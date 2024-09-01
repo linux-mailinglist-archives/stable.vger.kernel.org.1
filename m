@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90699679CC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7779678E4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7609D28155F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD191C20CF4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED91181334;
-	Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AA417F389;
+	Sun,  1 Sep 2024 16:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM7H/fhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdUaibPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8E81E87B;
-	Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD247537FF;
+	Sun,  1 Sep 2024 16:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209271; cv=none; b=HsEWU0De7CfukiV4mz3dZnFazO3bAK6+Vianh4p12IkDRRTp5S+OJ+cCQrOy5/ph+kJyV2nAPFAGM9LTi5DYP2rRqrFMUOEMcem8h9SHNSxIFbzn9drv9A6u3WJ24rEZtgw+7OYmJ6nUGym2mDcV18EWqQfMnL4E0Mw2aUBDkbo=
+	t=1725208617; cv=none; b=DhIIUpfeLZlM2VZSRXzl7IFpPydrU+H4teW1NPn7FAd7sj88l9gikriyr7BF94ukMU95WNMpqY2p9WyXegIy27UQ9+/sCdwFlVzjknMigfjQWH6bI/JUdnSoqVAgEhFOoHWVcp7Y5pF2GKK+/7b9ljVbJfZIRdhfgWKm/PmPzxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209271; c=relaxed/simple;
-	bh=pXhxTJRmCl0tPES5ETHnGIYTrV0BhdABM003MDgS2aM=;
+	s=arc-20240116; t=1725208617; c=relaxed/simple;
+	bh=Tr+XvF+IG83SwhDaUEh0SPdtK585e217rUUZnB+JYac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGaHSEcUaue2tD78or953rL8cu1E3+LijXVtn93Fe8U9FP1sAJC2XsVxDrjovqP8DYuwRp9iixObXcPDRvrmTcnvJfRZV6PrcX8r8GU2sab1aRhoU3PlS6ttSCWexhVpwcOG7MUDBHqhk02I3Kj6F7ljU28iNEabndjC8tQ5Y5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM7H/fhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE7BC4CEC3;
-	Sun,  1 Sep 2024 16:47:50 +0000 (UTC)
+	 MIME-Version; b=I8zhpdVDhB2rmlMAmMCzF5dmJ7VmN/v35S+flFxDNp5/Lvh2kfLPtMp3cg7rerPy3lwKWbfZ17zHbxkNIm1AMqGMCdVridZzm1TJmI6mPkWrnThv9w/YEQf1KWGPi7IFBpP9ynQIYUYtpeBkgwMYinpvSR172hcdznISR7QVUno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdUaibPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FA8C4CEC3;
+	Sun,  1 Sep 2024 16:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209271;
-	bh=pXhxTJRmCl0tPES5ETHnGIYTrV0BhdABM003MDgS2aM=;
+	s=korg; t=1725208617;
+	bh=Tr+XvF+IG83SwhDaUEh0SPdtK585e217rUUZnB+JYac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RM7H/fhzSDox2sqlMszSs0L1BP4WR1dcb2wD0HsE/EvEbC9fxpVfOffvokHDne3xZ
-	 t8UTocGKiQalviPoDTsOfE8ldKhiFBEDqdSsEqXmJQuKQpBwd/W8uDkMhgXk50LziM
-	 eMz1/Rxf2DothRSN5pIuiJEQYOmo7HR1bzL2XLbo=
+	b=xdUaibPbkobDCOX+T/pLYni/fSqYN/jc27GwpuXjWs76u8+sOgpWzOFKjIVUtFsuk
+	 ygbVAslbMDo7mppOfNhO5N+YIgidVEBozJcNwQNnn8ZvjdqDNAxF+L5nYuW6bCeDRc
+	 r9yZaGNEI9aPKzq42LfskWpOB52BZqrAWDVcDfx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengqi Zhang <mengqi.zhang@mediatek.com>,
-	stable@vger.stable.com,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/71] mmc: mtk-sd: receive cmd8 data when hs400 tuning fail
-Date: Sun,  1 Sep 2024 18:17:28 +0200
-Message-ID: <20240901160802.763517117@linuxfoundation.org>
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.10 138/149] usb: cdnsp: fix for Link TRB with TC
+Date: Sun,  1 Sep 2024 18:17:29 +0200
+Message-ID: <20240901160822.637456468@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengqi Zhang <mengqi.zhang@mediatek.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit 9374ae912dbb1eed8139ed75fd2c0f1b30ca454d ]
+commit 740f2e2791b98e47288b3814c83a3f566518fed2 upstream.
 
-When we use cmd8 as the tuning command in hs400 mode, the command
-response sent back by some eMMC devices cannot be correctly sampled
-by MTK eMMC controller at some weak sample timing. In this case,
-command timeout error may occur. So we must receive the following
-data to make sure the next cmd8 send correctly.
+Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
+internal cycle bit can have incorrect state after command complete.
+In consequence empty transfer ring can be incorrectly detected
+when EP is resumed.
+NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
+is then on NOP TRB and internal cycle bit is not changed and have
+correct value.
 
-Signed-off-by: Mengqi Zhang <mengqi.zhang@mediatek.com>
-Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
-Cc: stable@vger.stable.com
-Link: https://lore.kernel.org/r/20240716013704.10578-1-mengqi.zhang@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
+ drivers/usb/cdns3/cdnsp-ring.c   |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index efd2af2d36862..ba18e9fa64b15 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1206,7 +1206,7 @@ static bool msdc_cmd_done(struct msdc_host *host, int events,
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -811,6 +811,7 @@ struct cdnsp_stream_info {
+  *        generate Missed Service Error Event.
+  *        Set skip flag when receive a Missed Service Error Event and
+  *        process the missed tds on the endpoint ring.
++ * @wa1_nop_trb: hold pointer to NOP trb.
+  */
+ struct cdnsp_ep {
+ 	struct usb_ep endpoint;
+@@ -838,6 +839,8 @@ struct cdnsp_ep {
+ #define EP_UNCONFIGURED		BIT(7)
+ 
+ 	bool skip;
++	union cdnsp_trb	 *wa1_nop_trb;
++
+ };
+ 
+ /**
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -1905,6 +1905,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		return ret;
+ 
+ 	/*
++	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
++	 * causes that internal cycle bit can have incorrect state after
++	 * command complete. In consequence empty transfer ring can be
++	 * incorrectly detected when EP is resumed.
++	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
++	 * then on NOP TRB and internal cycle bit is not changed and have
++	 * correct value.
++	 */
++	if (pep->wa1_nop_trb) {
++		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
++		field ^= TRB_CYCLE;
++
++		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
++		pep->wa1_nop_trb = NULL;
++	}
++
++	/*
+ 	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
+ 	 * until we've finished creating all the other TRBs. The ring's cycle
+ 	 * state may change as we enqueue the other TRBs, so save it too.
+@@ -1999,6 +2016,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		send_addr = addr;
  	}
  
- 	if (!sbc_error && !(events & MSDC_INT_CMDRDY)) {
--		if (events & MSDC_INT_CMDTMO ||
-+		if ((events & MSDC_INT_CMDTMO && !host->hs400_tuning) ||
- 		    (!mmc_op_tuning(cmd->opcode) && !host->hs400_tuning))
- 			/*
- 			 * should not clear fifo/interrupt as the tune data
-@@ -1299,9 +1299,9 @@ static void msdc_start_command(struct msdc_host *host,
- static void msdc_cmd_next(struct msdc_host *host,
- 		struct mmc_request *mrq, struct mmc_command *cmd)
- {
--	if ((cmd->error &&
--	    !(cmd->error == -EILSEQ &&
--	      (mmc_op_tuning(cmd->opcode) || host->hs400_tuning))) ||
-+	if ((cmd->error && !host->hs400_tuning &&
-+	     !(cmd->error == -EILSEQ &&
-+	     mmc_op_tuning(cmd->opcode))) ||
- 	    (mrq->sbc && mrq->sbc->error))
- 		msdc_request_done(host, mrq);
- 	else if (cmd == mrq->sbc)
--- 
-2.43.0
-
++	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
++		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
++		if (!ring->cycle_state)
++			field |= TRB_CYCLE;
++
++		pep->wa1_nop_trb = ring->enqueue;
++
++		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
++				TRB_INTR_TARGET(0), field);
++	}
++
+ 	cdnsp_check_trb_math(preq, enqd_len);
+ 	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
+ 				       start_cycle, start_trb);
 
 
 
