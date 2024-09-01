@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F65967827
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BA39677D4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69D021C21014
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E24B216F7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E0213D53B;
-	Sun,  1 Sep 2024 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46767181B88;
+	Sun,  1 Sep 2024 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1RnwMvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+IDvWYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7132B28387;
-	Sun,  1 Sep 2024 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0334F33987;
+	Sun,  1 Sep 2024 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208111; cv=none; b=Kzvk1dVSPcYyjYSbLldEc6Putm/CD0W9bIf8kD35YtE03hPexjIC1PcxsMBn3AtAe8FUB8u8nIITU2ziRdjeInJmvHROp3p82R52ew7npq5cgE7apej2W6wOh/GzHLcF0AWeW1Alk9HHL+xerGvf7lZF9JywZ3GNFy8ywLeiY3c=
+	t=1725207869; cv=none; b=l0fBW32tdEC3thHiprlzM2X1mOY+JrxWaOmWMSOTVFPgu9Iglq4/XBIqrQhxzqnzND2oOHGDiuVY2KHt61hpaCENg9BTZliOkmKlw5RNEguqzxGUxlzGXAwR6PM9SbZCoCOABRA4ECCaJ3kZmDaeEiyNNsnQ6+Aq3iJUbFFkqzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208111; c=relaxed/simple;
-	bh=yDPNE+F140U4txi0M9xtXrs4qjjuOHtKgo0piNtvTME=;
+	s=arc-20240116; t=1725207869; c=relaxed/simple;
+	bh=rdpttbXDPII9u9iCDKLXUC6psco/HORsxHCjQ65nLeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qb2q3l/ZknOp+v5Ws+oXJ92628Xn1AxtfCCwD1zaRHfYyWJ8wKhwmo5fsYS4blbvZ+8PyI2CA9lT7zO97CePIVozR7QOzUgYa42LbG4ty9p4TlPxZSYkZzr8N8Elewuazu+4GgePlaYiUj8aRO4zuUTnl35rnOkh3iN9+aA7dF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1RnwMvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48AFC4CEC3;
-	Sun,  1 Sep 2024 16:28:30 +0000 (UTC)
+	 MIME-Version; b=eceZ43NyPJcdRPumVbTkDRtO/Ce2j2iA5c/N4epTUvZv7sE2PdMpYNKLQXe8WY3duE6mBHX5RRBL9WXs5j0mLnH3Xbmn+VNq9J31pz2N38QZL0n4+RW7O1gRt2XKPt4f2oBcMMzvxmulWuE+MeYBHrDJAiP9r57E+CIYFu/I/CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+IDvWYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4CBC4CEC3;
+	Sun,  1 Sep 2024 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208111;
-	bh=yDPNE+F140U4txi0M9xtXrs4qjjuOHtKgo0piNtvTME=;
+	s=korg; t=1725207868;
+	bh=rdpttbXDPII9u9iCDKLXUC6psco/HORsxHCjQ65nLeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1RnwMvrpUSIvZGQH3lbDkLCnu3r+0Pzr71HQa4l6xyDaHt+DkmD/jf6JywFsJ1WC
-	 Xyu30Yb5G9oBZcfjcvBoJYlg9xMhP52NxgCzFxv5P+oJ7R9Y7ZlrKShV0zDVQQopAQ
-	 CJgbY+eGixKt5mXT3ICIwKLy487ZjbmtvI5+0Fko=
+	b=b+IDvWYqPvUEOjWKfAvb8u5nUtcJ9pMR/QADB5UVZr4Jppf42yGh44lLxl6lC2Tcw
+	 i2QBewPwx1uEDsA+62EVn4iCyxjxlj8GlkPBBYsT+bKzBJ3irG9/FBlvPH4Jyts+0B
+	 Pav3pZUKwkIyUcim1PwOz8PAJbPQBMbm8vlp8X7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 77/93] ARM: dts: imx6dl-yapp43: Increase LED current to match the yapp4 HW design
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>
+Subject: [PATCH 4.19 94/98] usb: dwc3: st: fix probed platform device ref count on probe error path
 Date: Sun,  1 Sep 2024 18:17:04 +0200
-Message-ID: <20240901160810.635612275@linuxfoundation.org>
+Message-ID: <20240901160807.242506934@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Vokáč <michal.vokac@ysoft.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 8512fbb64b0e599412da661412d10d4ba1cb003c upstream.
+commit ddfcfeba891064b88bb844208b43bef2ef970f0c upstream.
 
-On the imx6dl-yapp4 revision based boards, the RGB LED is not driven
-directly by the LP5562 driver but through FET transistors. Hence the LED
-current is not determined by the driver but by the LED series resistors.
+The probe function never performs any paltform device allocation, thus
+error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
+reference count from the platform device being probed.  If error path is
+triggered, this will lead to unbalanced device reference counts and
+premature release of device resources, thus possible use-after-free when
+releasing remaining devm-managed resources.
 
-On the imx6dl-yapp43 revision based boards, we removed the FET transistors
-to drive the LED directly from the LP5562 but forgot to tune the output
-current to match the previous HW design.
-
-Set the LED current on imx6dl-yapp43 based boards to the same values
-measured on the imx6dl-yapp4 boards and limit the maximum current to 20mA.
-
-Fixes: 7da4734751e0 ("ARM: dts: imx6dl-yapp43: Add support for new HW revision of the IOTA board")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://lore.kernel.org/r/20240814093957.37940-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/dwc3/dwc3-st.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-index 52a0f6ee426f..bcf4d9c870ec 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-@@ -274,24 +274,24 @@ leds: led-controller@30 {
+--- a/drivers/usb/dwc3/dwc3-st.c
++++ b/drivers/usb/dwc3/dwc3-st.c
+@@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform
+ 	dwc3_data->regmap = regmap;
  
- 		led@0 {
- 			chan-name = "R";
--			led-cur = /bits/ 8 <0x20>;
--			max-cur = /bits/ 8 <0x60>;
-+			led-cur = /bits/ 8 <0x6e>;
-+			max-cur = /bits/ 8 <0xc8>;
- 			reg = <0>;
- 			color = <LED_COLOR_ID_RED>;
- 		};
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
+-	if (!res) {
+-		ret = -ENXIO;
+-		goto undo_platform_dev_alloc;
+-	}
++	if (!res)
++		return -ENXIO;
  
- 		led@1 {
- 			chan-name = "G";
--			led-cur = /bits/ 8 <0x20>;
--			max-cur = /bits/ 8 <0x60>;
-+			led-cur = /bits/ 8 <0xbe>;
-+			max-cur = /bits/ 8 <0xc8>;
- 			reg = <1>;
- 			color = <LED_COLOR_ID_GREEN>;
- 		};
+ 	dwc3_data->syscfg_reg_off = res->start;
  
- 		led@2 {
- 			chan-name = "B";
--			led-cur = /bits/ 8 <0x20>;
--			max-cur = /bits/ 8 <0x60>;
-+			led-cur = /bits/ 8 <0xbe>;
-+			max-cur = /bits/ 8 <0xc8>;
- 			reg = <2>;
- 			color = <LED_COLOR_ID_BLUE>;
- 		};
--- 
-2.46.0
-
+@@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform
+ 		devm_reset_control_get_exclusive(dev, "powerdown");
+ 	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
+ 		dev_err(&pdev->dev, "could not get power controller\n");
+-		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
+-		goto undo_platform_dev_alloc;
++		return PTR_ERR(dwc3_data->rstc_pwrdn);
+ 	}
+ 
+ 	/* Manage PowerDown */
+@@ -296,8 +293,6 @@ undo_softreset:
+ 	reset_control_assert(dwc3_data->rstc_rst);
+ undo_powerdown:
+ 	reset_control_assert(dwc3_data->rstc_pwrdn);
+-undo_platform_dev_alloc:
+-	platform_device_put(pdev);
+ 	return ret;
+ }
+ 
 
 
 
