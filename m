@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C87B967853
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 157F5967A90
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030F61F217EC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 477531C21399
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8095217E00C;
-	Sun,  1 Sep 2024 16:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F217181334;
+	Sun,  1 Sep 2024 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXfs1OZ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRsxPbX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03C1C68C;
-	Sun,  1 Sep 2024 16:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED3616B391;
+	Sun,  1 Sep 2024 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208234; cv=none; b=co305WlSAfTObas614MKHlUxsdi/APQayvDrZ7Wi4oN8J5dHuj2kira5OhnTm3rk4a1m6lxLJUC/xKjmFGm9DIXcGw09qyxqY/z1piyzXaCaOVrxV8bupzTrNmP0S7YcIAzE4lYK00FPzwEKxgHG44R/OOLyrTxBJMJhC7Z0FOA=
+	t=1725209873; cv=none; b=EcBDfGiyg4YayKOMIef3ty+MdvHejOP85K40EJgaSweD4EGRQ2hKNyWlZRQbnXmwtBhXFHClG/UKzTnmRUFz5mDDFh/UcDigT5+93ispGnG/DC4n4NRDwxFlealnJstEjJOO8BSqt8rWa975yYeHQB5StoXX4fQ2+fC9kXVBeNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208234; c=relaxed/simple;
-	bh=1kzh7LrC7veQMIPT7HM2WpjjMX5oEMyBTPOpZwMLDQE=;
+	s=arc-20240116; t=1725209873; c=relaxed/simple;
+	bh=7fWxFT1PVNgPPxHLjUGp6a4aanpgT4Z6gNJz9mW3MwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oe15rLlNY8W/UwWo43zNxiw8K9qG+Bz1SX77DI7PYto7Kk4eAMt4vQ9Mj49jGvDii7t8wreOkFEYIkCYGQRkx0qUrpMB6BO7thy6kICm8A5abMGaIB2RdTOFxk437S54T4PSMrSCfH5D5iIEBY04NGF+q9YbdVMOZi7HdAjkQB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXfs1OZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01EDC4CEC3;
-	Sun,  1 Sep 2024 16:30:33 +0000 (UTC)
+	 MIME-Version; b=XCzKj5oAknDX4cBsdCoaSAp/ZpnNPD6O3Ap1IYruB6iQmjsbdeXUtqKeSIidbPL5Uu7Q+3Vl2HLcP3D+q0gR9ffOQDW/QAx5s2Kkqrs5jjbbfX4rfrBtoYzRUro1M/dDe466CPD0ssPkxKb28pCGFDZ8EtzXdh8GZpnVcTvFzhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRsxPbX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0488C4CEC3;
+	Sun,  1 Sep 2024 16:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208234;
-	bh=1kzh7LrC7veQMIPT7HM2WpjjMX5oEMyBTPOpZwMLDQE=;
+	s=korg; t=1725209873;
+	bh=7fWxFT1PVNgPPxHLjUGp6a4aanpgT4Z6gNJz9mW3MwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXfs1OZ9JDYdg/A58Ay3f38Oq4zYewIRmmrWMbW9vnlHkfpjxEFAO48rr0WOcLcfr
-	 givYl7VJfYIi1i4icrK0KJ8t4cy/tjAC9uFzTtqiX+whPeYYndPMh5aCASz1Is7N2W
-	 XsCoNTY06Uw99XjcclWBjvunOyG/3K5FrjwMtIAM=
+	b=KRsxPbX8ZWd8dDOeP/dnRs20B3Lx8IA8dXurLv+nUS5qM/SliIUT5SP55rKbhTID7
+	 0HqpGi+sNtwx/e5lyGDIavXQhGUhNJlX1rtIxhI7y5wPqfYNBgrpDIVnXhP8vP+X+7
+	 WGPqKc7Iag5P0wBubbH/TflKkTKLktu39Akj95fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+242ee56aaa9585553766@syzkaller.appspotmail.com,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.10 002/149] erofs: fix out-of-bound access when z_erofs_gbuf_growsize() partially fails
-Date: Sun,  1 Sep 2024 18:15:13 +0200
-Message-ID: <20240901160817.557372399@linuxfoundation.org>
+	syzbot+91dbdfecdd3287734d8e@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Eli Billauer <eli.billauer@gmail.com>
+Subject: [PATCH 5.15 002/215] char: xillybus: Dont destroy workqueue from work item running on it
+Date: Sun,  1 Sep 2024 18:15:14 +0200
+Message-ID: <20240901160823.328129856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Eli Billauer <eli.billauer@gmail.com>
 
-commit 0005e01e1e875c5e27130c5e2ed0189749d1e08a upstream.
+commit ccbde4b128ef9c73d14d0d7817d68ef795f6d131 upstream.
 
-If z_erofs_gbuf_growsize() partially fails on a global buffer due to
-memory allocation failure or fault injection (as reported by syzbot [1]),
-new pages need to be freed by comparing to the existing pages to avoid
-memory leaks.
+Triggered by a kref decrement, destroy_workqueue() may be called from
+within a work item for destroying its own workqueue. This illegal
+situation is averted by adding a module-global workqueue for exclusive
+use of the offending work item. Other work items continue to be queued
+on per-device workqueues to ensure performance.
 
-However, the old gbuf->pages[] array may not be large enough, which can
-lead to null-ptr-deref or out-of-bound access.
-
-Fix this by checking against gbuf->nrpages in advance.
-
-[1] https://lore.kernel.org/r/000000000000f7b96e062018c6e3@google.com
-
-Reported-by: syzbot+242ee56aaa9585553766@syzkaller.appspotmail.com
-Fixes: d6db47e571dc ("erofs: do not use pagepool in z_erofs_gbuf_growsize()")
-Cc: <stable@vger.kernel.org> # 6.10+
-Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
-Reviewed-by: Sandeep Dhavale <dhavale@google.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240820085619.1375963-1-hsiangkao@linux.alibaba.com
+Reported-by: syzbot+91dbdfecdd3287734d8e@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/lkml/0000000000000ab25a061e1dfe9f@google.com/
+Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
+Link: https://lore.kernel.org/r/20240801121126.60183-1-eli.billauer@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zutil.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/xillybus/xillyusb.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/erofs/zutil.c
-+++ b/fs/erofs/zutil.c
-@@ -111,7 +111,8 @@ int z_erofs_gbuf_growsize(unsigned int n
- out:
- 	if (i < z_erofs_gbuf_count && tmp_pages) {
- 		for (j = 0; j < nrpages; ++j)
--			if (tmp_pages[j] && tmp_pages[j] != gbuf->pages[j])
-+			if (tmp_pages[j] && (j >= gbuf->nrpages ||
-+					     tmp_pages[j] != gbuf->pages[j]))
- 				__free_page(tmp_pages[j]);
- 		kfree(tmp_pages);
+--- a/drivers/char/xillybus/xillyusb.c
++++ b/drivers/char/xillybus/xillyusb.c
+@@ -50,6 +50,7 @@ MODULE_LICENSE("GPL v2");
+ static const char xillyname[] = "xillyusb";
+ 
+ static unsigned int fifo_buf_order;
++static struct workqueue_struct *wakeup_wq;
+ 
+ #define USB_VENDOR_ID_XILINX		0x03fd
+ #define USB_VENDOR_ID_ALTERA		0x09fb
+@@ -561,10 +562,6 @@ static void cleanup_dev(struct kref *kre
+  * errors if executed. The mechanism relies on that xdev->error is assigned
+  * a non-zero value by report_io_error() prior to queueing wakeup_all(),
+  * which prevents bulk_in_work() from calling process_bulk_in().
+- *
+- * The fact that wakeup_all() and bulk_in_work() are queued on the same
+- * workqueue makes their concurrent execution very unlikely, however the
+- * kernel's API doesn't seem to ensure this strictly.
+  */
+ 
+ static void wakeup_all(struct work_struct *work)
+@@ -619,7 +616,7 @@ static void report_io_error(struct xilly
+ 
+ 	if (do_once) {
+ 		kref_get(&xdev->kref); /* xdev is used by work item */
+-		queue_work(xdev->workq, &xdev->wakeup_workitem);
++		queue_work(wakeup_wq, &xdev->wakeup_workitem);
  	}
+ }
+ 
+@@ -2242,6 +2239,10 @@ static int __init xillyusb_init(void)
+ {
+ 	int rc = 0;
+ 
++	wakeup_wq = alloc_workqueue(xillyname, 0, 0);
++	if (!wakeup_wq)
++		return -ENOMEM;
++
+ 	if (LOG2_INITIAL_FIFO_BUF_SIZE > PAGE_SHIFT)
+ 		fifo_buf_order = LOG2_INITIAL_FIFO_BUF_SIZE - PAGE_SHIFT;
+ 	else
+@@ -2249,11 +2250,16 @@ static int __init xillyusb_init(void)
+ 
+ 	rc = usb_register(&xillyusb_driver);
+ 
++	if (rc)
++		destroy_workqueue(wakeup_wq);
++
+ 	return rc;
+ }
+ 
+ static void __exit xillyusb_exit(void)
+ {
++	destroy_workqueue(wakeup_wq);
++
+ 	usb_deregister(&xillyusb_driver);
+ }
+ 
 
 
 
