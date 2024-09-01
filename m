@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DACF967840
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C7B9678BD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1455B222F7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E4E1C21104
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A57F183CD2;
-	Sun,  1 Sep 2024 16:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F184117DFFC;
+	Sun,  1 Sep 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zt1yejiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxbDYDQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274F7183CCA;
-	Sun,  1 Sep 2024 16:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5251E87B;
+	Sun,  1 Sep 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208175; cv=none; b=jLnznWcgl9McP5R1wrWn+YjKXdyFdFqAh5dwwAsPnmpCFA6wpBpkqBdERM3NMv7ry+abIGbQ6n+5OnOpYXbUqvxfl7Bs2oKKr957xu2HjbY3RjNNPXBoDzTBDy7xagYnqPdKSCW1P/52a60mpk+1ixZ8IMup2O1hr72KV9biwik=
+	t=1725208501; cv=none; b=RLThX3JlR5Rcw7UuyKU6qeFPo+kv34A+ViW5xSHBcGVk4hag8kRn/vXBhXjt5hvEVutXmjw6xxKHRKTzljeP3dA9uwa2IwL3MZHlKEhg6OZSmAzjfwzBYXfh2+iwNKJmFUUVi0cK7kthsK0yFXExQQFLQKOA9BI91cTjVFJHR44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208175; c=relaxed/simple;
-	bh=91cv/GLuceUJiAjbf1SW8HW81MVF7Sz+qns83qwqu6Y=;
+	s=arc-20240116; t=1725208501; c=relaxed/simple;
+	bh=VGqBIj9MvDgSUiuFwn8DBIHgmS5+MvY+enDU+/5R50g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOfjRFWsmQawlW+zKlWuRfe3W4pvoT1r26jOks3d565Tfde131DKUQscfgqdunbZ/eIaxwmJ8MLbop8dQLDr4oYfP2BZW3PBhLDyENWOWjDDPtM5tnSId2WHEqM0U/xt126OVJuxjtnHoMM2Qbmb3epzF0nCFLnR4gmFibssJdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zt1yejiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A22C4CEC3;
-	Sun,  1 Sep 2024 16:29:34 +0000 (UTC)
+	 MIME-Version; b=Wc5HEZzGuuWZucBjDSp6GOLM1PJaSxw5k0TGXf9lfC3P2rcdzKd6/UqSnzcaMoTHOVi0qq69pfrETI0fboufslAIgcpoLdsQmQbSO+JgMXqm/tWB83WXSEmlZD1+cHbH48jiT6RLS1y84ox1jP2WiDR0To7O6suYx2Y32VNniUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxbDYDQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E67FC4CEC3;
+	Sun,  1 Sep 2024 16:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208174;
-	bh=91cv/GLuceUJiAjbf1SW8HW81MVF7Sz+qns83qwqu6Y=;
+	s=korg; t=1725208501;
+	bh=VGqBIj9MvDgSUiuFwn8DBIHgmS5+MvY+enDU+/5R50g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zt1yejiHzrpOd5S553ONT+86f0+F7AT2uiju1eWrqO8SShXt3VxUhKFwWqcdBxiVF
-	 Z6GY5dakNmKXSR9n2CJx1YAxJ6v9iuS46T0W1rtpA2HizzX362+DTdqrRVvnZBw02+
-	 E/ZgBHNabrmuN/RDJoa1HN6TtAxjwDLDavueTrIM=
+	b=hxbDYDQoWXXV6eeWH0WoDale1OdokXHXqq1rG2j0dP9JlNpgexYOfQt7ng5kKvIth
+	 9p83A1FbI3KDSu2QO+oKrePDDRxsbYweg0KxnodmvQYKYS4Ae2fPLfEpD4j7vB9oh9
+	 aiTyj0UaOvneKmBAiqStlKvJPf30ibtQHuiFyvS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.6 66/93] sctp: fix association labeling in the duplicate COOKIE-ECHO case
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 102/149] selftests: forwarding: no_forwarding: Down ports on cleanup
 Date: Sun,  1 Sep 2024 18:16:53 +0200
-Message-ID: <20240901160809.848577581@linuxfoundation.org>
+Message-ID: <20240901160821.294969505@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 3a0504d54b3b57f0d7bf3d9184a00c9f8887f6d7 ]
+[ Upstream commit e8497d6951ee8541d73784f9aac9942a7f239980 ]
 
-sctp_sf_do_5_2_4_dupcook() currently calls security_sctp_assoc_request()
-on new_asoc, but as it turns out, this association is always discarded
-and the LSM labels never get into the final association (asoc).
+This test neglects to put ports down on cleanup. Fix it.
 
-This can be reproduced by having two SCTP endpoints try to initiate an
-association with each other at approximately the same time and then peel
-off the association into a new socket, which exposes the unitialized
-labels and triggers SELinux denials.
-
-Fix it by calling security_sctp_assoc_request() on asoc instead of
-new_asoc. Xin Long also suggested limit calling the hook only to cases
-A, B, and D, since in cases C and E the COOKIE ECHO chunk is discarded
-and the association doesn't enter the ESTABLISHED state, so rectify that
-as well.
-
-One related caveat with SELinux and peer labeling: When an SCTP
-connection is set up simultaneously in this way, we will end up with an
-association that is initialized with security_sctp_assoc_request() on
-both sides, so the MLS component of the security context of the
-association will get swapped between the peers, instead of just one side
-setting it to the other's MLS component. However, at that point
-security_sctp_assoc_request() had already been called on both sides in
-sctp_sf_do_unexpected_init() (on a temporary association) and thus if
-the exchange didn't fail before due to MLS, it won't fail now either
-(most likely both endpoints have the same MLS range).
-
-Tested by:
- - reproducer from https://src.fedoraproject.org/tests/selinux/pull-request/530
- - selinux-testsuite (https://github.com/SELinuxProject/selinux-testsuite/)
- - sctp-tests (https://github.com/sctp/sctp-tests) - no tests failed
-   that wouldn't fail also without the patch applied
-
-Fixes: c081d53f97a1 ("security: pass asoc to sctp_assoc_request and sctp_sk_clone")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Paul Moore <paul@paul-moore.com> (LSM/SELinux)
-Link: https://patch.msgid.link/20240826130711.141271-1-omosnace@redhat.com
+Fixes: 476a4f05d9b8 ("selftests: forwarding: add a no_forwarding.sh test")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0baf91dc24b95ae0cadfdf5db05b74888e6a228a.1724430120.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/forwarding/no_forwarding.sh | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 08fdf1251f46a..3649a4e1eb9de 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2259,12 +2259,6 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
- 		}
- 	}
+diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+index af3b398d13f01..9e677aa64a06a 100755
+--- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
++++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+@@ -233,6 +233,9 @@ cleanup()
+ {
+ 	pre_cleanup
  
--	/* Update socket peer label if first association. */
--	if (security_sctp_assoc_request(new_asoc, chunk->head_skb ?: chunk->skb)) {
--		sctp_association_free(new_asoc);
--		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
--	}
--
- 	/* Set temp so that it won't be added into hashtable */
- 	new_asoc->temp = 1;
- 
-@@ -2273,6 +2267,22 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
- 	 */
- 	action = sctp_tietags_compare(new_asoc, asoc);
- 
-+	/* In cases C and E the association doesn't enter the ESTABLISHED
-+	 * state, so there is no need to call security_sctp_assoc_request().
-+	 */
-+	switch (action) {
-+	case 'A': /* Association restart. */
-+	case 'B': /* Collision case B. */
-+	case 'D': /* Collision case D. */
-+		/* Update socket peer label if first association. */
-+		if (security_sctp_assoc_request((struct sctp_association *)asoc,
-+						chunk->head_skb ?: chunk->skb)) {
-+			sctp_association_free(new_asoc);
-+			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+		}
-+		break;
-+	}
++	ip link set dev $swp2 down
++	ip link set dev $swp1 down
 +
- 	switch (action) {
- 	case 'A': /* Association restart. */
- 		retval = sctp_sf_do_dupcook_a(net, ep, asoc, chunk, commands,
+ 	h2_destroy
+ 	h1_destroy
+ 
 -- 
 2.43.0
 
