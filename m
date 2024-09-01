@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F52E9678D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCCD967833
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3423B1F210B8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F4851C20D88
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AE61C68C;
-	Sun,  1 Sep 2024 16:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FFF183CA5;
+	Sun,  1 Sep 2024 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWvdsnqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fA/aMN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F317F389;
-	Sun,  1 Sep 2024 16:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9368D28387;
+	Sun,  1 Sep 2024 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208570; cv=none; b=Nhkzv4ABSvSnMDqAfO9a5UA3jU/2wfCMn8hdyJ+C10rqYGUwEGXW61mJB43AcJtO4BubPmTh2TTq2Bcga+Q33F6SE11KKfPOjlu/xzA8w6TKThtUp4ZX4bjARhmh4fQdKP4N/tJXRSYbgvgTYht8O1dcOOg8X7mxIgjrJXpzMSw=
+	t=1725208144; cv=none; b=QYrcMJQ9IHO4koTwLSdoCvFh/LWTJN5QpegJrL7o5ZMDpB1Kt/iqKVerdnt5l+WOmr0EeRvE2b/9nFkSDu3fxBLcOOTxIDIO/HhFGM8zNqqfZbTYHRxiJYCNTeqBcbuK+tCCRILI6+hIZ3+ud9D5Sr4yjrSL7WsiXrCFj2fslQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208570; c=relaxed/simple;
-	bh=C+jrN6zvj3fny5D/r0dCtP++jlIr5TSjex3ghNVWhj4=;
+	s=arc-20240116; t=1725208144; c=relaxed/simple;
+	bh=zt/uuSzGQ/7o84j2dxSqDFEXkCs06L2mZEmf2xAcQz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABMs80KyMP+beyol3Olkx0kCr6XGjPlS93jGZJhoJUdhAujbmrZ+8O7iXtFAqzaUSppVrvQs0YxgkPsWx9Q+i6cagVy8Q61r6Lo2XgQXF/tPiXI62hskKyMoIRSotR/ZeiRSNZ9Oy+nryFpB/i3Z4DV3VJKxxCviJ8vPMs92i8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWvdsnqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE446C4CEC3;
-	Sun,  1 Sep 2024 16:36:09 +0000 (UTC)
+	 MIME-Version; b=jTQVOVtskTVfHA6UbTZm1FdEtKrSHiKTepg9BLQtQLS8BxHrasQFOsBY59PoySBqmqcIPOZkrpDwjv6b9t6y4D9yZ//7k1npOmYBW1cZRCnUkkxMTy1ETENa9FRGo2j+9KpoMLAyl4BTBYxhZbSXzyrpUp1eTjVC8BWZyEvlqbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fA/aMN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63CEC4CEC3;
+	Sun,  1 Sep 2024 16:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208570;
-	bh=C+jrN6zvj3fny5D/r0dCtP++jlIr5TSjex3ghNVWhj4=;
+	s=korg; t=1725208144;
+	bh=zt/uuSzGQ/7o84j2dxSqDFEXkCs06L2mZEmf2xAcQz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWvdsnqg0KnQtU1EZ76y3/ROzujQWL/2VfGZIxVt2qr47YItQSul9p31hMJuhQmtj
-	 v/N+7cVwsnezWttBPsxueIky4kq1s3qdqsfGUuygWHrPWAVVCfw3/X1nm5+/es1PMN
-	 O5nfyi+jnbfbam0v9UmaMu/4VXbHe8nwBovRw/8Y=
+	b=0fA/aMN4gNWrZ4LlDlpe/mALz0QsZkdPTZ8iBJVtFf2qpz+/2KGoHE37HS2gfDZZH
+	 W6fQX5WhrRFsJGOReUP3pE36mQOAtpA4VHKvGFWJzdQ+lB6QUSxj0kKIajRtv+zKo4
+	 t5LCF5X5CVd6Ls5PeElvQkyO5DTiebdULJmqiCEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 121/149] scsi: sd: Ignore command SYNCHRONIZE CACHE error if format in progress
-Date: Sun,  1 Sep 2024 18:17:12 +0200
-Message-ID: <20240901160822.004128133@linuxfoundation.org>
+	Adam Ford <aford173@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 86/93] arm64: dts: imx8mp-beacon-kit: Fix Stereo Audio on WM8962
+Date: Sun,  1 Sep 2024 18:17:13 +0200
+Message-ID: <20240901160810.972078530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Adam Ford <aford173@gmail.com>
 
-commit 4f9eedfa27ae5806ed10906bcceee7bae49c8941 upstream.
+[ Upstream commit 4e69cd835a2d5c3915838491f59a68ee697a87d0 ]
 
-If formatting a suspended disk (such as formatting with different DIF
-type), the disk will be resuming first, and then the format command will
-submit to the disk through SG_IO ioctl.
+The L/R clock needs to be controlled by the SAI3 instead of the
+CODEC to properly achieve stereo sound. Doing this allows removes
+the need for unnecessary clock manipulation to try to get the
+CODEC's clock in sync with the SAI3 clock, since the CODEC can cope
+with a wide variety of clock inputs.
 
-When the disk is processing the format command, the system does not
-submit other commands to the disk. Therefore, the system attempts to
-suspend the disk again and sends the SYNCHRONIZE CACHE command. However,
-the SYNCHRONIZE CACHE command will fail because the disk is in the
-formatting process. This will cause the runtime_status of the disk to
-error and it is difficult for user to recover it. Error info like:
-
-[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
-[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
-[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
-[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
-
-To solve the issue, ignore the error and return success/0 when format is
-in progress.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20240819090934.2130592-1-liyihang9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 161af16c18f3 ("arm64: dts: imx8mp-beacon-kit: Fix audio_pll2 clock")
+Fixes: 69e2f37a6ddc ("arm64: dts: imx8mp-beacon-kit: Enable WM8962 Audio CODEC")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -1711,13 +1711,15 @@ static int sd_sync_cache(struct scsi_dis
- 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
- 				/* this is no error here */
- 				return 0;
-+
- 			/*
--			 * This drive doesn't support sync and there's not much
--			 * we can do because this is called during shutdown
--			 * or suspend so just return success so those operations
--			 * can proceed.
-+			 * If a format is in progress or if the drive does not
-+			 * support sync, there is not much we can do because
-+			 * this is called during shutdown or suspend so just
-+			 * return success so those operations can proceed.
- 			 */
--			if (sshdr.sense_key == ILLEGAL_REQUEST)
-+			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
-+			    sshdr.sense_key == ILLEGAL_REQUEST)
- 				return 0;
- 		}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+index acd265d8b58ed..e094f409028dd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+@@ -163,13 +163,12 @@
  
+ 		simple-audio-card,cpu {
+ 			sound-dai = <&sai3>;
++			frame-master;
++			bitclock-master;
+ 		};
+ 
+ 		simple-audio-card,codec {
+ 			sound-dai = <&wm8962>;
+-			clocks = <&clk IMX8MP_CLK_IPP_DO_CLKO1>;
+-			frame-master;
+-			bitclock-master;
+ 		};
+ 	};
+ };
+@@ -381,10 +380,9 @@
+ &sai3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sai3>;
+-	assigned-clocks = <&clk IMX8MP_CLK_SAI3>,
+-			  <&clk IMX8MP_AUDIO_PLL2> ;
+-	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
+-	assigned-clock-rates = <12288000>, <361267200>;
++	assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
++	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
++	assigned-clock-rates = <12288000>;
+ 	fsl,sai-mclk-direction-output;
+ 	status = "okay";
+ };
+-- 
+2.43.0
+
 
 
 
