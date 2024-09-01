@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-71921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB6696785A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC65967AA4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF7F1C2102D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115741F2172C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A13F17E900;
-	Sun,  1 Sep 2024 16:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CC18306C;
+	Sun,  1 Sep 2024 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcDd7FQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxseVqmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CA25381A;
-	Sun,  1 Sep 2024 16:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D2417ADE1;
+	Sun,  1 Sep 2024 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208258; cv=none; b=TBcFQl6TobG5EDiWs7TO5upvarfCKAOTWviITlhZ1vk35uGzIfY6IIaz8rciUQgNspexAaD0Ony6z2oyFVarOV0UC7LxYGr3FtJPWTLRJoEqQooKYfY2BpU8R9AN5CBQpXgFmyQhQgi/tKovGd0uAf+y7HZ1dec1bjbkqsvzfKc=
+	t=1725209937; cv=none; b=N4HwrnlX5V7QeCYgYFng4v15JywkvG6YsKvPScERMI3MFYIeotYO4lcBpfAqPNi+y7ZSlzFAwV00HmbckkA6g+tRKJQaTQRbjnWnhqhSbPZbz4XxXQVPa0kStI8Th3ghkANyuDNrk4eAtRA7AqSCHD6jgSvB9/GAUxm6iAsHFM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208258; c=relaxed/simple;
-	bh=+o6G7zl2g3HsxvH4UyuRmDO4OvphWPY7QsqeXflnrOA=;
+	s=arc-20240116; t=1725209937; c=relaxed/simple;
+	bh=6X5xUf49DE7E3OLXU2Mhh1vuHDuXovPLR05YLise/+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDC3wY2oSYrD3EbD2pCmjPGnsDuMaalYmG5PMsOVu4ePoSD0N7JQSh0iaOgP385rOK6MQdVXH+jnbG31YdiMv1Vfwt1KjWte0dqY0LUuLH9XshEKI0aXWWB7iKC5BZxUaobhZcAm1xdxd5U7zyuF9+7k7dSSHOS7sJjiuDyy3Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcDd7FQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26340C4CEC3;
-	Sun,  1 Sep 2024 16:30:56 +0000 (UTC)
+	 MIME-Version; b=nSUMLGnkES15Wb1C5uANzMdjz3/RXIEwUXSCZ4HZVBlAd2+uRdD5EV8NeiUgfy9mznTtXUS31MJFUYYNd4GNn7tADhCnWnTw3TDpm1Fd3BEtFxxcazRezqny2uEkddByLoF2NB9lCmlIU4tV6XR/gYuKfBCMOfRVr0UI7fre1RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxseVqmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C59C4CEC3;
+	Sun,  1 Sep 2024 16:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208257;
-	bh=+o6G7zl2g3HsxvH4UyuRmDO4OvphWPY7QsqeXflnrOA=;
+	s=korg; t=1725209937;
+	bh=6X5xUf49DE7E3OLXU2Mhh1vuHDuXovPLR05YLise/+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcDd7FQI7ux6iX8dFrkhuHUlHbGkp1oAmBJvt0qBpk64900vU1kkKDqUouQHuKUrn
-	 2tt8H9rhKot7q6hDqyOlFiaRfbAIAk0W6wHzBu+KBPGOWSXS+zmYiPaDvmoBxU13ly
-	 2pTP2ALft5RthD+7hm14YNAbkIkdmOzlDQiZXJBE=
+	b=lxseVqmLEJQAjse6xbiMZUOvEAr5Yhpu6s9dqeDozYHLI4FAAphzSIbQNGhmhvcG5
+	 lB+WMPlkH925YjwbYEd0yI2cuGBbnnVyFe+7Vvg/VRYCo1xCXsbfpkBYz/cKGq7hsy
+	 XZzxSWE0fEJHHd2yuxhWEdLXqtK9+BtuudKNxnpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>
-Subject: [PATCH 6.10 009/149] btrfs: fix a use-after-free when hitting errors inside btrfs_submit_chunk()
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 008/215] thunderbolt: Mark XDomain as unplugged when router is removed
 Date: Sun,  1 Sep 2024 18:15:20 +0200
-Message-ID: <20240901160817.818935943@linuxfoundation.org>
+Message-ID: <20240901160823.554816293@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,205 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 10d9d8c3512f16cad47b2ff81ec6fc4b27d8ee10 upstream.
+commit e2006140ad2e01a02ed0aff49cc2ae3ceeb11f8d upstream.
 
-[BUG]
-There is an internal report that KASAN is reporting use-after-free, with
-the following backtrace:
+I noticed that when we do discrete host router NVM upgrade and it gets
+hot-removed from the PCIe side as a result of NVM firmware authentication,
+if there is another host connected with enabled paths we hang in tearing
+them down. This is due to fact that the Thunderbolt networking driver
+also tries to cleanup the paths and ends up blocking in
+tb_disconnect_xdomain_paths() waiting for the domain lock.
 
-  BUG: KASAN: slab-use-after-free in btrfs_check_read_bio+0xa68/0xb70 [btrfs]
-  Read of size 4 at addr ffff8881117cec28 by task kworker/u16:2/45
-  CPU: 1 UID: 0 PID: 45 Comm: kworker/u16:2 Not tainted 6.11.0-rc2-next-20240805-default+ #76
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Workqueue: btrfs-endio btrfs_end_bio_work [btrfs]
-  Call Trace:
-   dump_stack_lvl+0x61/0x80
-   print_address_description.constprop.0+0x5e/0x2f0
-   print_report+0x118/0x216
-   kasan_report+0x11d/0x1f0
-   btrfs_check_read_bio+0xa68/0xb70 [btrfs]
-   process_one_work+0xce0/0x12a0
-   worker_thread+0x717/0x1250
-   kthread+0x2e3/0x3c0
-   ret_from_fork+0x2d/0x70
-   ret_from_fork_asm+0x11/0x20
+However, at this point we already cleaned the paths in tb_stop() so
+there is really no need for tb_disconnect_xdomain_paths() to do that
+anymore. Furthermore it already checks if the XDomain is unplugged and
+bails out early so take advantage of that and mark the XDomain as
+unplugged when we remove the parent router.
 
-  Allocated by task 20917:
-   kasan_save_stack+0x37/0x60
-   kasan_save_track+0x10/0x30
-   __kasan_slab_alloc+0x7d/0x80
-   kmem_cache_alloc_noprof+0x16e/0x3e0
-   mempool_alloc_noprof+0x12e/0x310
-   bio_alloc_bioset+0x3f0/0x7a0
-   btrfs_bio_alloc+0x2e/0x50 [btrfs]
-   submit_extent_page+0x4d1/0xdb0 [btrfs]
-   btrfs_do_readpage+0x8b4/0x12a0 [btrfs]
-   btrfs_readahead+0x29a/0x430 [btrfs]
-   read_pages+0x1a7/0xc60
-   page_cache_ra_unbounded+0x2ad/0x560
-   filemap_get_pages+0x629/0xa20
-   filemap_read+0x335/0xbf0
-   vfs_read+0x790/0xcb0
-   ksys_read+0xfd/0x1d0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-  Freed by task 20917:
-   kasan_save_stack+0x37/0x60
-   kasan_save_track+0x10/0x30
-   kasan_save_free_info+0x37/0x50
-   __kasan_slab_free+0x4b/0x60
-   kmem_cache_free+0x214/0x5d0
-   bio_free+0xed/0x180
-   end_bbio_data_read+0x1cc/0x580 [btrfs]
-   btrfs_submit_chunk+0x98d/0x1880 [btrfs]
-   btrfs_submit_bio+0x33/0x70 [btrfs]
-   submit_one_bio+0xd4/0x130 [btrfs]
-   submit_extent_page+0x3ea/0xdb0 [btrfs]
-   btrfs_do_readpage+0x8b4/0x12a0 [btrfs]
-   btrfs_readahead+0x29a/0x430 [btrfs]
-   read_pages+0x1a7/0xc60
-   page_cache_ra_unbounded+0x2ad/0x560
-   filemap_get_pages+0x629/0xa20
-   filemap_read+0x335/0xbf0
-   vfs_read+0x790/0xcb0
-   ksys_read+0xfd/0x1d0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-[CAUSE]
-Although I cannot reproduce the error, the report itself is good enough
-to pin down the cause.
-
-The call trace is the regular endio workqueue context, but the
-free-by-task trace is showing that during btrfs_submit_chunk() we
-already hit a critical error, and is calling btrfs_bio_end_io() to error
-out.  And the original endio function called bio_put() to free the whole
-bio.
-
-This means a double freeing thus causing use-after-free, e.g.:
-
-1. Enter btrfs_submit_bio() with a read bio
-   The read bio length is 128K, crossing two 64K stripes.
-
-2. The first run of btrfs_submit_chunk()
-
-2.1 Call btrfs_map_block(), which returns 64K
-2.2 Call btrfs_split_bio()
-    Now there are two bios, one referring to the first 64K, the other
-    referring to the second 64K.
-2.3 The first half is submitted.
-
-3. The second run of btrfs_submit_chunk()
-
-3.1 Call btrfs_map_block(), which by somehow failed
-    Now we call btrfs_bio_end_io() to handle the error
-
-3.2 btrfs_bio_end_io() calls the original endio function
-    Which is end_bbio_data_read(), and it calls bio_put() for the
-    original bio.
-
-    Now the original bio is freed.
-
-4. The submitted first 64K bio finished
-   Now we call into btrfs_check_read_bio() and tries to advance the bio
-   iter.
-   But since the original bio (thus its iter) is already freed, we
-   trigger the above use-after free.
-
-   And even if the memory is not poisoned/corrupted, we will later call
-   the original endio function, causing a double freeing.
-
-[FIX]
-Instead of calling btrfs_bio_end_io(), call btrfs_orig_bbio_end_io(),
-which has the extra check on split bios and do the proper refcounting
-for cloned bios.
-
-Furthermore there is already one extra btrfs_cleanup_bio() call, but
-that is duplicated to btrfs_orig_bbio_end_io() call, so remove that
-label completely.
-
-Reported-by: David Sterba <dsterba@suse.com>
-Fixes: 852eee62d31a ("btrfs: allow btrfs_submit_bio to split bios")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/bio.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/thunderbolt/switch.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -668,7 +668,6 @@ static bool btrfs_submit_chunk(struct bt
- {
- 	struct btrfs_inode *inode = bbio->inode;
- 	struct btrfs_fs_info *fs_info = bbio->fs_info;
--	struct btrfs_bio *orig_bbio = bbio;
- 	struct bio *bio = &bbio->bio;
- 	u64 logical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
- 	u64 length = bio->bi_iter.bi_size;
-@@ -706,7 +705,7 @@ static bool btrfs_submit_chunk(struct bt
- 		bbio->saved_iter = bio->bi_iter;
- 		ret = btrfs_lookup_bio_sums(bbio);
- 		if (ret)
--			goto fail_put_bio;
-+			goto fail;
- 	}
- 
- 	if (btrfs_op(bio) == BTRFS_MAP_WRITE) {
-@@ -740,13 +739,13 @@ static bool btrfs_submit_chunk(struct bt
- 
- 			ret = btrfs_bio_csum(bbio);
- 			if (ret)
--				goto fail_put_bio;
-+				goto fail;
- 		} else if (use_append ||
- 			   (btrfs_is_zoned(fs_info) && inode &&
- 			    inode->flags & BTRFS_INODE_NODATASUM)) {
- 			ret = btrfs_alloc_dummy_sum(bbio);
- 			if (ret)
--				goto fail_put_bio;
-+				goto fail;
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2877,6 +2877,7 @@ void tb_switch_remove(struct tb_switch *
+ 			tb_switch_remove(port->remote->sw);
+ 			port->remote = NULL;
+ 		} else if (port->xdomain) {
++			port->xdomain->is_unplugged = true;
+ 			tb_xdomain_remove(port->xdomain);
+ 			port->xdomain = NULL;
  		}
- 	}
- 
-@@ -754,12 +753,23 @@ static bool btrfs_submit_chunk(struct bt
- done:
- 	return map_length == length;
- 
--fail_put_bio:
--	if (map_length < length)
--		btrfs_cleanup_bio(bbio);
- fail:
- 	btrfs_bio_counter_dec(fs_info);
--	btrfs_bio_end_io(orig_bbio, ret);
-+	/*
-+	 * We have split the original bbio, now we have to end both the current
-+	 * @bbio and remaining one, as the remaining one will never be submitted.
-+	 */
-+	if (map_length < length) {
-+		struct btrfs_bio *remaining = bbio->private;
-+
-+		ASSERT(bbio->bio.bi_pool == &btrfs_clone_bioset);
-+		ASSERT(remaining);
-+
-+		remaining->bio.bi_status = ret;
-+		btrfs_orig_bbio_end_io(remaining);
-+	}
-+	bbio->bio.bi_status = ret;
-+	btrfs_orig_bbio_end_io(bbio);
- 	/* Do not submit another chunk */
- 	return true;
- }
 
 
 
