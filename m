@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3D967925
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6AD1967A27
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF0A1C20906
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D8841F2345A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E541C68C;
-	Sun,  1 Sep 2024 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC98317E00C;
+	Sun,  1 Sep 2024 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+fBPrM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cNeKM/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD217DFFC;
-	Sun,  1 Sep 2024 16:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F81DFD1;
+	Sun,  1 Sep 2024 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208815; cv=none; b=sRXXxlil/QhlBn4vFDyCA+zIcRJi5eG2civWhxrNCcFcqJjwvwSwOfSskqUUTtovRWqyO6O1QRNU8ber9iGP2uEckWK3nqq+JIsC7oLdeeGBn0IAzeGyp8skoWHg+9oyYM9Pg5kp/BoIm9fL3zjEcNZzII+aQkuDYHp7BxH+Fmw=
+	t=1725209531; cv=none; b=u6DxOAued9oZUBlf+I3XYFLzAUz0Cl/w7SN8rBLItaGPJpa0Fb2GBd3h7kCCSuJZosq/SmhNGBeDppeplDraHsrCNHg1GinJHiwL2ddth7T2KGkyllvQktBegqQoPl+5Ln5JJBzEac6y4v3bcH8aa82hB4uUPP2d1ZZFCkCW0vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208815; c=relaxed/simple;
-	bh=yRPJWKbSB7TCyaArYkZ0Dft8EXpIz+CEjrxXI532uYw=;
+	s=arc-20240116; t=1725209531; c=relaxed/simple;
+	bh=/ttphmw1VhTCySoyiIj7Dcw6u+Ds5uEnVeD3w9E/KjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itSjww39jU9uZ1FiqUxFPMg+innwA7/RSQRQJpeRoFy7w5qKYVN36QWPkPXMyPQXhPeWbtDM9FZ0FWfBUZg/dPuzEWxhMnf5v3GmYY9wX01MOmql68OTSbBnEpOZiUkLX/dFJJZI5v/6wB2zrURTWmOxq6ooc+WpYHaByGvtfyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+fBPrM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FDDC4CEC3;
-	Sun,  1 Sep 2024 16:40:14 +0000 (UTC)
+	 MIME-Version; b=T+m8CjJo+uuQBBg/J94/BJgZORaLz4EwO+z0LPCA/7tiQLOecEI97qaS+pCgcjXp/Yc3ynTLkthHRB/x4lZISIKq5Bcp/JZe+AZbwBaPlC15WPdGawGemGeGTBUpf1qgVcKuP7Emuj70PoJMM2VlZGxJfHDX9qi630YG9Nnmxs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cNeKM/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE13EC4CEC3;
+	Sun,  1 Sep 2024 16:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208815;
-	bh=yRPJWKbSB7TCyaArYkZ0Dft8EXpIz+CEjrxXI532uYw=;
+	s=korg; t=1725209531;
+	bh=/ttphmw1VhTCySoyiIj7Dcw6u+Ds5uEnVeD3w9E/KjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+fBPrM6y/p27TBP6ctby+1WkmnbechlY0V7xZA5ywikH1rCX1RfQKyvZ4PbzYP3I
-	 IICOeVRrLO3x0kReASyhws40V7+U+8U9qVaTeE8rUkIoiTzYrLoUNeu37qFwkGIDb3
-	 vNr0XR4/9YtugPeAPEvKqSU0x9j7P17OT6JokQxw=
+	b=2cNeKM/7zHbOEIHlbgotkoDiLlbSoODsuPmEx+tA0zhNCXoqdvWnGhrVdcLS/bjuC
+	 xf3dEGuDZOcIHAOVsr3AAAy5x3VcRG9Q02caQhxQAnuC3R5drHTNRRhEvadZj4c4nd
+	 yXLCPNwDivFVyv6XBvUMBZ3ZBHrrH/7IL1gZozj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 047/134] scsi: lpfc: Initialize status local variable in lpfc_sli4_repost_sgl_list()
-Date: Sun,  1 Sep 2024 18:16:33 +0200
-Message-ID: <20240901160811.878524679@linuxfoundation.org>
+Subject: [PATCH 5.10 034/151] i2c: riic: avoid potential division by zero
+Date: Sun,  1 Sep 2024 18:16:34 +0200
+Message-ID: <20240901160815.383547677@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 3d0f9342ae200aa1ddc4d6e7a573c6f8f068d994 ]
+[ Upstream commit 7890fce6201aed46d3576e3d641f9ee5c1f0e16f ]
 
-A static code analyzer tool indicates that the local variable called status
-in the lpfc_sli4_repost_sgl_list() routine could be used to print garbage
-uninitialized values in the routine's log message.
+Value comes from DT, so it could be 0. Unlikely, but could be.
 
-Fix by initializing to zero.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-2-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 2 +-
+ drivers/i2c/busses/i2c-riic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index e489c68cfb631..04b9a94f2f5e5 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -6902,7 +6902,7 @@ lpfc_sli4_repost_sgl_list(struct lpfc_hba *phba,
- 	struct lpfc_sglq *sglq_entry = NULL;
- 	struct lpfc_sglq *sglq_entry_next = NULL;
- 	struct lpfc_sglq *sglq_entry_first = NULL;
--	int status, total_cnt;
-+	int status = 0, total_cnt;
- 	int post_cnt = 0, num_posted = 0, block_cnt = 0;
- 	int last_xritag = NO_XRI;
- 	LIST_HEAD(prep_sgl_list);
+diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
+index 4eccc0f69861f..d8f252c4caf2b 100644
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -312,7 +312,7 @@ static int riic_init_hw(struct riic_dev *riic, struct i2c_timings *t)
+ 	 * frequency with only 62 clock ticks max (31 high, 31 low).
+ 	 * Aim for a duty of 60% LOW, 40% HIGH.
+ 	 */
+-	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz);
++	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz ?: 1);
+ 
+ 	for (cks = 0; cks < 7; cks++) {
+ 		/*
 -- 
 2.43.0
 
