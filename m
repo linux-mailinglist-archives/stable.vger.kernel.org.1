@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-71908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F64596784C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2D4967A8B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0CB1F212AE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF1B1C2147B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B7B184529;
-	Sun,  1 Sep 2024 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C06817E919;
+	Sun,  1 Sep 2024 16:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2V5O9nqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpAp1e6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA018537FF;
-	Sun,  1 Sep 2024 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7082A1B8;
+	Sun,  1 Sep 2024 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208215; cv=none; b=dQiGZmQJbvUcIxdGz9wfBYzteXAwrU0iVoiCb/42O8hWzpAS35fy727IE2XoXHbDNO21sJuDHV/jCpyFhOVAgEwEGUT/T5Fo1GUkhAy9Uft7eRFbfWzSdEJxqOEUlQc01duJylFFIrLBSTqrnZ2/2NB04GzlSKiL+aCktqIT13Q=
+	t=1725209853; cv=none; b=kYZfSRblM3peZt9x1Om2g3fqKE0QpK1zLS2ukKXXvE6mb+fnBXeYQxnkP6lJJR7inddn7uszVDHYbxV3ffr3Wyw7IhpZUnlvEcBvtgww52YoTO8YgyFRP2EI2cOtJyDfi9J0MM9LDOuFIoMeDsWQimEuxLqpdhiTrjqB2LYfmzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208215; c=relaxed/simple;
-	bh=xhn+MF3hqGrLXb1LRI3b0c5JVKjjLvNvVZqlphT19lI=;
+	s=arc-20240116; t=1725209853; c=relaxed/simple;
+	bh=FZVIR2tz3S+lzbDwQcSoDl1A+dVNocIZH2uY/bKkFKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSyeIomYRCk2C4X6h+JJsIcoX+pV9ljv0iA7FBoJDS07qwuNdKQGlgjsfV21zD6qviY/TtTbpmKBtmW12WB7DKMBNL+uzI/EWYXE+EFwx+HNeH2ejxDZehL16PsewYRubibysdtr7e8VKEU8Dy0TpeOLiQhn6Cii4SwNJYRvq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2V5O9nqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31360C4CEC3;
-	Sun,  1 Sep 2024 16:30:14 +0000 (UTC)
+	 MIME-Version; b=Vl3zwM5JxLzFllGMY8uo1Fpwe01ywElOoLH40gqvNjr9bNHhC3cq52s7EbjRngHZT0i3IT90yUrHOyng9LKqiwWRTLOMtAePD/eMBWw01Gu9j1OO1ZwVFhzwF9OiOz942EjQrVe6Mag3nQUrIrhAN8/kKssll7de9uEh7709yZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpAp1e6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8F3C4CEC3;
+	Sun,  1 Sep 2024 16:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208214;
-	bh=xhn+MF3hqGrLXb1LRI3b0c5JVKjjLvNvVZqlphT19lI=;
+	s=korg; t=1725209852;
+	bh=FZVIR2tz3S+lzbDwQcSoDl1A+dVNocIZH2uY/bKkFKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2V5O9nqsFDR57FvnegInxeAuc83cHU0ZNA4UjPv3TDvSaxBQXOJL5oCBdZE8MzIJI
-	 KV6BtVKD9PM/Zn1St6GUfqCAQ+per85uqgYUzh+2ZTIVlK/RJLGb4UeQA5tepxGe+M
-	 y0Py8J/fmH4h9iCzTfDqJkr8iH/u87y2rEojN2Hw=
+	b=KpAp1e6Odu1kaULlXx+1GnSLz648cC1b9lKoNi7qVsLkmAQ3pjHXdZhDX6uHx/jIA
+	 mxnAaaUm0gfQjiNgyDwcc3tCUJLVt5YH+NHHOyMNGDE/Nen3NfpfGAOg4LMA+hPIkn
+	 5Hd7s9mP8+eHviJz/ufoKQJPfadRMBJwWEn2rrNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	ceph-devel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 014/149] netfs, ceph: Partially revert "netfs: Replace PG_fscache by setting folio->private and marking dirty"
-Date: Sun,  1 Sep 2024 18:15:25 +0200
-Message-ID: <20240901160818.003327412@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 014/215] fs/ntfs3: add prefix to bitmap_size() and use BITS_TO_U64()
+Date: Sun,  1 Sep 2024 18:15:26 +0200
+Message-ID: <20240901160823.791418936@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit 92764e8822d4e7f8efb5ad959fac195a7f8ea0c6 upstream.
+commit 3f5ef5109f6a054ce58b3bec7214ed76c9cc269f upstream.
 
-This partially reverts commit 2ff1e97587f4d398686f52c07afde3faf3da4e5c.
+bitmap_size() is a pretty generic name and one may want to use it for
+a generic bitmap API function. At the same time, its logic is
+NTFS-specific, as it aligns to the sizeof(u64), not the sizeof(long)
+(although it uses ideologically right ALIGN() instead of division).
+Add the prefix 'ntfs3_' used for that FS (not just 'ntfs_' to not mix
+it with the legacy module) and use generic BITS_TO_U64() while at it.
 
-In addition to reverting the removal of PG_private_2 wrangling from the
-buffered read code[1][2], the removal of the waits for PG_private_2 from
-netfs_release_folio() and netfs_invalidate_folio() need reverting too.
-
-It also adds a wait into ceph_evict_inode() to wait for netfs read and
-copy-to-cache ops to complete.
-
-Fixes: 2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private and marking dirty")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/3575457.1722355300@warthog.procyon.org.uk [1]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8e5ced7804cb9184c4a23f8054551240562a8eda [2]
-Link: https://lore.kernel.org/r/20240814203850.2240469-2-dhowells@redhat.com
-cc: Max Kellermann <max.kellermann@ionos.com>
-cc: Ilya Dryomov <idryomov@gmail.com>
-cc: Xiubo Li <xiubli@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: ceph-devel@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Suggested-by: Yury Norov <yury.norov@gmail.com> # BITS_TO_U64()
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |    1 +
- fs/netfs/misc.c |    7 +++++++
- 2 files changed, 8 insertions(+)
+ fs/ntfs3/bitmap.c  |    4 ++--
+ fs/ntfs3/fsntfs.c  |    2 +-
+ fs/ntfs3/index.c   |   11 ++++++-----
+ fs/ntfs3/ntfs_fs.h |    4 ++--
+ fs/ntfs3/super.c   |    2 +-
+ 5 files changed, 12 insertions(+), 11 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -697,6 +697,7 @@ void ceph_evict_inode(struct inode *inod
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -661,7 +661,7 @@ int wnd_init(struct wnd_bitmap *wnd, str
+ 	wnd->total_zeroes = nbits;
+ 	wnd->extent_max = MINUS_ONE_T;
+ 	wnd->zone_bit = wnd->zone_end = 0;
+-	wnd->nwnd = bytes_to_block(sb, bitmap_size(nbits));
++	wnd->nwnd = bytes_to_block(sb, ntfs3_bitmap_size(nbits));
+ 	wnd->bits_last = nbits & (wbits - 1);
+ 	if (!wnd->bits_last)
+ 		wnd->bits_last = wbits;
+@@ -1325,7 +1325,7 @@ int wnd_extend(struct wnd_bitmap *wnd, s
+ 		return -EINVAL;
  
- 	percpu_counter_dec(&mdsc->metric.total_inodes);
+ 	/* Align to 8 byte boundary. */
+-	new_wnd = bytes_to_block(sb, bitmap_size(new_bits));
++	new_wnd = bytes_to_block(sb, ntfs3_bitmap_size(new_bits));
+ 	new_last = new_bits & (wbits - 1);
+ 	if (!new_last)
+ 		new_last = wbits;
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -493,7 +493,7 @@ static int ntfs_extend_mft(struct ntfs_s
+ 	ni->mi.dirty = true;
  
-+	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- 	if (inode->i_state & I_PINNING_NETFS_WB)
- 		ceph_fscache_unuse_cookie(inode, true);
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -101,6 +101,8 @@ void netfs_invalidate_folio(struct folio
+ 	/* Step 2: Resize $MFT::BITMAP. */
+-	new_bitmap_bytes = bitmap_size(new_mft_total);
++	new_bitmap_bytes = ntfs3_bitmap_size(new_mft_total);
  
- 	kenter("{%lx},%zx,%zx", folio->index, offset, length);
+ 	err = attr_set_size(ni, ATTR_BITMAP, NULL, 0, &sbi->mft.bitmap.run,
+ 			    new_bitmap_bytes, &new_bitmap_bytes, true, NULL);
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1461,8 +1461,8 @@ static int indx_create_allocate(struct n
  
-+	folio_wait_private_2(folio); /* [DEPRECATED] */
-+
- 	if (!folio_test_private(folio))
- 		return;
+ 	alloc->nres.valid_size = alloc->nres.data_size = cpu_to_le64(data_size);
  
-@@ -165,6 +167,11 @@ bool netfs_release_folio(struct folio *f
+-	err = ni_insert_resident(ni, bitmap_size(1), ATTR_BITMAP, in->name,
+-				 in->name_len, &bitmap, NULL, NULL);
++	err = ni_insert_resident(ni, ntfs3_bitmap_size(1), ATTR_BITMAP,
++				 in->name, in->name_len, &bitmap, NULL, NULL);
+ 	if (err)
+ 		goto out2;
  
- 	if (folio_test_private(folio))
- 		return false;
-+	if (unlikely(folio_test_private_2(folio))) { /* [DEPRECATED] */
-+		if (current_is_kswapd() || !(gfp & __GFP_FS))
-+			return false;
-+		folio_wait_private_2(folio);
-+	}
- 	fscache_note_page_release(netfs_i_cookie(ctx));
- 	return true;
+@@ -1523,8 +1523,9 @@ static int indx_add_allocate(struct ntfs
+ 	if (bmp) {
+ 		/* Increase bitmap. */
+ 		err = attr_set_size(ni, ATTR_BITMAP, in->name, in->name_len,
+-				    &indx->bitmap_run, bitmap_size(bit + 1),
+-				    NULL, true, NULL);
++				    &indx->bitmap_run,
++				    ntfs3_bitmap_size(bit + 1), NULL, true,
++				    NULL);
+ 		if (err)
+ 			goto out1;
+ 	}
+@@ -2087,7 +2088,7 @@ static int indx_shrink(struct ntfs_index
+ 	if (err)
+ 		return err;
+ 
+-	bpb = bitmap_size(bit);
++	bpb = ntfs3_bitmap_size(bit);
+ 	if (bpb * 8 == nbits)
+ 		return 0;
+ 
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -950,9 +950,9 @@ static inline bool run_is_empty(struct r
  }
+ 
+ /* NTFS uses quad aligned bitmaps. */
+-static inline size_t bitmap_size(size_t bits)
++static inline size_t ntfs3_bitmap_size(size_t bits)
+ {
+-	return ALIGN((bits + 7) >> 3, 8);
++	return BITS_TO_U64(bits) * sizeof(u64);
+ }
+ 
+ #define _100ns2seconds 10000000
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1103,7 +1103,7 @@ static int ntfs_fill_super(struct super_
+ 
+ 	/* Check bitmap boundary. */
+ 	tt = sbi->used.bitmap.nbits;
+-	if (inode->i_size < bitmap_size(tt)) {
++	if (inode->i_size < ntfs3_bitmap_size(tt)) {
+ 		err = -EINVAL;
+ 		goto put_inode_out;
+ 	}
 
 
 
