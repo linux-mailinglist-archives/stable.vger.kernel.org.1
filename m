@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381BE967B20
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE479679C0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C440B20B1C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1E128163F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63623BB48;
-	Sun,  1 Sep 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8463F184537;
+	Sun,  1 Sep 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOF/lf85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj95Jhd+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32792C6AF;
-	Sun,  1 Sep 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E10417E00C;
+	Sun,  1 Sep 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210324; cv=none; b=ltyFZLyPEv1GlULPY/Pe6IVECIXFs0Y2Du4lt/wx9qHPPyDkt8ch6339MWX5/Bd9YvIsFRBcLbtKNQaH26NaYPBaAEVzwO50+lPFm5iiFUWdPJkzplm7xDNV4TXRL0XNYOPgUjYslQ3xp1SnMPlbh6w0I8F8b8mM91VPDggHass=
+	t=1725209234; cv=none; b=sCBG24n0dgTD8u5nxuIZ+H1fr5JazNSmPw+gCYfuhMDc32huQTocr+jY291quU3K6DcUwNf9cXBSkLKkgXaXB05K670B/X8DS6NV3U/66im3N1yk8zAqYK/a26vYX9eAe+/a3jLygFTEYkUppxoOb0jHyUsDADt6RAtB1YqA1O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210324; c=relaxed/simple;
-	bh=VXOQ9rr1djpbMESyV8WnOEGu8Qt07sLpdxawAaCFb0Y=;
+	s=arc-20240116; t=1725209234; c=relaxed/simple;
+	bh=8/D14BXm4d5QmyZQ2k5mS+kSqPMUJ7iXruUhXTjklJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQDcT7EZNEILkb0vkQyWxVvKaj2barXahauBp+EqwalqeAd0QOfQjOETz9r8moL0Y/l6E3c4pkX2d4s9U9Epyv03ENS7v5+hyIdlz3rcG7JoaAsANVlAvXAJQvtF/LlRee/RhKNkBNqGuyzKAi6oTU+h51Aiunz6OBqn/SFHWRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOF/lf85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267CBC4CEC3;
-	Sun,  1 Sep 2024 17:05:23 +0000 (UTC)
+	 MIME-Version; b=EyS8yxkUObB7ZnEfOpcbb9WZln5KPP5Nt/z0/XU0r3Zj4YjPt3Xjxo9xkujJBlGJGqSrQ1iRL2MlzFkanW8jWoQBi0k7oFy+wL+X4g33umwzSM7W8It579KulBzYdcBUw0aPcaGAPNdL9oO9jwnxTPlql7hdHXN6zjC88p63DAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fj95Jhd+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CBDC4CEC3;
+	Sun,  1 Sep 2024 16:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210324;
-	bh=VXOQ9rr1djpbMESyV8WnOEGu8Qt07sLpdxawAaCFb0Y=;
+	s=korg; t=1725209234;
+	bh=8/D14BXm4d5QmyZQ2k5mS+kSqPMUJ7iXruUhXTjklJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOF/lf85zjNTkmbPEtEsJQI1XVDj8vUcsKoJ3V1Un6MfiLoWEgooUpIB5CcA7yVqA
-	 lPP+VFs0qxspffoa8FWKlU/vt2DmjZataVqwjFJLbAQqZDGo0OE6Sv/cno24M3HK5M
-	 GvHsbZOGKGFVbPlfnrBSsWU8LVatDrKCQ/e1vNgw=
+	b=Fj95Jhd+fUPGoDy97yqIVH/sG/Tw+BpJWbFrUHFe1qQZWCcBPW7SGb471jfosD6O5
+	 XkVpeMD0uaDXLwLKVTXWR212v2HPpSsKQ2yTcLEwNQiMJVbYnncEjNRZQxEu7qeG9n
+	 sphQ+sh/Z9r0ovNX13/kNx0nTn4okXPHoP+pOkpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/215] drm/msm/dpu: dont play tricks with debug macros
+Subject: [PATCH 6.1 42/71] Bluetooth: hci_core: Fix not handling hibernation actions
 Date: Sun,  1 Sep 2024 18:17:47 +0200
-Message-ID: <20240901160829.222026566@linuxfoundation.org>
+Message-ID: <20240901160803.479488590@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
+[ Upstream commit 18b3256db76bd1130965acd99fbd38f87c3e6950 ]
 
-DPU debugging macros need to be converted to a proper drm_debug_*
-macros, however this is a going an intrusive patch, not suitable for a
-fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
-to make sure that DPU debugging messages always end up in the drm debug
-messages and are controlled via the usual drm.debug mask.
+This fixes not handling hibernation actions on suspend notifier so they
+are treated in the same way as regular suspend actions.
 
-I don't think that it is a good idea for a generic DPU_DEBUG macro to be
-tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
-default it should go to the DRM_UT_DRIVER channel. While refactoring
-debug macros later on we might end up with particular messages going to
-ATOMIC or KMS, but DRIVER should be the default.
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/606932/
-Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 9952d90ea288 ("Bluetooth: Handle PM_SUSPEND_PREPARE and PM_POST_SUSPEND")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ net/bluetooth/hci_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index 170b3e9dd4b00..73aef80a8556a 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -32,24 +32,14 @@
-  * @fmt: Pointer to format string
-  */
- #define DPU_DEBUG(fmt, ...)                                                \
--	do {                                                               \
--		if (drm_debug_enabled(DRM_UT_KMS))                         \
--			DRM_DEBUG(fmt, ##__VA_ARGS__); \
--		else                                                       \
--			pr_debug(fmt, ##__VA_ARGS__);                      \
--	} while (0)
-+	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 210e03a3609d4..dc19a0b1a2f6d 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2405,10 +2405,16 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
+ 	/* To avoid a potential race with hci_unregister_dev. */
+ 	hci_dev_hold(hdev);
  
- /**
-  * DPU_DEBUG_DRIVER - macro for hardware driver logging
-  * @fmt: Pointer to format string
-  */
- #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
--	do {                                                               \
--		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
--			DRM_ERROR(fmt, ##__VA_ARGS__); \
--		else                                                       \
--			pr_debug(fmt, ##__VA_ARGS__);                      \
--	} while (0)
-+	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+-	if (action == PM_SUSPEND_PREPARE)
++	switch (action) {
++	case PM_HIBERNATION_PREPARE:
++	case PM_SUSPEND_PREPARE:
+ 		ret = hci_suspend_dev(hdev);
+-	else if (action == PM_POST_SUSPEND)
++		break;
++	case PM_POST_HIBERNATION:
++	case PM_POST_SUSPEND:
+ 		ret = hci_resume_dev(hdev);
++		break;
++	}
  
- #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
- #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 	if (ret)
+ 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
 -- 
 2.43.0
 
