@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A83F96780D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B128C967AD8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1588EB21938
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E190E1C20829
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7D3183CA3;
-	Sun,  1 Sep 2024 16:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B779376EC;
+	Sun,  1 Sep 2024 17:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xv0AbijU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mv9IMCrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB6244C97;
-	Sun,  1 Sep 2024 16:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E141EB5B;
+	Sun,  1 Sep 2024 17:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208034; cv=none; b=AR826gnXXons9cIFBS8h60SzoF+Bm8d6HvfaAzE8JMbNF6Ru/+7hpuTl0F+TGbcJU4dLEaw9kx4EMz/CIiZ3vQGlYKZpxCyjQHD2KMyNJrQz/Dzi16tFSPpi0GpuPaChqzjX+jFDYC0kEgkCmbAiL6sCqoCEGEC2owU28Kqxwzc=
+	t=1725210101; cv=none; b=UAI7A/c1dAHiNuJFtNdPA0xcMA8mO32DMu/hZHdsO2L2R5gF5xtU99+vOsrsGEnCAt0EPRQCZwTpPwVaygYQR9SoiRDKnOFcaGw01JkjePKpi5xELgnUqPr3ot3iVA/dj3g2iwO5WQ2yRM0qA2f8q3IBtvNnPiyLX9MyoXY6wLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208034; c=relaxed/simple;
-	bh=2YztWC2ocnujg36UqxPxSAwfGdbjltjwxOUTTCfFJGk=;
+	s=arc-20240116; t=1725210101; c=relaxed/simple;
+	bh=FFO4hm9qwK46cJi+Ae792x97/1+SYXPfOXNM7nxtyEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXVy9OcfcJzWknkRLO8KG1dUYPZsLMQrd0sZBL4jP3GbZ2AyDptbsvYGj6ZMJ2kAbIjhRhQH8qdDJ6DNGrjgNRz0LLmLkEks5ENSEUVaC/GRniBbe1fccUWI3mSlAB2F+l0xNQsi7XRssjUqtSfzozwdmpQCtQD/cZk4JMXqq4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xv0AbijU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A201BC4CEC3;
-	Sun,  1 Sep 2024 16:27:13 +0000 (UTC)
+	 MIME-Version; b=IR/lpYfDxtZUr2MuPWlgS7Y96uetlbmdzzmR9ZYgiNUYLxhrXKoeEwswHo9vXJBD+pCJPH6WyGV852CSIrTZZiRE2XB0vjB5QVtTETmB/7D5HY54T7XdhpsEykhwMLXk6CcpCDTdPr8I6MIE9R+N2KS6F2rVS/Ghq0Ticnq0j1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mv9IMCrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E12C4CEC3;
+	Sun,  1 Sep 2024 17:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208034;
-	bh=2YztWC2ocnujg36UqxPxSAwfGdbjltjwxOUTTCfFJGk=;
+	s=korg; t=1725210100;
+	bh=FFO4hm9qwK46cJi+Ae792x97/1+SYXPfOXNM7nxtyEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xv0AbijUdbe78bBn5QkDudr9ShT/4cCV+CIjjAJMAtjxGApHVLPbOrBxIR+zvTooi
-	 7Dy7SMZpaSzQAaDRTxoFJv4ssldpXzapDc2EawqilTMyN/M3YkTyu/LOYSwxBRqtRk
-	 hZxyYOXNgE/Jj4bStMWyMR3ych7NojayfZJgnd8w=
+	b=Mv9IMCrS1mtwtSr8ehvWSVL7J/g6iysW/fpnocS1+vPfjT7VhlvUKTdEplnvqznH5
+	 MXruKIMf4D6pzATU7X11/rvPjSfSBI/win/eA2UnkqeO3ijMV1DJE05MWN9fFqsXfK
+	 cMpkmS/hEA1B+lK/cAxIAmTzIiKO+cuBeoFgtm8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 53/93] Bluetooth: btnxpuart: Fix random crash seen while removing driver
+Subject: [PATCH 5.15 088/215] btrfs: handle invalid root reference found in may_destroy_subvol()
 Date: Sun,  1 Sep 2024 18:16:40 +0200
-Message-ID: <20240901160809.360434406@linuxfoundation.org>
+Message-ID: <20240901160826.681154499@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 35237475384ab3622f63c3c09bdf6af6dacfe9c3 ]
+[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
 
-This fixes the random kernel crash seen while removing the driver, when
-running the load/unload test over multiple iterations.
+The may_destroy_subvol() looks up a root by a key, allowing to do an
+inexact search when key->offset is -1.  It's never expected to find such
+item, as it would break the allowed range of a root id.
 
-1) modprobe btnxpuart
-2) hciconfig hci0 reset
-3) hciconfig (check hci0 interface up with valid BD address)
-4) modprobe -r btnxpuart
-Repeat steps 1 to 4
-
-The ps_wakeup() call in btnxpuart_close() schedules the psdata->work(),
-which gets scheduled after module is removed, causing a kernel crash.
-
-This hidden issue got highlighted after enabling Power Save by default
-in 4183a7be7700 (Bluetooth: btnxpuart: Enable Power Save feature on
-startup)
-
-The new ps_cleanup() deasserts UART break immediately while closing
-serdev device, cancels any scheduled ps_work and destroys the ps_lock
-mutex.
-
-[   85.884604] Unable to handle kernel paging request at virtual address ffffd4a61638f258
-[   85.884624] Mem abort info:
-[   85.884625]   ESR = 0x0000000086000007
-[   85.884628]   EC = 0x21: IABT (current EL), IL = 32 bits
-[   85.884633]   SET = 0, FnV = 0
-[   85.884636]   EA = 0, S1PTW = 0
-[   85.884638]   FSC = 0x07: level 3 translation fault
-[   85.884642] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000041dd0000
-[   85.884646] [ffffd4a61638f258] pgd=1000000095fff003, p4d=1000000095fff003, pud=100000004823d003, pmd=100000004823e003, pte=0000000000000000
-[   85.884662] Internal error: Oops: 0000000086000007 [#1] PREEMPT SMP
-[   85.890932] Modules linked in: algif_hash algif_skcipher af_alg overlay fsl_jr_uio caam_jr caamkeyblob_desc caamhash_desc caamalg_desc crypto_engine authenc libdes crct10dif_ce polyval_ce polyval_generic snd_soc_imx_spdif snd_soc_imx_card snd_soc_ak5558 snd_soc_ak4458 caam secvio error snd_soc_fsl_spdif snd_soc_fsl_micfil snd_soc_fsl_sai snd_soc_fsl_utils gpio_ir_recv rc_core fuse [last unloaded: btnxpuart(O)]
-[   85.927297] CPU: 1 PID: 67 Comm: kworker/1:3 Tainted: G           O       6.1.36+g937b1be4345a #1
-[   85.936176] Hardware name: FSL i.MX8MM EVK board (DT)
-[   85.936182] Workqueue: events 0xffffd4a61638f380
-[   85.936198] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   85.952817] pc : 0xffffd4a61638f258
-[   85.952823] lr : 0xffffd4a61638f258
-[   85.952827] sp : ffff8000084fbd70
-[   85.952829] x29: ffff8000084fbd70 x28: 0000000000000000 x27: 0000000000000000
-[   85.963112] x26: ffffd4a69133f000 x25: ffff4bf1c8540990 x24: ffff4bf215b87305
-[   85.963119] x23: ffff4bf215b87300 x22: ffff4bf1c85409d0 x21: ffff4bf1c8540970
-[   85.977382] x20: 0000000000000000 x19: ffff4bf1c8540880 x18: 0000000000000000
-[   85.977391] x17: 0000000000000000 x16: 0000000000000133 x15: 0000ffffe2217090
-[   85.977399] x14: 0000000000000001 x13: 0000000000000133 x12: 0000000000000139
-[   85.977407] x11: 0000000000000001 x10: 0000000000000a60 x9 : ffff8000084fbc50
-[   85.977417] x8 : ffff4bf215b7d000 x7 : ffff4bf215b83b40 x6 : 00000000000003e8
-[   85.977424] x5 : 00000000410fd030 x4 : 0000000000000000 x3 : 0000000000000000
-[   85.977432] x2 : 0000000000000000 x1 : ffff4bf1c4265880 x0 : 0000000000000000
-[   85.977443] Call trace:
-[   85.977446]  0xffffd4a61638f258
-[   85.977451]  0xffffd4a61638f3e8
-[   85.977455]  process_one_work+0x1d4/0x330
-[   85.977464]  worker_thread+0x6c/0x430
-[   85.977471]  kthread+0x108/0x10c
-[   85.977476]  ret_from_fork+0x10/0x20
-[   85.977488] Code: bad PC value
-[   85.977491] ---[ end trace 0000000000000000 ]---
-
-Preset since v6.9.11
-Fixes: 86d55f124b52 ("Bluetooth: btnxpuart: Deasset UART break before closing serdev device")
-Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index f72086ee614fb..814dd966b1a45 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -438,6 +438,23 @@ static bool ps_wakeup(struct btnxpuart_dev *nxpdev)
- 	return false;
- }
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 07c6ab4ba0d43..66b56ddf3f4cc 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4411,7 +4411,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
+ 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto out;
+-	BUG_ON(ret == 0);
++	if (ret == 0) {
++		/*
++		 * Key with offset -1 found, there would have to exist a root
++		 * with such id, but this is out of valid range.
++		 */
++		ret = -EUCLEAN;
++		goto out;
++	}
  
-+static void ps_cleanup(struct btnxpuart_dev *nxpdev)
-+{
-+	struct ps_data *psdata = &nxpdev->psdata;
-+	u8 ps_state;
-+
-+	mutex_lock(&psdata->ps_lock);
-+	ps_state = psdata->ps_state;
-+	mutex_unlock(&psdata->ps_lock);
-+
-+	if (ps_state != PS_STATE_AWAKE)
-+		ps_control(psdata->hdev, PS_STATE_AWAKE);
-+
-+	ps_cancel_timer(nxpdev);
-+	cancel_work_sync(&psdata->work);
-+	mutex_destroy(&psdata->ps_lock);
-+}
-+
- static int send_ps_cmd(struct hci_dev *hdev, void *data)
- {
- 	struct btnxpuart_dev *nxpdev = hci_get_drvdata(hdev);
-@@ -1307,7 +1324,6 @@ static int btnxpuart_close(struct hci_dev *hdev)
- {
- 	struct btnxpuart_dev *nxpdev = hci_get_drvdata(hdev);
- 
--	ps_wakeup(nxpdev);
- 	serdev_device_close(nxpdev->serdev);
- 	skb_queue_purge(&nxpdev->txq);
- 	kfree_skb(nxpdev->rx_skb);
-@@ -1457,8 +1473,8 @@ static void nxp_serdev_remove(struct serdev_device *serdev)
- 			nxpdev->new_baudrate = nxpdev->fw_init_baudrate;
- 			nxp_set_baudrate_cmd(hdev, NULL);
- 		}
--		ps_cancel_timer(nxpdev);
- 	}
-+	ps_cleanup(nxpdev);
- 	hci_unregister_dev(hdev);
- 	hci_free_dev(hdev);
- }
+ 	ret = 0;
+ 	if (path->slots[0] > 0) {
 -- 
 2.43.0
 
