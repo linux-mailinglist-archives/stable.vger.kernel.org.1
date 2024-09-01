@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72970967AF7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E525E96782C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3A0D1C21543
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2C71C20BDF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33E72C190;
-	Sun,  1 Sep 2024 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145B3183CA5;
+	Sun,  1 Sep 2024 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucNU0hEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnRl2nCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF63BB48;
-	Sun,  1 Sep 2024 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E4A44C97;
+	Sun,  1 Sep 2024 16:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210189; cv=none; b=Et0GXGQ+CjhFLxX5D5ZE147aL863419cnkw0IOOwis5oRz9iz0FSz+O7OdzfQs3GZM2Dvlbgf/aBBDrKDzcuiaMC+zWABEO3RkYX5N75gJ7Qs46mitWSBolRy99+7lfM3PSbiGuoTdlf6q+kmebIqNoEK1VUVl8eycXs3Rc+TkM=
+	t=1725208124; cv=none; b=orskubQlVrAIsXu8gkTCL3hc0zlxo9NuTUfRj5JK/9edYR1k7AOOl5Bw73HPhmOdf75pSWumJpByvkzxwEX4LOD7j5HDX8Pi7tOqvcBQV3Fpuo9E6pUQxrzE2cxWLoOKWcmjP6DNZddcUyBK/kq8VV6/9r+rEY+DNnUEbso64Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210189; c=relaxed/simple;
-	bh=j04oPRQxmfN5xMtTQNXJbStB/6j0L5Zof+nV8UxKTQk=;
+	s=arc-20240116; t=1725208124; c=relaxed/simple;
+	bh=rwpXXgCyd2lx8ET1B72ssMyivpxfZ5rlzLwPN8QJTPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mxlp7neThSdPNreS3OBU8GJRgt1KRwuHzI1MVZO8RXH0MuEUmO74OEpYNYcf/JwGqsYHbeCJIUBMd1NAgbyr5zKNPCDCXGL6dUwoCurg5cIR7r36EZTT4Inv9P8iL+myY1ndAX8x6eijeyhNJ6n00JaAdHXs4/107A51KPzRWQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucNU0hEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C361BC4CEC3;
-	Sun,  1 Sep 2024 17:03:08 +0000 (UTC)
+	 MIME-Version; b=uxS08sOSp1IM7HuULgzhMv4cgjWTLR1uBV3c6yw8zVN/g2Vs9128gnPcyIIjqz/Wrng+kfB3EFmwJRPmLQoW4F24XM2WMMKRawN4lPv+T75hXRixTOlwRRxs3HWFvkGQlSP0Tb5JCsaip92uzx7nY+pvDTrk9Ia+LnyE2nluEt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnRl2nCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB031C4CEC3;
+	Sun,  1 Sep 2024 16:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210189;
-	bh=j04oPRQxmfN5xMtTQNXJbStB/6j0L5Zof+nV8UxKTQk=;
+	s=korg; t=1725208124;
+	bh=rwpXXgCyd2lx8ET1B72ssMyivpxfZ5rlzLwPN8QJTPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucNU0hEiUc7ORivFxqjGy9jo5FB9SSBLBpgF2yQI6J2QVPyqjgBxevfcVyWnCj3k7
-	 zXfHAKPnNEofQITEoP60/EC9sTZaoKXTZVxSt5g7emrzUUo5vR1Ok9ldwR2dv3eLtn
-	 N3Kv/WlE6mcH49B9yY0aID7RgpLO8VDYh76KRg9A=
+	b=dnRl2nCmjNHXLTGrKOdzp6APMGQZumuYpljw6W1K1pukV2XjKbMIbYSkbv8Ck6K2c
+	 1I2dqy0KyCifVdpDTd6wqVrVREaKZssiqnlXWR6hteBX4PqduGpnYc7s/bgkBQ5+3j
+	 YXVLCJu8cvbwln7m3e2nCYEiX3FCM0L4M6CXjErc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 116/215] NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 81/93] usb: dwc3: st: add missing depopulate in probe error path
 Date: Sun,  1 Sep 2024 18:17:08 +0200
-Message-ID: <20240901160827.738087609@linuxfoundation.org>
+Message-ID: <20240901160810.784386244@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5ec39944f874e1ecc09f624a70dfaa8ac3bf9d08 ]
+commit cd4897bfd14f6a5388b21ba45a066541a0425199 upstream.
 
-In function ‘export_stats_init’,
-    inlined from ‘svc_export_alloc’ at fs/nfsd/export.c:866:6:
-fs/nfsd/export.c:337:16: warning: ‘nfsd_percpu_counters_init’ accessing 40 bytes in a region of size 0 [-Wstringop-overflow=]
-  337 |         return nfsd_percpu_counters_init(&stats->counter, EXP_STATS_COUNTERS_NUM);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-fs/nfsd/export.c:337:16: note: referencing argument 1 of type ‘struct percpu_counter[0]’
-fs/nfsd/stats.h: In function ‘svc_export_alloc’:
-fs/nfsd/stats.h:40:5: note: in a call to function ‘nfsd_percpu_counters_init’
-   40 | int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+Depopulate device in probe error paths to fix leak of children
+resources.
 
-Cc: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 93483ac5fec6 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240814093957.37940-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/stats.c |    2 +-
- fs/nfsd/stats.h |    6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/dwc3/dwc3-st.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -74,7 +74,7 @@ static int nfsd_show(struct seq_file *se
+--- a/drivers/usb/dwc3/dwc3-st.c
++++ b/drivers/usb/dwc3/dwc3-st.c
+@@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform
+ 	if (!child_pdev) {
+ 		dev_err(dev, "failed to find dwc3 core device\n");
+ 		ret = -ENODEV;
+-		goto err_node_put;
++		goto depopulate;
+ 	}
  
- DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
+ 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
+@@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform
+ 	ret = st_dwc3_drd_init(dwc3_data);
+ 	if (ret) {
+ 		dev_err(dev, "drd initialisation failed\n");
++		of_platform_depopulate(dev);
+ 		goto undo_softreset;
+ 	}
  
--int nfsd_percpu_counters_init(struct percpu_counter counters[], int num)
-+int nfsd_percpu_counters_init(struct percpu_counter *counters, int num)
- {
- 	int i, err = 0;
+@@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform
+ 	platform_set_drvdata(pdev, dwc3_data);
+ 	return 0;
  
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -36,9 +36,9 @@ extern struct nfsd_stats	nfsdstats;
- 
- extern struct svc_stat		nfsd_svcstats;
- 
--int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
--void nfsd_percpu_counters_reset(struct percpu_counter counters[], int num);
--void nfsd_percpu_counters_destroy(struct percpu_counter counters[], int num);
-+int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
-+void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
-+void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
- int nfsd_stat_init(void);
- void nfsd_stat_shutdown(void);
- 
++depopulate:
++	of_platform_depopulate(dev);
+ err_node_put:
+ 	of_node_put(child);
+ undo_softreset:
 
 
 
