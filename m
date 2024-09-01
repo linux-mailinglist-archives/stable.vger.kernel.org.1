@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED21E967B50
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDB9679D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C43281BF7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4438F1F21C3C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AB917ADE1;
-	Sun,  1 Sep 2024 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C38C185924;
+	Sun,  1 Sep 2024 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdaf2YIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6bGX3Mp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01C26AC1;
-	Sun,  1 Sep 2024 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39C1DFD1;
+	Sun,  1 Sep 2024 16:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210487; cv=none; b=OG9ztSqTvsvm9h19p1SlpkSCTomKKXrGXlqvQnKqmux7eHdsNtVuHBPitIAPJDNeFMzKRoxDPQD76s9Hiqr1otsFoVzLabQkyNSvC4hXv3LVmZL9ZaY9pZ/BbgAth4KcoI1FnuBtazApyqhVPWmeUOnm+I9nJn+6LtCvuLR4VR4=
+	t=1725209287; cv=none; b=SVXRnceP65V+R05QevhLyuMGkmJNCSGWF5q8hNE9RZWLn/8fyK9z9pS4ZZrWoiNJOYRFD8T5Cx+/OQTzrESedE8H+LmWPWYoOzrPp2FKtcZGhaHoRhB0DvbdMDJ04NFohwHUsBCohfS2ln8ldfOVhSlDovxTgGdYpGyEZtOXFS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210487; c=relaxed/simple;
-	bh=6xd9/f2kJ5d421KmeX+Fa5bSqUFOiTjP7YAqfI5k/IU=;
+	s=arc-20240116; t=1725209287; c=relaxed/simple;
+	bh=dHJeRpm8wV6dmUsocfnIjwYd2fSH5sGUTXtySS3abFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gx0kxfe0dVMg7hf2wZyVIqEcRew2xvE2TsKDeIpn1Z3EFa3StxhWn7zXlqqfqFmQtwQCsWQSNBO8ntcQwu/ivGzVK/PLG/BrodWzv3bYVIxrdLGdQUuo9ubW1eLOIjf3HfWHa/foqzBdy6BvPaxUX5AeHUaCALqWKSTEFontmP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdaf2YIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9D6C4CEC3;
-	Sun,  1 Sep 2024 17:08:07 +0000 (UTC)
+	 MIME-Version; b=AZ8NFWM40/QHSw9uW7Ny0QUD3RRrSpmvuXuR5SUvAmT8KvFXw1voCDplrpsSuiIL6vtaIrkwecSErWPjd6F7HxH1iFAY2bpI318K8kQ/uVUnTcczPak+Wxsly3Kl5Ao7J7xKnKKUIRtcrbOfVau7PyqZnwHyf9l7OhFk4DT0rcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6bGX3Mp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212F5C4CEC3;
+	Sun,  1 Sep 2024 16:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210487;
-	bh=6xd9/f2kJ5d421KmeX+Fa5bSqUFOiTjP7YAqfI5k/IU=;
+	s=korg; t=1725209286;
+	bh=dHJeRpm8wV6dmUsocfnIjwYd2fSH5sGUTXtySS3abFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdaf2YIvrzKoM59vYrQl7CwrMoFwtxvJ1kI0HQ9AayKwWRIUERBiUxM0sWVbV/hWH
-	 miRxm5H6I3/itsJO2bwBlHUlxMhGKz7sWInE17u0boyif4SKJt6K1KL2DG1wNkPEUN
-	 ytS/sJ4PzYCBu9FDyf2Wc+VMn7UuldBUb7oTvRh4=
+	b=B6bGX3MpMZ3FInYOmQBHLI/ZPnV3L3mpwjiAyQ8wiECUlkFQn8N39v/xpp6DhvwI3
+	 qybgMD7+uLpPZRO2GD6C2DRNZZD8VpKK99Gldmbur0YObszyaMqazScq6jejHx1VA6
+	 vbihUKIibozWdfZQNrJRa7B1qSGYMFlYeQ04IHcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 5.15 173/215] Input: MT - limit max slots
+	stable <stable@kernel.org>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 60/71] usb: dwc3: core: Prevent USB core invalid event buffer address access
 Date: Sun,  1 Sep 2024 18:18:05 +0200
-Message-ID: <20240901160829.902527733@linuxfoundation.org>
+Message-ID: <20240901160804.152646375@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
+commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
 
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
+This commit addresses an issue where the USB core could access an
+invalid event buffer address during runtime suspend, potentially causing
+SMMU faults and other memory issues in Exynos platforms. The problem
+arises from the following sequence.
+        1. In dwc3_gadget_suspend, there is a chance of a timeout when
+        moving the USB core to the halt state after clearing the
+        run/stop bit by software.
+        2. In dwc3_core_exit, the event buffer is cleared regardless of
+        the USB core's status, which may lead to an SMMU faults and
+        other memory issues. if the USB core tries to access the event
+        buffer address.
 
-Since nobody knows possible max slots, this patch chose 1024.
+To prevent this hardware quirk on Exynos platforms, this commit ensures
+that the event buffer address is not cleared by software  when the USB
+core is active during runtime suspend by checking its status before
+clearing the buffer address.
 
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/input-mt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/dwc3/core.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -45,6 +45,9 @@ int input_mt_init_slots(struct input_dev
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -553,9 +553,17 @@ int dwc3_event_buffers_setup(struct dwc3
+ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
++	u32				reg;
  
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
+ 	if (!dwc->ev_buf)
+ 		return;
++	/*
++	 * Exynos platforms may not be able to access event buffer if the
++	 * controller failed to halt on dwc3_core_exit().
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
++	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
++		return;
+ 
+ 	evt = dwc->ev_buf;
+ 
 
 
 
