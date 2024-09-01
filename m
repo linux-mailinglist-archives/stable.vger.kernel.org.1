@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F246B9678FC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6C49677DC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 290731C20EBF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93FD7B21562
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFEC2B9C7;
-	Sun,  1 Sep 2024 16:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B1E181B88;
+	Sun,  1 Sep 2024 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hWV33ez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO6Rz3NN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8FD1C68C;
-	Sun,  1 Sep 2024 16:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C331414290C;
+	Sun,  1 Sep 2024 16:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208699; cv=none; b=SsNWBqcKptuaHPHUAVVLxXHSqy5PR/u58GMfzAYh6DtITpijjga2REMmOTGFN6SzRu2+YqWaIMhxNKulf9M5vyeOr0E8K173oiwLCIx2M1T8ZHOToXw964E3BUGU5dx+9j89XIbCzLBkaGXwb3pdWW5eYGjs0SKr3A6jPBHp1Wk=
+	t=1725207898; cv=none; b=ALm8XrhfE33+ryk1Rf+e1I/LaYTmqRtYZzAquxMO+tz+YYxM1OzqxYCnRkbj7nCVB7O34kcyMqp7fcNMMMWrzYsrq3KnT0ioLj7DS8UL+/4kUjuZeqBTWQBpACwxgJ4pUYpL3DPyybDut6ahwANoTvhCnpNROwjCMwlmPxPVpe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208699; c=relaxed/simple;
-	bh=49Q23zQHiIodSv8xO3eGG7CJNN+wU/dISJg4JfFqcMs=;
+	s=arc-20240116; t=1725207898; c=relaxed/simple;
+	bh=RUgw2PfakD2E6SuEufAYHtfIcgchMS2RF/BEDIMdtWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bM9HOof999uxKf1GbUfecYqPMC0ZLaYrpPZ7pZC4bqOw2xibqQrVvhFAyz9I1ukZ8j9pPwtYvJJBFyI4EbjCoXD2npqIjSwC+5OV5/YJUZMa9WXbLzmhnzLw7cKzLmn5pT6QAh6h8JfKLSuu/J5zY7012zeXp6KGwEQ7yG5MJY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hWV33ez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0907C4CEC3;
-	Sun,  1 Sep 2024 16:38:18 +0000 (UTC)
+	 MIME-Version; b=NDhwmHwMNsJ/C9lDjXnOP7U0C7Wg2QlGdHeW0vwNFKU5NhaaBMaESrTcyb4jB6Lh2qeb3KP+0zfv+aoE4t84kvgMcaDw75h2gJMJJMGyunbvpwTvmo2snYDrB0AdxcUqEkgcHtSX2p+hv9CSSLuh2Hhri9f/EeUHVbfGltcMrco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO6Rz3NN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC72C4CEC3;
+	Sun,  1 Sep 2024 16:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208699;
-	bh=49Q23zQHiIodSv8xO3eGG7CJNN+wU/dISJg4JfFqcMs=;
+	s=korg; t=1725207898;
+	bh=RUgw2PfakD2E6SuEufAYHtfIcgchMS2RF/BEDIMdtWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hWV33ezJXxhTSyYPOmnS6h5sp6vqpjKbX/lQ4b00ffbSaZ128LJ04EKJdxJUJFY4
-	 lJeQAav+6peF/79Q4+wM8k/URFTrBvL9x3i0299B+yaKqfvlrJn/zWyWn+z8AKdwhK
-	 5ztwGKFL1+1+zLJIHJGl3qvCF1Gk10gztxwh4Jtw=
+	b=oO6Rz3NN93sHbUUnKFe4Wv1fwbwq72mjopffLz2PLCm+ssTsgNm7knpDD7OwXch6Z
+	 yxNHp07WlWD9/oTng+Cu8rkXKFsyLggJRkp5Bgph+X8dK3zeOSWdUEMc5q4D8fuUuM
+	 Ucs7XcAZ8kB+SN8yJTB/QX4p491YWiCqyonHn0FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 5.4 013/134] memcg_write_event_control(): fix a user-triggerable oops
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 12/93] mptcp: close subflow when receiving TCP+FIN
 Date: Sun,  1 Sep 2024 18:15:59 +0200
-Message-ID: <20240901160810.611953724@linuxfoundation.org>
+Message-ID: <20240901160807.820287848@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
+commit f09b0ad55a1196f5891663f8888463c0541059cb upstream.
 
-we are *not* guaranteed that anything past the terminating NUL
-is mapped (let alone initialized with anything sane).
+When a peer decides to close one subflow in the middle of a connection
+having multiple subflows, the receiver of the first FIN should accept
+that, and close the subflow on its side as well. If not, the subflow
+will stay half closed, and would even continue to be used until the end
+of the MPTCP connection or a reset from the network.
 
-Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+The issue has not been seen before, probably because the in-kernel
+path-manager always sends a RM_ADDR before closing the subflow. Upon the
+reception of this RM_ADDR, the other peer will initiate the closure on
+its side as well. On the other hand, if the RM_ADDR is lost, or if the
+path-manager of the other peer only closes the subflow without sending a
+RM_ADDR, the subflow would switch to TCP_CLOSE_WAIT, but that's it,
+leaving the subflow half-closed.
+
+So now, when the subflow switches to the TCP_CLOSE_WAIT state, and if
+the MPTCP connection has not been closed before with a DATA_FIN, the
+kernel owning the subflow schedules its worker to initiate the closure
+on its side as well.
+
+This issue can be easily reproduced with packetdrill, as visible in [1],
+by creating an additional subflow, injecting a FIN+ACK before sending
+the DATA_FIN, and expecting a FIN+ACK in return.
+
+Fixes: 40947e13997a ("mptcp: schedule worker when subflow is closed")
 Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://github.com/multipath-tcp/packetdrill/pull/154 [1]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-1-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    5 ++++-
+ net/mptcp/subflow.c  |    8 ++++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4732,9 +4732,12 @@ static ssize_t memcg_write_event_control
- 	buf = endp + 1;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2496,8 +2496,11 @@ static void __mptcp_close_subflow(struct
  
- 	cfd = simple_strtoul(buf, &endp, 10);
--	if ((*endp != ' ') && (*endp != '\0'))
-+	if (*endp == '\0')
-+		buf = endp;
-+	else if (*endp == ' ')
-+		buf = endp + 1;
-+	else
- 		return -EINVAL;
--	buf = endp + 1;
+ 	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int ssk_state = inet_sk_state_load(ssk);
  
- 	event = kzalloc(sizeof(*event), GFP_KERNEL);
- 	if (!event)
+-		if (inet_sk_state_load(ssk) != TCP_CLOSE)
++		if (ssk_state != TCP_CLOSE &&
++		    (ssk_state != TCP_CLOSE_WAIT ||
++		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
+ 			continue;
+ 
+ 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1226,12 +1226,16 @@ out:
+ /* sched mptcp worker to remove the subflow if no more data is pending */
+ static void subflow_sched_work_if_closed(struct mptcp_sock *msk, struct sock *ssk)
+ {
+-	if (likely(ssk->sk_state != TCP_CLOSE))
++	struct sock *sk = (struct sock *)msk;
++
++	if (likely(ssk->sk_state != TCP_CLOSE &&
++		   (ssk->sk_state != TCP_CLOSE_WAIT ||
++		    inet_sk_state_load(sk) != TCP_ESTABLISHED)))
+ 		return;
+ 
+ 	if (skb_queue_empty(&ssk->sk_receive_queue) &&
+ 	    !test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
+-		mptcp_schedule_work((struct sock *)msk);
++		mptcp_schedule_work(sk);
+ }
+ 
+ static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
 
 
 
