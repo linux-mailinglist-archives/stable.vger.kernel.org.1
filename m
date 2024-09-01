@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-71808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C939677D8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955CA967B0E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C205E1C20F60
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E41E5B207E9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0F3183090;
-	Sun,  1 Sep 2024 16:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBB417ADE1;
+	Sun,  1 Sep 2024 17:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKUN1fxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIDOT+gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7B814290C;
-	Sun,  1 Sep 2024 16:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD952C190;
+	Sun,  1 Sep 2024 17:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207885; cv=none; b=kZb7V+NMRqR9tdw6j6Ew88GfEj7OQ7W44Ur9t4NAsXp2cxdmU0YuEOy+KT9V/btlqShV0q8cS8HLyP96Rio9spYr3nXjaC3UPTuhGpEQC8GLMcRZKGTlD9GrliY0w/bFDuOorbtgCMdNL+HjUrL/3g4+WA5IMMgl6Ncdh8p+C/Y=
+	t=1725210267; cv=none; b=b2o6fb7U8ln+61rdmDKcJ+4KYa8QKb6IerJ8yy3IrhzZq6TawG6zT/aa3YQt3ChRNmGqMfenJPccXhx2T30DbZemV1dbjJDcK2LhOFb/rqpDTktJTu7MuHQL12yS4HafMimiJJnW0B0CoYVjudvOI8jF2nZDJnkVQf70aHqPiIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207885; c=relaxed/simple;
-	bh=hx3HbfcNhzTm4gkSlp3stk1+CvdmsZEKbZecv7mBnZw=;
+	s=arc-20240116; t=1725210267; c=relaxed/simple;
+	bh=iKhzfLRFWydvPdONPyDM0NnREcYykTFS6XuNLio7op8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghHQUc9g4pDgbOBVbuakZ98Pi0wRfSkx7V9u779zgdglvT9RDNjcsrV2k7BULyxp+DWZ4AEvzFXtAAsBtqUpPZqji/mReeJv+S0c9iGnRFOiupSGfAnTbGfY/PH2pd4ONQE+iqg4kql/j6pvdGSq8CUxy3ifI37DCrLTQtSXpu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKUN1fxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01EFC4CEC3;
-	Sun,  1 Sep 2024 16:24:44 +0000 (UTC)
+	 MIME-Version; b=vBAqBti07bcYTFJxVGBwJvauak3PpP8eJOwAswh1eniWrPluJMatmSL7+8Nn1QXxZ+gopc1J2JlPFc73EGltMuUPOSFZmZrvtuk1X907/JMQrWnDCUFV3/8oX2pno+ZhQUemtZZNmuoORFVsmHu41SasyOGGSCuX7Vi4/f6Aw2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIDOT+gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE1AC4CEC3;
+	Sun,  1 Sep 2024 17:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207885;
-	bh=hx3HbfcNhzTm4gkSlp3stk1+CvdmsZEKbZecv7mBnZw=;
+	s=korg; t=1725210267;
+	bh=iKhzfLRFWydvPdONPyDM0NnREcYykTFS6XuNLio7op8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKUN1fxjDt7cDdKeO02fK+lpowBbOv0ebj33I+KcbBAd0MzzrUQhzggTm3qa5JD3t
-	 p2iQgXtbqgPTq/Fe8/3+cCn7V4WykrZ2HjnJLBf1w7rUKGJwVhnht51ejIvAM2IXj0
-	 IysXWlvvVivYx9vHpT0ZBwZIKmu1IxXXBxuMnhWQ=
+	b=XIDOT+grmVoKCu4eGDFvUyBIUT9byJJjnn8UevkkRaZ7f/OzKC6pDofr/7VD6y06h
+	 Fogui30ZrQP3Nned/0WKiztSUhWbBUQWbIZqPSE81KogqRJ90ov+XL2yWhvOdJMcrD
+	 cH5CLQLDpOgYsqf6/hbjNdYfGyEV3DgZvp8/yGMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Phil Chang <phil.chang@mediatek.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 89/98] net: busy-poll: use ktime_get_ns() instead of local_clock()
+Subject: [PATCH 5.15 107/215] hrtimer: Prevent queuing of hrtimer without a function callback
 Date: Sun,  1 Sep 2024 18:16:59 +0200
-Message-ID: <20240901160807.053982274@linuxfoundation.org>
+Message-ID: <20240901160827.390170355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Phil Chang <phil.chang@mediatek.com>
 
-[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
+[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
 
-Typically, busy-polling durations are below 100 usec.
+The hrtimer function callback must not be NULL. It has to be specified by
+the call side but it is not validated by the hrtimer code. When a hrtimer
+is queued without a function callback, the kernel crashes with a null
+pointer dereference when trying to execute the callback in __run_hrtimer().
 
-When/if the busy-poller thread migrates to another cpu,
-local_clock() can be off by +/-2msec or more for small
-values of HZ, depending on the platform.
+Introduce a validation before queuing the hrtimer in
+hrtimer_start_range_ns().
 
-Use ktimer_get_ns() to ensure deterministic behavior,
-which is the whole point of busy-polling.
+[anna-maria: Rephrase commit message]
 
-Fixes: 060212928670 ("net: add low latency socket poll")
-Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
-Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Phil Chang <phil.chang@mediatek.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/busy_poll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/hrtimer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index 8f42f6f3af86f..c45253ee08c9f 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -73,7 +73,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
- static inline unsigned long busy_loop_current_time(void)
- {
- #ifdef CONFIG_NET_RX_BUSY_POLL
--	return (unsigned long)(local_clock() >> 10);
-+	return (unsigned long)(ktime_get_ns() >> 10);
- #else
- 	return 0;
- #endif
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 5502c687bd401..bdd9041d595e9 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1284,6 +1284,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	struct hrtimer_clock_base *base;
+ 	unsigned long flags;
+ 
++	if (WARN_ON_ONCE(!timer->function))
++		return;
+ 	/*
+ 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
+ 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
 -- 
 2.43.0
 
