@@ -1,92 +1,95 @@
-Return-Path: <stable+bounces-72628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40A5967B77
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:26:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CA0967C55
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 23:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C017281CD0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:26:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3691F215C8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 21:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8038118308A;
-	Sun,  1 Sep 2024 17:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A2A18594D;
+	Sun,  1 Sep 2024 21:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="nHMv3NRr"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l90DbWeJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A0917ADE1;
-	Sun,  1 Sep 2024 17:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE2118308A;
+	Sun,  1 Sep 2024 21:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725211574; cv=none; b=CH+o2soGC/Mxhh7C+7jW1tpR6hjAVS0nP3q2oINYZu2Dy8yCEU4iYR6wlYrjtLgJDaEdo5OAQYdERuPiopKExcvWQRGKmqXuBGShi8RFSkRw8EQsvpWOsusJd7njYH0PRrax7+xQD0LeXpo5MUx+z+sG9yDin1dytuHq7o40mKg=
+	t=1725226323; cv=none; b=YlgvaqdrBUqV3Y2evVgiVpDomlTXeoZ/N/yzCpGJm5cy5WZ6n36BnvNyhBS8g+29v7rYTzcdZQBWpZFUNhR0QraNVK2KVb62YWyuHjWonQzqhfgkkNJhrsbWfw/Ez8rJOCOeYQz0Wk5S/4aMn0i1hLBRs4IWN6gvn0tXwixqI9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725211574; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=r+smjbd4NQwSBrK2mZXQ/Y7Tqt7cFspjRcK8RlkWbIz0UTg7/aINHsYfa7IZrR7NHZWl0UyWn7e+cxBoinjk3hFT3dSIcZYfxmJ9qGTfdy08iiasE5z9WxEhEeFsTZVEA2xH9RfVH6BRSCpbtIti4Q0nE4E6QyMLtfYEtqdthgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=nHMv3NRr; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1725211568; x=1725816368; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=nHMv3NRr9wD/mVomPz/9UkNSOWwWoK5kYBxCvzCqnv6kjMtqTpooHSJiAS+NIt72
-	 +SvFhYXU13mRCtD9Qg05/Zdq+Grkm9924OKWiCP7SGOqTxE7+FLO02c55qgsS6jV0
-	 qd7ZFMbIJMX+QZJJK/WOjeUnPIpUtv27+PvNJxhTWDrJTF1dx+DBate/9D6VPfb/H
-	 Saqd4k9SENsT1W5y6J1unCZNdxSmH4Zxz0lssrqKynOPKcItxnAYiBnHrWLzYxH/E
-	 ioujHpRI8g3wPXCcU6btigB4+sPJd4h8m+L7X0o1a5I4h0QAAl0+F6oAUtLY/ptvC
-	 KmRA8hQgTydsxve1hQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.208]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mk0JW-1sMRs81BlY-00m6F3; Sun, 01
- Sep 2024 19:26:08 +0200
-Message-ID: <64a508d8-e93e-4e25-ae23-baf74e73bd23@gmx.de>
-Date: Sun, 1 Sep 2024 19:26:07 +0200
+	s=arc-20240116; t=1725226323; c=relaxed/simple;
+	bh=hAKxii2AHA4r0SKAFo3pvPOxzOVgeBfKCGIQJSUYPXU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SDuSarLX2xeu0jfLOo5xXljI3Gc7U3UJ4q3CvtaNxm9DXAc+r6Br+a6VRxnQb8i5ppCLBCzdI8GhHeJtz04bGJk6MCcB0uptBc7gN1i1VMcKj/bAEFIMxMO4z91XhTCg719oaoPDWn2ia2nAsIgyZU7t/3aHYIypcKMtrWS6GH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l90DbWeJ; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 452F114C1E1;
+	Sun,  1 Sep 2024 23:31:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1725226312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IjF8kFSC1OaoOTtQg6ZwHQDUnXTJvG+nyTqgCngUekA=;
+	b=l90DbWeJ0eSih6v7OKDYJeda3OTeGVgfxuPJZRrmAa2xtWUjyjAH4eceGrjcJNg+V/Qubh
+	O6Uuskt4Je8JiudgTu1SAdW97eUZzPoPFpBBITz+mLgvCLUq76aN30n3ANOF5i2b0babl2
+	wXtdylEN2mxJhNut5rxX4+pJS5LWIZMj6KfVYei0Erc7zpebX9LSDVk7ElQaEHdB5hcID6
+	FzEBwdJGLVqkBtRiz6f/J1SDYirCOz9lhfMO6fCNPxY2mmrr0lNKPoMcMsebqPBnN4jrSU
+	K/TdWmcXG4oXJ+I69it8kbF3Mjg1KErbmw3vgEucOnszsmUFh3wsPpdeetR1gA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f91a7026;
+	Sun, 1 Sep 2024 21:31:45 +0000 (UTC)
+Date: Mon, 2 Sep 2024 06:31:30 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/151] 5.10.225-rc1 review
+Message-ID: <ZtTdMijfnu0mqanS@codewreck.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.10 000/149] 6.10.8-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:9lHzAT4uCa6PaVl2zwW2c2RnNHrEhGNvNatK+JOV1fjxeYSwvCz
- 5gfTW64iYxA2BkZZuylTJlcY/wDlIiOliDehkB5zq59M47jhpe2vl+x9GMNDH4rEJ4S/iDX
- W9DHlAAA+g52Yq19ej5GEf15O+8CXtTguVknfNTe0RjiE9x33nq13OMXI/iP4fR676r29p0
- q8Fu6XvjnMVMyi+cuLJ4w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wqceaBVsemE=;Y658Bj9kz2vua0tySLlvXW+o+Er
- mF9DbSa0Nr+XDtNEmyEOXfzLRl72NfWeUCxxjWotwFkh0+VFAmVrMplm6BYM/JGHCaWLR8NwP
- kGIxAi/Q3G88E8rAOKTG3bJLvVLtaX6vRQVaKEgD186/ROsA2TQ3XEwYj1s1bQdJxx0G4ugQX
- 9OYu8RH6Oi8Z4Iyo5Ap4OeKOWIW+2tkZ/CDpuLCNXMsZXpuBM0H2Z0E/uoJ+9oW7asXKMmVaB
- bLSRXrxx11jxROePW+oieqClgLRptEGv51XKJpK9Mr9frVIEtmlHOO04U3PC1SqJHOHQhh1PX
- gfFPaKh7H+J9/RdMZ+QXZsMw6GbgLdY9hsqFch6UWC9jEoUlD0jCi1QGBYfTsOlMn3rrvpqF5
- y/rBwp6u1HsNvApvI7mDiRdPJfdhBGwHHw1+CjBcXuL88+bQvG7tAxfafAvfyl3kMY3EwEhqQ
- nC8JL7YeF9f/D+D16uNF+ofNFZPAHSeIMBHErM5Fr/qYAqwjIgtXO85AeuW3krf/N8gpZjELC
- bsc5qnuhiJ11hJ7P9HunLv0+zf2SAk4+MIKG6vQ3iaP+s1+FTSIywH3hSGy8aY1wzPY0eWRLl
- RtjGe5zWoQ6rpx1jjMFEbF5fVQeuqcIkWCJDyVp2DIVuoLmOskI8/wZwLui2nFKpCKlMx0Seq
- b+WY9axjp9slUtWbGdGZm4Jb2U1RWSOMhsze6Nm+04EpIi55rk2Rq3pTdiT6IRivDDzNBvEAh
- YaFToDy+YBeOo9b1o8Pt1YJkz9FshK8wXB+SRXgx0augjF3RS+Dhta4Ads6Sb+E4NdbI6fseM
- fxI/OhDKcP2deG+hhbDA2Uyw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
 
-Hi Greg
+Greg Kroah-Hartman wrote on Sun, Sep 01, 2024 at 06:16:00PM +0200:
+> This is the start of the stable review cycle for the 5.10.225 release.
+> There are 151 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.225-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+Tested ee485d4aa099 ("Linux 5.10.225-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+-- 
+Dominique Martinet
 
