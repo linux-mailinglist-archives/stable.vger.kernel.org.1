@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA81C967B2E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC2B967961
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280871C21171
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077801C20CB7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1533BB48;
-	Sun,  1 Sep 2024 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D71A17F389;
+	Sun,  1 Sep 2024 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HecaWNHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls9COscB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F252C190;
-	Sun,  1 Sep 2024 17:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA6117CA1F;
+	Sun,  1 Sep 2024 16:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210375; cv=none; b=VwujJGZ/o5kDl3wNuGQzWi8PXRPjQ2lLTs+RvbWgMlrkreyy9dPBWtnHFaqo8wtYG+qmdqn9SNfgH3mlxoRpalsoihNVPJoX2iXWbMDJP5THWwnuNBYDkVzScztCBBU/o1BPdPu1KsbtuMs13JfpC4vuI7l3/LiKo9+JQ0+1TDQ=
+	t=1725209006; cv=none; b=UEQmYfEkOBTn9EtklCMjypF/H0763XGD8OoWUrB300ib9ZscY7vXdfk2VadTKS0h6MopBuqCkkCIxq0JTuEU5QtgXV5Kw2AfXGno9KPkzA6wriJr18i68esK9ywuz23pfeKB+gqXOSXfGEMF26hrugvAhpbiJ8rGIl1vmKbAi50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210375; c=relaxed/simple;
-	bh=hrLzIOSnHXPVnTenjBSF6vNdSKyMhTuCocgejXQITb8=;
+	s=arc-20240116; t=1725209006; c=relaxed/simple;
+	bh=k8Vu5GbhatEthMtKawaWANqRRH1FVabqTpQdS3rgJJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTxqiz5sn4HlH/iyrUPuZuLs4e6LLMWsw5gVenhvvwbl2c99lJhUTWseHXqjKPlNbHN06rFxgebx8q1IYIRQ7lR6O/BZ35NUNwp1KspnDFb2HbNbTqszzDiuRmGNrFMZIlGQnbB07c2DipR+RHYmQIahMfF1CWiI6tztnrURMAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HecaWNHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE46C4CEC3;
-	Sun,  1 Sep 2024 17:06:14 +0000 (UTC)
+	 MIME-Version; b=Mm1UHCRK9Ncs/owNhr7Lf7KoZVsCu4JaOq4kHMSLLzeH1vq7Aqa9jbCdyW46eXx9KueXvmQHegzp3BCes94OJhh4pFoWWsXfZdcJWKcZCsX1PmKqPiXjh9haCEBblrE9l3KwZ5HjClyv4nigoHFw3EjL3MGWp6i5GzpIA20sVsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls9COscB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57243C4CEC3;
+	Sun,  1 Sep 2024 16:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210374;
-	bh=hrLzIOSnHXPVnTenjBSF6vNdSKyMhTuCocgejXQITb8=;
+	s=korg; t=1725209005;
+	bh=k8Vu5GbhatEthMtKawaWANqRRH1FVabqTpQdS3rgJJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HecaWNHAWne5kLdBm4KGUOT31QNnIK1DYSnXaD8bYYS5G5fUCr4XbwSFlM1zgg/fN
-	 ujmjzEUhlZtvw9DUD4g1aSeKI8uO9WtuAl+aJ2cqu96B1SGBhk3vbt4aLQw6ROshyH
-	 3cFvptdTM/rsrwblzNnwnRqB0fi5yD/EQ09/fqmw=
+	b=Ls9COscBg3iL9cR1Bh3EuzdiMpiS/jcFW8iWwgOlQcGhtOjZTBgjFJOAXFiqYSle/
+	 HOHUXkL8yQrEBb8EErisehzRJH7natxznmZt3Ep0zoGzeoMxtAhgok1RoQ3bvnqhRR
+	 V7nOj2shmJfVYLkm8GJLdNBMa8v63/oGxofm8b5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/215] bonding: fix bond_ipsec_offload_ok return type
-Date: Sun,  1 Sep 2024 18:17:31 +0200
-Message-ID: <20240901160828.621480875@linuxfoundation.org>
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 106/134] tools: move alignment-related macros to new <linux/align.h>
+Date: Sun,  1 Sep 2024 18:17:32 +0200
+Message-ID: <20240901160814.077821000@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit fc59b9a5f7201b9f7272944596113a82cc7773d5 ]
+commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
 
-Fix the return type which should be bool.
+Currently, tools have *ALIGN*() macros scattered across the unrelated
+headers, as there are only 3 of them and they were added separately
+each time on an as-needed basis.
+Anyway, let's make it more consistent with the kernel headers and allow
+using those macros outside of the mentioned headers. Create
+<linux/align.h> inside the tools/ folder and include it where needed.
 
-Fixes: 955b785ec6b3 ("bonding: fix suspicious RCU usage in bond_ipsec_offload_ok()")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ tools/include/linux/align.h  |   12 ++++++++++++
+ tools/include/linux/bitmap.h |    1 +
+ 2 files changed, 13 insertions(+)
+ create mode 100644 tools/include/linux/align.h
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 6a91229b0e05b..61ff4bb22e647 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -592,34 +592,28 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
- 	struct net_device *real_dev;
- 	struct slave *curr_active;
- 	struct bonding *bond;
--	int err;
-+	bool ok = false;
+--- /dev/null
++++ b/tools/include/linux/align.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _TOOLS_LINUX_ALIGN_H
++#define _TOOLS_LINUX_ALIGN_H
++
++#include <uapi/linux/const.h>
++
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif /* _TOOLS_LINUX_ALIGN_H */
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _PERF_BITOPS_H
  
- 	bond = netdev_priv(bond_dev);
- 	rcu_read_lock();
- 	curr_active = rcu_dereference(bond->curr_active_slave);
- 	real_dev = curr_active->dev;
- 
--	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP) {
--		err = false;
-+	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
- 		goto out;
--	}
- 
--	if (!xs->xso.real_dev) {
--		err = false;
-+	if (!xs->xso.real_dev)
- 		goto out;
--	}
- 
- 	if (!real_dev->xfrmdev_ops ||
- 	    !real_dev->xfrmdev_ops->xdo_dev_offload_ok ||
--	    netif_is_bond_master(real_dev)) {
--		err = false;
-+	    netif_is_bond_master(real_dev))
- 		goto out;
--	}
- 
--	err = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
-+	ok = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
- out:
- 	rcu_read_unlock();
--	return err;
-+	return ok;
- }
- 
- static const struct xfrmdev_ops bond_xfrmdev_ops = {
--- 
-2.43.0
-
+ #include <string.h>
++#include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <stdlib.h>
+ #include <linux/kernel.h>
 
 
 
