@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F838967993
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882EC967B27
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D783282240
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84C41C215F3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49902184540;
-	Sun,  1 Sep 2024 16:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157973BB48;
+	Sun,  1 Sep 2024 17:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsJkZp7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHoYeJ+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFE183CBF;
-	Sun,  1 Sep 2024 16:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C500617C;
+	Sun,  1 Sep 2024 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209121; cv=none; b=KvGByLyCGxXwfiYumJP0nwRT4XFDDpPEfevPkH8pN7UqsnS0zeeUSJ4Iga+EcPkYa8eaNUNt3YhkOmyhYmWAdovV6a7BPg4Cp5PApO8ArT878D5Hl/RWwh7Af43Z6mrwy/LjyA3qkKUdb1hBC22HgOgoXofEOib7sHktNxMfdC0=
+	t=1725210352; cv=none; b=QaDWWooLGA3LFm+8meTeL8gS4JeuuWMMQk6okXvmQnUHf6uVerHk9MLOum8zq5JtHtXeI1a7v+fBR3SGe4mkmuECVXDbb3grgNCw1xuIhbUc4mGF2DFHJeFizkRb+DryO0oRVtId+K+O0t9OH0FZJpLufOfkECb0YQoOBMPfBFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209121; c=relaxed/simple;
-	bh=yTjgF1NZzdvnWTQF9NbsuY4Oz/hb/9Lk3RTGHV0a+C0=;
+	s=arc-20240116; t=1725210352; c=relaxed/simple;
+	bh=zrpam1r/ZJqmGJGhHnrMwtao3XYb44H0RIFyZIFzRS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDOZsMFk/8gi81bGeDioV/Fs3qi3A25SfqPavsiNspzLttndNLW+JVFH7ZEU7QSnEbkGz87MeGU54urIm4dzjr5moS4BaBy3wkHGas4L9452OUMUwlHwBT9kJOOj1s4LoMrLUqyAdV4RL7LeO4aK6cg9k3mTHTGYtUt2GVqOlg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsJkZp7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1E0C4CEC3;
-	Sun,  1 Sep 2024 16:45:19 +0000 (UTC)
+	 MIME-Version; b=el02oBJW1GV8KnRHppB6RMPxKgf0uybNNpS4u34UH+MvAg/PcgeuaIfiAFNt3Vj0f4GBmOxGE88scJFDkWfcVH0pSy6ThriygdX5eHbHWXBH3JNIwek4NgxohYl6QV8QV6eG5BgGawjW0bHDYzpjKzva/dAs6/oOvbDZQ+xqlk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHoYeJ+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3991FC4CEC3;
+	Sun,  1 Sep 2024 17:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209120;
-	bh=yTjgF1NZzdvnWTQF9NbsuY4Oz/hb/9Lk3RTGHV0a+C0=;
+	s=korg; t=1725210352;
+	bh=zrpam1r/ZJqmGJGhHnrMwtao3XYb44H0RIFyZIFzRS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsJkZp7kWBYUNUnfFFJE4Fhlx1IhC/eKIctAcj3Y7osUAw3vc0IwLsrYZvZ8/muTM
-	 s1tH9zJr2MfgJKG8RlLIg/9hp+KUJTcxoeXQCvZmAbsR2H4j9ygk22Um9P11uuvbqz
-	 K4on2F2pjvx0JYvQdy+0xVbvcJvWoe14+UsFYZTw=
+	b=aHoYeJ+WpjnyyY790zcQDpHZUBLXOznM05HekwlGFQQxThR9pnpplzdNPRTrIx6Ui
+	 K1TrMjnY4uCfPSakHNfesx1z6x7rxTkqaedTUYiF6lHjEU9ONvwGSPXE5bvNuhaAnD
+	 Z6vvBolN9UOTEXO1o756TE+TB5JSJx1z1QC8HW8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 129/134] usb: dwc3: core: Prevent USB core invalid event buffer address access
+	Bastien Nocera <hadess@hadess.net>,
+	Siarhei Vishniakou <svv@google.com>,
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 5.15 163/215] HID: microsoft: Add rumble support to latest xbox controllers
 Date: Sun,  1 Sep 2024 18:17:55 +0200
-Message-ID: <20240901160814.932726336@linuxfoundation.org>
+Message-ID: <20240901160829.520801309@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Siarhei Vishniakou <svv@google.com>
 
-commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
+commit f5554725f30475b05b5178b998366f11ecb50c7f upstream.
 
-This commit addresses an issue where the USB core could access an
-invalid event buffer address during runtime suspend, potentially causing
-SMMU faults and other memory issues in Exynos platforms. The problem
-arises from the following sequence.
-        1. In dwc3_gadget_suspend, there is a chance of a timeout when
-        moving the USB core to the halt state after clearing the
-        run/stop bit by software.
-        2. In dwc3_core_exit, the event buffer is cleared regardless of
-        the USB core's status, which may lead to an SMMU faults and
-        other memory issues. if the USB core tries to access the event
-        buffer address.
+Currently, rumble is only supported via bluetooth on a single xbox
+controller, called 'model 1708'. On the back of the device, it's named
+'wireless controller for xbox one'. However, in 2021, Microsoft released
+a firmware update for this controller. As part of this update, the HID
+descriptor of the device changed. The product ID was also changed from
+0x02fd to 0x0b20. On this controller, rumble was supported via
+hid-microsoft, which matched against the old product id (0x02fd). As a
+result, the firmware update broke rumble support on this controller.
 
-To prevent this hardware quirk on Exynos platforms, this commit ensures
-that the event buffer address is not cleared by software  when the USB
-core is active during runtime suspend by checking its status before
-clearing the buffer address.
+See:
+https://news.xbox.com/en-us/2021/09/08/xbox-controller-firmware-update-rolling-out-to-insiders-starting-today/
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
+The hid-microsoft driver actually supports rumble on the new firmware,
+as well. So simply adding new product id is sufficient to bring back
+this support.
+
+After discussing further with the xbox team, it was pointed out that
+another xbox controller, xbox elite series 2, can be supported in a
+similar way.
+
+Add rumble support for all of these devices in this patch. Two of the
+devices have received firmware updates that caused their product id's to
+change. Both old and new firmware versions of these devices were tested.
+
+The tested controllers are:
+
+1. 'wireless controller for xbox one', model 1708
+2. 'xbox wireless controller', model 1914. This is also sometimes
+   referred to as 'xbox series S|X'.
+3. 'elite series 2', model 1797.
+
+The tested configurations are:
+1. model 1708, pid 0x02fd (old firmware)
+2. model 1708, pid 0x0b20 (new firmware)
+3. model 1914, pid 0x0b13
+4. model 1797, pid 0x0b05 (old firmware)
+5. model 1797, pid 0x0b22 (new firmware)
+
+I verified rumble support on both bluetooth and usb.
+
+Reviewed-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Siarhei Vishniakou <svv@google.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/hid/hid-ids.h       |   10 +++++++++-
+ drivers/hid/hid-microsoft.c |   11 ++++++++++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -438,9 +438,17 @@ int dwc3_event_buffers_setup(struct dwc3
- void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
-+	u32				reg;
- 
- 	if (!dwc->ev_buf)
- 		return;
-+	/*
-+	 * Exynos platforms may not be able to access event buffer if the
-+	 * controller failed to halt on dwc3_core_exit().
-+	 */
-+	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
-+	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
-+		return;
- 
- 	evt = dwc->ev_buf;
- 
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -894,7 +894,15 @@
+ #define USB_DEVICE_ID_MS_TYPE_COVER_2    0x07a9
+ #define USB_DEVICE_ID_MS_POWER_COVER     0x07da
+ #define USB_DEVICE_ID_MS_SURFACE3_COVER		0x07de
+-#define USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER	0x02fd
++/*
++ * For a description of the Xbox controller models, refer to:
++ * https://en.wikipedia.org/wiki/Xbox_Wireless_Controller#Summary
++ */
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708	0x02fd
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE	0x0b20
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914	0x0b13
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797	0x0b05
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE	0x0b22
+ #define USB_DEVICE_ID_MS_PIXART_MOUSE    0x00cb
+ #define USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS      0x02e0
+ #define USB_DEVICE_ID_MS_MOUSE_0783      0x0783
+--- a/drivers/hid/hid-microsoft.c
++++ b/drivers/hid/hid-microsoft.c
+@@ -446,7 +446,16 @@ static const struct hid_device_id ms_dev
+ 		.driver_data = MS_PRESENTER },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, 0x091B),
+ 		.driver_data = MS_SURFACE_DIAL },
+-	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER),
++
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE),
+ 		.driver_data = MS_QUIRK_FF },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS),
+ 		.driver_data = MS_QUIRK_FF },
 
 
 
