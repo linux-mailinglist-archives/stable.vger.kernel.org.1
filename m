@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED9F967978
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:45:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C5C967A32
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F8321C20F99
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:45:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3F061F23713
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2F8185940;
-	Sun,  1 Sep 2024 16:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B38D18308A;
+	Sun,  1 Sep 2024 16:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k81WcC2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlHhbzxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2AE18593A;
-	Sun,  1 Sep 2024 16:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2E718132A;
+	Sun,  1 Sep 2024 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209064; cv=none; b=pPt3PrbqRr//KkVMPKpQsoaufrO2K9MSF5Gh/vjFNzJDPXBXyUNmNb8p0jRF6WNVJfq/C1NOnVM9u78vBW1gQWTuFNUWfx+Fd37ptB9emI29UgOw4P/J4EdaPdBi6j3DF2g7zMOIZ6hoqKLIU52MdHQh/t2b6Tk1sDmQUdv+alc=
+	t=1725209567; cv=none; b=gNiydjuLy0CLvV/wAzGXiGwSkZ3Ttz0VzI9Wfg8s4LgYxfCnLFeMOSvIJA2zY9qIf+z4DnfbNXb7NoTwllkPjcgEhTVIfhYuJL2MTWWTaP1XVnmHgstG2GBiTjA7F9YHl6xcI8kZb49Ilo+8SyMO3Oh6SIpGnOCvS7H1YfYFWKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209064; c=relaxed/simple;
-	bh=tNzovmimcYdjAjVyUQnlHcCKn6C3nFaSUSjkng34XJk=;
+	s=arc-20240116; t=1725209567; c=relaxed/simple;
+	bh=X8HNeRxA+Igz2PfPXE+B7HKQzfPkYArTVNwXTNT08VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcBdW27SHj+brPaikeQN9OygF3mLlrdT5iVmjdVJD13QMAjs2Ijj+Iw8vAQTr0e3s9K3qFHXbm1paP5KML16myyrADTdHc64jOtTG/M/HO+GBzUMaOMZbpf9l1d68BjJXQFiEu9QOgnn/HkbQ2Fkj7PjcUslXMcD3ku1N6mBSxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k81WcC2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5216AC4CECA;
-	Sun,  1 Sep 2024 16:44:24 +0000 (UTC)
+	 MIME-Version; b=lIlqejaJzkY2EojMpDDyRuwVyTRqKDT/b6jLO71C49O8hs8CrUtcPmy0ccHELOFuSKE4RD4Ln1U/D4zcrfvNKnbqNhgKoEUWKFCFmXbTQv7b+tA8Z5DuH/iYgdwooCTcb/hytE8QfltVGZdHEz37Qdc77U98SBoQf1LtvNghux4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlHhbzxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DE4C4CEC3;
+	Sun,  1 Sep 2024 16:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209064;
-	bh=tNzovmimcYdjAjVyUQnlHcCKn6C3nFaSUSjkng34XJk=;
+	s=korg; t=1725209566;
+	bh=X8HNeRxA+Igz2PfPXE+B7HKQzfPkYArTVNwXTNT08VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k81WcC2/lb+KkEtm6FffJmRsI+1PdpORXrSJz/Wq65BPPL0EdBFH3LiIoFzqr+EJ9
-	 mkToYKnltBwiy+CtvkHgivIBETD4MQ7s/ft+YpkT/y/u+iCewRyl7bnqfj9WfZlnt5
-	 jkiAAEmG1pgjbFeNeqMIkudA+8NwCpa0+a7jW7dM=
+	b=xlHhbzxBEy8k/Vz8JhinmE2fDtxaTHAOkK3epa9wC4HkwkR78iCd50JTjZwC8O1sS
+	 558GkWUSGNEGksFrTHe0TeJcHAKZZCIxOIWrJYR4eSFX9Gq0Br6Gj3+SYz2y330/Qw
+	 7JAFwJB5vsqHUN2KGJ9z2j7/mAwGOU8XMa4GdYxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/134] netem: fix return value if duplicate enqueue fails
+Subject: [PATCH 5.10 077/151] fbdev: offb: replace of_node_put with __free(device_node)
 Date: Sun,  1 Sep 2024 18:17:17 +0200
-Message-ID: <20240901160813.522208256@linuxfoundation.org>
+Message-ID: <20240901160817.010844858@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
 
-[ Upstream commit c07ff8592d57ed258afee5a5e04991a48dbaf382 ]
+[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
 
-There is a bug in netem_enqueue() introduced by
-commit 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
-that can lead to a use-after-free.
+Replaced instance of of_node_put with __free(device_node)
+to simplify code and protect against any memory leaks
+due to future changes in the control flow.
 
-This commit made netem_enqueue() always return NET_XMIT_SUCCESS
-when a packet is duplicated, which can cause the parent qdisc's q.qlen
-to be mistakenly incremented. When this happens qlen_notify() may be
-skipped on the parent during destruction, leaving a dangling pointer
-for some classful qdiscs like DRR.
-
-There are two ways for the bug happen:
-
-- If the duplicated packet is dropped by rootq->enqueue() and then
-  the original packet is also dropped.
-- If rootq->enqueue() sends the duplicated packet to a different qdisc
-  and the original packet is dropped.
-
-In both cases NET_XMIT_SUCCESS is returned even though no packets
-are enqueued at the netem qdisc.
-
-The fix is to defer the enqueue of the duplicate packet until after
-the original packet has been guaranteed to return NET_XMIT_SUCCESS.
-
-Fixes: 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240819175753.5151-1-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 47 ++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/offb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 265a02b6ad099..591ca93e2a01d 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -437,12 +437,10 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	/* We don't fill cb now as skb_unshare() may invalidate it */
- 	struct netem_skb_cb *cb;
--	struct sk_buff *skb2;
-+	struct sk_buff *skb2 = NULL;
- 	struct sk_buff *segs = NULL;
- 	unsigned int prev_len = qdisc_pkt_len(skb);
- 	int count = 1;
--	int rc = NET_XMIT_SUCCESS;
--	int rc_drop = NET_XMIT_DROP;
- 
- 	/* Do not fool qdisc_drop_all() */
- 	skb->prev = NULL;
-@@ -471,19 +469,11 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		skb_orphan_partial(skb);
- 
- 	/*
--	 * If we need to duplicate packet, then re-insert at top of the
--	 * qdisc tree, since parent queuer expects that only one
--	 * skb will be queued.
-+	 * If we need to duplicate packet, then clone it before
-+	 * original is modified.
- 	 */
--	if (count > 1 && (skb2 = skb_clone(skb, GFP_ATOMIC)) != NULL) {
--		struct Qdisc *rootq = qdisc_root_bh(sch);
--		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
--
--		q->duplicate = 0;
--		rootq->enqueue(skb2, rootq, to_free);
--		q->duplicate = dupsave;
--		rc_drop = NET_XMIT_SUCCESS;
--	}
-+	if (count > 1)
-+		skb2 = skb_clone(skb, GFP_ATOMIC);
- 
- 	/*
- 	 * Randomized packet corruption.
-@@ -495,7 +485,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		if (skb_is_gso(skb)) {
- 			skb = netem_segment(skb, sch, to_free);
- 			if (!skb)
--				return rc_drop;
-+				goto finish_segs;
-+
- 			segs = skb->next;
- 			skb_mark_not_on_list(skb);
- 			qdisc_skb_cb(skb)->pkt_len = skb->len;
-@@ -521,7 +512,24 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		/* re-link segs, so that qdisc_drop_all() frees them all */
- 		skb->next = segs;
- 		qdisc_drop_all(skb, sch, to_free);
--		return rc_drop;
-+		if (skb2)
-+			__qdisc_drop(skb2, to_free);
-+		return NET_XMIT_DROP;
-+	}
-+
-+	/*
-+	 * If doing duplication then re-insert at top of the
-+	 * qdisc tree, since parent queuer expects that only one
-+	 * skb will be queued.
-+	 */
-+	if (skb2) {
-+		struct Qdisc *rootq = qdisc_root_bh(sch);
-+		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
-+
-+		q->duplicate = 0;
-+		rootq->enqueue(skb2, rootq, to_free);
-+		q->duplicate = dupsave;
-+		skb2 = NULL;
- 	}
- 
- 	qdisc_qstats_backlog_inc(sch, skb);
-@@ -592,9 +600,12 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- finish_segs:
-+	if (skb2)
-+		__qdisc_drop(skb2, to_free);
-+
- 	if (segs) {
- 		unsigned int len, last_len;
--		int nb;
-+		int rc, nb;
- 
- 		len = skb ? skb->len : 0;
- 		nb = skb ? 1 : 0;
+diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+index 4501e848a36f2..766adaf2618c5 100644
+--- a/drivers/video/fbdev/offb.c
++++ b/drivers/video/fbdev/offb.c
+@@ -354,7 +354,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+ 			par->cmap_type = cmap_gxt2000;
+ 	} else if (of_node_name_prefix(dp, "vga,Display-")) {
+ 		/* Look for AVIVO initialized by SLOF */
+-		struct device_node *pciparent = of_get_parent(dp);
++		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
+ 		const u32 *vid, *did;
+ 		vid = of_get_property(pciparent, "vendor-id", NULL);
+ 		did = of_get_property(pciparent, "device-id", NULL);
+@@ -366,7 +366,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+ 			if (par->cmap_adr)
+ 				par->cmap_type = cmap_avivo;
+ 		}
+-		of_node_put(pciparent);
+ 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
+ #ifdef __BIG_ENDIAN
+ 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
 -- 
 2.43.0
 
