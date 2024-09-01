@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353C296789D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0784B9679FA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65A611C204BF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9FBD28155F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9E0183092;
-	Sun,  1 Sep 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047C417CA1F;
+	Sun,  1 Sep 2024 16:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmW1U3KY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehnoaSQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0E75381A;
-	Sun,  1 Sep 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59D51DFD1;
+	Sun,  1 Sep 2024 16:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208412; cv=none; b=ZuFTMStvOydh5wNNmwuLhMu8tEyzQRljYjQS0Pp2XjOy6n+TAmvRA87HAXH9r8c2qg9soO6HUkHyGxIJhfsrqs7gYWGIw4M6akqXkoivZ/9Ke5+oc/rRdXN6g7lmbei5grkguIjG3SgHvf9kemanVtR7Gp4zk0Vscz6WpowLsTg=
+	t=1725209404; cv=none; b=FkH2NtJMP3A5YJgZ3KFY848Oz9rr/l21fGKifrf1AtLm/oeHE0QWXrh6KLgS0ZX3X0y9sNd+yEVNZlujc7OJYpOg9FaSCOuBvw/aG0yDOABXHgpJhYnQ3frefsAFPwd+cfyD6EGefpVPivDtZ1XVV7VG3xEtjsY0hWPOv8FZMxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208412; c=relaxed/simple;
-	bh=PbfS4eiBJ4Q534elt8IhUoy+VKOYGanLiy/m2g/93fk=;
+	s=arc-20240116; t=1725209404; c=relaxed/simple;
+	bh=SIbcLW4pNtWA1qIGBFKsNw02GEEewbewemtKozMyKb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XikqHS0fePQv8uWYRJMy4GDAY32bPUn8eJqcmnYFn59Pqzfjg+pUpy1hX0NNyJOfTFGHltiiVoJObzYmUD/Ae8YwH5/8dCSI33ZejMxm3eC4ZYnaBEOiPm6mWzFAyZCGwtfJfChmHOfnave9ofkanaYQAUzPFJGWHp4BcwwFfK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmW1U3KY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6086C4CEC3;
-	Sun,  1 Sep 2024 16:33:31 +0000 (UTC)
+	 MIME-Version; b=qdPXtFfgKMyAJMD/7G0hEZdEqHehtsLAq4RukDeh1yY5pGmMyegeyQjg49i+/rysj4EAFnf/wNao+iojJG9hgwe+yJd1FU3bHnJj7HxuIUvc6XxzgTZ48ZrVJmaspJy7ODi/UNvUM9vc5HKZA07mQlq8lbbI66VqWYH6SgOiuk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehnoaSQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB01C4CEC3;
+	Sun,  1 Sep 2024 16:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208412;
-	bh=PbfS4eiBJ4Q534elt8IhUoy+VKOYGanLiy/m2g/93fk=;
+	s=korg; t=1725209404;
+	bh=SIbcLW4pNtWA1qIGBFKsNw02GEEewbewemtKozMyKb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmW1U3KYYJUsFtQgQdbfh5f4UYKvRWF1AjbINxKuwiz9g4ljdoPIxM8vvuMuxAIEF
-	 acHOvc8M8YQsYuJHMzTwBX5m3h1Px+svKi0SqsgsuApmvcv0UGuiwdD51tbPIsvp/Q
-	 KkvQu7AVY9oN+JgWQVdpNQccplJOipMhWrVvwcrA=
+	b=ehnoaSQ7xn5+basQiIjSicyAozmNl9lfYdXer4iae1b1HAUsPZB513iN/QpARSQrK
+	 Yxa06xXVpqKsZrzeOKUtImaamwyAEVPLNoN2afSSpNyXfSEpVgyju1ZiFJyTA2eOrR
+	 Ba+tOrbcgLjSFVteOkWmvLVtB7ZmfcVt0bs11U6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 074/149] nfsd: fix potential UAF in nfsd4_cb_getattr_release
+Subject: [PATCH 5.10 025/151] net: dsa: vsc73xx: check busy flag in MDIO operations
 Date: Sun,  1 Sep 2024 18:16:25 +0200
-Message-ID: <20240901160820.248764915@linuxfoundation.org>
+Message-ID: <20240901160815.044757430@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 1116e0e372eb16dd907ec571ce5d4af325c55c10 ]
+[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
 
-Once we drop the delegation reference, the fields embedded in it are no
-longer safe to access. Do that last.
+The VSC73xx has a busy flag used during MDIO operations. It is raised
+when MDIO read/write operations are in progress. Without it, PHYs are
+misconfigured and bus operations do not work as expected.
 
-Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 19d39872be325..02d43f95146ee 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -3078,9 +3078,9 @@ nfsd4_cb_getattr_release(struct nfsd4_callback *cb)
- 	struct nfs4_delegation *dp =
- 			container_of(ncf, struct nfs4_delegation, dl_cb_fattr);
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index d050dfaf327cc..8a21902212e04 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -39,6 +39,10 @@
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
  
--	nfs4_put_stid(&dp->dl_stid);
- 	clear_bit(CB_GETATTR_BUSY, &ncf->ncf_cb_flags);
- 	wake_up_bit(&ncf->ncf_cb_flags, CB_GETATTR_BUSY);
-+	nfs4_put_stid(&dp->dl_stid);
++/* MII Block subblock */
++#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
++#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
++
+ #define CPU_PORT	6 /* CPU port */
+ 
+ /* MAC Block registers */
+@@ -197,6 +201,8 @@
+ #define VSC73XX_MII_CMD		0x1
+ #define VSC73XX_MII_DATA	0x2
+ 
++#define VSC73XX_MII_STAT_BUSY	BIT(3)
++
+ /* Arbiter block 5 registers */
+ #define VSC73XX_ARBEMPTY		0x0c
+ #define VSC73XX_ARBDISC			0x0e
+@@ -271,6 +277,7 @@
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
+ 
+ #define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_MDIO_POLL_SLEEP_US	5
+ #define VSC73XX_POLL_TIMEOUT_US		10000
+ 
+ struct vsc73xx_counter {
+@@ -488,6 +495,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
+ 	return 0;
  }
  
- static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
++static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
++{
++	int ret, err;
++	u32 val;
++
++	ret = read_poll_timeout(vsc73xx_read, err,
++				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
++				VSC73XX_MDIO_POLL_SLEEP_US,
++				VSC73XX_POLL_TIMEOUT_US, false, vsc,
++				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
++				VSC73XX_MII_STAT, &val);
++	if (ret)
++		return ret;
++	return err;
++}
++
+ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ {
+ 	struct vsc73xx *vsc = ds->priv;
+@@ -495,12 +518,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ 	u32 val;
+ 	int ret;
+ 
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* Setting bit 26 means "read" */
+ 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
+-	msleep(2);
++
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
+ 	if (ret)
+ 		return ret;
+@@ -524,6 +555,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 	u32 cmd;
+ 	int ret;
+ 
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* It was found through tedious experiments that this router
+ 	 * chip really hates to have it's PHYs reset. They
+ 	 * never recover if that happens: autonegotiation stops
 -- 
 2.43.0
 
