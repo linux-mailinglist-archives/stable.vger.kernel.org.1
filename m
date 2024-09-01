@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1999F967834
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F917967957
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88AE1F20F03
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01E132821CB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DE6183CB1;
-	Sun,  1 Sep 2024 16:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2ED17E8EA;
+	Sun,  1 Sep 2024 16:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMzx6zWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFPOMbP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E3A28387;
-	Sun,  1 Sep 2024 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A231C68C;
+	Sun,  1 Sep 2024 16:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208147; cv=none; b=FysGLelr220yljEBBt/L7sazLeKFltLzrV1NTs3TOeeN5/Y9CGP305vjUt9dUZ3VnTrk2PjPTQQ8mQwnlhI4W8UM5f3mIjAxAIVLCe7+rsTq9JiaKXChOSehWt3FrST9gdbzzzY/eGLv9sQRb/PVaypEYq12Svv8LBnTVxy+46I=
+	t=1725208974; cv=none; b=CaQOjMF3aKAAiPIVLyhOB1FSeBjFRs9e4dA8XLEulHfFF/PjA5K2CXMTLr6Ua2HHWIg+1+pmgore9oTCRVi1TS2kLVc2xd1Jk7dD/+rRhpXtw5JLLgyg8Yx+AtKyc3mZVXUq3K2yj2aO9D1qjFZ2867Dz684/KbUifMASz+1ovw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208147; c=relaxed/simple;
-	bh=/QKd+x68M4jlw4SZ8PVWyyAUffC0wUSn2n+ZhNMmWFQ=;
+	s=arc-20240116; t=1725208974; c=relaxed/simple;
+	bh=6HE3yGRYkjrPXstzaZN2u96jfVNzyrwYmsVkDTfhfV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWBtgUgqlmU1Wcmy+VCibsjVOT9TJHo1lyR+WxYtFC7vrONH5dziTOF0quCmS4BogayupMpHYHC4oQmZqGuwJVgZX3IIyTdl0vDraMdxHvQ6BYM8C4r4Docptump/+1BjUZ+Gwxptb4vJbJIzKOgIYe9D1Pg/rDjCTJYHM8PB2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMzx6zWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2194C4CEC3;
-	Sun,  1 Sep 2024 16:29:06 +0000 (UTC)
+	 MIME-Version; b=VIszoLqDSfsadtmSvo4mBBw5M4RrBRzYMyt0yzlyCed8PMTZvZLnQNUFYlQOnuYYodBsK4PYkRuNUZT7L5pyA9IsMJOuMLSiyy9lJwa0q8AC+oYK4kFpDXFJVGFcFJ+fwwQVBdEkmI0VNzp62cW+sx5wI0td+sGW88pY3q1CznQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFPOMbP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCB6C4CEC3;
+	Sun,  1 Sep 2024 16:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208147;
-	bh=/QKd+x68M4jlw4SZ8PVWyyAUffC0wUSn2n+ZhNMmWFQ=;
+	s=korg; t=1725208974;
+	bh=6HE3yGRYkjrPXstzaZN2u96jfVNzyrwYmsVkDTfhfV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMzx6zWllRb3/FaSZK+bc3w2E6R87ia7IYXnyKExL4J90vm2eT78oa4Tq1UHn3OyA
-	 guKh+/KO9/AnPBdW2pPjL63B4VSO0D7603AupyLtUentCIe1B/Gwfa0CJx7chxrbkB
-	 P1ttm9oH+1U4o5huGggq4xPy1CmW+r9S3vy+vpWs=
+	b=gFPOMbP/q4ToZDGxPtNs0IN97Sem+1br+uwngQdiGUyNXuzyCGyHklc1O0+oYGFIn
+	 gTOThcqMWGWoszee3vvQB2Qu8J7ZI2YuHwmNqFAQoRObjeca4fxhkx2UGK2K1CFKd9
+	 zqIG56yjN6pPvz4ILrWF7AMm5F23I9jd2C7yuOIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	"Hans J. Schultz" <netdev@kapio-technology.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 87/93] arm64: dts: imx93: add nvmem property for fec1
+Subject: [PATCH 5.4 088/134] net: dsa: mv88e6xxx: read FID when handling ATU violations
 Date: Sun,  1 Sep 2024 18:17:14 +0200
-Message-ID: <20240901160811.008614154@linuxfoundation.org>
+Message-ID: <20240901160813.411962613@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Hans J. Schultz <netdev@kapio-technology.com>
 
-[ Upstream commit b2ab0edaf484d578e8d0c06093af0003586def72 ]
+[ Upstream commit 4bf24ad09bc0b05e97fb48b962b2c9246fc76727 ]
 
-Add nvmem property for fec1 to get mac address.
+When an ATU violation occurs, the switch uses the ATU FID register to
+report the FID of the MAC address that incurred the violation. It would
+be good for the driver to know the FID value for purposes such as
+logging and CPU-based authentication.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: 109f256285dd ("arm64: dts: imx93: update default value for snps,clk-csr")
+Up until now, the driver has been calling the mv88e6xxx_g1_atu_op()
+function to read ATU violations, but that doesn't do exactly what we
+want, namely it calls mv88e6xxx_g1_atu_fid_write() with FID 0.
+(side note, the documentation for the ATU Get/Clear Violation command
+says that writes to the ATU FID register have no effect before the
+operation starts, it's only that we disregard the value that this
+register provides once the operation completes)
+
+So mv88e6xxx_g1_atu_fid_write() is not what we want, but rather
+mv88e6xxx_g1_atu_fid_read(). However, the latter doesn't exist, we need
+to write it.
+
+The remainder of mv88e6xxx_g1_atu_op() except for
+mv88e6xxx_g1_atu_fid_write() is still needed, namely to send a
+GET_CLR_VIOLATION command to the ATU. In principle we could have still
+kept calling mv88e6xxx_g1_atu_op(), but the MDIO writes to the ATU FID
+register are pointless, but in the interest of doing less CPU work per
+interrupt, write a new function called mv88e6xxx_g1_read_atu_violation()
+and call it.
+
+The FID will be the port default FID as set by mv88e6xxx_port_set_fid()
+if the VID from the packet cannot be found in the VTU. Otherwise it is
+the FID derived from the VTU entry associated with that VID.
+
+Signed-off-by: Hans J. Schultz <netdev@kapio-technology.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 528876d867a2 ("net: dsa: mv88e6xxx: Fix out-of-bound access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/dsa/mv88e6xxx/global1_atu.c | 72 +++++++++++++++++++++----
+ 1 file changed, 61 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 943b7e6655634..1b7260d2a0fff 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -786,6 +786,8 @@
- 				fsl,num-tx-queues = <3>;
- 				fsl,num-rx-queues = <3>;
- 				fsl,stop-mode = <&wakeupmix_gpr 0x0c 1>;
-+				nvmem-cells = <&eth_mac1>;
-+				nvmem-cell-names = "mac-address";
- 				status = "disabled";
- 			};
+diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+index d655a96f27f0a..13ca45bf0f0bb 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
++++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+@@ -82,6 +82,19 @@ static int mv88e6xxx_g1_atu_op_wait(struct mv88e6xxx_chip *chip)
+ 	return mv88e6xxx_g1_wait_bit(chip, MV88E6XXX_G1_ATU_OP, bit, 0);
+ }
  
-@@ -888,6 +890,11 @@
- 			reg = <0x47510000 0x10000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
++static int mv88e6xxx_g1_read_atu_violation(struct mv88e6xxx_chip *chip)
++{
++	int err;
 +
-+			eth_mac1: mac-address@4ec {
-+				reg = <0x4ec 0x6>;
-+			};
++	err = mv88e6xxx_g1_write(chip, MV88E6XXX_G1_ATU_OP,
++				 MV88E6XXX_G1_ATU_OP_BUSY |
++				 MV88E6XXX_G1_ATU_OP_GET_CLR_VIOLATION);
++	if (err)
++		return err;
 +
- 		};
++	return mv88e6xxx_g1_atu_op_wait(chip);
++}
++
+ static int mv88e6xxx_g1_atu_op(struct mv88e6xxx_chip *chip, u16 fid, u16 op)
+ {
+ 	u16 val;
+@@ -127,6 +140,41 @@ int mv88e6xxx_g1_atu_get_next(struct mv88e6xxx_chip *chip, u16 fid)
+ 	return mv88e6xxx_g1_atu_op(chip, fid, MV88E6XXX_G1_ATU_OP_GET_NEXT_DB);
+ }
  
- 		s4muap: mailbox@47520000 {
++static int mv88e6xxx_g1_atu_fid_read(struct mv88e6xxx_chip *chip, u16 *fid)
++{
++	u16 val = 0, upper = 0, op = 0;
++	int err = -EOPNOTSUPP;
++
++	if (mv88e6xxx_num_databases(chip) > 256) {
++		err = mv88e6xxx_g1_read(chip, MV88E6352_G1_ATU_FID, &val);
++		val &= 0xfff;
++		if (err)
++			return err;
++	} else {
++		err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_ATU_OP, &op);
++		if (err)
++			return err;
++		if (mv88e6xxx_num_databases(chip) > 64) {
++			/* ATU DBNum[7:4] are located in ATU Control 15:12 */
++			err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_ATU_CTL,
++						&upper);
++			if (err)
++				return err;
++
++			upper = (upper >> 8) & 0x00f0;
++		} else if (mv88e6xxx_num_databases(chip) > 16) {
++			/* ATU DBNum[5:4] are located in ATU Operation 9:8 */
++			upper = (op >> 4) & 0x30;
++		}
++
++		/* ATU DBNum[3:0] are located in ATU Operation 3:0 */
++		val = (op & 0xf) | upper;
++	}
++	*fid = val;
++
++	return err;
++}
++
+ /* Offset 0x0C: ATU Data Register */
+ 
+ static int mv88e6xxx_g1_atu_data_read(struct mv88e6xxx_chip *chip,
+@@ -321,14 +369,12 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
+ {
+ 	struct mv88e6xxx_chip *chip = dev_id;
+ 	struct mv88e6xxx_atu_entry entry;
+-	int spid;
+-	int err;
+-	u16 val;
++	int err, spid;
++	u16 val, fid;
+ 
+ 	mv88e6xxx_reg_lock(chip);
+ 
+-	err = mv88e6xxx_g1_atu_op(chip, 0,
+-				  MV88E6XXX_G1_ATU_OP_GET_CLR_VIOLATION);
++	err = mv88e6xxx_g1_read_atu_violation(chip);
+ 	if (err)
+ 		goto out;
+ 
+@@ -336,6 +382,10 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
+ 	if (err)
+ 		goto out;
+ 
++	err = mv88e6xxx_g1_atu_fid_read(chip, &fid);
++	if (err)
++		goto out;
++
+ 	err = mv88e6xxx_g1_atu_data_read(chip, &entry);
+ 	if (err)
+ 		goto out;
+@@ -354,22 +404,22 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
+ 
+ 	if (val & MV88E6XXX_G1_ATU_OP_MEMBER_VIOLATION) {
+ 		dev_err_ratelimited(chip->dev,
+-				    "ATU member violation for %pM portvec %x spid %d\n",
+-				    entry.mac, entry.portvec, spid);
++				    "ATU member violation for %pM fid %u portvec %x spid %d\n",
++				    entry.mac, fid, entry.portvec, spid);
+ 		chip->ports[spid].atu_member_violation++;
+ 	}
+ 
+ 	if (val & MV88E6XXX_G1_ATU_OP_MISS_VIOLATION) {
+ 		dev_err_ratelimited(chip->dev,
+-				    "ATU miss violation for %pM portvec %x spid %d\n",
+-				    entry.mac, entry.portvec, spid);
++				    "ATU miss violation for %pM fid %u portvec %x spid %d\n",
++				    entry.mac, fid, entry.portvec, spid);
+ 		chip->ports[spid].atu_miss_violation++;
+ 	}
+ 
+ 	if (val & MV88E6XXX_G1_ATU_OP_FULL_VIOLATION) {
+ 		dev_err_ratelimited(chip->dev,
+-				    "ATU full violation for %pM portvec %x spid %d\n",
+-				    entry.mac, entry.portvec, spid);
++				    "ATU full violation for %pM fid %u portvec %x spid %d\n",
++				    entry.mac, fid, entry.portvec, spid);
+ 		chip->ports[spid].atu_full_violation++;
+ 	}
+ 	mv88e6xxx_reg_unlock(chip);
 -- 
 2.43.0
 
