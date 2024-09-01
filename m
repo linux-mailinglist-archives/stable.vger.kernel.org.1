@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-72551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0A1967B17
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59130967A69
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A0A2811E1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDAE11F23E5D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63DB17E005;
-	Sun,  1 Sep 2024 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B1017E919;
+	Sun,  1 Sep 2024 16:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aouv1rqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhoXjNxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827872C6AF;
-	Sun,  1 Sep 2024 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CD6208A7;
+	Sun,  1 Sep 2024 16:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210297; cv=none; b=mbT73dZWpV+IGFFAfLWafvKGLnn+nMDUyhuUrUfnsE1i2fSES5GYzDPBibw99kOvd6T0hg3vZhyDsY50mdFlOxjKrUy/4KwTmMCQLHNF3V+kGZeYo5Me6yRaoBTjhYV86N5jFx5AQJEQj3Ar4lu61d4qx4pKOXQ+hP+0qQyKyck=
+	t=1725209744; cv=none; b=m+z6P/Dco7HvucN+RiKr1vyRRkFhruVxW/THR1Qc9YvvsLso9HCb4iqGCgMAsexMUfhXo4t6bSoNur4GXGskN8XX6KvPhbomtVQ2y9RZzRdr2mU3+qwW+r6rjERXzzsXBtXGkmIFdiG6pVSTZ6j74LhcexT+DsVBoN5xi1dPWqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210297; c=relaxed/simple;
-	bh=fZIYmT2oilqshdz34Zi18uEXGXxEC6EDDTq5fxvcslE=;
+	s=arc-20240116; t=1725209744; c=relaxed/simple;
+	bh=w5ELFpIXsv5KNk5/Xz6KK210wi4/KW28SLNatPocxVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIFzCPi1BKomZlL6hNCIXrOyriCeV0DMqa48Nytv2UFoiT7QxtVSX26uznI+7J+o5iibzzDGVCCHfxVF0XYy12I5RYA9E7Yo+dAWBF+PAdglxYHcpU6ZwYh9QRHTfMdGO35tzJpR489xsvzCdZiyAa/5FvsZcpDQhuRG1NxH7FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aouv1rqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDB1C4CEC3;
-	Sun,  1 Sep 2024 17:04:56 +0000 (UTC)
+	 MIME-Version; b=IhQp0a3xpF2cscMsZrH8XRT4gIyw4gohwSbjJ8OENfTZ3XgHjNXj9jQewmwD/nUvi+H8q/XbVER4hAMzw+wQQHyMhMwhP+czoi+lHswqDEQL8YI8vYp1yoECnF9fHPdM2KtlZyQlHyWyIf/6PjY4BBgm91Xztuvj1sXw9GAWE/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhoXjNxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751A8C4CEC3;
+	Sun,  1 Sep 2024 16:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210297;
-	bh=fZIYmT2oilqshdz34Zi18uEXGXxEC6EDDTq5fxvcslE=;
+	s=korg; t=1725209744;
+	bh=w5ELFpIXsv5KNk5/Xz6KK210wi4/KW28SLNatPocxVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aouv1rquK/oTxd5Ie5tEAx3oFsAfz+pykSJ1Q5d/ROG+981bEia9Vgc0t02aqIU2+
-	 Tt1goWRuujfIA61pKMlt/Wjl820TkZPB5/7QtZ84UOpJ6qOVkDKiTZC5y3e/OlgK8m
-	 OePpCOXH+BYgBE0SKc28VtAPgv5/8W1KETyWiig8=
+	b=OhoXjNxqQG4se3LdXdSV7DWsBgEvbN/7HeKGgUVl9u7B33uXdgRJaw6CRbafoiTgL
+	 bEhr2EnYolT7NNumFy2yj/7BKPb1lbCjPg3js3SZPh4SUX+7uGpZQNxoKzkUq942UX
+	 zGVffJM6yjsIboCKF8cQdPaGUKk3rGFD70N/iZCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/215] netem: fix return value if duplicate enqueue fails
+Subject: [PATCH 5.10 100/151] netem: fix return value if duplicate enqueue fails
 Date: Sun,  1 Sep 2024 18:17:40 +0200
-Message-ID: <20240901160828.960186031@linuxfoundation.org>
+Message-ID: <20240901160817.875028899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
