@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB219678F7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28DA967A39
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D922280A46
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9691F2398E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822A417E46E;
-	Sun,  1 Sep 2024 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E712B181334;
+	Sun,  1 Sep 2024 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAA9QNOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4iHGj3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415761C68C;
-	Sun,  1 Sep 2024 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1217DFE7;
+	Sun,  1 Sep 2024 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208679; cv=none; b=rrxhUMnN+gf/zoWqZ1mqf+7aO8KOWvH+aAGOE2GnVEc3s3X/upw3TgdBQslkbHkOkB2dOVXmoQEgmoc5Quj91IGsb5OjeMxamvMljvAY2HDbtUToxviPaeyhnpo1iLrnAA2XGuxSvtiWSfiltZ9uhCTVMT3WO+UwMCq98WhuTSM=
+	t=1725209589; cv=none; b=OhSGxWh6i631xTC2aNLa/vfHEtT6yR1yJdI30Sq3ofdHBqu1i5kIMDtxSSa43sv8rpP7JKNLGFYEsjLo/pknzSUyB/wWbdH3Eu457QU9G8NrfLAYdWcvfRtUngSsOXz/ztpTIOmDDlNREY1PZDgSP8XbFVB0GNjEhUb0ID+sTlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208679; c=relaxed/simple;
-	bh=nxNRSvIqenktZygj/5uBU34d3IZtYrrRLIMgB/sSEJs=;
+	s=arc-20240116; t=1725209589; c=relaxed/simple;
+	bh=pROhkzbO6PoT492l6MOEBffTxFU+xeFtLCq6TWU/pF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9JPDUNQDL2y9Z2QF3RQn6+gIpb/2svENYB+1xqKQpIUeTO34ihMuEEeTAMbJ0M1L4MwHhKixntTmDLpytBZpBm99qdzYZU/hiV7ytrrsuHMEvZgceKBUdi9wK5+e4yCjloZppPRVQ+e+8TxCYVX8WE5gqPoO2x0NzmhGpBQJ/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAA9QNOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83A4C4CEC3;
-	Sun,  1 Sep 2024 16:37:58 +0000 (UTC)
+	 MIME-Version; b=I2BwzMUk0mzFajseQxY6uA6YnFyHJezgHlMUnUT99kmo0R0xoOdNZjV9WhowxXahLaTbRywnT0xfJkS+CWGvVOO3kX2QnQPtdzrvAilyeSuqBXXi7B3TSkEwN0NsE/HN0rv6bwYlk8Xz8sbinxSKozZrIliRnGV1Yj8xjLKJNuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4iHGj3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA97AC4CEC3;
+	Sun,  1 Sep 2024 16:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208679;
-	bh=nxNRSvIqenktZygj/5uBU34d3IZtYrrRLIMgB/sSEJs=;
+	s=korg; t=1725209589;
+	bh=pROhkzbO6PoT492l6MOEBffTxFU+xeFtLCq6TWU/pF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAA9QNOG2+hbjXYkWvsS5aMBsa1a4bz3W1RO9jrBcHTXrHPbo7u7tO09z1vGIoXU3
-	 DWC6J4Jzwap4GS+VgMwXqTCSuKVk4UmyBhxpVVcTHW43cSxO5z4/n0sX3vYcdJ7muF
-	 hEhwRHRBzCQhahNyo+/M6nG+er2wmuL3z8QPOyBw=
+	b=Z4iHGj3uFsKMSlorO0qXqiyyeAi3iExUORFk6XvHwrFDa6GBoXL4h9VpD+5fjtFp2
+	 MKGpwdEsZxpwD2ylENSFLXGjUHLVnmtqtnf01ncP4HGjFRopv+NItivRBKWSM61ag1
+	 jYCCPk8YClXTwILubfKacL4THMAhxwRUYSYU+QfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.10 131/149] usb: dwc3: xilinx: add missing depopulate in probe error path
-Date: Sun,  1 Sep 2024 18:17:22 +0200
-Message-ID: <20240901160822.379947024@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	David Hunter <david.hunter.linux@gmail.com>
+Subject: [PATCH 5.10 083/151] block: use "unsigned long" for blk_validate_block_size().
+Date: Sun,  1 Sep 2024 18:17:23 +0200
+Message-ID: <20240901160817.242865843@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
 
-commit 16f2a21d9d7e48e1af02654fe3d926c0ce6cb3e5 upstream.
+commit 37ae5a0f5287a52cf51242e76ccf198d02ffe495 upstream.
 
-Depopulate device in probe error paths to fix leak of children
-resources.
+Since lo_simple_ioctl(LOOP_SET_BLOCK_SIZE) and ioctl(NBD_SET_BLKSIZE) pass
+user-controlled "unsigned long arg" to blk_validate_block_size(),
+"unsigned long" should be used for validation.
 
-Fixes: 53b5ff83d893 ("usb: dwc3: xilinx: improve error handling for PM APIs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240816075409.23080-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/9ecbf057-4375-c2db-ab53-e4cc0dff953d@i-love.sakura.ne.jp
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/blkdev.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -298,9 +298,14 @@ static int dwc3_xlnx_probe(struct platfo
- 		goto err_pm_set_suspended;
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -59,7 +59,7 @@ struct blk_keyslot_manager;
+  */
+ #define BLKCG_MAX_POLS		5
  
- 	pm_suspend_ignore_children(dev, false);
--	return pm_runtime_resume_and_get(dev);
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		goto err_pm_set_suspended;
-+
-+	return 0;
- 
- err_pm_set_suspended:
-+	of_platform_depopulate(dev);
- 	pm_runtime_set_suspended(dev);
- 
- err_clk_put:
+-static inline int blk_validate_block_size(unsigned int bsize)
++static inline int blk_validate_block_size(unsigned long bsize)
+ {
+ 	if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
+ 		return -EINVAL;
 
 
 
