@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811479678CC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03687967AF1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3731C1F21683
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348FB1C2094A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D9217E900;
-	Sun,  1 Sep 2024 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2003217ADE1;
+	Sun,  1 Sep 2024 17:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFcyjpAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVnmsnWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1130117DFFC;
-	Sun,  1 Sep 2024 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C2B2C190;
+	Sun,  1 Sep 2024 17:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208542; cv=none; b=eyW1HrYxs61TeMTXd0JoyRkWj4enWso8+BQ3h+69a29O/uMufegGmxzKelrHgf4e+8uAKblZ4FFuh/x/1albkFlk5yCDCFxpinPSsPBFHSMworu0eADboTwMS1uXJpPPxSphfV0c3AxtfzlLNC+ePZOPUmUyyl5AP1NnfFiOVd0=
+	t=1725210175; cv=none; b=EpqugQfai9vnRm1H5UvN+olnaGNgKuI6qJs6v+WXhJgusUcnJwxbWHouzTdjZXmYQIHXKLsfa+cgJmH4naEqvNiKbXvJDCmHhb2rlZdFwVG9VgDvk5gOUqVPCbdvnHp5meWxe/4LUZk2gC0OEAwmCzvoiZi4GK1HdrPZphyBLP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208542; c=relaxed/simple;
-	bh=JHwSZg/VkqZiIf0HlBv0bwc7I45hBT34kJ+yXmvlq6E=;
+	s=arc-20240116; t=1725210175; c=relaxed/simple;
+	bh=Cl+UIj2p3oBKnkQZ+C/fLzJD9Sqf0Hcg5yvG/k/e/D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9TE7evM1oBEeaXK3JZVK9w5p8icZUOKWJa9o1aZbZ6TJj+26IcfAN3ycVII2Hjb1ytdJ21I/E9/6F9ka+zm3Zo02KTb01Zu7fuyGupOf1r4S1+ec3NRvOWWR7Wyxk27szllXajL2zwxKoR4H/lF74pfMOXUHC0yCQqef/zo0Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFcyjpAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A83C4CEC3;
-	Sun,  1 Sep 2024 16:35:41 +0000 (UTC)
+	 MIME-Version; b=k6uhENjQP6ZnTnJ52/bwcNtl1djZ4kDugLUJ/N/xpsOW65oEQMVaOq0P6pOO1hslBJlt1GH3krWFRGFXdmENK1ZUjK+Wk9KKMiw5trBJeuZSO34ou76rsVpHRtf84cgHOB4Ic70wkuy17BCRodACNvR/UFKZ6WydTtP0iIj0c+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVnmsnWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44893C4CEC3;
+	Sun,  1 Sep 2024 17:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208541;
-	bh=JHwSZg/VkqZiIf0HlBv0bwc7I45hBT34kJ+yXmvlq6E=;
+	s=korg; t=1725210175;
+	bh=Cl+UIj2p3oBKnkQZ+C/fLzJD9Sqf0Hcg5yvG/k/e/D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFcyjpAal5PHWDFJdxjpB97rgzVqwr5cbsPi3Wq1Z0PMXlG9DwjlZhPLvsFxlDsDb
-	 wqDZCkt32xXtRjrpw/nEgkyhWB1wucPzKqBOLHMFfKgAQBnydI9WRRa9PHW9Lt89fK
-	 u5EX5zNVNbFcYTsCJvXk8sv7dOEX2UBTURavuAq8=
+	b=HVnmsnWExrGVEreU4ljxy1HaP4RpaHmA5yTxBTbfX2UVWpZrfuTqU1+6YJpSWmfQj
+	 cTIDEVsCQ442hEl9JMhufF0XacHehQxb5x5hZxBzi9LHp/qcgxdXrlApyjdYK/GKbr
+	 zjfCKoEKeE44mAbTIiz4qs5uS0oaggJiVOwVfW64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 113/149] drm/xe/hwmon: Fix WRITE_I1 param from u32 to u16
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 112/215] NFSD: Refactor nfsd_reply_cache_free_locked()
 Date: Sun,  1 Sep 2024 18:17:04 +0200
-Message-ID: <20240901160821.704072665@linuxfoundation.org>
+Message-ID: <20240901160827.583341479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthik Poosa <karthik.poosa@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 59d237c8a241168c7ae34c48244059b7bafaff38 ]
+[ Upstream commit 35308e7f0fc3942edc87d9c6dc78c4a096428957 ]
 
-WRITE_I1 sub-command of the POWER_SETUP pcode command accepts a u16
-parameter instead of u32. This change prevents potential illegal
-sub-command errors.
+To reduce contention on the bucket locks, we must avoid calling
+kfree() while each bucket lock is held.
 
-v2: Mask uval instead of changing the prototype. (Badal)
+Start by refactoring nfsd_reply_cache_free_locked() into a helper
+that removes an entry from the bucket (and must therefore run under
+the lock) and a second helper that frees the entry (which does not
+need to hold the lock).
 
-v3: Rephrase commit message. (Badal)
+For readability, rename the helpers nfsd_cacherep_<verb>.
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Fixes: 92d44a422d0d ("drm/xe/hwmon: Expose card reactive critical power")
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240827155301.183383-1-karthik.poosa@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit a7f657097e96d8fa745c74bb1a239ebd5a8c971c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: a9507f6af145 ("NFSD: Replace nfsd_prune_bucket()")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfscache.c |   27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-index d37f1dea9f8b8..bb815dbde63a6 100644
---- a/drivers/gpu/drm/xe/xe_hwmon.c
-+++ b/drivers/gpu/drm/xe/xe_hwmon.c
-@@ -443,7 +443,7 @@ static int xe_hwmon_pcode_write_i1(struct xe_gt *gt, u32 uval)
- {
- 	return xe_pcode_write(gt, PCODE_MBOX(PCODE_POWER_SETUP,
- 			      POWER_SETUP_SUBCOMMAND_WRITE_I1, 0),
--			      uval);
-+			      (uval & POWER_SETUP_I1_DATA_MASK));
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -110,21 +110,33 @@ nfsd_reply_cache_alloc(struct svc_rqst *
+ 	return rp;
  }
  
- static int xe_hwmon_power_curr_crit_read(struct xe_hwmon *hwmon, int channel,
--- 
-2.43.0
-
++static void nfsd_cacherep_free(struct svc_cacherep *rp)
++{
++	if (rp->c_type == RC_REPLBUFF)
++		kfree(rp->c_replvec.iov_base);
++	kmem_cache_free(drc_slab, rp);
++}
++
+ static void
+-nfsd_reply_cache_free_locked(struct nfsd_drc_bucket *b, struct svc_cacherep *rp,
+-				struct nfsd_net *nn)
++nfsd_cacherep_unlink_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
++			    struct svc_cacherep *rp)
+ {
+-	if (rp->c_type == RC_REPLBUFF && rp->c_replvec.iov_base) {
++	if (rp->c_type == RC_REPLBUFF && rp->c_replvec.iov_base)
+ 		nfsd_stats_drc_mem_usage_sub(nn, rp->c_replvec.iov_len);
+-		kfree(rp->c_replvec.iov_base);
+-	}
+ 	if (rp->c_state != RC_UNUSED) {
+ 		rb_erase(&rp->c_node, &b->rb_head);
+ 		list_del(&rp->c_lru);
+ 		atomic_dec(&nn->num_drc_entries);
+ 		nfsd_stats_drc_mem_usage_sub(nn, sizeof(*rp));
+ 	}
+-	kmem_cache_free(drc_slab, rp);
++}
++
++static void
++nfsd_reply_cache_free_locked(struct nfsd_drc_bucket *b, struct svc_cacherep *rp,
++				struct nfsd_net *nn)
++{
++	nfsd_cacherep_unlink_locked(nn, b, rp);
++	nfsd_cacherep_free(rp);
+ }
+ 
+ static void
+@@ -132,8 +144,9 @@ nfsd_reply_cache_free(struct nfsd_drc_bu
+ 			struct nfsd_net *nn)
+ {
+ 	spin_lock(&b->cache_lock);
+-	nfsd_reply_cache_free_locked(b, rp, nn);
++	nfsd_cacherep_unlink_locked(nn, b, rp);
+ 	spin_unlock(&b->cache_lock);
++	nfsd_cacherep_free(rp);
+ }
+ 
+ int nfsd_drc_slab_create(void)
 
 
 
