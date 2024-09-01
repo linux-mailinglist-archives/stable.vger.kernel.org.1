@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B869679ED
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880BB9678B5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1851C213EE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C0BA1F21180
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875BE184532;
-	Sun,  1 Sep 2024 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F9B184551;
+	Sun,  1 Sep 2024 16:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI6hOUfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5zY2pnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47369181B86;
-	Sun,  1 Sep 2024 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F8118454E;
+	Sun,  1 Sep 2024 16:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209364; cv=none; b=Cojy2nWCmQkOg520mJM1kpvVO4g58llqsDcduy+vvHEI9SYmBy/7T/RZPp3Z5H8hctE5J/mRx0vHvTB0cox3RhFnllQfW9/ChTDdephg9ss5hLwzG3mm3n+vCb/eW5lHjH78DHMMWRRnBRJnzO+zd4vtIPuD+ODh46W7cI+klLY=
+	t=1725208475; cv=none; b=COW4hoopaPw9Zm6v4ccnv8Ne88wiANgMtHzG+jV54u0N4zLtB1qHWj/FmHAJXlaRw8es2Z6v3PSG8dd1hDNnraPs3MJAOYnhHatDxYX3ruLOdGk3Mn0F/AXvh9dre1htAecRVCkjIekbjgOvSHtTC1+pZke/IvFSRb2Q/fJB1+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209364; c=relaxed/simple;
-	bh=FLkH+K4AdWM6avStl2uTilgZ8QnG00ro2hHnudxLkG0=;
+	s=arc-20240116; t=1725208475; c=relaxed/simple;
+	bh=hPDySGdS+fepgmQEoVwDYqYpIXRsUzGcH06ck73sfZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X19AfCE15SH6Uc0WdffNrwkzvHC/5XFtjgX+TXN06NtEIvbG2ViGjB/BTN9ccUVxYN43iU38hPec/dVTQN96fEsnqQjA6cMThpzGaaNgJsdAERtCjWzIRSMgN6MoZkcu281MkfblAVDuMQcN4hmlH/UZMEcBOCWFt4hIVDSxJzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI6hOUfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B806DC4CEC3;
-	Sun,  1 Sep 2024 16:49:23 +0000 (UTC)
+	 MIME-Version; b=NtptoM5AISlZF/F64gplZ5WBw3tmbeQuPgZkX+rjj1fC37erzVfeezhLwTIonTCK9QkbzZ1H8z4LMpoPpeDFAofJV8V0QY4q6vjKGdglIsEQgzaKmoM0jJmySPDdNVKGrTC696meEsNZE6NI4+lgkzHRDiOKPH6bWfQI9yBH+Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5zY2pnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD536C4CED0;
+	Sun,  1 Sep 2024 16:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209364;
-	bh=FLkH+K4AdWM6avStl2uTilgZ8QnG00ro2hHnudxLkG0=;
+	s=korg; t=1725208475;
+	bh=hPDySGdS+fepgmQEoVwDYqYpIXRsUzGcH06ck73sfZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hI6hOUfPY2vpoOLqm/t5/NDEH4WOByplnfCmPExZW46Djr7IHAN4c+yBQ+sUsBz18
-	 PB1NCq8cZNG2/tIUWe3ny07EWxi1aR2k+sOBnl/R6NoweRzeGZt3ACFGudeyZCTBeT
-	 tDWX7M3cwBWtybexs9d0icpxvz7AQtR1tPWDSrsk=
+	b=Y5zY2pnWTdkVMauCgDAF8/IVBtt5kabEFBqrr5jLNur7OeXp3fQalovJbLatxjb8v
+	 wfFmGMlPDWsUJjoSkmGk/cGQf7BnNuOL/lNvH1/01uURgA0LjQuEQSHNFKox8nxXxZ
+	 ZfjpV0Gm8C1vNU8+sT6jO9AjQJgt1XbUWQaTiOG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 013/151] btrfs: tree-checker: add dev extent item checks
+	Konrad Dybcio <quic_kdybcio@quicinc.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 062/149] pinctrl: qcom: x1e80100: Fix special pin offsets
 Date: Sun,  1 Sep 2024 18:16:13 +0200
-Message-ID: <20240901160814.599851214@linuxfoundation.org>
+Message-ID: <20240901160819.799864199@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Konrad Dybcio <quic_kdybcio@quicinc.com>
 
-commit 008e2512dc5696ab2dc5bf264e98a9fe9ceb830e upstream.
+[ Upstream commit d3692d95cc4d88114b070ee63cffc976f00f207f ]
 
-[REPORT]
-There is a corruption report that btrfs refused to mount a fs that has
-overlapping dev extents:
+Remove the erroneus 0x100000 offset to prevent the boards from crashing
+on pin state setting, as well as for the intended state changes to take
+effect.
 
-  BTRFS error (device sdc): dev extent devid 4 physical offset 14263979671552 overlap with previous dev extent end 14263980982272
-  BTRFS error (device sdc): failed to verify dev extents against chunks: -117
-  BTRFS error (device sdc): open_ctree failed
-
-[CAUSE]
-The direct cause is very obvious, there is a bad dev extent item with
-incorrect length.
-
-With btrfs check reporting two overlapping extents, the second one shows
-some clue on the cause:
-
-  ERROR: dev extent devid 4 offset 14263979671552 len 6488064 overlap with previous dev extent end 14263980982272
-  ERROR: dev extent devid 13 offset 2257707008000 len 6488064 overlap with previous dev extent end 2257707270144
-  ERROR: errors found in extent allocation tree or chunk allocation
-
-The second one looks like a bitflip happened during new chunk
-allocation:
-hex(2257707008000) = 0x20da9d30000
-hex(2257707270144) = 0x20da9d70000
-diff               = 0x00000040000
-
-So it looks like a bitflip happened during new dev extent allocation,
-resulting the second overlap.
-
-Currently we only do the dev-extent verification at mount time, but if the
-corruption is caused by memory bitflip, we really want to catch it before
-writing the corruption to the storage.
-
-Furthermore the dev extent items has the following key definition:
-
-	(<device id> DEV_EXTENT <physical offset>)
-
-Thus we can not just rely on the generic key order check to make sure
-there is no overlapping.
-
-[ENHANCEMENT]
-Introduce dedicated dev extent checks, including:
-
-- Fixed member checks
-  * chunk_tree should always be BTRFS_CHUNK_TREE_OBJECTID (3)
-  * chunk_objectid should always be
-    BTRFS_FIRST_CHUNK_CHUNK_TREE_OBJECTID (256)
-
-- Alignment checks
-  * chunk_offset should be aligned to sectorsize
-  * length should be aligned to sectorsize
-  * key.offset should be aligned to sectorsize
-
-- Overlap checks
-  If the previous key is also a dev-extent item, with the same
-  device id, make sure we do not overlap with the previous dev extent.
-
-Reported: Stefan N <stefannnau@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CA+W5K0rSO3koYTo=nzxxTm1-Pdu1HYgVxEpgJ=aGc7d=E8mGEg@mail.gmail.com/
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 05e4941d97ef ("pinctrl: qcom: Add X1E80100 pinctrl driver")
+Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/20240809-topic-h_sdc-v1-1-bb421532c531@quicinc.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |   69 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-x1e80100.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1546,6 +1546,72 @@ static int check_inode_ref(struct extent
- 	return 0;
- }
+diff --git a/drivers/pinctrl/qcom/pinctrl-x1e80100.c b/drivers/pinctrl/qcom/pinctrl-x1e80100.c
+index 6cd4d10e6fd6f..65ed933f05ce1 100644
+--- a/drivers/pinctrl/qcom/pinctrl-x1e80100.c
++++ b/drivers/pinctrl/qcom/pinctrl-x1e80100.c
+@@ -1805,10 +1805,10 @@ static const struct msm_pingroup x1e80100_groups[] = {
+ 	[235] = PINGROUP(235, aon_cci, qdss_gpio, _, _, _, _, _, _, _),
+ 	[236] = PINGROUP(236, aon_cci, qdss_gpio, _, _, _, _, _, _, _),
+ 	[237] = PINGROUP(237, _, _, _, _, _, _, _, _, _),
+-	[238] = UFS_RESET(ufs_reset, 0x1f9000),
+-	[239] = SDC_QDSD_PINGROUP(sdc2_clk, 0x1f2000, 14, 6),
+-	[240] = SDC_QDSD_PINGROUP(sdc2_cmd, 0x1f2000, 11, 3),
+-	[241] = SDC_QDSD_PINGROUP(sdc2_data, 0x1f2000, 9, 0),
++	[238] = UFS_RESET(ufs_reset, 0xf9000),
++	[239] = SDC_QDSD_PINGROUP(sdc2_clk, 0xf2000, 14, 6),
++	[240] = SDC_QDSD_PINGROUP(sdc2_cmd, 0xf2000, 11, 3),
++	[241] = SDC_QDSD_PINGROUP(sdc2_data, 0xf2000, 9, 0),
+ };
  
-+static int check_dev_extent_item(const struct extent_buffer *leaf,
-+				 const struct btrfs_key *key,
-+				 int slot,
-+				 struct btrfs_key *prev_key)
-+{
-+	struct btrfs_dev_extent *de;
-+	const u32 sectorsize = leaf->fs_info->sectorsize;
-+
-+	de = btrfs_item_ptr(leaf, slot, struct btrfs_dev_extent);
-+	/* Basic fixed member checks. */
-+	if (unlikely(btrfs_dev_extent_chunk_tree(leaf, de) !=
-+		     BTRFS_CHUNK_TREE_OBJECTID)) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk tree id, has %llu expect %llu",
-+			    btrfs_dev_extent_chunk_tree(leaf, de),
-+			    BTRFS_CHUNK_TREE_OBJECTID);
-+		return -EUCLEAN;
-+	}
-+	if (unlikely(btrfs_dev_extent_chunk_objectid(leaf, de) !=
-+		     BTRFS_FIRST_CHUNK_TREE_OBJECTID)) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk objectid, has %llu expect %llu",
-+			    btrfs_dev_extent_chunk_objectid(leaf, de),
-+			    BTRFS_FIRST_CHUNK_TREE_OBJECTID);
-+		return -EUCLEAN;
-+	}
-+	/* Alignment check. */
-+	if (unlikely(!IS_ALIGNED(key->offset, sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent key.offset, has %llu not aligned to %u",
-+			    key->offset, sectorsize);
-+		return -EUCLEAN;
-+	}
-+	if (unlikely(!IS_ALIGNED(btrfs_dev_extent_chunk_offset(leaf, de),
-+				 sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk offset, has %llu not aligned to %u",
-+			    btrfs_dev_extent_chunk_objectid(leaf, de),
-+			    sectorsize);
-+		return -EUCLEAN;
-+	}
-+	if (unlikely(!IS_ALIGNED(btrfs_dev_extent_length(leaf, de),
-+				 sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent length, has %llu not aligned to %u",
-+			    btrfs_dev_extent_length(leaf, de), sectorsize);
-+		return -EUCLEAN;
-+	}
-+	/* Overlap check with previous dev extent. */
-+	if (slot && prev_key->objectid == key->objectid &&
-+	    prev_key->type == key->type) {
-+		struct btrfs_dev_extent *prev_de;
-+		u64 prev_len;
-+
-+		prev_de = btrfs_item_ptr(leaf, slot - 1, struct btrfs_dev_extent);
-+		prev_len = btrfs_dev_extent_length(leaf, prev_de);
-+		if (unlikely(prev_key->offset + prev_len > key->offset)) {
-+			generic_err(leaf, slot,
-+		"dev extent overlap, prev offset %llu len %llu current offset %llu",
-+				    prev_key->objectid, prev_len, key->offset);
-+			return -EUCLEAN;
-+		}
-+	}
-+	return 0;
-+}
-+
- /*
-  * Common point to switch the item-specific validation.
-  */
-@@ -1581,6 +1647,9 @@ static int check_leaf_item(struct extent
- 	case BTRFS_DEV_ITEM_KEY:
- 		ret = check_dev_item(leaf, key, slot);
- 		break;
-+	case BTRFS_DEV_EXTENT_KEY:
-+		ret = check_dev_extent_item(leaf, key, slot, prev_key);
-+		break;
- 	case BTRFS_INODE_ITEM_KEY:
- 		ret = check_inode_item(leaf, key, slot);
- 		break;
+ static const struct msm_gpio_wakeirq_map x1e80100_pdc_map[] = {
+-- 
+2.43.0
+
 
 
 
