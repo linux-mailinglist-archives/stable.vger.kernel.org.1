@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC84D96783E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C1D9678F5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A5F0B223A7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A446D1C20D92
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68DC183CC3;
-	Sun,  1 Sep 2024 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42B217E8EA;
+	Sun,  1 Sep 2024 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Hb9YBla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHzH4iC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506F183CA3;
-	Sun,  1 Sep 2024 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30942B9C7;
+	Sun,  1 Sep 2024 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208171; cv=none; b=kkw2TqyolBYHOvmxXsHy8kCn/VcL3UJAAYRFKQZndnfMv+PtB7oS996rDXFAAiKPTPogPnrmalo85upAXFv052tlY466wWou01jjQ2pb3j8TLUV339DRJ5ac0hTQe2ty0xjR7XbMlThymPI68e1u8jKXkbiSmveTjS3CefgBW44=
+	t=1725208672; cv=none; b=qRB0LFhwTNywooOfM2/IeOlQIXtv26ibfbyKLVxRRhqr9Mx1IrrIrPo7bQwzCxDEneMbNKymrIrGIXoqdtqvpDcEmSaBBOQ6WR3wstmWwOlxrSl0fYv2QRMFxRAvzxZzGVrA3ez+T3FkY5mNF/S0aMWylSueXj5KeVsGlMdto1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208171; c=relaxed/simple;
-	bh=1e9remJhkHwcMItnozxaAm3QZRnX569tm0OHyvUGeTA=;
+	s=arc-20240116; t=1725208672; c=relaxed/simple;
+	bh=5sG9k3B/958kKnsc26xxirZrdB6nq646QKxZ7i5HB/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKJdz1kAAQkE4mYpVIpF5sTg2tbtrA4jqt4OdIT2jIcMCpXetGxpbrkwfvNtpT/L91jmsoSstr2n/Rz9hWfQc3BN9ECFNG5n8MyWQrg3OoE6/Cr7F/ejgDKyRrtwQaSTTRQCoPLj8+A3OoVdiArBbSDhY3kgCr1XlNNQgjbsQtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Hb9YBla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90EAC4CEC3;
-	Sun,  1 Sep 2024 16:29:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a148huPsKAx8LIP4oUeePYnDvprcUKoVMofJ1oTjkae25c1fUQPGr+/ZOOfUFMiqZFUiJBR8DRlp4UBRjFHiAMaEkY2ZsRC/vOBbjn9GjGl3ELgXbx//re+rClHr8/56+NlHpimj767EzgkTCar431OCN37znWN/shp9GS4ZKPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHzH4iC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DE2C4CEC3;
+	Sun,  1 Sep 2024 16:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208171;
-	bh=1e9remJhkHwcMItnozxaAm3QZRnX569tm0OHyvUGeTA=;
+	s=korg; t=1725208672;
+	bh=5sG9k3B/958kKnsc26xxirZrdB6nq646QKxZ7i5HB/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Hb9YBlaALLHx4/H8W0ZyCI42jx9cn34NzdP6F0KtQn1c/yFN3MXa1S7wvWktuk2Q
-	 l+j/4StbWhOaV/QGMuiXwXgpjGW8wM4uZ3o4sMbalbFeSKJHO4II+iQ3ItlS7jL5Av
-	 uVT1UZkhYOrfJxXh3h+TN0Sa2rLBolOGHlXu/6Kc=
+	b=gHzH4iC6Ur00ZvE+7pqPPp6ERDMN49gXcGwN0u1owKrRQR2fZfpe7FruMYXO02MNl
+	 y/sPELE/4mV4RfExGGNpFkM6I9mroyWMotx8loBJQilsC/J0WdnmRmzDOqEoX3l1QO
+	 4FJQoPJx2D7Gm1u7cQmV+iHagcnVzQ6fBTxoGK7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 93/93] apparmor: fix policy_unpack_test on big endian systems
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.10 129/149] ARM: dts: imx6dl-yapp43: Increase LED current to match the yapp4 HW design
 Date: Sun,  1 Sep 2024 18:17:20 +0200
-Message-ID: <20240901160811.233194496@linuxfoundation.org>
+Message-ID: <20240901160822.306068592@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Michal Vokáč <michal.vokac@ysoft.com>
 
-[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
+commit 8512fbb64b0e599412da661412d10d4ba1cb003c upstream.
 
-policy_unpack_test fails on big endian systems because data byte order
-is expected to be little endian but is generated in host byte order.
-This results in test failures such as:
+On the imx6dl-yapp4 revision based boards, the RGB LED is not driven
+directly by the LP5562 driver but through FET transistors. Hence the LED
+current is not determined by the driver but by the LED series resistors.
 
- # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
-    not ok 3 policy_unpack_test_unpack_array_with_null_name
-    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
+On the imx6dl-yapp43 revision based boards, we removed the FET transistors
+to drive the LED directly from the LP5562 but forgot to tune the output
+current to match the previous HW design.
 
-Add the missing endianness conversions when generating test data.
+Set the LED current on imx6dl-yapp43 based boards to the same values
+measured on the imx6dl-yapp4 boards and limit the maximum current to 20mA.
 
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7da4734751e0 ("ARM: dts: imx6dl-yapp43: Add support for new HW revision of the IOTA board")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack_test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
-index 5c9bde25e56df..2b8003eb4f463 100644
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -80,14 +80,14 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
- 	strscpy(buf + 3, TEST_U32_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
--	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
-+	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
+@@ -274,24 +274,24 @@
  
- 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
- 	*buf = AA_NAME;
- 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
- 	strscpy(buf + 3, TEST_U64_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
--	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
-+	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
+ 		led@0 {
+ 			chan-name = "R";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0x6e>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <0>;
+ 			color = <LED_COLOR_ID_RED>;
+ 		};
  
- 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
- 	*buf = AA_NAME;
-@@ -103,7 +103,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
- 	strscpy(buf + 3, TEST_ARRAY_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
--	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
-+	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
+ 		led@1 {
+ 			chan-name = "G";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0xbe>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <1>;
+ 			color = <LED_COLOR_ID_GREEN>;
+ 		};
  
- 	return e;
- }
--- 
-2.43.0
-
+ 		led@2 {
+ 			chan-name = "B";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0xbe>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <2>;
+ 			color = <LED_COLOR_ID_BLUE>;
+ 		};
 
 
 
