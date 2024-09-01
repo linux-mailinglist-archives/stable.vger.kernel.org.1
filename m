@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9432B96799F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B91967A47
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528EB2822A4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07E21F23C45
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570A7185928;
-	Sun,  1 Sep 2024 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9C118132A;
+	Sun,  1 Sep 2024 16:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxSfoYb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghl6Lttq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2BD185950;
-	Sun,  1 Sep 2024 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3E644C93;
+	Sun,  1 Sep 2024 16:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209151; cv=none; b=AKAksTvRvw3p7to0DF3mVyJavLKgX0L3tcBYjTTqaiTp/BWA83QCJnF7rKMZySkp9GJzqYiaMmXNQiX6YwBs3AOEQqcnla+XRLxDwx17dMeSOxCpzz+X2o8MwkMe0P8+uLSzNIVIpkpNcTZsV/eR4NoRy0+SakonitYhkYWEBb8=
+	t=1725209638; cv=none; b=i77HUR5nI2UX4LT9V1pEw+uMBAFbdQ2mV/1i6xzu7JgJSq5wwGu/CxHqO2dvx5o3Be7qQ2t8pXNc4F2Yh6UlSFSG3/mEu6bEB/1apwtwkzG1RZ1gMrdamMGPHy/+qqjjDQHnRsCYA8fy6t4eiUv6r2A8Gca2cTIo4JS6DqXGoIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209151; c=relaxed/simple;
-	bh=KL1aeYDXfkMf0ZBVGUFkiX60nWnwKKYzb1HhrQleF4k=;
+	s=arc-20240116; t=1725209638; c=relaxed/simple;
+	bh=zAXDs0tD0K9mKy9EatKAhjM3/ZX2UqIWuYl7xBzJY4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLeGsBUwVXz9EYtBONRUKaosBfUJqq+tK95eRaO+sD5hJZ8qINdcSe76Kadg/+LhED1Jg7SNu09bzm07dchSeU6xMixzAUZNZJHFj2i9o5PZAPhDJNTqaI0onrxEeOCJi4whRrGb5D/7gasuRgjnrVPSiLTtwgRFEXCZIczXDf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxSfoYb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BC4C4CEC3;
-	Sun,  1 Sep 2024 16:45:50 +0000 (UTC)
+	 MIME-Version; b=Eo4FMzwPuCfSX9xnVL43ZOvX3oXtG3F2jVvftlARJ7H+bdbkxQw+zYaDPZLcurgXcDKdEZ5u7vXUzjkeiGWBzTxDyPwHK3TIXVcjgQ719OUQJ3ULGmfEGSLFdQNORmkYhYt+oGmphhIXZNhUCy+mzgh2gHp/6CxfQk0YV+NdaIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghl6Lttq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7399BC4CEC3;
+	Sun,  1 Sep 2024 16:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209150;
-	bh=KL1aeYDXfkMf0ZBVGUFkiX60nWnwKKYzb1HhrQleF4k=;
+	s=korg; t=1725209637;
+	bh=zAXDs0tD0K9mKy9EatKAhjM3/ZX2UqIWuYl7xBzJY4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxSfoYb+rffanOjKaFH8pjRiOvJI+v9L/2qT5EL9P3kHf2iv5TGrt3mAjciWMeTIH
-	 epi2FSmJqbyi6z4o1tdLM7LLH5uHnGHGx8IoE48SsVDjzcsvck+MGUqoaFIEmZ/Ln0
-	 1sPTJXCzNbSn1w4D17rcelh79LiHkaYtOpNzqFyU=
+	b=ghl6LttqhxkyIG52bX9dS/V9mDwkKO5bEG/l0OfmBYTlLLd04SeShSF3zq83dZCTZ
+	 VzIgzt6otqa3hG9JYVt0sEpfKHGj2xSYaXdsfe7o7MvzXgdJxU6wVIVoYJuSJ00N4H
+	 Tsop6PAdFyHDfTOouMwpCdiWeGijvjJohu6D9hf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 02/71] LoongArch: Remove the unused dma-direct.h
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/151] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
 Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160801.975806106@linuxfoundation.org>
+Message-ID: <20240901160816.639048906@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Wang <shankerwangmiao@gmail.com>
+From: David Sterba <dsterba@suse.com>
 
-commit 58aec91efb93338d1cc7acc0a93242613a2a4e5f upstream.
+[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
 
-dma-direct.h is introduced in commit d4b6f1562a3c3284 ("LoongArch: Add
-Non-Uniform Memory Access (NUMA) support"). In commit c78c43fe7d42524c
-("LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA"),
-ARCH_HAS_PHYS_TO_DMA was deselected and the coresponding phys_to_dma()/
-dma_to_phys() functions were removed. However, the unused dma-direct.h
-was left behind, which is removed by this patch.
+The BUG_ON is deep in the qgroup code where we can expect that it
+exists. A NULL pointer would cause a crash.
 
-Cc: <stable@vger.kernel.org>
-Fixes: c78c43fe7d42 ("LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA")
-Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
+calculation function btrfs_qgroup_account_extents()."). It maybe made
+sense back then as the quota enable/disable state machine was not that
+robust as it is nowadays, so we can just delete it.
+
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/dma-direct.h | 11 -----------
- 1 file changed, 11 deletions(-)
- delete mode 100644 arch/loongarch/include/asm/dma-direct.h
+ fs/btrfs/qgroup.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/dma-direct.h b/arch/loongarch/include/asm/dma-direct.h
-deleted file mode 100644
-index 75ccd808a2af..000000000000
---- a/arch/loongarch/include/asm/dma-direct.h
-+++ /dev/null
-@@ -1,11 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-- */
--#ifndef _LOONGARCH_DMA_DIRECT_H
--#define _LOONGARCH_DMA_DIRECT_H
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 83d17f22335b1..7518ab3b409c5 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -2658,8 +2658,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
+ 	if (nr_old_roots == 0 && nr_new_roots == 0)
+ 		goto out_free;
+ 
+-	BUG_ON(!fs_info->quota_root);
 -
--dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
--phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
--
--#endif /* _LOONGARCH_DMA_DIRECT_H */
+ 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
+ 					num_bytes, nr_old_roots, nr_new_roots);
+ 
 -- 
-2.46.0
+2.43.0
 
 
 
