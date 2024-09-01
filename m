@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9C1967907
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D66967AC8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6A2812B9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83CF1B20299
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178C81822F8;
-	Sun,  1 Sep 2024 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A2B3398B;
+	Sun,  1 Sep 2024 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW4OB/Rr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUHcrEkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB011183CAA;
-	Sun,  1 Sep 2024 16:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6597C1EB5B;
+	Sun,  1 Sep 2024 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208732; cv=none; b=UMgIy2OHsU+e3g6Iy0LuTW6pCy8d5CRJFi4XHcsAFwqbRPQabcKkrOxBE4/g2eLzgCEjFBWAVuqCHO2dRp2OzkuQ0LL0C+7oTKEF73ZIUOpSRdjBubD3s+wos8Q9kKRZQGeNuBuJqlv5gCC/z09KuT0LAsD6fuC1VH8OBKv6t9c=
+	t=1725210049; cv=none; b=PWpMC+XVn4NzHtdocKc/C8fXcYUmQxWb/uQ/q/yoBIMezGcB/hPix/muVpO+sZusg5r7Chrl5MsGB0pXr4254duJot7RxYsGIknItjQhfBZiZZmleOKjjdLfzeUn4diY5T9HkctVT7xNTKiofjmwt9Jxorx+cLL1tbtw3PbCato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208732; c=relaxed/simple;
-	bh=N57xg8PsbbzGkHkGsa4FPoqC/25VhJ06J7Cmf0JubBQ=;
+	s=arc-20240116; t=1725210049; c=relaxed/simple;
+	bh=JgFg6KicT0Ux16oQ2NVwQZN6psZTWHJxG2TeF9CvR7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGTGEx193Ka+aa7GZCUKF0P3byn1GukMbdmFDuwf9KtVn5ZevcWlgpzcUXESaMHJsHVBBwHhOf2oM1D/k/EMqj1Ia2ha46r95eVaOo6vaUTp0sQVJD1GyyAxxB+LY8Jl4LRlZQaE3rOZnrsjVo6UgtiGmEIn/RYf0cNq8nV6iSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW4OB/Rr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025D0C4CEC3;
-	Sun,  1 Sep 2024 16:38:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VjXQYUdo21s9TKxfPKF1sWQ0Z+3gXwJiCoTg0MZH2NgqmeuRKEw9SDkObGe8w8tfHfo08uJoC6+LXVNm5+BPZDnziTX9fdIYT83PuXIhsy95s0liaVg5Setnp4soR+W000W6a0NgeO8ysDEvLOWypK/Jy5FlF/eLv54/egKR944=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUHcrEkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B9BC4CEC3;
+	Sun,  1 Sep 2024 17:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208732;
-	bh=N57xg8PsbbzGkHkGsa4FPoqC/25VhJ06J7Cmf0JubBQ=;
+	s=korg; t=1725210049;
+	bh=JgFg6KicT0Ux16oQ2NVwQZN6psZTWHJxG2TeF9CvR7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pW4OB/RriS6jOdBQHSghy4rEiqC2g8kGEuPijmy0LHcKctxaBc7UG7rOS9bgVG+8A
-	 AOql6xIV8rSJRHUw8YOYeEk2arfd9ROoKJ4QYdYb+/9lu1xloW+X8nlb8XvVvkD1vq
-	 SLsHkylmJ3bIQJ4r9XQfeBEyO/U0rTGollvf6h1o=
+	b=QUHcrEkL8ZUrO/cDSoW35FBHMsDQwdkNobo9xm5Ut4X95rxLMLHxFnfn/c2bA6JZb
+	 a3VeS9g0ozxBztNkwYHIgsXqd82+2qKN8NlnP8Y3YlEvy6FRC+qRRvTuwWt8kIhKaO
+	 upAARcV1fmqXqfbwb9bnc5Ta9ZcRoEj6SJNn9u28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Zdenek Kabelac <zkabelac@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.4 007/134] dm persistent data: fix memory allocation failure
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 041/215] net: hns3: fix a deadlock problem when config TC during resetting
 Date: Sun,  1 Sep 2024 18:15:53 +0200
-Message-ID: <20240901160810.384609661@linuxfoundation.org>
+Message-ID: <20240901160824.898952908@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
+[ Upstream commit be5e816d00a506719e9dbb1a9c861c5ced30a109 ]
 
-kmalloc is unreliable when allocating more than 8 pages of memory. It may
-fail when there is plenty of free memory but the memory is fragmented.
-Zdenek Kabelac observed such failure in his tests.
+When config TC during the reset process, may cause a deadlock, the flow is
+as below:
+                             pf reset start
+                                 │
+                                 ▼
+                              ......
+setup tc                         │
+    │                            ▼
+    ▼                      DOWN: napi_disable()
+napi_disable()(skip)             │
+    │                            │
+    ▼                            ▼
+  ......                      ......
+    │                            │
+    ▼                            │
+napi_enable()                    │
+                                 ▼
+                           UINIT: netif_napi_del()
+                                 │
+                                 ▼
+                              ......
+                                 │
+                                 ▼
+                           INIT: netif_napi_add()
+                                 │
+                                 ▼
+                              ......                 global reset start
+                                 │                      │
+                                 ▼                      ▼
+                           UP: napi_enable()(skip)    ......
+                                 │                      │
+                                 ▼                      ▼
+                              ......                 napi_disable()
 
-This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
-vmalloc if the large allocation fails.
+In reset process, the driver will DOWN the port and then UINIT, in this
+case, the setup tc process will UP the port before UINIT, so cause the
+problem. Adds a DOWN process in UINIT to fix it.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb6b94a896d4 ("net: hns3: Add reset interface implementation in client")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/persistent-data/dm-space-map-metadata.c
-+++ b/drivers/md/persistent-data/dm-space-map-metadata.c
-@@ -275,7 +275,7 @@ static void sm_metadata_destroy(struct d
- {
- 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index e48d33927c176..d6bdcd9f285b0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5504,6 +5504,9 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
+ 	struct net_device *netdev = handle->kinfo.netdev;
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
  
--	kfree(smm);
-+	kvfree(smm);
- }
- 
- static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
-@@ -759,7 +759,7 @@ struct dm_space_map *dm_sm_metadata_init
- {
- 	struct sm_metadata *smm;
- 
--	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
-+	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
- 	if (!smm)
- 		return ERR_PTR(-ENOMEM);
- 
++	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
++		hns3_nic_net_stop(netdev);
++
+ 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
+ 		netdev_warn(netdev, "already uninitialized\n");
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
