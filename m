@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479B0967B30
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D423E9679B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 772E81C216A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80A821F21BF1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7A317E918;
-	Sun,  1 Sep 2024 17:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175C61865F7;
+	Sun,  1 Sep 2024 16:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC2jcEE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzOTDuRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679002C190;
-	Sun,  1 Sep 2024 17:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8206183CD2;
+	Sun,  1 Sep 2024 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210381; cv=none; b=sZ+NlArqLx0L3GcBTbjNr0ES9QAgeC29UnqTqDTv3gyG6mRU4lt+f3pHSPgBJgYw6IZeopfxiFUGRAS4udIJz+NNXnZ4ebA8bdzQX3+6AHCtDWbyotIXXfSCno7iI7RZ5xuUxH66Owze5Iidz1bqQOScSn7dcn8KWnTvn2HV7Z8=
+	t=1725209187; cv=none; b=ksVtP45DJg2y8tCilhn9EHYfwvOMFEUNWqH0IX3GECo6FhtxfLffqWo6PpLu6tWp7MAIruxp8StNlZmTrCJ1P+4jOHw68H1p8RtclY4AOXUJAlSEQf3/qp8TSE+7IzKEYVSz1SQUDKLUvTyvVatV36HgWPTMQHUH9qaxzd3zkQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210381; c=relaxed/simple;
-	bh=PY41iSBbhGEsnEzXqK7laqNtFGb845dDhNr9ZOUHtTA=;
+	s=arc-20240116; t=1725209187; c=relaxed/simple;
+	bh=6NAK0sQycs92IGvXFHu+cU7RQrWAf5ll2NYr84kOQgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXf/i++ZyukGeFUcPqpRWAU8b0cLeK29cQDHqMPYt21DSvqZasgWU1s7Emeob7qHVJJiwj1kNDAYOvZTb1MqfZJemako1QdATTFsIrkjFbafAsQbkYbQ929OILjBHdTMz0M0LS2eZZKPVclmKBSSLTHizoiP3em5YNloX2s6adE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC2jcEE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF72AC4CEC3;
-	Sun,  1 Sep 2024 17:06:20 +0000 (UTC)
+	 MIME-Version; b=Z2m+qi7w5Em4UPkoS8z7YabinZcq2dSmyAQxGsN0ObPMkICkAf67EzB6FkZJluKC4EolrppJU0jy5bwd7LVJ8v/8gOoa5DArn4qN6QgOvON4W0HUIJLcfLaRxxqLWuclPe8tz0XKunzGhbIrCWEELfVsJI1j2s0VdQ7BTAsJ9eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzOTDuRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ABAC4CEC3;
+	Sun,  1 Sep 2024 16:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210381;
-	bh=PY41iSBbhGEsnEzXqK7laqNtFGb845dDhNr9ZOUHtTA=;
+	s=korg; t=1725209187;
+	bh=6NAK0sQycs92IGvXFHu+cU7RQrWAf5ll2NYr84kOQgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RC2jcEE+HTwabQBGCQAeORCNnVhnFhikJYVc5lXHAJySaBMu/IzKP2d66Uor0SA7t
-	 bRFeFKXP8g/s2BK7xtDrijs4KBBCS2oOiAQWJ+cXrLDxnFPKuO48ECNb/bKxe2lH09
-	 A75E8RMxujUfZ3jWOZMBPjcwRewuJOQmSLHLswPM=
+	b=PzOTDuRy18i+qrw8718lsthhc2sD1dHfIdynQD5nGlCGFnteXWFin9nVGuoBZ/JfW
+	 NU8AxaRG1ebfbaWhKmOsdqdJKmxnuQlf9tsLfJ0fTmMclWuC2b8TispFNgLrWOpXIN
+	 0RLoQtMJv+wXpOrBCtT1wDoVx+NgU2ohE1pDul9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/215] bonding: fix xfrm real_dev null pointer dereference
+Subject: [PATCH 6.1 28/71] of: Introduce for_each_*_child_of_node_scoped() to automate of_node_put() handling
 Date: Sun,  1 Sep 2024 18:17:33 +0200
-Message-ID: <20240901160828.695540833@linuxfoundation.org>
+Message-ID: <20240901160802.952136431@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit f8cde9805981c50d0c029063dc7d82821806fc44 ]
+[ Upstream commit 34af4554fb0ce164e2c4876683619eb1e23848d4 ]
 
-We shouldn't set real_dev to NULL because packets can be in transit and
-xfrm might call xdo_dev_offload_ok() in parallel. All callbacks assume
-real_dev is set.
+To avoid issues with out of order cleanup, or ambiguity about when the
+auto freed data is first instantiated, do it within the for loop definition.
 
- Example trace:
- kernel: BUG: unable to handle page fault for address: 0000000000001030
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: #PF: supervisor write access in kernel mode
- kernel: #PF: error_code(0x0002) - not-present page
- kernel: PGD 0 P4D 0
- kernel: Oops: 0002 [#1] PREEMPT SMP
- kernel: CPU: 4 PID: 2237 Comm: ping Not tainted 6.7.7+ #12
- kernel: Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
- kernel: RIP: 0010:nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel: Code: e0 0f 0b 48 83 7f 38 00 74 de 0f 0b 48 8b 47 08 48 8b 37 48 8b 78 40 e9 b2 e5 9a d7 66 90 0f 1f 44 00 00 48 8b 86 80 02 00 00 <83> 80 30 10 00 00 01 b8 01 00 00 00 c3 0f 1f 80 00 00 00 00 0f 1f
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: RSP: 0018:ffffabde81553b98 EFLAGS: 00010246
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:
- kernel: RAX: 0000000000000000 RBX: ffff9eb404e74900 RCX: ffff9eb403d97c60
- kernel: RDX: ffffffffc090de10 RSI: ffff9eb404e74900 RDI: ffff9eb3c5de9e00
- kernel: RBP: ffff9eb3c0a42000 R08: 0000000000000010 R09: 0000000000000014
- kernel: R10: 7974203030303030 R11: 3030303030303030 R12: 0000000000000000
- kernel: R13: ffff9eb3c5de9e00 R14: ffffabde81553cc8 R15: ffff9eb404c53000
- kernel: FS:  00007f2a77a3ad00(0000) GS:ffff9eb43bd00000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000001030 CR3: 00000001122ab000 CR4: 0000000000350ef0
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: Call Trace:
- kernel:  <TASK>
- kernel:  ? __die+0x1f/0x60
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ? page_fault_oops+0x142/0x4c0
- kernel:  ? do_user_addr_fault+0x65/0x670
- kernel:  ? kvm_read_and_reset_apf_flags+0x3b/0x50
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel:  ? exc_page_fault+0x7b/0x180
- kernel:  ? asm_exc_page_fault+0x22/0x30
- kernel:  ? nsim_bpf_uninit+0x50/0x50 [netdevsim]
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ? nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel:  bond_ipsec_offload_ok+0x7b/0x90 [bonding]
- kernel:  xfrm_output+0x61/0x3b0
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ip_push_pending_frames+0x56/0x80
+The disadvantage is that the struct device_node *child variable creation
+is not immediately obvious where this is used.
+However, in many cases, if there is another definition of
+struct device_node *child; the compiler / static analysers will notify us
+that it is unused, or uninitialized.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that, in the vast majority of cases, the _available_ form should be
+used and as code is converted to these scoped handers, we should confirm
+that any cases that do not check for available have a good reason not
+to.
+
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20240225142714.286440-3-jic23@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: afc954fd223d ("thermal: of: Fix OF node leak in thermal_of_trips_init() error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/of.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 177c90e9a4685..fd0667e1d10ab 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -575,7 +575,6 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
- 		} else {
- 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
- 		}
--		ipsec->xs->xso.real_dev = NULL;
- 	}
- 	spin_unlock_bh(&bond->ipsec_lock);
- 	rcu_read_unlock();
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 506e30e4c959c..2960e609ca05e 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -1373,10 +1373,23 @@ static inline int of_property_read_s32(const struct device_node *np,
+ #define for_each_child_of_node(parent, child) \
+ 	for (child = of_get_next_child(parent, NULL); child != NULL; \
+ 	     child = of_get_next_child(parent, child))
++
++#define for_each_child_of_node_scoped(parent, child) \
++	for (struct device_node *child __free(device_node) =		\
++	     of_get_next_child(parent, NULL);				\
++	     child != NULL;						\
++	     child = of_get_next_child(parent, child))
++
+ #define for_each_available_child_of_node(parent, child) \
+ 	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
+ 	     child = of_get_next_available_child(parent, child))
+ 
++#define for_each_available_child_of_node_scoped(parent, child) \
++	for (struct device_node *child __free(device_node) =		\
++	     of_get_next_available_child(parent, NULL);			\
++	     child != NULL;						\
++	     child = of_get_next_available_child(parent, child))
++
+ #define for_each_of_cpu_node(cpu) \
+ 	for (cpu = of_get_next_cpu_node(NULL); cpu != NULL; \
+ 	     cpu = of_get_next_cpu_node(cpu))
 -- 
 2.43.0
 
