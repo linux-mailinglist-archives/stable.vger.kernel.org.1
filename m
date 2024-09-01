@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEA5967B21
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94A6967A52
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E7D91C21487
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75B7282197
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E60B17ADE1;
-	Sun,  1 Sep 2024 17:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581C7181334;
+	Sun,  1 Sep 2024 16:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0K7lhEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imd0btBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2B17C;
-	Sun,  1 Sep 2024 17:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172A21DFD1;
+	Sun,  1 Sep 2024 16:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210332; cv=none; b=CI2nPDMPjlg9ivOxHwnafVqKTQHVueOo5hI7dgmxRWTtZ2qCB+vDtbiq9hFTBoL+61VMpTZG/PrOks6fMbcZK6pEtIWTc9xTArXVAkFrFav8KZkm1z0dVLX9KvV5rDwXAOB0UPoknDx2xmaQxQ8H/cLyVz+R1vYcNCEBQxsnp3s=
+	t=1725209672; cv=none; b=kpd/8bMysrxNY/vjtDAnw8vnh837p/pYZYGZGudBn8WGm/7IdxI6XNMZTfGXS4scAKkQbBP2w3G9nWjhm4X22FYmR06GZpqaDSQqCz6IzbdPWn6E+dvaHoNgvqLJh6UtLR+8ECKZoWvTX92muojS73R9EbZ//lckBzCJSb4SEg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210332; c=relaxed/simple;
-	bh=mJ7xZ+EMQLxyxuZVAwSgAJNEiVT75t9wB9/iiil9Q+g=;
+	s=arc-20240116; t=1725209672; c=relaxed/simple;
+	bh=Wk3llQ0VzXvLrNULPm6jRI5AHsWVIfhNAZIqqtbp6Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr7fIW9BKtLYUcLja+2SuPy/qjAbO6D2ZPpuogeE6FVGgd9ga7KZj5i+n1gWn/bCfi0uMp3desEPq9QNKUB1kNbWeQTLJNIRc0kHsi9lO17SzrT52XIHCdToJbNCItL6jRD0xy1PINJ/ams6eqERwd6KFCy0Np5axPjeG8LFzVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0K7lhEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BC9C4CEC3;
-	Sun,  1 Sep 2024 17:05:31 +0000 (UTC)
+	 MIME-Version; b=K4KSrHXctuoDa05GcU2sWtn19nWmfNUGEF/bBBD73AJP9GN6KwV+rJrbcYT2A0vyCippiXFKaPktDkFqT2DKGvbhSisCR6p3F4b1Kaep37X1He8EUL46UeTSv0UpBT8vdI+bj2TcNrl9+2Klzh5bdBwxG5MKi3D6dgZZ/CpJCts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imd0btBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EE2C4CEC3;
+	Sun,  1 Sep 2024 16:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210331;
-	bh=mJ7xZ+EMQLxyxuZVAwSgAJNEiVT75t9wB9/iiil9Q+g=;
+	s=korg; t=1725209670;
+	bh=Wk3llQ0VzXvLrNULPm6jRI5AHsWVIfhNAZIqqtbp6Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0K7lhEgJdfGUqO7VjqPqtQyoKPrhBZv1FbM3R9iczXalvSMF3j7QVhsKmbeOkCio
-	 ZT/Vlj91bXXkC4WvDmFn9JIGfy4ltPvf/A/hX4IqwtXkMCrtnOluykxetJHEfxwb0L
-	 Vfuozj27tGDcaUdODVXIQbAQoZ5timfce7aM16u8=
+	b=imd0btBovXsIIIIZWLEvU+ChvovbrIvf6OrQEvxtKCc8EUR70NeNi0MA52G+QRAyF
+	 ob2c/TyG0WDbh7b4DWJdYuafXzz+PCj3/l8a9+EW1GlrveAlRsC8n/1okHYhXxvgKi
+	 +bQ6bV3D40GzJVkD8ZQwkIGcpxJls+XqOx6RUKTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/215] drm/msm/dpu: cleanup FB if dpu_format_populate_layout fails
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 109/151] MIPS: Loongson64: Set timer mode in cpu-probe
 Date: Sun,  1 Sep 2024 18:17:49 +0200
-Message-ID: <20240901160829.297181920@linuxfoundation.org>
+Message-ID: <20240901160818.208938983@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit bfa1a6283be390947d3649c482e5167186a37016 ]
+commit 1cb6ab446424649f03c82334634360c2e3043684 upstream.
 
-If the dpu_format_populate_layout() fails, then FB is prepared, but not
-cleaned up. This ends up leaking the pin_count on the GEM object and
-causes a splat during DRM file closure:
+Loongson64 C and G processors have EXTIMER feature which
+is conflicting with CP0 counter.
 
-msm_obj->pin_count
-WARNING: CPU: 2 PID: 569 at drivers/gpu/drm/msm/msm_gem.c:121 update_lru_locked+0xc4/0xcc
-[...]
-Call trace:
- update_lru_locked+0xc4/0xcc
- put_pages+0xac/0x100
- msm_gem_free_object+0x138/0x180
- drm_gem_object_free+0x1c/0x30
- drm_gem_object_handle_put_unlocked+0x108/0x10c
- drm_gem_object_release_handle+0x58/0x70
- idr_for_each+0x68/0xec
- drm_gem_release+0x28/0x40
- drm_file_free+0x174/0x234
- drm_release+0xb0/0x160
- __fput+0xc0/0x2c8
- __fput_sync+0x50/0x5c
- __arm64_sys_close+0x38/0x7c
- invoke_syscall+0x48/0x118
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x4c/0x120
- el0t_64_sync_handler+0x100/0x12c
- el0t_64_sync+0x190/0x194
-irq event stamp: 129818
-hardirqs last  enabled at (129817): [<ffffa5f6d953fcc0>] console_unlock+0x118/0x124
-hardirqs last disabled at (129818): [<ffffa5f6da7dcf04>] el1_dbg+0x24/0x8c
-softirqs last  enabled at (129808): [<ffffa5f6d94afc18>] handle_softirqs+0x4c8/0x4e8
-softirqs last disabled at (129785): [<ffffa5f6d94105e4>] __do_softirq+0x14/0x20
+Although the processor resets in EXTIMER disabled & INTIMER
+enabled mode, which is compatible with MIPS CP0 compare, firmware
+may attempt to enable EXTIMER and interfere CP0 compare.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/600714/
-Link: https://lore.kernel.org/r/20240625-dpu-mode-config-width-v5-1-501d984d634f@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set timer mode back to MIPS compatible mode to fix booting on
+systems with such firmware before we have an actual driver for
+EXTIMER.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/kernel/cpu-probe.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 9c30ab106b0a1..3ee9a92ffed57 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -906,6 +906,9 @@ static int dpu_plane_prepare_fb(struct drm_plane *plane,
- 			new_state->fb, &layout);
- 	if (ret) {
- 		DPU_ERROR_PLANE(pdpu, "failed to get format layout, %d\n", ret);
-+		if (pstate->aspace)
-+			msm_framebuffer_cleanup(new_state->fb, pstate->aspace,
-+						pstate->needs_dirtyfb);
- 		return ret;
- 	}
- 
--- 
-2.43.0
-
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1769,12 +1769,16 @@ static inline void cpu_probe_loongson(st
+ 		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
+ 			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
+ 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
+ 		break;
+ 	case PRID_IMP_LOONGSON_64G:
+ 		__cpu_name[cpu] = "ICT Loongson-3";
+ 		set_elf_platform(cpu, "loongson3a");
+ 		set_isa(c, MIPS_CPU_ISA_M64R2);
+ 		decode_cpucfg(c);
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
+ 		break;
+ 	default:
+ 		panic("Unknown Loongson Processor ID!");
 
 
 
