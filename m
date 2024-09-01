@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B1E9677E3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C31096791D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15CFAB20C55
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDB32B2251E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC2218132F;
-	Sun,  1 Sep 2024 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AFC18452E;
+	Sun,  1 Sep 2024 16:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2hi+jXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDEPZDnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA5D14290C;
-	Sun,  1 Sep 2024 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1621C68C;
+	Sun,  1 Sep 2024 16:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207922; cv=none; b=WZjDhuY59OTKSat/npd2HLMO2OgoJIYmoHwxQw9+dl92ZcKwZxnMwrnNStIjPM5LE2i5KXnyTYye2+H1h5uLEds1z6M5KBilD2Dkh5LOGtc1d1aCbdlmKlsBIcFrKXyqPBOH//qXurYCi0pv8UOcnZQEbnE8ZY+X80y0C3HJEPE=
+	t=1725208781; cv=none; b=iXfh1ijRsn8JhZgevII0IpcrMCHn86YkQxe7ABaED6h7bCiVAgP7rE6nG7u6zMzvb3XLxc6phmxWYspUXCkjmTatOPJBfir7Oij/5aWGCt93n/aJFTf+E3iinDpAjLr25Czn/fvwvOmQk4K1PijIssPJLooFo7a1FgGWDCXKO4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207922; c=relaxed/simple;
-	bh=kbI8NMXuaod9FgPPsxBSLosE3nQ7P7GenqJnbvpAfnw=;
+	s=arc-20240116; t=1725208781; c=relaxed/simple;
+	bh=xcQGi0PyUXJrMft/UH/4VPtTzIX333fdhJwkmvwPckk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cRz5urqvjO4Yclx1D1HSDwgj95gmU0m6LtPS6KaBYMCBPFPujpLkoV8NW1SuXrJ+i1i9Uuk3tWI51C4b5KO/Qcsdgee4LlUFyGAgmidJNkON6KqmKwprAbPbHoagkjcMvJqm6JYwkLcAhfMIQTPnPbTF3XmmHAaTm+/t9k+VVwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2hi+jXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C6AC4CEC3;
-	Sun,  1 Sep 2024 16:25:21 +0000 (UTC)
+	 MIME-Version; b=Bc3ycxFDAXUonDHGazRmN/Rll+MpXqJcYKT72o452zEyKpG7lsDhdZW2zX0Zzx3kgb+xGvGQlV7tv/LUVgtGhzoWOxfBOeuwfqzkK99klLQ5DVBNaqcznnOZfA6SdAW6SWPv96HWPCKw1TLVR7iaZgUTs4JX+90rdw1uV5tT3w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDEPZDnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610DBC4CEC3;
+	Sun,  1 Sep 2024 16:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207922;
-	bh=kbI8NMXuaod9FgPPsxBSLosE3nQ7P7GenqJnbvpAfnw=;
+	s=korg; t=1725208781;
+	bh=xcQGi0PyUXJrMft/UH/4VPtTzIX333fdhJwkmvwPckk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2hi+jXG/uXty9kWGYPalyyP/i8TI+rDtIKsWRULVoh1eIxg+FDZ5fvjrvN6imi0Z
-	 HI2drvp955Pl29l9t7oFNnkA7hT4g7Dkl5BKXlhojYOqSjw5kKVSX6Xfqeb9Y81dEW
-	 coS1mX51CQUSnmQ4D39xO64c42Pab994Qb4xNm9E=
+	b=oDEPZDnL3hQwWw1vl6wbeXAAcRLt4GWFp5DO9H8yMbNeMSgJejex/5WoHNy2AH0L1
+	 STXMaRAFtDjnoMA3TtLfgS7nw/RawI6AnR+7aG4zXP+APcubCcy99nOe3aOERVi0kc
+	 nLPyi26X41c/T55hACAlBlmqwhGqFU2mlxz7LEWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 19/93] mptcp: pm: fix ID 0 endp usage after multiple re-creations
+	Andre Przywara <andre.przywara@arm.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 020/134] net: axienet: Improve DMA error handling
 Date: Sun,  1 Sep 2024 18:16:06 +0200
-Message-ID: <20240901160808.085027171@linuxfoundation.org>
+Message-ID: <20240901160810.870303224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Andre Przywara <andre.przywara@arm.com>
 
-commit 9366922adc6a71378ca01f898c41be295309f044 upstream.
+[ Upstream commit e7fea0b9d09e2f7d32776f5198192dfc2572a5b9 ]
 
-'local_addr_used' and 'add_addr_accepted' are decremented for addresses
-not related to the initial subflow (ID0), because the source and
-destination addresses of the initial subflows are known from the
-beginning: they don't count as "additional local address being used" or
-"ADD_ADDR being accepted".
+Since 0 is a valid DMA address, we cannot use the physical address to
+check whether a TX descriptor is valid and is holding a DMA mapping.
 
-It is then required not to increment them when the entrypoint used by
-the initial subflow is removed and re-added during a connection. Without
-this modification, this entrypoint cannot be removed and re-added more
-than once.
+Use the "cntrl" member of the descriptor to make this decision, as it
+contains at least the length of the buffer, so 0 points to an
+uninitialised buffer.
 
-Reported-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/512
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Reported-by: syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/00000000000049861306209237f4@google.com
-Cc: stable@vger.kernel.org
-Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -623,12 +623,13 @@ subflow:
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 27901bb7cd5b5..22222d79e4902 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -572,7 +572,7 @@ static void axienet_start_xmit_done(struct net_device *ndev)
+ 				DMA_TO_DEVICE);
+ 		if (cur_p->skb)
+ 			dev_consume_skb_irq(cur_p->skb);
+-		/*cur_p->phys = 0;*/
++		cur_p->cntrl = 0;
+ 		cur_p->app0 = 0;
+ 		cur_p->app1 = 0;
+ 		cur_p->app2 = 0;
+@@ -1562,7 +1562,7 @@ static void axienet_dma_err_handler(struct work_struct *work)
  
- 		fullmesh = !!(local.flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
- 
--		msk->pm.local_addr_used++;
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
- 
- 		/* Special case for ID0: set the correct ID */
- 		if (local.addr.id == msk->mpc_endpoint_id)
- 			local.addr.id = 0;
-+		else /* local_addr_used is not decr for ID 0 */
-+			msk->pm.local_addr_used++;
- 
- 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
- 		if (nr == 0)
-@@ -758,7 +759,9 @@ static void mptcp_pm_nl_add_addr_receive
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (sf_created) {
--		msk->pm.add_addr_accepted++;
-+		/* add_addr_accepted is not decr for ID 0 */
-+		if (remote.id)
-+			msk->pm.add_addr_accepted++;
- 		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
- 		    msk->pm.subflows >= subflows_max)
- 			WRITE_ONCE(msk->pm.accept_addr, false);
+ 	for (i = 0; i < lp->tx_bd_num; i++) {
+ 		cur_p = &lp->tx_bd_v[i];
+-		if (cur_p->phys)
++		if (cur_p->cntrl)
+ 			dma_unmap_single(ndev->dev.parent, cur_p->phys,
+ 					 (cur_p->cntrl &
+ 					  XAXIDMA_BD_CTRL_LENGTH_MASK),
+-- 
+2.43.0
+
 
 
 
