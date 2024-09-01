@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-72065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74326967905
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6BF967AC6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01EACB21A06
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A199C1F209A6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2088817E00C;
-	Sun,  1 Sep 2024 16:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B995D381BD;
+	Sun,  1 Sep 2024 17:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nK0QtlqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3tBo/2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42DD1C68C;
-	Sun,  1 Sep 2024 16:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782DA17C;
+	Sun,  1 Sep 2024 17:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208725; cv=none; b=MXOE9qGz2Y2fRGrl5JsKGFqh4ZqpN4dHWbjuQF/5qVOtBtx9Fmxn99Dw0GaOU+UBAlBNCVt/Du4LM1frJhokRQ+3FsK0VS9l0qEXNn4D2XjC37IcUHXYAepY0kJlSaomD5i/VKlqAGzLPU+Bbn6yH5WAMekq18ST7AbLGPw0HFw=
+	t=1725210043; cv=none; b=gkCljLzXi2r8IdyFPAsMEnIb6YQo7y5oEYMyluF1gCE8LCaKoKrQACh4Rx9jlp3RR5kQNdjiAULSDEl9NpfMYnwV30VEtz1nwT4V/FH6y5PA1nnsT1PGUh+48PFyOR7dhRWljhNi1jW1sOUG3NPyD0W0mVoWDRfGd72vRQK3Wrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208725; c=relaxed/simple;
-	bh=Z/6KJwssYrhyAQRY3h1dg4aE3gjOA7l0k0RNbhjCVtw=;
+	s=arc-20240116; t=1725210043; c=relaxed/simple;
+	bh=3fofLDEFyII+w/Ex2tMX0s43KdG8wgAvxI+BKifWsiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqQ9ASqn92EBW+qxuXKIy0ePMgHOIRi2cD8XYrD9qg+zo7EtQVcVuEFmJn3r33KNwFz5e9ImYQgWfK/j2Qb7DU7rcAHLeEueRAPTT134GLWsDxJCmrYwME1IzN+q7V4byIadeWIZP0Rm2IRlUf5/oRM7LN857xrd5TndLOebThw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nK0QtlqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450A3C4CEC3;
-	Sun,  1 Sep 2024 16:38:45 +0000 (UTC)
+	 MIME-Version; b=JPu5CzGNPqU675LM+3hqAZ9NeJjKdNR3DYLtmO9MKhvkFM0PSHezsWI/Rf4znLV9f0YCgDmlEiOdTUr46VwQAAnI//nkapyiCMODASTkR88Ws5jGfuty+CuZ1wj3bJKc/b7owD2IDmrkmsDG49LyoQj2GwEBFMhw3J/TKgLo/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3tBo/2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B787C4CEC3;
+	Sun,  1 Sep 2024 17:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208725;
-	bh=Z/6KJwssYrhyAQRY3h1dg4aE3gjOA7l0k0RNbhjCVtw=;
+	s=korg; t=1725210043;
+	bh=3fofLDEFyII+w/Ex2tMX0s43KdG8wgAvxI+BKifWsiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nK0QtlqHQIHPeZ2jD25EP/3a0eZxaEavPGDQlW86gU5J8sidBxLZza0AZ4HzQvgp/
-	 JAGgVwtUbwcAxACB06k4CGiWIfL7LP5lTKQ4GmjGwRFMJBpz5X7Vy5zpBq3mcCttIj
-	 3bPnhF6fDRboooEdlJwhRN1gO/NaJPiduzByqYQs=
+	b=T3tBo/2n9ytfi3k3hkfcoZR0C/hgkYhl4/SknV8Cgclb5iZFLtiSTEYUzVeI81WQk
+	 PjKz4IeNRbb+0KWxA8CO4t9cXAmUyAz+9p0UtKE9xFxjitgn687GgVCSEvkhHoZTWw
+	 alJ8o7zqh++W9gQvO/GBoVdj40Bjr0R2OVIDBgCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Haibo Xu <haibo1.xu@intel.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH 5.4 005/134] arm64: ACPI: NUMA: initialize all values of acpi_early_node_map to NUMA_NO_NODE
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 039/215] netfilter: nf_queue: drop packets with cloned unconfirmed conntracks
 Date: Sun,  1 Sep 2024 18:15:51 +0200
-Message-ID: <20240901160809.962586221@linuxfoundation.org>
+Message-ID: <20240901160824.823243815@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Xu <haibo1.xu@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit a21dcf0ea8566ebbe011c79d6ed08cdfea771de3 upstream.
+[ Upstream commit 7d8dc1c7be8d3509e8f5164dd5df64c8e34d7eeb ]
 
-Currently, only acpi_early_node_map[0] was initialized to NUMA_NO_NODE.
-To ensure all the values were properly initialized, switch to initialize
-all of them to NUMA_NO_NODE.
+Conntrack assumes an unconfirmed entry (not yet committed to global hash
+table) has a refcount of 1 and is not visible to other cores.
 
-Fixes: e18962491696 ("arm64: numa: rework ACPI NUMA initialization")
-Cc: <stable@vger.kernel.org> # 4.19.x
-Reported-by: Andrew Jones <ajones@ventanamicro.com>
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/853d7f74aa243f6f5999e203246f0d1ae92d2b61.1722828421.git.haibo1.xu@intel.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With multicast forwarding this assumption breaks down because such
+skbs get cloned after being picked up, i.e.  ct->use refcount is > 1.
+
+Likewise, bridge netfilter will clone broad/mutlicast frames and
+all frames in case they need to be flood-forwarded during learning
+phase.
+
+For ip multicast forwarding or plain bridge flood-forward this will
+"work" because packets don't leave softirq and are implicitly
+serialized.
+
+With nfqueue this no longer holds true, the packets get queued
+and can be reinjected in arbitrary ways.
+
+Disable this feature, I see no other solution.
+
+After this patch, nfqueue cannot queue packets except the last
+multicast/broadcast packet.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/acpi_numa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_netfilter_hooks.c |  6 +++++-
+ net/netfilter/nfnetlink_queue.c | 35 +++++++++++++++++++++++++++++++--
+ 2 files changed, 38 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -27,7 +27,7 @@
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 9981e0dfdd4d3..d0d41dbbfe382 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -602,8 +602,12 @@ static unsigned int br_nf_local_in(void *priv,
+ 	if (likely(nf_ct_is_confirmed(ct)))
+ 		return NF_ACCEPT;
  
- #include <asm/numa.h>
++	if (WARN_ON_ONCE(refcount_read(&nfct->use) != 1)) {
++		nf_reset_ct(skb);
++		return NF_ACCEPT;
++	}
++
+ 	WARN_ON_ONCE(skb_shared(skb));
+-	WARN_ON_ONCE(refcount_read(&nfct->use) != 1);
  
--static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
-+static int acpi_early_node_map[NR_CPUS] __initdata = { [0 ... NR_CPUS - 1] = NUMA_NO_NODE };
- 
- int __init acpi_numa_get_nid(unsigned int cpu)
+ 	/* We can't call nf_confirm here, it would create a dependency
+ 	 * on nf_conntrack module.
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 89b16d36da9cf..d5f5b93a99a08 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -640,10 +640,41 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry)
  {
+ #if IS_ENABLED(CONFIG_NF_CONNTRACK)
+ 	static const unsigned long flags = IPS_CONFIRMED | IPS_DYING;
+-	const struct nf_conn *ct = (void *)skb_nfct(entry->skb);
++	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
++	unsigned long status;
++	unsigned int use;
+ 
+-	if (ct && ((ct->status & flags) == IPS_DYING))
++	if (!ct)
++		return false;
++
++	status = READ_ONCE(ct->status);
++	if ((status & flags) == IPS_DYING)
+ 		return true;
++
++	if (status & IPS_CONFIRMED)
++		return false;
++
++	/* in some cases skb_clone() can occur after initial conntrack
++	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
++	 * unconfirmed entries.
++	 *
++	 * This happens for br_netfilter and with ip multicast routing.
++	 * We can't be solved with serialization here because one clone could
++	 * have been queued for local delivery.
++	 */
++	use = refcount_read(&ct->ct_general.use);
++	if (likely(use == 1))
++		return false;
++
++	/* Can't decrement further? Exclusive ownership. */
++	if (!refcount_dec_not_one(&ct->ct_general.use))
++		return false;
++
++	skb_set_nfct(entry->skb, 0);
++	/* No nf_ct_put(): we already decremented .use and it cannot
++	 * drop down to 0.
++	 */
++	return true;
+ #endif
+ 	return false;
+ }
+-- 
+2.43.0
+
 
 
 
