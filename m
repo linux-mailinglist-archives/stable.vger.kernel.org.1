@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9232C96798C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2934C967B2D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C661C2139A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84499B207A6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0399B184551;
-	Sun,  1 Sep 2024 16:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4017B50B;
+	Sun,  1 Sep 2024 17:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1phh8cA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drNdW5/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A9617E46E;
-	Sun,  1 Sep 2024 16:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3052C190;
+	Sun,  1 Sep 2024 17:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209098; cv=none; b=sJKNSoUhFJhrmPlMYo5mhtuOMFYzYWeYAUYMbTgvMjbyFHC15xBXFvPEV7sLr+2A2rJBFgOo0ljt5ejxi5n6YzQU4XMu562AnIjlE7mbYMGnbDy1+8ECp3gZh0PCDZzJrMLs4IuE1TppJRUFgZb43HKfZhZmjVYDwfjeCqcGuJA=
+	t=1725210371; cv=none; b=RqBwX8xzavAySv6cwvg0vH6a6588xRBRgXDCGdxcwNw0ayD+JeKz1QR2Zr84pjQW+HgsKto4B9fdk9H7arYbS8zzv1cy81VoES3UnwQ4dCmsFJws+TOQREcETegNxCvepTcdHDLoxTzl3vBJ8cQlFl1QBqtUrZ1VLlLCik9s1Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209098; c=relaxed/simple;
-	bh=evctpTsFNSV/fUZXUNo9kgqow/PcVvpzmPLtxmZrhqg=;
+	s=arc-20240116; t=1725210371; c=relaxed/simple;
+	bh=ff9r634YEkTTrH0Qdt2VodPyV2F0KXR8Qk/NM3e7ASo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr9E+9IEN7M/Cax3XF73HBk5OuqtxUoDm3MqRZKMQJYAcwMWarqOyjyKN3H4TYzTAspAIB0pZpU6QNjOe+miFdMs5yg+klAku6HPAO3xg9tsVsgboE2ZgXJogJ1UZCcWlUg8Z6Sd4ZUPg36olvjL+rX1AzoEYBQ5R6eRjl7ozhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1phh8cA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376BAC4CEC3;
-	Sun,  1 Sep 2024 16:44:58 +0000 (UTC)
+	 MIME-Version; b=TQ9ggcpNV7DFgS+uH4msNvIDptsG4e5k+cArvwOTNz0xKJ0conj1dP/mL1a12M4F+MetuhwIlRNdETu3/zy0RtS46QYja9rnDbVpvaphSz0niGXwTPCFFHvf8iiaeYD+DVamu39MTPnVVz3exsBJpsNQdlIM/5/vEFR6wM5gZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drNdW5/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C752C4CEC3;
+	Sun,  1 Sep 2024 17:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209098;
-	bh=evctpTsFNSV/fUZXUNo9kgqow/PcVvpzmPLtxmZrhqg=;
+	s=korg; t=1725210371;
+	bh=ff9r634YEkTTrH0Qdt2VodPyV2F0KXR8Qk/NM3e7ASo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1phh8cAItdBGm6Qb3jWpJIEYuB7jb4uP2mQcbNsG1Q2bnJrXtLpTfWkCYafyO873
-	 SQ5c/CH7MEqpBGUe7iWyEERY0QHNeGUiHkGsMJYx6EdeHLd4T30LIzCoJaDwcudvtO
-	 viuUDe3nlYKRe1nSFaX8H0xJs2hT+qN0qKqwQkoI=
+	b=drNdW5/aBuE/F5p2izX/JqSg4qtOp6AlKoE25FgdJrjZ5d2wcynLxkkVOCwBs0ceQ
+	 czEkCFeWzn1uZiMfjL9rjnGkKKVg9TmrRGkifHF9QBLpkhtxAVHYI3HOSad+kUVmZD
+	 mF1w7h7e2ts6KB+offV+8vClSuKt5beiW2eDF+9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
-	Ben Hutchings <benh@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 134/134] scsi: aacraid: Fix double-free on probe failure
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 168/215] hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
 Date: Sun,  1 Sep 2024 18:18:00 +0200
-Message-ID: <20240901160815.118386530@linuxfoundation.org>
+Message-ID: <20240901160829.709296395@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
+commit a94ff8e50c20bde6d50864849a98b106e45d30c6 upstream.
 
-aac_probe_one() calls hardware-specific init functions through the
-aac_driver_ident::init pointer, all of which eventually call down to
-aac_init_adapter().
+A new error path was added to the fwnode_for_each_available_node() loop
+in ltc2992_parse_dt(), which leads to an early return that requires a
+call to fwnode_handle_put() to avoid a memory leak in that case.
 
-If aac_init_adapter() fails after allocating memory for aac_dev::queues,
-it frees the memory but does not clear that member.
+Add the missing fwnode_handle_put() in the error path from a zero value
+shunt resistor.
 
-After the hardware-specific init function returns an error,
-aac_probe_one() goes down an error path that frees the memory pointed to
-by aac_dev::queues, resulting.in a double-free.
-
-Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
-Link: https://bugs.debian.org/1075855
-Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aacraid/comminit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/ltc2992.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index d4fcfa1e54e02..8849eca08a494 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -638,6 +638,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -913,9 +913,11 @@ static int ltc2992_parse_dt(struct ltc29
  
- 	if (aac_comm_init(dev)<0){
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
+ 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
+ 		if (!ret) {
+-			if (!val)
++			if (!val) {
++				fwnode_handle_put(child);
+ 				return dev_err_probe(&st->client->dev, -EINVAL,
+ 						     "shunt resistor value cannot be zero\n");
++			}
+ 			st->r_sense_uohm[addr] = val;
+ 		}
  	}
- 	/*
-@@ -645,6 +646,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 	 */
- 	if (aac_fib_setup(dev) < 0) {
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 		
--- 
-2.43.0
-
 
 
 
