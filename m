@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BF7967A3E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90699679CC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E47D1F23A6B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7609D28155F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA26E17E919;
-	Sun,  1 Sep 2024 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED91181334;
+	Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tosfjQom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM7H/fhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980481DFD1;
-	Sun,  1 Sep 2024 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8E81E87B;
+	Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209605; cv=none; b=BniX5jVFCTFu7YLd3d+m8k08S9/tbSEIAZTm/NGOWBrmzxQ482RKfTj30hjIp5aS06k6pMUC+RRZRl8a9BBXJb9ufkhztZuEG465uDq/O5qGVD5i88DqJJUnsOc2cFIvD+ZfTHDbSRJg+7IUHBYcymiPWqB4miNnA8nCocZinbE=
+	t=1725209271; cv=none; b=HsEWU0De7CfukiV4mz3dZnFazO3bAK6+Vianh4p12IkDRRTp5S+OJ+cCQrOy5/ph+kJyV2nAPFAGM9LTi5DYP2rRqrFMUOEMcem8h9SHNSxIFbzn9drv9A6u3WJ24rEZtgw+7OYmJ6nUGym2mDcV18EWqQfMnL4E0Mw2aUBDkbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209605; c=relaxed/simple;
-	bh=VNPFoR0Sg7IrR/1L8Xqx+J+PdW2MzQ2TOYWwB3A7RKA=;
+	s=arc-20240116; t=1725209271; c=relaxed/simple;
+	bh=pXhxTJRmCl0tPES5ETHnGIYTrV0BhdABM003MDgS2aM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7AROpMni4XI70iUA50kbloaVh+fVMZoVdsfvxkqRQaf9x/8W/iNex9jISQRhqZkSztOJROnmFwYW8IcOBfVXTIfFJy0fR4L7eSbCECFHSdt1PxPB5IOnsSJdK4kumW3CFY/2V9V7invamh7eFabehTqJqh+a+u09KfXcSEGdus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tosfjQom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE0FC4CEC3;
-	Sun,  1 Sep 2024 16:53:24 +0000 (UTC)
+	 MIME-Version; b=IGaHSEcUaue2tD78or953rL8cu1E3+LijXVtn93Fe8U9FP1sAJC2XsVxDrjovqP8DYuwRp9iixObXcPDRvrmTcnvJfRZV6PrcX8r8GU2sab1aRhoU3PlS6ttSCWexhVpwcOG7MUDBHqhk02I3Kj6F7ljU28iNEabndjC8tQ5Y5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM7H/fhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE7BC4CEC3;
+	Sun,  1 Sep 2024 16:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209605;
-	bh=VNPFoR0Sg7IrR/1L8Xqx+J+PdW2MzQ2TOYWwB3A7RKA=;
+	s=korg; t=1725209271;
+	bh=pXhxTJRmCl0tPES5ETHnGIYTrV0BhdABM003MDgS2aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tosfjQomrUKRViyalt+sF9wgrl8vCy00GoByIrMkrOS8gqqtgHTmAMvDn9B/YmDiz
-	 z84AjLfsXHF8Owcm4yItZK37/wNJp1DwSZgKYvtX8BF9bXuhIwIqa0VNW83yA5SEwC
-	 GDKnqNl4ABS1NcKDuVV8arr1SD0mNOiZn3gLGnr8=
+	b=RM7H/fhzSDox2sqlMszSs0L1BP4WR1dcb2wD0HsE/EvEbC9fxpVfOffvokHDne3xZ
+	 t8UTocGKiQalviPoDTsOfE8ldKhiFBEDqdSsEqXmJQuKQpBwd/W8uDkMhgXk50LziM
+	 eMz1/Rxf2DothRSN5pIuiJEQYOmo7HR1bzL2XLbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mengqi Zhang <mengqi.zhang@mediatek.com>,
+	stable@vger.stable.com,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/151] tc-testing: dont access non-existent variable on exception
+Subject: [PATCH 6.1 23/71] mmc: mtk-sd: receive cmd8 data when hs400 tuning fail
 Date: Sun,  1 Sep 2024 18:17:28 +0200
-Message-ID: <20240901160817.428777085@linuxfoundation.org>
+Message-ID: <20240901160802.763517117@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Mengqi Zhang <mengqi.zhang@mediatek.com>
 
-[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
+[ Upstream commit 9374ae912dbb1eed8139ed75fd2c0f1b30ca454d ]
 
-Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
-the variable test_ordinal doesn't exist in call_pre_case().
-So it should not be accessed when an exception occurs.
+When we use cmd8 as the tuning command in hs400 mode, the command
+response sent back by some eMMC devices cannot be correctly sampled
+by MTK eMMC controller at some weak sample timing. In this case,
+command timeout error may occur. So we must receive the following
+data to make sure the next cmd8 send correctly.
 
-This resolves the following splat:
-
-  ...
-  During handling of the above exception, another exception occurred:
-
-  Traceback (most recent call last):
-    File ".../tdc.py", line 1028, in <module>
-      main()
-    File ".../tdc.py", line 1022, in main
-      set_operation_mode(pm, parser, args, remaining)
-    File ".../tdc.py", line 966, in set_operation_mode
-      catresults = test_runner_serial(pm, args, alltests)
-    File ".../tdc.py", line 642, in test_runner_serial
-      (index, tsr) = test_runner(pm, args, alltests)
-    File ".../tdc.py", line 536, in test_runner
-      res = run_one_test(pm, args, index, tidx)
-    File ".../tdc.py", line 419, in run_one_test
-      pm.call_pre_case(tidx)
-    File ".../tdc.py", line 146, in call_pre_case
-      print('test_ordinal is {}'.format(test_ordinal))
-  NameError: name 'test_ordinal' is not defined
-
-Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mengqi Zhang <mengqi.zhang@mediatek.com>
+Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
+Cc: stable@vger.stable.com
+Link: https://lore.kernel.org/r/20240716013704.10578-1-mengqi.zhang@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/tdc.py | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
-index a3e43189d9400..d6a9d97f73c24 100755
---- a/tools/testing/selftests/tc-testing/tdc.py
-+++ b/tools/testing/selftests/tc-testing/tdc.py
-@@ -129,7 +129,6 @@ class PluginMgr:
-             except Exception as ee:
-                 print('exception {} in call to pre_case for {} plugin'.
-                       format(ee, pgn_inst.__class__))
--                print('test_ordinal is {}'.format(test_ordinal))
-                 print('testid is {}'.format(caseinfo['id']))
-                 raise
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index efd2af2d36862..ba18e9fa64b15 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -1206,7 +1206,7 @@ static bool msdc_cmd_done(struct msdc_host *host, int events,
+ 	}
  
+ 	if (!sbc_error && !(events & MSDC_INT_CMDRDY)) {
+-		if (events & MSDC_INT_CMDTMO ||
++		if ((events & MSDC_INT_CMDTMO && !host->hs400_tuning) ||
+ 		    (!mmc_op_tuning(cmd->opcode) && !host->hs400_tuning))
+ 			/*
+ 			 * should not clear fifo/interrupt as the tune data
+@@ -1299,9 +1299,9 @@ static void msdc_start_command(struct msdc_host *host,
+ static void msdc_cmd_next(struct msdc_host *host,
+ 		struct mmc_request *mrq, struct mmc_command *cmd)
+ {
+-	if ((cmd->error &&
+-	    !(cmd->error == -EILSEQ &&
+-	      (mmc_op_tuning(cmd->opcode) || host->hs400_tuning))) ||
++	if ((cmd->error && !host->hs400_tuning &&
++	     !(cmd->error == -EILSEQ &&
++	     mmc_op_tuning(cmd->opcode))) ||
+ 	    (mrq->sbc && mrq->sbc->error))
+ 		msdc_request_done(host, mrq);
+ 	else if (cmd == mrq->sbc)
 -- 
 2.43.0
 
