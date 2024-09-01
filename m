@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36B9967A7D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4CA967B4D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3DD41C20C5D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77636B2112D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3707E18306C;
-	Sun,  1 Sep 2024 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15EE17E005;
+	Sun,  1 Sep 2024 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si24krL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y++Zb1uU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812D16B391;
-	Sun,  1 Sep 2024 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDC0376EC;
+	Sun,  1 Sep 2024 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209808; cv=none; b=TCj67h2Mz9GUxUC1qVwGySwrbd0dplWEviBjPJMdd6i720bjdXibpA3/kIJr4NJTrUrUhxXkOL7kBv3jwUNUeOsKbKTbOR3VDdN/IGoFyti2iXkYTFYUn0MVz/ZhpfUgqcS0uFk+qoPylm6ypE/dk8GUW5ghf31M+HUaxbxea1Y=
+	t=1725210477; cv=none; b=pjwoRUemhQXdl3Ty2O164PDs/pn8JPFivXNTt8d0aetf4jHJpNflTvEYdrWs2DcSgMXNxkr/qbNDoBcDKq1Rkt1hQFgCM47YMfByULiXizG+xOTZ1QSnLMProHVqEu38Ev1ttBfW2jMnz91HUTu5z8w/KLQDwqel/kciR/zwM2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209808; c=relaxed/simple;
-	bh=NDrCorSaE9aRALAopxQzA5td9CTuRK9pHMP0+o0QGFw=;
+	s=arc-20240116; t=1725210477; c=relaxed/simple;
+	bh=9NIYbjsqTj5szRiNABbGuON8wDhbSzb1bravGbNt7w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kayqxu8+yjk3dEXIz3wRREEKpqvLuy6+I3WQtrKanWulXUqjtVrrynjEV0XTeCog+vyyL/rbqIanDs2RPu18ZNm8ooHY3fjoWe0vBJPsmwrnRnjcpna/tYggX4oJ4GX8M/ZeY7ROyOp23eD3HH3nCzmEJLmtublzl0apXtsZgCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si24krL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619E3C4CEC3;
-	Sun,  1 Sep 2024 16:56:47 +0000 (UTC)
+	 MIME-Version; b=GpDxMHyN3/9+BL2/XzuYCin8CzwnH0wu21Qbu+shdha3zt4V4VV49t8mkhX0gXoZpBmqlAChUxQAWHBbjrMUiiItLnHKiEXlIXnj/jaXNliER9PMJvwmNoIKxPrMnAnOtYnG5gdVR/lptdTqN2Fp7HbKVd+t/ReOFskp3TGrWp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y++Zb1uU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA22C4CEC3;
+	Sun,  1 Sep 2024 17:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209807;
-	bh=NDrCorSaE9aRALAopxQzA5td9CTuRK9pHMP0+o0QGFw=;
+	s=korg; t=1725210477;
+	bh=9NIYbjsqTj5szRiNABbGuON8wDhbSzb1bravGbNt7w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=si24krL0jcWtxg3F/usfePM+afCEBvNVrosjnVTvMjx7EDYjVCM2kDKuTXIDxHi3m
-	 649LjB03sAtzcO3GxiwdqfizJYd0ta4F0mYE9MnFdixB89WCdr5aafvpFIKeympO6Z
-	 BQxBMU2RSulRp5JoIji200c72OqH55I/ebewEgjE=
+	b=Y++Zb1uUVxx9EC04GcZdJdWLWeQ1d7Z8GMl9DC+kcbkVNrcDZ6vDNSLFPFRhPsqih
+	 ZyUbAfEn8igqe0MV9kVu8P/fPf7Wrqa45yO3nwnA5Tmf5AAtQ7++7eoc9t781Ym78M
+	 i6Er34heFoy5gkR02FFjPzXIbsSyq91H6NIafjYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/151] apparmor: fix policy_unpack_test on big endian systems
-Date: Sun,  1 Sep 2024 18:18:31 +0200
-Message-ID: <20240901160819.793471960@linuxfoundation.org>
+Subject: [PATCH 5.15 200/215] nfc: pn533: Add poll mod list filling check
+Date: Sun,  1 Sep 2024 18:18:32 +0200
+Message-ID: <20240901160830.911871584@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
+[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
 
-policy_unpack_test fails on big endian systems because data byte order
-is expected to be little endian but is generated in host byte order.
-This results in test failures such as:
+In case of im_protocols value is 1 and tm_protocols value is 0 this
+combination successfully passes the check
+'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
+But then after pn533_poll_create_mod_list() call in pn533_start_poll()
+poll mod list will remain empty and dev->poll_mod_count will remain 0
+which lead to division by zero.
 
- # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
-    not ok 3 policy_unpack_test_unpack_array_with_null_name
-    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
+Normally no im protocol has value 1 in the mask, so this combination is
+not expected by driver. But these protocol values actually come from
+userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
+broken or malicious program may pass a message containing a "bad"
+combination of protocol parameter values so that dev->poll_mod_count
+is not incremented inside pn533_poll_create_mod_list(), thus leading
+to division by zero.
+Call trace looks like:
+nfc_genl_start_poll()
+  nfc_start_poll()
+    ->start_poll()
+    pn533_start_poll()
 
-Add the missing endianness conversions when generating test data.
+Add poll mod list filling check.
 
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack_test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nfc/pn533/pn533.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
-index 533137f45361c..4951d9bef5794 100644
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -78,14 +78,14 @@ struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
- 	strcpy(buf + 3, TEST_U32_NAME);
- 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
--	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
-+	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index 939d27652a4c9..fceae9c127602 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1725,6 +1725,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
+ 	}
  
- 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
- 	*buf = AA_NAME;
- 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
- 	strcpy(buf + 3, TEST_U64_NAME);
- 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
--	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
-+	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
+ 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
++	if (!dev->poll_mod_count) {
++		nfc_err(dev->dev,
++			"Poll mod list is empty\n");
++		return -EINVAL;
++	}
  
- 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
- 	*buf = AA_NAME;
-@@ -101,7 +101,7 @@ struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
- 	strcpy(buf + 3, TEST_ARRAY_NAME);
- 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
--	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
-+	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
- 
- 	return e;
- }
+ 	/* Do not always start polling from the same modulation */
+ 	get_random_bytes(&rand_mod, sizeof(rand_mod));
 -- 
 2.43.0
 
