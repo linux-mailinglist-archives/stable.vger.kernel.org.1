@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F9A967B08
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8199679B9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85822281047
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE024282312
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E50381BD;
-	Sun,  1 Sep 2024 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CDB187322;
+	Sun,  1 Sep 2024 16:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS8XQ0IE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFCG0yOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76CD17C;
-	Sun,  1 Sep 2024 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A082186E3A;
+	Sun,  1 Sep 2024 16:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210246; cv=none; b=Ez57c4bi2Mu5/YVSKq1h4UieEkKNifecu58O82sKzC5+wHXPIjcH+/qujD6kVnTG2IdeJUB7rAW7p5gT9wVT79T14gPPm2yI8sSJ2Rbg7ceG0VmEB65zOz3E52bAJfCkC3tZ4oQsVpwO+hwSWvd6o661kXwnBIsuhRQ7g6BtpQY=
+	t=1725209212; cv=none; b=uKYhZQKiBFxyn2N1GnBbolAeI04BqoDV2FsbPltuoTVDf+ZMowu/926TOIxElSr1NXeovChPcu6tXDndsaDs9ohlDG06LefOHc6TnLtD2KDyZZY8mrpvCOeh/0R3TON/I1UyWUy62YFNUzIO91eGnp8AJlvjMujYNmK7/QvPvo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210246; c=relaxed/simple;
-	bh=WGPLbK+blPvBnlo9yHnGgaoZ41f76vwRIdfhKui38Ms=;
+	s=arc-20240116; t=1725209212; c=relaxed/simple;
+	bh=rXp8FFZqksAoqzxsRluHqnpA4LbKdDDdYGpSXnz1Nj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jkx3gRAig0bZInSuI/LQcwvYWIAtXxccSloXw9suN1DI4jBjH7zWls358ftcV+OceE5gGAif+T784zimO/Oi8fnemswHsXGfuKcK+ym9ygS+02clPdrQb9UexEqgo8g46YfEUVWhyWjQrH6CuOcoS9u0mXnZ7rtsVPCTvf7ih6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS8XQ0IE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B31C4CEC3;
-	Sun,  1 Sep 2024 17:04:05 +0000 (UTC)
+	 MIME-Version; b=g9zfkVPbjbYn/12/8t6Are/6ZOaAaoF2X4DvWXs6yYGYMZ2BY8wTFyiOQtESZgOER3wLLA0fefQgz8BcgRkEi6qN9Xh2YumNuVNuAFf3+Xx1lmf/+27Q5I6vnz08eH14OeJpOXds/Vt2fbv7eKrgMtCBovVpXPqgK4T+tPwszOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFCG0yOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48D0C4CECC;
+	Sun,  1 Sep 2024 16:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210246;
-	bh=WGPLbK+blPvBnlo9yHnGgaoZ41f76vwRIdfhKui38Ms=;
+	s=korg; t=1725209212;
+	bh=rXp8FFZqksAoqzxsRluHqnpA4LbKdDDdYGpSXnz1Nj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pS8XQ0IEcD6YINgFAJl7YQiagug2yV0OrlrXcSU2ejVglykOtZfOxZmhNT+hIm3Ep
-	 PQYZympLLEp/7pZqhMwk+vBfumdD1vyU571alQAdeDYBuzVzBk6k4mxrgtzPPdQSOp
-	 SCcqep2iJ70WAuHRryPrBH99M9OQhGE3YGtmwMQI=
+	b=pFCG0yOaND/BBeBXprPP8MPG3jZSSB+H1MvRJNB0ZwU7cwOu2cFaVUFK/WJBOG+o8
+	 kfVAQOtr7btP3QMePXGwp6BjW9hQeGqkyLvCcwSBR16pm0FDSfNIyOdOW1OWzHujkV
+	 M7Z3EJx7PzS1OKAe2+rec5E+Zw0brCbZogMg/j4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/215] platform/surface: aggregator: Fix warning when controller is destroyed in probe
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 18/71] drm/amdgpu: align pp_power_profile_mode with kernel docs
 Date: Sun,  1 Sep 2024 18:17:23 +0200
-Message-ID: <20240901160828.318198280@linuxfoundation.org>
+Message-ID: <20240901160802.577187576@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit bc923d594db21bee0ead128eb4bb78f7e77467a4 ]
+commit 8f614469de248a4bc55fb07e55d5f4c340c75b11 upstream.
 
-There is a small window in ssam_serial_hub_probe() where the controller
-is initialized but has not been started yet. Specifically, between
-ssam_controller_init() and ssam_controller_start(). Any failure in this
-window, for example caused by a failure of serdev_device_open(),
-currently results in an incorrect warning being emitted.
+The kernel doc says you need to select manual mode to
+adjust this, but the code only allows you to adjust it when
+manual mode is not selected.  Remove the manual mode check.
 
-In particular, any failure in this window results in the controller
-being destroyed via ssam_controller_destroy(). This function checks the
-state of the controller and, in an attempt to validate that the
-controller has been cleanly shut down before we try and deallocate any
-resources, emits a warning if that state is not SSAM_CONTROLLER_STOPPED.
-
-However, since we have only just initialized the controller and have not
-yet started it, its state is SSAM_CONTROLLER_INITIALIZED. Note that this
-is the only point at which the controller has this state, as it will
-change after we start the controller with ssam_controller_start() and
-never revert back. Further, at this point no communication has taken
-place and the sender and receiver threads have not been started yet (and
-we may not even have an open serdev device either).
-
-Therefore, it is perfectly safe to call ssam_controller_destroy() with a
-state of SSAM_CONTROLLER_INITIALIZED. This, however, means that the
-warning currently being emitted is incorrect. Fix it by extending the
-check.
-
-Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20240811124645.246016-1-luzmaximilian@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit bbb05f8a9cd87f5046d05a0c596fddfb714ee457)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/aggregator/controller.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
-index 5542b768890c9..cc78687d6874c 100644
---- a/drivers/platform/surface/aggregator/controller.c
-+++ b/drivers/platform/surface/aggregator/controller.c
-@@ -1354,7 +1354,8 @@ void ssam_controller_destroy(struct ssam_controller *ctrl)
- 	if (ctrl->state == SSAM_CONTROLLER_UNINITIALIZED)
- 		return;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1870,8 +1870,7 @@ static int smu_adjust_power_state_dynami
+ 		smu_dpm_ctx->dpm_level = level;
+ 	}
  
--	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED);
-+	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED &&
-+		ctrl->state != SSAM_CONTROLLER_INITIALIZED);
+-	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+-		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
++	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
+ 		index = fls(smu->workload_mask);
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+ 		workload[0] = smu->workload_setting[index];
+@@ -1948,8 +1947,7 @@ static int smu_switch_power_profile(void
+ 		workload[0] = smu->workload_setting[index];
+ 	}
  
- 	/*
- 	 * Note: New events could still have been received after the previous
--- 
-2.43.0
-
+-	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+-		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
++	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
+ 		smu_bump_power_profile_mode(smu, workload, 0);
+ 
+ 	return 0;
 
 
 
