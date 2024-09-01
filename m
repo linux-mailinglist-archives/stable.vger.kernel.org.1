@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-72227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142609679C5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658B7967990
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ADF2810C8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 088CEB21650
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E9A17E919;
-	Sun,  1 Sep 2024 16:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4329185920;
+	Sun,  1 Sep 2024 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BckyaKJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItV7Wd9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749401C68C;
-	Sun,  1 Sep 2024 16:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D152184544;
+	Sun,  1 Sep 2024 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209249; cv=none; b=KGSopL1/ZXS3N0NeyoBqapa8NnBvt+tCggd+V9TiXTG+oEnO+Ai2mfDctuoH/4Jp42s48cjcAYZsLwnVa541r1hk0wDPPQgQU+ZbEuPk6PS9gJohjQ9u2NstijikZ8jYvPxliaD19HGsRRvqSx6jK4HR5I9k3x0kYfHNFC8si08=
+	t=1725209108; cv=none; b=n086am+p0NMRO+togNH7panpI62Q76DzqADUUFrSoav/9ZqRvUMnA4uT4OtYS/TjvZVoQZm3+EyMGts8vwpa+1u42EMCvIllirv8fBnJ9r9VuBemrNgIufclCCwCraK55E6w0Eyzcin/FiTioWuPrn/038/eMTS+VQ11tga2FFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209249; c=relaxed/simple;
-	bh=1vS6b1KcBs3cSa07fFj9k50LoREQi+9JmJHmllSQGaI=;
+	s=arc-20240116; t=1725209108; c=relaxed/simple;
+	bh=pDv6GNgY/pKr50dwUjctJR0rsHAntyH9HTeFbH78ioY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wrox4X7HNbR73RIkKKNqaPeK7mh/pP7/IEinGrmwow1FbMGrzNWGgvCCklQ0j0L1pDNzf4PTFf8Fv9qffXXotu+Gz6M0UaoVtlmbblblN3aunIrTwt3OwhSb5mSfIwhyxBa5aRCAJ8mVVeC/cztXJa3Zb+oSenioJRpX9O2taeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BckyaKJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00590C4CEC3;
-	Sun,  1 Sep 2024 16:47:28 +0000 (UTC)
+	 MIME-Version; b=UqXKtSqenBoDTZVyFXORwiSx8w1AoXrHMFrGncGLbhJQDCt5fYRJZXxzsNv+tJh6PQmO/Lsumg1aiWDyxPh86xQiuLW26+JwyNE0p9Wj5lPzd6ETVQZuIGVDAeG5F+ffnjtMzNa2Z8arz5plGb5si2sabUzLBHNbCa03IJpnOqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItV7Wd9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46C5C4CEC3;
+	Sun,  1 Sep 2024 16:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209249;
-	bh=1vS6b1KcBs3cSa07fFj9k50LoREQi+9JmJHmllSQGaI=;
+	s=korg; t=1725209108;
+	bh=pDv6GNgY/pKr50dwUjctJR0rsHAntyH9HTeFbH78ioY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BckyaKJOqdKm/n4WVrBUN92Xx0KnR1kUvombW2rpqxtp3KaZbdkD+ztjWyf/7OIuz
-	 mqvXJSh3LGbFjcruMlLo+iTl5laEwcRNvSc8j26blVfY1AI5VGK+H9CHDwZcocyjqN
-	 80v26P69Uc8Le9842bshxGDMX3mhozslxRcYxZns=
+	b=ItV7Wd9jCKNL/lmpEZNZcbHcI2aiMDkwFYsZveVpjF9UckqoBWYILgcDIy8T+mymk
+	 +e4XsipZhrWnWyMoq7v0Ql83Vfmo4r2+eUlUkTckin2tA/nBwbMDeosEJSRIpeomvD
+	 U1U3xiwxdug4IEh+Xg++nTUwFFT8VIbyX6qZDxMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 46/71] ethtool: check device is present when getting link settings
+	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
+	Maulik Shah <quic_mkshah@quicinc.com>,
+	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Nikita Travkin <nikita@trvn.ru>
+Subject: [PATCH 5.4 125/134] soc: qcom: cmd-db: Map shared memory as WC, not WB
 Date: Sun,  1 Sep 2024 18:17:51 +0200
-Message-ID: <20240901160803.628894335@linuxfoundation.org>
+Message-ID: <20240901160814.783551240@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 
-[ Upstream commit a699781c79ecf6cfe67fb00a0331b4088c7c8466 ]
+commit f9bb896eab221618927ae6a2f1d566567999839d upstream.
 
-A sysfs reader can race with a device reset or removal, attempting to
-read device state when the device is not actually present. eg:
+Linux does not write into cmd-db region. This region of memory is write
+protected by XPU. XPU may sometime falsely detect clean cache eviction
+as "write" into the write protected region leading to secure interrupt
+which causes an endless loop somewhere in Trust Zone.
 
-     [exception RIP: qed_get_current_link+17]
-  #8 [ffffb9e4f2907c48] qede_get_link_ksettings at ffffffffc07a994a [qede]
-  #9 [ffffb9e4f2907cd8] __rh_call_get_link_ksettings at ffffffff992b01a3
- #10 [ffffb9e4f2907d38] __ethtool_get_link_ksettings at ffffffff992b04e4
- #11 [ffffb9e4f2907d90] duplex_show at ffffffff99260300
- #12 [ffffb9e4f2907e38] dev_attr_show at ffffffff9905a01c
- #13 [ffffb9e4f2907e50] sysfs_kf_seq_show at ffffffff98e0145b
- #14 [ffffb9e4f2907e68] seq_read at ffffffff98d902e3
- #15 [ffffb9e4f2907ec8] vfs_read at ffffffff98d657d1
- #16 [ffffb9e4f2907f00] ksys_read at ffffffff98d65c3f
- #17 [ffffb9e4f2907f38] do_syscall_64 at ffffffff98a052fb
+The only reason it is working right now is because Qualcomm Hypervisor
+maps the same region as Non-Cacheable memory in Stage 2 translation
+tables. The issue manifests if we want to use another hypervisor (like
+Xen or KVM), which does not know anything about those specific mappings.
 
- crash> struct net_device.state ffff9a9d21336000
-    state = 5,
+Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
+removes dependency on correct mappings in Stage 2 tables. This patch
+fixes the issue by updating the mapping to MEMREMAP_WC.
 
-state 5 is __LINK_STATE_START (0b1) and __LINK_STATE_NOCARRIER (0b100).
-The device is not present, note lack of __LINK_STATE_PRESENT (0b10).
+I tested this on SA8155P with Xen.
 
-This is the same sort of panic as observed in commit 4224cfd7fb65
-("net-sysfs: add check for netdevice being present to speed_show").
-
-There are many other callers of __ethtool_get_link_ksettings() which
-don't have a device presence check.
-
-Move this check into ethtool to protect all callers.
-
-Fixes: d519e17e2d01 ("net: export device speed and duplex via sysfs")
-Fixes: 4224cfd7fb65 ("net-sysfs: add check for netdevice being present to speed_show")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/8bae218864beaa44ed01628140475b9bf641c5b0.1724393671.git.jamie.bainbridge@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+Tested-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net-sysfs.c | 2 +-
- net/ethtool/ioctl.c  | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/cmd-db.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index fdf3308b03350..8a06f97320e04 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -215,7 +215,7 @@ static ssize_t speed_show(struct device *dev,
- 	if (!rtnl_trylock())
- 		return restart_syscall();
+--- a/drivers/soc/qcom/cmd-db.c
++++ b/drivers/soc/qcom/cmd-db.c
+@@ -247,7 +247,7 @@ static int cmd_db_dev_probe(struct platf
+ 		return -EINVAL;
+ 	}
  
--	if (netif_running(netdev) && netif_device_present(netdev)) {
-+	if (netif_running(netdev)) {
- 		struct ethtool_link_ksettings cmd;
- 
- 		if (!__ethtool_get_link_ksettings(netdev, &cmd))
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index e31d1247b9f08..442c4c343e155 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -445,6 +445,9 @@ int __ethtool_get_link_ksettings(struct net_device *dev,
- 	if (!dev->ethtool_ops->get_link_ksettings)
- 		return -EOPNOTSUPP;
- 
-+	if (!netif_device_present(dev))
-+		return -ENODEV;
-+
- 	memset(link_ksettings, 0, sizeof(*link_ksettings));
- 	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
- }
--- 
-2.43.0
-
+-	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WB);
++	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
+ 	if (!cmd_db_header) {
+ 		ret = -ENOMEM;
+ 		cmd_db_header = NULL;
 
 
 
