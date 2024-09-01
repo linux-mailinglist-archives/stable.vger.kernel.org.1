@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B5C967A48
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD05967AF5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC197B20D27
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 695411C21530
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA9C17E900;
-	Sun,  1 Sep 2024 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E7426AC1;
+	Sun,  1 Sep 2024 17:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4YlUDqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjCMnDBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAB01DFD1;
-	Sun,  1 Sep 2024 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983FA2C6AF;
+	Sun,  1 Sep 2024 17:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209635; cv=none; b=DCBJndmQYduMmbOVXLyBmwqfQQWCum/kuBff50Gs/ja+BmiV27PprLmkhHtc60/MPEuHS22j4CTxo8+ijF05Qs5M7k52ccJMr3w7AA7l20wlxbesAkquQgyKDKd7JlOw8Fflp85ctLUY8KZPyCSdVR4C1XTivCVjNZiIKHRJLHo=
+	t=1725210182; cv=none; b=EQjcLYnTh6QIOcjJOUyb3qA7q4Jv5tYOnvm/yhyp9C6tnZAXc9coC2oGMlmLm1pc2x3k0PMK1pPoo3hpjGtOSKWdgFXG+KTE4RESCRPFfwVQnQOeAvEWoNKuU4an2DrtukSMQXbb5axVNSzDYRB+eduCQ/8yfcLlJf17f2RmZbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209635; c=relaxed/simple;
-	bh=MinyPCOWysreGpc1qXkm6YwrwNBPiDb3oPUTMTfAKP4=;
+	s=arc-20240116; t=1725210182; c=relaxed/simple;
+	bh=geVUrgiKo87CQgIv1cr9YSmVjiyPbuAixOsz/ZfmuOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzDbA8ZvXHGnl0B1w9glXl4H0KtMKR35hZ0SQ4QGU/lo428nQm49e0tg/tKxOYqh8nTeEDjVtow1df8jI8KfZ1KnOeeN1fR55tQNSFM8DgxGhv2uHa8CN+b4V6DZabiD3mRqk9t+KHM9B4uKFNXoBc4HwBzCojG//l2GtGCiV1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4YlUDqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C8FC4CEC3;
-	Sun,  1 Sep 2024 16:53:53 +0000 (UTC)
+	 MIME-Version; b=PgdKip4beDmjKUhShrA5RibuyqVAUoB1w/WqcRpZo/N41daVLYvfywJK1rv5EKeMWq86IoaM+ZieHVQSwKdDHHCfcO+z4CB24l3mpZN04vaL5nl5GIf0bFdDOFEY4Y+q2tGX2aMXYL0F7DNRoYmo+EgV5XVYKJEHFajln0sGa8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjCMnDBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC5BC4CEC4;
+	Sun,  1 Sep 2024 17:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209634;
-	bh=MinyPCOWysreGpc1qXkm6YwrwNBPiDb3oPUTMTfAKP4=;
+	s=korg; t=1725210182;
+	bh=geVUrgiKo87CQgIv1cr9YSmVjiyPbuAixOsz/ZfmuOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4YlUDqpqyp2kG5ywo/GETNm4d8hzL8oNR6ia5SQ3bbgt3EiU3z7Erx7rjxu/xWYv
-	 PKluik1HYow9xrTRyVbGBAlYyxpCUfWKcNnqRKLOwnBKp16WFKZARx/U/fk5Ky4oin
-	 SK/rK0DihcAcPifEL6Lb/IB3TKJ6Jav8z/xIKfOQ=
+	b=OjCMnDBnlpNBWOlDTcfUWRlLVL8Z2ypalEvRUkQ2a8HJcvrSx+dKaBQ/LOMCjArSi
+	 KEhvOl4Fq0OBpSNzcWb8AXQpXdBAZLBLlIz3uj56/iv3uwogZnUxq1f8zX2G79n+la
+	 K2XaZEL+Hzw+7hVMm4eqkh4Hgo7BbGeof14B1mhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/151] btrfs: send: handle unexpected data in header buffer in begin_cmd()
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 114/215] NFSD: Replace nfsd_prune_bucket()
 Date: Sun,  1 Sep 2024 18:17:06 +0200
-Message-ID: <20240901160816.600950547@linuxfoundation.org>
+Message-ID: <20240901160827.660693989@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
+[ Upstream commit a9507f6af1450ed26a4a36d979af518f5bb21e5d ]
 
-Change BUG_ON to a proper error handling in the unlikely case of seeing
-data when the command is started. This is supposed to be reset when the
-command is finished (send_cmd, send_encoded_extent).
+Enable nfsd_prune_bucket() to drop the bucket lock while calling
+kfree(). Use the same pattern that Jeff recently introduced in the
+NFSD filecache.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A few percpu operations are moved outside the lock since they
+temporarily disable local IRQs which is expensive and does not
+need to be done while the lock is held.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: c135e1269f34 ("NFSD: Refactor the duplicate reply cache shrinker")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/nfsd/nfscache.c |   78 ++++++++++++++++++++++++++++++++++++++++++-----------
+ fs/nfsd/trace.h    |   22 ++++++++++++++
+ 2 files changed, 85 insertions(+), 15 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index a5ed01d49f069..a9e72f42e91e0 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -685,7 +685,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
- 	if (WARN_ON(!sctx->send_buf))
- 		return -EINVAL;
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -117,6 +117,21 @@ static void nfsd_cacherep_free(struct sv
+ 	kmem_cache_free(drc_slab, rp);
+ }
  
--	BUG_ON(sctx->send_size);
-+	if (unlikely(sctx->send_size != 0)) {
-+		btrfs_err(sctx->send_root->fs_info,
-+			  "send: command header buffer not empty cmd %d offset %llu",
-+			  cmd, sctx->send_off);
-+		return -EINVAL;
++static unsigned long
++nfsd_cacherep_dispose(struct list_head *dispose)
++{
++	struct svc_cacherep *rp;
++	unsigned long freed = 0;
++
++	while (!list_empty(dispose)) {
++		rp = list_first_entry(dispose, struct svc_cacherep, c_lru);
++		list_del(&rp->c_lru);
++		nfsd_cacherep_free(rp);
++		freed++;
 +	}
++	return freed;
++}
++
+ static void
+ nfsd_cacherep_unlink_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
+ 			    struct svc_cacherep *rp)
+@@ -259,6 +274,41 @@ nfsd_cache_bucket_find(__be32 xid, struc
+ 	return &nn->drc_hashtbl[hash];
+ }
  
- 	sctx->send_size += sizeof(*hdr);
- 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
--- 
-2.43.0
-
++/*
++ * Remove and return no more than @max expired entries in bucket @b.
++ * If @max is zero, do not limit the number of removed entries.
++ */
++static void
++nfsd_prune_bucket_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
++			 unsigned int max, struct list_head *dispose)
++{
++	unsigned long expiry = jiffies - RC_EXPIRE;
++	struct svc_cacherep *rp, *tmp;
++	unsigned int freed = 0;
++
++	lockdep_assert_held(&b->cache_lock);
++
++	/* The bucket LRU is ordered oldest-first. */
++	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
++		/*
++		 * Don't free entries attached to calls that are still
++		 * in-progress, but do keep scanning the list.
++		 */
++		if (rp->c_state == RC_INPROG)
++			continue;
++
++		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
++		    time_before(expiry, rp->c_timestamp))
++			break;
++
++		nfsd_cacherep_unlink_locked(nn, b, rp);
++		list_add(&rp->c_lru, dispose);
++
++		if (max && ++freed > max)
++			break;
++	}
++}
++
+ static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+ 			 unsigned int max)
+ {
+@@ -282,11 +332,6 @@ static long prune_bucket(struct nfsd_drc
+ 	return freed;
+ }
+ 
+-static long nfsd_prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn)
+-{
+-	return prune_bucket(b, nn, 3);
+-}
+-
+ /*
+  * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
+  * Also prune the oldest ones when the total exceeds the max number of entries.
+@@ -442,6 +487,8 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	__wsum			csum;
+ 	struct nfsd_drc_bucket	*b;
+ 	int type = rqstp->rq_cachetype;
++	unsigned long freed;
++	LIST_HEAD(dispose);
+ 	int rtn = RC_DOIT;
+ 
+ 	rqstp->rq_cacherep = NULL;
+@@ -466,20 +513,18 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	found = nfsd_cache_insert(b, rp, nn);
+ 	if (found != rp)
+ 		goto found_entry;
+-
+-	nfsd_stats_rc_misses_inc();
+ 	rqstp->rq_cacherep = rp;
+ 	rp->c_state = RC_INPROG;
++	nfsd_prune_bucket_locked(nn, b, 3, &dispose);
++	spin_unlock(&b->cache_lock);
+ 
++	freed = nfsd_cacherep_dispose(&dispose);
++	trace_nfsd_drc_gc(nn, freed);
++
++	nfsd_stats_rc_misses_inc();
+ 	atomic_inc(&nn->num_drc_entries);
+ 	nfsd_stats_drc_mem_usage_add(nn, sizeof(*rp));
+-
+-	nfsd_prune_bucket(b, nn);
+-
+-out_unlock:
+-	spin_unlock(&b->cache_lock);
+-out:
+-	return rtn;
++	goto out;
+ 
+ found_entry:
+ 	/* We found a matching entry which is either in progress or done. */
+@@ -517,7 +562,10 @@ found_entry:
+ 
+ out_trace:
+ 	trace_nfsd_drc_found(nn, rqstp, rtn);
+-	goto out_unlock;
++out_unlock:
++	spin_unlock(&b->cache_lock);
++out:
++	return rtn;
+ }
+ 
+ /**
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -1260,6 +1260,28 @@ TRACE_EVENT(nfsd_drc_mismatch,
+ 		__entry->ingress)
+ );
+ 
++TRACE_EVENT_CONDITION(nfsd_drc_gc,
++	TP_PROTO(
++		const struct nfsd_net *nn,
++		unsigned long freed
++	),
++	TP_ARGS(nn, freed),
++	TP_CONDITION(freed > 0),
++	TP_STRUCT__entry(
++		__field(unsigned long long, boot_time)
++		__field(unsigned long, freed)
++		__field(int, total)
++	),
++	TP_fast_assign(
++		__entry->boot_time = nn->boot_time;
++		__entry->freed = freed;
++		__entry->total = atomic_read(&nn->num_drc_entries);
++	),
++	TP_printk("boot_time=%16llx total=%d freed=%lu",
++		__entry->boot_time, __entry->total, __entry->freed
++	)
++);
++
+ TRACE_EVENT(nfsd_cb_args,
+ 	TP_PROTO(
+ 		const struct nfs4_client *clp,
 
 
 
