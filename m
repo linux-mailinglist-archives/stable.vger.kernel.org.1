@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-72402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CA9967A7C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1268967B4A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82641C20C3A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B2EF1C21645
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF89181334;
-	Sun,  1 Sep 2024 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFFD17ADE1;
+	Sun,  1 Sep 2024 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgpK+OAt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ5b2htK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A0F2A1B8;
-	Sun,  1 Sep 2024 16:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC1626AC1;
+	Sun,  1 Sep 2024 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209805; cv=none; b=nWnNOsiWeI3gBxsMpRNZ20tQ1LDTDBuEsNsDO2u7fc4tdr2+UDmEv0aKz3QZou+GD9k92rQ2AYPtrfxI6SmxLQCVb3eREpDKl69baoKNmEYCOuG+ro0Uv+gkRh/MJSMCntrCzTi2NAga2PzuZG6H0GiUSUxusJ7ai0lFnychFAA=
+	t=1725210468; cv=none; b=bX0E2UeKvvtZGt98t7FVtCfinm5fYu54nad6W+cdgATvdSGi7gFeZFRNCfiEPNI4OtM8hB5nTgD9IIo1Kvz2oLlpFf/XXLZX0Q8A1qU0uWtK/O7njsJfUzLOTgePJAMuQgDQObkbbcWv5VLXtzPn9BgatMs87XusVj/6RFm57A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209805; c=relaxed/simple;
-	bh=4x3vdYn3tsQJle9kxURjx0qaliWRS7PAElZyW4Ze0zc=;
+	s=arc-20240116; t=1725210468; c=relaxed/simple;
+	bh=mRfr8sOHptqrXE9LNoxNk8hmgLm/4OVaG2LrJ8bswkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAmSz+5qoGG6Hqo+D/froc8JenB61itXBrNTuIujcrFvyxAf1RHaMkejjnUn0xnZxZEmWYb6gLFd9kOGbkxI7LyNLY4gjtbF5udACFKnKDtQghGuynD2QU4+dtNsV2WWaJsJIq79RxBim/NYdCRL1d0rMc/nmogH650i0cmjIGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgpK+OAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED8AC4CEC3;
-	Sun,  1 Sep 2024 16:56:44 +0000 (UTC)
+	 MIME-Version; b=rdxkzVPwdx+Qad6XljrWxetqNp0WCAjZdkRoEtBnZa8dg4PAva/3DRiR49cnMwdhQDPgfblQjwKPXL14z5w05CFc8RkfccmUfpiGEb3WihWri2quleUCvYZcNfAzGM++UnW8/E863zSEGfP2skifkYs5cOqyWRdWzZVDtppPtmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ5b2htK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9F0C4CEC3;
+	Sun,  1 Sep 2024 17:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209804;
-	bh=4x3vdYn3tsQJle9kxURjx0qaliWRS7PAElZyW4Ze0zc=;
+	s=korg; t=1725210467;
+	bh=mRfr8sOHptqrXE9LNoxNk8hmgLm/4OVaG2LrJ8bswkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgpK+OAtiGG07prAGQVeeOCkFjlPktR7VZLjWkSzU1r5I4EXBz9GeTQPUKycLlmrn
-	 xcLeJIhsw8BzAW13FZXMCV6Bb6Xfslg4d5m0GaNBSKKmh3aNqsD63gzh+62yUMJAh4
-	 pOprBZrEuRKxv+eSq97HscHWIW0RARbUDYKqpaoI=
+	b=aQ5b2htKv2tTLVp+Rwh81t2Y8QA/3EKSj28F/6OrjW0WbmoxaW4H0zeGbs2yJTtQM
+	 EMN7Osuff1F6LK5qG5cc1JHNr5Jek8/Xz1O3ZvnBg/QqbJUec3dZNsvCapijUbeTCI
+	 BnfUfbyfqCnhuk/KGY3lOMhzHY90IhiR/ln5loU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
-	Ben Hutchings <benh@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andreas Schultz <aschultz@tpip.net>,
+	Harald Welte <laforge@gnumonks.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/151] scsi: aacraid: Fix double-free on probe failure
+Subject: [PATCH 5.15 198/215] gtp: fix a potential NULL pointer dereference
 Date: Sun,  1 Sep 2024 18:18:30 +0200
-Message-ID: <20240901160819.755888474@linuxfoundation.org>
+Message-ID: <20240901160830.837587827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
+[ Upstream commit defd8b3c37b0f9cb3e0f60f47d3d78d459d57fda ]
 
-aac_probe_one() calls hardware-specific init functions through the
-aac_driver_ident::init pointer, all of which eventually call down to
-aac_init_adapter().
+When sockfd_lookup() fails, gtp_encap_enable_socket() returns a
+NULL pointer, but its callers only check for error pointers thus miss
+the NULL pointer case.
 
-If aac_init_adapter() fails after allocating memory for aac_dev::queues,
-it frees the memory but does not clear that member.
+Fix it by returning an error pointer with the error code carried from
+sockfd_lookup().
 
-After the hardware-specific init function returns an error,
-aac_probe_one() goes down an error path that frees the memory pointed to
-by aac_dev::queues, resulting.in a double-free.
+(I found this bug during code inspection.)
 
-Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
-Link: https://bugs.debian.org/1075855
-Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 1e3a3abd8b28 ("gtp: make GTP sockets in gtp_newlink optional")
+Cc: Andreas Schultz <aschultz@tpip.net>
+Cc: Harald Welte <laforge@gnumonks.org>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240825191638.146748-1-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/aacraid/comminit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/gtp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index 355b16f0b1456..34e45c87cae03 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -642,6 +642,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 3bc9149e23a7c..40c94df382e54 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -817,7 +817,7 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
+ 	sock = sockfd_lookup(fd, &err);
+ 	if (!sock) {
+ 		pr_debug("gtp socket fd=%d not found\n", fd);
+-		return NULL;
++		return ERR_PTR(err);
+ 	}
  
- 	if (aac_comm_init(dev)<0){
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 	/*
-@@ -649,6 +650,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 	 */
- 	if (aac_fib_setup(dev) < 0) {
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 		
+ 	sk = sock->sk;
 -- 
 2.43.0
 
