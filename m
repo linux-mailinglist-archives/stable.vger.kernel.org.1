@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBE0967AD9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E56496780C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69C8D281E7D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801BE1C20DDB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1577426AE8;
-	Sun,  1 Sep 2024 17:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F9D183090;
+	Sun,  1 Sep 2024 16:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyUjG3No"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O96AMlwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C625417C;
-	Sun,  1 Sep 2024 17:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A4C44C97;
+	Sun,  1 Sep 2024 16:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210103; cv=none; b=Vma7XCxv8b+X07HcUV6YMfxX9pQYoZB6+Asrti4hiOsKoBN2VGxiz4RnY76mExpZA+1gk0vzm+t371n+DGZH5k5/dvfufe6GE5/fcC8sBvlgDPWtA4EK740h4O6TjGpRxJtHs3cEZJXMsDBgirUWUAFexc7WKg09exNG0h2oBP4=
+	t=1725208037; cv=none; b=aa8eI4uViwFz0CaIK5JL3KUXj7B4wxYr7Y3LZSJ2BUPpcLe+JG9+taPruqxAY9KUmN6LXqYkAjJtR6zc04ZYRyh7cJqyW9sUdBY45+XC8t2PtmH+jnkQglOqd+Y1/C3HkjdOGjRpYkPnlZQtMzMK0KVHrn/cULW0LETovHQRojc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210103; c=relaxed/simple;
-	bh=SsCIuGjM0qQ87CNI3JVqLGTdSYRE2jh4FIBwqRLw7p4=;
+	s=arc-20240116; t=1725208037; c=relaxed/simple;
+	bh=vgBtFu8xTGWD3HTi4ZngssjuUplN6TMz51PyNmHAjus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4kc2WYV34Cd9MNNiZAB9+7P3lEiQiJ9OZt+Ps3zjTrfkMDwuxnlh1R2e2UBMAFAaYwpMLZJ7SlPh2rgJc7t3RVDZ+tknJvtIqORX2OgXhV2ZGlD2sJXqw7eMAjjiiTz+oLh1nOrxpEoEPDCnj9Jnet/WwwPrmUzNNRidTKrt/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyUjG3No; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE6EC4CEC3;
-	Sun,  1 Sep 2024 17:01:43 +0000 (UTC)
+	 MIME-Version; b=jJMezsZqgywY0phR2GYrJEv8W074Oc+eHqFbKwxIz4E+eN0aSM6sITI9c1Vfmf7Qk1xiHh39sx0/xwyhHo/kvS2ATP8DYIIp2sNDMWgz2qEsyTH60snOfsQSN9Wlxcn/WdGTKnZjX8A2wYwPgU0IyxBkkKyDSKyaVtQMsWcvnEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O96AMlwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDCCC4CEC3;
+	Sun,  1 Sep 2024 16:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210103;
-	bh=SsCIuGjM0qQ87CNI3JVqLGTdSYRE2jh4FIBwqRLw7p4=;
+	s=korg; t=1725208037;
+	bh=vgBtFu8xTGWD3HTi4ZngssjuUplN6TMz51PyNmHAjus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyUjG3No9QNAG75EzRhVHuo6PGqfDGpW+pxTyaRnzU0ajoT8u0gf0nhZ02GsgObAn
-	 FOFrZke0UuAkJ9WuMmZ5j6VmHdrSUE4/p0T4zXj87ZTr0E59IpN+86LEHIHpMe85Z4
-	 8ouDiQo+tgXXjemf187NwHcW3FA6v28/JOt2VKxA=
+	b=O96AMlweZgTW7OHCCMSVzSfeXhTcB9iSwS0+DXK3cFSSjAYwkK6FTcV8OWvObjmuJ
+	 uFKsze668kjEWa5velOVO31nSXk4Fb/iGSamWbKUIPKOW80RJWrCebPhBw3b+P+fqw
+	 lE6DIjWTwKJGXpHKOFGhm/e3Tl3cTvochHGrUelU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/215] btrfs: send: handle unexpected data in header buffer in begin_cmd()
+Subject: [PATCH 6.6 54/93] Bluetooth: hci_core: Fix not handling hibernation actions
 Date: Sun,  1 Sep 2024 18:16:41 +0200
-Message-ID: <20240901160826.717650748@linuxfoundation.org>
+Message-ID: <20240901160809.398051398@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
+[ Upstream commit 18b3256db76bd1130965acd99fbd38f87c3e6950 ]
 
-Change BUG_ON to a proper error handling in the unlikely case of seeing
-data when the command is started. This is supposed to be reset when the
-command is finished (send_cmd, send_encoded_extent).
+This fixes not handling hibernation actions on suspend notifier so they
+are treated in the same way as regular suspend actions.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9952d90ea288 ("Bluetooth: Handle PM_SUSPEND_PREPARE and PM_POST_SUSPEND")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index c2842e892e4ed..27a33dfa93212 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -695,7 +695,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
- 	if (WARN_ON(!sctx->send_buf))
- 		return -EINVAL;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index e660b3d661dae..1b56355c40eaf 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2394,10 +2394,16 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
+ 	/* To avoid a potential race with hci_unregister_dev. */
+ 	hci_dev_hold(hdev);
  
--	BUG_ON(sctx->send_size);
-+	if (unlikely(sctx->send_size != 0)) {
-+		btrfs_err(sctx->send_root->fs_info,
-+			  "send: command header buffer not empty cmd %d offset %llu",
-+			  cmd, sctx->send_off);
-+		return -EINVAL;
+-	if (action == PM_SUSPEND_PREPARE)
++	switch (action) {
++	case PM_HIBERNATION_PREPARE:
++	case PM_SUSPEND_PREPARE:
+ 		ret = hci_suspend_dev(hdev);
+-	else if (action == PM_POST_SUSPEND)
++		break;
++	case PM_POST_HIBERNATION:
++	case PM_POST_SUSPEND:
+ 		ret = hci_resume_dev(hdev);
++		break;
 +	}
  
- 	sctx->send_size += sizeof(*hdr);
- 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
+ 	if (ret)
+ 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
 -- 
 2.43.0
 
