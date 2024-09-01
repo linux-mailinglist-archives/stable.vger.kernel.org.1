@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6B5967914
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7AD9679F3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697022815F5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6DC281803
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6477218308A;
-	Sun,  1 Sep 2024 16:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845EA18306C;
+	Sun,  1 Sep 2024 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEEOayUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPbJ2ry7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C0417E46E;
-	Sun,  1 Sep 2024 16:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4370E16B391;
+	Sun,  1 Sep 2024 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208765; cv=none; b=XgMn16aKVn2RbhPq2PsIuJ+40yXI+4F7KrWpm0FZbNXt1AHuXlfMYQV0P8ofKsO2DX4DGv5n4vgID+aIiq6DqlAR/i0gxlP82NBuus0IVlF73CdP4Bt1jlRkEeYFO6ppk/SZPBgRhjTxsCpxj+c9c1hWhNoAGghEiAJqUPxZZUY=
+	t=1725209383; cv=none; b=JoUxpBCeAywrT4Zdq7qBAQIUasHDsnJjRjZZM8uIHl60uHESW6qClqb9lgivrmINHh0xd3bpCCV6KXZABpq4Y1YkGbCR+JhAJvDYdfWdLPJ+0GlIKbF6KYPXv/Cb2Z/xKFjENrl1IwNrrGiRSnG+caemztaVsy6RUthyJPxlP5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208765; c=relaxed/simple;
-	bh=jF/kgPXt0PU+ZfPsHDWF1TNjabulZl9rxlpf4inPgTs=;
+	s=arc-20240116; t=1725209383; c=relaxed/simple;
+	bh=VXvRQDq+F4k1o++gPfTC4ikE3qH4itKa3SYb4onxm3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwcpxZh4GxPA24mC8EimqPCoWXDMD6fkCITUNKZew9t0qe9zeXpXoMaXaQXLCfG2N0BFU3brrkaJs0gapmdT5K/xXmvymfJlOWg5Qh6dzjRr5u/sYWS1VOZHpK11FSti+eJMJ6N0NG7y3OoPlhFBkaZsceB16v/xBnOhLRaWwHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEEOayUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6118DC4CEC3;
-	Sun,  1 Sep 2024 16:39:24 +0000 (UTC)
+	 MIME-Version; b=sBCW0dmjuMz4/TAtMfQo44nSl5WCI0YKKR6iecq2/XkU9RvNZWbOeltranOQKObuWmKlXGCuQQnSXofjBHjCVPZaHg3KLHm28fS7ArBEwgmlJIlcFiklfso5MsmJx6QtHB/ifFk+IeswHR2ztfHoxhJI0+TPmE/N/KmctXK+80M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPbJ2ry7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8452FC4CEC3;
+	Sun,  1 Sep 2024 16:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208765;
-	bh=jF/kgPXt0PU+ZfPsHDWF1TNjabulZl9rxlpf4inPgTs=;
+	s=korg; t=1725209383;
+	bh=VXvRQDq+F4k1o++gPfTC4ikE3qH4itKa3SYb4onxm3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEEOayUejXAuyanS6wXBt5X87bmo2+dTV226gVG3ZFvR7YWQrYnMs7RLp2whC1rut
-	 TjnjmOj74TdqoojSaCoetMJfzp1kEQQKA7Uuy6oU93mz90yDlMEN5h4ICl4th1JIDz
-	 1mqtEhdjxSGSSa31/96tvbn/rHhhe0bsvfUJyA9Q=
+	b=hPbJ2ry7zG/4ntbJmbGbK0SHDO9NjTYkYF4mMQrlcJZlXebpq5FvcfyBqv/jMHsFT
+	 4FBzoMZ6pdOYgnwcHFe/HYFyvFU+7SOCZF3nkzhhVHxgL6ZwjqulFrAYCi6YGLT7Hs
+	 Dqhbb6ChBhfCW04W2xJEiF2NTbmyUsXMEew+mpE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/134] i2c: riic: avoid potential division by zero
+Subject: [PATCH 5.10 019/151] s390/uv: Panic for set and remove shared access UVC errors
 Date: Sun,  1 Sep 2024 18:16:19 +0200
-Message-ID: <20240901160811.351538375@linuxfoundation.org>
+Message-ID: <20240901160814.823492587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 7890fce6201aed46d3576e3d641f9ee5c1f0e16f ]
+[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
 
-Value comes from DT, so it could be 0. Unlikely, but could be.
+The return value uv_set_shared() and uv_remove_shared() (which are
+wrappers around the share() function) is not always checked. The system
+integrity of a protected guest depends on the Share and Unshare UVCs
+being successful. This means that any caller that fails to check the
+return value will compromise the security of the protected guest.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+No code path that would lead to such violation of the security
+guarantees is currently exercised, since all the areas that are shared
+never get unshared during the lifetime of the system. This might
+change and become an issue in the future.
+
+The Share and Unshare UVCs can only fail in case of hypervisor
+misbehaviour (either a bug or malicious behaviour). In such cases there
+is no reasonable way forward, and the system needs to panic.
+
+This patch replaces the return at the end of the share() function with
+a panic, to guarantee system integrity.
+
+Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
+Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
+[frankja@linux.ibm.com: Fixed up patch subject]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-riic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/uv.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
-index 800414886f6b5..588a3efb09c26 100644
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -312,7 +312,7 @@ static int riic_init_hw(struct riic_dev *riic, struct i2c_timings *t)
- 	 * frequency with only 62 clock ticks max (31 high, 31 low).
- 	 * Aim for a duty of 60% LOW, 40% HIGH.
- 	 */
--	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz);
-+	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz ?: 1);
+diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
+index 12c5f006c1364..8fd441150a4e6 100644
+--- a/arch/s390/include/asm/uv.h
++++ b/arch/s390/include/asm/uv.h
+@@ -312,7 +312,10 @@ static inline int share(unsigned long addr, u16 cmd)
  
- 	for (cks = 0; cks < 7; cks++) {
- 		/*
+ 	if (!uv_call(0, (u64)&uvcb))
+ 		return 0;
+-	return -EINVAL;
++	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
++	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
++	       uvcb.header.rc, uvcb.header.rrc);
++	panic("System security cannot be guaranteed unless the system panics now.\n");
+ }
+ 
+ /*
 -- 
 2.43.0
 
