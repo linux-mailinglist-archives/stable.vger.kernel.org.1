@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-72375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73553967A61
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1184967B40
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB2C1F23EB0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7622817F8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691A7181334;
-	Sun,  1 Sep 2024 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F41617ADE1;
+	Sun,  1 Sep 2024 17:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COcYkbul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVZCORbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F88208A7;
-	Sun,  1 Sep 2024 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19482C190;
+	Sun,  1 Sep 2024 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209719; cv=none; b=rHnM3C58k65uHpIMlzXFdxzknjlWSmKl3EMKAfwrsVXsCsAjgJ+RDc/q53dss//WxzTEjhDV4mKVfS9L2hhPtROxTtOKMXIe391MVPmdpOKw6sbygtK2zvBrbSZlBBZSevRnBXudiHakrbJciGyxyUCryVuomBYGJ33u9djlUqI=
+	t=1725210434; cv=none; b=Z+2WBCSmKUF1AK0gSuop96WvdjZOE04ULElDI/QWMDVuwbTpSHb9WitFcol/bLo8035SrM/0usryaS/Mcl4XuHb1xVItZ2Q/77qNL4s26q5x7o9RNuEMW62u6iCsq4h4oj3T7KLeyIBOqFY1BJNt3s/H1imiPd1GQnq/RrzYfAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209719; c=relaxed/simple;
-	bh=wTxztW0zcHyfOJBVKuOSmuxlfuBpb7CneEeWZWomi28=;
+	s=arc-20240116; t=1725210434; c=relaxed/simple;
+	bh=S1uHVgA11CNxnlnkj0hC4pTTZv7qCeclGI0856zpHUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDxYEMDkYfX9vxlzMbsJlZ9w6RWD5q/5u5Vx+A6Pgv6ouwNN5I27uLGhoz2VvC2wRr1TXgoMccFQG0VeCr4ntQs8zM2lFlxPp9jpfEEigdyB5wEIwa1OBdwnyZM2cNR7d9oBCCnyq68wp7WZdD3rWf96pWwZG9eV8JUC6+Y3ukM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COcYkbul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94189C4CEC3;
-	Sun,  1 Sep 2024 16:55:18 +0000 (UTC)
+	 MIME-Version; b=X048XXGT35PU4eSCxFZuWcf11wZKmAP2mbHuDlJN6Aqi1D1zYzBOv8N8wlk/MArTlnTsCztCDbA2yMbnnYzAUytTyPKQIDdhWMOBamRNkjePjoACAq/GyatM8RZZTUrziNIwo69tf+8dvZp1Qa2xlEv+/d3VqOujk/J1Isl7jyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVZCORbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C358C4CEC3;
+	Sun,  1 Sep 2024 17:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209719;
-	bh=wTxztW0zcHyfOJBVKuOSmuxlfuBpb7CneEeWZWomi28=;
+	s=korg; t=1725210433;
+	bh=S1uHVgA11CNxnlnkj0hC4pTTZv7qCeclGI0856zpHUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COcYkbulfts/dd5ZNjvUcfhtEMl3LevNRIEJh2GQLLcBL2jJE2UNoZ1T3ccSjsVBz
-	 3HBRTyzfQbAjA7RhTA/RFgB8BurnoMNjiBNzy6kI3SV5c4Ggtec2bOBGZlcaGUD7ak
-	 ShmRh8axOuV3WIv2yJiVbgr8mLhZT2Eu8JnIui0U=
+	b=bVZCORbPRSo6LiD2reSNKUSpYgTFWr0RU1uKy+LVNYNPSy/7ib81b6WivJizVh4to
+	 f18UeFKFbuWwgUlgV4JRlGbGVi9HqSfOeq3aDi8R36mLppWFblX1q+IteHVt6anDIK
+	 rTq0TcLBppaIU8X6rM1xlMxxue1BevdRJOsRi1+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Kojedzinszky <richard@kojedz.in>,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Trevor Woerner <twoerner@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.10 123/151] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
+	Zi Yan <ziy@nvidia.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 171/215] mm/numa: no task_numa_fault() call if PTE is changed
 Date: Sun,  1 Sep 2024 18:18:03 +0200
-Message-ID: <20240901160818.736181399@linuxfoundation.org>
+Message-ID: <20240901160829.826156416@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Zi Yan <ziy@nvidia.com>
 
-commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
+commit 40b760cfd44566bca791c80e0720d70d75382b84 upstream.
 
-The base iomux offsets for each GPIO pin line are accumulatively
-calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-bytes, otherwise it would increase by 4 bytes.
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
+TLB flush via delaying mapping on hint page fault") restructured
+do_numa_page() and did not avoid task_numa_fault() call in the second page
+table check after a numa migration failure.  Fix it by making all
+!pte_same() return immediately.
 
-Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-into 4 bytes space with write mask, it actually take 8 bytes width for
-whole GPIO2-B line.
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-correctly increased by 8, matching the actual width of GPIO2-B iomux.
-
-Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
-Cc: stable@vger.kernel.org
-Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
-Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Trevor Woerner <twoerner@gmail.com>
-Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
+Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memory.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3695,7 +3695,7 @@ static struct rockchip_pin_bank rk3328_p
- 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
--			     0,
-+			     IOMUX_WIDTH_2BIT,
- 			     IOMUX_WIDTH_3BIT,
- 			     0),
- 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4407,7 +4407,7 @@ static vm_fault_t do_numa_page(struct vm
+ 	spin_lock(vmf->ptl);
+ 	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
+ 
+ 	/* Get the normal PTE  */
+@@ -4454,21 +4454,17 @@ static vm_fault_t do_numa_page(struct vm
+ 	if (migrate_misplaced_page(page, vma, target_nid)) {
+ 		page_nid = target_nid;
+ 		flags |= TNF_MIGRATED;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
+-		spin_lock(vmf->ptl);
+-		if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
+-			pte_unmap_unlock(vmf->pte, vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
++		task_numa_fault(last_cpupid, page_nid, 1, flags);
++		return 0;
+ 	}
+ 
+-out:
+-	if (page_nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, page_nid, 1, flags);
+-	return 0;
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
++	spin_lock(vmf->ptl);
++	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/*
+ 	 * Make it present again, depending on how arch implements
+@@ -4482,7 +4478,10 @@ out_map:
+ 	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, pte);
+ 	update_mmu_cache(vma, vmf->address, vmf->pte);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+-	goto out;
++
++	if (page_nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, page_nid, 1, flags);
++	return 0;
+ }
+ 
+ static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
 
 
 
