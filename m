@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D34B967902
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDB6967774
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B051280F81
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9811C20BDF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6E417E900;
-	Sun,  1 Sep 2024 16:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AA61836E2;
+	Sun,  1 Sep 2024 16:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nx20edK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJCAVVsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9EE2B9C7;
-	Sun,  1 Sep 2024 16:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF7D183CC1;
+	Sun,  1 Sep 2024 16:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208716; cv=none; b=llWcLirQZYVklytZXIJYvZwBOJA0V8nzzlqupB4nQubwPFO2aW4+8q2ZAPVymMmgfIHrPVMexQv/DloKnUgJ+zBBoNtFH8TLlgpCQhxeVIpGrfzTusOHl9MwvnfeFq+YnWj0v2yeVTS8Rd1OR0qU4hMF1P2HA52Dz7TPIJOKQME=
+	t=1725207590; cv=none; b=ZVHqalZnfx6b0U28qIrC6ixcK21azB2G+n0r1TKOMCBKc4v9bi2ypWWu5SWdc+dH2vaC3bJBHgGyjoyc+AzJyl9K7/Mu2xjf5DEE4ZbQJ47/OIaJWnCURN6RWY7335qA2LDiQSf/H/EqSqXtIGGdtynu7Y9nW79nQPo8VkVNW/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208716; c=relaxed/simple;
-	bh=PEH0sjxB4ZLnTBACnTDKBU37N0ClQqxfkgmJtNX14rY=;
+	s=arc-20240116; t=1725207590; c=relaxed/simple;
+	bh=aR+BAOT6LpVoTB0bwyZ5iChhcoiWbNfMUO6RFLHg4JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBg5R6LM1iZrFCPCvNkcqN2QAYKeOYbq/N0SMPkPyVHheIvyJDvZEnV8ubXuR2iRz1/Y2ToHseN9i1M5KolRiQsGUidYbM25uT4R5DS8HZGAmSL/ZM/pFrSJmmbQ/fn0m921R44IcvIHUESiO9R3ygg2IdUQZ0bPD+90mwNqfNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nx20edK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9903C4CEC3;
-	Sun,  1 Sep 2024 16:38:35 +0000 (UTC)
+	 MIME-Version; b=ng54qv9hu4w0RFKq36yu4CuUWhUHPaLR9gY6ZV1cBr28qesuC5sse8Pzx3orAuIrZWvLvJikVsYYzp8DaCbCJ1oD56PpB5w2vkmZc83EHLest72QjUGLQXbNvlK1VeD6DAFU72+M7b186Be+r8st8eXuJK004OWwdcRjCmAMxQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJCAVVsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED3EC4CEC3;
+	Sun,  1 Sep 2024 16:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208716;
-	bh=PEH0sjxB4ZLnTBACnTDKBU37N0ClQqxfkgmJtNX14rY=;
+	s=korg; t=1725207589;
+	bh=aR+BAOT6LpVoTB0bwyZ5iChhcoiWbNfMUO6RFLHg4JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nx20edKmYqD2QCQxXBTgFX0ZlDxZqZOTaGbqp5Ngea2WSUAk+ifJLYq2GMuH914f
-	 OD7mGLpOTWaLVnlACp+Qae9gUcXXMCM17jM5eVoXWoMiEa+zR/EkcljUQyVXEIvlFR
-	 qdt/jAEtojI5VJTo/qVJAPRVpz9nG243d4BChVZg=
+	b=dJCAVVsmp690Z/wDO0pFxd57JEtFjJHqM5Q6s7hOmyr2eq0DsXtXOu9eSvNEUGQE1
+	 M2vOfF7b3ByvcyBesB5krsgcgw90sOKY5MR19z60U/goDxHmaWjyqdRMItkuVpUmRk
+	 f2iCi5UUCp1jdEmLzSSY/rVBh4Gb29/SXi5sCWow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 002/134] ALSA: usb-audio: Support Yamaha P-125 quirk entry
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 18/98] wifi: cw1200: Avoid processing an invalid TIM IE
 Date: Sun,  1 Sep 2024 18:15:48 +0200
-Message-ID: <20240901160809.848921762@linuxfoundation.org>
+Message-ID: <20240901160804.379169053@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juan José Arboleda <soyjuanarbol@gmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-commit c286f204ce6ba7b48e3dcba53eda7df8eaa64dd9 upstream.
+[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
 
-This patch adds a USB quirk for the Yamaha P-125 digital piano.
+While converting struct ieee80211_tim_ie::virtual_map to be a flexible
+array it was observed that the TIM IE processing in cw1200_rx_cb()
+could potentially process a malformed IE in a manner that could result
+in a buffer over-read. Add logic to verify that the TIM IE length is
+large enough to hold a valid TIM payload before processing it.
 
-Signed-off-by: Juan José Arboleda <soyjuanarbol@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240813161053.70256-1-soyjuanarbol@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/st/cw1200/txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -390,6 +390,7 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
-+YAMAHA_DEVICE(0x1718, "P-125"),
- {
- 	USB_DEVICE(0x0499, 0x1503),
- 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
+diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
+index f7b1b0062db32..3ccb3a134599d 100644
+--- a/drivers/net/wireless/st/cw1200/txrx.c
++++ b/drivers/net/wireless/st/cw1200/txrx.c
+@@ -1173,7 +1173,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
+ 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
+ 
+ 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
+-		if (tim_ie) {
++		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
+ 			struct ieee80211_tim_ie *tim =
+ 				(struct ieee80211_tim_ie *)&tim_ie[2];
+ 
+-- 
+2.43.0
+
 
 
 
