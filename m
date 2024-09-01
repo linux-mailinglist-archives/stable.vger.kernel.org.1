@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-72171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197A0967985
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4179967B05
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AAC31C20CEA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60AEAB207D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B5518786D;
-	Sun,  1 Sep 2024 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30CF2C6AF;
+	Sun,  1 Sep 2024 17:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNV0CvYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwIGl86P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB76187866;
-	Sun,  1 Sep 2024 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6058A381BD;
+	Sun,  1 Sep 2024 17:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209077; cv=none; b=jlGt/Dgi6Z0i2Xs6v5xOeaeaYN+HMh/ju7if0C6Rqa73r7w415ANqwaIpi4fJRZsIazCt6iqWL/tf8cpnsGFjdT+M/E6z8ZntifpT4kYDUN1p6mo4HCqVLGlxJ5vfYGhSAC4R3zH6gXsiHj+BvIuJtoFErrf30n41MGbLlYW0RM=
+	t=1725210236; cv=none; b=epFOEbYFG0tjMc1sOOJLRFVdXMdwL/IvlV26dLDl7aQ/hIftJGbRfHVzr0bb7t5aEc7mAoxAK8fzpWORFnERpR/0rXjn2bO27tolDrxOuhELjavgABGfa2LY+VpepjSZEFMi5RzwFjKs9TZshDtLdMH2pfWJhyKCGSxK6WdYv9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209077; c=relaxed/simple;
-	bh=zfIVDZ++hPOLBEK3oz6U1xatxw9Z40PH3RNul3DMFXY=;
+	s=arc-20240116; t=1725210236; c=relaxed/simple;
+	bh=XcBmceHjW7h10VFMLcERiz491Wjnu4CJiluDtjJT4Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLVID/9LIYO4I+hUv85wpgukGppk+NlbraNoiKLOekoHvx3f6qmsevQ+eXSIJTsC9PTpTsX4L4BXbDPBbJtgryjDW2aCCiHNVX9buwDepTFOtemGJVPuah/BgnyWi4/b6b6+grlsPS6U6LJ75qM1tPI1/n0pkBM+hI2Vj8ocwMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNV0CvYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FAEC4CEC9;
-	Sun,  1 Sep 2024 16:44:36 +0000 (UTC)
+	 MIME-Version; b=jJyb6SK5ZY/FST3ZwEnoeNms5C5u0RNhcmasEddO21Lpta6SFusDiXg+JxtgOMD12Usao/YoRpdBrXN8YtARTRpDbKur5FNQ+mswQM+Otxvpp+hCKLgRwxxBPae+izHsMzee+vuGMODL86/fmC3vRGCr5Z26WFzbVhfCH7ky9Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwIGl86P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF755C4CEC3;
+	Sun,  1 Sep 2024 17:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209077;
-	bh=zfIVDZ++hPOLBEK3oz6U1xatxw9Z40PH3RNul3DMFXY=;
+	s=korg; t=1725210236;
+	bh=XcBmceHjW7h10VFMLcERiz491Wjnu4CJiluDtjJT4Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNV0CvYkQTCOk8E9kMp7TXvIdwXgkTjWnBylbR6mQWxOcqrLSHKQCLfai5w4ZoUka
-	 IRvqo5skcXTJ6MZwcFgpI1ZChu0myJEiVXr+4B2taH2tfPeHOMnCuWvOGalGBh2Xb0
-	 wEv1oelWwA37iWj9Icn6WSPG7cjf8x3MWlKKMX80=
+	b=OwIGl86PHQpI/qq+y3OD73yI/J2zby48c1ZvCZpshiT3x3c5FKfKlawPAcUK6/B4h
+	 U5qqXguZP/ibJaQry4qsTZUqS2O5nnFbHo+1SMykg31zue9Tnyio10aYSbrWln0u8A
+	 i7zwkt133pBH112v/W75DdejWdd/DSLMdV9qwbRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@gmail.com>,
-	Sean Paul <sean@poorly.run>,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@intel.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 095/134] drm/msm: use drm_debug_enabled() to check for debug categories
+Subject: [PATCH 5.15 129/215] dm suspend: return -ERESTARTSYS instead of -EINTR
 Date: Sun,  1 Sep 2024 18:17:21 +0200
-Message-ID: <20240901160813.670282230@linuxfoundation.org>
+Message-ID: <20240901160828.242360679@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit d8db0b36d888b6a5eb392f112dc156e694de2369 ]
+[ Upstream commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 ]
 
-Allow better abstraction of the drm_debug global variable in the
-future. No functional changes.
+This commit changes device mapper, so that it returns -ERESTARTSYS
+instead of -EINTR when it is interrupted by a signal (so that the ioctl
+can be restarted).
 
-v2: Move unlikely() to drm_debug_enabled()
+The manpage signal(7) says that the ioctl function should be restarted if
+the signal was handled with SA_RESTART.
 
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: freedreno@lists.freedesktop.org
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c7142cdebb5f6fed527272b333cd6c43c0aa68ec.1569329774.git.jani.nikula@intel.com
-Stable-dep-of: df24373435f5 ("drm/msm/dpu: don't play tricks with debug macros")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 4 ++--
+ drivers/md/dm.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index 6a4813505c33c..d6c26426b1c6e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -31,7 +31,7 @@
-  */
- #define DPU_DEBUG(fmt, ...)                                                \
- 	do {                                                               \
--		if (unlikely(drm_debug & DRM_UT_KMS))                      \
-+		if (drm_debug_enabled(DRM_UT_KMS))                         \
- 			DRM_DEBUG(fmt, ##__VA_ARGS__); \
- 		else                                                       \
- 			pr_debug(fmt, ##__VA_ARGS__);                      \
-@@ -43,7 +43,7 @@
-  */
- #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
- 	do {                                                               \
--		if (unlikely(drm_debug & DRM_UT_DRIVER))                   \
-+		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
- 			DRM_ERROR(fmt, ##__VA_ARGS__); \
- 		else                                                       \
- 			pr_debug(fmt, ##__VA_ARGS__);                      \
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index fd9bb8b53219a..8199166ca8620 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2255,7 +2255,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, unsigned int ta
+ 			break;
+ 
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
+ 
+@@ -2280,7 +2280,7 @@ static int dm_wait_for_completion(struct mapped_device *md, unsigned int task_st
+ 			break;
+ 
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
+ 
 -- 
 2.43.0
 
