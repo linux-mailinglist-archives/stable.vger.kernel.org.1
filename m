@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534F19679AA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2013967A2F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDB01F21BD3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A9791C21425
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C22183092;
-	Sun,  1 Sep 2024 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C375C17E919;
+	Sun,  1 Sep 2024 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdIUCePd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP0VVREx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D88B185B4B;
-	Sun,  1 Sep 2024 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B3944393;
+	Sun,  1 Sep 2024 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209172; cv=none; b=h3bKuPQfqn18e9Jq7oSHhwmRemPYYLnfAvd+Sk6di7lcvVQdvxrOE7VzFsyt6f93crOmL6jy/iAzWnPaxfvlC14fV+e13IbFQgka+WuYIi5a8AplgELdbvv9qNRjWoHnkFxX5GvdoqZTSzP53ch0vA0r5eKIfHZl62hr8vRx6/4=
+	t=1725209557; cv=none; b=PRHXN0KHSrwf0/830opZhJnWukA+PviNaHzqT15qI8kczIABF2ZUEIgK83AFfD9fyIkzTkNP+Ek6EDwpS+LjfTF8ANkNf7AIyr1Um2U/SpwoebQ+BFFdNcgoiv5SuqkyVkETZECX25Ev+fPw5HBT34yhJqd6oAfO8atVFBQL5vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209172; c=relaxed/simple;
-	bh=OZiThIV+lWQbmOBbfBQu+DIChia7iAzTIs94ipgHUTY=;
+	s=arc-20240116; t=1725209557; c=relaxed/simple;
+	bh=r1j2cqFG0lQo3EpNK5Em0osHvvOKDSMbWAMp/xvEDRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5ZFwjsRkFUIv46+nsPUz91DAQCMRrEYQLukdUBE7aYTlXpaMGnih+3Zr/n6oTzParSgb0TYt4yyZjJUlKcUGUCwusi74SAADdRa8xRJfs5v2gs7oG3OgotrH5DcB4NKzSKvrDlaEaV9ppBes0/cc+EBsm4Furwt1707oPVkx5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdIUCePd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5974C4CEC3;
-	Sun,  1 Sep 2024 16:46:11 +0000 (UTC)
+	 MIME-Version; b=OWvNoTTH3fd7SikP1rKLyn21gIyWAqFfZfzKD16Nyr1V/4ABkQT6nlHJwY7W7jREl4SYASpacZ3lnnJZmy3SGXMYCrGKSdSEwvoEJ895b2Za59ajBJEDtFTul+UYLa/gi14wx7qMNZAzeWDfnpxru1h8B7EIWAjYG/ntPWb/r9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP0VVREx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03649C4CEC3;
+	Sun,  1 Sep 2024 16:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209172;
-	bh=OZiThIV+lWQbmOBbfBQu+DIChia7iAzTIs94ipgHUTY=;
+	s=korg; t=1725209557;
+	bh=r1j2cqFG0lQo3EpNK5Em0osHvvOKDSMbWAMp/xvEDRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdIUCePdSxSJnSNKvtLaW6s5jJCdab2fLnoNpVoUSbZw68cmuktf/gsJHKipY/++N
-	 r+yulCGCeR7o0FqrYuo7LIkjt6ysAVaxFzyw4wVbAAyDbbAyb33UCkpn8PPpMo/TLp
-	 8JwJY06UcDTkWr6FH0LPn5uoitJPa9o4hU96MfYM=
+	b=nP0VVREx/N8ibDsdpS/LAhlSk6j+BNJsrwNp+eQCJMEeUPBE0gpYOnY8jIW8Tb0zs
+	 dG9R45VXMZZsWv5EalGNKg87iyzyYwYO6o5h+oKMX3aju7JspNXfP1yFp4b/KD5Sjl
+	 pWNpS5ZhKRqSS/7ryVdJHBu0ijPYtfYRgDryzB5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 09/71] wifi: mwifiex: duplicate static structs used in driver instances
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Stafford Horne <shorne@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 074/151] openrisc: Call setup_memory() earlier in the init sequence
 Date: Sun,  1 Sep 2024 18:17:14 +0200
-Message-ID: <20240901160802.239839310@linuxfoundation.org>
+Message-ID: <20240901160816.898477232@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
 
-commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
+[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
 
-mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-used and modified in driver instances. Duplicate them before using
-them in driver instances so that different driver instances do not
-influence each other.
+The unflatten_and_copy_device_tree() function contains a call to
+memblock_alloc(). This means that memblock is allocating memory before
+any of the reserved memory regions are set aside in the setup_memory()
+function which calls early_init_fdt_scan_reserved_mem(). Therefore,
+there is a possibility for memblock to allocate from any of the
+reserved memory regions.
 
-This was observed on a board which has one PCIe and one SDIO mwifiex
-adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-the statically allocated struct which is modified in this function.
+Hence, move the call to setup_memory() to be earlier in the init
+sequence so that the reserved memory regions are set aside before any
+allocations are done using memblock.
 
-Cc: stable@vger.kernel.org
-Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ arch/openrisc/kernel/setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4362,11 +4362,27 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
- 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
+index c6f9e7b9f7cb2..8c65810eeca24 100644
+--- a/arch/openrisc/kernel/setup.c
++++ b/arch/openrisc/kernel/setup.c
+@@ -284,6 +284,9 @@ void calibrate_delay(void)
  
--	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
--	if (adapter->config_bands & BAND_A)
--		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
--	else
-+	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-+						       &mwifiex_band_2ghz,
-+						       sizeof(mwifiex_band_2ghz),
-+						       GFP_KERNEL);
-+	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
+ void __init setup_arch(char **cmdline_p)
+ {
++	/* setup memblock allocator */
++	setup_memory();
 +
-+	if (adapter->config_bands & BAND_A) {
-+		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
-+							       &mwifiex_band_5ghz,
-+							       sizeof(mwifiex_band_5ghz),
-+							       GFP_KERNEL);
-+		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	} else {
- 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
-+	}
+ 	unflatten_and_copy_device_tree();
  
- 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
- 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
-@@ -4459,8 +4475,7 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ret < 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "%s: wiphy_register failed: %d\n", __func__, ret);
--		wiphy_free(wiphy);
--		return ret;
-+		goto err;
+ 	setup_cpuinfo();
+@@ -310,9 +313,6 @@ void __init setup_arch(char **cmdline_p)
  	}
+ #endif
  
- 	if (!adapter->regd) {
-@@ -4502,4 +4517,9 @@ int mwifiex_register_cfg80211(struct mwi
+-	/* setup memblock allocator */
+-	setup_memory();
+-
+ 	/* paging_init() sets up the MMU and marks all pages as reserved */
+ 	paging_init();
  
- 	adapter->wiphy = wiphy;
- 	return ret;
-+
-+err:
-+	wiphy_free(wiphy);
-+
-+	return ret;
- }
+-- 
+2.43.0
+
 
 
 
