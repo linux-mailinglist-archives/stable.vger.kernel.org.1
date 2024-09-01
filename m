@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEF4967AC5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8CD967903
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9D94B20B5A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AA19280FAC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284F2225D9;
-	Sun,  1 Sep 2024 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF76917DFFC;
+	Sun,  1 Sep 2024 16:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APiNrq+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKCSheRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96A61EB5B;
-	Sun,  1 Sep 2024 17:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1B81C68C;
+	Sun,  1 Sep 2024 16:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210036; cv=none; b=Cr4XpzdxALR5xJjBDrzX3bbyIDzUcLe+1V9LoD+bppq6LHOYCmnhxg0OXznuhDgC3judf/zoSZxYxkhmcffW6t318jkna1Fpnna/FoIm7eb+TUP8wsytTlzDgkrti+GZ1eiBWk5YcxuISz+mmnuAOBxJdz7ldZXkbY8X+qsGEx8=
+	t=1725208719; cv=none; b=XbjiMCDKL5X1bI4/wC5DnvNRt1zRaeUTr+XlyTLYusK0gxqr2QyJ8wVJ//ABM9jJN11IgQhdHWtiFW5O7yVwE32VQYM9VQl7nhfKxfZpcu56XzgtwuEUplLg72wfY294Jtiz6oKq1Sqt/xKc3QQGTOFly/5Noy1ibNs5NPO+NNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210036; c=relaxed/simple;
-	bh=6YVyJJohE3kEXWlAsSnE5MOP7j43i7AusNsYPTufaxw=;
+	s=arc-20240116; t=1725208719; c=relaxed/simple;
+	bh=+yi8wDB/tOFWsfGBe5ziMoklY473gn2sKhT2/7AyzUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chdbHfWAsz+9aLlXt+50iFuyEUbJHn8JHLgNwSb3w9eGlonQYJL2cljfhz4kuDOnv0/3ZYaQEyzBcboXKUhAEx/wAaPueiyrB5/FoXwUqHWD1VuXzpORvE78WLmMciThSsMKFO0no9mzZFno4pRs7V7va3KokuzfEGholGuQb28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APiNrq+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04253C4CEC3;
-	Sun,  1 Sep 2024 17:00:35 +0000 (UTC)
+	 MIME-Version; b=ACmk0MNJK0p6zu9QXxQ0kGqtdA/3G0fiikzdciQGRjjNeGrtXQ0TgNjfrNPCvWI3FXatBmps8Q2cTzZ1PqrV1nG3agO4Jy1Tfs6DLX6t5ce2+Og9NeFgnfD/xiYVwuohjLNIBrnik5Y3zOnWND0VaGl1zPP6w0e0XMy3clBlQT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKCSheRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF68DC4CEC3;
+	Sun,  1 Sep 2024 16:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210036;
-	bh=6YVyJJohE3kEXWlAsSnE5MOP7j43i7AusNsYPTufaxw=;
+	s=korg; t=1725208719;
+	bh=+yi8wDB/tOFWsfGBe5ziMoklY473gn2sKhT2/7AyzUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APiNrq+Y8oW6qIXwaSaxt8u5KthwpYWfk40CjcugIK+TzcCpb7V6/9+VEunxu4bWK
-	 PROHJRJFXS9JaqsvsfPmDTtT6RzAn6hEVflZ58VIPWK8aojJ6mhCQHHYzbpu7QXBgW
-	 rIjWnwB9EDsXXBBckjAcj+Y5SmUsDUiuCqmupiHs=
+	b=pKCSheRVKiR4NOU0o502cjiaOUNzhJXC8hn8TT2Bq4CQpr3m0AYo5ilsBpLpr4rT0
+	 OejD7vyqbvnRMPxHrJp1Fwc9NrJC7MLJnmwbF5WKSHotkR8+0CNEsfRnKSz0QTpey1
+	 kSo1Kvw+KuATwwu9dwkAKX+7KFcSKxy4GE2Own88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Hughes <tom@compton.nu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/215] netfilter: allow ipv6 fragments to arrive on different devices
+	Karel Balej <balejk@matfyz.cz>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 003/134] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
 Date: Sun,  1 Sep 2024 18:15:49 +0200
-Message-ID: <20240901160824.747604751@linuxfoundation.org>
+Message-ID: <20240901160809.886561435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Hughes <tom@compton.nu>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 3cd740b985963f874a1a094f1969e998b9d05554 ]
+commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
 
-Commit 264640fc2c5f4 ("ipv6: distinguish frag queues by device
-for multicast and link-local packets") modified the ipv6 fragment
-reassembly logic to distinguish frag queues by device for multicast
-and link-local packets but in fact only the main reassembly code
-limits the use of the device to those address types and the netfilter
-reassembly code uses the device for all packets.
+re-enumerating full-speed devices after a failed address device command
+can trigger a NULL pointer dereference.
 
-This means that if fragments of a packet arrive on different interfaces
-then netfilter will fail to reassemble them and the fragments will be
-expired without going any further through the filters.
+Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
+value during enumeration. Usb core calls usb_ep0_reinit() in this case,
+which ends up calling xhci_configure_endpoint().
 
-Fixes: 648700f76b03 ("inet: frags: use rhashtables for reassembly units")
-Signed-off-by: Tom Hughes <tom@compton.nu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Panther point xHC the xhci_configure_endpoint() function will
+additionally check and reserve bandwidth in software. Other hosts do
+this in hardware
+
+If xHC address device command fails then a new xhci_virt_device structure
+is allocated as part of re-enabling the slot, but the bandwidth table
+pointers are not set up properly here.
+This triggers the NULL pointer dereference the next time usb_ep0_reinit()
+is called and xhci_configure_endpoint() tries to check and reserve
+bandwidth
+
+[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
+[46710.713699] usb 3-1: Device not responding to setup address.
+[46710.917684] usb 3-1: Device not responding to setup address.
+[46711.125536] usb 3-1: device not accepting address 5, error -71
+[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[46711.125600] #PF: supervisor read access in kernel mode
+[46711.125603] #PF: error_code(0x0000) - not-present page
+[46711.125606] PGD 0 P4D 0
+[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
+[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
+[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
+[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
+
+Fix this by making sure bandwidth table pointers are set up correctly
+after a failed address device command, and additionally by avoiding
+checking for bandwidth in cases like this where no actual endpoints are
+added or removed, i.e. only context for default control endpoint 0 is
+evaluated.
+
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
+Cc: stable@vger.kernel.org
+Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/nf_conntrack_reasm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
-index 5c47be29b9ee9..2e5b090d7c89f 100644
---- a/net/ipv6/netfilter/nf_conntrack_reasm.c
-+++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
-@@ -155,6 +155,10 @@ static struct frag_queue *fq_find(struct net *net, __be32 id, u32 user,
- 	};
- 	struct inet_frag_queue *q;
- 
-+	if (!(ipv6_addr_type(&hdr->daddr) & (IPV6_ADDR_MULTICAST |
-+					    IPV6_ADDR_LINKLOCAL)))
-+		key.iif = 0;
-+
- 	q = inet_frag_find(nf_frag->fqdir, &key);
- 	if (!q)
- 		return NULL;
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -2819,7 +2819,7 @@ static int xhci_configure_endpoint(struc
+ 				xhci->num_active_eps);
+ 		return -ENOMEM;
+ 	}
+-	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
++	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
+ 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
+ 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
+ 			xhci_free_host_resources(xhci, ctrl_ctx);
+@@ -4231,8 +4231,10 @@ static int xhci_setup_device(struct usb_
+ 		mutex_unlock(&xhci->mutex);
+ 		ret = xhci_disable_slot(xhci, udev->slot_id);
+ 		xhci_free_virt_device(xhci, udev->slot_id);
+-		if (!ret)
+-			xhci_alloc_dev(hcd, udev);
++		if (!ret) {
++			if (xhci_alloc_dev(hcd, udev) == 1)
++				xhci_setup_addressable_virt_dev(xhci, udev);
++		}
+ 		kfree(command->completion);
+ 		kfree(command);
+ 		return -EPROTO;
 
 
 
