@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955CA967B0E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585E5967A22
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E41E5B207E9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 164CB281BD3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBB417ADE1;
-	Sun,  1 Sep 2024 17:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE9617CA1F;
+	Sun,  1 Sep 2024 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIDOT+gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga2kkaiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD952C190;
-	Sun,  1 Sep 2024 17:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C181DFD1;
+	Sun,  1 Sep 2024 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210267; cv=none; b=b2o6fb7U8ln+61rdmDKcJ+4KYa8QKb6IerJ8yy3IrhzZq6TawG6zT/aa3YQt3ChRNmGqMfenJPccXhx2T30DbZemV1dbjJDcK2LhOFb/rqpDTktJTu7MuHQL12yS4HafMimiJJnW0B0CoYVjudvOI8jF2nZDJnkVQf70aHqPiIc=
+	t=1725209515; cv=none; b=W+nejRIpP9slFQT0lfG/bdTi8W0/vcxOXa9QoEoVMk9rWyUlIAuNm3eK710ycC7fIP2wA4iQmOnFaKB9jRZIloiODLrUS9lI9O4cHIlXKNYiJ4oZ5mymgqanpsyxVpAhcm2tyHVqlUB+gK/USbRhvfENrJJgVH9C2vabXTkv+pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210267; c=relaxed/simple;
-	bh=iKhzfLRFWydvPdONPyDM0NnREcYykTFS6XuNLio7op8=;
+	s=arc-20240116; t=1725209515; c=relaxed/simple;
+	bh=Ks3NHNRoIiU/bwee9p8rOotG3OQ916xZp67yIYyoeE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBAqBti07bcYTFJxVGBwJvauak3PpP8eJOwAswh1eniWrPluJMatmSL7+8Nn1QXxZ+gopc1J2JlPFc73EGltMuUPOSFZmZrvtuk1X907/JMQrWnDCUFV3/8oX2pno+ZhQUemtZZNmuoORFVsmHu41SasyOGGSCuX7Vi4/f6Aw2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIDOT+gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE1AC4CEC3;
-	Sun,  1 Sep 2024 17:04:26 +0000 (UTC)
+	 MIME-Version; b=Al5ZBv8qe8ZC+vdkqHwVH907YkaHMt1sJiS4Ocdi1Kz8IofrnybFfIcewLPB5Brv9CNTwPgVxFUlnzwMW2a5TusbuhBmjZrLh9kf50UO8fKV8kdy329H8b+wqUXycPr6I55DruAzV1lh0T2NLZ3lu1ffUWgJrcz1a8MtVpYoWy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga2kkaiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E87C4CEC3;
+	Sun,  1 Sep 2024 16:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210267;
-	bh=iKhzfLRFWydvPdONPyDM0NnREcYykTFS6XuNLio7op8=;
+	s=korg; t=1725209515;
+	bh=Ks3NHNRoIiU/bwee9p8rOotG3OQ916xZp67yIYyoeE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIDOT+grmVoKCu4eGDFvUyBIUT9byJJjnn8UevkkRaZ7f/OzKC6pDofr/7VD6y06h
-	 Fogui30ZrQP3Nned/0WKiztSUhWbBUQWbIZqPSE81KogqRJ90ov+XL2yWhvOdJMcrD
-	 cH5CLQLDpOgYsqf6/hbjNdYfGyEV3DgZvp8/yGMQ=
+	b=ga2kkaiJJkagT4yeCkRdtD40S203a6K2mNfy0m9cGpSU4jqLNSJwvxZJ2X+hDMPaE
+	 Wc1igZB0255dJNJPtL90RzZFFLlyRsDcg55rcrQ7RmbtyADmlEmYI3M+BjfY2yBu6G
+	 D/xRQKaXQhnIpn15LPFTDqdCHg3EdZ0lwfc48kgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Chang <phil.chang@mediatek.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	y0un9n132@gmail.com,
+	Kees Cook <keescook@chromium.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/215] hrtimer: Prevent queuing of hrtimer without a function callback
+Subject: [PATCH 5.10 059/151] x86: Increase brk randomness entropy for 64-bit systems
 Date: Sun,  1 Sep 2024 18:16:59 +0200
-Message-ID: <20240901160827.390170355@linuxfoundation.org>
+Message-ID: <20240901160816.337899176@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Chang <phil.chang@mediatek.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
+[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
 
-The hrtimer function callback must not be NULL. It has to be specified by
-the call side but it is not validated by the hrtimer code. When a hrtimer
-is queued without a function callback, the kernel crashes with a null
-pointer dereference when trying to execute the callback in __run_hrtimer().
+In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
+defined to use a 32MB range (13 bits of entropy), but was never increased
+when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
+32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
 
-Introduce a validation before queuing the hrtimer in
-hrtimer_start_range_ns().
+Update x86_64 to match the entropy used by arm64 and other 64-bit
+architectures.
 
-[anna-maria: Rephrase commit message]
-
-Signed-off-by: Phil Chang <phil.chang@mediatek.com>
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Reported-by: y0un9n132@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
+Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/process.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 5502c687bd401..bdd9041d595e9 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1284,6 +1284,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	struct hrtimer_clock_base *base;
- 	unsigned long flags;
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 1cba09a9f1c13..4f731981d3267 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -926,7 +926,10 @@ unsigned long arch_align_stack(unsigned long sp)
  
-+	if (WARN_ON_ONCE(!timer->function))
-+		return;
- 	/*
- 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
- 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
+ unsigned long arch_randomize_brk(struct mm_struct *mm)
+ {
+-	return randomize_page(mm->brk, 0x02000000);
++	if (mmap_is_ia32())
++		return randomize_page(mm->brk, SZ_32M);
++
++	return randomize_page(mm->brk, SZ_1G);
+ }
+ 
+ /*
 -- 
 2.43.0
 
