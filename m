@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-71906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2B0967849
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755BD967A88
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3081C21054
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3139D282239
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2897183CA7;
-	Sun,  1 Sep 2024 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77F181334;
+	Sun,  1 Sep 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnoQ+Y6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWCg9OJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C1D17CA1F;
-	Sun,  1 Sep 2024 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1FE208A7;
+	Sun,  1 Sep 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208208; cv=none; b=G0GkcghsmiWwR5WWge1qdvK9cFzRvrOLpyjQufFQUtqUSfbDp2+EYYGwHw288oM6QkMPL8qU/9OEMu9O/jH/VEFAmGn6KHXbX6MBAuyGCbxQf9dZfUdFUY2NWp9tNithJtYv+EMBDsM0QjDrsQRQPYbM62edCVsxcy9jgSJAT+U=
+	t=1725209843; cv=none; b=TjB5nrkD81BIpQRFk9OuPetrruFIl8XRPAbz/RNsymtZUZ6jHusxP8pLP5P3kZ1L1npMtTGdSC5tsikjpZMr/dzfH7mPg2mTQXZZhEjTN0Y3wYcmXvLbvi9TATHyqv3j4SxGl/8bawzksbIRCYCMUOmf4GcDatQAgow+00nTMik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208208; c=relaxed/simple;
-	bh=M1r+5pmOXv4N898G0RGzlThYp73xqlpnOQu0U30hc/g=;
+	s=arc-20240116; t=1725209843; c=relaxed/simple;
+	bh=s497HjR8Z7sOMFLltS5+izsE4GK20G7VLoXjxx5HXvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5zM8a/gYUTZ3xXUdj1dIhDNcN4p1ThZlsxetCdNBlo0JTSr4ZLEd2wehYD2q8kVOGiWMm+OixE7ZHe06jPBuvtO8kwyyujoQbnzs3Pui/dQy5FNNz/+SOkXFk0VkVZI2Ac4v8Fju0mkRA5euJdeQrXJZeNvpCHXe+EHLk/dBS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnoQ+Y6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6312C4CEC3;
-	Sun,  1 Sep 2024 16:30:07 +0000 (UTC)
+	 MIME-Version; b=TPauDxZFGBtIe1RcXb3TlPwx3/85XNCsOgwYxjUiJ+tXCqhdt4Q7yzVJV10isbm2p0KhUpbts7ML2Hz+ZxM5rG7Z70uDnX3AHvc1cpIZby2y4eDgybjhsjIELIYMFr82jr8wHLq4Rb9mSHCy1bfvPv5g56leRvnpShXWrLnSZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWCg9OJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFE1C4CEC3;
+	Sun,  1 Sep 2024 16:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208208;
-	bh=M1r+5pmOXv4N898G0RGzlThYp73xqlpnOQu0U30hc/g=;
+	s=korg; t=1725209843;
+	bh=s497HjR8Z7sOMFLltS5+izsE4GK20G7VLoXjxx5HXvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnoQ+Y6RNF96gBbb6FLU4r5m/EcgGv+Hv77M76lW0w/y/OzI12z7hArDxfAE0K6Sq
-	 Ck6xdHpG62jrE6V6CtSUytYCbqDbuwROziYf4iI05lTN/5krgR/BiGlkR0MUZDgvA3
-	 ye4owpKWkHB1NPwZinGV2arosVJYAy8voRHdSU+E=
+	b=uWCg9OJnVMzgY8VAKHozlBVMkJvyIcLMNyhzXeGUW7c0NX7nwQnsti4GTjkg0LGiZ
+	 sv7LgsAdZsdL3k6XI2RN5uWR0g5OGI0WZHz2iH4LlBcT58AQuyFPXN3DAy+oYqFMe7
+	 2eSbSmEGECxsyLMuQK8RuKA43f+7E97IjiVrQtpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Kojedzinszky <richard@kojedz.in>,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Trevor Woerner <twoerner@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.10 012/149] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Khazhismel Kumykov <khazhy@google.com>
+Subject: [PATCH 5.15 011/215] dm resume: dont return EINVAL when signalled
 Date: Sun,  1 Sep 2024 18:15:23 +0200
-Message-ID: <20240901160817.929907613@linuxfoundation.org>
+Message-ID: <20240901160823.671580902@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Khazhismel Kumykov <khazhy@google.com>
 
-commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
+commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
 
-The base iomux offsets for each GPIO pin line are accumulatively
-calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-bytes, otherwise it would increase by 4 bytes.
+If the dm_resume method is called on a device that is not suspended, the
+method will suspend the device briefly, before resuming it (so that the
+table will be swapped).
 
-Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-into 4 bytes space with write mask, it actually take 8 bytes width for
-whole GPIO2-B line.
+However, there was a bug that the return value of dm_suspended_md was not
+checked. dm_suspended_md may return an error when it is interrupted by a
+signal. In this case, do_resume would call dm_swap_table, which would
+return -EINVAL.
 
-Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-correctly increased by 8, matching the actual width of GPIO2-B iomux.
+This commit fixes the logic, so that error returned by dm_suspend is
+checked and the resume operation is undone.
 
-Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
 Cc: stable@vger.kernel.org
-Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
-Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Trevor Woerner <twoerner@gmail.com>
-Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3800,7 +3800,7 @@ static struct rockchip_pin_bank rk3328_p
- 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
--			     0,
-+			     IOMUX_WIDTH_2BIT,
- 			     IOMUX_WIDTH_3BIT,
- 			     0),
- 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1151,8 +1151,26 @@ static int do_resume(struct dm_ioctl *pa
+ 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
+ 		if (param->flags & DM_NOFLUSH_FLAG)
+ 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
+-		if (!dm_suspended_md(md))
+-			dm_suspend(md, suspend_flags);
++		if (!dm_suspended_md(md)) {
++			r = dm_suspend(md, suspend_flags);
++			if (r) {
++				down_write(&_hash_lock);
++				hc = dm_get_mdptr(md);
++				if (hc && !hc->new_map) {
++					hc->new_map = new_map;
++					new_map = NULL;
++				} else {
++					r = -ENXIO;
++				}
++				up_write(&_hash_lock);
++				if (new_map) {
++					dm_sync_table(md);
++					dm_table_destroy(new_map);
++				}
++				dm_put(md);
++				return r;
++			}
++		}
+ 
+ 		old_size = dm_get_size(md);
+ 		old_map = dm_swap_table(md, new_map);
 
 
 
