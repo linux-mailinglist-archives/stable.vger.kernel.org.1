@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-71757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA24996779E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B709679F9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFFFB21912
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 511C8B2264D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2754183CA5;
-	Sun,  1 Sep 2024 16:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0584717DFE7;
+	Sun,  1 Sep 2024 16:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1RlO40G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGa5bP60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E138183090;
-	Sun,  1 Sep 2024 16:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7256143894;
+	Sun,  1 Sep 2024 16:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207714; cv=none; b=niE5iIKGCU7ukk7PsXlU5+hsED7tDX6FG8EcUUtT9NEf3CBXF4nJkPmt4V1puglHwEjiys7OdlXALa0y0skZIFEH4ud/Hhn8o7XewjEtrzbnfdsrAisRZ2udXsYsIj8zS/HCZqCbYbzXePXgV6j8hiqhRCIVaE/HWOOXEXypBQk=
+	t=1725209401; cv=none; b=NjKQCkA+wnbwtr1n4kB7TyG+eEcSLIzsnoY/5UmAPdSi1G4Z4QWMfoGkPubrN7x/bVsY1NxU6k16XdEwxMZ/P6IamGpBxcjgUbuHlKEz8M2p1bBx9LV76X3EVy3+gZKAOwSfl9O8Gw4RRB9nVgLMQuPiKVg0dF4E3wzh1klogfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207714; c=relaxed/simple;
-	bh=uCzjZbbqctetRMcepL6W8oC9JX1cyTPl2kvyCAxmdOw=;
+	s=arc-20240116; t=1725209401; c=relaxed/simple;
+	bh=Q6BtjSxvGalxtHEh6qbXqQGwgTX5llt6/IpqdoQWYSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMDsaRmrV3MBnosqirnnzXAJ/q/cAhEmxM9nV0nsCbxNmMzIeo4vxfAAHGycnLY9yTKHp/yRpEqY5tEMqfqa+6Vtsc8vKqEydDs17QdByCNzmB2ITa3PTdiwjTii/sfpATT2dNOCZDBvXJbYeMS1WF1lb9KUkPQRTsJRryRhi6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1RlO40G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3D5C4CEC3;
-	Sun,  1 Sep 2024 16:21:53 +0000 (UTC)
+	 MIME-Version; b=QTiyTR0v5VQJjRWOfeWYCKthb9Wj4Cs/+uSek1ciPzDaszAOyDaA3+/RlYUt3SF/YbksXnex1u2Amha0HoLo/nPfJFyex3SxKtUfsBSEAAcTBgoWvWWifHJMR0guebzNbvDhe+rmIBgIX64O+Ga0vVG+9m0vjyP6oD2p8JNAVh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGa5bP60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A05C4CEC3;
+	Sun,  1 Sep 2024 16:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207714;
-	bh=uCzjZbbqctetRMcepL6W8oC9JX1cyTPl2kvyCAxmdOw=;
+	s=korg; t=1725209401;
+	bh=Q6BtjSxvGalxtHEh6qbXqQGwgTX5llt6/IpqdoQWYSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1RlO40GqTyBxmZ0/a/hETXKRfia2S1MpwEJh4xLpesURUm9wNoyxM5ZSwIyYzTzZ
-	 mJSu9gNLV9p/EdY6pK1A/MgAc+TIuPvDn548RUw0xyJx+Nk2J07BonA1aPk1TAm6sY
-	 BXbqQGhEtQfW9yRn/PwpXKDpEBWi94JoeJOIvNN0=
+	b=jGa5bP60vwFL/V2Oys5LWoGKseZGCjy8RynWSFlwCXKl4ffbdKOMlhKOcPEHuBG7P
+	 FQR3svGisCdGikA84bxrkADyWKXXURb9FoEhgh/tVcA936qb+ycAq0s5+dDGRX0/ug
+	 qCGhLptDFNv1uWy/yn1jhF3F1584cvtQ+FuOQhA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 54/98] Bluetooth: Make use of __check_timeout on hci_sched_le
+Subject: [PATCH 5.10 024/151] net: dsa: vsc73xx: use read_poll_timeout instead delay loop
 Date: Sun,  1 Sep 2024 18:16:24 +0200
-Message-ID: <20240901160805.737359832@linuxfoundation.org>
+Message-ID: <20240901160815.007752313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 1b1d29e5149990e44634b2e681de71effd463591 ]
+[ Upstream commit eb7e33d01db3aec128590391b2397384bab406b6 ]
 
-This reuse __check_timeout on hci_sched_le following the same logic
-used hci_sched_acl.
+Switch the delay loop during the Arbiter empty check from
+vsc73xx_adjust_link() to use read_poll_timeout(). Functionally,
+one msleep() call is eliminated at the end of the loop in the timeout
+case.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
+As Russell King suggested:
+
+"This [change] avoids the issue that on the last iteration, the code reads
+the register, tests it, finds the condition that's being waiting for is
+false, _then_ waits and end up printing the error message - that last
+wait is rather useless, and as the arbiter state isn't checked after
+waiting, it could be that we had success during the last wait."
+
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Link: https://lore.kernel.org/r/20240417205048.3542839-2-paweldembicki@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: fa63c6434b6f ("net: dsa: vsc73xx: check busy flag in MDIO operations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 30 ++++++++++++++------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 504f6aa4e95db..0221aa5785052 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4116,15 +4116,10 @@ static void hci_sched_le(struct hci_dev *hdev)
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 55c1063327a8f..d050dfaf327cc 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -17,6 +17,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/iopoll.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+@@ -269,6 +270,9 @@
+ #define IS_7398(a) ((a)->chipid == VSC73XX_CHIPID_ID_7398)
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
  
--	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
--		/* LE tx timeout must be longer than maximum
--		 * link supervision timeout (40.9 seconds) */
--		if (!hdev->le_cnt && hdev->le_pkts &&
--		    time_after(jiffies, hdev->le_last_tx + HZ * 45))
--			hci_link_tx_to(hdev, LE_LINK);
--	}
--
- 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++#define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_POLL_TIMEOUT_US		10000
 +
-+	__check_timeout(hdev, cnt);
-+
- 	tmp = cnt;
- 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
+ struct vsc73xx_counter {
+ 	u8 counter;
+ 	const char *name;
+@@ -780,7 +784,7 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 	 * after a PHY or the CPU port comes up or down.
+ 	 */
+ 	if (!phydev->link) {
+-		int maxloop = 10;
++		int ret, err;
+ 
+ 		dev_dbg(vsc->dev, "port %d: went down\n",
+ 			port);
+@@ -795,19 +799,17 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 				    VSC73XX_ARBDISC, BIT(port), BIT(port));
+ 
+ 		/* Wait until queue is empty */
+-		vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-			     VSC73XX_ARBEMPTY, &val);
+-		while (!(val & BIT(port))) {
+-			msleep(1);
+-			vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-				     VSC73XX_ARBEMPTY, &val);
+-			if (--maxloop == 0) {
+-				dev_err(vsc->dev,
+-					"timeout waiting for block arbiter\n");
+-				/* Continue anyway */
+-				break;
+-			}
+-		}
++		ret = read_poll_timeout(vsc73xx_read, err,
++					err < 0 || (val & BIT(port)),
++					VSC73XX_POLL_SLEEP_US,
++					VSC73XX_POLL_TIMEOUT_US, false,
++					vsc, VSC73XX_BLOCK_ARBITER, 0,
++					VSC73XX_ARBEMPTY, &val);
++		if (ret)
++			dev_err(vsc->dev,
++				"timeout waiting for block arbiter\n");
++		else if (err < 0)
++			dev_err(vsc->dev, "error reading arbiter\n");
+ 
+ 		/* Put this port into reset */
+ 		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG,
 -- 
 2.43.0
 
