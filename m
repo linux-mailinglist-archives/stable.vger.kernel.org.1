@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28DA967A39
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F9A967B08
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9691F2398E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85822281047
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E712B181334;
-	Sun,  1 Sep 2024 16:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E50381BD;
+	Sun,  1 Sep 2024 17:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4iHGj3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS8XQ0IE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1217DFE7;
-	Sun,  1 Sep 2024 16:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76CD17C;
+	Sun,  1 Sep 2024 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209589; cv=none; b=OhSGxWh6i631xTC2aNLa/vfHEtT6yR1yJdI30Sq3ofdHBqu1i5kIMDtxSSa43sv8rpP7JKNLGFYEsjLo/pknzSUyB/wWbdH3Eu457QU9G8NrfLAYdWcvfRtUngSsOXz/ztpTIOmDDlNREY1PZDgSP8XbFVB0GNjEhUb0ID+sTlw=
+	t=1725210246; cv=none; b=Ez57c4bi2Mu5/YVSKq1h4UieEkKNifecu58O82sKzC5+wHXPIjcH+/qujD6kVnTG2IdeJUB7rAW7p5gT9wVT79T14gPPm2yI8sSJ2Rbg7ceG0VmEB65zOz3E52bAJfCkC3tZ4oQsVpwO+hwSWvd6o661kXwnBIsuhRQ7g6BtpQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209589; c=relaxed/simple;
-	bh=pROhkzbO6PoT492l6MOEBffTxFU+xeFtLCq6TWU/pF0=;
+	s=arc-20240116; t=1725210246; c=relaxed/simple;
+	bh=WGPLbK+blPvBnlo9yHnGgaoZ41f76vwRIdfhKui38Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2BwzMUk0mzFajseQxY6uA6YnFyHJezgHlMUnUT99kmo0R0xoOdNZjV9WhowxXahLaTbRywnT0xfJkS+CWGvVOO3kX2QnQPtdzrvAilyeSuqBXXi7B3TSkEwN0NsE/HN0rv6bwYlk8Xz8sbinxSKozZrIliRnGV1Yj8xjLKJNuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4iHGj3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA97AC4CEC3;
-	Sun,  1 Sep 2024 16:53:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jkx3gRAig0bZInSuI/LQcwvYWIAtXxccSloXw9suN1DI4jBjH7zWls358ftcV+OceE5gGAif+T784zimO/Oi8fnemswHsXGfuKcK+ym9ygS+02clPdrQb9UexEqgo8g46YfEUVWhyWjQrH6CuOcoS9u0mXnZ7rtsVPCTvf7ih6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS8XQ0IE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B31C4CEC3;
+	Sun,  1 Sep 2024 17:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209589;
-	bh=pROhkzbO6PoT492l6MOEBffTxFU+xeFtLCq6TWU/pF0=;
+	s=korg; t=1725210246;
+	bh=WGPLbK+blPvBnlo9yHnGgaoZ41f76vwRIdfhKui38Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4iHGj3uFsKMSlorO0qXqiyyeAi3iExUORFk6XvHwrFDa6GBoXL4h9VpD+5fjtFp2
-	 MKGpwdEsZxpwD2ylENSFLXGjUHLVnmtqtnf01ncP4HGjFRopv+NItivRBKWSM61ag1
-	 jYCCPk8YClXTwILubfKacL4THMAhxwRUYSYU+QfM=
+	b=pS8XQ0IEcD6YINgFAJl7YQiagug2yV0OrlrXcSU2ejVglykOtZfOxZmhNT+hIm3Ep
+	 PQYZympLLEp/7pZqhMwk+vBfumdD1vyU571alQAdeDYBuzVzBk6k4mxrgtzPPdQSOp
+	 SCcqep2iJ70WAuHRryPrBH99M9OQhGE3YGtmwMQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	David Hunter <david.hunter.linux@gmail.com>
-Subject: [PATCH 5.10 083/151] block: use "unsigned long" for blk_validate_block_size().
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 131/215] platform/surface: aggregator: Fix warning when controller is destroyed in probe
 Date: Sun,  1 Sep 2024 18:17:23 +0200
-Message-ID: <20240901160817.242865843@linuxfoundation.org>
+Message-ID: <20240901160828.318198280@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-commit 37ae5a0f5287a52cf51242e76ccf198d02ffe495 upstream.
+[ Upstream commit bc923d594db21bee0ead128eb4bb78f7e77467a4 ]
 
-Since lo_simple_ioctl(LOOP_SET_BLOCK_SIZE) and ioctl(NBD_SET_BLKSIZE) pass
-user-controlled "unsigned long arg" to blk_validate_block_size(),
-"unsigned long" should be used for validation.
+There is a small window in ssam_serial_hub_probe() where the controller
+is initialized but has not been started yet. Specifically, between
+ssam_controller_init() and ssam_controller_start(). Any failure in this
+window, for example caused by a failure of serdev_device_open(),
+currently results in an incorrect warning being emitted.
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/9ecbf057-4375-c2db-ab53-e4cc0dff953d@i-love.sakura.ne.jp
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In particular, any failure in this window results in the controller
+being destroyed via ssam_controller_destroy(). This function checks the
+state of the controller and, in an attempt to validate that the
+controller has been cleanly shut down before we try and deallocate any
+resources, emits a warning if that state is not SSAM_CONTROLLER_STOPPED.
+
+However, since we have only just initialized the controller and have not
+yet started it, its state is SSAM_CONTROLLER_INITIALIZED. Note that this
+is the only point at which the controller has this state, as it will
+change after we start the controller with ssam_controller_start() and
+never revert back. Further, at this point no communication has taken
+place and the sender and receiver threads have not been started yet (and
+we may not even have an open serdev device either).
+
+Therefore, it is perfectly safe to call ssam_controller_destroy() with a
+state of SSAM_CONTROLLER_INITIALIZED. This, however, means that the
+warning currently being emitted is incorrect. Fix it by extending the
+check.
+
+Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20240811124645.246016-1-luzmaximilian@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/surface/aggregator/controller.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -59,7 +59,7 @@ struct blk_keyslot_manager;
-  */
- #define BLKCG_MAX_POLS		5
+diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
+index 5542b768890c9..cc78687d6874c 100644
+--- a/drivers/platform/surface/aggregator/controller.c
++++ b/drivers/platform/surface/aggregator/controller.c
+@@ -1354,7 +1354,8 @@ void ssam_controller_destroy(struct ssam_controller *ctrl)
+ 	if (ctrl->state == SSAM_CONTROLLER_UNINITIALIZED)
+ 		return;
  
--static inline int blk_validate_block_size(unsigned int bsize)
-+static inline int blk_validate_block_size(unsigned long bsize)
- {
- 	if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
- 		return -EINVAL;
+-	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED);
++	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED &&
++		ctrl->state != SSAM_CONTROLLER_INITIALIZED);
+ 
+ 	/*
+ 	 * Note: New events could still have been received after the previous
+-- 
+2.43.0
+
 
 
 
