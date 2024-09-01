@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90AF9678FE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E8E967878
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD121F20F76
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9846F1C20380
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7ED537FF;
-	Sun,  1 Sep 2024 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53BF17DFFC;
+	Sun,  1 Sep 2024 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHQRqnjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSvS9+Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994491C68C;
-	Sun,  1 Sep 2024 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A390F5381A;
+	Sun,  1 Sep 2024 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208702; cv=none; b=LpJoKlQTgYNn3mTq5tQTmTT/cwUqUMUr+OZNveappOqaPZwjsHN7mshHoB1LjzBjc1Flz3Ow0jimcqJFejAbH6rU4I7zhdid85X4efZQ0JVSrK5hZXaDjpeAWJ4fwABaQPCdUGXh8eF0rCEisv8pn3pUILX08p1Y74+/rmnXbyU=
+	t=1725208329; cv=none; b=s/d8Pqu15uwyes3vOrjIVtXhWPh16JKbVWlUb7iQMb/EIiNLNfHiF6iK2D3hzJ6rWvHGDs5icStdiuTAwdUZyt9bXOSPjt00qcJW9Q5bFPU1IUa7M2mXCWV2rnQbcM4ChZJAjpXlCwCv6KqAJyydJq0V1BjTUX8fa6UITzERMb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208702; c=relaxed/simple;
-	bh=kQNWj+nEG4XKAqqkb+IbNfF0/UuKVJjniw5QrTBJG3M=;
+	s=arc-20240116; t=1725208329; c=relaxed/simple;
+	bh=beRFZJOQ6Iz7ocz5/s2mXetqtJQqo7/EODMkuWGxvag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImZulABCqjvGjRzxhOWU4RbMpbDsuqAl27La1K3HTQCexNOCLryXN8d2Zg+ET9BjQh2ocsH3fXiYKeq6mr1axLOgY4wneBlZf8so3qSzOP3ceNbk2/uAh+SEVbaRMDg9iqeXoXYamyY9HNr6o5xcBhuuXGBmo2xM1g21WK9tr74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHQRqnjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A63C4CEC3;
-	Sun,  1 Sep 2024 16:38:21 +0000 (UTC)
+	 MIME-Version; b=OnbIz1guh412vZmi/VmnYkoc6QINmFXY7iD5UXhHAxSieTykMJsv/XRgTQGLKgT23ovY6j08TduOTQ1AYXoB0wbFA1Z3Gn5SA2hK0Sr6HsFcfvdRlW90XkCx0Coey8SwX26XtdIZ80mfs3OK/ScevhjJjaPpup8eoxt5CnVt2zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSvS9+Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CE9C4CEC3;
+	Sun,  1 Sep 2024 16:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208702;
-	bh=kQNWj+nEG4XKAqqkb+IbNfF0/UuKVJjniw5QrTBJG3M=;
+	s=korg; t=1725208329;
+	bh=beRFZJOQ6Iz7ocz5/s2mXetqtJQqo7/EODMkuWGxvag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHQRqnjDPQ2ZKEVXxEDWkIO7lZQ/+92apBILsMzXmHP9p5lUYuXJbZjCzFKoR3p00
-	 pW0Y+Pl4JL11W7fd6/VnZpqLRJ95Q4Y0TEg6UEqia9MMsE6oBXMiSgzQ3rBtoVGuIC
-	 CDP1sb9sPyQ1NsL1grOIZ2u05YnQfWiQUwbTMCZM=
+	b=OSvS9+DyggB+lF7178A3oxbR9cyRgccHdIN9030En3GQZYmwPhw9oHbps2iXracl/
+	 o8zQqCGFRoF4a5JPH1jsWgY7qAOpUu1fgnkfl2EooJ+NzA0WYgwxw2oE4i9ykSjAzY
+	 RXDIw/vPb5IYvLW0q4vcVeH4WELAA19fAd3+mZEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 014/134] s390/cio: rename bitmap_size() -> idset_bitmap_size()
+	Victor Lu <victorchengchi.lu@amd.com>,
+	Vignesh Chander <Vignesh.Chander@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 049/149] drm/amdgpu: Do not wait for MP0_C2PMSG_33 IFWI init in SRIOV
 Date: Sun,  1 Sep 2024 18:16:00 +0200
-Message-ID: <20240901160810.649315498@linuxfoundation.org>
+Message-ID: <20240901160819.312305211@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
+[ Upstream commit b32563859d6f61265222ec0f27d394964a8f7669 ]
 
-bitmap_size() is a pretty generic name and one may want to use it for
-a generic bitmap API function. At the same time, its logic is not
-"generic", i.e. it's not just `nbits -> size of bitmap in bytes`
-converter as it would be expected from its name.
-Add the prefix 'idset_' used throughout the file where the function
-resides.
+SRIOV does not need to wait for IFWI init, and MP0_C2PMSG_33 is blocked
+for VF access.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Reviewed-by: Vignesh Chander <Vignesh.Chander@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 9cead81eff63 ("drm/amdgpu: fix eGPU hotplug regression")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/idset.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 26 ++++++++++---------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -16,7 +16,7 @@ struct idset {
- 	unsigned long bitmap[0];
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 0e31bdb4b7cb6..ea5223388cff2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -256,19 +256,21 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
+ 	u32 msg;
+ 	int i, ret = 0;
  
--static inline unsigned long bitmap_size(int num_ssid, int num_id)
-+static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
- {
- 	return bitmap_size(size_mul(num_ssid, num_id));
- }
-@@ -25,11 +25,12 @@ static struct idset *idset_new(int num_s
- {
- 	struct idset *set;
+-	/* It can take up to a second for IFWI init to complete on some dGPUs,
+-	 * but generally it should be in the 60-100ms range.  Normally this starts
+-	 * as soon as the device gets power so by the time the OS loads this has long
+-	 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
+-	 * wait for this to complete.  Once the C2PMSG is updated, we can
+-	 * continue.
+-	 */
++	if (!amdgpu_sriov_vf(adev)) {
++		/* It can take up to a second for IFWI init to complete on some dGPUs,
++		 * but generally it should be in the 60-100ms range.  Normally this starts
++		 * as soon as the device gets power so by the time the OS loads this has long
++		 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
++		 * wait for this to complete.  Once the C2PMSG is updated, we can
++		 * continue.
++		 */
  
--	set = vmalloc(sizeof(struct idset) + bitmap_size(num_ssid, num_id));
-+	set = vmalloc(sizeof(struct idset) +
-+		      idset_bitmap_size(num_ssid, num_id));
- 	if (set) {
- 		set->num_ssid = num_ssid;
- 		set->num_id = num_id;
--		memset(set->bitmap, 0, bitmap_size(num_ssid, num_id));
-+		memset(set->bitmap, 0, idset_bitmap_size(num_ssid, num_id));
+-	for (i = 0; i < 1000; i++) {
+-		msg = RREG32(mmMP0_SMN_C2PMSG_33);
+-		if (msg & 0x80000000)
+-			break;
+-		usleep_range(1000, 1100);
++		for (i = 0; i < 1000; i++) {
++			msg = RREG32(mmMP0_SMN_C2PMSG_33);
++			if (msg & 0x80000000)
++				break;
++			usleep_range(1000, 1100);
++		}
  	}
- 	return set;
- }
-@@ -41,7 +42,8 @@ void idset_free(struct idset *set)
  
- void idset_fill(struct idset *set)
- {
--	memset(set->bitmap, 0xff, bitmap_size(set->num_ssid, set->num_id));
-+	memset(set->bitmap, 0xff,
-+	       idset_bitmap_size(set->num_ssid, set->num_id));
- }
- 
- static inline void idset_add(struct idset *set, int ssid, int id)
+ 	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
+-- 
+2.43.0
+
 
 
 
