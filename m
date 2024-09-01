@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-71929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05AF967866
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0349967772
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF0C1F212E9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D4AB20F72
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E85E184524;
-	Sun,  1 Sep 2024 16:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D409817E01C;
+	Sun,  1 Sep 2024 16:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSCcNHlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seXtGDy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1031181CE1;
-	Sun,  1 Sep 2024 16:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923962C1B4;
+	Sun,  1 Sep 2024 16:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208283; cv=none; b=k/D4sZ/flCBw7z2TMY4bgfBQOPtcndk1KhSvUkqDK4YqlkVkcf7wf/QqG2gMFrLD1mzecHbsqbYsHc4TZSZ1REQrCfXqK8gUOLaFaKaaLPcHnkrVOy6oC+xrh1PZY3uWtCosCIjpYOSpedTRowgbME5KBU419p31qWnEHQlESPg=
+	t=1725207583; cv=none; b=u2dR+TPQs2+ZPMMcOon5HT2ah/lnXEBUpaw/bKHAXzwNbTpo1Zh7dW2Gcg9bQzvRzf9Z5Y5ZNvsaA+55QXhyumsy3OVDPzDuIYVbnSZDOr8XjgaXHYuF91AzLiCIQwjsXEaPeQHn7ROkUXUBncx1rcT4v5aV1Kd5B2XO03KfrR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208283; c=relaxed/simple;
-	bh=wWhDUtQWEEc59DnKnsPBWImRYCR/lCLBlJyYpyFRhKc=;
+	s=arc-20240116; t=1725207583; c=relaxed/simple;
+	bh=k5fUwYpwv+LET4zfrN0iM4SmJHlBSbEdbIzD64HB9mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=acL2aaIESZyLAwryQMyDabXQpXVJPvExuCKKUMnp5mgB71oLgoUYSZV1WwcKowARky4zUGPc1C9IpQaDlM3PLZF9nS6Oqw7mRkv9Y0wd1hN1H3qAavhjpW1BeBRPljl9ffHhi7uSICypH3igdMJyyYboC4XwXOIlbtMSg6MgDTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSCcNHlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E55AC4CEC3;
-	Sun,  1 Sep 2024 16:31:22 +0000 (UTC)
+	 MIME-Version; b=VkjHK92QSn4/W10HLIp3u9Sy+S/0sl9vb/Ji/zBSTmEGiVnpO+RWGwMr2oTuDC/uulr0ceYB2MA+U6aAFunj8iGSc+WDtowOVYWoKRs2tDaD6iholNQPSIdVZ0/1hU+EPd8+7sS1I3CMpkdlmqwEI0lqiHgTBsxSzrqK7/flyW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seXtGDy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F26CC4CEC3;
+	Sun,  1 Sep 2024 16:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208282;
-	bh=wWhDUtQWEEc59DnKnsPBWImRYCR/lCLBlJyYpyFRhKc=;
+	s=korg; t=1725207583;
+	bh=k5fUwYpwv+LET4zfrN0iM4SmJHlBSbEdbIzD64HB9mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSCcNHlGnaKcbGh9gJKhpvZ+QIio07PGvvj73JM5JMT7ghjE2JfgEw/fmaqBvEUiu
-	 RoNQwihVlwv9xvZCXiXNHcZw87aIAYd81cYJ/E7d/29kCRsRKaP/+PFqdWTd9OsvCk
-	 7n1AQeHCk2zruB4zhfa90FOyqcL/3Ad+0/bfpbFo=
+	b=seXtGDy3n6do2CM2Vg/wP1A6160TgTB2eWNgzb5HeNX1dQ5r5wohhrwt8LaWSkoda
+	 0AvJkqGnz/wuSXEmy+9w6BFCV5LB7A4GYysDGj+xWpFPmLSb3rvmloa9YdhbxSkKig
+	 Hp7ZNQHk90EJ8G8yXYaJq1Bw3kZ5tyglhyH7Edls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.10 035/149] drm/v3d: Disable preemption while updating GPU stats
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 16/98] net: dsa: vsc73xx: pass value in phy_write operation
 Date: Sun,  1 Sep 2024 18:15:46 +0200
-Message-ID: <20240901160818.782119823@linuxfoundation.org>
+Message-ID: <20240901160804.301899240@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,82 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-commit 9d824c7fce58f59982228aa85b0376b113cdfa35 upstream.
+[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
 
-We forgot to disable preemption around the write_seqcount_begin/end() pair
-while updating GPU stats:
+In the 'vsc73xx_phy_write' function, the register value is missing,
+and the phy write operation always sends zeros.
 
-  [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
-  [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
- <...snip...>
-  [ ] Call trace:
-  [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
-  [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
-  [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
-  [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
-  [ ]  process_one_work+0x62c/0xb48
-  [ ]  worker_thread+0x468/0x5b0
-  [ ]  kthread+0x1c4/0x1e0
-  [ ]  ret_from_fork+0x10/0x20
+This commit passes the value variable into the proper register.
 
-Fix it.
-
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Acked-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240813102505.80512-1-tursulin@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/dsa/vitesse-vsc73xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index b8682818bafa..ad1e6236ff6f 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -134,6 +134,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
+diff --git a/drivers/net/dsa/vitesse-vsc73xx.c b/drivers/net/dsa/vitesse-vsc73xx.c
+index 34fefa015fd79..eaafb1c30c91c 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx.c
++++ b/drivers/net/dsa/vitesse-vsc73xx.c
+@@ -649,7 +649,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 		return 0;
+ 	}
  
-+	preempt_disable();
-+
- 	write_seqcount_begin(&local_stats->lock);
- 	local_stats->start_ns = now;
- 	write_seqcount_end(&local_stats->lock);
-@@ -141,6 +143,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	write_seqcount_begin(&global_stats->lock);
- 	global_stats->start_ns = now;
- 	write_seqcount_end(&global_stats->lock);
-+
-+	preempt_enable();
- }
- 
- static void
-@@ -162,8 +166,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
- 
-+	preempt_disable();
- 	v3d_stats_update(local_stats, now);
- 	v3d_stats_update(global_stats, now);
-+	preempt_enable();
- }
- 
- static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+-	cmd = (phy << 21) | (regnum << 16);
++	cmd = (phy << 21) | (regnum << 16) | val;
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
 -- 
-2.46.0
+2.43.0
 
 
 
