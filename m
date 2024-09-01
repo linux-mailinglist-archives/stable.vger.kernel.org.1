@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF0C9679DF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C00967A82
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B24F281478
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF91F23EAF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DB9184524;
-	Sun,  1 Sep 2024 16:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21BD17E919;
+	Sun,  1 Sep 2024 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neHTSQr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwCO0nxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A99183CDC;
-	Sun,  1 Sep 2024 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE72A1B8;
+	Sun,  1 Sep 2024 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209320; cv=none; b=O33kwvBz5U/UpxpoMOd2h4fy2FIrbF6fKiQMJIlCN0NwO2ocq3HgocNyjHVjI8HhL15ci4Pmqqpbhq9XVFHeap6YLeF5QkiwlONcRkPXVT2FEdFxyUTw6RWa1Kogm/Oa9yzPEl3SgWoj2fWrhfjq2rXqb2Ar9uR6T+e731f9DSw=
+	t=1725209823; cv=none; b=seJlmQF+lb9N/75B8J+DVDdSLuLy6FMATBGP20pZVALXzCYPXE0H/tCAYqe+02I2C5LXAbAAfcJJG/Cwpaj3TzILWYRGWd+crdb/VaTQO2rKKbhdQcSe2hlG8yNkb505ZxtxjcefxLQC2eg8LOAsIT5cYTUevBax5P7DGnfcrIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209320; c=relaxed/simple;
-	bh=Ev/xt/P7k4UuUDeuPeGznF7oWyBWMuYDSAclM8VA8zU=;
+	s=arc-20240116; t=1725209823; c=relaxed/simple;
+	bh=RouQDi8LkXJ5gwndn2KTUfyW2Fd3gYVybBp19iPIsFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4O12G10AFbDX9pl39aQFyIJBG2IpzVNTIj+9Gf5YHrLbVJcpgTD5LFvc0sxXtHSGKW11Ey+SOR6Yt7NU8A+qu8koV2lZH/2ICMCO9WTprAi4SeJf45cRAjyTHsWtmoVFOzEThUK3a+giKVEFskhe9r8HOA3dkdsaGoABbtJeec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neHTSQr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E26C4CEC3;
-	Sun,  1 Sep 2024 16:48:40 +0000 (UTC)
+	 MIME-Version; b=vCeKO36c8rKa35Y2sUuYoIuIQwXm/5pEWrl7Bg2vMz0+8+3+D9YXoiodM0+JO4M+uCJdSl4JYYIGaMgRMiaGMq4RLMF9Tx/KPxlHqY/sriF3QDIButn6Zh7B09nVqwh8bbL1aFxpOAzxhAgkVT63Su/N+QTCzG6PtLc2xtTpkf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwCO0nxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EFCC4CEC3;
+	Sun,  1 Sep 2024 16:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209320;
-	bh=Ev/xt/P7k4UuUDeuPeGznF7oWyBWMuYDSAclM8VA8zU=;
+	s=korg; t=1725209823;
+	bh=RouQDi8LkXJ5gwndn2KTUfyW2Fd3gYVybBp19iPIsFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neHTSQr9F4cpdmDg6Bcrh3BBkyIQrAnNeMg5kEz0hmLrjhPNnvLJysZ4sajz0z6O0
-	 obVfOp1C3FRQBNr896srj7bZqp1ewIYhDS9VQ/bRGusVZNFUNleNc1kCeQCZGe21cI
-	 KgUCsrZvdNykDdIqKwHUxO4mi/B0+zAvCnzC5qmo=
+	b=iwCO0nxQ0xlWpoAW+9QTmjBSsrsIGX4TitxCADkyMSQ1OIt0OkAe9t91l/GQPSoO0
+	 kzr3uzQb1hMiWRidUv0OaFal0wiKsbeKB/zrl/A8DUVpi1Y0sOY2O0SvADJeGSIijQ
+	 2ZOD2dr2zyZDLt7WgZA5NaeBE1OKk7hY00pRh2vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 70/71] apparmor: fix policy_unpack_test on big endian systems
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 135/151] soundwire: stream: fix programming slave ports for non-continous port maps
 Date: Sun,  1 Sep 2024 18:18:15 +0200
-Message-ID: <20240901160804.529724268@linuxfoundation.org>
+Message-ID: <20240901160819.183874052@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
+commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
 
-policy_unpack_test fails on big endian systems because data byte order
-is expected to be little endian but is generated in host byte order.
-This results in test failures such as:
+Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
+'sink_ports' - define which ports to program in
+sdw_program_slave_port_params().  The masks are used to get the
+appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
+an array.
 
- # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
-    not ok 3 policy_unpack_test_unpack_array_with_null_name
-    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
+Bitmasks can be non-continuous or can start from index different than 0,
+thus when looking for matching port property for given port, we must
+iterate over mask bits, not from 0 up to number of ports.
 
-Add the missing endianness conversions when generating test data.
+This fixes allocation and programming slave ports, when a source or sink
+masks start from further index.
 
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack_test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/soundwire/stream.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
-index f25cf2a023d57..0711a0305df34 100644
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -81,14 +81,14 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
- 	strcpy(buf + 3, TEST_U32_NAME);
- 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
--	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
-+	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1425,18 +1425,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
+ 					    unsigned int port_num)
+ {
+ 	struct sdw_dpn_prop *dpn_prop;
+-	u8 num_ports;
++	unsigned long mask;
+ 	int i;
  
- 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
- 	*buf = AA_NAME;
- 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
- 	strcpy(buf + 3, TEST_U64_NAME);
- 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
--	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
-+	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
+ 	if (direction == SDW_DATA_DIR_TX) {
+-		num_ports = hweight32(slave->prop.source_ports);
++		mask = slave->prop.source_ports;
+ 		dpn_prop = slave->prop.src_dpn_prop;
+ 	} else {
+-		num_ports = hweight32(slave->prop.sink_ports);
++		mask = slave->prop.sink_ports;
+ 		dpn_prop = slave->prop.sink_dpn_prop;
+ 	}
  
- 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
- 	*buf = AA_NAME;
-@@ -104,7 +104,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
- 	strcpy(buf + 3, TEST_ARRAY_NAME);
- 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
--	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
-+	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
- 
- 	return e;
- }
--- 
-2.43.0
-
+-	for (i = 0; i < num_ports; i++) {
++	for_each_set_bit(i, &mask, 32) {
+ 		if (dpn_prop[i].num == port_num)
+ 			return &dpn_prop[i];
+ 	}
 
 
 
