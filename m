@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE67967A5B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CA4967B2A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A6EA1F23E7E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E82B1C2163B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D88C18132A;
-	Sun,  1 Sep 2024 16:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFAC17E918;
+	Sun,  1 Sep 2024 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6OM9UG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNhudVUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD0B1DFD1;
-	Sun,  1 Sep 2024 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E98F2C6AF;
+	Sun,  1 Sep 2024 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209700; cv=none; b=UzKCoEkfiTRbTLt0EN5WguMFW9OCGjk+XuGmbZAG/h9UmIMqgQ4Fjej+ND0oq70AgmZtSqXIJwrO9GNaO03eDzCopfxE/7ksz1X/vDH4TdAUhxGKR7pPbLI6AXXM1TA7JmK1XKJFWf4OV44/sqyqmYyidokT5JJcyN3QZZTakCY=
+	t=1725210362; cv=none; b=IEnfUN2lpzLawTuIo/BY/SLoOryedonFxG4R1wxqfoe+T7wLxXO5TL7CFOkQjQO9DortP+KknSlPJ5MTLZVqjOHij+VREhyfoXUkA4FUXLiy86hVU5Yp3TJBJdfBJQsO/S92HOUSin2W2il1JVK1wVbGIdtNSyngX0JcG/0Fz9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209700; c=relaxed/simple;
-	bh=70yC3c4VZDcm+AqfgbwlJ9bXOdhyNA2R7SV1JY6KSGU=;
+	s=arc-20240116; t=1725210362; c=relaxed/simple;
+	bh=xS21LTM+gFB94VSRasRXReIYf3C/DY+Vj6GtIq5qkA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=an5b09dsou/hlyrgwJB2H05A80hYTkIqSm/jljw1/oBLRVlJ64JH9LsPSXYxCOSNQ7YhreSIdO2VFIlNZ2sWZoQvVTHzPwDlQEYnniXSf46DsTOY34S52zvrHxjjWw+xbfKvvAQHDOODtdixbUYdkjtjSqGIURLbYe+41trAm34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6OM9UG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1D6C4CEC3;
-	Sun,  1 Sep 2024 16:54:59 +0000 (UTC)
+	 MIME-Version; b=VoDq4DoU4cX/KH6MnSM9i29QGstvGK8STxEHYt4rfL4nXtaZy6/W6iWo1VFkfDCaR9ncZ0Pn3mSvnpD8vSrV5Q52LMBPYeEKQ/sM9xo3ItbxIOvFBZKK5LwD8OUhqLsRKeHsK8zcPTHpwJq59pOyfkamEfKm0nw1H8z7xRfqvag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNhudVUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EF1C4CEC3;
+	Sun,  1 Sep 2024 17:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209699;
-	bh=70yC3c4VZDcm+AqfgbwlJ9bXOdhyNA2R7SV1JY6KSGU=;
+	s=korg; t=1725210362;
+	bh=xS21LTM+gFB94VSRasRXReIYf3C/DY+Vj6GtIq5qkA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6OM9UG53yT4zcxqjl6kIPDX3e+P0oLLmjhDDDEjtezmvSRg7JBH76UiF/DsOdcgj
-	 nZ/bq+eQHCvGVhN1ckMvlrRksx3yiuc7FSQIYaABjBY3m5lJdJTwtIU16Cx0CHMIuE
-	 auuH4tQ2XpB5Xs+t9tK6eMqmpoy7x77MYh5wa+J4=
+	b=gNhudVUXldl01wckqIOPpet6mOZoyKErDXgA3bDhsEWLjx9ggikfesfJQppAk2pW5
+	 s4/4xim/iFL7YPl/QLX0C3e4Od9EA2QYq2eayrcHf5zWuMapLbBpsmrYz74Qe9iBEV
+	 KvO1abT+TdfX/P0BmMgI7sTAwHo7yf5HrbThQhLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hughdan Liu <hughliu@amazon.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 117/151] nfsd: Dont call freezable_schedule_timeout() after each successful page allocation in svc_alloc_arg().
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.15 165/215] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
 Date: Sun,  1 Sep 2024 18:17:57 +0200
-Message-ID: <20240901160818.510633740@linuxfoundation.org>
+Message-ID: <20240901160829.596137703@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Marc Zyngier <maz@kernel.org>
 
-When commit 390390240145 ("nfsd: don't allow nfsd threads to be
-signalled.") is backported to 5.10, it was adjusted considering commit
-3feac2b55293 ("sunrpc: exclude from freezer when waiting for requests:").
+commit 3e6245ebe7ef341639e9a7e402b3ade8ad45a19f upstream.
 
-However, 3feac2b55293 is based on commit f6e70aab9dfe ("SUNRPC: refresh
-rq_pages using a bulk page allocator"), which converted page-by-page
-allocation to a batch allocation, so schedule_timeout() is placed
-un-nested.
+On a system with a GICv3, if a guest hasn't been configured with
+GICv3 and that the host is not capable of GICv2 emulation,
+a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
 
-As a result, the backported commit 7229200f6866 ("nfsd: don't allow nfsd
-threads to be signalled.") placed freezable_schedule_timeout() in the wrong
-place.
+We therefore try to emulate the SGI access, only to hit a NULL
+pointer as no private interrupt is allocated (no GIC, remember?).
 
-Now, freezable_schedule_timeout() is called after every successful page
-allocation, and we see 30%+ performance regression on 5.10.220 in our
-test suite.
+The obvious fix is to give the guest what it deserves, in the
+shape of a UNDEF exception.
 
-Let's move it to the correct place so that freezable_schedule_timeout()
-is called only when page allocation fails.
-
-Fixes: 7229200f6866 ("nfsd: don't allow nfsd threads to be signalled.")
-Reported-by: Hughdan Liu <hughliu@amazon.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820100349.3544850-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svc_xprt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/sys_regs.c  |    6 ++++++
+ arch/arm64/kvm/vgic/vgic.h |    7 +++++++
+ 2 files changed, 13 insertions(+)
 
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -679,8 +679,8 @@ static int svc_alloc_arg(struct svc_rqst
- 					set_current_state(TASK_RUNNING);
- 					return -EINTR;
- 				}
-+				freezable_schedule_timeout(msecs_to_jiffies(500));
- 			}
--			freezable_schedule_timeout(msecs_to_jiffies(500));
- 			rqstp->rq_pages[i] = p;
- 		}
- 	rqstp->rq_page_end = &rqstp->rq_pages[i];
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -30,6 +30,7 @@
+ #include <trace/events/kvm.h>
+ 
+ #include "sys_regs.h"
++#include "vgic/vgic.h"
+ 
+ #include "trace.h"
+ 
+@@ -203,6 +204,11 @@ static bool access_gic_sgi(struct kvm_vc
+ {
+ 	bool g1;
+ 
++	if (!kvm_has_gicv3(vcpu->kvm)) {
++		kvm_inject_undefined(vcpu);
++		return false;
++	}
++
+ 	if (!p->is_write)
+ 		return read_from_write_only(vcpu, p, r);
+ 
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -324,4 +324,11 @@ void vgic_v4_configure_vsgis(struct kvm
+ void vgic_v4_get_vlpi_state(struct vgic_irq *irq, bool *val);
+ int vgic_v4_request_vpe_irq(struct kvm_vcpu *vcpu, int irq);
+ 
++static inline bool kvm_has_gicv3(struct kvm *kvm)
++{
++	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
++		irqchip_in_kernel(kvm) &&
++		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
++}
++
+ #endif
 
 
 
