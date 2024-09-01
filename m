@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0F0967945
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04D99677D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E3BB2161B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F1D92811D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F82517E46E;
-	Sun,  1 Sep 2024 16:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB405183CA5;
+	Sun,  1 Sep 2024 16:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JW40p1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrRm29E0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12191C68C;
-	Sun,  1 Sep 2024 16:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87CA16EB4B;
+	Sun,  1 Sep 2024 16:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208912; cv=none; b=AAFSPquh5W9d/7gjBZMdZv37AKd9FD6EOK74Gi4M60aqhCrDgwbggio7GGqAstLzizLrJZH5a+fZvvFyryFDqpbLNofPYragr3+Oe77PbKiprPbY4rCpY/7N2YMWsHl9RrVRuK15gd1gvLTRb1HY6deZ1M+k2vhOA1tYP/sxj2A=
+	t=1725207865; cv=none; b=oM/Ppwk/MyLktojt4RSQfxqIZJVoFSDiXNk4phhGgTzuq2i8AZzg5ippf11s0A4MQayTK1EMtHe1LXSbqQq6dHAoQuR2Gfk8ww+9PU1po/Xo73DgBF5FVUmfBJm1HYq6a1JWgRtThFcFeIS5SZQ5mkqLItnCbbQQQdz2ZF+zR/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208912; c=relaxed/simple;
-	bh=NWCG1epY3mCCDCfjJc1qHy3+zbgW8dCDNOsMtdH5ljk=;
+	s=arc-20240116; t=1725207865; c=relaxed/simple;
+	bh=57hPJ4kSLy6NUUBsJfkq+o7RMvsGv5qTlXi2eUkUGXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDzorn7bCz7ak9wr9rcn3L2oHNMFE2N6KRlJiBph+Q0DDszwmoIGCfvouA7OBrBSHNjTazEUEiEyAId0qJcK5iH1XfZPnQtpk9XFKDhUazwCz+aZ8w/JWxIVI/EAqe8LN2nWQFKSj0P7s8X1qP/SPJxfRNqwIF0ETceHDjzACkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JW40p1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632CEC4CEC3;
-	Sun,  1 Sep 2024 16:41:51 +0000 (UTC)
+	 MIME-Version; b=PQ0rWXU39L6FSE6X5XsNgUWJjCCr0EIT1eLCIsyU/UVm8dg+K0J3bnWb1GeKBydPYRBPmGX6UCCv0DlR5EVwdMAWwKG82M+VboPB/yd3r2dK5re95fk26VWgfSAwbXYzR9vHJ8rP8sMui72LtucS7b6CbvhmB1n+KHlPDRAiksE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrRm29E0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B6C4CEC3;
+	Sun,  1 Sep 2024 16:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208911;
-	bh=NWCG1epY3mCCDCfjJc1qHy3+zbgW8dCDNOsMtdH5ljk=;
+	s=korg; t=1725207865;
+	bh=57hPJ4kSLy6NUUBsJfkq+o7RMvsGv5qTlXi2eUkUGXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JW40p1Eu++mLQU3pgvmiu3f4RBUWLjh7TjXvmWjMMUCPfWXd+ktUmQPTpgZYB8kv
-	 8K4O5JJtduiqF7MUErRPMS83YRDgl9EKWrXqrKPJKBNNvyRifjpJQUpCjB51NsWv2k
-	 LwyMfSXa9TZYdrdcFc/9NU7ntkcKp8eHM46JHrFU=
+	b=lrRm29E0hiiW/jsX9Ot0y9JZiKp8K0KrP8KGZ/iHRSsnnJ+t6WRmdLWOeZNaPe8pz
+	 cA8vBnfhrYffFvotgirNdXhyxJjr+9mbgC5iFsakP5MBAY4IecPO/dSQVE+Tb4TcLT
+	 Vsla6GgiCsx2rFy21bUHdpGbC91ZL7jPoDELFTi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Mike Snitzer <snitzer@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/134] dm mpath: pass IO start time to path selector
+	stable <stable@kernel.org>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 4.19 93/98] usb: dwc3: core: Prevent USB core invalid event buffer address access
 Date: Sun,  1 Sep 2024 18:17:03 +0200
-Message-ID: <20240901160812.999595523@linuxfoundation.org>
+Message-ID: <20240901160807.203981096@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit 087615bf3acdafd0ba7c7c9ed5286e7b7c80fe1b ]
+commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
 
-The HST path selector needs this information to perform path
-prediction. For request-based mpath, struct request's io_start_time_ns
-is used, while for bio-based, use the start_time stored in dm_io.
+This commit addresses an issue where the USB core could access an
+invalid event buffer address during runtime suspend, potentially causing
+SMMU faults and other memory issues in Exynos platforms. The problem
+arises from the following sequence.
+        1. In dwc3_gadget_suspend, there is a chance of a timeout when
+        moving the USB core to the halt state after clearing the
+        run/stop bit by software.
+        2. In dwc3_core_exit, the event buffer is cleared regardless of
+        the USB core's status, which may lead to an SMMU faults and
+        other memory issues. if the USB core tries to access the event
+        buffer address.
 
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-Stable-dep-of: 1e1fd567d32f ("dm suspend: return -ERESTARTSYS instead of -EINTR")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent this hardware quirk on Exynos platforms, this commit ensures
+that the event buffer address is not cleared by software  when the USB
+core is active during runtime suspend by checking its status before
+clearing the buffer address.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-mpath.c         | 9 ++++++---
- drivers/md/dm-path-selector.h | 2 +-
- drivers/md/dm-queue-length.c  | 2 +-
- drivers/md/dm-service-time.c  | 2 +-
- drivers/md/dm.c               | 9 +++++++++
- include/linux/device-mapper.h | 2 ++
- 6 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/usb/dwc3/core.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
-index 54ecfea2cf47b..4f6a54452b1ca 100644
---- a/drivers/md/dm-mpath.c
-+++ b/drivers/md/dm-mpath.c
-@@ -558,7 +558,8 @@ static void multipath_release_clone(struct request *clone,
- 		if (pgpath && pgpath->pg->ps.type->end_io)
- 			pgpath->pg->ps.type->end_io(&pgpath->pg->ps,
- 						    &pgpath->path,
--						    mpio->nr_bytes);
-+						    mpio->nr_bytes,
-+						    clone->io_start_time_ns);
- 	}
- 
- 	blk_put_request(clone);
-@@ -1568,7 +1569,8 @@ static int multipath_end_io(struct dm_target *ti, struct request *clone,
- 		struct path_selector *ps = &pgpath->pg->ps;
- 
- 		if (ps->type->end_io)
--			ps->type->end_io(ps, &pgpath->path, mpio->nr_bytes);
-+			ps->type->end_io(ps, &pgpath->path, mpio->nr_bytes,
-+					 clone->io_start_time_ns);
- 	}
- 
- 	return r;
-@@ -1612,7 +1614,8 @@ static int multipath_end_io_bio(struct dm_target *ti, struct bio *clone,
- 		struct path_selector *ps = &pgpath->pg->ps;
- 
- 		if (ps->type->end_io)
--			ps->type->end_io(ps, &pgpath->path, mpio->nr_bytes);
-+			ps->type->end_io(ps, &pgpath->path, mpio->nr_bytes,
-+					 dm_start_time_ns_from_clone(clone));
- 	}
- 
- 	return r;
-diff --git a/drivers/md/dm-path-selector.h b/drivers/md/dm-path-selector.h
-index b6eb5365b1a46..c47bc0e20275b 100644
---- a/drivers/md/dm-path-selector.h
-+++ b/drivers/md/dm-path-selector.h
-@@ -74,7 +74,7 @@ struct path_selector_type {
- 	int (*start_io) (struct path_selector *ps, struct dm_path *path,
- 			 size_t nr_bytes);
- 	int (*end_io) (struct path_selector *ps, struct dm_path *path,
--		       size_t nr_bytes);
-+		       size_t nr_bytes, u64 start_time);
- };
- 
- /* Register a path selector */
-diff --git a/drivers/md/dm-queue-length.c b/drivers/md/dm-queue-length.c
-index 969c4f1a36336..5fd018d184187 100644
---- a/drivers/md/dm-queue-length.c
-+++ b/drivers/md/dm-queue-length.c
-@@ -227,7 +227,7 @@ static int ql_start_io(struct path_selector *ps, struct dm_path *path,
- }
- 
- static int ql_end_io(struct path_selector *ps, struct dm_path *path,
--		     size_t nr_bytes)
-+		     size_t nr_bytes, u64 start_time)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -419,9 +419,17 @@ int dwc3_event_buffers_setup(struct dwc3
+ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
  {
- 	struct path_info *pi = path->pscontext;
+ 	struct dwc3_event_buffer	*evt;
++	u32				reg;
  
-diff --git a/drivers/md/dm-service-time.c b/drivers/md/dm-service-time.c
-index f006a9005593b..9cfda665e9ebd 100644
---- a/drivers/md/dm-service-time.c
-+++ b/drivers/md/dm-service-time.c
-@@ -309,7 +309,7 @@ static int st_start_io(struct path_selector *ps, struct dm_path *path,
- }
+ 	if (!dwc->ev_buf)
+ 		return;
++	/*
++	 * Exynos platforms may not be able to access event buffer if the
++	 * controller failed to halt on dwc3_core_exit().
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
++	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
++		return;
  
- static int st_end_io(struct path_selector *ps, struct dm_path *path,
--		     size_t nr_bytes)
-+		     size_t nr_bytes, u64 start_time)
- {
- 	struct path_info *pi = path->pscontext;
+ 	evt = dwc->ev_buf;
  
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index a7724ba45b437..36d21a5d09ebf 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -659,6 +659,15 @@ static bool md_in_flight(struct mapped_device *md)
- 		return md_in_flight_bios(md);
- }
- 
-+u64 dm_start_time_ns_from_clone(struct bio *bio)
-+{
-+	struct dm_target_io *tio = container_of(bio, struct dm_target_io, clone);
-+	struct dm_io *io = tio->io;
-+
-+	return jiffies_to_nsecs(io->start_time);
-+}
-+EXPORT_SYMBOL_GPL(dm_start_time_ns_from_clone);
-+
- static void start_io_acct(struct dm_io *io)
- {
- 	struct mapped_device *md = io->md;
-diff --git a/include/linux/device-mapper.h b/include/linux/device-mapper.h
-index 60631f3abddbd..b077f32043653 100644
---- a/include/linux/device-mapper.h
-+++ b/include/linux/device-mapper.h
-@@ -332,6 +332,8 @@ void *dm_per_bio_data(struct bio *bio, size_t data_size);
- struct bio *dm_bio_from_per_bio_data(void *data, size_t data_size);
- unsigned dm_bio_get_target_bio_nr(const struct bio *bio);
- 
-+u64 dm_start_time_ns_from_clone(struct bio *bio);
-+
- int dm_register_target(struct target_type *t);
- void dm_unregister_target(struct target_type *t);
- 
--- 
-2.43.0
-
 
 
 
