@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A41296795F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D73967A41
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B12F1C20FD9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBC01F23B82
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C81017E00C;
-	Sun,  1 Sep 2024 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9988317CA1F;
+	Sun,  1 Sep 2024 16:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK2waynm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQGtoPGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0021C68C;
-	Sun,  1 Sep 2024 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581411DFD1;
+	Sun,  1 Sep 2024 16:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208998; cv=none; b=Pbw/lxJ5WgLVDEvkd0rPKE/J8WZlIPbloRDEn0foza1mBJd4l01OiO1IB4fAhmS2ygN/yNis5a6O1Y0Iiq3LB72/rxq47RFjKgVjZ3jv1v1LD9LBy1T7fFgOu4BLNkKVb6EL4DYzN+AI1FeOm7aACQlmrAl9x1qC2/uvOOp/V8U=
+	t=1725209615; cv=none; b=MiQ9GjFY3CNhKtOGaBlF0BSgMdPHjsJ/yaWBih8otBUoQrbWkGpYkVshIU+K+JpV4HFA1LdoxDlEnjRmfqGkaktzd+Wx1SJq1qrwy7BK/LBZQtT53u17K1qmeFyKzHtHlbD4aLBGlkr4y6AtmI1uqcLaWMm7b7MsViV88D8szyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208998; c=relaxed/simple;
-	bh=IQdYP6Fgm4zAh/uR2t23cITvIL9yfjt/U5nk3vMGblo=;
+	s=arc-20240116; t=1725209615; c=relaxed/simple;
+	bh=/1x2SCRcQdwx+KL6FtwOVCTQc2YvOShc4n3a+FAJSXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQEyVjQPzTfpK3ZZo56VPY1VQNXfnWP1ld++fyXRiagsHuwM+UoeiqY0TK4LbuwwwXBsz38OhQIGPy83ML+TkQWicBm0jKxWy7vRL96moouzEl0lZXkH1QYI9e8+6+dQAoQ7OIotTu8eRt4buebhAaP4thFyw0ywTyWyWi3Gc60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK2waynm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32C4C4CEC3;
-	Sun,  1 Sep 2024 16:43:17 +0000 (UTC)
+	 MIME-Version; b=FLp4CTVbEFhkWlo32TAhkmyfcv3J7afZqvUkQHqolo5E37RjQICnlLLS7DStFl5+QmCIXtw5CqN8uHZmr93yYzGft4Rdk4i+nH1pkHjUUAm2tzq+mRtEi8G8YfCPJIsDohoJCzM4G6V4j18OlQ2EMxR1JDu1MS8OyKZ1JywT7q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQGtoPGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E56C4CEC3;
+	Sun,  1 Sep 2024 16:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208998;
-	bh=IQdYP6Fgm4zAh/uR2t23cITvIL9yfjt/U5nk3vMGblo=;
+	s=korg; t=1725209615;
+	bh=/1x2SCRcQdwx+KL6FtwOVCTQc2YvOShc4n3a+FAJSXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iK2waynmBKY7Ga5v0viE5V6PDMDHIJEtX7kApyOTuXaSdPdmYHtyzFRjTftSY1pRl
-	 ba1MFzaLxnUjoXd5aK3cQRCZdna3HI93JFDWftFMfTKiXp453c9uMyU3vqix8GWDW5
-	 iqtyo2+CMJtIGVruAwZWIPYb5rlxVonIMM8RSdm0=
+	b=LQGtoPGGUyFUtPhRW2Zlmr+hffXqJZIfij8yW4zN2BiqdWRE8bvvTnGCDjX2XjMIJ
+	 91tRmAlIYqgW0BUw1L53eHmw/sgVgxd8rdFJICHDehUieWQgwASELQ90rApFhgpN+U
+	 zjAkOgjw7NubytudCy3rSif/qGqRGKEzq6sCHqFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Hao <yhao016@ucr.edu>,
-	Weiteng Chen <wchen130@ucr.edu>,
-	"Lee, Chun-Yi" <jlee@suse.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 104/134] Bluetooth: hci_ldisc: check HCI_UART_PROTO_READY flag in HCIUARTGETPROTO
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 090/151] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
 Date: Sun,  1 Sep 2024 18:17:30 +0200
-Message-ID: <20240901160814.002603830@linuxfoundation.org>
+Message-ID: <20240901160817.502471404@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <joeyli.kernel@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 9c33663af9ad115f90c076a1828129a3fbadea98 upstream.
+[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
 
-This patch adds code to check HCI_UART_PROTO_READY flag before
-accessing hci_uart->proto. It fixes the race condition in
-hci_uart_tty_ioctl() between HCIUARTSETPROTO and HCIUARTGETPROTO.
-This issue bug found by Yu Hao and Weiteng Chen:
+nft_counter_reset() resets the counter by subtracting the previously
+retrieved value from the counter. This is a write operation on the
+counter and as such it requires to be performed with a write sequence of
+nft_counter_seq to serialize against its possible reader.
 
-BUG: general protection fault in hci_uart_tty_ioctl [1]
+Update the packets/ bytes within write-sequence of nft_counter_seq.
 
-The information of C reproducer can also reference the link [2]
-
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Closes: https://lore.kernel.org/all/CA+UBctC3p49aTgzbVgkSZ2+TQcqq4fPDO7yZitFT5uBPDeCO2g@mail.gmail.com/ [1]
-Reported-by: Weiteng Chen <wchen130@ucr.edu>
-Closes: https://lore.kernel.org/lkml/CA+UBctDPEvHdkHMwD340=n02rh+jNRJNNQ5LBZNA+Wm4Keh2ow@mail.gmail.com/T/ [2]
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nft_counter.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -765,7 +765,8 @@ static int hci_uart_tty_ioctl(struct tty
- 		break;
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index 75fa6fcd6cd6c..ea102b9a168b8 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -105,11 +105,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
+ 			      struct nft_counter *total)
+ {
+ 	struct nft_counter *this_cpu;
++	seqcount_t *myseq;
  
- 	case HCIUARTGETPROTO:
--		if (test_bit(HCI_UART_PROTO_SET, &hu->flags))
-+		if (test_bit(HCI_UART_PROTO_SET, &hu->flags) &&
-+		    test_bit(HCI_UART_PROTO_READY, &hu->flags))
- 			err = hu->proto->id;
- 		else
- 			err = -EUNATCH;
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
++	myseq = this_cpu_ptr(&nft_counter_seq);
++
++	write_seqcount_begin(myseq);
+ 	this_cpu->packets -= total->packets;
+ 	this_cpu->bytes -= total->bytes;
++	write_seqcount_end(myseq);
+ 	local_bh_enable();
+ }
+ 
+-- 
+2.43.0
+
 
 
 
