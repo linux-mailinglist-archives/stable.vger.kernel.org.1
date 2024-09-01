@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612D29678F0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 386779679BA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7C32812C1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0E12812B8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9439717CA1F;
-	Sun,  1 Sep 2024 16:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0239186E3A;
+	Sun,  1 Sep 2024 16:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhohs0qq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STv1m5YP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E791C68C;
-	Sun,  1 Sep 2024 16:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E8184529;
+	Sun,  1 Sep 2024 16:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208656; cv=none; b=icSqyRgV8p0BnIoRYm4Xk0+ipBwwbHJXqRACfrGROib1ZVDlEPZJtDUiJI7Z2x75J6OSkWeAzxrp/d5tVYmgi638WnPhFVjld0sdlpcADz3s1evoGvPzaTO5JPoUmvE6Cl8ly2COTgcWKPW4bPCt+92q528bfJIhcjs1hyG5Qpo=
+	t=1725209215; cv=none; b=DnekFgYFf6wPBeANjhtK84lR8O1y/jNW+lJ37utTIIE+Ry4frt1U+Q6BxNXS6/R2ttT4xWVsKBm1HRty/Shm9Hd0+vJzOHePZ244zRk+bG4V3eqdZQQTCyAKY8vwfTM5eoiCVlEQl++qniLx5/O5BNP5iDBTRFozvw4UC8cEvng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208656; c=relaxed/simple;
-	bh=E5907xIhxg3SCP8CY4QKO1UlaSj3oO7hzU25ihyVXQU=;
+	s=arc-20240116; t=1725209215; c=relaxed/simple;
+	bh=q0wy6GkfSbfoaXrXYXWAO/irJ5GXt0Gsho+5U43B6j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmROtpAtJugEzfIWqhldhsLeidQCTcDi3L3vBNZTtPemMHIK8hI6t0v+OuPjTInPGg4gvL36AUSzs/Q2+6C3h608yyo9V25ojCEa41uWGhwJ1FpCruz0FVvnd4q6uc/BTXBjvMEVV541B7xNlNBYjTiCWe9X3lDI+hZvEQwLHuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhohs0qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6097C4CEC3;
-	Sun,  1 Sep 2024 16:37:35 +0000 (UTC)
+	 MIME-Version; b=hkrceFbQBhW61wk5BCcSMxprqLO5rJPlwo0G4htWOeSCh8huNX6v6eH5doytdU4M1GQWhDc/5bBL7Qj/TrvcZ6/JeBtx35nPwwqdk9y5TK4eJr3XxzpcDAsR6fK27fhzsC9aSGnNu5sLyqglTacKx3ooTedIf2S3Uo2fCCZafN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STv1m5YP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B894C4CEC3;
+	Sun,  1 Sep 2024 16:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208656;
-	bh=E5907xIhxg3SCP8CY4QKO1UlaSj3oO7hzU25ihyVXQU=;
+	s=korg; t=1725209215;
+	bh=q0wy6GkfSbfoaXrXYXWAO/irJ5GXt0Gsho+5U43B6j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhohs0qqH86EVJ9xvKKarx+BD5x1goO0h7q0h0UYugs6iUQH7LwiQAEtvbsWblUue
-	 LHmRaijmNFJODfJYCpHFa8UtHk86jS/KQjrBAIKjzTgg3YrrXQ2uIBEcLvIHdIPZKN
-	 R2ddL4lRhrY56HVU677rsEH/BjwL7FfvSbimq/4M=
+	b=STv1m5YPS3gZZ2FKDXQk3JZ8jghSmby9VP2eM0kpBqiocjbHTI8hx5H098s/FIJbM
+	 2c6tl1cejZbIquP3oxpoWEj4bFo6KMjhu2gR4NheSL8agzK/rFNedI6CljbCCOzhVW
+	 BCg7qAIWVityewliGj+he3mPJB3a3KrY9kGy2/Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 149/149] nfsd: fix nfsd4_deleg_getattr_conflict in presence of third party lease
-Date: Sun,  1 Sep 2024 18:17:40 +0200
-Message-ID: <20240901160823.049123999@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 36/71] soundwire: stream: fix programming slave ports for non-continous port maps
+Date: Sun,  1 Sep 2024 18:17:41 +0200
+Message-ID: <20240901160803.255768489@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 40927f3d0972bf86357a32a5749be71a551241b6 ]
+commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
 
-It is not safe to dereference fl->c.flc_owner without first confirming
-fl->fl_lmops is the expected manager.  nfsd4_deleg_getattr_conflict()
-tests fl_lmops but largely ignores the result and assumes that flc_owner
-is an nfs4_delegation anyway.  This is wrong.
+Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
+'sink_ports' - define which ports to program in
+sdw_program_slave_port_params().  The masks are used to get the
+appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
+an array.
 
-With this patch we restore the "!= &nfsd_lease_mng_ops" case to behave
-as it did before the change mentioned below.  This is the same as the
-current code, but without any reference to a possible delegation.
+Bitmasks can be non-continuous or can start from index different than 0,
+thus when looking for matching port property for given port, we must
+iterate over mask bits, not from 0 up to number of ports.
 
-Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes allocation and programming slave ports, when a source or sink
+masks start from further index.
+
+Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/soundwire/stream.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 07f2496850c4c..a366fb1c1b9b4 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8859,7 +8859,15 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
- 			 */
- 			if (type == F_RDLCK)
- 				break;
--			goto break_lease;
-+
-+			nfsd_stats_wdeleg_getattr_inc(nn);
-+			spin_unlock(&ctx->flc_lock);
-+
-+			status = nfserrno(nfsd_open_break_lease(inode, NFSD_MAY_READ));
-+			if (status != nfserr_jukebox ||
-+			    !nfsd_wait_for_delegreturn(rqstp, inode))
-+				return status;
-+			return 0;
- 		}
- 		if (type == F_WRLCK) {
- 			struct nfs4_delegation *dp = fl->c.flc_owner;
-@@ -8868,7 +8876,6 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
- 				spin_unlock(&ctx->flc_lock);
- 				return 0;
- 			}
--break_lease:
- 			nfsd_stats_wdeleg_getattr_inc(nn);
- 			dp = fl->c.flc_owner;
- 			refcount_inc(&dp->dl_stid.sc_count);
--- 
-2.43.0
-
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1272,18 +1272,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
+ 					    unsigned int port_num)
+ {
+ 	struct sdw_dpn_prop *dpn_prop;
+-	u8 num_ports;
++	unsigned long mask;
+ 	int i;
+ 
+ 	if (direction == SDW_DATA_DIR_TX) {
+-		num_ports = hweight32(slave->prop.source_ports);
++		mask = slave->prop.source_ports;
+ 		dpn_prop = slave->prop.src_dpn_prop;
+ 	} else {
+-		num_ports = hweight32(slave->prop.sink_ports);
++		mask = slave->prop.sink_ports;
+ 		dpn_prop = slave->prop.sink_dpn_prop;
+ 	}
+ 
+-	for (i = 0; i < num_ports; i++) {
++	for_each_set_bit(i, &mask, 32) {
+ 		if (dpn_prop[i].num == port_num)
+ 			return &dpn_prop[i];
+ 	}
 
 
 
