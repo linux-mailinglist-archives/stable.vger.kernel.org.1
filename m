@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC009679F7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD17A967AE1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446861F22584
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDD711C209EC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD151C68C;
-	Sun,  1 Sep 2024 16:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30AB376EC;
+	Sun,  1 Sep 2024 17:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhIn3SWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjfPP9Rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2380143894;
-	Sun,  1 Sep 2024 16:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F14217C;
+	Sun,  1 Sep 2024 17:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209395; cv=none; b=DbWBXtUup7xxZX/h/lxJBOM4sRN5UJ24xchCUu1ulHYb8vScDEs9FbwRE7WR3olQPOSKbAMGuy2u6zdvq4J/K1zF7VRrgQ7p2v/5dQj9zY0R+PgrwkLQGBHBk1soTi03Ku0jd91x8oK3KnIONZja3WViWXRkirmr8Wptom9IZWA=
+	t=1725210130; cv=none; b=J64jLhyfqu/QKrppVi0TokTKkmSOoWZC3FOzI0Ncn/hVPA9y+poAwMUMKaU2G0r8j873D4AhRhEgNTHfEGghPBknNqWovFu2HQD9ggKaIThaX8cChKWTMxoK3NU7pFjngiN996ooeQe82lw8QSDmR4Y07Ny+mRVbSo5Ft/gG4b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209395; c=relaxed/simple;
-	bh=9LD9Fye4gkCaxtJEF+Caocac+Ba0gEA9uUJ7dU27AQU=;
+	s=arc-20240116; t=1725210130; c=relaxed/simple;
+	bh=y25OGzwl+Mhr/D2PPM2yGZaeXPV1HImcgF5lRAhesU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWMJL+kYLs6wpwYrGyOwz5WBFYLxWYrWBL4oZuo4ejKRuBSFXmQ3h6uRkQ44kcj5gs4QNhyDzKfT4mkUrhvWlZ4x3A/jT8+uJTQFE5/bBloVqnG60rolvgPyuYKCfJCjjd3VPAWONyNCg5LgM+GPh2aYUEy3woMacBNSXM6xxD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhIn3SWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A76FC4CEC3;
-	Sun,  1 Sep 2024 16:49:55 +0000 (UTC)
+	 MIME-Version; b=roDI9s3iXWmVH52Wyy5pDNc8voFVFfUME1iAsFmg8Xu0ukY+IytOlD7xE7aDIKHrjmO+QqHw6ZVtoHGD9PBJxpNhWh9JDqufCvnfux5/vtm0ecBTkQrEGT+6Cpxtr9PWKIwz49RfRbie9U5icy3bBl7bdPxFY0j5wuQQyXr4a2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjfPP9Rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8A1C4CEC3;
+	Sun,  1 Sep 2024 17:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209395;
-	bh=9LD9Fye4gkCaxtJEF+Caocac+Ba0gEA9uUJ7dU27AQU=;
+	s=korg; t=1725210130;
+	bh=y25OGzwl+Mhr/D2PPM2yGZaeXPV1HImcgF5lRAhesU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhIn3SWrCYPyTtWHa1nNjDFDOeTIWsWIzSUt4hHjQQMPzGDAK3bUP/QUUOlIEoSbs
-	 xutEDnh1xVuwOc29FAcjd8Vxaa19xONEjaY547J8wUnJkHDiKEWlcRpT0raSngEGqz
-	 ksEjEI7eOG9krPmE8JJXVFFvev4bsojh9iRp+udE=
+	b=NjfPP9Rwayc0L1kzxYrF+piJvY8ydE9P52IoP41Hv/LUxZyTr7HJtIrFuEb702A7M
+	 tcyyK+SpZ976fT9eg4pUafMEn361+BN7Vduj6vGegg20o59QYSg2wBGqHNavV6c5QU
+	 OMIgcQru6nWBd7jovELcRPT2Y7kOKm2JYi+WINiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/151] net: axienet: Fix register defines comment description
+Subject: [PATCH 5.15 070/215] fuse: fix UAF in rcu pathwalks
 Date: Sun,  1 Sep 2024 18:16:22 +0200
-Message-ID: <20240901160814.934093157@linuxfoundation.org>
+Message-ID: <20240901160825.998688907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 9ff2f816e2aa65ca9a1cdf0954842f8173c0f48d ]
+[ Upstream commit 053fc4f755ad43cf35210677bcba798ccdc48d0c ]
 
-In axiethernet header fix register defines comment description to be
-inline with IP documentation. It updates MAC configuration register,
-MDIO configuration register and frame filter control description.
+->permission(), ->get_link() and ->inode_get_acl() might dereference
+->s_fs_info (and, in case of ->permission(), ->s_fs_info->fc->user_ns
+as well) when called from rcu pathwalk.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Freeing ->s_fs_info->fc is rcu-delayed; we need to make freeing ->s_fs_info
+and dropping ->user_ns rcu-delayed too.
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/fuse/cuse.c   |  3 +--
+ fs/fuse/fuse_i.h |  1 +
+ fs/fuse/inode.c  | 15 +++++++++++----
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 7326ad4d5e1c7..c0c93d0e3c7f9 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -159,16 +159,16 @@
- #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
- #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
- #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
--#define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
--#define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
-+#define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
-+#define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
- #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
--#define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
--#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
--#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
--#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MII Management Read Data */
-+#define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
-+#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
-+#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
-+#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MDIO Read Data */
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
--#define XAE_FMI_OFFSET		0x00000708 /* Filter Mask Index */
-+#define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+diff --git a/fs/fuse/cuse.c b/fs/fuse/cuse.c
+index c7d882a9fe339..295344a462e1d 100644
+--- a/fs/fuse/cuse.c
++++ b/fs/fuse/cuse.c
+@@ -474,8 +474,7 @@ static int cuse_send_init(struct cuse_conn *cc)
  
-@@ -307,7 +307,7 @@
-  */
- #define XAE_UAW1_UNICASTADDR_MASK	0x0000FFFF
+ static void cuse_fc_release(struct fuse_conn *fc)
+ {
+-	struct cuse_conn *cc = fc_to_cc(fc);
+-	kfree_rcu(cc, fc.rcu);
++	kfree(fc_to_cc(fc));
+ }
  
--/* Bit masks for Axi Ethernet FMI register */
-+/* Bit masks for Axi Ethernet FMC register */
- #define XAE_FMI_PM_MASK			0x80000000 /* Promis. mode enable */
- #define XAE_FMI_IND_MASK		0x00000003 /* Index Mask */
+ /**
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 55b7ca26fb8ab..ac655c7a15db2 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -848,6 +848,7 @@ struct fuse_mount {
+ 
+ 	/* Entry on fc->mounts */
+ 	struct list_head fc_entry;
++	struct rcu_head rcu;
+ };
+ 
+ static inline struct fuse_mount *get_fuse_mount_super(struct super_block *sb)
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 396866f9d72c3..40a4c7680bd7e 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -883,6 +883,14 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_init);
+ 
++static void delayed_release(struct rcu_head *p)
++{
++	struct fuse_conn *fc = container_of(p, struct fuse_conn, rcu);
++
++	put_user_ns(fc->user_ns);
++	fc->release(fc);
++}
++
+ void fuse_conn_put(struct fuse_conn *fc)
+ {
+ 	if (refcount_dec_and_test(&fc->count)) {
+@@ -894,13 +902,12 @@ void fuse_conn_put(struct fuse_conn *fc)
+ 		if (fiq->ops->release)
+ 			fiq->ops->release(fiq);
+ 		put_pid_ns(fc->pid_ns);
+-		put_user_ns(fc->user_ns);
+ 		bucket = rcu_dereference_protected(fc->curr_bucket, 1);
+ 		if (bucket) {
+ 			WARN_ON(atomic_read(&bucket->count) != 1);
+ 			kfree(bucket);
+ 		}
+-		fc->release(fc);
++		call_rcu(&fc->rcu, delayed_release);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_put);
+@@ -1297,7 +1304,7 @@ EXPORT_SYMBOL_GPL(fuse_send_init);
+ void fuse_free_conn(struct fuse_conn *fc)
+ {
+ 	WARN_ON(!list_empty(&fc->devices));
+-	kfree_rcu(fc, rcu);
++	kfree(fc);
+ }
+ EXPORT_SYMBOL_GPL(fuse_free_conn);
+ 
+@@ -1836,7 +1843,7 @@ static void fuse_sb_destroy(struct super_block *sb)
+ void fuse_mount_destroy(struct fuse_mount *fm)
+ {
+ 	fuse_conn_put(fm->fc);
+-	kfree(fm);
++	kfree_rcu(fm, rcu);
+ }
+ EXPORT_SYMBOL(fuse_mount_destroy);
  
 -- 
 2.43.0
