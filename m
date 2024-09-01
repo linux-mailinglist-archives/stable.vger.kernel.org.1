@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C831F967863
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D348696776C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6606DB21F22
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E049B2122D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0021217F389;
-	Sun,  1 Sep 2024 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D9181B88;
+	Sun,  1 Sep 2024 16:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNJITTx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVloD3+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD838184558;
-	Sun,  1 Sep 2024 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358712C1B4;
+	Sun,  1 Sep 2024 16:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208270; cv=none; b=f9+eQmSSVStW8h+7uaZQq8aYyt6R47NUgyUinydz2eQCMuKlEKx9IAGxYAnR11CeP0vGRkIcFuQm4XppQKGpppJ20VE1n6AqtbhYHklDIOXfpau+RluQsaR7ljU1ZuMdSg3KhtEuLCXcMh3TscK13llNdkZ0l/PIyBprlZbVHjs=
+	t=1725207571; cv=none; b=KkWLDI4/qz4HgWRLaoRNr/9CsypWgxkCb1wOmw3ZpP7Ne7hXnbWc3mLRqqr+w7dSF0RQ70GN7l3BzSpb7Vdsp6i+HG8bFNAOBTZjpkFhM6dt6EENDU7IpbRjktr04pWwcbhqqkJ9Dy1SV2akM1UOsqxgGx/xs2BBlY7EmxzLVh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208270; c=relaxed/simple;
-	bh=HDUHKyjqXnMN5CGi+yRdPrPh880niVwo9Om9riOzeig=;
+	s=arc-20240116; t=1725207571; c=relaxed/simple;
+	bh=Uab43FtKXTllZD1UiuQlFVFtbFh6KR3h7rPO1wb++fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itNZZ0A1tTUSrwtzt/GmStI2FBToBLaTWyk3UYvZzS49zGjhjDsSFEIqrlDlSS32j+UXVorOe7wBHXyffTvytbmoNHyUDt6OqL/NcYWEx/9gw2DPs+R9Oanxm7Rd1pYdWESV5PgtAQ5KX8VHTq2TqEjCD2gjWMjB5EpS1wUWLzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNJITTx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C9BC4CEC3;
-	Sun,  1 Sep 2024 16:31:09 +0000 (UTC)
+	 MIME-Version; b=t+1o6OjcBvT/JvB94+/lulKBsVhuc+YkEJEhtEJEnZmCwVOMG7d0S+7Bz+s278F7XGipDrTxvFB9o5hEyrIuwPDaSHGIMxRPS+oAu7xVD+aGm54pkkW0l+1f0WzvBOsxsB7mWkCCMqIjGmiwzTmuP+2VYgfvVG3bVD3rVFPBt4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVloD3+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEA7C4CEC3;
+	Sun,  1 Sep 2024 16:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208270;
-	bh=HDUHKyjqXnMN5CGi+yRdPrPh880niVwo9Om9riOzeig=;
+	s=korg; t=1725207570;
+	bh=Uab43FtKXTllZD1UiuQlFVFtbFh6KR3h7rPO1wb++fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNJITTx60fS2b/I0zS/MEgQdGGlWN1WyDxKJzqiWavgL9mIcPoJonByVapE0+lIca
-	 Qbx2k+4A8K+BrAqa867njajTPTJNjvexfixsp3y9/OlsI8Nz3aINP7QPVIgwpsH4Kj
-	 8oMV+PZRzZMA8Ovkx2RQlY1kP+ef05RYMWR6EMO0=
+	b=LVloD3+s7rLjcxn89grTqlTrb/0SVRyMokGWbMwEh1mCTQ40Ic1FrZwoqy2R1jouR
+	 MhmjueSzlLltFNnLxxrPvzBsLwTEJ6W0D/kLYOu/pkEYN2ibcp8UF71hDhvBPyoWPk
+	 PO3DhAab3lKwwDcYC/Z2goNfQmACQc/ljmqYTrrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 031/149] selftests: mptcp: join: check removing ID 0 endpoint
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 12/98] s390/cio: rename bitmap_size() -> idset_bitmap_size()
 Date: Sun,  1 Sep 2024 18:15:42 +0200
-Message-ID: <20240901160818.633999384@linuxfoundation.org>
+Message-ID: <20240901160804.148943893@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit 5f94b08c001290acda94d9d8868075590931c198 upstream.
+commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
 
-Removing the endpoint linked to the initial subflow should trigger a
-RM_ADDR for the right ID, and the removal of the subflow. That's what is
-now being verified in the "delete and re-add" test.
+bitmap_size() is a pretty generic name and one may want to use it for
+a generic bitmap API function. At the same time, its logic is not
+"generic", i.e. it's not just `nbits -> size of bitmap in bytes`
+converter as it would be expected from its name.
+Add the prefix 'idset_' used throughout the file where the function
+resides.
 
-Note that removing the initial subflow will not decrement the 'subflows'
-counters, which corresponds to the *additional* subflows. On the other
-hand, when the same endpoint is re-added, it will increment this
-counter, as it will be seen as an additional subflow this time.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   25 +++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/s390/cio/idset.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3572,8 +3572,9 @@ endpoint_tests()
+--- a/drivers/s390/cio/idset.c
++++ b/drivers/s390/cio/idset.c
+@@ -16,7 +16,7 @@ struct idset {
+ 	unsigned long bitmap[0];
+ };
  
- 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 2
--		pm_nl_set_limits $ns2 0 2
-+		pm_nl_set_limits $ns1 0 3
-+		pm_nl_set_limits $ns2 0 3
-+		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
-@@ -3582,17 +3583,17 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		pm_nl_check_endpoint "creation" \
- 			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
--		chk_subflow_nr "before delete" 2
-+		chk_subflow_nr "before delete id 2" 2
- 		chk_mptcp_info subflows 1 subflows 1
+-static inline unsigned long bitmap_size(int num_ssid, int num_id)
++static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
+ {
+ 	return bitmap_size(size_mul(num_ssid, num_id));
+ }
+@@ -25,11 +25,12 @@ static struct idset *idset_new(int num_s
+ {
+ 	struct idset *set;
  
- 		pm_nl_del_endpoint $ns2 2 10.0.2.2
- 		sleep 0.5
--		chk_subflow_nr "after delete" 1
-+		chk_subflow_nr "after delete id 2" 1
- 		chk_mptcp_info subflows 0 subflows 0
+-	set = vmalloc(sizeof(struct idset) + bitmap_size(num_ssid, num_id));
++	set = vmalloc(sizeof(struct idset) +
++		      idset_bitmap_size(num_ssid, num_id));
+ 	if (set) {
+ 		set->num_ssid = num_ssid;
+ 		set->num_id = num_id;
+-		memset(set->bitmap, 0, bitmap_size(num_ssid, num_id));
++		memset(set->bitmap, 0, idset_bitmap_size(num_ssid, num_id));
+ 	}
+ 	return set;
+ }
+@@ -41,7 +42,8 @@ void idset_free(struct idset *set)
  
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		wait_mpj $ns2
--		chk_subflow_nr "after re-add" 2
-+		chk_subflow_nr "after re-add id 2" 2
- 		chk_mptcp_info subflows 1 subflows 1
- 
- 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-@@ -3607,10 +3608,20 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
- 
-+		pm_nl_del_endpoint $ns2 1 10.0.1.2
-+		sleep 0.5
-+		chk_subflow_nr "after delete id 0" 2
-+		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
-+
-+		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-add id 0" 3
-+		chk_mptcp_info subflows 3 subflows 3
-+
- 		mptcp_lib_kill_wait $tests_pid
- 
--		chk_join_nr 3 3 3
--		chk_rm_nr 1 1
-+		chk_join_nr 4 4 4
-+		chk_rm_nr 2 2
- 	fi
+ void idset_fill(struct idset *set)
+ {
+-	memset(set->bitmap, 0xff, bitmap_size(set->num_ssid, set->num_id));
++	memset(set->bitmap, 0xff,
++	       idset_bitmap_size(set->num_ssid, set->num_id));
  }
  
+ static inline void idset_add(struct idset *set, int ssid, int id)
 
 
 
