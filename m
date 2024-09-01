@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C11C9679CF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E5B9678F6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DE141C2142F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0856B2158A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E4618455B;
-	Sun,  1 Sep 2024 16:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A1917E00C;
+	Sun,  1 Sep 2024 16:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuQh+fV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvJscU+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A544C1E87B;
-	Sun,  1 Sep 2024 16:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F9A537FF;
+	Sun,  1 Sep 2024 16:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209280; cv=none; b=SR4j7vJqG3c3DsNdffsG07ZrRCFRKxZH7N9DdpFezITIogyt9iA+OwFWfUzcy1Ab7vcqINVOZ8ky7rR+NXR5P4Xq57YDx4iKD6N43vEXGE60cwrDEzLdg6yqzPCLf40n8K6A2jDi681a9tsOPJ4xaqre74plieNT70K/RbKKyhE=
+	t=1725208675; cv=none; b=j15Dn4ROQy6QgOZ5DioMnq+cxcjzLaaSgKnFizgNQ9O1lhMd8N1ZQbaeKLkGDgqosW0WoyWAPqCCoTm768GIyRkNmkgA3Z0YjhPYpTQWI3YdPUX3g9NN1y/2Y7SvUrBOMyLRmNaoqz7iFiom0iv0kwQ+xM5kEixexvh5+1o81PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209280; c=relaxed/simple;
-	bh=aFNpwhOz5P9rc0Fxe4zQDQzB4A0Nrs2byH/MYVGwb6M=;
+	s=arc-20240116; t=1725208675; c=relaxed/simple;
+	bh=hP8B5zaVSxGNuxLteYATXF45YjgtxOeIzVyC20QMuKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBBn4BXm51RktHndNur14QSA8YeFfAaL5JzFlk1pY8fY3dgD500AoafeJ64DLFoL3Qwn7fF6HdqDSWUFs5mxax1v5D+5d2XowO6A26MOqk1VwObUDbs5vFimOrmnNEim4b/hyArcHs/MbyAuQR9HJyQaOXWoDnCkjQXHMTs/V+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuQh+fV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A227C4CEC3;
-	Sun,  1 Sep 2024 16:47:59 +0000 (UTC)
+	 MIME-Version; b=H/j4ezUqEe4oqfXfC/aGryxbtPMSJTJm0FnFZb49WSWFMdSBORfx3mAW7zSp/Y/NZqnx57adjwoIMTjW8T5oM6Sl3GqtgINv6QWeReIzn/n2O/X5ZHIttXAkGoBzQCjDYkLO9Q/hd0k4agyRF1JiFPfzkE8F9bnRHmDQoA+CwHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvJscU+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C105C4CEC3;
+	Sun,  1 Sep 2024 16:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209280;
-	bh=aFNpwhOz5P9rc0Fxe4zQDQzB4A0Nrs2byH/MYVGwb6M=;
+	s=korg; t=1725208675;
+	bh=hP8B5zaVSxGNuxLteYATXF45YjgtxOeIzVyC20QMuKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuQh+fV1g89CsT8iAkdkdG6k5fcTP8SQlHJOfplQsB7Ic4FfkUEBQWQvzRYv74Xr7
-	 00dvfB0MENNW3fHqJn/gXvulOTpHKAD9WitjftY/Qh6XzCz9gUzaklYgzZzmfGDE6H
-	 35vUvRTejjNtEKldkT/HIxVH79+IqzLO65KddTDY=
+	b=gvJscU+0XFsqn3R5NmqoqIGMpM+SYoIKgEXxockCXYZ547dMoBCOilGELynmCQEpU
+	 HnkXwFd52iyIZ66AXZ5qUgaLePVLbasFe9NRJX4E158m4FQNU36/ko3KSSCtPhde6z
+	 EPxxBTziIOIFFQdc50mLWwuGxBRDd2js/oN0OWOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 16/71] mptcp: pm: do not remove already closed subflows
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: [PATCH 6.10 130/149] usb: dwc3: ep0: Dont reset resource alloc flag (including ep0)
 Date: Sun,  1 Sep 2024 18:17:21 +0200
-Message-ID: <20240901160802.502821644@linuxfoundation.org>
+Message-ID: <20240901160822.342902853@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit 58e1b66b4e4b8a602d3f2843e8eba00a969ecce2 upstream.
+commit 72fca8371f205d654f95b09cd023a71fd5307041 upstream.
 
-It is possible to have in the list already closed subflows, e.g. the
-initial subflow has been already closed, but still in the list. No need
-to try to close it again, and increments the related counters again.
+The DWC3_EP_RESOURCE_ALLOCATED flag ensures that the resource of an
+endpoint is only assigned once. Unless the endpoint is reset, don't
+clear this flag. Otherwise we may set endpoint resource again, which
+prevents the driver from initiate transfer after handling a STALL or
+endpoint halt to the control endpoint.
 
-Fixes: 0ee4261a3681 ("mptcp: implement mptcp_pm_remove_subflow")
+Commit f2e0eee47038 ("usb: dwc3: ep0: Don't reset resource alloc flag")
+was fixing the initial issue, but did this only for physical ep1. Since
+the function dwc3_ep0_stall_and_restart is resetting the flags for both
+physical endpoints, this also has to be done for ep0.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b311048c174d ("usb: dwc3: gadget: Rewrite endpoint allocation flow")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20240814-dwc3hwep0reset-v2-1-29e1d7d923ea@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/ep0.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -825,6 +825,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index d96ffbe52039..c9533a99e47c 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -232,7 +232,8 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 	/* stall is always issued on EP0 */
+ 	dep = dwc->eps[0];
+ 	__dwc3_gadget_ep_set_halt(dep, 1, false);
+-	dep->flags = DWC3_EP_ENABLED;
++	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
++	dep->flags |= DWC3_EP_ENABLED;
+ 	dwc->delayed_status = false;
  
-+			if (inet_sk_state_load(ssk) == TCP_CLOSE)
-+				continue;
- 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
+ 	if (!list_empty(&dep->pending_list)) {
+-- 
+2.46.0
+
 
 
 
