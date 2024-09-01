@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9496791C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E92B967AEA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7421C20FC6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFAF3281F97
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD76B18308A;
-	Sun,  1 Sep 2024 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8A918308E;
+	Sun,  1 Sep 2024 17:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWTkHA2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ow1tLMTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE71C68C;
-	Sun,  1 Sep 2024 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D823398B;
+	Sun,  1 Sep 2024 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208788; cv=none; b=Qe92lV8JvFXSXKppqv1Iojx9COQR8xJ+11reNvbbKk6a1OeOTPF4WWfaoyl2HspIqvmE9cXVh3TsbMpo5JgL6ZDIMhf3NenwnMRcYbDTg37zLlbkUMuEl2NoSdpFrluZxYHcZzgMl/1rvew3ZtgpfxYgmhAt8OtPEZg4rsVy5aQ=
+	t=1725210153; cv=none; b=DieGW6UmOcDMLafLDnDZ5voTNawKw278njZ1+Rmejt0qTxz0YXFVKT7y2KF8I0QPkPmCdYxQFteZerdSmUxG9embpahPifsYCEufIyhZ7YPBf4xOy6fznsQpMaPCTT1wKmh1aAhacSAFje+dGP4/4OiwvxSkH0zSl3k3S1rz3nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208788; c=relaxed/simple;
-	bh=PA3smShbpbG3OWkN3uFkDyLu+xFfg65hxjztDiI/hRE=;
+	s=arc-20240116; t=1725210153; c=relaxed/simple;
+	bh=vjDZUh4roFgAhAbT6CmkglmkLclui5edZtHBAwW5xao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNbSibYywMdtRJwciiBTdn/26qJWyhr+51l/tz4TNt9fjZ8a4zDkqn4d3EoCGnrR6mFiTyEJzmKtJj8FgekHkTD56hyifPXfCjP0mLWaDGXM/lwe5SgCJy2aZAbJVrlw9pq8mtx74y6JZLajWCcgL4bf26ZI/QpS0nMx2zZU+n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWTkHA2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC78C4CEC3;
-	Sun,  1 Sep 2024 16:39:47 +0000 (UTC)
+	 MIME-Version; b=MOpn0DaEDGoD+fJPIWIH5vdgc9aOfcWzaYpWT6h/WANU9+craIMHcAOjl/1dIXWtjZTuK7KzChjCMkQLquCLo2PayNCXObE0ZF+C6vK36wiWG/5jXMoDvyCJohNoLKMd4I3oLL6GdK0AsOK4hmO+xD5I3u9EAzp+wz0r+b3pjdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ow1tLMTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A28C4CEC3;
+	Sun,  1 Sep 2024 17:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208788;
-	bh=PA3smShbpbG3OWkN3uFkDyLu+xFfg65hxjztDiI/hRE=;
+	s=korg; t=1725210152;
+	bh=vjDZUh4roFgAhAbT6CmkglmkLclui5edZtHBAwW5xao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWTkHA2cRQWirn8yJg5kZEqpADhZORaws5dzb2MhYKtDGOJ/rfk0FcWmFMTRGyTAS
-	 pbZRVCDAfHqKF5hZdEy+HJbGX//lPFNJXYg47mYLJQQuYvn+qmGjzI3BQX7M3C/2sZ
-	 lP2epvu3syuV9zDox2aA0EL6duwMU6jFMKnN2cro=
+	b=ow1tLMTM9sro/Akgx2UwFjyTFfs2ey8tj8mw/yN7c7JFwdzYI/2lSrDcM8dcRO/UG
+	 pMHgXG7bSAuImYBqqVRPG1TOGnuVXvTBo37waBnKd0LHYaBWbShYxN/rAisa4P1pVx
+	 4JW20b5myuKI830Kt064SGCpKzkhH1A48A8nNjYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/134] wifi: iwlwifi: abort scan when rfkill on but device enabled
+Subject: [PATCH 5.15 073/215] fs: binfmt_elf_efpic: dont use missing interpreters properties
 Date: Sun,  1 Sep 2024 18:16:25 +0200
-Message-ID: <20240901160811.581624703@linuxfoundation.org>
+Message-ID: <20240901160826.111154858@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
+[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
 
-In RFKILL we first set the RFKILL bit, then we abort scan
-(if one exists) by waiting for the notification from FW
-and notifying mac80211. And then we stop the device.
-But in case we have a scan ongoing in the period of time between
-rfkill on and before the device is stopped - we will not wait for the
-FW notification because of the iwl_mvm_is_radio_killed() condition,
-and then the scan_status and uid_status are misconfigured,
-(scan_status is cleared but uid_status not)
-and when the notification suddenly arrives (before stopping the device)
-we will get into the assert about scan_status and uid_status mismatch.
-Fix this by waiting for FW notif when rfkill is on but the device isn't
-disabled yet.
+Static FDPIC executable may get an executable stack even when it has
+non-executable GNU_STACK segment. This happens when STACK segment has rw
+permissions, but does not specify stack size. In that case FDPIC loader
+uses permissions of the interpreter's stack, and for static executables
+with no interpreter it results in choosing the arch-default permissions
+for the stack.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix that by using the interpreter's properties only when the interpreter
+is actually used.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ fs/binfmt_elf_fdpic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 3a58267d3d710..3bce3b59a12b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2140,7 +2140,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
- 	if (!(mvm->scan_status & type))
- 		return 0;
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index f51f6e4d1a322..a7084a720b28c 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -320,7 +320,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 	else
+ 		executable_stack = EXSTACK_DEFAULT;
  
--	if (iwl_mvm_is_radio_killed(mvm)) {
-+	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
- 		ret = 0;
- 		goto out;
- 	}
+-	if (stack_size == 0) {
++	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
+ 		stack_size = interp_params.stack_size;
+ 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
+ 			executable_stack = EXSTACK_ENABLE_X;
 -- 
 2.43.0
 
