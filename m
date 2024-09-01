@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD4D9678F4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F2967B03
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B73D2810D1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648A72811FC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07D217DFFC;
-	Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C553BB59;
+	Sun,  1 Sep 2024 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+LJW3sk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVUwecKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701981C68C;
-	Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FBA2C6AF;
+	Sun,  1 Sep 2024 17:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208669; cv=none; b=IIFBKUK50gwXZ13wVjcgrkZSP2ytLL6CWL1nPw/ZNjm/HAPL3tJJw/EhsxLvgShULqOSzz45v2Y1kydjAcviFv2xwQnSHkOZ3QECZ2Kc0v5rQ47DrVEhxoz9AmtWUI98WzUz5J1aekryy7xon9W7/GMNP8WoX5hMgd/VtYIQXXI=
+	t=1725210229; cv=none; b=dAZFJXiEmb3IGet2noDCyf0Aq77mncO90Qb/bq5+RLpSdyhNOhGQXNZ3L8aGn0d9XcOWFX89ZAfYeIE9efQRgoraGP+rclaWCsokVS583+ZWV6/v5PkV+E030Y/Eoue7np0CGWjoMSvIYiOc19WoAb3NMIh6f4OlSPS2rnPjpGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208669; c=relaxed/simple;
-	bh=1SM28nTHpPHPGU+tFqlOvmAj5Gup5pgR2kpRj6aLFR0=;
+	s=arc-20240116; t=1725210229; c=relaxed/simple;
+	bh=CQLpTvLR22dYa6Hs1Bo2csABXU/cCC9lIbUDyAJLktY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAxCCecUyJLylX9gDV6eknCipQbPdktAsJVEm/d3FXTPVrpWZ1ceOaJ/J/7ZO3XULAVEEkaGKHdsLhRr21Rq8d7smBIbv+VRzWQaTZj0qRg/omadgIdh/2zAlIom775OI393H42Iz7lcF2dhSaW8Zy549YiVBKwvuEg4cmFpjVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+LJW3sk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD89C4CEC3;
-	Sun,  1 Sep 2024 16:37:48 +0000 (UTC)
+	 MIME-Version; b=UQfXEOMCTFX8ASwIpEMAXWnBE09+MdhqrYhqCvGA6YxZb7C1gcSn0Y7PoUkLAIPurq7i56LJyel0svXMAXW9TxdaMBrcpHRmnMBP7c6OuQkC2+psp3P12ZtFngg/yqyntCKzhdvb3KvNdD/gKJckD8hGn8Xul87FshPv6USr0VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVUwecKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26369C4CEC3;
+	Sun,  1 Sep 2024 17:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208669;
-	bh=1SM28nTHpPHPGU+tFqlOvmAj5Gup5pgR2kpRj6aLFR0=;
+	s=korg; t=1725210229;
+	bh=CQLpTvLR22dYa6Hs1Bo2csABXU/cCC9lIbUDyAJLktY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+LJW3sk2Ip6g/NgOq0ZMYA0wyLbM560NN5cfv8w1uVxhHKGfmBf0j/KnmIXJcjQ7
-	 oncvie9y3BdlqNH1pjJX+2Rl28nsHqNWKWph3STZb10LvSJPsJ3rW7S7xkrqf5XOh+
-	 KG2f0dihhP7CiclVn+ucq1IiPllEaLv9QvY7VrzI=
+	b=pVUwecKLoyfwRcGLkLvfW5ZpgVTzt4pSgXkmG/hTrod4NxE3a6ph+xJ6foIb4TvgT
+	 RX9zuBaVltyCg5rWPVxdrn5nMtdyctiRsnzF89YnHomjbqHtlOEPy/1yc2Z7liZ7JL
+	 yPlwG55BvISk7Em+yFiaOpGxRwu+fH/ziBB07HfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 128/149] arm64: dts: qcom: x1e80100: fix PCIe domain numbers
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 127/215] nfsd: make svc_stat per-network namespace instead of global
 Date: Sun,  1 Sep 2024 18:17:19 +0200
-Message-ID: <20240901160822.267884459@linuxfoundation.org>
+Message-ID: <20240901160828.165199645@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit f8fa1f2f6412bffa71972f9506b72992d0e6e485 upstream.
+[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
 
-The current PCIe domain numbers are off by one and do not match the
-numbers that the UEFI firmware (and Windows) uses.
+The final bit of stats that is global is the rpc svc_stat.  Move this
+into the nfsd_net struct and use that everywhere instead of the global
+struct.  Remove the unused global struct.
 
-Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
-Cc: stable@vger.kernel.org	# 6.9
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240722094249.26471-3-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/netns.h  |    4 ++++
+ fs/nfsd/nfsctl.c |    2 ++
+ fs/nfsd/nfssvc.c |    2 +-
+ fs/nfsd/stats.c  |   10 ++++------
+ fs/nfsd/stats.h  |    2 --
+ 5 files changed, 11 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -2756,7 +2756,7 @@
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -13,6 +13,7 @@
+ #include <linux/nfs4.h>
+ #include <linux/percpu_counter.h>
+ #include <linux/siphash.h>
++#include <linux/sunrpc/stats.h>
  
- 			dma-coherent;
+ /* Hash tables for nfs4_clientid state */
+ #define CLIENT_HASH_BITS                 4
+@@ -183,6 +184,9 @@ struct nfsd_net {
+ 	/* Per-netns stats counters */
+ 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
  
--			linux,pci-domain = <7>;
-+			linux,pci-domain = <6>;
- 			num-lanes = <2>;
++	/* sunrpc svc stats */
++	struct svc_stat          nfsd_svcstats;
++
+ 	/* longest hash chain seen */
+ 	unsigned int             longest_chain;
  
- 			interrupts = <GIC_SPI 773 IRQ_TYPE_LEVEL_HIGH>,
-@@ -2878,7 +2878,7 @@
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1461,6 +1461,8 @@ static __net_init int nfsd_init_net(stru
+ 	retval = nfsd_stat_counters_init(nn);
+ 	if (retval)
+ 		goto out_repcache_error;
++	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
++	nn->nfsd_svcstats.program = &nfsd_program;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -665,7 +665,7 @@ int nfsd_create_serv(struct net *net)
+ 	if (nfsd_max_blksize == 0)
+ 		nfsd_max_blksize = nfsd_get_default_max_blksize();
+ 	nfsd_reset_versions(nn);
+-	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
++	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
+ 				 nfsd_max_blksize, nfsd);
+ 	if (serv == NULL)
+ 		return -ENOMEM;
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -27,10 +27,6 @@
  
- 			dma-coherent;
+ #include "nfsd.h"
  
--			linux,pci-domain = <5>;
-+			linux,pci-domain = <4>;
- 			num-lanes = <2>;
+-struct svc_stat		nfsd_svcstats = {
+-	.program	= &nfsd_program,
+-};
+-
+ static int nfsd_show(struct seq_file *seq, void *v)
+ {
+ 	struct net *net = PDE_DATA(file_inode(seq->file));
+@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *se
+ 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
+ 	/* show my rpc info */
+-	svc_seq_show(seq, &nfsd_svcstats);
++	svc_seq_show(seq, &nn->nfsd_svcstats);
+ 
+ #ifdef CONFIG_NFSD_V4
+ 	/* Show count for individual nfsv4 operations */
+@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct n
+ 
+ void nfsd_proc_stat_init(struct net *net)
+ {
+-	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
++	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++
++	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ }
+ 
+ void nfsd_proc_stat_shutdown(struct net *net)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,8 +10,6 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-extern struct svc_stat		nfsd_svcstats;
+-
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
 
 
 
