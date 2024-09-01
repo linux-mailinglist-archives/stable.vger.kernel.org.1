@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4494A967AEC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D337C96791F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 754D51C21572
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92EF7281E5E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD9F17B50B;
-	Sun,  1 Sep 2024 17:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F61F183CA9;
+	Sun,  1 Sep 2024 16:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0MAVbmT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdccjEoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB1E3B79C;
-	Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1EA17E00C;
+	Sun,  1 Sep 2024 16:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210159; cv=none; b=t5KRHCV1/0JoPLVVdw/S2hctERvapFHY1GxSx33e6bm9dnGTxMqjYgNglVB5ISt1FUty0YYd5Xi2ZsGsv6dLadB2MfDeOHl6wrrDkrB/1MWYDftANQD/WMC+AbyLD4I7VhC2Dk2UjcEUAhVAGENqtWcFN2a62jRiEQnHz71Y9/E=
+	t=1725208795; cv=none; b=ldCHGdyUqShprmjv2pfK6ivf64LiQWyT0tiVFjFXFrZMH8vbO4rr2Pli5/ykagM2OF4hl59SvByH36jRWM87ScReBv1mp4DDXuQ8lirjlTxmVEs8ms6TifaQst83yZnlgfDAw154PsslYOk5om2IemPPiUuLrhy7enlEMeD+Tag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210159; c=relaxed/simple;
-	bh=oEwSBkNc9yRulwyvbeYwF0gzOMV27oJNVTEny2ZqIEw=;
+	s=arc-20240116; t=1725208795; c=relaxed/simple;
+	bh=KDN11cNtpg3d52qJzPCLDerynQFUapxl9kCUMqVPDIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYbW5YYO/47J5pUAXprq3Ld1lq1LA8FPC8QZ9BEqP3R7id3MVTm7Wq6A3OLe2I2vQyLn1yy7cwgMiA/Tosit+2ewDQez2w6Gq8w4qYfPqpqj7EZp2tgd4LgyPMBf4mhfXEUH3HK9NpH4QyfTmXafFqe/yugLldb28a9ygMs6Quc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0MAVbmT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325D4C4CEC3;
-	Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
+	 MIME-Version; b=cfmoqK0SCvQMOLl8c1UdIXJEQhB95caBs8F1CXpOXDtYXM2W+3iy561aNUI3wQqfiTm26wjmgrQoLPyqX4UHKa6RucMcnwBnTDXzOG/abF+1rwvZkk7oq71IFK7ZH0/1z5IcwxjXGoN5qNju5xi7Ska+X+CttPTUdsUm+vGtNfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdccjEoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D53C4CEC3;
+	Sun,  1 Sep 2024 16:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210159;
-	bh=oEwSBkNc9yRulwyvbeYwF0gzOMV27oJNVTEny2ZqIEw=;
+	s=korg; t=1725208794;
+	bh=KDN11cNtpg3d52qJzPCLDerynQFUapxl9kCUMqVPDIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0MAVbmTq6kbgVGctOAYA4DwoKNBNLdFPBqHQHIz37ivUaFRo+JpQkIpsjGQ1SRlh
-	 dPPyrI48NmHTflRMLubVzQVPjkS7+zfwz2FtgulolAVbdzvj39MwbwP2uJ8eV8k4JL
-	 aeujC5pG0rSQHhAGExti7Ph7P/UEfmoIichGXb/8=
+	b=EdccjEoE0DhfQWeKCqEjpipAj8xXrqM8uOiEnFN62zQd/kFV0hxeBD/ZxBeXIKHgI
+	 0Akj0BtzZhcRwjmkE6W2yQT43+Cp1PRB3ghMd8nYbGVUPfYhkUccBl4vgh4Mn0SKGO
+	 D2SxRj/a5ScV2gY3HtlcqJvxZHzlKuqNyr/nVB2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/215] media: drivers/media/dvb-core: copy user arrays safely
+Subject: [PATCH 5.4 041/134] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
 Date: Sun,  1 Sep 2024 18:16:27 +0200
-Message-ID: <20240901160826.187838002@linuxfoundation.org>
+Message-ID: <20240901160811.654587166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 102fb77c2deb0df3683ef8ff7a6f4cf91dc456e2 ]
+[ Upstream commit 45b1ba7e5d1f6881050d558baf9bc74a2ae13930 ]
 
-At several positions in dvb_frontend.c, memdup_user() is utilized to
-copy userspace arrays. This is done without overflow checks.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Use the new wrapper memdup_array_user() to copy the arrays more safely.
-
-Link: https://lore.kernel.org/linux-media/20231102191633.52592-2-pstanner@redhat.com
-Suggested-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231122030651.3818-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/powerpc/sysdev/xics/icp-native.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index fea62bce97468..d76ac3ec93c2f 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -2160,7 +2160,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
+diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
+index 7d13d2ef5a905..66de291b27d08 100644
+--- a/arch/powerpc/sysdev/xics/icp-native.c
++++ b/arch/powerpc/sysdev/xics/icp-native.c
+@@ -235,6 +235,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
+ 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
+ 			  cpu, hw_id);
  
--		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user(compat_ptr(tvps->props),
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
- 
-@@ -2191,7 +2192,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
- 
--		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user(compat_ptr(tvps->props),
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
- 
-@@ -2368,7 +2370,8 @@ static int dvb_get_property(struct dvb_frontend *fe, struct file *file,
- 	if (!tvps->num || tvps->num > DTV_IOCTL_MAX_MSGS)
- 		return -EINVAL;
- 
--	tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
-+	tvp = memdup_array_user((void __user *)tvps->props,
-+				tvps->num, sizeof(*tvp));
- 	if (IS_ERR(tvp))
- 		return PTR_ERR(tvp);
- 
-@@ -2446,7 +2449,8 @@ static int dvb_frontend_handle_ioctl(struct file *file,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
- 
--		tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user((void __user *)tvps->props,
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
- 
++	if (!rname)
++		return -ENOMEM;
+ 	if (!request_mem_region(addr, size, rname)) {
+ 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
+ 			cpu, hw_id);
 -- 
 2.43.0
 
