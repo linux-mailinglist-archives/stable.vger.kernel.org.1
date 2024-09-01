@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDB9679D1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18514967B51
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4438F1F21C3C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EB51C21645
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C38C185924;
-	Sun,  1 Sep 2024 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E2217E005;
+	Sun,  1 Sep 2024 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6bGX3Mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhm0UPuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39C1DFD1;
-	Sun,  1 Sep 2024 16:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C362C190;
+	Sun,  1 Sep 2024 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209287; cv=none; b=SVXRnceP65V+R05QevhLyuMGkmJNCSGWF5q8hNE9RZWLn/8fyK9z9pS4ZZrWoiNJOYRFD8T5Cx+/OQTzrESedE8H+LmWPWYoOzrPp2FKtcZGhaHoRhB0DvbdMDJ04NFohwHUsBCohfS2ln8ldfOVhSlDovxTgGdYpGyEZtOXFS0=
+	t=1725210491; cv=none; b=KOBDRLr8TlRguBKEoBReDdqbpXNq6BINFft/Z/GGoZBzcm14FtChyTT/3m8QkOT9JbcL8j8QuQhb8DxcdqHmR+7X71DOlHzJzSvycWtmB7ixIeZ7UoAWRnPtwtYG/0gOh8Xl+HQUH9gmHAkirF0GP94amRlfcuvE3/XXfyInh64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209287; c=relaxed/simple;
-	bh=dHJeRpm8wV6dmUsocfnIjwYd2fSH5sGUTXtySS3abFA=;
+	s=arc-20240116; t=1725210491; c=relaxed/simple;
+	bh=AJFxwj+bB2NuZXJQqGvB75OAciIhHUg3cLvlhsE/MqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ8NFWM40/QHSw9uW7Ny0QUD3RRrSpmvuXuR5SUvAmT8KvFXw1voCDplrpsSuiIL6vtaIrkwecSErWPjd6F7HxH1iFAY2bpI318K8kQ/uVUnTcczPak+Wxsly3Kl5Ao7J7xKnKKUIRtcrbOfVau7PyqZnwHyf9l7OhFk4DT0rcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6bGX3Mp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212F5C4CEC3;
-	Sun,  1 Sep 2024 16:48:05 +0000 (UTC)
+	 MIME-Version; b=o81I/l9prt7p0gYQIU0sjvwAUHmcHkOb71cPRnHm2BEtTx1jAoEFFNG4kjVSfCmTzoGGb5XY01txxq4+Qam2HCj0K+jxxqBIJBi0hnZUf17ghWAeb2fFhcbPY5+qsFwJIZI1pbqdnujxUz/+xYBLrdKm6dqWpNt1j9/LdaWS2JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhm0UPuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B21C4CEC3;
+	Sun,  1 Sep 2024 17:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209286;
-	bh=dHJeRpm8wV6dmUsocfnIjwYd2fSH5sGUTXtySS3abFA=;
+	s=korg; t=1725210491;
+	bh=AJFxwj+bB2NuZXJQqGvB75OAciIhHUg3cLvlhsE/MqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6bGX3MpMZ3FInYOmQBHLI/ZPnV3L3mpwjiAyQ8wiECUlkFQn8N39v/xpp6DhvwI3
-	 qybgMD7+uLpPZRO2GD6C2DRNZZD8VpKK99Gldmbur0YObszyaMqazScq6jejHx1VA6
-	 vbihUKIibozWdfZQNrJRa7B1qSGYMFlYeQ04IHcg=
+	b=bhm0UPuu5ESLBPOH7FzuOCs6z3SxRdxPhDPMV0p3z8vXGI1xNvaRS3+zDR0N0Wbgo
+	 xcc44ysWGg5olckErZ0O6TVAd9v8MPEYmBlMO0CYgkjfVthbLBbRnyvDnzlCosjAwu
+	 HZYNTDC5oZk/5kF95eRMqxUlmwqlPVuiji+MTKGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 60/71] usb: dwc3: core: Prevent USB core invalid event buffer address access
-Date: Sun,  1 Sep 2024 18:18:05 +0200
-Message-ID: <20240901160804.152646375@linuxfoundation.org>
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 174/215] tools: move alignment-related macros to new <linux/align.h>
+Date: Sun,  1 Sep 2024 18:18:06 +0200
+Message-ID: <20240901160829.940325600@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
+commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
 
-This commit addresses an issue where the USB core could access an
-invalid event buffer address during runtime suspend, potentially causing
-SMMU faults and other memory issues in Exynos platforms. The problem
-arises from the following sequence.
-        1. In dwc3_gadget_suspend, there is a chance of a timeout when
-        moving the USB core to the halt state after clearing the
-        run/stop bit by software.
-        2. In dwc3_core_exit, the event buffer is cleared regardless of
-        the USB core's status, which may lead to an SMMU faults and
-        other memory issues. if the USB core tries to access the event
-        buffer address.
+Currently, tools have *ALIGN*() macros scattered across the unrelated
+headers, as there are only 3 of them and they were added separately
+each time on an as-needed basis.
+Anyway, let's make it more consistent with the kernel headers and allow
+using those macros outside of the mentioned headers. Create
+<linux/align.h> inside the tools/ folder and include it where needed.
 
-To prevent this hardware quirk on Exynos platforms, this commit ensures
-that the event buffer address is not cleared by software  when the USB
-core is active during runtime suspend by checking its status before
-clearing the buffer address.
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/include/linux/align.h  |   12 ++++++++++++
+ tools/include/linux/bitmap.h |    2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+ create mode 100644 tools/include/linux/align.h
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -553,9 +553,17 @@ int dwc3_event_buffers_setup(struct dwc3
- void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
-+	u32				reg;
+--- /dev/null
++++ b/tools/include/linux/align.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _TOOLS_LINUX_ALIGN_H
++#define _TOOLS_LINUX_ALIGN_H
++
++#include <uapi/linux/const.h>
++
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif /* _TOOLS_LINUX_ALIGN_H */
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _PERF_BITOPS_H
  
- 	if (!dwc->ev_buf)
- 		return;
-+	/*
-+	 * Exynos platforms may not be able to access event buffer if the
-+	 * controller failed to halt on dwc3_core_exit().
-+	 */
-+	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
-+	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
-+		return;
+ #include <string.h>
++#include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <stdlib.h>
+ #include <linux/kernel.h>
+@@ -160,7 +161,6 @@ static inline int bitmap_and(unsigned lo
+ #define BITMAP_MEM_ALIGNMENT (8 * sizeof(unsigned long))
+ #endif
+ #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
+-#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
  
- 	evt = dwc->ev_buf;
- 
+ static inline int bitmap_equal(const unsigned long *src1,
+ 			const unsigned long *src2, unsigned int nbits)
 
 
 
