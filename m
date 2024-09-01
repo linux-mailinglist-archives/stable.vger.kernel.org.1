@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCDC967A96
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C713096787F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB04282313
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8461A281B4C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2A017E919;
-	Sun,  1 Sep 2024 16:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F0417CA1F;
+	Sun,  1 Sep 2024 16:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoMZXaYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcjV/aQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBED7208A7;
-	Sun,  1 Sep 2024 16:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0F61C68C;
+	Sun,  1 Sep 2024 16:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209890; cv=none; b=u7QbXlNq7XP0oPQ1K11m8vPtXkJS/r+Vl9EWhMPC1OzByUxqm2kUJ/lk/mNZOzowQjuH19I6HrgSOIn14R1PHAZzT3rB9sZOZbHCcjM84iK4a9r347x+sH9/x3Z87pyxOqaA16uhVaAtljp3IJUVehB0GyZ/mec7XqjrYaXj2kE=
+	t=1725208353; cv=none; b=bjpzN39IQmdrx74qOKQud26zQ2+mcBu4KVLPan72k63G9gP3kt9Ye+XNlJJrzkLhI3bzn0jr5T47NE/RHXIGCakO/cq/Jj2e2og777fVEs6EZhK6U6gMfkfIO2oPj/41vaJV9gd2NvgrgHt097nFajKom7UWa2ZwDap0izotpms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209890; c=relaxed/simple;
-	bh=N1p/xEY2oHKobu6LmurJIeAA4wogJQ6s/PLZFy4m7is=;
+	s=arc-20240116; t=1725208353; c=relaxed/simple;
+	bh=7Ig3KuEZs8ebvMPugLzF3lAQwJDlYC0UAoWZnXC9QTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULI0SJPXNfupfLTLe05KxpGRuAn3rsqGY1SJC6FgRVyb1Q00ffGIAo5EH33Przyl6hSEE6aKaND8JdXo2bbs4xfXn6FH7Xlg12BxcFCnM+3VEbcCi1+3ce7sbB5sWriLPM1XWtIbXbzwYanRilOt/bxg9+wyynQ+f6CSOeySEmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoMZXaYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579F0C4CEC3;
-	Sun,  1 Sep 2024 16:58:09 +0000 (UTC)
+	 MIME-Version; b=QwrXbb0Y7l83oL6KVM4lmCJNaLj+pUrYOendkFAwjSRsdWpugnfWX1AVaBSsinW77i9OC9Auyu6kt9iPerrSMX0k5Z7whDqe5WDhgyjp7I6A8t+suI58ep63GqrQRghdJnPM4wo4qjJli6CLlP2URVe2T5Q8+AMmvaEVNUAcWW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcjV/aQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7667BC4CEC3;
+	Sun,  1 Sep 2024 16:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209889;
-	bh=N1p/xEY2oHKobu6LmurJIeAA4wogJQ6s/PLZFy4m7is=;
+	s=korg; t=1725208352;
+	bh=7Ig3KuEZs8ebvMPugLzF3lAQwJDlYC0UAoWZnXC9QTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoMZXaYyKvOTEk4iiMuVLprlMHwbwcaNdeVSx8dkHfGIXea0M9J0kjub7N9gJCn1U
-	 5gyBBpcHczBVdEfzNyh5EzPClQ3vfwYH0MMu3/mYbN0zJ+iIWahvXme6wUZIsR+ooj
-	 OsEEhjSWWkiltPRGn0728FWdPjRIuawaoz8AMdn8=
+	b=zcjV/aQFCxIhWMKl+02LGpxPI8aYTory1RfqcstMG31MJxV8KRfaqrWmj6dRJ3HLn
+	 U7x1ze+QCgnBHhqDOS30nKKd27vpLJrAuamdq2kjodFH/L8+No4bYSCtsH7WhzPwA+
+	 H/nPmMioKghyY/FSEgJyCHxxN6HnE+I5F8kNKr1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/215] s390/uv: Panic for set and remove shared access UVC errors
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 025/149] mptcp: pm: fix RM_ADDR ID for the initial subflow
 Date: Sun,  1 Sep 2024 18:15:36 +0200
-Message-ID: <20240901160824.175416972@linuxfoundation.org>
+Message-ID: <20240901160818.411805750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
+commit 87b5896f3f7848130095656739b05881904e2697 upstream.
 
-The return value uv_set_shared() and uv_remove_shared() (which are
-wrappers around the share() function) is not always checked. The system
-integrity of a protected guest depends on the Share and Unshare UVCs
-being successful. This means that any caller that fails to check the
-return value will compromise the security of the protected guest.
+The initial subflow has a special local ID: 0. When an endpoint is being
+deleted, it is then important to check if its address is not linked to
+the initial subflow to send the right ID.
 
-No code path that would lead to such violation of the security
-guarantees is currently exercised, since all the areas that are shared
-never get unshared during the lifetime of the system. This might
-change and become an issue in the future.
+If there was an endpoint linked to the initial subflow, msk's
+mpc_endpoint_id field will be set. We can then use this info when an
+endpoint is being removed to see if it is linked to the initial subflow.
 
-The Share and Unshare UVCs can only fail in case of hypervisor
-misbehaviour (either a bug or malicious behaviour). In such cases there
-is no reasonable way forward, and the system needs to panic.
+So now, the correct IDs are passed to mptcp_pm_nl_rm_addr_or_subflow(),
+it is no longer needed to use mptcp_local_id_match().
 
-This patch replaces the return at the end of the share() function with
-a panic, to guarantee system integrity.
-
-Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
-Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
-[frankja@linux.ibm.com: Fixed up patch subject]
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/uv.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
-index fe92a4caf5ec8..56df0bc01e3a8 100644
---- a/arch/s390/include/asm/uv.h
-+++ b/arch/s390/include/asm/uv.h
-@@ -312,7 +312,10 @@ static inline int share(unsigned long addr, u16 cmd)
- 
- 	if (!uv_call(0, (u64)&uvcb))
- 		return 0;
--	return -EINVAL;
-+	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
-+	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
-+	       uvcb.header.rc, uvcb.header.rrc);
-+	panic("System security cannot be guaranteed unless the system panics now.\n");
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -806,11 +806,6 @@ int mptcp_pm_nl_mp_prio_send_ack(struct
+ 	return -EINVAL;
  }
  
- /*
--- 
-2.43.0
-
+-static bool mptcp_local_id_match(const struct mptcp_sock *msk, u8 local_id, u8 id)
+-{
+-	return local_id == id || (!local_id && msk->mpc_endpoint_id == id);
+-}
+-
+ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+ 					   const struct mptcp_rm_list *rm_list,
+ 					   enum linux_mptcp_mib_field rm_type)
+@@ -845,7 +840,7 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 
+ 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
+ 				continue;
+-			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
++			if (rm_type == MPTCP_MIB_RMSUBFLOW && id != rm_id)
+ 				continue;
+ 
+ 			pr_debug(" -> %s rm_list_ids[%d]=%u local_id=%u remote_id=%u mpc_id=%u\n",
+@@ -1461,6 +1456,12 @@ static bool remove_anno_list_by_saddr(st
+ 	return false;
+ }
+ 
++static u8 mptcp_endp_get_local_id(struct mptcp_sock *msk,
++				  const struct mptcp_addr_info *addr)
++{
++	return msk->mpc_endpoint_id == addr->id ? 0 : addr->id;
++}
++
+ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+ 				      const struct mptcp_addr_info *addr,
+ 				      bool force)
+@@ -1468,7 +1469,7 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	struct mptcp_rm_list list = { .nr = 0 };
+ 	bool ret;
+ 
+-	list.ids[list.nr++] = addr->id;
++	list.ids[list.nr++] = mptcp_endp_get_local_id(msk, addr);
+ 
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+@@ -1495,14 +1496,12 @@ static int mptcp_nl_remove_subflow_and_s
+ 						   const struct mptcp_pm_addr_entry *entry)
+ {
+ 	const struct mptcp_addr_info *addr = &entry->addr;
+-	struct mptcp_rm_list list = { .nr = 0 };
++	struct mptcp_rm_list list = { .nr = 1 };
+ 	long s_slot = 0, s_num = 0;
+ 	struct mptcp_sock *msk;
+ 
+ 	pr_debug("remove_id=%d\n", addr->id);
+ 
+-	list.ids[list.nr++] = addr->id;
+-
+ 	while ((msk = mptcp_token_iter_next(net, &s_slot, &s_num)) != NULL) {
+ 		struct sock *sk = (struct sock *)msk;
+ 		bool remove_subflow;
+@@ -1520,6 +1519,7 @@ static int mptcp_nl_remove_subflow_and_s
+ 		mptcp_pm_remove_anno_addr(msk, addr, remove_subflow &&
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
+ 
++		list.ids[0] = mptcp_endp_get_local_id(msk, addr);
+ 		if (remove_subflow) {
+ 			spin_lock_bh(&msk->pm.lock);
+ 			mptcp_pm_nl_rm_subflow_received(msk, &list);
+@@ -1628,6 +1628,7 @@ int mptcp_pm_nl_del_addr_doit(struct sk_
+ 	return ret;
+ }
+ 
++/* Called from the userspace PM only */
+ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
+ {
+ 	struct mptcp_rm_list alist = { .nr = 0 };
+@@ -1656,6 +1657,7 @@ void mptcp_pm_remove_addrs(struct mptcp_
+ 	}
+ }
+ 
++/* Called from the in-kernel PM only */
+ static void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+ 					       struct list_head *rm_list)
+ {
+@@ -1665,11 +1667,11 @@ static void mptcp_pm_remove_addrs_and_su
+ 	list_for_each_entry(entry, rm_list, list) {
+ 		if (slist.nr < MPTCP_RM_IDS_MAX &&
+ 		    lookup_subflow_by_saddr(&msk->conn_list, &entry->addr))
+-			slist.ids[slist.nr++] = entry->addr.id;
++			slist.ids[slist.nr++] = mptcp_endp_get_local_id(msk, &entry->addr);
+ 
+ 		if (alist.nr < MPTCP_RM_IDS_MAX &&
+ 		    remove_anno_list_by_saddr(msk, &entry->addr))
+-			alist.ids[alist.nr++] = entry->addr.id;
++			alist.ids[alist.nr++] = mptcp_endp_get_local_id(msk, &entry->addr);
+ 	}
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+@@ -1966,7 +1968,7 @@ static void mptcp_pm_nl_fullmesh(struct
+ {
+ 	struct mptcp_rm_list list = { .nr = 0 };
+ 
+-	list.ids[list.nr++] = addr->id;
++	list.ids[list.nr++] = mptcp_endp_get_local_id(msk, addr);
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 	mptcp_pm_nl_rm_subflow_received(msk, &list);
 
 
 
