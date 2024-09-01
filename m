@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C075C96791A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572C496781E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A62818E8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC981F20EC6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544ED17CA1F;
-	Sun,  1 Sep 2024 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A97183CA3;
+	Sun,  1 Sep 2024 16:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtKFYXqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKYsVjcp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130791C68C;
-	Sun,  1 Sep 2024 16:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24AB744C97;
+	Sun,  1 Sep 2024 16:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208779; cv=none; b=mhJlFcV64Ug5VoLJw2pFQJZjQKOCPjWpANVE0wxTncKrkmT78MpaXP66ighQsQzWXKF3pjm7Cg/MAaewkyDhE1H/PQtSXK/rl1+XcpGHU4BnN81hYTH7pTI8c+rtFTBU00wxTvpLI99XJ4xrOgG279zpAWd9L2maoKwPgNyZIik=
+	t=1725208081; cv=none; b=hNIqjGQaPr8X/stmU26D3CNs2oQn+9G45zAjp7js1ag/JHX3tN/tAO/Jm3YZosCajdjy2Hk5u+0naIIyGk+zN3q/FQBrStL4MxwqNRrBPW+YTxAaoucuZ3Wd/zwob/DfPu89QbRqQQJSQ7p1okQHn+rknilw5VRs5lMvE/r0WWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208779; c=relaxed/simple;
-	bh=b9TsH4f4LLYGTmy/lEpZYAYZJMTVkwq7hrGJu8n76D0=;
+	s=arc-20240116; t=1725208081; c=relaxed/simple;
+	bh=RKJ3XHwUXQ+CmqcZpe63lAx82aj8utuPy6sX5fuvBQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVBdTcXSqFV3Rjs27DJpMzGv/o5uVlnJuXi5n2sbRB3WdSRgOePvIyybclSZXzGpyx6QBeeWyzzXxML6JgihgMNDgfgqEnj3gbeEAaBJQ0Yr2oQx/zvJxwnvCbv239Uo3pa/C7jut1tAFE13l6cZz52RmdXGxxS97JHqMa8+/Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtKFYXqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E06EC4CEC3;
-	Sun,  1 Sep 2024 16:39:37 +0000 (UTC)
+	 MIME-Version; b=UAFfhg0AB5ey0w033dCgti/0CGOKbfIOvgiY4r+BEIk3hUDC7/EgpzfsQLnu0HAQCCFozJSk/r1wLM5GVbliCdSiMCfMG/XHhGvMcFiGAVz5eqz03wh/WxzDx6UNJWy6Xi8K04/OL1wc67pHpx3JIURbo2d1QmjyKJgw8hKB34k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKYsVjcp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A25CC4CEC3;
+	Sun,  1 Sep 2024 16:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208778;
-	bh=b9TsH4f4LLYGTmy/lEpZYAYZJMTVkwq7hrGJu8n76D0=;
+	s=korg; t=1725208081;
+	bh=RKJ3XHwUXQ+CmqcZpe63lAx82aj8utuPy6sX5fuvBQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtKFYXqgu6+tDakumEj4Fdo9SxE6Y1P6OXTlPqohcwIpxYMAUSx4lOkR/vufxQwVa
-	 174U0tz/ucB3AoIN3Se9Wcle3F371ffThIojDs9lfSAGhPmuiqIZVF0qIGhBRwXijo
-	 tZU/x+7Zgz1LESbGVdWZWm6bSYG3GkBzDFZy7cys=
+	b=wKYsVjcpW0j1zXe7H8m97AW/Iq5SmvEcuUXHEY8B7O3KAXbkorZ0naUYU9cRDq31d
+	 ly1fKg/A2ryzaqpbog+RVmVbCQIDNjQmcq3J+DgAuOsLHsMMcmo9+r/8d8hTcGyAz0
+	 NKH/+myjogO2Crgl34eKsKgS6cpPIK54yNQKOMx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/134] scsi: spi: Fix sshdr use
+Subject: [PATCH 6.6 36/93] ovl: pass string to ovl_parse_layer()
 Date: Sun,  1 Sep 2024 18:16:23 +0200
-Message-ID: <20240901160811.499154751@linuxfoundation.org>
+Message-ID: <20240901160808.718507154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
+[ Upstream commit 7eff3453cbd7e0bfc7524d59694119b5ca844778 ]
 
-If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
-shouldn't access the sshdr. If it returns 0, then the cmd executed
-successfully, so there is no need to check the sshdr. This has us access
-the sshdr when we get a return value > 0.
+So it can be used for parsing the Opt_lowerdir.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240705011510.794025-2-chengzhihao1@huawei.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: ca76ac36bb60 ("ovl: fix wrong lowerdir number check for parameter Opt_lowerdir")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/overlayfs/params.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
-index c37dd15d16d24..83f2576ed2aa0 100644
---- a/drivers/scsi/scsi_transport_spi.c
-+++ b/drivers/scsi/scsi_transport_spi.c
-@@ -677,10 +677,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
- 	for (r = 0; r < retries; r++) {
- 		result = spi_execute(sdev, spi_write_buffer, DMA_TO_DEVICE,
- 				     buffer, len, &sshdr);
--		if(result || !scsi_device_online(sdev)) {
-+		if (result || !scsi_device_online(sdev)) {
+diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
+index 488f920f79d28..17b9c1838182d 100644
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -369,10 +369,9 @@ static void ovl_add_layer(struct fs_context *fc, enum ovl_opt layer,
+ 	}
+ }
  
- 			scsi_device_set_state(sdev, SDEV_QUIESCE);
--			if (scsi_sense_valid(&sshdr)
-+			if (result > 0 && scsi_sense_valid(&sshdr)
- 			    && sshdr.sense_key == ILLEGAL_REQUEST
- 			    /* INVALID FIELD IN CDB */
- 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
+-static int ovl_parse_layer(struct fs_context *fc, struct fs_parameter *param,
+-			   enum ovl_opt layer)
++static int ovl_parse_layer(struct fs_context *fc, const char *layer_name, enum ovl_opt layer)
+ {
+-	char *name = kstrdup(param->string, GFP_KERNEL);
++	char *name = kstrdup(layer_name, GFP_KERNEL);
+ 	bool upper = (layer == Opt_upperdir || layer == Opt_workdir);
+ 	struct path path;
+ 	int err;
+@@ -586,7 +585,7 @@ static int ovl_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 	case Opt_datadir_add:
+ 	case Opt_upperdir:
+ 	case Opt_workdir:
+-		err = ovl_parse_layer(fc, param, opt);
++		err = ovl_parse_layer(fc, param->string, opt);
+ 		break;
+ 	case Opt_default_permissions:
+ 		config->default_permissions = true;
 -- 
 2.43.0
 
