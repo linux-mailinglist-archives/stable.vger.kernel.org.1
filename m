@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-72374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A058967A60
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2828967B35
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8DC1F23E63
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 579A81F2209A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC2C18132A;
-	Sun,  1 Sep 2024 16:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A4317E005;
+	Sun,  1 Sep 2024 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wakVpiWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BG8jZD2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1CB208A7;
-	Sun,  1 Sep 2024 16:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DF926AC1;
+	Sun,  1 Sep 2024 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209716; cv=none; b=k4G0ujjomzhYIlg+Xsc6CMyNE7fne9Iy3flfImvIf4ZTzWRrCRmc+vRl2MjVzM8WyRRc/+bsG7AGZk66wnTBO49Sh6m6CiCZVUYisoSi1cuvdn9fq5S+Jal2fKnPi4xJAfCgotvBAF/JPr3saRdWAQRD8tPr5oIqKl5mzGtj270=
+	t=1725210397; cv=none; b=aThTkuDvnZFxZNJuInRPc3k59/7cbhvLCdMfgLTATiJ7KIF+RlC1UfB9WezcbhmiYvQ4frODtHtuYYAjrgSva7U3JxUyL4uwpBKJv1ez9ODQr8L1p4EYgABXvGiUW1NCIEKQ0+LQlkgfHctk7dyBjgZ3sRXCu9GwBkWKz4AKgKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209716; c=relaxed/simple;
-	bh=VLP7m2rMthDPVEBLWn0IhGII9JlVA0Y/34xuh9pcEvE=;
+	s=arc-20240116; t=1725210397; c=relaxed/simple;
+	bh=/c8Cd7v5mzTjwq108SUYXf+i+ncrhZOkOTpkpRiWGjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DR5+JgSimd8k1o3N54akYba/QN1BE/QF29LdZk5Lsyr0ab1r3QnRzjyotDFvVKfiRLv8JFqZa2WU0diARjeOFk2Gsjm33qq7xSQenkP+ZVBTqNOhzCohZ5X9jclULne8E/GLSPMeV9GTmLemHBMmc7Gicv9JHRjQYlvuG31k0wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wakVpiWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F42C4CEC3;
-	Sun,  1 Sep 2024 16:55:15 +0000 (UTC)
+	 MIME-Version; b=fbT4UDYZ5RXnF+khLT9wBgXO4pOBs8pjE6tALgW7KgLkzru1wNydwRWmwSxZHP/qrRXtTekIkyoLhZKHph1pJvZJqjYlgpV035+d9DTlPEP78JtSHpHOcXyAN/Ozl/CD4s/tZv4ptd8gTpx9TQBNr+XjM5goANaHWAQxfoiTtVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BG8jZD2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166A3C4CEC3;
+	Sun,  1 Sep 2024 17:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209716;
-	bh=VLP7m2rMthDPVEBLWn0IhGII9JlVA0Y/34xuh9pcEvE=;
+	s=korg; t=1725210397;
+	bh=/c8Cd7v5mzTjwq108SUYXf+i+ncrhZOkOTpkpRiWGjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wakVpiWMG8HJOUJTG6NY7pNHBR5i6aNGnZL84Le0lqohcDc3ACpqkoMS8m9vg+x56
-	 OqlybDZ8pCfri6WPx7/Tahc67bdH/3ycZJLvy9xa8hLxVr44xMHS+mQj0H+Q3wRFwY
-	 5GbKf5EA2338rCkcJVZkRkVNkJGTq/ZG5/8f9rS4=
+	b=BG8jZD2+QRyo/U3PpxPGT85XtxYMpZiekSOtiy4GgCEdfCZXa8tdHd454rAh9IfpQ
+	 SoXfy/6PW3U1GAIl+98CLpmO4t5mSUjHWFT69ykdW1Y8FRnjsoZwgkCNZ3+KRo8AzD
+	 U6rU+5eiFedU8+/qZGssgeX1dJD5aKW2wc0FMaeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 122/151] KVM: arm64: Dont use cbz/adr with external symbols
+	"Huang, Ying" <ying.huang@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 170/215] mm/numa: no task_numa_fault() call if PMD is changed
 Date: Sun,  1 Sep 2024 18:18:02 +0200
-Message-ID: <20240901160818.698905436@linuxfoundation.org>
+Message-ID: <20240901160829.788225429@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +67,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Zi Yan <ziy@nvidia.com>
 
-commit dbaee836d60a8e1b03e7d53a37893235662ba124 upstream.
+commit fd8c35a92910f4829b7c99841f39b1b952c259d5 upstream.
 
-allmodconfig + CONFIG_LTO_CLANG_THIN=y fails to build due to following
-linker errors:
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
+fault handling") restructured do_huge_pmd_numa_page() and did not avoid
+task_numa_fault() call in the second page table check after a numa
+migration failure.  Fix it by making all !pmd_same() return immediately.
 
-  ld.lld: error: irqbypass.c:(function __guest_enter: .text+0x21CC):
-  relocation R_AARCH64_CONDBR19 out of range: 2031220 is not in
-  [-1048576, 1048575]; references hyp_panic
-  >>> defined in vmlinux.o
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-  ld.lld: error: irqbypass.c:(function __guest_enter: .text+0x21E0):
-  relocation R_AARCH64_ADR_PREL_LO21 out of range: 2031200 is not in
-  [-1048576, 1048575]; references hyp_panic
-  >>> defined in vmlinux.o
-
-This is because with LTO, the compiler ends up placing hyp_panic()
-more than 1MB away from __guest_enter(). Use an unconditional branch
-and adr_l instead to fix the issue.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1317
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Will Deacon <will@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20210305202124.3768527-1-samitolvanen@google.com
+Link: https://lkml.kernel.org/r/20240809145906.1513458-3-ziy@nvidia.com
+Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/entry.S |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/huge_memory.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/arch/arm64/kvm/hyp/entry.S
-+++ b/arch/arm64/kvm/hyp/entry.S
-@@ -85,8 +85,10 @@ SYM_INNER_LABEL(__guest_exit_panic, SYM_
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1437,7 +1437,7 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+ 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 		spin_unlock(vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
  
- 	// If the hyp context is loaded, go straight to hyp_panic
- 	get_loaded_vcpu x0, x1
--	cbz	x0, hyp_panic
-+	cbnz	x0, 1f
-+	b	hyp_panic
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1465,23 +1465,16 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	if (migrated) {
+ 		flags |= TNF_MIGRATED;
+ 		page_nid = target_nid;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+-		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+-			spin_unlock(vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
++		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR, flags);
++		return 0;
+ 	}
  
-+1:
- 	// The hyp context is saved so make sure it is restored to allow
- 	// hyp_panic to run at hyp and, subsequently, panic to run in the host.
- 	// This makes use of __guest_exit to avoid duplication but sets the
-@@ -94,7 +96,7 @@ SYM_INNER_LABEL(__guest_exit_panic, SYM_
- 	// current state is saved to the guest context but it will only be
- 	// accurate if the guest had been completely restored.
- 	adr_this_cpu x0, kvm_hyp_ctxt, x1
--	adr	x1, hyp_panic
-+	adr_l	x1, hyp_panic
- 	str	x1, [x0, #CPU_XREG_OFFSET(30)]
+-out:
+-	if (page_nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR,
+-				flags);
+-
+-	return 0;
+-
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
++	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
++		spin_unlock(vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/* Restore the PMD */
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1491,7 +1484,10 @@ out_map:
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto out;
++
++	if (page_nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR, flags);
++	return 0;
+ }
  
- 	get_vcpu_ptr	x1, x0
+ /*
 
 
 
