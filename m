@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8219F967865
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361E6967AA8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382A51F218DE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664901C21517
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77232184529;
-	Sun,  1 Sep 2024 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A810B18308E;
+	Sun,  1 Sep 2024 16:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc7UQNsq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rpzp7vX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3679C183CA7;
-	Sun,  1 Sep 2024 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65941183CA7;
+	Sun,  1 Sep 2024 16:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208280; cv=none; b=ZKXfcfCXLn6Uh9JKag+jr+hLuOLumSfEr58UnFwIbtSoc11Gu0qkg53qKycHYEEUrBaAInHmdw8DnXm4h3AglAvMizGDSc9UBj4NPIFdNQ4kRycQnOcyi8j4k6pJxSvopGcChZBk+YMlrh7gXIFIH1HoaYJ+Jo3Cy7bk9WxL0AE=
+	t=1725209947; cv=none; b=ss0K6fJ4fMwLXIKwog9bAE6xCZAuqOr1QazFewsqEPXQehowrGJRcMo1a0huvymOXla9j3KrHy5CirtSvT/agUUXxY7v8kOQWfQZ+cTudtXRcrwQskrMbZdFiY5Pla8/5asLVArDWKAmW4i1z4AT/pgstC34nvbtCETiFNtrsOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208280; c=relaxed/simple;
-	bh=qDgh7yoyaDspYaG2MqVEdpjS6vhw/32Vp8C7LlB8Pow=;
+	s=arc-20240116; t=1725209947; c=relaxed/simple;
+	bh=wgPG5P8YO/JaPDwdk1FghsbyHZafWtAtErqfC/ax4yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwAB9GatPkLmLVJct0canM109kbmNYuEv1ijKrfOdR+vpt2kMyHIfwJwN0DtxhooOGtSOIoDyjAQkib18aQ7RSJQjDAl4QMNRz5tQl/NjXG8v1AozPqY/u9mcjyBjecoBIqJ2ATe1UddzfFbTh4qClGR7Kus5AJcNSYOyxyqkmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc7UQNsq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A7BC4CEC3;
-	Sun,  1 Sep 2024 16:31:19 +0000 (UTC)
+	 MIME-Version; b=C107hoGRQkzrnKl0QCsSQm9Mv4cCBdV9DTNM8YOUh3usP90n/c0sqmhoIXBOhQvcPe6DvUHnwev2e0ZkCfwhoUQsWtD7koH2N9o6fgMj1L9W2yonjHi0SIecg0A+9025OsLsd3swostu4EumjrsW4mE0lTeYQT9MGh92b6d3ofQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rpzp7vX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA61EC4CEC3;
+	Sun,  1 Sep 2024 16:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208279;
-	bh=qDgh7yoyaDspYaG2MqVEdpjS6vhw/32Vp8C7LlB8Pow=;
+	s=korg; t=1725209947;
+	bh=wgPG5P8YO/JaPDwdk1FghsbyHZafWtAtErqfC/ax4yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pc7UQNsqfW71StoerGqUOSZnvQAax3r4IYckphaJHf7wScyQbS9wCKBKuf1HJELvy
-	 Un2E1hns1hdriZ8uBmN2zVJdDoD2sODDFXpovpl1NxlvDBm8AInxYAYamVR8fIWdPb
-	 cAVCJNRbum3xHmPBEVGi3SoQmpUv/Be6mr5StXPw=
+	b=Rpzp7vX1zxG4dO1WssLV7NGIDDoeXwKm5zDqPBRNP8GNvoV6l3lJNtDZB3NCHR+5M
+	 bb5n4pz5wxpBYbq4B+xH2UcDwAxuigAzuEipEgFKNqJIWqF3CWL8gPpHDBTh2M9xRl
+	 yVBHhSEouRnOtihHblAebjrwPhR+PYdW8w94977M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Ungerer <gerg@kernel.org>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.10 034/149] binfmt_elf_fdpic: fix AUXV size calculation when ELF_HWCAP2 is defined
-Date: Sun,  1 Sep 2024 18:15:45 +0200
-Message-ID: <20240901160818.745189201@linuxfoundation.org>
+	Yue Haibing <yuehaibing@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 034/215] mlxbf_gige: Remove two unused function declarations
+Date: Sun,  1 Sep 2024 18:15:46 +0200
+Message-ID: <20240901160824.635673814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-commit c6a09e342f8e6d3cac7f7c5c14085236aca284b9 upstream.
+[ Upstream commit 98261be155f8de38f11b6542d4a8935e5532687b ]
 
-create_elf_fdpic_tables() does not correctly account the space for the
-AUX vector when an architecture has ELF_HWCAP2 defined. Prior to the
-commit 10e29251be0e ("binfmt_elf_fdpic: fix /proc/<pid>/auxv") it
-resulted in the last entry of the AUX vector being set to zero, but with
-that change it results in a kernel BUG.
+Commit f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+declared but never implemented these.
 
-Fix that by adding one to the number of AUXV entries (nitems) when
-ELF_HWCAP2 is defined.
-
-Fixes: 10e29251be0e ("binfmt_elf_fdpic: fix /proc/<pid>/auxv")
-Cc: stable@vger.kernel.org
-Reported-by: Greg Ungerer <gerg@kernel.org>
-Closes: https://lore.kernel.org/lkml/5b51975f-6d0b-413c-8b38-39a6a45e8821@westnet.com.au/
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Tested-by: Greg Ungerer <gerg@kernel.org>
-Link: https://lore.kernel.org/r/20240826032745.3423812-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Link: https://lore.kernel.org/r/20230808145249.41596-1-yuehaibing@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: df934abb185c ("mlxbf_gige: disable RX filters until RX path initialized")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -592,6 +592,9 @@ static int create_elf_fdpic_tables(struc
- 
- 	if (bprm->have_execfd)
- 		nitems++;
-+#ifdef ELF_HWCAP2
-+	nitems++;
-+#endif
- 
- 	csp = sp;
- 	sp -= nitems * 2 * sizeof(unsigned long);
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
+index 0fdf2c8ca480d..13ba044e7d9a4 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
+@@ -151,9 +151,6 @@ enum mlxbf_gige_res {
+ int mlxbf_gige_mdio_probe(struct platform_device *pdev,
+ 			  struct mlxbf_gige *priv);
+ void mlxbf_gige_mdio_remove(struct mlxbf_gige *priv);
+-irqreturn_t mlxbf_gige_mdio_handle_phy_interrupt(int irq, void *dev_id);
+-void mlxbf_gige_mdio_enable_phy_int(struct mlxbf_gige *priv);
+-
+ void mlxbf_gige_set_mac_rx_filter(struct mlxbf_gige *priv,
+ 				  unsigned int index, u64 dmac);
+ void mlxbf_gige_get_mac_rx_filter(struct mlxbf_gige *priv,
+-- 
+2.43.0
+
 
 
 
