@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0246967AC9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B91D967799
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D276281F01
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169AE1F2191D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22422C190;
-	Sun,  1 Sep 2024 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCA9183CB1;
+	Sun,  1 Sep 2024 16:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6uXAu8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmmRm9Gh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D861EB5B;
-	Sun,  1 Sep 2024 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8778417F394;
+	Sun,  1 Sep 2024 16:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210052; cv=none; b=IIWd3M1s9uOyut1IxcVKMuw/vw/3VzxTVEYpjVIRztMm2bTYehhuFxg5aMtvPIVADrux7ibw3g736PvMqCmc//QaayPCRtqVl8MkprGPEzQ1KJpkTHor2jPdBgFxU4fwv9nnulsF38fx5iCEuQj8z4EjFvgMibI1fkNuvetpHz4=
+	t=1725207701; cv=none; b=tge1F6mMefwmPBlux4ipqgWIqVnlVYANU+NscJKjXDAePkWtVWASMekUPtzUux7uz46tgjaYow12J3i6a/Bowj2Je5qryyFxGu3038SJVwIokCCdgiG/Sm7YzKacaHKQXK8a5z+Md6rRsbRW1d6CqPWnF08w9YFMYnqH76uAKwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210052; c=relaxed/simple;
-	bh=cXR7DFRQPm0+qZRrXdLaqDBL35f3N9C/HHrmjXIgjHU=;
+	s=arc-20240116; t=1725207701; c=relaxed/simple;
+	bh=1QVgud1BqekJgRBdiqmzbqPPafc+eOyldJTBPTlknsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExgZZQnxvqdviVqK4eXPdrUQ8XjLNMEe4VCH0Lhwg61HWE7OfU3KwfHJCSEoW0TM7iDm58U95vSY4+13WSkgl470OhyNJ2a0Xmq7zYOc5F5GPSJk8SWrF3BvRoclaYFuMoQuGThRk36FVOWTXXUxCGZHiCK3mT7hr1TLynQhcVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6uXAu8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AB6C4CEC3;
-	Sun,  1 Sep 2024 17:00:51 +0000 (UTC)
+	 MIME-Version; b=iqOwAJlS0NC85HMqiUc5vgoQ2n3tadY3BcXFDwu0gn2vgInyMZOHkFPAyMhVDysZtyGLvl2o+goIRhf6dUwCM3YxEKSr2j6L4PPqyYFvYrKlZQAmmcq4mYdub2OXobkumCy9p/vsdTVXsCJa2vDbjBZCOfpIE7JUn70o/wcnL+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmmRm9Gh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA494C4CEC3;
+	Sun,  1 Sep 2024 16:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210052;
-	bh=cXR7DFRQPm0+qZRrXdLaqDBL35f3N9C/HHrmjXIgjHU=;
+	s=korg; t=1725207701;
+	bh=1QVgud1BqekJgRBdiqmzbqPPafc+eOyldJTBPTlknsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6uXAu8QD9h4J4/2umKZya9K/reQqFxlWYQRdJDZN92jFMIQXQofRLywUQWqd2E7k
-	 /luHSB8bVPglJSMBkBWll5vbVBhEFGcsnGl6mjGl8R1aICcqrD+a8qq4sIAnO0L/Hu
-	 BRyq77S8iG9waHIvLBRtE4utBpZi55GNAviD5WCg=
+	b=fmmRm9Ghhhk9x5ZzGueoYUg9zB4V39M83VqKx3A2ueaEbSIMxypWaTpB9xPBTYYbw
+	 NFzHKBpxSqLIEJbOWI5w2dXch0T1wazh/p3yz93msErqpAwQ/bBEW0Ec3JiU/bQO3T
+	 ZVYtES67qJvsb31TonkRqxb2Cz8ijHFHk+UEB5wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parsa Poorshikhian <parsa.poorsh@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/215] ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7
+Subject: [PATCH 4.19 24/98] wifi: iwlwifi: abort scan when rfkill on but device enabled
 Date: Sun,  1 Sep 2024 18:15:54 +0200
-Message-ID: <20240901160824.938129818@linuxfoundation.org>
+Message-ID: <20240901160804.604875790@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parsa Poorshikhian <parsa.poorsh@gmail.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit ef9718b3d54e822de294351251f3a574f8a082ce ]
+[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
 
-Fix noise from speakers connected to AUX port when no sound is playing.
-The problem occurs because the `alc_shutup_pins` function includes
-a 0x10ec0257 vendor ID, which causes noise on Lenovo IdeaPad 3 15IAU7 with
-Realtek ALC257 codec when no sound is playing.
-Removing this vendor ID from the function fixes the bug.
+In RFKILL we first set the RFKILL bit, then we abort scan
+(if one exists) by waiting for the notification from FW
+and notifying mac80211. And then we stop the device.
+But in case we have a scan ongoing in the period of time between
+rfkill on and before the device is stopped - we will not wait for the
+FW notification because of the iwl_mvm_is_radio_killed() condition,
+and then the scan_status and uid_status are misconfigured,
+(scan_status is cleared but uid_status not)
+and when the notification suddenly arrives (before stopping the device)
+we will get into the assert about scan_status and uid_status mismatch.
+Fix this by waiting for FW notif when rfkill is on but the device isn't
+disabled yet.
 
-Fixes: 70794b9563fe ("ALSA: hda/realtek: Add more codec ID to no shutup pins list")
-Signed-off-by: Parsa Poorshikhian <parsa.poorsh@gmail.com>
-Link: https://patch.msgid.link/20240810150939.330693-1-parsa.poorsh@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 8729896c7f9cd..05fb686ae2508 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -577,7 +577,6 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
--	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
- 	case 0x10ec0285:
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 16b614cc16ab5..eb2d235e9dc59 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1993,7 +1993,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
+ 	if (!(mvm->scan_status & type))
+ 		return 0;
+ 
+-	if (iwl_mvm_is_radio_killed(mvm)) {
++	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
+ 		ret = 0;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
