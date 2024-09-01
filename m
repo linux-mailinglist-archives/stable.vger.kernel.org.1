@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-72010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34C39678CE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF4F9677D5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95BF281348
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F041C20ACE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B06183092;
-	Sun,  1 Sep 2024 16:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EE818132F;
+	Sun,  1 Sep 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u69m5tXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEUaSY0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A4A1E87B;
-	Sun,  1 Sep 2024 16:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE7F14290C;
+	Sun,  1 Sep 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208548; cv=none; b=SzFRXWjqg0ApPwFHKmPXWTPWefLDsg12dgZ8O3k15wQeJfnTw1vTCytB+1MCbiZnBhW8pObjkoPw/tz4bgWTjxEAMckHqSEbNSLX1ZB4Npj5MYqggN5JGsKFfzpliPQEe3Xz0XaTuPICUNvDyU66gP3VK6fgNyZ+tjYMPUKHHg4=
+	t=1725207879; cv=none; b=Bbb1QtWlMocGQ+g+J8xut/GNhnpzF+kKWrOKldpqomBqsRj2dXpyvHJpodxwHcSdnSGEFK+30m0xhYG3Q3dhEMf1sl7OZhTisggJ9iC44srwet3B1rQmEi/6Ssv4vQb8NJQPHwnQ0TkyknFGeXNahd8FawJMmGs80uxhrtLbxaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208548; c=relaxed/simple;
-	bh=KNb9E4jsB81GrhkEQv/EFoonfmr2tcvL+tNN68rwu4k=;
+	s=arc-20240116; t=1725207879; c=relaxed/simple;
+	bh=z7UJu94i3e36Bymp926qgV2hkPsaIpVHob4ixixY190=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p53zHmL+MnYCoO0LvkYPwByN5ZgPpHcRiwJ7TflASBiTSpvIxCyVigfClt2ZTWmFZvV69sXPUquOwUppazVRW7LOADPzRvU21l2fuZEt5aW7pMmMtESKfci5LsHv7/jFgfGG6j6u/Yw5U5XITrUYJCa9L+tZHPfuaxMmj0zPYPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u69m5tXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5BDC4CEC3;
-	Sun,  1 Sep 2024 16:35:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cxjh8wa0sVErIefMsAQNCHDC+JeopjTxJa449uAaAZGjrVj5tC7RFDcDx5Ie6VNwNi3fVUQE87TpFAfu1s70pY6MUJQPFSJrtG54bDDDl91fA9KUaWhEPI4pyUvuE6XzchKGCUOwsODZYIV5sQXLFpN7XAQfqKvjX/seN87jA84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEUaSY0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753CCC4CEC3;
+	Sun,  1 Sep 2024 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208547;
-	bh=KNb9E4jsB81GrhkEQv/EFoonfmr2tcvL+tNN68rwu4k=;
+	s=korg; t=1725207878;
+	bh=z7UJu94i3e36Bymp926qgV2hkPsaIpVHob4ixixY190=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u69m5tXN6S9GxRqVK9dpX/7D/XF4ynR1mC+WwpBPBIsknypCnK8BFjf8RGt0sPnNQ
-	 8rrK7ymvFIzwyjlha/xLs80UKo+18+ceKnzMVDqo5ePlxw5IMmuj3Me0pV3iHSwAPZ
-	 x2f4/1nLkAMpy15Y6mAJ8zf61Xs6rX+0C5SKqXD8=
+	b=CEUaSY0F5goBPLQQ188/lVLueRdR9hfaP9VhGIn7j6B6GHugP0Gqouxt/WmbhBZMf
+	 rg4GM7qAKKg2ERXUTwox3extU2c3OR0rUcnoPVRnfRmLSHGYnn4CXU/E55iWe+u9WO
+	 JTPKAbPOkNxol8HXdiMQ77NdWFJiWcWUMXkHWsgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Nikita Travkin <nikita@trvn.ru>
-Subject: [PATCH 6.10 115/149] soc: qcom: cmd-db: Map shared memory as WC, not WB
-Date: Sun,  1 Sep 2024 18:17:06 +0200
-Message-ID: <20240901160821.780835557@linuxfoundation.org>
+	Vasily Averin <vvs@virtuozzo.com>,
+	Michal Hocko <mhocko@suse.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.19 97/98] ipc: remove memcg accounting for sops objects in do_semtimedop()
+Date: Sun,  1 Sep 2024 18:17:07 +0200
+Message-ID: <20240901160807.356007930@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+From: Vasily Averin <vvs@virtuozzo.com>
 
-commit f9bb896eab221618927ae6a2f1d566567999839d upstream.
+commit 6a4746ba06191e23d30230738e94334b26590a8a upstream.
 
-Linux does not write into cmd-db region. This region of memory is write
-protected by XPU. XPU may sometime falsely detect clean cache eviction
-as "write" into the write protected region leading to secure interrupt
-which causes an endless loop somewhere in Trust Zone.
+Linus proposes to revert an accounting for sops objects in
+do_semtimedop() because it's really just a temporary buffer
+for a single semtimedop() system call.
 
-The only reason it is working right now is because Qualcomm Hypervisor
-maps the same region as Non-Cacheable memory in Stage 2 translation
-tables. The issue manifests if we want to use another hypervisor (like
-Xen or KVM), which does not know anything about those specific mappings.
+This object can consume up to 2 pages, syscall is sleeping
+one, size and duration can be controlled by user, and this
+allocation can be repeated by many thread at the same time.
 
-Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
-removes dependency on correct mappings in Stage 2 tables. This patch
-fixes the issue by updating the mapping to MEMREMAP_WC.
+However Shakeel Butt pointed that there are much more popular
+objects with the same life time and similar memory
+consumption, the accounting of which was decided to be
+rejected for performance reasons.
 
-I tested this on SA8155P with Xen.
+Considering at least 2 pages for task_struct and 2 pages for
+the kernel stack, a back of the envelope calculation gives a
+footprint amplification of <1.5 so this temporal buffer can be
+safely ignored.
 
-Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Tested-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The factor would IMO be interesting if it was >> 2 (from the
+PoV of excessive (ab)use, fine-grained accounting seems to be
+currently unfeasible due to performance impact).
+
+Link: https://lore.kernel.org/lkml/90e254df-0dfe-f080-011e-b7c53ee7fd20@virtuozzo.com/
+Fixes: 18319498fdd4 ("memcg: enable accounting of ipc resources")
+Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/cmd-db.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ipc/sem.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -349,7 +349,7 @@ static int cmd_db_dev_probe(struct platf
- 		return -EINVAL;
+--- a/ipc/sem.c
++++ b/ipc/sem.c
+@@ -1962,8 +1962,7 @@ static long do_semtimedop(int semid, str
+ 	if (nsops > ns->sc_semopm)
+ 		return -E2BIG;
+ 	if (nsops > SEMOPM_FAST) {
+-		sops = kvmalloc_array(nsops, sizeof(*sops),
+-				      GFP_KERNEL_ACCOUNT);
++		sops = kvmalloc_array(nsops, sizeof(*sops), GFP_KERNEL);
+ 		if (sops == NULL)
+ 			return -ENOMEM;
  	}
- 
--	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WB);
-+	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
- 	if (!cmd_db_header) {
- 		ret = -ENOMEM;
- 		cmd_db_header = NULL;
 
 
 
