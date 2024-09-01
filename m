@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A9E967998
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381BE967B20
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F55282273
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C440B20B1C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A90D18132A;
-	Sun,  1 Sep 2024 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63623BB48;
+	Sun,  1 Sep 2024 17:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hu7oCs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOF/lf85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085DB185958;
-	Sun,  1 Sep 2024 16:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32792C6AF;
+	Sun,  1 Sep 2024 17:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209127; cv=none; b=iMTi1B1DiHx2/wECcud27DwE17fDoCAUwAl6Ocppq9AXm1Hfb4759XHdZdLnN/idPki93msbLy0UW/tAIqaoEOBVJmcgqMhL69NvZ7jmOZ2eUBqH0oqvVC26ofL965DonSkTFjBb2FaAzQIhxmnbiugurtsEsqaI2p59e3d2TmE=
+	t=1725210324; cv=none; b=ltyFZLyPEv1GlULPY/Pe6IVECIXFs0Y2Du4lt/wx9qHPPyDkt8ch6339MWX5/Bd9YvIsFRBcLbtKNQaH26NaYPBaAEVzwO50+lPFm5iiFUWdPJkzplm7xDNV4TXRL0XNYOPgUjYslQ3xp1SnMPlbh6w0I8F8b8mM91VPDggHass=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209127; c=relaxed/simple;
-	bh=okG9X9ptlte5a9gfZLGYOhWJ5ByaCgp0PUylW8fCtj4=;
+	s=arc-20240116; t=1725210324; c=relaxed/simple;
+	bh=VXOQ9rr1djpbMESyV8WnOEGu8Qt07sLpdxawAaCFb0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBXRU0J9InkxAKFW3NTjB5WRyGjSfIgui9Waqh7SCoVQ5YZ79Vsf5wRjWh2EWCailD7BTizJwu6wrVuXNkgfBFUuoqxKsTwsacFFL1W6u3WHeRHLc7JIo7fxORkiJgPVq7O4wqSVapl5VfB/saEBhZfqYiAwFgSI75NkGtRbRxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hu7oCs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D560C4CEC3;
-	Sun,  1 Sep 2024 16:45:25 +0000 (UTC)
+	 MIME-Version; b=PQDcT7EZNEILkb0vkQyWxVvKaj2barXahauBp+EqwalqeAd0QOfQjOETz9r8moL0Y/l6E3c4pkX2d4s9U9Epyv03ENS7v5+hyIdlz3rcG7JoaAsANVlAvXAJQvtF/LlRee/RhKNkBNqGuyzKAi6oTU+h51Aiunz6OBqn/SFHWRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOF/lf85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267CBC4CEC3;
+	Sun,  1 Sep 2024 17:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209126;
-	bh=okG9X9ptlte5a9gfZLGYOhWJ5ByaCgp0PUylW8fCtj4=;
+	s=korg; t=1725210324;
+	bh=VXOQ9rr1djpbMESyV8WnOEGu8Qt07sLpdxawAaCFb0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Hu7oCs7NgmLRmWGry0CVckgIEIlzsLpiXeT5oPsmgatEIQhs52EUHuSf2zuuVJ3t
-	 Hue1GIBlOlwObkd8bdWtj2VJdu9z6UrEXwZr5N/vmSoUB+nvxZXlsXh2B6MO7g3Ryd
-	 w7E87car7o/dT1iY3uWUyhMzyFOYMts9KF9tJpIM=
+	b=GOF/lf85zjNTkmbPEtEsJQI1XVDj8vUcsKoJ3V1Un6MfiLoWEgooUpIB5CcA7yVqA
+	 lPP+VFs0qxspffoa8FWKlU/vt2DmjZataVqwjFJLbAQqZDGo0OE6Sv/cno24M3HK5M
+	 GvHsbZOGKGFVbPlfnrBSsWU8LVatDrKCQ/e1vNgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 121/134] net: busy-poll: use ktime_get_ns() instead of local_clock()
+Subject: [PATCH 5.15 155/215] drm/msm/dpu: dont play tricks with debug macros
 Date: Sun,  1 Sep 2024 18:17:47 +0200
-Message-ID: <20240901160814.635230325@linuxfoundation.org>
+Message-ID: <20240901160829.222026566@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
+[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
 
-Typically, busy-polling durations are below 100 usec.
+DPU debugging macros need to be converted to a proper drm_debug_*
+macros, however this is a going an intrusive patch, not suitable for a
+fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
+to make sure that DPU debugging messages always end up in the drm debug
+messages and are controlled via the usual drm.debug mask.
 
-When/if the busy-poller thread migrates to another cpu,
-local_clock() can be off by +/-2msec or more for small
-values of HZ, depending on the platform.
+I don't think that it is a good idea for a generic DPU_DEBUG macro to be
+tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
+default it should go to the DRM_UT_DRIVER channel. While refactoring
+debug macros later on we might end up with particular messages going to
+ATOMIC or KMS, but DRIVER should be the default.
 
-Use ktimer_get_ns() to ensure deterministic behavior,
-which is the whole point of busy-polling.
-
-Fixes: 060212928670 ("net: add low latency socket poll")
-Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
-Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606932/
+Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/busy_poll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index 16258c0c7319e..36259516ec0d2 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -61,7 +61,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
- static inline unsigned long busy_loop_current_time(void)
- {
- #ifdef CONFIG_NET_RX_BUSY_POLL
--	return (unsigned long)(local_clock() >> 10);
-+	return (unsigned long)(ktime_get_ns() >> 10);
- #else
- 	return 0;
- #endif
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index 170b3e9dd4b00..73aef80a8556a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -32,24 +32,14 @@
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG(fmt, ...)                                                \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_KMS))                         \
+-			DRM_DEBUG(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+ 
+ /**
+  * DPU_DEBUG_DRIVER - macro for hardware driver logging
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
+-			DRM_ERROR(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+ 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
+ #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
 -- 
 2.43.0
 
