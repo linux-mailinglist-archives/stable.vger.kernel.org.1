@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-72549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0068A967B14
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C203967A67
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207731C21562
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE07F1C20A5A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB833BB48;
-	Sun,  1 Sep 2024 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CDC181334;
+	Sun,  1 Sep 2024 16:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxF4hATK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGlkMapR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED2417C;
-	Sun,  1 Sep 2024 17:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37711DFD1;
+	Sun,  1 Sep 2024 16:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210291; cv=none; b=ABFwaHKl8begRcjecV+n1F3XtBfsiG1lBMa+cmd+J6q9bAUcV0vGqWM1kkhlojR0YwIskY5w4oHXtpsDy/fJLv26tDFNEao3s1c6QirOqUjqEeKxeP1G5kcQQzS7SCxL/Ym+XYov4XeQvemo+29SlHp2WZmtzi/nFbXKKAJrvVA=
+	t=1725209737; cv=none; b=ATo7HbyyawjX7LoW+P+fiFq9tF+Lbh7KGurSNu4nLbSUXvOnt2MfQumu5zayJLqEQyN5mbH6fKCodaUQ2xqh2Z+kiF3iwj61e+EPNJn/feJSSNZwbPjhHBtX2sQJXAo+j6q42MSAxtV4kKrmA8JtG15ZuBFSrpFV9UAP/JPCYLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210291; c=relaxed/simple;
-	bh=LDJR1hcbjnxPoVjitz5TiGYZ5SaXCNSq3HBXejIcIe4=;
+	s=arc-20240116; t=1725209737; c=relaxed/simple;
+	bh=2xeqNPZV+PbB9wT6/a2FLfD2Y7erUWa8IUq5/zws5K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfetKPI+JxxOz11xeCXkMftwy/URfEI1SEEt2OPMt3OxAf/RnX4Nb/l/Dl/8qzdu2us9oiBaQ2yw3uGP1d6wFjXihN32z7N2lfFx4IqYzKjFGG/bYrQle1W+M9SeeCNG64PC+1KMMegGat1JCqilFsqjvdZiEMb9hblRFcUVOx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxF4hATK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45203C4CEC3;
-	Sun,  1 Sep 2024 17:04:50 +0000 (UTC)
+	 MIME-Version; b=olsRDHswBQ58QKMGi+r3uIHh0qFQsCR6iaOuFL+/CrGAVh/3k0+C9IW8bjOxddvPVZe66OT+DlsBwr7NVbbtL/cg52zgxYNsbrtT3wBqNT8rrtiRXN9DNfvy1Kji2JzU4j0IT0YMcOKKTFpTvj2w4Gv5UOAKgC2v5eLEMwOvo20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGlkMapR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DF4C4CEC3;
+	Sun,  1 Sep 2024 16:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210290;
-	bh=LDJR1hcbjnxPoVjitz5TiGYZ5SaXCNSq3HBXejIcIe4=;
+	s=korg; t=1725209737;
+	bh=2xeqNPZV+PbB9wT6/a2FLfD2Y7erUWa8IUq5/zws5K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxF4hATKYRiqaWFrZzF6Wor6DwjWXtzHUQJevUzxXW79J7EtoDkyaJ/bn5nSZAJXH
-	 A+gEr3bC/VIXlDPM7sdl68ilHtSVYf2sEOui/2PTB0rTgPWTEkcmHbphwXfVPQnA0k
-	 XMXwP27QdCgYL+F3KwqmkIYDdAq3AwUKuEoY56fA=
+	b=NGlkMapR0DKOjQD9FaMNZWtlSWPCWvGZUCAbHIOZts7fkbS5Vdrwg0T8hFEbc3VrH
+	 5511tP8WlX+ybYEauyPKaARlqnKfVmsZFKfpOVNlJ5FwmN+dS6zWG34gMFNS9yAnyi
+	 j9xMfluNisY6oJ9qCL3OR7c7qPj+7hMEAP5Avmt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Fainelli <f.fainelli@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/215] net: dsa: mv88e6xxx: replace ATU violation prints with trace points
+Subject: [PATCH 5.10 098/151] net: dsa: mv88e6xxx: replace ATU violation prints with trace points
 Date: Sun,  1 Sep 2024 18:17:38 +0200
-Message-ID: <20240901160828.884661500@linuxfoundation.org>
+Message-ID: <20240901160817.801375829@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -106,7 +106,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  create mode 100644 drivers/net/dsa/mv88e6xxx/trace.h
 
 diff --git a/drivers/net/dsa/mv88e6xxx/Makefile b/drivers/net/dsa/mv88e6xxx/Makefile
-index c8eca2b6f9594..49bf358b9c4fa 100644
+index 4b080b448ce74..1f7240e0d6bce 100644
 --- a/drivers/net/dsa/mv88e6xxx/Makefile
 +++ b/drivers/net/dsa/mv88e6xxx/Makefile
 @@ -15,3 +15,7 @@ mv88e6xxx-objs += port_hidden.o
@@ -118,7 +118,7 @@ index c8eca2b6f9594..49bf358b9c4fa 100644
 +# for tracing framework to find trace.h
 +CFLAGS_trace.o := -I$(src)
 diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-index 4f689396fc402..7c513a03789cf 100644
+index b5580042250ff..1a4781a44e0d7 100644
 --- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
 +++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
 @@ -12,6 +12,7 @@
