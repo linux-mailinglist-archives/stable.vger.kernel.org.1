@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FAD967A9B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4CB96776B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FC12816F0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB08CB21089
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDFA17B50B;
-	Sun,  1 Sep 2024 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6C917E01C;
+	Sun,  1 Sep 2024 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvFRS1Su"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RPwK2ER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D848208A7;
-	Sun,  1 Sep 2024 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15F2C1B4;
+	Sun,  1 Sep 2024 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209907; cv=none; b=b80KZ0Fxf0XuITvfuUjmuYQ+hf6+JOTUycm7PIu21am1EzUp32S4digCXBmgnF2Z6f36Ldll7fQodTOIwKrIIItUJyEvY0agOf892hu2PBGynunVromBOq8K40/2Q626kgxJL1b+Y3qnqJsBEcpUDIrjsNFxp9DB8c4SXZYmcI8=
+	t=1725207567; cv=none; b=mmNMGbb4TRwo8N9k1LL7BaW1E+HHrnlRlKN7apwYn7vdNXNFsRvqYNhAkDkkpKB4tXdpU3LeErjM4wZpxRJS1G5sq9PssaQLPlORfiALTdrXyoW9uUGAKsDJBMrWZucRumKvOq8VODZkyMkpKajDExAj6ulMU12L38EsBDi8bLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209907; c=relaxed/simple;
-	bh=tENLYeFr+xgjerf49lhjnkd01FUKwZJORkI+16tP5Vw=;
+	s=arc-20240116; t=1725207567; c=relaxed/simple;
+	bh=WKIcprMpLv5iJcoi6qcoZfB1SP9vdZxCKhZ01gz6TBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjwRKslw4sjJknwTQ3p4RFy5ISVsreF4xb7nKdEACDmopyoTDQW2Bsa9jkuhGmJxzjao+87ouF7+rT+wY7j3DxxwcDCpUl3rtIT7aDj1XKuKFQuVE2gNt9pPGCqN4ZTkppDutzcM0ItFsQ6+ynvE8qisFHYY8MzzkhfH518mMbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvFRS1Su; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C22C4CEC3;
-	Sun,  1 Sep 2024 16:58:26 +0000 (UTC)
+	 MIME-Version; b=LgnpkZvo8yL4ALjiprEimrz+2zjaW7SRyrRJDy+PejblLuhQ7RJo/ifba6UOJaDTUmTLXYs8xr/Mwg98nGJIQl/QPkSXC7Y432pZ71E2Nr1q+H+X6TzPTMFTb7vP6J53hdt8G4Rm0KiAXg1hx4BgFmYbQRlt7i27U80s1jf3DXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RPwK2ER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C647C4CEC3;
+	Sun,  1 Sep 2024 16:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209907;
-	bh=tENLYeFr+xgjerf49lhjnkd01FUKwZJORkI+16tP5Vw=;
+	s=korg; t=1725207567;
+	bh=WKIcprMpLv5iJcoi6qcoZfB1SP9vdZxCKhZ01gz6TBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvFRS1Suq5//ILUauQk+9+/zhHQNRsGY47U8/1j6UxOvaDAp54aHDDzeuRyO14xg4
-	 VEEjIFP61RwZVoVBP2cZ9Qvl+ZncR3EJGNpzkzTcoUkQAvSYXpITIGQbhC8PIEXr18
-	 zTyfP7pvULgnVseZoFTrZT1SmXnsp8T5OcT+Ae7Y=
+	b=1RPwK2ER/TTGf0F+LxKGPeWA+XrLiUtj5wMWLC4GV4lUS3/Unw1Nun/ATgquMr8rg
+	 nYX/cj6TSDHUz0+JoUHM+MnyNOGZtLliYmBWYq8R1K8MylAx4c27n9V2XsXLxs67pZ
+	 Ra/w7jI5rthTdkyz9MJsIXCcp/xuDkQ+M5mbdakM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/215] atm: idt77252: prevent use after free in dequeue_rx()
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 4.19 11/98] memcg_write_event_control(): fix a user-triggerable oops
 Date: Sun,  1 Sep 2024 18:15:41 +0200
-Message-ID: <20240901160824.365214347@linuxfoundation.org>
+Message-ID: <20240901160804.111962173@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
+commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
 
-We can't dereference "skb" after calling vcc->push() because the skb
-is released.
+we are *not* guaranteed that anything past the terminating NUL
+is mapped (let alone initialized with anything sane).
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+Cc: stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/idt77252.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ mm/memcontrol.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index 2daf50d4cd47a..7810f974b2ca9 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 	rpp->len += skb->len;
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4140,9 +4140,12 @@ static ssize_t memcg_write_event_control
+ 	buf = endp + 1;
  
- 	if (stat & SAR_RSQE_EPDU) {
-+		unsigned int len, truesize;
- 		unsigned char *l1l2;
--		unsigned int len;
+ 	cfd = simple_strtoul(buf, &endp, 10);
+-	if ((*endp != ' ') && (*endp != '\0'))
++	if (*endp == '\0')
++		buf = endp;
++	else if (*endp == ' ')
++		buf = endp + 1;
++	else
+ 		return -EINVAL;
+-	buf = endp + 1;
  
- 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
- 
-@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 		ATM_SKB(skb)->vcc = vcc;
- 		__net_timestamp(skb);
- 
-+		truesize = skb->truesize;
- 		vcc->push(vcc, skb);
- 		atomic_inc(&vcc->stats->rx);
- 
--		if (skb->truesize > SAR_FB_SIZE_3)
-+		if (truesize > SAR_FB_SIZE_3)
- 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
--		else if (skb->truesize > SAR_FB_SIZE_2)
-+		else if (truesize > SAR_FB_SIZE_2)
- 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
--		else if (skb->truesize > SAR_FB_SIZE_1)
-+		else if (truesize > SAR_FB_SIZE_1)
- 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
- 		else
- 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
--- 
-2.43.0
-
+ 	event = kzalloc(sizeof(*event), GFP_KERNEL);
+ 	if (!event)
 
 
 
