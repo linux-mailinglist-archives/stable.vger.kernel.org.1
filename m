@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E129B96781C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F191B967798
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69A88B219D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1421C20B74
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FB2183CBF;
-	Sun,  1 Sep 2024 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6A4181B88;
+	Sun,  1 Sep 2024 16:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjA8tPEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbjG4yqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38341183CA3;
-	Sun,  1 Sep 2024 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD232C1B4;
+	Sun,  1 Sep 2024 16:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208071; cv=none; b=FZHYEhk5Z8TNXT6hGirSUjki0ozpy9lq6PiSHsdzhPDWACXZQILO6Agrt7ZVhA3VIcgZf5xaudChWd+eMozPXbQd9IQjR8sSjI2Lw7EKNDQ1zmO9cPX6QFo0ZB3ZzXyagTPlQDQN+RaDD+JdrzDqgTI7FvmwRNf1vhzHjAv6/Jc=
+	t=1725207698; cv=none; b=r5SjWmo73YEKWlOuXeW0go/5ZtYC0ndo3UjNJAK5caAsVf1rold3Cvw5ZIWFt3G8IoQBvJ8mOyYtj+6RLz1D4xx1vN8+YBCID3WjFezAaIwB2tC5v8l8kWd2iq5A9F65qjQqEP6Ok6Z/mmMEUBm0rQw/bBeNYWzT83xrC510EVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208071; c=relaxed/simple;
-	bh=FDBbWnCHmWDfL7t+O2VHTOchKQlqFbt+0Kl3N045Hiw=;
+	s=arc-20240116; t=1725207698; c=relaxed/simple;
+	bh=ApetZ26n8GR3vsKls4q4H8vTu7UWWjUnvM13U9VWTnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSYkPkEMd9yttug8m5f/edDzGbzH+IrvGlh6M1qzbl56qTtTB6imWskNkPY9QrtfGuge3Lk90C4ggF7s4sRWtMjgW3jIZGnWYSZrnzE6+fxSXV9xqCWhDr3Wx+e5HiB9mPq9XQEPKSFGA9VNb7da5AQh9JBzbzdmOjS72WyIpb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjA8tPEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99523C4CEC3;
-	Sun,  1 Sep 2024 16:27:50 +0000 (UTC)
+	 MIME-Version; b=PsKRoGVncrTpnu1RdEKdZR3hlim+826HFv1iaTL+1we6BHAdRbuucxYllSUFcSM2L3pgmnalPmdFQFSkW+3dX8gwKEwphElSxGN4c5o+1SEib86VMY2eZ8C8eShC/5RhODRCXbv22eQtdT90Z6S3dSLvc2gSV8FNmk+ujQilV4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbjG4yqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888DBC4CEC3;
+	Sun,  1 Sep 2024 16:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208071;
-	bh=FDBbWnCHmWDfL7t+O2VHTOchKQlqFbt+0Kl3N045Hiw=;
+	s=korg; t=1725207698;
+	bh=ApetZ26n8GR3vsKls4q4H8vTu7UWWjUnvM13U9VWTnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjA8tPEn/DFg8UeefFuCjd6LEjm5A+u8WsvmuwfZeDmfnOa/g7rgN70KrMQfVj+67
-	 PpvzkIEL2CxvAzSK+0uDuL2TQelv743ZBbhph9wGPsOemMKXLS+1AIUYAl6a5PUa1D
-	 B395ne3TYtnINgVyWZ6xfLagtx/pQjudjSdDHVq4=
+	b=UbjG4yqsB9SNRRoKo1YDlz1JTM15J6o31Ony/xqnak5wd8LDXlLYpCd+U9aCArmZV
+	 08tprsyXed2h/fz19dMM2LlAcT4gY0cxFERVc8exPWd9XZR89jDy4EvccuE+uMpOL/
+	 +56qlcD4R3F0bKck/6XhMIfwmuPMhDppGLLcO7H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/93] ASoC: SOF: amd: Fix for acp init sequence
+Subject: [PATCH 4.19 50/98] nvmet-rdma: fix possible bad dereference when freeing rsps
 Date: Sun,  1 Sep 2024 18:16:20 +0200
-Message-ID: <20240901160808.607413533@linuxfoundation.org>
+Message-ID: <20240901160805.587325639@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit a42db293e5983aa1508d12644f23d73f0553b32c ]
+[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
 
-When ACP is not powered on by default, acp power on sequence explicitly
-invoked by programming pgfsm control mask. The existing implementation
-checks the same PGFSM status mask and programs the same PGFSM control mask
-in all ACP variants which breaks acp power on sequence for ACP6.0 and
-ACP6.3 variants. So to fix this issue, update ACP pgfsm control mask and
-status mask based on acp descriptor rev field, which will vary based on
-acp variant.
+It is possible that the host connected and saw a cm established
+event and started sending nvme capsules on the qp, however the
+ctrl did not yet see an established event. This is why the
+rsp_wait_list exists (for async handling of these cmds, we move
+them to a pending list).
 
-Fixes: 846aef1d7cc0 ("ASoC: SOF: amd: Add Renoir ACP HW support")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20240816070328.610360-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Furthermore, it is possible that the ctrl cm times out, resulting
+in a connect-error cm event. in this case we hit a bad deref [1]
+because in nvmet_rdma_free_rsps we assume that all the responses
+are in the free list.
+
+We are freeing the cmds array anyways, so don't even bother to
+remove the rsp from the free_list. It is also guaranteed that we
+are not racing anything when we are releasing the queue so no
+other context accessing this array should be running.
+
+[1]:
+--
+Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
+[...]
+pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ Call trace:
+ nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+ nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ process_one_work+0x1ec/0x4a0
+ worker_thread+0x48/0x490
+ kthread+0x158/0x160
+ ret_from_fork+0x10/0x18
+--
+
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp.c | 19 +++++++++++++++++--
- sound/soc/sof/amd/acp.h |  7 +++++--
- 2 files changed, 22 insertions(+), 4 deletions(-)
+ drivers/nvme/target/rdma.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index add386f749ae9..bfed848de77c8 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -380,6 +380,7 @@ static int acp_power_on(struct snd_sof_dev *sdev)
- 	const struct sof_amd_acp_desc *desc = get_chip_info(sdev->pdata);
- 	unsigned int base = desc->pgfsm_base;
- 	unsigned int val;
-+	unsigned int acp_pgfsm_status_mask, acp_pgfsm_cntl_mask;
- 	int ret;
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index cfd26437aeaea..7889a55156f4d 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -435,12 +435,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
+ 	return 0;
  
- 	val = snd_sof_dsp_read(sdev, ACP_DSP_BAR, base + PGFSM_STATUS_OFFSET);
-@@ -387,9 +388,23 @@ static int acp_power_on(struct snd_sof_dev *sdev)
- 	if (val == ACP_POWERED_ON)
- 		return 0;
+ out_free:
+-	while (--i >= 0) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
+-
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	while (--i >= 0)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
+ out:
+ 	return ret;
+@@ -451,12 +447,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
+ 	struct nvmet_rdma_device *ndev = queue->dev;
+ 	int i, nr_rsps = queue->recv_queue_size * 2;
  
--	if (val & ACP_PGFSM_STATUS_MASK)
-+	switch (desc->rev) {
-+	case 3:
-+	case 5:
-+		acp_pgfsm_status_mask = ACP3X_PGFSM_STATUS_MASK;
-+		acp_pgfsm_cntl_mask = ACP3X_PGFSM_CNTL_POWER_ON_MASK;
-+		break;
-+	case 6:
-+		acp_pgfsm_status_mask = ACP6X_PGFSM_STATUS_MASK;
-+		acp_pgfsm_cntl_mask = ACP6X_PGFSM_CNTL_POWER_ON_MASK;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (val & acp_pgfsm_status_mask)
- 		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + PGFSM_CONTROL_OFFSET,
--				  ACP_PGFSM_CNTL_POWER_ON_MASK);
-+				  acp_pgfsm_cntl_mask);
+-	for (i = 0; i < nr_rsps; i++) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
+-
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	for (i = 0; i < nr_rsps; i++)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
+ }
  
- 	ret = snd_sof_dsp_read_poll_timeout(sdev, ACP_DSP_BAR, base + PGFSM_STATUS_OFFSET, val,
- 					    !val, ACP_REG_POLL_INTERVAL, ACP_REG_POLL_TIMEOUT_US);
-diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
-index 4dcceb7647694..133abed74f015 100644
---- a/sound/soc/sof/amd/acp.h
-+++ b/sound/soc/sof/amd/acp.h
-@@ -25,8 +25,11 @@
- #define ACP_REG_POLL_TIMEOUT_US                 2000
- #define ACP_DMA_COMPLETE_TIMEOUT_US		5000
- 
--#define ACP_PGFSM_CNTL_POWER_ON_MASK		0x01
--#define ACP_PGFSM_STATUS_MASK			0x03
-+#define ACP3X_PGFSM_CNTL_POWER_ON_MASK		0x01
-+#define ACP3X_PGFSM_STATUS_MASK			0x03
-+#define ACP6X_PGFSM_CNTL_POWER_ON_MASK		0x07
-+#define ACP6X_PGFSM_STATUS_MASK			0x0F
-+
- #define ACP_POWERED_ON				0x00
- #define ACP_ASSERT_RESET			0x01
- #define ACP_RELEASE_RESET			0x00
 -- 
 2.43.0
 
