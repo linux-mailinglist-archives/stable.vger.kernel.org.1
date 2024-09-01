@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-72626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86C0967B62
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:09:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB68967B58
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54AED1F22ADC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1692D1F2292F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF2A149002;
-	Sun,  1 Sep 2024 17:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40304149002;
+	Sun,  1 Sep 2024 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQLjA47d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZ8PEtJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA901DFD1;
-	Sun,  1 Sep 2024 17:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F249526AC1;
+	Sun,  1 Sep 2024 17:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210547; cv=none; b=qi4UGaS/KOqxS9hE/skB30EpC/HTU/kfq5JRd9IgEi5VVoB4ED8bayDcDpTbbW4uoxmcAJ6nmgvq4ufytfxkmOZWYahTYkn3u91MoMnlLBmoZZNFLy064lN73w/5hEj7VKUWp2SaCiD2xxDxbAYprIhqvsdZiWqiZjAbWHjv1f0=
+	t=1725210515; cv=none; b=OCG5J2mymrHJyAx4uks2myIGNe+rB2OQ1CT7CoRtCXEASQcPxK7nnRA1jgIOUoYrRdq4URwnRUDMtNczVnwiwW533730AOqYRfQJstgTZuCFcAXA8yhzhmUm6bPXNKRBWrloCLLguRdNKWd/X/7I9rY6D8aZDVrfy+RXK0wnGbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210547; c=relaxed/simple;
-	bh=47tP9u89Kf557zVPEZNbK6AV9ATFJPAaOqIjA+/tI0A=;
+	s=arc-20240116; t=1725210515; c=relaxed/simple;
+	bh=9pQbzNAqpsS9xDjn80h++9jzbVyo0q5uv6Yq4ABxVrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2GbOWAutLLqaAHQO8zmLQ1cxxLciL1CSTeCabo33J+2vouCH15hnWoN+8oeoFWEbm95SaMPA8I9hghZk1bhUZl4g/QVhW1l686/A7D5OLu3nYr8CGhhXhlWXhs8IA7rsW6LlPpY51+4EwOsNVl93rTWnwdovzRusf3Fio2vYlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQLjA47d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C2CC4CEC3;
-	Sun,  1 Sep 2024 17:09:06 +0000 (UTC)
+	 MIME-Version; b=dsvGOVjMl+FJBlgrHpCS4mScZ9haBzfuRwGJNIytWB9eK/hJ1XrpiFUzm5UBa1FYK0dcQ1TsmSI8sSsOextMBSWUtK8MQpIeFkedEf7XI289DFJ1pB1pFM1MPXnZVMHO6vRKqlz0jr1FBJL+a4H8bB+IC75y/MwtXSDMmQvgc7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZ8PEtJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A70C4CEC3;
+	Sun,  1 Sep 2024 17:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210547;
-	bh=47tP9u89Kf557zVPEZNbK6AV9ATFJPAaOqIjA+/tI0A=;
+	s=korg; t=1725210514;
+	bh=9pQbzNAqpsS9xDjn80h++9jzbVyo0q5uv6Yq4ABxVrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQLjA47dP691DCn2c0AtDrV5G15CxD8sxbID/+WwtHjbq/vsOydULw3dgvaTfz6xJ
-	 soYILS56AUG8HCHheCFdY1AVgrhVb5KXlvnLXvz/ZsQuQ805aj80FtHT46e/ajRGVF
-	 IT38yOOrXE8K7DHFYjkOjTe4TqRhwMommlaimJh0=
+	b=HZ8PEtJN8fUZA8iurEOJQBeFJKOA0sVOTLYZMbZ6XATaR/wK1y+AXq7CApIOlNdxI
+	 /eQbciCLS/VGlDW7zN853Vp42D3vMSJeYBQCcqhT9SIraPoL4oedzMlsMzDlyVNHDI
+	 Cx/swAyRqOnOByD4WscgwNogkciP5cJVSyl1vW60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
 	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 212/215] igc: Fix reset adapter logics when tx mode change
-Date: Sun,  1 Sep 2024 18:18:44 +0200
-Message-ID: <20240901160831.365002759@linuxfoundation.org>
+Subject: [PATCH 5.15 213/215] igc: Fix qbv tx latency by setting gtxoffset
+Date: Sun,  1 Sep 2024 18:18:45 +0200
+Message-ID: <20240901160831.402688820@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
 References: <20240901160823.230213148@linuxfoundation.org>
@@ -70,73 +70,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-commit 0afeaeb5dae86aceded0d5f0c3a54d27858c0c6f upstream.
+commit 6c3fc0b1c3d073bd6fc3bf43dbd0e64240537464 upstream.
 
-Following the "igc: Fix TX Hang issue when QBV Gate is close" changes,
-remaining issues with the reset adapter logic in igc_tsn_offload_apply()
-have been observed:
+A large tx latency issue was discovered during testing when only QBV was
+enabled. The issue occurs because gtxoffset was not set when QBV is
+active, it was only set when launch time is active.
 
-1. The reset adapter logics for i225 and i226 differ, although they should
-   be the same according to the guidelines in I225/6 HW Design Section
-   7.5.2.1 on software initialization during tx mode changes.
-2. The i225 resets adapter every time, even though tx mode doesn't change.
-   This occurs solely based on the condition  igc_is_device_id_i225() when
-   calling schedule_work().
-3. i226 doesn't reset adapter for tsn->legacy tx mode changes. It only
-   resets adapter for legacy->tsn tx mode transitions.
-4. qbv_count introduced in the patch is actually not needed; in this
-   context, a non-zero value of qbv_count is used to indicate if tx mode
-   was unconditionally set to tsn in igc_tsn_enable_offload(). This could
-   be replaced by checking the existing register
-   IGC_TQAVCTRL_TRANSMIT_MODE_TSN bit.
+The patch "igc: Correct the launchtime offset" only sets gtxoffset when
+the launchtime_enable field is set by the user. Enabling launchtime_enable
+ultimately sets the register IGC_TXQCTL_QUEUE_MODE_LAUNCHT (referred to as
+LaunchT in the SW user manual).
 
-This patch resolves all issues and enters schedule_work() to reset the
-adapter only when changing tx mode. It also removes reliance on qbv_count.
+Section 7.5.2.6 of the IGC i225/6 SW User Manual Rev 1.2.4 states:
+"The latency between transmission scheduling (launch time) and the
+time the packet is transmitted to the network is listed in Table 7-61."
 
-qbv_count field will be removed in a future patch.
+However, the patch misinterprets the phrase "launch time" in that section
+by assuming it specifically refers to the LaunchT register, whereas it
+actually denotes the generic term for when a packet is released from the
+internal buffer to the MAC transmit logic.
 
-Test ran:
+This launch time, as per that section, also implicitly refers to the QBV
+gate open time, where a packet waits in the buffer for the QBV gate to
+open. Therefore, latency applies whenever QBV is in use. TSN features such
+as QBU and QAV reuse QBV, making the latency universal to TSN features.
 
-1. Verify reset adapter behaviour in i225/6:
-   a) Enrol a new GCL
-      Reset adapter observed (tx mode change legacy->tsn)
-   b) Enrol a new GCL without deleting qdisc
-      No reset adapter observed (tx mode remain tsn->tsn)
-   c) Delete qdisc
-      Reset adapter observed (tx mode change tsn->legacy)
+Discussed with i226 HW owner (Shalev, Avi) and we were in agreement that
+the term "launch time" used in Section 7.5.2.6 is not clear and can be
+easily misinterpreted. Avi will update this section to:
+"When TQAVCTRL.TRANSMIT_MODE = TSN, the latency between transmission
+scheduling and the time the packet is transmitted to the network is listed
+in Table 7-61."
 
-2. Tested scenario from "igc: Fix TX Hang issue when QBV Gate is closed"
-   to confirm it remains resolved.
+Fix this issue by using igc_tsn_is_tx_mode_in_tsn() as a condition to
+write to gtxoffset, aligning with the newly updated SW User Manual.
 
-Fixes: 175c241288c0 ("igc: Fix TX Hang issue when QBV Gate is closed")
+Tested:
+1. Enrol taprio on talker board
+   base-time 0
+   cycle-time 1000000
+   flags 0x2
+   index 0 cmd S gatemask 0x1 interval1
+   index 0 cmd S gatemask 0x1 interval2
+
+   Note:
+   interval1 = interval for a 64 bytes packet to go through
+   interval2 = cycle-time - interval1
+
+2. Take tcpdump on listener board
+
+3. Use udp tai app on talker to send packets to listener
+
+4. Check the timestamp on listener via wireshark
+
+Test Result:
+100 Mbps: 113 ~193 ns
+1000 Mbps: 52 ~ 84 ns
+2500 Mbps: 95 ~ 223 ns
+
+Note that the test result is similar to the patch "igc: Correct the
+launchtime offset".
+
+Fixes: 790835fcc0cb ("igc: Correct the launchtime offset")
 Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Only want the igc_tsn_is_tx_mode_in_tsn() portion of this for older stable
-  kernels - gregkh ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_tsn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/net/ethernet/intel/igc/igc_tsn.c
 +++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -49,6 +49,13 @@ static unsigned int igc_tsn_new_flags(st
- 	return new_flags;
- }
- 
-+static bool igc_tsn_is_tx_mode_in_tsn(struct igc_adapter *adapter)
-+{
-+	struct igc_hw *hw = &adapter->hw;
-+
-+	return !!(rd32(IGC_TQAVCTRL) & IGC_TQAVCTRL_TRANSMIT_MODE_TSN);
-+}
-+
- void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
- {
+@@ -61,7 +61,7 @@ void igc_tsn_adjust_txtime_offset(struct
  	struct igc_hw *hw = &adapter->hw;
+ 	u16 txoffset;
+ 
+-	if (!is_any_launchtime(adapter))
++	if (!igc_tsn_is_tx_mode_in_tsn(adapter))
+ 		return;
+ 
+ 	switch (adapter->link_speed) {
 
 
 
