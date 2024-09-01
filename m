@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-71920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F257967859
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E452967AA3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 814701C20380
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D60B20A7D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C9E17E46E;
-	Sun,  1 Sep 2024 16:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4157C17E919;
+	Sun,  1 Sep 2024 16:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlCnKuOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR3AG1LV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978771C68C;
-	Sun,  1 Sep 2024 16:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC917ADE1;
+	Sun,  1 Sep 2024 16:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208254; cv=none; b=Bz0zsuJ3g6nzriMUMucvbsjnpd+/mbHXK8XKmt/Jd5NVedNHy/5kOY9wO+zmaklbF98ixmJNrZTOcF7PCoTRrut4y8v9qzKtvF54o6SU3z7BncpyzDGmawTSW9gAsRorD6L3bh+qbR4fppvtKyf+k1UDOMnJ/MJwNP+7VwPTD9Q=
+	t=1725209934; cv=none; b=DzAxgIN4nfTADpUgs2g2lvoluftE+UxbsQUaD0E+p7v7OsWXCWiQlz8Enr+npD34hG3omwuTRty8GH/h6AqjbB6scVRzyuHQPdzJRfB77sR3OA/K+K2WcjBxZr0NI0bXcX3w7gu3WzX/EOIri5Mj+VGwZWxGZCJcL7+gP4nnpcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208254; c=relaxed/simple;
-	bh=JLUCg03veTVKesQfY3kpelRlY7k+/2XhKQxepfD4fDc=;
+	s=arc-20240116; t=1725209934; c=relaxed/simple;
+	bh=YZVEiSKvjCxG34p9Jacul31kZpLBvallpCf4HFhV9Sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iv+VM0ckcOjwTNrphIpH878r8nfpYVZhPMzNR6eYS4AqsfO0S0K4iVw52WOtMwzeIj9WpYyU049L1bq/GvnwKN53n6yIuR5puGSh4hJVSrMKY4Rrgo9cQL+OUe5eXQqUrgiLiRezObJOwvQqDlX8JCZeDU4QtM4SayiUwpHZC6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlCnKuOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077D5C4CEC3;
-	Sun,  1 Sep 2024 16:30:53 +0000 (UTC)
+	 MIME-Version; b=YTDKLK7IQHXBERdKNj3h7+E0qk1LLD2kVbd24Au8ISpY9GJyByLSL13NunFt/qj1rQ+BHsFHdfX4J9xzzudMxJYLvelW+GBHolKG2ua4leJoIDCRHYG/Awf6k9uRQfSPCioapmltDSggDAeuYhTMuUoIJOiYAj6uPZlyBgbVQEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR3AG1LV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C4AC4CEC3;
+	Sun,  1 Sep 2024 16:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208254;
-	bh=JLUCg03veTVKesQfY3kpelRlY7k+/2XhKQxepfD4fDc=;
+	s=korg; t=1725209933;
+	bh=YZVEiSKvjCxG34p9Jacul31kZpLBvallpCf4HFhV9Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlCnKuOxC7Khr6j36Mkg3BB6PawpNqlDfXEln/zr+SDGKct0aEhlbF24IfQ2PHMaE
-	 wluKTTsinyFFUtQkNE3xTKvuFtpgkM9Iv/YffCkbJv1QjVG6Ra9v1KA8fYwaHuTU0N
-	 6KbKhKB+mcVmn5L8b1c+xmNJJyQG9ow8CI9sp664=
+	b=DR3AG1LVRctAGF3qgQMk/tMw9Q1tE6bN0hQ1Sywqmmc+//Fa+rzcjdh3cwUd6s7wE
+	 WsFkQBZic942fFQCf0K7GoWz9wY7Jj3NLcfjZaaGiKqUh6HK8Kc6ShL6cP3ICMQg4A
+	 pM+MXMwAZCoxiQ4ezzHSaaBUcFq/T5Bz+H5UUU+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.10 008/149] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support
+	Karel Balej <balejk@matfyz.cz>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 007/215] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
 Date: Sun,  1 Sep 2024 18:15:19 +0200
-Message-ID: <20240901160817.780395041@linuxfoundation.org>
+Message-ID: <20240901160823.517712329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 08d08e2e9f0ad1af0044e4747723f66677c35ee9 upstream.
+commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
 
-Commit d2add27cf2b8 ("tpm: Add NULL primary creation") introduced
-CONFIG_TCG_TPM2_HMAC. When this option is enabled on ppc64 then the
-following message appears in the kernel log due to a missing call to
-tpm2_sessions_init().
+re-enumerating full-speed devices after a failed address device command
+can trigger a NULL pointer dereference.
 
-[    2.654549] tpm tpm0: auth session is not active
+Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
+value during enumeration. Usb core calls usb_ep0_reinit() in this case,
+which ends up calling xhci_configure_endpoint().
 
-Add the missing call to tpm2_session_init() to the ibmvtpm driver to
-resolve this issue.
+On Panther point xHC the xhci_configure_endpoint() function will
+additionally check and reserve bandwidth in software. Other hosts do
+this in hardware
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+If xHC address device command fails then a new xhci_virt_device structure
+is allocated as part of re-enabling the slot, but the bandwidth table
+pointers are not set up properly here.
+This triggers the NULL pointer dereference the next time usb_ep0_reinit()
+is called and xhci_configure_endpoint() tries to check and reserve
+bandwidth
+
+[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
+[46710.713699] usb 3-1: Device not responding to setup address.
+[46710.917684] usb 3-1: Device not responding to setup address.
+[46711.125536] usb 3-1: device not accepting address 5, error -71
+[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[46711.125600] #PF: supervisor read access in kernel mode
+[46711.125603] #PF: error_code(0x0000) - not-present page
+[46711.125606] PGD 0 P4D 0
+[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
+[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
+[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
+[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
+
+Fix this by making sure bandwidth table pointers are set up correctly
+after a failed address device command, and additionally by avoiding
+checking for bandwidth in cases like this where no actual endpoints are
+added or removed, i.e. only context for default control endpoint 0 is
+evaluated.
+
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
+Cc: stable@vger.kernel.org
+Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-index d3989b257f42..1e5b107d1f3b 100644
---- a/drivers/char/tpm/tpm_ibmvtpm.c
-+++ b/drivers/char/tpm/tpm_ibmvtpm.c
-@@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
- 		rc = tpm2_get_cc_attrs_tbl(chip);
- 		if (rc)
- 			goto init_irq_cleanup;
-+
-+		rc = tpm2_sessions_init(chip);
-+		if (rc)
-+			goto init_irq_cleanup;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -2954,7 +2954,7 @@ static int xhci_configure_endpoint(struc
+ 				xhci->num_active_eps);
+ 		return -ENOMEM;
  	}
- 
- 	return tpm_chip_register(chip);
--- 
-2.46.0
-
+-	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
++	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
+ 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
+ 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
+ 			xhci_free_host_resources(xhci, ctrl_ctx);
+@@ -4294,8 +4294,10 @@ static int xhci_setup_device(struct usb_
+ 		mutex_unlock(&xhci->mutex);
+ 		ret = xhci_disable_slot(xhci, udev->slot_id);
+ 		xhci_free_virt_device(xhci, udev->slot_id);
+-		if (!ret)
+-			xhci_alloc_dev(hcd, udev);
++		if (!ret) {
++			if (xhci_alloc_dev(hcd, udev) == 1)
++				xhci_setup_addressable_virt_dev(xhci, udev);
++		}
+ 		kfree(command->completion);
+ 		kfree(command);
+ 		return -EPROTO;
 
 
 
