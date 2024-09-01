@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC85D967AE9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9496791C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0919F1C214D2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7421C20FC6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE30C183CA6;
-	Sun,  1 Sep 2024 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD76B18308A;
+	Sun,  1 Sep 2024 16:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQCWfZlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWTkHA2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C37017E005;
-	Sun,  1 Sep 2024 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE71C68C;
+	Sun,  1 Sep 2024 16:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210149; cv=none; b=iJBR7l1U9zIPl6/EVBEpxnb5/t11mM0DyJl0PKP0XeeZgFVhEetB4OB4J66iWnbgkwxe81EI9oJv1X52JNxHrvVF3193LkT9brKVkH47p+3Y497YWEbhWVVAn0rctF0BaiRq99t0w9G+szrOoYA0UZKuwzu5oTn7dREG1D8REvs=
+	t=1725208788; cv=none; b=Qe92lV8JvFXSXKppqv1Iojx9COQR8xJ+11reNvbbKk6a1OeOTPF4WWfaoyl2HspIqvmE9cXVh3TsbMpo5JgL6ZDIMhf3NenwnMRcYbDTg37zLlbkUMuEl2NoSdpFrluZxYHcZzgMl/1rvew3ZtgpfxYgmhAt8OtPEZg4rsVy5aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210149; c=relaxed/simple;
-	bh=5LIwOQJJMOT/PbYglCB0tFkZInxkc9bmX2DGa81rYe8=;
+	s=arc-20240116; t=1725208788; c=relaxed/simple;
+	bh=PA3smShbpbG3OWkN3uFkDyLu+xFfg65hxjztDiI/hRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNbDB0udKElyHl6FderRsidKamcrAtZYZxpcLqz+hlz01wb11Yz9B7sFj0LFit6zpxz9g1fd6UgDIULPGU31v70wM3VtOj9vrUVnyLOPrjPblgLCSA5ZtfALkHMfDNP07O9udWyApQw2nvs7ji+WEAe25SQ7fIsxrYOI0yv0MFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQCWfZlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CC8C4CEC3;
-	Sun,  1 Sep 2024 17:02:28 +0000 (UTC)
+	 MIME-Version; b=rNbSibYywMdtRJwciiBTdn/26qJWyhr+51l/tz4TNt9fjZ8a4zDkqn4d3EoCGnrR6mFiTyEJzmKtJj8FgekHkTD56hyifPXfCjP0mLWaDGXM/lwe5SgCJy2aZAbJVrlw9pq8mtx74y6JZLajWCcgL4bf26ZI/QpS0nMx2zZU+n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWTkHA2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC78C4CEC3;
+	Sun,  1 Sep 2024 16:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210149;
-	bh=5LIwOQJJMOT/PbYglCB0tFkZInxkc9bmX2DGa81rYe8=;
+	s=korg; t=1725208788;
+	bh=PA3smShbpbG3OWkN3uFkDyLu+xFfg65hxjztDiI/hRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQCWfZlgOofVm1VZqhgpvcyUE7NCwJonX67lAOj59MaaKjvS5KqOWGSlJ8u9Ax05O
-	 vhc2vQCvL9IYc+YGEUgL2+itK6l2w6Uwb2ZgWVOqNlNTxaOC13o6I0a2+dAeXYapGV
-	 WlHEokOTT+drxrY4OAC3jlUF5EiE5BtGtexuik9o=
+	b=UWTkHA2cRQWirn8yJg5kZEqpADhZORaws5dzb2MhYKtDGOJ/rfk0FcWmFMTRGyTAS
+	 pbZRVCDAfHqKF5hZdEy+HJbGX//lPFNJXYg47mYLJQQuYvn+qmGjzI3BQX7M3C/2sZ
+	 lP2epvu3syuV9zDox2aA0EL6duwMU6jFMKnN2cro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sicong Huang <huangsicong@iie.ac.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/215] media: pci: cx23885: check cx23885_vdev_init() return
-Date: Sun,  1 Sep 2024 18:16:24 +0200
-Message-ID: <20240901160826.074317999@linuxfoundation.org>
+Subject: [PATCH 5.4 039/134] wifi: iwlwifi: abort scan when rfkill on but device enabled
+Date: Sun,  1 Sep 2024 18:16:25 +0200
+Message-ID: <20240901160811.581624703@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 15126b916e39b0cb67026b0af3c014bfeb1f76b3 ]
+[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
 
-cx23885_vdev_init() can return a NULL pointer, but that pointer
-is used in the next line without a check.
+In RFKILL we first set the RFKILL bit, then we abort scan
+(if one exists) by waiting for the notification from FW
+and notifying mac80211. And then we stop the device.
+But in case we have a scan ongoing in the period of time between
+rfkill on and before the device is stopped - we will not wait for the
+FW notification because of the iwl_mvm_is_radio_killed() condition,
+and then the scan_status and uid_status are misconfigured,
+(scan_status is cleared but uid_status not)
+and when the notification suddenly arrives (before stopping the device)
+we will get into the assert about scan_status and uid_status mismatch.
+Fix this by waiting for FW notif when rfkill is on but the device isn't
+disabled yet.
 
-Add a NULL pointer check and go to the error unwind if it is NULL.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Sicong Huang <huangsicong@iie.ac.cn>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-video.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
-index 6851e01da1c5b..7a696aea52f10 100644
---- a/drivers/media/pci/cx23885/cx23885-video.c
-+++ b/drivers/media/pci/cx23885/cx23885-video.c
-@@ -1354,6 +1354,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
- 	/* register Video device */
- 	dev->video_dev = cx23885_vdev_init(dev, dev->pci,
- 		&cx23885_video_template, "video");
-+	if (!dev->video_dev) {
-+		err = -ENOMEM;
-+		goto fail_unreg;
-+	}
- 	dev->video_dev->queue = &dev->vb2_vidq;
- 	dev->video_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
- 				      V4L2_CAP_AUDIO | V4L2_CAP_VIDEO_CAPTURE;
-@@ -1382,6 +1386,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
- 	/* register VBI device */
- 	dev->vbi_dev = cx23885_vdev_init(dev, dev->pci,
- 		&cx23885_vbi_template, "vbi");
-+	if (!dev->vbi_dev) {
-+		err = -ENOMEM;
-+		goto fail_unreg;
-+	}
- 	dev->vbi_dev->queue = &dev->vb2_vbiq;
- 	dev->vbi_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
- 				    V4L2_CAP_AUDIO | V4L2_CAP_VBI_CAPTURE;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 3a58267d3d710..3bce3b59a12b1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -2140,7 +2140,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
+ 	if (!(mvm->scan_status & type))
+ 		return 0;
+ 
+-	if (iwl_mvm_is_radio_killed(mvm)) {
++	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
+ 		ret = 0;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
