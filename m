@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-71777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218EB9677B2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5021C967A11
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BE31C20DD5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB6981F22F1F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6357517F394;
-	Sun,  1 Sep 2024 16:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8325718132A;
+	Sun,  1 Sep 2024 16:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4wh2a+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLpWaURw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3062C1B4;
-	Sun,  1 Sep 2024 16:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413AF1DFD1;
+	Sun,  1 Sep 2024 16:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207781; cv=none; b=QW6VamLqUpg5Iv7zg74jR4Hh2sfObcl+e26Q+hhwpkOtPdDLwyzrGD5AbLP2k96aSjvVyLbZZXYvuDqoFJPeLw9rsUN3dSrEGcCrg3TaYkiNQA8F5fktUdh6r6JqCW9pqPRXyX0Sq4APlUSyrAdzrQF34RBt6c9vbJlRwJvieh4=
+	t=1725209471; cv=none; b=RzVAuS2ibcjlXXIEXr5/DQIm0WxK8+j2gOtMge9TwnjzbefYR8+ToTd4U5DJmcbjK8h3z3f3e7KCX/StlUUcwTiAjvf2DCP2YoSqCeHkTJT/NsfvfBqc4R1mA8iInsNd/+XMQSYSzfMwm4IEwRAkETxRNCKiDeTtbMIsQ7n4Lew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207781; c=relaxed/simple;
-	bh=CbaUy3bVzhNgOxzdXB7U9RXc+hGcT+VCYDT52Fa/9x0=;
+	s=arc-20240116; t=1725209471; c=relaxed/simple;
+	bh=QgO6DCYF2ih06QsYNJ152XKIHpjQT5OZCTP1gd6g3P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeM0ngLyHOZQkY9rB9VMx7CFP72xu2zKM9Pvia5hwV9u6u3hICZ2/m7dF3rLBEuKTeFWTp6MjBNMnyOTEcO/8Deay7vsrQdFEa0ZobpgjHweEI2FyR/Fx2XL0gEDNu7ahcrnvb0Ch1cY/eDGITBoIIRn7CqTrDdQJLIqy+lxY1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4wh2a+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B237C4CEC3;
-	Sun,  1 Sep 2024 16:23:00 +0000 (UTC)
+	 MIME-Version; b=i+ZC1gkvkmRH6txAJUhUeGyEABjgtR30x2k4Rr9q2EPa5akSXl8nG2uS82pZEnRfonIS0NWcw7P7XC/chC+IRWd4SRgdSWdpQZCpBPLud2Ip7qgRfySP6Xd/a4uzWIGcvOEme5g1XlRV0nett5JQDRi1HUTBAJpi012EKspGrUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLpWaURw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4EAC4CEC3;
+	Sun,  1 Sep 2024 16:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207781;
-	bh=CbaUy3bVzhNgOxzdXB7U9RXc+hGcT+VCYDT52Fa/9x0=;
+	s=korg; t=1725209471;
+	bh=QgO6DCYF2ih06QsYNJ152XKIHpjQT5OZCTP1gd6g3P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4wh2a+sqOoXIaTgYoP2BfOudZc5qOD0SAKFKXXHuZLmBEnooPsfWzTn4vIamszPU
-	 hncls47CXTVCfmxGSDmJcxDBH8ZIiosyF/wa7x6lxHx9aMKnr1oSuYhpp7WnMPtm+9
-	 vPG3JtVUFuMQWyJBV/2l1vwBn6BBVkN0W/Lna/Ig=
+	b=qLpWaURww9ImcJ8xHdfaQZ+ncb2mwEsBk7AwNNYLYWzq2vUtEqUVIJP59BKsT8I1P
+	 4zKLiWxHvEbLJasipXaNqYC8VmC0yPV1rog1y7nU6NS/g9+s9f6XbSiWK57H5QLYuX
+	 BlIaNgHQQCZxIPM7gp7BRKGvUoipBiRY5cJjpnzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 4.19 75/98] dm suspend: return -ERESTARTSYS instead of -EINTR
-Date: Sun,  1 Sep 2024 18:16:45 +0200
-Message-ID: <20240901160806.524742946@linuxfoundation.org>
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 046/151] IB/hfi1: Fix potential deadlock on &irq_src_lock and &dd->uctxt_lock
+Date: Sun,  1 Sep 2024 18:16:46 +0200
+Message-ID: <20240901160815.840973833@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 upstream.
+[ Upstream commit 2f19c4b8395ccb6eb25ccafee883c8cfbe3fc193 ]
 
-This commit changes device mapper, so that it returns -ERESTARTSYS
-instead of -EINTR when it is interrupted by a signal (so that the ioctl
-can be restarted).
+handle_receive_interrupt_napi_sp() running inside interrupt handler
+could introduce inverse lock ordering between &dd->irq_src_lock
+and &dd->uctxt_lock, if read_mod_write() is preempted by the isr.
 
-The manpage signal(7) says that the ioctl function should be restarted if
-the signal was handled with SA_RESTART.
+          [CPU0]                                        |          [CPU1]
+hfi1_ipoib_dev_open()                                   |
+--> hfi1_netdev_enable_queues()                         |
+--> enable_queues(rx)                                   |
+--> hfi1_rcvctrl()                                      |
+--> set_intr_bits()                                     |
+--> read_mod_write()                                    |
+--> spin_lock(&dd->irq_src_lock)                        |
+                                                        | hfi1_poll()
+                                                        | --> poll_next()
+                                                        | --> spin_lock_irq(&dd->uctxt_lock)
+                                                        |
+                                                        | --> hfi1_rcvctrl()
+                                                        | --> set_intr_bits()
+                                                        | --> read_mod_write()
+                                                        | --> spin_lock(&dd->irq_src_lock)
+<interrupt>                                             |
+   --> handle_receive_interrupt_napi_sp()               |
+   --> set_all_fastpath()                               |
+   --> hfi1_rcd_get_by_index()                          |
+   --> spin_lock_irqsave(&dd->uctxt_lock)               |
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
+
+To prevent the potential deadlock, the patch use spin_lock_irqsave()
+on &dd->irq_src_lock inside read_mod_write() to prevent the possible
+deadlock scenario.
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926101116.2797-1-dg573847474@gmail.com
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hfi1/chip.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2468,7 +2468,7 @@ static int dm_wait_for_completion(struct
- 			break;
+diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
+index c74868f016379..b7ae4bf2f5499 100644
+--- a/drivers/infiniband/hw/hfi1/chip.c
++++ b/drivers/infiniband/hw/hfi1/chip.c
+@@ -13224,15 +13224,16 @@ static void read_mod_write(struct hfi1_devdata *dd, u16 src, u64 bits,
+ {
+ 	u64 reg;
+ 	u16 idx = src / BITS_PER_REGISTER;
++	unsigned long flags;
  
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
+-	spin_lock(&dd->irq_src_lock);
++	spin_lock_irqsave(&dd->irq_src_lock, flags);
+ 	reg = read_csr(dd, CCE_INT_MASK + (8 * idx));
+ 	if (set)
+ 		reg |= bits;
+ 	else
+ 		reg &= ~bits;
+ 	write_csr(dd, CCE_INT_MASK + (8 * idx), reg);
+-	spin_unlock(&dd->irq_src_lock);
++	spin_unlock_irqrestore(&dd->irq_src_lock, flags);
+ }
  
+ /**
+-- 
+2.43.0
+
 
 
 
