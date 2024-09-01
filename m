@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E8E967878
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58497967AAE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9846F1C20380
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8B54B20DAE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53BF17DFFC;
-	Sun,  1 Sep 2024 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FBC183CA3;
+	Sun,  1 Sep 2024 16:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSvS9+Dy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pj3WFICC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A390F5381A;
-	Sun,  1 Sep 2024 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BBE18132A;
+	Sun,  1 Sep 2024 16:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208329; cv=none; b=s/d8Pqu15uwyes3vOrjIVtXhWPh16JKbVWlUb7iQMb/EIiNLNfHiF6iK2D3hzJ6rWvHGDs5icStdiuTAwdUZyt9bXOSPjt00qcJW9Q5bFPU1IUa7M2mXCWV2rnQbcM4ChZJAjpXlCwCv6KqAJyydJq0V1BjTUX8fa6UITzERMb8=
+	t=1725209967; cv=none; b=AVOtdE1Yi0IiJLnivzA2A0WDOt3iMex5h1581spfWLoThUkeAVyr4U7eKptJk0PosB+QYty+/4Hi90LrObwFSPZaaHeLjXnh0O4YYBNF/p5TxbF/UDPZniVmoUX4xdfIaSzKyA9RqJJ/Yluefgokx8LhaMSkR+KsRQ+4dcWbddo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208329; c=relaxed/simple;
-	bh=beRFZJOQ6Iz7ocz5/s2mXetqtJQqo7/EODMkuWGxvag=;
+	s=arc-20240116; t=1725209967; c=relaxed/simple;
+	bh=E+SDNm5G/IOUcPEYB6eO2GKuElij+B3M4HMym7gUxn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnbIz1guh412vZmi/VmnYkoc6QINmFXY7iD5UXhHAxSieTykMJsv/XRgTQGLKgT23ovY6j08TduOTQ1AYXoB0wbFA1Z3Gn5SA2hK0Sr6HsFcfvdRlW90XkCx0Coey8SwX26XtdIZ80mfs3OK/ScevhjJjaPpup8eoxt5CnVt2zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSvS9+Dy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CE9C4CEC3;
-	Sun,  1 Sep 2024 16:32:08 +0000 (UTC)
+	 MIME-Version; b=TwOof14ERbaJMmS4SBLnXbKgOAB8SzpqNqHtlyFRvKFPOfdYkiD1l5neygCMGJG+4YDs9DjPlC9ajnnwcyLhvpuTJzcpgJg3YXugXoC5KqlbyxVJXExCAfW/xU5JAfpPRHlJEQymj+HPwcHeyBf9mIMKRy3KcR35AxD2IR3zXEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pj3WFICC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524FBC4CEC3;
+	Sun,  1 Sep 2024 16:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208329;
-	bh=beRFZJOQ6Iz7ocz5/s2mXetqtJQqo7/EODMkuWGxvag=;
+	s=korg; t=1725209967;
+	bh=E+SDNm5G/IOUcPEYB6eO2GKuElij+B3M4HMym7gUxn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSvS9+DyggB+lF7178A3oxbR9cyRgccHdIN9030En3GQZYmwPhw9oHbps2iXracl/
-	 o8zQqCGFRoF4a5JPH1jsWgY7qAOpUu1fgnkfl2EooJ+NzA0WYgwxw2oE4i9ykSjAzY
-	 RXDIw/vPb5IYvLW0q4vcVeH4WELAA19fAd3+mZEQ=
+	b=pj3WFICCLTIaPrIuu4Ao4udG+K+coaVzlmJ+oOzaKlxxR3MBFznSwC82s/VSfoNxi
+	 Ob4uStuCf+iRpme37DB4GWrkpPc5sjngVTGFUSQ1cS1LBbLp2Fsy1KJoFdjbJZamGj
+	 Wi/8F1FSG5GPtWnrBE7ZL2VsWQFBWxU2QOMEL/to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
-	Vignesh Chander <Vignesh.Chander@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 049/149] drm/amdgpu: Do not wait for MP0_C2PMSG_33 IFWI init in SRIOV
+Subject: [PATCH 5.15 048/215] RDMA/rtrs: Fix the problem of variable not initialized fully
 Date: Sun,  1 Sep 2024 18:16:00 +0200
-Message-ID: <20240901160819.312305211@linuxfoundation.org>
+Message-ID: <20240901160825.169338105@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit b32563859d6f61265222ec0f27d394964a8f7669 ]
+[ Upstream commit c5930a1aa08aafe6ffe15b5d28fe875f88f6ac86 ]
 
-SRIOV does not need to wait for IFWI init, and MP0_C2PMSG_33 is blocked
-for VF access.
+No functionality change. The variable which is not initialized fully
+will introduce potential risks.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Reviewed-by: Vignesh Chander <Vignesh.Chander@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 9cead81eff63 ("drm/amdgpu: fix eGPU hotplug regression")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20230919020806.534183-1-yanjun.zhu@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 0e31bdb4b7cb6..ea5223388cff2 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -256,19 +256,21 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
- 	u32 msg;
- 	int i, ret = 0;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
+index 4745f33d7104a..7f0f3ce8f1151 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs.c
+@@ -255,7 +255,7 @@ static int create_cq(struct rtrs_con *con, int cq_vector, int nr_cqe,
+ static int create_qp(struct rtrs_con *con, struct ib_pd *pd,
+ 		     u32 max_send_wr, u32 max_recv_wr, u32 max_sge)
+ {
+-	struct ib_qp_init_attr init_attr = {NULL};
++	struct ib_qp_init_attr init_attr = {};
+ 	struct rdma_cm_id *cm_id = con->cm_id;
+ 	int ret;
  
--	/* It can take up to a second for IFWI init to complete on some dGPUs,
--	 * but generally it should be in the 60-100ms range.  Normally this starts
--	 * as soon as the device gets power so by the time the OS loads this has long
--	 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
--	 * wait for this to complete.  Once the C2PMSG is updated, we can
--	 * continue.
--	 */
-+	if (!amdgpu_sriov_vf(adev)) {
-+		/* It can take up to a second for IFWI init to complete on some dGPUs,
-+		 * but generally it should be in the 60-100ms range.  Normally this starts
-+		 * as soon as the device gets power so by the time the OS loads this has long
-+		 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
-+		 * wait for this to complete.  Once the C2PMSG is updated, we can
-+		 * continue.
-+		 */
- 
--	for (i = 0; i < 1000; i++) {
--		msg = RREG32(mmMP0_SMN_C2PMSG_33);
--		if (msg & 0x80000000)
--			break;
--		usleep_range(1000, 1100);
-+		for (i = 0; i < 1000; i++) {
-+			msg = RREG32(mmMP0_SMN_C2PMSG_33);
-+			if (msg & 0x80000000)
-+				break;
-+			usleep_range(1000, 1100);
-+		}
- 	}
- 
- 	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
 -- 
 2.43.0
 
