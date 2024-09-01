@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-72558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBBA967B1E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FABA967B29
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9758B1F21546
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A55F9B209F5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B943F3BB59;
-	Sun,  1 Sep 2024 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90017E005;
+	Sun,  1 Sep 2024 17:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEUohsL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eX8WlZ5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A3F17C;
-	Sun,  1 Sep 2024 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D22C6AF;
+	Sun,  1 Sep 2024 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210321; cv=none; b=EIk2hP6ImX1Jk5tFJaGJ8Y2zoYOL6pZnRtxzndS2lsJFmwW4UXH/BrbbEi8NG+NUc83WuPBORxl1tLy1EYeYVJ2s5guUurF07yFsW6tMQMjepmmib8ojznGbEp6P1RJ0eZnbjvfRWrAw88Zi12ULBnaFtjezPc7j/Q1HYFU3M/s=
+	t=1725210358; cv=none; b=SQPgRjkUh1DrrfbyFIL1hUXGYIpRadOnZZTwxrY21gLQ/3svIoN1cZf4QioshfLTdzmbcvH1sUIqBFy8XqhmMtMhWOElj3QkTabszTnoieswi05xEgsyps9N+4ZmMXwt/lKSKaKM1l72PlD5jzhRJWP79iJTMfauT2/TgdgWPDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210321; c=relaxed/simple;
-	bh=Ko2kREj09U64pjIfUpZF4cDbg1rG5MifYOJ/ONSaFMg=;
+	s=arc-20240116; t=1725210358; c=relaxed/simple;
+	bh=XF7QdoucP3l785WQ3f480E7PtWBSNfvg+XGPcvwOtYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdvUU6nvURrT/4Yj/h0ZWagmtW9PojlmEZ5pt+5C+8+UucgQH4lq6pkXAAJEN+ThDK4izhhyPj+u3AP6PAz0Kou8ccczE9D11X+OYFX1fIG/udz+4iCP7CYdSpXd6CZkOZ3ektwtKDyMcFGTTwVhKcqQPEmRY8OxqUJAmW4uESw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEUohsL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4C4C4CEC3;
-	Sun,  1 Sep 2024 17:05:20 +0000 (UTC)
+	 MIME-Version; b=ZqqF9wXJsqxyoMOCWIbZLDjDXHPNdkEyIU3//73UVEStGmCMPqdxd/tDSiBJNechVkBnu1gqtPhi/ZntMaye6C7uIwTDHw9TBjHJQ6UD+R+n60XE9XMLSIwFuVjolr056rSUzlZZvHWqZC53E5toBkcVCBgCmV/FCCLoItGo7HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eX8WlZ5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58629C4CEC3;
+	Sun,  1 Sep 2024 17:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210321;
-	bh=Ko2kREj09U64pjIfUpZF4cDbg1rG5MifYOJ/ONSaFMg=;
+	s=korg; t=1725210358;
+	bh=XF7QdoucP3l785WQ3f480E7PtWBSNfvg+XGPcvwOtYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEUohsL5ZJhKs484frLPdB6xqdpaOJJjo8Z8GGIKlR4qFbrFy1fPN8qQJuevRD9z6
-	 hnQRVhCX+cqW8Lh+mo7wAHBN4eMC6hASoEOlm3ibs3gUv89J/ZNrLs+o6kja4H9KJ8
-	 tsijOe/qFfVQAcem7W0ZJb3GHZjS+Tt0IvBZUNto=
+	b=eX8WlZ5qptCQKEQKQqV1gGcsyzsgxcn8QtHqeqqf3xmbB8d+b7oMtIylojVlmdXbU
+	 jgLO8iaNdTOnNihvmLL1rNdMprhoWY6DmclB9gD/Jm0D3xW3NxHVPu/mRmMtrGp75S
+	 O6Iqmwb0Dwbn0Ovd9N4TChjLO4HP3n3/mSwW3zm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/215] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
-Date: Sun,  1 Sep 2024 18:17:29 +0200
-Message-ID: <20240901160828.544220441@linuxfoundation.org>
+Subject: [PATCH 5.15 138/215] ip6_tunnel: Fix broken GRO
+Date: Sun,  1 Sep 2024 18:17:30 +0200
+Message-ID: <20240901160828.581388035@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
 References: <20240901160823.230213148@linuxfoundation.org>
@@ -67,47 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
+[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
 
-nft_counter_reset() resets the counter by subtracting the previously
-retrieved value from the counter. This is a write operation on the
-counter and as such it requires to be performed with a write sequence of
-nft_counter_seq to serialize against its possible reader.
+GRO code checks for matching layer 2 headers to see, if packet belongs
+to the same flow and because ip6 tunnel set dev->hard_header_len
+this check fails in cases, where it shouldn't. To fix this don't
+set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
+does.
 
-Update the packets/ bytes within write-sequence of nft_counter_seq.
-
-Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv6/ip6_tunnel.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index f10d36c693b13..30b24d002c3d8 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -106,11 +106,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
- 			      struct nft_counter *total)
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index d370a71c97520..5955fca601b3a 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1501,7 +1501,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
+ 			tdev = __dev_get_by_index(t->net, p->link);
+ 
+ 		if (tdev) {
+-			dev->hard_header_len = tdev->hard_header_len + t_hlen;
++			dev->needed_headroom = tdev->hard_header_len +
++				tdev->needed_headroom + t_hlen;
+ 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
+ 
+ 			mtu = mtu - t_hlen;
+@@ -1729,7 +1730,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
  {
- 	struct nft_counter *this_cpu;
-+	seqcount_t *myseq;
+ 	struct ip6_tnl *tnl = netdev_priv(dev);
++	int t_hlen;
  
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
-+	myseq = this_cpu_ptr(&nft_counter_seq);
-+
-+	write_seqcount_begin(myseq);
- 	this_cpu->packets -= total->packets;
- 	this_cpu->bytes -= total->bytes;
-+	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
++	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
+ 	if (tnl->parms.proto == IPPROTO_IPV6) {
+ 		if (new_mtu < IPV6_MIN_MTU)
+ 			return -EINVAL;
+@@ -1738,10 +1741,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
+ 			return -EINVAL;
+ 	}
+ 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
+-		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	} else {
+-		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	}
+ 	dev->mtu = new_mtu;
+@@ -1887,12 +1890,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
+ 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
  
+ 	dev->type = ARPHRD_TUNNEL6;
+-	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
+ 	dev->mtu = ETH_DATA_LEN - t_hlen;
+ 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
+ 		dev->mtu -= 8;
+ 	dev->min_mtu = ETH_MIN_MTU;
+-	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
++	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+ 
+ 	dev_hold(dev);
+ 	return 0;
 -- 
 2.43.0
 
