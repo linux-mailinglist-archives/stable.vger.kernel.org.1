@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C44B967AE3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3AC9677BA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DCE01C21279
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5769DB21921
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0980017E918;
-	Sun,  1 Sep 2024 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD9016EB4B;
+	Sun,  1 Sep 2024 16:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhAsMjrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vM3aDFt3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6753B79C;
-	Sun,  1 Sep 2024 17:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3CB18132F;
+	Sun,  1 Sep 2024 16:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210136; cv=none; b=HEZ7odqfqhd+CaQH7yfWtm/ZJn35rCAmDJ/QesAusyo7qQPEEtW0EA0Zzo57wEW+3UBwQ465bYl1jN8srRQOhBbgQ6UzVZh7ROzwWmWVHC1e7Aa3mfl0aFGVYWxywYgVC3tQnPQLLsH/lXrDrup5WjLpAWXI3tdtSlligBTCLnE=
+	t=1725207798; cv=none; b=pPSom1ptJ2wb5Kuu6zIVE7/Kz5Ery70CTEBGgozCmQAQ6ma2iKEKbaLSon8xsJRvOp0tlmX5h0IU2fEr+Hr+eM5c92w9CWAnJ4EsRPzKtxfHLYkPrjxV0/sRcMEcuxjdZgHh0sbf5ZmHU58UEx1D+kTiBfGQTY661uKN0Io26j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210136; c=relaxed/simple;
-	bh=q8VHbLgDdv/fsbJAurdtZBUYulTn3P0doaZvNBvB6XE=;
+	s=arc-20240116; t=1725207798; c=relaxed/simple;
+	bh=+mG7qp+PNtK9GcMqsRMJEw4doyKvOu1b7VpQ6LbNzVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwdvpFybCNYj1neVBdbrxmQo9ZBuQKZ8cMhP+ju9sGhElR/PyI1+HwzfyCuAr7PBtpPpoETk9fh4JBQWoLlVxhBoMfuRUFfRTvS1+wVqnhYnJ2ozkQI+LsVnx10DW1a6YhwsgY4ycWuHowbSx2C5u9Bej4NKss9SQx42kx+wspw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhAsMjrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E78C4CEC3;
-	Sun,  1 Sep 2024 17:02:15 +0000 (UTC)
+	 MIME-Version; b=V2+aHzKPW8sGWPnWTmY+ftLYHR4mKLP5cUo507ehGeYwtqHu93vtClGYGS1+Cd9HR8L9+VbNHlzMXZAbm2Vzn9rozhv8ZS2gqmc4aUTkY1eIV0lla74e29yAe/GDXNl1L4JGWkc1mR9UFbwtXN70dhgKggpuTVR7dRoN/dt/6xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vM3aDFt3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809CBC4CEC3;
+	Sun,  1 Sep 2024 16:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210136;
-	bh=q8VHbLgDdv/fsbJAurdtZBUYulTn3P0doaZvNBvB6XE=;
+	s=korg; t=1725207798;
+	bh=+mG7qp+PNtK9GcMqsRMJEw4doyKvOu1b7VpQ6LbNzVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhAsMjrwjr4ZEBqP59CizBzdSyCPnx1BlpJehDKkrk0ukv3lxZz57sXTjzTdpkQLU
-	 vfobWuwlF3nnjvMuN+GqXaoV949yJ5Mm/mhVSFxxZbtMJWkEHoRZJASgxU1ag3Rco+
-	 jILAWKL3nMQmFyPwtlOxx6imZRKX/mQIN7pC7WGY=
+	b=vM3aDFt3is16K9CYf75g9oNgHQdlw8vnygFTpyesdKh2zpyU4t7qm3ywpjql21dAw
+	 i/Tgw+YSuw97xP81DqlXmjg+j9C2WnXsr0qTsesAT3DGOqXDruewcsUdTgG7XniyHh
+	 hcl1wP6xMHk1NotVfaQcLsK/qLL6Mi9AjPut/l3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	Stafford Horne <shorne@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/215] openrisc: Call setup_memory() earlier in the init sequence
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 4.19 80/98] cgroup/cpuset: Prevent UAF in proc_cpuset_show()
 Date: Sun,  1 Sep 2024 18:16:50 +0200
-Message-ID: <20240901160827.055534146@linuxfoundation.org>
+Message-ID: <20240901160806.712516715@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
+commit 1be59c97c83ccd67a519d8a49486b3a8a73ca28a upstream.
 
-The unflatten_and_copy_device_tree() function contains a call to
-memblock_alloc(). This means that memblock is allocating memory before
-any of the reserved memory regions are set aside in the setup_memory()
-function which calls early_init_fdt_scan_reserved_mem(). Therefore,
-there is a possibility for memblock to allocate from any of the
-reserved memory regions.
+An UAF can happen when /proc/cpuset is read as reported in [1].
 
-Hence, move the call to setup_memory() to be earlier in the init
-sequence so that the reserved memory regions are set aside before any
-allocations are done using memblock.
+This can be reproduced by the following methods:
+1.add an mdelay(1000) before acquiring the cgroup_lock In the
+ cgroup_path_ns function.
+2.$cat /proc/<pid>/cpuset   repeatly.
+3.$mount -t cgroup -o cpuset cpuset /sys/fs/cgroup/cpuset/
+$umount /sys/fs/cgroup/cpuset/   repeatly.
 
-Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The race that cause this bug can be shown as below:
+
+(umount)		|	(cat /proc/<pid>/cpuset)
+css_release		|	proc_cpuset_show
+css_release_work_fn	|	css = task_get_css(tsk, cpuset_cgrp_id);
+css_free_rwork_fn	|	cgroup_path_ns(css->cgroup, ...);
+cgroup_destroy_root	|	mutex_lock(&cgroup_mutex);
+rebind_subsystems	|
+cgroup_free_root 	|
+			|	// cgrp was freed, UAF
+			|	cgroup_path_ns_locked(cgrp,..);
+
+When the cpuset is initialized, the root node top_cpuset.css.cgrp
+will point to &cgrp_dfl_root.cgrp. In cgroup v1, the mount operation will
+allocate cgroup_root, and top_cpuset.css.cgrp will point to the allocated
+&cgroup_root.cgrp. When the umount operation is executed,
+top_cpuset.css.cgrp will be rebound to &cgrp_dfl_root.cgrp.
+
+The problem is that when rebinding to cgrp_dfl_root, there are cases
+where the cgroup_root allocated by setting up the root for cgroup v1
+is cached. This could lead to a Use-After-Free (UAF) if it is
+subsequently freed. The descendant cgroups of cgroup v1 can only be
+freed after the css is released. However, the css of the root will never
+be released, yet the cgroup_root should be freed when it is unmounted.
+This means that obtaining a reference to the css of the root does
+not guarantee that css.cgrp->root will not be freed.
+
+Fix this problem by using rcu_read_lock in proc_cpuset_show().
+As cgroup_root is kfree_rcu after commit d23b5c577715
+("cgroup: Make operations on the cgroup root_list RCU safe"),
+css->cgroup won't be freed during the critical section.
+To call cgroup_path_ns_locked, css_set_lock is needed, so it is safe to
+replace task_get_css with task_css.
+
+[1] https://syzkaller.appspot.com/bug?extid=9b1ff7be974a403aa4cd
+
+Fixes: a79a908fd2b0 ("cgroup: introduce cgroup namespaces")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/openrisc/kernel/setup.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
-index 0cd04d936a7a1..f2fe45d3094df 100644
---- a/arch/openrisc/kernel/setup.c
-+++ b/arch/openrisc/kernel/setup.c
-@@ -270,6 +270,9 @@ void calibrate_delay(void)
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -22,6 +22,7 @@
+  *  distribution for more details.
+  */
  
- void __init setup_arch(char **cmdline_p)
- {
-+	/* setup memblock allocator */
-+	setup_memory();
++#include "cgroup-internal.h"
+ #include <linux/cpu.h>
+ #include <linux/cpumask.h>
+ #include <linux/cpuset.h>
+@@ -2758,10 +2759,14 @@ int proc_cpuset_show(struct seq_file *m,
+ 	if (!buf)
+ 		goto out;
+ 
+-	css = task_get_css(tsk, cpuset_cgrp_id);
+-	retval = cgroup_path_ns(css->cgroup, buf, PATH_MAX,
+-				current->nsproxy->cgroup_ns);
+-	css_put(css);
++	rcu_read_lock();
++	spin_lock_irq(&css_set_lock);
++	css = task_css(tsk, cpuset_cgrp_id);
++	retval = cgroup_path_ns_locked(css->cgroup, buf, PATH_MAX,
++				       current->nsproxy->cgroup_ns);
++	spin_unlock_irq(&css_set_lock);
++	rcu_read_unlock();
 +
- 	unflatten_and_copy_device_tree();
- 
- 	setup_cpuinfo();
-@@ -293,9 +296,6 @@ void __init setup_arch(char **cmdline_p)
- 	}
- #endif
- 
--	/* setup memblock allocator */
--	setup_memory();
--
- 	/* paging_init() sets up the MMU and marks all pages as reserved */
- 	paging_init();
- 
--- 
-2.43.0
-
+ 	if (retval >= PATH_MAX)
+ 		retval = -ENAMETOOLONG;
+ 	if (retval < 0)
 
 
 
