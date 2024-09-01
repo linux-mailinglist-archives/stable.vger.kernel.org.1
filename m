@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-71731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B411967781
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9C1967907
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111D51F21914
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6A2812B9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D01A183CC3;
-	Sun,  1 Sep 2024 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178C81822F8;
+	Sun,  1 Sep 2024 16:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVh6iOHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW4OB/Rr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5879F183CBC;
-	Sun,  1 Sep 2024 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB011183CAA;
+	Sun,  1 Sep 2024 16:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207629; cv=none; b=b4HPmjwO7sbKcOTdT5yEOqekW8OCunp7FiNmDbPHKxm2XXDr78+LjxGIKVYHw++uK1zhfnFiJLlWUdwnJ3/GV2LThmyZ6C2Tv3tPgMJ2BoiPP9nWJE8wxA2lRZgNBURJZuAMlIOmvwjxG+hHiswyc56O2gZY9oZUwQ7oviQ+87A=
+	t=1725208732; cv=none; b=UMgIy2OHsU+e3g6Iy0LuTW6pCy8d5CRJFi4XHcsAFwqbRPQabcKkrOxBE4/g2eLzgCEjFBWAVuqCHO2dRp2OzkuQ0LL0C+7oTKEF73ZIUOpSRdjBubD3s+wos8Q9kKRZQGeNuBuJqlv5gCC/z09KuT0LAsD6fuC1VH8OBKv6t9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207629; c=relaxed/simple;
-	bh=iIb4fAgg7xgZAoPuBKnDig42jkO5LZuq1WixVcFmFdg=;
+	s=arc-20240116; t=1725208732; c=relaxed/simple;
+	bh=N57xg8PsbbzGkHkGsa4FPoqC/25VhJ06J7Cmf0JubBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSGIQtTb8aQkG1ZSQxdJdcF9n4czEAFY52CzqEf6sYqnIDQm7wVAgoFbNVpmxyKEOh0LKtTR7F3J0NULdag2XtYZ9S6ZevxbkWJkUx48Rfx+vzRxu43HDD5QS0o+LkKRMFAdrGLUSteJUvLS7+GXfpZeVEnhYU39xrwJoWOuYb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVh6iOHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3144C4CEC3;
-	Sun,  1 Sep 2024 16:20:28 +0000 (UTC)
+	 MIME-Version; b=PGTGEx193Ka+aa7GZCUKF0P3byn1GukMbdmFDuwf9KtVn5ZevcWlgpzcUXESaMHJsHVBBwHhOf2oM1D/k/EMqj1Ia2ha46r95eVaOo6vaUTp0sQVJD1GyyAxxB+LY8Jl4LRlZQaE3rOZnrsjVo6UgtiGmEIn/RYf0cNq8nV6iSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW4OB/Rr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025D0C4CEC3;
+	Sun,  1 Sep 2024 16:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207629;
-	bh=iIb4fAgg7xgZAoPuBKnDig42jkO5LZuq1WixVcFmFdg=;
+	s=korg; t=1725208732;
+	bh=N57xg8PsbbzGkHkGsa4FPoqC/25VhJ06J7Cmf0JubBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVh6iOHjJdfc+YwCpzrKD1SgqHL/wKBG4cRdUd+DkqhGxCir43L+6aPB/lSJPOTjJ
-	 wfyUlVx3wnIkP2U2Z7TQ9mh6dii5sJPNO/iVrPiO4+L6itAG8d9MPR8EJ768wk9ikt
-	 15A2OeVVq2uX+B3e44QnVycCN5yRQ/9sZAM/4ZFQ=
+	b=pW4OB/RriS6jOdBQHSghy4rEiqC2g8kGEuPijmy0LHcKctxaBc7UG7rOS9bgVG+8A
+	 AOql6xIV8rSJRHUw8YOYeEk2arfd9ROoKJ4QYdYb+/9lu1xloW+X8nlb8XvVvkD1vq
+	 SLsHkylmJ3bIQJ4r9XQfeBEyO/U0rTGollvf6h1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 22/98] scsi: spi: Fix sshdr use
-Date: Sun,  1 Sep 2024 18:15:52 +0200
-Message-ID: <20240901160804.529286438@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.4 007/134] dm persistent data: fix memory allocation failure
+Date: Sun,  1 Sep 2024 18:15:53 +0200
+Message-ID: <20240901160810.384609661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
+commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
 
-If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
-shouldn't access the sshdr. If it returns 0, then the cmd executed
-successfully, so there is no need to check the sshdr. This has us access
-the sshdr when we get a return value > 0.
+kmalloc is unreliable when allocating more than 8 pages of memory. It may
+fail when there is plenty of free memory but the memory is fragmented.
+Zdenek Kabelac observed such failure in his tests.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
+vmalloc if the large allocation fails.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_spi.c | 4 ++--
+ drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
-index efb9c3d902133..adbe9b07f3d0b 100644
---- a/drivers/scsi/scsi_transport_spi.c
-+++ b/drivers/scsi/scsi_transport_spi.c
-@@ -690,10 +690,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
- 	for (r = 0; r < retries; r++) {
- 		result = spi_execute(sdev, spi_write_buffer, DMA_TO_DEVICE,
- 				     buffer, len, &sshdr);
--		if(result || !scsi_device_online(sdev)) {
-+		if (result || !scsi_device_online(sdev)) {
+--- a/drivers/md/persistent-data/dm-space-map-metadata.c
++++ b/drivers/md/persistent-data/dm-space-map-metadata.c
+@@ -275,7 +275,7 @@ static void sm_metadata_destroy(struct d
+ {
+ 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
  
- 			scsi_device_set_state(sdev, SDEV_QUIESCE);
--			if (scsi_sense_valid(&sshdr)
-+			if (result > 0 && scsi_sense_valid(&sshdr)
- 			    && sshdr.sense_key == ILLEGAL_REQUEST
- 			    /* INVALID FIELD IN CDB */
- 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
--- 
-2.43.0
-
+-	kfree(smm);
++	kvfree(smm);
+ }
+ 
+ static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
+@@ -759,7 +759,7 @@ struct dm_space_map *dm_sm_metadata_init
+ {
+ 	struct sm_metadata *smm;
+ 
+-	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
++	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
+ 	if (!smm)
+ 		return ERR_PTR(-ENOMEM);
+ 
 
 
 
