@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC61F9678BB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A6D967938
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 980901F20C96
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB00C1F21963
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D05518308A;
-	Sun,  1 Sep 2024 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9746017F389;
+	Sun,  1 Sep 2024 16:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2QGBUVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYkAkppl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12856181B87;
-	Sun,  1 Sep 2024 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A46183092;
+	Sun,  1 Sep 2024 16:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208495; cv=none; b=sku6bQq4aGb2+C8ZqYoXmie4V1sImbqWuGlt+W/QI43c+ROf5ZdyDQjq0Y0V8Yoc34k7WdPmwrQ+H+BLmt618XU699KwXIXvDAnK2c5/QZEjBrBz9DN0m+JskjqhnEoGdkTg0WE5qYORuxnH/tIbIX17UOkKc6M65RWb766AMA4=
+	t=1725208870; cv=none; b=bcJy/+k14gdOOhfmAqLAyPpKpt3djo8MRSZ7kE4tjh+wV4xIweVtoonGtHllvPtrpc9Ck04MRROYpXddC0rD0hbTkP/3SRrgxk04FOZIvsztNfIue6Ki4pbGKYfnuhPzt3X+zzRZeqyN+EMtoHOgzM0FKN59+mB7TBzqRuOHUv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208495; c=relaxed/simple;
-	bh=rcuRA8I0NBD2/CFtUXTgi/PxiM02m39/4IdibUTzdW8=;
+	s=arc-20240116; t=1725208870; c=relaxed/simple;
+	bh=00pLTnilcHer5GnIvxI0NNw5lJ343tDWf8altqzhawM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDv7jbLdxraNO91ux48XfbT/RF2a3FCXnfc3glnFcjtq4ps0HSplJk+VuqZJYldEYgz7O0bw4CK1wIO7HbvhYDTjDZZuG+aT7osasPPwfaiwe6CmS0HsTWeQyKFY2Ui98PFa1dLwflkAGbr8SVBzvNs0lquw4jaQvTbbD7cRB2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2QGBUVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72760C4CEC3;
-	Sun,  1 Sep 2024 16:34:54 +0000 (UTC)
+	 MIME-Version; b=kpo4NPOqmkxAf7bJ8pVJvl/mSH2Wx82nK8BgOWvfGiwEJIn3/g3CfXXnqIDOFFyDi35Ky61CrlZY3tkjd7WjmPICuasMJzCm9SnDpwMGQ9Y8A+jYpw3sZ44EY9Zm/et+CXkKSRptmq65yspWhj49AF/BeqzcKQp1XDeMyp7noV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYkAkppl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABEAC4CEC3;
+	Sun,  1 Sep 2024 16:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208494;
-	bh=rcuRA8I0NBD2/CFtUXTgi/PxiM02m39/4IdibUTzdW8=;
+	s=korg; t=1725208870;
+	bh=00pLTnilcHer5GnIvxI0NNw5lJ343tDWf8altqzhawM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2QGBUVjQeMiOiMggxe5MZ3LBPQncTUZ3G7RCA4bbwNvTjguiRefNO5qGM0eSH7+V
-	 vzq9xIBLS87o2IKpuGKQFmLEbhhioL4Z9kZxkApdXoRgsw1hvNTNrM+XJd2yWddre2
-	 vAwQXe4bXyu5xwxA8Tgz3MjfUYZPrlmZDPhQkYBw=
+	b=GYkAkppl/Zd5m6tq/RQU9+zHszyyBTiXWXP3RzwtcdvydrAXnhGFU3e0AXz6NIG1a
+	 T3srpLTlev1jnHmRQeZLG8RlXe5xZ01Ehqr352M7QeEkPpS1DcPiVY3tKEh2G+8FFQ
+	 bIqykvzgaoeDfsZBiC4c6PdTkwwc7gQ/D/PUlhlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 6.10 100/149] net_sched: sch_fq: fix incorrect behavior for small weights
+	NeilBrown <neilb@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/134] NFS: avoid infinite loop in pnfs_update_layout.
 Date: Sun,  1 Sep 2024 18:16:51 +0200
-Message-ID: <20240901160821.220956437@linuxfoundation.org>
+Message-ID: <20240901160812.547085166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit bc21000e99f92a6b5540d7267c6b22806c5c33d3 ]
+[ Upstream commit 2fdbc20036acda9e5694db74a032d3c605323005 ]
 
-fq_dequeue() has a complex logic to find packets in one of the 3 bands.
+If pnfsd_update_layout() is called on a file for which recovery has
+failed it will enter a tight infinite loop.
 
-As Neal found out, it is possible that one band has a deficit smaller
-than its weight. fq_dequeue() can return NULL while some packets are
-elligible for immediate transmit.
+NFS_LAYOUT_INVALID_STID will be set, nfs4_select_rw_stateid() will
+return -EIO, and nfs4_schedule_stateid_recovery() will do nothing, so
+nfs4_client_recover_expired_lease() will not wait.  So the code will
+loop indefinitely.
 
-In this case, more than one iteration is needed to refill pband->credit.
+Break the loop by testing the validity of the open stateid at the top of
+the loop.
 
-With default parameters (weights 589824 196608 65536) bug can trigger
-if large BIG TCP packets are sent to the lowest priority band.
-
-Bisected-by: John Sperbeck <jsperbeck@google.com>
-Diagnosed-by: Neal Cardwell <ncardwell@google.com>
-Fixes: 29f834aa326e ("net_sched: sch_fq: add 3 bands and WRR scheduling")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20240824181901.953776-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/pnfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 2389747256793..19a49af5a9e52 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -663,7 +663,9 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 			pband = &q->band_flows[q->band_nr];
- 			pband->credit = min(pband->credit + pband->quantum,
- 					    pband->quantum);
--			goto begin;
-+			if (pband->credit > 0)
-+				goto begin;
-+			retry = 0;
- 		}
- 		if (q->time_next_delayed_flow != ~0ULL)
- 			qdisc_watchdog_schedule_range_ns(&q->watchdog,
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 3b19fa74b0620..3f7d905d7528d 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1953,6 +1953,14 @@ pnfs_update_layout(struct inode *ino,
+ 	}
+ 
+ lookup_again:
++	if (!nfs4_valid_open_stateid(ctx->state)) {
++		trace_pnfs_update_layout(ino, pos, count,
++					 iomode, lo, lseg,
++					 PNFS_UPDATE_LAYOUT_INVALID_OPEN);
++		lseg = ERR_PTR(-EIO);
++		goto out;
++	}
++
+ 	lseg = ERR_PTR(nfs4_client_recover_expired_lease(clp));
+ 	if (IS_ERR(lseg))
+ 		goto out;
 -- 
 2.43.0
 
