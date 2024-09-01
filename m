@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-72350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B91967A47
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB219677D7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07E21F23C45
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4671C20F46
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9C118132A;
-	Sun,  1 Sep 2024 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C209117F394;
+	Sun,  1 Sep 2024 16:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghl6Lttq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7jFAPSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3E644C93;
-	Sun,  1 Sep 2024 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA5E33987;
+	Sun,  1 Sep 2024 16:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209638; cv=none; b=i77HUR5nI2UX4LT9V1pEw+uMBAFbdQ2mV/1i6xzu7JgJSq5wwGu/CxHqO2dvx5o3Be7qQ2t8pXNc4F2Yh6UlSFSG3/mEu6bEB/1apwtwkzG1RZ1gMrdamMGPHy/+qqjjDQHnRsCYA8fy6t4eiUv6r2A8Gca2cTIo4JS6DqXGoIk=
+	t=1725207882; cv=none; b=P51ySPxit/AqGVb9mfpxJMpVKWK487QvfmPxeSv1bpx3dPogk5Aia55KwL5Usx0QAtLJx+11M+DtuaCoRaGRXOOd/NIb4rHdiDE2LhTD7xFx5fZ/vja72ndv2eLiwDl3yGJAX4ryNraC3x5Tv3RSG6FQY/+TaaaCzuWIDBlz/vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209638; c=relaxed/simple;
-	bh=zAXDs0tD0K9mKy9EatKAhjM3/ZX2UqIWuYl7xBzJY4Y=;
+	s=arc-20240116; t=1725207882; c=relaxed/simple;
+	bh=+Ev+dviDJP/J437tFQAZ2Qr6GJZ7ZEcCgXLWJSQ0vT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eo4FMzwPuCfSX9xnVL43ZOvX3oXtG3F2jVvftlARJ7H+bdbkxQw+zYaDPZLcurgXcDKdEZ5u7vXUzjkeiGWBzTxDyPwHK3TIXVcjgQ719OUQJ3ULGmfEGSLFdQNORmkYhYt+oGmphhIXZNhUCy+mzgh2gHp/6CxfQk0YV+NdaIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghl6Lttq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7399BC4CEC3;
-	Sun,  1 Sep 2024 16:53:57 +0000 (UTC)
+	 MIME-Version; b=X4zSXotD0yHIvMR4lS4jbWMLXc+RpR0A8Z42KpKI7pLCDF6RdqWdzkW2bb4h8UD+T+niXZ4ismo26+PMJ0kzAlqGpTQu3rvQO6+XGUKgU0ndWZsZLS25G3/pcq1OwfequqneXIUlnJAs0pK/4PxnImKNmUrFDNUrL0Ff0pBt+ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7jFAPSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA5AC4CEC3;
+	Sun,  1 Sep 2024 16:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209637;
-	bh=zAXDs0tD0K9mKy9EatKAhjM3/ZX2UqIWuYl7xBzJY4Y=;
+	s=korg; t=1725207882;
+	bh=+Ev+dviDJP/J437tFQAZ2Qr6GJZ7ZEcCgXLWJSQ0vT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghl6LttqhxkyIG52bX9dS/V9mDwkKO5bEG/l0OfmBYTlLLd04SeShSF3zq83dZCTZ
-	 VzIgzt6otqa3hG9JYVt0sEpfKHGj2xSYaXdsfe7o7MvzXgdJxU6wVIVoYJuSJ00N4H
-	 Tsop6PAdFyHDfTOouMwpCdiWeGijvjJohu6D9hf8=
+	b=S7jFAPSfkRUhSYSYSoUIwGoHtnmdedW+6zoQtY8vwcYvGBp0NbmrB8YpMXRJACIaI
+	 0g/Fmf1l+SFAg/7BvZQN32hHq8qPHnfDc5XW3mVTgstFPU9Ywf0z6Z1jmgID5shRnI
+	 OETO9cEN6dkVLaXR0T0CM7AAHVrsTBDGjcaS5Ar0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/151] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
-Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160816.639048906@linuxfoundation.org>
+	syzbot+20dcf81733d43ddff661@syzkaller.appspotmail.com,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel.vetter@intel.com>
+Subject: [PATCH 4.19 98/98] drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
+Date: Sun,  1 Sep 2024 18:17:08 +0200
+Message-ID: <20240901160807.393310648@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
+commit 1935f0deb6116dd785ea64d8035eab0ff441255b upstream.
 
-The BUG_ON is deep in the qgroup code where we can expect that it
-exists. A NULL pointer would cause a crash.
+Drivers are supposed to fix this up if needed if they don't outright
+reject it. Uncovered by 6c11df58fd1a ("fbmem: Check virtual screen
+sizes in fb_set_var()").
 
-It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
-calculation function btrfs_qgroup_account_extents()."). It maybe made
-sense back then as the quota enable/disable state machine was not that
-robust as it is nowadays, so we can just delete it.
-
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+20dcf81733d43ddff661@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=c5faf983bfa4a607de530cd3bb008888bf06cefc
+Cc: stable@vger.kernel.org # v5.4+
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230404194038.472803-1-daniel.vetter@ffwll.ch
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/drm_fb_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 83d17f22335b1..7518ab3b409c5 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2658,8 +2658,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
- 	if (nr_old_roots == 0 && nr_new_roots == 0)
- 		goto out_free;
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -1713,6 +1713,9 @@ int drm_fb_helper_check_var(struct fb_va
+ 		return -EINVAL;
+ 	}
  
--	BUG_ON(!fs_info->quota_root);
--
- 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
- 					num_bytes, nr_old_roots, nr_new_roots);
- 
--- 
-2.43.0
-
++	var->xres_virtual = fb->width;
++	var->yres_virtual = fb->height;
++
+ 	/*
+ 	 * Workaround for SDL 1.2, which is known to be setting all pixel format
+ 	 * fields values to zero in some cases. We treat this situation as a
 
 
 
