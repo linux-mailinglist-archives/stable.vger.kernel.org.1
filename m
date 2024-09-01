@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-72339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF7C967A3D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CD39678E2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D48C1C20A42
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E2A628204A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A2617E900;
-	Sun,  1 Sep 2024 16:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9617DFFC;
+	Sun,  1 Sep 2024 16:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0CE3Rd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRLynRt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B32208A7;
-	Sun,  1 Sep 2024 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CE7537FF;
+	Sun,  1 Sep 2024 16:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209602; cv=none; b=iPkOiDfSLhhcX5CrKI8nTOaIKET8kJImE2P6H6btEnqE8P1Z9Zoo+M8+aA+ck5oEvir7XOl+G++9Cu5rrQLuxUcI5E4WmHqoskBzl3gkeArdGMwBr/lHM8UPEw87lYjI69mYPmnmmL0SCbxgK9sTU3utTD4NS4iek2x125DB2Uk=
+	t=1725208611; cv=none; b=sYGi6sTOG2RAdZyh9L3Zw0ofZKcCI3ndyTN7RVVnF5D0hdorWpVjMCSG9I1NaDPli7t6JUj/LU2JEkYRS2a4IiI0zUUx6CXlPwo/6nIS9t/N+n1x1nvscgntjR1U8kkYY2xky+Xoz3sfTMkNYACzUuWvVpNCabqgDMFkdVj5/Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209602; c=relaxed/simple;
-	bh=QHtfXesKsDtJANY2yJzC3xnHMEvI73x31eWy4NFc97Q=;
+	s=arc-20240116; t=1725208611; c=relaxed/simple;
+	bh=xrxce+bHGoxv66bs6QOR7SunB0xwxLAMsUJNpXMIlxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKa5gbhGGWPar32NimC+TDEPigQ6sYHpzuupfGiA9UvVgIOFoEQakj3Pi2DCjWdBg8LFIHcDIMAI8DnALOexwECqmdsMqgIBigeJyRc9C3n2z53Zh1mszQKR11Y9hKc6w+jc/xDdyzmmhlY27klSaZffb8uoDoFABDz7N7CYjIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0CE3Rd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EA2C4CEC3;
-	Sun,  1 Sep 2024 16:53:21 +0000 (UTC)
+	 MIME-Version; b=jt4L63r5pysBnKchS5ECNClm9ij8qzCgyCfRu37iI5w1j9UFstM15YkU5vLwuj04NE4bj7RsT/xnV1KmJ3dtJcXimNr5uOhs8pDrgTS/UMMu0MWT2RUCtftaosOjzXsJwxbQ+0vhLZAiRTmrPo/z+YSz/tNgCz1G7ftlX3RtrIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRLynRt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C88C4CEC3;
+	Sun,  1 Sep 2024 16:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209602;
-	bh=QHtfXesKsDtJANY2yJzC3xnHMEvI73x31eWy4NFc97Q=;
+	s=korg; t=1725208611;
+	bh=xrxce+bHGoxv66bs6QOR7SunB0xwxLAMsUJNpXMIlxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0CE3Rd6ky41h09l0WBs24uxvlQWDLVmGKCl8SCpQRR5qxJZ1TKnECGQItr0jwtYn
-	 S32z0iDo1FD40lbva/qTMiXJB5niDumU/xD7FoRfeia6nT0/N+szxy1itZyCrPPiCU
-	 sT/w1iG2NFOxNhlqoyBA0al4gEwI2guGGh6vrzII=
+	b=VRLynRt+XjyccWUVLkv5lzsQYtFWbqAwUZ461i6nUmtmctW/pbCTAGPoUR17rqrpV
+	 RWnvFK0Y+cpdvTBNbbJVMn+tqClIVDXart8GUqetcm3NmQqwKUR5+3jYZR7trGlgAO
+	 0NJZWzndQrZEv5y96VhoN/PBt8hdkcDw7SzzWj8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/151] Bluetooth: SMP: Fix assumption of Central always being Initiator
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.10 136/149] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group in remove_power_attributes()
 Date: Sun,  1 Sep 2024 18:17:27 +0200
-Message-ID: <20240901160817.391471323@linuxfoundation.org>
+Message-ID: <20240901160822.563845516@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,452 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 28cd47f75185c4818b0fb1b46f2f02faaba96376 ]
+commit 3a8839bbb86da7968a792123ed2296d063871a52 upstream.
 
-SMP initiator role shall be considered the one that initiates the
-pairing procedure with SMP_CMD_PAIRING_REQ:
+Device attribute group @usb3_hardware_lpm_attr_group is merged by
+add_power_attributes(), but it is not unmerged explicitly, fixed by
+unmerging it in remove_power_attributes().
 
-BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 3, Part H
-page 1557:
-
-Figure 2.1: LE pairing phases
-
-Note that by sending SMP_CMD_SECURITY_REQ it doesn't change the role to
-be Initiator.
-
-Link: https://github.com/bluez/bluez/issues/567
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c | 144 ++++++++++++++++++++++----------------------
- 1 file changed, 72 insertions(+), 72 deletions(-)
+ drivers/usb/core/sysfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 27381e7425a8f..20cae8f768762 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -914,7 +914,7 @@ static int tk_request(struct l2cap_conn *conn, u8 remote_oob, u8 auth,
- 	 * Confirms and the responder Enters the passkey.
- 	 */
- 	if (smp->method == OVERLAP) {
--		if (hcon->role == HCI_ROLE_MASTER)
-+		if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 			smp->method = CFM_PASSKEY;
- 		else
- 			smp->method = REQ_PASSKEY;
-@@ -964,7 +964,7 @@ static u8 smp_confirm(struct smp_chan *smp)
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -670,6 +670,7 @@ static int add_power_attributes(struct d
  
- 	smp_send_cmd(smp->conn, SMP_CMD_PAIRING_CONFIRM, sizeof(cp), &cp);
- 
--	if (conn->hcon->out)
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_CONFIRM);
- 	else
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RANDOM);
-@@ -980,7 +980,8 @@ static u8 smp_random(struct smp_chan *smp)
- 	int ret;
- 
- 	bt_dev_dbg(conn->hcon->hdev, "conn %p %s", conn,
--		   conn->hcon->out ? "initiator" : "responder");
-+		   test_bit(SMP_FLAG_INITIATOR, &smp->flags) ? "initiator" :
-+		   "responder");
- 
- 	ret = smp_c1(smp->tk, smp->rrnd, smp->preq, smp->prsp,
- 		     hcon->init_addr_type, &hcon->init_addr,
-@@ -994,7 +995,7 @@ static u8 smp_random(struct smp_chan *smp)
- 		return SMP_CONFIRM_FAILED;
- 	}
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		u8 stk[16];
- 		__le64 rand = 0;
- 		__le16 ediv = 0;
-@@ -1251,14 +1252,15 @@ static void smp_distribute_keys(struct smp_chan *smp)
- 	rsp = (void *) &smp->prsp[1];
- 
- 	/* The responder sends its keys first */
--	if (hcon->out && (smp->remote_key_dist & KEY_DIST_MASK)) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags) &&
-+	    (smp->remote_key_dist & KEY_DIST_MASK)) {
- 		smp_allow_key_dist(smp);
- 		return;
- 	}
- 
- 	req = (void *) &smp->preq[1];
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		keydist = &rsp->init_key_dist;
- 		*keydist &= req->init_key_dist;
- 	} else {
-@@ -1427,7 +1429,7 @@ static int sc_mackey_and_ltk(struct smp_chan *smp, u8 mackey[16], u8 ltk[16])
- 	struct hci_conn *hcon = smp->conn->hcon;
- 	u8 *na, *nb, a[7], b[7];
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		na   = smp->prnd;
- 		nb   = smp->rrnd;
- 	} else {
-@@ -1455,7 +1457,7 @@ static void sc_dhkey_check(struct smp_chan *smp)
- 	a[6] = hcon->init_addr_type;
- 	b[6] = hcon->resp_addr_type;
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		local_addr = a;
- 		remote_addr = b;
- 		memcpy(io_cap, &smp->preq[1], 3);
-@@ -1534,7 +1536,7 @@ static u8 sc_passkey_round(struct smp_chan *smp, u8 smp_op)
- 		/* The round is only complete when the initiator
- 		 * receives pairing random.
- 		 */
--		if (!hcon->out) {
-+		if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 			smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM,
- 				     sizeof(smp->prnd), smp->prnd);
- 			if (smp->passkey_round == 20)
-@@ -1562,7 +1564,7 @@ static u8 sc_passkey_round(struct smp_chan *smp, u8 smp_op)
- 
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RANDOM);
- 
--		if (hcon->out) {
-+		if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 			smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM,
- 				     sizeof(smp->prnd), smp->prnd);
- 			return 0;
-@@ -1573,7 +1575,7 @@ static u8 sc_passkey_round(struct smp_chan *smp, u8 smp_op)
- 	case SMP_CMD_PUBLIC_KEY:
- 	default:
- 		/* Initiating device starts the round */
--		if (!hcon->out)
-+		if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 			return 0;
- 
- 		bt_dev_dbg(hdev, "Starting passkey round %u",
-@@ -1618,7 +1620,7 @@ static int sc_user_reply(struct smp_chan *smp, u16 mgmt_op, __le32 passkey)
- 	}
- 
- 	/* Initiator sends DHKey check first */
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		sc_dhkey_check(smp);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
- 	} else if (test_and_clear_bit(SMP_FLAG_DHKEY_PENDING, &smp->flags)) {
-@@ -1741,7 +1743,7 @@ static u8 smp_cmd_pairing_req(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_cmd_pairing rsp, *req = (void *) skb->data;
- 	struct l2cap_chan *chan = conn->smp;
- 	struct hci_dev *hdev = conn->hcon->hdev;
--	struct smp_chan *smp;
-+	struct smp_chan *smp = chan->data;
- 	u8 key_size, auth, sec_level;
- 	int ret;
- 
-@@ -1750,16 +1752,14 @@ static u8 smp_cmd_pairing_req(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (skb->len < sizeof(*req))
- 		return SMP_INVALID_PARAMS;
- 
--	if (conn->hcon->role != HCI_ROLE_SLAVE)
-+	if (smp && test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		return SMP_CMD_NOTSUPP;
- 
--	if (!chan->data)
-+	if (!smp) {
- 		smp = smp_chan_create(conn);
--	else
--		smp = chan->data;
--
--	if (!smp)
--		return SMP_UNSPECIFIED;
-+		if (!smp)
-+			return SMP_UNSPECIFIED;
-+	}
- 
- 	/* We didn't start the pairing, so match remote */
- 	auth = req->auth_req & AUTH_REQ_MASK(hdev);
-@@ -1941,7 +1941,7 @@ static u8 smp_cmd_pairing_rsp(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (skb->len < sizeof(*rsp))
- 		return SMP_INVALID_PARAMS;
- 
--	if (conn->hcon->role != HCI_ROLE_MASTER)
-+	if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		return SMP_CMD_NOTSUPP;
- 
- 	skb_pull(skb, sizeof(*rsp));
-@@ -2036,7 +2036,7 @@ static u8 sc_check_confirm(struct smp_chan *smp)
- 	if (smp->method == REQ_PASSKEY || smp->method == DSP_PASSKEY)
- 		return sc_passkey_round(smp, SMP_CMD_PAIRING_CONFIRM);
- 
--	if (conn->hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
- 			     smp->prnd);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RANDOM);
-@@ -2058,7 +2058,7 @@ static int fixup_sc_false_positive(struct smp_chan *smp)
- 	u8 auth;
- 
- 	/* The issue is only observed when we're in responder role */
--	if (hcon->out)
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		return SMP_UNSPECIFIED;
- 
- 	if (hci_dev_test_flag(hdev, HCI_SC_ONLY)) {
-@@ -2094,7 +2094,8 @@ static u8 smp_cmd_pairing_confirm(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct hci_dev *hdev = hcon->hdev;
- 
- 	bt_dev_dbg(hdev, "conn %p %s", conn,
--		   hcon->out ? "initiator" : "responder");
-+		   test_bit(SMP_FLAG_INITIATOR, &smp->flags) ? "initiator" :
-+		   "responder");
- 
- 	if (skb->len < sizeof(smp->pcnf))
- 		return SMP_INVALID_PARAMS;
-@@ -2116,7 +2117,7 @@ static u8 smp_cmd_pairing_confirm(struct l2cap_conn *conn, struct sk_buff *skb)
- 			return ret;
- 	}
- 
--	if (conn->hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
- 			     smp->prnd);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RANDOM);
-@@ -2151,7 +2152,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (!test_bit(SMP_FLAG_SC, &smp->flags))
- 		return smp_random(smp);
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		pkax = smp->local_pk;
- 		pkbx = smp->remote_pk;
- 		na   = smp->prnd;
-@@ -2164,7 +2165,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	}
- 
- 	if (smp->method == REQ_OOB) {
--		if (!hcon->out)
-+		if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 			smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM,
- 				     sizeof(smp->prnd), smp->prnd);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
-@@ -2175,7 +2176,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (smp->method == REQ_PASSKEY || smp->method == DSP_PASSKEY)
- 		return sc_passkey_round(smp, SMP_CMD_PAIRING_RANDOM);
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		u8 cfm[16];
- 
- 		err = smp_f4(smp->tfm_cmac, smp->remote_pk, smp->local_pk,
-@@ -2216,7 +2217,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 		return SMP_UNSPECIFIED;
- 
- 	if (smp->method == REQ_OOB) {
--		if (hcon->out) {
-+		if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 			sc_dhkey_check(smp);
- 			SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
- 		}
-@@ -2290,10 +2291,27 @@ bool smp_sufficient_security(struct hci_conn *hcon, u8 sec_level,
- 	return false;
- }
- 
-+static void smp_send_pairing_req(struct smp_chan *smp, __u8 auth)
-+{
-+	struct smp_cmd_pairing cp;
-+
-+	if (smp->conn->hcon->type == ACL_LINK)
-+		build_bredr_pairing_cmd(smp, &cp, NULL);
-+	else
-+		build_pairing_cmd(smp->conn, &cp, NULL, auth);
-+
-+	smp->preq[0] = SMP_CMD_PAIRING_REQ;
-+	memcpy(&smp->preq[1], &cp, sizeof(cp));
-+
-+	smp_send_cmd(smp->conn, SMP_CMD_PAIRING_REQ, sizeof(cp), &cp);
-+	SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RSP);
-+
-+	set_bit(SMP_FLAG_INITIATOR, &smp->flags);
-+}
-+
- static u8 smp_cmd_security_req(struct l2cap_conn *conn, struct sk_buff *skb)
+ static void remove_power_attributes(struct device *dev)
  {
- 	struct smp_cmd_security_req *rp = (void *) skb->data;
--	struct smp_cmd_pairing cp;
- 	struct hci_conn *hcon = conn->hcon;
- 	struct hci_dev *hdev = hcon->hdev;
- 	struct smp_chan *smp;
-@@ -2342,16 +2360,20 @@ static u8 smp_cmd_security_req(struct l2cap_conn *conn, struct sk_buff *skb)
- 
- 	skb_pull(skb, sizeof(*rp));
- 
--	memset(&cp, 0, sizeof(cp));
--	build_pairing_cmd(conn, &cp, NULL, auth);
-+	smp_send_pairing_req(smp, auth);
- 
--	smp->preq[0] = SMP_CMD_PAIRING_REQ;
--	memcpy(&smp->preq[1], &cp, sizeof(cp));
-+	return 0;
-+}
- 
--	smp_send_cmd(conn, SMP_CMD_PAIRING_REQ, sizeof(cp), &cp);
--	SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RSP);
-+static void smp_send_security_req(struct smp_chan *smp, __u8 auth)
-+{
-+	struct smp_cmd_security_req cp;
- 
--	return 0;
-+	cp.auth_req = auth;
-+	smp_send_cmd(smp->conn, SMP_CMD_SECURITY_REQ, sizeof(cp), &cp);
-+	SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_REQ);
-+
-+	clear_bit(SMP_FLAG_INITIATOR, &smp->flags);
++	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
  }
- 
- int smp_conn_security(struct hci_conn *hcon, __u8 sec_level)
-@@ -2422,23 +2444,11 @@ int smp_conn_security(struct hci_conn *hcon, __u8 sec_level)
- 			authreq |= SMP_AUTH_MITM;
- 	}
- 
--	if (hcon->role == HCI_ROLE_MASTER) {
--		struct smp_cmd_pairing cp;
--
--		build_pairing_cmd(conn, &cp, NULL, authreq);
--		smp->preq[0] = SMP_CMD_PAIRING_REQ;
--		memcpy(&smp->preq[1], &cp, sizeof(cp));
--
--		smp_send_cmd(conn, SMP_CMD_PAIRING_REQ, sizeof(cp), &cp);
--		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RSP);
--	} else {
--		struct smp_cmd_security_req cp;
--		cp.auth_req = authreq;
--		smp_send_cmd(conn, SMP_CMD_SECURITY_REQ, sizeof(cp), &cp);
--		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_REQ);
--	}
-+	if (hcon->role == HCI_ROLE_MASTER)
-+		smp_send_pairing_req(smp, authreq);
-+	else
-+		smp_send_security_req(smp, authreq);
- 
--	set_bit(SMP_FLAG_INITIATOR, &smp->flags);
- 	ret = 0;
- 
- unlock:
-@@ -2689,8 +2699,6 @@ static int smp_cmd_sign_info(struct l2cap_conn *conn, struct sk_buff *skb)
- 
- static u8 sc_select_method(struct smp_chan *smp)
- {
--	struct l2cap_conn *conn = smp->conn;
--	struct hci_conn *hcon = conn->hcon;
- 	struct smp_cmd_pairing *local, *remote;
- 	u8 local_mitm, remote_mitm, local_io, remote_io, method;
- 
-@@ -2703,7 +2711,7 @@ static u8 sc_select_method(struct smp_chan *smp)
- 	 * the "struct smp_cmd_pairing" from them we need to skip the
- 	 * first byte which contains the opcode.
- 	 */
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		local = (void *) &smp->preq[1];
- 		remote = (void *) &smp->prsp[1];
- 	} else {
-@@ -2772,7 +2780,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 	/* Non-initiating device sends its public key after receiving
- 	 * the key from the initiating device.
- 	 */
--	if (!hcon->out) {
-+	if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		err = sc_send_public_key(smp);
- 		if (err)
- 			return err;
-@@ -2834,7 +2842,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 	}
- 
- 	if (smp->method == REQ_OOB) {
--		if (hcon->out)
-+		if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 			smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM,
- 				     sizeof(smp->prnd), smp->prnd);
- 
-@@ -2843,7 +2851,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 		return 0;
- 	}
- 
--	if (hcon->out)
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_CONFIRM);
- 
- 	if (smp->method == REQ_PASSKEY) {
-@@ -2858,7 +2866,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 	/* The Initiating device waits for the non-initiating device to
- 	 * send the confirm value.
- 	 */
--	if (conn->hcon->out)
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags))
- 		return 0;
- 
- 	err = smp_f4(smp->tfm_cmac, smp->local_pk, smp->remote_pk, smp->prnd,
-@@ -2892,7 +2900,7 @@ static int smp_cmd_dhkey_check(struct l2cap_conn *conn, struct sk_buff *skb)
- 	a[6] = hcon->init_addr_type;
- 	b[6] = hcon->resp_addr_type;
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		local_addr = a;
- 		remote_addr = b;
- 		memcpy(io_cap, &smp->prsp[1], 3);
-@@ -2917,7 +2925,7 @@ static int smp_cmd_dhkey_check(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (crypto_memneq(check->e, e, 16))
- 		return SMP_DHKEY_CHECK_FAILED;
- 
--	if (!hcon->out) {
-+	if (!test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		if (test_bit(SMP_FLAG_WAIT_USER, &smp->flags)) {
- 			set_bit(SMP_FLAG_DHKEY_PENDING, &smp->flags);
- 			return 0;
-@@ -2929,7 +2937,7 @@ static int smp_cmd_dhkey_check(struct l2cap_conn *conn, struct sk_buff *skb)
- 
- 	sc_add_ltk(smp);
- 
--	if (hcon->out) {
-+	if (test_bit(SMP_FLAG_INITIATOR, &smp->flags)) {
- 		hci_le_start_enc(hcon, 0, 0, smp->tk, smp->enc_key_size);
- 		hcon->enc_key_size = smp->enc_key_size;
- 	}
-@@ -3078,7 +3086,6 @@ static void bredr_pairing(struct l2cap_chan *chan)
- 	struct l2cap_conn *conn = chan->conn;
- 	struct hci_conn *hcon = conn->hcon;
- 	struct hci_dev *hdev = hcon->hdev;
--	struct smp_cmd_pairing req;
- 	struct smp_chan *smp;
- 
- 	bt_dev_dbg(hdev, "chan %p", chan);
-@@ -3130,14 +3137,7 @@ static void bredr_pairing(struct l2cap_chan *chan)
- 
- 	bt_dev_dbg(hdev, "starting SMP over BR/EDR");
- 
--	/* Prepare and send the BR/EDR SMP Pairing Request */
--	build_bredr_pairing_cmd(smp, &req, NULL);
--
--	smp->preq[0] = SMP_CMD_PAIRING_REQ;
--	memcpy(&smp->preq[1], &req, sizeof(req));
--
--	smp_send_cmd(conn, SMP_CMD_PAIRING_REQ, sizeof(req), &req);
--	SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_RSP);
-+	smp_send_pairing_req(smp, 0x00);
- }
- 
- static void smp_resume_cb(struct l2cap_chan *chan)
--- 
-2.43.0
-
 
 
 
