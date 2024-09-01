@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDBA967AAF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAAC96787A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9C628162C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14A681F21068
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722BD17ADE1;
-	Sun,  1 Sep 2024 16:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5730917E900;
+	Sun,  1 Sep 2024 16:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhPf2lWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP+GFs7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290AF44C93;
-	Sun,  1 Sep 2024 16:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AA8537FF;
+	Sun,  1 Sep 2024 16:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209970; cv=none; b=DWS7lUOZHlZJG0zomGoB6ZR937186uZuBhA1Q6rbX2GSaYXUgJe3Vm3Yuu3Sg2XNFw0QlYggOKHQHp3iQ6YAIeZWTNvhiwOnbnilGiopgWOTZbG2u8IPjxiaUwwbNlpczyK/PtBHCyJuI/z/bwDo+gs5Bo1aU89weWwQCoSaQ30=
+	t=1725208337; cv=none; b=HLfVqbqwtemAqWdHTvLjKTSVCKxG/ZFp6HpGX9a1PfhCFQ5SszirUHhGUoheuWQ7g4ayZh10FnOlm39r4bXPssr30aD1RSQOEV1ZgalbZU+3syWGqhmm+D1eHgvmiJJEr0Cy6MrNYCdlrQo72H+vzrmM1fEfQWKuBdrLUC/yRoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209970; c=relaxed/simple;
-	bh=h61EiXhiFvGdX172GOBA6xIKn0Q7OKcNdWs6S6OtRNc=;
+	s=arc-20240116; t=1725208337; c=relaxed/simple;
+	bh=XS7DUdNTiKI5W3u3+tg8AhqG/nPnuIcvSBPTBf2y8X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE3wkp6XhGLa3iXkwiigblAt/u0cYYpf6VzLt7cDSCJSj28cx7x0PrzwcY8ry2dDJ1mr2lhb+X7Zl1Lpnkgo13Ws+kaPPL2lMP0XJlNaY2O7PJ8kFvI+M4IviAvq9itkBhFKEi9WouKGbPatk3LPBNc9PodAKjxHr46qr30INvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhPf2lWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854CDC4CEC3;
-	Sun,  1 Sep 2024 16:59:29 +0000 (UTC)
+	 MIME-Version; b=sR9vHeHoqWcli1JUjI2PnOzHV+z0XhxzsaEBysxxTpP3KsuqM9b44JBz1PO8WRvoUipTHgCIoqrRItjAw72D+M0Wk5yfyMOCkEWk1K3iIUvDyObF0xJd5/0VXXFMcm0Vc+zDBhxmZwNrgjKjW0QiscMFQZ4Ay51Hg6xQSOs0kKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP+GFs7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A32DC4CEC3;
+	Sun,  1 Sep 2024 16:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209970;
-	bh=h61EiXhiFvGdX172GOBA6xIKn0Q7OKcNdWs6S6OtRNc=;
+	s=korg; t=1725208337;
+	bh=XS7DUdNTiKI5W3u3+tg8AhqG/nPnuIcvSBPTBf2y8X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhPf2lWcBQjhDQC9O0lFe9CEPIuySj+IFcfSp5RHv/njRR0BqM56UGWOF4p4WGzJ+
-	 AK4QauRSU9nce4o/zZfSgLIXi9ytbl27HGVDcOg2zdbmGy0/nNC4N6sIkVsAo2ut0r
-	 8kCivx9dNuZg/kjkIYJhmVlzJdzE8bDhe8DxmcbM=
+	b=fP+GFs7Mj2kWPPS+iKnWC6Ih1ktzejGiBJGjVjxSZrYnzi+Lgf+tkTTOVtrsYeB0p
+	 KR2O/Tv7kwFXz6VX8erE8/oaxdTl/Kmsvq1qsdZ9BW365I+0N3WpKhAsbYMyKmEAPT
+	 ZO8xXGMQGXK0lsOPnLes4fSCA37U2Rf4+h+r+caA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/215] s390/smp,mcck: fix early IPI handling
+Subject: [PATCH 6.10 050/149] drm/amdgpu: fix eGPU hotplug regression
 Date: Sun,  1 Sep 2024 18:16:01 +0200
-Message-ID: <20240901160825.207108294@linuxfoundation.org>
+Message-ID: <20240901160819.349667766@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 4a1725281fc5b0009944b1c0e1d2c1dc311a09ec ]
+[ Upstream commit 9cead81eff635e3b3cbce51b40228f3bdc6f2b8c ]
 
-Both the external call as well as the emergency signal submask bits in
-control register 0 are set before any interrupt handler is registered.
+The driver needs to wait for the on board firmware
+to finish its initialization before probing the card.
+Commit 959056982a9b ("drm/amdgpu: Fix discovery initialization failure during pci rescan")
+switched from using msleep() to using usleep_range() which
+seems to have caused init failures on some navi1x boards. Switch
+back to msleep().
 
-Change the order and first register the interrupt handler and only then
-enable the interrupts by setting the corresponding bits in control
-register 0.
-
-This prevents that the second part of the machine check handler for
-early machine check handling is not executed: the machine check handler
-sends an IPI to the CPU it runs on. If the corresponding interrupts are
-enabled, but no interrupt handler is present, the interrupt is ignored.
-
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 959056982a9b ("drm/amdgpu: Fix discovery initialization failure during pci rescan")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3559
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3500
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Ma Jun <Jun.Ma2@amd.com>
+(cherry picked from commit c69b07f7bbc905022491c45097923d3487479529)
+Cc: stable@vger.kernel.org # 6.10.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c | 12 +++---------
- arch/s390/kernel/smp.c   |  4 ++--
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9857cb0467268..9898582f44da8 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -250,15 +250,9 @@ static inline void save_vector_registers(void)
- #endif
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index ea5223388cff2..f1b08893765cf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -269,7 +269,7 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
+ 			msg = RREG32(mmMP0_SMN_C2PMSG_33);
+ 			if (msg & 0x80000000)
+ 				break;
+-			usleep_range(1000, 1100);
++			msleep(1);
+ 		}
+ 	}
  
--static inline void setup_control_registers(void)
-+static inline void setup_low_address_protection(void)
- {
--	unsigned long reg;
--
--	__ctl_store(reg, 0, 0);
--	reg |= CR0_LOW_ADDRESS_PROTECTION;
--	reg |= CR0_EMERGENCY_SIGNAL_SUBMASK;
--	reg |= CR0_EXTERNAL_CALL_SUBMASK;
--	__ctl_load(reg, 0, 0);
-+	__ctl_set_bit(0, 28);
- }
- 
- static inline void setup_access_registers(void)
-@@ -311,7 +305,7 @@ void __init startup_init(void)
- 	save_vector_registers();
- 	setup_topology();
- 	sclp_early_detect();
--	setup_control_registers();
-+	setup_low_address_protection();
- 	setup_access_registers();
- 	lockdep_on();
- }
-diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-index 35af70ed58fc7..48f67a69d119b 100644
---- a/arch/s390/kernel/smp.c
-+++ b/arch/s390/kernel/smp.c
-@@ -1003,12 +1003,12 @@ void __init smp_fill_possible_mask(void)
- 
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
--	/* request the 0x1201 emergency signal external interrupt */
- 	if (register_external_irq(EXT_IRQ_EMERGENCY_SIG, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1201");
--	/* request the 0x1202 external call external interrupt */
-+	ctl_set_bit(0, 14);
- 	if (register_external_irq(EXT_IRQ_EXTERNAL_CALL, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1202");
-+	ctl_set_bit(0, 13);
- }
- 
- void __init smp_prepare_boot_cpu(void)
 -- 
 2.43.0
 
