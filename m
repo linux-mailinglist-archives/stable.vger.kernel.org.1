@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D238F967922
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AFB9678A2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1281C20B6F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE43E1F20F71
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001C017E900;
-	Sun,  1 Sep 2024 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE49F183CC2;
+	Sun,  1 Sep 2024 16:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptEmb3Yj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6lwKk2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B161817E46E;
-	Sun,  1 Sep 2024 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB4D1C68C;
+	Sun,  1 Sep 2024 16:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208804; cv=none; b=rqut8bZj9oPchlH62S4wnhaxhS0l/wpbdZGRDOsnQFv0gXHvclDAafIoTJz6Nfi7VSnqua8eT9L8RUd+t8Kp/CKWQfZvPujPn7q1PAEYDKPCmjUhnOgJdAtI3A8Af1b+Hl9RDLcOHl60wmh9aecYWZK+hllLMjy+tUQ6cuFBqZk=
+	t=1725208428; cv=none; b=p54qSfHw8M0M8fEniyk4ExncnVUyK0h8OPmBdONDvUQDl5kOJaZOVkuDzq7pDODSxwASY79IxqagY1Iy9SFWnEor3HiA+LI9PlLzB8ADXyyciLoD6HssAGE0zHJ1An8U3NzE1JdDkYpPQCBCU/URjduzyJVOibogl+k3R62Tm4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208804; c=relaxed/simple;
-	bh=M9I8iJC7iBtagehsi9VzPcgEjVpyXXRHx8aLbXpMoso=;
+	s=arc-20240116; t=1725208428; c=relaxed/simple;
+	bh=SZSoMA7JfukeC8Z7hm5Ev76sh+0p2FpwMgM1pKSp+Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkU6X4ivT0d4HevBNG4kiAw9cxuu6UhbDCxJxJ2WNsQS8EGzKq4QtO6EmVru5BGTVBPYc/FXDHgmrIKfQ9Fil97ncGETkImUehJDKnxvoP72f/HAMJdvR+B60VeVo1pkIDBPlVrXCeISG+Sf0Mq1kkJKMjevmefPajvQi7m81IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptEmb3Yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAC8C4CEC3;
-	Sun,  1 Sep 2024 16:40:03 +0000 (UTC)
+	 MIME-Version; b=XJGZXH2W5wMJ9B2Ur8LZmjzAfxxkTZ8BDtFuXfAtcrPRTTp1Wj0P8JieJb59VRNS7pkK6cAgX4c6BbMUJbQli+mglx4tB/BEfX0Mj1TMWj6b+wAcrGbemGrm4mxZVFE/2FwWPBf99GqLM94u2cvjOAzU/Q6m7faS6ygYLwMD+u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6lwKk2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1233AC4CEC3;
+	Sun,  1 Sep 2024 16:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208804;
-	bh=M9I8iJC7iBtagehsi9VzPcgEjVpyXXRHx8aLbXpMoso=;
+	s=korg; t=1725208428;
+	bh=SZSoMA7JfukeC8Z7hm5Ev76sh+0p2FpwMgM1pKSp+Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptEmb3YjZbdpFoa2Xo2DaxNksTTPaJXxwIMcY/cZnws8ncJtFNwrXZgyq+jQA/MC/
-	 w5P7PskoI0EfjOUHo8U0YrdXQtRnsvRV10dc3ZXwnic5oJ+EgfM0VQRTkzJLjA6qpK
-	 jzjtuk7SMwM+xoux/000T9odcXQmfOAN8fqgWgE8=
+	b=R6lwKk2z87rOviAare48l/r1/dkzjHGum2tyOWdawAAlQN5EAICmd6wbzlkfBC1EV
+	 xBiUyTtgB26ASLG6aH1bg8xKF/RdOm+CNDtWsel9uGc6R2YJje49XGCK9zAgSMHNjR
+	 Ap8ZPC7iHn1fzb9trvZAZ4EEAUklSuD88lKSeCkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/134] quota: Remove BUG_ON from dqget()
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.10 079/149] phy: fsl-imx8mq-usb: fix tuning parameter name
 Date: Sun,  1 Sep 2024 18:16:30 +0200
-Message-ID: <20240901160811.767121087@linuxfoundation.org>
+Message-ID: <20240901160820.439273486@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
+commit ce52c2532299c7ccfd34a52db8d071e890a78c59 upstream.
 
-dqget() checks whether dquot->dq_sb is set when returning it using
-BUG_ON. Firstly this doesn't work as an invalidation check for quite
-some time (we release dquot with dq_sb set these days), secondly using
-BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
-hashed instead.
+According to fsl,imx8mq-usb-phy.yaml, this tuning parameter should be
+fsl,phy-pcs-tx-deemph-3p5db-attenuation-db.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240801124642.1152838-1-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index a7ddb874912d4..14c0dd5b65a43 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -986,9 +986,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * smp_mb__before_atomic() in dquot_acquire().
- 	 */
- 	smp_rmb();
--#ifdef CONFIG_QUOTA_DEBUG
--	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
--#endif
-+	/* Has somebody invalidated entry under us? */
-+	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
- out:
- 	if (empty)
- 		do_destroy_dquot(empty);
--- 
-2.43.0
-
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -176,7 +176,7 @@ static void imx8m_get_phy_tuning_data(st
+ 		imx_phy->comp_dis_tune =
+ 			phy_comp_dis_tune_from_property(imx_phy->comp_dis_tune);
+ 
+-	if (device_property_read_u32(dev, "fsl,pcs-tx-deemph-3p5db-attenuation-db",
++	if (device_property_read_u32(dev, "fsl,phy-pcs-tx-deemph-3p5db-attenuation-db",
+ 				     &imx_phy->pcs_tx_deemph_3p5db))
+ 		imx_phy->pcs_tx_deemph_3p5db = PHY_TUNE_DEFAULT;
+ 	else
 
 
 
