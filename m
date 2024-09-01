@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1B3967926
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BBF967AB6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59F11F211C0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6861C21524
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F76917DFFC;
-	Sun,  1 Sep 2024 16:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B93D18132A;
+	Sun,  1 Sep 2024 16:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LceOHQWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI09mrqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C52A2B9C7;
-	Sun,  1 Sep 2024 16:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E11E87B;
+	Sun,  1 Sep 2024 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208819; cv=none; b=b08S+dyACAlFaQcEApeISH3yb8RKGZpaAaP5q1mdl2ig48Mfr+HlXZ/wbjTbqPLuldQ4+wh9GPbrAFPiNAFY7FVDHSeZNLV30yN8cUrEZOwsdqxrJjOXiZHNXvc5vpyieOxd/Zmw3V+ynQc/+tKQp7nv7gR6msZFiwpnFoFlx48=
+	t=1725209994; cv=none; b=Wc4hMQjvicUh81ZxKb6t0pLGqkIWm+rGBt31XhTPhVEfirKijdZD7OCEsK8MTl3K5vdphTuac/HA4zcqbl4bQ6PmhfdMk2sFNktSP+oQ6dLe1Szt20zhdD1H0GH0+Zg9m7kDNbRQehszwAeYUQuKgC0QAZp/olP3MlhlsblT9ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208819; c=relaxed/simple;
-	bh=8fRsJU6BszFBYCEgvLwdJDU3M+0nJhWEBPhsnEYkfc4=;
+	s=arc-20240116; t=1725209994; c=relaxed/simple;
+	bh=JmNI3uT4zD3levVc1oVplZBusl7vZ9+Z1sCm4SsYRf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNn339Nemy8Cza+SeC5dsIGZMRy3q2/JKoV35AlSiy0gL7ehLYyGdsuhr8ZllQgWnRDG3Cwig4mZMmXNKY8RdwhwNzTpINEr30/YjL59lGCm8V/kVvcgOOlQ0oSTbh4DebkFNlE+BYB8Wwc9GxGDC1+4mCW6CLXvq/SorFt83w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LceOHQWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51519C4CEC3;
-	Sun,  1 Sep 2024 16:40:18 +0000 (UTC)
+	 MIME-Version; b=VJO6PKQJ/rvYNSIC2tZOxPrmKowyYWAb/0gtysvnL8wcjDSseRdLAlkAD6McbQRKtlydi/JNMRWJPQ7EiGrDQ4y8zVy1+xnKDgnl/2Vo4H+9QN+UNoSXjpjkPHmTcedMtNt0Wvzb+emNKJxOctkQviEFlbpjGqtdEtfv0r0tC1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI09mrqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7CEC4CEC3;
+	Sun,  1 Sep 2024 16:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208818;
-	bh=8fRsJU6BszFBYCEgvLwdJDU3M+0nJhWEBPhsnEYkfc4=;
+	s=korg; t=1725209993;
+	bh=JmNI3uT4zD3levVc1oVplZBusl7vZ9+Z1sCm4SsYRf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LceOHQWYxcLLvQX5+ePeRQw0ZNqkd14mVQQdkebEBYUWTeU/7sC6tHjCxVU/I8RbM
-	 yRO745+4adTzbTF6eWHtV2mwSzCEbs9W0cp5K39ASGc55bHhQasD0AM1nigGToahEx
-	 gTeBU8tL/PL8MSmCbmd8D6amSj5cwIiu8xJ0LdYo=
+	b=uI09mrqkSyndVZUk76MdfzoXp9cr+O4CStKrbBCV6MPjDrMdWlNRx9mAzLbbCbU8O
+	 tvGwQQkmEq+UHJuCLgKRRB8iP1JGZq06l9Mx/LoA0Gi9Zrvi0tZhZ23ZjMo7VghxsG
+	 H7XHleJBGdF+/jv3WN3KSErpLMoF8I5uyOmbbIHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chengfeng Ye <dg573847474@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 021/134] net: axienet: Factor out TX descriptor chain cleanup
+Subject: [PATCH 5.15 055/215] staging: ks7010: disable bh on tx_dev_lock
 Date: Sun,  1 Sep 2024 18:16:07 +0200
-Message-ID: <20240901160810.907153559@linuxfoundation.org>
+Message-ID: <20240901160825.430707051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit ab365c3393664f32116aa22fe322cb04a93fab31 ]
+[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
 
-Factor out the code that cleans up a number of connected TX descriptors,
-as we will need it to properly roll back a failed _xmit() call.
-There are subtle differences between cleaning up a successfully sent
-chain (unknown number of involved descriptors, total data size needed)
-and a chain that was about to set up (number of descriptors known), so
-cater for those variations with some extra parameters.
+As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
+could be call from timer under softirq context, use spin_lock_bh()
+on it to prevent potential deadlock.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
+hostif_sme_work()
+--> hostif_sme_set_pmksa()
+--> hostif_mib_set_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
+
+ks_wlan_start_xmit()
+--> hostif_data_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 79 +++++++++++++------
- 1 file changed, 57 insertions(+), 22 deletions(-)
+ drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 22222d79e4902..4467719095432 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -546,32 +546,46 @@ static int axienet_device_reset(struct net_device *ndev)
- }
+diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
+index 98d759e7cc957..a4f3a7a79422b 100644
+--- a/drivers/staging/ks7010/ks7010_sdio.c
++++ b/drivers/staging/ks7010/ks7010_sdio.c
+@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
+ 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
+ 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
  
- /**
-- * axienet_start_xmit_done - Invoked once a transmit is completed by the
-- * Axi DMA Tx channel.
-+ * axienet_free_tx_chain - Clean up a series of linked TX descriptors.
-  * @ndev:	Pointer to the net_device structure
-+ * @first_bd:	Index of first descriptor to clean up
-+ * @nr_bds:	Number of descriptors to clean up, can be -1 if unknown.
-+ * @sizep:	Pointer to a u32 filled with the total sum of all bytes
-+ * 		in all cleaned-up descriptors. Ignored if NULL.
-  *
-- * This function is invoked from the Axi DMA Tx isr to notify the completion
-- * of transmit operation. It clears fields in the corresponding Tx BDs and
-- * unmaps the corresponding buffer so that CPU can regain ownership of the
-- * buffer. It finally invokes "netif_wake_queue" to restart transmission if
-- * required.
-+ * Would either be called after a successful transmit operation, or after
-+ * there was an error when setting up the chain.
-+ * Returns the number of descriptors handled.
-  */
--static void axienet_start_xmit_done(struct net_device *ndev)
-+static int axienet_free_tx_chain(struct net_device *ndev, u32 first_bd,
-+				 int nr_bds, u32 *sizep)
- {
--	u32 size = 0;
--	u32 packets = 0;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 	struct axidma_bd *cur_p;
--	unsigned int status = 0;
-+	int max_bds = nr_bds;
-+	unsigned int status;
-+	int i;
-+
-+	if (max_bds == -1)
-+		max_bds = lp->tx_bd_num;
-+
-+	for (i = 0; i < max_bds; i++) {
-+		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
-+		status = cur_p->status;
-+
-+		/* If no number is given, clean up *all* descriptors that have
-+		 * been completed by the MAC.
-+		 */
-+		if (nr_bds == -1 && !(status & XAXIDMA_BD_STS_COMPLETE_MASK))
-+			break;
+-	spin_lock(&priv->tx_dev.tx_dev_lock);
++	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
+ 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
+-	spin_unlock(&priv->tx_dev.tx_dev_lock);
++	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
  
--	cur_p = &lp->tx_bd_v[lp->tx_bd_ci];
--	status = cur_p->status;
--	while (status & XAXIDMA_BD_STS_COMPLETE_MASK) {
- 		dma_unmap_single(ndev->dev.parent, cur_p->phys,
- 				(cur_p->cntrl & XAXIDMA_BD_CTRL_LENGTH_MASK),
- 				DMA_TO_DEVICE);
--		if (cur_p->skb)
-+
-+		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK))
- 			dev_consume_skb_irq(cur_p->skb);
-+
- 		cur_p->cntrl = 0;
- 		cur_p->app0 = 0;
- 		cur_p->app1 = 0;
-@@ -580,15 +594,36 @@ static void axienet_start_xmit_done(struct net_device *ndev)
- 		cur_p->status = 0;
- 		cur_p->skb = NULL;
- 
--		size += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
--		packets++;
--
--		if (++lp->tx_bd_ci >= lp->tx_bd_num)
--			lp->tx_bd_ci = 0;
--		cur_p = &lp->tx_bd_v[lp->tx_bd_ci];
--		status = cur_p->status;
-+		if (sizep)
-+			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
- 	}
- 
-+	return i;
-+}
-+
-+/**
-+ * axienet_start_xmit_done - Invoked once a transmit is completed by the
-+ * Axi DMA Tx channel.
-+ * @ndev:	Pointer to the net_device structure
-+ *
-+ * This function is invoked from the Axi DMA Tx isr to notify the completion
-+ * of transmit operation. It clears fields in the corresponding Tx BDs and
-+ * unmaps the corresponding buffer so that CPU can regain ownership of the
-+ * buffer. It finally invokes "netif_wake_queue" to restart transmission if
-+ * required.
-+ */
-+static void axienet_start_xmit_done(struct net_device *ndev)
-+{
-+	struct axienet_local *lp = netdev_priv(ndev);
-+	u32 packets = 0;
-+	u32 size = 0;
-+
-+	packets = axienet_free_tx_chain(ndev, lp->tx_bd_ci, -1, &size);
-+
-+	lp->tx_bd_ci += packets;
-+	if (lp->tx_bd_ci >= lp->tx_bd_num)
-+		lp->tx_bd_ci -= lp->tx_bd_num;
-+
- 	ndev->stats.tx_packets += packets;
- 	ndev->stats.tx_bytes += size;
- 
+ 	if (txq_has_space(priv))
+ 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
 -- 
 2.43.0
 
