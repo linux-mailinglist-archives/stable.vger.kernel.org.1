@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A97967901
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E1B967AB1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5DCFB2192A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2EAD1C21517
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2551217E46E;
-	Sun,  1 Sep 2024 16:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461A918132A;
+	Sun,  1 Sep 2024 16:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI96op4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlbCz6im"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B0C537FF;
-	Sun,  1 Sep 2024 16:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0527F1E87B;
+	Sun,  1 Sep 2024 16:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208712; cv=none; b=OpXVaJDBXsckAzkM8z7jNVKGJqnI99xD2Ovh8K+JbTFz9yE23CrpmkwvXaN9rHxeOnyNFfnDJ8mZ4ildoLHR59k7fv3TJiayCO83WZAgUKKDcrN6rWq5PG+xjYiMA5xZScDKEJnaQ6gpMdlmllQDMu5lJMmpMviJIPQuiOIX/OQ=
+	t=1725209977; cv=none; b=l6HHQ/Dksh2UrkALe6yUgwikyFjdibMNVxmeXa4+lMr6fOIvuF7Tp295jnXvUkkSwIhWZPio7AScSG0IsFoCW1afPMNYTkA6UNeYrC8VbbKtRunj0rbSiWhsbBhkz7JWauVtXvp38iyyjyLLv36siEtR5atT63+fL/PF2LbmXzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208712; c=relaxed/simple;
-	bh=lG6ss0CzmteKPFkHD7emFMPv7cEsT5tGWdZ4QUhBOq8=;
+	s=arc-20240116; t=1725209977; c=relaxed/simple;
+	bh=MUBygpJZHA0gg/F3FRXNKGYdgj+0CB8gnP0agb9l8tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6J959v31ojG4l+2ZxTQ3KFEHGTeQrFx2xXoXV8vFwTRXP/ZQwm3uWCC4KxdDEqFKaoOAiuja3u5PAWHJiRpjpph1OXH9KacAh7NSc6RxGQSeQmEa4w7FIc4NsoW3rjRCSQgZPdpLhhjN7wvb7LCo1hjWCjTUCb8Voy3SLsIZGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI96op4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4745FC4CEC3;
-	Sun,  1 Sep 2024 16:38:32 +0000 (UTC)
+	 MIME-Version; b=bDSv/Mg+07xgEQDyNwxRCnI8zsZV+69FRNs19bjAJZ+2eRleZPzXQIj15bKW6Kj2FkVwk7gFmSrOAaQrzs25+qM7muvGHtEBodduOwb+rdyPxiMRCDwNQpcnxuQoAKJ3Fr4MWq7T9clzRFJvyz/MZExps7FboHuTJ+kbF4eOp+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlbCz6im; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6741FC4CEC3;
+	Sun,  1 Sep 2024 16:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208712;
-	bh=lG6ss0CzmteKPFkHD7emFMPv7cEsT5tGWdZ4QUhBOq8=;
+	s=korg; t=1725209976;
+	bh=MUBygpJZHA0gg/F3FRXNKGYdgj+0CB8gnP0agb9l8tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QI96op4aLjVsP7oDCrE8XQEUX6KuCaJm9o/rGlWGHFOs++7frdrHXxorDNkHHtjdK
-	 VKkB+il5kMJGvwI8UwGNAxtFaKPmm1HfluQPi86GfyRn7PN9plTTIc/mTkEMhSqyUv
-	 DCtZ688Nhm0SZp+qQhG6WYb1gBkpjAtO4e0pYtPI=
+	b=wlbCz6im2BO3Epo7nZ+MJZlMZiYy/4zOmmCL4w+4Hk8/CGJro0NjAuC9sv0uWkJMY
+	 X0gn8HHbhrkgRWarvHPtxs9L89R52Ub3BHs6+m2a/VU6IvtvKmN1ECE24x7BmTtitu
+	 VSTj57QiGkFlh3DnECEYyvOhVrn6Epz5skSTAMts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/134] net/mlx5e: Correctly report errors for ethtool rx flows
+Subject: [PATCH 5.15 051/215] i3c: mipi-i3c-hci: Do not unmap region not mapped for transfer
 Date: Sun,  1 Sep 2024 18:16:03 +0200
-Message-ID: <20240901160810.760013902@linuxfoundation.org>
+Message-ID: <20240901160825.282156361@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
+[ Upstream commit b8806e0c939f168237593af0056c309bf31022b0 ]
 
-Previously, an ethtool rx flow with no attrs would not be added to the
-NIC as it has no rules to configure the hw with, but it would be
-reported as successful to the caller (return code 0). This is confusing
-for the user as ethtool then reports "Added rule $num", but no rule was
-actually added.
+Fix following warning (with CONFIG_DMA_API_DEBUG) which happens with a
+transfer without a data buffer.
 
-This change corrects that by instead reporting these wrong rules as
--EINVAL.
+	DMA-API: i3c mipi-i3c-hci.0: device driver tries to free DMA memory it has not allocated [device address=0x0000000000000000] [size=0 bytes]
 
-Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For those transfers the hci_dma_queue_xfer() doesn't create a mapping and
+the DMA address pointer xfer->data_dma is not set.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20230921055704.1087277-10-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-index acd946f2ddbe7..be49a2a53f29d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-@@ -676,7 +676,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
- 	if (num_tuples <= 0) {
- 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
- 			    __func__, num_tuples);
--		return num_tuples;
-+		return num_tuples < 0 ? num_tuples : -EINVAL;
- 	}
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 7ad2edd479157..5e3f0ee1cfd0e 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -345,6 +345,8 @@ static void hci_dma_unmap_xfer(struct i3c_hci *hci,
  
- 	eth_ft = get_flow_table(priv, fs, num_tuples);
+ 	for (i = 0; i < n; i++) {
+ 		xfer = xfer_list + i;
++		if (!xfer->data)
++			continue;
+ 		dma_unmap_single(&hci->master.dev,
+ 				 xfer->data_dma, xfer->data_len,
+ 				 xfer->rnw ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
 -- 
 2.43.0
 
