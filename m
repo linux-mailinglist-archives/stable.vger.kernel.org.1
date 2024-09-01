@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-72436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842CF967A9E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49A096776E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51321C2017C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0911F216EA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1609917CA1F;
-	Sun,  1 Sep 2024 16:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D780181B88;
+	Sun,  1 Sep 2024 16:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L807KRd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0/gHmrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DE11C68C;
-	Sun,  1 Sep 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACA32C1B4;
+	Sun,  1 Sep 2024 16:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209917; cv=none; b=kAJjQq+bejE5Q0WEcaSuR8LrUB6X07xP9FBotT1vHAhSj1frCjm/F1wHrrebCHCew/D+B07TahL9HZeUmqdRSw+VFtKl2mUcV/7WBjfq3uiXu+THdfE+o0mC1c0f939ZKRjXsrOVBw0d50Y1xzSDCq93wv+vy5b7C/GRWV0rRYw=
+	t=1725207577; cv=none; b=FLlAji+Fx3eJkdsmNR5aFQ2Ao1Ohn2BFwq2s6DQPo0ZrZamzhirIXBhVJ3X1DfyH/OVM/zhBjE+48RIq0sbFzw4ixABKBJ3Xo7xg1HZHKM7sThnzsEpGBzEQIpzjmaRAj8FU9l/NNGKLqCsAlIwMTfRfFEUJqCo+M4eaQYvxyIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209917; c=relaxed/simple;
-	bh=5W1/5SA9b7p2GJstFQIohNJlyN0rFoR7BIGlJxhE+do=;
+	s=arc-20240116; t=1725207577; c=relaxed/simple;
+	bh=GSZq1BGO+FXLwlVKTapthMf507S29LnmU+iVa02Q1bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDwk0D3pckjWTXFgxUUlbeFkfdouKSiGd6bLqzIhA3kq5fXGQN7JsH6/8CArcntZGfY0T6A6QzloKbGjO3MNDX14yIyWi4sCNpHo+h3v/NpDabL6IeuPmEfOvea9VoiqF7r82g5tKIftAiS7B1XTuN4TXL7ukrfMLYlFu9qV3lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L807KRd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47408C4CEC3;
-	Sun,  1 Sep 2024 16:58:37 +0000 (UTC)
+	 MIME-Version; b=Rzd+3qawDCbFWN+Rl+p4kLrWCkoIY/5ekeDin3dpw4EGi1xw9hMJ7tMkcCVeHxT2vzBVuRsy0xo6hjJ/hHKd3iMg83EyRimOLRAIR9GuNp3aIItbxATEI7rPZCGWFU3D3Yl7DFHRXTEy3f1eQ3W2c6+TDP8EvCuuEFJKSFs7wmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0/gHmrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD1C4CEC3;
+	Sun,  1 Sep 2024 16:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209917;
-	bh=5W1/5SA9b7p2GJstFQIohNJlyN0rFoR7BIGlJxhE+do=;
+	s=korg; t=1725207577;
+	bh=GSZq1BGO+FXLwlVKTapthMf507S29LnmU+iVa02Q1bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L807KRd7Yq98MOzoq0RpKKrHQIAc+DxfX5xLG71u4U8gGCb+OcIZJaEcEXUgyV/yA
-	 L6UkHCCvrfboGc0j7mPlt6QSfZhtaB1ANlYt8mSL1kWN462EXy2UusFf6Rno1VmjXL
-	 7qIZ/I/AiqBVDyrSKVPRrR+1EEL0cfvrA/9hkeCY=
+	b=Q0/gHmrsxfonfqBmoVBm7S5ePA4C1TlG9lvMQFL8eRaj1QhVaRavKuMoD/9DOcspd
+	 azC52pDlg39f0CUH28x9f50fzK3toV4xns8cQpSoHviZt7M+bV9Kl47vfFSzYrC6AH
+	 49irx3POwnjKWXuOe+PKAj00+eSB7/QDzBkej3tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/215] net: dsa: vsc73xx: pass value in phy_write operation
-Date: Sun,  1 Sep 2024 18:15:43 +0200
-Message-ID: <20240901160824.439870839@linuxfoundation.org>
+Subject: [PATCH 4.19 14/98] net/mlx5e: Correctly report errors for ethtool rx flows
+Date: Sun,  1 Sep 2024 18:15:44 +0200
+Message-ID: <20240901160804.224594786@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
+[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
 
-In the 'vsc73xx_phy_write' function, the register value is missing,
-and the phy write operation always sends zeros.
+Previously, an ethtool rx flow with no attrs would not be added to the
+NIC as it has no rules to configure the hw with, but it would be
+reported as successful to the caller (return code 0). This is confusing
+for the user as ethtool then reports "Added rule $num", but no rule was
+actually added.
 
-This commit passes the value variable into the proper register.
+This change corrects that by instead reporting these wrong rules as
+-EINVAL.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 6b6470ef2ae93..15afb84155472 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -531,7 +531,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 		return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+index 41cde926cdab6..48ae9c201af46 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+@@ -689,7 +689,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
+ 	if (num_tuples <= 0) {
+ 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
+ 			    __func__, num_tuples);
+-		return num_tuples;
++		return num_tuples < 0 ? num_tuples : -EINVAL;
  	}
  
--	cmd = (phy << 21) | (regnum << 16);
-+	cmd = (phy << 21) | (regnum << 16) | val;
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
+ 	eth_ft = get_flow_table(priv, fs, num_tuples);
 -- 
 2.43.0
 
