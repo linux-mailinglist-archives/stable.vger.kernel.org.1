@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D1F967A5E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9232C96798C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70380282217
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C661C2139A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BC7181334;
-	Sun,  1 Sep 2024 16:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0399B184551;
+	Sun,  1 Sep 2024 16:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V35oWbau"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1phh8cA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27451DFD1;
-	Sun,  1 Sep 2024 16:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A9617E46E;
+	Sun,  1 Sep 2024 16:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209709; cv=none; b=i1XDzSVziC6Zge9OOqB+4hz2nV+WPzwJvllqwwhbg1526BoT3SL7Wiw+62HpfrODemBvEcNuOhlHV4pg8rFx/sSmriuFu1lOpemfUrs3HSwZf836PcH/bkSmTzbFH45iMHVJBribkk9+c2F95/ZfR6+6bFl5umgHtGQKVjfjLPU=
+	t=1725209098; cv=none; b=sJKNSoUhFJhrmPlMYo5mhtuOMFYzYWeYAUYMbTgvMjbyFHC15xBXFvPEV7sLr+2A2rJBFgOo0ljt5ejxi5n6YzQU4XMu562AnIjlE7mbYMGnbDy1+8ECp3gZh0PCDZzJrMLs4IuE1TppJRUFgZb43HKfZhZmjVYDwfjeCqcGuJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209709; c=relaxed/simple;
-	bh=ZQdHKYaJaN+56/oXH3BcQnBseNAv8y19p83p5KNbomU=;
+	s=arc-20240116; t=1725209098; c=relaxed/simple;
+	bh=evctpTsFNSV/fUZXUNo9kgqow/PcVvpzmPLtxmZrhqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FeeQIT6weo9ttz/QYVQVEK95tCmAUljTomUo1Q2QP7T3XG7w8Uf4UpZQDEWKXUBWhkLXiQx554swUl3B3tmkTcn6iKpyh3EsQ8ZvEZVDMrI5UuAKDkHUSQuVliiZ7KJnc/nlcZIrZkJw9mFicXFgLp99yZrYEgNzeGMwHdbi0RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V35oWbau; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25878C4CEC3;
-	Sun,  1 Sep 2024 16:55:08 +0000 (UTC)
+	 MIME-Version; b=pr9E+9IEN7M/Cax3XF73HBk5OuqtxUoDm3MqRZKMQJYAcwMWarqOyjyKN3H4TYzTAspAIB0pZpU6QNjOe+miFdMs5yg+klAku6HPAO3xg9tsVsgboE2ZgXJogJ1UZCcWlUg8Z6Sd4ZUPg36olvjL+rX1AzoEYBQ5R6eRjl7ozhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1phh8cA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376BAC4CEC3;
+	Sun,  1 Sep 2024 16:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209709;
-	bh=ZQdHKYaJaN+56/oXH3BcQnBseNAv8y19p83p5KNbomU=;
+	s=korg; t=1725209098;
+	bh=evctpTsFNSV/fUZXUNo9kgqow/PcVvpzmPLtxmZrhqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V35oWbau09R3sdQklDfxhkUnFMtuenTwrYfHAgORh6qyvboKgTrHjKy/S7VN92oGG
-	 xH1QdphJSbuGN4JSR3nfMWPhalrqJRnuXNaUC1H3JSS1LjqIY/2Ui8VDe4oRc5QB0E
-	 tMthp138duOL+3gvn+yzaNRYVor4O55C0+59YyTI=
+	b=F1phh8cAItdBGm6Qb3jWpJIEYuB7jb4uP2mQcbNsG1Q2bnJrXtLpTfWkCYafyO873
+	 SQ5c/CH7MEqpBGUe7iWyEERY0QHNeGUiHkGsMJYx6EdeHLd4T30LIzCoJaDwcudvtO
+	 viuUDe3nlYKRe1nSFaX8H0xJs2hT+qN0qKqwQkoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 120/151] tools: move alignment-related macros to new <linux/align.h>
+	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
+	Ben Hutchings <benh@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 134/134] scsi: aacraid: Fix double-free on probe failure
 Date: Sun,  1 Sep 2024 18:18:00 +0200
-Message-ID: <20240901160818.623542840@linuxfoundation.org>
+Message-ID: <20240901160815.118386530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Ben Hutchings <benh@debian.org>
 
-commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
+[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
 
-Currently, tools have *ALIGN*() macros scattered across the unrelated
-headers, as there are only 3 of them and they were added separately
-each time on an as-needed basis.
-Anyway, let's make it more consistent with the kernel headers and allow
-using those macros outside of the mentioned headers. Create
-<linux/align.h> inside the tools/ folder and include it where needed.
+aac_probe_one() calls hardware-specific init functions through the
+aac_driver_ident::init pointer, all of which eventually call down to
+aac_init_adapter().
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If aac_init_adapter() fails after allocating memory for aac_dev::queues,
+it frees the memory but does not clear that member.
+
+After the hardware-specific init function returns an error,
+aac_probe_one() goes down an error path that frees the memory pointed to
+by aac_dev::queues, resulting.in a double-free.
+
+Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
+Link: https://bugs.debian.org/1075855
+Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/align.h  |   12 ++++++++++++
- tools/include/linux/bitmap.h |    2 +-
- 2 files changed, 13 insertions(+), 1 deletion(-)
- create mode 100644 tools/include/linux/align.h
+ drivers/scsi/aacraid/comminit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- /dev/null
-+++ b/tools/include/linux/align.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef _TOOLS_LINUX_ALIGN_H
-+#define _TOOLS_LINUX_ALIGN_H
-+
-+#include <uapi/linux/const.h>
-+
-+#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
-+#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
-+#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
-+
-+#endif /* _TOOLS_LINUX_ALIGN_H */
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -3,6 +3,7 @@
- #define _PERF_BITOPS_H
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index d4fcfa1e54e02..8849eca08a494 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -638,6 +638,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
  
- #include <string.h>
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <stdlib.h>
- #include <linux/kernel.h>
-@@ -166,7 +167,6 @@ static inline int bitmap_and(unsigned lo
- #define BITMAP_MEM_ALIGNMENT (8 * sizeof(unsigned long))
- #endif
- #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
--#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
- 
- static inline int bitmap_equal(const unsigned long *src1,
- 			const unsigned long *src2, unsigned int nbits)
+ 	if (aac_comm_init(dev)<0){
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 	/*
+@@ -645,6 +646,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 	 */
+ 	if (aac_fib_setup(dev) < 0) {
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 		
+-- 
+2.43.0
+
 
 
 
