@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBA89678D6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9317967950
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEBCFB21EC7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6081E1F21A2C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC53117F389;
-	Sun,  1 Sep 2024 16:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0181117DFFC;
+	Sun,  1 Sep 2024 16:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucC5aUNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiKRoiwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC77C17B50B;
-	Sun,  1 Sep 2024 16:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B601B1C68C;
+	Sun,  1 Sep 2024 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208573; cv=none; b=bTVHwtTihN7xFN8lc8A2JhLrKzznaGDgxj+MrT619I+MDL5RJEbYgeglhu+QraEbuqhYsGVze/3PnA9JHi32AG9rG1lTTokaBnqGZsTDNGnegify9bWJlG7obQSg37JJLEwGkEMoBBaRIhRss7/Z8OvaLZwPyMjST4l4njAWVUI=
+	t=1725208948; cv=none; b=OCzTiwA0/ooWBDiRhP2Bm7uyVPZ68Ag59+Y9rinBPmClfhh9v9ROAwR5fWAXHIBxMBQNG8NnXb3UIelBGwKO0Nnq+avW4quY+zYNLQGiUkpfR3trwNE8K1RqeFgUctTPBGsCGua6iDh/MY/xVmPh1pvWX7HE7/GREbb/h1fvz3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208573; c=relaxed/simple;
-	bh=NIEPBDkbfmN+RyF2SeWNusQ5bFUOlibIWeACZCoakW4=;
+	s=arc-20240116; t=1725208948; c=relaxed/simple;
+	bh=XwR4Q1+/QlskJVDdUK22fy9bRmINxJFLld4hPiIVKkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLGwJdDoLEbYys7eoJojPkJniffeUkpbBZK2wFnFwlMGEMwi4FgNRXadOE0vwgNBKozExYBssAbGAhz/d19yv4CJENMdGbCRUS8vXsyTwGozzMqb5tn7wuNPifRSy0IGQhKFVG+kHMyLZBich0s/oiluu3Tv1YInClY8/6eyt2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucC5aUNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5A0C4CEC3;
-	Sun,  1 Sep 2024 16:36:12 +0000 (UTC)
+	 MIME-Version; b=L5M137qkjMW+mixQNNaBtYtY7dVdEglftD6u30Y18Idtm+wd/GM/HRH93q5ubqh1gQQr31PcYextchJrEhzaj04cQWiD6s2ZeKgiNNepsWdse6LF/vrZ2hZYKJH2zLQkIBG3zQ+grWLOsP0GeEYhIsmisbZGFaGYDLOgqHOJl4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiKRoiwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF57DC4CEC3;
+	Sun,  1 Sep 2024 16:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208573;
-	bh=NIEPBDkbfmN+RyF2SeWNusQ5bFUOlibIWeACZCoakW4=;
+	s=korg; t=1725208948;
+	bh=XwR4Q1+/QlskJVDdUK22fy9bRmINxJFLld4hPiIVKkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucC5aUNpeDCaDIYgzu+yKcZOfR9S+D8a5bJph6UVgFjN8Tjskusc0tuirVKMYtzNM
-	 tkQzchjO0PPe0CUPs7tAsC6goZ+e6NV5HF9uGoAA/UEv05HnQULQjv+KnVxg/i5K8t
-	 JUrHpizuwCFQ4WMj5eAIGTuqoPqRsR4Q/MTiB5lg=
+	b=MiKRoiwqwkqNBLHl9xhHJDvWZfC6bi5oWFLQOD3NOWNeI4CzlL3pM/W37WolWGgsy
+	 sTCT16BAocBb/Uu/ZOWA1123+qGARTKZO6eKFfQwHaOTju3VVWaX2KcKgGF7JTbpWA
+	 XFf17SvvifKfx8ry5bL53HwWx0V2EYOe49Y1DN10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 092/149] Bluetooth: hci_core: Fix not handling hibernation actions
+Subject: [PATCH 5.4 057/134] btrfs: handle invalid root reference found in may_destroy_subvol()
 Date: Sun,  1 Sep 2024 18:16:43 +0200
-Message-ID: <20240901160820.924134170@linuxfoundation.org>
+Message-ID: <20240901160812.251619594@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 18b3256db76bd1130965acd99fbd38f87c3e6950 ]
+[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
 
-This fixes not handling hibernation actions on suspend notifier so they
-are treated in the same way as regular suspend actions.
+The may_destroy_subvol() looks up a root by a key, allowing to do an
+inexact search when key->offset is -1.  It's never expected to find such
+item, as it would break the allowed range of a root id.
 
-Fixes: 9952d90ea288 ("Bluetooth: Handle PM_SUSPEND_PREPARE and PM_POST_SUSPEND")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index b488d0742c966..9493966cf389f 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2431,10 +2431,16 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
- 	/* To avoid a potential race with hci_unregister_dev. */
- 	hci_dev_hold(hdev);
- 
--	if (action == PM_SUSPEND_PREPARE)
-+	switch (action) {
-+	case PM_HIBERNATION_PREPARE:
-+	case PM_SUSPEND_PREPARE:
- 		ret = hci_suspend_dev(hdev);
--	else if (action == PM_POST_SUSPEND)
-+		break;
-+	case PM_POST_HIBERNATION:
-+	case PM_POST_SUSPEND:
- 		ret = hci_resume_dev(hdev);
-+		break;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 2c86be3fc25cd..d2a988bf9c895 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4520,7 +4520,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
+ 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto out;
+-	BUG_ON(ret == 0);
++	if (ret == 0) {
++		/*
++		 * Key with offset -1 found, there would have to exist a root
++		 * with such id, but this is out of valid range.
++		 */
++		ret = -EUCLEAN;
++		goto out;
 +	}
  
- 	if (ret)
- 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
+ 	ret = 0;
+ 	if (path->slots[0] > 0) {
 -- 
 2.43.0
 
