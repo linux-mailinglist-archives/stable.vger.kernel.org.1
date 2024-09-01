@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-72569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FABA967B29
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB45F9678E5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A55F9B209F5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1D51C20AF5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90017E005;
-	Sun,  1 Sep 2024 17:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AB217DFFC;
+	Sun,  1 Sep 2024 16:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eX8WlZ5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ1mR+Td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D22C6AF;
-	Sun,  1 Sep 2024 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2B1C68C;
+	Sun,  1 Sep 2024 16:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210358; cv=none; b=SQPgRjkUh1DrrfbyFIL1hUXGYIpRadOnZZTwxrY21gLQ/3svIoN1cZf4QioshfLTdzmbcvH1sUIqBFy8XqhmMtMhWOElj3QkTabszTnoieswi05xEgsyps9N+4ZmMXwt/lKSKaKM1l72PlD5jzhRJWP79iJTMfauT2/TgdgWPDs=
+	t=1725208621; cv=none; b=jYzB5548i0TF5XVoe9wRrCN9lVGcMzpNbkPZO45e1L+7c7PAAGNdz9Sb+5ss3zZhMUcdf5a9DRdFnydCKHG2WrwOIRW0S3Vr+q1FkDVeub4X2o6bIXBvu6OJHr962wi3myhVF0SlB9qhhVqYPozBff9SN7VuhxDAfWpaPc4RGUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210358; c=relaxed/simple;
-	bh=XF7QdoucP3l785WQ3f480E7PtWBSNfvg+XGPcvwOtYE=;
+	s=arc-20240116; t=1725208621; c=relaxed/simple;
+	bh=11fgy+a2cVXxhgiFmSXN1zjHR+ElqQGo667JBRbieWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqqF9wXJsqxyoMOCWIbZLDjDXHPNdkEyIU3//73UVEStGmCMPqdxd/tDSiBJNechVkBnu1gqtPhi/ZntMaye6C7uIwTDHw9TBjHJQ6UD+R+n60XE9XMLSIwFuVjolr056rSUzlZZvHWqZC53E5toBkcVCBgCmV/FCCLoItGo7HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eX8WlZ5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58629C4CEC3;
-	Sun,  1 Sep 2024 17:05:58 +0000 (UTC)
+	 MIME-Version; b=nbxBGW1Jy/0x8vRVNvdm2Bs2ItdttJWdLGaimVplGUpKEb6G0Ss5QHakxgEi4twDCYIaUvBS8SZYEaK//S/sQPhJMxuWAPDxwMsrDctaySgfXeASLdCkYm/MIg+JLZEvjfGa8txiAmGHdOboBqVCWp7GFift4A4pqGtXJq/rMLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ1mR+Td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6766EC4CEC3;
+	Sun,  1 Sep 2024 16:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210358;
-	bh=XF7QdoucP3l785WQ3f480E7PtWBSNfvg+XGPcvwOtYE=;
+	s=korg; t=1725208620;
+	bh=11fgy+a2cVXxhgiFmSXN1zjHR+ElqQGo667JBRbieWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eX8WlZ5qptCQKEQKQqV1gGcsyzsgxcn8QtHqeqqf3xmbB8d+b7oMtIylojVlmdXbU
-	 jgLO8iaNdTOnNihvmLL1rNdMprhoWY6DmclB9gD/Jm0D3xW3NxHVPu/mRmMtrGp75S
-	 O6Iqmwb0Dwbn0Ovd9N4TChjLO4HP3n3/mSwW3zm8=
+	b=PQ1mR+TdQRBT3BiyxEzrthAX2DsH3HnaNmzUYisNi86RfmH5+pkSQuWLPgg7toLI2
+	 N8WnIuuXj814rBCDnQwReHxQKexkyV8Aly5F3dmG5kZhtoGRO+ZtLFUPXSy4p0aq4j
+	 Qz5/FrtwvIyxZKnze0vdP4KkQ9GrHR9BLtl3mN9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/215] ip6_tunnel: Fix broken GRO
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 139/149] usb: typec: ucsi: Move unregister out of atomic section
 Date: Sun,  1 Sep 2024 18:17:30 +0200
-Message-ID: <20240901160828.581388035@linuxfoundation.org>
+Message-ID: <20240901160822.674705339@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +66,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
+commit 11bb2ffb679399f99041540cf662409905179e3a upstream.
 
-GRO code checks for matching layer 2 headers to see, if packet belongs
-to the same flow and because ip6 tunnel set dev->hard_header_len
-this check fails in cases, where it shouldn't. To fix this don't
-set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
-does.
+Commit '9329933699b3 ("soc: qcom: pmic_glink: Make client-lock
+non-sleeping")' moved the pmic_glink client list under a spinlock, as it
+is accessed by the rpmsg/glink callback, which in turn is invoked from
+IRQ context.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This means that ucsi_unregister() is now called from atomic context,
+which isn't feasible as it's expecting a sleepable context. An effort is
+under way to get GLINK to invoke its callbacks in a sleepable context,
+but until then lets schedule the unregistration.
+
+A side effect of this is that ucsi_unregister() can now happen
+after the remote processor, and thereby the communication link with it, is
+gone. pmic_glink_send() is amended with a check to avoid the resulting NULL
+pointer dereference.
+This does however result in the user being informed about this error by
+the following entry in the kernel log:
+
+  ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI write request: -5
+
+Fixes: 9329933699b3 ("soc: qcom: pmic_glink: Make client-lock non-sleeping")
+Cc: stable@vger.kernel.org
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Link: https://lore.kernel.org/r/20240820-pmic-glink-v6-11-races-v3-2-eec53c750a04@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_tunnel.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/soc/qcom/pmic_glink.c       |   10 +++++++++-
+ drivers/usb/typec/ucsi/ucsi_glink.c |   27 ++++++++++++++++++++++-----
+ 2 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d370a71c97520..5955fca601b3a 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1501,7 +1501,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
- 			tdev = __dev_get_by_index(t->net, p->link);
- 
- 		if (tdev) {
--			dev->hard_header_len = tdev->hard_header_len + t_hlen;
-+			dev->needed_headroom = tdev->hard_header_len +
-+				tdev->needed_headroom + t_hlen;
- 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
- 
- 			mtu = mtu - t_hlen;
-@@ -1729,7 +1730,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -112,8 +112,16 @@ EXPORT_SYMBOL_GPL(pmic_glink_client_regi
+ int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
  {
- 	struct ip6_tnl *tnl = netdev_priv(dev);
-+	int t_hlen;
+ 	struct pmic_glink *pg = client->pg;
++	int ret;
  
-+	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
- 	if (tnl->parms.proto == IPPROTO_IPV6) {
- 		if (new_mtu < IPV6_MIN_MTU)
- 			return -EINVAL;
-@@ -1738,10 +1741,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
- 			return -EINVAL;
- 	}
- 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
--		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	} else {
--		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	}
- 	dev->mtu = new_mtu;
-@@ -1887,12 +1890,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
- 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
+-	return rpmsg_send(pg->ept, data, len);
++	mutex_lock(&pg->state_lock);
++	if (!pg->ept)
++		ret = -ECONNRESET;
++	else
++		ret = rpmsg_send(pg->ept, data, len);
++	mutex_unlock(&pg->state_lock);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pmic_glink_send);
  
- 	dev->type = ARPHRD_TUNNEL6;
--	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
- 	dev->mtu = ETH_DATA_LEN - t_hlen;
- 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
- 		dev->mtu -= 8;
- 	dev->min_mtu = ETH_MIN_MTU;
--	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
-+	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -72,6 +72,9 @@ struct pmic_glink_ucsi {
  
- 	dev_hold(dev);
- 	return 0;
--- 
-2.43.0
-
+ 	struct work_struct notify_work;
+ 	struct work_struct register_work;
++	spinlock_t state_lock;
++	bool ucsi_registered;
++	bool pd_running;
+ 
+ 	u8 read_buf[UCSI_BUF_SIZE];
+ };
+@@ -271,8 +274,20 @@ static void pmic_glink_ucsi_notify(struc
+ static void pmic_glink_ucsi_register(struct work_struct *work)
+ {
+ 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
++	unsigned long flags;
++	bool pd_running;
+ 
+-	ucsi_register(ucsi->ucsi);
++	spin_lock_irqsave(&ucsi->state_lock, flags);
++	pd_running = ucsi->pd_running;
++	spin_unlock_irqrestore(&ucsi->state_lock, flags);
++
++	if (!ucsi->ucsi_registered && pd_running) {
++		ucsi_register(ucsi->ucsi);
++		ucsi->ucsi_registered = true;
++	} else if (ucsi->ucsi_registered && !pd_running) {
++		ucsi_unregister(ucsi->ucsi);
++		ucsi->ucsi_registered = false;
++	}
+ }
+ 
+ static void pmic_glink_ucsi_callback(const void *data, size_t len, void *priv)
+@@ -296,11 +311,12 @@ static void pmic_glink_ucsi_callback(con
+ static void pmic_glink_ucsi_pdr_notify(void *priv, int state)
+ {
+ 	struct pmic_glink_ucsi *ucsi = priv;
++	unsigned long flags;
+ 
+-	if (state == SERVREG_SERVICE_STATE_UP)
+-		schedule_work(&ucsi->register_work);
+-	else if (state == SERVREG_SERVICE_STATE_DOWN)
+-		ucsi_unregister(ucsi->ucsi);
++	spin_lock_irqsave(&ucsi->state_lock, flags);
++	ucsi->pd_running = (state == SERVREG_SERVICE_STATE_UP);
++	spin_unlock_irqrestore(&ucsi->state_lock, flags);
++	schedule_work(&ucsi->register_work);
+ }
+ 
+ static void pmic_glink_ucsi_destroy(void *data)
+@@ -348,6 +364,7 @@ static int pmic_glink_ucsi_probe(struct
+ 	init_completion(&ucsi->read_ack);
+ 	init_completion(&ucsi->write_ack);
+ 	init_completion(&ucsi->sync_ack);
++	spin_lock_init(&ucsi->state_lock);
+ 	mutex_init(&ucsi->lock);
+ 
+ 	ucsi->ucsi = ucsi_create(dev, &pmic_glink_ucsi_ops);
 
 
 
