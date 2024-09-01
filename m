@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448C5967AFC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AAC967A1D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03492281BE7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B209EB20D32
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF142C6AF;
-	Sun,  1 Sep 2024 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFFE17E900;
+	Sun,  1 Sep 2024 16:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOMLJ4Iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR82DwfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689AC17C;
-	Sun,  1 Sep 2024 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07691DFD1;
+	Sun,  1 Sep 2024 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210206; cv=none; b=R5fTEu6Wd+ZTqEG5V/QmHMP53RwowdSiC6h8U+fIjx8HZCV76hkGVWk2mGsTrmNg+eoTv09vReBhR7o6ts6MsbcIUHfwcCCd+4Dar+trsSW1vJ3h2oCygxlZvi14m0KABEg+tFW/xBr/DzawfXfts8o4j/n7yvd+EiuUS7m3JZI=
+	t=1725209500; cv=none; b=UT2RfrykdDQTYbOLlxrkbyarOJ/QU19TGdTUPbamntqWMEZeWDQE7IRNb5CJ61ggtcH3dUFNhYDbxYSu6GJomGg52CcjZCp6+jCPCu+5NicdARw6e2SsJn4eiRCVwTksXB3MjujUJ+qfOZccpR6qMr/F4EXKg01oRxGoB3nKH+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210206; c=relaxed/simple;
-	bh=+eR23HIqlZIqADekeVtm4+x/E41IeeKmIDhckyjH29U=;
+	s=arc-20240116; t=1725209500; c=relaxed/simple;
+	bh=6hidKxcDZgGnD6H7wYlUo8UxnKqb1mBR1tfEj/ljaok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kskXQJ2r/0MyjYifQAAligzDkK4XRwqmA0YFIcwE6R0pbEXj9ck9NZ4G3wmUIVaSKKOzPhazjBI5a4/DubQo2Us+AO0KSm3I1P8pHidycfcux1wzCZP+H+EvLiG0Xt4eGQEkMRRQzUgY5KN+5AyYlBEhaEvdu+IyoRHe2dOCOVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOMLJ4Iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79555C4CEC3;
-	Sun,  1 Sep 2024 17:03:25 +0000 (UTC)
+	 MIME-Version; b=Y6Ov+W2Iq7kjR2MiOjZuiiw6dGbgqImwB3mOoUDtDq3Es6yFaAJuJMLlbEdgQtoV4nPKmYVQb1gAVAX0Nei9Ppp/Gnqjf/m603Ep1ExL/emXde3TjQqAkL99xNcRRqqNdti01lt6hb8b9AG5/bB62zngxeK2Cci8emCZlC/W+Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR82DwfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F96C4CEC3;
+	Sun,  1 Sep 2024 16:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210206;
-	bh=+eR23HIqlZIqADekeVtm4+x/E41IeeKmIDhckyjH29U=;
+	s=korg; t=1725209499;
+	bh=6hidKxcDZgGnD6H7wYlUo8UxnKqb1mBR1tfEj/ljaok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOMLJ4Iy0eSBwUqSC3BFbZBorVSighvYBqY5dh4pJSgg+WI8x8rFBmE73B7xIWBdi
-	 Qmc4t2qMq43GGojzAL0IFMTg1F+i5lmBYY9xbFaChJPdUvj214qn2leJOE1QXZhSeW
-	 kvOvR5z+QgpyWsYe6eXTGagQRMKeHtQtwJ3+TI0o=
+	b=iR82DwfEm7yALh0kJMLmyPHhMdeYkbreinTV54CyxGLxvqGNZRlaDE/KFiriFMOmK
+	 mlNDDfwrmh00chjofUHg4g9FVVD+k6AF4igRvvgrV0JprgVD+sb/pfbxQYSE+CPKpz
+	 2hi58yYpy5WOILTAxrI9yg1N5UzovFl6NYtsUm+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/215] fbdev: offb: replace of_node_put with __free(device_node)
+Subject: [PATCH 5.10 055/151] drm/lima: set gp bus_stop bit before hard reset
 Date: Sun,  1 Sep 2024 18:16:55 +0200
-Message-ID: <20240901160827.241975147@linuxfoundation.org>
+Message-ID: <20240901160816.189434034@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
+[ Upstream commit 27aa58ec85f973d98d336df7b7941149308db80f ]
 
-Replaced instance of of_node_put with __free(device_node)
-to simplify code and protect against any memory leaks
-due to future changes in the control flow.
+This is required for reliable hard resets. Otherwise, doing a hard reset
+while a task is still running (such as a task which is being stopped by
+the drm_sched timeout handler) may result in random mmu write timeouts
+or lockups which cause the entire gpu to hang.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240124025947.2110659-5-nunes.erico@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/offb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/lima/lima_gp.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index 4501e848a36f2..766adaf2618c5 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -354,7 +354,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			par->cmap_type = cmap_gxt2000;
- 	} else if (of_node_name_prefix(dp, "vga,Display-")) {
- 		/* Look for AVIVO initialized by SLOF */
--		struct device_node *pciparent = of_get_parent(dp);
-+		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
- 		const u32 *vid, *did;
- 		vid = of_get_property(pciparent, "vendor-id", NULL);
- 		did = of_get_property(pciparent, "device-id", NULL);
-@@ -366,7 +366,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			if (par->cmap_adr)
- 				par->cmap_type = cmap_avivo;
- 		}
--		of_node_put(pciparent);
- 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
- #ifdef __BIG_ENDIAN
- 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index ca3842f719842..82071835ec9ed 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -166,6 +166,11 @@ static void lima_gp_task_run(struct lima_sched_pipe *pipe,
+ 	gp_write(LIMA_GP_CMD, cmd);
+ }
+ 
++static int lima_gp_bus_stop_poll(struct lima_ip *ip)
++{
++	return !!(gp_read(LIMA_GP_STATUS) & LIMA_GP_STATUS_BUS_STOPPED);
++}
++
+ static int lima_gp_hard_reset_poll(struct lima_ip *ip)
+ {
+ 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC01A0000);
+@@ -179,6 +184,13 @@ static int lima_gp_hard_reset(struct lima_ip *ip)
+ 
+ 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC0FFE000);
+ 	gp_write(LIMA_GP_INT_MASK, 0);
++
++	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_STOP_BUS);
++	ret = lima_poll_timeout(ip, lima_gp_bus_stop_poll, 10, 100);
++	if (ret) {
++		dev_err(dev->dev, "%s bus stop timeout\n", lima_ip_name(ip));
++		return ret;
++	}
+ 	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_RESET);
+ 	ret = lima_poll_timeout(ip, lima_gp_hard_reset_poll, 10, 100);
+ 	if (ret) {
 -- 
 2.43.0
 
