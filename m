@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A086F967ACA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D908396776F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D071F21332
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7421C2037C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BAD376EC;
-	Sun,  1 Sep 2024 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB017E91A;
+	Sun,  1 Sep 2024 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3rx12b2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGc3ytK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9655B1EB5B;
-	Sun,  1 Sep 2024 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15E344C97;
+	Sun,  1 Sep 2024 16:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210055; cv=none; b=WNPl2yjJdp8zvx41BdXPpdEuiIBtJH6PQVtNGHIBJ96NA1w6Sd5SUwBtJRrdMOz13iTpbRC0/Ik0VYiKZleYTjew+t8yh78a7nyE2KYl4RRKRxef75J0DYqEBd0czaE1yV3MJxelz+P4yIO4Dz1RFRrVq7Qkalu5j3AEq9IxBd4=
+	t=1725207580; cv=none; b=n5xs124rOoNsfFJTfOFZThrCMWM9+HughLcQ1cjjBIb94vYlo3l3VxRtc//S+1azQWeQhlMw9RikIZ9nTK31Pnx1TtDHKMArv3YfwVhdcOh6qEzFyNk9iVTwHpnNPTLkj1VyNPOi+t0VJj5v0PKnSj75ENKm26mRbZ0ao+IwrqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210055; c=relaxed/simple;
-	bh=yNqgWO6Tj2fjHcroA+ftTKatklJZ0NtrwzbEYOULi6s=;
+	s=arc-20240116; t=1725207580; c=relaxed/simple;
+	bh=ZzYcTgLyuo6aEIsTLYvMVubjQCiZQ/xqQFXT5EMRO4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lhc1gZrrZQIF/f0RlLKDwV6rDnpiyIuvnM1I2MyDDjySPbC+Ds9u91tP2ZX7EptYh6CTTj+Cwqo4aAuRmrrCeiVPeEy6vE2dCTA5jDScxRJudfFlPMMxtVBcpSvLj+3yHpFEaTZlU3nfOujmtqS0Q2i3dWXUPY6EHqpSKEt7qlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3rx12b2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3A6C4CEC3;
-	Sun,  1 Sep 2024 17:00:54 +0000 (UTC)
+	 MIME-Version; b=Oge3mVWnGmALEfwt7ThRFfK1p1vfIy998Mpy6gI9aJ1Zog4Olscb15M3IEltk2BUmTcZH0C9CG3ijnjcUC84zghhEA7uqdPngyCcVwGZOUncYvrE4qhJDfKQNbR+CqtVYAlzG+hje6E7COKYYjv0faLbqK0G4qd2Tjd3eWigWlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGc3ytK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B77C4CEC3;
+	Sun,  1 Sep 2024 16:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210055;
-	bh=yNqgWO6Tj2fjHcroA+ftTKatklJZ0NtrwzbEYOULi6s=;
+	s=korg; t=1725207580;
+	bh=ZzYcTgLyuo6aEIsTLYvMVubjQCiZQ/xqQFXT5EMRO4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3rx12b2nn+BMBsWJJmnRteZ8sEXExwNz0Pbn7+Brlw+PZyr/m2Yr8AZAZ13EUKiu
-	 mCebVnmd6PjysjJ3aI0loa2xkfLPT9tGswRuVBDn+ElKXDMsiOYG1HPsUr3ZB4b8uR
-	 XfIodFv2QAqh74MO8s3TUXnrEXhYji01DZ+z2Y90=
+	b=EGc3ytK6XDSeBU/znnWbUqcgFqRQDHPQeEWELlMpolDrd35NWpkck/mykKE42St9Z
+	 7caeLfj1lCVsgas3oxsbB2beJo7ulCz8DqAK+93+3Mo36NekN3fss+JlCB/x6GcMvc
+	 Pd+IdOJyc4sS3XXXKBUSENLDHA10wNAXKk8PZyys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/215] net: dsa: vsc73xx: check busy flag in MDIO operations
+Subject: [PATCH 4.19 15/98] atm: idt77252: prevent use after free in dequeue_rx()
 Date: Sun,  1 Sep 2024 18:15:45 +0200
-Message-ID: <20240901160824.515136021@linuxfoundation.org>
+Message-ID: <20240901160804.263274868@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
+[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
 
-The VSC73xx has a busy flag used during MDIO operations. It is raised
-when MDIO read/write operations are in progress. Without it, PHYs are
-misconfigured and bus operations do not work as expected.
+We can't dereference "skb" after calling vcc->push() because the skb
+is released.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ drivers/atm/idt77252.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index ce1c6d6eeb606..592527f069446 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -39,6 +39,10 @@
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index 36629633ae52a..c76792a471354 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -1117,8 +1117,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 	rpp->len += skb->len;
  
-+/* MII Block subblock */
-+#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
-+#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
-+
- #define CPU_PORT	6 /* CPU port */
+ 	if (stat & SAR_RSQE_EPDU) {
++		unsigned int len, truesize;
+ 		unsigned char *l1l2;
+-		unsigned int len;
  
- /* MAC Block registers */
-@@ -197,6 +201,8 @@
- #define VSC73XX_MII_CMD		0x1
- #define VSC73XX_MII_DATA	0x2
+ 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
  
-+#define VSC73XX_MII_STAT_BUSY	BIT(3)
-+
- /* Arbiter block 5 registers */
- #define VSC73XX_ARBEMPTY		0x0c
- #define VSC73XX_ARBDISC			0x0e
-@@ -271,6 +277,7 @@
- #define IS_739X(a) (IS_7395(a) || IS_7398(a))
+@@ -1188,14 +1188,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 		ATM_SKB(skb)->vcc = vcc;
+ 		__net_timestamp(skb);
  
- #define VSC73XX_POLL_SLEEP_US		1000
-+#define VSC73XX_MDIO_POLL_SLEEP_US	5
- #define VSC73XX_POLL_TIMEOUT_US		10000
++		truesize = skb->truesize;
+ 		vcc->push(vcc, skb);
+ 		atomic_inc(&vcc->stats->rx);
  
- struct vsc73xx_counter {
-@@ -488,6 +495,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
- 	return 0;
- }
- 
-+static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
-+{
-+	int ret, err;
-+	u32 val;
-+
-+	ret = read_poll_timeout(vsc73xx_read, err,
-+				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
-+				VSC73XX_MDIO_POLL_SLEEP_US,
-+				VSC73XX_POLL_TIMEOUT_US, false, vsc,
-+				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
-+				VSC73XX_MII_STAT, &val);
-+	if (ret)
-+		return ret;
-+	return err;
-+}
-+
- static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- {
- 	struct vsc73xx *vsc = ds->priv;
-@@ -495,12 +518,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- 	u32 val;
- 	int ret;
- 
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	/* Setting bit 26 means "read" */
- 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
--	msleep(2);
-+
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
- 	if (ret)
- 		return ret;
-@@ -524,6 +555,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 	u32 cmd;
- 	int ret;
- 
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	/* It was found through tedious experiments that this router
- 	 * chip really hates to have it's PHYs reset. They
- 	 * never recover if that happens: autonegotiation stops
+-		if (skb->truesize > SAR_FB_SIZE_3)
++		if (truesize > SAR_FB_SIZE_3)
+ 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_2)
++		else if (truesize > SAR_FB_SIZE_2)
+ 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_1)
++		else if (truesize > SAR_FB_SIZE_1)
+ 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
+ 		else
+ 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
 -- 
 2.43.0
 
