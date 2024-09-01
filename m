@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-72153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639BC967964
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270E39678EB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2B14B2203B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3BD1F219A8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEEF537FF;
-	Sun,  1 Sep 2024 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BA117E900;
+	Sun,  1 Sep 2024 16:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAH0vUHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH14RBDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B81E498;
-	Sun,  1 Sep 2024 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E880D1C68C;
+	Sun,  1 Sep 2024 16:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209016; cv=none; b=bBtJ6/FPnCUOyNt3NwwqMcMOzpXLxtmbDdm8LxfU58Q1suERpKUYCTvYpyR4t/SnSe66AHFnQLIDE22qHY0c+ZNTC3pWlzTmEprLcv3Bsfhx3ZTi9TDw33/naKHgppzkU+M1cK5drfXDFRLfgBRMeYLKAtWJQz4rH/AkRkWYlwg=
+	t=1725208640; cv=none; b=PPXWWLALjS9G2+O6BYusPAkBn3MM87qKEmM9WpPohr/wLocUVwguO2h0KckC5HNmTKzcLAEzpsHYUDE1AxAfUqQ6NKgBqxoIObhDDVyfE5H11QLTIip2Bdkfnlmvl71COfJQdz9m75yAp4qcjWk3tgEDIx9V8ODJBOJCu8LE7wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209016; c=relaxed/simple;
-	bh=Wmttm6vTSoD815Vuff92eDZyy+LlnFWBT9yHoOxXsuo=;
+	s=arc-20240116; t=1725208640; c=relaxed/simple;
+	bh=+l9kL9t/G4Zz8y08EInjIMh23Y/yHOwNdOshJD9QDnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDX3QGerW2vgoV4kTVIE5kvzDIpqxqxPhomNxiTJlCF7jC1reCHoY9EtGTMTq1r9ylYgoFCA9S3klFP1ME07iXtNCfwwtVYOfZqlEmmwqhYimOyi47VkUqQRCfviKIb/zcp0s9PQEz0WkJtoxPMh9+QXIdvDmaTIvvtjiusGpXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAH0vUHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1A5C4CEC3;
-	Sun,  1 Sep 2024 16:43:35 +0000 (UTC)
+	 MIME-Version; b=AyECFdw7I+E4p4XxeJWxks452YrMcw2WA+YBGyxov54eNF4DxR0MSbR5yeccOD83sNtOkL3M5xpr/s/C8wZdacksbe9FT6JgeaIaciBwvJ+dSsjfyg0EX1PAmEC3vZDmwa6pyuIKb6eyQbVawRrrN5G10YDQQnoXLmfyN5aWr9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH14RBDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59369C4CEC3;
+	Sun,  1 Sep 2024 16:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209016;
-	bh=Wmttm6vTSoD815Vuff92eDZyy+LlnFWBT9yHoOxXsuo=;
+	s=korg; t=1725208639;
+	bh=+l9kL9t/G4Zz8y08EInjIMh23Y/yHOwNdOshJD9QDnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAH0vUHEousjhm6yhz6N62GrV1f7oUmQ3vMlyf+kUSRriF33G1f/T9DdWfhMilpCY
-	 PUnhHDWRZ9OaPFvCCkbU/uNMQnSnSM3bBvAdtSIFQ/9YwjxSiNvze+3lF2wqYeOdus
-	 lweliW2BKASJwo9yA4cCUHeYWq6CwM9irhA2s1bA=
+	b=BH14RBDgAJXhHnUIcqdfHYo3MIC8E/4pfLBIKOuNjwJC3fQMTOM/N1iQAczFGySOB
+	 PQWOhbvKY7hastpAvZsOVQdL95W/+GJNcaubjC0y11ZTgMOiUORcrJGmZhFr5xyJtG
+	 uK5ENxYO0NMVXwQONuvVA1w8oKADrYktddbtXLWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 108/134] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Sun,  1 Sep 2024 18:17:34 +0200
-Message-ID: <20240901160814.152029218@linuxfoundation.org>
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 144/149] arm64: dts: freescale: imx93-tqma9352: fix CMA alloc-ranges
+Date: Sun,  1 Sep 2024 18:17:35 +0200
+Message-ID: <20240901160822.861447787@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
+[ Upstream commit cd0c6872aab4d2c556a5e953e6926a1b4485e543 ]
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+DRAM starts at 0x80000000.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c982ecfa7992 ("arm64: dts: freescale: add initial device tree for MBa93xxLA SBC board")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -323,6 +323,8 @@ static int pcs_get_function(struct pinct
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+index 9d2328c185c90..fe951f86a96bd 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+@@ -19,7 +19,7 @@
+ 		linux,cma {
+ 			compatible = "shared-dma-pool";
+ 			reusable;
+-			alloc-ranges = <0 0x60000000 0 0x40000000>;
++			alloc-ranges = <0 0x80000000 0 0x40000000>;
+ 			size = <0 0x10000000>;
+ 			linux,cma-default;
+ 		};
+-- 
+2.43.0
+
 
 
 
