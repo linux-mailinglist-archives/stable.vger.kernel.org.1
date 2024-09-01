@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4CB96776B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6B8967861
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB08CB21089
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDABB282018
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6C917E01C;
-	Sun,  1 Sep 2024 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFC4184556;
+	Sun,  1 Sep 2024 16:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RPwK2ER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZsihNTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15F2C1B4;
-	Sun,  1 Sep 2024 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022D1822F8;
+	Sun,  1 Sep 2024 16:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207567; cv=none; b=mmNMGbb4TRwo8N9k1LL7BaW1E+HHrnlRlKN7apwYn7vdNXNFsRvqYNhAkDkkpKB4tXdpU3LeErjM4wZpxRJS1G5sq9PssaQLPlORfiALTdrXyoW9uUGAKsDJBMrWZucRumKvOq8VODZkyMkpKajDExAj6ulMU12L38EsBDi8bLo=
+	t=1725208267; cv=none; b=AkNZ7eMnvXKcGOJ+FdaDja0qOGwwwMVBh+/+NxTZbm+YkS1gUEPu1o45iyizQH/18iDOpJFfcHUhtuHiHzqg1v7gc825wJperp1yzcheDGD1jHNGnx3f1QK6Xdj3YoQi6fnCava++njHgZlGpjzr5PJft5HyWOeFeoOTSfdom6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207567; c=relaxed/simple;
-	bh=WKIcprMpLv5iJcoi6qcoZfB1SP9vdZxCKhZ01gz6TBQ=;
+	s=arc-20240116; t=1725208267; c=relaxed/simple;
+	bh=eWhu7n+cjXQTEwIDiu5YH1eScOfGAU9t553qgmf3A50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgnpkZvo8yL4ALjiprEimrz+2zjaW7SRyrRJDy+PejblLuhQ7RJo/ifba6UOJaDTUmTLXYs8xr/Mwg98nGJIQl/QPkSXC7Y432pZ71E2Nr1q+H+X6TzPTMFTb7vP6J53hdt8G4Rm0KiAXg1hx4BgFmYbQRlt7i27U80s1jf3DXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RPwK2ER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C647C4CEC3;
-	Sun,  1 Sep 2024 16:19:26 +0000 (UTC)
+	 MIME-Version; b=UGecAMDbgOV0w+HPkKl3zBtlJm4y/dUs3z2kbgG6cQkiusPLPU2kYO8SVVFufAgXtyRLQVhvC/eGgQX/2fs563mts6DvgHdOUhArLFEDq3NYwJjd2sp2Yd8CMWc3eF0CtYJ7a59WzoLNEzwXAIOrIXZVjgcV1fixBk/mV2vOH3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZsihNTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8DFC4CEC3;
+	Sun,  1 Sep 2024 16:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207567;
-	bh=WKIcprMpLv5iJcoi6qcoZfB1SP9vdZxCKhZ01gz6TBQ=;
+	s=korg; t=1725208267;
+	bh=eWhu7n+cjXQTEwIDiu5YH1eScOfGAU9t553qgmf3A50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RPwK2ER/TTGf0F+LxKGPeWA+XrLiUtj5wMWLC4GV4lUS3/Unw1Nun/ATgquMr8rg
-	 nYX/cj6TSDHUz0+JoUHM+MnyNOGZtLliYmBWYq8R1K8MylAx4c27n9V2XsXLxs67pZ
-	 Ra/w7jI5rthTdkyz9MJsIXCcp/xuDkQ+M5mbdakM=
+	b=0ZsihNTLA7xAJlGNaXiXIKC9QMhOV8nS90rk4sy76/puPV/YZWwQnL91/UkGEdyvK
+	 3aKWAd7RbudqzvLXblQjGhxDKhxC342DFQPsBqZBldhS5nPUtESWOBzS5mLOl8J+ES
+	 UYFhSL1ZU0TZbY79Zq1n5K8ffXohAtKZoz/MvNgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 4.19 11/98] memcg_write_event_control(): fix a user-triggerable oops
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 030/149] selftests: mptcp: join: cannot rm sf if closed
 Date: Sun,  1 Sep 2024 18:15:41 +0200
-Message-ID: <20240901160804.111962173@linuxfoundation.org>
+Message-ID: <20240901160818.596944152@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
+commit e93681afcb96864ec26c3b2ce94008ce93577373 upstream.
 
-we are *not* guaranteed that anything past the terminating NUL
-is mapped (let alone initialized with anything sane).
+Thanks to the previous commit, the MPTCP subflows are now closed on both
+directions even when only the MPTCP path-manager of one peer asks for
+their closure.
 
-Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+In the two tests modified here -- "userspace pm add & remove address"
+and "userspace pm create destroy subflow" -- one peer is controlled by
+the userspace PM, and the other one by the in-kernel PM. When the
+userspace PM sends a RM_ADDR notification, the in-kernel PM will
+automatically react by closing all subflows using this address. Now,
+thanks to the previous commit, the subflows are properly closed on both
+directions, the userspace PM can then no longer closes the same
+subflows if they are already closed. Before, it was OK to do that,
+because the subflows were still half-opened, still OK to send a RM_ADDR.
+
+In other words, thanks to the previous commit closing the subflows, an
+error will be returned to the userspace if it tries to close a subflow
+that has already been closed. So no need to run this command, which mean
+that the linked counters will then not be incremented.
+
+These tests are then no longer sending both a RM_ADDR, then closing the
+linked subflow just after. The test with the userspace PM on the server
+side is now removing one subflow linked to one address, then sending
+a RM_ADDR for another address. The test with the userspace PM on the
+client side is now only removing the subflow that was previously
+created.
+
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
 Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-2-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4140,9 +4140,12 @@ static ssize_t memcg_write_event_control
- 	buf = endp + 1;
- 
- 	cfd = simple_strtoul(buf, &endp, 10);
--	if ((*endp != ' ') && (*endp != '\0'))
-+	if (*endp == '\0')
-+		buf = endp;
-+	else if (*endp == ' ')
-+		buf = endp + 1;
-+	else
- 		return -EINVAL;
--	buf = endp + 1;
- 
- 	event = kzalloc(sizeof(*event), GFP_KERNEL);
- 	if (!event)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3429,14 +3429,12 @@ userspace_tests()
+ 			"signal"
+ 		userspace_pm_chk_get_addr "${ns1}" "10" "id 10 flags signal 10.0.2.1"
+ 		userspace_pm_chk_get_addr "${ns1}" "20" "id 20 flags signal 10.0.3.1"
+-		userspace_pm_rm_addr $ns1 10
+ 		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns1}" \
+-			"id 20 flags signal 10.0.3.1" "after rm_addr 10"
++			"id 20 flags signal 10.0.3.1" "after rm_sf 10"
+ 		userspace_pm_rm_addr $ns1 20
+-		userspace_pm_rm_sf $ns1 10.0.3.1 $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns1}" "" "after rm_addr 20"
+-		chk_rm_nr 2 2 invert
++		chk_rm_nr 1 1 invert
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
+@@ -3460,12 +3458,11 @@ userspace_tests()
+ 			"id 20 flags subflow 10.0.3.2" \
+ 			"subflow"
+ 		userspace_pm_chk_get_addr "${ns2}" "20" "id 20 flags subflow 10.0.3.2"
+-		userspace_pm_rm_addr $ns2 20
+ 		userspace_pm_rm_sf $ns2 10.0.3.2 $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns2}" \
+ 			"" \
+-			"after rm_addr 20"
+-		chk_rm_nr 1 1
++			"after rm_sf 20"
++		chk_rm_nr 0 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
 
 
 
