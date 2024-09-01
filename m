@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-72445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361E6967AA8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05AF967866
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664901C21517
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF0C1F212E9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A810B18308E;
-	Sun,  1 Sep 2024 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E85E184524;
+	Sun,  1 Sep 2024 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rpzp7vX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSCcNHlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65941183CA7;
-	Sun,  1 Sep 2024 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1031181CE1;
+	Sun,  1 Sep 2024 16:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209947; cv=none; b=ss0K6fJ4fMwLXIKwog9bAE6xCZAuqOr1QazFewsqEPXQehowrGJRcMo1a0huvymOXla9j3KrHy5CirtSvT/agUUXxY7v8kOQWfQZ+cTudtXRcrwQskrMbZdFiY5Pla8/5asLVArDWKAmW4i1z4AT/pgstC34nvbtCETiFNtrsOg=
+	t=1725208283; cv=none; b=k/D4sZ/flCBw7z2TMY4bgfBQOPtcndk1KhSvUkqDK4YqlkVkcf7wf/QqG2gMFrLD1mzecHbsqbYsHc4TZSZ1REQrCfXqK8gUOLaFaKaaLPcHnkrVOy6oC+xrh1PZY3uWtCosCIjpYOSpedTRowgbME5KBU419p31qWnEHQlESPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209947; c=relaxed/simple;
-	bh=wgPG5P8YO/JaPDwdk1FghsbyHZafWtAtErqfC/ax4yk=;
+	s=arc-20240116; t=1725208283; c=relaxed/simple;
+	bh=wWhDUtQWEEc59DnKnsPBWImRYCR/lCLBlJyYpyFRhKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C107hoGRQkzrnKl0QCsSQm9Mv4cCBdV9DTNM8YOUh3usP90n/c0sqmhoIXBOhQvcPe6DvUHnwev2e0ZkCfwhoUQsWtD7koH2N9o6fgMj1L9W2yonjHi0SIecg0A+9025OsLsd3swostu4EumjrsW4mE0lTeYQT9MGh92b6d3ofQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rpzp7vX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA61EC4CEC3;
-	Sun,  1 Sep 2024 16:59:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=acL2aaIESZyLAwryQMyDabXQpXVJPvExuCKKUMnp5mgB71oLgoUYSZV1WwcKowARky4zUGPc1C9IpQaDlM3PLZF9nS6Oqw7mRkv9Y0wd1hN1H3qAavhjpW1BeBRPljl9ffHhi7uSICypH3igdMJyyYboC4XwXOIlbtMSg6MgDTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSCcNHlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E55AC4CEC3;
+	Sun,  1 Sep 2024 16:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209947;
-	bh=wgPG5P8YO/JaPDwdk1FghsbyHZafWtAtErqfC/ax4yk=;
+	s=korg; t=1725208282;
+	bh=wWhDUtQWEEc59DnKnsPBWImRYCR/lCLBlJyYpyFRhKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rpzp7vX1zxG4dO1WssLV7NGIDDoeXwKm5zDqPBRNP8GNvoV6l3lJNtDZB3NCHR+5M
-	 bb5n4pz5wxpBYbq4B+xH2UcDwAxuigAzuEipEgFKNqJIWqF3CWL8gPpHDBTh2M9xRl
-	 yVBHhSEouRnOtihHblAebjrwPhR+PYdW8w94977M=
+	b=jSCcNHlGnaKcbGh9gJKhpvZ+QIio07PGvvj73JM5JMT7ghjE2JfgEw/fmaqBvEUiu
+	 RoNQwihVlwv9xvZCXiXNHcZw87aIAYd81cYJ/E7d/29kCRsRKaP/+PFqdWTd9OsvCk
+	 7n1AQeHCk2zruB4zhfa90FOyqcL/3Ad+0/bfpbFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/215] mlxbf_gige: Remove two unused function declarations
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Subject: [PATCH 6.10 035/149] drm/v3d: Disable preemption while updating GPU stats
 Date: Sun,  1 Sep 2024 18:15:46 +0200
-Message-ID: <20240901160824.635673814@linuxfoundation.org>
+Message-ID: <20240901160818.782119823@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +59,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 98261be155f8de38f11b6542d4a8935e5532687b ]
+commit 9d824c7fce58f59982228aa85b0376b113cdfa35 upstream.
 
-Commit f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-declared but never implemented these.
+We forgot to disable preemption around the write_seqcount_begin/end() pair
+while updating GPU stats:
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20230808145249.41596-1-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: df934abb185c ("mlxbf_gige: disable RX filters until RX path initialized")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
+  [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
+ <...snip...>
+  [ ] Call trace:
+  [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
+  [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
+  [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
+  [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
+  [ ]  process_one_work+0x62c/0xb48
+  [ ]  worker_thread+0x468/0x5b0
+  [ ]  kthread+0x1c4/0x1e0
+  [ ]  ret_from_fork+0x10/0x20
+
+Fix it.
+
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Acked-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240813102505.80512-1-tursulin@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-index 0fdf2c8ca480d..13ba044e7d9a4 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-@@ -151,9 +151,6 @@ enum mlxbf_gige_res {
- int mlxbf_gige_mdio_probe(struct platform_device *pdev,
- 			  struct mlxbf_gige *priv);
- void mlxbf_gige_mdio_remove(struct mlxbf_gige *priv);
--irqreturn_t mlxbf_gige_mdio_handle_phy_interrupt(int irq, void *dev_id);
--void mlxbf_gige_mdio_enable_phy_int(struct mlxbf_gige *priv);
--
- void mlxbf_gige_set_mac_rx_filter(struct mlxbf_gige *priv,
- 				  unsigned int index, u64 dmac);
- void mlxbf_gige_get_mac_rx_filter(struct mlxbf_gige *priv,
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index b8682818bafa..ad1e6236ff6f 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -134,6 +134,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	struct v3d_stats *local_stats = &file->stats[queue];
+ 	u64 now = local_clock();
+ 
++	preempt_disable();
++
+ 	write_seqcount_begin(&local_stats->lock);
+ 	local_stats->start_ns = now;
+ 	write_seqcount_end(&local_stats->lock);
+@@ -141,6 +143,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	write_seqcount_begin(&global_stats->lock);
+ 	global_stats->start_ns = now;
+ 	write_seqcount_end(&global_stats->lock);
++
++	preempt_enable();
+ }
+ 
+ static void
+@@ -162,8 +166,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	struct v3d_stats *local_stats = &file->stats[queue];
+ 	u64 now = local_clock();
+ 
++	preempt_disable();
+ 	v3d_stats_update(local_stats, now);
+ 	v3d_stats_update(global_stats, now);
++	preempt_enable();
+ }
+ 
+ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
 -- 
-2.43.0
+2.46.0
 
 
 
