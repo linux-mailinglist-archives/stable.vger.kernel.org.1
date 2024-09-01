@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474729679E6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E326967A62
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F233E1F221B0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800011C214E2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD718306C;
-	Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3AF181334;
+	Sun,  1 Sep 2024 16:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6YoVjw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOZraQim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958211C68C;
-	Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEDB1DFD1;
+	Sun,  1 Sep 2024 16:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209342; cv=none; b=AMuZb8gklH7D0mUdVyWtTCJUqZVBGL8mXbG0cgeNoEbD2TKH089F2rQdvyn4Tdi4oHuoBNufCS3FPgwab1eeW2aflKQg11bCh/e1fxfigNgpl69FGI/IcSyv5MSHtDe60frTW4iSsDMuqr7E1VK4st7wo8ueI2EXnyGTOZsPhsg=
+	t=1725209725; cv=none; b=ViFbMsJGL0/MA3LWim0bUdjdm8GfZiOnOambkjQVbHtCEMWMlbd+jF75IpvnQuLSjfOeaDHHqnOQt0hwkrR2ELRiDpUyBFXpN24LqQq1i6c80H0bGilsD6YZNPimauDC5CivmOISFbSTwdXrVFUqBnrQzM4wyrG/bsZkNVogrWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209342; c=relaxed/simple;
-	bh=S24VOYJzr36u1fK0HJFY685lFOOT6PizT7YesRN7vkM=;
+	s=arc-20240116; t=1725209725; c=relaxed/simple;
+	bh=ZuOJPpyoBe7jGu4f06y45A8eiHoqgR5Lb10P0tR5cSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TW9LzC1EWP3DiBEs3eHjLrLVguke7UL67jad8NkrIE3DBWZ5Hyufoc7OjLWtKL2IipArxpP9RwIEGIODVmYi8i6RJ3PPSxnVjbG8hUsRGdKocM57K5lPnIsdtXoo2qjHhYd4a0Qg8KouWPMDB1/UHWVC6/VCplUwzXInWwSdKrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6YoVjw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA19C4CEC3;
-	Sun,  1 Sep 2024 16:49:01 +0000 (UTC)
+	 MIME-Version; b=iPAuY6kVzwOn85ULVtkvagdEBGVpzaTaRPpRdERyDr/VD8Bxp1pnt1Y9x7qrBDzNeq7f6cVz1+yDwWHdboGlOlGhsNBA2uio+yprRZkD8ZpNbukSDgs48d7Py5oF/vHZF8uzFhMlj648RmIo2bytkOQ0q+g6+oCA/Uc+150cdzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOZraQim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060E0C4CEC3;
+	Sun,  1 Sep 2024 16:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209342;
-	bh=S24VOYJzr36u1fK0HJFY685lFOOT6PizT7YesRN7vkM=;
+	s=korg; t=1725209725;
+	bh=ZuOJPpyoBe7jGu4f06y45A8eiHoqgR5Lb10P0tR5cSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6YoVjw3aJ08W1C5SylaEYHNCymUhI/htX/3DoH3Gj3reaqPIehv3ZjLt4b4CSBVt
-	 ZvyPgRTfsPS174dIVCiQQehVyPtFR3I0F1pTA0EergGawlsVlgacF+MsApgUoOgmb6
-	 MA+3JrKAFWiFIKPFJ32zBRckbRxBiZoC1SKPPsUA=
+	b=GOZraQimoDh7DwWut/uYftzrqLP71ur+CKLmnfyvqRejWl786nKv9dOaAALSdhn0q
+	 PtuBqf5dqmwpX0EZOqKpcwO2JqkY4aRoiAgauih9/xZVN/FlGFs1Q2merhIc2Aa7xR
+	 dfzahg3uyhhldJ7V0Mf4PxbnF2KRufZcnA9E0GrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZHANG Yuntian <yt@radxa.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 58/71] USB: serial: option: add MeiG Smart SRM825L
-Date: Sun,  1 Sep 2024 18:18:03 +0200
-Message-ID: <20240901160804.078319284@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.10 124/151] pinctrl: single: fix potential NULL dereference in pcs_get_function()
+Date: Sun,  1 Sep 2024 18:18:04 +0200
+Message-ID: <20240901160818.773333592@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZHANG Yuntian <yt@radxa.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
+commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
 
-Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=6f345e48
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Found by code review.
 
-Signed-off-by: ZHANG Yuntian <yt@radxa.com>
-Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-single.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,6 +619,8 @@ static void option_instat_callback(struc
- 
- /* MeiG Smart Technology products */
- #define MEIGSMART_VENDOR_ID			0x2dee
-+/* MeiG Smart SRM825L based on Qualcomm 315 */
-+#define MEIGSMART_PRODUCT_SRM825L		0x4d22
- /* MeiG Smart SLM320 based on UNISOC UIS8910 */
- #define MEIGSMART_PRODUCT_SLM320		0x4d41
- 
-@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -350,6 +350,8 @@ static int pcs_get_function(struct pinct
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 
 
 
