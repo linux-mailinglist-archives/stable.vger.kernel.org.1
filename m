@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-72157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8744B967968
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE629678EE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C7C22813D0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C1B2820C0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07B717E8EA;
-	Sun,  1 Sep 2024 16:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A15417E00C;
+	Sun,  1 Sep 2024 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5PruflA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBi1XB0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBB8143894;
-	Sun,  1 Sep 2024 16:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE52D2B9C7;
+	Sun,  1 Sep 2024 16:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209030; cv=none; b=PNWVAa6zq+P/JGMzSRW8twQBKcP+ySVoU4/vY+B3twUqnR6htyNtJFKO02enlajHPFlHTXHtq9aB/meBmNIPiqbLYBbjW544VV2Sm17yvr4e/nVOQOlLnE+xNDNY6m4Oawf5VHFnhlRRvKoKG3jdJtbeGLKQ4kMKJe7ff7ILZS0=
+	t=1725208650; cv=none; b=Bjlo4o4HGtn2vDjZU0wTuo0OmAx0vRjUisI5Rvozy6Ki7DLO9Ngz4svzT87+97AHfGJfvz+b5LtjIpPL3354uFDveqeSo73YN/mOkXeayBRVuW35TxPz3bhzInZ1cgvFGXTA8Gvd+abWzDpDl5+x6SsnmuHVGBLREqoNWOz6OA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209030; c=relaxed/simple;
-	bh=2LEuaxnDMDC4TK61jtJpPzUenybka5bW+/O7Y8T92uU=;
+	s=arc-20240116; t=1725208650; c=relaxed/simple;
+	bh=yBRDzq/eVsrf5+o12vAJG7uPCKk+GAnblzMk3cEW4hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OU+F1yQW6vt7m2+RzHQ7f7VsLIaI9kmT+eGNxWxUa6axesNzEPILAofWt2UVi4ADy9QyXVD+lJzDSW02cNcmmyDkbPCPP0XqM3hsp7g51XclsBPg4sUgulgqgvarQugnSA55ZCJPh5g0Jdm/PgBFTvr0ka5gJPynF5w8nKh9IfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5PruflA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AD6C4CEC3;
-	Sun,  1 Sep 2024 16:43:49 +0000 (UTC)
+	 MIME-Version; b=LOxJx5F62aFrBhE3Oaq+oLfHimnKe4spWf1nZVAvfDz8Wf3GI5S8LhxTfJOkJUQm5sc2VVtd5i5HqJTLpU+Zz8Xucc0Nffx7hMzHnhQSFBmoRdzavsbrUl2oS99PCLfjfqUUH8Rtayn8ewi1q2+uvUjtIHtHo3BoLAfL4yI3aPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBi1XB0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F95C4CEC3;
+	Sun,  1 Sep 2024 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209030;
-	bh=2LEuaxnDMDC4TK61jtJpPzUenybka5bW+/O7Y8T92uU=;
+	s=korg; t=1725208649;
+	bh=yBRDzq/eVsrf5+o12vAJG7uPCKk+GAnblzMk3cEW4hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5PruflAfabxdv54gAjOKHI5vF/DIClNvQlPEbvaCVJb3blzhRx4O341ry8mMUB+I
-	 HHse/yc05UafMOVqLjL4jbvE8PMuf+PyLUFqeCdL6z6+twnsrPZinPohtfWI4xyUex
-	 hU3j6Ex1j/Jszia9MmcJvbo9ll2UmmWov7z9VLYE=
+	b=sBi1XB0Ge8V5LpoxU/Alffw5/3xHLu0tEUUE1FAdaIvYiu6z6Pe2pXxBZj4x7lFV9
+	 oV524MMf7LuS5qfFJhFDdOQH/jQwO9cnbOC0jldWetEO4m44U082jLI/BCIgz17CcR
+	 3hlT/c6J2ncqP58LO37jNKhxFxSGzD+E1fFxYgvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>
-Subject: [PATCH 5.4 112/134] filelock: Correct the filelock owner in fcntl_setlk/fcntl_setlk64
+	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
+	Ben Hutchings <benh@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 147/149] scsi: aacraid: Fix double-free on probe failure
 Date: Sun,  1 Sep 2024 18:17:38 +0200
-Message-ID: <20240901160814.298614121@linuxfoundation.org>
+Message-ID: <20240901160822.974505544@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Ben Hutchings <benh@debian.org>
 
-The locks_remove_posix() function in fcntl_setlk/fcntl_setlk64 is designed
-to reliably remove locks when an fcntl/close race is detected. However, it
-was passing in the wrong filelock owner, it looks like a mistake and
-resulting in a failure to remove locks. More critically, if the lock
-removal fails, it could lead to a uaf issue while traversing the locks.
+[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
 
-This problem occurs only in the 4.19/5.4 stable version.
+aac_probe_one() calls hardware-specific init functions through the
+aac_driver_ident::init pointer, all of which eventually call down to
+aac_init_adapter().
 
-Fixes: 4c43ad4ab416 ("filelock: Fix fcntl/close race recovery compat path")
-Fixes: dc2ce1dfceaa ("filelock: Remove locks reliably when fcntl/close race is detected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If aac_init_adapter() fails after allocating memory for aac_dev::queues,
+it frees the memory but does not clear that member.
+
+After the hardware-specific init function returns an error,
+aac_probe_one() goes down an error path that frees the memory pointed to
+by aac_dev::queues, resulting.in a double-free.
+
+Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
+Link: https://bugs.debian.org/1075855
+Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/aacraid/comminit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2542,7 +2542,7 @@ int fcntl_setlk(unsigned int fd, struct
- 		f = fcheck(fd);
- 		spin_unlock(&current->files->file_lock);
- 		if (f != filp) {
--			locks_remove_posix(filp, &current->files);
-+			locks_remove_posix(filp, current->files);
- 			error = -EBADF;
- 		}
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index bd99c5492b7d4..0f64b02443037 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -642,6 +642,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 
+ 	if (aac_comm_init(dev)<0){
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
  	}
-@@ -2672,7 +2672,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = fcheck(fd);
- 		spin_unlock(&current->files->file_lock);
- 		if (f != filp) {
--			locks_remove_posix(filp, &current->files);
-+			locks_remove_posix(filp, current->files);
- 			error = -EBADF;
- 		}
+ 	/*
+@@ -649,6 +650,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 	 */
+ 	if (aac_fib_setup(dev) < 0) {
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
  	}
+ 		
+-- 
+2.43.0
+
 
 
 
