@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-71927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009F8967864
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0766967A9F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F1B281FED
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14CB1C21517
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9485381A;
-	Sun,  1 Sep 2024 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C3317E919;
+	Sun,  1 Sep 2024 16:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeL5IR5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlUWDtmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA6C183CD8;
-	Sun,  1 Sep 2024 16:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0074A1C68C;
+	Sun,  1 Sep 2024 16:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208277; cv=none; b=FgCsbo9scGN48sMlPiri8CLKpH5mLhMcpI5mNp9P73xe+KiCNEwgH+63yyDv2N239DVfj5EP4W4JnaQfl5HwlIXquCZXDgeMtfKoM3jXdD5UEylbOFseSpF/REYNobyMyi55FNiQKaldl0tF6Dvlk+/HAtGiAVXZt7rhF4gJah8=
+	t=1725209921; cv=none; b=fZqtGxNL6qV8O4qEWdWJfUkgZTuAq1y2uXtk0y7b/IQnLDrqykaHaphvAy4ZpsbXMPvWGJJFOEDmlTzjdxzcb8NnabtPRrYvy48nPswWjCrB7lytFaZldqS1FgWITQh17POp+TysUcp6krpe6zJ9Mtui+Ys2+BQXzWDe5eaVJwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208277; c=relaxed/simple;
-	bh=lHexZca08x6bD+ddDh7LIe04j9q3LPYXyp4EPTIkObk=;
+	s=arc-20240116; t=1725209921; c=relaxed/simple;
+	bh=NOrTVI/bTEtOki1+D75yNKmK/KJX1dkhLyWsOn8rCLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbm/llz6xXM419A24WGdP5efWpm4G5W9nphfY+hGX37t3W8gD8EwrKZR3YslzXw+VnsjnDt+RlUKnz4MtORoeBxMJ5Kw3JFEIbv1QoLc271eEV1wcZhh3CfXX7Gz2TCAJxgoX7fv8laMu6LAueHVHQ93hNEZpPIg14GSaR8++cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeL5IR5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74667C4CEC3;
-	Sun,  1 Sep 2024 16:31:16 +0000 (UTC)
+	 MIME-Version; b=XxINZ2hsOyq7YbaEFHoh9OI/osede9p/YkfzEvtdsSqTTp11P/WiWNkD65Rt4OtRRrODdK6EAEN18xO3K50CUnxPIu0b/PtgkKA/VKlPx3O7B3lSsZvuGvORQsv4Deu2XjIUb/Kr472GaPzukgfPld6YhM+nKbNdKjcvxqiCdeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlUWDtmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD04C4CEC3;
+	Sun,  1 Sep 2024 16:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208276;
-	bh=lHexZca08x6bD+ddDh7LIe04j9q3LPYXyp4EPTIkObk=;
+	s=korg; t=1725209920;
+	bh=NOrTVI/bTEtOki1+D75yNKmK/KJX1dkhLyWsOn8rCLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeL5IR5LNGJL9HezIm2JXj+csGZCrkGu73EFFcWpRljLxN6jqOD+i2Pi6SP3uoNuc
-	 GoUADmmk9WG2OADh7VnbNrSyVbRkwnSNJ9p3HewJZ2SdKSWW2WenaRHve0a0QkwFW8
-	 cjaxVL7nH7ze9gfP735dzyAe5D1kv5/hGvAizdAw=
+	b=VlUWDtmx7tljQ7wW324wGYMR6e0Ebf2jFcioc686yk9H+9R5Tl5lwzS2xef5lLkA2
+	 mo5QUCUi5HSHsS1f5HOONt+xHRSkCXwRLb42EG8hIxX+OB30+ep1wDFgBamy6toGwo
+	 CF6LjziSNO4VVsczUfbpUmWWTxcMxN4pl0Uw3vKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 033/149] selftests: mptcp: join: check re-re-adding ID 0 endp
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/215] net: dsa: vsc73xx: use read_poll_timeout instead delay loop
 Date: Sun,  1 Sep 2024 18:15:44 +0200
-Message-ID: <20240901160818.707938019@linuxfoundation.org>
+Message-ID: <20240901160824.476457623@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-commit d397d7246c11ca36c33c932bc36d38e3a79e9aa0 upstream.
+[ Upstream commit eb7e33d01db3aec128590391b2397384bab406b6 ]
 
-This test extends "delete and re-add" to validate the previous commit:
-when the endpoint linked to the initial subflow (ID 0) is re-added
-multiple times, it was no longer being used, because the internal linked
-counters are not decremented for this special endpoint: it is not an
-additional endpoint.
+Switch the delay loop during the Arbiter empty check from
+vsc73xx_adjust_link() to use read_poll_timeout(). Functionally,
+one msleep() call is eliminated at the end of the loop in the timeout
+case.
 
-Here, the "del/add id 0" steps are done 3 times to unsure this case is
-validated.
+As Russell King suggested:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+"This [change] avoids the issue that on the last iteration, the code reads
+the register, tests it, finds the condition that's being waiting for is
+false, _then_ waits and end up printing the error message - that last
+wait is rather useless, and as the arbiter state isn't checked after
+waiting, it could be that we had success during the last wait."
 
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Link: https://lore.kernel.org/r/20240417205048.3542839-2-paweldembicki@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: fa63c6434b6f ("net: dsa: vsc73xx: check busy flag in MDIO operations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++-----------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 30 ++++++++++++++------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3576,7 +3576,7 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 0 3
- 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
--		test_linkfail=4 speed=20 \
-+		test_linkfail=4 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 15afb84155472..ce1c6d6eeb606 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -17,6 +17,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/iopoll.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+@@ -269,6 +270,9 @@
+ #define IS_7398(a) ((a)->chipid == VSC73XX_CHIPID_ID_7398)
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
  
-@@ -3608,20 +3608,23 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
- 
--		pm_nl_del_endpoint $ns2 1 10.0.1.2
--		sleep 0.5
--		chk_subflow_nr "after delete id 0" 2
--		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
--
--		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
--		wait_mpj $ns2
--		chk_subflow_nr "after re-add id 0" 3
--		chk_mptcp_info subflows 3 subflows 3
-+		local i
-+		for i in $(seq 3); do
-+			pm_nl_del_endpoint $ns2 1 10.0.1.2
-+			sleep 0.5
-+			chk_subflow_nr "after delete id 0 ($i)" 2
-+			chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
++#define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_POLL_TIMEOUT_US		10000
 +
-+			pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-+			wait_mpj $ns2
-+			chk_subflow_nr "after re-add id 0 ($i)" 3
-+			chk_mptcp_info subflows 3 subflows 3
-+		done
+ struct vsc73xx_counter {
+ 	u8 counter;
+ 	const char *name;
+@@ -780,7 +784,7 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 	 * after a PHY or the CPU port comes up or down.
+ 	 */
+ 	if (!phydev->link) {
+-		int maxloop = 10;
++		int ret, err;
  
- 		mptcp_lib_kill_wait $tests_pid
+ 		dev_dbg(vsc->dev, "port %d: went down\n",
+ 			port);
+@@ -795,19 +799,17 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 				    VSC73XX_ARBDISC, BIT(port), BIT(port));
  
--		chk_join_nr 4 4 4
--		chk_rm_nr 2 2
-+		chk_join_nr 6 6 6
-+		chk_rm_nr 4 4
- 	fi
- }
+ 		/* Wait until queue is empty */
+-		vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-			     VSC73XX_ARBEMPTY, &val);
+-		while (!(val & BIT(port))) {
+-			msleep(1);
+-			vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-				     VSC73XX_ARBEMPTY, &val);
+-			if (--maxloop == 0) {
+-				dev_err(vsc->dev,
+-					"timeout waiting for block arbiter\n");
+-				/* Continue anyway */
+-				break;
+-			}
+-		}
++		ret = read_poll_timeout(vsc73xx_read, err,
++					err < 0 || (val & BIT(port)),
++					VSC73XX_POLL_SLEEP_US,
++					VSC73XX_POLL_TIMEOUT_US, false,
++					vsc, VSC73XX_BLOCK_ARBITER, 0,
++					VSC73XX_ARBEMPTY, &val);
++		if (ret)
++			dev_err(vsc->dev,
++				"timeout waiting for block arbiter\n");
++		else if (err < 0)
++			dev_err(vsc->dev, "error reading arbiter\n");
  
+ 		/* Put this port into reset */
+ 		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG,
+-- 
+2.43.0
+
 
 
 
