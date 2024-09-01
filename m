@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EED967B1B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784919679BB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4826DB203A8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA22281B40
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2553517ADE1;
-	Sun,  1 Sep 2024 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD65187327;
+	Sun,  1 Sep 2024 16:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlPctkHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6sBL9TW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D396417C;
-	Sun,  1 Sep 2024 17:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA18818452E;
+	Sun,  1 Sep 2024 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210307; cv=none; b=fL1YD2iq1ryTYm68aFNttnRSyBXwfkRrTSE0uz436YMZAi6R8hCq8dbmNZbIwNme/Bw2FGY+avSBNHGeGRT3qBHbVIZ+Y6BH87JQqlCfuhnkL0QGKMSS93xPpBSKvX6vppE/L+94DllKsgag49bxotAj9unxtLjN5h/XUDKOAy4=
+	t=1725209221; cv=none; b=Mc0hvF+FXavUNJAuwdHpx3NG500o2Pelspq43aMNA0fgkGFWmu/89S/uRF2nEYLb7uA7xzGVTm9zzV6JATJgtt3jSjBLosPY9zxk7Mw7FyFGw3EihcXN/j0c/q3tyQvjAjs0FERkMCAi2k40J/4QB1bhVkF7+ljCaYn5GDXH99Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210307; c=relaxed/simple;
-	bh=q+Jn4kt/Y+xarmPPd/IYriP1bn8+GUJFPpsjUZ1OvGI=;
+	s=arc-20240116; t=1725209221; c=relaxed/simple;
+	bh=2ynujQitxK9f3wsfw7x10NJcpLOiqRELndOLUMhpmhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKYcPU97pMMI2Jplq8yAu4WqUluVFDREVvaQej3edzx+P0QlTJHj2B4xbJFlKu8nud1vumhfCQGJEk5DO4I+6i2LX4kj4eaJR8VbsCsHlYbEuEPsxeUJ1gJAs7UQlVxbOM7uGNUGVOeXhY2gUoAUJWcE9kf+51OyJZiuGjvX2PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlPctkHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DA6C4CEC3;
-	Sun,  1 Sep 2024 17:05:07 +0000 (UTC)
+	 MIME-Version; b=FRN8GnNYg9PxbtoHXpfqHThcc3hYNz96xbzY25EBaCMIOmf35FLZLv4bcnVftnGwhq2vPhve3R3b7QSV6x491DDvZhVs5Q7Fkb7KH6POV0fKeIibX/qlmTfcOIMvi6X69DM1T2Z0eXYp7tzoDLSGZRsuI4lEGcZQ/dpTorbKKzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6sBL9TW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D54C4CEC3;
+	Sun,  1 Sep 2024 16:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210307;
-	bh=q+Jn4kt/Y+xarmPPd/IYriP1bn8+GUJFPpsjUZ1OvGI=;
+	s=korg; t=1725209221;
+	bh=2ynujQitxK9f3wsfw7x10NJcpLOiqRELndOLUMhpmhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlPctkHpNTgy3NSxhfk35aw/tbJUh7D0PqzN2pNUNkbX1+8v5mZnzkMOmzf64j0Np
-	 MMgm3/zPdeDrEY00Rs56XVZzZuJVpVkFTdSjqo5cECKUbGEa9LCOx6kMrWNec4rgvn
-	 sN6B1V90/5k1rqY4vZ8Lp7D/NEwohwDnvoEnt/mc=
+	b=X6sBL9TWoL6b/kA9Xn3fEJLdZwI14tNcWnbYx79HGcF/4wnxWj/hiOsD9oDXQ00pr
+	 ZahplDN3cE9QMygKKN9LXz9vOo0yZBRiHLVMx9n1BSJnVitAScoVLvqtLBBZ6qw+xx
+	 tIgLo+fpX1fCNiSRTVPh+o7gFXBplQVbIsFSPyHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Piyush Mehta <piyush.mehta@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 151/215] ipv6: prevent possible UAF in ip6_xmit()
+Subject: [PATCH 6.1 38/71] phy: xilinx: phy-zynqmp: dynamic clock support for power-save
 Date: Sun,  1 Sep 2024 18:17:43 +0200
-Message-ID: <20240901160829.072755510@linuxfoundation.org>
+Message-ID: <20240901160803.329761955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Piyush Mehta <piyush.mehta@amd.com>
 
-[ Upstream commit 2d5ff7e339d04622d8282661df36151906d0e1c7 ]
+[ Upstream commit 25d70083351318b44ae699d92c042dcb18a738ea ]
 
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
+Enabling clock for all the lanes consumes power even PHY is active or
+inactive. To resolve this, enable/disable clocks in phy_init/phy_exit.
 
-We must use rcu_read_lock() to prevent a possible UAF.
+By default clock is disabled for all the lanes. Whenever phy_init called
+from USB, SATA, or display driver, etc. It enabled the required clock
+for requested lane. On phy_exit cycle, it disabled clock for the active
+PHYs.
 
-Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+During the suspend/resume cycle, each USB/ SATA/ display driver called
+phy_exit/phy_init individually. It disabled clock on exit, and enabled
+on initialization for the active PHYs.
+
+Signed-off-by: Piyush Mehta <piyush.mehta@amd.com>
+Link: https://lore.kernel.org/r/20230613140250.3018947-3-piyush.mehta@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 5af9b304bc60 ("phy: xilinx: phy-zynqmp: Fix SGMII linkup failure on resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/phy/xilinx/phy-zynqmp.c | 61 ++++++++-------------------------
+ 1 file changed, 15 insertions(+), 46 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 8054a4a2f2a5e..b37121f872bc9 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -273,11 +273,15 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		head_room += opt->opt_nflen + opt->opt_flen;
+diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
+index 964d8087fcf46..a8782aad62ca4 100644
+--- a/drivers/phy/xilinx/phy-zynqmp.c
++++ b/drivers/phy/xilinx/phy-zynqmp.c
+@@ -573,6 +573,10 @@ static int xpsgtr_phy_init(struct phy *phy)
  
- 	if (unlikely(head_room > skb_headroom(skb))) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOBUFS;
+ 	mutex_lock(&gtr_dev->gtr_mutex);
+ 
++	/* Configure and enable the clock when peripheral phy_init call */
++	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->lane]))
++		goto out;
++
+ 	/* Skip initialization if not required. */
+ 	if (!xpsgtr_phy_init_required(gtr_phy))
+ 		goto out;
+@@ -617,9 +621,13 @@ static int xpsgtr_phy_init(struct phy *phy)
+ static int xpsgtr_phy_exit(struct phy *phy)
+ {
+ 	struct xpsgtr_phy *gtr_phy = phy_get_drvdata(phy);
++	struct xpsgtr_dev *gtr_dev = gtr_phy->dev;
+ 
+ 	gtr_phy->skip_phy_init = false;
+ 
++	/* Ensure that disable clock only, which configure for lane */
++	clk_disable_unprepare(gtr_dev->clk[gtr_phy->lane]);
++
+ 	return 0;
+ }
+ 
+@@ -825,15 +833,11 @@ static struct phy *xpsgtr_xlate(struct device *dev,
+ static int xpsgtr_runtime_suspend(struct device *dev)
+ {
+ 	struct xpsgtr_dev *gtr_dev = dev_get_drvdata(dev);
+-	unsigned int i;
+ 
+ 	/* Save the snapshot ICM_CFG registers. */
+ 	gtr_dev->saved_icm_cfg0 = xpsgtr_read(gtr_dev, ICM_CFG0);
+ 	gtr_dev->saved_icm_cfg1 = xpsgtr_read(gtr_dev, ICM_CFG1);
+ 
+-	for (i = 0; i < ARRAY_SIZE(gtr_dev->clk); i++)
+-		clk_disable_unprepare(gtr_dev->clk[i]);
+-
+ 	return 0;
+ }
+ 
+@@ -843,13 +847,6 @@ static int xpsgtr_runtime_resume(struct device *dev)
+ 	unsigned int icm_cfg0, icm_cfg1;
+ 	unsigned int i;
+ 	bool skip_phy_init;
+-	int err;
+-
+-	for (i = 0; i < ARRAY_SIZE(gtr_dev->clk); i++) {
+-		err = clk_prepare_enable(gtr_dev->clk[i]);
+-		if (err)
+-			goto err_clk_put;
+-	}
+ 
+ 	icm_cfg0 = xpsgtr_read(gtr_dev, ICM_CFG0);
+ 	icm_cfg1 = xpsgtr_read(gtr_dev, ICM_CFG1);
+@@ -870,12 +867,6 @@ static int xpsgtr_runtime_resume(struct device *dev)
+ 		gtr_dev->phys[i].skip_phy_init = skip_phy_init;
+ 
+ 	return 0;
+-
+-err_clk_put:
+-	while (i--)
+-		clk_disable_unprepare(gtr_dev->clk[i]);
+-
+-	return err;
+ }
+ 
+ static DEFINE_RUNTIME_DEV_PM_OPS(xpsgtr_pm_ops, xpsgtr_runtime_suspend,
+@@ -887,7 +878,6 @@ static DEFINE_RUNTIME_DEV_PM_OPS(xpsgtr_pm_ops, xpsgtr_runtime_suspend,
+ static int xpsgtr_get_ref_clocks(struct xpsgtr_dev *gtr_dev)
+ {
+ 	unsigned int refclk;
+-	int ret;
+ 
+ 	for (refclk = 0; refclk < ARRAY_SIZE(gtr_dev->refclk_sscs); ++refclk) {
+ 		unsigned long rate;
+@@ -898,19 +888,14 @@ static int xpsgtr_get_ref_clocks(struct xpsgtr_dev *gtr_dev)
+ 		snprintf(name, sizeof(name), "ref%u", refclk);
+ 		clk = devm_clk_get_optional(gtr_dev->dev, name);
+ 		if (IS_ERR(clk)) {
+-			ret = dev_err_probe(gtr_dev->dev, PTR_ERR(clk),
+-					    "Failed to get reference clock %u\n",
+-					    refclk);
+-			goto err_clk_put;
++			return dev_err_probe(gtr_dev->dev, PTR_ERR(clk),
++					     "Failed to get ref clock %u\n",
++					     refclk);
  		}
-+		rcu_read_unlock();
+ 
+ 		if (!clk)
+ 			continue;
+ 
+-		ret = clk_prepare_enable(clk);
+-		if (ret)
+-			goto err_clk_put;
+-
+ 		gtr_dev->clk[refclk] = clk;
+ 
+ 		/*
+@@ -930,18 +915,11 @@ static int xpsgtr_get_ref_clocks(struct xpsgtr_dev *gtr_dev)
+ 			dev_err(gtr_dev->dev,
+ 				"Invalid rate %lu for reference clock %u\n",
+ 				rate, refclk);
+-			ret = -EINVAL;
+-			goto err_clk_put;
++			return -EINVAL;
+ 		}
  	}
  
- 	if (opt) {
+ 	return 0;
+-
+-err_clk_put:
+-	while (refclk--)
+-		clk_disable_unprepare(gtr_dev->clk[refclk]);
+-
+-	return ret;
+ }
+ 
+ static int xpsgtr_probe(struct platform_device *pdev)
+@@ -950,7 +928,6 @@ static int xpsgtr_probe(struct platform_device *pdev)
+ 	struct xpsgtr_dev *gtr_dev;
+ 	struct phy_provider *provider;
+ 	unsigned int port;
+-	unsigned int i;
+ 	int ret;
+ 
+ 	gtr_dev = devm_kzalloc(&pdev->dev, sizeof(*gtr_dev), GFP_KERNEL);
+@@ -990,8 +967,7 @@ static int xpsgtr_probe(struct platform_device *pdev)
+ 		phy = devm_phy_create(&pdev->dev, np, &xpsgtr_phyops);
+ 		if (IS_ERR(phy)) {
+ 			dev_err(&pdev->dev, "failed to create PHY\n");
+-			ret = PTR_ERR(phy);
+-			goto err_clk_put;
++			return PTR_ERR(phy);
+ 		}
+ 
+ 		gtr_phy->phy = phy;
+@@ -1002,8 +978,7 @@ static int xpsgtr_probe(struct platform_device *pdev)
+ 	provider = devm_of_phy_provider_register(&pdev->dev, xpsgtr_xlate);
+ 	if (IS_ERR(provider)) {
+ 		dev_err(&pdev->dev, "registering provider failed\n");
+-		ret = PTR_ERR(provider);
+-		goto err_clk_put;
++		return PTR_ERR(provider);
+ 	}
+ 
+ 	pm_runtime_set_active(gtr_dev->dev);
+@@ -1012,16 +987,10 @@ static int xpsgtr_probe(struct platform_device *pdev)
+ 	ret = pm_runtime_resume_and_get(gtr_dev->dev);
+ 	if (ret < 0) {
+ 		pm_runtime_disable(gtr_dev->dev);
+-		goto err_clk_put;
++		return ret;
+ 	}
+ 
+ 	return 0;
+-
+-err_clk_put:
+-	for (i = 0; i < ARRAY_SIZE(gtr_dev->clk); i++)
+-		clk_disable_unprepare(gtr_dev->clk[i]);
+-
+-	return ret;
+ }
+ 
+ static int xpsgtr_remove(struct platform_device *pdev)
 -- 
 2.43.0
 
