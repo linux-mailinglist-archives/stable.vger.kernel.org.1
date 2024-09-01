@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988739677E1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989C1967786
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0E01F20CAA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16D89B21B73
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A033F181B88;
-	Sun,  1 Sep 2024 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B6E183090;
+	Sun,  1 Sep 2024 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZJtNXE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlfkE58Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF2E14290C;
-	Sun,  1 Sep 2024 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C352C1B4;
+	Sun,  1 Sep 2024 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207915; cv=none; b=pqwLRrwDe3M43MQTzwmLILJ2kjDOdvWia2RjGfVtY4UUPB3Ht6daT7RozRvFDGTkBYOYh14cj4EuGni4wAnCfoJjSBtlgCRJj4XF0etZyUdl8HRcAZNyIkxPMlSwqWqFN0Tw149FoCdYm89qGCiCzUvs1mKRW331iWOfG2eUGjM=
+	t=1725207642; cv=none; b=NzF09Jg/Y82y1KPrkI+JfmYISEIt68ZWEGAL/Cm3gDzLW9+RHU/UeBFQsvB2v0vfijajcjkyakejkLrH3q+rRL0sDmwWYcp93xVhOEPVeHgHQ8KHHJW5kcB6HevC1HGjkGbFG6ZNoXH/xAmS26Tschue90WyxNpSP1apro4YocE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207915; c=relaxed/simple;
-	bh=qyRW9K0UhWuoAAKxwU3jj5PQDo2bYaEDrP2T0KHxjsM=;
+	s=arc-20240116; t=1725207642; c=relaxed/simple;
+	bh=kRwqkHIOD9i6yjTKpahYW2ae48QNQ/fuyVbicz/wZmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5gA1AiUzLzjvOSWUZA//kRxPwobqwRv3DamdHDV/Iwz3IqioZSUtw1KCcbKTOAvwZDjg7PSB9jU09cKaHdoEbjGS8r+zkN0Kc7M5NF0xxbECbGQ94U2jFuX3xZxb5T7Wz995hy3cL6LaBCd33t6rzMSGH0YlCcnfrzXD9ehX0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZJtNXE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFA4C4CEC3;
-	Sun,  1 Sep 2024 16:25:14 +0000 (UTC)
+	 MIME-Version; b=bO5xSUF12E/qKQy895PfWDHYI1Hyd78SR+IXN/R3x3s7CC01Jco66WB6zn4ldkJ4cqXEL3Jr0eUUkbEIbJOWhmvdh/amsAF910a8FEDKPm1n/OxFxeDcSfelGqhBPx+9dOQjJVZMkEAWhrDz++3cvqb5CV9R2H8XEpwMVjMxxsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlfkE58Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB28C4CEC3;
+	Sun,  1 Sep 2024 16:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207915;
-	bh=qyRW9K0UhWuoAAKxwU3jj5PQDo2bYaEDrP2T0KHxjsM=;
+	s=korg; t=1725207642;
+	bh=kRwqkHIOD9i6yjTKpahYW2ae48QNQ/fuyVbicz/wZmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZJtNXE5jx6PfaYV5hxyK6s5BfLS2rjoJ1ph8+T/PYSXaa14r+bXt+ySGFZwPjl0o
-	 EEmhvl1FQLZb8mtS6Ifu+cD680e6Tn2wuMhbTAlX+Dcn264UYsW8wKELDpPGKf0Ga8
-	 ciFUseeu7luE1m8vdxKe6uPtZ5O4G+XDA/98jYnY=
+	b=MlfkE58Qy0ASM72Zeuv/Rx/SbyDWdTN1PUVVqmKVpy2jiLHVQaRnnfj6FthPIoEMY
+	 BM1lozbE0qgOudYEkMcafs/gXvx2Xwdu7tWxldHKo7swJOgObSrimH8t4kywPh+bWh
+	 e+sq1sw3+8R8KKddr3+DQoQgosCICcjsKQ5egWBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 17/93] mptcp: pm: send ACK on an active subflow
+	Li zeming <zeming@nfschina.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 34/98] powerpc/boot: Handle allocation failure in simple_realloc()
 Date: Sun,  1 Sep 2024 18:16:04 +0200
-Message-ID: <20240901160808.010347510@linuxfoundation.org>
+Message-ID: <20240901160804.984801373@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Li zeming <zeming@nfschina.com>
 
-commit c07cc3ed895f9bfe0c53b5ed6be710c133b4271c upstream.
+[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
 
-Taking the first one on the list doesn't work in some cases, e.g. if the
-initial subflow is being removed. Pick another one instead of not
-sending anything.
+simple_malloc() will return NULL when there is not enough memory left.
+Check pointer 'new' before using it to copy the old data.
 
-Fixes: 84dfe3677a6f ("mptcp: send out dedicated ADD_ADDR packet")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li zeming <zeming@nfschina.com>
+[mpe: Reword subject, use change log from Christophe]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/boot/simple_alloc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -776,9 +776,12 @@ void mptcp_pm_nl_addr_send_ack(struct mp
- 	    !mptcp_pm_should_rm_signal(msk))
- 		return;
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index 65ec135d01579..188c4f996512a 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -114,7 +114,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
--	subflow = list_first_entry_or_null(&msk->conn_list, typeof(*subflow), node);
--	if (subflow)
--		mptcp_pm_send_ack(msk, subflow, false, false);
-+	mptcp_for_each_subflow(msk, subflow) {
-+		if (__mptcp_subflow_active(subflow)) {
-+			mptcp_pm_send_ack(msk, subflow, false, false);
-+			break;
-+		}
-+	}
+ 	new = simple_malloc(size);
+-	memcpy(new, ptr, p->size);
++	if (new)
++		memcpy(new, ptr, p->size);
++
+ 	simple_free(ptr);
+ 	return new;
  }
- 
- int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
+-- 
+2.43.0
+
 
 
 
