@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD01F9679A0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D34967A34
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EAB2B218E7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F516282313
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6120185B5E;
-	Sun,  1 Sep 2024 16:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F325817E900;
+	Sun,  1 Sep 2024 16:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTz9Fl/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQbKcqQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DAC183087;
-	Sun,  1 Sep 2024 16:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E71DFD1;
+	Sun,  1 Sep 2024 16:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209145; cv=none; b=Y3CGYob7PKDi4pZeBIthTNDOUfQtLtp6dgr8xFvvzx+sMi9Mh2m0AbqzH4Fg+rk/V/GmCt9ToNMjPsubrWh2vk8EvzueKgfgEZBkYx5n6vUsOADt8ijA4O4yeOT6IUt3YLiG/zgM/N4fDcNo+r9iWfjTxRwe2moKp5LOnMVYtOE=
+	t=1725209573; cv=none; b=LJfwd1pBolyqUYZkx82LEP9FISF+GGcm8kdCn57AMhBeavPxJA7Jtv5BQHthny4jeBsZ2z1qV6qGGxfQ64wSLc99KaRjBgVMQNn7e1Y+C3HrqKo63pnWyq3GuRoJtT6gu5TMANyyQuVwmy4TcXVaDhNeEst/un1tDtD0i0ohK6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209145; c=relaxed/simple;
-	bh=M7XgjzWKtu3RzCGdL8WKsMSoIeR3W141W46/r7TJqAU=;
+	s=arc-20240116; t=1725209573; c=relaxed/simple;
+	bh=ftRo6Pp/UaVX/mad1DOuOcGE2oYLkoAftNTDFNTgilM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZiXakfqZbMWs0AN8aRZ0s7ombSicLFNuVQEd5Xtw/HCWK1VuxpJcHSioIf4mlj3yL5Wjy+XhGaGrwNXCC5296AyOODceTNHPCevMxsHRCIYBt/DuJB8WahMDKcfNB+sVDiq3zjSXpbgXpDVqIpSDE7DoRevrmnongu9RhXgYdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTz9Fl/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC637C4CEC3;
-	Sun,  1 Sep 2024 16:45:44 +0000 (UTC)
+	 MIME-Version; b=su/RbtawQjwhX+uj17xrFv2+b01z0oO2rJMp0NVVCrjFVgP93lCPlyxni10aUF/7BjsEn2dfUAr1gyeGLe6q64Mis3BT5LVYDVFYhHNZ0lwI/mkkx9hkjomM9K8/SnMAaokS9K/8ZX8d8pfhRS7EVPyMm1ifWIgWIqy16i7stTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQbKcqQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4EC4CEC3;
+	Sun,  1 Sep 2024 16:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209145;
-	bh=M7XgjzWKtu3RzCGdL8WKsMSoIeR3W141W46/r7TJqAU=;
+	s=korg; t=1725209573;
+	bh=ftRo6Pp/UaVX/mad1DOuOcGE2oYLkoAftNTDFNTgilM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTz9Fl/yPVQlrYavIKbyCtyHRFuT00gc5vc+D5CyFW7fvZSQTfEgnAQmeGPBtlyEY
-	 H1nxrSoDfq69s0EgopWspInGHV+xzpGOLrbp0h731J3copgjHLvuD+hNSJnpFbZ75k
-	 EjGNmSk/9RjTOMgDAZ7P0783lqBwmRPSDuuVwBdg=
+	b=TQbKcqQQa1kTCwo3sqvayxeBzO/f+VAZb7cc+kE0pLTmnEfWXYtg/K90CmFtbHVel
+	 vi4Wmw+VOBzXKAsi6+JDJUA1amZ4PT8lsxKvOKuqSh7p26HCGOq47vq+GfSLBNApBu
+	 6b9lkQ3m/swuHTPeBY8Ce+F1LufZpegvvEEcnkCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 14/71] mptcp: pm: reset MPC endp ID when re-added
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 079/151] ext4: set the type of max_zeroout to unsigned int to avoid overflow
 Date: Sun,  1 Sep 2024 18:17:19 +0200
-Message-ID: <20240901160802.426846301@linuxfoundation.org>
+Message-ID: <20240901160817.092229198@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit dce1c6d1e92535f165219695a826caedcca4e9b9 upstream.
+[ Upstream commit 261341a932d9244cbcd372a3659428c8723e5a49 ]
 
-The initial subflow has a special local ID: 0. It is specific per
-connection.
+The max_zeroout is of type int and the s_extent_max_zeroout_kb is of
+type uint, and the s_extent_max_zeroout_kb can be freely modified via
+the sysfs interface. When the block size is 1024, max_zeroout may
+overflow, so declare it as unsigned int to avoid overflow.
 
-When a global endpoint is deleted and re-added later, it can have a
-different ID -- most services managing the endpoints automatically don't
-force the ID to be the same as before. It is then important to track
-these modifications to be consistent with the ID being used for the
-address used by the initial subflow, not to confuse the other peer or to
-send the ID 0 for the wrong address.
-
-Now when removing an endpoint, msk->mpc_endpoint_id is reset if it
-corresponds to this endpoint. When adding a new endpoint, the same
-variable is updated if the address match the one of the initial subflow.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-9-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1331,20 +1331,27 @@ static struct pm_nl_pernet *genl_info_pm
- 	return pm_nl_get_pernet(genl_info_net(info));
- }
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 9e12592727914..f5fa9d542d648 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3399,9 +3399,10 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 	struct ext4_extent *ex, *abut_ex;
+ 	ext4_lblk_t ee_block, eof_block;
+ 	unsigned int ee_len, depth, map_len = map->m_len;
+-	int allocated = 0, max_zeroout = 0;
+ 	int err = 0;
+ 	int split_flag = EXT4_EXT_DATA_VALID2;
++	int allocated = 0;
++	unsigned int max_zeroout = 0;
  
--static int mptcp_nl_add_subflow_or_signal_addr(struct net *net)
-+static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
-+					       struct mptcp_addr_info *addr)
- {
- 	struct mptcp_sock *msk;
- 	long s_slot = 0, s_num = 0;
- 
- 	while ((msk = mptcp_token_iter_next(net, &s_slot, &s_num)) != NULL) {
- 		struct sock *sk = (struct sock *)msk;
-+		struct mptcp_addr_info mpc_addr;
- 
- 		if (!READ_ONCE(msk->fully_established) ||
- 		    mptcp_pm_is_userspace(msk))
- 			goto next;
- 
-+		/* if the endp linked to the init sf is re-added with a != ID */
-+		mptcp_local_address((struct sock_common *)msk, &mpc_addr);
-+
- 		lock_sock(sk);
- 		spin_lock_bh(&msk->pm.lock);
-+		if (mptcp_addresses_equal(addr, &mpc_addr, addr->port))
-+			msk->mpc_endpoint_id = addr->id;
- 		mptcp_pm_create_subflow_or_signal_addr(msk);
- 		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
-@@ -1417,7 +1424,7 @@ static int mptcp_nl_cmd_add_addr(struct
- 		goto out_free;
- 	}
- 
--	mptcp_nl_add_subflow_or_signal_addr(sock_net(skb->sk));
-+	mptcp_nl_add_subflow_or_signal_addr(sock_net(skb->sk), &entry->addr);
- 	return 0;
- 
- out_free:
-@@ -1530,6 +1537,8 @@ static int mptcp_nl_remove_subflow_and_s
- 			spin_unlock_bh(&msk->pm.lock);
- 		}
- 
-+		if (msk->mpc_endpoint_id == entry->addr.id)
-+			msk->mpc_endpoint_id = 0;
- 		release_sock(sk);
- 
- next:
+ 	ext_debug(inode, "logical block %llu, max_blocks %u\n",
+ 		  (unsigned long long)map->m_lblk, map_len);
+-- 
+2.43.0
+
 
 
 
