@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52EF967A26
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA66967804
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34C328223A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234241F215E3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BBC17E919;
-	Sun,  1 Sep 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE64183CBE;
+	Sun,  1 Sep 2024 16:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLGj3GmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3dTtkOT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1320F1DFD1;
-	Sun,  1 Sep 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAA133987;
+	Sun,  1 Sep 2024 16:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209528; cv=none; b=PBT+nK8DzPlmr+MlWFJGxMbK9KCNo2x5qvloqVVUZFzzikSoO/HDCpRmshaphv5yx2B3BICOMjxaLykkaDvHy41mZS/Q1JuCOGaHjqeGEi1JadjYQLPE7Y4vKJbeCtLJk8Kx3OFgAZrkjLGeTAVdEtbGx2SE4vQYxDa8+PYi8Vw=
+	t=1725208008; cv=none; b=MeK+0OaEE0IAcQf/S/UYvMjqU8DAoD32WdJujrvr5/KptK+xhYDjhAbRn56n7n2Isk5WsdLS+voXsCTiGsBq6i3mfNGvFDx54Q/6LVI4lPDIidVKeMTyBP4FLL0q0ve47MXrx5dFBm6rTITgLSQYJYatDnjRf0qd5ZnLYQAkDu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209528; c=relaxed/simple;
-	bh=BCPHmGgopEnyFAIEKroo1eRcg+sy7qeykBNFcBOs1uI=;
+	s=arc-20240116; t=1725208008; c=relaxed/simple;
+	bh=5Q9fQIbce9r1E64vOO1kod4XQoL2UPdOzApLwh1rU4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdDmez4poY02dwfYjh6mwanIQkxK3wXDjq5tN1y0tMWUXbF4Dl5ccj8u6dyoP2T3i8+JOZDvWAm0qelgrYw7F6AACCYhpYF5QOceV6gva3mMEnmJH++t9l/IisfJEG/6uA1ENqnNJRXldfeoAyMJyvHgDvXqcdnST6u82iARJ90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLGj3GmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D53C4CEC3;
-	Sun,  1 Sep 2024 16:52:07 +0000 (UTC)
+	 MIME-Version; b=SZ/IBpHSz/4cXX3DMPpn7gCOugRPvbvbhUL/kQhfRBneP0w2B/blco+tafe+U72gP5mJ2TLTmVPHDOebte+R4TZcwOrEE1lBgZw5O+WQw0WZoOMJ+iqPqS5L/mM9YdeucvrJ37P/msH4BSHS2OjHSbUdYt3ZP9KG55fQAjLpgKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3dTtkOT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7E4C4CEC3;
+	Sun,  1 Sep 2024 16:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209527;
-	bh=BCPHmGgopEnyFAIEKroo1eRcg+sy7qeykBNFcBOs1uI=;
+	s=korg; t=1725208008;
+	bh=5Q9fQIbce9r1E64vOO1kod4XQoL2UPdOzApLwh1rU4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLGj3GmGmWMrBpF6z4DQp1oJxEo46T3W40Uf33fo6n2iQnLXBXms9Wye1FtG9h3sh
-	 G5GLvc/yyTNeEa4oAjwySRhahA0witrLL5G/SwCAc+c7dUAvukHGVExvUq82b1EU+P
-	 AeC+eMh04LGe7aZJFVxnDk2ZgfqWBuTWjdFUFvZg=
+	b=R3dTtkOTaweTa19/Z60lHVB53hyHAChvbTWb9Dz88DNcIH0k94+u2lRunEIc2ok1s
+	 m6mvrjsHrwwZnVTLTRkvMQXhGsEyMAfUZN99pfgEC760NSwbuYcv8uf1AZyzWfpSSz
+	 xe2FFszWbUK06irnxWAwDW+5+Pux/XPHUv26+Ti0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/151] wifi: cw1200: Avoid processing an invalid TIM IE
+	Mrinmay Sarkar <quic_msarkar@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 46/93] dmaengine: dw-edma: Fix unmasking STOP and ABORT interrupts for HDMA
 Date: Sun,  1 Sep 2024 18:16:33 +0200
-Message-ID: <20240901160815.345977021@linuxfoundation.org>
+Message-ID: <20240901160809.095563125@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
 
-[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
+commit 383baf5c8f062091af34c63f28d37642a8f188ae upstream.
 
-While converting struct ieee80211_tim_ie::virtual_map to be a flexible
-array it was observed that the TIM IE processing in cw1200_rx_cb()
-could potentially process a malformed IE in a manner that could result
-in a buffer over-read. Add logic to verify that the TIM IE length is
-large enough to hold a valid TIM payload before processing it.
+The current logic is enabling both STOP_INT_MASK and ABORT_INT_MASK
+bit. This is apparently masking those particular interrupts rather than
+unmasking the same. If the interrupts are masked, they would never get
+triggered.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So fix the issue by unmasking the STOP and ABORT interrupts properly.
+
+Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+cc: stable@vger.kernel.org
+Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1724674261-3144-2-git-send-email-quic_msarkar@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/st/cw1200/txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dw-edma/dw-hdma-v0-core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
-index 400dd585916b5..7ef0886503578 100644
---- a/drivers/net/wireless/st/cw1200/txrx.c
-+++ b/drivers/net/wireless/st/cw1200/txrx.c
-@@ -1170,7 +1170,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
- 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
- 
- 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
--		if (tim_ie) {
-+		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
- 			struct ieee80211_tim_ie *tim =
- 				(struct ieee80211_tim_ie *)&tim_ie[2];
- 
+diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+index 10e8f0715114..2addaca3b694 100644
+--- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
++++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+@@ -247,10 +247,11 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ 	if (first) {
+ 		/* Enable engine */
+ 		SET_CH_32(dw, chan->dir, chan->id, ch_en, BIT(0));
+-		/* Interrupt enable&unmask - done, abort */
+-		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) |
+-		      HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK |
+-		      HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
++		/* Interrupt unmask - stop, abort */
++		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup);
++		tmp &= ~(HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK);
++		/* Interrupt enable - stop, abort */
++		tmp |= HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
+ 		if (!(dw->chip->flags & DW_EDMA_CHIP_LOCAL))
+ 			tmp |= HDMA_V0_REMOTE_STOP_INT_EN | HDMA_V0_REMOTE_ABORT_INT_EN;
+ 		SET_CH_32(dw, chan->dir, chan->id, int_setup, tmp);
 -- 
-2.43.0
+2.46.0
 
 
 
