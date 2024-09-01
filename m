@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ECF967846
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2313967A86
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 487AFB20F0B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8FC1F23EB3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7098F183CB1;
-	Sun,  1 Sep 2024 16:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04731181334;
+	Sun,  1 Sep 2024 16:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDHloLQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zF1SWvAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C1E28387;
-	Sun,  1 Sep 2024 16:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C87208A7;
+	Sun,  1 Sep 2024 16:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208198; cv=none; b=uRoZP/+xZqL9guzHOCbSIti+CfuNi+0jGqL7LysL3zE6gr7M72KUNjlptbtDblG5v5Z4B0LkO3drvH++bxz5dU3LUaRD88RFHJGaHf9pfPk6ijRM8lxn4OgvZ5f4FSwBwo5aHCLEO7BCTTE+T8zltLC5UHZAawpANo6QtpUwu+g=
+	t=1725209836; cv=none; b=EpAmv5UYjMSIgTpurj6Sg5s0ViO4vtv4zP8uCSRYeQpG0jZees993jU9KNr+WqmbtbB6a1XC42vLHr/r/JQ6UlzKXtDeR6tnSmdIKgsJU3AbZcDNMertB9jUOawJueP81KlpUX8N9a42HbxEsfgvYTHJpQYimHOWvNewTYsoFYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208198; c=relaxed/simple;
-	bh=vICCKWGRUXY7jAMjrrRKpJ7PObNL8r53dWRYShrMgws=;
+	s=arc-20240116; t=1725209836; c=relaxed/simple;
+	bh=iaQDcG6hQH13ci41A8RJexA8omsSjIBJBBBy4qaWKVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEViAYRRAmuDwmUQCpdJ5rLUonrXk5N8+R9md1PSDZtUc+eFEeRW3t7EujxT9Jzsj3Oa8sSg76OdmZkysfUk5jTQI4WUwbTFZNlnQcDrohZyC9PzgQ9v3uyrXsdnlTzKL7reb50qYyFVZng5OEm4jwlCc1pg2IIMvNUpLVIJ5NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDHloLQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95317C4CEC3;
-	Sun,  1 Sep 2024 16:29:57 +0000 (UTC)
+	 MIME-Version; b=u/86mFTQvrNqAO6AV9LXfj6+Tz0nXzYvvmxyvbV1P1Q6kEepHdjWyB+ZUW2g/aK/mjlCth+6Cbmdy2IhzkwM3i73uzALRaHon2vgfet8GQISwxEqVnXz3Aw6HAlpaWcqUh/H46WS+6VHepfX1huL8pxniTxhIzVspbs7KDZppUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zF1SWvAt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06149C4CEC3;
+	Sun,  1 Sep 2024 16:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208198;
-	bh=vICCKWGRUXY7jAMjrrRKpJ7PObNL8r53dWRYShrMgws=;
+	s=korg; t=1725209836;
+	bh=iaQDcG6hQH13ci41A8RJexA8omsSjIBJBBBy4qaWKVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDHloLQylVymHn/XkJFTduUubgQrpIQs1I68dXTQ2AJnKBNg9P8EQ6lax0sc0pLOb
-	 eLbmG2bw3XSkXCoSAQzaCg+xg/winkVTroLYDwAh6/V2GWpwrrgIVyBHRCOzMTyfom
-	 i51Dt9Li8VhCGAxEdm+K/qP2wyhVxKgLmVCeTv0U=
+	b=zF1SWvAtwFuPojcZORgQq6PNDz/PkgwaDkop6HrbCJJzKDG75apmLktAwL6wgXMgX
+	 be2nP55SjBGn8lUmmKoDeAf+pmqdPFhk0V8fMqZBfqduhk/HBaE9MZruPiE1jWlH44
+	 965sfmrOw8FTzfENZpX5SkexC17lbcbx5SJjaCuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 001/149] drm/amdgpu/mes: fix mes ring buffer overflow
-Date: Sun,  1 Sep 2024 18:15:12 +0200
-Message-ID: <20240901160817.520390148@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 001/215] fuse: Initialize beyond-EOF page contents before setting uptodate
+Date: Sun,  1 Sep 2024 18:15:13 +0200
+Message-ID: <20240901160823.289479819@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Jann Horn <jannh@google.com>
 
-commit 11752c013f562a1124088a35bd314aa0e9f0e88f upstream.
+commit 3c0da3d163eb32f1f91891efaade027fa9b245b9 upstream.
 
-wait memory room until enough before writing mes packets
-to avoid ring buffer overflow.
+fuse_notify_store(), unlike fuse_do_readpage(), does not enable page
+zeroing (because it can be used to change partial page contents).
 
-v2: squash in sched_hw_submission fix
+So fuse_notify_store() must be more careful to fully initialize page
+contents (including parts of the page that are beyond end-of-file)
+before marking the page uptodate.
 
-Fixes: de3246254156 ("drm/amdgpu: cleanup MES11 command submission")
-Fixes: fffe347e1478 ("drm/amdgpu: cleanup MES12 command submission")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 34e087e8920e635c62e2ed6a758b0cd27f836d13)
-Cc: stable@vger.kernel.org
+The current code can leave beyond-EOF page contents uninitialized, which
+makes these uninitialized page contents visible to userspace via mmap().
+
+This is an information leak, but only affects systems which do not
+enable init-on-alloc (via CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y or the
+corresponding kernel command line parameter).
+
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2574
+Cc: stable@kernel.org
+Fixes: a1d75f258230 ("fuse: add store request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    2 ++
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c   |   18 ++++++++++++++----
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ fs/fuse/dev.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -212,6 +212,8 @@ int amdgpu_ring_init(struct amdgpu_devic
- 	 */
- 	if (ring->funcs->type == AMDGPU_RING_TYPE_KIQ)
- 		sched_hw_submission = max(sched_hw_submission, 256);
-+	if (ring->funcs->type == AMDGPU_RING_TYPE_MES)
-+		sched_hw_submission = 8;
- 	else if (ring == &adev->sdma.instance[0].page)
- 		sched_hw_submission = 256;
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1623,9 +1623,11 @@ static int fuse_notify_store(struct fuse
  
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -163,7 +163,7 @@ static int mes_v11_0_submit_pkt_and_poll
- 	const char *op_str, *misc_op_str;
- 	unsigned long flags;
- 	u64 status_gpu_addr;
--	u32 status_offset;
-+	u32 seq, status_offset;
- 	u64 *status_ptr;
- 	signed long r;
- 	int ret;
-@@ -191,6 +191,13 @@ static int mes_v11_0_submit_pkt_and_poll
- 	if (r)
- 		goto error_unlock_free;
- 
-+	seq = ++ring->fence_drv.sync_seq;
-+	r = amdgpu_fence_wait_polling(ring,
-+				      seq - ring->fence_drv.num_fences_mask,
-+				      timeout);
-+	if (r < 1)
-+		goto error_undo;
-+
- 	api_status = (struct MES_API_STATUS *)((char *)pkt + api_status_off);
- 	api_status->api_completion_fence_addr = status_gpu_addr;
- 	api_status->api_completion_fence_value = 1;
-@@ -203,8 +210,7 @@ static int mes_v11_0_submit_pkt_and_poll
- 	mes_status_pkt.header.dwsize = API_FRAME_SIZE_IN_DWORDS;
- 	mes_status_pkt.api_status.api_completion_fence_addr =
- 		ring->fence_drv.gpu_addr;
--	mes_status_pkt.api_status.api_completion_fence_value =
--		++ring->fence_drv.sync_seq;
-+	mes_status_pkt.api_status.api_completion_fence_value = seq;
- 
- 	amdgpu_ring_write_multiple(ring, &mes_status_pkt,
- 				   sizeof(mes_status_pkt) / 4);
-@@ -224,7 +230,7 @@ static int mes_v11_0_submit_pkt_and_poll
- 		dev_dbg(adev->dev, "MES msg=%d was emitted\n",
- 			x_pkt->header.opcode);
- 
--	r = amdgpu_fence_wait_polling(ring, ring->fence_drv.sync_seq, timeout);
-+	r = amdgpu_fence_wait_polling(ring, seq, timeout);
- 	if (r < 1 || !*status_ptr) {
- 
- 		if (misc_op_str)
-@@ -247,6 +253,10 @@ static int mes_v11_0_submit_pkt_and_poll
- 	amdgpu_device_wb_free(adev, status_offset);
- 	return 0;
- 
-+error_undo:
-+	dev_err(adev->dev, "MES ring buffer is full.\n");
-+	amdgpu_ring_undo(ring);
-+
- error_unlock_free:
- 	spin_unlock_irqrestore(&mes->ring_lock, flags);
+ 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
+ 		err = fuse_copy_page(cs, &page, offset, this_num, 0);
+-		if (!err && offset == 0 &&
+-		    (this_num == PAGE_SIZE || file_size == end))
++		if (!PageUptodate(page) && !err && offset == 0 &&
++		    (this_num == PAGE_SIZE || file_size == end)) {
++			zero_user_segment(page, this_num, PAGE_SIZE);
+ 			SetPageUptodate(page);
++		}
+ 		unlock_page(page);
+ 		put_page(page);
  
 
 
