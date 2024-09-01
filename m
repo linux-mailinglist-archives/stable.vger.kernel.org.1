@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-72568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0594967B28
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6669679D0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CEC7281506
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C871F212B3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D74317C;
-	Sun,  1 Sep 2024 17:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A6818455A;
+	Sun,  1 Sep 2024 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbVecV/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYgbuY/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B8B2C6AF;
-	Sun,  1 Sep 2024 17:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD931849CB;
+	Sun,  1 Sep 2024 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210355; cv=none; b=q6YPcPnZw6c5aLeUOhd1/XkiUYuqeSFydCuKhgjL00jy9h8Ca1uk1moQS0lbC5zzN9/jqKHljnH6zUje+zzM+azesr1GEWnLGkzm505T6DOz1nyldtZPnTFZdantCcV+sRr87rMZ5pvKoxEF+z/Gh9XF+GYiwIYnX7e5yHx7cr0=
+	t=1725209283; cv=none; b=crWq0K2IaDXIUG32QItmagNR73LFQevJUYcsM+8srk3Kn2pmiZU/ERAhYvKTFLtOHskYgFxPMMHCuC3HWjvubjFuQ3DMloP0gpYXJR2ymPIAI/NRHp/Ztb9b3nmY65b90tHT17UAfDTdMELK/BjOPVlfHawXTqx4ltJIoz7x7p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210355; c=relaxed/simple;
-	bh=Jf+a7TkU8k6cmf2Zmvmlct+VOpW28MQXEP2aaPllO18=;
+	s=arc-20240116; t=1725209283; c=relaxed/simple;
+	bh=RJwpr+yHUfY01UAsE1AF5BlEmf7VwZzT10t0YS7qmoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSjNlbaek23UobAzqC8COHWWuSEP5kBGbBkP7TL9Je6TM0eatx4l5bBhHPxP9/iskFs/+proncC79jqqK7EOzlEzoDKus4cEXEbF5zpa8+Si66yStfaXcLQYx5qpZ8cSfrA74b3HJmJP0AwQS7a200owv+FK94GmDQJX5J57vgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbVecV/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A30C4CEC3;
-	Sun,  1 Sep 2024 17:05:55 +0000 (UTC)
+	 MIME-Version; b=euRCDURAtPanV4lTk7OkrnVwDDMz1bbbL6pusLqGbGeDTZCARtmN8R+1HU3V5kuB+KOSeZdxeY6zVNGAay9lvpCjlk8iJiR3SsOvXEHu3TFmms4bIRI89FBT8Y1ULiHMIB0QJuaSSG7Sb3wCKEq7be1V41TSUV7pCubBWF7ZmVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYgbuY/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252E8C4CEC3;
+	Sun,  1 Sep 2024 16:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210355;
-	bh=Jf+a7TkU8k6cmf2Zmvmlct+VOpW28MQXEP2aaPllO18=;
+	s=korg; t=1725209283;
+	bh=RJwpr+yHUfY01UAsE1AF5BlEmf7VwZzT10t0YS7qmoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GbVecV/uwk5Y5JfBNBmtQq3L962pKX75KRrtBQUaoABUTHeGjMXdZ4RLah79qF+gq
-	 5r7HUGQxwsgNTXHCOlZRTj89ROtLbFETXqfip2yLYc7IobaXalsZpopER72PHBHe1S
-	 agLszqAKrLoEwamazlh9KOmuGdSLYHdeaew7IVvA=
+	b=GYgbuY/uIH3m4prtP+LNgefDMaBCx1JuJYoKW0bGD032O5+O2qhn+n897Q2dDWgHX
+	 Zo7OdoNI+DQHkStdJu0UR3RoRF08MxxIhh3S56VhnQ5+pu1U0slRn9JXXfwT0ms7oZ
+	 xMx3kDlOXML2zKN1ek1KkYtHmbXNFsSCmfRaIYGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Andreas Schultz <aschultz@tpip.net>,
+	Harald Welte <laforge@gnumonks.org>,
+	Cong Wang <cong.wang@bytedance.com>,
 	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 164/215] cxgb4: add forgotten u64 ivlan cast before shift
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 51/71] gtp: fix a potential NULL pointer dereference
 Date: Sun,  1 Sep 2024 18:17:56 +0200
-Message-ID: <20240901160829.558129125@linuxfoundation.org>
+Message-ID: <20240901160803.816857989@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
+[ Upstream commit defd8b3c37b0f9cb3e0f60f47d3d78d459d57fda ]
 
-It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
-There is no reason it should not be done here
+When sockfd_lookup() fails, gtp_encap_enable_socket() returns a
+NULL pointer, but its callers only check for error pointers thus miss
+the NULL pointer case.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Fix it by returning an error pointer with the error code carried from
+sockfd_lookup().
 
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
+(I found this bug during code inspection.)
+
+Fixes: 1e3a3abd8b28 ("gtp: make GTP sockets in gtp_newlink optional")
+Cc: Andreas Schultz <aschultz@tpip.net>
+Cc: Harald Welte <laforge@gnumonks.org>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240825191638.146748-1-xiyou.wangcong@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/gtp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
- 	 * in the Compressed Filter Tuple.
- 	 */
- 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
--		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
-+		ntuple |= (u64)(FT_VLAN_VLD_F |
-+				fs->val.ivlan) << tp->vlan_shift;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 512daeb14e28b..bbe8d76b1595e 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1219,7 +1219,7 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
+ 	sock = sockfd_lookup(fd, &err);
+ 	if (!sock) {
+ 		pr_debug("gtp socket fd=%d not found\n", fd);
+-		return NULL;
++		return ERR_PTR(err);
+ 	}
  
- 	if (tp->port_shift >= 0 && fs->mask.iport)
- 		ntuple |= (u64)fs->val.iport << tp->port_shift;
+ 	sk = sock->sk;
+-- 
+2.43.0
+
 
 
 
