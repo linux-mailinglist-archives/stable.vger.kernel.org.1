@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B128C967AD8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA2E9677AD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E190E1C20829
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 087D71C20CA6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B779376EC;
-	Sun,  1 Sep 2024 17:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E30816EB4B;
+	Sun,  1 Sep 2024 16:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mv9IMCrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjDo5cMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E141EB5B;
-	Sun,  1 Sep 2024 17:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CBC364AB;
+	Sun,  1 Sep 2024 16:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210101; cv=none; b=UAI7A/c1dAHiNuJFtNdPA0xcMA8mO32DMu/hZHdsO2L2R5gF5xtU99+vOsrsGEnCAt0EPRQCZwTpPwVaygYQR9SoiRDKnOFcaGw01JkjePKpi5xELgnUqPr3ot3iVA/dj3g2iwO5WQ2yRM0qA2f8q3IBtvNnPiyLX9MyoXY6wLM=
+	t=1725207765; cv=none; b=I5QaIuuZKgTMhiixOCfMVmDcpN2aDB3Wc5rnPqoaoFt1CbBm5hFwHvHOGj41vIzUi6++PoYvD8BNseTkO9T8bggJuH8Gu26SopxfWZqwBPVPTSW0UztJG6eBq9Vt6pLdBWgnToR70TZmpJaisb69R2f+6XWe5Jlr/gKTu2S3aSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210101; c=relaxed/simple;
-	bh=FFO4hm9qwK46cJi+Ae792x97/1+SYXPfOXNM7nxtyEA=;
+	s=arc-20240116; t=1725207765; c=relaxed/simple;
+	bh=sr45mZxr0qw2J/JHKOQXiyGOi8DiNYmKBkPHH1EeRv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IR/lpYfDxtZUr2MuPWlgS7Y96uetlbmdzzmR9ZYgiNUYLxhrXKoeEwswHo9vXJBD+pCJPH6WyGV852CSIrTZZiRE2XB0vjB5QVtTETmB/7D5HY54T7XdhpsEykhwMLXk6CcpCDTdPr8I6MIE9R+N2KS6F2rVS/Ghq0Ticnq0j1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mv9IMCrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E12C4CEC3;
-	Sun,  1 Sep 2024 17:01:39 +0000 (UTC)
+	 MIME-Version; b=nufHhdEAfgYGU8nSPyvWPnn251f0ewAJxMu7FJx++9W0r2TesM/HyTzd9PMFv1HCauF0qBkJSpMKmm9LX/SrDevK5xdK2VpGOWniOcP05hYzFcg4glzKkq3LgrXT1nP3m0tmN5VWIH8X109fRVEBSu5RjhUnLzkMHKnhKZIMV3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjDo5cMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502CBC4CEC3;
+	Sun,  1 Sep 2024 16:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210100;
-	bh=FFO4hm9qwK46cJi+Ae792x97/1+SYXPfOXNM7nxtyEA=;
+	s=korg; t=1725207764;
+	bh=sr45mZxr0qw2J/JHKOQXiyGOi8DiNYmKBkPHH1EeRv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mv9IMCrS1mtwtSr8ehvWSVL7J/g6iysW/fpnocS1+vPfjT7VhlvUKTdEplnvqznH5
-	 MXruKIMf4D6pzATU7X11/rvPjSfSBI/win/eA2UnkqeO3ijMV1DJE05MWN9fFqsXfK
-	 cMpkmS/hEA1B+lK/cAxIAmTzIiKO+cuBeoFgtm8o=
+	b=WjDo5cMWAzrIDbXlsakLtyA0xOcRd3OOXxh/ALO1jQulj2uLpmFDg2Yo2JgliI14J
+	 xCtMqDAxqIZynjBSN1B6vllEen7fe0cdzbpaPJ8kaUoRUVTNZ6tDCZfGpXfZ5kWyfS
+	 6HSi9sWywlMMnE/6GW3u0vKIl5ug0C84bULzrPUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/215] btrfs: handle invalid root reference found in may_destroy_subvol()
-Date: Sun,  1 Sep 2024 18:16:40 +0200
-Message-ID: <20240901160826.681154499@linuxfoundation.org>
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 71/98] tools: move alignment-related macros to new <linux/align.h>
+Date: Sun,  1 Sep 2024 18:16:41 +0200
+Message-ID: <20240901160806.374403432@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
+commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
 
-The may_destroy_subvol() looks up a root by a key, allowing to do an
-inexact search when key->offset is -1.  It's never expected to find such
-item, as it would break the allowed range of a root id.
+Currently, tools have *ALIGN*() macros scattered across the unrelated
+headers, as there are only 3 of them and they were added separately
+each time on an as-needed basis.
+Anyway, let's make it more consistent with the kernel headers and allow
+using those macros outside of the mentioned headers. Create
+<linux/align.h> inside the tools/ folder and include it where needed.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/include/linux/align.h  |   12 ++++++++++++
+ tools/include/linux/bitmap.h |    1 +
+ 2 files changed, 13 insertions(+)
+ create mode 100644 tools/include/linux/align.h
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 07c6ab4ba0d43..66b56ddf3f4cc 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4411,7 +4411,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
- 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	BUG_ON(ret == 0);
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset -1 found, there would have to exist a root
-+		 * with such id, but this is out of valid range.
-+		 */
-+		ret = -EUCLEAN;
-+		goto out;
-+	}
+--- /dev/null
++++ b/tools/include/linux/align.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _TOOLS_LINUX_ALIGN_H
++#define _TOOLS_LINUX_ALIGN_H
++
++#include <uapi/linux/const.h>
++
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif /* _TOOLS_LINUX_ALIGN_H */
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _PERF_BITOPS_H
  
- 	ret = 0;
- 	if (path->slots[0] > 0) {
--- 
-2.43.0
-
+ #include <string.h>
++#include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <stdlib.h>
+ #include <linux/kernel.h>
 
 
 
