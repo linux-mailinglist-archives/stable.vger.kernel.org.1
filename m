@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-72611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9880F967B53
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553C09679D5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F222809C9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A73B219C6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B1B3BB48;
-	Sun,  1 Sep 2024 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765FF1849CB;
+	Sun,  1 Sep 2024 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VG96fJCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQoJF1m4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37782C190;
-	Sun,  1 Sep 2024 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36018183CA3;
+	Sun,  1 Sep 2024 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210497; cv=none; b=tDLHB+fHdBYeD/xYGfKotZhXkElLsD4ePuYjreOmdwEJcQkbAH9lqjSjg3rjSPwfaAUDbolyjygJ7+yvuF67CyIardF+JPtGD5Q71utxPu/7jHTMCL6RG1wYFdWPj3JAKbpSo9VT1Nbmov8t2OzxhrL872YplKdqUqnxVczynvs=
+	t=1725209296; cv=none; b=nOlDn7O3PtrsJ69qGYY6kJZbPsMmKb9WImtj84ZuPZf/JQDU2dDlleSbjchL9bvNlTXmWhQKUOzD2D77R2E3P2AjzwM923WR2Xk2XalIK/z+xDtLydwY9l95hAOyL7SivF/6CP8D1qWWkOjEN6k0qHRtNUC9dWVBRfc9ROkqZsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210497; c=relaxed/simple;
-	bh=1RWceZPmmH4UtqoPzAbzP6Q0Flk8hv+FpT9R4dDgfSM=;
+	s=arc-20240116; t=1725209296; c=relaxed/simple;
+	bh=C6jpKMeBEsrTF2lnFDtWD4ppwjUYLfxTTxEUaVu0wi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSA/iFmciG0hTtiR2v2ojVBSQsinYYhxu40QBxzJ6lUPFs6mf55VM+VS5s7Q0hX4sNRoUpb2RqkbvQLIG0SQzuIj4AnI6eBIMrSNMCepk+SVLcAlP/wo7uNVZ029XJx0b6CiHujsn3QMv26Kipw1yXT99+VVx2GNIAW8CWW2vXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VG96fJCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395F7C4CEC3;
-	Sun,  1 Sep 2024 17:08:17 +0000 (UTC)
+	 MIME-Version; b=Yi67xaYvK1cLeMOL8jeR4tFtpXLl7evbyTK/2NFAXuWxBDkniPSDTcx30nhtoqh3+/ld+fJNcxdF65ZjudbRvXQkBySdK3VJsP3GqMcHIT9zr+NDiOvgW1gWPur4YQ7SjlOu5+mYrjiPqiiGi3T9QWv9pSpOx6AJ4SlrqP9pc40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQoJF1m4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1536C4CEC3;
+	Sun,  1 Sep 2024 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210497;
-	bh=1RWceZPmmH4UtqoPzAbzP6Q0Flk8hv+FpT9R4dDgfSM=;
+	s=korg; t=1725209296;
+	bh=C6jpKMeBEsrTF2lnFDtWD4ppwjUYLfxTTxEUaVu0wi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VG96fJCT1Iqg/A6yUtvZvAvJwbouEMCqi7MnDXRi+p8nt3nEIFihjsxyC7pjYjv4Q
-	 QOnZA2xNAUGz4z9WuyP9llL9n10LwrjvTav8iHwWihu0+toDyzH3raIptGzdD2HbZs
-	 3j8zDtjolsVMjoD7Rguu0XQaIeBZPOo+f+yfMBD0=
+	b=mQoJF1m4w9WJPX7pAUHtfuf6PDJ2XxHo/JuWda0TmOOc13ZdR05D19+Gw8+o9tyXo
+	 GtkRtKHTUgZBwwnLACmx0ufJUIUoVRQtu0ItfAo9AMK5ZB39u/obrLHdw5uC6HKcna
+	 9Y1GyTnE6hdXbt4FtXZD9FprZBK+vl8wi1OAYdzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 176/215] btrfs: run delayed iputs when flushing delalloc
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.1 63/71] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group in remove_power_attributes()
 Date: Sun,  1 Sep 2024 18:18:08 +0200
-Message-ID: <20240901160830.013829791@linuxfoundation.org>
+Message-ID: <20240901160804.264642019@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 2d3447261031503b181dacc549fe65ffe2d93d65 upstream.
+commit 3a8839bbb86da7968a792123ed2296d063871a52 upstream.
 
-We have transient failures with btrfs/301, specifically in the part
-where we do
+Device attribute group @usb3_hardware_lpm_attr_group is merged by
+add_power_attributes(), but it is not unmerged explicitly, fixed by
+unmerging it in remove_power_attributes().
 
-  for i in $(seq 0 10); do
-	  write 50m to file
-	  rm -f file
-  done
-
-Sometimes this will result in a transient quota error, and it's because
-sometimes we start writeback on the file which results in a delayed
-iput, and thus the rm doesn't actually clean the file up.  When we're
-flushing the quota space we need to run the delayed iputs to make sure
-all the unlinks that we think have completed have actually completed.
-This removes the small window where we could fail to find enough space
-in our quota.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/core/sysfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3677,6 +3677,8 @@ static int try_flush_qgroup(struct btrfs
- 		return 0;
- 	}
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -670,6 +670,7 @@ static int add_power_attributes(struct d
  
-+	btrfs_run_delayed_iputs(root->fs_info);
-+	btrfs_wait_on_delayed_iputs(root->fs_info);
- 	ret = btrfs_start_delalloc_snapshot(root, true);
- 	if (ret < 0)
- 		goto out;
+ static void remove_power_attributes(struct device *dev)
+ {
++	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
+ }
 
 
 
