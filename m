@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FEF967AF6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E839D96782D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346C928222D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 871E7B21E44
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B2C3B79C;
-	Sun,  1 Sep 2024 17:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9239F183CAF;
+	Sun,  1 Sep 2024 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEe+e2G0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEV71fGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02522376EC;
-	Sun,  1 Sep 2024 17:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D6F44C97;
+	Sun,  1 Sep 2024 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210186; cv=none; b=kou+f0RGv92irl9r1ashAlSJqI7gwIDN3NOYnsz8Ut2IhWxBivGW7CQozmPtrkqJEBqTbmA9pNw6XEYez00wq7rHx75B7rIEzD83uH9P8egGIKhYYmpoqdeQ/5IyYbXk74KGM+Q4ZU08nWI9QytJp4XYXd7mTGsxO9oojOhgxm0=
+	t=1725208121; cv=none; b=T+5cVkWokY9mzHnAl8KoLwuKywD2DXsoGhZBDNe7i3QI4dyN0lvHltVSn0yXPd+9+Go9QY6WbTffpR6c/n9UBw2fz0R+7/XvrDi3/mnDjo0VTU2uV1aU1CnGnNWKPaKeqL07VDh6Fv2lgQlO3xghBRWN1ZJjVt6vXIVbxKLnEjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210186; c=relaxed/simple;
-	bh=ijrfK2OyFseBEkx5bCg/pR9zN+CtlQIknqLXZ0NWbAc=;
+	s=arc-20240116; t=1725208121; c=relaxed/simple;
+	bh=pI93jKb0iF2l8zRrHFTwhtM6V0EnjL/5bJ89etHET+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOdkPPm+HfZ+Y7vXOXwfSlBo37Y+3hVFdhRnZiOMvPrN1NGZOte9XDekY++aPsplXODHtVJ2hWHSBCmt9wgOoljqxHE36S8qFT/3lxb78soMwziL+/NgiAdFj+wiph73/IsbZhiqnE4QiR5NktnA8ytZle873BI0T6nifGtHcmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEe+e2G0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6693AC4CEC3;
-	Sun,  1 Sep 2024 17:03:05 +0000 (UTC)
+	 MIME-Version; b=bTnvByfgFuPi0kwAB2ex+4j8ukmdUd2IOyn+S2UmSLimAGfpV9TAYdtK9GMDTd2zflOtXADborMKPT/P+4dGFIREluBapXbue65gks3zZaZ1Aimd1XA7W6yt0NZ5lRSq8WT22n4dDUjbo0adKolHerg05tmCxl56ckdN/uB7rwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEV71fGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DACC4CEC3;
+	Sun,  1 Sep 2024 16:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210185;
-	bh=ijrfK2OyFseBEkx5bCg/pR9zN+CtlQIknqLXZ0NWbAc=;
+	s=korg; t=1725208121;
+	bh=pI93jKb0iF2l8zRrHFTwhtM6V0EnjL/5bJ89etHET+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEe+e2G0JcAlCX9TNU3n+6dDKL+wfdD2ix+FNiNQl6UpOk16iXAa2wznUn0A+Fdlj
-	 8UZ1fKIJAdXXs73PpP6+DXkgrQrqbywPyTWw/jkSp2j80mmziheLi5Dg4tYOqSoLsW
-	 cu7Auvz84FkfD8ewt1mFfizPO19Xr0gb7IvTk0Hc=
+	b=lEV71fGhLWES7128eAW8QJ/Jw9h9I6P6zvlk/MxvqIQvOIM5PxpwyFGpmzDRhXiiN
+	 3r3JPA20DWxzPoEQyBJVAS+Bwn/93ZSH8knyYIm09eWqn/D9m+wbfpEVpqf1SYZ4ew
+	 y2leUdNcgQcvERP7wb/HN8Xz4JZ09dQGEJhjsYQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 115/215] NFSD: Refactor the duplicate reply cache shrinker
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>
+Subject: [PATCH 6.6 80/93] usb: dwc3: st: fix probed platform device ref count on probe error path
 Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160827.699381834@linuxfoundation.org>
+Message-ID: <20240901160810.746507039@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c135e1269f34dfdea4bd94c11060c83a3c0b3c12 ]
+commit ddfcfeba891064b88bb844208b43bef2ef970f0c upstream.
 
-Avoid holding the bucket lock while freeing cache entries. This
-change also caps the number of entries that are freed when the
-shrinker calls to reduce the shrinker's impact on the cache's
-effectiveness.
+The probe function never performs any paltform device allocation, thus
+error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
+reference count from the platform device being probed.  If error path is
+triggered, this will lead to unbalanced device reference counts and
+premature release of device resources, thus possible use-after-free when
+releasing remaining devm-managed resources.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://lore.kernel.org/r/20240814093957.37940-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfscache.c |   82 +++++++++++++++++++++++++----------------------------
- 1 file changed, 39 insertions(+), 43 deletions(-)
+ drivers/usb/dwc3/dwc3-st.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -309,68 +309,64 @@ nfsd_prune_bucket_locked(struct nfsd_net
+--- a/drivers/usb/dwc3/dwc3-st.c
++++ b/drivers/usb/dwc3/dwc3-st.c
+@@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform
+ 	dwc3_data->regmap = regmap;
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
+-	if (!res) {
+-		ret = -ENXIO;
+-		goto undo_platform_dev_alloc;
+-	}
++	if (!res)
++		return -ENXIO;
+ 
+ 	dwc3_data->syscfg_reg_off = res->start;
+ 
+@@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform
+ 		devm_reset_control_get_exclusive(dev, "powerdown");
+ 	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
+ 		dev_err(&pdev->dev, "could not get power controller\n");
+-		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
+-		goto undo_platform_dev_alloc;
++		return PTR_ERR(dwc3_data->rstc_pwrdn);
  	}
+ 
+ 	/* Manage PowerDown */
+@@ -300,8 +297,6 @@ undo_softreset:
+ 	reset_control_assert(dwc3_data->rstc_rst);
+ undo_powerdown:
+ 	reset_control_assert(dwc3_data->rstc_pwrdn);
+-undo_platform_dev_alloc:
+-	platform_device_put(pdev);
+ 	return ret;
  }
  
--static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
--			 unsigned int max)
-+/**
-+ * nfsd_reply_cache_count - count_objects method for the DRC shrinker
-+ * @shrink: our registered shrinker context
-+ * @sc: garbage collection parameters
-+ *
-+ * Returns the total number of entries in the duplicate reply cache. To
-+ * keep things simple and quick, this is not the number of expired entries
-+ * in the cache (ie, the number that would be removed by a call to
-+ * nfsd_reply_cache_scan).
-+ */
-+static unsigned long
-+nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
- {
--	struct svc_cacherep *rp, *tmp;
--	long freed = 0;
-+	struct nfsd_net *nn = container_of(shrink,
-+				struct nfsd_net, nfsd_reply_cache_shrinker);
- 
--	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
--		/*
--		 * Don't free entries attached to calls that are still
--		 * in-progress, but do keep scanning the list.
--		 */
--		if (rp->c_state == RC_INPROG)
--			continue;
--		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
--		    time_before(jiffies, rp->c_timestamp + RC_EXPIRE))
--			break;
--		nfsd_reply_cache_free_locked(b, rp, nn);
--		if (max && freed++ > max)
--			break;
--	}
--	return freed;
-+	return atomic_read(&nn->num_drc_entries);
- }
- 
--/*
-- * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
-- * Also prune the oldest ones when the total exceeds the max number of entries.
-+/**
-+ * nfsd_reply_cache_scan - scan_objects method for the DRC shrinker
-+ * @shrink: our registered shrinker context
-+ * @sc: garbage collection parameters
-+ *
-+ * Free expired entries on each bucket's LRU list until we've released
-+ * nr_to_scan freed objects. Nothing will be released if the cache
-+ * has not exceeded it's max_drc_entries limit.
-+ *
-+ * Returns the number of entries released by this call.
-  */
--static long
--prune_cache_entries(struct nfsd_net *nn)
-+static unsigned long
-+nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
- {
-+	struct nfsd_net *nn = container_of(shrink,
-+				struct nfsd_net, nfsd_reply_cache_shrinker);
-+	unsigned long freed = 0;
-+	LIST_HEAD(dispose);
- 	unsigned int i;
--	long freed = 0;
- 
- 	for (i = 0; i < nn->drc_hashsize; i++) {
- 		struct nfsd_drc_bucket *b = &nn->drc_hashtbl[i];
- 
- 		if (list_empty(&b->lru_head))
- 			continue;
-+
- 		spin_lock(&b->cache_lock);
--		freed += prune_bucket(b, nn, 0);
-+		nfsd_prune_bucket_locked(nn, b, 0, &dispose);
- 		spin_unlock(&b->cache_lock);
--	}
--	return freed;
--}
- 
--static unsigned long
--nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
--{
--	struct nfsd_net *nn = container_of(shrink,
--				struct nfsd_net, nfsd_reply_cache_shrinker);
-+		freed += nfsd_cacherep_dispose(&dispose);
-+		if (freed > sc->nr_to_scan)
-+			break;
-+	}
- 
--	return atomic_read(&nn->num_drc_entries);
-+	trace_nfsd_drc_gc(nn, freed);
-+	return freed;
- }
- 
--static unsigned long
--nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
--{
--	struct nfsd_net *nn = container_of(shrink,
--				struct nfsd_net, nfsd_reply_cache_shrinker);
--
--	return prune_cache_entries(nn);
--}
- /*
-  * Walk an xdr_buf and get a CRC for at most the first RC_CSUMLEN bytes
-  */
 
 
 
