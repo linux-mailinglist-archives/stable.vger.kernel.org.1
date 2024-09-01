@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-72078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDB1967916
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B2B967893
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3A961F21A43
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 418A21C210E6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2C2183CAA;
-	Sun,  1 Sep 2024 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E747F183CD7;
+	Sun,  1 Sep 2024 16:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6gEGIvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyfZ53OU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19C17E00C;
-	Sun,  1 Sep 2024 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A057217E46E;
+	Sun,  1 Sep 2024 16:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208768; cv=none; b=YmqEA2d/nZ/oWgzJDXgagp9BxnygLIl98aQ+TsYiurzuCt4GUIcQGGSNHlpAUwfLum9+D2UgENAQ+eUpDsy6v5o4NukdBGUkeNPsOfp4hMFX12670EzERJy1eFt3Pa+zgDp66vWsUSqbAaRj+gr2S/QcaDB/rIJRMMathcGgjZg=
+	t=1725208392; cv=none; b=KyFsSZylVDiWF5z6MqvDZfMZd6fz3+24LNfNhCtJMOmYeM44x73EA4IKS0kt51r3Lao9EQX8o8fYD37TAGDTUIXUytuTx9nDC/bW3fpKBu0GVhedCJ2mBT68oxPq1d+SNuxZipwS3D0iLsb6554enrE837+MMLW0W5CzkZZv0XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208768; c=relaxed/simple;
-	bh=qe8uDsLRbGOuhXGxSJbfSrzvCNlKme5hzVO5ModOE+E=;
+	s=arc-20240116; t=1725208392; c=relaxed/simple;
+	bh=v4Ur4u1Bj8s/ckHrunGoQMCP28DvkrdDH3ttcxoBy74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/ahcgG7PbqrdwDINjqTYPoGirAaKtEQJpU9HxSnm3dr2u2Xvz6Z53eSIuEw3W+4uewnhIUae6afDbd7fWITqcp4SpIGvPbSPKaggzp8Jt1RGr9jaZRy/bvrSecW2uapgVcjs8tl0X/Hz9kbCsSKfz5/ynjm8buqK+ZJGN0PsGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6gEGIvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE702C4CEC3;
-	Sun,  1 Sep 2024 16:39:27 +0000 (UTC)
+	 MIME-Version; b=c9WcjKsIQe8gsAOemQHsytDNMZRNA1+L3OyUq5JHvr99QyRoiOrNnkB4Fv6YiepHtIYU6FecNuyIwFYNmXL6G2STrOt5yU0fMnfwWZSaZzy5VDSazcEsmDunTi9heKV06IksDANsB7FbSJlDMZE17kJy0UH5FtFaqmT4P5+0u8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyfZ53OU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126E5C4CEC3;
+	Sun,  1 Sep 2024 16:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208768;
-	bh=qe8uDsLRbGOuhXGxSJbfSrzvCNlKme5hzVO5ModOE+E=;
+	s=korg; t=1725208392;
+	bh=v4Ur4u1Bj8s/ckHrunGoQMCP28DvkrdDH3ttcxoBy74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6gEGIvZ5XxgM7zDv07ySI/qrEJ9pRhPEVDbqS0DpO/H8aWSxfX6QXeDPPEGdoVyZ
-	 zoE4DEzCh62OdnRzJ+Q32BnpEWB00DrO4RH0c0/+P3zRKexKZjt1lsjnT0WxjbmJz6
-	 oj1lY1zbYm9j7bfEdK3lm7kyPOYClNMFa63+KAlU=
+	b=JyfZ53OUvOIBY7zEvF63nqKPHdR0JzJ5zEt/GWzcYShPvQmAklLDBLfjgyEiicUWD
+	 6sSLuniyg40s/6J0++fa47lCKorA0M25eRqQNHlZVAUjuoQOvllrhePAQdBDIjUekM
+	 n/RbuQfA+Xe3jUOHGhK80yj8jMCuqdw392GLzdnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/134] media: radio-isa: use dev_name to fill in bus_info
+Subject: [PATCH 6.10 069/149] netfs: Fix missing iterator reset on retry of short read
 Date: Sun,  1 Sep 2024 18:16:20 +0200
-Message-ID: <20240901160811.387922551@linuxfoundation.org>
+Message-ID: <20240901160820.061147257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +68,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 8b7f3cf4eb9a95940eaabad3226caeaa0d9aa59d ]
+[ Upstream commit 950b03d0f664a54389a555d79215348ed413161f ]
 
-This fixes this warning:
+Fix netfs_rreq_perform_resubmissions() to reset before retrying a short
+read, otherwise the wrong part of the output buffer will be used.
 
-drivers/media/radio/radio-isa.c: In function 'radio_isa_querycap':
-drivers/media/radio/radio-isa.c:39:57: warning: '%s' directive output may be truncated writing up to 35 bytes into a region of size 28 [-Wformat-truncation=]
-   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
-      |                                                         ^~
-drivers/media/radio/radio-isa.c:39:9: note: 'snprintf' output between 5 and 40 bytes into a destination of size 32
-   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 92b6cc5d1e7c ("netfs: Add iov_iters to (sub)requests to describe various buffers")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240823200819.532106-6-dhowells@redhat.com
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/radio/radio-isa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/io.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/radio/radio-isa.c b/drivers/media/radio/radio-isa.c
-index ad2ac16ff12dd..610d3e3269518 100644
---- a/drivers/media/radio/radio-isa.c
-+++ b/drivers/media/radio/radio-isa.c
-@@ -36,7 +36,7 @@ static int radio_isa_querycap(struct file *file, void  *priv,
- 
- 	strscpy(v->driver, isa->drv->driver.driver.name, sizeof(v->driver));
- 	strscpy(v->card, isa->drv->card, sizeof(v->card));
--	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
-+	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", dev_name(isa->v4l2_dev.dev));
- 	return 0;
- }
- 
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index f3abc5dfdbc0c..c96431d3da6d8 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -313,6 +313,7 @@ static bool netfs_rreq_perform_resubmissions(struct netfs_io_request *rreq)
+ 			netfs_reset_subreq_iter(rreq, subreq);
+ 			netfs_read_from_server(rreq, subreq);
+ 		} else if (test_bit(NETFS_SREQ_SHORT_IO, &subreq->flags)) {
++			netfs_reset_subreq_iter(rreq, subreq);
+ 			netfs_rreq_short_read(rreq, subreq);
+ 		}
+ 	}
 -- 
 2.43.0
 
