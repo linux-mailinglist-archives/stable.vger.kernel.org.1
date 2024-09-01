@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9317967950
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A1F9677AF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6081E1F21A2C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EAC9282054
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0181117DFFC;
-	Sun,  1 Sep 2024 16:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27D3181B88;
+	Sun,  1 Sep 2024 16:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiKRoiwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sI6wFfu9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B601B1C68C;
-	Sun,  1 Sep 2024 16:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2406364AB;
+	Sun,  1 Sep 2024 16:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208948; cv=none; b=OCzTiwA0/ooWBDiRhP2Bm7uyVPZ68Ag59+Y9rinBPmClfhh9v9ROAwR5fWAXHIBxMBQNG8NnXb3UIelBGwKO0Nnq+avW4quY+zYNLQGiUkpfR3trwNE8K1RqeFgUctTPBGsCGua6iDh/MY/xVmPh1pvWX7HE7/GREbb/h1fvz3c=
+	t=1725207771; cv=none; b=byFvPRjkEa2jn1qkpzq1yPXmXkCp2LFSx2Mpsq6k2NYuhofenZUE3OIPuziENkmvoLCpvktIsXePFrwUHHXzdtbvFxepvd7NIRJGgjSM1TWbgFRa5OiB0MjMoJSpEHiAbjXOzGFcYgO+ZJkgnyt8N7jA5VhmEI9UQ/8tWX1sOI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208948; c=relaxed/simple;
-	bh=XwR4Q1+/QlskJVDdUK22fy9bRmINxJFLld4hPiIVKkk=;
+	s=arc-20240116; t=1725207771; c=relaxed/simple;
+	bh=t1vpZvw/lSCFt32Sggd1qo+bnu//0Gywi21/zdvlv8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5M137qkjMW+mixQNNaBtYtY7dVdEglftD6u30Y18Idtm+wd/GM/HRH93q5ubqh1gQQr31PcYextchJrEhzaj04cQWiD6s2ZeKgiNNepsWdse6LF/vrZ2hZYKJH2zLQkIBG3zQ+grWLOsP0GeEYhIsmisbZGFaGYDLOgqHOJl4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiKRoiwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF57DC4CEC3;
-	Sun,  1 Sep 2024 16:42:27 +0000 (UTC)
+	 MIME-Version; b=V9fGurAt/gNOnKTnSTQqj7jqWAl2Q0OGa0PjL96nlsR86jeWiHtgFnLpSjmBGaVrcrilpJ2E5xsRrpLNr8aSjuxXzq9PIQ0zjy+oG5MHZNSKJRixHpaDXYdMZfVJqddkByP+N+2gW6omTQirc/oFqzRD4hcqmSCjDNTnpq2bvow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sI6wFfu9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19968C4CEC3;
+	Sun,  1 Sep 2024 16:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208948;
-	bh=XwR4Q1+/QlskJVDdUK22fy9bRmINxJFLld4hPiIVKkk=;
+	s=korg; t=1725207771;
+	bh=t1vpZvw/lSCFt32Sggd1qo+bnu//0Gywi21/zdvlv8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MiKRoiwqwkqNBLHl9xhHJDvWZfC6bi5oWFLQOD3NOWNeI4CzlL3pM/W37WolWGgsy
-	 sTCT16BAocBb/Uu/ZOWA1123+qGARTKZO6eKFfQwHaOTju3VVWaX2KcKgGF7JTbpWA
-	 XFf17SvvifKfx8ry5bL53HwWx0V2EYOe49Y1DN10=
+	b=sI6wFfu9AWPqXNS2RlwFSLnjTeu+IX4Sn916+gb5sRifRCLAj189GWFrui7ZtPCSK
+	 CeeCF1DjILRm9gKoRQr5QcXdmCZUy7CV1CabEeijCiLF8h5QhOmMFVeicBT03s9xdf
+	 9iSzttlS0+pKJsCCKGjtWh1Wcy/4JSHPVZPlBF7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/134] btrfs: handle invalid root reference found in may_destroy_subvol()
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 4.19 73/98] pinctrl: single: fix potential NULL dereference in pcs_get_function()
 Date: Sun,  1 Sep 2024 18:16:43 +0200
-Message-ID: <20240901160812.251619594@linuxfoundation.org>
+Message-ID: <20240901160806.449643224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
+commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
 
-The may_destroy_subvol() looks up a root by a key, allowing to do an
-inexact search when key->offset is -1.  It's never expected to find such
-item, as it would break the allowed range of a root id.
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 2c86be3fc25cd..d2a988bf9c895 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4520,7 +4520,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
- 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	BUG_ON(ret == 0);
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset -1 found, there would have to exist a root
-+		 * with such id, but this is out of valid range.
-+		 */
-+		ret = -EUCLEAN;
-+		goto out;
-+	}
- 
- 	ret = 0;
- 	if (path->slots[0] > 0) {
--- 
-2.43.0
-
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -323,6 +323,8 @@ static int pcs_get_function(struct pinct
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 
 
 
