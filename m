@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-72541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D31967B0D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF059678C5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F275280C94
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E00EB2179A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D7A381BD;
-	Sun,  1 Sep 2024 17:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D585381A;
+	Sun,  1 Sep 2024 16:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX36yeSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIa+hEa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E262C6AF;
-	Sun,  1 Sep 2024 17:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43F61E87B;
+	Sun,  1 Sep 2024 16:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210263; cv=none; b=D4VGzdSTWoaFAH03HDlFr/ErGNaLfyW7El3KOThzM58k7xASv16o2O0ISfBXnZUSRo94Ju2dW6ZDiOAgeGbktv0px5xfF93LPrOs9wMGMmEKwq31X2wSNn1UT+o0+ASvYR2QR0epRvED6z6ilTYY9X1YtFMyfYO6oAoFBbtLBr4=
+	t=1725208526; cv=none; b=eNKK+Ym+g0LSwVgUbgczOjJ7PC51JSqew3NYNfGC424tXzYY+2kpz65cBbWPic9XXCk+7ei2uniN8GHpLkcj67RfzZrpDN4UkAVcoVZG1xqQokHSZ46f7ssKwfOkn0AGofRzVxOajvgUwOWYA8OY8HaE6EhDCdhfEi+vZhnVBX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210263; c=relaxed/simple;
-	bh=azef8RR3SUT1zIhdW1AglG3mPDqLdB4XRgqNxV58Rfs=;
+	s=arc-20240116; t=1725208526; c=relaxed/simple;
+	bh=H2LLt5cJeU7C9kKilCaBx+Vr9KorCpQRTqKP1wt05vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTfbrCFdT5iDCja43Gtmd7GRCEb/1Yn8uemkxLjt8UApLWXiFSD23xmg8DGxG/FwThkvC3fJDNlFuieYnelsfF6jM9AeTn967I+UXzSwyRvqsA486LMSx2jQ7uT4cGXBTbbo5mgLWsGSEA8ZthX8WmgtrqfDMdMtHZztXcMdz2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX36yeSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BF2C4CEC3;
-	Sun,  1 Sep 2024 17:04:22 +0000 (UTC)
+	 MIME-Version; b=tIfd8f7G+TEKuJDGTj/g2LKl7Uet3zZpSFSf3U4kFswyu6ACcDFnl/I4xL38V1OB0a9fUPaKdaJSi7rRjCFJBeI/lApEubXz9tq2ZM52IaCts88aIZJkIK8IxkJmLXCec5GvuB/TmY7rjMuFenGOp5TvHxKr2MYem5nSiCGzYu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIa+hEa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FC7C4CEC3;
+	Sun,  1 Sep 2024 16:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210263;
-	bh=azef8RR3SUT1zIhdW1AglG3mPDqLdB4XRgqNxV58Rfs=;
+	s=korg; t=1725208525;
+	bh=H2LLt5cJeU7C9kKilCaBx+Vr9KorCpQRTqKP1wt05vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BX36yeSDBRc7sIGAq4hCGRQj16jNapdxIA6MH0Y88+Oos3Jv7X/z/UkgubVEceKTM
-	 RI7arCFy/MOxXmUJdXmNwZeyPsrkPuPVSpUHvWh1Xdb/ibNbWFBu+RgGJQd3tYwU6d
-	 3WHXsN9g5TaVBbkE3GPiDPaEwGMbW1fMNw+UUXVI=
+	b=ZIa+hEa5xkxrpZrZ3hDL2TdqfnQfncvnt5HMJ36HDKpLIYYxRqDKTj8dPA+OaWN3K
+	 UbRLUNc8/DjhKrrOsZVqpAzo4dAQFOdZ8j6bdkI7w4jPDSKa5mvUzKMT5JjUtxqvG2
+	 S8OpPbNaVQg5reSxyzb8FJreshh8vApSjJpf86UU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Xueming Feng <kuro@kuroa.me>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/215] nvmet-rdma: fix possible bad dereference when freeing rsps
-Date: Sun,  1 Sep 2024 18:16:58 +0200
-Message-ID: <20240901160827.353003082@linuxfoundation.org>
+Subject: [PATCH 6.10 108/149] tcp: fix forever orphan socket caused by tcp_abort
+Date: Sun,  1 Sep 2024 18:16:59 +0200
+Message-ID: <20240901160821.516860198@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Xueming Feng <kuro@kuroa.me>
 
-[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
+[ Upstream commit bac76cf89816bff06c4ec2f3df97dc34e150a1c4 ]
 
-It is possible that the host connected and saw a cm established
-event and started sending nvme capsules on the qp, however the
-ctrl did not yet see an established event. This is why the
-rsp_wait_list exists (for async handling of these cmds, we move
-them to a pending list).
+We have some problem closing zero-window fin-wait-1 tcp sockets in our
+environment. This patch come from the investigation.
 
-Furthermore, it is possible that the ctrl cm times out, resulting
-in a connect-error cm event. in this case we hit a bad deref [1]
-because in nvmet_rdma_free_rsps we assume that all the responses
-are in the free list.
+Previously tcp_abort only sends out reset and calls tcp_done when the
+socket is not SOCK_DEAD, aka orphan. For orphan socket, it will only
+purging the write queue, but not close the socket and left it to the
+timer.
 
-We are freeing the cmds array anyways, so don't even bother to
-remove the rsp from the free_list. It is also guaranteed that we
-are not racing anything when we are releasing the queue so no
-other context accessing this array should be running.
+While purging the write queue, tp->packets_out and sk->sk_write_queue
+is cleared along the way. However tcp_retransmit_timer have early
+return based on !tp->packets_out and tcp_probe_timer have early
+return based on !sk->sk_write_queue.
 
-[1]:
---
-Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
-[...]
-pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
-lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- Call trace:
- nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
- nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- process_one_work+0x1ec/0x4a0
- worker_thread+0x48/0x490
- kthread+0x158/0x160
- ret_from_fork+0x10/0x18
---
+This caused ICSK_TIME_RETRANS and ICSK_TIME_PROBE0 not being resched
+and socket not being killed by the timers, converting a zero-windowed
+orphan into a forever orphan.
 
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This patch removes the SOCK_DEAD check in tcp_abort, making it send
+reset to peer and close the socket accordingly. Preventing the
+timer-less orphan from happening.
+
+According to Lorenzo's email in the v1 thread, the check was there to
+prevent force-closing the same socket twice. That situation is handled
+by testing for TCP_CLOSE inside lock, and returning -ENOENT if it is
+already closed.
+
+The -ENOENT code comes from the associate patch Lorenzo made for
+iproute2-ss; link attached below, which also conform to RFC 9293.
+
+At the end of the patch, tcp_write_queue_purge(sk) is removed because it
+was already called in tcp_done_with_error().
+
+p.s. This is the same patch with v2. Resent due to mis-labeled "changes
+requested" on patchwork.kernel.org.
+
+Link: https://patchwork.ozlabs.org/project/netdev/patch/1450773094-7978-3-git-send-email-lorenzo@google.com/
+Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
+Signed-off-by: Xueming Feng <kuro@kuroa.me>
+Tested-by: Lorenzo Colitti <lorenzo@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240826102327.1461482-1-kuro@kuroa.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ net/ipv4/tcp.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 18e082091c821..9561ba3d43138 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -472,12 +472,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index ec6911034138f..2edbd5b181e29 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4573,6 +4573,13 @@ int tcp_abort(struct sock *sk, int err)
+ 		/* Don't race with userspace socket closes such as tcp_close. */
+ 		lock_sock(sk);
+ 
++	/* Avoid closing the same socket twice. */
++	if (sk->sk_state == TCP_CLOSE) {
++		if (!has_current_bpf_ctx())
++			release_sock(sk);
++		return -ENOENT;
++	}
++
+ 	if (sk->sk_state == TCP_LISTEN) {
+ 		tcp_set_state(sk, TCP_CLOSE);
+ 		inet_csk_listen_stop(sk);
+@@ -4582,16 +4589,13 @@ int tcp_abort(struct sock *sk, int err)
+ 	local_bh_disable();
+ 	bh_lock_sock(sk);
+ 
+-	if (!sock_flag(sk, SOCK_DEAD)) {
+-		if (tcp_need_reset(sk->sk_state))
+-			tcp_send_active_reset(sk, GFP_ATOMIC,
+-					      SK_RST_REASON_NOT_SPECIFIED);
+-		tcp_done_with_error(sk, err);
+-	}
++	if (tcp_need_reset(sk->sk_state))
++		tcp_send_active_reset(sk, GFP_ATOMIC,
++				      SK_RST_REASON_NOT_SPECIFIED);
++	tcp_done_with_error(sk, err);
+ 
+ 	bh_unlock_sock(sk);
+ 	local_bh_enable();
+-	tcp_write_queue_purge(sk);
+ 	if (!has_current_bpf_ctx())
+ 		release_sock(sk);
  	return 0;
- 
- out_free:
--	while (--i >= 0) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	while (--i >= 0)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
- out:
- 	return ret;
-@@ -488,12 +484,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
- 	struct nvmet_rdma_device *ndev = queue->dev;
- 	int i, nr_rsps = queue->recv_queue_size * 2;
- 
--	for (i = 0; i < nr_rsps; i++) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	for (i = 0; i < nr_rsps; i++)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
- }
- 
 -- 
 2.43.0
 
