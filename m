@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-71806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF4F9677D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08769678D0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F041C20ACE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23FBAB21BF7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EE818132F;
-	Sun,  1 Sep 2024 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1A2183CBC;
+	Sun,  1 Sep 2024 16:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEUaSY0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0pDUAoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE7F14290C;
-	Sun,  1 Sep 2024 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463322B9C7;
+	Sun,  1 Sep 2024 16:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207879; cv=none; b=Bbb1QtWlMocGQ+g+J8xut/GNhnpzF+kKWrOKldpqomBqsRj2dXpyvHJpodxwHcSdnSGEFK+30m0xhYG3Q3dhEMf1sl7OZhTisggJ9iC44srwet3B1rQmEi/6Ssv4vQb8NJQPHwnQ0TkyknFGeXNahd8FawJMmGs80uxhrtLbxaU=
+	t=1725208551; cv=none; b=pG8rKIHw2Td1ms8i7pMmyYTStqXAmJTp/5J+UgpYg7b9SY1CXza/zgRqV2T8eEBdTpE+J40TnwENa5yR6FOhgjZNbd3ML2KuliblQ8eU+6rVL6V1vm4C6uKLXvFdBrRI71j6eGdm11l2/E8ZFmUx1KnttYFtcfXKftGY8hITWiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207879; c=relaxed/simple;
-	bh=z7UJu94i3e36Bymp926qgV2hkPsaIpVHob4ixixY190=;
+	s=arc-20240116; t=1725208551; c=relaxed/simple;
+	bh=BRO6dht36ItnCmA+nsFHxCWq9Eb2eSFfvQNxzahG9AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cxjh8wa0sVErIefMsAQNCHDC+JeopjTxJa449uAaAZGjrVj5tC7RFDcDx5Ie6VNwNi3fVUQE87TpFAfu1s70pY6MUJQPFSJrtG54bDDDl91fA9KUaWhEPI4pyUvuE6XzchKGCUOwsODZYIV5sQXLFpN7XAQfqKvjX/seN87jA84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEUaSY0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753CCC4CEC3;
-	Sun,  1 Sep 2024 16:24:38 +0000 (UTC)
+	 MIME-Version; b=f3zNPvKxTl7H/4imz1yrz5ECavVsoPas1EupP3mExQ3MjDmon2ZiuOsdRcsSoaM8/b97nggZ5VKWqszKplEZNrS6w1/cQpmh0Oh+FUI7zYgkbOGz2H5649h/l3kY7qGJADi3oVdZ+bH3/tc0wrSe0o/x2FhRY0HCqWXAVwNTSLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0pDUAoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90163C4CEC3;
+	Sun,  1 Sep 2024 16:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207878;
-	bh=z7UJu94i3e36Bymp926qgV2hkPsaIpVHob4ixixY190=;
+	s=korg; t=1725208551;
+	bh=BRO6dht36ItnCmA+nsFHxCWq9Eb2eSFfvQNxzahG9AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEUaSY0F5goBPLQQ188/lVLueRdR9hfaP9VhGIn7j6B6GHugP0Gqouxt/WmbhBZMf
-	 rg4GM7qAKKg2ERXUTwox3extU2c3OR0rUcnoPVRnfRmLSHGYnn4CXU/E55iWe+u9WO
-	 JTPKAbPOkNxol8HXdiMQ77NdWFJiWcWUMXkHWsgA=
+	b=e0pDUAoOpSo3cGRNYxfih9gDpIdePFutoPq3DlfNT7RTxqdjwbxbEmWoCSi0g5Dtj
+	 iJYw7kFmDg82/s/4SIL8Nz6Rfe7pJ8U/8wjCCpoUWZynp3N4G3vgKUAmX1jbQaOaic
+	 ar4gC3oD40d2jSrASkQ21I/hlFaAx+vdAakZxric=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Averin <vvs@virtuozzo.com>,
-	Michal Hocko <mhocko@suse.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 4.19 97/98] ipc: remove memcg accounting for sops objects in do_semtimedop()
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 116/149] soc: qcom: pmic_glink: Actually communicate when remote goes down
 Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160807.356007930@linuxfoundation.org>
+Message-ID: <20240901160821.819831429@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Averin <vvs@virtuozzo.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-commit 6a4746ba06191e23d30230738e94334b26590a8a upstream.
+commit ad51126037a43c05f5f4af5eb262734e3e88ca59 upstream.
 
-Linus proposes to revert an accounting for sops objects in
-do_semtimedop() because it's really just a temporary buffer
-for a single semtimedop() system call.
+When the pmic_glink state is UP and we either receive a protection-
+domain (PD) notification indicating that the PD is going down, or that
+the whole remoteproc is going down, it's expected that the pmic_glink
+client instances are notified that their function has gone DOWN.
 
-This object can consume up to 2 pages, syscall is sleeping
-one, size and duration can be controlled by user, and this
-allocation can be repeated by many thread at the same time.
+This is not what the code does, which results in the client state either
+not updating, or being wrong in many cases. So let's fix the conditions.
 
-However Shakeel Butt pointed that there are much more popular
-objects with the same life time and similar memory
-consumption, the accounting of which was decided to be
-rejected for performance reasons.
-
-Considering at least 2 pages for task_struct and 2 pages for
-the kernel stack, a back of the envelope calculation gives a
-footprint amplification of <1.5 so this temporal buffer can be
-safely ignored.
-
-The factor would IMO be interesting if it was >> 2 (from the
-PoV of excessive (ab)use, fine-grained accounting seems to be
-currently unfeasible due to performance impact).
-
-Link: https://lore.kernel.org/lkml/90e254df-0dfe-f080-011e-b7c53ee7fd20@virtuozzo.com/
-Fixes: 18319498fdd4 ("memcg: enable accounting of ipc resources")
-Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Link: https://lore.kernel.org/r/20240820-pmic-glink-v6-11-races-v3-3-eec53c750a04@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/sem.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/soc/qcom/pmic_glink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/ipc/sem.c
-+++ b/ipc/sem.c
-@@ -1962,8 +1962,7 @@ static long do_semtimedop(int semid, str
- 	if (nsops > ns->sc_semopm)
- 		return -E2BIG;
- 	if (nsops > SEMOPM_FAST) {
--		sops = kvmalloc_array(nsops, sizeof(*sops),
--				      GFP_KERNEL_ACCOUNT);
-+		sops = kvmalloc_array(nsops, sizeof(*sops), GFP_KERNEL);
- 		if (sops == NULL)
- 			return -ENOMEM;
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -175,7 +175,7 @@ static void pmic_glink_state_notify_clie
+ 		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
+ 			new_state = SERVREG_SERVICE_STATE_UP;
+ 	} else {
+-		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
++		if (pg->pdr_state == SERVREG_SERVICE_STATE_DOWN || !pg->ept)
+ 			new_state = SERVREG_SERVICE_STATE_DOWN;
  	}
+ 
 
 
 
