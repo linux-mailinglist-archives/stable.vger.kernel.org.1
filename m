@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875879678F2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A7596799B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B78611C20FB3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1F01F21A56
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A9317DFFC;
-	Sun,  1 Sep 2024 16:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCDF185B59;
+	Sun,  1 Sep 2024 16:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEgMCAHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQkUyvFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB4F2B9C7;
-	Sun,  1 Sep 2024 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A01917E900;
+	Sun,  1 Sep 2024 16:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208662; cv=none; b=pUUBi/kz/jNiwo558Zrj/XzEHMDO4NpUfG5+vjGMHVb6YBJkysP4NVRE8tKnGHpc1JgRtrrSaNh36y2BQsFyJjkkDSFCgqSdzWPN48PPRQfwP4l9S/rsj13LiIJLqUmcCa6Y1a2XmkKT2GO+5Xp9b3uG3hSmjbzRssXBLVIaUTs=
+	t=1725209138; cv=none; b=DhcbKscd62JMqD5M7MvOrsFwM/IPuQwxjNZGXSDi8dYqWcXW4tEjkZjVAjSPeSM1HNRjN5mHqpCOijL7/Uh3tqaqeexW6CjBGk+Erv8oJnGOFttmV/y8NV6uKZMyjv+sY4TQAhHwKQf1LtoKk2PAzzUQ4q9UbewQAq7+x+Gl1m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208662; c=relaxed/simple;
-	bh=7kbXJUBF5oRFzlolCMPqzfzdcCkfEPHf8c+iZptqfEs=;
+	s=arc-20240116; t=1725209138; c=relaxed/simple;
+	bh=qH/2iVeFypiHkdkfeBFK33q4Ivc+amuvHKz5ud0MA0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PF+bGna7gKZezHiJO1sK0PAE+ez0WXSL8F33XqkiEt4bMb7Z1YuJDGXeLrc6pwUYtltd3B5N6JhUgpuQzoAqKz9H9pt7cJ8j+AUpAJurBD/nG9aR841YCytjBLQf69R/gZnatZWkPxQg7XTpq0/W4Dvrq5i8InCfD+Pqxh/PSCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEgMCAHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B612C4CEC3;
-	Sun,  1 Sep 2024 16:37:42 +0000 (UTC)
+	 MIME-Version; b=mg1OOZvbne1GG5Tu/rAhgzGlNHiJ6a2HkoXpUevnE9F1NAlhK3a1aTjhWHj0G2NiQbYYxdmkDzrpJOyQGv4cjRHozHRLEvZC+HzFEfAr7su7+LUSdXnhfm0sd58BCkLYcnOK2zL1wqn/F5TZTpQr86PTEyGppbAQik5IoPiQ9CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQkUyvFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218B3C4CEC3;
+	Sun,  1 Sep 2024 16:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208662;
-	bh=7kbXJUBF5oRFzlolCMPqzfzdcCkfEPHf8c+iZptqfEs=;
+	s=korg; t=1725209138;
+	bh=qH/2iVeFypiHkdkfeBFK33q4Ivc+amuvHKz5ud0MA0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEgMCAHCX10L/buNxwHs+DltYnUjI//JW5p7+rdZdR/EjKnUPRe+kQM9v3CFWFPyK
-	 LD3jWamIJdCWLmON7fUpfOSv5M6BJ/idC7CGEBOOB+EagYIZoNwJ0DOKUyYCio1IL1
-	 iP2RQdt45D0y+P7vsVeoWLR/WHEkgJ3erwen+/PE=
+	b=yQkUyvFFGpaHQO/XehUUGE66qlW1c6GCeYLPFjHiMDnOt0OiBllmKeYShuWLi1hht
+	 IIvSJo87DGjB9C8CaxQ2n8GsDeS5DWCguHLGS3IwAlsQH1sWbea3d9HPQ5F1fMYBvx
+	 aUyY98VZ1n+TV04XQYye0PuyLdiAQZjeBmlULaSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 126/149] arm64: dts: qcom: x1e80100-qcp: fix PCIe4 PHY supply
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 12/71] mptcp: sched: check both backup in retrans
 Date: Sun,  1 Sep 2024 18:17:17 +0200
-Message-ID: <20240901160822.191648993@linuxfoundation.org>
+Message-ID: <20240901160802.351923868@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f03dd49f884f428ba71efe23383ff842f4f15e0e upstream.
+commit 2a1f596ebb23eadc0f9b95a8012e18ef76295fc8 upstream.
 
-The PCIe4 PHY is powered by vreg_l3i (not vreg_l3j) on the CRD so assume
-the same applies to the QCP.
+The 'mptcp_subflow_context' structure has two items related to the
+backup flags:
 
-Fixes: f9a9c11471da ("arm64: dts: qcom: x1e80100-qcp: Enable more support")
-Cc: stable@vger.kernel.org      # 6.9
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240722095459.27437-2-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+ - 'backup': the subflow has been marked as backup by the other peer
+
+ - 'request_bkup': the backup flag has been set by the host
+
+Looking only at the 'backup' flag can make sense in some cases, but it
+is not the behaviour of the default packet scheduler when selecting
+paths.
+
+As explained in the commit b6a66e521a20 ("mptcp: sched: check both
+directions for backup"), the packet scheduler should look at both flags,
+because that was the behaviour from the beginning: the 'backup' flag was
+set by accident instead of the 'request_bkup' one. Now that the latter
+has been fixed, get_retrans() needs to be adapted as well.
+
+Fixes: b6a66e521a20 ("mptcp: sched: check both directions for backup")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-3-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 +-
+ net/mptcp/protocol.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -459,7 +459,7 @@
- };
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2309,7 +2309,7 @@ static struct sock *mptcp_subflow_get_re
+ 			continue;
+ 		}
  
- &pcie4_phy {
--	vdda-phy-supply = <&vreg_l3j_0p8>;
-+	vdda-phy-supply = <&vreg_l3i_0p8>;
- 	vdda-pll-supply = <&vreg_l3e_1p2>;
- 
- 	status = "okay";
+-		if (subflow->backup) {
++		if (subflow->backup || subflow->request_bkup) {
+ 			if (!backup)
+ 				backup = ssk;
+ 			continue;
 
 
 
