@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-72277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0784B9679FA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7521A9677FB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9FBD28155F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323C5280E10
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047C417CA1F;
-	Sun,  1 Sep 2024 16:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A46184524;
+	Sun,  1 Sep 2024 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehnoaSQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQdY532a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59D51DFD1;
-	Sun,  1 Sep 2024 16:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A5B181B88;
+	Sun,  1 Sep 2024 16:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209404; cv=none; b=FkH2NtJMP3A5YJgZ3KFY848Oz9rr/l21fGKifrf1AtLm/oeHE0QWXrh6KLgS0ZX3X0y9sNd+yEVNZlujc7OJYpOg9FaSCOuBvw/aG0yDOABXHgpJhYnQ3frefsAFPwd+cfyD6EGefpVPivDtZ1XVV7VG3xEtjsY0hWPOv8FZMxU=
+	t=1725207985; cv=none; b=QF3AMerBacXDWgHajIgni80txlEzFelbcp3qsfdpvV4dDS6bp/REhtFOI8rtTjeIp4kprEkz04ZVILsTzWIL3Frjm6lO54SMQBIHfuotz4LzB5JQ2W59tg3thgHHDIRWIZKSh2ySXfgwsKTGom9+HO6QLM0aWst1/8wTkG4FGCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209404; c=relaxed/simple;
-	bh=SIbcLW4pNtWA1qIGBFKsNw02GEEewbewemtKozMyKb0=;
+	s=arc-20240116; t=1725207985; c=relaxed/simple;
+	bh=wYt3P5BbUTBvecX1udspSjS/+owMsoREYiXBYb1BtRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdPXtFfgKMyAJMD/7G0hEZdEqHehtsLAq4RukDeh1yY5pGmMyegeyQjg49i+/rysj4EAFnf/wNao+iojJG9hgwe+yJd1FU3bHnJj7HxuIUvc6XxzgTZ48ZrVJmaspJy7ODi/UNvUM9vc5HKZA07mQlq8lbbI66VqWYH6SgOiuk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehnoaSQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB01C4CEC3;
-	Sun,  1 Sep 2024 16:50:04 +0000 (UTC)
+	 MIME-Version; b=E0T7lFNNE/0LCXnOq44f76Hq4tYmWIhNVowVflpAgxWawLwWN8Bstwc11INCvbuvLwHcc+DVYFZEcQPtygHpJxBylsSm5OsV3q1qRWiYCZFocug0QnzYVGk/CQr0VHU7jEI6BZzpqL9fueXSAjyopH/NxMKYp6uXyk0FIz3VZFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQdY532a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA9EC4CEC3;
+	Sun,  1 Sep 2024 16:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209404;
-	bh=SIbcLW4pNtWA1qIGBFKsNw02GEEewbewemtKozMyKb0=;
+	s=korg; t=1725207985;
+	bh=wYt3P5BbUTBvecX1udspSjS/+owMsoREYiXBYb1BtRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehnoaSQ7xn5+basQiIjSicyAozmNl9lfYdXer4iae1b1HAUsPZB513iN/QpARSQrK
-	 Yxa06xXVpqKsZrzeOKUtImaamwyAEVPLNoN2afSSpNyXfSEpVgyju1ZiFJyTA2eOrR
-	 Ba+tOrbcgLjSFVteOkWmvLVtB7ZmfcVt0bs11U6w=
+	b=jQdY532azJHo8P72rPWxfnRfpaV/kkUVuhPbdI86qa1TvFtl2CzooHxqviCZAjl3r
+	 N4oSheOStngo8oGH/MQvB7sQU3V+KIyseFPnoXouhtO1e23FZa/S/ZM2AkmNr5RA78
+	 FV+wx0qQc5XxGAng+xKN+f/zfZmsynPbYtz4I+H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	David Howells <dhowells@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/151] net: dsa: vsc73xx: check busy flag in MDIO operations
-Date: Sun,  1 Sep 2024 18:16:25 +0200
-Message-ID: <20240901160815.044757430@linuxfoundation.org>
+Subject: [PATCH 6.6 39/93] mm: Fix missing folio invalidation calls during truncation
+Date: Sun,  1 Sep 2024 18:16:26 +0200
+Message-ID: <20240901160808.833325956@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +70,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
+[ Upstream commit 0aa2e1b2fb7a75aa4b5b4347055ccfea6f091769 ]
 
-The VSC73xx has a busy flag used during MDIO operations. It is raised
-when MDIO read/write operations are in progress. Without it, PHYs are
-misconfigured and bus operations do not work as expected.
+When AS_RELEASE_ALWAYS is set on a mapping, the ->release_folio() and
+->invalidate_folio() calls should be invoked even if PG_private and
+PG_private_2 aren't set.  This is used by netfslib to keep track of the
+point above which reads can be skipped in favour of just zeroing pagecache
+locally.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+There are a couple of places in truncation in which invalidation is only
+called when folio_has_private() is true.  Fix these to check
+folio_needs_release() instead.
+
+Without this, the generic/075 and generic/112 xfstests (both fsx-based
+tests) fail with minimum folio size patches applied[1].
+
+Fixes: b4fa966f03b7 ("mm, netfs, fscache: stop read optimisation when folio removed from pagecache")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240815090849.972355-1-kernel@pankajraghav.com/ [1]
+Link: https://lore.kernel.org/r/20240823200819.532106-2-dhowells@redhat.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+cc: Pankaj Raghav <p.raghav@samsung.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ mm/truncate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index d050dfaf327cc..8a21902212e04 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -39,6 +39,10 @@
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 8e3aa9e8618ed..70c09213bb920 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -174,7 +174,7 @@ static void truncate_cleanup_folio(struct folio *folio)
+ 	if (folio_mapped(folio))
+ 		unmap_mapping_folio(folio);
  
-+/* MII Block subblock */
-+#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
-+#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
-+
- #define CPU_PORT	6 /* CPU port */
+-	if (folio_has_private(folio))
++	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, 0, folio_size(folio));
  
- /* MAC Block registers */
-@@ -197,6 +201,8 @@
- #define VSC73XX_MII_CMD		0x1
- #define VSC73XX_MII_DATA	0x2
+ 	/*
+@@ -235,7 +235,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	 */
+ 	folio_zero_range(folio, offset, length);
  
-+#define VSC73XX_MII_STAT_BUSY	BIT(3)
-+
- /* Arbiter block 5 registers */
- #define VSC73XX_ARBEMPTY		0x0c
- #define VSC73XX_ARBDISC			0x0e
-@@ -271,6 +277,7 @@
- #define IS_739X(a) (IS_7395(a) || IS_7398(a))
- 
- #define VSC73XX_POLL_SLEEP_US		1000
-+#define VSC73XX_MDIO_POLL_SLEEP_US	5
- #define VSC73XX_POLL_TIMEOUT_US		10000
- 
- struct vsc73xx_counter {
-@@ -488,6 +495,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
- 	return 0;
- }
- 
-+static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
-+{
-+	int ret, err;
-+	u32 val;
-+
-+	ret = read_poll_timeout(vsc73xx_read, err,
-+				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
-+				VSC73XX_MDIO_POLL_SLEEP_US,
-+				VSC73XX_POLL_TIMEOUT_US, false, vsc,
-+				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
-+				VSC73XX_MII_STAT, &val);
-+	if (ret)
-+		return ret;
-+	return err;
-+}
-+
- static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- {
- 	struct vsc73xx *vsc = ds->priv;
-@@ -495,12 +518,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- 	u32 val;
- 	int ret;
- 
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	/* Setting bit 26 means "read" */
- 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
--	msleep(2);
-+
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
- 	if (ret)
- 		return ret;
-@@ -524,6 +555,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 	u32 cmd;
- 	int ret;
- 
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	/* It was found through tedious experiments that this router
- 	 * chip really hates to have it's PHYs reset. They
- 	 * never recover if that happens: autonegotiation stops
+-	if (folio_has_private(folio))
++	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+ 		return true;
 -- 
 2.43.0
 
