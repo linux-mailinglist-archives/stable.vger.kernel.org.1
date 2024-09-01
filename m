@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309D29677DF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D476967900
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0EDA2810DD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7A32818AC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6298F183090;
-	Sun,  1 Sep 2024 16:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64DA2B9C7;
+	Sun,  1 Sep 2024 16:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBtlZ45G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMgj3Vhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2001914290C;
-	Sun,  1 Sep 2024 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757DA537FF;
+	Sun,  1 Sep 2024 16:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207909; cv=none; b=Di+D3vCA1NKxkDrJIASNIlsHueQnHSBx0X1u8q0lM2v7Ui85dV6ReY8FfB7EFsCijlFYkyKt9KEEsDAVrZ4n0thSYb0WY51CmIgQWmxr/Ck/oM9Hrlc22JS6g2TZI7M9SPBR+XwUWh3DTkCHChJyx8YgvcDFD6UUxWL2xNG4TbY=
+	t=1725208709; cv=none; b=kvQdnWnzUZAvh3k9YgcE6FqEBUFkJooe/V8FnMeW4mL5SdfXQY0xhXexI8ztaMKRU7/nT4z10+DR3bZ7CXjCTLLFyk2yy6jYNqbenw4jo6PUf0LezW7ZsFtDHOzNuPYuiA2nEC4MhQsjEOXmOBgHs6l1i2k+/WnHVWKmw0jNVow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207909; c=relaxed/simple;
-	bh=sSdNlcAVUjAP60cIr8hikHEZfyaoPY/yCXMSleQw008=;
+	s=arc-20240116; t=1725208709; c=relaxed/simple;
+	bh=axR0mqbv5EgjaW7lg54midyb9NZTWx2dOjibUw70Yrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m93AqM+cGbrtT2ly0agFsNoZcf7rI3LGhZFrphoo61ws4gxVGVJqXEXDEGkP5/wRkO/NgrU+u1/siPEN4Dv/3MecKfqRO2T9mWr45zI7lTyEW07vetqnvTMl61SX3Hp9CkvQvm2QNFMxaEfkC/UR4vC9NZgORkArNPSbFuqF+IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBtlZ45G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC4DC4CEC8;
-	Sun,  1 Sep 2024 16:25:07 +0000 (UTC)
+	 MIME-Version; b=GPouMRNjejU2d6OF+FwjIPvYs/gFX9RMKERoHIYbDVgOqE6xcLFM5NZKKJjh97hDZKpKlt6XuZajPaEoygf00++OMA9mRViugYlqcKwjur3oOSU5ZUpoF6uL2jLLlGI2t57EaaLyZgrq5mAmaG1gfDWb7/VO2d+8m4xyqNc/18Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMgj3Vhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8095C4CEC3;
+	Sun,  1 Sep 2024 16:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207908;
-	bh=sSdNlcAVUjAP60cIr8hikHEZfyaoPY/yCXMSleQw008=;
+	s=korg; t=1725208709;
+	bh=axR0mqbv5EgjaW7lg54midyb9NZTWx2dOjibUw70Yrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBtlZ45GHg+qUHIXUZC6hv4a5DzNNkIOdo8bRknKgZP7OUHD5yZ9R0Ctz31xn035y
-	 YcvkBd8adIHwODhsopX7haMSihp2/VEmLWSclthrgzSNGLNIaN75UmwoiBkXq4qhMS
-	 +TRS3whsNQfmYGiDQBj9436Pw/uG9QzU1YQlAxhc=
+	b=dMgj3VhnRZnumgbhmPvJbMZzd2UDMeK/SFrwOS+Q+eYVVwy/CCGz7FsSWOgvOKNfo
+	 jpm2rEOPhSQfMG0XD2XUMS2GJn2xi1PtIZG4d6zgozya9/LhlYLUGSaSqpVFT/mHsU
+	 71013nCkc7USCwZCz/2LPpgEd4MK2u/V90SFiG2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 15/93] mptcp: pm: skip connecting to already established sf
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 016/134] s390/uv: Panic for set and remove shared access UVC errors
 Date: Sun,  1 Sep 2024 18:16:02 +0200
-Message-ID: <20240901160807.933845232@linuxfoundation.org>
+Message-ID: <20240901160810.722793917@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-commit bc19ff57637ff563d2bdf2b385b48c41e6509e0d upstream.
+[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
 
-The lookup_subflow_by_daddr() helper checks if there is already a
-subflow connected to this address. But there could be a subflow that is
-closing, but taking time due to some reasons: latency, losses, data to
-process, etc.
+The return value uv_set_shared() and uv_remove_shared() (which are
+wrappers around the share() function) is not always checked. The system
+integrity of a protected guest depends on the Share and Unshare UVCs
+being successful. This means that any caller that fails to check the
+return value will compromise the security of the protected guest.
 
-If an ADD_ADDR is received while the endpoint is being closed, it is
-better to try connecting to it, instead of rejecting it: the peer which
-has sent the ADD_ADDR will not be notified that the ADD_ADDR has been
-rejected for this reason, and the expected subflow will not be created
-at the end.
+No code path that would lead to such violation of the security
+guarantees is currently exercised, since all the areas that are shared
+never get unshared during the lifetime of the system. This might
+change and become an issue in the future.
 
-This helper should then only look for subflows that are established, or
-going to be, but not the ones being closed.
+The Share and Unshare UVCs can only fail in case of hypervisor
+misbehaviour (either a bug or malicious behaviour). In such cases there
+is no reasonable way forward, and the system needs to panic.
 
-Fixes: d84ad04941c3 ("mptcp: skip connecting the connected address")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch replaces the return at the end of the share() function with
+a panic, to guarantee system integrity.
+
+Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
+Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
+[frankja@linux.ibm.com: Fixed up patch subject]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/uv.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -135,12 +135,15 @@ static bool lookup_subflow_by_daddr(cons
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_addr_info cur;
--	struct sock_common *skc;
+diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
+index ef3c00b049ab4..67f63b76dc18b 100644
+--- a/arch/s390/include/asm/uv.h
++++ b/arch/s390/include/asm/uv.h
+@@ -97,7 +97,10 @@ static inline int share(unsigned long addr, u16 cmd)
  
- 	list_for_each_entry(subflow, list, node) {
--		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 	if (!uv_call(0, (u64)&uvcb))
+ 		return 0;
+-	return -EINVAL;
++	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
++	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
++	       uvcb.header.rc, uvcb.header.rrc);
++	panic("System security cannot be guaranteed unless the system panics now.\n");
+ }
  
--		remote_address(skc, &cur);
-+		if (!((1 << inet_sk_state_load(ssk)) &
-+		      (TCPF_ESTABLISHED | TCPF_SYN_SENT | TCPF_SYN_RECV)))
-+			continue;
-+
-+		remote_address((struct sock_common *)ssk, &cur);
- 		if (mptcp_addresses_equal(&cur, daddr, daddr->port))
- 			return true;
- 	}
+ /*
+-- 
+2.43.0
+
 
 
 
