@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D228967AF8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3107D96794C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95EFE1F216AF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6208E1C2126F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5D818132A;
-	Sun,  1 Sep 2024 17:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E5617E8EA;
+	Sun,  1 Sep 2024 16:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwUwihVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocCPCK4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA84317ADE1;
-	Sun,  1 Sep 2024 17:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3316E1C68C;
+	Sun,  1 Sep 2024 16:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210192; cv=none; b=d9ZoMmTmc23M5DrCgyLgznNviH7eHMMU1Bo3wgCQd61inwjk6zi2FDm6MIR7Bs4EdOjy1CeXTuCHg4Zbo0aRrItE9H9SVUPUMvwPbFlvNFDrodKzBb3a4oeL5LXWhNBd+g6/ltVjoRJg60IIfNxjR4D5om6foXAbALMUUCnlZ44=
+	t=1725208935; cv=none; b=sRnPssIuwCYYgKMWF9oKEJ6U/yXiDaqaX0vDnDfu4orZP78jjGedArwl7d3WeDbejMY/eu9AHNGYtLNehSdVCHpwKyxuIV7r3fp0Sc28nJrlLIWNeF5uX7uISD44uUNZg0VlnoYF3ML9MuJ3iNDMWvwu1TAPS77BIRsel3gAlno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210192; c=relaxed/simple;
-	bh=9FAsQ2jhNjJBdJ73S4gDv80PoTZIkb69iM5QZuJvnkU=;
+	s=arc-20240116; t=1725208935; c=relaxed/simple;
+	bh=7PeJ0+Ql/4VVaiO9mkthGuDOSaCliUZAHwF0xwUmwSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSo5SHUruVZYLfhXI6xCrRpMT3cHVnYA1+hT3vuDuSEjakSrUxQeXGCY6iiMIAcTFx077k5r1EOAY7IiuyzFqkM5UEEvoZM3ETJfa+BHIIM+Ki+euB76Lx5DgDfUkbyNuGB15r7b6/FTYuW9L8dk06UJONtwENHYPpNTfpQPu3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwUwihVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9D7C4CEC3;
-	Sun,  1 Sep 2024 17:03:11 +0000 (UTC)
+	 MIME-Version; b=lOQ37FzHndLpg8XsXxR/k7ooQsnAEY5noohjohnxCUdYUdLKZCObg+nWoP90RiSADRWjd6JiByHKckRAeat3OFGT04GulAn5Hj/5NwAyeWuuSkRMGFPuq2KPx8IF0Wi+PzTiQ2MDvV5s91kjFXz6uLiqZvuznb6YC4NYTs3PiXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocCPCK4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9751C4CEC3;
+	Sun,  1 Sep 2024 16:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210192;
-	bh=9FAsQ2jhNjJBdJ73S4gDv80PoTZIkb69iM5QZuJvnkU=;
+	s=korg; t=1725208935;
+	bh=7PeJ0+Ql/4VVaiO9mkthGuDOSaCliUZAHwF0xwUmwSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwUwihVnqanNQXV28rYkWPlxvFtZpUK5gQMyLn2SUsE4yYb3fOe74FmQg9TyMEdyN
-	 s9iCimrfPD+ZZbBRyMEMGkJwGBRgXNfMh40kUHedg/HvhS1K9cCbSIdar0+mJjpino
-	 MEdff69jKBRzCNPFrxKctCRTHILRjLTO3VkjlF/8=
+	b=ocCPCK4Tl1HfFZDXdRNA6nZD/AET2/DxE188G6t2x+zHd+nqfuUKKOzdavyayWiKt
+	 kO8QnGHLH5+namUhcghStnr3pfidF30P2QvMM317D0S9/Ozy8z7FAjqQVECPeOXx2R
+	 +Ji3GD8LtoClnUB+DsBhG9oe7BtBEplEp72TdNTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 117/215] NFSD: Fix frame size warning in svc_export_parse()
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/134] tc-testing: dont access non-existent variable on exception
 Date: Sun,  1 Sep 2024 18:17:09 +0200
-Message-ID: <20240901160827.776188093@linuxfoundation.org>
+Message-ID: <20240901160813.221154650@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 6939ace1f22681fface7841cdbf34d3204cc94b5 ]
+[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
 
-fs/nfsd/export.c: In function 'svc_export_parse':
-fs/nfsd/export.c:737:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-    737 | }
+Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+the variable test_ordinal doesn't exist in call_pre_case().
+So it should not be accessed when an exception occurs.
 
-On my systems, svc_export_parse() has a stack frame of over 800
-bytes, not 1040, but nonetheless, it could do with some reduction.
+This resolves the following splat:
 
-When a struct svc_export is on the stack, it's a temporary structure
-used as an argument, and not visible as an actual exported FS. No
-need to reserve space for export_stats in such cases.
+  ...
+  During handling of the above exception, another exception occurred:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310012359.YEw5IrK6-lkp@intel.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
-[ cel: adjusted to apply to v5.15.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Traceback (most recent call last):
+    File ".../tdc.py", line 1028, in <module>
+      main()
+    File ".../tdc.py", line 1022, in main
+      set_operation_mode(pm, parser, args, remaining)
+    File ".../tdc.py", line 966, in set_operation_mode
+      catresults = test_runner_serial(pm, args, alltests)
+    File ".../tdc.py", line 642, in test_runner_serial
+      (index, tsr) = test_runner(pm, args, alltests)
+    File ".../tdc.py", line 536, in test_runner
+      res = run_one_test(pm, args, index, tidx)
+    File ".../tdc.py", line 419, in run_one_test
+      pm.call_pre_case(tidx)
+    File ".../tdc.py", line 146, in call_pre_case
+      print('test_ordinal is {}'.format(test_ordinal))
+  NameError: name 'test_ordinal' is not defined
+
+Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |   32 +++++++++++++++++++++++---------
- fs/nfsd/export.h |    4 ++--
- fs/nfsd/stats.h  |   12 ++++++------
- 3 files changed, 31 insertions(+), 17 deletions(-)
+ tools/testing/selftests/tc-testing/tdc.py | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -339,12 +339,16 @@ static int export_stats_init(struct expo
+diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
+index e566c70e64a19..81f76a5d12ac6 100755
+--- a/tools/testing/selftests/tc-testing/tdc.py
++++ b/tools/testing/selftests/tc-testing/tdc.py
+@@ -129,7 +129,6 @@ class PluginMgr:
+             except Exception as ee:
+                 print('exception {} in call to pre_case for {} plugin'.
+                       format(ee, pgn_inst.__class__))
+-                print('test_ordinal is {}'.format(test_ordinal))
+                 print('testid is {}'.format(caseinfo['id']))
+                 raise
  
- static void export_stats_reset(struct export_stats *stats)
- {
--	nfsd_percpu_counters_reset(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_reset(stats->counter,
-+					   EXP_STATS_COUNTERS_NUM);
- }
- 
- static void export_stats_destroy(struct export_stats *stats)
- {
--	nfsd_percpu_counters_destroy(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_destroy(stats->counter,
-+					     EXP_STATS_COUNTERS_NUM);
- }
- 
- static void svc_export_put(struct kref *ref)
-@@ -353,7 +357,8 @@ static void svc_export_put(struct kref *
- 	path_put(&exp->ex_path);
- 	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
--	export_stats_destroy(&exp->ex_stats);
-+	export_stats_destroy(exp->ex_stats);
-+	kfree(exp->ex_stats);
- 	kfree(exp->ex_uuid);
- 	kfree_rcu(exp, ex_rcu);
- }
-@@ -744,13 +749,15 @@ static int svc_export_show(struct seq_fi
- 	seq_putc(m, '\t');
- 	seq_escape(m, exp->ex_client->name, " \t\n\\");
- 	if (export_stats) {
--		seq_printf(m, "\t%lld\n", exp->ex_stats.start_time);
-+		struct percpu_counter *counter = exp->ex_stats->counter;
-+
-+		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
- 		seq_printf(m, "\tfh_stale: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_FH_STALE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
- 		seq_printf(m, "\tio_read: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_READ]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
- 		seq_printf(m, "\tio_write: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_WRITE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
- 		seq_putc(m, '\n');
- 		return 0;
- 	}
-@@ -796,7 +803,7 @@ static void svc_export_init(struct cache
- 	new->ex_layout_types = 0;
- 	new->ex_uuid = NULL;
- 	new->cd = item->cd;
--	export_stats_reset(&new->ex_stats);
-+	export_stats_reset(new->ex_stats);
- }
- 
- static void export_update(struct cache_head *cnew, struct cache_head *citem)
-@@ -832,7 +839,14 @@ static struct cache_head *svc_export_all
- 	if (!i)
- 		return NULL;
- 
--	if (export_stats_init(&i->ex_stats)) {
-+	i->ex_stats = kmalloc(sizeof(*(i->ex_stats)), GFP_KERNEL);
-+	if (!i->ex_stats) {
-+		kfree(i);
-+		return NULL;
-+	}
-+
-+	if (export_stats_init(i->ex_stats)) {
-+		kfree(i->ex_stats);
- 		kfree(i);
- 		return NULL;
- 	}
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -64,10 +64,10 @@ struct svc_export {
- 	struct cache_head	h;
- 	struct auth_domain *	ex_client;
- 	int			ex_flags;
-+	int			ex_fsid;
- 	struct path		ex_path;
- 	kuid_t			ex_anon_uid;
- 	kgid_t			ex_anon_gid;
--	int			ex_fsid;
- 	unsigned char *		ex_uuid; /* 16 byte fsid */
- 	struct nfsd4_fs_locations ex_fslocs;
- 	uint32_t		ex_nflavors;
-@@ -76,7 +76,7 @@ struct svc_export {
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
- 	struct rcu_head		ex_rcu;
--	struct export_stats	ex_stats;
-+	struct export_stats	*ex_stats;
- };
- 
- /* an "export key" (expkey) maps a filehandlefragement to an
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -60,22 +60,22 @@ static inline void nfsd_stats_rc_nocache
- static inline void nfsd_stats_fh_stale_inc(struct svc_export *exp)
- {
- 	percpu_counter_inc(&nfsdstats.counter[NFSD_STATS_FH_STALE]);
--	if (exp)
--		percpu_counter_inc(&exp->ex_stats.counter[EXP_STATS_FH_STALE]);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_inc(&exp->ex_stats->counter[EXP_STATS_FH_STALE]);
- }
- 
- static inline void nfsd_stats_io_read_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_READ], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_READ], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_READ], amount);
- }
- 
- static inline void nfsd_stats_io_write_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_WRITE], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_WRITE], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_WRITE], amount);
- }
- 
- static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
+-- 
+2.43.0
+
 
 
 
