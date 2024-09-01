@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192FD967831
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555B396794E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 695D7B21F15
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0917A1F212F6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77CB181B88;
-	Sun,  1 Sep 2024 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E3817E46E;
+	Sun,  1 Sep 2024 16:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qts9mhSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4xtNah+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865A9183CA5;
-	Sun,  1 Sep 2024 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F9E2B9C7;
+	Sun,  1 Sep 2024 16:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208137; cv=none; b=YIpfIvjaY8809XetIYSMfkrCjrhGDXk1rTxhwIE28YX+MlbsF6QaPtg3bIe+0053Reko085j2VPI60rNOITMaCQ7SXWhd6M45JnURRfD6P7M5IjVL41+5/V2bQuM6NLIWnZCvd9i5mvZgOelYOMJno530zwY2NQlufc3U13D1R4=
+	t=1725208942; cv=none; b=D3rhuR4imNhULjRarrOlTwK2nsMU2t2MWBCpy10eBZOXHZHzBW2oUAKmkVZdrMFJu1Y+u19BiDpSG8KZRibjRyMMCJmYfxzeMhJ5knkCiBlplR6amYBchOpV6Czn1MGCaE3/nt+BKdg7UayAB4oydgxQQMZ4YzLW4yr12AqPW0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208137; c=relaxed/simple;
-	bh=3X5Ds3N6ZnS8y2rqhWzku7u12jdpB8AR+SmAv5594YA=;
+	s=arc-20240116; t=1725208942; c=relaxed/simple;
+	bh=80S/o+h9kNSKLp17q9mICVpzI7N1B506xYA036GPdwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OB6x5en7cmhZRTpbW//A4GfE5fHiSun+9Z0xFEa8bDiLtUn/ksE+ZZMT3ThDjOwhi1IFsGnyGgA3g+nSU3hhNGlV92aOsewY/SBF/TUBKcht86JaTONINmFoyQ9hjnJy1pT4qTGvw1exYSNi7dYKgzdrWofSvyzFOxpLOmqQlqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qts9mhSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D593EC4CEC3;
-	Sun,  1 Sep 2024 16:28:56 +0000 (UTC)
+	 MIME-Version; b=DzZwRDlyIxHjt+MuU5vW6k6e/oM34ellrEHYkZLUt37oMQEpR9vFowSocwzYkP55sIRJXYj5rTGs/LCRHpE94Jxgs3bUIWD7lZSROYd+/3VQI/T4Hk/2AmhDkKcS3HuDhSBmWykkj89oqpcCrcoP5I4rNIbx6bGFYHsdXtCGjYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4xtNah+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87217C4CEC3;
+	Sun,  1 Sep 2024 16:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208137;
-	bh=3X5Ds3N6ZnS8y2rqhWzku7u12jdpB8AR+SmAv5594YA=;
+	s=korg; t=1725208942;
+	bh=80S/o+h9kNSKLp17q9mICVpzI7N1B506xYA036GPdwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qts9mhSCt67v3YgkUyq//wn0stg9eaLiLu6KkoZpBgMZfdMlE189/t2dTxP/3KvTK
-	 ffqPQSzA2LogOHUnOrEUm/yVDJ03Yj/TktF8Pmv3b+hf41vaegqyhWxRcD814lsg7m
-	 cXSIidbr8xWrDLh3IHOAJNHACDZUN7J9A208rrWI=
+	b=l4xtNah+wrwT61gxgtpP5tq4PLqWHf58wzk1WHVmnU1MPwLsT2yZfluoAKZhAmmy9
+	 cIgTrvOZa03xxvkv6Xt4ASFKcahhM8y8Paj9TShl0Ppmt6zHYpBleszgNYBeFTPtSC
+	 sHjL4zyAgy5UX/VjKC7gD7FLLYD2kPmyj1A8nat8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 84/93] usb: cdnsp: fix for Link TRB with TC
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 085/134] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
 Date: Sun,  1 Sep 2024 18:17:11 +0200
-Message-ID: <20240901160810.897794170@linuxfoundation.org>
+Message-ID: <20240901160813.301999160@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 740f2e2791b98e47288b3814c83a3f566518fed2 upstream.
+[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
 
-Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
-internal cycle bit can have incorrect state after command complete.
-In consequence empty transfer ring can be incorrectly detected
-when EP is resumed.
-NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
-is then on NOP TRB and internal cycle bit is not changed and have
-correct value.
+nft_counter_reset() resets the counter by subtracting the previously
+retrieved value from the counter. This is a write operation on the
+counter and as such it requires to be performed with a write sequence of
+nft_counter_seq to serialize against its possible reader.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-cc: <stable@vger.kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the packets/ bytes within write-sequence of nft_counter_seq.
+
+Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
- drivers/usb/cdns3/cdnsp-ring.c   |   28 ++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ net/netfilter/nft_counter.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -811,6 +811,7 @@ struct cdnsp_stream_info {
-  *        generate Missed Service Error Event.
-  *        Set skip flag when receive a Missed Service Error Event and
-  *        process the missed tds on the endpoint ring.
-+ * @wa1_nop_trb: hold pointer to NOP trb.
-  */
- struct cdnsp_ep {
- 	struct usb_ep endpoint;
-@@ -838,6 +839,8 @@ struct cdnsp_ep {
- #define EP_UNCONFIGURED		BIT(7)
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index f6d4d0fa23a62..bf829fabf2785 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -105,11 +105,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
+ 			      struct nft_counter *total)
+ {
+ 	struct nft_counter *this_cpu;
++	seqcount_t *myseq;
  
- 	bool skip;
-+	union cdnsp_trb	 *wa1_nop_trb;
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
++	myseq = this_cpu_ptr(&nft_counter_seq);
 +
- };
++	write_seqcount_begin(myseq);
+ 	this_cpu->packets -= total->packets;
+ 	this_cpu->bytes -= total->bytes;
++	write_seqcount_end(myseq);
+ 	local_bh_enable();
+ }
  
- /**
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -1905,6 +1905,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
- 		return ret;
- 
- 	/*
-+	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
-+	 * causes that internal cycle bit can have incorrect state after
-+	 * command complete. In consequence empty transfer ring can be
-+	 * incorrectly detected when EP is resumed.
-+	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
-+	 * then on NOP TRB and internal cycle bit is not changed and have
-+	 * correct value.
-+	 */
-+	if (pep->wa1_nop_trb) {
-+		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
-+		field ^= TRB_CYCLE;
-+
-+		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
-+		pep->wa1_nop_trb = NULL;
-+	}
-+
-+	/*
- 	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
- 	 * until we've finished creating all the other TRBs. The ring's cycle
- 	 * state may change as we enqueue the other TRBs, so save it too.
-@@ -1999,6 +2016,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
- 		send_addr = addr;
- 	}
- 
-+	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
-+		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
-+		if (!ring->cycle_state)
-+			field |= TRB_CYCLE;
-+
-+		pep->wa1_nop_trb = ring->enqueue;
-+
-+		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
-+				TRB_INTR_TARGET(0), field);
-+	}
-+
- 	cdnsp_check_trb_math(preq, enqd_len);
- 	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
- 				       start_cycle, start_trb);
+-- 
+2.43.0
+
 
 
 
