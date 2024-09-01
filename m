@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-72098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE95796792B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ADE967AD5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5711C21117
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29701C20D87
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDC817E46E;
-	Sun,  1 Sep 2024 16:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31271381BD;
+	Sun,  1 Sep 2024 17:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yXmiD9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usln91cv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C57E2B9C7;
-	Sun,  1 Sep 2024 16:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A9526AC1;
+	Sun,  1 Sep 2024 17:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208835; cv=none; b=l0FpXvfXhDjrdvW2wTxVj0MbqAlet3ZhSfobIpi1/M1LqorVwLh2RC3OtVW4D4sYrkInqd2jCK72kuON+qtbXZ59PWMJ0YJSEebEbakHsIa2JFpZH+gpmNXC/hW5E7VZscJzIuFc1DmnufHckeW58v1U7R6rBiQJZTWh8E6Ligs=
+	t=1725210091; cv=none; b=epE8kbyjO6LwgcfbP1KiaWW1Y4qCBXqC+Ey8ZjoVDazx617UA4H8M41mwM85cIJCCqS87JyEYdU80G8UHPnGEVh1leI5YcTXtuGkXrKRV+vTWWRnbLce6QXQnU5V6G5d9zUujsUMgXwukNXTk+PBra2TtBOy0ejPfzFM5/ZNKF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208835; c=relaxed/simple;
-	bh=VHQh11OdeVQnYAbipgDOjsU3Mw7ml38aC8a/8ubNalU=;
+	s=arc-20240116; t=1725210091; c=relaxed/simple;
+	bh=1WtReWD8O1eA2XyE6T2m9EJHg9gtnxM6XjxyyEK5DA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9fC2ytUcXanxU5W1EpkUOUP25Z4R92T40u1b8Uu5CZWAWYPNIL5KDTnUxA24wZzAIGfi5c7ETOr8BI4Hn4ezKTWudnCq7OO+CMfgoaqa3YBSx5etAH/rPg+ekwEWuBsTP6sQqhSoaQyLSi7s6pVpPKwVs/G0q+xHGq3LOppqOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yXmiD9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8343C4CEC3;
-	Sun,  1 Sep 2024 16:40:34 +0000 (UTC)
+	 MIME-Version; b=aVT07aYtEp66ubgX7IHbh3pzYYd8np3GUYVYXsLhFG1RpdsqPMumg9L/Z4Hx1+0mdWi6ZwHgFC4rNB6KrIOkjX9Kc+0uox9+zW8nVOpp96zi7hwkUxTiEbeOTLJq4XEeRbsi74rYvw62rE5YR4RY3uyI7cPPuZh7fzKhVVgG8Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usln91cv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E04C4CEC3;
+	Sun,  1 Sep 2024 17:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208835;
-	bh=VHQh11OdeVQnYAbipgDOjsU3Mw7ml38aC8a/8ubNalU=;
+	s=korg; t=1725210090;
+	bh=1WtReWD8O1eA2XyE6T2m9EJHg9gtnxM6XjxyyEK5DA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yXmiD9+pRT69TxqSrYG1YgjhSbchXVoeIf6kcpvrilNfGnnTlUj7ZhYDami4lhOz
-	 1262c9F1oxufYJkJeGsY79Zs4e8T85QmabZ4FRpzBd7rdIUBnqgr8qtytLgFFzfh4Y
-	 FYqGFODpoeKPqVFU7XAqRHgA+SziHxr389JA2FXU=
+	b=usln91cvdUjcoXFj9HWGcTS5BQ6vimpVyM6ozP6OFFqr7SiaTIxECYXIwJZcYWcou
+	 OctqKQSmmlQz8RhtDuzHv9atH/hClmidAUCq24GMRXVIHwPpkYF8FGEOD5knsINgwG
+	 ODW5bVINQwfaG1YY4Nz66ZEuPb1qScQWBl6pXYJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 052/134] x86: Increase brk randomness entropy for 64-bit systems
+Subject: [PATCH 5.15 086/215] powerpc/boot: Only free if realloc() succeeds
 Date: Sun,  1 Sep 2024 18:16:38 +0200
-Message-ID: <20240901160812.066581339@linuxfoundation.org>
+Message-ID: <20240901160826.606534079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
+[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
 
-In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
-defined to use a 32MB range (13 bits of entropy), but was never increased
-when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
-32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
+simple_realloc() frees the original buffer (ptr) even if the
+reallocation failed.
 
-Update x86_64 to match the entropy used by arm64 and other 64-bit
-architectures.
+Fix it to behave like standard realloc() and only free the original
+buffer if the reallocation succeeded.
 
-Reported-by: y0un9n132@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/boot/simple_alloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index b8de27bb6e09c..c402b079b74e8 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -793,7 +793,10 @@ unsigned long arch_align_stack(unsigned long sp)
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index 188c4f996512a..bc99f75b8582d 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -114,10 +114,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
- unsigned long arch_randomize_brk(struct mm_struct *mm)
- {
--	return randomize_page(mm->brk, 0x02000000);
-+	if (mmap_is_ia32())
-+		return randomize_page(mm->brk, SZ_32M);
-+
-+	return randomize_page(mm->brk, SZ_1G);
+ 	new = simple_malloc(size);
+-	if (new)
++	if (new) {
+ 		memcpy(new, ptr, p->size);
++		simple_free(ptr);
++	}
+ 
+-	simple_free(ptr);
+ 	return new;
  }
  
- /*
 -- 
 2.43.0
 
