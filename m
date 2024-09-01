@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D9B967917
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F45967898
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2455F1C2125F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E550E280D9D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A25183CA9;
-	Sun,  1 Sep 2024 16:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD629181B87;
+	Sun,  1 Sep 2024 16:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+s1Utgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxLEEenR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90817DFFC;
-	Sun,  1 Sep 2024 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCC6184530;
+	Sun,  1 Sep 2024 16:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208772; cv=none; b=IPOCTUGhRRj4aTpkWaLZAfCLja9OREf3wg0gRhSdNlRI0xxRnNm4udVkRhy5bRn0tWfsveo4eYI0VJYEFTDFcyC4US5ZThpXFHUcVlSGXwMphVB30MdYVV+fhYT86++DoMgaxnHj23+GBMA9AcS8GVobl5/2az2VSQEPrKuqJEc=
+	t=1725208399; cv=none; b=IbbwWt/U1KVHA/UXwqwzWwhHd3TY2zTy+dLTVQiEYoi7EUMLDqZ8DXWAVw9Lotyy527nxMXroXnMAeEHtmsUrIsZXw3dVIavZEMvmMxFJvz8epgSVzRShojEVdw5mgw5D0KAE11fKxHDnZ+9L5cdHXcd9rm/76ExpTWy2KYli2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208772; c=relaxed/simple;
-	bh=FKPJ4wv+D0b+OWWvqnsfMNGXK16ygu22WcviE3n826s=;
+	s=arc-20240116; t=1725208399; c=relaxed/simple;
+	bh=Tlh4OJXMRH8HpRbgaRcd1tx5MJYujpDnn5LwH9I+E/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpaGD0QCGfK0kmP8SJI3UWDNBw7ZzFIvuTL+JTV5dzEklN0RtKi/n9V23jbs4VGcvguS+g6iAxv3WQQz0tvTEw+rDv74XGGgy5VPwdYJ2qtfkE767a+sIU6wuYxW9hp3x+m4vhmAiGFhHWo8kTjaxEZz4wdOP4UqXDEV6kJVeys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+s1Utgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8F8C4CEC3;
-	Sun,  1 Sep 2024 16:39:31 +0000 (UTC)
+	 MIME-Version; b=o5qSzRqV1BeSYFPwLi3Fk/nTMpmby8sUpaID306CbXAFFs4FdJxRaZZ9Q1pAhoWKjU58NZV/MvbdrqIVP8mdC8jRgxKt2LDS8TEe+7awVdc49crdhje7xhxrwHO7r5OwnXMuLLOf3Uz9zjYxViiKS5J04HRjdHBzyQW1UevxKyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxLEEenR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C6BC4CEC3;
+	Sun,  1 Sep 2024 16:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208771;
-	bh=FKPJ4wv+D0b+OWWvqnsfMNGXK16ygu22WcviE3n826s=;
+	s=korg; t=1725208399;
+	bh=Tlh4OJXMRH8HpRbgaRcd1tx5MJYujpDnn5LwH9I+E/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+s1UtgvnzRB45jsT+yXl7e13guC1YKe/8W43BlgFxxBb46MiW4T2i2B052p2t/Py
-	 xCqG3hvJmmkHpPkfBlwqGnoEmatEsWkN9wNlPgO3fAdvnHNLI8Ud+/RYGVDKTFAHwK
-	 dIykhZR6+1l2fZHg68r5anvSEmI1eSNewN5DXH60=
+	b=kxLEEenROlM9xowrn26ROTWAKv0BcS7yNLUFHaHqWlkmFbDdQGL2zja04FtgV3BHJ
+	 xAKejjtH7xrMKEgnvnGMlrgn/SHNVXG4ZSpZA3aUOnZ7hpFGQkcEkB/KIuFWz+Lfo4
+	 9aB1n2oibdl+qbgQB8FgoBg3Ch2vQOijivZWIsqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/134] staging: ks7010: disable bh on tx_dev_lock
-Date: Sun,  1 Sep 2024 18:16:21 +0200
-Message-ID: <20240901160811.424500297@linuxfoundation.org>
+Subject: [PATCH 6.10 071/149] smb/client: remove unused rq_iter_size from struct smb_rqst
+Date: Sun,  1 Sep 2024 18:16:22 +0200
+Message-ID: <20240901160820.135682111@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
+[ Upstream commit b608e2c318789aeba49055747166e13bee57df4a ]
 
-As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
-could be call from timer under softirq context, use spin_lock_bh()
-on it to prevent potential deadlock.
-
-hostif_sme_work()
---> hostif_sme_set_pmksa()
---> hostif_mib_set_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
-
-ks_wlan_start_xmit()
---> hostif_data_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsglob.h | 1 -
+ fs/smb/client/cifssmb.c  | 1 -
+ fs/smb/client/smb2ops.c  | 2 --
+ fs/smb/client/smb2pdu.c  | 2 --
+ 4 files changed, 6 deletions(-)
 
-diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
-index 3fbe223d59b8e..28723db44a8ff 100644
---- a/drivers/staging/ks7010/ks7010_sdio.c
-+++ b/drivers/staging/ks7010/ks7010_sdio.c
-@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
- 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
- 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 0a271b9fbc622..1e4da268de3b4 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -254,7 +254,6 @@ struct cifs_open_info_data {
+ struct smb_rqst {
+ 	struct kvec	*rq_iov;	/* array of kvecs */
+ 	unsigned int	rq_nvec;	/* number of kvecs in array */
+-	size_t		rq_iter_size;	/* Amount of data in ->rq_iter */
+ 	struct iov_iter	rq_iter;	/* Data iterator */
+ 	struct xarray	rq_buffer;	/* Page buffer for encryption */
+ };
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 595c4b673707e..6dce70f172082 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1713,7 +1713,6 @@ cifs_async_writev(struct cifs_io_subrequest *wdata)
+ 	rqst.rq_iov = iov;
+ 	rqst.rq_nvec = 2;
+ 	rqst.rq_iter = wdata->subreq.io_iter;
+-	rqst.rq_iter_size = iov_iter_count(&wdata->subreq.io_iter);
  
--	spin_lock(&priv->tx_dev.tx_dev_lock);
-+	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
- 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
--	spin_unlock(&priv->tx_dev.tx_dev_lock);
-+	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
+ 	cifs_dbg(FYI, "async write at %llu %zu bytes\n",
+ 		 wdata->subreq.start, wdata->subreq.len);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 7fe59235f0901..cfbca3489ece1 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4428,7 +4428,6 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
+ 			}
+ 			iov_iter_xarray(&new->rq_iter, ITER_SOURCE,
+ 					buffer, 0, size);
+-			new->rq_iter_size = size;
+ 		}
+ 	}
  
- 	if (txq_has_space(priv))
- 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
+@@ -4474,7 +4473,6 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
+ 	rqst.rq_nvec = 2;
+ 	if (iter) {
+ 		rqst.rq_iter = *iter;
+-		rqst.rq_iter_size = iov_iter_count(iter);
+ 		iter_size = iov_iter_count(iter);
+ 	}
+ 
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 52b95f33db57d..d262e70100c9c 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4517,7 +4517,6 @@ smb2_readv_callback(struct mid_q_entry *mid)
+ 
+ 	if (rdata->got_bytes) {
+ 		rqst.rq_iter	  = rdata->subreq.io_iter;
+-		rqst.rq_iter_size = iov_iter_count(&rdata->subreq.io_iter);
+ 	}
+ 
+ 	WARN_ONCE(rdata->server != mid->server,
+@@ -4969,7 +4968,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
+ 	rqst.rq_iov = iov;
+ 	rqst.rq_nvec = 1;
+ 	rqst.rq_iter = wdata->subreq.io_iter;
+-	rqst.rq_iter_size = iov_iter_count(&rqst.rq_iter);
+ 	if (test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
+ 		smb2_set_replay(server, &rqst);
+ #ifdef CONFIG_CIFS_SMB_DIRECT
 -- 
 2.43.0
 
