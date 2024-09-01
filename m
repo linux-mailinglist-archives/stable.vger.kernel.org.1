@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-71980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3849678A8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD24967807
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9331C210F1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E0C1281224
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132C717B50B;
-	Sun,  1 Sep 2024 16:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD4A183CA3;
+	Sun,  1 Sep 2024 16:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IW77iPJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8qCbCuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A181C68C;
-	Sun,  1 Sep 2024 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA0344C97;
+	Sun,  1 Sep 2024 16:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208448; cv=none; b=WOIBFMo5CQUac8IQDAFZc1D0YEWPaccaWx2pzid2O99Xy8dRNLV3072EzL13q4v+wh2ZOuN9kA9XmSYdbK8dDoxXCACiVLnynw5desEqS1qxk5VJJGQ8AUa1fOSRy5nFPp6Hi82c2xjr/SEx7gXTwYkdoZX187yfuP4IFII0EO8=
+	t=1725208017; cv=none; b=WPARK7ZVjCGXEPrM/lKupHhyNDdvG6ZnZWCLJ/emYdUum1vCHLA2DSR9SD9Szg0MOxgHzotwcoxxqjYLAV20ba6HfcwxjOFFo7GlfM4RwstDLV2DaspiaRiN0Xtl8pxdGzSxK0UFi/BzAyl+3VHpSGstFbXhCzoMEPDo5bbn33s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208448; c=relaxed/simple;
-	bh=hqJRrv/u/Z+u/m7brPoaKjxQUEMbLtxQ1lyZv4uuekY=;
+	s=arc-20240116; t=1725208017; c=relaxed/simple;
+	bh=lJw96Dj9dAFAuH3H405JMFycw6XHV2XZKYkpq7Rbkso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Foji9ZwZ8LpG/NFwnl/sFNJSEzvUR6z4coeR0iXq071wajnzodVJaZk/QbyHYtrVLydgsQXs9IY/S+0bXzWcSWnYZHAXM7dXmaNPRfeR8I0+Mv0cShWoz571Q11s2knSJrXUr46UOCnhphiNMm36fK5pYN3GO4puAGi2h2f3wz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IW77iPJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D80C4CEC3;
-	Sun,  1 Sep 2024 16:34:07 +0000 (UTC)
+	 MIME-Version; b=FpDTE1OqHZiZ93C3n7xDt6kBZ94/T0ncpR4iXBpv3KdiI9+mAF2eiSoBk/Gw1PYJhElbnuGuvZUGobFq38xRKQRhVMceUEhkjoITJsdf2FZXTYbEeGZ9ClMwksGqEnqNjkJyL9w8ietiWeGeT1h1+FPGiTmDSgZ9KdTBhsQa/GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8qCbCuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44646C4CEC3;
+	Sun,  1 Sep 2024 16:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208448;
-	bh=hqJRrv/u/Z+u/m7brPoaKjxQUEMbLtxQ1lyZv4uuekY=;
+	s=korg; t=1725208017;
+	bh=lJw96Dj9dAFAuH3H405JMFycw6XHV2XZKYkpq7Rbkso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IW77iPJ5fVE7F3FbiiCtAt9klmT/G/s6SreMIeuppZ0a/Edxex56UTvk+AVpFneeR
-	 q8MKY/0RRqQZJDhq/vK9ypQY4iVF2WkGrnuqczHielxbBBL+0eYt5Ox6y96m7rBoQx
-	 zknqs6Up2zAIRAjh06r208DFlt3VGViqqaApajnE=
+	b=k8qCbCuc4vj11AyzWc95vi4zSiySWlty9PRceGna8Qp+HMOivvwkmB8Q1nv/Xjl/B
+	 m6xX5xA5HA4870EPykojRevh3tjU5ZEXztGZgp5re90bx5wkMaa6y09MDGscv04NoT
+	 HFY+q1j9Jg3ay7XAOwXpoeiM45lWnHQd05hI9cTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 084/149] phy: xilinx: phy-zynqmp: Fix SGMII linkup failure on resume
+Subject: [PATCH 6.6 48/93] phy: xilinx: phy-zynqmp: Fix SGMII linkup failure on resume
 Date: Sun,  1 Sep 2024 18:16:35 +0200
-Message-ID: <20240901160820.626018963@linuxfoundation.org>
+Message-ID: <20240901160809.170783520@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,7 +91,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 56 insertions(+)
 
 diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
-index f2bff7f25f05a..d7d12cf3011a2 100644
+index 0cb5088e460b5..8c8b1ca31e4c4 100644
 --- a/drivers/phy/xilinx/phy-zynqmp.c
 +++ b/drivers/phy/xilinx/phy-zynqmp.c
 @@ -166,6 +166,24 @@
