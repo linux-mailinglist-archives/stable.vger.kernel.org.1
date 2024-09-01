@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE1E967AD4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247989677A9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B111F21429
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 559F71C20C35
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEB03398B;
-	Sun,  1 Sep 2024 17:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA70B183061;
+	Sun,  1 Sep 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNUIZA9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGrZtfXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C5A1EB5B;
-	Sun,  1 Sep 2024 17:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D6E44C97;
+	Sun,  1 Sep 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210088; cv=none; b=C97DjW63tN9ek54mEqzJVj1Lj86WU9xy1on5sjQBvtEjFh/lX/ydKPoAJHicSn92ZnyLLT4HeRQy3nUedDrRAAOOfEJrkRhyqSvug8WcQy8N2DRaBqn9C+JGpRyO3hOfoVb024d2IWUIRqkTPcWibK+MY7zFP7Rq6zu8Q0v14+s=
+	t=1725207751; cv=none; b=cznvBjAzveREbcMPGAA7GmhQSWEx+jCP38UL5afZtYcHV3sMB0Taoqj2STv63i27iEoErbTvQEU39w8a0FULaU1tPKtyki02vZUe0vHwko6DbLxRHpd5E1A0DFPA3piSLUgVUNztCOwDufSzDIQb192KqoXB5ZKXjit0DWPjVpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210088; c=relaxed/simple;
-	bh=VB+DBQBf/VpF0cfWACyQdWS1Ed1dfGHC0IE6wjyvlxE=;
+	s=arc-20240116; t=1725207751; c=relaxed/simple;
+	bh=vazMM4pc3Ah2cFlln451tohtr3iw03OBjJw82PjNeQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsBJ4Vfuc7XfaN7rhoRa6tvJtgSWbA4xS/DB1TkOAAyGbBsly+jjxI0AuXb/mF+A2j6fB5pL9ZN/qrt+JJVjn5cotGlTRh9b3NQpDLRTR1U0SYqlyhhVFXMN5AbiRtUSFOSn9xgNF/7Rum2Sx6u3uWNKv0Z2l0PnvIbQPReI2Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNUIZA9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B57C4CEC3;
-	Sun,  1 Sep 2024 17:01:27 +0000 (UTC)
+	 MIME-Version; b=X43ojxEiCstQKWz6GLTouhYYzLPPkKt3Dx3bXHWvEMG+xoy5O6hCTFYQuoM2KnFxhh2oqqU7hl8iTWNIK9YvrHMiLfxl0HE38h1DdYOhq8rMBPCJjPtatdPbbMyXlpFR7ChOut8egTX57u3fL/6wQFWH09g54AIUY4lhlm4lasc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGrZtfXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEA9C4CEC3;
+	Sun,  1 Sep 2024 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210087;
-	bh=VB+DBQBf/VpF0cfWACyQdWS1Ed1dfGHC0IE6wjyvlxE=;
+	s=korg; t=1725207751;
+	bh=vazMM4pc3Ah2cFlln451tohtr3iw03OBjJw82PjNeQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNUIZA9a7M/teuHX5SerWskbZ/24dKuEZWaTgRzJljoz7GsxpGpJ8sphofE3wCqH+
-	 YVGFd8quQfCaKyxoQzjMOsE8M+RXRsaexdxwyh39Cljd+GETuGXseJQTqeWgQhjghj
-	 sDAA11zEGw+3nFJU8BkQOTAajRRnXK23IAbl9rCU=
+	b=JGrZtfXXmdEAUU+0Vo9pjs9Zqnvb/lNEVXfhc3adGsgIl4JWYS57HNkt/Hxj/swUZ
+	 e2LhLRVdR89qHPiK/haya0YTCq2fEzExLZYRz9I5wktii5ZgySduH9ujhbavQ9GcHv
+	 nJ4tD5hIPEVnmxXHWOWtpb3XP+xPffNL4IM2VCPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li zeming <zeming@nfschina.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/215] powerpc/boot: Handle allocation failure in simple_realloc()
+	Ben Whitten <ben.whitten@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 67/98] mmc: dw_mmc: allow biu and ciu clocks to defer
 Date: Sun,  1 Sep 2024 18:16:37 +0200
-Message-ID: <20240901160826.569263920@linuxfoundation.org>
+Message-ID: <20240901160806.224893419@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li zeming <zeming@nfschina.com>
+From: Ben Whitten <ben.whitten@gmail.com>
 
-[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
+commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
 
-simple_malloc() will return NULL when there is not enough memory left.
-Check pointer 'new' before using it to copy the old data.
+Fix a race condition if the clock provider comes up after mmc is probed,
+this causes mmc to fail without retrying.
+When given the DEFER error from the clk source, pass it on up the chain.
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
-[mpe: Reword subject, use change log from Christophe]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
+Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/dw_mmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 65ec135d01579..188c4f996512a 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -114,7 +114,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
- 
- 	new = simple_malloc(size);
--	memcpy(new, ptr, p->size);
-+	if (new)
-+		memcpy(new, ptr, p->size);
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3205,6 +3205,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->biu_clk = devm_clk_get(host->dev, "biu");
+ 	if (IS_ERR(host->biu_clk)) {
+ 		dev_dbg(host->dev, "biu clock not available\n");
++		ret = PTR_ERR(host->biu_clk);
++		if (ret == -EPROBE_DEFER)
++			return ret;
 +
- 	simple_free(ptr);
- 	return new;
- }
--- 
-2.43.0
-
+ 	} else {
+ 		ret = clk_prepare_enable(host->biu_clk);
+ 		if (ret) {
+@@ -3216,6 +3220,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
+ 	if (IS_ERR(host->ciu_clk)) {
+ 		dev_dbg(host->dev, "ciu clock not available\n");
++		ret = PTR_ERR(host->ciu_clk);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_biu;
++
+ 		host->bus_hz = host->pdata->bus_hz;
+ 	} else {
+ 		ret = clk_prepare_enable(host->ciu_clk);
 
 
 
