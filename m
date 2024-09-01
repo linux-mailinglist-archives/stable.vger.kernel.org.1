@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0A0967954
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53516967818
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7D9282166
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856D81C20FD9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3A817E8EA;
-	Sun,  1 Sep 2024 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B613D53B;
+	Sun,  1 Sep 2024 16:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNMd2BaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIUoN3fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A06D2B9C7;
-	Sun,  1 Sep 2024 16:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14744183CC5;
+	Sun,  1 Sep 2024 16:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208964; cv=none; b=EfkXjvd3gL7j0FuTTVPfNxhv2mcgN6PqDB1/mq1XMnIpjH/sdfqnfZM77RyAv7VHixDblAvpiHYAaDjDKxyVxG/3uGIWwBtquBiu2/1iBgbyJdfhBUEJJep01QkgihvJOk0BLfUu6vT6I1WGYKLMVkYIHqFPK65qS22qPcmeE8k=
+	t=1725208061; cv=none; b=Yaj8Yp7FYWHCOBNuDioli+WYIf/lnxaG8F15DRgxAWhKTBVS/cfQIZ+7/1blnW63pfJNvhkTQhZZTYWlmsI510mpv6YvyQW96vV6FoU/3YoqNVemvHSPuWKqpq1x/I+C8flMYzTsbSIRX/9Niq7LZhbMGPJeh9md1SvJp+g7hDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208964; c=relaxed/simple;
-	bh=NpmEBINSI/g3Fv9Iy7OcEVu5ADM0wL9YbygWTigFXOY=;
+	s=arc-20240116; t=1725208061; c=relaxed/simple;
+	bh=Qu59aJdfwS1ww/tz25Il5QmyGrYhtztalvFi/pgiN+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V2eq9onVCIFLL3ag91Mdeg67GsgnftzwYTyPGNcYBADr003FUqB16ezxKAlXCjEZKDfJecLjiOKKvlfH5Q9MJ56ZGNJD3KHOMvLdHsmhdtxV8wzD+egUlmeTmZqrGgetaO6xoTLbe7uDqG6BAd2A8ikSufOkrUfmAlFN5y3tgdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNMd2BaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6474EC4CEC3;
-	Sun,  1 Sep 2024 16:42:43 +0000 (UTC)
+	 MIME-Version; b=nKGbOsWGFYyH8/Nmr/HNQUyWzyfWF2tvbBAwV67+rFL45C5q7kKWENnVk14uNZv05Mkk7dNHSxCW3o4yzniN0J9gu25VxXzMjrEf446j5C8Maro24TsxLUbr7/l1zpHscI/u4+fimSiVzQISEJQtDUuR061ReIZT2J7qSk2tJsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIUoN3fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774CCC4CEC3;
+	Sun,  1 Sep 2024 16:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208963;
-	bh=NpmEBINSI/g3Fv9Iy7OcEVu5ADM0wL9YbygWTigFXOY=;
+	s=korg; t=1725208061;
+	bh=Qu59aJdfwS1ww/tz25Il5QmyGrYhtztalvFi/pgiN+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNMd2BaG0i24pBKO6Q6W1l2Tg/Svl84+Pn4fu+70iq8XE3b1w/M0tVddVe6/9RUA3
-	 MQWl6xp/6CqvUyPU+KSd9KnW0XOdNfzzf73DO86e5S1zCYLTIEm32PFiZ5CfZBP3Ww
-	 I9g1OeknVd0vv3sWtptGUXSz7WasvjbWhXr/PBtA=
+	b=uIUoN3fhKHkq6VK9qiTkvR3rIkIn5X8sG7e6cjN+Y0fnhper1k7Z3SlzGnJkRYskr
+	 cfhrqyn00atLNWAz4A91w1fqR9CHJsukItkeGWT9XzI35lVWmrBqTXrnrsSOOaRhDX
+	 pse+ZyQ7TEVVUbcK/FPSYfA8sMbmgCcLXrXNT8AY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/134] usb: gadget: fsl: Increase size of name buffer for endpoints
+Subject: [PATCH 6.6 60/93] selftests: forwarding: no_forwarding: Down ports on cleanup
 Date: Sun,  1 Sep 2024 18:16:47 +0200
-Message-ID: <20240901160812.400035390@linuxfoundation.org>
+Message-ID: <20240901160809.622335634@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 87850f6cc20911e35eafcbc1d56b0d649ae9162d ]
+[ Upstream commit e8497d6951ee8541d73784f9aac9942a7f239980 ]
 
-This fixes a W=1 warning about sprintf writing up to 16 bytes into a
-buffer of size 14. There is no practical relevance because there are not
-more than 32 endpoints.
+This test neglects to put ports down on cleanup. Fix it.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/6754df25c56aae04f8110594fad2cd2452b1862a.1708709120.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 476a4f05d9b8 ("selftests: forwarding: add a no_forwarding.sh test")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0baf91dc24b95ae0cadfdf5db05b74888e6a228a.1724430120.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/no_forwarding.sh | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-index 9a05863b28768..6a4e206b1e2df 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -2503,7 +2503,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	/* setup the udc->eps[] for non-control endpoints and link
- 	 * to gadget.ep_list */
- 	for (i = 1; i < (int)(udc_controller->max_ep / 2); i++) {
--		char name[14];
-+		char name[16];
+diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+index af3b398d13f01..9e677aa64a06a 100755
+--- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
++++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+@@ -233,6 +233,9 @@ cleanup()
+ {
+ 	pre_cleanup
  
- 		sprintf(name, "ep%dout", i);
- 		struct_ep_setup(udc_controller, i * 2, name, 1);
++	ip link set dev $swp2 down
++	ip link set dev $swp1 down
++
+ 	h2_destroy
+ 	h1_destroy
+ 
 -- 
 2.43.0
 
