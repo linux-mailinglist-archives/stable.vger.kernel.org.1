@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C5C967A32
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA50967B02
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3F061F23713
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6501C21510
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B38D18308A;
-	Sun,  1 Sep 2024 16:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE0717ADE1;
+	Sun,  1 Sep 2024 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlHhbzxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA/3HwjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2E718132A;
-	Sun,  1 Sep 2024 16:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEF02A1B8;
+	Sun,  1 Sep 2024 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209567; cv=none; b=gNiydjuLy0CLvV/wAzGXiGwSkZ3Ttz0VzI9Wfg8s4LgYxfCnLFeMOSvIJA2zY9qIf+z4DnfbNXb7NoTwllkPjcgEhTVIfhYuJL2MTWWTaP1XVnmHgstG2GBiTjA7F9YHl6xcI8kZb49Ilo+8SyMO3Oh6SIpGnOCvS7H1YfYFWKY=
+	t=1725210226; cv=none; b=Ij4BYXjWQYiDeS0vhBXBZU7+XeHaBBxuRjOq2ha64RyY/eePxmoTpUegyd/THA+5zT3yFOVQUz9/N58XL75nU/ADF1Ze1OwyJD3YAL5FCr6q5mhDuLla1ZK4yFPfgLaktSGSQExeTdY4q1Xa6kFwt9QEJRyBqJpOMVeZd8Z4+T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209567; c=relaxed/simple;
-	bh=X8HNeRxA+Igz2PfPXE+B7HKQzfPkYArTVNwXTNT08VI=;
+	s=arc-20240116; t=1725210226; c=relaxed/simple;
+	bh=2gydjGcY9Mxsk+rv+DOagCA20hoh54gZrzeQOqoGDDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIlqejaJzkY2EojMpDDyRuwVyTRqKDT/b6jLO71C49O8hs8CrUtcPmy0ccHELOFuSKE4RD4Ln1U/D4zcrfvNKnbqNhgKoEUWKFCFmXbTQv7b+tA8Z5DuH/iYgdwooCTcb/hytE8QfltVGZdHEz37Qdc77U98SBoQf1LtvNghux4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlHhbzxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DE4C4CEC3;
-	Sun,  1 Sep 2024 16:52:46 +0000 (UTC)
+	 MIME-Version; b=Zn2JXr/XgnLtpgdgtAg8xkhN1OuGFXqocPeKgUSM2CMa4zMgHzuajvUfLplOjPE4NpGzBlSNiuOxePwG1XE0AW8PRxC3jvnqEa4UHyvQX4YLy+2ZMnqQMQx8jZ0UCHu99NfHl5eqnBRPWOBDRSM3YoxinRY932hhjPiPBhPBrcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA/3HwjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE01C4CEC3;
+	Sun,  1 Sep 2024 17:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209566;
-	bh=X8HNeRxA+Igz2PfPXE+B7HKQzfPkYArTVNwXTNT08VI=;
+	s=korg; t=1725210226;
+	bh=2gydjGcY9Mxsk+rv+DOagCA20hoh54gZrzeQOqoGDDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlHhbzxBEy8k/Vz8JhinmE2fDtxaTHAOkK3epa9wC4HkwkR78iCd50JTjZwC8O1sS
-	 558GkWUSGNEGksFrTHe0TeJcHAKZZCIxOIWrJYR4eSFX9Gq0Br6Gj3+SYz2y330/Qw
-	 7JAFwJB5vsqHUN2KGJ9z2j7/mAwGOU8XMa4GdYxM=
+	b=YA/3HwjKjgUOmpTHy/Fz5nXKFqFNSQHAS+z8LLloYHfFOvyo8ZGARuQKvumCOUdgF
+	 MKmYJIDSOsXefgP5ltkrQHrnhgr0eImgpCbDFXVRHtwkpuyIO+Bz3HUXaYMllsdn5h
+	 i8BedhIdOj4GikV6RjKPlAIYMs0nerjV6YFys+3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/151] fbdev: offb: replace of_node_put with __free(device_node)
-Date: Sun,  1 Sep 2024 18:17:17 +0200
-Message-ID: <20240901160817.010844858@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 126/215] nfsd: remove nfsd_stats, make th_cnt a global counter
+Date: Sun,  1 Sep 2024 18:17:18 +0200
+Message-ID: <20240901160828.126236228@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
+[ Upstream commit e41ee44cc6a473b1f414031782c3b4283d7f3e5f ]
 
-Replaced instance of of_node_put with __free(device_node)
-to simplify code and protect against any memory leaks
-due to future changes in the control flow.
+This is the last global stat, take it out of the nfsd_stats struct and
+make it a global part of nfsd, report it the same as always.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/offb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfsd/nfsd.h   |    1 +
+ fs/nfsd/nfssvc.c |    5 +++--
+ fs/nfsd/stats.c  |    3 +--
+ fs/nfsd/stats.h  |    6 ------
+ 4 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index 4501e848a36f2..766adaf2618c5 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -354,7 +354,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			par->cmap_type = cmap_gxt2000;
- 	} else if (of_node_name_prefix(dp, "vga,Display-")) {
- 		/* Look for AVIVO initialized by SLOF */
--		struct device_node *pciparent = of_get_parent(dp);
-+		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
- 		const u32 *vid, *did;
- 		vid = of_get_property(pciparent, "vendor-id", NULL);
- 		did = of_get_property(pciparent, "device-id", NULL);
-@@ -366,7 +366,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			if (par->cmap_adr)
- 				par->cmap_type = cmap_avivo;
- 		}
--		of_node_put(pciparent);
- 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
- #ifdef __BIG_ENDIAN
- 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
--- 
-2.43.0
-
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -69,6 +69,7 @@ extern struct mutex		nfsd_mutex;
+ extern spinlock_t		nfsd_drc_lock;
+ extern unsigned long		nfsd_drc_max_mem;
+ extern unsigned long		nfsd_drc_mem_used;
++extern atomic_t			nfsd_th_cnt;		/* number of available threads */
+ 
+ extern const struct seq_operations nfs_exports_op;
+ 
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -34,6 +34,7 @@
+ 
+ #define NFSDDBG_FACILITY	NFSDDBG_SVC
+ 
++atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
+ extern struct svc_program	nfsd_program;
+ static int			nfsd(void *vrqstp);
+ #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
+@@ -941,7 +942,7 @@ nfsd(void *vrqstp)
+ 
+ 	current->fs->umask = 0;
+ 
+-	atomic_inc(&nfsdstats.th_cnt);
++	atomic_inc(&nfsd_th_cnt);
+ 
+ 	set_freezable();
+ 
+@@ -965,7 +966,7 @@ nfsd(void *vrqstp)
+ 		validate_process_creds();
+ 	}
+ 
+-	atomic_dec(&nfsdstats.th_cnt);
++	atomic_dec(&nfsd_th_cnt);
+ 
+ out:
+ 	/* Release the thread */
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -27,7 +27,6 @@
+ 
+ #include "nfsd.h"
+ 
+-struct nfsd_stats	nfsdstats;
+ struct svc_stat		nfsd_svcstats = {
+ 	.program	= &nfsd_program,
+ };
+@@ -47,7 +46,7 @@ static int nfsd_show(struct seq_file *se
+ 		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_IO_WRITE]));
+ 
+ 	/* thread usage: */
+-	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
++	seq_printf(seq, "th %u 0", atomic_read(&nfsd_th_cnt));
+ 
+ 	/* deprecated thread usage histogram stats */
+ 	for (i = 0; i < 10; i++)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,12 +10,6 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-struct nfsd_stats {
+-	atomic_t	th_cnt;		/* number of available threads */
+-};
+-
+-extern struct nfsd_stats	nfsdstats;
+-
+ extern struct svc_stat		nfsd_svcstats;
+ 
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
 
 
 
