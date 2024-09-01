@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE5E967770
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8664796786A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90C651C20ABD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F20CEB221EA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C81183090;
-	Sun,  1 Sep 2024 16:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E6E184531;
+	Sun,  1 Sep 2024 16:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfWLUYpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPKeKlry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2BA18132F;
-	Sun,  1 Sep 2024 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27594181CE1;
+	Sun,  1 Sep 2024 16:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207587; cv=none; b=Wf0sOUCkjXKmggyrM7ajBnJj9RlsIWUBzy5VaRHXtMJ3WZ04Odb+5L5dgx6WbtYfuxDImd4ofeGOseoBxR2iwRrXqUm8VaqNcV8SeOXIJ7zEPU2HkhYVoNnUTEmF4ZBkW45q1PLOhebDtSqMO2hVjCNN+ghuV7+hAE7hKCHnfsg=
+	t=1725208286; cv=none; b=OlDKJWdAZBmxGNoRvK5vL6O9lGIcgRWY5t9Hy0pTEUQBbctwAdaTXnvZo0KwtQ2D1X4sBfsQ1kLA9+PbiLRawHY1MrlqYbmc51Ot1cooiU/0JLRrnpXCGFWmz5bEmDcoD0Ry3km1nuVYrxmOggSDT8Fy9gIUHe6iAkgtuMEsp9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207587; c=relaxed/simple;
-	bh=CQmXlF0UGH2x0rDS0Y3nhrSI6BjuoCzXIbbft55MUPo=;
+	s=arc-20240116; t=1725208286; c=relaxed/simple;
+	bh=q/hGbgBNzW+lb99hYTDy9jk9C9h3l8RbyDgL9qwljcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qTonoz7anb2tHeCjEfvfwosyAiYaj4F4EHP/LJ3GToM5LnKLTAo6f/LVxrdnBWlcvpC3p4CT26jh/3b27hRBaqN0H0p/101qtQQu8+30vXiE3O2owfTWVzsdqCmSv+LgxjlsG73ZW69QT0esuTKuqKp3e4Y4cVl/+n5/l7has1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfWLUYpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29814C4CEC3;
-	Sun,  1 Sep 2024 16:19:45 +0000 (UTC)
+	 MIME-Version; b=Bsmkggsr5pubhdws59TQeCAg5WpAo25+o34ouxJPaKnfhcD+qx7hBqQFREtEteOT2N0KXInAVaCNKW+/T4VVdlnFI5j82Q7Qs+9zClOSs5UXL/eyjgR7faTloVtfoiq/568X1h+3qXOIRaCW17XY37UFAZkbo3ANV9byTaK0O8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPKeKlry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32F9C4CEC3;
+	Sun,  1 Sep 2024 16:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207586;
-	bh=CQmXlF0UGH2x0rDS0Y3nhrSI6BjuoCzXIbbft55MUPo=;
+	s=korg; t=1725208286;
+	bh=q/hGbgBNzW+lb99hYTDy9jk9C9h3l8RbyDgL9qwljcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfWLUYpRRBOEzw6a+5EQxya6g7LhuqykcyVLspW18x4h32WuH5MwAGvIS79qk+chm
-	 BgvoQelWhp8HqtNQhNXDdsfZygmySHUhW0LtAlY5RC0NvkK2TAYC/2dWMgA9Hrg0VK
-	 S0+YKT1+1pyUkmF/mY49+At2PdMqBOwXb57nPEaA=
+	b=lPKeKlry+KqeH39op1KnNPgyfLhWvP8HbEmCvSDTiPvm4V33gFYxTr+Sf0uxrMK8r
+	 E6+u+46lpQEzXhMiJ0KUNzAk7qwxWvVsErHxCqZuLmwzAHqJPwxXgJwPws4mkLf1Nb
+	 BHUD+QdCjpWvHCbb1ZJgyOuKZczZORBUkeDQK8KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/98] ssb: Fix division by zero issue in ssb_calc_clock_rate
+	Jani Nikula <jani.nikula@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.10 036/149] drm/i915/dsi: Make Lenovo Yoga Tab 3 X90F DMI match less strict
 Date: Sun,  1 Sep 2024 18:15:47 +0200
-Message-ID: <20240901160804.340980081@linuxfoundation.org>
+Message-ID: <20240901160818.820407178@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e0b5127fa134fe0284d58877b6b3133939c8b3ce ]
+commit 7d058e6bac9afab6a406e34344ebbfd3068bb2d5 upstream.
 
-In ssb_calc_clock_rate(), there is a potential issue where the value of
-m1 could be zero due to initialization using clkfactor_f6_resolv(). This
-situation raised concerns about the possibility of a division by zero
-error.
+There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
+turns out that the 2G version has a DMI product name of
+"CHERRYVIEW D1 PLATFORM" where as the 4G version has
+"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
+unique enough that the product-name check is not necessary.
 
-We fixed it by following the suggestions provided by Larry Finger
-<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
-involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
-This modification ensures the proper functioning of the code and
-eliminates the risk of division by zero errors.
+Drop the product-name check so that the existing DMI match for the 4G
+RAM version also matches the 2G RAM version.
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
-Acked-by: Michael Büsch <m@bues.ch>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230904232346.34991-1-rand.sec96@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f6f4a0862bde ("drm/i915/vlv_dsi: Add DMI quirk for backlight control issues on Lenovo Yoga Tab 3 (v2)")
+Cc: stable@vger.kernel.org
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240823075055.17198-1-hdegoede@redhat.com
+(cherry picked from commit a4dbe45c4c14edc316ae94b9af86a28f8c5d8123)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ssb/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/vlv_dsi.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index 0a26984acb2ca..9e54bc7eec663 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -835,7 +835,7 @@ static u32 clkfactor_f6_resolve(u32 v)
- 	case SSB_CHIPCO_CLK_F6_7:
- 		return 7;
- 	}
--	return 0;
-+	return 1;
- }
- 
- /* Calculate the speed the backplane would run at a given set of clockcontrol values */
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/i915/display/vlv_dsi.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
+@@ -1869,7 +1869,6 @@ static const struct dmi_system_id vlv_ds
+ 		/* Lenovo Yoga Tab 3 Pro YT3-X90F */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 		.driver_data = (void *)vlv_dsi_lenovo_yoga_tab3_backlight_fixup,
 
 
 
