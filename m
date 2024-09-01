@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5274967A9A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EC4967883
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 501691F23E97
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFE71F2167C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED5317ADE1;
-	Sun,  1 Sep 2024 16:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E01017E46E;
+	Sun,  1 Sep 2024 16:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqwzua5v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9s2P+xn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1861C68C;
-	Sun,  1 Sep 2024 16:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFAB1C68C;
+	Sun,  1 Sep 2024 16:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209904; cv=none; b=GMqfE3d+3ITVgTVP6XE2fCe26ZLgVRt85qSqnEjFnHN8FCG5kN797/oYFV1SHLzf72TacgABkLjB5kfcy800xn72CahDa4AOqXqr+qLm5GyzuE8bwcbhZh8cmXrtHQ0zKN3sPY5w0pPKO8YfIrKz1fIR8fNtgOHfbhJutmMubgc=
+	t=1725208366; cv=none; b=p3QXgKB/PfS8G+Nm5wts8AWx0FCwv2UFzjfxwU2gjj9klbSZbJNN+m304QjiEG0etLABhRB+s6KWgwu5pnYphb/wrFaT/1ofn/ymbUg7Dk1LhlTVvAWsack+kQeifentCT1NMCqi75vyjHi6+MFuVg3s70toxqrWp1eA2hJRJxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209904; c=relaxed/simple;
-	bh=MvkK4OA59InBw6fNIXHenAz0nA79uIqku/A/I6wsjbA=;
+	s=arc-20240116; t=1725208366; c=relaxed/simple;
+	bh=NO1cm7OQ+iQYth+6Md9wWTNmktqh4iZTGCKrmZcT018=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6cXpm9H7W/T+4CngcW+kSHS6uxXg7qBhxtgJR6J2sZj0OO+x80OqMjyKdErpTHKNWLKvIXWHSenampX+5lmzrDxKE4FkyVQ7f6Dxrt4At1zN6C9/p+s+N2PstjoFNy1Pw6XIuafDUGKbbs5qqaMWAmHivvbVxFPa8I68HRQMp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqwzua5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE42C4CEC3;
-	Sun,  1 Sep 2024 16:58:23 +0000 (UTC)
+	 MIME-Version; b=AHEmD5MjWxjrzIEQM1p8on+yNDxnly3jInJ91VJchkXQxqvT/huz3QUa/ZgTbqQfVB2xA1XzWyN1h8b+Wpi+IUOvz+fCk/tlfDdeRNmNk7EMx12cEDP70KocvzqmkJed7/nvUaUPD/TjDtVpVkBV7UpR3bsj3j44WPBloYAYAd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9s2P+xn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857C5C4CEC3;
+	Sun,  1 Sep 2024 16:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209904;
-	bh=MvkK4OA59InBw6fNIXHenAz0nA79uIqku/A/I6wsjbA=;
+	s=korg; t=1725208365;
+	bh=NO1cm7OQ+iQYth+6Md9wWTNmktqh4iZTGCKrmZcT018=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqwzua5vFc1KMs6b85cG5Jr84cW51kfjlweCj8EzuhoL8uKoWlnRPwCwP43QVBAT7
-	 0Du6M1USaouZFMRKbILV8mB9Sz72u+2NU5XB9EAxKitpNSHLxjvif7iRJp5RuA4Ric
-	 DnvzYWR4OIpETeOFn/U8lYN6LNBLZOD3CfCCpbY0=
+	b=V9s2P+xnnIW63cXF1nQpwCI6QQ3mM2O1RUi8bdHCzD2VFDAWP9ROcMFMalBACz2+c
+	 qDDPMJ8HF1L/rPuDtmyI1zrT05RxfXyB+72oHSTSVci7PnKTW1Gcolqr6Yya49065i
+	 sMeXoAi7trqxFdBCoWcow91+H3L0ZYDKHTnfMSrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/215] net/mlx5e: Correctly report errors for ethtool rx flows
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 029/149] mptcp: pm: ADD_ADDR 0 is not a new address
 Date: Sun,  1 Sep 2024 18:15:40 +0200
-Message-ID: <20240901160824.326649039@linuxfoundation.org>
+Message-ID: <20240901160818.559721719@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
+commit 57f86203b41c98b322119dfdbb1ec54ce5e3369b upstream.
 
-Previously, an ethtool rx flow with no attrs would not be added to the
-NIC as it has no rules to configure the hw with, but it would be
-reported as successful to the caller (return code 0). This is confusing
-for the user as ethtool then reports "Added rule $num", but no rule was
-actually added.
+The ADD_ADDR 0 with the address from the initial subflow should not be
+considered as a new address: this is not something new. If the host
+receives it, it simply means that the address is available again.
 
-This change corrects that by instead reporting these wrong rules as
--EINVAL.
+When receiving an ADD_ADDR for the ID 0, the PM already doesn't consider
+it as new by not incrementing the 'add_addr_accepted' counter. But the
+'accept_addr' might not be set if the limit has already been reached:
+this can be bypassed in this case. But before, it is important to check
+that this ADD_ADDR for the ID 0 is for the same address as the initial
+subflow. If not, it is not something that should happen, and the
+ADD_ADDR can be ignored.
 
-Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that if an ADD_ADDR is received while there is already a subflow
+opened using the same address, this ADD_ADDR is ignored as well. It
+means that if multiple ADD_ADDR for ID 0 are received, there will not be
+any duplicated subflows created by the client.
+
+Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm.c         |    4 +++-
+ net/mptcp/pm_netlink.c |    9 +++++++++
+ net/mptcp/protocol.h   |    2 ++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-index d32b70c62c949..32212bc41df30 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-@@ -727,7 +727,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
- 	if (num_tuples <= 0) {
- 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
- 			    __func__, num_tuples);
--		return num_tuples;
-+		return num_tuples < 0 ? num_tuples : -EINVAL;
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -226,7 +226,9 @@ void mptcp_pm_add_addr_received(const st
+ 		} else {
+ 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
+ 		}
+-	} else if (!READ_ONCE(pm->accept_addr)) {
++	/* id0 should not have a different address */
++	} else if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
++		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
+ 		mptcp_pm_announce_addr(msk, addr, true);
+ 		mptcp_pm_add_addr_send_ack(msk);
+ 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -760,6 +760,15 @@ static void mptcp_pm_nl_add_addr_receive
  	}
+ }
  
- 	eth_ft = get_flow_table(priv, fs, num_tuples);
--- 
-2.43.0
-
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote)
++{
++	struct mptcp_addr_info mpc_remote;
++
++	remote_address((struct sock_common *)msk, &mpc_remote);
++	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
++}
++
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
+ {
+ 	struct mptcp_subflow_context *subflow;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -988,6 +988,8 @@ void mptcp_pm_add_addr_received(const st
+ void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
+ 			      const struct mptcp_addr_info *addr);
+ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+ 			       const struct mptcp_rm_list *rm_list);
 
 
 
