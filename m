@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-72209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C349679B2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2839967A57
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF6B028174E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796451F23EBA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46888186E42;
-	Sun,  1 Sep 2024 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA69617E900;
+	Sun,  1 Sep 2024 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUrGDFdq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEXWLQie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047FB186E3B;
-	Sun,  1 Sep 2024 16:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40641DFD1;
+	Sun,  1 Sep 2024 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209195; cv=none; b=Fyq9nL9b6oA+FVQMaDWiW5hqWhcXjV5OGEX2Eg0uoA05FngZ4/9xJeTYwx3XICPRO/sqgrX4LONHTxEYoOaMDrxD4qsVsW9PJmpCINIurWHVXZvmERu9aS2QIDE6rSwrptCAlHu+ua1E2nQSraHZDUBBZwTR/FXQIgqsP5lXHpc=
+	t=1725209686; cv=none; b=D84pA+wu2xhL0+zrKhMFoftJG0Rd3zYYcGaUUjdf6Ecv5hYswsf9MFZkJd2D4QKWuBgkc2X72wbLuJ2hpqZczrpdz6nv8Buka+LOsMBs54R4dj4fO06O+50GcdZexbyd3yMQQoXAt2ppeI2ZH3UwZu0AaHORKuDKBy5AqH1MtJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209195; c=relaxed/simple;
-	bh=Fd8T90vfOzWMoUedCqP3SI8t3erLJ4A+A9khb46PMys=;
+	s=arc-20240116; t=1725209686; c=relaxed/simple;
+	bh=+7KVQ9LQp3qiabAQrrieEpGMcKbdYv9JLTffEjA54gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmVer8QANjCM6mp4z05CF7lXN55kmrKfMN0QjwgwutMQ2RJUkeQJ3fRabDdJsnK9ounQfASl8h8DbyHCDlq983hROw5pLiDg570M/q6fc2+dPmdvwZZZE49VMBR03FtUWzPpXrVJCxkEQznkB0b+jIJ9wmRWYnoc7atNOhpXITA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUrGDFdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9ACC4CEC4;
-	Sun,  1 Sep 2024 16:46:32 +0000 (UTC)
+	 MIME-Version; b=AqAJ+pYNyQO8/VeXEwqqkeE1qWM34RxeiGXUwJBusHETtqNkVTNWPuoxyaIpEWvwHkK3yOtZ4J64cHyOVg3Kbjem/nZaRpJhLldDFjiATdg5ydBoO0RA7phAkHoPCZWQ+2n9xz7diGeyqFAf1Lr1q+z+We0mte+CAg1iX9l8yUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEXWLQie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2820CC4CEC3;
+	Sun,  1 Sep 2024 16:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209193;
-	bh=Fd8T90vfOzWMoUedCqP3SI8t3erLJ4A+A9khb46PMys=;
+	s=korg; t=1725209686;
+	bh=+7KVQ9LQp3qiabAQrrieEpGMcKbdYv9JLTffEjA54gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUrGDFdq89MQhXBQRDkYManHwI3wZnH2di56/t5IuCUXu6HqzDf8OkbjkoWSGr4rQ
-	 ry47RghvvitDnjcl01dceU06oai4No2lrLMa3kN/9CIJ543qDYS61d0w7k6+laszRT
-	 vS+qKkOF0t4W+vbN3sUKYGRC2QCgbDEUHgNLnsX4=
+	b=WEXWLQiehIA75H0cadl/DW2hYM3+r4GEnYjTjOFc6AR5aHVsTpjCxBylnNqxdXCLZ
+	 4vGAle4xuJIpIy90LRCYD6EJkxHd61PxZItOOHZRWz9mjFVkbWIDSf6lQ+Cyc3M3pb
+	 geANhng1LXNUpC9s6KvgQ4O91ExzT0Pgk2bs6DnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/71] thermal: of: Fix OF node leak in of_thermal_zone_find() error paths
-Date: Sun,  1 Sep 2024 18:17:35 +0200
-Message-ID: <20240901160803.026968164@linuxfoundation.org>
+	Luiz Capitulino <luizcap@redhat.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 5.10 096/151] ice: fix ICE_LAST_OFFSET formula
+Date: Sun,  1 Sep 2024 18:17:36 +0200
+Message-ID: <20240901160817.724096795@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit c0a1ef9c5be72ff28a5413deb1b3e1a066593c13 ]
+[ Upstream commit b966ad832942b5a11e002f9b5ef102b08425b84a ]
 
-Terminating for_each_available_child_of_node() loop requires dropping OF
-node reference, so bailing out on errors misses this.  Solve the OF node
-reference leak with scoped for_each_available_child_of_node_scoped().
+For bigger PAGE_SIZE archs, ice driver works on 3k Rx buffers.
+Therefore, ICE_LAST_OFFSET should take into account ICE_RXBUF_3072, not
+ICE_RXBUF_2048.
 
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20240814195823.437597-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 7237f5b0dba4 ("ice: introduce legacy Rx flag")
+Suggested-by: Luiz Capitulino <luizcap@redhat.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_of.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 62099ffcd9721..323c8cd171485 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -294,14 +294,14 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
- 	 * Search for each thermal zone, a defined sensor
- 	 * corresponding to the one passed as parameter
- 	 */
--	for_each_available_child_of_node(np, tz) {
-+	for_each_available_child_of_node_scoped(np, child) {
- 
- 		int count, i;
- 
--		count = of_count_phandle_with_args(tz, "thermal-sensors",
-+		count = of_count_phandle_with_args(child, "thermal-sensors",
- 						   "#thermal-sensor-cells");
- 		if (count <= 0) {
--			pr_err("%pOFn: missing thermal sensor\n", tz);
-+			pr_err("%pOFn: missing thermal sensor\n", child);
- 			tz = ERR_PTR(-EINVAL);
- 			goto out;
- 		}
-@@ -310,18 +310,19 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
- 
- 			int ret;
- 
--			ret = of_parse_phandle_with_args(tz, "thermal-sensors",
-+			ret = of_parse_phandle_with_args(child, "thermal-sensors",
- 							 "#thermal-sensor-cells",
- 							 i, &sensor_specs);
- 			if (ret < 0) {
--				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", tz, ret);
-+				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", child, ret);
- 				tz = ERR_PTR(ret);
- 				goto out;
- 			}
- 
- 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
- 								  sensor_specs.args[0] : 0)) {
--				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, tz);
-+				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
-+				tz = no_free_ptr(child);
- 				goto out;
- 			}
- 		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 442a9bcbf60a7..7734264d570db 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -786,7 +786,7 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf, int rx_buf_pgcnt)
+ 		return false;
+ #else
+ #define ICE_LAST_OFFSET \
+-	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
++	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_3072)
+ 	if (rx_buf->page_offset > ICE_LAST_OFFSET)
+ 		return false;
+ #endif /* PAGE_SIZE < 8192) */
 -- 
 2.43.0
 
