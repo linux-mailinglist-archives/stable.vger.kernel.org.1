@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D156967A0F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052D39678D8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5B01F22EFF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 369121C208B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63417E900;
-	Sun,  1 Sep 2024 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CE717E8EA;
+	Sun,  1 Sep 2024 16:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IzxPkB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNrLBvLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8171C68C;
-	Sun,  1 Sep 2024 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291361C68C;
+	Sun,  1 Sep 2024 16:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209465; cv=none; b=OHYDOoL/9K8MLrmmsWB1q5YzFi/zHhsVu0K/hmDxp/IlkDh9DSiN2wl0ZcgOP25nZTvV0BI7W2TrFnrvK+uZjLjjEPNvZ9RxJL16ueEd66fnNz8z1QEis0LT9HrvYJkvoMDXw8QY8mNgQ3WSlMUmSkXjNbgoFIUvatn5lwTEj1k=
+	t=1725208580; cv=none; b=YVHX9suNtLf01mHPC5Irqlay1wChpOryALP62NfAOFk64b9nnQHA8bWfKzFwwkcHMEegPISLTjivO/oDU7jUYIZHsnzW5MtVqVjgFaDAsf0vHZKQuQNzTFz11wZcxjN7dABqfvf7R++TJ/VxIbU7jm/7ng1y0o/6ZtDgC/NFQM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209465; c=relaxed/simple;
-	bh=FjD8XP88TQwtf7F6zFACmdjcuHGE240j6QyiMOeDQG4=;
+	s=arc-20240116; t=1725208580; c=relaxed/simple;
+	bh=RxY1DFUI9u3fVlRg+ScCG3mruhMCI35yHUP2V88BnoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOfllkOYR/5STyFNqHSkDLgOoUFri8r8ehKNozyISEaJSFIpk4nI2419VU1i2GHuKFi+e4zaC54HL7m9mJsW8zBywleUGAF/iv80MoC+tYnGyU+2TmiZ6Uowwzmz5snns9Zsy0E0nNG0/yjWqj7F3GK7+9CtRSM094JxCKd33c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IzxPkB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C360C4CEC3;
-	Sun,  1 Sep 2024 16:51:04 +0000 (UTC)
+	 MIME-Version; b=gmJ6TKwRFRfhh9pFF2AbUC0gQyiH9+bkuXYCJLS4S0T9qfG851Z6eqmAGPMISHTigEUNUnTFdBHViHbR0HCaFI3CdujB2Vi9H+CEgacpSeH/cZsKMip1uZH/Y8nJZJsi8aj/OcP7Mtha66mYC/zxEeL7vKeltGhmkYMjK/HVu/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNrLBvLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD03C4CEC3;
+	Sun,  1 Sep 2024 16:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209465;
-	bh=FjD8XP88TQwtf7F6zFACmdjcuHGE240j6QyiMOeDQG4=;
+	s=korg; t=1725208579;
+	bh=RxY1DFUI9u3fVlRg+ScCG3mruhMCI35yHUP2V88BnoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IzxPkB07DhEd8yH74tM+T0vMoagFEXFXR0QLprDXne688Zz6t0hWXSoPImW0Blv4
-	 PqlosCozX+6RXk8sCC8V8XlJxZ9tlC1w6WOowOwyIbwgbyWJhhmxXCEFHDRih0p1UO
-	 BRWK+xjVNTCJDS0vfL9nwZ7S3wwqEn0+km4iYH9A=
+	b=eNrLBvLHFvV5MCFxnZbQauIYqE68EPmsXE99N3Gj977/zcTV/2pQjMpqrUs94kyPW
+	 cJfypmIeh430LoY5MI4LVxPcTqFIM68qAt3fDYA3xbwa0naVOncNEVcnN6FXGg6BI1
+	 2ohq/qUuDZGsdrliWPEe0gmHgo5/A+HyPmoTp2jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jorge Ortiz <jorge.ortiz.escribano@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/151] wifi: iwlwifi: abort scan when rfkill on but device enabled
+Subject: [PATCH 6.10 094/149] netfilter: nf_tables: restore IP sanity checks for netdev/egress
 Date: Sun,  1 Sep 2024 18:16:45 +0200
-Message-ID: <20240901160815.803597336@linuxfoundation.org>
+Message-ID: <20240901160820.998660644@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
+[ Upstream commit 5fd0628918977a0afdc2e6bc562d8751b5d3b8c5 ]
 
-In RFKILL we first set the RFKILL bit, then we abort scan
-(if one exists) by waiting for the notification from FW
-and notifying mac80211. And then we stop the device.
-But in case we have a scan ongoing in the period of time between
-rfkill on and before the device is stopped - we will not wait for the
-FW notification because of the iwl_mvm_is_radio_killed() condition,
-and then the scan_status and uid_status are misconfigured,
-(scan_status is cleared but uid_status not)
-and when the notification suddenly arrives (before stopping the device)
-we will get into the assert about scan_status and uid_status mismatch.
-Fix this by waiting for FW notif when rfkill is on but the device isn't
-disabled yet.
+Subtract network offset to skb->len before performing IPv4 header sanity
+checks, then adjust transport offset from offset from mac header.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Jorge Ortiz says:
+
+When small UDP packets (< 4 bytes payload) are sent from eth0,
+`meta l4proto udp` condition is not met because `NFT_PKTINFO_L4PROTO` is
+not set. This happens because there is a comparison that checks if the
+transport header offset exceeds the total length.  This comparison does
+not take into account the fact that the skb network offset might be
+non-zero in egress mode (e.g., 14 bytes for Ethernet header).
+
+Fixes: 0ae8e4cca787 ("netfilter: nf_tables: set transport offset from mac header for netdev/egress")
+Reported-by: Jorge Ortiz <jorge.ortiz.escribano@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables_ipv4.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index a9df48c75155b..a52af491eed58 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2675,7 +2675,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
- 	if (!(mvm->scan_status & type))
- 		return 0;
+diff --git a/include/net/netfilter/nf_tables_ipv4.h b/include/net/netfilter/nf_tables_ipv4.h
+index 60a7d0ce30804..fcf967286e37c 100644
+--- a/include/net/netfilter/nf_tables_ipv4.h
++++ b/include/net/netfilter/nf_tables_ipv4.h
+@@ -19,7 +19,7 @@ static inline void nft_set_pktinfo_ipv4(struct nft_pktinfo *pkt)
+ static inline int __nft_set_pktinfo_ipv4_validate(struct nft_pktinfo *pkt)
+ {
+ 	struct iphdr *iph, _iph;
+-	u32 len, thoff;
++	u32 len, thoff, skb_len;
  
--	if (iwl_mvm_is_radio_killed(mvm)) {
-+	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
- 		ret = 0;
- 		goto out;
- 	}
+ 	iph = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb),
+ 				 sizeof(*iph), &_iph);
+@@ -30,8 +30,10 @@ static inline int __nft_set_pktinfo_ipv4_validate(struct nft_pktinfo *pkt)
+ 		return -1;
+ 
+ 	len = iph_totlen(pkt->skb, iph);
+-	thoff = skb_network_offset(pkt->skb) + (iph->ihl * 4);
+-	if (pkt->skb->len < len)
++	thoff = iph->ihl * 4;
++	skb_len = pkt->skb->len - skb_network_offset(pkt->skb);
++
++	if (skb_len < len)
+ 		return -1;
+ 	else if (len < thoff)
+ 		return -1;
+@@ -40,7 +42,7 @@ static inline int __nft_set_pktinfo_ipv4_validate(struct nft_pktinfo *pkt)
+ 
+ 	pkt->flags = NFT_PKTINFO_L4PROTO;
+ 	pkt->tprot = iph->protocol;
+-	pkt->thoff = thoff;
++	pkt->thoff = skb_network_offset(pkt->skb) + thoff;
+ 	pkt->fragoff = ntohs(iph->frag_off) & IP_OFFSET;
+ 
+ 	return 0;
 -- 
 2.43.0
 
