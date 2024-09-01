@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-71971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D852396789F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C2C967A04
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1503D1C20A58
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80121C2148D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B991183CAA;
-	Sun,  1 Sep 2024 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66A918308E;
+	Sun,  1 Sep 2024 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMlMXtkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9RBz7g4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFA55381A;
-	Sun,  1 Sep 2024 16:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6129F183092;
+	Sun,  1 Sep 2024 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208418; cv=none; b=uEWo9J6McTaJGazYc/PyM+yArPqenk8Pi3V8sh11oMs7VUTX7KSl437Lw1a3adH7ZRdEmUcmJ8C3AjnnNBJyTW4MQsgDRkeck72CQAoClIXvWjuxl1oL/zBaW81RJsbRpOc8D1oLpAPPG7ztYaqpwqbMReeE8m+a6hFlc8h+Fh0=
+	t=1725209433; cv=none; b=Teosah1vFXALS8bvFoEHjn+Hpj68kBd14BxHi5V/6QpwEJ/4zh31rM2hJY5JkM5I3TqHBy4sHfnqzKv6z+haXN8f3CBh9mllyFYyhNVf9R6HpYGLUNzPGW1V4sfRyCsWc9uDNhmEsfiN68lMUJBRiCtRvwYSS4AW2Q+1lR2GnHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208418; c=relaxed/simple;
-	bh=rIOmxPLFj9UCHT2aNovsEgaJy7WmwEJP2hugYtEo7L8=;
+	s=arc-20240116; t=1725209433; c=relaxed/simple;
+	bh=I2Z10wmpbl1i225CmYxXqO9mw8WtBwbK0Apushs6ynM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Miy3UtPTgeDcrup9ZDSiCjUuzzcbyeWqhLgf/ZS5PGhHQzeqfIS08kJ3SmU+MzzzoKif5lXnyAOnWUTur5xZgHvF1QwtUWo3XD7OaqImVvhmce+Pit+L3zIJJk4pQUYZjK3M2ufnGnFiqgFUsGUNzjq3EvmA+5Y/HeaLoY72nyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMlMXtkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC5C4CEC3;
-	Sun,  1 Sep 2024 16:33:38 +0000 (UTC)
+	 MIME-Version; b=O3rJ5rKMOE3sIUoMFhEQAHfoRKtDdX8o8OSr9cJKLJ+IHqt5luDqVqORxLOb7Rxbo+m1Ir72uc2a1rkLz7WTuc881l1D6RHVs86XwU7jVt7XHKmPhGCIDtztqUWh9sp2VYeC5FlmVHW7OtFxQeNf9tTOBnpnMxNymvGwqPvFXSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9RBz7g4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC665C4CEC3;
+	Sun,  1 Sep 2024 16:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208418;
-	bh=rIOmxPLFj9UCHT2aNovsEgaJy7WmwEJP2hugYtEo7L8=;
+	s=korg; t=1725209433;
+	bh=I2Z10wmpbl1i225CmYxXqO9mw8WtBwbK0Apushs6ynM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMlMXtkVWgP9ctu+mW/YCBCdxawC7lLzw5AbSX7pXgd2oG40IdyXNSTABISVzN3OK
-	 YfWCDxjcKGYlecF1LcFoVr7fTDIq7XdUnqPSF2AOEVuIplTSVtPbEpswsoYzSCzCxg
-	 AZ8U4PjkkPsJID7vvzwg+FkPRmZy3OEvq88JGcMQ=
+	b=H9RBz7g4oABc5CmGCGoh6wt63nBWFL1i2nZUAwQeKTYz/TqdQM+pL90paqsklq/td
+	 AUeW+rlTWGuYwITmlWsGtbuS1hng6qLRZX0y4WInrtM5dzvw0hce/vhQBxv3FzoFU+
+	 5K54vs79z1bjrGZCObF/2XpiFCrCa1W/WYFNCdJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Marek Gresko <marek.gresko@protonmail.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.10 076/149] selinux,smack: dont bypass permissions check in inode_setsecctx hook
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 027/151] netfilter: flowtable: initialise extack before use
 Date: Sun,  1 Sep 2024 18:16:27 +0200
-Message-ID: <20240901160820.324127490@linuxfoundation.org>
+Message-ID: <20240901160815.118353020@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-commit 76a0e79bc84f466999fa501fce5bf7a07641b8a7 upstream.
+[ Upstream commit e9767137308daf906496613fd879808a07f006a2 ]
 
-Marek Gresko reports that the root user on an NFS client is able to
-change the security labels on files on an NFS filesystem that is
-exported with root squashing enabled.
+Fix missing initialisation of extack in flow offload.
 
-The end of the kerneldoc comment for __vfs_setxattr_noperm() states:
-
- *  This function requires the caller to lock the inode's i_mutex before it
- *  is executed. It also assumes that the caller will make the appropriate
- *  permission checks.
-
-nfsd_setattr() does do permissions checking via fh_verify() and
-nfsd_permission(), but those don't do all the same permissions checks
-that are done by security_inode_setxattr() and its related LSM hooks do.
-
-Since nfsd_setattr() is the only consumer of security_inode_setsecctx(),
-simplest solution appears to be to replace the call to
-__vfs_setxattr_noperm() with a call to __vfs_setxattr_locked().  This
-fixes the above issue and has the added benefit of causing nfsd to
-recall conflicting delegations on a file when a client tries to change
-its security label.
-
-Cc: stable@kernel.org
-Reported-by: Marek Gresko <marek.gresko@protonmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218809
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/hooks.c   |    4 ++--
- security/smack/smack_lsm.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_flow_table_offload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -6660,8 +6660,8 @@ static int selinux_inode_notifysecctx(st
-  */
- static int selinux_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 746ca77d0aad6..f6275d93f8a51 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -682,8 +682,8 @@ static int nf_flow_offload_tuple(struct nf_flowtable *flowtable,
+ 				 struct list_head *block_cb_list)
  {
--	return __vfs_setxattr_noperm(&nop_mnt_idmap, dentry, XATTR_NAME_SELINUX,
--				     ctx, ctxlen, 0);
-+	return __vfs_setxattr_locked(&nop_mnt_idmap, dentry, XATTR_NAME_SELINUX,
-+				     ctx, ctxlen, 0, NULL);
- }
+ 	struct flow_cls_offload cls_flow = {};
++	struct netlink_ext_ack extack = {};
+ 	struct flow_block_cb *block_cb;
+-	struct netlink_ext_ack extack;
+ 	__be16 proto = ETH_P_ALL;
+ 	int err, i = 0;
  
- static int selinux_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4874,8 +4874,8 @@ static int smack_inode_notifysecctx(stru
- 
- static int smack_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
- {
--	return __vfs_setxattr_noperm(&nop_mnt_idmap, dentry, XATTR_NAME_SMACK,
--				     ctx, ctxlen, 0);
-+	return __vfs_setxattr_locked(&nop_mnt_idmap, dentry, XATTR_NAME_SMACK,
-+				     ctx, ctxlen, 0, NULL);
- }
- 
- static int smack_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+-- 
+2.43.0
+
 
 
 
