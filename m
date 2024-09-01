@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C8E967AC7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8710C967906
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F143D1F213AE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BFFF1F21765
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5572C190;
-	Sun,  1 Sep 2024 17:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28DF17E8EA;
+	Sun,  1 Sep 2024 16:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ww5cssLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB8r/6ta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0A417C;
-	Sun,  1 Sep 2024 17:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0F1C68C;
+	Sun,  1 Sep 2024 16:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210046; cv=none; b=pPlO6dX5KMFnk0lglUwTofZ8ifQ0B1c19oSjGCRoZI4z2I59bsGjSPTOpRdN7LlLn3usH7gmMjdiNcTBNrZ3pb8Hv1vn4lY5s9muTLIw7wFKHjGZ+uf55bkzJ/uVRAqzkDNPewPL6ZHccL9eT3HfDuJINQrZr4eTU7WR2G3aelc=
+	t=1725208729; cv=none; b=HL4oxW4MPYCRgL9OtcphXOSV4ELlUEwD5VZ6XthKrZ+F5bBRO/gO9TjBIdUEMIBSyf2QrCPEtZYpKKvriGm0yxtPCBSRVoMmDAa+Y3ocEF2Kxla7VNAbl5EONueNPjthSpwkEIp+nDI7YQtHSUBZlSYehBoOAgBe54TxlTikWM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210046; c=relaxed/simple;
-	bh=J+9bkZ2TaBDtONW1F0xcOBZBT47VvvXBvsO5e43ogJE=;
+	s=arc-20240116; t=1725208729; c=relaxed/simple;
+	bh=0paFXTcSReWGIiVujGmeFJ82+7NPP+MPuTaH6OJIg2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bB45aUtTSejl4fyv1ugUEaiSe3PC4yE+xa/fTu5TcOw0nas5rS36DhiOEkuj/8gXeQfozMyGBczHWNC2+N12TIQvGMJfqByWAEdgFnleqVOzxFbVJpYnfO+WdSLWdM1u+HiB3xj2EH2kxGBp+k87eoKRhy4RV6XBfd63f9Zv9Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ww5cssLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FA8C4CEC3;
-	Sun,  1 Sep 2024 17:00:45 +0000 (UTC)
+	 MIME-Version; b=CMs7nQHjyzpVkUe8qcW6XXFF+8/K+DWBUFKbK1XHnbXR4mXIXnKCAN1QdDvgjE0VWllJ/YKOaEjyf68VXzpm7EhltPV5NnSDkMnGe3yRSbJfVBjlug/ImnkdZQGmeH+qbqhm981e9qlwG3+RzgNwwVtDBFhfAu0/mwpcBKxz5nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB8r/6ta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B73C4CEC3;
+	Sun,  1 Sep 2024 16:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210046;
-	bh=J+9bkZ2TaBDtONW1F0xcOBZBT47VvvXBvsO5e43ogJE=;
+	s=korg; t=1725208729;
+	bh=0paFXTcSReWGIiVujGmeFJ82+7NPP+MPuTaH6OJIg2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ww5cssLEjRTeB1zN6qA8yoFXfqKjnSHtkSuTi7oF0vqMstiN2HlAwiVXU3PpdcZmV
-	 G3xthu5tr/8kssbUOBKBEgQzCTk6a4M5ahhjT806OeXAVePZb4tSFLqPyQ9GzEGgA7
-	 2wJ3bRLwktdREpOdnd0I8gHb5jeusZ97MT1Y4iUs=
+	b=vB8r/6ta+lw5ssDCkLH6v8nQtXTmHdeN71G/t8MH0yMGqekObEnR9xueUFOJIEgpu
+	 AylPH8o64VdvRYeS9q1KPfWxGe4HvJQsApguIeONJslbB3THPNahLqy8lz1MMoN/dw
+	 YdhFIP1+BjntG8BGnF88gJjCxFymJeGH6+8cs4ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/215] net: hns3: fix wrong use of semaphore up
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Khazhismel Kumykov <khazhy@google.com>
+Subject: [PATCH 5.4 006/134] dm resume: dont return EINVAL when signalled
 Date: Sun,  1 Sep 2024 18:15:52 +0200
-Message-ID: <20240901160824.860296210@linuxfoundation.org>
+Message-ID: <20240901160810.000629264@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Khazhismel Kumykov <khazhy@google.com>
 
-[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
+commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
 
-Currently, if hns3 PF or VF FLR reset failed after five times retry,
-the reset done process will directly release the semaphore
-which has already released in hclge_reset_prepare_general.
-This will cause down operation fail.
+If the dm_resume method is called on a device that is not suspended, the
+method will suspend the device briefly, before resuming it (so that the
+table will be swapped).
 
-So this patch fixes it by adding reset state judgement. The up operation is
-only called after successful PF FLR reset.
+However, there was a bug that the return value of dm_suspended_md was not
+checked. dm_suspended_md may return an error when it is interrupted by a
+signal. In this case, do_resume would call dm_swap_table, which would
+return -EINVAL.
 
-Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
-Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes the logic, so that error returned by dm_suspend is
+checked and the resume operation is undone.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c3690e49c3d95..eb902e80a8158 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11636,8 +11636,8 @@ static void hclge_reset_done(struct hnae3_ae_dev *ae_dev)
- 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1064,8 +1064,26 @@ static int do_resume(struct dm_ioctl *pa
+ 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
+ 		if (param->flags & DM_NOFLUSH_FLAG)
+ 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
+-		if (!dm_suspended_md(md))
+-			dm_suspend(md, suspend_flags);
++		if (!dm_suspended_md(md)) {
++			r = dm_suspend(md, suspend_flags);
++			if (r) {
++				down_write(&_hash_lock);
++				hc = dm_get_mdptr(md);
++				if (hc && !hc->new_map) {
++					hc->new_map = new_map;
++					new_map = NULL;
++				} else {
++					r = -ENXIO;
++				}
++				up_write(&_hash_lock);
++				if (new_map) {
++					dm_sync_table(md);
++					dm_table_destroy(new_map);
++				}
++				dm_put(md);
++				return r;
++			}
++		}
  
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
- }
- 
- static void hclge_clear_resetting_state(struct hclge_dev *hdev)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index a41e04796b0b6..5b861a2a3e73e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -2217,8 +2217,8 @@ static void hclgevf_reset_done(struct hnae3_ae_dev *ae_dev)
- 			 ret);
- 
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
- }
- 
- static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
--- 
-2.43.0
-
+ 		old_map = dm_swap_table(md, new_map);
+ 		if (IS_ERR(old_map)) {
 
 
 
