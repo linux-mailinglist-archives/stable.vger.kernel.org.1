@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C7B9678BD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F7F967B12
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E4E1C21104
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258081C21399
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F184117DFFC;
-	Sun,  1 Sep 2024 16:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A2717E005;
+	Sun,  1 Sep 2024 17:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxbDYDQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFJws2xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5251E87B;
-	Sun,  1 Sep 2024 16:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5FC3BB48;
+	Sun,  1 Sep 2024 17:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208501; cv=none; b=RLThX3JlR5Rcw7UuyKU6qeFPo+kv34A+ViW5xSHBcGVk4hag8kRn/vXBhXjt5hvEVutXmjw6xxKHRKTzljeP3dA9uwa2IwL3MZHlKEhg6OZSmAzjfwzBYXfh2+iwNKJmFUUVi0cK7kthsK0yFXExQQFLQKOA9BI91cTjVFJHR44=
+	t=1725210281; cv=none; b=OgMziA+/csNJArljeveWPgKgcf/aOh71YO0JaAyhj3hTMfqJJkhywYgxe0qd0uDhEg1xE8My6gas964agLHIww8Xig5Q9MbKsP3NbJDBy4+ZOZjoV7oOD4c5LhzieWfSSgqQYHqr7QpIO9xw5cv53ARC4jtIt+fZ3D+ekpqzf1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208501; c=relaxed/simple;
-	bh=VGqBIj9MvDgSUiuFwn8DBIHgmS5+MvY+enDU+/5R50g=;
+	s=arc-20240116; t=1725210281; c=relaxed/simple;
+	bh=t+fNsx33bHlJ6/gYs/oOwRyDVVOubH7LAP8J86zmJko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc5HEZzGuuWZucBjDSp6GOLM1PJaSxw5k0TGXf9lfC3P2rcdzKd6/UqSnzcaMoTHOVi0qq69pfrETI0fboufslAIgcpoLdsQmQbSO+JgMXqm/tWB83WXSEmlZD1+cHbH48jiT6RLS1y84ox1jP2WiDR0To7O6suYx2Y32VNniUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxbDYDQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E67FC4CEC3;
-	Sun,  1 Sep 2024 16:35:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b07p64no7vTA9JQYNG7c4HsvDEfCNJ45WQaNZtF7xeoKBIpRRRevsQiVlQNpwI5qip+rADkfSukHe16HKJEPZEbGEv+sTdQO/rrSjsDaZcZkIwITkFipmtmlva3eeUZRn0FdlY9+AAzdQVHTDy/7DeD3LO+TTQ2Ym8vxAo2iRf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFJws2xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C24C4CEC3;
+	Sun,  1 Sep 2024 17:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208501;
-	bh=VGqBIj9MvDgSUiuFwn8DBIHgmS5+MvY+enDU+/5R50g=;
+	s=korg; t=1725210280;
+	bh=t+fNsx33bHlJ6/gYs/oOwRyDVVOubH7LAP8J86zmJko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxbDYDQoWXXV6eeWH0WoDale1OdokXHXqq1rG2j0dP9JlNpgexYOfQt7ng5kKvIth
-	 9p83A1FbI3KDSu2QO+oKrePDDRxsbYweg0KxnodmvQYKYS4Ae2fPLfEpD4j7vB9oh9
-	 aiTyj0UaOvneKmBAiqStlKvJPf30ibtQHuiFyvS0=
+	b=rFJws2xXv78dmYezzUVS/xcKdTIPjKfE0GtpavSO6V/UlLArMPAMMTSgtTrAsroka
+	 kivrmbHrXhV0purPtN90eJskprnPbnPtHXr+zgOXUAvqu7XnrsNXlvsYq6YUO00kwr
+	 yuhInwni65fKM5gvpWEYT+wZg3431JyIZaunDk3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gergo Koteles <soyer@irl.hu>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 102/149] selftests: forwarding: no_forwarding: Down ports on cleanup
+Subject: [PATCH 5.15 101/215] platform/x86: lg-laptop: fix %s null argument warning
 Date: Sun,  1 Sep 2024 18:16:53 +0200
-Message-ID: <20240901160821.294969505@linuxfoundation.org>
+Message-ID: <20240901160827.168350095@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit e8497d6951ee8541d73784f9aac9942a7f239980 ]
+[ Upstream commit e71c8481692582c70cdfd0996c20cdcc71e425d3 ]
 
-This test neglects to put ports down on cleanup. Fix it.
+W=1 warns about null argument to kprintf:
+warning: ‘%s’ directive argument is null [-Wformat-overflow=]
+pr_info("product: %s  year: %d\n", product, year);
 
-Fixes: 476a4f05d9b8 ("selftests: forwarding: add a no_forwarding.sh test")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0baf91dc24b95ae0cadfdf5db05b74888e6a228a.1724430120.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use "unknown" instead of NULL.
+
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://lore.kernel.org/r/33d40e976f08f82b9227d0ecae38c787fcc0c0b2.1712154684.git.soyer@irl.hu
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/no_forwarding.sh | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/lg-laptop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-index af3b398d13f01..9e677aa64a06a 100755
---- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
-+++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-@@ -233,6 +233,9 @@ cleanup()
- {
- 	pre_cleanup
+diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+index 5f9fbea8fc3c2..b374b0c7c62f6 100644
+--- a/drivers/platform/x86/lg-laptop.c
++++ b/drivers/platform/x86/lg-laptop.c
+@@ -665,7 +665,7 @@ static int acpi_add(struct acpi_device *device)
+ 		default:
+ 			year = 2019;
+ 		}
+-	pr_info("product: %s  year: %d\n", product, year);
++	pr_info("product: %s  year: %d\n", product ?: "unknown", year);
  
-+	ip link set dev $swp2 down
-+	ip link set dev $swp1 down
-+
- 	h2_destroy
- 	h1_destroy
- 
+ 	if (year >= 2019)
+ 		battery_limit_use_wmbb = 1;
 -- 
 2.43.0
 
