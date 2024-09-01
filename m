@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D37296783D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD01F9679A0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F18D1C20968
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EAB2B218E7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E89B183CC1;
-	Sun,  1 Sep 2024 16:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6120185B5E;
+	Sun,  1 Sep 2024 16:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMUQdVcL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTz9Fl/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1809183CA3;
-	Sun,  1 Sep 2024 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DAC183087;
+	Sun,  1 Sep 2024 16:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208168; cv=none; b=rs/5JLy8HN7huhkRO9AAJCDirUHzFjlVPgvpcRYsXYOdIeUC5Pqf8yCwuv7Krpw0un7EpPX3glBXZqsZxodburn1ECWPDMh2YNqV6qoSKsD2vFRsFJSZdDk6byO9CzZFd8j5kozQOfKf1KlufhDl7gwuhMCMEl8ksY/0Xy7f+sk=
+	t=1725209145; cv=none; b=Y3CGYob7PKDi4pZeBIthTNDOUfQtLtp6dgr8xFvvzx+sMi9Mh2m0AbqzH4Fg+rk/V/GmCt9ToNMjPsubrWh2vk8EvzueKgfgEZBkYx5n6vUsOADt8ijA4O4yeOT6IUt3YLiG/zgM/N4fDcNo+r9iWfjTxRwe2moKp5LOnMVYtOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208168; c=relaxed/simple;
-	bh=9u76tWUmoU1ef9JuhG5TjcgRbW0/wwTIx+nFmNqQcWQ=;
+	s=arc-20240116; t=1725209145; c=relaxed/simple;
+	bh=M7XgjzWKtu3RzCGdL8WKsMSoIeR3W141W46/r7TJqAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9dGVq/e0TdqGuzF/SX1EY7MeQfSViz2oZKGSKrKlRQ9dxTGSyZTeKIJyYOSVSNAQ7E6EzSHsZZzGfCUZ+c18J6S50vPOQR0RG9lZo6x9JiV2TXHYK3/VJ6OZa29DPKoUZDlqTsq7H33gNVDKv/th9hQ9LJFlYFKVz1yD1jrQ/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMUQdVcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61893C4CEC3;
-	Sun,  1 Sep 2024 16:29:27 +0000 (UTC)
+	 MIME-Version; b=nZiXakfqZbMWs0AN8aRZ0s7ombSicLFNuVQEd5Xtw/HCWK1VuxpJcHSioIf4mlj3yL5Wjy+XhGaGrwNXCC5296AyOODceTNHPCevMxsHRCIYBt/DuJB8WahMDKcfNB+sVDiq3zjSXpbgXpDVqIpSDE7DoRevrmnongu9RhXgYdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTz9Fl/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC637C4CEC3;
+	Sun,  1 Sep 2024 16:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208167;
-	bh=9u76tWUmoU1ef9JuhG5TjcgRbW0/wwTIx+nFmNqQcWQ=;
+	s=korg; t=1725209145;
+	bh=M7XgjzWKtu3RzCGdL8WKsMSoIeR3W141W46/r7TJqAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMUQdVcLDCDBRuC86bD9bKmUs0JKyF0OHD8+EeZhyrbJBtwzC7n0YG11bd9S+bA9Z
-	 o3MGW6XmFUB0lKajhBCe9qakdw+OgGvH4pAeX1PvIUl6dZbogAd/zhxjUtuR97PYgo
-	 pqjFIgyaJJo9UZoHoF0NAuKbUgMZbXNuH8iDsKhM=
+	b=tTz9Fl/yPVQlrYavIKbyCtyHRFuT00gc5vc+D5CyFW7fvZSQTfEgnAQmeGPBtlyEY
+	 H1nxrSoDfq69s0EgopWspInGHV+xzpGOLrbp0h731J3copgjHLvuD+hNSJnpFbZ75k
+	 EjGNmSk/9RjTOMgDAZ7P0783lqBwmRPSDuuVwBdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
-	Ben Hutchings <benh@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 92/93] scsi: aacraid: Fix double-free on probe failure
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 14/71] mptcp: pm: reset MPC endp ID when re-added
 Date: Sun,  1 Sep 2024 18:17:19 +0200
-Message-ID: <20240901160811.195776580@linuxfoundation.org>
+Message-ID: <20240901160802.426846301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
+commit dce1c6d1e92535f165219695a826caedcca4e9b9 upstream.
 
-aac_probe_one() calls hardware-specific init functions through the
-aac_driver_ident::init pointer, all of which eventually call down to
-aac_init_adapter().
+The initial subflow has a special local ID: 0. It is specific per
+connection.
 
-If aac_init_adapter() fails after allocating memory for aac_dev::queues,
-it frees the memory but does not clear that member.
+When a global endpoint is deleted and re-added later, it can have a
+different ID -- most services managing the endpoints automatically don't
+force the ID to be the same as before. It is then important to track
+these modifications to be consistent with the ID being used for the
+address used by the initial subflow, not to confuse the other peer or to
+send the ID 0 for the wrong address.
 
-After the hardware-specific init function returns an error,
-aac_probe_one() goes down an error path that frees the memory pointed to
-by aac_dev::queues, resulting.in a double-free.
+Now when removing an endpoint, msk->mpc_endpoint_id is reset if it
+corresponds to this endpoint. When adding a new endpoint, the same
+variable is updated if the address match the one of the initial subflow.
 
-Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
-Link: https://bugs.debian.org/1075855
-Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aacraid/comminit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/pm_netlink.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index bd99c5492b7d4..0f64b02443037 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -642,6 +642,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1331,20 +1331,27 @@ static struct pm_nl_pernet *genl_info_pm
+ 	return pm_nl_get_pernet(genl_info_net(info));
+ }
  
- 	if (aac_comm_init(dev)<0){
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
+-static int mptcp_nl_add_subflow_or_signal_addr(struct net *net)
++static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
++					       struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_sock *msk;
+ 	long s_slot = 0, s_num = 0;
+ 
+ 	while ((msk = mptcp_token_iter_next(net, &s_slot, &s_num)) != NULL) {
+ 		struct sock *sk = (struct sock *)msk;
++		struct mptcp_addr_info mpc_addr;
+ 
+ 		if (!READ_ONCE(msk->fully_established) ||
+ 		    mptcp_pm_is_userspace(msk))
+ 			goto next;
+ 
++		/* if the endp linked to the init sf is re-added with a != ID */
++		mptcp_local_address((struct sock_common *)msk, &mpc_addr);
++
+ 		lock_sock(sk);
+ 		spin_lock_bh(&msk->pm.lock);
++		if (mptcp_addresses_equal(addr, &mpc_addr, addr->port))
++			msk->mpc_endpoint_id = addr->id;
+ 		mptcp_pm_create_subflow_or_signal_addr(msk);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 		release_sock(sk);
+@@ -1417,7 +1424,7 @@ static int mptcp_nl_cmd_add_addr(struct
+ 		goto out_free;
  	}
- 	/*
-@@ -649,6 +650,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 	 */
- 	if (aac_fib_setup(dev) < 0) {
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 		
--- 
-2.43.0
-
+ 
+-	mptcp_nl_add_subflow_or_signal_addr(sock_net(skb->sk));
++	mptcp_nl_add_subflow_or_signal_addr(sock_net(skb->sk), &entry->addr);
+ 	return 0;
+ 
+ out_free:
+@@ -1530,6 +1537,8 @@ static int mptcp_nl_remove_subflow_and_s
+ 			spin_unlock_bh(&msk->pm.lock);
+ 		}
+ 
++		if (msk->mpc_endpoint_id == entry->addr.id)
++			msk->mpc_endpoint_id = 0;
+ 		release_sock(sk);
+ 
+ next:
 
 
 
