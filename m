@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF74967A91
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE05967860
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2023B2097A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F7F1F210ED
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCE217ADE1;
-	Sun,  1 Sep 2024 16:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32A217E46E;
+	Sun,  1 Sep 2024 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzHnZlwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTnKJvhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF2C208A7;
-	Sun,  1 Sep 2024 16:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10B6184547;
+	Sun,  1 Sep 2024 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209870; cv=none; b=hiOVdMenfKi5TfEXHMGuCjUNUukhDLlsuPQI+TZ5Y4rs9zy8V16DIcy8c16/0wJLdM+fqk/R+XPsFEzlCaLhfglzukUh5gaBnQvqoWvf63MxfIfDC7IMzjyuP/s17o4ygMOdlbOng24i7hBUvT7GDJN5KfgbjvqhukvwdGMcdKA=
+	t=1725208264; cv=none; b=rb26gGR3iTEICVIo3Oxv+tj100eHaA0hMVKb8hCLx6Vd7T+p6ilWF5Be8OHigXN9hOzrDGke0o4cwbfSl2HzW3AiPwKcza643VLKL1ZItBOgifSIRmDbI/wYIsQ7cDTi3l0ueKHA/cF0bqXvZWwMLBclt3nvqlJF7vJslPEETGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209870; c=relaxed/simple;
-	bh=1/5oytWr3cqIKnmOEur8qPwzD0aaCFSbIOtS5FYsTIU=;
+	s=arc-20240116; t=1725208264; c=relaxed/simple;
+	bh=awLpId0UFi53ld3OiMxUx0m0vO5a3h1FLV9jHrWkutQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlOgGMK8vK0uUrGMaqV4+1skxUI0ALA723N95NHJaxRdgjqGilRxTmvegaq5dzejJXv36EeRNE2ArtJmzR/LJN42asnSg9f5WZU/urGe2fS3+JUgFGV+Dimf+RVKjJTgtNU7sNCzqJhXz18vZrUa0u0WxjmbVZ+qdE/LR4qt2z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzHnZlwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6BAC4CEC3;
-	Sun,  1 Sep 2024 16:57:49 +0000 (UTC)
+	 MIME-Version; b=Q6ieLHFsJhjJ2xMBERNLu/m6SckOtgwmE5hpusUCObiMI6/A3aEeBWgQneR9VtiMl3QHSgl7h8Xvd7g4tM0110QSKkUT4b/H02lv99RGDHJ1MbDhlLH1xK0u9p7PYgNcaKeQz50s7xDMw3WpdKYZ2nXWPeCO365CBsse0DQzPpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTnKJvhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B921FC4CEC3;
+	Sun,  1 Sep 2024 16:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209870;
-	bh=1/5oytWr3cqIKnmOEur8qPwzD0aaCFSbIOtS5FYsTIU=;
+	s=korg; t=1725208264;
+	bh=awLpId0UFi53ld3OiMxUx0m0vO5a3h1FLV9jHrWkutQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzHnZlweQ0TeJ9/9lOl9czZlR1Lecu8popHJDLQtLbFyB8dYU7p7QwwslBXAnCzBU
-	 wg40cFRvhAkrMYjb4Bxc6m9EZ0DGBrCWMUryLNO7Tm5ZrwVPe2M6rU3/uQPfQBPV6L
-	 2j0vqbGyUO6gd8SOXf9oYBWsBeheVJN367CU6zlY=
+	b=aTnKJvhGl13bfDQPFlejjsYv1m4/8RXpt/NvNvuF/F9mk5cmM5tFQcEj06pl8Z8O2
+	 mPGPM7rWenSLYymxGvvC8RI4dMsua+vcT7RILVyXgWLsCO1OIL/xaB39IavEwdunmn
+	 Ic7ZrKl6PXUxnEW6Yt6QbMAahs9XK2rWixIpzeDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 019/215] selinux: fix potential counting error in avc_add_xperms_decision()
-Date: Sun,  1 Sep 2024 18:15:31 +0200
-Message-ID: <20240901160823.986358750@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 021/149] mptcp: pm: reuse ID 0 after delete and re-add
+Date: Sun,  1 Sep 2024 18:15:32 +0200
+Message-ID: <20240901160818.262314959@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 379d9af3f3da2da1bbfa67baf1820c72a080d1f1 upstream.
+commit 8b8ed1b429f8fa7ebd5632555e7b047bc0620075 upstream.
 
-The count increases only when a node is successfully added to
-the linked list.
+When the endpoint used by the initial subflow is removed and re-added
+later, the PM has to force the ID 0, it is a special case imposed by the
+MPTCP specs.
 
+Note that the endpoint should then need to be re-added reusing the same
+ID.
+
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
 Cc: stable@vger.kernel.org
-Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/avc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/security/selinux/avc.c
-+++ b/security/selinux/avc.c
-@@ -332,12 +332,12 @@ static int avc_add_xperms_decision(struc
- {
- 	struct avc_xperms_decision_node *dest_xpd;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -585,6 +585,11 @@ static void mptcp_pm_create_subflow_or_s
  
--	node->ae.xp_node->xp.len++;
- 	dest_xpd = avc_xperms_decision_alloc(src->used);
- 	if (!dest_xpd)
- 		return -ENOMEM;
- 	avc_copy_xperms_decision(&dest_xpd->xpd, src);
- 	list_add(&dest_xpd->xpd_list, &node->ae.xp_node->xpd_head);
-+	node->ae.xp_node->xp.len++;
- 	return 0;
- }
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		mptcp_pm_announce_addr(msk, &local.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
  
+@@ -609,6 +614,11 @@ subflow:
+ 
+ 		msk->pm.local_addr_used++;
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
+ 		if (nr == 0)
+ 			continue;
 
 
 
