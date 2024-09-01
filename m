@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67F2967B03
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC84D96783E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648A72811FC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A5F0B223A7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C553BB59;
-	Sun,  1 Sep 2024 17:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68DC183CC3;
+	Sun,  1 Sep 2024 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVUwecKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Hb9YBla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FBA2C6AF;
-	Sun,  1 Sep 2024 17:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506F183CA3;
+	Sun,  1 Sep 2024 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210229; cv=none; b=dAZFJXiEmb3IGet2noDCyf0Aq77mncO90Qb/bq5+RLpSdyhNOhGQXNZ3L8aGn0d9XcOWFX89ZAfYeIE9efQRgoraGP+rclaWCsokVS583+ZWV6/v5PkV+E030Y/Eoue7np0CGWjoMSvIYiOc19WoAb3NMIh6f4OlSPS2rnPjpGI=
+	t=1725208171; cv=none; b=kkw2TqyolBYHOvmxXsHy8kCn/VcL3UJAAYRFKQZndnfMv+PtB7oS996rDXFAAiKPTPogPnrmalo85upAXFv052tlY466wWou01jjQ2pb3j8TLUV339DRJ5ac0hTQe2ty0xjR7XbMlThymPI68e1u8jKXkbiSmveTjS3CefgBW44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210229; c=relaxed/simple;
-	bh=CQLpTvLR22dYa6Hs1Bo2csABXU/cCC9lIbUDyAJLktY=;
+	s=arc-20240116; t=1725208171; c=relaxed/simple;
+	bh=1e9remJhkHwcMItnozxaAm3QZRnX569tm0OHyvUGeTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQfXEOMCTFX8ASwIpEMAXWnBE09+MdhqrYhqCvGA6YxZb7C1gcSn0Y7PoUkLAIPurq7i56LJyel0svXMAXW9TxdaMBrcpHRmnMBP7c6OuQkC2+psp3P12ZtFngg/yqyntCKzhdvb3KvNdD/gKJckD8hGn8Xul87FshPv6USr0VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVUwecKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26369C4CEC3;
-	Sun,  1 Sep 2024 17:03:48 +0000 (UTC)
+	 MIME-Version; b=tKJdz1kAAQkE4mYpVIpF5sTg2tbtrA4jqt4OdIT2jIcMCpXetGxpbrkwfvNtpT/L91jmsoSstr2n/Rz9hWfQc3BN9ECFNG5n8MyWQrg3OoE6/Cr7F/ejgDKyRrtwQaSTTRQCoPLj8+A3OoVdiArBbSDhY3kgCr1XlNNQgjbsQtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Hb9YBla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90EAC4CEC3;
+	Sun,  1 Sep 2024 16:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210229;
-	bh=CQLpTvLR22dYa6Hs1Bo2csABXU/cCC9lIbUDyAJLktY=;
+	s=korg; t=1725208171;
+	bh=1e9remJhkHwcMItnozxaAm3QZRnX569tm0OHyvUGeTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVUwecKLoyfwRcGLkLvfW5ZpgVTzt4pSgXkmG/hTrod4NxE3a6ph+xJ6foIb4TvgT
-	 RX9zuBaVltyCg5rWPVxdrn5nMtdyctiRsnzF89YnHomjbqHtlOEPy/1yc2Z7liZ7JL
-	 yPlwG55BvISk7Em+yFiaOpGxRwu+fH/ziBB07HfI=
+	b=1Hb9YBlaALLHx4/H8W0ZyCI42jx9cn34NzdP6F0KtQn1c/yFN3MXa1S7wvWktuk2Q
+	 l+j/4StbWhOaV/QGMuiXwXgpjGW8wM4uZ3o4sMbalbFeSKJHO4II+iQ3ItlS7jL5Av
+	 uVT1UZkhYOrfJxXh3h+TN0Sa2rLBolOGHlXu/6Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 127/215] nfsd: make svc_stat per-network namespace instead of global
-Date: Sun,  1 Sep 2024 18:17:19 +0200
-Message-ID: <20240901160828.165199645@linuxfoundation.org>
+	Brendan Higgins <brendanhiggins@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 93/93] apparmor: fix policy_unpack_test on big endian systems
+Date: Sun,  1 Sep 2024 18:17:20 +0200
+Message-ID: <20240901160811.233194496@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
+[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
 
-The final bit of stats that is global is the rpc svc_stat.  Move this
-into the nfsd_net struct and use that everywhere instead of the global
-struct.  Remove the unused global struct.
+policy_unpack_test fails on big endian systems because data byte order
+is expected to be little endian but is generated in host byte order.
+This results in test failures such as:
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
+    Expected array_size == (u16)16, but
+        array_size == 4096 (0x1000)
+        (u16)16 == 16 (0x10)
+    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
+    not ok 3 policy_unpack_test_unpack_array_with_null_name
+    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
+    Expected array_size == (u16)16, but
+        array_size == 4096 (0x1000)
+        (u16)16 == 16 (0x10)
+    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
+
+Add the missing endianness conversions when generating test data.
+
+Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h  |    4 ++++
- fs/nfsd/nfsctl.c |    2 ++
- fs/nfsd/nfssvc.c |    2 +-
- fs/nfsd/stats.c  |   10 ++++------
- fs/nfsd/stats.h  |    2 --
- 5 files changed, 11 insertions(+), 9 deletions(-)
+ security/apparmor/policy_unpack_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -13,6 +13,7 @@
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/siphash.h>
-+#include <linux/sunrpc/stats.h>
+diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
+index 5c9bde25e56df..2b8003eb4f463 100644
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -80,14 +80,14 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
+ 	strscpy(buf + 3, TEST_U32_NAME, e->end - (void *)(buf + 3));
+ 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
+-	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
++	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
  
- /* Hash tables for nfs4_clientid state */
- #define CLIENT_HASH_BITS                 4
-@@ -183,6 +184,9 @@ struct nfsd_net {
- 	/* Per-netns stats counters */
- 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
+ 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
+ 	*buf = AA_NAME;
+ 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
+ 	strscpy(buf + 3, TEST_U64_NAME, e->end - (void *)(buf + 3));
+ 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
+-	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
++	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
  
-+	/* sunrpc svc stats */
-+	struct svc_stat          nfsd_svcstats;
-+
- 	/* longest hash chain seen */
- 	unsigned int             longest_chain;
+ 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
+ 	*buf = AA_NAME;
+@@ -103,7 +103,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
+ 	strscpy(buf + 3, TEST_ARRAY_NAME, e->end - (void *)(buf + 3));
+ 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
+-	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
++	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
  
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1461,6 +1461,8 @@ static __net_init int nfsd_init_net(stru
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
-+	nn->nfsd_svcstats.program = &nfsd_program;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -665,7 +665,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
- 				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,10 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct svc_stat		nfsd_svcstats = {
--	.program	= &nfsd_program,
--};
--
- static int nfsd_show(struct seq_file *seq, void *v)
- {
- 	struct net *net = PDE_DATA(file_inode(seq->file));
-@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *se
- 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
- 
- 	/* show my rpc info */
--	svc_seq_show(seq, &nfsd_svcstats);
-+	svc_seq_show(seq, &nn->nfsd_svcstats);
- 
- #ifdef CONFIG_NFSD_V4
- 	/* Show count for individual nfsv4 operations */
-@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct n
- 
- void nfsd_proc_stat_init(struct net *net)
- {
--	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ 	return e;
  }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,8 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--extern struct svc_stat		nfsd_svcstats;
--
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+-- 
+2.43.0
+
 
 
 
