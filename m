@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0E5967A79
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116DF9679D4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56FD0282247
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32D31F215C0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B60181CE1;
-	Sun,  1 Sep 2024 16:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CE4183CA3;
+	Sun,  1 Sep 2024 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiVMk7YW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5c5610K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886011DFD1;
-	Sun,  1 Sep 2024 16:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419F51DFD1;
+	Sun,  1 Sep 2024 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209795; cv=none; b=Z7O4g/qJUuF8pNHwBQNf9PVGFqLFeNkOLEJAl+FBJrVDKqJFL+PbP0/RfkiXiGaW7HH9xzEly8QlE21FkLuJPa4ZBZain765Rv0PN6BYEPeoOu3SRiM7y1EkQytjlGxgvgBCRoI8MIktHD561+mktASL3UvZyTTQhtLFR9BHcqQ=
+	t=1725209302; cv=none; b=Ki0iILRX8PcsPmzXtIGAbw24oC4DQNZqQILWpx4PVmfHuUsrcgDJk24/IUgc9Xz75vGMCAQPIqaGv0NmkoxldAMTmU9YIB4cKPurAptzOGiOElzesTeQG/o3vHlFOu/dZ/LANykpRN3SQj4croRslaGMfrBokX7Z3FimpIxvvvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209795; c=relaxed/simple;
-	bh=BNduLgJKXb5XvEbvZoLOyRoZv+rQYXMIndEqlqUOMR4=;
+	s=arc-20240116; t=1725209302; c=relaxed/simple;
+	bh=7GfpzL0Z1TRk8b9HjH+M3sx0+4NSzjxsAVzx3qHvkhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XYwn3KIkqhV1PY8gXn3t1cyJWPTzN6hzo5EjelJaZhS4Z+CfW7ywYdCe0yyzJAuc0E7S3ELbClJznrntm54brgpk2qGvoDRwttD1aUXUWPQg1kv6o9FI+cB0DsnGIjuW+ylYUdjzjFS9lh4yYwNTyKPfQbQc4baXChfDVievHzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiVMk7YW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3A9C4CEC3;
-	Sun,  1 Sep 2024 16:56:34 +0000 (UTC)
+	 MIME-Version; b=EXrujc6YJzJIyv32P4YpMys26antFnbiwJg79+yJHMLbQpY13IEK9lDZXDTYfQ9BWWdGkF0umVBHirt57PS/QzHcdOxaslzXTFZ0nbZI2JCETnyu9KqdSCP5RGsm/6Tj3GmHi6Lyez4PejmWNZ8yLMocUUqOJK/xR+BjmJ00tNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5c5610K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D87C4CEC3;
+	Sun,  1 Sep 2024 16:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209795;
-	bh=BNduLgJKXb5XvEbvZoLOyRoZv+rQYXMIndEqlqUOMR4=;
+	s=korg; t=1725209302;
+	bh=7GfpzL0Z1TRk8b9HjH+M3sx0+4NSzjxsAVzx3qHvkhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiVMk7YWfdf3b4pkd6NxKSJ9wD5Bjxwnarh0g9m2rhgw27jN/yMpPt0EZwNBMB7Ps
-	 opoDiAg9S1QO+67mflg9fSsMacaU4KvZ3E8VjxDeUfLhj7wCaPAzEBBDd/aPXDqWQE
-	 EMvcgf78SmulF0KaauzYWmLww0MdLcylXKHhGe00=
+	b=r5c5610Ko4Vacrx/8N8Hi5FMI5lTbQI6gh764uOC5KASe6xKcDgmlLGugniq/rmsz
+	 QDXv5Vahv0kNPIC9hBUyHNdeZR101KciZWc4y5EhMok6PSFaB1BDprN5Mm7zTWSVEB
+	 mL+r1Yx1R9x1RqjNjXWRi8V19rB9GyeOMmOU6JUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/151] Revert "Input: ioc3kbd - convert to platform remove callback returning void"
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 65/71] usb: cdnsp: fix for Link TRB with TC
 Date: Sun,  1 Sep 2024 18:18:10 +0200
-Message-ID: <20240901160818.998146019@linuxfoundation.org>
+Message-ID: <20240901160804.340129781@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Pawel Laszczak <pawell@cadence.com>
 
-This reverts commit 0096d223f78cb48db1ae8ae9fd56d702896ba8ae which is
-commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b upstream.
+commit 740f2e2791b98e47288b3814c83a3f566518fed2 upstream.
 
-It breaks the build and shouldn't be here, it was applied to make a
-follow-up one apply easier.
+Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
+internal cycle bit can have incorrect state after command complete.
+In consequence empty transfer ring can be incorrectly detected
+when EP is resumed.
+NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
+is then on NOP TRB and internal cycle bit is not changed and have
+correct value.
 
-Reported-by: Dominique Martinet <asmadeus@codewreck.org>
-Link: https://lore.kernel.org/r/Zs6hwNxk7QkCe7AW@codewreck.org
-Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230920125829.1478827-37-u.kleine-koenig@pengutronix.de
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/ioc3kbd.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
+ drivers/usb/cdns3/cdnsp-ring.c   |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -190,7 +190,7 @@ static int ioc3kbd_probe(struct platform
- 	return 0;
- }
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -811,6 +811,7 @@ struct cdnsp_stream_info {
+  *        generate Missed Service Error Event.
+  *        Set skip flag when receive a Missed Service Error Event and
+  *        process the missed tds on the endpoint ring.
++ * @wa1_nop_trb: hold pointer to NOP trb.
+  */
+ struct cdnsp_ep {
+ 	struct usb_ep endpoint;
+@@ -838,6 +839,8 @@ struct cdnsp_ep {
+ #define EP_UNCONFIGURED		BIT(7)
  
--static void ioc3kbd_remove(struct platform_device *pdev)
-+static int ioc3kbd_remove(struct platform_device *pdev)
- {
- 	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
- 
-@@ -198,6 +198,8 @@ static void ioc3kbd_remove(struct platfo
- 
- 	serio_unregister_port(d->kbd);
- 	serio_unregister_port(d->aux);
+ 	bool skip;
++	union cdnsp_trb	 *wa1_nop_trb;
 +
-+	return 0;
- }
+ };
  
- static const struct platform_device_id ioc3kbd_id_table[] = {
-@@ -208,7 +210,7 @@ MODULE_DEVICE_TABLE(platform, ioc3kbd_id
+ /**
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -1903,6 +1903,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		return ret;
  
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
--	.remove_new     = ioc3kbd_remove,
-+	.remove         = ioc3kbd_remove,
- 	.id_table	= ioc3kbd_id_table,
- 	.driver = {
- 		.name = "ioc3-kbd",
+ 	/*
++	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
++	 * causes that internal cycle bit can have incorrect state after
++	 * command complete. In consequence empty transfer ring can be
++	 * incorrectly detected when EP is resumed.
++	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
++	 * then on NOP TRB and internal cycle bit is not changed and have
++	 * correct value.
++	 */
++	if (pep->wa1_nop_trb) {
++		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
++		field ^= TRB_CYCLE;
++
++		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
++		pep->wa1_nop_trb = NULL;
++	}
++
++	/*
+ 	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
+ 	 * until we've finished creating all the other TRBs. The ring's cycle
+ 	 * state may change as we enqueue the other TRBs, so save it too.
+@@ -1997,6 +2014,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		send_addr = addr;
+ 	}
+ 
++	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
++		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
++		if (!ring->cycle_state)
++			field |= TRB_CYCLE;
++
++		pep->wa1_nop_trb = ring->enqueue;
++
++		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
++				TRB_INTR_TARGET(0), field);
++	}
++
+ 	cdnsp_check_trb_math(preq, enqd_len);
+ 	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
+ 				       start_cycle, start_trb);
 
 
 
