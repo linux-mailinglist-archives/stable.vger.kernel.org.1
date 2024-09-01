@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EF59677DA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D96967875
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87BE280EB4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9802817B9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BF5181B88;
-	Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1430717CA1F;
+	Sun,  1 Sep 2024 16:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwlaDS1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqq/1St4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2833416EB4B;
-	Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55161C68C;
+	Sun,  1 Sep 2024 16:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207892; cv=none; b=UwjIoGPhwzMmmlJ4OJod3DWO3eTXQ1iQ1V92pTbM9J6ODYmr2qFCpKCAVIlgD6uaYwsAlPnaFU5TYrdS2ek2ZmFfxlVhqg7ckzqq9MEwYmtwW/5suh1lSFOzxtNkmAuk8tz0YIh+E70fPgmi3olkb2lMmRAGAU4yWvjOSc961Ig=
+	t=1725208320; cv=none; b=JyQP74nmpl7SGlt6joj8MApGqXTbYStBCaV/eqjZZXHN5qfU+L+AaR6IlJ1B6y9FplenjOp6PdibM6ynRmxEZ+Bb0xSg1PZSO7sa0wzNcTgMnn53wbgcWmsz78Pd1/wF1XFlHytglAZyLtZ/FnG//XmPSBujf4W94YQ/iczu90A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207892; c=relaxed/simple;
-	bh=osmAc78uuGpuDsNxYTpUgKxk33u8wjw+uyWCDEW8VPM=;
+	s=arc-20240116; t=1725208320; c=relaxed/simple;
+	bh=4FGqN5F6GnKL6aIt4Lu9oQrdrZ1CM/pX1+7VfPwpp4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RozdW6HdsoiTIv0gMxHYiMJLRlsEAmgnAgwOJ4Up8pIp4Ymd5TEiY+FXfSsSg2dRUjWuFrfUeyoFLOlaQuuyJevybzKXs2wNt8Jo0CiNZqz02d8llnlAd139GcqBmKjm1kpKpuuqhU82J3HJ3KGL6L+McyVr1kE6hRXNQBBIyQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwlaDS1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA8BC4CEC3;
-	Sun,  1 Sep 2024 16:24:51 +0000 (UTC)
+	 MIME-Version; b=V/Hvk41RArKZokLpIto5zX67icab/4rqYMGyc9LEsNhGMvyOOQT+U8vueAcV2VO2KvOlQC5nqii5P1LakikYnBAXhwBWMPzZbgP2q0+EcF+mPsuM4RToFLZJnaqGplUPrcZ3MN4QO2+GM2MrE7bbIBwyLeqnj773GwNOfO1jAuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqq/1St4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F715C4CEC3;
+	Sun,  1 Sep 2024 16:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207892;
-	bh=osmAc78uuGpuDsNxYTpUgKxk33u8wjw+uyWCDEW8VPM=;
+	s=korg; t=1725208320;
+	bh=4FGqN5F6GnKL6aIt4Lu9oQrdrZ1CM/pX1+7VfPwpp4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwlaDS1yPbLebyrkFQjSKyqdFJdhgUjBPFWuR1uwfd4kqITshj1cqid9/anM0d8Gm
-	 GcUnP0GT82OrXWGrjyfrkba0WG7EDmTD5VH1wBPDJz58cARsBibcSki2V/DiwbGz3K
-	 vakpmE8jAQdVb9QeCptnqfez7mE1PdlaHn3zBEVU=
+	b=Jqq/1St4GPKopWo+MHZKIQ6Pyn8n7FmkvwaqHbsm5B7Yc10Rks09ngXywo9qqM3bU
+	 IyQ79QYHEMxvFuDq+53XB49/iGioVlU3lMP1lWmBH5nGFedkcQxFreTqid8tCWFaYX
+	 veSYHVEPvx2rJIXBtrbs7sUH1qZ7NaphZ1freicA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 10/93] wifi: mwifiex: duplicate static structs used in driver instances
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 046/149] drm/xe/vm: Simplify if condition
 Date: Sun,  1 Sep 2024 18:15:57 +0200
-Message-ID: <20240901160807.746118182@linuxfoundation.org>
+Message-ID: <20240901160819.198974385@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
+[ Upstream commit b3181f433206a1432bc7093d1896fe36026f7fff ]
 
-mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-used and modified in driver instances. Duplicate them before using
-them in driver instances so that different driver instances do not
-influence each other.
+The if condition !A || A && B can be simplified to !A || B.
 
-This was observed on a board which has one PCIe and one SDIO mwifiex
-adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-the statically allocated struct which is modified in this function.
+Fixes the following Coccinelle/coccicheck warning reported by
+excluded_middle.cocci:
 
-Cc: stable@vger.kernel.org
-Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	WARNING !A || A && B is equivalent to !A || B
+
+Compile-tested only.
+
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240603180005.191578-1-thorsten.blum@toblux.com
+Stable-dep-of: 730b72480e29 ("drm/xe: prevent UAF around preempt fence")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4362,11 +4362,27 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
- 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 4aa3943e6f292..3137cbbaabde0 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -85,8 +85,8 @@ static bool preempt_fences_waiting(struct xe_vm *vm)
  
--	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
--	if (adapter->config_bands & BAND_A)
--		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
--	else
-+	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-+						       &mwifiex_band_2ghz,
-+						       sizeof(mwifiex_band_2ghz),
-+						       GFP_KERNEL);
-+	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	if (adapter->config_bands & BAND_A) {
-+		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
-+							       &mwifiex_band_5ghz,
-+							       sizeof(mwifiex_band_5ghz),
-+							       GFP_KERNEL);
-+		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	} else {
- 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
-+	}
- 
- 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
- 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
-@@ -4460,8 +4476,7 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ret < 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "%s: wiphy_register failed: %d\n", __func__, ret);
--		wiphy_free(wiphy);
--		return ret;
-+		goto err;
+ 	list_for_each_entry(q, &vm->preempt.exec_queues, compute.link) {
+ 		if (!q->compute.pfence ||
+-		    (q->compute.pfence && test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT,
+-						   &q->compute.pfence->flags))) {
++		    test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT,
++			     &q->compute.pfence->flags)) {
+ 			return true;
+ 		}
  	}
- 
- 	if (!adapter->regd) {
-@@ -4503,4 +4518,9 @@ int mwifiex_register_cfg80211(struct mwi
- 
- 	adapter->wiphy = wiphy;
- 	return ret;
-+
-+err:
-+	wiphy_free(wiphy);
-+
-+	return ret;
- }
+-- 
+2.43.0
+
 
 
 
