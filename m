@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-71737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF00967787
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D6E9679FD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 572D81F21756
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7591F2273F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6B2183061;
-	Sun,  1 Sep 2024 16:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B559317E00C;
+	Sun,  1 Sep 2024 16:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT6Fk2Ef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8ak/6tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07E16EB4B;
-	Sun,  1 Sep 2024 16:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7206D1C68C;
+	Sun,  1 Sep 2024 16:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207648; cv=none; b=NiIWz21ZzfM+S/G3d9l0kvHhIHQr0BqqdQd2CP1i820njSh7rrQM3qe55RQFTe6Sk87DNKKJEGszdCVoH3hupTovBVxzAwYNU/KUilcIi8rn6oBetSZ9gFKEHruI1H7O8CoHEC+OFwyaPM4FAy5icKrAUYr23pAMZ8GPuhDAsCg=
+	t=1725209417; cv=none; b=TU0b0PXoN194oH7208W0fiXR3pA9AolXJ32HXyFd8T67S+FDbvYDxy6+rYNQXyNmcDU5B1XS79xoeaJVDgCcOOXIJE6u4JLjh4izBIKxBrcI/mmG4HqPJGHA3cTG00O9wJkC/HrhlfxIP6QseV8pn1Chite+glaLcQ0dJQ1A44c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207648; c=relaxed/simple;
-	bh=j/8+0egvX6+PC3XRTSZMWc/1f1RXNDJg7N2GTX+f1uk=;
+	s=arc-20240116; t=1725209417; c=relaxed/simple;
+	bh=TThz+3hopQwX8sX+UrQW9A11WzpsfBpm1uCSGvQrCL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrsUWDPCaLy0zPnuSq5NGA3cpEl7VkI54k/0+zCyFkDZtg74Z2RoTXdPjC6kcJ3Zkset1RNFJkhxwAmZPsBb2ms3XqHscaE3whR1pFyU9sIz7DLnIdKGClokyqU1VfnRZy6TR176J2Nu/cUUw9fT/il8BM8RCPOnvb9kq5Xy2H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT6Fk2Ef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E068CC4CEC3;
-	Sun,  1 Sep 2024 16:20:47 +0000 (UTC)
+	 MIME-Version; b=iAh2OJS/kX21tfOBP9Xg2smbUByTjt+P6dXkfti4JIVIvzocU2C8hocHg9qp8aQhRYQs/DMEYsV8tjYnNQfcLoKjT9A4QaLxwqYUcNDSE8XT16PoDulHV5f+5i7bed/bVA82ThfGPk16vLV5A2S6SJpxXf/lpHmsGkeuFtUlaDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8ak/6tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDEDC4CEC3;
+	Sun,  1 Sep 2024 16:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207648;
-	bh=j/8+0egvX6+PC3XRTSZMWc/1f1RXNDJg7N2GTX+f1uk=;
+	s=korg; t=1725209417;
+	bh=TThz+3hopQwX8sX+UrQW9A11WzpsfBpm1uCSGvQrCL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HT6Fk2Efyis3UUYIfVMs+3kkvHxjqzlXVd5huBfc+E+5Mt94f5W2b9JHpPDMsCXJA
-	 d/L+y4nc7KzLqBZ/mPwsUQrzltCNWX0iGP32j/hkt4N4xzBmAsmJb//cYQw7ZoqRd+
-	 /do62TMfCFnMuJJW9AJ2S3kq3ZE5omaew5q8dYZw=
+	b=a8ak/6tjoOgYm9fg2srrujneJH62bkZI/uiTAP0p1mvaHFFfZX0ntHV6dLlLy8PyV
+	 8KuvwIUOHQRSKF4Y1IyDOjQXbzcDEgSy3TUQoFdstCeFp1pfMAxNaWP5qlXarSmTRI
+	 8diL9kts1JlgcKJtMQmiT4DAOKYZkEHKWqpYAl84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 36/98] btrfs: change BUG_ON to assertion when checking for delayed_node root
+	Andrew Jones <ajones@ventanamicro.com>,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH 5.10 006/151] arm64: ACPI: NUMA: initialize all values of acpi_early_node_map to NUMA_NO_NODE
 Date: Sun,  1 Sep 2024 18:16:06 +0200
-Message-ID: <20240901160805.059838080@linuxfoundation.org>
+Message-ID: <20240901160814.336020444@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Haibo Xu <haibo1.xu@intel.com>
 
-[ Upstream commit be73f4448b607e6b7ce41cd8ef2214fdf6e7986f ]
+commit a21dcf0ea8566ebbe011c79d6ed08cdfea771de3 upstream.
 
-The pointer to root is initialized in btrfs_init_delayed_node(), no need
-to check for it again. Change the BUG_ON to assertion.
+Currently, only acpi_early_node_map[0] was initialized to NUMA_NO_NODE.
+To ensure all the values were properly initialized, switch to initialize
+all of them to NUMA_NO_NODE.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e18962491696 ("arm64: numa: rework ACPI NUMA initialization")
+Cc: <stable@vger.kernel.org> # 4.19.x
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/853d7f74aa243f6f5999e203246f0d1ae92d2b61.1722828421.git.haibo1.xu@intel.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c | 2 +-
+ arch/arm64/kernel/acpi_numa.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index fec62782fc86c..fa8f359d89994 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -984,7 +984,7 @@ static void btrfs_release_delayed_inode(struct btrfs_delayed_node *delayed_node)
+--- a/arch/arm64/kernel/acpi_numa.c
++++ b/arch/arm64/kernel/acpi_numa.c
+@@ -27,7 +27,7 @@
  
- 	if (delayed_node &&
- 	    test_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags)) {
--		BUG_ON(!delayed_node->root);
-+		ASSERT(delayed_node->root);
- 		clear_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags);
- 		delayed_node->count--;
+ #include <asm/numa.h>
  
--- 
-2.43.0
-
+-static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
++static int acpi_early_node_map[NR_CPUS] __initdata = { [0 ... NR_CPUS - 1] = NUMA_NO_NODE };
+ 
+ int __init acpi_numa_get_nid(unsigned int cpu)
+ {
 
 
 
