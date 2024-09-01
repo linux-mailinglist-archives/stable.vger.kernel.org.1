@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-72511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A51967AED
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D44E967800
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C08B1F21719
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2480281EF9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238DD17E005;
-	Sun,  1 Sep 2024 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65FF183CC9;
+	Sun,  1 Sep 2024 16:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFDXg1vU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRoye6/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AAC2C190;
-	Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639F1183CA5;
+	Sun,  1 Sep 2024 16:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210162; cv=none; b=W6jRDZGmMUIeE89kAJMJSPkWxGbTw6dXRQ0+ZsbfCDzLlYamQQpLFO6Tgo2fTxHGPYXBRW0bTBKsp3wCaZe36AFUwhEM735G/XC9DmCO4g0LOICyKJq2HXxHh5D1QeyyIOqAavPjej1JHR62cdKaVYfG8H76OuD/sUK5XbibXcI=
+	t=1725207995; cv=none; b=tsYiSs0XMbQ+rHLf3Qnm51VVUkpQq6qcDTH+p4zDRbbp5bwMs+HCJ0ZaGD9EoqhF9gj+KMfawqA3mZ3qcoqxQnnu0P5Sq3i1UEYcVEI0OcgvQzI42uUIrqNqYWXKjx45R0UTkjZ92FMqLuP5fCpDBW+HNMinE+e0Kk3CexsK5nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210162; c=relaxed/simple;
-	bh=/sKXA4pvR3Kuchvu3NlDQDUbnqIT2Je5Gz9ZzpNaeuU=;
+	s=arc-20240116; t=1725207995; c=relaxed/simple;
+	bh=xJliqHAobR4yCHOBPNnaDgQH+PJ0Tpl7xk80tb1StVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8OoliZt6NiHECoyXTtQrL3MtTMj1umMkV/Dvm9pkdu8rav8lgvX+ZAhqLjKoyjV7hSxDQcNsLIoctgSbaaQ/m1jNWMxjSeOfjFo/3GIkFfeTuzLx7Mp15Jydktm9E+WhZ4tNpwAG5IxAoU+FOLpRhiVExxG+KY8EfyAnQqh2ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFDXg1vU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569F6C4CEC3;
-	Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
+	 MIME-Version; b=ldFzHANn4JH9Yo6pjiDwshQ2uEluylm3O5S2hiE+BgZMhGYmJyy6gtC5cNiZXCfaCRigXKyn7/E2GDOWNGPO5k1/GtZm3QQIqlFx36FVzJJbYSek3fEScsONJx7Qnf7ybZly61W6z2R2kshijycDEDwfV2dlz97gbEvtRvpEJBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRoye6/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6815C4CEC3;
+	Sun,  1 Sep 2024 16:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210162;
-	bh=/sKXA4pvR3Kuchvu3NlDQDUbnqIT2Je5Gz9ZzpNaeuU=;
+	s=korg; t=1725207995;
+	bh=xJliqHAobR4yCHOBPNnaDgQH+PJ0Tpl7xk80tb1StVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFDXg1vUSE9Q4jJMxNWnrdttL6oB6n6Nd4MKNsZUEkSIEG8/M46BoVhDjzrRB9DPl
-	 ZwuLB80DsNLrFz0E6OfF24sfGiBEl8WWpuWTLg+itQhyBtrZlQM4md1rDWja4r3z5e
-	 ynAtkFVQwd/PsmdqrL8jDSmwBWz5EtHzJFuc8ILs=
+	b=dRoye6/RkG7bA9hDQet+Ug4xC02UdcH+loEbNCNYdFiPMo3GF7nmeNAbLAVTfnqrH
+	 ZavYD2DMSvs9VoyL5+Z3cA+rsbczW//PKRJVUEVcfjEV0YfZmcLkMbCqizPK1JjHjq
+	 W7g5g/448eHmBzBxFgkz8WgraL2LVzaKXAbGx4kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Creasey <sammy@sammy.net>,
-	Kees Cook <keescook@chromium.org>,
-	Simon Horman <horms@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/215] net/sun3_82586: Avoid reading past buffer in debug output
-Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160826.225393612@linuxfoundation.org>
+	stable@kernel.org,
+	Marek Gresko <marek.gresko@protonmail.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.6 42/93] selinux,smack: dont bypass permissions check in inode_setsecctx hook
+Date: Sun,  1 Sep 2024 18:16:29 +0200
+Message-ID: <20240901160808.946775899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +67,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
+commit 76a0e79bc84f466999fa501fce5bf7a07641b8a7 upstream.
 
-Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
--Warraybounds, this build warning is visible[1]:
+Marek Gresko reports that the root user on an NFS client is able to
+change the security labels on files on an NFS filesystem that is
+exported with root squashing enabled.
 
-drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
-drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
-  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-      |                                                                                                               ~~~~~~~~~~~~^~~
-...
-drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
-  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
+The end of the kerneldoc comment for __vfs_setxattr_noperm() states:
 
-Avoid accessing index 1 since it doesn't exist.
+ *  This function requires the caller to lock the inode's i_mutex before it
+ *  is executed. It also assumes that the caller will make the appropriate
+ *  permission checks.
 
-Link: https://github.com/KSPP/linux/issues/325 [1]
-Cc: Sam Creasey <sammy@sammy.net>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+nfsd_setattr() does do permissions checking via fh_verify() and
+nfsd_permission(), but those don't do all the same permissions checks
+that are done by security_inode_setxattr() and its related LSM hooks do.
+
+Since nfsd_setattr() is the only consumer of security_inode_setsecctx(),
+simplest solution appears to be to replace the call to
+__vfs_setxattr_noperm() with a call to __vfs_setxattr_locked().  This
+fixes the above issue and has the added benefit of causing nfsd to
+recall conflicting delegations on a file when a client tries to change
+its security label.
+
+Cc: stable@kernel.org
+Reported-by: Marek Gresko <marek.gresko@protonmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218809
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/selinux/hooks.c   |    4 ++--
+ security/smack/smack_lsm.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index 18d32302c3c7a..6c89aa7eaa222 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -987,7 +987,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
- 	{
- #ifdef DEBUG
- 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
--		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-+		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
- 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
- #endif
- 		sun3_82586_close(dev);
--- 
-2.43.0
-
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -6553,8 +6553,8 @@ static int selinux_inode_notifysecctx(st
+  */
+ static int selinux_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_noperm(&nop_mnt_idmap, dentry, XATTR_NAME_SELINUX,
+-				     ctx, ctxlen, 0);
++	return __vfs_setxattr_locked(&nop_mnt_idmap, dentry, XATTR_NAME_SELINUX,
++				     ctx, ctxlen, 0, NULL);
+ }
+ 
+ static int selinux_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4772,8 +4772,8 @@ static int smack_inode_notifysecctx(stru
+ 
+ static int smack_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_noperm(&nop_mnt_idmap, dentry, XATTR_NAME_SMACK,
+-				     ctx, ctxlen, 0);
++	return __vfs_setxattr_locked(&nop_mnt_idmap, dentry, XATTR_NAME_SMACK,
++				     ctx, ctxlen, 0, NULL);
+ }
+ 
+ static int smack_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
 
 
 
