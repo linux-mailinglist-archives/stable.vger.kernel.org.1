@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-71862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53516967818
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA6A967ADF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856D81C20FD9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AEE61C20D87
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B613D53B;
-	Sun,  1 Sep 2024 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF343B79C;
+	Sun,  1 Sep 2024 17:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIUoN3fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvVt+bZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14744183CC5;
-	Sun,  1 Sep 2024 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8391EB5B;
+	Sun,  1 Sep 2024 17:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208061; cv=none; b=Yaj8Yp7FYWHCOBNuDioli+WYIf/lnxaG8F15DRgxAWhKTBVS/cfQIZ+7/1blnW63pfJNvhkTQhZZTYWlmsI510mpv6YvyQW96vV6FoU/3YoqNVemvHSPuWKqpq1x/I+C8flMYzTsbSIRX/9Niq7LZhbMGPJeh9md1SvJp+g7hDI=
+	t=1725210123; cv=none; b=sZCbP/hRBU5ucVn/ZwB69oCmLnq0Kwx2JcRBoWiIctqYSOfC3Ity3/npn+88/EXiNz1y/aWluMuXNgab91+eOs6vR4HvXw0lsohNDVVYAdK5LSHiwd/tarlnEh1CDIE7jIIMWkekwQsEDsyGv1kaGi0ESWM8MYMwWsHQlVhkD9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208061; c=relaxed/simple;
-	bh=Qu59aJdfwS1ww/tz25Il5QmyGrYhtztalvFi/pgiN+g=;
+	s=arc-20240116; t=1725210123; c=relaxed/simple;
+	bh=Lnsk7dbacXQbbngeeUBeiyqJMx5Lt8wxbPRvgtGEmkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKGbOsWGFYyH8/Nmr/HNQUyWzyfWF2tvbBAwV67+rFL45C5q7kKWENnVk14uNZv05Mkk7dNHSxCW3o4yzniN0J9gu25VxXzMjrEf446j5C8Maro24TsxLUbr7/l1zpHscI/u4+fimSiVzQISEJQtDUuR061ReIZT2J7qSk2tJsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIUoN3fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774CCC4CEC3;
-	Sun,  1 Sep 2024 16:27:40 +0000 (UTC)
+	 MIME-Version; b=nzgaJeRaTLZ+9zVxfAf+bh2IvardCQMTCXkhrE2EXSnhMJue/2aWrA7OuObqRG7T4tpDZSdqYlAbTc5QNjAPE6Vo3Be2A6tSg+pA+h8PrSKaVTur2U3EgIxopJGPxauOTsMt9dufjT/n3P/RKp4oRIwU/lpB0eDuZcvy74/NUSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvVt+bZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECA4C4CEC3;
+	Sun,  1 Sep 2024 17:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208061;
-	bh=Qu59aJdfwS1ww/tz25Il5QmyGrYhtztalvFi/pgiN+g=;
+	s=korg; t=1725210123;
+	bh=Lnsk7dbacXQbbngeeUBeiyqJMx5Lt8wxbPRvgtGEmkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIUoN3fhKHkq6VK9qiTkvR3rIkIn5X8sG7e6cjN+Y0fnhper1k7Z3SlzGnJkRYskr
-	 cfhrqyn00atLNWAz4A91w1fqR9CHJsukItkeGWT9XzI35lVWmrBqTXrnrsSOOaRhDX
-	 pse+ZyQ7TEVVUbcK/FPSYfA8sMbmgCcLXrXNT8AY=
+	b=bvVt+bZc7UiLA8MvSYvTESK9m1dMRHSypll0MVwi7SsPOVnG/SDn92WakLHLegdte
+	 XvGvNDNFw2p2sis9GjdyivyN6SRsk7pu0+mAPena3iArJKYAD0dM75+3g+p3Bet80N
+	 8tFQr4qWWSNcm3Llh0xlkYyI5JEQHB+KT7OhbGoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 60/93] selftests: forwarding: no_forwarding: Down ports on cleanup
+Subject: [PATCH 5.15 095/215] net: hns3: add checking for vf id of mailbox
 Date: Sun,  1 Sep 2024 18:16:47 +0200
-Message-ID: <20240901160809.622335634@linuxfoundation.org>
+Message-ID: <20240901160826.941767839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit e8497d6951ee8541d73784f9aac9942a7f239980 ]
+[ Upstream commit 4e2969a0d6a7549bc0bc1ebc990588b622c4443d ]
 
-This test neglects to put ports down on cleanup. Fix it.
+Add checking for vf id of mailbox, in order to avoid array
+out-of-bounds risk.
 
-Fixes: 476a4f05d9b8 ("selftests: forwarding: add a no_forwarding.sh test")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0baf91dc24b95ae0cadfdf5db05b74888e6a228a.1724430120.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/no_forwarding.sh | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-index af3b398d13f01..9e677aa64a06a 100755
---- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
-+++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-@@ -233,6 +233,9 @@ cleanup()
- {
- 	pre_cleanup
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 77c432ab7856c..e2fe41d3972fb 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -1066,10 +1066,11 @@ void hclge_mbx_handler(struct hclge_dev *hdev)
+ 		req = (struct hclge_mbx_vf_to_pf_cmd *)desc->data;
  
-+	ip link set dev $swp2 down
-+	ip link set dev $swp1 down
-+
- 	h2_destroy
- 	h1_destroy
+ 		flag = le16_to_cpu(crq->desc[crq->next_to_use].flag);
+-		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B))) {
++		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B) ||
++			     req->mbx_src_vfid > hdev->num_req_vfs)) {
+ 			dev_warn(&hdev->pdev->dev,
+-				 "dropped invalid mailbox message, code = %u\n",
+-				 req->msg.code);
++				 "dropped invalid mailbox message, code = %u, vfid = %u\n",
++				 req->msg.code, req->mbx_src_vfid);
  
+ 			/* dropping/not processing this invalid message */
+ 			crq->desc[crq->next_to_use].flag = 0;
 -- 
 2.43.0
 
