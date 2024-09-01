@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2153296786D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C46967776
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526731C20A05
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DCDE282015
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B041822F8;
-	Sun,  1 Sep 2024 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B62A2C1B4;
+	Sun,  1 Sep 2024 16:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wR78WzrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od6crr2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7488017CA1F;
-	Sun,  1 Sep 2024 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4C1183CAF;
+	Sun,  1 Sep 2024 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208299; cv=none; b=LTG2XXY/+j9BoupvNVKPHamtGIbB1PKfyakGIuV9rQtieWMXmVuoVa85c6MMWQnyHrhkzjyGiCrAE3jCDOdU7WdeiaGUwDW01X80btM+NFibp7t6pR05kTmzLEisW1tdwToNrnqKf3K5X5iREqz74k+sCv+y3ba1OYI4+s5V41Q=
+	t=1725207603; cv=none; b=jx2iggn0Fc7tH6GXNI8VRpXgVnJSCia9ZLuOBBY6hg52yONOB9KhhHeHnz15q0YOXqaqxswKXqoaYcxF1Og5fruRjWA5xEIcW1gAkjiJHB2n7/FoNT6ah1p4Q5T5ua/2n2c3bngZqus/2V7UkVgWuqy7FRbB0LI+689DMdq7Mds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208299; c=relaxed/simple;
-	bh=G/3O2aqsTjkvV4PE3JGBQq0rJ7iVjdPbf1SEgHbiO2s=;
+	s=arc-20240116; t=1725207603; c=relaxed/simple;
+	bh=OOiUWVFgXDbu7dy3eM/rqx9/V/AAWIju4eEPdkTyz+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raiwpNLj9D/OuCq7lohnaR2xMvtUKN5sKI3XCIhXtbbp5t2nOY3LtDOxLciaJNiFZ8L52kMEq1LRZliyZcNrYhLxGnDVt7jwppjoqTM8PBBY8esSy0Wfj6z6WokMk3b1TNlD1zcvKv/5w8DAhwIuUTZ3bpO4nkjVhxpyA1rUOrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wR78WzrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE6DC4CEC3;
-	Sun,  1 Sep 2024 16:31:38 +0000 (UTC)
+	 MIME-Version; b=HubT0fA6OqpYRENecSehgewFl8qw0mhT7gEIMWmfo4anBeFTBwzYeEJQ3h8qCGrK8a4tE1rBTF0bXhbblsAoNsJwEppuPJmTDI61djXT9o9t5xFJvcuYYytWbtPLGwrHOqLfZIo9AIl36LPd5YCQTd0L5Zm3vPqQtgxz7IXdXSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od6crr2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EE0C4CEC3;
+	Sun,  1 Sep 2024 16:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208298;
-	bh=G/3O2aqsTjkvV4PE3JGBQq0rJ7iVjdPbf1SEgHbiO2s=;
+	s=korg; t=1725207602;
+	bh=OOiUWVFgXDbu7dy3eM/rqx9/V/AAWIju4eEPdkTyz+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wR78WzrQFRSf+VZ8z+FHiKbNmmcSc1nD2DYNoxZB9QsNqCjwtfymfbyzMB3Knb82H
-	 GfkOJvhkfYVDDehtbabTg0gAZiFhtxHjxZRfxMWmAcHjw+0RoDf7SRLhecENWp9nSp
-	 Q0sQz5cg3Z8slUHJlIqvTNkdSpHtP4gefbUIeSQ8=
+	b=od6crr2Bz+UzwicUVvkGWu1yCxR0wlGflwC57rmzR0N5Sjx36yfbAH9FFcYGQ8Gkd
+	 1agfi7E6KHCGeB5MCthYHq9ai+49kmkXEe9K75twxnz/3KvMSr1ganTX9ZCb+49S9N
+	 G301OXixxJXZe0Q32hE2FZJtKDFsjFJNnsTgu9BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 022/149] mptcp: pm: skip connecting to already established sf
+	Karel Balej <balejk@matfyz.cz>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 4.19 03/98] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
 Date: Sun,  1 Sep 2024 18:15:33 +0200
-Message-ID: <20240901160818.299983032@linuxfoundation.org>
+Message-ID: <20240901160803.806564653@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit bc19ff57637ff563d2bdf2b385b48c41e6509e0d upstream.
+commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
 
-The lookup_subflow_by_daddr() helper checks if there is already a
-subflow connected to this address. But there could be a subflow that is
-closing, but taking time due to some reasons: latency, losses, data to
-process, etc.
+re-enumerating full-speed devices after a failed address device command
+can trigger a NULL pointer dereference.
 
-If an ADD_ADDR is received while the endpoint is being closed, it is
-better to try connecting to it, instead of rejecting it: the peer which
-has sent the ADD_ADDR will not be notified that the ADD_ADDR has been
-rejected for this reason, and the expected subflow will not be created
-at the end.
+Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
+value during enumeration. Usb core calls usb_ep0_reinit() in this case,
+which ends up calling xhci_configure_endpoint().
 
-This helper should then only look for subflows that are established, or
-going to be, but not the ones being closed.
+On Panther point xHC the xhci_configure_endpoint() function will
+additionally check and reserve bandwidth in software. Other hosts do
+this in hardware
 
-Fixes: d84ad04941c3 ("mptcp: skip connecting the connected address")
+If xHC address device command fails then a new xhci_virt_device structure
+is allocated as part of re-enabling the slot, but the bandwidth table
+pointers are not set up properly here.
+This triggers the NULL pointer dereference the next time usb_ep0_reinit()
+is called and xhci_configure_endpoint() tries to check and reserve
+bandwidth
+
+[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
+[46710.713699] usb 3-1: Device not responding to setup address.
+[46710.917684] usb 3-1: Device not responding to setup address.
+[46711.125536] usb 3-1: device not accepting address 5, error -71
+[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[46711.125600] #PF: supervisor read access in kernel mode
+[46711.125603] #PF: error_code(0x0000) - not-present page
+[46711.125606] PGD 0 P4D 0
+[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
+[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
+[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
+[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
+
+Fix this by making sure bandwidth table pointers are set up correctly
+after a failed address device command, and additionally by avoiding
+checking for bandwidth in cases like this where no actual endpoints are
+added or removed, i.e. only context for default control endpoint 0 is
+evaluated.
+
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -130,12 +130,15 @@ static bool lookup_subflow_by_daddr(cons
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_addr_info cur;
--	struct sock_common *skc;
- 
- 	list_for_each_entry(subflow, list, node) {
--		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
--		remote_address(skc, &cur);
-+		if (!((1 << inet_sk_state_load(ssk)) &
-+		      (TCPF_ESTABLISHED | TCPF_SYN_SENT | TCPF_SYN_RECV)))
-+			continue;
-+
-+		remote_address((struct sock_common *)ssk, &cur);
- 		if (mptcp_addresses_equal(&cur, daddr, daddr->port))
- 			return true;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -2790,7 +2790,7 @@ static int xhci_configure_endpoint(struc
+ 				xhci->num_active_eps);
+ 		return -ENOMEM;
  	}
+-	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
++	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
+ 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
+ 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
+ 			xhci_free_host_resources(xhci, ctrl_ctx);
+@@ -4145,8 +4145,10 @@ static int xhci_setup_device(struct usb_
+ 		mutex_unlock(&xhci->mutex);
+ 		ret = xhci_disable_slot(xhci, udev->slot_id);
+ 		xhci_free_virt_device(xhci, udev->slot_id);
+-		if (!ret)
+-			xhci_alloc_dev(hcd, udev);
++		if (!ret) {
++			if (xhci_alloc_dev(hcd, udev) == 1)
++				xhci_setup_addressable_virt_dev(xhci, udev);
++		}
+ 		kfree(command->completion);
+ 		kfree(command);
+ 		return -EPROTO;
 
 
 
