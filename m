@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-71832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0099677F3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F4F967871
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29FBD2816BC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25A49B2227A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39CE183CBF;
-	Sun,  1 Sep 2024 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D80181B87;
+	Sun,  1 Sep 2024 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLETJTbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTCWMtPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9150E183CA4;
-	Sun,  1 Sep 2024 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A705381A;
+	Sun,  1 Sep 2024 16:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207963; cv=none; b=gsbi8H/zGiWr2ae1vkQ5kI3ZpriHwjRPypUJipHZ20vtr6JXg9aJYEfaPYEq3h84x8c6WjZ229NxF9Kdc+CyfopKKDR1WxIgHna7vJz9A2UvCufd0RN+6xIbzocyn2LqZrFfAj88Cn94OYldXfQDpxw6M5HLmFcRwxhsrxUPgYw=
+	t=1725208308; cv=none; b=C+UU4v3WFrv5eAbg0VbU/2uqvv0TwK0+jOLYTwaIfFUGhvhSpDMW6W5bsfP9A6aTHpsND6I2BFE80Jko4vZ/MQ3D/LSoE3yfb0gUQBlNjXx/lFeW05/nLFdSWitAa7GZ3FBwaYl2EKpEtmeqZWGGLmUqa6Kp6oIgdUJmx+btNJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207963; c=relaxed/simple;
-	bh=lQQy1IJFj3S0K/2qIn0Re+XEQF9vZnX0aiPNE6EgDKY=;
+	s=arc-20240116; t=1725208308; c=relaxed/simple;
+	bh=QA378Zlkowog8BJugdPguQL19MAgqOyUvTpy2U6RhUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dk6mW6EZDAg4hdPOvRYV1GqZ7ydBDqLRpevr3oChCxHdxeXnuU5QBDua7jinwLf0RKcYh0RO9jQppNwCHaooO5S2DKpcEsqgCZonfjatApu2H4IcxcsQZU5tnT7yjTJtRVAWgmuvKyC3FtqJuLzDdOrrzpW533Fr9IDHqRa7y6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLETJTbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F54C4CEC3;
-	Sun,  1 Sep 2024 16:26:02 +0000 (UTC)
+	 MIME-Version; b=dxj18flOOjC6Pya7QthGDiiG+95/e/MVzBb/JVHLi3lJCmYvzzaFdbdDwg5Ct6TkKiUn47jN7fWXnA2TnD6DgQgxNQMKGDlV/zVNnzq3WHNqEkU+jv+ia3tgA7X2IBsGQ7DpZzTtxrJcB9U0vGzlMJWumDQ/NjmLh7H/j4wXltQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTCWMtPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E6BC4CECE;
+	Sun,  1 Sep 2024 16:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207963;
-	bh=lQQy1IJFj3S0K/2qIn0Re+XEQF9vZnX0aiPNE6EgDKY=;
+	s=korg; t=1725208308;
+	bh=QA378Zlkowog8BJugdPguQL19MAgqOyUvTpy2U6RhUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLETJTbUP/gvgpNi1J9eS9Zhl6Xle2bUPSKfmIFPFsdRKuJNWiTS9pOHWaQefOfDC
-	 DT7YIXeDcj7VAflRUq85ch/uA9E2vevAkfZmhet7p+DMWN5k/GvRulFAxLOC83JKek
-	 9G/aHpDFsoBuDM+gs6JQTt13GaT7JZxezImkTEaU=
+	b=mTCWMtPi9siChZYVB6A+H/7MrjxGY6zVrYEdL5tKjkCTAWPSI3wtl4va8vi3ue7Wz
+	 Ogd48F9fWmw+9KH8PpsSMyf9VJjNb2k2w1tcnN2enqcFrjwU7lgerg5a2E6C+/X4nY
+	 09LbSpAMa45QiqMRPBB6LXAoyf+VaUybjnPPDNTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Kojedzinszky <richard@kojedz.in>,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Trevor Woerner <twoerner@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 06/93] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Christian Heusel <christian@heusel.eu>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Benjamin Coddington <bcodding@redhat.com>
+Subject: [PATCH 6.10 042/149] drm/vmwgfx: Disable coherent dumb buffers without 3d
 Date: Sun,  1 Sep 2024 18:15:53 +0200
-Message-ID: <20240901160807.596122419@linuxfoundation.org>
+Message-ID: <20240901160819.047253101@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
+commit e9fd436bb8fb9b9d31fdf07bbcdba6d30290c5e4 upstream.
 
-The base iomux offsets for each GPIO pin line are accumulatively
-calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-bytes, otherwise it would increase by 4 bytes.
+Coherent surfaces make only sense if the host renders to them using
+accelerated apis. Without 3d the entire content of dumb buffers stays
+in the guest making all of the extra work they're doing to synchronize
+between guest and host useless.
 
-Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-into 4 bytes space with write mask, it actually take 8 bytes width for
-whole GPIO2-B line.
+Configurations without 3d also tend to run with very low graphics
+memory limits. The pinned console fb, mob cursors and graphical login
+manager tend to run out of 16MB graphics memory that those guests use.
 
-Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-correctly increased by 8, matching the actual width of GPIO2-B iomux.
+Fix it by making sure the coherent dumb buffers are only used on
+configs with 3d enabled.
 
-Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
-Cc: stable@vger.kernel.org
-Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
-Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Trevor Woerner <twoerner@gmail.com>
-Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
+Reported-by: Christian Heusel <christian@heusel.eu>
+Closes: https://lore.kernel.org/all/0d0330f3-2ac0-4cd5-8075-7f1cbaf72a8e@heusel.eu
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.9+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240816183332.31961-4-zack.rusin@broadcom.com
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Tested-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3802,7 +3802,7 @@ static struct rockchip_pin_bank rk3328_p
- 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
--			     0,
-+			     IOMUX_WIDTH_2BIT,
- 			     IOMUX_WIDTH_3BIT,
- 			     0),
- 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+@@ -2283,9 +2283,11 @@ int vmw_dumb_create(struct drm_file *fil
+ 	/*
+ 	 * Without mob support we're just going to use raw memory buffer
+ 	 * because we wouldn't be able to support full surface coherency
+-	 * without mobs
++	 * without mobs. There also no reason to support surface coherency
++	 * without 3d (i.e. gpu usage on the host) because then all the
++	 * contents is going to be rendered guest side.
+ 	 */
+-	if (!dev_priv->has_mob) {
++	if (!dev_priv->has_mob || !vmw_supports_3d(dev_priv)) {
+ 		int cpp = DIV_ROUND_UP(args->bpp, 8);
+ 
+ 		switch (cpp) {
 
 
 
