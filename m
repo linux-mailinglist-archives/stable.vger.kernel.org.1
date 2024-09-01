@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C4F9678A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46753967921
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60F771F21344
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777541C20EBF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918A1537FF;
-	Sun,  1 Sep 2024 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B965A1C68C;
+	Sun,  1 Sep 2024 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tk89i9NU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQL58L49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5071B1C68C;
-	Sun,  1 Sep 2024 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7617017CA1F;
+	Sun,  1 Sep 2024 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208425; cv=none; b=kCKPA1kmXLfKXiSxJJCuWUAYZpIAveNVUjGp1Uh1Q4QKnremGl2FnZAaZUzflkoBQwyRWzB7gIydIa7sQzx5C6b5B4HK053wxJDmjLNMRB6QBfy+Z8QEIBhIJCBYWZFzJbIEwECxglE2b9HvElTlM9281HY+0LbD8GcG6k9xym4=
+	t=1725208801; cv=none; b=elK/dbfwAGpNNSYFf3ciQvLy1OM6jSFy3kwOPJk0wBI7OtgU/XbqBWSI21L8FBdR3gmFqDm2FfgUxVPKYvyazLFIcYBzz3E5bd7gX8rO46TUahWFRXYL4HWGa9B4F0tbRoDzUevKtDyMIIAyw9WeV7N5aartxuk+ai4eDlTQY2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208425; c=relaxed/simple;
-	bh=qKbxlgR5Omb26S9zUl5GY/4TcxzwYPAuTpbAMlYYidI=;
+	s=arc-20240116; t=1725208801; c=relaxed/simple;
+	bh=GIWAkQh48s0DqtXV086qIrmt4+aHMokbbdnkesBK3sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4DafA97+dfnSLtKn6LzOw30VmmAcRiYiZt60LaTD2MZKcl1LIiyE2wPEC0AMsDjGSnefvIitjNfM2fMe8pePuDuVMs0AAHzaTaAEdK/izIkh6KG7/J9ot2c0EEjsWnmQ5uz+rLqgqvUb2IJt0jAvU0ydYJ8JxVlf/KJgI2CMOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tk89i9NU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD76DC4CEC3;
-	Sun,  1 Sep 2024 16:33:44 +0000 (UTC)
+	 MIME-Version; b=sFmcpwy1xMAK81l4VTC6wIQ1dGd+maecITD8ZzcDgADeeydbj7/uPDDztMvctS0Q+srx7HtwbXNLlQzlPRbN/oRtWxRAbneH8LnsoquVy7iVBJxoN3nHA+fQFP6LesoAxgmHuOjsPhtMBbd0Mw2EtLm+VfSMuh9vGb2EuqrKhOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQL58L49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0495C4CEC3;
+	Sun,  1 Sep 2024 16:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208425;
-	bh=qKbxlgR5Omb26S9zUl5GY/4TcxzwYPAuTpbAMlYYidI=;
+	s=korg; t=1725208801;
+	bh=GIWAkQh48s0DqtXV086qIrmt4+aHMokbbdnkesBK3sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tk89i9NUHJR7hoNjeqCDCgSwFThJ/znoUkOgkWygto0P5zEGV23s8LV+MI2/8iGoh
-	 V3vX5FB5Cy0nrG0egpEP+RNOYLV3PWlwubLPuMBvlx+utOs+SObvLMjItyshgd4W4O
-	 5cHerIIQUe7S8LbD1y0t7ke3er0aSyAD/qcJWmK0=
+	b=sQL58L49geq8wB+ABEK3en8aNdn8ERfPrCmH3j673bmGq7I+7ymbT7Kh8FPJD5TAn
+	 tE7rFQXLXwQVm2uyxtRS5zyb1hVQfLlTtosm8OeCghXtnlYll1OQF/fN2CDI9pf5iR
+	 GxOJLfXess20yG3yYaP0B6m6swqB0IWpnygdKbxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.10 078/149] iommufd: Do not allow creating areas without READ or WRITE
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 043/134] ext4: do not trim the group with corrupted block bitmap
 Date: Sun,  1 Sep 2024 18:16:29 +0200
-Message-ID: <20240901160820.401469559@linuxfoundation.org>
+Message-ID: <20240901160811.729818450@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 996dc53ac289b81957aa70d62ccadc6986d26a87 upstream.
+[ Upstream commit 172202152a125955367393956acf5f4ffd092e0d ]
 
-This results in passing 0 or just IOMMU_CACHE to iommu_map(). Most of
-the page table formats don't like this:
+Otherwise operating on an incorrupted block bitmap can lead to all sorts
+of unknown problems.
 
-  amdv1 - -EINVAL
-  armv7s - returns 0, doesn't update mapped
-  arm-lpae - returns 0 doesn't update mapped
-  dart - returns 0, doesn't update mapped
-  VT-D - returns -EINVAL
-
-Unfortunately the three formats that return 0 cause serious problems:
-
- - Returning ret = but not uppdating mapped from domain->map_pages()
-   causes an infinite loop in __iommu_map()
-
- - Not writing ioptes means that VFIO/iommufd have no way to recover them
-   and we will have memory leaks and worse during unmap
-
-Since almost nothing can support this, and it is a useless thing to do,
-block it early in iommufd.
-
-Cc: stable@kernel.org
-Fixes: aad37e71d5c4 ("iommufd: IOCTLs for the io_pagetable")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/1-v1-1211e1294c27+4b1-iommu_no_prot_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-3-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/ioas.c            |    8 ++++++++
- tools/testing/selftests/iommu/iommufd.c |    6 +++---
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ fs/ext4/mballoc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iommu/iommufd/ioas.c
-+++ b/drivers/iommu/iommufd/ioas.c
-@@ -213,6 +213,10 @@ int iommufd_ioas_map(struct iommufd_ucmd
- 	if (cmd->iova >= ULONG_MAX || cmd->length >= ULONG_MAX)
- 		return -EOVERFLOW;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 9bc590564ea1f..b268dc0e1df44 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5227,6 +5227,9 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 	bool set_trimmed = false;
+ 	void *bitmap;
  
-+	if (!(cmd->flags &
-+	      (IOMMU_IOAS_MAP_WRITEABLE | IOMMU_IOAS_MAP_READABLE)))
-+		return -EINVAL;
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		return 0;
 +
- 	ioas = iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
- 	if (IS_ERR(ioas))
- 		return PTR_ERR(ioas);
-@@ -253,6 +257,10 @@ int iommufd_ioas_copy(struct iommufd_ucm
- 	    cmd->dst_iova >= ULONG_MAX)
- 		return -EOVERFLOW;
- 
-+	if (!(cmd->flags &
-+	      (IOMMU_IOAS_MAP_WRITEABLE | IOMMU_IOAS_MAP_READABLE)))
-+		return -EINVAL;
-+
- 	src_ioas = iommufd_get_ioas(ucmd->ictx, cmd->src_ioas_id);
- 	if (IS_ERR(src_ioas))
- 		return PTR_ERR(src_ioas);
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -803,7 +803,7 @@ TEST_F(iommufd_ioas, copy_area)
- {
- 	struct iommu_ioas_copy copy_cmd = {
- 		.size = sizeof(copy_cmd),
--		.flags = IOMMU_IOAS_MAP_FIXED_IOVA,
-+		.flags = IOMMU_IOAS_MAP_FIXED_IOVA | IOMMU_IOAS_MAP_WRITEABLE,
- 		.dst_ioas_id = self->ioas_id,
- 		.src_ioas_id = self->ioas_id,
- 		.length = PAGE_SIZE,
-@@ -1296,7 +1296,7 @@ TEST_F(iommufd_ioas, copy_sweep)
- {
- 	struct iommu_ioas_copy copy_cmd = {
- 		.size = sizeof(copy_cmd),
--		.flags = IOMMU_IOAS_MAP_FIXED_IOVA,
-+		.flags = IOMMU_IOAS_MAP_FIXED_IOVA | IOMMU_IOAS_MAP_WRITEABLE,
- 		.src_ioas_id = self->ioas_id,
- 		.dst_iova = MOCK_APERTURE_START,
- 		.length = MOCK_PAGE_SIZE,
-@@ -1586,7 +1586,7 @@ TEST_F(iommufd_mock_domain, user_copy)
- 	};
- 	struct iommu_ioas_copy copy_cmd = {
- 		.size = sizeof(copy_cmd),
--		.flags = IOMMU_IOAS_MAP_FIXED_IOVA,
-+		.flags = IOMMU_IOAS_MAP_FIXED_IOVA | IOMMU_IOAS_MAP_WRITEABLE,
- 		.dst_ioas_id = self->ioas_id,
- 		.dst_iova = MOCK_APERTURE_START,
- 		.length = BUFFER_SIZE,
+ 	last = ext4_last_grp_cluster(sb, e4b->bd_group);
+ 	bitmap = e4b->bd_bitmap;
+ 	if (start == 0 && max >= last)
+-- 
+2.43.0
+
 
 
 
