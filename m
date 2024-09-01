@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B62967830
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FE89678D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D31BC1F20EE1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BA231C211F7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9C8183CBD;
-	Sun,  1 Sep 2024 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DC617E00C;
+	Sun,  1 Sep 2024 16:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZal4fbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGy64yfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B76F28387;
-	Sun,  1 Sep 2024 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65291E87B;
+	Sun,  1 Sep 2024 16:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208134; cv=none; b=L12ZWk2YcUX6fCd4m1dfj29HcON8rltYF4SbFJ4IIXuFwYRE5r9F/F9FP6sDutY7XyHhEJ4MQgpYWfumHEZphBbIsBMrcl08qVVJuK5G15cadoxXI2oLduo2KTLW285t/wk4VnS1Z3hZ79G66cuvHMnmbHTEALM2vRawvmre9Ck=
+	t=1725208563; cv=none; b=Kr2dzPgY98C+O+8VtKU35r//eqLBllgodwrjCJPbACdTRTdCRX8yPAzhNRAIFDlQF7TUr5vBSRwJT/txiu773sp2zkjBzJqpnHau1DKK4RpnfkS+KKZZng6ce1Sm+iHaiGxbHjwpitZOKThXzD0XivbPefF9XRlfzKkwQcBidx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208134; c=relaxed/simple;
-	bh=VhTGjZ0FxIvqqJ1rjHc4IShOjqVCtq4nKRNeSvOKJVo=;
+	s=arc-20240116; t=1725208563; c=relaxed/simple;
+	bh=7XF2+g29Y4CQvNXzFMyxIvmC3i14rWTKdOAjZrFKbek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4WkgXJUB042pjhfSRM9PEaoDwjQmWGsQTp4nN2VNcdTApidjnuu5ihLWPIrhzLweckzVQcNjqWUCYlJdjBArTH2Wv7IxmXhdoEFQ1pmPoHOlbwO6IZu24e7Mvn/sCu3XwTP9wWDCYK2w2cDiRvWVRfpxRr496i6mhKObtZ+FMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZal4fbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866D7C4CEC3;
-	Sun,  1 Sep 2024 16:28:53 +0000 (UTC)
+	 MIME-Version; b=LkkPBDmsc8Qwqf5bGoZzCMKR7sZOD9FMTW8OK0Rr+S+GYs2VTJJ/Qq0zLJUFrrJdenTD3tEsbq0pWLJKvbem/C8GA1eSFTw8+xurBTpysEAcDIeiajI/4RJ2cD4nL8OYCYH0HZh5eXG5Yss2ylFkXUcQIreSz4ueDrV+a3Oeees=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGy64yfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F41C4CEC3;
+	Sun,  1 Sep 2024 16:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208134;
-	bh=VhTGjZ0FxIvqqJ1rjHc4IShOjqVCtq4nKRNeSvOKJVo=;
+	s=korg; t=1725208563;
+	bh=7XF2+g29Y4CQvNXzFMyxIvmC3i14rWTKdOAjZrFKbek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZal4fbnaPdwWnZ0E68OL3FrD7FCy3jxvtyn9c7oiyPPLONgAGa/BfC6zr/KQOZy+
-	 SE8/3kOFEcw1MB1gx61r2N+Z7hCvGUAB4CcvD0BsZRfmYwd74c6717BgOogzZ5x1Jm
-	 vTxIngHgza977n3mmI1L/+FFx9nZbnxkyY5UEkZA=
+	b=uGy64yfbowN28+yYiKAunFrI/tW0JiNDtM1xDb0Xw7jISLr7fbHf+ZAoab6Xzenwl
+	 lc6vh6TEuxKaBSgS+zSR4z56nthYRASbJXBMVVrW+tzO89Y4Y/PB4EhJZHZgDC4fzo
+	 N3pxO2lHT6DdPoaCq9mYyDbroIuQfAqMslOds9BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 83/93] usb: cdnsp: fix incorrect index in cdnsp_get_hw_deq function
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.10 119/149] usb: typec: fsa4480: Relax CHIP_ID check
 Date: Sun,  1 Sep 2024 18:17:10 +0200
-Message-ID: <20240901160810.859988695@linuxfoundation.org>
+Message-ID: <20240901160821.930413434@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 0497a356d3c498221eb0c1edc1e8985816092f12 upstream.
+commit 4f83cae0edb2b13aabb82e8a4852092844d320aa upstream.
 
-Patch fixes the incorrect "stream_id" table index instead of
-"ep_index" used in cdnsp_get_hw_deq function.
+Some FSA4480-compatible chips like the OCP96011 used on Fairphone 5
+return 0x00 from the CHIP_ID register. Handle that gracefully and only
+fail probe when the I2C read has failed.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-cc: stable@vger.kernel.org
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95381F2182688811D5C711CEDD8D2@PH7PR07MB9538.namprd07.prod.outlook.com
+With this the dev_dbg will print 0 but otherwise continue working.
+
+  [    0.251581] fsa4480 1-0042: Found FSA4480 v0.0 (Vendor ID = 0)
+
+Cc: stable@vger.kernel.org
+Fixes: e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-ring.c |    2 +-
+ drivers/usb/typec/mux/fsa4480.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -402,7 +402,7 @@ static u64 cdnsp_get_hw_deq(struct cdnsp
- 	struct cdnsp_stream_ctx *st_ctx;
- 	struct cdnsp_ep *pep;
+diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
+index cd235339834b..f71dba8bf07c 100644
+--- a/drivers/usb/typec/mux/fsa4480.c
++++ b/drivers/usb/typec/mux/fsa4480.c
+@@ -274,7 +274,7 @@ static int fsa4480_probe(struct i2c_client *client)
+ 		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
  
--	pep = &pdev->eps[stream_id];
-+	pep = &pdev->eps[ep_index];
+ 	ret = regmap_read(fsa->regmap, FSA4480_DEVICE_ID, &val);
+-	if (ret || !val)
++	if (ret)
+ 		return dev_err_probe(dev, -ENODEV, "FSA4480 not found\n");
  
- 	if (pep->ep_state & EP_HAS_STREAMS) {
- 		st_ctx = &pep->stream_info.stream_ctx_array[stream_id];
+ 	dev_dbg(dev, "Found FSA4480 v%lu.%lu (Vendor ID = %lu)\n",
+-- 
+2.46.0
+
 
 
 
