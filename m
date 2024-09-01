@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D35967AD0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E52EF967A26
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6270D281C76
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34C328223A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DF82C190;
-	Sun,  1 Sep 2024 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BBC17E919;
+	Sun,  1 Sep 2024 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3kqm0e1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLGj3GmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF19017C;
-	Sun,  1 Sep 2024 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1320F1DFD1;
+	Sun,  1 Sep 2024 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210074; cv=none; b=aFauhNk6CsW+XCA6T3mJrLvnbIl1E47vDCDZIPni+uhIwzAx3oc2ycbx0dXXcmV/FZd9RGQw04jjfS5otiwW/tF4THUzMJiJdOiTbBY0PVFp3IKsC3qXy/XzOSOUkB12SwYpJdtQfNtWs6Gcy0E3D9kRcAtBufXCL/nFffzD1Mw=
+	t=1725209528; cv=none; b=PBT+nK8DzPlmr+MlWFJGxMbK9KCNo2x5qvloqVVUZFzzikSoO/HDCpRmshaphv5yx2B3BICOMjxaLykkaDvHy41mZS/Q1JuCOGaHjqeGEi1JadjYQLPE7Y4vKJbeCtLJk8Kx3OFgAZrkjLGeTAVdEtbGx2SE4vQYxDa8+PYi8Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210074; c=relaxed/simple;
-	bh=CUZgZKfTOxGmvO6bQdRij6s1Xv6KK3Wp+ib9vlxbhL0=;
+	s=arc-20240116; t=1725209528; c=relaxed/simple;
+	bh=BCPHmGgopEnyFAIEKroo1eRcg+sy7qeykBNFcBOs1uI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5HCSd93a/FfHxeOX+cUonw1OkQyCnIS23YM1RpYCHjTP3duhVLvRqXx5ZRDE1Noc2+687mQz5UXl08ihMiOZ/DNERqKFbncXHUCf+YTp3nYKzHii4ndwlH9vrUV2CNsTBAHpesJKO5FF08ywxF6Aor5bvepjaQVSsTzZgLi6vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3kqm0e1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C513C4CEC3;
-	Sun,  1 Sep 2024 17:01:13 +0000 (UTC)
+	 MIME-Version; b=bdDmez4poY02dwfYjh6mwanIQkxK3wXDjq5tN1y0tMWUXbF4Dl5ccj8u6dyoP2T3i8+JOZDvWAm0qelgrYw7F6AACCYhpYF5QOceV6gva3mMEnmJH++t9l/IisfJEG/6uA1ENqnNJRXldfeoAyMJyvHgDvXqcdnST6u82iARJ90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLGj3GmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D53C4CEC3;
+	Sun,  1 Sep 2024 16:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210074;
-	bh=CUZgZKfTOxGmvO6bQdRij6s1Xv6KK3Wp+ib9vlxbhL0=;
+	s=korg; t=1725209527;
+	bh=BCPHmGgopEnyFAIEKroo1eRcg+sy7qeykBNFcBOs1uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3kqm0e1d0chXb9qy2GjwBAFfQ6eFNG9Bjkk42+nGwvK8nviaJUygwWe2BoESifxa
-	 iDQQD6vvQW/6lmQK/om8Mz6XQ8qP0WLkg069/9KBJlh96b7VIOIkSCZs6qi+C0t6AA
-	 kO2KIfMOxuBvZnV4Iu+9w2mbQzMNfzQjA3V357Ag=
+	b=pLGj3GmGmWMrBpF6z4DQp1oJxEo46T3W40Uf33fo6n2iQnLXBXms9Wye1FtG9h3sh
+	 G5GLvc/yyTNeEa4oAjwySRhahA0witrLL5G/SwCAc+c7dUAvukHGVExvUq82b1EU+P
+	 AeC+eMh04LGe7aZJFVxnDk2ZgfqWBuTWjdFUFvZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/215] md: clean up invalid BUG_ON in md_ioctl
+Subject: [PATCH 5.10 033/151] wifi: cw1200: Avoid processing an invalid TIM IE
 Date: Sun,  1 Sep 2024 18:16:33 +0200
-Message-ID: <20240901160826.418153885@linuxfoundation.org>
+Message-ID: <20240901160815.345977021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 9dd8702e7cd28ebf076ff838933f29cf671165ec ]
+[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
 
-'disk->private_data' is set to mddev in md_alloc() and never set to NULL,
-and users need to open mddev before submitting ioctl. So mddev must not
-have been freed during ioctl, and there is no need to check mddev here.
-Clean up it.
+While converting struct ieee80211_tim_ie::virtual_map to be a flexible
+array it was observed that the TIM IE processing in cw1200_rx_cb()
+could potentially process a malformed IE in a manner that could result
+in a buffer over-read. Add logic to verify that the TIM IE length is
+large enough to hold a valid TIM payload before processing it.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240226031444.3606764-4-linan666@huaweicloud.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/wireless/st/cw1200/txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 5b6c366587d54..332458ad96637 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -7589,11 +7589,6 @@ static int md_ioctl(struct block_device *bdev, fmode_t mode,
+diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
+index 400dd585916b5..7ef0886503578 100644
+--- a/drivers/net/wireless/st/cw1200/txrx.c
++++ b/drivers/net/wireless/st/cw1200/txrx.c
+@@ -1170,7 +1170,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
+ 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
  
- 	mddev = bdev->bd_disk->private_data;
+ 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
+-		if (tim_ie) {
++		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
+ 			struct ieee80211_tim_ie *tim =
+ 				(struct ieee80211_tim_ie *)&tim_ie[2];
  
--	if (!mddev) {
--		BUG();
--		goto out;
--	}
--
- 	/* Some actions do not requires the mutex */
- 	switch (cmd) {
- 	case GET_ARRAY_INFO:
 -- 
 2.43.0
 
