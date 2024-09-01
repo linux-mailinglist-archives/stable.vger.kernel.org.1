@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-72003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF059678C5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C939677D8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E00EB2179A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C205E1C20F60
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D585381A;
-	Sun,  1 Sep 2024 16:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0F3183090;
+	Sun,  1 Sep 2024 16:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIa+hEa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKUN1fxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43F61E87B;
-	Sun,  1 Sep 2024 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7B814290C;
+	Sun,  1 Sep 2024 16:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208526; cv=none; b=eNKK+Ym+g0LSwVgUbgczOjJ7PC51JSqew3NYNfGC424tXzYY+2kpz65cBbWPic9XXCk+7ei2uniN8GHpLkcj67RfzZrpDN4UkAVcoVZG1xqQokHSZ46f7ssKwfOkn0AGofRzVxOajvgUwOWYA8OY8HaE6EhDCdhfEi+vZhnVBX4=
+	t=1725207885; cv=none; b=kZb7V+NMRqR9tdw6j6Ew88GfEj7OQ7W44Ur9t4NAsXp2cxdmU0YuEOy+KT9V/btlqShV0q8cS8HLyP96Rio9spYr3nXjaC3UPTuhGpEQC8GLMcRZKGTlD9GrliY0w/bFDuOorbtgCMdNL+HjUrL/3g4+WA5IMMgl6Ncdh8p+C/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208526; c=relaxed/simple;
-	bh=H2LLt5cJeU7C9kKilCaBx+Vr9KorCpQRTqKP1wt05vs=;
+	s=arc-20240116; t=1725207885; c=relaxed/simple;
+	bh=hx3HbfcNhzTm4gkSlp3stk1+CvdmsZEKbZecv7mBnZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIfd8f7G+TEKuJDGTj/g2LKl7Uet3zZpSFSf3U4kFswyu6ACcDFnl/I4xL38V1OB0a9fUPaKdaJSi7rRjCFJBeI/lApEubXz9tq2ZM52IaCts88aIZJkIK8IxkJmLXCec5GvuB/TmY7rjMuFenGOp5TvHxKr2MYem5nSiCGzYu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIa+hEa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FC7C4CEC3;
-	Sun,  1 Sep 2024 16:35:24 +0000 (UTC)
+	 MIME-Version; b=ghHQUc9g4pDgbOBVbuakZ98Pi0wRfSkx7V9u779zgdglvT9RDNjcsrV2k7BULyxp+DWZ4AEvzFXtAAsBtqUpPZqji/mReeJv+S0c9iGnRFOiupSGfAnTbGfY/PH2pd4ONQE+iqg4kql/j6pvdGSq8CUxy3ifI37DCrLTQtSXpu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKUN1fxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01EFC4CEC3;
+	Sun,  1 Sep 2024 16:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208525;
-	bh=H2LLt5cJeU7C9kKilCaBx+Vr9KorCpQRTqKP1wt05vs=;
+	s=korg; t=1725207885;
+	bh=hx3HbfcNhzTm4gkSlp3stk1+CvdmsZEKbZecv7mBnZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIa+hEa5xkxrpZrZ3hDL2TdqfnQfncvnt5HMJ36HDKpLIYYxRqDKTj8dPA+OaWN3K
-	 UbRLUNc8/DjhKrrOsZVqpAzo4dAQFOdZ8j6bdkI7w4jPDSKa5mvUzKMT5JjUtxqvG2
-	 S8OpPbNaVQg5reSxyzb8FJreshh8vApSjJpf86UU=
+	b=xKUN1fxjDt7cDdKeO02fK+lpowBbOv0ebj33I+KcbBAd0MzzrUQhzggTm3qa5JD3t
+	 p2iQgXtbqgPTq/Fe8/3+cCn7V4WykrZ2HjnJLBf1w7rUKGJwVhnht51ejIvAM2IXj0
+	 IysXWlvvVivYx9vHpT0ZBwZIKmu1IxXXBxuMnhWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xueming Feng <kuro@kuroa.me>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Joe Damato <jdamato@fastly.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 108/149] tcp: fix forever orphan socket caused by tcp_abort
+Subject: [PATCH 4.19 89/98] net: busy-poll: use ktime_get_ns() instead of local_clock()
 Date: Sun,  1 Sep 2024 18:16:59 +0200
-Message-ID: <20240901160821.516860198@linuxfoundation.org>
+Message-ID: <20240901160807.053982274@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xueming Feng <kuro@kuroa.me>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bac76cf89816bff06c4ec2f3df97dc34e150a1c4 ]
+[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
 
-We have some problem closing zero-window fin-wait-1 tcp sockets in our
-environment. This patch come from the investigation.
+Typically, busy-polling durations are below 100 usec.
 
-Previously tcp_abort only sends out reset and calls tcp_done when the
-socket is not SOCK_DEAD, aka orphan. For orphan socket, it will only
-purging the write queue, but not close the socket and left it to the
-timer.
+When/if the busy-poller thread migrates to another cpu,
+local_clock() can be off by +/-2msec or more for small
+values of HZ, depending on the platform.
 
-While purging the write queue, tp->packets_out and sk->sk_write_queue
-is cleared along the way. However tcp_retransmit_timer have early
-return based on !tp->packets_out and tcp_probe_timer have early
-return based on !sk->sk_write_queue.
+Use ktimer_get_ns() to ensure deterministic behavior,
+which is the whole point of busy-polling.
 
-This caused ICSK_TIME_RETRANS and ICSK_TIME_PROBE0 not being resched
-and socket not being killed by the timers, converting a zero-windowed
-orphan into a forever orphan.
-
-This patch removes the SOCK_DEAD check in tcp_abort, making it send
-reset to peer and close the socket accordingly. Preventing the
-timer-less orphan from happening.
-
-According to Lorenzo's email in the v1 thread, the check was there to
-prevent force-closing the same socket twice. That situation is handled
-by testing for TCP_CLOSE inside lock, and returning -ENOENT if it is
-already closed.
-
-The -ENOENT code comes from the associate patch Lorenzo made for
-iproute2-ss; link attached below, which also conform to RFC 9293.
-
-At the end of the patch, tcp_write_queue_purge(sk) is removed because it
-was already called in tcp_done_with_error().
-
-p.s. This is the same patch with v2. Resent due to mis-labeled "changes
-requested" on patchwork.kernel.org.
-
-Link: https://patchwork.ozlabs.org/project/netdev/patch/1450773094-7978-3-git-send-email-lorenzo@google.com/
-Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
-Signed-off-by: Xueming Feng <kuro@kuroa.me>
-Tested-by: Lorenzo Colitti <lorenzo@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240826102327.1461482-1-kuro@kuroa.me
+Fixes: 060212928670 ("net: add low latency socket poll")
+Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
+Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ include/net/busy_poll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ec6911034138f..2edbd5b181e29 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4573,6 +4573,13 @@ int tcp_abort(struct sock *sk, int err)
- 		/* Don't race with userspace socket closes such as tcp_close. */
- 		lock_sock(sk);
- 
-+	/* Avoid closing the same socket twice. */
-+	if (sk->sk_state == TCP_CLOSE) {
-+		if (!has_current_bpf_ctx())
-+			release_sock(sk);
-+		return -ENOENT;
-+	}
-+
- 	if (sk->sk_state == TCP_LISTEN) {
- 		tcp_set_state(sk, TCP_CLOSE);
- 		inet_csk_listen_stop(sk);
-@@ -4582,16 +4589,13 @@ int tcp_abort(struct sock *sk, int err)
- 	local_bh_disable();
- 	bh_lock_sock(sk);
- 
--	if (!sock_flag(sk, SOCK_DEAD)) {
--		if (tcp_need_reset(sk->sk_state))
--			tcp_send_active_reset(sk, GFP_ATOMIC,
--					      SK_RST_REASON_NOT_SPECIFIED);
--		tcp_done_with_error(sk, err);
--	}
-+	if (tcp_need_reset(sk->sk_state))
-+		tcp_send_active_reset(sk, GFP_ATOMIC,
-+				      SK_RST_REASON_NOT_SPECIFIED);
-+	tcp_done_with_error(sk, err);
- 
- 	bh_unlock_sock(sk);
- 	local_bh_enable();
--	tcp_write_queue_purge(sk);
- 	if (!has_current_bpf_ctx())
- 		release_sock(sk);
+diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
+index 8f42f6f3af86f..c45253ee08c9f 100644
+--- a/include/net/busy_poll.h
++++ b/include/net/busy_poll.h
+@@ -73,7 +73,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
+ static inline unsigned long busy_loop_current_time(void)
+ {
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+-	return (unsigned long)(local_clock() >> 10);
++	return (unsigned long)(ktime_get_ns() >> 10);
+ #else
  	return 0;
+ #endif
 -- 
 2.43.0
 
