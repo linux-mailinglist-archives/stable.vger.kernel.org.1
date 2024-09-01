@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-72467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BAF967ABF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA8D9677D9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9021C1F21281
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A4AFB21789
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017EA2C190;
-	Sun,  1 Sep 2024 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0917717F394;
+	Sun,  1 Sep 2024 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o09glSa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkWBXcGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39E3376EC;
-	Sun,  1 Sep 2024 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA69143894;
+	Sun,  1 Sep 2024 16:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210020; cv=none; b=DeqL0jncokTheJGH4e2B8qez3NhZfcwbLNddDCwHPm/YbXBqCN/3pDI+yzy/qEikQfc9B4UbkfLsyq/UQzF00FX3hFMOmprfk+48gThPQb7safsIN0EldMjEDVynCPSo6Th/gaTFJP16/uJneh0WH8/YcRgBWocFbQFU5dBedqg=
+	t=1725207888; cv=none; b=QEu02Or4RRaoUMkgJZqTIM6l6ZMm60rPfhMJpHzEeJ1k3Dd1DhT3xFts7OzNynZKaWv8vyxtzW97NPgW+7bJI4vo4cNKYxFYjqj4EaOwMmuwUbDiMqTTiBRjdoUqssbnn333u3Ib+QQDmMOHtIatAxSdPpvdIWBnpOpcPWjU/k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210020; c=relaxed/simple;
-	bh=PXQ378gtcXV7rMMOJ6772iLeNxeAWVIOFZPYrVgT/8Y=;
+	s=arc-20240116; t=1725207888; c=relaxed/simple;
+	bh=j+FpvGCOC1cAf0JVElFFhNDXR0HNYnFUMiZFQcf6VrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAq2NRm7SfzJXud9UMWdHnylc7i4kkuq5yGjeMa9ghVqg9BSQbD8SCHvB1N8GXh0W3Jy37JyVBkUXE5c1LI/2CY64o46fT3g9PBymVvFir1PvHava3EZJqdMf2HfMSSgxIQ2zTntQCd9vF9goKAEHypaIKpob7iLTb8gYdBarJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o09glSa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B91C4CEC3;
-	Sun,  1 Sep 2024 17:00:19 +0000 (UTC)
+	 MIME-Version; b=q6bVEyXPGDkVX7ZLHpiDqy7HvtJblJXEIHXlldDnxygXJPueqljQg7aFfb3oxyhrLBQTXt2grfhhgzSxLUnH+Lby8fC4o1Ug5ur5aSatqO/aeKRzCfIZOxq6uqQLhpQjZf/GIkUxwRottjhpk2WKs8dY8OAl7N5OjwUPd4M5bs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkWBXcGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248ACC4CEC3;
+	Sun,  1 Sep 2024 16:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210020;
-	bh=PXQ378gtcXV7rMMOJ6772iLeNxeAWVIOFZPYrVgT/8Y=;
+	s=korg; t=1725207888;
+	bh=j+FpvGCOC1cAf0JVElFFhNDXR0HNYnFUMiZFQcf6VrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o09glSa45Cr6Ya3kRWdiXTlPkjMLsLweffFiEs77unZ95r4+JYQ/h7thMfIf7ErBs
-	 /mAOb3yYvz0Wa5frV6RCTJ18QMCFm7Qge2mFBUs2a3VC6fbhqh13FGYAlrSyu56xf/
-	 qYTl5TXfqGmMsosvHUH7gHIbAH3uIbawKH7CBDPc=
+	b=AkWBXcGWQHMLGtcRR16ss7AffuVO4S+0XJJvRepL2/ZMtNM3famEk2s+iRduS8PXW
+	 OFqCXz50OHMwudMNrHlr9yLdYNm1quSzbBpO7L28lv1xAo6r9P8wEHKUn2yMjSq9mI
+	 DC9QnHSwvUotRLK2KRJMhuArM6ncZNXxC+vsLgL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Syromiatnikov <esyr@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/215] mptcp: correct MPTCP_SUBFLOW_ATTR_SSN_OFFSET reserved size
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 01/93] ALSA: seq: Skip event type filtering for UMP events
 Date: Sun,  1 Sep 2024 18:15:48 +0200
-Message-ID: <20240901160824.710618166@linuxfoundation.org>
+Message-ID: <20240901160807.405460507@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Syromiatnikov <esyr@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 655111b838cdabdb604f3625a9ff08c5eedb11da ]
+commit 32108c22ac619c32dd6db594319e259b63bfb387 upstream.
 
-ssn_offset field is u32 and is placed into the netlink response with
-nla_put_u32(), but only 2 bytes are reserved for the attribute payload
-in subflow_get_info_size() (even though it makes no difference
-in the end, as it is aligned up to 4 bytes).  Supply the correct
-argument to the relevant nla_total_size() call to make it less
-confusing.
+UMP events don't use the event type field, hence it's invalid to apply
+the filter, which may drop the events unexpectedly.
+Skip the event filtering for UMP events, instead.
 
-Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
-Signed-off-by: Eugene Syromiatnikov <esyr@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240812065024.GA19719@asgard.redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 46397622a3fa ("ALSA: seq: Add UMP support")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240819084156.10286-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_clientmgr.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
-index d7ca71c597545..23bd18084c8a2 100644
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -95,7 +95,7 @@ static size_t subflow_get_info_size(const struct sock *sk)
- 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_RELWRITE_SEQ */
- 		nla_total_size_64bit(8) +	/* MPTCP_SUBFLOW_ATTR_MAP_SEQ */
- 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_MAP_SFSEQ */
--		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
-+		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
- 		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_MAP_DATALEN */
- 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_FLAGS */
- 		nla_total_size(1) +	/* MPTCP_SUBFLOW_ATTR_ID_REM */
--- 
-2.43.0
-
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -537,6 +537,9 @@ static struct snd_seq_client *get_event_
+ 		return NULL;
+ 	if (! dest->accept_input)
+ 		goto __not_avail;
++	if (snd_seq_ev_is_ump(event))
++		return dest; /* ok - no filter checks */
++
+ 	if ((dest->filter & SNDRV_SEQ_FILTER_USE_EVENT) &&
+ 	    ! test_bit(event->type, dest->event_filter))
+ 		goto __not_avail;
 
 
 
