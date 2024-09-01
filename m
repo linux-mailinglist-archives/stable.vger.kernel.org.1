@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82209679BC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89266967A4D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63F08280DC4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D36F1F23D46
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15CD183CA9;
-	Sun,  1 Sep 2024 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A516C181334;
+	Sun,  1 Sep 2024 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0V6pW+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQeRuZet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A609318452E;
-	Sun,  1 Sep 2024 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628A717E900;
+	Sun,  1 Sep 2024 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209224; cv=none; b=A6WZ0/jx7UpxSka8DpZJX6ZtjEXmHjsJ0UBW901ovSXN82k1IjhRHhzBeGnrkcoPQrRQ5Wh1KIGP8wGPp0//stjZWKIwRdvKhRFEAxVgVZZKjxpwQzhw4vhjzTktBydliu/2gMDRgZisdbsA5OAu9KVabGP32GfSgJ64h8cC3PI=
+	t=1725209654; cv=none; b=RJEVtoLBG2GoGSHBA/s7cXobWhsFdp8bE6Dn7P0Pg4QFrweEpgLQ1+5FGMbPbH0WCnJhMNd/EcRugdfneG5G12lmCAjZuc/i/oc1SrAEATgP3iU/9cvZM9FC/PilCSbpdzHOWq8cnf6zoGvb+UEeIXJyJ/ULjCAD3JTLlA7pqdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209224; c=relaxed/simple;
-	bh=WzSKuh1ZiTaClLoeiEXo5oeF8OZ0YyYcD26iGJe+VDU=;
+	s=arc-20240116; t=1725209654; c=relaxed/simple;
+	bh=Nr5CvNgAeQl1hzZ5hiecRRD3CWwQj1bYPZAhqVuw67U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMh726irWVdGFUmE1Wrd58ScAJiL9hMKXtKx05g484gMKqWyvInJHFooWZQA0WmO+/SvoBRJ9q/HY8wpS63RxvbTTTDbNNQaG0yY8B+Rz7mNcmL2s8V0G1Hj5H+qurWWmtBs1t4SsDv4AxyWcYSsIOP2S0S5yijtNdAaL8/1Q9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0V6pW+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C403C4CEC3;
-	Sun,  1 Sep 2024 16:47:03 +0000 (UTC)
+	 MIME-Version; b=mXTGkXkGnZETQc+0AaeVwi4PPNy6MkmEFGsXr9H56kwb413ckabzSYls56+6BHF2KlzaBHp4YvteHixeMaCp/lahnLqn4puF6aWU5u2u5cJvDTNg2GebrcEnK3z+2Jq5b440gp+Uhdny0LJCXSKST04mDA2DYPxMuHhEUl1vQHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQeRuZet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68371C4CEC3;
+	Sun,  1 Sep 2024 16:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209224;
-	bh=WzSKuh1ZiTaClLoeiEXo5oeF8OZ0YyYcD26iGJe+VDU=;
+	s=korg; t=1725209653;
+	bh=Nr5CvNgAeQl1hzZ5hiecRRD3CWwQj1bYPZAhqVuw67U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0V6pW+9EcF0EKKAYB9pyqhuPNV9sGvwBnQ76e2sObpnztRfzm3uFbeb9i2ngSCNh
-	 1t9EEVNRfXaGAme6hnDmGmeWaqlMUTAmXosJYZh2MM8vLMsX1VZtvV6a80MwpzZmAi
-	 P+s7WWr8e9aHHS51meY2Q1AK0ZlVoSVlz42cZ28o=
+	b=bQeRuZet+uQKNat1WQQn/mv/a2gWSI7fve8U6Q1KJE3I6kPDCuAc6wCljKMjZUlsN
+	 lX2oJVLbcOwbwDw8DFfy93M8XoV4KdfoJlqFQJ0jdpIA/4XGsaSavgj/N7uUvfgGXo
+	 dhELv4RIwT9gH0fBZVHNB54QXQkBJCoyJl2PUGVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piyush Mehta <piyush.mehta@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/71] phy: xilinx: phy-zynqmp: Fix SGMII linkup failure on resume
+Subject: [PATCH 5.10 104/151] drm/msm/dpu: dont play tricks with debug macros
 Date: Sun,  1 Sep 2024 18:17:44 +0200
-Message-ID: <20240901160803.366968914@linuxfoundation.org>
+Message-ID: <20240901160818.022655769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piyush Mehta <piyush.mehta@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5af9b304bc6010723c02f74de0bfd24ff19b1a10 ]
+[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
 
-On a few Kria KR260 Robotics Starter Kit the PS-GEM SGMII linkup is not
-happening after the resume. This is because serdes registers are reset
-when FPD is off (in suspend state) and needs to be reprogrammed in the
-resume path with the same default initialization as done in the first
-stage bootloader psu_init routine.
+DPU debugging macros need to be converted to a proper drm_debug_*
+macros, however this is a going an intrusive patch, not suitable for a
+fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
+to make sure that DPU debugging messages always end up in the drm debug
+messages and are controlled via the usual drm.debug mask.
 
-To address the failure introduce a set of serdes registers to be saved in
-the suspend path and then restore it on resume.
+I don't think that it is a good idea for a generic DPU_DEBUG macro to be
+tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
+default it should go to the DRM_UT_DRIVER channel. While refactoring
+debug macros later on we might end up with particular messages going to
+ATOMIC or KMS, but DRIVER should be the default.
 
-Fixes: 4a33bea00314 ("phy: zynqmp: Add PHY driver for the Xilinx ZynqMP Gigabit Transceiver")
-Signed-off-by: Piyush Mehta <piyush.mehta@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1722837547-2578381-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606932/
+Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/xilinx/phy-zynqmp.c | 56 +++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
-index a8782aad62ca4..75b0f9f31c81f 100644
---- a/drivers/phy/xilinx/phy-zynqmp.c
-+++ b/drivers/phy/xilinx/phy-zynqmp.c
-@@ -166,6 +166,24 @@
- /* Timeout values */
- #define TIMEOUT_US			1000
- 
-+/* Lane 0/1/2/3 offset */
-+#define DIG_8(n)		((0x4000 * (n)) + 0x1074)
-+#define ILL13(n)		((0x4000 * (n)) + 0x1994)
-+#define DIG_10(n)		((0x4000 * (n)) + 0x107c)
-+#define RST_DLY(n)		((0x4000 * (n)) + 0x19a4)
-+#define BYP_15(n)		((0x4000 * (n)) + 0x1038)
-+#define BYP_12(n)		((0x4000 * (n)) + 0x102c)
-+#define MISC3(n)		((0x4000 * (n)) + 0x19ac)
-+#define EQ11(n)			((0x4000 * (n)) + 0x1978)
-+
-+static u32 save_reg_address[] = {
-+	/* Lane 0/1/2/3 Register */
-+	DIG_8(0), ILL13(0), DIG_10(0), RST_DLY(0), BYP_15(0), BYP_12(0), MISC3(0), EQ11(0),
-+	DIG_8(1), ILL13(1), DIG_10(1), RST_DLY(1), BYP_15(1), BYP_12(1), MISC3(1), EQ11(1),
-+	DIG_8(2), ILL13(2), DIG_10(2), RST_DLY(2), BYP_15(2), BYP_12(2), MISC3(2), EQ11(2),
-+	DIG_8(3), ILL13(3), DIG_10(3), RST_DLY(3), BYP_15(3), BYP_12(3), MISC3(3), EQ11(3),
-+};
-+
- struct xpsgtr_dev;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index bb7c7e437242e..31a5646f54939 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -32,24 +32,14 @@
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG(fmt, ...)                                                \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_KMS))                         \
+-			DRM_DEBUG(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
  /**
-@@ -214,6 +232,7 @@ struct xpsgtr_phy {
-  * @tx_term_fix: fix for GT issue
-  * @saved_icm_cfg0: stored value of ICM CFG0 register
-  * @saved_icm_cfg1: stored value of ICM CFG1 register
-+ * @saved_regs: registers to be saved/restored during suspend/resume
+  * DPU_DEBUG_DRIVER - macro for hardware driver logging
+  * @fmt: Pointer to format string
   */
- struct xpsgtr_dev {
- 	struct device *dev;
-@@ -226,6 +245,7 @@ struct xpsgtr_dev {
- 	bool tx_term_fix;
- 	unsigned int saved_icm_cfg0;
- 	unsigned int saved_icm_cfg1;
-+	u32 *saved_regs;
- };
+ #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
+-			DRM_ERROR(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
- /*
-@@ -299,6 +319,32 @@ static inline void xpsgtr_clr_set_phy(struct xpsgtr_phy *gtr_phy,
- 	writel((readl(addr) & ~clr) | set, addr);
- }
- 
-+/**
-+ * xpsgtr_save_lane_regs - Saves registers on suspend
-+ * @gtr_dev: pointer to phy controller context structure
-+ */
-+static void xpsgtr_save_lane_regs(struct xpsgtr_dev *gtr_dev)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(save_reg_address); i++)
-+		gtr_dev->saved_regs[i] = xpsgtr_read(gtr_dev,
-+						     save_reg_address[i]);
-+}
-+
-+/**
-+ * xpsgtr_restore_lane_regs - Restores registers on resume
-+ * @gtr_dev: pointer to phy controller context structure
-+ */
-+static void xpsgtr_restore_lane_regs(struct xpsgtr_dev *gtr_dev)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(save_reg_address); i++)
-+		xpsgtr_write(gtr_dev, save_reg_address[i],
-+			     gtr_dev->saved_regs[i]);
-+}
-+
- /*
-  * Hardware Configuration
-  */
-@@ -838,6 +884,8 @@ static int xpsgtr_runtime_suspend(struct device *dev)
- 	gtr_dev->saved_icm_cfg0 = xpsgtr_read(gtr_dev, ICM_CFG0);
- 	gtr_dev->saved_icm_cfg1 = xpsgtr_read(gtr_dev, ICM_CFG1);
- 
-+	xpsgtr_save_lane_regs(gtr_dev);
-+
- 	return 0;
- }
- 
-@@ -848,6 +896,8 @@ static int xpsgtr_runtime_resume(struct device *dev)
- 	unsigned int i;
- 	bool skip_phy_init;
- 
-+	xpsgtr_restore_lane_regs(gtr_dev);
-+
- 	icm_cfg0 = xpsgtr_read(gtr_dev, ICM_CFG0);
- 	icm_cfg1 = xpsgtr_read(gtr_dev, ICM_CFG1);
- 
-@@ -990,6 +1040,12 @@ static int xpsgtr_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	gtr_dev->saved_regs = devm_kmalloc(gtr_dev->dev,
-+					   sizeof(save_reg_address),
-+					   GFP_KERNEL);
-+	if (!gtr_dev->saved_regs)
-+		return -ENOMEM;
-+
- 	return 0;
- }
- 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
+ #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
 -- 
 2.43.0
 
