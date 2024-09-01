@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849209677B4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B85967817
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF57BB21912
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 016B528108D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F7C183090;
-	Sun,  1 Sep 2024 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28AE183CC9;
+	Sun,  1 Sep 2024 16:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsBPSW7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiIkGI11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38322364AB;
-	Sun,  1 Sep 2024 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF60B33987;
+	Sun,  1 Sep 2024 16:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207784; cv=none; b=TTm2aNEFxvEv5BVvxAIF9fnomN2tJvA6UReWy2NJBMNMJE43gRH6NuXunIJx0+Mb/8vgTKW7ICR8IhXMW6I6odgX5kMNkQJPUIzs0wzQ0Y8iQ9//enqQGPyxQ0eEXTkSUZWUgU52tht6/6XxchzvmAFhuU4aVIQMsxvtqUG9bEg=
+	t=1725208057; cv=none; b=JXlVfQ0ujLVme9z7v3Xn29vN2A/OhQKokq9NmBi5Dm9z69Qh8FE9DEx+O5QifF3FtC9YT2hvy3oDcoLIfnpA5k2cdzIedfXZ2K43PhGSHtq3aY1qzWMCfaiAbKaDtp+YlpU8Pvc7hTdOia8ylcgG0/7nbZZj8Ph225UYmys/6QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207784; c=relaxed/simple;
-	bh=hHCW1enYfTo9NQ2PsTLs8zW4jP1jzZdHjldPHIYS5eI=;
+	s=arc-20240116; t=1725208057; c=relaxed/simple;
+	bh=Bcx0GYRiCnPmKA1+EGohu2qpAj9iGpAmXJC2rMij4u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kyqx39avdrWpgsAaqNu4jV0bEuBPHeGo/+I2QXiDLwVzY8+jCbyOi/djiMyGQgxBsUdg157axW6RfY4s8DoBjLQ4z4UiVHSFzPvxfdLGUsREUnliEJRUVVQQOfYVql/RAlu8gydvUpa6ksR7cntNTpjFxIGXQivc/z3SAbDiNSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsBPSW7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC93C4CEC4;
-	Sun,  1 Sep 2024 16:23:03 +0000 (UTC)
+	 MIME-Version; b=nqlj7kpzOql7HRp5WcMhdUl21TqVOUqJQEiytMX3SYBTK8QJzXBvy1ZUv0CHT6QrTXyzTt7ljNU7QnjjY3NMttUp9FvRR2c5dyFfUeUvpONFah9yAEJn2yQvZbO3X1NqzbW7In74gETCxPhtaptiO8X0HzrlWahZW+lz3ZSlnsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiIkGI11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C431C4CEC3;
+	Sun,  1 Sep 2024 16:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207784;
-	bh=hHCW1enYfTo9NQ2PsTLs8zW4jP1jzZdHjldPHIYS5eI=;
+	s=korg; t=1725208057;
+	bh=Bcx0GYRiCnPmKA1+EGohu2qpAj9iGpAmXJC2rMij4u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsBPSW7/hwVR/fA5Yc3fx6CQ45enHLTrA2AUyMc+2CZrkp/jt0orjPkjrKpOco335
-	 Ie9xWEC4XdmZwDkWGtaaz4xctZTYjCvLsZnfxBE766WzlOmoLAQHo+/jqQV8AkUc5i
-	 zvrjVEAtmeZOOGdiRNJUzjx/+tUbe4wNTY2Fep2U=
+	b=fiIkGI11ld0JZl59tOoc3cqmA3XHU9Bu/sZFT00p9cxUUhO4lWnYcBi0tuPT9s3bF
+	 zWFU5365qVb7+Btn6UdfAtXvMwLTjHiJPqfu2hJkvL0PjyZ9efBZocm/b2WiDZYA17
+	 +JYuy4LiVur2MhfAzfgUfvVJzjtnPKvwnN98aphg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 76/98] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 59/93] netfilter: nf_tables_ipv6: consider network offset in netdev/egress validation
 Date: Sun,  1 Sep 2024 18:16:46 +0200
-Message-ID: <20240901160806.561999791@linuxfoundation.org>
+Message-ID: <20240901160809.585140942@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 82dbb57ac8d06dfe8227ba9ab11a49de2b475ae5 upstream.
+[ Upstream commit 70c261d500951cf3ea0fcf32651aab9a65a91471 ]
 
-Some firmware versions of the 9600 series SAS HBA byte-swap the REPORT
-ZONES command reply buffer from ATA-ZAC devices by directly accessing the
-buffer in the host memory. This does not respect the default command DMA
-direction and causes IOMMU page faults on architectures with an IOMMU
-enforcing write-only mappings for DMA_FROM_DEVICE DMA driection (e.g. AMD
-hosts).
+>From netdev/egress, skb->len can include the ethernet header, therefore,
+subtract network offset from skb->len when validating IPv6 packet length.
 
-scsi 18:0:0:0: Direct-Access-ZBC ATA      WDC  WSH722020AL W870 PQ: 0 ANSI: 6
-scsi 18:0:0:0: SATA: handle(0x0027), sas_addr(0x300062b2083e7c40), phy(0), device_name(0x5000cca29dc35e11)
-scsi 18:0:0:0: enclosure logical id (0x300062b208097c40), slot(0)
-scsi 18:0:0:0: enclosure level(0x0000), connector name( C0.0)
-scsi 18:0:0:0: atapi(n), ncq(y), asyn_notify(n), smart(y), fua(y), sw_preserve(y)
-scsi 18:0:0:0: qdepth(32), tagged(1), scsi_level(7), cmd_que(1)
-sd 18:0:0:0: Attached scsi generic sg2 type 20
-sd 18:0:0:0: [sdc] Host-managed zoned block device
-mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b200 flags=0x0050]
-mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b300 flags=0x0050]
-mpt3sas_cm0: mpt3sas_ctl_pre_reset_handler: Releasing the trace buffer due to adapter reset.
-mpt3sas_cm0 fault info from func: mpt3sas_base_make_ioc_ready
-mpt3sas_cm0: fault_state(0x2666)!
-mpt3sas_cm0: sending diag reset !!
-mpt3sas_cm0: diag reset: SUCCESS
-sd 18:0:0:0: [sdc] REPORT ZONES start lba 0 failed
-sd 18:0:0:0: [sdc] REPORT ZONES: Result: hostbyte=DID_RESET driverbyte=DRIVER_OK
-sd 18:0:0:0: [sdc] 0 4096-byte logical blocks: (0 B/0 B)
-
-Avoid such issue by always mapping the buffer of REPORT ZONES commands
-using DMA_BIDIRECTIONAL (read+write IOMMU mapping). This is done by
-introducing the helper function _base_scsi_dma_map() and using this helper
-in _base_build_sg_scmd() and _base_build_sg_scmd_ieee() instead of calling
-directly scsi_dma_map().
-
-Fixes: 471ef9d4e498 ("mpt3sas: Build MPI SGL LIST on GEN2 HBAs and IEEE SGL LIST on GEN3 HBAs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240719073913.179559-3-dlemoal@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 42df6e1d221d ("netfilter: Introduce egress hook")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables_ipv6.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -2221,6 +2221,22 @@ _base_build_zero_len_sge_ieee(struct MPT
- 	_base_add_sg_single_ieee(paddr, sgl_flags, 0, 0, -1);
- }
+diff --git a/include/net/netfilter/nf_tables_ipv6.h b/include/net/netfilter/nf_tables_ipv6.h
+index 467d59b9e5334..a0633eeaec977 100644
+--- a/include/net/netfilter/nf_tables_ipv6.h
++++ b/include/net/netfilter/nf_tables_ipv6.h
+@@ -31,8 +31,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
+ 	struct ipv6hdr *ip6h, _ip6h;
+ 	unsigned int thoff = 0;
+ 	unsigned short frag_off;
++	u32 pkt_len, skb_len;
+ 	int protohdr;
+-	u32 pkt_len;
  
-+static inline int _base_scsi_dma_map(struct scsi_cmnd *cmd)
-+{
-+	/*
-+	 * Some firmware versions byte-swap the REPORT ZONES command reply from
-+	 * ATA-ZAC devices by directly accessing in the host buffer. This does
-+	 * not respect the default command DMA direction and causes IOMMU page
-+	 * faults on some architectures with an IOMMU enforcing write mappings
-+	 * (e.g. AMD hosts). Avoid such issue by making the report zones buffer
-+	 * mapping bi-directional.
-+	 */
-+	if (cmd->cmnd[0] == ZBC_IN && cmd->cmnd[1] == ZI_REPORT_ZONES)
-+		cmd->sc_data_direction = DMA_BIDIRECTIONAL;
-+
-+	return scsi_dma_map(cmd);
-+}
-+
- /**
-  * _base_build_sg_scmd - main sg creation routine
-  *		pcie_device is unused here!
-@@ -2267,7 +2283,7 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPT
- 	sgl_flags = sgl_flags << MPI2_SGE_FLAGS_SHIFT;
+ 	ip6h = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb),
+ 				  sizeof(*ip6h), &_ip6h);
+@@ -43,7 +43,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
+ 		return -1;
  
- 	sg_scmd = scsi_sglist(scmd);
--	sges_left = scsi_dma_map(scmd);
-+	sges_left = _base_scsi_dma_map(scmd);
- 	if (sges_left < 0) {
- 		sdev_printk(KERN_ERR, scmd->device,
- 		 "pci_map_sg failed: request for %d bytes!\n",
-@@ -2415,7 +2431,7 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_
- 	}
+ 	pkt_len = ntohs(ip6h->payload_len);
+-	if (pkt_len + sizeof(*ip6h) > pkt->skb->len)
++	skb_len = pkt->skb->len - skb_network_offset(pkt->skb);
++	if (pkt_len + sizeof(*ip6h) > skb_len)
+ 		return -1;
  
- 	sg_scmd = scsi_sglist(scmd);
--	sges_left = scsi_dma_map(scmd);
-+	sges_left = _base_scsi_dma_map(scmd);
- 	if (sges_left < 0) {
- 		sdev_printk(KERN_ERR, scmd->device,
- 			"pci_map_sg failed: request for %d bytes!\n",
+ 	protohdr = ipv6_find_hdr(pkt->skb, &thoff, -1, &frag_off, &flags);
+-- 
+2.43.0
+
 
 
 
