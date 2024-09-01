@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDB0967791
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9819679EF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07E31C20D87
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2BE281EF0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F0017E91A;
-	Sun,  1 Sep 2024 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7F318452D;
+	Sun,  1 Sep 2024 16:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAjCSui3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRMieM5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0128444C97;
-	Sun,  1 Sep 2024 16:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3E2184537;
+	Sun,  1 Sep 2024 16:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207682; cv=none; b=FScHyZjPUo7pXywn4kHXKabP2tXRFSLXAoVtUtxX4YatBiH9hlYy0zCp7ke/CmNyMoremx/ML9Q/UkZHB+UF/1cFp32i0KGPqG7kV7hB0J+L7wl0wfcWgoASjxmzw59cD7gH7STpyaKw5P7FZvlSTd51Cb/9vksPaf6pIyuYGRg=
+	t=1725209370; cv=none; b=hf2TS0bsD5P0a8bMTaaC4Umdil74/S4vtKWuDEDqoH/8tm2spDWN7nFnz3C+uUiRHUVlIrEN2Hg8mIM/PTq1kEvfM4Xb+tyG5AALORmEGSo/EAclfc0BSuH6b8N8ewbC+IpLx7Y7dLpYkbFxaCX8U5ZTYLdCcSE49k+8Sbmt/HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207682; c=relaxed/simple;
-	bh=iVgUjstn6FH15bIjIFzIlVdXKq96jCKUWw//9JDbpA8=;
+	s=arc-20240116; t=1725209370; c=relaxed/simple;
+	bh=Unvr3Xur3FcYoBlb03r6zeMdfSfb/rQy4Wu/geQycbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGqZdYyueKkhwY/ANnTVkbwb3jGwMG3coFFfUwhSJw/8h70sEh+j0GitebmPG1I8xEiR2xkLe1H6UikcR7gNEvZcBlqXoEnkik1MoyUF/2rTN1mZF1fIpe5h3bpeDy/Sqw3XpAFB+fvRHWQAonFvmzOM7Qj8J/ax5Qyv/019cyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAjCSui3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16058C4CEC3;
-	Sun,  1 Sep 2024 16:21:20 +0000 (UTC)
+	 MIME-Version; b=bvp+gWsxoFWNj8Nsm5rEFMqxQOwsw7WVW5fWsUepU5tu0FEC16porx9+MahH2tkMPuMq1UKKOTNj3TM6pw8qPyKyIXYcWXxM8dAYIQyLwJ+1ZN4ajIaPQZo36GoynRVDMYPjW3qTL3t7AQ2Sd6xNw7o83YctXAHDyLS+G4FbEkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRMieM5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81A6C4CEC4;
+	Sun,  1 Sep 2024 16:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207681;
-	bh=iVgUjstn6FH15bIjIFzIlVdXKq96jCKUWw//9JDbpA8=;
+	s=korg; t=1725209370;
+	bh=Unvr3Xur3FcYoBlb03r6zeMdfSfb/rQy4Wu/geQycbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAjCSui3uD403Bc2T6untUn1FK8hoJWHcCishFM6B2yvTD73IHbJBQiP0984I0OiM
-	 6M5x7ZvYxF01z3e/R4JD2bwaTMqFo+xOGImZASUXXgcmAjO/wMnJoN8g/eCjXyNfAs
-	 RX8siTpF1pLA8nty6NLA6up6t8C7o5++GrBnYlTs=
+	b=hRMieM5UUYoZsjKr9ZiutrjYmJahtl3/tDL9k+oyxtG54zl78TUmw43H6Hl9uRKgV
+	 pwjJTTk8/5Pz5MomOoNV9Y3IcSKKPFWPPfI7DR2o7lcQCS7d6Gr4lCj3n4frBfNyXq
+	 F9fNKTH5oxerknbexCsqpR5GWD49gvSzwodD0wzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/98] s390/iucv: fix receive buffer virtual vs physical address confusion
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.10 015/151] memcg_write_event_control(): fix a user-triggerable oops
 Date: Sun,  1 Sep 2024 18:16:15 +0200
-Message-ID: <20240901160805.398378850@linuxfoundation.org>
+Message-ID: <20240901160814.675393252@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
+commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
 
-Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
-This does not fix a bug since virtual and physical address spaces are
-currently the same.
+we are *not* guaranteed that anything past the terminating NUL
+is mapped (let alone initialized with anything sane).
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+Cc: stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/iucv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/memcontrol.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index 2f82a6f0992e4..b1ecf008fa507 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -1149,8 +1149,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
- 		size = (size < 8) ? size : 8;
- 		for (array = buffer; size > 0; array++) {
- 			copy = min_t(size_t, size, array->length);
--			memcpy((u8 *)(addr_t) array->address,
--				rmmsg, copy);
-+			memcpy(phys_to_virt(array->address), rmmsg, copy);
- 			rmmsg += copy;
- 			size -= copy;
- 		}
--- 
-2.43.0
-
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4884,9 +4884,12 @@ static ssize_t memcg_write_event_control
+ 	buf = endp + 1;
+ 
+ 	cfd = simple_strtoul(buf, &endp, 10);
+-	if ((*endp != ' ') && (*endp != '\0'))
++	if (*endp == '\0')
++		buf = endp;
++	else if (*endp == ' ')
++		buf = endp + 1;
++	else
+ 		return -EINVAL;
+-	buf = endp + 1;
+ 
+ 	event = kzalloc(sizeof(*event), GFP_KERNEL);
+ 	if (!event)
 
 
 
