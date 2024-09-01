@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C7796786E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51403967AC4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE080B222AB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8352A1C2147B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1984617DFFC;
-	Sun,  1 Sep 2024 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AB83398B;
+	Sun,  1 Sep 2024 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alhsuLKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx+RIvAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F6A17E46E;
-	Sun,  1 Sep 2024 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842491EB5B;
+	Sun,  1 Sep 2024 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208295; cv=none; b=PGt/oV5vW0nO+1r6slrlXq5wxCAKtFLBkqPtb4vUgpIDUjqVdarJT98Yi3wccZEIdXHAHpNww6PIj1k2W+8pa4pHk5e59R/5Pmz7qaT45ZXlPzdVX65kWNR+ijCc3bJmz6t359d9jkLWcSFvoADgAKhe7Q4fUJcX0JjHwwXjtSw=
+	t=1725210039; cv=none; b=PCgrAOcwMvRJ9u81nqb38LRP6UdCNe7P7zIiJOa+JIHuZ+2P5ClonwrOJiTjIklB5h1a1p52yOEI7znSeC1krYUQRbrAVShHb2xF6X3ytGFXIDZhGL+WZD/9jK9sV6xVLU/b9IX8Xvb67XWY1Rg9ap2CHfelBpgjHa/mmtF5jyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208295; c=relaxed/simple;
-	bh=ZrL01JAaNK34MabyuG7lSZmNRriIEVwUnpRPFfWctro=;
+	s=arc-20240116; t=1725210039; c=relaxed/simple;
+	bh=66fagODpiNL59eEycdHbyAzinQ0G+P/UqamjwLvPKF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIz3ozCTX41eSCIci9Cq4UWWJYBsTny87+T14GY3sbqY8VXhw9FuLgsCtxAO1PlLKwJT52YmulHDB7kBrh6GryKf8KhgvfA2PejZPdyCB4KfyvnKLRxFQ2ATP4rUB8mIVDe1huz8zKyQCNqCt978wTCryI0jKOqesosLdRgyBhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alhsuLKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E99C4CEC3;
-	Sun,  1 Sep 2024 16:31:35 +0000 (UTC)
+	 MIME-Version; b=IwPB8bMR3INmHIp/FRypCIrmwXO3mUO1lSN7rcTr74RHggSRVyR4FdKDxANvRLUX8QdfdHFN1fwQAjVKKaVdoLNnlqADBS3PJPxdlLeJYfZTRU0b6ezZyTRFzFvQyR+XhdoUR7TzIaSvG3NNLy3f0bV4+Hz7ncNEsoXl2rjoVtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx+RIvAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAF8C4CEC3;
+	Sun,  1 Sep 2024 17:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208295;
-	bh=ZrL01JAaNK34MabyuG7lSZmNRriIEVwUnpRPFfWctro=;
+	s=korg; t=1725210039;
+	bh=66fagODpiNL59eEycdHbyAzinQ0G+P/UqamjwLvPKF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alhsuLKBLhjtivQulKbRa2XlndiYYy48jTM60H1Eu6fCLj6yuhT4o3uI4uf2KVZ4O
-	 KqM5yrrQ3Mr+cmgEPT9czn/628y6PSSPmyk7EitstrLo4fin29BAiew7gV4ADZbmIx
-	 x0fldF3JvWp1mQyA7A8wKGBRGVoblKKqOv/eKk1A=
+	b=sx+RIvAeEwlTL76axsqvnNF5wATmj/1ZAijCTwLFAc/eAixATkRruHnvXzvoSTVUn
+	 COBAbseYd5U2JTFfuvaRlo7sZLkKa0IwAr0OBiZPtMoVQLx7BFw9966hLsH/DM44mE
+	 +ARU1dT1iM56+kJi1TzovriItA3ta1bDW2vfV7W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 039/149] drm/amdgpu/swsmu: always force a state reprogram on init
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 038/215] netfilter: flowtable: initialise extack before use
 Date: Sun,  1 Sep 2024 18:15:50 +0200
-Message-ID: <20240901160818.932574756@linuxfoundation.org>
+Message-ID: <20240901160824.784860087@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-commit d420c857d85777663e8d16adfc24463f5d5c2dbc upstream.
+[ Upstream commit e9767137308daf906496613fd879808a07f006a2 ]
 
-Always reprogram the hardware state on init.  This ensures
-the PMFW state is explicitly programmed and we are not relying
-on the default PMFW state.
+Fix missing initialisation of extack in flow offload.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c50fe289ed7207f71df3b5f1720512a9620e84fb)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/netfilter/nf_flow_table_offload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2215,8 +2215,9 @@ static int smu_bump_power_profile_mode(s
- }
- 
- static int smu_adjust_power_state_dynamic(struct smu_context *smu,
--				   enum amd_dpm_forced_level level,
--				   bool skip_display_settings)
-+					  enum amd_dpm_forced_level level,
-+					  bool skip_display_settings,
-+					  bool force_update)
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 6ac1ebe17456d..d8cb304f809e5 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -830,8 +830,8 @@ static int nf_flow_offload_tuple(struct nf_flowtable *flowtable,
+ 				 struct list_head *block_cb_list)
  {
- 	int ret = 0;
- 	int index = 0;
-@@ -2245,7 +2246,7 @@ static int smu_adjust_power_state_dynami
- 		}
- 	}
+ 	struct flow_cls_offload cls_flow = {};
++	struct netlink_ext_ack extack = {};
+ 	struct flow_block_cb *block_cb;
+-	struct netlink_ext_ack extack;
+ 	__be16 proto = ETH_P_ALL;
+ 	int err, i = 0;
  
--	if (smu_dpm_ctx->dpm_level != level) {
-+	if (force_update || smu_dpm_ctx->dpm_level != level) {
- 		ret = smu_asic_set_performance_level(smu, level);
- 		if (ret) {
- 			dev_err(smu->adev->dev, "Failed to set performance level!");
-@@ -2261,7 +2262,7 @@ static int smu_adjust_power_state_dynami
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
- 
--		if (smu->power_profile_mode != workload[0])
-+		if (force_update || smu->power_profile_mode != workload[0])
- 			smu_bump_power_profile_mode(smu, workload, 0);
- 	}
- 
-@@ -2282,11 +2283,13 @@ static int smu_handle_task(struct smu_co
- 		ret = smu_pre_display_config_changed(smu);
- 		if (ret)
- 			return ret;
--		ret = smu_adjust_power_state_dynamic(smu, level, false);
-+		ret = smu_adjust_power_state_dynamic(smu, level, false, false);
- 		break;
- 	case AMD_PP_TASK_COMPLETE_INIT:
-+		ret = smu_adjust_power_state_dynamic(smu, level, true, true);
-+		break;
- 	case AMD_PP_TASK_READJUST_POWER_STATE:
--		ret = smu_adjust_power_state_dynamic(smu, level, true);
-+		ret = smu_adjust_power_state_dynamic(smu, level, true, false);
- 		break;
- 	default:
- 		break;
+-- 
+2.43.0
+
 
 
 
