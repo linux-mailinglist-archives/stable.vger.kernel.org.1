@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA639967B22
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D0396798E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 076DB1C2163E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A90282263
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B7F17E005;
-	Sun,  1 Sep 2024 17:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4F4183CA5;
+	Sun,  1 Sep 2024 16:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtlVhHGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJeZ3CdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9AE376EC;
-	Sun,  1 Sep 2024 17:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B900183CCA;
+	Sun,  1 Sep 2024 16:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210335; cv=none; b=naS0GgWxdd+xs4Vu1bm8v884FVzksJzBlLS78MxjI8a4wvNJmrGDyOQDx9eblJNUrhti3yQWtYjmacJ2z8lmgHS4W/t6s1sPHcFeUXg1kGA7nwiOXpabPvgmEqP4EOhal2qSvqoRcPSYIEeBRQK4ZrxjcXXC6zANbBthzP/kpCI=
+	t=1725209105; cv=none; b=s4aQrX9Af0ptSOTcoiHuZOgTPQwiKdC57NG9wNUOQ0AZ1JktY94RyVTMWr5NeRkUctWezkrpgX/UqFxrcbtJkZtw5hLe2hloFiD6KRd8bgazEl9E/yawhN1sFWu36xjOsIG6Dr+6CtAhtNi5SVu6rIY8KTRB8TTrso/twc9E2wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210335; c=relaxed/simple;
-	bh=stS/028XzAIZYMkH60r9tHgbyVWDXXyJpju+I/3JDh8=;
+	s=arc-20240116; t=1725209105; c=relaxed/simple;
+	bh=rvyB60pX/FK6L1DGsRGLlvjeHQxz9zMV8QoPhYeZouU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbtRvpjSshir+/E4csYQlwhh/njM0ithn9FFcULsBDVSEq4ZueZd5pgZ/IxuiVNzsJYtIzN/EfdcORewSWH0M/qYjo8fQ2wDH0levHOooV9pVLfEm3XZfimhw0w1anBcPXLQKPU5Fov40nNtXSBbiPBRDGtASgVuMcGhV0n9d4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtlVhHGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624E2C4CEC3;
-	Sun,  1 Sep 2024 17:05:34 +0000 (UTC)
+	 MIME-Version; b=IMVDI7yHaMMG6OD3a0PChbD9d0OCBiPC4Ae6AkOs3RpbH8gXH284u5zNXLQMZGyR/oJsKXFiQUCHHqmgmLrbkhU97E7rkwAH+IzJl1Fzu9h1E0fQZPzGWZ3zBixBugUYKVaCgBNsRfO0ubLzWNwLhJvn8G4SkyB4HFoup8cDGZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJeZ3CdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C876C4CEC3;
+	Sun,  1 Sep 2024 16:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210334;
-	bh=stS/028XzAIZYMkH60r9tHgbyVWDXXyJpju+I/3JDh8=;
+	s=korg; t=1725209105;
+	bh=rvyB60pX/FK6L1DGsRGLlvjeHQxz9zMV8QoPhYeZouU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtlVhHGXL06oTxHqlApDDmvezG+diBDWGNYs2I7sk5PrbTj7k2ZNF7gIrnTV0GX6F
-	 f9Ny6c+rOvHtcOEiPMAVrxnl/CXIX2BaaRgh7wQOzwjNXZR8bv/HgbnC7E6gQP6CcQ
-	 AWlwff3CH+fUGqNOkESug599qY7gr4zCIYOPEY2Q=
+	b=SJeZ3CdTguYHKki4lRJ3verhsrU0ltiwnajsO4VgE0mueos3OjMjtglJv1NXEzPoi
+	 G90O5KNehD6pLVUCtvo/UXKch2mgw2wGeId+Un/eSaPdwmBSmJVfiaKlcPIJ6awUx0
+	 d1NcZFqyqDY0WpMOd4IaF++PmOpioPP0J1EkLijs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/215] mmc: mmc_test: Fix NULL dereference on allocation failure
+Subject: [PATCH 5.4 124/134] nfc: pn533: Add poll mod list filling check
 Date: Sun,  1 Sep 2024 18:17:50 +0200
-Message-ID: <20240901160829.334172896@linuxfoundation.org>
+Message-ID: <20240901160814.746594437@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit a1e627af32ed60713941cbfc8075d44cad07f6dd ]
+[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
 
-If the "test->highmem = alloc_pages()" allocation fails then calling
-__free_pages(test->highmem) will result in a NULL dereference.  Also
-change the error code to -ENOMEM instead of returning success.
+In case of im_protocols value is 1 and tm_protocols value is 0 this
+combination successfully passes the check
+'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
+But then after pn533_poll_create_mod_list() call in pn533_start_poll()
+poll mod list will remain empty and dev->poll_mod_count will remain 0
+which lead to division by zero.
 
-Fixes: 2661081f5ab9 ("mmc_test: highmem tests")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8c90be28-67b4-4b0d-a105-034dc72a0b31@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Normally no im protocol has value 1 in the mask, so this combination is
+not expected by driver. But these protocol values actually come from
+userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
+broken or malicious program may pass a message containing a "bad"
+combination of protocol parameter values so that dev->poll_mod_count
+is not incremented inside pn533_poll_create_mod_list(), thus leading
+to division by zero.
+Call trace looks like:
+nfc_genl_start_poll()
+  nfc_start_poll()
+    ->start_poll()
+    pn533_start_poll()
+
+Add poll mod list filling check.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc_test.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/nfc/pn533/pn533.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
-index 4052f828f75e7..e03d4405cda36 100644
---- a/drivers/mmc/core/mmc_test.c
-+++ b/drivers/mmc/core/mmc_test.c
-@@ -3111,13 +3111,13 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
- 	test->buffer = kzalloc(BUFFER_SIZE, GFP_KERNEL);
- #ifdef CONFIG_HIGHMEM
- 	test->highmem = alloc_pages(GFP_KERNEL | __GFP_HIGHMEM, BUFFER_ORDER);
-+	if (!test->highmem) {
-+		count = -ENOMEM;
-+		goto free_test_buffer;
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index 1c3da3675d7df..9610a9b1929f1 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1751,6 +1751,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
+ 	}
+ 
+ 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
++	if (!dev->poll_mod_count) {
++		nfc_err(dev->dev,
++			"Poll mod list is empty\n");
++		return -EINVAL;
 +	}
- #endif
  
--#ifdef CONFIG_HIGHMEM
--	if (test->buffer && test->highmem) {
--#else
- 	if (test->buffer) {
--#endif
- 		mutex_lock(&mmc_test_lock);
- 		mmc_test_run(test, testcase);
- 		mutex_unlock(&mmc_test_lock);
-@@ -3125,6 +3125,7 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
- 
- #ifdef CONFIG_HIGHMEM
- 	__free_pages(test->highmem, BUFFER_ORDER);
-+free_test_buffer:
- #endif
- 	kfree(test->buffer);
- 	kfree(test);
+ 	/* Do not always start polling from the same modulation */
+ 	get_random_bytes(&rand_mod, sizeof(rand_mod));
 -- 
 2.43.0
 
