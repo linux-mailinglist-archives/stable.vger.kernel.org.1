@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-71860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6B6967815
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218EB9677B2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C1B71C20B1F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BE31C20DD5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796FF183CB1;
-	Sun,  1 Sep 2024 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6357517F394;
+	Sun,  1 Sep 2024 16:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJGLZ+nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4wh2a+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3850633987;
-	Sun,  1 Sep 2024 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3062C1B4;
+	Sun,  1 Sep 2024 16:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208054; cv=none; b=vGPwqL07hEfDxMp6w6Zo1/MGK3V2iVAmlWLnFnMDsZ11SQpZfzNNjPvvt3DwiQjAdVnFJT7zXLLiyvELTQGF8DVMSWM0eU0rs8XMu3p2i+Kwpcsau3wpPnVN1FvR3FrEFvDdJYWlPl0Ej6T8gc1J2ydtvVbr+yvN9GbT51CKJHg=
+	t=1725207781; cv=none; b=QW6VamLqUpg5Iv7zg74jR4Hh2sfObcl+e26Q+hhwpkOtPdDLwyzrGD5AbLP2k96aSjvVyLbZZXYvuDqoFJPeLw9rsUN3dSrEGcCrg3TaYkiNQA8F5fktUdh6r6JqCW9pqPRXyX0Sq4APlUSyrAdzrQF34RBt6c9vbJlRwJvieh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208054; c=relaxed/simple;
-	bh=Z0f1P9lemC5fwZ4+N+YzUiA1zJJjSm56TlPK5z8NlUU=;
+	s=arc-20240116; t=1725207781; c=relaxed/simple;
+	bh=CbaUy3bVzhNgOxzdXB7U9RXc+hGcT+VCYDT52Fa/9x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4Z8CDsjpHmvcVjH1gEshPZ+3VZfXIXQBGgWAQaru8Mii1ujYRy6kOdMYvdeQOF9ZwRXVjc1QzC5wtKu6PrWwAdoC7siGpsKbxAVqHv3O1lRHtKLEeFMhQRN1ccN8alL6WL0OymZol2bET8tIETbIjyoIT/DV8c4pedm9cfhSII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJGLZ+nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688D1C4CEC3;
-	Sun,  1 Sep 2024 16:27:33 +0000 (UTC)
+	 MIME-Version; b=EeM0ngLyHOZQkY9rB9VMx7CFP72xu2zKM9Pvia5hwV9u6u3hICZ2/m7dF3rLBEuKTeFWTp6MjBNMnyOTEcO/8Deay7vsrQdFEa0ZobpgjHweEI2FyR/Fx2XL0gEDNu7ahcrnvb0Ch1cY/eDGITBoIIRn7CqTrDdQJLIqy+lxY1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4wh2a+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B237C4CEC3;
+	Sun,  1 Sep 2024 16:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208054;
-	bh=Z0f1P9lemC5fwZ4+N+YzUiA1zJJjSm56TlPK5z8NlUU=;
+	s=korg; t=1725207781;
+	bh=CbaUy3bVzhNgOxzdXB7U9RXc+hGcT+VCYDT52Fa/9x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJGLZ+nhEGNOjJlbGEIocOnpL7R7zCZ4GMq1r4pGTxOBHBB1qRJDcgijW/rZbjpbv
-	 jwKnQstBJSnWi6wBVd2vlO3kGeGKFqPaGSCV7d86ZRHr+SA9G0v/aMMnrRE69ZbYd0
-	 zjEPL4GvKCRF2ImKs30qARh5y2flpd57c0kYFRqs=
+	b=H4wh2a+sqOoXIaTgYoP2BfOudZc5qOD0SAKFKXXHuZLmBEnooPsfWzTn4vIamszPU
+	 hncls47CXTVCfmxGSDmJcxDBH8ZIiosyF/wa7x6lxHx9aMKnr1oSuYhpp7WnMPtm+9
+	 vPG3JtVUFuMQWyJBV/2l1vwBn6BBVkN0W/Lna/Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 58/93] ethtool: check device is present when getting link settings
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 4.19 75/98] dm suspend: return -ERESTARTSYS instead of -EINTR
 Date: Sun,  1 Sep 2024 18:16:45 +0200
-Message-ID: <20240901160809.547794849@linuxfoundation.org>
+Message-ID: <20240901160806.524742946@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit a699781c79ecf6cfe67fb00a0331b4088c7c8466 ]
+commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 upstream.
 
-A sysfs reader can race with a device reset or removal, attempting to
-read device state when the device is not actually present. eg:
+This commit changes device mapper, so that it returns -ERESTARTSYS
+instead of -EINTR when it is interrupted by a signal (so that the ioctl
+can be restarted).
 
-     [exception RIP: qed_get_current_link+17]
-  #8 [ffffb9e4f2907c48] qede_get_link_ksettings at ffffffffc07a994a [qede]
-  #9 [ffffb9e4f2907cd8] __rh_call_get_link_ksettings at ffffffff992b01a3
- #10 [ffffb9e4f2907d38] __ethtool_get_link_ksettings at ffffffff992b04e4
- #11 [ffffb9e4f2907d90] duplex_show at ffffffff99260300
- #12 [ffffb9e4f2907e38] dev_attr_show at ffffffff9905a01c
- #13 [ffffb9e4f2907e50] sysfs_kf_seq_show at ffffffff98e0145b
- #14 [ffffb9e4f2907e68] seq_read at ffffffff98d902e3
- #15 [ffffb9e4f2907ec8] vfs_read at ffffffff98d657d1
- #16 [ffffb9e4f2907f00] ksys_read at ffffffff98d65c3f
- #17 [ffffb9e4f2907f38] do_syscall_64 at ffffffff98a052fb
+The manpage signal(7) says that the ioctl function should be restarted if
+the signal was handled with SA_RESTART.
 
- crash> struct net_device.state ffff9a9d21336000
-    state = 5,
-
-state 5 is __LINK_STATE_START (0b1) and __LINK_STATE_NOCARRIER (0b100).
-The device is not present, note lack of __LINK_STATE_PRESENT (0b10).
-
-This is the same sort of panic as observed in commit 4224cfd7fb65
-("net-sysfs: add check for netdevice being present to speed_show").
-
-There are many other callers of __ethtool_get_link_ksettings() which
-don't have a device presence check.
-
-Move this check into ethtool to protect all callers.
-
-Fixes: d519e17e2d01 ("net: export device speed and duplex via sysfs")
-Fixes: 4224cfd7fb65 ("net-sysfs: add check for netdevice being present to speed_show")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/8bae218864beaa44ed01628140475b9bf641c5b0.1724393671.git.jamie.bainbridge@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net-sysfs.c | 2 +-
- net/ethtool/ioctl.c  | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 5a9487af44e00..f7404bc679746 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -216,7 +216,7 @@ static ssize_t speed_show(struct device *dev,
- 	if (!rtnl_trylock())
- 		return restart_syscall();
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2468,7 +2468,7 @@ static int dm_wait_for_completion(struct
+ 			break;
  
--	if (netif_running(netdev) && netif_device_present(netdev)) {
-+	if (netif_running(netdev)) {
- 		struct ethtool_link_ksettings cmd;
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
  
- 		if (!__ethtool_get_link_ksettings(netdev, &cmd))
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 7cb23bcf8ef7a..4486cbe2faf0c 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -438,6 +438,9 @@ int __ethtool_get_link_ksettings(struct net_device *dev,
- 	if (!dev->ethtool_ops->get_link_ksettings)
- 		return -EOPNOTSUPP;
- 
-+	if (!netif_device_present(dev))
-+		return -ENODEV;
-+
- 	memset(link_ksettings, 0, sizeof(*link_ksettings));
- 	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
- }
--- 
-2.43.0
-
 
 
 
