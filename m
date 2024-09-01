@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-71791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA759677C2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D31967B0D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 099141C20C35
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F275280C94
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AB317E01C;
-	Sun,  1 Sep 2024 16:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D7A381BD;
+	Sun,  1 Sep 2024 17:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOt7ESxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX36yeSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0463233987;
-	Sun,  1 Sep 2024 16:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E262C6AF;
+	Sun,  1 Sep 2024 17:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207828; cv=none; b=B6YfhuXVHZNHhBCKetWm394WeEcByubdVY+Ds14LJ9Q4jCy/tgdCnenJ0zW8Vd+d86Y/QXcOopyS701Ghw1P33OraaYmo6ITHBcBO8UNyFDGh+PhjxuuxyXAZ2QemAHMmRNdgsqv/wYDQy5jj4QKT/979vm6TK8osnVA4riH3Qw=
+	t=1725210263; cv=none; b=D4VGzdSTWoaFAH03HDlFr/ErGNaLfyW7El3KOThzM58k7xASv16o2O0ISfBXnZUSRo94Ju2dW6ZDiOAgeGbktv0px5xfF93LPrOs9wMGMmEKwq31X2wSNn1UT+o0+ASvYR2QR0epRvED6z6ilTYY9X1YtFMyfYO6oAoFBbtLBr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207828; c=relaxed/simple;
-	bh=zM+7vF+IPoWDW3qXXAjcLMSG3DI3nZPoGglDh6zwP/4=;
+	s=arc-20240116; t=1725210263; c=relaxed/simple;
+	bh=azef8RR3SUT1zIhdW1AglG3mPDqLdB4XRgqNxV58Rfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ4zbBF8GnKs2uY7J5vtaV1/YfCPqUjTxs27f912Yqhy7oY9mZwvPbRLKTYOZ/pA3PF2hdMUbHnTc4sX/4E8d1qcICIDBiGWW4JrsSkpPrYiWt1P23wn/zmwBdYoqiFc3SKsVJqs2XjchxwnT7/LH5tiLb+b9BEqv7jqZtoFrMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOt7ESxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129D4C4CEC3;
-	Sun,  1 Sep 2024 16:23:46 +0000 (UTC)
+	 MIME-Version; b=dTfbrCFdT5iDCja43Gtmd7GRCEb/1Yn8uemkxLjt8UApLWXiFSD23xmg8DGxG/FwThkvC3fJDNlFuieYnelsfF6jM9AeTn967I+UXzSwyRvqsA486LMSx2jQ7uT4cGXBTbbo5mgLWsGSEA8ZthX8WmgtrqfDMdMtHZztXcMdz2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX36yeSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BF2C4CEC3;
+	Sun,  1 Sep 2024 17:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207827;
-	bh=zM+7vF+IPoWDW3qXXAjcLMSG3DI3nZPoGglDh6zwP/4=;
+	s=korg; t=1725210263;
+	bh=azef8RR3SUT1zIhdW1AglG3mPDqLdB4XRgqNxV58Rfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOt7ESxJhL5tjXMY9JvjqG2d1FA69+5ZIPUh77lVQEhxufumkbtnJ00J0tgS/cY6M
-	 c75YifQXEKB7JZfaRjNKIc2gRziaj4LX6X/UuW1qQX+VOJO5MlqAZQWhF7hQRM7yAu
-	 mvEkECpxqduWz6pme1I55qDRAmiuz97tsXdUw3Ak=
+	b=BX36yeSDBRc7sIGAq4hCGRQj16jNapdxIA6MH0Y88+Oos3Jv7X/z/UkgubVEceKTM
+	 RI7arCFy/MOxXmUJdXmNwZeyPsrkPuPVSpUHvWh1Xdb/ibNbWFBu+RgGJQd3tYwU6d
+	 3WHXsN9g5TaVBbkE3GPiDPaEwGMbW1fMNw+UUXVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schultz <aschultz@tpip.net>,
-	Harald Welte <laforge@gnumonks.org>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 88/98] gtp: fix a potential NULL pointer dereference
+Subject: [PATCH 5.15 106/215] nvmet-rdma: fix possible bad dereference when freeing rsps
 Date: Sun,  1 Sep 2024 18:16:58 +0200
-Message-ID: <20240901160807.016531506@linuxfoundation.org>
+Message-ID: <20240901160827.353003082@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit defd8b3c37b0f9cb3e0f60f47d3d78d459d57fda ]
+[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
 
-When sockfd_lookup() fails, gtp_encap_enable_socket() returns a
-NULL pointer, but its callers only check for error pointers thus miss
-the NULL pointer case.
+It is possible that the host connected and saw a cm established
+event and started sending nvme capsules on the qp, however the
+ctrl did not yet see an established event. This is why the
+rsp_wait_list exists (for async handling of these cmds, we move
+them to a pending list).
 
-Fix it by returning an error pointer with the error code carried from
-sockfd_lookup().
+Furthermore, it is possible that the ctrl cm times out, resulting
+in a connect-error cm event. in this case we hit a bad deref [1]
+because in nvmet_rdma_free_rsps we assume that all the responses
+are in the free list.
 
-(I found this bug during code inspection.)
+We are freeing the cmds array anyways, so don't even bother to
+remove the rsp from the free_list. It is also guaranteed that we
+are not racing anything when we are releasing the queue so no
+other context accessing this array should be running.
 
-Fixes: 1e3a3abd8b28 ("gtp: make GTP sockets in gtp_newlink optional")
-Cc: Andreas Schultz <aschultz@tpip.net>
-Cc: Harald Welte <laforge@gnumonks.org>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/20240825191638.146748-1-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1]:
+--
+Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
+[...]
+pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ Call trace:
+ nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+ nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ process_one_work+0x1ec/0x4a0
+ worker_thread+0x48/0x490
+ kthread+0x158/0x160
+ ret_from_fork+0x10/0x18
+--
+
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/rdma.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index cc80bd98e172d..733cafb0888f6 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -812,7 +812,7 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
- 	sock = sockfd_lookup(fd, &err);
- 	if (!sock) {
- 		pr_debug("gtp socket fd=%d not found\n", fd);
--		return NULL;
-+		return ERR_PTR(err);
- 	}
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 18e082091c821..9561ba3d43138 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -472,12 +472,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
+ 	return 0;
  
- 	sk = sock->sk;
+ out_free:
+-	while (--i >= 0) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
+-
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	while (--i >= 0)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
+ out:
+ 	return ret;
+@@ -488,12 +484,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
+ 	struct nvmet_rdma_device *ndev = queue->dev;
+ 	int i, nr_rsps = queue->recv_queue_size * 2;
+ 
+-	for (i = 0; i < nr_rsps; i++) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
+-
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	for (i = 0; i < nr_rsps; i++)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
+ }
+ 
 -- 
 2.43.0
 
