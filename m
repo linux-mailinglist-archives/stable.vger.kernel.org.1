@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457239678A7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D412F967A00
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7716C1C21100
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD102815C2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B216E17CA1F;
-	Sun,  1 Sep 2024 16:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6E117DFE7;
+	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvrH4My+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbtzy06s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F33E2B9C7;
-	Sun,  1 Sep 2024 16:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2621C68C;
+	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208445; cv=none; b=b5GtzzhaDrojdqK3ay2/49xVVEVZnKzL1F6wI5R4C/cgtEbYYwKNFZLvIlRL3SH3snJF3H/COdkjzellsseBTf9db/+pZQ9AVo0BFfupiOnBc22RjSNMt52WyQDG4SuuEg6WyytQfCltCFIHoaYD4sGmfZMB33oIGvZECVepdxI=
+	t=1725209423; cv=none; b=caX0cT43ZhkFGFRgwqYT2HDlT/c9izFRjOdtQ+/cD6JwqlateA1h2Ahts1xEAoptTrfGH8XVkoMVZESjj0qjGb+eBpRlmCrc5znEK2ZyVBmTV/T0RGV5Tb2ivOd2DPW3XpiLATHv++Bh/0Lv0jZCiFMd+64OiIGKUXx+oHN5Xg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208445; c=relaxed/simple;
-	bh=ndi12aesAPSaAL6apTpgRaH2nxN+Uc8HKW2fE+YSecE=;
+	s=arc-20240116; t=1725209423; c=relaxed/simple;
+	bh=WJcrFWUzko5hFoqeYBL1+pW5fHbFQV+tLBRjvn559Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDoOBVjSYucf9GCfs2fVnggsoMDoxOF+7LVyM6RLQcP6xwwwZR/1MNPh1CgcGgJHBtJbOdBv4jejXMiAXKB6mzedjW2loqKDkINLRaHVBYvCRjSLP5vUv61UjblV3F/9+VjVEBillJ60GWBfsfaeJ/RgLPvtE6jE77nUNXEBV6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvrH4My+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5FDC4CEC3;
-	Sun,  1 Sep 2024 16:34:04 +0000 (UTC)
+	 MIME-Version; b=mQ7/HFBTCVUiBfLgrzg7lVvZc05gvFM0cC+1F1vQYPD1dYr2NQomPr377EiImG8/WKAVAEiP/t8ofCtU3DRaqjyfCtxwJ0uTDXqkpK7J8To+CE9eDGOOncNvgqyY/1BAp5BrrsumFsOYwUQZLeRNmKsQaPsXrjrTFIqomRbSwr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbtzy06s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33740C4CEC3;
+	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208445;
-	bh=ndi12aesAPSaAL6apTpgRaH2nxN+Uc8HKW2fE+YSecE=;
+	s=korg; t=1725209423;
+	bh=WJcrFWUzko5hFoqeYBL1+pW5fHbFQV+tLBRjvn559Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvrH4My+lx0tYJwfjcTAKQI2PeROzQer0ofto62sQWYqPczFC+XBTimZJHIHN39Pj
-	 VIJQFs36m9wJSgpZX/OEVp8PG0QXQxy88MkuCo67wR9yu7OOjKbFvVGHGKqDo4nosY
-	 CkDDiuqk+Bf5yBpIfCEi1u6bLtGo/NKIVFVR1afE=
+	b=jbtzy06s6ZiBBEkVKWWS4skgkRBdRdiOpRTXqIoHfmLkMzER5F919vKyfAHu+lyuJ
+	 bjVCxsLvRFPPHutR/qAIQGU9WEuQwZq6vBREE9Wy1JLbIak1HTdh+rqK2u3/nr2TFn
+	 9UeuNFhAoGBPocfAxeOdyA109i2udzp0ni6aXIBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 057/149] ASoC: cs-amp-lib-test: Force test calibration blob entries to be valid
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.10 008/151] dm persistent data: fix memory allocation failure
 Date: Sun,  1 Sep 2024 18:16:08 +0200
-Message-ID: <20240901160819.613972675@linuxfoundation.org>
+Message-ID: <20240901160814.411713333@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit bff980d8d9ca537fd5f3c0e9a99876c1e3713e81 ]
+commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
 
-For a normal calibration blob the calTarget values must be non-zero and
-unique, and the calTime values must be non-zero. Don't rely on
-get_random_bytes() to be random enough to guarantee this. Force the
-calTarget and calTime values to be valid while retaining randomness
-in the values.
+kmalloc is unreliable when allocating more than 8 pages of memory. It may
+fail when there is plenty of free memory but the memory is fragmented.
+Zdenek Kabelac observed such failure in his tests.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 177862317a98 ("ASoC: cs-amp-lib: Add KUnit test for calibration helpers")
-Link: https://patch.msgid.link/20240822115725.259568-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
+vmalloc if the large allocation fails.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs-amp-lib-test.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs-amp-lib-test.c b/sound/soc/codecs/cs-amp-lib-test.c
-index 15f991b2e16e2..8169ec88a8ba8 100644
---- a/sound/soc/codecs/cs-amp-lib-test.c
-+++ b/sound/soc/codecs/cs-amp-lib-test.c
-@@ -38,6 +38,7 @@ static void cs_amp_lib_test_init_dummy_cal_blob(struct kunit *test, int num_amps
+--- a/drivers/md/persistent-data/dm-space-map-metadata.c
++++ b/drivers/md/persistent-data/dm-space-map-metadata.c
+@@ -275,7 +275,7 @@ static void sm_metadata_destroy(struct d
  {
- 	struct cs_amp_lib_test_priv *priv = test->priv;
- 	unsigned int blob_size;
-+	int i;
+ 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
  
- 	blob_size = offsetof(struct cirrus_amp_efi_data, data) +
- 		    sizeof(struct cirrus_amp_cal_data) * num_amps;
-@@ -49,6 +50,14 @@ static void cs_amp_lib_test_init_dummy_cal_blob(struct kunit *test, int num_amps
- 	priv->cal_blob->count = num_amps;
- 
- 	get_random_bytes(priv->cal_blob->data, sizeof(struct cirrus_amp_cal_data) * num_amps);
-+
-+	/* Ensure all timestamps are non-zero to mark the entry valid. */
-+	for (i = 0; i < num_amps; i++)
-+		priv->cal_blob->data[i].calTime[0] |= 1;
-+
-+	/* Ensure that all UIDs are non-zero and unique. */
-+	for (i = 0; i < num_amps; i++)
-+		*(u8 *)&priv->cal_blob->data[i].calTarget[0] = i + 1;
+-	kfree(smm);
++	kvfree(smm);
  }
  
- static u64 cs_amp_lib_test_get_target_uid(struct kunit *test)
--- 
-2.43.0
-
+ static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
+@@ -759,7 +759,7 @@ struct dm_space_map *dm_sm_metadata_init
+ {
+ 	struct sm_metadata *smm;
+ 
+-	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
++	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
+ 	if (!smm)
+ 		return ERR_PTR(-ENOMEM);
+ 
 
 
 
