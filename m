@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E92B967AEA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20EB9677FA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFAF3281F97
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3281C20EEA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8A918308E;
-	Sun,  1 Sep 2024 17:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC21183CDC;
+	Sun,  1 Sep 2024 16:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ow1tLMTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5ql9HfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D823398B;
-	Sun,  1 Sep 2024 17:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAAE44C97;
+	Sun,  1 Sep 2024 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210153; cv=none; b=DieGW6UmOcDMLafLDnDZ5voTNawKw278njZ1+Rmejt0qTxz0YXFVKT7y2KF8I0QPkPmCdYxQFteZerdSmUxG9embpahPifsYCEufIyhZ7YPBf4xOy6fznsQpMaPCTT1wKmh1aAhacSAFje+dGP4/4OiwvxSkH0zSl3k3S1rz3nE=
+	t=1725207983; cv=none; b=Bnva8kozN2XHOsmemWFG4lliBuvX2VEMVdumqeZRcvPxdKpQeDTkRBQwwPGCvyQ4DhdCz5bvIdFZbNs6T3MXNEHWAdXOCT9j3SgExEYiC28GsjDDwfPXZxfkWSZf3XvIJKtQaBuB1UQyMlBGKu294EYkaFM6ixvHoRq9+XjbCvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210153; c=relaxed/simple;
-	bh=vjDZUh4roFgAhAbT6CmkglmkLclui5edZtHBAwW5xao=;
+	s=arc-20240116; t=1725207983; c=relaxed/simple;
+	bh=/4pt3qKWLFQCaMrMK/i1jwse6+VlGqK5wsEFrUbMCNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOpn0DaEDGoD+fJPIWIH5vdgc9aOfcWzaYpWT6h/WANU9+craIMHcAOjl/1dIXWtjZTuK7KzChjCMkQLquCLo2PayNCXObE0ZF+C6vK36wiWG/5jXMoDvyCJohNoLKMd4I3oLL6GdK0AsOK4hmO+xD5I3u9EAzp+wz0r+b3pjdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ow1tLMTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A28C4CEC3;
-	Sun,  1 Sep 2024 17:02:32 +0000 (UTC)
+	 MIME-Version; b=HiezQxJ/xTfsPudyTGRtgO83/MVuYY4Nba1SbQBuKn7AcnngDhqXd2kXXp9AcK7DTzXzqXy5jr4LFyuusOC1A0iSmMSBVkctqCPJYLoVSOm0AGcW61ESCLjQc1sYHloIRXHdEn/9whcYCPkynlPZu02k1GDSSKd2YJzpVFttv3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5ql9HfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F716C4CEC3;
+	Sun,  1 Sep 2024 16:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210152;
-	bh=vjDZUh4roFgAhAbT6CmkglmkLclui5edZtHBAwW5xao=;
+	s=korg; t=1725207982;
+	bh=/4pt3qKWLFQCaMrMK/i1jwse6+VlGqK5wsEFrUbMCNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ow1tLMTM9sro/Akgx2UwFjyTFfs2ey8tj8mw/yN7c7JFwdzYI/2lSrDcM8dcRO/UG
-	 pMHgXG7bSAuImYBqqVRPG1TOGnuVXvTBo37waBnKd0LHYaBWbShYxN/rAisa4P1pVx
-	 4JW20b5myuKI830Kt064SGCpKzkhH1A48A8nNjYs=
+	b=q5ql9HfFhE2As4tW+4T1XKM8gU5Qu9IVwJT/mognVDmMKYvCWwdVLXd2LD5Ws27Kt
+	 dxXoF6ZY57j8t+raI15LQtQmdyoLX5g7njvzK8mqouyq30FfmS2eCSFNRaLdCEdfjz
+	 9zow/LqR1G1UbRwb795/oiNZEmQ2XJyojl4Devdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/215] fs: binfmt_elf_efpic: dont use missing interpreters properties
+Subject: [PATCH 6.6 38/93] ovl: ovl_parse_param_lowerdir: Add missed \n for pr_err
 Date: Sun,  1 Sep 2024 18:16:25 +0200
-Message-ID: <20240901160826.111154858@linuxfoundation.org>
+Message-ID: <20240901160808.793617945@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
+[ Upstream commit 441e36ef5b347d9ab4f54f7b54853266be687556 ]
 
-Static FDPIC executable may get an executable stack even when it has
-non-executable GNU_STACK segment. This happens when STACK segment has rw
-permissions, but does not specify stack size. In that case FDPIC loader
-uses permissions of the interpreter's stack, and for static executables
-with no interpreter it results in choosing the arch-default permissions
-for the stack.
+Add '\n' for pr_err in function ovl_parse_param_lowerdir(), which
+ensures that error message is displayed at once.
 
-Fix that by using the interpreter's properties only when the interpreter
-is actually used.
-
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: b36a5780cb44 ("ovl: modify layer parameter parsing")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240705011510.794025-4-chengzhihao1@huawei.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/params.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index f51f6e4d1a322..a7084a720b28c 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -320,7 +320,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	else
- 		executable_stack = EXSTACK_DEFAULT;
+diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
+index 39919a10ce1c9..0f3768cf9e871 100644
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -453,7 +453,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ 		return 0;
  
--	if (stack_size == 0) {
-+	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
- 		stack_size = interp_params.stack_size;
- 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
- 			executable_stack = EXSTACK_ENABLE_X;
+ 	if (*name == ':') {
+-		pr_err("cannot append lower layer");
++		pr_err("cannot append lower layer\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -497,7 +497,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ 			 * there are no data layers.
+ 			 */
+ 			if (ctx->nr_data > 0) {
+-				pr_err("regular lower layers cannot follow data lower layers");
++				pr_err("regular lower layers cannot follow data lower layers\n");
+ 				goto out_err;
+ 			}
+ 
 -- 
 2.43.0
 
