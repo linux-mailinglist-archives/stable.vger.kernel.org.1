@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8B0967920
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C899678A0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6791C2097A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05367280F5D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0117E46E;
-	Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EDC183CBD;
+	Sun,  1 Sep 2024 16:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDfmwoQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ9iY7u/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A28E1C68C;
-	Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248155381A;
+	Sun,  1 Sep 2024 16:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208798; cv=none; b=A87N/q53pgIf8J2GFZcVHp1QaFcj22HeXIMgb8cG1PwSuFEEUpOvc47kggEBPzVxzsqiccYhKukTNcsz2i7DGu0BISaRPGaPZ8gxOvKxFf+7cp2nYiVypfYakxqFBiv3mcStN402JiIf3ZhXMnwn07TyteeGX3jy/j1VI1SuR0s=
+	t=1725208422; cv=none; b=O2SHtmudILnEmsaZPeP80HAOyBU475+3mWpL2MMwPEKlX69sWloN5T5zsUygu0Yl1NffgpENBHrDsYWpQFukhR7a8bxlqCnmt0w0/sHDZhuJuO9z256nbFEwmhHfc4fFZ90WNkWV9Nw6Pj3ByOles03+AfFbYfAYoGbFT87WZq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208798; c=relaxed/simple;
-	bh=6tXgB703y893M6UWgpr8bbmXLxQHd400AeX1DAhNLi0=;
+	s=arc-20240116; t=1725208422; c=relaxed/simple;
+	bh=v4g/Vz56LyYs8rzw2ISzuXYAoAjpzQ9D6Tx1kdZ0DaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1uuR0Knp9arlF1KjgapO0cUIvHvxqnA1DhUoSZyoF8rqoKhDiW/ThTCKqfEy2qsJ/gu0cM45QQQtmlGvXNzMrTn6fYKCm1G2uyrxTaCVlf273IiVwV2fWaO9+fiDJrBKsA7Am4cNrzRxJsFXtMMGQ84ffHtCXQKmC19inc85ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDfmwoQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6B2C4CEC3;
-	Sun,  1 Sep 2024 16:39:57 +0000 (UTC)
+	 MIME-Version; b=uaXGsDswLALM/Ahd/aa6347aTv+9YYc3LkLwqa/794PK065ZV8v0t7RpMqG+E4/s9DTXl7y7K3MocZYTPJtrh4bBjp4ir2XJgjTEbjH21BGCsLsHNc+JAokK7Rs/9IQ3sDB5vaCv36YlLQ0nmbo41Aq7jwcptG3Ihk06QcCpKQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ9iY7u/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF5C4CEC3;
+	Sun,  1 Sep 2024 16:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208798;
-	bh=6tXgB703y893M6UWgpr8bbmXLxQHd400AeX1DAhNLi0=;
+	s=korg; t=1725208422;
+	bh=v4g/Vz56LyYs8rzw2ISzuXYAoAjpzQ9D6Tx1kdZ0DaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDfmwoQUpH6QJ0L5mjk85oskX/hyUWxtUrVSnN7ZGzBmnHEMzqoQ22wxDApzxXQHy
-	 wayKX8pU3M51ZoBIAa0ZwM4EhzW2JZkVN3pX8hUyM+Vc3urr/HXX+kkgNZHvkN9Ihd
-	 Fu6n9CKSOUigr4zExAVokXYNBPJwfQBMe1VfDuug=
+	b=nJ9iY7u/7V4elHoI2Mck2dnYlkNBA3+i4yoUaQunanW7BXv2cw6GxzEU42sdEZ1a9
+	 lWomxNysGd+MR/qPqdrbRDVTK2mp/QvlORP645eHn+dJkQIDqgezO+JgplEsBc59c4
+	 w4KpVALBFWoRdneZO5bv40GG3tZiIfwYj/r/I6c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/134] nvmet-trace: avoid dereferencing pointer too early
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.10 077/149] cpufreq/amd-pstate: Use topology_logical_package_id() instead of logical_die_id()
 Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160811.692181193@linuxfoundation.org>
+Message-ID: <20240901160820.363068340@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 0e716cec6fb11a14c220ee17c404b67962e902f7 ]
+commit 0d8584d288a9b4132e945d76bcc04395d158b2e7 upstream.
 
-The first command issued from the host to the target is the fabrics
-connect command. At this point, neither the target queue nor the
-controller have been allocated. But we already try to trace this command
-in nvmet_req_init.
+After the commit 63edbaa48a57 ("x86/cpu/topology: Add support for the
+AMD 0x80000026 leaf"), the topolgy_logical_die_id() function returns
+the logical Core Chiplet Die (CCD) ID instead of the logical socket
+ID.
 
-Reported by KASAN.
+Since this is currently used to set MSR_AMD_CPPC_ENABLE, which needs
+to be set on any one of the threads of the socket, it is prudent to
+use topology_logical_package_id() in place of
+topology_logical_die_id().
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
+cc: stable@vger.kernel.org # 6.10
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Tested-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Link: https://lore.kernel.org/lkml/20240801124509.3650-1-Dhananjay.Ugwekar@amd.com/
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/trace.c |  6 +++---
- drivers/nvme/target/trace.h | 28 +++++++++++++++++-----------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/cpufreq/amd-pstate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
-index 1373a3c67962a..a3564e12927b6 100644
---- a/drivers/nvme/target/trace.c
-+++ b/drivers/nvme/target/trace.c
-@@ -195,7 +195,7 @@ const char *nvmet_trace_disk_name(struct trace_seq *p, char *name)
- 	return ret;
- }
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -329,7 +329,7 @@ static inline int pstate_enable(bool ena
+ 		return 0;
  
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id)
- {
- 	const char *ret = trace_seq_buffer_ptr(p);
+ 	for_each_present_cpu(cpu) {
+-		unsigned long logical_id = topology_logical_die_id(cpu);
++		unsigned long logical_id = topology_logical_package_id(cpu);
  
-@@ -208,8 +208,8 @@ const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
- 	 * If we can know the extra data of the connect command in this stage,
- 	 * we can update this print statement later.
- 	 */
--	if (ctrl)
--		trace_seq_printf(p, "%d", ctrl->cntlid);
-+	if (ctrl_id)
-+		trace_seq_printf(p, "%d", ctrl_id);
- 	else
- 		trace_seq_printf(p, "_");
- 	trace_seq_putc(p, 0);
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 3f61b6657175e..5b00a338d52ca 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -32,18 +32,24 @@ const char *nvmet_trace_parse_fabrics_cmd(struct trace_seq *p, u8 fctype,
- 	 nvmet_trace_parse_nvm_cmd(p, opcode, cdw10) :			\
- 	 nvmet_trace_parse_admin_cmd(p, opcode, cdw10)))
- 
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl);
--#define __print_ctrl_name(ctrl)				\
--	nvmet_trace_ctrl_name(p, ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id);
-+#define __print_ctrl_id(ctrl_id)			\
-+	nvmet_trace_ctrl_id(p, ctrl_id)
- 
- const char *nvmet_trace_disk_name(struct trace_seq *p, char *name);
- #define __print_disk_name(name)				\
- 	nvmet_trace_disk_name(p, name)
- 
- #ifndef TRACE_HEADER_MULTI_READ
--static inline struct nvmet_ctrl *nvmet_req_to_ctrl(struct nvmet_req *req)
-+static inline u16 nvmet_req_to_ctrl_id(struct nvmet_req *req)
- {
--	return req->sq->ctrl;
-+	/*
-+	 * The queue and controller pointers are not valid until an association
-+	 * has been established.
-+	 */
-+	if (!req->sq || !req->sq->ctrl)
-+		return 0;
-+	return req->sq->ctrl->cntlid;
- }
- 
- static inline void __assign_req_name(char *name, struct nvmet_req *req)
-@@ -60,7 +66,7 @@ TRACE_EVENT(nvmet_req_init,
- 	TP_ARGS(req, cmd),
- 	TP_STRUCT__entry(
- 		__field(struct nvme_command *, cmd)
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(u16, cid)
-@@ -73,7 +79,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_fast_assign(
- 		__entry->cmd = cmd;
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__assign_req_name(__entry->disk, req);
- 		__entry->qid = req->sq->qid;
- 		__entry->cid = cmd->common.command_id;
-@@ -87,7 +93,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
- 		  "meta=%#llx, cmd=(%s, %s)",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->nsid,
- 		__entry->flags, __entry->metadata,
-@@ -101,7 +107,7 @@ TRACE_EVENT(nvmet_req_complete,
- 	TP_PROTO(struct nvmet_req *req),
- 	TP_ARGS(req),
- 	TP_STRUCT__entry(
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(int, cid)
-@@ -109,7 +115,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__field(u16, status)
- 	),
- 	TP_fast_assign(
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__entry->qid = req->cq->qid;
- 		__entry->cid = req->cqe->command_id;
- 		__entry->result = le64_to_cpu(req->cqe->result.u64);
-@@ -117,7 +123,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__assign_req_name(__entry->disk, req);
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, res=%#llx, status=%#x",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->result, __entry->status)
- 
--- 
-2.43.0
-
+ 		if (test_bit(logical_id, &logical_proc_id_mask))
+ 			continue;
 
 
 
