@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E0B967948
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260349677D6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521032821A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8538B216B6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53E817E8EA;
-	Sun,  1 Sep 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32405181B88;
+	Sun,  1 Sep 2024 16:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jre+DbmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQLPWIUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E92B9C7;
-	Sun,  1 Sep 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5166143C6E;
+	Sun,  1 Sep 2024 16:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208921; cv=none; b=j5y6orYgxxQnwsN23mqp0AkXt01YTr3YPUGukLi7+z86qk+9plpyXh4KDooH2xAA8CqXVqMvbmbzMflxUWY8bwax/cJBSEqQkF5cU8CBy5gURPa5ugSEtWkeKl37MeqWMRjsUGxuJvbkpStDqZnPeOqmREiZ2cnp4RsP7T/bIIA=
+	t=1725207876; cv=none; b=VCSOhMgoDqz3LXWF8u9c/2XY1YEM9IBhF3QMglGuSP0iSJnLVPCserorcLw7U52vPbpKpmsqExYW+fbmWcMD9tpZ7D3QlsKTN5621TzsyF7FRGOPLzzo1K7K81ZFbgJDFGEVSRocQc6vLxqaFvn6CRBRipGW77ZFZn/yrMpXloc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208921; c=relaxed/simple;
-	bh=vo/17mCWQWoQJaN87SoYKPsyEsiWuOtYqYMddRkQ7hc=;
+	s=arc-20240116; t=1725207876; c=relaxed/simple;
+	bh=3PGWYWMq16rvRyC6kQGbDRr8bkDighmFhhIdGhtokhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzKo9WVJsps3Yt8GBxtlj8OLYAgqBjHj246bfAq6STyvlAxsQ8SzKbUC4Sz7uuOxQiUwRvn+5qFZ3M1LjXIVkSEn3QSqDiquAiOVQYh7SL2dUol+QiKpj05/gtDQoPZbGRG+O2mkuWzAPylB49/JVCenmxd5WKuQgcCJZZy2sBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jre+DbmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E4FC4CEC3;
-	Sun,  1 Sep 2024 16:42:00 +0000 (UTC)
+	 MIME-Version; b=sNvRNdlqB6wBG/2538qcvWKbht9E5mzXY7i5kVOyxMuKzdwBUPmkQlULi+QHmr/6cSS51cM5pZ+3zvEDq7JOS/O8p9XhtHp67OuXxQWWlpPdXcFmV7LxHB82s7ZDvtdK2RkqxupP5x9NHqYDmva4T8Uxd0JY0OF/TpFmpF42ds8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQLPWIUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5D0C4CEC3;
+	Sun,  1 Sep 2024 16:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208921;
-	bh=vo/17mCWQWoQJaN87SoYKPsyEsiWuOtYqYMddRkQ7hc=;
+	s=korg; t=1725207875;
+	bh=3PGWYWMq16rvRyC6kQGbDRr8bkDighmFhhIdGhtokhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jre+DbmQdGwNwKtm7Jk8tEiZ9GS5T7f7o9+w9sci+mREtrmgLAD1sDlV+sG2YQJd7
-	 yCYAowBU9yebK3qY3c4dWXLIf4AsCW7KWmUhizido4Zxva9B5dbQjtoZ31tAGENuKs
-	 DQxEoKfp1fis8FBfcXTtgCt6/UgI1HdFRFSzPtIc=
+	b=TQLPWIUh9+4rmRG+ScAV65p4l0De95lg5FtDtsdusQ63lgqT6XP8eSmTKRq7DfZwo
+	 VCplU8Jm+QLb+woHls+8R4tKS6kRx0Zo2LwaLe1UROS+hyB/xo9w7Bn3G4nT4b+J08
+	 zjF1begS7tab5Y2q+iOLBI81n1CBqvgbytKtR2kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
+	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
+	Ben Hutchings <benh@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/134] Bluetooth: Make use of __check_timeout on hci_sched_le
+Subject: [PATCH 4.19 96/98] scsi: aacraid: Fix double-free on probe failure
 Date: Sun,  1 Sep 2024 18:17:06 +0200
-Message-ID: <20240901160813.110000056@linuxfoundation.org>
+Message-ID: <20240901160807.319016392@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ben Hutchings <benh@debian.org>
 
-[ Upstream commit 1b1d29e5149990e44634b2e681de71effd463591 ]
+[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
 
-This reuse __check_timeout on hci_sched_le following the same logic
-used hci_sched_acl.
+aac_probe_one() calls hardware-specific init functions through the
+aac_driver_ident::init pointer, all of which eventually call down to
+aac_init_adapter().
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
+If aac_init_adapter() fails after allocating memory for aac_dev::queues,
+it frees the memory but does not clear that member.
+
+After the hardware-specific init function returns an error,
+aac_probe_one() goes down an error path that frees the memory pointed to
+by aac_dev::queues, resulting.in a double-free.
+
+Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
+Link: https://bugs.debian.org/1075855
+Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/scsi/aacraid/comminit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 71a7e42097cc0..6caef575c628c 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4240,15 +4240,10 @@ static void hci_sched_le(struct hci_dev *hdev)
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index 0dc7b5a4fea25..0378fd3eb0392 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -652,6 +652,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
  
--	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
--		/* LE tx timeout must be longer than maximum
--		 * link supervision timeout (40.9 seconds) */
--		if (!hdev->le_cnt && hdev->le_pkts &&
--		    time_after(jiffies, hdev->le_last_tx + HZ * 45))
--			hci_link_tx_to(hdev, LE_LINK);
--	}
--
- 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
-+
-+	__check_timeout(hdev, cnt);
-+
- 	tmp = cnt;
- 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
+ 	if (aac_comm_init(dev)<0){
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 	/*
+@@ -659,6 +660,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 	 */
+ 	if (aac_fib_setup(dev) < 0) {
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 		
 -- 
 2.43.0
 
