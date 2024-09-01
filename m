@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5A0967A9C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD04967855
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0116B1C20FF5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E37F7B214FE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515A018132A;
-	Sun,  1 Sep 2024 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E83417E46E;
+	Sun,  1 Sep 2024 16:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f46/ORBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqWHTwaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DF01E87B;
-	Sun,  1 Sep 2024 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C09D537FF;
+	Sun,  1 Sep 2024 16:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209911; cv=none; b=HpvA8R30x4FXdGUTCNFe6y2EOyL0xHnITAvAYInOmmMQfDC1w6OR5uPL7DhEL8IaV+cEtVBXbqDAPAvEQouaaIr5O7jYxooQARFP6jR6yNmOBatHGomFmjXETmeBLpH8/MtxuFO2aZPgtpwjPB+8YSbI07QrHswhVkiY03hECnc=
+	t=1725208241; cv=none; b=kM0vWLHBYuQgy2D9vExcvxTp9qFsfoEzYyPVfZEgGXGcy9YmmiGNOLHAYgY/FcxMUTNXnNjCt/M8Q9BG8YBa6lkLXskUKpwTg5snYwYvvu2IQQ7VhXgqgOb3wfO2FNHDrEx2sgpp39L5r5Yfiia2KitBxht/cjd9RBAJ05EqiXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209911; c=relaxed/simple;
-	bh=6KEiIsC9whRdk7zZvvuEwSn97enDhOqmV9q8BaiVuyU=;
+	s=arc-20240116; t=1725208241; c=relaxed/simple;
+	bh=PUpy0cisUvFfTdHo9NxsCdsz18lKhMDGZOiQNiFw1UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQpdZiChVdjvyncNrgeMCCqPsX5cCHxK2gYzm7GAec3jNvSM9Vhz4ok/Q8tO3axTUduVVy4FA/CEP3e85exYa1/PNpVBPDeaW3Nefny8UnJW7Pn/HGVQP6BNu48XGyllZlEV9rv5XpbF1l+isUI+X7VZ2fB+QSmJCqzgm/sNCVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f46/ORBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73855C4CEC3;
-	Sun,  1 Sep 2024 16:58:30 +0000 (UTC)
+	 MIME-Version; b=V00rERiDIa0RSO67SY8RjTnZLxs2QS9x2gWpsyJGrrVKNiIU+P0kVdL5SjdUymkcpMPadZy2/EWKUAQ9PU1jQsUWcjD4c7NJpj1xkd9fKnkCSXHdvr4VZi/BOJc9k8BFCIfEeBPLza7d4hi0CSckdE79D81tBAF9Z9hoAk9vdp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqWHTwaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FD5C4CEC3;
+	Sun,  1 Sep 2024 16:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209910;
-	bh=6KEiIsC9whRdk7zZvvuEwSn97enDhOqmV9q8BaiVuyU=;
+	s=korg; t=1725208241;
+	bh=PUpy0cisUvFfTdHo9NxsCdsz18lKhMDGZOiQNiFw1UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f46/ORBZT/viWkBQYP7Pp0UROuMXV2W5c68Ui0keYo98Zp6Eq6Ni52EEk29wr0QsI
-	 BCo5LpMihnaZGpdaeXe2S1cGYqxDrRlANaXilE7Q8jrxFAdTORH4gIydpg10hZq6QG
-	 1qEJh3QWKs5FMV1nVovuC3eaXakmJ5OD9kVtG9WM=
+	b=OqWHTwaXUIkPeuwqto6W8Rqkhk5kOJmQDfAlWikoJVSyWtxV8S/rYAP9fvNW00cyN
+	 85gIdYKFUGekbitaQ++koK5j+fYBMnFB+Ec7HR7RUF6j2IlUIhOMxwxREGNcNbcN4p
+	 srS3hDBpexcXbEBpmEaM+CQowwy+p75nA2RK2f1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eli Billauer <eli.billauer@gmail.com>
-Subject: [PATCH 5.15 003/215] char: xillybus: Refine workqueue handling
+	John Sweeney <john.sweeney@runbox.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 004/149] ALSA: hda/realtek: Enable mute/micmute LEDs on HP Laptop 14-ey0xxx
 Date: Sun,  1 Sep 2024 18:15:15 +0200
-Message-ID: <20240901160823.366496280@linuxfoundation.org>
+Message-ID: <20240901160817.632613500@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eli Billauer <eli.billauer@gmail.com>
+From: John Sweeney <john.sweeney@runbox.com>
 
-commit ad899c301c880766cc709aad277991b3ab671b66 upstream.
+commit 56314c0d78d6f5a60c8804c517167991a879e14a upstream.
 
-As the wakeup work item now runs on a separate workqueue, it needs to be
-flushed separately along with flushing the device's workqueue.
+HP Pavilion Plus 14-ey0xxx needs existing quirk
+ALC245_FIXUP_HP_X360_MUTE_LEDS to enable its mute/micmute LEDs.
 
-Also, move the destroy_workqueue() call to the end of the exit method,
-so that deinitialization is done in the opposite order of
-initialization.
-
-Fixes: ccbde4b128ef ("char: xillybus: Don't destroy workqueue from work item running on it")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
-Link: https://lore.kernel.org/r/20240816070200.50695-1-eli.billauer@gmail.com
+Signed-off-by: John Sweeney <john.sweeney@runbox.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/E1sfhrD-0007TA-HC@rmmprod05.runbox
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/xillybus/xillyusb.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/char/xillybus/xillyusb.c
-+++ b/drivers/char/xillybus/xillyusb.c
-@@ -2079,9 +2079,11 @@ static int xillyusb_discovery(struct usb
- 	 * just after responding with the IDT, there is no reason for any
- 	 * work item to be running now. To be sure that xdev->channels
- 	 * is updated on anything that might run in parallel, flush the
--	 * workqueue, which rarely does anything.
-+	 * device's workqueue and the wakeup work item. This rarely
-+	 * does anything.
- 	 */
- 	flush_workqueue(xdev->workq);
-+	flush_work(&xdev->wakeup_workitem);
- 
- 	xdev->num_channels = num_channels;
- 
-@@ -2258,9 +2260,9 @@ static int __init xillyusb_init(void)
- 
- static void __exit xillyusb_exit(void)
- {
--	destroy_workqueue(wakeup_wq);
--
- 	usb_deregister(&xillyusb_driver);
-+
-+	destroy_workqueue(wakeup_wq);
- }
- 
- module_init(xillyusb_init);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10221,6 +10221,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c15, "HP Spectre x360 2-in-1 Laptop 14-eu0xxx", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x8c16, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8c17, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8c21, "HP Pavilion Plus Laptop 14-ey0XXX", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c48, "HP EliteBook 860 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
 
 
 
