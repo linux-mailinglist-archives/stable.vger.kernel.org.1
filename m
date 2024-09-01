@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B396794E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C45967A2B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0917A1F212F6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 018201C2139F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E3817E46E;
-	Sun,  1 Sep 2024 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEA317E900;
+	Sun,  1 Sep 2024 16:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4xtNah+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHqd7YRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F9E2B9C7;
-	Sun,  1 Sep 2024 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E0244393;
+	Sun,  1 Sep 2024 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208942; cv=none; b=D3rhuR4imNhULjRarrOlTwK2nsMU2t2MWBCpy10eBZOXHZHzBW2oUAKmkVZdrMFJu1Y+u19BiDpSG8KZRibjRyMMCJmYfxzeMhJ5knkCiBlplR6amYBchOpV6Czn1MGCaE3/nt+BKdg7UayAB4oydgxQQMZ4YzLW4yr12AqPW0I=
+	t=1725209548; cv=none; b=Fr7jPfpZm8GfX6KdwkCHvIYSSWPbXWxAaKYT7K9Gn7PxGRgVoZvghMm0ZlBuW91d3p/KRoLsnfwu/5aWsdFYjFQrDILF1zL1Zd3CU/WowhQGwPF7Qwq5IDrMREeffrBVeABmJfzFOqrakkxlBfZnoVyRZW8xku7SvMPMIKEaeoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208942; c=relaxed/simple;
-	bh=80S/o+h9kNSKLp17q9mICVpzI7N1B506xYA036GPdwI=;
+	s=arc-20240116; t=1725209548; c=relaxed/simple;
+	bh=EGLlrjWZUk/Iox/sBz4k0mmXd03SwEqpZPHhzdCMv34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzZwRDlyIxHjt+MuU5vW6k6e/oM34ellrEHYkZLUt37oMQEpR9vFowSocwzYkP55sIRJXYj5rTGs/LCRHpE94Jxgs3bUIWD7lZSROYd+/3VQI/T4Hk/2AmhDkKcS3HuDhSBmWykkj89oqpcCrcoP5I4rNIbx6bGFYHsdXtCGjYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4xtNah+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87217C4CEC3;
-	Sun,  1 Sep 2024 16:42:21 +0000 (UTC)
+	 MIME-Version; b=rL67zrVnsM7xShMB16xIy+UhNyPCkMAQ+vzk4BKTvg94ZEyXpFcb2pfHR2QixaHb7BQEieu8lsFjW/R7w5erdQ4O/ahvj7I8ezfdduF1SbwFMcTpzyKqekBA8goHzI0ihxrLmxkwO0Vv5MCkaTo2NNq/zGAov+cCGN2njFpPCQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHqd7YRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176E2C4CEC3;
+	Sun,  1 Sep 2024 16:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208942;
-	bh=80S/o+h9kNSKLp17q9mICVpzI7N1B506xYA036GPdwI=;
+	s=korg; t=1725209547;
+	bh=EGLlrjWZUk/Iox/sBz4k0mmXd03SwEqpZPHhzdCMv34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4xtNah+wrwT61gxgtpP5tq4PLqWHf58wzk1WHVmnU1MPwLsT2yZfluoAKZhAmmy9
-	 cIgTrvOZa03xxvkv6Xt4ASFKcahhM8y8Paj9TShl0Ppmt6zHYpBleszgNYBeFTPtSC
-	 sHjL4zyAgy5UX/VjKC7gD7FLLYD2kPmyj1A8nat8=
+	b=vHqd7YRwSpCaw1Vahw6sAYCoBIf7SjComPJeat6JbJLqy9PpVmBJQbT5uld6o90/R
+	 BlmjotfFXeJmyP1IeM0Hg93et6DOdcMxqRKIBN9DQAfOoo5wbz5UrsQDSBZNR1m59e
+	 t+y6UbZdZydkDUcETuNZLcnCjM6VR1WPG2/fXVVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/134] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
+Subject: [PATCH 5.10 071/151] net: hns3: add checking for vf id of mailbox
 Date: Sun,  1 Sep 2024 18:17:11 +0200
-Message-ID: <20240901160813.301999160@linuxfoundation.org>
+Message-ID: <20240901160816.787219728@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
+[ Upstream commit 4e2969a0d6a7549bc0bc1ebc990588b622c4443d ]
 
-nft_counter_reset() resets the counter by subtracting the previously
-retrieved value from the counter. This is a write operation on the
-counter and as such it requires to be performed with a write sequence of
-nft_counter_seq to serialize against its possible reader.
+Add checking for vf id of mailbox, in order to avoid array
+out-of-bounds risk.
 
-Update the packets/ bytes within write-sequence of nft_counter_seq.
-
-Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index f6d4d0fa23a62..bf829fabf2785 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -105,11 +105,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
- 			      struct nft_counter *total)
- {
- 	struct nft_counter *this_cpu;
-+	seqcount_t *myseq;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 51b7b46f2f309..9969714d1133d 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -715,10 +715,11 @@ void hclge_mbx_handler(struct hclge_dev *hdev)
+ 		req = (struct hclge_mbx_vf_to_pf_cmd *)desc->data;
  
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
-+	myseq = this_cpu_ptr(&nft_counter_seq);
-+
-+	write_seqcount_begin(myseq);
- 	this_cpu->packets -= total->packets;
- 	this_cpu->bytes -= total->bytes;
-+	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
+ 		flag = le16_to_cpu(crq->desc[crq->next_to_use].flag);
+-		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B))) {
++		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B) ||
++			     req->mbx_src_vfid > hdev->num_req_vfs)) {
+ 			dev_warn(&hdev->pdev->dev,
+-				 "dropped invalid mailbox message, code = %u\n",
+-				 req->msg.code);
++				 "dropped invalid mailbox message, code = %u, vfid = %u\n",
++				 req->msg.code, req->mbx_src_vfid);
  
+ 			/* dropping/not processing this invalid message */
+ 			crq->desc[crq->next_to_use].flag = 0;
 -- 
 2.43.0
 
