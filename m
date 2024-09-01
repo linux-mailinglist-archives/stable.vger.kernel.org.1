@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACB99679F0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEFB967806
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 886662815E0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402DC1F21968
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A01D184538;
-	Sun,  1 Sep 2024 16:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C483818132F;
+	Sun,  1 Sep 2024 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYrof1xw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmJHl5f0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F23184524;
-	Sun,  1 Sep 2024 16:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC633987;
+	Sun,  1 Sep 2024 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209376; cv=none; b=OkIWKOU+HBJRYtDrPPSPmUomZTP3diQREqOQmhoAJ4wFCSTznAFg/qca6hNwoD/UxcFcVGo03nGYAVwQF5F/fMls5m9OFhLCobTwOOyWzWNAAKrsHOAgXTRIgD3GmhTqIOmRDidigBdgY5fnsFCnlHDfXhASStkjdNc0ibo1sno=
+	t=1725208014; cv=none; b=YxlgUgxl/5JWonc+lLIFquP0PqjmDwOX7bRSPL8rBTobVn9bm/w3cNEAGm6Afd3J8o2cy4veTKAsXlduRWRq+ZtGSm+UdIWQ4UQ0xtuTKJpzzWPRyQuugUYgsJr0bBjYrLBEIl3Wn4tC37sT3OahX1CUyawbfglYC6aOblUHayU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209376; c=relaxed/simple;
-	bh=2P+bz1W2eMqOK64jzrpAULpIOseXSwwoM7j8Qlqa+0Y=;
+	s=arc-20240116; t=1725208014; c=relaxed/simple;
+	bh=ggAOvFXRdg9mBIzIRPFDVXL401cz5ncV7jPIbjEVVp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q92Dn/GI9CIqdKBhPM0h7hKX9VqY9UighTPYRFnr7//4uHpcBkfgKQzJXBZMfPv8LtI3bQ5ZQcEqR/Fh7Ameid/hrpFnfolofEQSPf1pstqEzsLLOHpAgcYdiWGhA+etnk68EE0QqcO4G8jWM/ZrTdKILiA1qKDrR7Sa1zHqNhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYrof1xw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A20C4CEC3;
-	Sun,  1 Sep 2024 16:49:36 +0000 (UTC)
+	 MIME-Version; b=d0P/XLVUA5HsOlHyv6Qx5BvtTGmMP11GLtuoUSyoq2xlywiMbWNB/KG9kNJ6dJw47jXbucCB/IjFOVdfwekaHiG9ds8Urfe2Sg72ahaXiVfbi7d0RDt+rte5Lhwim6ak9xIyjtjBN8Gtb5xT6bDmi8OjjrVPKBcm1viScDdyq2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmJHl5f0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00129C4CEC3;
+	Sun,  1 Sep 2024 16:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209376;
-	bh=2P+bz1W2eMqOK64jzrpAULpIOseXSwwoM7j8Qlqa+0Y=;
+	s=korg; t=1725208014;
+	bh=ggAOvFXRdg9mBIzIRPFDVXL401cz5ncV7jPIbjEVVp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYrof1xw5/J4ts/l7vMYWeiQVZ31La7iT97+Wp1tmKrmCo56m7X1cFB3f5b3Mu3bI
-	 iBG+va4UCou5yvM8OUcM0716zoFKe0aoRv5BOucFYFX0WSOUABYA6Gqsas32oVAdo+
-	 xpB1SuaItRh8Rjqju+wZxf+3kB7XCI0MYqOhpsTk=
+	b=wmJHl5f0P7sJHpMzfEZ2AvuvaoGxnZ1DloIYeZbv7E01ICBJ1IzGiOsxyB91o7mzf
+	 CpKT+zqIHER/vBRYyevBub3REEas01BDQjeYGB0lWHtLz+McPJ6d1XyDinczJgce/x
+	 ueako/nyQY8J7bqKPRrOIoOUEyb1M/uOwOmAUgI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 017/151] s390/cio: rename bitmap_size() -> idset_bitmap_size()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 30/93] thermal: of: Fix OF node leak in thermal_of_trips_init() error path
 Date: Sun,  1 Sep 2024 18:16:17 +0200
-Message-ID: <20240901160814.749613350@linuxfoundation.org>
+Message-ID: <20240901160808.494274932@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
+[ Upstream commit afc954fd223ded70b1fa000767e2531db55cce58 ]
 
-bitmap_size() is a pretty generic name and one may want to use it for
-a generic bitmap API function. At the same time, its logic is not
-"generic", i.e. it's not just `nbits -> size of bitmap in bytes`
-converter as it would be expected from its name.
-Add the prefix 'idset_' used throughout the file where the function
-resides.
+Terminating for_each_child_of_node() loop requires dropping OF node
+reference, so bailing out after thermal_of_populate_trip() error misses
+this.  Solve the OF node reference leak with scoped
+for_each_child_of_node_scoped().
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/idset.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/thermal/thermal_of.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -16,7 +16,7 @@ struct idset {
- 	unsigned long bitmap[];
- };
- 
--static inline unsigned long bitmap_size(int num_ssid, int num_id)
-+static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index d5174f11b91c2..e7d25e70fb93e 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -123,7 +123,7 @@ static int thermal_of_populate_trip(struct device_node *np,
+ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *ntrips)
  {
- 	return bitmap_size(size_mul(num_ssid, num_id));
- }
-@@ -25,11 +25,12 @@ static struct idset *idset_new(int num_s
- {
- 	struct idset *set;
+ 	struct thermal_trip *tt;
+-	struct device_node *trips, *trip;
++	struct device_node *trips;
+ 	int ret, count;
  
--	set = vmalloc(sizeof(struct idset) + bitmap_size(num_ssid, num_id));
-+	set = vmalloc(sizeof(struct idset) +
-+		      idset_bitmap_size(num_ssid, num_id));
- 	if (set) {
- 		set->num_ssid = num_ssid;
- 		set->num_id = num_id;
--		memset(set->bitmap, 0, bitmap_size(num_ssid, num_id));
-+		memset(set->bitmap, 0, idset_bitmap_size(num_ssid, num_id));
- 	}
- 	return set;
- }
-@@ -41,7 +42,8 @@ void idset_free(struct idset *set)
+ 	trips = of_get_child_by_name(np, "trips");
+@@ -148,7 +148,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+ 	*ntrips = count;
  
- void idset_fill(struct idset *set)
- {
--	memset(set->bitmap, 0xff, bitmap_size(set->num_ssid, set->num_id));
-+	memset(set->bitmap, 0xff,
-+	       idset_bitmap_size(set->num_ssid, set->num_id));
- }
- 
- static inline void idset_add(struct idset *set, int ssid, int id)
+ 	count = 0;
+-	for_each_child_of_node(trips, trip) {
++	for_each_child_of_node_scoped(trips, trip) {
+ 		ret = thermal_of_populate_trip(trip, &tt[count++]);
+ 		if (ret)
+ 			goto out_kfree;
+-- 
+2.43.0
+
 
 
 
