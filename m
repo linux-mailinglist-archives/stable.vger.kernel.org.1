@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C0F967788
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1B3967926
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3AA281FAB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59F11F211C0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1352C1B4;
-	Sun,  1 Sep 2024 16:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F76917DFFC;
+	Sun,  1 Sep 2024 16:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJsQI3os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LceOHQWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16017E01C;
-	Sun,  1 Sep 2024 16:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C52A2B9C7;
+	Sun,  1 Sep 2024 16:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207652; cv=none; b=gxVRC7mce9jvCB5C6YlUk4oAD5XsfzgLBTwoDIEBIVQ9p5rGp6jTlS6q5fEX0pmIXBLLgG4pBfJg9+HV9deeML1QYlZRyn5j8JebWRXHU23GdUMnML8CvudZ12eOqXDNjGvSNc847IA1j/+V45DNdGeAtzOiWNnOHd1dZHX5K6E=
+	t=1725208819; cv=none; b=b08S+dyACAlFaQcEApeISH3yb8RKGZpaAaP5q1mdl2ig48Mfr+HlXZ/wbjTbqPLuldQ4+wh9GPbrAFPiNAFY7FVDHSeZNLV30yN8cUrEZOwsdqxrJjOXiZHNXvc5vpyieOxd/Zmw3V+ynQc/+tKQp7nv7gR6msZFiwpnFoFlx48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207652; c=relaxed/simple;
-	bh=hPfffHJe+UY2pevyINT9srx/Zakw3X43IBlS+B0p83E=;
+	s=arc-20240116; t=1725208819; c=relaxed/simple;
+	bh=8fRsJU6BszFBYCEgvLwdJDU3M+0nJhWEBPhsnEYkfc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn/bIljw4F9gogwAWWdj6Ssx4S1OLnPPzrP5s9l/b4813brrnXfrhtOqNybOXbUN6e/eYKQQBS0gW0clOTpYEysA5/JOipseI9rIg5JdJyOLh7FEbBARdzsT7ntng+qgLJLyMcIxouiWaSOYNBk73zwT4l/kbr63BGu9C6gacmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJsQI3os; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F260C4CEC3;
-	Sun,  1 Sep 2024 16:20:50 +0000 (UTC)
+	 MIME-Version; b=oNn339Nemy8Cza+SeC5dsIGZMRy3q2/JKoV35AlSiy0gL7ehLYyGdsuhr8ZllQgWnRDG3Cwig4mZMmXNKY8RdwhwNzTpINEr30/YjL59lGCm8V/kVvcgOOlQ0oSTbh4DebkFNlE+BYB8Wwc9GxGDC1+4mCW6CLXvq/SorFt83w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LceOHQWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51519C4CEC3;
+	Sun,  1 Sep 2024 16:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207651;
-	bh=hPfffHJe+UY2pevyINT9srx/Zakw3X43IBlS+B0p83E=;
+	s=korg; t=1725208818;
+	bh=8fRsJU6BszFBYCEgvLwdJDU3M+0nJhWEBPhsnEYkfc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJsQI3osEezpwq00dcGt3CPyOCu2bw0vUGhvw1VWDCi48ckN0dNwzpoULSRTv1qx0
-	 eeGsLljsADZhZbYu9f5Q6GR8UzVNyz6nZXeiATiZ8R/AtvXUkRapUd340EnG9OgKXf
-	 31osg/UTM3A0eXKxCslhSzK5igZEYEhcWWmLhEpo=
+	b=LceOHQWYxcLLvQX5+ePeRQw0ZNqkd14mVQQdkebEBYUWTeU/7sC6tHjCxVU/I8RbM
+	 yRO745+4adTzbTF6eWHtV2mwSzCEbs9W0cp5K39ASGc55bHhQasD0AM1nigGToahEx
+	 gTeBU8tL/PL8MSmCbmd8D6amSj5cwIiu8xJ0LdYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 37/98] btrfs: handle invalid root reference found in may_destroy_subvol()
+Subject: [PATCH 5.4 021/134] net: axienet: Factor out TX descriptor chain cleanup
 Date: Sun,  1 Sep 2024 18:16:07 +0200
-Message-ID: <20240901160805.098421493@linuxfoundation.org>
+Message-ID: <20240901160810.907153559@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
+[ Upstream commit ab365c3393664f32116aa22fe322cb04a93fab31 ]
 
-The may_destroy_subvol() looks up a root by a key, allowing to do an
-inexact search when key->offset is -1.  It's never expected to find such
-item, as it would break the allowed range of a root id.
+Factor out the code that cleans up a number of connected TX descriptors,
+as we will need it to properly roll back a failed _xmit() call.
+There are subtle differences between cleaning up a successfully sent
+chain (unknown number of involved descriptors, total data size needed)
+and a chain that was about to set up (number of descriptors known), so
+cater for those variations with some extra parameters.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 79 +++++++++++++------
+ 1 file changed, 57 insertions(+), 22 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 7f675862ffb0e..15ebebed40056 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4296,7 +4296,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
- 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	BUG_ON(ret == 0);
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset -1 found, there would have to exist a root
-+		 * with such id, but this is out of valid range.
-+		 */
-+		ret = -EUCLEAN;
-+		goto out;
-+	}
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 22222d79e4902..4467719095432 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -546,32 +546,46 @@ static int axienet_device_reset(struct net_device *ndev)
+ }
  
- 	ret = 0;
- 	if (path->slots[0] > 0) {
+ /**
+- * axienet_start_xmit_done - Invoked once a transmit is completed by the
+- * Axi DMA Tx channel.
++ * axienet_free_tx_chain - Clean up a series of linked TX descriptors.
+  * @ndev:	Pointer to the net_device structure
++ * @first_bd:	Index of first descriptor to clean up
++ * @nr_bds:	Number of descriptors to clean up, can be -1 if unknown.
++ * @sizep:	Pointer to a u32 filled with the total sum of all bytes
++ * 		in all cleaned-up descriptors. Ignored if NULL.
+  *
+- * This function is invoked from the Axi DMA Tx isr to notify the completion
+- * of transmit operation. It clears fields in the corresponding Tx BDs and
+- * unmaps the corresponding buffer so that CPU can regain ownership of the
+- * buffer. It finally invokes "netif_wake_queue" to restart transmission if
+- * required.
++ * Would either be called after a successful transmit operation, or after
++ * there was an error when setting up the chain.
++ * Returns the number of descriptors handled.
+  */
+-static void axienet_start_xmit_done(struct net_device *ndev)
++static int axienet_free_tx_chain(struct net_device *ndev, u32 first_bd,
++				 int nr_bds, u32 *sizep)
+ {
+-	u32 size = 0;
+-	u32 packets = 0;
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 	struct axidma_bd *cur_p;
+-	unsigned int status = 0;
++	int max_bds = nr_bds;
++	unsigned int status;
++	int i;
++
++	if (max_bds == -1)
++		max_bds = lp->tx_bd_num;
++
++	for (i = 0; i < max_bds; i++) {
++		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
++		status = cur_p->status;
++
++		/* If no number is given, clean up *all* descriptors that have
++		 * been completed by the MAC.
++		 */
++		if (nr_bds == -1 && !(status & XAXIDMA_BD_STS_COMPLETE_MASK))
++			break;
+ 
+-	cur_p = &lp->tx_bd_v[lp->tx_bd_ci];
+-	status = cur_p->status;
+-	while (status & XAXIDMA_BD_STS_COMPLETE_MASK) {
+ 		dma_unmap_single(ndev->dev.parent, cur_p->phys,
+ 				(cur_p->cntrl & XAXIDMA_BD_CTRL_LENGTH_MASK),
+ 				DMA_TO_DEVICE);
+-		if (cur_p->skb)
++
++		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK))
+ 			dev_consume_skb_irq(cur_p->skb);
++
+ 		cur_p->cntrl = 0;
+ 		cur_p->app0 = 0;
+ 		cur_p->app1 = 0;
+@@ -580,15 +594,36 @@ static void axienet_start_xmit_done(struct net_device *ndev)
+ 		cur_p->status = 0;
+ 		cur_p->skb = NULL;
+ 
+-		size += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
+-		packets++;
+-
+-		if (++lp->tx_bd_ci >= lp->tx_bd_num)
+-			lp->tx_bd_ci = 0;
+-		cur_p = &lp->tx_bd_v[lp->tx_bd_ci];
+-		status = cur_p->status;
++		if (sizep)
++			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
+ 	}
+ 
++	return i;
++}
++
++/**
++ * axienet_start_xmit_done - Invoked once a transmit is completed by the
++ * Axi DMA Tx channel.
++ * @ndev:	Pointer to the net_device structure
++ *
++ * This function is invoked from the Axi DMA Tx isr to notify the completion
++ * of transmit operation. It clears fields in the corresponding Tx BDs and
++ * unmaps the corresponding buffer so that CPU can regain ownership of the
++ * buffer. It finally invokes "netif_wake_queue" to restart transmission if
++ * required.
++ */
++static void axienet_start_xmit_done(struct net_device *ndev)
++{
++	struct axienet_local *lp = netdev_priv(ndev);
++	u32 packets = 0;
++	u32 size = 0;
++
++	packets = axienet_free_tx_chain(ndev, lp->tx_bd_ci, -1, &size);
++
++	lp->tx_bd_ci += packets;
++	if (lp->tx_bd_ci >= lp->tx_bd_num)
++		lp->tx_bd_ci -= lp->tx_bd_num;
++
+ 	ndev->stats.tx_packets += packets;
+ 	ndev->stats.tx_bytes += size;
+ 
 -- 
 2.43.0
 
