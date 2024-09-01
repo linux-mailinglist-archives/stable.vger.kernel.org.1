@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B65D967ADE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3031967953
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06457281F00
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE661F215BB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC80381BD;
-	Sun,  1 Sep 2024 17:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518EF17DFFC;
+	Sun,  1 Sep 2024 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIjuuLTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5SdUmO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31517C;
-	Sun,  1 Sep 2024 17:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105642B9C7;
+	Sun,  1 Sep 2024 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210120; cv=none; b=rpu3HP187puLbz0bN5gwxqQlTw+XNSq/g7IH88P/yl32zASzGAOsHwuM7w+WNhSmYQCzeQdpLpK47GzJAXlv/BWRJ9GSN0jTH7kAox8tRY5b85KtvXNnp7taXhdKaQ7ZYPcieODaKRXtHeFRgsJY56lHrLeXWEsydMhwlJJ5j4c=
+	t=1725208961; cv=none; b=aDCzlUeBtJx0n48jwV1EsnJ+YcqoMPzyQ9Jv1qyrSMfyd82fxAFkCQSoI+vBp4EfizTBkHLBS8XBHx0ZFoZREWQ2gAEZTa+w7+6D8s3lARos1c9vuDHB3HRxhrepczTpJT2PetE4B4BibDP21lL3/DHfdKe+fc6WU72Iw2BoG5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210120; c=relaxed/simple;
-	bh=8LMrs6We4La9lJ4s/nncp1RTjbxeSLHWXBaLtjYwffI=;
+	s=arc-20240116; t=1725208961; c=relaxed/simple;
+	bh=xfuaZwAAN78jLpfLqtU1rbNrPXBRI/47M1So2NSTXps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+ieVuAx+w71FYmMO96jPOkKaH5sgFTTln7WgVfzwVF+y5NvokPHvLEZOCUdZyDEolsVbNgZGvUd+MMjdT2/oytTUjlCd1dFZ4ynnkZgJ/Q48oAUjGAPgAoUkC7uHtfuG3Gm5t8vEl6rN8XnTHvmpdH/e9br+mHEkv/fGVzwAdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIjuuLTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C092BC4CEC3;
-	Sun,  1 Sep 2024 17:01:59 +0000 (UTC)
+	 MIME-Version; b=LwdF7as3wZfQs66zTmf+EsmRCSnI/S985zLEUvTrQdomIzHocXR3cuLdxEAhnHSjZ+EJPAP//c5vRVU5VDGd18r0oQQeaykGpMhNuvEO07BZo0MXZA6tDWhSBBwkJaDDpEzX3WZR8sqeZOWD+0hs7z0AYgn6fWeN6kbfMfogGlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5SdUmO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0EBC4CEC3;
+	Sun,  1 Sep 2024 16:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210120;
-	bh=8LMrs6We4La9lJ4s/nncp1RTjbxeSLHWXBaLtjYwffI=;
+	s=korg; t=1725208960;
+	bh=xfuaZwAAN78jLpfLqtU1rbNrPXBRI/47M1So2NSTXps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIjuuLTl2FfLUAwxgfj8JNRNcQPm5jSpk3qqfbheV6MoE86hJssRBpX+n+DXAkwVU
-	 3XH9tpGgAv0JfkL2W58zoUTLsOADAf/kH1jZKwO12an9hKyxxRiTfuqh/VHHFw2h9x
-	 1PBraQVP56W0FBKJzBc/wQQsEBtK1td3LUUuYGAI=
+	b=P5SdUmO5wzV3nZASmjhV1GknreyCqOq1lvx2iGwjCMJ9n8qwpQGLqsGxvxHeUuMHd
+	 LmhV3dN9disZVu6vIgo0PAI9/WWicIYWZp+Msc2oP72Pl2IYZVxqlvoLMup25VkRd3
+	 qZzKV2JricfIb71g11l7SLF68U3/IkUxlg/MvgF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/215] Bluetooth: bnep: Fix out-of-bound access
+Subject: [PATCH 5.4 060/134] f2fs: fix to do sanity check in update_sit_entry
 Date: Sun,  1 Sep 2024 18:16:46 +0200
-Message-ID: <20240901160826.904415119@linuxfoundation.org>
+Message-ID: <20240901160812.363665792@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 0f0639b4d6f649338ce29c62da3ec0787fa08cd1 ]
+[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
 
-This fixes attempting to access past ethhdr.h_source, although it seems
-intentional to copy also the contents of h_proto this triggers
-out-of-bound access problems with the likes of static analyzer, so this
-instead just copy ETH_ALEN and then proceed to use put_unaligned to copy
-h_proto separetely.
+If GET_SEGNO return NULL_SEGNO for some unecpected case,
+update_sit_entry will access invalid memory address,
+cause system crash. It is better to do sanity check about
+GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Also remove some redundant judgment code.
+
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/segment.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index a796d72c7dbaa..8bb6c8ad11313 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -385,7 +385,8 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index e43b57755a7fe..da37e2b8a0ec7 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2131,6 +2131,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
+ #endif
  
- 	case BNEP_COMPRESSED_DST_ONLY:
- 		__skb_put_data(nskb, skb_mac_header(skb), ETH_ALEN);
--		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN + 2);
-+		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN);
-+		put_unaligned(s->eh.h_proto, (__be16 *)__skb_put(nskb, 2));
- 		break;
+ 	segno = GET_SEGNO(sbi, blkaddr);
++	if (segno == NULL_SEGNO)
++		return;
  
- 	case BNEP_GENERAL:
+ 	se = get_seg_entry(sbi, segno);
+ 	new_vblocks = se->valid_blocks + del;
+@@ -3113,8 +3115,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	 * since SSR needs latest valid block information.
+ 	 */
+ 	update_sit_entry(sbi, *new_blkaddr, 1);
+-	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
+-		update_sit_entry(sbi, old_blkaddr, -1);
++	update_sit_entry(sbi, old_blkaddr, -1);
+ 
+ 	if (!__has_curseg_space(sbi, type))
+ 		sit_i->s_ops->allocate_segment(sbi, type, false);
 -- 
 2.43.0
 
