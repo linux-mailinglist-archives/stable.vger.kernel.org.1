@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD279967A6B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EED967B1B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 333F3B20B9D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4826DB203A8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE93E18132A;
-	Sun,  1 Sep 2024 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2553517ADE1;
+	Sun,  1 Sep 2024 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tz3MQZ8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlPctkHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B74208A7;
-	Sun,  1 Sep 2024 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D396417C;
+	Sun,  1 Sep 2024 17:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209750; cv=none; b=IXTpEene84pwjzVfWwrbLPLFXZWxoCZwP1RhIerCTkazN74w0ewLbtOvni75yUq9TTWSNgMzx2oIALr2CJaBDdQsrQiv5zgpqCs5DNPjcZWAJr/P0rl11vBNxOhwVqRBvHyLC/MeuCv2tsGOQSdZdPj8GB+xreCZTTP+lV84+eM=
+	t=1725210307; cv=none; b=fL1YD2iq1ryTYm68aFNttnRSyBXwfkRrTSE0uz436YMZAi6R8hCq8dbmNZbIwNme/Bw2FGY+avSBNHGeGRT3qBHbVIZ+Y6BH87JQqlCfuhnkL0QGKMSS93xPpBSKvX6vppE/L+94DllKsgag49bxotAj9unxtLjN5h/XUDKOAy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209750; c=relaxed/simple;
-	bh=m4BQ9uNEAhFPen6EWHRbOn64UcJK2arU9H+skXC3i9Q=;
+	s=arc-20240116; t=1725210307; c=relaxed/simple;
+	bh=q+Jn4kt/Y+xarmPPd/IYriP1bn8+GUJFPpsjUZ1OvGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXsHX7vP+F5SHuorzAtz0CLYyB1oAPADD/aOqmsryXXifuaEMoaszD7YJq9+nvCtEMz5UX5XWO/qifyAcbMsEMCXjYXUStJMZu7nETZ8Lslq16OwwVGbQM6Yl++K3l4UR39qYKaEtfd9Vog5WXdQ2P/FIwiAAhrVhcGPxj4Hi40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz3MQZ8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFDFC4CEC3;
-	Sun,  1 Sep 2024 16:55:49 +0000 (UTC)
+	 MIME-Version; b=pKYcPU97pMMI2Jplq8yAu4WqUluVFDREVvaQej3edzx+P0QlTJHj2B4xbJFlKu8nud1vumhfCQGJEk5DO4I+6i2LX4kj4eaJR8VbsCsHlYbEuEPsxeUJ1gJAs7UQlVxbOM7uGNUGVOeXhY2gUoAUJWcE9kf+51OyJZiuGjvX2PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlPctkHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DA6C4CEC3;
+	Sun,  1 Sep 2024 17:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209750;
-	bh=m4BQ9uNEAhFPen6EWHRbOn64UcJK2arU9H+skXC3i9Q=;
+	s=korg; t=1725210307;
+	bh=q+Jn4kt/Y+xarmPPd/IYriP1bn8+GUJFPpsjUZ1OvGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tz3MQZ8J/hW8L9Pbur4dqiZjymVMwcZb8pwnJwV90TvfnhKxlh8Zr3YQZk9GlAZ5y
-	 zxWx1Bie2t9LMNimJm5jJLD491XmVW/snxnEXuk6r2ZICmFIz8H1wK4X5h0tHKHNQ7
-	 QXDQGPD8u7Ov+VUQ2q8gVEIA5JrhlunjDcPHx48A=
+	b=hlPctkHpNTgy3NSxhfk35aw/tbJUh7D0PqzN2pNUNkbX1+8v5mZnzkMOmzf64j0Np
+	 MMgm3/zPdeDrEY00Rs56XVZzZuJVpVkFTdSjqo5cECKUbGEa9LCOx6kMrWNec4rgvn
+	 sN6B1V90/5k1rqY4vZ8Lp7D/NEwohwDnvoEnt/mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/151] net: xilinx: axienet: Always disable promiscuous mode
-Date: Sun,  1 Sep 2024 18:17:42 +0200
-Message-ID: <20240901160817.948289368@linuxfoundation.org>
+Subject: [PATCH 5.15 151/215] ipv6: prevent possible UAF in ip6_xmit()
+Date: Sun,  1 Sep 2024 18:17:43 +0200
+Message-ID: <20240901160829.072755510@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4ae738dfef2c0323752ab81786e2d298c9939321 ]
+[ Upstream commit 2d5ff7e339d04622d8282661df36151906d0e1c7 ]
 
-If promiscuous mode is disabled when there are fewer than four multicast
-addresses, then it will not be reflected in the hardware. Fix this by
-always clearing the promiscuous mode flag even when we program multicast
-addresses.
+If skb_expand_head() returns NULL, skb has been freed
+and the associated dst/idev could also have been freed.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-2-sean.anderson@linux.dev
+We must use rcu_read_lock() to prevent a possible UAF.
+
+Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ++++
+ net/ipv6/ip6_output.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 2a5a3f8761c30..b814ef1da3c73 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -427,6 +427,10 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 	} else if (!netdev_mc_empty(ndev)) {
- 		struct netdev_hw_addr *ha;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 8054a4a2f2a5e..b37121f872bc9 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -273,11 +273,15 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 		head_room += opt->opt_nflen + opt->opt_flen;
  
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET);
-+		reg &= ~XAE_FMI_PM_MASK;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+
- 		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
+ 	if (unlikely(head_room > skb_headroom(skb))) {
++		/* Make sure idev stays alive */
++		rcu_read_lock();
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++			rcu_read_unlock();
+ 			return -ENOBUFS;
+ 		}
++		rcu_read_unlock();
+ 	}
+ 
+ 	if (opt) {
 -- 
 2.43.0
 
