@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-71787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7C9677BE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A51967AED
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA302807B0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C08B1F21719
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB41F183061;
-	Sun,  1 Sep 2024 16:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238DD17E005;
+	Sun,  1 Sep 2024 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILzhf0h1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFDXg1vU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F2B44C97;
-	Sun,  1 Sep 2024 16:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AAC2C190;
+	Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207814; cv=none; b=MR0pv3rzy12aWV2bjXeQffDXCZ8rUl+iMC8vpFiv5YVJqWJ5y87DFPAVZk3lv7krJqkzjXBolvUbDw1WSlqyNyX1TBS71LqDQk8wkTIB1vqmx8JhrWZ6pz1N7T69fEF0lGyp4oOuLMqi9XIvRWQJvXrNi3EVOpmPbQKphdT8DEA=
+	t=1725210162; cv=none; b=W6jRDZGmMUIeE89kAJMJSPkWxGbTw6dXRQ0+ZsbfCDzLlYamQQpLFO6Tgo2fTxHGPYXBRW0bTBKsp3wCaZe36AFUwhEM735G/XC9DmCO4g0LOICyKJq2HXxHh5D1QeyyIOqAavPjej1JHR62cdKaVYfG8H76OuD/sUK5XbibXcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207814; c=relaxed/simple;
-	bh=aX9ro6Kj+FbbynFSZ7Vh5a6xWfX0RDAMQS/QmLLNkgE=;
+	s=arc-20240116; t=1725210162; c=relaxed/simple;
+	bh=/sKXA4pvR3Kuchvu3NlDQDUbnqIT2Je5Gz9ZzpNaeuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DS/G7tkFbGdZeYZp7x2Y7vnItxJom/ykz7Rp83oLgM3L1rUlTyJI0eaeYlFTAA4mQARWvV1knBJKAJduEjhkOxnOY6wViGgMiURSCE6wZUNNkihc36Fk0nH3oDmFKd7mcocauE/VR2R9y5hrQU3luGqfJcDS0AAm531nE43YKSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILzhf0h1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A29C4CEC3;
-	Sun,  1 Sep 2024 16:23:33 +0000 (UTC)
+	 MIME-Version; b=O8OoliZt6NiHECoyXTtQrL3MtTMj1umMkV/Dvm9pkdu8rav8lgvX+ZAhqLjKoyjV7hSxDQcNsLIoctgSbaaQ/m1jNWMxjSeOfjFo/3GIkFfeTuzLx7Mp15Jydktm9E+WhZ4tNpwAG5IxAoU+FOLpRhiVExxG+KY8EfyAnQqh2ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFDXg1vU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569F6C4CEC3;
+	Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207814;
-	bh=aX9ro6Kj+FbbynFSZ7Vh5a6xWfX0RDAMQS/QmLLNkgE=;
+	s=korg; t=1725210162;
+	bh=/sKXA4pvR3Kuchvu3NlDQDUbnqIT2Je5Gz9ZzpNaeuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILzhf0h1nZcY6Y3/JL9Li3aY5KbNhhzxtrBm3bQEQQGHuEfeoenk/bHfW9FisGe4Y
-	 YY5oR2gC2E65QdWyLZicxuxjo5PkUfYnSaKdp08AUV+nkXPYGPfmxjyHEc73Z0N2r1
-	 f04GaLxp81I+JQzZ0DSLdhBouque6LPVa6FiFa/o=
+	b=rFDXg1vUSE9Q4jJMxNWnrdttL6oB6n6Nd4MKNsZUEkSIEG8/M46BoVhDjzrRB9DPl
+	 ZwuLB80DsNLrFz0E6OfF24sfGiBEl8WWpuWTLg+itQhyBtrZlQM4md1rDWja4r3z5e
+	 ynAtkFVQwd/PsmdqrL8jDSmwBWz5EtHzJFuc8ILs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sam Creasey <sammy@sammy.net>,
+	Kees Cook <keescook@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 58/98] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
+Subject: [PATCH 5.15 076/215] net/sun3_82586: Avoid reading past buffer in debug output
 Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160805.886523435@linuxfoundation.org>
+Message-ID: <20240901160826.225393612@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
+[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
 
-nft_counter_reset() resets the counter by subtracting the previously
-retrieved value from the counter. This is a write operation on the
-counter and as such it requires to be performed with a write sequence of
-nft_counter_seq to serialize against its possible reader.
+Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
+-Warraybounds, this build warning is visible[1]:
 
-Update the packets/ bytes within write-sequence of nft_counter_seq.
+drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
+drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
+  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
+      |                                                                                                               ~~~~~~~~~~~~^~~
+...
+drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
+  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
 
-Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Avoid accessing index 1 since it doesn't exist.
+
+Link: https://github.com/KSPP/linux/issues/325 [1]
+Cc: Sam Creasey <sammy@sammy.net>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index a61d7edfc290d..b4a4ed00506f1 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -108,11 +108,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv __percpu *priv,
- 			      struct nft_counter *total)
- {
- 	struct nft_counter *this_cpu;
-+	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
-+	myseq = this_cpu_ptr(&nft_counter_seq);
-+
-+	write_seqcount_begin(myseq);
- 	this_cpu->packets -= total->packets;
- 	this_cpu->bytes -= total->bytes;
-+	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 18d32302c3c7a..6c89aa7eaa222 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -987,7 +987,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
+ 	{
+ #ifdef DEBUG
+ 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
+-		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
++		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
+ 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
+ #endif
+ 		sun3_82586_close(dev);
 -- 
 2.43.0
 
