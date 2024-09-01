@@ -1,98 +1,144 @@
-Return-Path: <stable+bounces-71702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E843967360
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 23:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF189675B9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 11:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 164B41F2212C
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 21:51:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61831F212AE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 09:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C12D17DFE4;
-	Sat, 31 Aug 2024 21:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C83D13B2B8;
+	Sun,  1 Sep 2024 09:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kuruczgy.com header.i=@kuruczgy.com header.b="Epo4RKkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxJic0/S"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3FE15E81
-	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 21:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3574A94B
+	for <stable@vger.kernel.org>; Sun,  1 Sep 2024 09:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725141058; cv=none; b=OV6CqplMjDTCq2GcZfnqHGRuuKKXU8KGLiHgjWK8UHf2fMY6izwtHjh+Uq1nTcJ9+CKPTUclaQLeHNPcV3VFFr9sT1YWr5gRnsnqUUWgZTS6i1zc134+lGyy8bwoUYSdOAJw4xyAopvinnLukczlpqEO91S6SW7gVaIeTzofx3c=
+	t=1725182489; cv=none; b=NejtZXQO/LihPFmNdkBRAZd8BbTevyDFziB6MgTydJSUiRwEzE4FgVqzOSQun9h/MdEgRsxHsSNLM+t876BuMVXuBaqm1WLQW+J+UbCUApdKYGODpXs/QisaYqruDRQHJr6do3DJi728i2ds2COn75IC985fUak1JQj7z0r4kxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725141058; c=relaxed/simple;
-	bh=3wGrMnM2vclQhrcQmwGiVliT+rHB6JAHjVx5LHqeLCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZBIdJqJW6LfEMIJy3nBm4aAtMNpjhBDHJUFD8p81v/XhO2pftOYCQPZWxJtjhJFchFFAu0CUDNuTrZPwoHaf7MM5UkUZ9OaRrJRFN2xXImZiESSDpbrYubYRUMt1Pq5u439/iQOCAUTfYm+4lrRzfxXburYGRpAZofRpcY+FuXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kuruczgy.com; spf=pass smtp.mailfrom=kuruczgy.com; dkim=pass (1024-bit key) header.d=kuruczgy.com header.i=@kuruczgy.com header.b=Epo4RKkb; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kuruczgy.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kuruczgy.com
-Message-ID: <1f6676ae-62bf-40e1-b93c-463fa7d04cef@kuruczgy.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kuruczgy.com;
-	s=default; t=1725141053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oTTxbm5FRKBWZJPjYUBnkFj2GnM7Zwi1RSotZuqKSv0=;
-	b=Epo4RKkbvgj0Pu3nc0WR0rnBMIqrltiBcOrQH60nPt+RmBRL4pTlEiqvDdGCqzQHLaQphA
-	GxHcqdRBReY4Aby9hey2tRCLxkBRnlBjht5nKuPUJHYsGx3htSfPomMuRmcijkhmf5e5VH
-	LA00B8U2KZCkpHSIrjeY0l+AmXfD9pU=
-Date: Sat, 31 Aug 2024 23:50:50 +0200
+	s=arc-20240116; t=1725182489; c=relaxed/simple;
+	bh=m3N54/IOYQcWBjDe80OPV8SXEiTR9AImpWDl8/7z7BY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=u7j+Earqt1uO3rrmO8tn4qe1tPk1UU8W421RXagBd5NC6pE2Yq3NV5Kmcmu8GRDlETr33ikU7gID6k7oGhENEUmU1+XEbupIUv0P8UjyZd5hpLOP8Ryi/jENw9Qk2VP7k1thErFrmGFNjA6wze993xVj0XTgxYLgA64sdQAOAq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxJic0/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BE0C4CEC3;
+	Sun,  1 Sep 2024 09:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725182489;
+	bh=m3N54/IOYQcWBjDe80OPV8SXEiTR9AImpWDl8/7z7BY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=RxJic0/SP1tqKs7UOO1sykiQjjLhuOucnp9Hqr77somoGVuhoooKhgPJjAD6SS7jk
+	 fYKvteAuzOLzIifr7BcRdJcZWGMbPz4mhv0K8RAR58UZoC6SQVg0EB0YuAJd6gSVth
+	 /tw07FNpfDb22/2U9BIrtI9A9vUIglX7KG9z2dK4=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: x1e80100-crd: fix missing PCIe4 gpios" failed to apply to 6.10-stable tree
+To: johan+linaro@kernel.org,andersson@kernel.org,konrad.dybcio@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 01 Sep 2024 11:21:25 +0200
+Message-ID: <2024090124-chaffing-curable-eb92@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
- connector
-To: Leonard Lausen <leonard@lausen.nl>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org
-References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
- <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
- <0b2286bf-42fc-45dc-a4e0-89f85e97b189@lausen.nl>
- <56bf547a-08a5-4a08-87a9-c65f94416ef3@kuruczgy.com>
- <9d359542-bd16-4aba-88a8-0bdea1c1de44@lausen.nl>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: =?UTF-8?Q?Gy=C3=B6rgy_Kurucz?= <me@kuruczgy.com>
-In-Reply-To: <9d359542-bd16-4aba-88a8-0bdea1c1de44@lausen.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Dear Leonard,
 
-I installed KDE. First, I ran it with the my regular kernel without this 
-patch. The first interesting thing I notice is that the screen *does* 
-come back after resume. (The error messages are still present though.)
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Ack. Do you mean that Rob Clark also uses Yoga Slim 7x but does not face the "screen never comes back (always have to switch VT back-and-forth to bring it back)" issue?
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Yes, at least that's what I gathered from our conversations on IRC. But 
-with the above in mind, I now suspect that this comes down to desktop 
-environment differences.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 42b33ad188466292eaac9825544b8be8deddb3cb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090124-chaffing-curable-eb92@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
-> It would be great if you can validate whether this patch breaks CRTC state (which includes the CTM state) on Yoga Slim 7x, or whether that is specific to the trogdor lazor (Chromebook Acer Spin 513), though it may require you to install KDE.
+Possible dependencies:
 
-Well "Night Light" seems to be even more broken under KDE. I went into 
-System Settings, set it to "Always on night light", and tried to adjust 
-the temperature slider. While adjusting the slider, the screen goes 
-black, and only comes back after a few seconds. The color temperature 
-does not change, no matter what I change the slider to. Afterwards I 
-tried with this patch as well, but it produces the exact same behavior.
+42b33ad18846 ("arm64: dts: qcom: x1e80100-crd: fix missing PCIe4 gpios")
+6e3902c49954 ("arm64: dts: qcom: x1e80100-crd: fix up PCIe6a pinctrl node")
+eb57cbe730d1 ("arm64: dts: qcom: x1e80100: Describe the PCIe 6a resources")
 
-Best regards,
-György
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 42b33ad188466292eaac9825544b8be8deddb3cb Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Mon, 22 Jul 2024 11:42:47 +0200
+Subject: [PATCH] arm64: dts: qcom: x1e80100-crd: fix missing PCIe4 gpios
+
+Add the missing PCIe4 perst, wake and clkreq GPIOs and pin config.
+
+Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
+Cc: stable@vger.kernel.org	# 6.9
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240722094249.26471-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+index aeb279b1a0cc..d65a22172006 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -756,6 +756,12 @@ &mdss_dp3_phy {
+ };
+ 
+ &pcie4 {
++	perst-gpios = <&tlmm 146 GPIO_ACTIVE_LOW>;
++	wake-gpios = <&tlmm 148 GPIO_ACTIVE_LOW>;
++
++	pinctrl-0 = <&pcie4_default>;
++	pinctrl-names = "default";
++
+ 	status = "okay";
+ };
+ 
+@@ -931,6 +937,29 @@ nvme_reg_en: nvme-reg-en-state {
+ 		bias-disable;
+ 	};
+ 
++	pcie4_default: pcie4-default-state {
++		clkreq-n-pins {
++			pins = "gpio147";
++			function = "pcie4_clk";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++
++		perst-n-pins {
++			pins = "gpio146";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-disable;
++		};
++
++		wake-n-pins {
++			pins = "gpio148";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++	};
++
+ 	pcie6a_default: pcie6a-default-state {
+ 		clkreq-n-pins {
+ 			pins = "gpio153";
+
 
