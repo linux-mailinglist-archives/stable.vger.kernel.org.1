@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839A0967A4C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534F3967965
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41857281B81
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A05C1F21A1E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E622418132A;
-	Sun,  1 Sep 2024 16:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2BD17E00C;
+	Sun,  1 Sep 2024 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9oDpmlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKulpuFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51B51DFD1;
-	Sun,  1 Sep 2024 16:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAEA1E498;
+	Sun,  1 Sep 2024 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209650; cv=none; b=TZc3g/11z3/n4Q3oSuZewe2Gq38jKLJ/WAku8g/BOBBCgo/B4Dd9yoTuoYYy17hZxacaUeWeOPKpVm4zjmN5g/1k8En8PEFZAo16bTKCmHwRBSXGSTG4/L+3FwSL9/xIlX52jn9ni02QH/bL7w5pKPN4tyGrxkwHu5FXUYGpjgQ=
+	t=1725209020; cv=none; b=R8NQDkAw83yyO0hZf3HaRAqOvbuoMA8oGeiuuISnyJw5LxUQ9SWg++ZissjsCRRBgI2u5+lEUkE9XZFxqhGuGZHmy5gQzUo69F2LA+R4ry0PseTggtO77KbEZpW0Sk9u0bYM/7tIA1j3+qrx3TDvY5pUFaF3eaYLlx68g8Le8xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209650; c=relaxed/simple;
-	bh=L8ccglQoQV5reBfw/Xw3q/b2F7TyIcCEqNMFVRzvedg=;
+	s=arc-20240116; t=1725209020; c=relaxed/simple;
+	bh=hLF3NCfUZkMlDHN1Ndj+vEZdp4U704W+X58g45BRG/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPwjMZiu0Xv5h1c36bHp83ww4/E0JUljuU99jFIbtsGK1a4OvBmFtffOQpwNJRmAJd/tcxVv0ftHoy/P+cCCpTxuwQiSIvkn4C2TYc8oeqjJfnx/rvNJsXqig+mHKGJZ/ZGVwaYiam3aVB2Yd1aYk+UfCAsAVSbVj+6mUnwdk18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9oDpmlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D14C4CEC3;
-	Sun,  1 Sep 2024 16:54:09 +0000 (UTC)
+	 MIME-Version; b=mCbrqa6RJpiTOkLORwzlypaNp2UXll98sr91ZzgHtFsyGkvn/Qe1z5uYiOKK+II+nIAIyvbb2lruNPY20sw2c0wDjDJg1T1g1K+MjHUXCuRoxmSE/TXBN9zFOu0jupgohH0IKYq9DhW1JcU223N1F2LyjiB7rvpIyqbmU+2gPSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKulpuFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF92C4CEC3;
+	Sun,  1 Sep 2024 16:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209650;
-	bh=L8ccglQoQV5reBfw/Xw3q/b2F7TyIcCEqNMFVRzvedg=;
+	s=korg; t=1725209020;
+	bh=hLF3NCfUZkMlDHN1Ndj+vEZdp4U704W+X58g45BRG/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9oDpmlhcljTNFUL0JeQgCdZuv/qTrUeOOYTOuNbpzKIb+ov1KeQzndItYmQKe+v8
-	 AYqwLkmb8LLmcA+XgoXF30VdAf0nEZrAeehvy08z9w7CvfdG6y30yP8M75sVfjV0iz
-	 z3wJ2YzVZGPccx/fmgx2BexTHsGSnDCBHi6zujtk=
+	b=MKulpuFXiPr4bNZ/GtpgqdTr1OyBp9419vjHUOKcyi+oepHYJQ69P11ASYvdm5ndh
+	 ujBpsRNOovInIBTq9yvSAZz8wWZ8b639cBRsCXOwNpMgeKwOtBpcA857y8L3iV/9qU
+	 xr9fr1g8eYviISdCDA2UPGcf+059kBSYglmOwrTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/151] bonding: fix xfrm state handling when clearing active slave
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.4 109/134] wifi: mwifiex: duplicate static structs used in driver instances
 Date: Sun,  1 Sep 2024 18:17:35 +0200
-Message-ID: <20240901160817.688104055@linuxfoundation.org>
+Message-ID: <20240901160814.187985860@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
+commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
 
-If the active slave is cleared manually the xfrm state is not flushed.
-This leads to xfrm add/del imbalance and adding the same state multiple
-times. For example when the device cannot handle anymore states we get:
- [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
-because it's filled with the same state after multiple active slave
-clearings. This change also has a few nice side effects: user-space
-gets a notification for the change, the old device gets its mac address
-and promisc/mcast adjusted properly.
+mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+used and modified in driver instances. Duplicate them before using
+them in driver instances so that different driver instances do not
+influence each other.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was observed on a board which has one PCIe and one SDIO mwifiex
+adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+the statically allocated struct which is modified in this function.
+
+Cc: stable@vger.kernel.org
+Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_options.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index fa0bf77870d43..acc6185749945 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -822,7 +822,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
- 	/* check to see if we are clearing active */
- 	if (!slave_dev) {
- 		netdev_dbg(bond->dev, "Clearing current active slave\n");
--		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
-+		bond_change_active_slave(bond, NULL);
- 		bond_select_active_slave(bond);
- 	} else {
- 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
--- 
-2.43.0
-
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4319,11 +4319,27 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+ 
+-	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
+-	if (adapter->config_bands & BAND_A)
+-		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
+-	else
++	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
++						       &mwifiex_band_2ghz,
++						       sizeof(mwifiex_band_2ghz),
++						       GFP_KERNEL);
++	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	if (adapter->config_bands & BAND_A) {
++		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
++							       &mwifiex_band_5ghz,
++							       sizeof(mwifiex_band_5ghz),
++							       GFP_KERNEL);
++		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	} else {
+ 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
++	}
+ 
+ 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
+ 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
+@@ -4411,8 +4427,7 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ret < 0) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "%s: wiphy_register failed: %d\n", __func__, ret);
+-		wiphy_free(wiphy);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	if (!adapter->regd) {
+@@ -4454,4 +4469,9 @@ int mwifiex_register_cfg80211(struct mwi
+ 
+ 	adapter->wiphy = wiphy;
+ 	return ret;
++
++err:
++	wiphy_free(wiphy);
++
++	return ret;
+ }
 
 
 
