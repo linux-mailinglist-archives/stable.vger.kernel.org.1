@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D412F967A00
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326DE967789
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD102815C2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46B0B21C14
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6E117DFE7;
-	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396F2181B88;
+	Sun,  1 Sep 2024 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbtzy06s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsilJ7p2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2621C68C;
-	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8C617E01C;
+	Sun,  1 Sep 2024 16:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209423; cv=none; b=caX0cT43ZhkFGFRgwqYT2HDlT/c9izFRjOdtQ+/cD6JwqlateA1h2Ahts1xEAoptTrfGH8XVkoMVZESjj0qjGb+eBpRlmCrc5znEK2ZyVBmTV/T0RGV5Tb2ivOd2DPW3XpiLATHv++Bh/0Lv0jZCiFMd+64OiIGKUXx+oHN5Xg8=
+	t=1725207655; cv=none; b=b+A9FZjoU8E/8txt8eyRghfg6kFVHDm79BupQ1B4Nif7Bi9RYxsorFqo7IjO0GJHEppYGUGAL0Hc9FT6YAoBvqmYRR0IaqwNplXmYXgpX7ZfcFpDEOxY5Nf5mQGimpu1FUiGagV+L7E93+YKGLOG0FQocHhKQoT60prOWlUwnR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209423; c=relaxed/simple;
-	bh=WJcrFWUzko5hFoqeYBL1+pW5fHbFQV+tLBRjvn559Gk=;
+	s=arc-20240116; t=1725207655; c=relaxed/simple;
+	bh=HW8QBKasgQNc/x+cRK0PyLuaqPGaF/dyP0i1TgJLSjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQ7/HFBTCVUiBfLgrzg7lVvZc05gvFM0cC+1F1vQYPD1dYr2NQomPr377EiImG8/WKAVAEiP/t8ofCtU3DRaqjyfCtxwJ0uTDXqkpK7J8To+CE9eDGOOncNvgqyY/1BAp5BrrsumFsOYwUQZLeRNmKsQaPsXrjrTFIqomRbSwr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbtzy06s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33740C4CEC3;
-	Sun,  1 Sep 2024 16:50:23 +0000 (UTC)
+	 MIME-Version; b=nPpn5vT+wZaH4Tj+aSbKx2xQ4r9xIAtZqE9NKtYmohOE6+WQiG7KshcNksaR6ATLab8UjQGEoRArapp7AxeXDTquG8ZG30HkwvWL92TaVNG1GFa3JpG8wYqmRFkd+yQ8oUBJrvb5mW892QLoZa6/sdzACZ1ZCmVp+2bBP5/1KUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsilJ7p2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0FCC4CEC3;
+	Sun,  1 Sep 2024 16:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209423;
-	bh=WJcrFWUzko5hFoqeYBL1+pW5fHbFQV+tLBRjvn559Gk=;
+	s=korg; t=1725207654;
+	bh=HW8QBKasgQNc/x+cRK0PyLuaqPGaF/dyP0i1TgJLSjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbtzy06s6ZiBBEkVKWWS4skgkRBdRdiOpRTXqIoHfmLkMzER5F919vKyfAHu+lyuJ
-	 bjVCxsLvRFPPHutR/qAIQGU9WEuQwZq6vBREE9Wy1JLbIak1HTdh+rqK2u3/nr2TFn
-	 9UeuNFhAoGBPocfAxeOdyA109i2udzp0ni6aXIBs=
+	b=wsilJ7p2H/EQ4sIrhnUNWpW/ZzPOXutioFkF36Jpp+zNPBy5ZLhTzhZViaELH4Qe3
+	 OPn0ltB06rYvpKENrQMO4Zl8XbCoKcKWlFJKFOAQRbyIgtD2apDtS1M/5zR6mW+lLv
+	 ZdGZb1elAFK6fg3Oy8g1SmLln44ZohFdgN9stua8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Zdenek Kabelac <zkabelac@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.10 008/151] dm persistent data: fix memory allocation failure
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 38/98] btrfs: send: handle unexpected data in header buffer in begin_cmd()
 Date: Sun,  1 Sep 2024 18:16:08 +0200
-Message-ID: <20240901160814.411713333@linuxfoundation.org>
+Message-ID: <20240901160805.136316256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: David Sterba <dsterba@suse.com>
 
-commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
+[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
 
-kmalloc is unreliable when allocating more than 8 pages of memory. It may
-fail when there is plenty of free memory but the memory is fragmented.
-Zdenek Kabelac observed such failure in his tests.
+Change BUG_ON to a proper error handling in the unlikely case of seeing
+data when the command is started. This is supposed to be reset when the
+command is finished (send_cmd, send_encoded_extent).
 
-This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
-vmalloc if the large allocation fails.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/send.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/md/persistent-data/dm-space-map-metadata.c
-+++ b/drivers/md/persistent-data/dm-space-map-metadata.c
-@@ -275,7 +275,7 @@ static void sm_metadata_destroy(struct d
- {
- 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index e3b6ca9176afe..2840abf2037b1 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -677,7 +677,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
+ 	if (WARN_ON(!sctx->send_buf))
+ 		return -EINVAL;
  
--	kfree(smm);
-+	kvfree(smm);
- }
+-	BUG_ON(sctx->send_size);
++	if (unlikely(sctx->send_size != 0)) {
++		btrfs_err(sctx->send_root->fs_info,
++			  "send: command header buffer not empty cmd %d offset %llu",
++			  cmd, sctx->send_off);
++		return -EINVAL;
++	}
  
- static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
-@@ -759,7 +759,7 @@ struct dm_space_map *dm_sm_metadata_init
- {
- 	struct sm_metadata *smm;
- 
--	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
-+	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
- 	if (!smm)
- 		return ERR_PTR(-ENOMEM);
- 
+ 	sctx->send_size += sizeof(*hdr);
+ 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
+-- 
+2.43.0
+
 
 
 
