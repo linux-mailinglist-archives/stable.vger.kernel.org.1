@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-72279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7DE9679FC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EFD967AB3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A7982817DC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 477DA1C21542
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A69717CA1F;
-	Sun,  1 Sep 2024 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F68183092;
+	Sun,  1 Sep 2024 16:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awsD1+WF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6vml63h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094F61C68C;
-	Sun,  1 Sep 2024 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC817E00C;
+	Sun,  1 Sep 2024 16:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209411; cv=none; b=JhCHNOmhPqTywxI2V+1FutcftvNkW2pggqUp89x8VfC4jxPTEvpvKwH2kFbWlfWf8hA7WKCsnvz1/LGFhSW3M9RP3YZg6nYSPBjYAD+o+WnEbnuh/m7Jspgi4aA22r+jBimSkYN5NLAh+rbQoe7wnigN3e37TKAaJ2fjXVhdPUw=
+	t=1725209987; cv=none; b=rxhQtHvyrb/uzd5xg6gL06dRVFCPN8cInHP+09hXg/Vnnrnv592GU/VUx+cuYAm6VY2nyQ1kiT/R4D1Rb5FpKtAzxIKw6rpzV6gOcFS3rx3BXjbIjBY+kCGrtBQjaWebrKAlRbaXSmoaYAb1xBVp+acV9xUlFvJSKzxmS9z8fo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209411; c=relaxed/simple;
-	bh=LzqwIbGZvD1pPEwi6jRWu0xSuPnaSXr+9faBwOGgPbA=;
+	s=arc-20240116; t=1725209987; c=relaxed/simple;
+	bh=4a3Y+h+qSB+2W+3itSursoWQT+I9tbDhRHfMfmJBB6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjCydB8l2Tf+05v9XMtZwblxinuLasEAZaX7qz6Qb1E+kQuij4WDabdHKAP1tCchHLrh+b4QzkgMc6mRgbG/IVT4jfhPG0AeSOlXLct4Iqrp0o+Hv8F2I1SUePZiRAbbNsn+DcERoWp1jUMfch1PCt5W6AF848GqWQ4mIohYuxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awsD1+WF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E521C4CEC3;
-	Sun,  1 Sep 2024 16:50:10 +0000 (UTC)
+	 MIME-Version; b=NnhCDyjhKRhFZpmoWze3EGQpTJ4WBBEe1S/xspTf8yAZdb8z72P0SjYN34+C6rS2jK5H/Ja6AmyZLs9i59n9ZfNs8q8DLeJASY2i2FrzXxJ1gg0gq8Wxh+Zj8Y+J6I6cemSLCtUQA9ujNkZ5fopwsGW0Sx28ahR/Iehg7+4UASI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6vml63h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADD4C4CEC3;
+	Sun,  1 Sep 2024 16:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209410;
-	bh=LzqwIbGZvD1pPEwi6jRWu0xSuPnaSXr+9faBwOGgPbA=;
+	s=korg; t=1725209987;
+	bh=4a3Y+h+qSB+2W+3itSursoWQT+I9tbDhRHfMfmJBB6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awsD1+WF6sAJm3mSfw6zn84v9fKf2ldqhpKfTUuavq8A8tDlSEQeQQ2R2piVXdHJf
-	 N7Vhd/iQDwKakTSU2Ga4vYAISS+XeeS9TAOqM3EyCAoLmbVuuzV/qjZQD7la0IVEny
-	 d75PN8JF4fvlSqJx2m+HgYykvQblrm5sNpxs+pqk=
+	b=A6vml63hUFeQa1U93lTVOoX9X7dIMGQ6hrw64uTOyr7zLbNwrP6dBmf8MYQUIZ+B1
+	 O2jJieaKYGib74v5cqzPE6e1NfJYJVCxV8Fr4VKBDDYcwFWhUc1l0nxGZC3jFigTX5
+	 NIqlBm6HPqRQbWDGsrpLB+pg89m9p77Xb/vi0bUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 004/151] thunderbolt: Mark XDomain as unplugged when router is removed
-Date: Sun,  1 Sep 2024 18:16:04 +0200
-Message-ID: <20240901160814.260256184@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 053/215] staging: iio: resolver: ad2s1210: fix use before initialization
+Date: Sun,  1 Sep 2024 18:16:05 +0200
+Message-ID: <20240901160825.356813166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit e2006140ad2e01a02ed0aff49cc2ae3ceeb11f8d upstream.
+[ Upstream commit 7fe2d05cee46b1c4d9f1efaeab08cc31a0dfff60 ]
 
-I noticed that when we do discrete host router NVM upgrade and it gets
-hot-removed from the PCIe side as a result of NVM firmware authentication,
-if there is another host connected with enabled paths we hang in tearing
-them down. This is due to fact that the Thunderbolt networking driver
-also tries to cleanup the paths and ends up blocking in
-tb_disconnect_xdomain_paths() waiting for the domain lock.
+This fixes a use before initialization in ad2s1210_probe(). The
+ad2s1210_setup_gpios() function uses st->sdev but it was being called
+before this field was initialized.
 
-However, at this point we already cleaned the paths in tb_stop() so
-there is really no need for tb_disconnect_xdomain_paths() to do that
-anymore. Furthermore it already checks if the XDomain is unplugged and
-bails out early so take advantage of that and mark the XDomain as
-unplugged when we remove the parent router.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/iio/resolver/ad2s1210.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2584,6 +2584,7 @@ void tb_switch_remove(struct tb_switch *
- 			tb_switch_remove(port->remote->sw);
- 			port->remote = NULL;
- 		} else if (port->xdomain) {
-+			port->xdomain->is_unplugged = true;
- 			tb_xdomain_remove(port->xdomain);
- 			port->xdomain = NULL;
- 		}
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index a19cfb2998c93..f19bb5c796cf7 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -658,9 +658,6 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 	st = iio_priv(indio_dev);
+-	ret = ad2s1210_setup_gpios(st);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	spi_set_drvdata(spi, indio_dev);
+ 
+@@ -671,6 +668,10 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	st->resolution = 12;
+ 	st->fexcit = AD2S1210_DEF_EXCIT;
+ 
++	ret = ad2s1210_setup_gpios(st);
++	if (ret < 0)
++		return ret;
++
+ 	indio_dev->info = &ad2s1210_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = ad2s1210_channels;
+-- 
+2.43.0
+
 
 
 
