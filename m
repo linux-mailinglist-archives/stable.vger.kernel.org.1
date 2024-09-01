@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C159678BA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE1967936
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9834A1C210E1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF1F1C209B8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD2517E8EA;
-	Sun,  1 Sep 2024 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0AA181CE1;
+	Sun,  1 Sep 2024 16:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BexFdbpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYkIsQOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1761E87B;
-	Sun,  1 Sep 2024 16:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6AA17CA1F;
+	Sun,  1 Sep 2024 16:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208491; cv=none; b=MhDYbr4Xf/17kOknvVBVSrGE3cgF7fitMpyMZC2TSIMbH3mPbOsyx1DW6Ny7NzQxIa+h7ZWGxmqk/QyQYPfgxHw3EPlfRqtdsY6Nql1XiBsxD7Qz4FJwB+BygxFKf7KzSfKplFkJ3+xn+d0nZQ7mjep0zB6rUrn9+4SE671nUDY=
+	t=1725208867; cv=none; b=S8pzVDVyptYIrjrZGpMWjY5tf4Dsf/IRGnMfZ3EQEaD1SBYB9zKY3IJzRrXox4lnxibJoC3ujixrxFWU7a76Y+TfkSYA9SJc79T0LuX5sJ275tS06p6wHAfB6RfnwKoYcnGZRsq6ldnNsDryNSroMlXonlwpOwnfCTAsTKbRhTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208491; c=relaxed/simple;
-	bh=LvUn6Sxk30ZzrQ5Qk4KeIHOOBUg6dKS5BTluzQwAv+M=;
+	s=arc-20240116; t=1725208867; c=relaxed/simple;
+	bh=wYiKBCmR/TI2wJcccArIh6l9yefFl06tMXqEjXAPVz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwafFyf1l3feFhaH3g4v6XHDbHqcIeYaURk0J6ZJHLgd8NYwW/+Anms/80o5lUAIVnuyjRJMc9XB7wBR5MRAlL+3YvnUgXKTrfpCqiv6JtLxx5KCzVWJ4w2lbkbZZiNt20uLDen8B6cKBK+D/MS58sc4tyms0KqfyDjKiZry3t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BexFdbpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E58FC4CEC3;
-	Sun,  1 Sep 2024 16:34:50 +0000 (UTC)
+	 MIME-Version; b=bYRmHu7BxBKKNnclKY08pP7zFdN4ySxKYz47bBiW68w4n/UKG7GCdc4/Qs0XaRkTOWT40S6ccJoH7wlMo3b+3kLpODAos53ycYYrKVCyrhDiH+xv421dIsHmAdzMFMnzmpIkFGzS+GNr3349JAz+p1QBgdAjRUqAEF7En1ydQr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYkIsQOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921BFC4CEC3;
+	Sun,  1 Sep 2024 16:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208491;
-	bh=LvUn6Sxk30ZzrQ5Qk4KeIHOOBUg6dKS5BTluzQwAv+M=;
+	s=korg; t=1725208867;
+	bh=wYiKBCmR/TI2wJcccArIh6l9yefFl06tMXqEjXAPVz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BexFdbpV7Pahf2DJp4jMXLLwGR5YZnrhlmhag2xI66pTK7a8UpPJwfVwphuZURKUZ
-	 7tz9uwcFLXvAb/3lfCkK9wZdKzK08EdeAphfPj4J+ysWYgEeyx+J4Az7cj50r0Ov0C
-	 BKf5234VX7Dyhrkxs2HetACN7gYoZCQ7KWF7Jeww=
+	b=yYkIsQOgOxLk9P/NJk5mzvFD9a+hQnt0nw1tqcMgMgCnc6/EggoPnAYo4tcbl/0Hu
+	 LSfnP00ES7nkdh4KjISC/jYXsLv7H0Y4FPkH6nZ7c+EOfm+bknYpD+1k1546yX56S2
+	 LfRC3EOHD7sKI8IQu+RK13GG17SukfflvBeVw24I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmo Chou <chou.cosmo@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 099/149] hwmon: (pt5161l) Fix invalid temperature reading
+Subject: [PATCH 5.4 064/134] nvmet-tcp: do not continue for invalid icreq
 Date: Sun,  1 Sep 2024 18:16:50 +0200
-Message-ID: <20240901160821.183930118@linuxfoundation.org>
+Message-ID: <20240901160812.510562967@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmo Chou <chou.cosmo@gmail.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 7bbc079531fc38d401e1c4088d4981435a8828e3 ]
+[ Upstream commit 0889d13b9e1cbef49e802ae09f3b516911ad82a1 ]
 
-The temperature reading function was using a signed long for the ADC
-code, which could lead to mishandling of invalid codes on 32-bit
-platforms. This allowed out-of-range ADC codes to be incorrectly
-interpreted as valid values and used in temperature calculations.
+When the length check for an icreq sqe fails we should not
+continue processing but rather return immediately as all
+other contents of that sqe cannot be relied on.
 
-Change adc_code to u32 to ensure that invalid ADC codes are correctly
-identified on all platforms.
-
-Fixes: 1b2ca93cd059 ("hwmon: Add driver for Astera Labs PT5161L retimer")
-Signed-off-by: Cosmo Chou <chou.cosmo@gmail.com>
-Message-ID: <20240819104630.2375441-1-chou.cosmo@gmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pt5161l.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/target/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/pt5161l.c b/drivers/hwmon/pt5161l.c
-index b0d58a26d499d..a9f0b23f9e76e 100644
---- a/drivers/hwmon/pt5161l.c
-+++ b/drivers/hwmon/pt5161l.c
-@@ -427,7 +427,7 @@ static int pt5161l_read(struct device *dev, enum hwmon_sensor_types type,
- 	struct pt5161l_data *data = dev_get_drvdata(dev);
- 	int ret;
- 	u8 buf[8];
--	long adc_code;
-+	u32 adc_code;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index d40bd57537ba1..fa6e7fbf356e7 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -792,6 +792,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
+ 		pr_err("bad nvme-tcp pdu length (%d)\n",
+ 			le32_to_cpu(icreq->hdr.plen));
+ 		nvmet_tcp_fatal_error(queue);
++		return -EPROTO;
+ 	}
  
- 	switch (attr) {
- 	case hwmon_temp_input:
-@@ -449,7 +449,7 @@ static int pt5161l_read(struct device *dev, enum hwmon_sensor_types type,
- 
- 		adc_code = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
- 		if (adc_code == 0 || adc_code >= 0x3ff) {
--			dev_dbg(dev, "Invalid adc_code %lx\n", adc_code);
-+			dev_dbg(dev, "Invalid adc_code %x\n", adc_code);
- 			return -EIO;
- 		}
- 
+ 	if (icreq->pfv != NVME_TCP_PFV_1_0) {
 -- 
 2.43.0
 
