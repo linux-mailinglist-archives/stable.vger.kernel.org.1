@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-71855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E56496780C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB15967940
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801BE1C20DDB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5935B21B7E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F9D183090;
-	Sun,  1 Sep 2024 16:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2AE17E00C;
+	Sun,  1 Sep 2024 16:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O96AMlwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYwtGM4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A4C44C97;
-	Sun,  1 Sep 2024 16:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2531C68C;
+	Sun,  1 Sep 2024 16:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208037; cv=none; b=aa8eI4uViwFz0CaIK5JL3KUXj7B4wxYr7Y3LZSJ2BUPpcLe+JG9+taPruqxAY9KUmN6LXqYkAjJtR6zc04ZYRyh7cJqyW9sUdBY45+XC8t2PtmH+jnkQglOqd+Y1/C3HkjdOGjRpYkPnlZQtMzMK0KVHrn/cULW0LETovHQRojc=
+	t=1725208896; cv=none; b=Ku3ligTbknVnUYQ3g34mUAj7paSqPmz6t8CiiSiy/VVOUP0jRB5bDt2zQYw5sPwH+onkc8j76+Zw2NNY7f43LBdK4S4CZd1bE6o8Yh68VCbEvwLYP2H+t+LnWpKfEH/zr+6GKcbDVrMvLS5LGP3Bhw3Dzg2XE1AMeVTryRKEL5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208037; c=relaxed/simple;
-	bh=vgBtFu8xTGWD3HTi4ZngssjuUplN6TMz51PyNmHAjus=;
+	s=arc-20240116; t=1725208896; c=relaxed/simple;
+	bh=DJu42gCL+nzYO3HHGn2B9anzRzO/mNev1OPqSlZ6+44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJMezsZqgywY0phR2GYrJEv8W074Oc+eHqFbKwxIz4E+eN0aSM6sITI9c1Vfmf7Qk1xiHh39sx0/xwyhHo/kvS2ATP8DYIIp2sNDMWgz2qEsyTH60snOfsQSN9Wlxcn/WdGTKnZjX8A2wYwPgU0IyxBkkKyDSKyaVtQMsWcvnEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O96AMlwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDCCC4CEC3;
-	Sun,  1 Sep 2024 16:27:16 +0000 (UTC)
+	 MIME-Version; b=hXqkkLgjs6II7bVQhFuTNJBCHLzkK3jhXaIodfqbUIZj3+Jga54Sh6JBw3eRPQHqtRMQNqeKsBZ3kWkKhX+TCbRK/CT32+ItIjhD3LSTiwemWQ6KRs4YxKWsu4AQQA5DbOvzebgaE7cd8BpEeM6+BE3trHDpVpCy9CtywbgZUa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYwtGM4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1CDC4CEC3;
+	Sun,  1 Sep 2024 16:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208037;
-	bh=vgBtFu8xTGWD3HTi4ZngssjuUplN6TMz51PyNmHAjus=;
+	s=korg; t=1725208895;
+	bh=DJu42gCL+nzYO3HHGn2B9anzRzO/mNev1OPqSlZ6+44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O96AMlweZgTW7OHCCMSVzSfeXhTcB9iSwS0+DXK3cFSSjAYwkK6FTcV8OWvObjmuJ
-	 uFKsze668kjEWa5velOVO31nSXk4Fb/iGSamWbKUIPKOW80RJWrCebPhBw3b+P+fqw
-	 lE6DIjWTwKJGXpHKOFGhm/e3Tl3cTvochHGrUelU=
+	b=bYwtGM4gogyzsT+3Y9nMtr7+W5t/LBO1M+yl3HCdSn715XAe4kWIjTf3jufZUlf1k
+	 TNbNs2zv4MtHJXVPf+fHlC9YcTCqE9MED7lx1V+1oE1qyjrullyLuTRoj5ETURbwxn
+	 LR+oGsgbWh4IBptjnCNZexeKlVGqEl9IZKNIXEGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/93] Bluetooth: hci_core: Fix not handling hibernation actions
+Subject: [PATCH 5.4 055/134] powerpc/boot: Only free if realloc() succeeds
 Date: Sun,  1 Sep 2024 18:16:41 +0200
-Message-ID: <20240901160809.398051398@linuxfoundation.org>
+Message-ID: <20240901160812.178149626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 18b3256db76bd1130965acd99fbd38f87c3e6950 ]
+[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
 
-This fixes not handling hibernation actions on suspend notifier so they
-are treated in the same way as regular suspend actions.
+simple_realloc() frees the original buffer (ptr) even if the
+reallocation failed.
 
-Fixes: 9952d90ea288 ("Bluetooth: Handle PM_SUSPEND_PREPARE and PM_POST_SUSPEND")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix it to behave like standard realloc() and only free the original
+buffer if the reallocation succeeded.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/powerpc/boot/simple_alloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index e660b3d661dae..1b56355c40eaf 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2394,10 +2394,16 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
- 	/* To avoid a potential race with hci_unregister_dev. */
- 	hci_dev_hold(hdev);
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index 188c4f996512a..bc99f75b8582d 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -114,10 +114,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
--	if (action == PM_SUSPEND_PREPARE)
-+	switch (action) {
-+	case PM_HIBERNATION_PREPARE:
-+	case PM_SUSPEND_PREPARE:
- 		ret = hci_suspend_dev(hdev);
--	else if (action == PM_POST_SUSPEND)
-+		break;
-+	case PM_POST_HIBERNATION:
-+	case PM_POST_SUSPEND:
- 		ret = hci_resume_dev(hdev);
-+		break;
+ 	new = simple_malloc(size);
+-	if (new)
++	if (new) {
+ 		memcpy(new, ptr, p->size);
++		simple_free(ptr);
 +	}
  
- 	if (ret)
- 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
+-	simple_free(ptr);
+ 	return new;
+ }
+ 
 -- 
 2.43.0
 
