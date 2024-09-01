@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6D9967AE8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF9D96779C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C286281F4B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4DB28202F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD37317E918;
-	Sun,  1 Sep 2024 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E36183CBD;
+	Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q89tSil7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kw+TYj2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDAC225D9;
-	Sun,  1 Sep 2024 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B554183CA5;
+	Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210146; cv=none; b=Dy20PFnwIXNLL0XCY65zgiHrM0bhtduD/goZnElLzG7guCt8lAohUVht3sTXFU+Ls0BKKIJPBPH+RWHPsOZ6IGZDqRhuaZKfdMG9nVzFsMwX3ZSMcrgHU/PLyQ6QtrQ/RmQI1ImaJ9IG5BOa7knlPov9TnQV6pl35MvEmkj60Ls=
+	t=1725207711; cv=none; b=e3qJ3WqhZItyH2NWgK9QFVWiB+rNMNaJ/FLzBNgBumfxIbAn6ODvCiiXNYVPhR9M8kym7SaNsYBMDAzxQnkdxbC390SKscz/JJ411+/1nE47Xhs4nLmJf1CJZ1XPA2kOmJET3AMHpMFhaGTDhCiSSmY6n2kCZCZRdOyDdl+uQr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210146; c=relaxed/simple;
-	bh=7O7GxWGC08EBpdBwiQcelT/wQlgsg62GuRVvPLcdotg=;
+	s=arc-20240116; t=1725207711; c=relaxed/simple;
+	bh=GL47WSxDABkB+Vxd0aUN9yt4V62DR12pEdAfq5N+M40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmQ10ZGYRRdrmmNZFvbiZImIr6cD/iEkaJlzzIZMN2QnZC0R694Gp1ESjG2fcnIzC/5jvlfbV0IZsNazaUkS5DoiG8rqTxrxLsuxgtCbxQe+AbyVscUN+EsxpMXs5dT3NVLqZOqOUG7fYnZzxPG8nQwE03LoqHlciKF4puCc/Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q89tSil7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CE6C4CEC3;
-	Sun,  1 Sep 2024 17:02:25 +0000 (UTC)
+	 MIME-Version; b=BiKK3JlyAY1pv7cO5vuA1UEnegYjZdMggZ4Ke2k9SFnDReUzcqDkcHjhQUZp4ZHSlm/6ds7rJP+aT7qrroS2jetl3MIFIc0KgbpHMt+z/Cptv+kbP6XlcXl5WvGvtysKWk40PORJOvJ/XWZwRCRAHT1A6v+AEAeCoTAy9LTa5M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kw+TYj2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37C0C4CEC3;
+	Sun,  1 Sep 2024 16:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210146;
-	bh=7O7GxWGC08EBpdBwiQcelT/wQlgsg62GuRVvPLcdotg=;
+	s=korg; t=1725207711;
+	bh=GL47WSxDABkB+Vxd0aUN9yt4V62DR12pEdAfq5N+M40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q89tSil7hlrqDUHDiDi824uI+LyKTqCKwaCFrmP3cCQxgBiA/Hpo2KqxSXdokF+Nz
-	 cSDSa7dcPi7ji19AECSLk7w1YtUmFZqnQdgxlLxnpB25Dp7ut+Zym9l50x7to/rb11
-	 sXNGcAjf+BmlZQVH8tOhZmC0VwGtXKngVVuOaTjg=
+	b=Kw+TYj2URf1Fws0ZKjpqoarzHOXuHDyrytz9+HEZTgoDYnYMisNGnP1Wdj22xTEfM
+	 r8KxFb/zaNcThhWJXsQCdcclcDVQjwkLE2eNY3+qobNLLzG5i/5w4XwRYtXUjDzuRy
+	 bioK4A2c4HZVqQPd/ONwYHt7tNPC+1s3L9+h+V+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/215] quota: Remove BUG_ON from dqget()
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	David Hunter <david.hunter.linux@gmail.com>
+Subject: [PATCH 4.19 53/98] block: use "unsigned long" for blk_validate_block_size().
 Date: Sun,  1 Sep 2024 18:16:23 +0200
-Message-ID: <20240901160826.036514917@linuxfoundation.org>
+Message-ID: <20240901160805.699779829@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
 
-[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
+commit 37ae5a0f5287a52cf51242e76ccf198d02ffe495 upstream.
 
-dqget() checks whether dquot->dq_sb is set when returning it using
-BUG_ON. Firstly this doesn't work as an invalidation check for quite
-some time (we release dquot with dq_sb set these days), secondly using
-BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
-hashed instead.
+Since lo_simple_ioctl(LOOP_SET_BLOCK_SIZE) and ioctl(NBD_SET_BLKSIZE) pass
+user-controlled "unsigned long arg" to blk_validate_block_size(),
+"unsigned long" should be used for validation.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/9ecbf057-4375-c2db-ab53-e4cc0dff953d@i-love.sakura.ne.jp
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/blkdev.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index edb414d3fd164..3b62fbcefa8c3 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -995,9 +995,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * smp_mb__before_atomic() in dquot_acquire().
- 	 */
- 	smp_rmb();
--#ifdef CONFIG_QUOTA_DEBUG
--	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
--#endif
-+	/* Has somebody invalidated entry under us? */
-+	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
- out:
- 	if (empty)
- 		do_destroy_dquot(empty);
--- 
-2.43.0
-
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -56,7 +56,7 @@ struct blk_stat_callback;
+  */
+ #define BLKCG_MAX_POLS		5
+ 
+-static inline int blk_validate_block_size(unsigned int bsize)
++static inline int blk_validate_block_size(unsigned long bsize)
+ {
+ 	if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
+ 		return -EINVAL;
 
 
 
