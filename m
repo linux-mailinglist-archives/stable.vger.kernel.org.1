@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CD3967947
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF0E967A46
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662F01C20D48
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58F2A281C2E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95C317E46E;
-	Sun,  1 Sep 2024 16:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AE8183CAB;
+	Sun,  1 Sep 2024 16:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8xlf54/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExEp2k2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673932B9C7;
-	Sun,  1 Sep 2024 16:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B8717CA1F;
+	Sun,  1 Sep 2024 16:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208918; cv=none; b=qQPJoM4YrYHgzCuGR9+encWPkrjB5un/2mxO6A1T4SV6+Kj3SjYDpovI2rs4fzpZZtjV9te/hfanKaiEvnIYaKg5tUVkADR3a1wkE+fvD0I/0HqKQIYbMbV6l7PAThIBFd2xHgS51SAKYIfouvRwK2LPxrE6UNnrlOlU0q5rAaY=
+	t=1725209631; cv=none; b=Ui6VtQmBhkfki/wxioE9Uc5F0zxq1VwJht3PEdQcQ50WTuN2RXvN8lPXjogq+l/yLEmgmiXDwNN/mNxT3Mt4CQrQnZzcGZwl6vjYzBZKAPZwYOtVi9ttgfti/NnuRrY6iE/OJuFSwz0zuDQ3Zx6am2NZ/lzxGyMdDzDaO1V4y+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208918; c=relaxed/simple;
-	bh=wpNRJXqiISWo+nSpbqMf67eNdoYlq1HlAXOrzsOkFPs=;
+	s=arc-20240116; t=1725209631; c=relaxed/simple;
+	bh=Lyqntk+JGXpBb+dHAPnDnB8PSzb9dB6Ng2Y/JgoG3rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RygSWcyr2X4LkiPAhbPLkwaiZGhvKprjT0btHP7mjOi0tbDEMS9i1RJhpLuIuBzdr8NuFhLl68PJbCmzMQWtq4AieXj00BnD8uVf8QhYOHXY/TuRNHsXOSeFsYOl07zQxzJSouYaFXB0bQjfIkmU1R+2Wpp3IY+nF/aPI/qbPz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8xlf54/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB675C4CEC3;
-	Sun,  1 Sep 2024 16:41:57 +0000 (UTC)
+	 MIME-Version; b=Tdsbu3HbUikav1KDa+7IkTG+7c3daHU7emFyLo/zfxoVjbqW+EZTHMZcROgDcAWP6AdaqqRmjoHO/EZ+sSMFF2ptw6OcqQhhpvcY2Obq0fCrPo8J5dMmY7dE5OIicugdkNV1ahAWFmlN/EDT549aO4+MsLRyI0G33pqjW1d006c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExEp2k2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB8CC4CEC3;
+	Sun,  1 Sep 2024 16:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208918;
-	bh=wpNRJXqiISWo+nSpbqMf67eNdoYlq1HlAXOrzsOkFPs=;
+	s=korg; t=1725209631;
+	bh=Lyqntk+JGXpBb+dHAPnDnB8PSzb9dB6Ng2Y/JgoG3rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8xlf54/74MUMnuO0mSyhn6X2SF3c8kPWPBxgZ8KGe2UuO0PnlaOnfg+hpeWac59C
-	 +itSybEALslkhWvMMpfXFzK0GArs6E/AlFoWYKSJt4OqjUXNLyaT1EIFmTXxQxXlgY
-	 ECqG1Ks4XCs/6m2mgsllIl8REWoKZ7VvsLiW7hiA=
+	b=ExEp2k2tVw9Iqiycl9KtzLt9QmiLgEQUf+LD/SeATsTOzwqAnMioCPOl3z/XsmvP1
+	 DUFhU8+4lgFEEUgiXeRZuEKKBVwgquwVIthkNRAhMuY6mQy2HlHC1U681eLLZ/lAcL
+	 mZOFynfxh0DRcOndK/nzBJZBWjZ0ddMqG1BT7rkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 079/134] dm suspend: return -ERESTARTSYS instead of -EINTR
+Subject: [PATCH 5.10 065/151] btrfs: handle invalid root reference found in may_destroy_subvol()
 Date: Sun,  1 Sep 2024 18:17:05 +0200
-Message-ID: <20240901160813.073066804@linuxfoundation.org>
+Message-ID: <20240901160816.563534589@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 ]
+[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
 
-This commit changes device mapper, so that it returns -ERESTARTSYS
-instead of -EINTR when it is interrupted by a signal (so that the ioctl
-can be restarted).
+The may_destroy_subvol() looks up a root by a key, allowing to do an
+inexact search when key->offset is -1.  It's never expected to find such
+item, as it would break the allowed range of a root id.
 
-The manpage signal(7) says that the ioctl function should be restarted if
-the signal was handled with SA_RESTART.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index f6f5b68a6950b..3d00bb98d702b 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2432,7 +2432,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, long task_state
- 			break;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 1f99d7dced17a..4bf28f74605fd 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3918,7 +3918,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
+ 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto out;
+-	BUG_ON(ret == 0);
++	if (ret == 0) {
++		/*
++		 * Key with offset -1 found, there would have to exist a root
++		 * with such id, but this is out of valid range.
++		 */
++		ret = -EUCLEAN;
++		goto out;
++	}
  
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
- 
-@@ -2457,7 +2457,7 @@ static int dm_wait_for_completion(struct mapped_device *md, long task_state)
- 			break;
- 
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
- 
+ 	ret = 0;
+ 	if (path->slots[0] > 0) {
 -- 
 2.43.0
 
