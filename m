@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0ED7967AB5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09282967885
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6631B1F21A25
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2211C20B82
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABD017E00C;
-	Sun,  1 Sep 2024 16:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF9017E00C;
+	Sun,  1 Sep 2024 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK8XVS+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcRS0lbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0744C93;
-	Sun,  1 Sep 2024 16:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEE21C68C;
+	Sun,  1 Sep 2024 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209990; cv=none; b=qNaGQ4qsm2LT+a7aziFcyFr74vit3ueKqgYVXvfSek6YwfR7F1Ullsfd8RWc+kEaGxJHYaeWZm8QRNZ6MWBFdVFDIzBAHyFU7yxEOQotDL9ktQ2wArXT3clMukYnEivEci6G/YJ+072XFZSJrEdl7IAv1Lk3TszOHhFeX3pwdRg=
+	t=1725208373; cv=none; b=tkbTQTOIIcA9kE/FWG7s7GIwEuUdAUVB0rop+9csv06ijaL9meLxeJWsbqJLNu/CC3A85GgpTfiqphWB01SZPG9t5gKxzS/k1SdPjlQdsdQEJ6L91n/2QFdgj7dF4GA+PPBsosOBDMipRtmDX1izikh8U7eFLLVBZv71x0Ltqsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209990; c=relaxed/simple;
-	bh=LFh4qChb+A+l0tHWs17OwUxrpYy14vwvTaG8eWDNFQ0=;
+	s=arc-20240116; t=1725208373; c=relaxed/simple;
+	bh=Ao+FrCq7LK0LCKI8Lrvz6B6ElEIW9PjTFU0L/GTPzBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZmNgA19ukvnuHcxtLPT3j5/qEA9SM/l1hp+3P+dmAhr4BheNhK2Adr/n15xZzXvOq/aAm4f3vDNc87rS++rF/1DHFzjCABqZ35pOc8K1DNKvjQKSGEfUser7z23A/8YXoZBhjw1fwjtgSZt+UXWzvTaObAKWOaycTaONZNmivU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK8XVS+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A33AC4CEC3;
-	Sun,  1 Sep 2024 16:59:49 +0000 (UTC)
+	 MIME-Version; b=N3Cf2F7O1nxK0LIBiGCwCNMmfu3qWc/rBRPoIyOePiPEu6pe7L9L77q3Wwmu5oN9O+b2KlaYjaJorZF++yMqKK66aAooyrw07Vp+//CQaYEXQ1s5EOOviTMoNqOMOm76pb+BeO/Y51+SBW5k/qLHndBbLzVnW1SJ8dt78Ye37Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcRS0lbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A67BC4CEC3;
+	Sun,  1 Sep 2024 16:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209990;
-	bh=LFh4qChb+A+l0tHWs17OwUxrpYy14vwvTaG8eWDNFQ0=;
+	s=korg; t=1725208373;
+	bh=Ao+FrCq7LK0LCKI8Lrvz6B6ElEIW9PjTFU0L/GTPzBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK8XVS+q/6RtqujJqRBWfiyK1dAWmS9b4565Zk0wcVkRXFcN9a1XiDTPLgjhQbW2R
-	 6wNjRLQhB9d6vBDdckNr1W/acisxDm9X5k48vQCDmIzmwJZR5g7WiMcfkI0D6kP7Zm
-	 0YYS/fI8bmA8W9mwOEcihwHKD9F+kGoivWMOcITE=
+	b=GcRS0lbX2SvoUllXlxki73xuWnqxxmikdp7ycQoBavxfO7ExJpn/JSHWQuirvCeJr
+	 m5mS4x23FkKFVEurzMdppPpHNv5ZlHK+t0ohbiy2DendswVUCth9ATI6n2K3m/SnhI
+	 mMJsLFHjyI0ccPoe0KbCzPyEvXmg/0mYdMf7l+oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/215] drm/amd/display: Validate hw_points_num before using it
+Subject: [PATCH 6.10 055/149] ASoC: SOF: amd: Fix for acp init sequence
 Date: Sun,  1 Sep 2024 18:16:06 +0200
-Message-ID: <20240901160825.393543094@linuxfoundation.org>
+Message-ID: <20240901160819.538394234@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50 ]
+[ Upstream commit a42db293e5983aa1508d12644f23d73f0553b32c ]
 
-[WHAT]
-hw_points_num is 0 before ogam LUT is programmed; however, function
-"dwb3_program_ogam_pwl" assumes hw_points_num is always greater than 0,
-i.e. substracting it by 1 as an array index.
+When ACP is not powered on by default, acp power on sequence explicitly
+invoked by programming pgfsm control mask. The existing implementation
+checks the same PGFSM status mask and programs the same PGFSM control mask
+in all ACP variants which breaks acp power on sequence for ACP6.0 and
+ACP6.3 variants. So to fix this issue, update ACP pgfsm control mask and
+status mask based on acp descriptor rev field, which will vary based on
+acp variant.
 
-[HOW]
-Check hw_points_num is not equal to 0 before using it.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 846aef1d7cc0 ("ASoC: SOF: amd: Add Renoir ACP HW support")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20240816070328.610360-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/sof/amd/acp.c | 19 +++++++++++++++++--
+ sound/soc/sof/amd/acp.h |  7 +++++--
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-index 6a3d3a0ec0a36..0f2e7fba0c938 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-@@ -243,6 +243,9 @@ static bool dwb3_program_ogam_lut(
- 		return false;
- 	}
+diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
+index d95f865669a69..85b58c8ccd0da 100644
+--- a/sound/soc/sof/amd/acp.c
++++ b/sound/soc/sof/amd/acp.c
+@@ -433,6 +433,7 @@ static int acp_power_on(struct snd_sof_dev *sdev)
+ 	const struct sof_amd_acp_desc *desc = get_chip_info(sdev->pdata);
+ 	unsigned int base = desc->pgfsm_base;
+ 	unsigned int val;
++	unsigned int acp_pgfsm_status_mask, acp_pgfsm_cntl_mask;
+ 	int ret;
  
-+	if (params->hw_points_num == 0)
-+		return false;
+ 	val = snd_sof_dsp_read(sdev, ACP_DSP_BAR, base + PGFSM_STATUS_OFFSET);
+@@ -440,9 +441,23 @@ static int acp_power_on(struct snd_sof_dev *sdev)
+ 	if (val == ACP_POWERED_ON)
+ 		return 0;
+ 
+-	if (val & ACP_PGFSM_STATUS_MASK)
++	switch (desc->rev) {
++	case 3:
++	case 5:
++		acp_pgfsm_status_mask = ACP3X_PGFSM_STATUS_MASK;
++		acp_pgfsm_cntl_mask = ACP3X_PGFSM_CNTL_POWER_ON_MASK;
++		break;
++	case 6:
++		acp_pgfsm_status_mask = ACP6X_PGFSM_STATUS_MASK;
++		acp_pgfsm_cntl_mask = ACP6X_PGFSM_CNTL_POWER_ON_MASK;
++		break;
++	default:
++		return -EINVAL;
++	}
 +
- 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
++	if (val & acp_pgfsm_status_mask)
+ 		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + PGFSM_CONTROL_OFFSET,
+-				  ACP_PGFSM_CNTL_POWER_ON_MASK);
++				  acp_pgfsm_cntl_mask);
  
- 	current_mode = dwb3_get_ogam_current(dwbc30);
+ 	ret = snd_sof_dsp_read_poll_timeout(sdev, ACP_DSP_BAR, base + PGFSM_STATUS_OFFSET, val,
+ 					    !val, ACP_REG_POLL_INTERVAL, ACP_REG_POLL_TIMEOUT_US);
+diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
+index 1af86b5b28db8..61b28df8c9081 100644
+--- a/sound/soc/sof/amd/acp.h
++++ b/sound/soc/sof/amd/acp.h
+@@ -25,8 +25,11 @@
+ #define ACP_REG_POLL_TIMEOUT_US                 2000
+ #define ACP_DMA_COMPLETE_TIMEOUT_US		5000
+ 
+-#define ACP_PGFSM_CNTL_POWER_ON_MASK		0x01
+-#define ACP_PGFSM_STATUS_MASK			0x03
++#define ACP3X_PGFSM_CNTL_POWER_ON_MASK		0x01
++#define ACP3X_PGFSM_STATUS_MASK			0x03
++#define ACP6X_PGFSM_CNTL_POWER_ON_MASK		0x07
++#define ACP6X_PGFSM_STATUS_MASK			0x0F
++
+ #define ACP_POWERED_ON				0x00
+ #define ACP_ASSERT_RESET			0x01
+ #define ACP_RELEASE_RESET			0x00
 -- 
 2.43.0
 
