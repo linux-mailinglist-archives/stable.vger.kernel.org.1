@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEA9967B39
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E99B49679DD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02221F221A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F841F21DA1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4332B17ADE1;
-	Sun,  1 Sep 2024 17:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2405185B5D;
+	Sun,  1 Sep 2024 16:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdotIHr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExkQCBBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0063826AC1;
-	Sun,  1 Sep 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67745185B55;
+	Sun,  1 Sep 2024 16:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210411; cv=none; b=jPd3my7/lXmevIywauwtYzOu3mklfBppxIEbXKw8gALGU8oc9EzDKiV3W462PSeFJqd4UgeeMu9N3gJCcoSSNlnT6zDym1EmWBSat86yma5x8h8kq9149773lmECN9PRiaJ7GnxNlyxiFD6ekXdMgz9I42hVlH8rN6BKvZy/0y0=
+	t=1725209314; cv=none; b=uZUyHmYwvdqATNxFvQz0J+4SQZX6LTtWbXq/3Po3CP+zKE03MjIirzOLj7bM0mpjTM3wc99IflZYIUkz6OO9225Tg5rRizLbOaHsUfd8CAxSC7B3iG6kyPhAOM2ikHFg7PQB9YcR7K8holC0QwtxYtF2C3fln2NeVBEdl2mzOVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210411; c=relaxed/simple;
-	bh=7hvAP1NyfyCLHlA+Y1kCh2j4MjFToy75/S2ooaYLrm8=;
+	s=arc-20240116; t=1725209314; c=relaxed/simple;
+	bh=A+xxftYSB42VCcT28LsC2uIwWKeY2xV8hFO8yQCfjiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFT8a+10t3EVyB9gsPlkWjynzmwOu15gjlGUNRRdgu+MfCdPtJfDPPfoj4G6kRZuwBlJDi1kAJ81Bp04HufMI6BZZELtmJitRO8sP/LNodc9JiVMfGo+FISeQgJHXf3B02wljnxVSzfC3ep9vgpbMQgMXdIkn9Avsu/w/kJrE6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdotIHr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BE5C4CEC3;
-	Sun,  1 Sep 2024 17:06:50 +0000 (UTC)
+	 MIME-Version; b=rWcUMenpnURxLwWdTZjyt+a6aCREY7uiKybBsy9+OTFd0G2ahEbcB+Wn8BzL8yM5ZX/RA69nq1jC5Xi793CHMDsEE+/SqKkqyYjrvx01EbLro842W2BAIF6WWvTqBqpyBsIoH3KxvogcHCagdy+zykXrTUdwt1DDfBDa0gcuGjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExkQCBBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5725C4CEC8;
+	Sun,  1 Sep 2024 16:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210410;
-	bh=7hvAP1NyfyCLHlA+Y1kCh2j4MjFToy75/S2ooaYLrm8=;
+	s=korg; t=1725209314;
+	bh=A+xxftYSB42VCcT28LsC2uIwWKeY2xV8hFO8yQCfjiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdotIHr8XLOreZsHHX82bL5Kw/0Gd9dhBLPi/tcNiUsFpQAy/hQag8GzoAsbQ+BAz
-	 DXSlhXlRg5UO6ytWlHD+mx0PIPiHzRFVk2iwpnh2GYZcp+eriU7drcGZLkr5xJ7uUG
-	 ng537uBzhorhnutnCQSR775aXOK68xiI0tUL1q6Y=
+	b=ExkQCBBwLCnoSaW5OtO90h5sMM7KEngDcg/Ml5svzbtS8I+6/5n0QeurGDgpOOXIc
+	 M4YKnf9FlMsGh9BlMqj7N3hup3z2KIxjeDYYOXPKNLX7+JSP02DG/YiDfsoK5N0NyM
+	 WXozkbPCfdhexJf65F9c4fw+fUVeDOubu8P98USc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 182/215] Revert "MIPS: Loongson64: reset: Prioritise firmware service"
+	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
+	Ben Hutchings <benh@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 69/71] scsi: aacraid: Fix double-free on probe failure
 Date: Sun,  1 Sep 2024 18:18:14 +0200
-Message-ID: <20240901160830.239694708@linuxfoundation.org>
+Message-ID: <20240901160804.491838246@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ben Hutchings <benh@debian.org>
 
-This reverts commit 77011a1d7a1a973d1657d06b658ce20f94172827 which is
-commit 4e7ca0b57f3bc09ba3e4ab86bf6b7c35134bfd04 upstream.
+[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
 
-Turns out to break the 5.15.y build, it should not have been backported
-that far.
+aac_probe_one() calls hardware-specific init functions through the
+aac_driver_ident::init pointer, all of which eventually call down to
+aac_init_adapter().
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Link: https://lore.kernel.org/r/135ef4fd-4fc9-40b4-b188-8e64946f47c4@roeck-us.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If aac_init_adapter() fails after allocating memory for aac_dev::queues,
+it frees the memory but does not clear that member.
+
+After the hardware-specific init function returns an error,
+aac_probe_one() goes down an error path that frees the memory pointed to
+by aac_dev::queues, resulting.in a double-free.
+
+Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
+Link: https://bugs.debian.org/1075855
+Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/loongson64/reset.c |   38 ++++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 16 deletions(-)
+ drivers/scsi/aacraid/comminit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/loongson64/reset.c
-+++ b/arch/mips/loongson64/reset.c
-@@ -11,7 +11,6 @@
- #include <linux/init.h>
- #include <linux/kexec.h>
- #include <linux/pm.h>
--#include <linux/reboot.h>
- #include <linux/slab.h>
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index bd99c5492b7d4..0f64b02443037 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -642,6 +642,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
  
- #include <asm/bootinfo.h>
-@@ -22,21 +21,36 @@
- #include <loongson.h>
- #include <boot_param.h>
- 
--static int firmware_restart(struct sys_off_data *unusedd)
-+static void loongson_restart(char *command)
- {
- 
- 	void (*fw_restart)(void) = (void *)loongson_sysconf.restart_addr;
- 
- 	fw_restart();
--	return NOTIFY_DONE;
-+	while (1) {
-+		if (cpu_wait)
-+			cpu_wait();
-+	}
- }
- 
--static int firmware_poweroff(struct sys_off_data *unused)
-+static void loongson_poweroff(void)
- {
- 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
- 
- 	fw_poweroff();
--	return NOTIFY_DONE;
-+	while (1) {
-+		if (cpu_wait)
-+			cpu_wait();
-+	}
-+}
-+
-+static void loongson_halt(void)
-+{
-+	pr_notice("\n\n** You can safely turn off the power now **\n\n");
-+	while (1) {
-+		if (cpu_wait)
-+			cpu_wait();
-+	}
- }
- 
- #ifdef CONFIG_KEXEC
-@@ -140,17 +154,9 @@ static void loongson_crash_shutdown(stru
- 
- static int __init mips_reboot_setup(void)
- {
--	if (loongson_sysconf.restart_addr) {
--		register_sys_off_handler(SYS_OFF_MODE_RESTART,
--				 SYS_OFF_PRIO_FIRMWARE,
--				 firmware_restart, NULL);
--	}
--
--	if (loongson_sysconf.poweroff_addr) {
--		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
--				 SYS_OFF_PRIO_FIRMWARE,
--				 firmware_poweroff, NULL);
--	}
-+	_machine_restart = loongson_restart;
-+	_machine_halt = loongson_halt;
-+	pm_power_off = loongson_poweroff;
- 
- #ifdef CONFIG_KEXEC
- 	kexec_argv = kmalloc(KEXEC_ARGV_SIZE, GFP_KERNEL);
+ 	if (aac_comm_init(dev)<0){
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 	/*
+@@ -649,6 +650,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 	 */
+ 	if (aac_fib_setup(dev) < 0) {
+ 		kfree(dev->queues);
++		dev->queues = NULL;
+ 		return NULL;
+ 	}
+ 		
+-- 
+2.43.0
+
 
 
 
