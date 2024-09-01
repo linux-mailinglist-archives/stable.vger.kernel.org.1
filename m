@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD27967A51
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DE2967988
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF01F1C2139F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BA981F21A56
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121082A1B8;
-	Sun,  1 Sep 2024 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C8E184542;
+	Sun,  1 Sep 2024 16:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgukZ1V8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FptuRMTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DE71DFD1;
-	Sun,  1 Sep 2024 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5F17E00C;
+	Sun,  1 Sep 2024 16:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209667; cv=none; b=Ux5rFIk+87aiFhNWpOifDjmoyH+rOqhSnqgdZ568r+FkL7U3ntnHaf3tegQD/xqGdLRgnUvUilid4ES8l1atAzyAyqfJBKOr8ggKrj6y26uqmevvjRghbTDNcopggGnjWIqX0YUkrY/Lc8+NAjWMXjS/LOlhFY9pwLvTmNHsSGM=
+	t=1725209086; cv=none; b=OmEmLskjrdagIvuxczHZku6epQYttbZYAwNQJYxuri/+OOG3BcnFmCjUWu2zzzUQhzcNVubhZJa8xstsD/8zBTgot9yH3WBe+qKp20/qUQpyfJ2dBA5McqEX1jlNrXSkoockC4t6WFV8jml51x28QMy4W3T/tddetqLHONfkbek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209667; c=relaxed/simple;
-	bh=D4D89SaCKtIiNdKhkNTfEQ9XPI3UrI+egc+qT368TMk=;
+	s=arc-20240116; t=1725209086; c=relaxed/simple;
+	bh=r4h7pHqMcKo3M7ktPkgyOxOxlpVfb4/NrFD0JtFvn9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5TN898YXMpq7nLqsdx8MJYW9NswfJibnVv6YBWQM98jkLkVYHv/Q1+DPbGFWjJgRIeLUAzfuz5HwhFhsy/XpvUkPiV1csOIc7MSMLAFRumjW/xjsQ4v1p0xvegYoYziqRe9btgsFzaxbEWNHFdahDUBKthmsCILIUeHAGYBvvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgukZ1V8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C1DC4CEC3;
-	Sun,  1 Sep 2024 16:54:26 +0000 (UTC)
+	 MIME-Version; b=cb4+LZ/4m27RVrHPelNjauqayxdhJh1RRP4ct7F5Fl+YRHc4nDly+rWq2R4te6X1e2KCyNaLnFbAHW9KH1YXoqBgrlkIc01bxfuKPEmy8Piv8rkOTu0r2muIcaIp1Va69hRLiQYljMzeA/7YRlTwGLUenkVFHKlWB/ryatMJY/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FptuRMTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C41C4CEC3;
+	Sun,  1 Sep 2024 16:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209667;
-	bh=D4D89SaCKtIiNdKhkNTfEQ9XPI3UrI+egc+qT368TMk=;
+	s=korg; t=1725209086;
+	bh=r4h7pHqMcKo3M7ktPkgyOxOxlpVfb4/NrFD0JtFvn9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgukZ1V8jZFoysJDASoTr/rSQoutxPodWi+NPBsbQf0mLXU9KfeHShFhCE5GDCBJb
-	 xZ2ac1hofE89RmrkDoYyb/8lkO68OLu/AqYuoGNOjhGf+Or9Z3N4kMcZMagjGKAXQ6
-	 dC4oAg5zWbUyGA10Wfsa4n6S575r+4EeYGaWxlKs=
+	b=FptuRMTkadiKmmVAiB6+fWmlcfZGKIHV47oawalGluwcZJTxbnH+fXdqhCQcF4/LJ
+	 mG03Wk0R7748HQjlotr0COA5ckhZaaC/MV3uqB4/SDhBoGdiFPGSIsgxzx3drn7U+d
+	 uBhXi54cvRZVph9tnSbT8Oq3liHNC1lin0REZri4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Vivier <laurent@vivier.eu>,
-	YunQiang Su <ysu@wavecomp.com>,
-	Helge Deller <deller@gmx.de>,
-	Thorsten Glaser <tg@debian.org>
-Subject: [PATCH 5.10 108/151] binfmt_misc: pass binfmt_misc flags to the interpreter
+	Johan Hovold <johan@kernel.org>,
+	Lars Poeschel <poeschel@lemonage.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 122/134] nfc: pn533: Add dev_up/dev_down hooks to phy_ops
 Date: Sun,  1 Sep 2024 18:17:48 +0200
-Message-ID: <20240901160818.172244371@linuxfoundation.org>
+Message-ID: <20240901160814.672236778@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Vivier <laurent@vivier.eu>
+From: Lars Poeschel <poeschel@lemonage.de>
 
-commit 2347961b11d4079deace3c81dceed460c08a8fc1 upstream.
+[ Upstream commit 0bf2840ccc6efcba82d83b224dcde19dea9f1ee3 ]
 
-It can be useful to the interpreter to know which flags are in use.
+This adds hooks for dev_up and dev_down to the phy_ops. They are
+optional.
+The idea is to inform the phy driver when the nfc chip is really going
+to be used. When it is not used, the phy driver can suspend it's
+interface to the nfc chip to save some power. The nfc chip is considered
+not in use before dev_up and after dev_down.
 
-For instance, knowing if the preserve-argv[0] is in use would
-allow to skip the pathname argument.
-
-This patch uses an unused auxiliary vector, AT_FLAGS, to add a
-flag to inform interpreter if the preserve-argv[0] is enabled.
-
-Note by Helge Deller:
-The real-world user of this patch is qemu-user, which needs to know
-if it has to preserve the argv[0]. See Debian bug #970460.
-
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-Reviewed-by: YunQiang Su <ysu@wavecomp.com>
-URL: http://bugs.debian.org/970460
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Thorsten Glaser <tg@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Johan Hovold <johan@kernel.org>
+Signed-off-by: Lars Poeschel <poeschel@lemonage.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: febccb39255f ("nfc: pn533: Add poll mod list filling check")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf.c              |    5 ++++-
- fs/binfmt_elf_fdpic.c        |    5 ++++-
- fs/binfmt_misc.c             |    4 +++-
- include/linux/binfmts.h      |    4 ++++
- include/uapi/linux/binfmts.h |    4 ++++
- 5 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/nfc/pn533/pn533.c | 12 +++++++++++-
+ drivers/nfc/pn533/pn533.h |  9 +++++++++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -186,6 +186,7 @@ create_elf_tables(struct linux_binprm *b
- 	unsigned char k_rand_bytes[16];
- 	int items;
- 	elf_addr_t *elf_info;
-+	elf_addr_t flags = 0;
- 	int ei_index;
- 	const struct cred *cred = current_cred();
- 	struct vm_area_struct *vma;
-@@ -260,7 +261,9 @@ create_elf_tables(struct linux_binprm *b
- 	NEW_AUX_ENT(AT_PHENT, sizeof(struct elf_phdr));
- 	NEW_AUX_ENT(AT_PHNUM, exec->e_phnum);
- 	NEW_AUX_ENT(AT_BASE, interp_load_addr);
--	NEW_AUX_ENT(AT_FLAGS, 0);
-+	if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
-+		flags |= AT_FLAGS_PRESERVE_ARGV0;
-+	NEW_AUX_ENT(AT_FLAGS, flags);
- 	NEW_AUX_ENT(AT_ENTRY, e_entry);
- 	NEW_AUX_ENT(AT_UID, from_kuid_munged(cred->user_ns, cred->uid));
- 	NEW_AUX_ENT(AT_EUID, from_kuid_munged(cred->user_ns, cred->euid));
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -506,6 +506,7 @@ static int create_elf_fdpic_tables(struc
- 	char __user *u_platform, *u_base_platform, *p;
- 	int loop;
- 	int nr;	/* reset for each csp adjustment */
-+	unsigned long flags = 0;
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index 1e90ff17f87db..c36cd68b47eb5 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -2465,6 +2465,9 @@ static int pn533_dev_up(struct nfc_dev *nfc_dev)
+ {
+ 	struct pn533 *dev = nfc_get_drvdata(nfc_dev);
  
- #ifdef CONFIG_MMU
- 	/* In some cases (e.g. Hyper-Threading), we want to avoid L1 evictions
-@@ -648,7 +649,9 @@ static int create_elf_fdpic_tables(struc
- 	NEW_AUX_ENT(AT_PHENT,	sizeof(struct elf_phdr));
- 	NEW_AUX_ENT(AT_PHNUM,	exec_params->hdr.e_phnum);
- 	NEW_AUX_ENT(AT_BASE,	interp_params->elfhdr_addr);
--	NEW_AUX_ENT(AT_FLAGS,	0);
-+	if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
-+		flags |= AT_FLAGS_PRESERVE_ARGV0;
-+	NEW_AUX_ENT(AT_FLAGS,	flags);
- 	NEW_AUX_ENT(AT_ENTRY,	exec_params->entry_addr);
- 	NEW_AUX_ENT(AT_UID,	(elf_addr_t) from_kuid_munged(cred->user_ns, cred->uid));
- 	NEW_AUX_ENT(AT_EUID,	(elf_addr_t) from_kuid_munged(cred->user_ns, cred->euid));
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -191,7 +191,9 @@ static int load_misc_binary(struct linux
- 	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
- 		goto ret;
- 
--	if (!(fmt->flags & MISC_FMT_PRESERVE_ARGV0)) {
-+	if (fmt->flags & MISC_FMT_PRESERVE_ARGV0) {
-+		bprm->interp_flags |= BINPRM_FLAGS_PRESERVE_ARGV0;
-+	} else {
- 		retval = remove_arg_zero(bprm);
- 		if (retval)
- 			goto ret;
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -73,6 +73,10 @@ struct linux_binprm {
- #define BINPRM_FLAGS_PATH_INACCESSIBLE_BIT 2
- #define BINPRM_FLAGS_PATH_INACCESSIBLE (1 << BINPRM_FLAGS_PATH_INACCESSIBLE_BIT)
- 
-+/* preserve argv0 for the interpreter  */
-+#define BINPRM_FLAGS_PRESERVE_ARGV0_BIT 3
-+#define BINPRM_FLAGS_PRESERVE_ARGV0 (1 << BINPRM_FLAGS_PRESERVE_ARGV0_BIT)
++	if (dev->phy_ops->dev_up)
++		dev->phy_ops->dev_up(dev);
 +
- /* Function parameter for binfmt->coredump */
- struct coredump_params {
- 	const kernel_siginfo_t *siginfo;
---- a/include/uapi/linux/binfmts.h
-+++ b/include/uapi/linux/binfmts.h
-@@ -18,4 +18,8 @@ struct pt_regs;
- /* sizeof(linux_binprm->buf) */
- #define BINPRM_BUF_SIZE 256
+ 	if (dev->device_type == PN533_DEVICE_PN532) {
+ 		int rc = pn532_sam_configuration(nfc_dev);
  
-+/* preserve argv0 for the interpreter  */
-+#define AT_FLAGS_PRESERVE_ARGV0_BIT 0
-+#define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
+@@ -2477,7 +2480,14 @@ static int pn533_dev_up(struct nfc_dev *nfc_dev)
+ 
+ static int pn533_dev_down(struct nfc_dev *nfc_dev)
+ {
+-	return pn533_rf_field(nfc_dev, 0);
++	struct pn533 *dev = nfc_get_drvdata(nfc_dev);
++	int ret;
 +
- #endif /* _UAPI_LINUX_BINFMTS_H */
++	ret = pn533_rf_field(nfc_dev, 0);
++	if (dev->phy_ops->dev_down && !ret)
++		dev->phy_ops->dev_down(dev);
++
++	return ret;
+ }
+ 
+ static struct nfc_ops pn533_nfc_ops = {
+diff --git a/drivers/nfc/pn533/pn533.h b/drivers/nfc/pn533/pn533.h
+index 8bf9d6ece0f50..570ee0a3e832b 100644
+--- a/drivers/nfc/pn533/pn533.h
++++ b/drivers/nfc/pn533/pn533.h
+@@ -207,6 +207,15 @@ struct pn533_phy_ops {
+ 			  struct sk_buff *out);
+ 	int (*send_ack)(struct pn533 *dev, gfp_t flags);
+ 	void (*abort_cmd)(struct pn533 *priv, gfp_t flags);
++	/*
++	 * dev_up and dev_down are optional.
++	 * They are used to inform the phy layer that the nfc chip
++	 * is going to be really used very soon. The phy layer can then
++	 * bring up it's interface to the chip and have it suspended for power
++	 * saving reasons otherwise.
++	 */
++	void (*dev_up)(struct pn533 *priv);
++	void (*dev_down)(struct pn533 *priv);
+ };
+ 
+ 
+-- 
+2.43.0
+
 
 
 
