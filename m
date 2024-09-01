@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A7F967951
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DD9967ADC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E435B20CF8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E9F1C21231
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B60217E900;
-	Sun,  1 Sep 2024 16:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F654381BD;
+	Sun,  1 Sep 2024 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYZ/dFi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tz9E7qMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1E81C68C;
-	Sun,  1 Sep 2024 16:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFED61EB5B;
+	Sun,  1 Sep 2024 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208951; cv=none; b=TTVRFnuvJA/xImXUEsQuf7h15MAywyJm2qdLPDp1qOIkssYFDJZTNvEJfRdhPxAGNmZK/nuNzOYEaGk0VINw5woLbngDoFCOriDkmlvykx/TEoYTcKzxo/K7UfU2mQBQHoSIF7Iq7CrPFNrbtxlHmxamsQ6ZJIu9W3EvrVNFoko=
+	t=1725210113; cv=none; b=Roi20CfzhUXJV4Yp67hZwEUnqbPztH2Y+8AL/VAMjCVEmbpm0gsef3vaGGUBO8Ei/xp9Q/9maFXV3EN/OVns0sOi2yaFAwAbbA+lWrdTQuiA5+GKW6HjEl97gI8o+jdGBn7d1bFSZ1nm0eMSgk1o6EHXF4YqGkOD6GW0F0m1QXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208951; c=relaxed/simple;
-	bh=G34I3/sLgoQVAS87JX6xG34XbL8W7/q4GLsB9z+acAA=;
+	s=arc-20240116; t=1725210113; c=relaxed/simple;
+	bh=yAxzC4j+rVNenIS6gMwgLiCYQHwSyryjV5AcAUW+As8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diBn3dWBT4bWwh4pJ1L6AWhkSbWOHGu8nksGnGd4XB3KtNeALozsf/R3AoUGTE9O1daHuoIF4Hrpv3+4O7QEbPIRGr+/An+IUCrzNScxL5ex5O+BIljib+SiTtHkd5EikDAHWeFzZ8ZIArNfNJ+ufkd9jB2Fn11lvvOngP3kpis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYZ/dFi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50A0C4CEC3;
-	Sun,  1 Sep 2024 16:42:30 +0000 (UTC)
+	 MIME-Version; b=hyaKABn/FLO1nuq7RF+ZgMrJ4UtohyK9rJvZtmYYDZLE4Hq5YbM0iml54jeJV7jz0RAimE85og5SfX0AbQxqJayLRVywT2VuymXVqH3HrJ06aDGKkos6XHL4SZMppI5ZUg2vklk6Uny7VmDsGo7X3MOIZO0Vurul4/3OLQWM/lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz9E7qMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC9AC4CEC3;
+	Sun,  1 Sep 2024 17:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208951;
-	bh=G34I3/sLgoQVAS87JX6xG34XbL8W7/q4GLsB9z+acAA=;
+	s=korg; t=1725210113;
+	bh=yAxzC4j+rVNenIS6gMwgLiCYQHwSyryjV5AcAUW+As8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYZ/dFi6IXQjGWByK/VY+Ver+wATLgqaQANnRP2X57tqcsW3ePB0TKQhZMmcZLG+S
-	 lWL+BmT83TwPLalj2jzI2tqZEsfM+11ZtErftZB82vd2cYHdQGx0ihryYWP9gxl6AL
-	 9svllSXV7RKaAeTkvBAfMfwGEY4NQM8LHH70+sso=
+	b=tz9E7qMqVJuznq8aoB8I3gTu/SnVHy03cxiFXykYFNrQQ6xU4OVmYjLMfRrOeMqrW
+	 Lbv3qDacEHM3Yxn1/Prv3YGwqRFt7CY2e6Yg/ioIZeGLv8yrRF36OjyY33xVZfbpxO
+	 hoP3Wf37Gg0sh7ykXAAXSJ2NQI6/V3VqWsoYrMVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/134] btrfs: send: handle unexpected data in header buffer in begin_cmd()
+Subject: [PATCH 5.15 092/215] f2fs: fix to do sanity check in update_sit_entry
 Date: Sun,  1 Sep 2024 18:16:44 +0200
-Message-ID: <20240901160812.288773353@linuxfoundation.org>
+Message-ID: <20240901160826.830312779@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
+[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
 
-Change BUG_ON to a proper error handling in the unlikely case of seeing
-data when the command is started. This is supposed to be reset when the
-command is finished (send_cmd, send_encoded_extent).
+If GET_SEGNO return NULL_SEGNO for some unecpected case,
+update_sit_entry will access invalid memory address,
+cause system crash. It is better to do sanity check about
+GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Also remove some redundant judgment code.
+
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/f2fs/segment.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 576c027909f8a..e1063ef3dece5 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -692,7 +692,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
- 	if (WARN_ON(!sctx->send_buf))
- 		return -EINVAL;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 1c69dc91c3292..dc33b4e5c07b8 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2269,6 +2269,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
+ #endif
  
--	BUG_ON(sctx->send_size);
-+	if (unlikely(sctx->send_size != 0)) {
-+		btrfs_err(sctx->send_root->fs_info,
-+			  "send: command header buffer not empty cmd %d offset %llu",
-+			  cmd, sctx->send_off);
-+		return -EINVAL;
-+	}
+ 	segno = GET_SEGNO(sbi, blkaddr);
++	if (segno == NULL_SEGNO)
++		return;
  
- 	sctx->send_size += sizeof(*hdr);
- 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
+ 	se = get_seg_entry(sbi, segno);
+ 	new_vblocks = se->valid_blocks + del;
+@@ -3443,8 +3445,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	 * since SSR needs latest valid block information.
+ 	 */
+ 	update_sit_entry(sbi, *new_blkaddr, 1);
+-	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
+-		update_sit_entry(sbi, old_blkaddr, -1);
++	update_sit_entry(sbi, old_blkaddr, -1);
+ 
+ 	if (!__has_curseg_space(sbi, curseg)) {
+ 		if (from_gc)
 -- 
 2.43.0
 
