@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1895967ACE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0144A967A25
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7B01C214E7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 921EEB21696
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB323381BD;
-	Sun,  1 Sep 2024 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE1917DFE7;
+	Sun,  1 Sep 2024 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9iSavVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erF1Pd38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F7426AC1;
-	Sun,  1 Sep 2024 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A020C1DFD1;
+	Sun,  1 Sep 2024 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210068; cv=none; b=Q+bZ936KEV0CSXCfL+3arbVNSpdFlorByhElmAB97ytPMl56bFWTy1IQs+PjgOdCZBBnwcbK4YfEnzgiQ0iYm7suSP6YBiMbcwW+wkjLeDfETWJf/nSI7v2894QHxtD9VPFzloaR4vuoAAuZo1Yjfhkigl4SGZVdsMa5QghOysk=
+	t=1725209521; cv=none; b=jSYsG/ijJKoT5KxzT5tMK3j/NDUHdKQ+JABG8IDPkjAB++L8bgbsBzalxHIb6J6N3eDBSmnloeLLPJhx/o5t3Kr7iGhx6uj2jPA29hg2WuenWkCocOsLLGcqs3eogi2axN78gmppmBMplpGLOtfbdPEsDzWfQKfQHDopb5iqy98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210068; c=relaxed/simple;
-	bh=S47Rj58fU+CR8F2Iq+fCP/ZhIHW4j0uKAxS46CqGFLs=;
+	s=arc-20240116; t=1725209521; c=relaxed/simple;
+	bh=S5GgmOHYWfDaWK7w5yrT7S3ktDAiCWUp0KYCl0skvgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaS7b0kpqr6KYTI+3qng4FthOz8XnixRs+KkKpUqaxuT4imdnw9+4mcO8rpI1ak/aiZhoOph8GTLEkYsffDiNWR2PDr4EXK+YIgXdMU26HPZ2IjS3gNCU2GrgKS3rcjSqkWVYY4ctpHF31SqSpRytqvVzlel9cojUsKVuVX8qDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9iSavVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EBBC4CEC3;
-	Sun,  1 Sep 2024 17:01:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TFTIDYZz/WGpnlIGyzkQJeF5v6XgNwalrwi5+58UpCbUjsqDCY/n9xJQqxi5EzXLhy6di/cW1wEnluSjCC7jCPpqoDIG0SQss6DGs/xmyidjhPDm2XD8D4/gi7obkw+IUDeO6Ss2SediJi4IEVTDksPhPJEnZlE7MXk2V9V4vsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erF1Pd38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2890BC4CEC3;
+	Sun,  1 Sep 2024 16:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210068;
-	bh=S47Rj58fU+CR8F2Iq+fCP/ZhIHW4j0uKAxS46CqGFLs=;
+	s=korg; t=1725209521;
+	bh=S5GgmOHYWfDaWK7w5yrT7S3ktDAiCWUp0KYCl0skvgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9iSavVyE0OxFw31vGeviOfGMDhHj3IZKeW1tsPOr+Z7b8zWTBlrV01kCMe/tQ3OR
-	 e6os1OpnNnv/P7ZrgL8fSB8ZqgNbxOYbkXrFnL16dpyF40LSEpNd+Lup6tabOQUlzg
-	 3U/3ReSQfEREcPE7fHdHCTPGOmaZtGCjlLL0rGN4=
+	b=erF1Pd38JlgSYsnUTw1zn+gOhfUP03lfPkLZV1nECarTMGGL4TSOXe0YcvXL/sSr8
+	 R2n4niwiEkkNTKS81jThjGA6JOT5tWkoXEcFwDxvUC8T6dIRdkCBpHRpMve/46OMP/
+	 4jbEqGv0ucRbxo2YN8dUpD2x+rvqQAj4pg8W17aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Rand Deeb <rand.sec96@gmail.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/215] clocksource/drivers/arm_global_timer: Guard against division by zero
+Subject: [PATCH 5.10 031/151] ssb: Fix division by zero issue in ssb_calc_clock_rate
 Date: Sun,  1 Sep 2024 18:16:31 +0200
-Message-ID: <20240901160826.339720137@linuxfoundation.org>
+Message-ID: <20240901160815.270512468@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit e651f2fae33634175fae956d896277cf916f5d09 ]
+[ Upstream commit e0b5127fa134fe0284d58877b6b3133939c8b3ce ]
 
-The result of the division of new_rate by gt_target_rate can be zero (if
-new_rate is smaller than gt_target_rate). Using that result as divisor
-without checking can result in a division by zero error. Guard against
-this by checking for a zero value earlier.
-While here, also change the psv variable to an unsigned long to make
-sure we don't overflow the datatype as all other types involved are also
-unsiged long.
+In ssb_calc_clock_rate(), there is a potential issue where the value of
+m1 could be zero due to initialization using clkfactor_f6_resolv(). This
+situation raised concerns about the possibility of a division by zero
+error.
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240225151336.2728533-3-martin.blumenstingl@googlemail.com
+We fixed it by following the suggestions provided by Larry Finger
+<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
+involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
+This modification ensures the proper functioning of the code and
+eliminates the risk of division by zero errors.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Michael Büsch <m@bues.ch>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230904232346.34991-1-rand.sec96@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/arm_global_timer.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/ssb/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index e1c773bb55359..22a58d35a41fa 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -290,18 +290,17 @@ static int gt_clk_rate_change_cb(struct notifier_block *nb,
- 	switch (event) {
- 	case PRE_RATE_CHANGE:
- 	{
--		int psv;
-+		unsigned long psv;
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 0a26984acb2ca..9e54bc7eec663 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -835,7 +835,7 @@ static u32 clkfactor_f6_resolve(u32 v)
+ 	case SSB_CHIPCO_CLK_F6_7:
+ 		return 7;
+ 	}
+-	return 0;
++	return 1;
+ }
  
--		psv = DIV_ROUND_CLOSEST(ndata->new_rate,
--					gt_target_rate);
--
--		if (abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
-+		psv = DIV_ROUND_CLOSEST(ndata->new_rate, gt_target_rate);
-+		if (!psv ||
-+		    abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
- 			return NOTIFY_BAD;
- 
- 		psv--;
- 
- 		/* prescaler within legal range? */
--		if (psv < 0 || psv > GT_CONTROL_PRESCALER_MAX)
-+		if (psv > GT_CONTROL_PRESCALER_MAX)
- 			return NOTIFY_BAD;
- 
- 		/*
+ /* Calculate the speed the backplane would run at a given set of clockcontrol values */
 -- 
 2.43.0
 
