@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AFB9678A2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8226C967A23
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE43E1F20F71
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410A8282193
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE49F183CC2;
-	Sun,  1 Sep 2024 16:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F4F17E00C;
+	Sun,  1 Sep 2024 16:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6lwKk2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLQZUCjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB4D1C68C;
-	Sun,  1 Sep 2024 16:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D981DFD1;
+	Sun,  1 Sep 2024 16:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208428; cv=none; b=p54qSfHw8M0M8fEniyk4ExncnVUyK0h8OPmBdONDvUQDl5kOJaZOVkuDzq7pDODSxwASY79IxqagY1Iy9SFWnEor3HiA+LI9PlLzB8ADXyyciLoD6HssAGE0zHJ1An8U3NzE1JdDkYpPQCBCU/URjduzyJVOibogl+k3R62Tm4I=
+	t=1725209518; cv=none; b=oJKRbG8uqLPvtwrXZKRZ9B//mqmv4NGXFbqWrdOFXVhCWRapgX/IHDReBfdpee1eCFmoMJcItwAVE0Oy+igysX4CdcFhkPJ+OLZcnlur5DPmWZ/howUUj376k7KInD5DlY3n+yzsHMrrd7ZrXlNMcK+Mf9xrV8on87ZPSqtBNCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208428; c=relaxed/simple;
-	bh=SZSoMA7JfukeC8Z7hm5Ev76sh+0p2FpwMgM1pKSp+Uc=;
+	s=arc-20240116; t=1725209518; c=relaxed/simple;
+	bh=LKdoAgnDo1eFiRfscr8PGt8fq1NW/5egY6XzJCYpJJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJGZXH2W5wMJ9B2Ur8LZmjzAfxxkTZ8BDtFuXfAtcrPRTTp1Wj0P8JieJb59VRNS7pkK6cAgX4c6BbMUJbQli+mglx4tB/BEfX0Mj1TMWj6b+wAcrGbemGrm4mxZVFE/2FwWPBf99GqLM94u2cvjOAzU/Q6m7faS6ygYLwMD+u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6lwKk2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1233AC4CEC3;
-	Sun,  1 Sep 2024 16:33:47 +0000 (UTC)
+	 MIME-Version; b=Xip0xB2SfDzrDlbNdNLVw2CylIGpuH8Sdh8H9j6bxBf4TXqZzqdKY0ac1/aacpjuqDsgaOgHBL7yDyx+oW5eDXQGexuYK1IRwvK4EU4CxhK5APojIoldV2Ph5lRz/+69IEZWaST6NAKQjQBSowRszC6M1v3px0SP+f9ztOzuYAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLQZUCjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA91C4CEC3;
+	Sun,  1 Sep 2024 16:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208428;
-	bh=SZSoMA7JfukeC8Z7hm5Ev76sh+0p2FpwMgM1pKSp+Uc=;
+	s=korg; t=1725209518;
+	bh=LKdoAgnDo1eFiRfscr8PGt8fq1NW/5egY6XzJCYpJJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6lwKk2z87rOviAare48l/r1/dkzjHGum2tyOWdawAAlQN5EAICmd6wbzlkfBC1EV
-	 xBiUyTtgB26ASLG6aH1bg8xKF/RdOm+CNDtWsel9uGc6R2YJje49XGCK9zAgSMHNjR
-	 Ap8ZPC7iHn1fzb9trvZAZ4EEAUklSuD88lKSeCkw=
+	b=lLQZUCjFtOBwFlabvZ/NoR2ZDq/nAe2Sf1Hh30B/CmavgwUY+FZQZMq7G5Mp5G98Z
+	 xwIwrXo4vTv7Uo+rjuS1AYtfnCz6cy2SB37ERfSLqO1HwcSv/HOVSBCpmXDkKu3pQG
+	 iC7H3WQg+hQt0e0MvU2nRaoF7Sb91LVzUYjFHJKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.10 079/149] phy: fsl-imx8mq-usb: fix tuning parameter name
+	Parsa Poorshikhian <parsa.poorsh@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 030/151] ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7
 Date: Sun,  1 Sep 2024 18:16:30 +0200
-Message-ID: <20240901160820.439273486@linuxfoundation.org>
+Message-ID: <20240901160815.233414922@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Parsa Poorshikhian <parsa.poorsh@gmail.com>
 
-commit ce52c2532299c7ccfd34a52db8d071e890a78c59 upstream.
+[ Upstream commit ef9718b3d54e822de294351251f3a574f8a082ce ]
 
-According to fsl,imx8mq-usb-phy.yaml, this tuning parameter should be
-fsl,phy-pcs-tx-deemph-3p5db-attenuation-db.
+Fix noise from speakers connected to AUX port when no sound is playing.
+The problem occurs because the `alc_shutup_pins` function includes
+a 0x10ec0257 vendor ID, which causes noise on Lenovo IdeaPad 3 15IAU7 with
+Realtek ALC257 codec when no sound is playing.
+Removing this vendor ID from the function fixes the bug.
 
-Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20240801124642.1152838-1-xu.yang_2@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 70794b9563fe ("ALSA: hda/realtek: Add more codec ID to no shutup pins list")
+Signed-off-by: Parsa Poorshikhian <parsa.poorsh@gmail.com>
+Link: https://patch.msgid.link/20240810150939.330693-1-parsa.poorsh@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -176,7 +176,7 @@ static void imx8m_get_phy_tuning_data(st
- 		imx_phy->comp_dis_tune =
- 			phy_comp_dis_tune_from_property(imx_phy->comp_dis_tune);
- 
--	if (device_property_read_u32(dev, "fsl,pcs-tx-deemph-3p5db-attenuation-db",
-+	if (device_property_read_u32(dev, "fsl,phy-pcs-tx-deemph-3p5db-attenuation-db",
- 				     &imx_phy->pcs_tx_deemph_3p5db))
- 		imx_phy->pcs_tx_deemph_3p5db = PHY_TUNE_DEFAULT;
- 	else
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index e8e9cfb4a9357..04fd52bba0573 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -578,7 +578,6 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
+-	case 0x10ec0257:
+ 	case 0x19e58326:
+ 	case 0x10ec0283:
+ 	case 0x10ec0285:
+-- 
+2.43.0
+
 
 
 
