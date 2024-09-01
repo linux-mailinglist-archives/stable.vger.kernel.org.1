@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09EC9678A5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3D967925
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0D4B1C2116F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF0A1C20906
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD0F17E8EA;
-	Sun,  1 Sep 2024 16:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E541C68C;
+	Sun,  1 Sep 2024 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekMSJvc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+fBPrM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA82B9C7;
-	Sun,  1 Sep 2024 16:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD217DFFC;
+	Sun,  1 Sep 2024 16:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208438; cv=none; b=CquURyYfAciBFZO6Na4/JfpcDAbRntI+guN/rJbCiPxN0HFyDFW8fO/sqFigbhrJwaHqg/ldj+XnnNrUJMSCw1FsJyNsWLaQbyT7V/PH+aCtXiUAp0C5CowufhGduZZWB8ykqwudnKNfW11d5MfU20AC+pPP83bdFkOsyeqHxM4=
+	t=1725208815; cv=none; b=sRXXxlil/QhlBn4vFDyCA+zIcRJi5eG2civWhxrNCcFcqJjwvwSwOfSskqUUTtovRWqyO6O1QRNU8ber9iGP2uEckWK3nqq+JIsC7oLdeeGBn0IAzeGyp8skoWHg+9oyYM9Pg5kp/BoIm9fL3zjEcNZzII+aQkuDYHp7BxH+Fmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208438; c=relaxed/simple;
-	bh=p2eHvkZ1Rm/9vHx36DoAogTfUaig4FyG6VIwEpxlOgw=;
+	s=arc-20240116; t=1725208815; c=relaxed/simple;
+	bh=yRPJWKbSB7TCyaArYkZ0Dft8EXpIz+CEjrxXI532uYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov2Usm01GGG/9nCl2O7Yt9WzTnlPqBFkwJNy/qeOTG3r6FZaWPfbXOdbwsZ/FC2zkEqF/DeU5v9qD98h9Bwz8qj6zloWs2Z/MZk9WtMdJv0u91qoBZs1Tx8cQkg9UPrijQfLdpeGr20cW4u+BzcAPmscOWYE4VUdfjWRSyO6ShU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekMSJvc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D691CC4CEC3;
-	Sun,  1 Sep 2024 16:33:57 +0000 (UTC)
+	 MIME-Version; b=itSjww39jU9uZ1FiqUxFPMg+innwA7/RSQRQJpeRoFy7w5qKYVN36QWPkPXMyPQXhPeWbtDM9FZ0FWfBUZg/dPuzEWxhMnf5v3GmYY9wX01MOmql68OTSbBnEpOZiUkLX/dFJJZI5v/6wB2zrURTWmOxq6ooc+WpYHaByGvtfyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+fBPrM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FDDC4CEC3;
+	Sun,  1 Sep 2024 16:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208438;
-	bh=p2eHvkZ1Rm/9vHx36DoAogTfUaig4FyG6VIwEpxlOgw=;
+	s=korg; t=1725208815;
+	bh=yRPJWKbSB7TCyaArYkZ0Dft8EXpIz+CEjrxXI532uYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekMSJvc+cZTmEwuiMr7eR+SPekRkrb+eoVS4NQzilWspup5bIC4gW95ALj17n7c1E
-	 xa3Xe6Z8ebB8wMnUkf9WTr6Msanxbsg2rB4BRfeUlIkxm6Mtu+r+vnMyaJAKKCV38z
-	 saK4qScW4CUznvkg4WcGylLG1XE+7dqr30AH97YQ=
+	b=z+fBPrM6y/p27TBP6ctby+1WkmnbechlY0V7xZA5ywikH1rCX1RfQKyvZ4PbzYP3I
+	 IICOeVRrLO3x0kReASyhws40V7+U+8U9qVaTeE8rUkIoiTzYrLoUNeu37qFwkGIDb3
+	 vNr0XR4/9YtugPeAPEvKqSU0x9j7P17OT6JokQxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mrinmay Sarkar <quic_msarkar@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.10 082/149] dmaengine: dw-edma: Do not enable watermark interrupts for HDMA
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 047/134] scsi: lpfc: Initialize status local variable in lpfc_sli4_repost_sgl_list()
 Date: Sun,  1 Sep 2024 18:16:33 +0200
-Message-ID: <20240901160820.552245009@linuxfoundation.org>
+Message-ID: <20240901160811.878524679@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 9f646ff25c09c52cebe726601db27a60f876f15e upstream.
+[ Upstream commit 3d0f9342ae200aa1ddc4d6e7a573c6f8f068d994 ]
 
-DW_HDMA_V0_LIE and DW_HDMA_V0_RIE are initialized as BIT(3) and BIT(4)
-respectively in dw_hdma_control enum. But as per HDMA register these
-bits are corresponds to LWIE and RWIE bit i.e local watermark interrupt
-enable and remote watermarek interrupt enable. In linked list mode LWIE
-and RWIE bits only enable the local and remote watermark interrupt.
+A static code analyzer tool indicates that the local variable called status
+in the lpfc_sli4_repost_sgl_list() routine could be used to print garbage
+uninitialized values in the routine's log message.
 
-Since the watermark interrupts are not used but enabled, this leads to
-spurious interrupts getting generated. So remove the code that enables
-them to avoid generating spurious watermark interrupts.
+Fix by initializing to zero.
 
-And also rename DW_HDMA_V0_LIE to DW_HDMA_V0_LWIE and DW_HDMA_V0_RIE to
-DW_HDMA_V0_RWIE as there is no LIE and RIE bits in HDMA and those bits
-are corresponds to LWIE and RWIE bits.
-
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-cc: stable@vger.kernel.org
-Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/1724674261-3144-3-git-send-email-quic_msarkar@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240131185112.149731-2-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c |   17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/scsi/lpfc/lpfc_sli.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -17,8 +17,8 @@ enum dw_hdma_control {
- 	DW_HDMA_V0_CB					= BIT(0),
- 	DW_HDMA_V0_TCB					= BIT(1),
- 	DW_HDMA_V0_LLP					= BIT(2),
--	DW_HDMA_V0_LIE					= BIT(3),
--	DW_HDMA_V0_RIE					= BIT(4),
-+	DW_HDMA_V0_LWIE					= BIT(3),
-+	DW_HDMA_V0_RWIE					= BIT(4),
- 	DW_HDMA_V0_CCS					= BIT(8),
- 	DW_HDMA_V0_LLE					= BIT(9),
- };
-@@ -195,25 +195,14 @@ static void dw_hdma_v0_write_ll_link(str
- static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- {
- 	struct dw_edma_burst *child;
--	struct dw_edma_chan *chan = chunk->chan;
- 	u32 control = 0, i = 0;
--	int j;
- 
- 	if (chunk->cb)
- 		control = DW_HDMA_V0_CB;
- 
--	j = chunk->bursts_alloc;
--	list_for_each_entry(child, &chunk->burst->list, list) {
--		j--;
--		if (!j) {
--			control |= DW_HDMA_V0_LIE;
--			if (!(chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
--				control |= DW_HDMA_V0_RIE;
--		}
--
-+	list_for_each_entry(child, &chunk->burst->list, list)
- 		dw_hdma_v0_write_ll_data(chunk, i++, control, child->sz,
- 					 child->sar, child->dar);
--	}
- 
- 	control = DW_HDMA_V0_LLP | DW_HDMA_V0_TCB;
- 	if (!chunk->cb)
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index e489c68cfb631..04b9a94f2f5e5 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -6902,7 +6902,7 @@ lpfc_sli4_repost_sgl_list(struct lpfc_hba *phba,
+ 	struct lpfc_sglq *sglq_entry = NULL;
+ 	struct lpfc_sglq *sglq_entry_next = NULL;
+ 	struct lpfc_sglq *sglq_entry_first = NULL;
+-	int status, total_cnt;
++	int status = 0, total_cnt;
+ 	int post_cnt = 0, num_posted = 0, block_cnt = 0;
+ 	int last_xritag = NO_XRI;
+ 	LIST_HEAD(prep_sgl_list);
+-- 
+2.43.0
+
 
 
 
