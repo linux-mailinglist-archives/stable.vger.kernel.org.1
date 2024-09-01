@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-71915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35F1967854
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5A0967A9C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 533A4B2077A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0116B1C20FF5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C312A17E00C;
-	Sun,  1 Sep 2024 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515A018132A;
+	Sun,  1 Sep 2024 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgW9mjTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f46/ORBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE25381A;
-	Sun,  1 Sep 2024 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DF01E87B;
+	Sun,  1 Sep 2024 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208238; cv=none; b=rOenVgOuy0eS0/N4DvRDF49wCS/+RBp1+sfN+P4QiLx7NM5VUUUBJJoI2nxnbTlZrzsiFkOFjCOBulTPsH2qQaCsZYLaPrbjJHWHm2mlo1D4z/G4yHIISVblPmhTUsSdRNc6Nb9Pg3hQwKydp39Iapu6csGmiu6OQCG9DiHnGIg=
+	t=1725209911; cv=none; b=HpvA8R30x4FXdGUTCNFe6y2EOyL0xHnITAvAYInOmmMQfDC1w6OR5uPL7DhEL8IaV+cEtVBXbqDAPAvEQouaaIr5O7jYxooQARFP6jR6yNmOBatHGomFmjXETmeBLpH8/MtxuFO2aZPgtpwjPB+8YSbI07QrHswhVkiY03hECnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208238; c=relaxed/simple;
-	bh=Xq8AxDe3ODyhsEpAHsMoPoYqsBWHGIFPBL+HO3xDgrg=;
+	s=arc-20240116; t=1725209911; c=relaxed/simple;
+	bh=6KEiIsC9whRdk7zZvvuEwSn97enDhOqmV9q8BaiVuyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPG+fvkAfu7qNTktdtUk7oNenop5nbbpMFuovwBSEpQ2z/whZ5UkUJ7WLWgO517Bkv03mY6jkAPZ9khm90vzsE69+6IMg5SoRa9O51oiYgbQ/MsxODttIhxnbk47FSwBKR6xhmuQ87sxQmaM91LFTyUit7yPzMNMu+T049Q1Sn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgW9mjTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3B3C4CEC3;
-	Sun,  1 Sep 2024 16:30:37 +0000 (UTC)
+	 MIME-Version; b=aQpdZiChVdjvyncNrgeMCCqPsX5cCHxK2gYzm7GAec3jNvSM9Vhz4ok/Q8tO3axTUduVVy4FA/CEP3e85exYa1/PNpVBPDeaW3Nefny8UnJW7Pn/HGVQP6BNu48XGyllZlEV9rv5XpbF1l+isUI+X7VZ2fB+QSmJCqzgm/sNCVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f46/ORBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73855C4CEC3;
+	Sun,  1 Sep 2024 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208237;
-	bh=Xq8AxDe3ODyhsEpAHsMoPoYqsBWHGIFPBL+HO3xDgrg=;
+	s=korg; t=1725209910;
+	bh=6KEiIsC9whRdk7zZvvuEwSn97enDhOqmV9q8BaiVuyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgW9mjTkUiyJ6qZKYR1s7gTsLX37kQCdK/8J+4MXNjKqOzxyCitdOLYk61eUBHmvs
-	 NzW8dWIpqb05zvhI2BIVCEnHE3ulicbagsNnCePKt3QL9hwUPDHNrAAprBoH008EOT
-	 9oGNUUOMy2NXy2HZFf2yXrEbmhQdgZ/ccdmv6r/4=
+	b=f46/ORBZT/viWkBQYP7Pp0UROuMXV2W5c68Ui0keYo98Zp6Eq6Ni52EEk29wr0QsI
+	 BCo5LpMihnaZGpdaeXe2S1cGYqxDrRlANaXilE7Q8jrxFAdTORH4gIydpg10hZq6QG
+	 1qEJh3QWKs5FMV1nVovuC3eaXakmJ5OD9kVtG9WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 003/149] ALSA: seq: Skip event type filtering for UMP events
-Date: Sun,  1 Sep 2024 18:15:14 +0200
-Message-ID: <20240901160817.595200510@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Eli Billauer <eli.billauer@gmail.com>
+Subject: [PATCH 5.15 003/215] char: xillybus: Refine workqueue handling
+Date: Sun,  1 Sep 2024 18:15:15 +0200
+Message-ID: <20240901160823.366496280@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Eli Billauer <eli.billauer@gmail.com>
 
-commit 32108c22ac619c32dd6db594319e259b63bfb387 upstream.
+commit ad899c301c880766cc709aad277991b3ab671b66 upstream.
 
-UMP events don't use the event type field, hence it's invalid to apply
-the filter, which may drop the events unexpectedly.
-Skip the event filtering for UMP events, instead.
+As the wakeup work item now runs on a separate workqueue, it needs to be
+flushed separately along with flushing the device's workqueue.
 
-Fixes: 46397622a3fa ("ALSA: seq: Add UMP support")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240819084156.10286-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Also, move the destroy_workqueue() call to the end of the exit method,
+so that deinitialization is done in the opposite order of
+initialization.
+
+Fixes: ccbde4b128ef ("char: xillybus: Don't destroy workqueue from work item running on it")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
+Link: https://lore.kernel.org/r/20240816070200.50695-1-eli.billauer@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_clientmgr.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/char/xillybus/xillyusb.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -537,6 +537,9 @@ static struct snd_seq_client *get_event_
- 		return NULL;
- 	if (! dest->accept_input)
- 		goto __not_avail;
-+	if (snd_seq_ev_is_ump(event))
-+		return dest; /* ok - no filter checks */
+--- a/drivers/char/xillybus/xillyusb.c
++++ b/drivers/char/xillybus/xillyusb.c
+@@ -2079,9 +2079,11 @@ static int xillyusb_discovery(struct usb
+ 	 * just after responding with the IDT, there is no reason for any
+ 	 * work item to be running now. To be sure that xdev->channels
+ 	 * is updated on anything that might run in parallel, flush the
+-	 * workqueue, which rarely does anything.
++	 * device's workqueue and the wakeup work item. This rarely
++	 * does anything.
+ 	 */
+ 	flush_workqueue(xdev->workq);
++	flush_work(&xdev->wakeup_workitem);
+ 
+ 	xdev->num_channels = num_channels;
+ 
+@@ -2258,9 +2260,9 @@ static int __init xillyusb_init(void)
+ 
+ static void __exit xillyusb_exit(void)
+ {
+-	destroy_workqueue(wakeup_wq);
+-
+ 	usb_deregister(&xillyusb_driver);
 +
- 	if ((dest->filter & SNDRV_SEQ_FILTER_USE_EVENT) &&
- 	    ! test_bit(event->type, dest->event_filter))
- 		goto __not_avail;
++	destroy_workqueue(wakeup_wq);
+ }
+ 
+ module_init(xillyusb_init);
 
 
 
