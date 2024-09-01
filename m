@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043A9967A40
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EF79678CB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6C91F23B36
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F20A71F21683
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A09E181B86;
-	Sun,  1 Sep 2024 16:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB7117E00C;
+	Sun,  1 Sep 2024 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KX3PAkHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tztYdl8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2EF208A7;
-	Sun,  1 Sep 2024 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA80184534;
+	Sun,  1 Sep 2024 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209612; cv=none; b=Uwr5ikKFDWn2FaH/V0m/SdpTU+RVXvIMVzla09UY+S2edrKJJg2pNV4Cq3DV0JlRnapNdaMG0n64tnoMAiASjUuzhcJZlorOtkK8ndiJQqlaspyS10xZfnfYuLSI+1YWVRgbmgpZVeEydDRQpl75Zzcsi1iiOqu+a2eRAL+T+cU=
+	t=1725208538; cv=none; b=kO8fsxoQ6j57Ap2FYCMINxUcYMh8e6fgGEoR1+H+KtI68tgyEKX3AxqMzgXmXqEn/d6+1f35WWSqBt2QeSFwetbX7KwOGm2HxpoidGS+aiX8UB9UcF0iPCQemSXjh4VzthTYLNwq4FFB6N1PGtml3/tcSo5XjIt1rbf7JEcmmFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209612; c=relaxed/simple;
-	bh=l7yyjopWC1u7I9zMIILbOx+l9rdowcwP4y7C0NtBPuw=;
+	s=arc-20240116; t=1725208538; c=relaxed/simple;
+	bh=tz0G4m3VA0BSvuao6NeUkIM7h2fTbhXr9jY3cvDYOoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6WJp4L3jEyc+jSDff03sRpl3wZEbtVqO1/wdhHv8DRfi7Om04BuHyKkW7OWlBlg3Xh4tVlhyQdyFkkDHGKX85qO26x37uz/61zToABdkliSsRxGVGseGwSRMGtnLhe6IX1csDq7vcNjCwC2g/csn+YXppAb1zeSOZ6/8C9SliI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KX3PAkHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3E3C4CEC3;
-	Sun,  1 Sep 2024 16:53:31 +0000 (UTC)
+	 MIME-Version; b=Dzsw3jHA7K2bNUSTiGngYDAwabmbZlxXVgvblezk1+SVi5jBgto6hoYsoaoBJ5zwsoDYaO211WlEqGP4QsdmhvK6JTs/hj92D66DVlPYkzfsfNfw2TtL3cqy6nSn5UV+MoREqgUc+veqIMVTOuUi+adpD24V47osajAut1sIQp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tztYdl8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000A5C4CEC3;
+	Sun,  1 Sep 2024 16:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209611;
-	bh=l7yyjopWC1u7I9zMIILbOx+l9rdowcwP4y7C0NtBPuw=;
+	s=korg; t=1725208538;
+	bh=tz0G4m3VA0BSvuao6NeUkIM7h2fTbhXr9jY3cvDYOoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KX3PAkHEfJHAFUOcT+cuAxh9gxZvq+iC7xSdg4aTwlJPwCD0aJO0j9QNd+/wjDGg0
-	 pczHlVps7okjxEQXHDYGGkKrTxyN9x5ZK9hrFKFbsxoXyEvpLQXAI7Fc3KA9Psg4yD
-	 ettjyN+uR66vMvXEC0qb2Em6aOGP/1ZfEP65t8pk=
+	b=tztYdl8oyuqr/0rfZ0tOlKuJXPHCvAElpTJr7hYJ2s+mrwQIjJrWl69zTL67GI7c5
+	 EboKB5gOQLZ2XFEMGMGWyTIw4vmBtqgQ+CHtTVta8OtSjjxbBJfNpLjyuNv0+Wu1kD
+	 nbnrThD+QunmQcbm74rDXCP5yMLFnfRo179tDhaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/151] powerpc/boot: Only free if realloc() succeeds
+Subject: [PATCH 6.10 112/149] nfc: pn533: Add poll mod list filling check
 Date: Sun,  1 Sep 2024 18:17:03 +0200
-Message-ID: <20240901160816.488742521@linuxfoundation.org>
+Message-ID: <20240901160821.666854496@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
+[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
 
-simple_realloc() frees the original buffer (ptr) even if the
-reallocation failed.
+In case of im_protocols value is 1 and tm_protocols value is 0 this
+combination successfully passes the check
+'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
+But then after pn533_poll_create_mod_list() call in pn533_start_poll()
+poll mod list will remain empty and dev->poll_mod_count will remain 0
+which lead to division by zero.
 
-Fix it to behave like standard realloc() and only free the original
-buffer if the reallocation succeeded.
+Normally no im protocol has value 1 in the mask, so this combination is
+not expected by driver. But these protocol values actually come from
+userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
+broken or malicious program may pass a message containing a "bad"
+combination of protocol parameter values so that dev->poll_mod_count
+is not incremented inside pn533_poll_create_mod_list(), thus leading
+to division by zero.
+Call trace looks like:
+nfc_genl_start_poll()
+  nfc_start_poll()
+    ->start_poll()
+    pn533_start_poll()
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
+Add poll mod list filling check.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/nfc/pn533/pn533.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 188c4f996512a..bc99f75b8582d 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -114,10 +114,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index b19c39dcfbd93..e2bc67300a915 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1723,6 +1723,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
+ 	}
  
- 	new = simple_malloc(size);
--	if (new)
-+	if (new) {
- 		memcpy(new, ptr, p->size);
-+		simple_free(ptr);
+ 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
++	if (!dev->poll_mod_count) {
++		nfc_err(dev->dev,
++			"Poll mod list is empty\n");
++		return -EINVAL;
 +	}
  
--	simple_free(ptr);
- 	return new;
- }
- 
+ 	/* Do not always start polling from the same modulation */
+ 	get_random_bytes(&rand_mod, sizeof(rand_mod));
 -- 
 2.43.0
 
