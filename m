@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF3296778B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD3996792E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B6A1F218C9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2748A281F9E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CB144C97;
-	Sun,  1 Sep 2024 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CD717E8EA;
+	Sun,  1 Sep 2024 16:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ur8Qaxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik7vLuUa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9660F155A24;
-	Sun,  1 Sep 2024 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5590D1C68C;
+	Sun,  1 Sep 2024 16:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207661; cv=none; b=T0Z1oObJ0Y3cszYgYj+4sUiSIZ/Vfg3Id0/2EhgIc3woDTz+4xX8RNMHnhYeVWlm1CiHtAMc5d2es95pBBsl/tEvtIYHkmkXNzy7k2uLvM3VklZOPSfmi0h90ae4ucI3ndOlIj3sNz9ALKAvjc29qMlYsp2MBvSmPMAMbar5i4A=
+	t=1725208844; cv=none; b=M1Nq5B8IepETJzncnB5b+gnRvcmJoERhtF/2cAU/qYYhs/wqyFfyTMb4lGfTZoHOQYdbKiL6J/mMKIXOrRLJh9PTxOWZJ2n8jfKEAG/FS+9opKl4Q7cH+ZsswXTRP9cxvjzffpftgyFbjJb7P+9k3eyEldg/TVprC93pVn0/kT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207661; c=relaxed/simple;
-	bh=GWfp588RcYpSH6lXUQq0/Z3iRXzVrv9wCqtmJD6gZz4=;
+	s=arc-20240116; t=1725208844; c=relaxed/simple;
+	bh=mVyjbKCdjSLLVFe9w+32V4JkoXAMWOeYj5+aD3D0bcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk9crUnjzMwqcVagNBj/lm9Bkn5tfR7UR1pfmNLUYlc6pj57w7fU9jFLOSJeivmxfmnlUo7w5Ugi2ri2rIVl5X31X9SJsA3UFb9sQ1gV94VtHADkJ0ZtAEVHVBMGLFXhfWxmr4AQXkIgcEW+Kn2yvsvsVjhQZr+66BfKbef3WPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ur8Qaxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05051C4CEC3;
-	Sun,  1 Sep 2024 16:21:00 +0000 (UTC)
+	 MIME-Version; b=bYldkNALFA7PmjVAvmJYkMbSjCSFiCfSsxuECtEq7t94kZxTgduSuOWAEdZB8JkGOHEX5mLCnibNxXOxR6PFIwWaoN/ZncoZkbDKHsBWwLKAuCqGAQ5Lmp1B8fxZU+A907TWuNlc362qkeOd7QU5+gUHDzXWH5lxZkvygPR2NMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik7vLuUa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A56C4CEC3;
+	Sun,  1 Sep 2024 16:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207661;
-	bh=GWfp588RcYpSH6lXUQq0/Z3iRXzVrv9wCqtmJD6gZz4=;
+	s=korg; t=1725208844;
+	bh=mVyjbKCdjSLLVFe9w+32V4JkoXAMWOeYj5+aD3D0bcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ur8QaxqIcvIXXw+XC1siLjoWylgdAe4RZn1xbWk4puaQpl25gK70wnnSYVfy0K/b
-	 /K++y/sjZ2IgA4nrDfHV2YLVGKk0l+2sWqtuMKxpY55kFWmNd6Te6xbmVvyYkrPXx4
-	 ULrB44hz4fYe9Sm1I9nFfcnSlKgfcqdcEjabOylk=
+	b=ik7vLuUaAmS7TeNn4CHajWBYXmV+9HZyGnyrCZsyxkILI5t6XBF6Pb8Qm1aWiQ5Ed
+	 3cRP2tfQ5MiTC7bH4J+qCJaI/A3iHEigHEWOJQJNxcasWw/gtzAcD6JYe3kwG0T//B
+	 SDaGps0zwvF1icx3O1bIO2jc9qUsMq3S9HfMpJwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/98] f2fs: fix to do sanity check in update_sit_entry
+Subject: [PATCH 5.4 024/134] net: axienet: Wrap DMA pointer writes to prepare for 64 bit
 Date: Sun,  1 Sep 2024 18:16:10 +0200
-Message-ID: <20240901160805.211763724@linuxfoundation.org>
+Message-ID: <20240901160811.018736874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
+[ Upstream commit 6a00d0dd3fcfa2ef200973479fbeee62f3681130 ]
 
-If GET_SEGNO return NULL_SEGNO for some unecpected case,
-update_sit_entry will access invalid memory address,
-cause system crash. It is better to do sanity check about
-GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
+Newer versions of the Xilink DMA IP support busses with more than 32
+address bits, by introducing an MSB word for the registers holding DMA
+pointers (tail/current, RX/TX descriptor addresses).
+On IP configured for more than 32 bits, it is also *required* to write
+both words, to let the IP recognise this as a start condition for an
+MM2S request, for instance.
 
-Also remove some redundant judgment code.
+Wrap the DMA pointer writes with a separate function, to add this
+functionality later. For now we stick to the lower 32 bits.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 26 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 34090edc8ce25..6750cda692cc3 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2018,6 +2018,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
- #endif
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 76f719c28355c..bd03a6d66e122 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -148,6 +148,12 @@ static inline void axienet_dma_out32(struct axienet_local *lp,
+ 	iowrite32(value, lp->dma_regs + reg);
+ }
  
- 	segno = GET_SEGNO(sbi, blkaddr);
-+	if (segno == NULL_SEGNO)
-+		return;
- 
- 	se = get_seg_entry(sbi, segno);
- 	new_vblocks = se->valid_blocks + del;
-@@ -2935,8 +2937,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	 * since SSR needs latest valid block information.
++static void axienet_dma_out_addr(struct axienet_local *lp, off_t reg,
++				 dma_addr_t addr)
++{
++	axienet_dma_out32(lp, reg, lower_32_bits(addr));
++}
++
+ /**
+  * axienet_dma_bd_release - Release buffer descriptor rings
+  * @ndev:	Pointer to the net_device structure
+@@ -286,18 +292,18 @@ static int axienet_dma_bd_init(struct net_device *ndev)
+ 	/* Populate the tail pointer and bring the Rx Axi DMA engine out of
+ 	 * halted state. This will make the Rx side ready for reception.
  	 */
- 	update_sit_entry(sbi, *new_blkaddr, 1);
--	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
--		update_sit_entry(sbi, old_blkaddr, -1);
-+	update_sit_entry(sbi, old_blkaddr, -1);
+-	axienet_dma_out32(lp, XAXIDMA_RX_CDESC_OFFSET, lp->rx_bd_p);
++	axienet_dma_out_addr(lp, XAXIDMA_RX_CDESC_OFFSET, lp->rx_bd_p);
+ 	cr = axienet_dma_in32(lp, XAXIDMA_RX_CR_OFFSET);
+ 	axienet_dma_out32(lp, XAXIDMA_RX_CR_OFFSET,
+ 			  cr | XAXIDMA_CR_RUNSTOP_MASK);
+-	axienet_dma_out32(lp, XAXIDMA_RX_TDESC_OFFSET, lp->rx_bd_p +
+-			  (sizeof(*lp->rx_bd_v) * (lp->rx_bd_num - 1)));
++	axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, lp->rx_bd_p +
++			     (sizeof(*lp->rx_bd_v) * (lp->rx_bd_num - 1)));
  
- 	if (!__has_curseg_space(sbi, type))
- 		sit_i->s_ops->allocate_segment(sbi, type, false);
+ 	/* Write to the RS (Run-stop) bit in the Tx channel control register.
+ 	 * Tx channel is now ready to run. But only after we write to the
+ 	 * tail pointer register that the Tx channel will start transmitting.
+ 	 */
+-	axienet_dma_out32(lp, XAXIDMA_TX_CDESC_OFFSET, lp->tx_bd_p);
++	axienet_dma_out_addr(lp, XAXIDMA_TX_CDESC_OFFSET, lp->tx_bd_p);
+ 	cr = axienet_dma_in32(lp, XAXIDMA_TX_CR_OFFSET);
+ 	axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET,
+ 			  cr | XAXIDMA_CR_RUNSTOP_MASK);
+@@ -758,7 +764,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 
+ 	tail_p = lp->tx_bd_p + sizeof(*lp->tx_bd_v) * lp->tx_bd_tail;
+ 	/* Start the transfer */
+-	axienet_dma_out32(lp, XAXIDMA_TX_TDESC_OFFSET, tail_p);
++	axienet_dma_out_addr(lp, XAXIDMA_TX_TDESC_OFFSET, tail_p);
+ 	if (++lp->tx_bd_tail >= lp->tx_bd_num)
+ 		lp->tx_bd_tail = 0;
+ 
+@@ -850,7 +856,7 @@ static void axienet_recv(struct net_device *ndev)
+ 	ndev->stats.rx_bytes += size;
+ 
+ 	if (tail_p)
+-		axienet_dma_out32(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
++		axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
+ }
+ 
+ /**
+@@ -1683,18 +1689,18 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 	/* Populate the tail pointer and bring the Rx Axi DMA engine out of
+ 	 * halted state. This will make the Rx side ready for reception.
+ 	 */
+-	axienet_dma_out32(lp, XAXIDMA_RX_CDESC_OFFSET, lp->rx_bd_p);
++	axienet_dma_out_addr(lp, XAXIDMA_RX_CDESC_OFFSET, lp->rx_bd_p);
+ 	cr = axienet_dma_in32(lp, XAXIDMA_RX_CR_OFFSET);
+ 	axienet_dma_out32(lp, XAXIDMA_RX_CR_OFFSET,
+ 			  cr | XAXIDMA_CR_RUNSTOP_MASK);
+-	axienet_dma_out32(lp, XAXIDMA_RX_TDESC_OFFSET, lp->rx_bd_p +
+-			  (sizeof(*lp->rx_bd_v) * (lp->rx_bd_num - 1)));
++	axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, lp->rx_bd_p +
++			     (sizeof(*lp->rx_bd_v) * (lp->rx_bd_num - 1)));
+ 
+ 	/* Write to the RS (Run-stop) bit in the Tx channel control register.
+ 	 * Tx channel is now ready to run. But only after we write to the
+ 	 * tail pointer register that the Tx channel will start transmitting
+ 	 */
+-	axienet_dma_out32(lp, XAXIDMA_TX_CDESC_OFFSET, lp->tx_bd_p);
++	axienet_dma_out_addr(lp, XAXIDMA_TX_CDESC_OFFSET, lp->tx_bd_p);
+ 	cr = axienet_dma_in32(lp, XAXIDMA_TX_CR_OFFSET);
+ 	axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET,
+ 			  cr | XAXIDMA_CR_RUNSTOP_MASK);
 -- 
 2.43.0
 
