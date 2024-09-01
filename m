@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-72489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ADE967AD5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35589677AA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29701C20D87
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D388C1C20E4F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31271381BD;
-	Sun,  1 Sep 2024 17:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE321836E2;
+	Sun,  1 Sep 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usln91cv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhMQQkv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A9526AC1;
-	Sun,  1 Sep 2024 17:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1DD17F394;
+	Sun,  1 Sep 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210091; cv=none; b=epE8kbyjO6LwgcfbP1KiaWW1Y4qCBXqC+Ey8ZjoVDazx617UA4H8M41mwM85cIJCCqS87JyEYdU80G8UHPnGEVh1leI5YcTXtuGkXrKRV+vTWWRnbLce6QXQnU5V6G5d9zUujsUMgXwukNXTk+PBra2TtBOy0ejPfzFM5/ZNKF4=
+	t=1725207754; cv=none; b=bpyhsrVp8LmrfgDAetmkSITrhrLpTnzarT93RMjgYCWZMFBo8KSv5OT7UB/e4XUvsULd7M1P+fl93Vb9UD16F7dUvdpCc0yuecalj2I+MHw7x9lifTalszD4+0wNqZSy4vj73X2rdfhs5l2ueg8zIsaJlisGrQ0qPIZq+MAJpd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210091; c=relaxed/simple;
-	bh=1WtReWD8O1eA2XyE6T2m9EJHg9gtnxM6XjxyyEK5DA8=;
+	s=arc-20240116; t=1725207754; c=relaxed/simple;
+	bh=cNov5Dzmz/0IjlovJ2rPA5BTo1A2Qx/m55kTOCV5MOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVT07aYtEp66ubgX7IHbh3pzYYd8np3GUYVYXsLhFG1RpdsqPMumg9L/Z4Hx1+0mdWi6ZwHgFC4rNB6KrIOkjX9Kc+0uox9+zW8nVOpp96zi7hwkUxTiEbeOTLJq4XEeRbsi74rYvw62rE5YR4RY3uyI7cPPuZh7fzKhVVgG8Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usln91cv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E04C4CEC3;
-	Sun,  1 Sep 2024 17:01:30 +0000 (UTC)
+	 MIME-Version; b=SCjn4FySRiqLEBD2DvAHj9VHicLtx+MxuE9SpOfyDj8vFbXcATJMDbMts3UI62WH462AUs3r7HoDMcRSXgeqNW4wEl9Qu47VuXetF2Y1yGtfajmUUGwhSTChLGW/Gq8scK49QbCFr03DgYssegbUOipkAAVgaZfHdus1vhUbAlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhMQQkv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDF8C4CEC3;
+	Sun,  1 Sep 2024 16:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210090;
-	bh=1WtReWD8O1eA2XyE6T2m9EJHg9gtnxM6XjxyyEK5DA8=;
+	s=korg; t=1725207754;
+	bh=cNov5Dzmz/0IjlovJ2rPA5BTo1A2Qx/m55kTOCV5MOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usln91cvdUjcoXFj9HWGcTS5BQ6vimpVyM6ozP6OFFqr7SiaTIxECYXIwJZcYWcou
-	 OctqKQSmmlQz8RhtDuzHv9atH/hClmidAUCq24GMRXVIHwPpkYF8FGEOD5knsINgwG
-	 ODW5bVINQwfaG1YY4Nz66ZEuPb1qScQWBl6pXYJo=
+	b=WhMQQkv/R/07Jy0dTKMd0sYJrdR5mJRAyr4vxvj/WK26RpND0Wrh6JA8o4/nS+TcM
+	 bqRsIzKJf+st+5aW4QXT7UIVsWyfMRotwc1m6UE2GBYJcOgpn1Xc4YzW0qN33ol0Lo
+	 TmMxLEanBnygYGG+BFSGybLpxOGH8BWFqUD0bjE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/215] powerpc/boot: Only free if realloc() succeeds
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 68/98] ALSA: timer: Relax start tick time check for slave timer elements
 Date: Sun,  1 Sep 2024 18:16:38 +0200
-Message-ID: <20240901160826.606534079@linuxfoundation.org>
+Message-ID: <20240901160806.261812465@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
+commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
 
-simple_realloc() frees the original buffer (ptr) even if the
-reallocation failed.
+The recent addition of a sanity check for a too low start tick time
+seems breaking some applications that uses aloop with a certain slave
+timer setup.  They may have the initial resolution 0, hence it's
+treated as if it were a too low value.
 
-Fix it to behave like standard realloc() and only free the original
-buffer if the reallocation succeeded.
+Relax and skip the check for the slave timer instance for addressing
+the regression.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/raspberrypi/linux/issues/6294
+Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/core/timer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 188c4f996512a..bc99f75b8582d 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -114,10 +114,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
- 
- 	new = simple_malloc(size);
--	if (new)
-+	if (new) {
- 		memcpy(new, ptr, p->size);
-+		simple_free(ptr);
-+	}
- 
--	simple_free(ptr);
- 	return new;
- }
- 
--- 
-2.43.0
-
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -532,7 +532,7 @@ static int snd_timer_start1(struct snd_t
+ 	/* check the actual time for the start tick;
+ 	 * bail out as error if it's way too low (< 100us)
+ 	 */
+-	if (start) {
++	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
+ 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
+ 			result = -EINVAL;
+ 			goto unlock;
 
 
 
