@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAAC96787A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868DD9677DE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14A681F21068
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52628B219BA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5730917E900;
-	Sun,  1 Sep 2024 16:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF60A181B88;
+	Sun,  1 Sep 2024 16:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP+GFs7M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQQS9tPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AA8537FF;
-	Sun,  1 Sep 2024 16:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C41A14290C;
+	Sun,  1 Sep 2024 16:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208337; cv=none; b=HLfVqbqwtemAqWdHTvLjKTSVCKxG/ZFp6HpGX9a1PfhCFQ5SszirUHhGUoheuWQ7g4ayZh10FnOlm39r4bXPssr30aD1RSQOEV1ZgalbZU+3syWGqhmm+D1eHgvmiJJEr0Cy6MrNYCdlrQo72H+vzrmM1fEfQWKuBdrLUC/yRoM=
+	t=1725207905; cv=none; b=m6h3968klWFXKW3RyYB7/5icNoBSDkZ0sLGi/VWnYZ1d0jBzLHDNaQerbCRvkOTxwOYkRwGNM9Q/ry4/F1Da8UiRH3+2RUHq1/b2B1hjtlzTDiKYJ2MHCMMF3o+DyQFcs5GN2wPaPAf8QXcz4hnxO/oslaxmcieRs+zeldzPsJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208337; c=relaxed/simple;
-	bh=XS7DUdNTiKI5W3u3+tg8AhqG/nPnuIcvSBPTBf2y8X8=;
+	s=arc-20240116; t=1725207905; c=relaxed/simple;
+	bh=a8VWYZerN+wAUKI8xaIntN+QXrh1YXcmQQKeIbBnwM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR9vHeHoqWcli1JUjI2PnOzHV+z0XhxzsaEBysxxTpP3KsuqM9b44JBz1PO8WRvoUipTHgCIoqrRItjAw72D+M0Wk5yfyMOCkEWk1K3iIUvDyObF0xJd5/0VXXFMcm0Vc+zDBhxmZwNrgjKjW0QiscMFQZ4Ay51Hg6xQSOs0kKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP+GFs7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A32DC4CEC3;
-	Sun,  1 Sep 2024 16:32:16 +0000 (UTC)
+	 MIME-Version; b=GdhElisDQTDe7iu8Whc25W7IaAfJHyUVJfMjteJYhmhLIcngfm+75lCo8hIn9xcKkKgPJowmW6tvGzLcOrFD1tfArMo+IrJgZpvTqVdmVMeZc3QKzpdrjkJ92lY28GM4SSdA36zDpnrDRdrCoZuSq+qBQXOnimJRhNXAEDdvqaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQQS9tPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0483C4CEC3;
+	Sun,  1 Sep 2024 16:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208337;
-	bh=XS7DUdNTiKI5W3u3+tg8AhqG/nPnuIcvSBPTBf2y8X8=;
+	s=korg; t=1725207905;
+	bh=a8VWYZerN+wAUKI8xaIntN+QXrh1YXcmQQKeIbBnwM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fP+GFs7Mj2kWPPS+iKnWC6Ih1ktzejGiBJGjVjxSZrYnzi+Lgf+tkTTOVtrsYeB0p
-	 KR2O/Tv7kwFXz6VX8erE8/oaxdTl/Kmsvq1qsdZ9BW365I+0N3WpKhAsbYMyKmEAPT
-	 ZO8xXGMQGXK0lsOPnLes4fSCA37U2Rf4+h+r+caA=
+	b=CQQS9tPe2sRsjiAAaZDJB+bK/fYjvMRakxaa0FgpSkJdP7zb7A+0Qk54Po32pcFX9
+	 3gy/QOq2XmI4zU/+p1sCylWQxNJvp2lJ8RJ9d7VinMuhEjQZwqo6kylHVXnTtLdo/4
+	 tnitNuH4rlF4PNUI6tDAYdRdY3kJPvjnm8YPUdCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 050/149] drm/amdgpu: fix eGPU hotplug regression
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 14/93] mptcp: pm: reuse ID 0 after delete and re-add
 Date: Sun,  1 Sep 2024 18:16:01 +0200
-Message-ID: <20240901160819.349667766@linuxfoundation.org>
+Message-ID: <20240901160807.895470744@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 9cead81eff635e3b3cbce51b40228f3bdc6f2b8c ]
+commit 8b8ed1b429f8fa7ebd5632555e7b047bc0620075 upstream.
 
-The driver needs to wait for the on board firmware
-to finish its initialization before probing the card.
-Commit 959056982a9b ("drm/amdgpu: Fix discovery initialization failure during pci rescan")
-switched from using msleep() to using usleep_range() which
-seems to have caused init failures on some navi1x boards. Switch
-back to msleep().
+When the endpoint used by the initial subflow is removed and re-added
+later, the PM has to force the ID 0, it is a special case imposed by the
+MPTCP specs.
 
-Fixes: 959056982a9b ("drm/amdgpu: Fix discovery initialization failure during pci rescan")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3559
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3500
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Ma Jun <Jun.Ma2@amd.com>
-(cherry picked from commit c69b07f7bbc905022491c45097923d3487479529)
-Cc: stable@vger.kernel.org # 6.10.x
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the endpoint should then need to be re-added reusing the same
+ID.
+
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index ea5223388cff2..f1b08893765cf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -269,7 +269,7 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
- 			msg = RREG32(mmMP0_SMN_C2PMSG_33);
- 			if (msg & 0x80000000)
- 				break;
--			usleep_range(1000, 1100);
-+			msleep(1);
- 		}
- 	}
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -593,6 +593,11 @@ static void mptcp_pm_create_subflow_or_s
  
--- 
-2.43.0
-
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		mptcp_pm_announce_addr(msk, &local.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+ 
+@@ -617,6 +622,11 @@ subflow:
+ 
+ 		msk->pm.local_addr_used++;
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
+ 		if (nr == 0)
+ 			continue;
 
 
 
