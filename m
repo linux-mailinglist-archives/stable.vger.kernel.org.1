@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8199679B9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E52967958
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE024282312
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D45392821CE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CDB187322;
-	Sun,  1 Sep 2024 16:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AC817DFFC;
+	Sun,  1 Sep 2024 16:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFCG0yOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZbfipIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A082186E3A;
-	Sun,  1 Sep 2024 16:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434A71C68C;
+	Sun,  1 Sep 2024 16:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209212; cv=none; b=uKYhZQKiBFxyn2N1GnBbolAeI04BqoDV2FsbPltuoTVDf+ZMowu/926TOIxElSr1NXeovChPcu6tXDndsaDs9ohlDG06LefOHc6TnLtD2KDyZZY8mrpvCOeh/0R3TON/I1UyWUy62YFNUzIO91eGnp8AJlvjMujYNmK7/QvPvo0=
+	t=1725208977; cv=none; b=el/ULFCIcN9nxVU/pQbEi0grKoRH7oaejqp+ejURaJQHgVkG04zbXSkghxnEuuN6PE6OJYzcNZEDYX1CkUQ8RswZa/Jzt3bnMeo/4YFNKkxYIHMJqzNX5NeUoxdjsXLdrZAuQkj49GycPW5LnF/9rqrQUfVlYAUCu7brd9RmI24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209212; c=relaxed/simple;
-	bh=rXp8FFZqksAoqzxsRluHqnpA4LbKdDDdYGpSXnz1Nj4=;
+	s=arc-20240116; t=1725208977; c=relaxed/simple;
+	bh=JNnPHHDiy6KORCZHWUOp6u8HBULngxrbS5Gzt/DnXrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9zfkVPbjbYn/12/8t6Are/6ZOaAaoF2X4DvWXs6yYGYMZ2BY8wTFyiOQtESZgOER3wLLA0fefQgz8BcgRkEi6qN9Xh2YumNuVNuAFf3+Xx1lmf/+27Q5I6vnz08eH14OeJpOXds/Vt2fbv7eKrgMtCBovVpXPqgK4T+tPwszOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFCG0yOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48D0C4CECC;
-	Sun,  1 Sep 2024 16:46:51 +0000 (UTC)
+	 MIME-Version; b=VqWuVc4XCU7tmHR5HZGzwMMhDjhIXb951avkC9jI0QugBjIRTPrEQJXlfsdI+kX1b37O6nzKeWZembGLXbEKgzH06iuy05FTZuANnUbDAI58TJqz/dEvi0BH/xMJzbdZjOlBzvrijnmTXkrVHmvNe6CFUvXkIxOOoWTZaw7ZFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZbfipIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE4FC4CEC3;
+	Sun,  1 Sep 2024 16:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209212;
-	bh=rXp8FFZqksAoqzxsRluHqnpA4LbKdDDdYGpSXnz1Nj4=;
+	s=korg; t=1725208977;
+	bh=JNnPHHDiy6KORCZHWUOp6u8HBULngxrbS5Gzt/DnXrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFCG0yOaND/BBeBXprPP8MPG3jZSSB+H1MvRJNB0ZwU7cwOu2cFaVUFK/WJBOG+o8
-	 kfVAQOtr7btP3QMePXGwp6BjW9hQeGqkyLvCcwSBR16pm0FDSfNIyOdOW1OWzHujkV
-	 M7Z3EJx7PzS1OKAe2+rec5E+Zw0brCbZogMg/j4Q=
+	b=cZbfipIHv3r/C0mufW8dKef+0KPcNbVTxC4P0+WaY5nyFg1SLmBZEmWCqbGJ3nNIL
+	 DIXGDRQvij1iwQAiA+L5S6fQVd7ktsQujC/mLre1jKR4/28joAwE1plWWTazLGcd/y
+	 2LmS/D1eTChAWX0cvb98Am9sueeS00RlnXriqeSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 18/71] drm/amdgpu: align pp_power_profile_mode with kernel docs
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 097/134] mmc: mmc_test: Fix NULL dereference on allocation failure
 Date: Sun,  1 Sep 2024 18:17:23 +0200
-Message-ID: <20240901160802.577187576@linuxfoundation.org>
+Message-ID: <20240901160813.743862093@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8f614469de248a4bc55fb07e55d5f4c340c75b11 upstream.
+[ Upstream commit a1e627af32ed60713941cbfc8075d44cad07f6dd ]
 
-The kernel doc says you need to select manual mode to
-adjust this, but the code only allows you to adjust it when
-manual mode is not selected.  Remove the manual mode check.
+If the "test->highmem = alloc_pages()" allocation fails then calling
+__free_pages(test->highmem) will result in a NULL dereference.  Also
+change the error code to -ENOMEM instead of returning success.
 
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit bbb05f8a9cd87f5046d05a0c596fddfb714ee457)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2661081f5ab9 ("mmc_test: highmem tests")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/8c90be28-67b4-4b0d-a105-034dc72a0b31@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mmc/core/mmc_test.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1870,8 +1870,7 @@ static int smu_adjust_power_state_dynami
- 		smu_dpm_ctx->dpm_level = level;
- 	}
+diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
+index cd64e0f23ae54..8fcaec5544ff4 100644
+--- a/drivers/mmc/core/mmc_test.c
++++ b/drivers/mmc/core/mmc_test.c
+@@ -3097,13 +3097,13 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
+ 	test->buffer = kzalloc(BUFFER_SIZE, GFP_KERNEL);
+ #ifdef CONFIG_HIGHMEM
+ 	test->highmem = alloc_pages(GFP_KERNEL | __GFP_HIGHMEM, BUFFER_ORDER);
++	if (!test->highmem) {
++		count = -ENOMEM;
++		goto free_test_buffer;
++	}
+ #endif
  
--	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
--		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
-+	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
- 		index = fls(smu->workload_mask);
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
-@@ -1948,8 +1947,7 @@ static int smu_switch_power_profile(void
- 		workload[0] = smu->workload_setting[index];
- 	}
+-#ifdef CONFIG_HIGHMEM
+-	if (test->buffer && test->highmem) {
+-#else
+ 	if (test->buffer) {
+-#endif
+ 		mutex_lock(&mmc_test_lock);
+ 		mmc_test_run(test, testcase);
+ 		mutex_unlock(&mmc_test_lock);
+@@ -3111,6 +3111,7 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
  
--	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
--		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
-+	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
- 		smu_bump_power_profile_mode(smu, workload, 0);
- 
- 	return 0;
+ #ifdef CONFIG_HIGHMEM
+ 	__free_pages(test->highmem, BUFFER_ORDER);
++free_test_buffer:
+ #endif
+ 	kfree(test->buffer);
+ 	kfree(test);
+-- 
+2.43.0
+
 
 
 
