@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DD9967ADC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84009967814
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E9F1C21231
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2079CB21505
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F654381BD;
-	Sun,  1 Sep 2024 17:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99078184538;
+	Sun,  1 Sep 2024 16:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tz9E7qMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9+orjHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFED61EB5B;
-	Sun,  1 Sep 2024 17:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DA333987;
+	Sun,  1 Sep 2024 16:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210113; cv=none; b=Roi20CfzhUXJV4Yp67hZwEUnqbPztH2Y+8AL/VAMjCVEmbpm0gsef3vaGGUBO8Ei/xp9Q/9maFXV3EN/OVns0sOi2yaFAwAbbA+lWrdTQuiA5+GKW6HjEl97gI8o+jdGBn7d1bFSZ1nm0eMSgk1o6EHXF4YqGkOD6GW0F0m1QXg=
+	t=1725208047; cv=none; b=GQ1oMQ6C02f/mDVSucmhHnv6x2sAW4Y5pL2ZPFoUniQuk1yoM9MloWYJMdyMVk5J3k9uBUR2KF5BtRYZmfjgq6+cLEy4slQzqPbfVyB37DMIzp9R2nCpceLQIyRY6qQlitoO6OQ2yKiMqIsL0wQAe4/+GXQIwlia/QNyI81nN18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210113; c=relaxed/simple;
-	bh=yAxzC4j+rVNenIS6gMwgLiCYQHwSyryjV5AcAUW+As8=;
+	s=arc-20240116; t=1725208047; c=relaxed/simple;
+	bh=vjp+MH9gVkEr7NM2Ah7ChOET6QB/jNS4wU4Dr/8kfZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyaKABn/FLO1nuq7RF+ZgMrJ4UtohyK9rJvZtmYYDZLE4Hq5YbM0iml54jeJV7jz0RAimE85og5SfX0AbQxqJayLRVywT2VuymXVqH3HrJ06aDGKkos6XHL4SZMppI5ZUg2vklk6Uny7VmDsGo7X3MOIZO0Vurul4/3OLQWM/lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz9E7qMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC9AC4CEC3;
-	Sun,  1 Sep 2024 17:01:52 +0000 (UTC)
+	 MIME-Version; b=gi1JUGMab6Ch4dRwB26qtJKvz5CPmsAGx+aU3sgvaDk2RkTGCLOUU+nOtM4M7qFTkvXyLIccJgBHmm/mw0vqn4kN4T2D7XJ/hIGhnX3U0omDiXinOWdjXA2huISJ+Y/9o05Kju89reeOKjCLF71VvH54eulMiS2R2y6gBMugi68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9+orjHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC100C4CEC8;
+	Sun,  1 Sep 2024 16:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210113;
-	bh=yAxzC4j+rVNenIS6gMwgLiCYQHwSyryjV5AcAUW+As8=;
+	s=korg; t=1725208047;
+	bh=vjp+MH9gVkEr7NM2Ah7ChOET6QB/jNS4wU4Dr/8kfZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tz9E7qMqVJuznq8aoB8I3gTu/SnVHy03cxiFXykYFNrQQ6xU4OVmYjLMfRrOeMqrW
-	 Lbv3qDacEHM3Yxn1/Prv3YGwqRFt7CY2e6Yg/ioIZeGLv8yrRF36OjyY33xVZfbpxO
-	 hoP3Wf37Gg0sh7ykXAAXSJ2NQI6/V3VqWsoYrMVQ=
+	b=Y9+orjHKNIv0Worw7X0QMqah3wFS9Dz16pQgpwhUJ3Q7ByTjzIEaZugijKBdYUJp3
+	 fVWq8UpFO38uR9rlHxWYL7Q2XsUE7UGwFHIhHqb7Mtg0vosUiVHlFHT+fq8+k8PEoA
+	 SBVIsL2HA7k2RdwpDJGYSWnN8jimNBaDgv3x9zJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/215] f2fs: fix to do sanity check in update_sit_entry
+Subject: [PATCH 6.6 57/93] wifi: iwlwifi: fw: fix wgds rev 3 exact size
 Date: Sun,  1 Sep 2024 18:16:44 +0200
-Message-ID: <20240901160826.830312779@linuxfoundation.org>
+Message-ID: <20240901160809.510005975@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
+[ Upstream commit 3ee22f07a35b76939c5b8d17d6af292f5fafb509 ]
 
-If GET_SEGNO return NULL_SEGNO for some unecpected case,
-update_sit_entry will access invalid memory address,
-cause system crash. It is better to do sanity check about
-GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
+Check size of WGDS revision 3 is equal to 8 entries size with some header,
+but doesn't depend on the number of used entries. Check that used entries
+are between min and max but allow more to be present than are used to fix
+operation with some BIOSes that have such data.
 
-Also remove some redundant judgment code.
-
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 97f8a3d1610b ("iwlwifi: ACPI: support revision 3 WGDS tables")
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.cc71dfc67ec3.Ic27ee15ac6128b275c210b6de88f2145bd83ca7b@changeid
+[edit commit message]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 1c69dc91c3292..dc33b4e5c07b8 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2269,6 +2269,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
- #endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 2cda1dcfd059a..9943e2d21a8f5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -867,22 +867,25 @@ int iwl_sar_get_wgds_table(struct iwl_fw_runtime *fwrt)
+ 				entry = &wifi_pkg->package.elements[entry_idx];
+ 				entry_idx++;
+ 				if (entry->type != ACPI_TYPE_INTEGER ||
+-				    entry->integer.value > num_profiles) {
++				    entry->integer.value > num_profiles ||
++				    entry->integer.value <
++					rev_data[idx].min_profiles) {
+ 					ret = -EINVAL;
+ 					goto out_free;
+ 				}
+-				num_profiles = entry->integer.value;
  
- 	segno = GET_SEGNO(sbi, blkaddr);
-+	if (segno == NULL_SEGNO)
-+		return;
- 
- 	se = get_seg_entry(sbi, segno);
- 	new_vblocks = se->valid_blocks + del;
-@@ -3443,8 +3445,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	 * since SSR needs latest valid block information.
- 	 */
- 	update_sit_entry(sbi, *new_blkaddr, 1);
--	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
--		update_sit_entry(sbi, old_blkaddr, -1);
-+	update_sit_entry(sbi, old_blkaddr, -1);
- 
- 	if (!__has_curseg_space(sbi, curseg)) {
- 		if (from_gc)
+ 				/*
+-				 * this also validates >= min_profiles since we
+-				 * otherwise wouldn't have gotten the data when
+-				 * looking up in ACPI
++				 * Check to see if we received package count
++				 * same as max # of profiles
+ 				 */
+ 				if (wifi_pkg->package.count !=
+ 				    hdr_size + profile_size * num_profiles) {
+ 					ret = -EINVAL;
+ 					goto out_free;
+ 				}
++
++				/* Number of valid profiles */
++				num_profiles = entry->integer.value;
+ 			}
+ 			goto read_table;
+ 		}
 -- 
 2.43.0
 
