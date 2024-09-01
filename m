@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4995B967A08
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40800967956
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F82282185
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2BC428219E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D529416B391;
-	Sun,  1 Sep 2024 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BFE17DFFC;
+	Sun,  1 Sep 2024 16:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrKQEAVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4FAGhU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9242C1C68C;
-	Sun,  1 Sep 2024 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263D51C68C;
+	Sun,  1 Sep 2024 16:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209445; cv=none; b=c6BH9SAYxWdSau8wd2HksDUif9Mfnyx6+j7IN/ICL0xYejxWEIflDzDbYMPMtZmPp6x3Xy/rajSgK5LRBC0PvKECWw9LIMllXA4Dm1LycLzQG8a5yieNNLsYgjEOo580wgSxB7xpI57ydhvXiAF4uiEwmLgpXjisyza+DiB/jhA=
+	t=1725208971; cv=none; b=MD6E7KdTaMW0oISDKKhMVZFjsmdTTiOjkNJocMAiNZ5N3+sHteA3jADrj+vmt/LCIMutZCbX91cvPHFYRFSGndV79KK2p/oV2EXBAP9M6t9X4QueklaBldajrjwwd++wQPpPj5IQL88t4WsTxlN/+skxIcdSJxaP1fHcMWZtBrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209445; c=relaxed/simple;
-	bh=Fa8T29YTlp3O/GEp5gQl+6jdjqkcFFMcNunp8pq/HqQ=;
+	s=arc-20240116; t=1725208971; c=relaxed/simple;
+	bh=kN3q1fsXiBtILVHi8KodfRcOrQqbH6d1DwcrF46jnFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcgiZlbDJiQx+8bEDpe0BplLP5VDpxlGoHmXcvwS22CltQV2HpW9YwAZMOWiO8YwMTBvyZui8MNVXPcnxarziA+e6OGCxeiS1gj2K+KpsNUFXoyCL9MirKSAHofsoBDPIwTcqEStyFI3q+nh0gPMgG+Ijqc+FWo4xMmcUYlTM+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrKQEAVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9F7C4CEC3;
-	Sun,  1 Sep 2024 16:50:44 +0000 (UTC)
+	 MIME-Version; b=Y/kGWZEJ5UgL/DYt4sHMGoBDKfKuOD7I6xg8QVfx+vA1jTqPfONZ5zgyzH2vcxFBfug2TEvin2XHKWZMOYIW5PtWZx33p83gcvpHhAKJSd9RP9CumnAceXhv05hH2Xkreg2RFSVi8DAujhby9JiIizuUv/UVBqCjQMgfJbYttA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4FAGhU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7414CC4CEC3;
+	Sun,  1 Sep 2024 16:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209445;
-	bh=Fa8T29YTlp3O/GEp5gQl+6jdjqkcFFMcNunp8pq/HqQ=;
+	s=korg; t=1725208971;
+	bh=kN3q1fsXiBtILVHi8KodfRcOrQqbH6d1DwcrF46jnFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WrKQEAVymWjA+r+rMDO3rTTEkh3yVdNkgn+vJCb+MiexC/ygkeDnlBqBxySC3vFQX
-	 yNLXmAO3pdUWf0PMWvSKT3ir7PxKxpEWEV+CLC4VInGGiELIUWiBGguJczmFM37Y0Q
-	 /KY15NhmWGQmFYgdkx6QQ3sUxmRFy0Kratq6hAA4=
+	b=g4FAGhU71ZDL1BWUP9nKtLb39hI5Xh4mxkiiivuI9+IiohQmvqAzL4mnDO6k9a9o6
+	 Z0GfZmmulEkKUUxQ1eNRpa9XmKeRQ8Hsg+6HTwa2IK6MIvhNEKmo3bvDQPaih7eaxP
+	 BGNud1XXzXb+SG0GqG0fL6Odb8F7Hk/GF13kjcUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/151] drm/amd/display: Validate hw_points_num before using it
+Subject: [PATCH 5.4 053/134] parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367
 Date: Sun,  1 Sep 2024 18:16:39 +0200
-Message-ID: <20240901160815.571825861@linuxfoundation.org>
+Message-ID: <20240901160812.103979288@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50 ]
+[ Upstream commit 73cb4a2d8d7e0259f94046116727084f21e4599f ]
 
-[WHAT]
-hw_points_num is 0 before ogam LUT is programmed; however, function
-"dwb3_program_ogam_pwl" assumes hw_points_num is always greater than 0,
-i.e. substracting it by 1 as an array index.
+Use irq*_rcu() functions to fix this kernel warning:
 
-[HOW]
-Check hw_points_num is not equal to 0 before using it.
+ WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0xa0/0xd0
+ Modules linked in:
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc3-64bit+ #1037
+ Hardware name: 9000/785/C3700
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000412cd758 00000000412cd75c
+  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 0000000043c20c20
+  CPU:        0   CR30: 0000000041caa000 CR31: 0000000000000000
+  ORIG_R28: 0000000000000005
+  IAOQ[0]: ct_irq_enter+0xa0/0xd0
+  IAOQ[1]: ct_irq_enter+0xa4/0xd0
+  RP(r2): irq_enter+0x34/0x68
+ Backtrace:
+  [<000000004034a3ec>] irq_enter+0x34/0x68
+  [<000000004030dc48>] do_cpu_irq_mask+0xc0/0x450
+  [<0000000040303070>] intr_return+0x0/0xc
+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/parisc/kernel/irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-index 6d621f07be489..1c170fbb634da 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-@@ -243,6 +243,9 @@ static bool dwb3_program_ogam_lut(
- 		return false;
- 	}
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index b4aa5af943ba5..c4c06bcd04835 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -520,7 +520,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
  
-+	if (params->hw_points_num == 0)
-+		return false;
-+
- 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
+ 	old_regs = set_irq_regs(regs);
+ 	local_irq_disable();
+-	irq_enter();
++	irq_enter_rcu();
  
- 	current_mode = dwb3_get_ogam_current(dwbc30);
+ 	eirr_val = mfctl(23) & cpu_eiem & per_cpu(local_ack_eiem, cpu);
+ 	if (!eirr_val)
+@@ -555,7 +555,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+ #endif /* CONFIG_IRQSTACKS */
+ 
+  out:
+-	irq_exit();
++	irq_exit_rcu();
+ 	set_irq_regs(old_regs);
+ 	return;
+ 
 -- 
 2.43.0
 
