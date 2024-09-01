@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-71756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF9D96779C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C075C96791A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4DB28202F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A62818E8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E36183CBD;
-	Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544ED17CA1F;
+	Sun,  1 Sep 2024 16:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kw+TYj2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtKFYXqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B554183CA5;
-	Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130791C68C;
+	Sun,  1 Sep 2024 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207711; cv=none; b=e3qJ3WqhZItyH2NWgK9QFVWiB+rNMNaJ/FLzBNgBumfxIbAn6ODvCiiXNYVPhR9M8kym7SaNsYBMDAzxQnkdxbC390SKscz/JJ411+/1nE47Xhs4nLmJf1CJZ1XPA2kOmJET3AMHpMFhaGTDhCiSSmY6n2kCZCZRdOyDdl+uQr8=
+	t=1725208779; cv=none; b=mhJlFcV64Ug5VoLJw2pFQJZjQKOCPjWpANVE0wxTncKrkmT78MpaXP66ighQsQzWXKF3pjm7Cg/MAaewkyDhE1H/PQtSXK/rl1+XcpGHU4BnN81hYTH7pTI8c+rtFTBU00wxTvpLI99XJ4xrOgG279zpAWd9L2maoKwPgNyZIik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207711; c=relaxed/simple;
-	bh=GL47WSxDABkB+Vxd0aUN9yt4V62DR12pEdAfq5N+M40=;
+	s=arc-20240116; t=1725208779; c=relaxed/simple;
+	bh=b9TsH4f4LLYGTmy/lEpZYAYZJMTVkwq7hrGJu8n76D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiKK3JlyAY1pv7cO5vuA1UEnegYjZdMggZ4Ke2k9SFnDReUzcqDkcHjhQUZp4ZHSlm/6ds7rJP+aT7qrroS2jetl3MIFIc0KgbpHMt+z/Cptv+kbP6XlcXl5WvGvtysKWk40PORJOvJ/XWZwRCRAHT1A6v+AEAeCoTAy9LTa5M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kw+TYj2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37C0C4CEC3;
-	Sun,  1 Sep 2024 16:21:50 +0000 (UTC)
+	 MIME-Version; b=XVBdTcXSqFV3Rjs27DJpMzGv/o5uVlnJuXi5n2sbRB3WdSRgOePvIyybclSZXzGpyx6QBeeWyzzXxML6JgihgMNDgfgqEnj3gbeEAaBJQ0Yr2oQx/zvJxwnvCbv239Uo3pa/C7jut1tAFE13l6cZz52RmdXGxxS97JHqMa8+/Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtKFYXqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E06EC4CEC3;
+	Sun,  1 Sep 2024 16:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207711;
-	bh=GL47WSxDABkB+Vxd0aUN9yt4V62DR12pEdAfq5N+M40=;
+	s=korg; t=1725208778;
+	bh=b9TsH4f4LLYGTmy/lEpZYAYZJMTVkwq7hrGJu8n76D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kw+TYj2URf1Fws0ZKjpqoarzHOXuHDyrytz9+HEZTgoDYnYMisNGnP1Wdj22xTEfM
-	 r8KxFb/zaNcThhWJXsQCdcclcDVQjwkLE2eNY3+qobNLLzG5i/5w4XwRYtXUjDzuRy
-	 bioK4A2c4HZVqQPd/ONwYHt7tNPC+1s3L9+h+V+Y=
+	b=NtKFYXqgu6+tDakumEj4Fdo9SxE6Y1P6OXTlPqohcwIpxYMAUSx4lOkR/vufxQwVa
+	 174U0tz/ucB3AoIN3Se9Wcle3F371ffThIojDs9lfSAGhPmuiqIZVF0qIGhBRwXijo
+	 tZU/x+7Zgz1LESbGVdWZWm6bSYG3GkBzDFZy7cys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Mike Christie <michael.christie@oracle.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	David Hunter <david.hunter.linux@gmail.com>
-Subject: [PATCH 4.19 53/98] block: use "unsigned long" for blk_validate_block_size().
+	John Garry <john.g.garry@oracle.com>,
+	Martin Wilck <mwilck@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 037/134] scsi: spi: Fix sshdr use
 Date: Sun,  1 Sep 2024 18:16:23 +0200
-Message-ID: <20240901160805.699779829@linuxfoundation.org>
+Message-ID: <20240901160811.499154751@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+From: Mike Christie <michael.christie@oracle.com>
 
-commit 37ae5a0f5287a52cf51242e76ccf198d02ffe495 upstream.
+[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
 
-Since lo_simple_ioctl(LOOP_SET_BLOCK_SIZE) and ioctl(NBD_SET_BLKSIZE) pass
-user-controlled "unsigned long arg" to blk_validate_block_size(),
-"unsigned long" should be used for validation.
+If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
+shouldn't access the sshdr. If it returns 0, then the cmd executed
+successfully, so there is no need to check the sshdr. This has us access
+the sshdr when we get a return value > 0.
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/9ecbf057-4375-c2db-ab53-e4cc0dff953d@i-love.sakura.ne.jp
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/scsi_transport_spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -56,7 +56,7 @@ struct blk_stat_callback;
-  */
- #define BLKCG_MAX_POLS		5
+diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
+index c37dd15d16d24..83f2576ed2aa0 100644
+--- a/drivers/scsi/scsi_transport_spi.c
++++ b/drivers/scsi/scsi_transport_spi.c
+@@ -677,10 +677,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
+ 	for (r = 0; r < retries; r++) {
+ 		result = spi_execute(sdev, spi_write_buffer, DMA_TO_DEVICE,
+ 				     buffer, len, &sshdr);
+-		if(result || !scsi_device_online(sdev)) {
++		if (result || !scsi_device_online(sdev)) {
  
--static inline int blk_validate_block_size(unsigned int bsize)
-+static inline int blk_validate_block_size(unsigned long bsize)
- {
- 	if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
- 		return -EINVAL;
+ 			scsi_device_set_state(sdev, SDEV_QUIESCE);
+-			if (scsi_sense_valid(&sshdr)
++			if (result > 0 && scsi_sense_valid(&sshdr)
+ 			    && sshdr.sense_key == ILLEGAL_REQUEST
+ 			    /* INVALID FIELD IN CDB */
+ 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
+-- 
+2.43.0
+
 
 
 
