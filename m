@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-71905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4393B967848
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97263967A87
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1641F20EFA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F391C20BCD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B02184523;
-	Sun,  1 Sep 2024 16:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D8F18132A;
+	Sun,  1 Sep 2024 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hlm5UoRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zddYzB1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D440A183CD7;
-	Sun,  1 Sep 2024 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85C92A1B8;
+	Sun,  1 Sep 2024 16:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208204; cv=none; b=CZZejSKFkBa3ct1c5ToqYMXd7gfLvYPHKKl0BYJ6KdQmUyKMt6gx31Wvqub43A8qwMst6MNxN8UfpUmU/Yi/nMmOnXhaHhusJWw+raOMdp7RZYeOi25rHliNqoF0KwzDpFJGKM0ag0kNvmSf5fp0T2bk1SDL5Rn0YPfCWcA6x1M=
+	t=1725209839; cv=none; b=pkJHZmlahgnOI3BYCmnWKAfl7JtEOYF6qxCabZnS2YiOXc/X6bKvGKcA9/pMrYbDbM05KB1KPqddSZ0ilJQIo3Kn90BNciBjsz4DSkqfU1dpI9acvOFCud5af5HMLRwvV3y/IsJnZrmaf8SnhROhY1SUVF9ZAhalwfVkS5qMTzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208204; c=relaxed/simple;
-	bh=d8FhL9h9t8MvNtWDEaYajhtrV884juagukzBpS8pNlw=;
+	s=arc-20240116; t=1725209839; c=relaxed/simple;
+	bh=POXcYf1nU/W0v1f2nsHDAHFLmbwnR7om8gWjHdP/4tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt0IRFDSavkC9WxdPvY9lW9BI98OEkLN5JKbNXJh5MJK1crNaT+CHAXXlqFZn21nKX0eL9Xlr6ncm04r9pAprDQtRcp0AiGHKzZvhTHbViL6a4rgblUvqXe73gYtrPxIyhm/k8yx+qkblS66Fi8w33FKUbzbGOI0MCcjvoAVziw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hlm5UoRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40329C4CEC3;
-	Sun,  1 Sep 2024 16:30:04 +0000 (UTC)
+	 MIME-Version; b=ZgRvtd1JhMv4M89De6zF9nhZYSnelCJIOtPYAb7wwo+/vKXOlfMfX6PA4rGW+cVXEOyeaKLy52olD9myPo/Mh8JfCsgbMJto3Z2Elryw4yAs8RWfvd4+GlQQfrW75Ow98x5iX8QwcgE3/159gzvEIL0v/++yLAa8Nahl+RXDOhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zddYzB1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1CAC4CEC3;
+	Sun,  1 Sep 2024 16:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208204;
-	bh=d8FhL9h9t8MvNtWDEaYajhtrV884juagukzBpS8pNlw=;
+	s=korg; t=1725209839;
+	bh=POXcYf1nU/W0v1f2nsHDAHFLmbwnR7om8gWjHdP/4tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hlm5UoRTCF6mRmc7clTNzsRl54k8L0TRuLgQz5aI1CitLgi31VM2qoaFx18VSjX6g
-	 QEH1fmPo+ibHVw1fJd07Qq2KS11ISCj48mN43/P38C437mInwzW9Hr6XNgST52sjBO
-	 7NLqfPkZKaYqIrK04FAdnEreV6JLia+JIZMYcVfk=
+	b=zddYzB1DFqj59OY1dRpPoHmiTfpIY4gd33gAVBSlwfOtNhnUcTzd5z0a318lLvRTu
+	 zgy8FyxFDpOJj+XKd9yDJf1BnPpFx7Bf28O3FUU34x6iBunvbETSK5G2J6s1RG4A1R
+	 PorCpilI5GwKS9vARuub4bPlgJ1tZnD1W+46OEtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 011/149] smb/client: avoid dereferencing rdata=NULL in smb2_new_read_req()
+	Andrew Jones <ajones@ventanamicro.com>,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH 5.15 010/215] arm64: ACPI: NUMA: initialize all values of acpi_early_node_map to NUMA_NO_NODE
 Date: Sun,  1 Sep 2024 18:15:22 +0200
-Message-ID: <20240901160817.893717114@linuxfoundation.org>
+Message-ID: <20240901160823.631245293@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Haibo Xu <haibo1.xu@intel.com>
 
-commit c724b2ab6a46435b4e7d58ad2fbbdb7a318823cf upstream.
+commit a21dcf0ea8566ebbe011c79d6ed08cdfea771de3 upstream.
 
-This happens when called from SMB2_read() while using rdma
-and reaching the rdma_readwrite_threshold.
+Currently, only acpi_early_node_map[0] was initialized to NUMA_NO_NODE.
+To ensure all the values were properly initialized, switch to initialize
+all of them to NUMA_NO_NODE.
 
-Cc: stable@vger.kernel.org
-Fixes: a6559cc1d35d ("cifs: split out smb3_use_rdma_offload() helper")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e18962491696 ("arm64: numa: rework ACPI NUMA initialization")
+Cc: <stable@vger.kernel.org> # 4.19.x
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/853d7f74aa243f6f5999e203246f0d1ae92d2b61.1722828421.git.haibo1.xu@intel.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |    2 +-
+ arch/arm64/kernel/acpi_numa.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4435,7 +4435,7 @@ smb2_new_read_req(void **buf, unsigned i
- 	 * If we want to do a RDMA write, fill in and append
- 	 * smbd_buffer_descriptor_v1 to the end of read request
- 	 */
--	if (smb3_use_rdma_offload(io_parms)) {
-+	if (rdata && smb3_use_rdma_offload(io_parms)) {
- 		struct smbd_buffer_descriptor_v1 *v1;
- 		bool need_invalidate = server->dialect == SMB30_PROT_ID;
+--- a/arch/arm64/kernel/acpi_numa.c
++++ b/arch/arm64/kernel/acpi_numa.c
+@@ -27,7 +27,7 @@
  
+ #include <asm/numa.h>
+ 
+-static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
++static int acpi_early_node_map[NR_CPUS] __initdata = { [0 ... NR_CPUS - 1] = NUMA_NO_NODE };
+ 
+ int __init acpi_numa_get_nid(unsigned int cpu)
+ {
 
 
 
