@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-72607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98ACA967B4F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC1D967B63
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6131F2271A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CCDB1C21725
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BCC3BB48;
-	Sun,  1 Sep 2024 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C6717ADE1;
+	Sun,  1 Sep 2024 17:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psXq3FNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8v3MFxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6485D2C190;
-	Sun,  1 Sep 2024 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AF12A1B8;
+	Sun,  1 Sep 2024 17:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210484; cv=none; b=BrsNNNMmeT4v4qeA8XcZ8liMVL6ZmPrGerVojYWViBcRnO2LTLtSdyxFJRn+lR/Q1F39js17WuLPOGJGjZI5XxeMNRgGH9QWnpnjA2/nBiKedq2R2atQU9BBQPzLCxracG1Bx95Oj2HnV+MSsoVXreupCDD4aIS5z6M40nCYvow=
+	t=1725210551; cv=none; b=gxiJ4ACbBfky/DzMWNStGmFVM/HT0hIQaMABbdEwLGGk8da3/quDz1PilrKu4s9fNtzIyv1wUpzHtseb4MOnW0zBK8mBcmYys0zMJkfXNN8A6+hdlSvg4waIsjylBcWn2QG5N8WO/PxnPAdo0ePVbGzna1mJNG/638fyXZqtf8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210484; c=relaxed/simple;
-	bh=09jgOuzhY2Wq4pFzfCzei1q90gg11ImEvgkFMyUgIEw=;
+	s=arc-20240116; t=1725210551; c=relaxed/simple;
+	bh=cN3AN9tl0kGdHjZHBbhuZGCmDL1WyKBmKFHlIgMZ1DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkEJpiQKKT9yWwyMzpXr+GzbUU2Y5bm3SV63gY2tG7JaMgpn/xgh+9sIqubR4CW/1xyztzzx+5VRSDZ6wID4VKa1oKNePDzRkupyoRgGfg2mk1B7ka2T4oGUaJD8ZEoJ7PHa1UrYsTCRoSpNGDRsX9K2zZT20ociVhpAkIk5UsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psXq3FNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E83C4CEC3;
-	Sun,  1 Sep 2024 17:08:03 +0000 (UTC)
+	 MIME-Version; b=SJadTxI8GW6oCb9k3551eMFliOOiOR3lt5rHLp49x4CbT2L2TtbJNaog0pP9DFmUDt7dun3tU/DGIlNEmggP8QbisAFQX4/bR5e37xEfU/fKa90aBoWgF88VW3oEwlNYxyF2JwTz8Tf2Ez2Sv4mIvwKiGfAQM2dY0AtTZOyZNGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8v3MFxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C642C4CEC3;
+	Sun,  1 Sep 2024 17:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210484;
-	bh=09jgOuzhY2Wq4pFzfCzei1q90gg11ImEvgkFMyUgIEw=;
+	s=korg; t=1725210550;
+	bh=cN3AN9tl0kGdHjZHBbhuZGCmDL1WyKBmKFHlIgMZ1DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psXq3FNddaZK43la5kW+ZS7tj8BxLhai2J9FPdLwnVXzbzAW6gxzAmJtrcjeLcZD4
-	 Vvxej9CvgLG15X9MKkqGnKLxXKFQg4D7MmzdvB+i104FBTu5OEaQk9ljoDmlkOebkx
-	 ksCbUXzLEX/nJAeNRSth8mO3Gt1n6Ev0AwMgm2eA=
+	b=b8v3MFxDtAwsRFtcDfUmbe20z2tZ/XsuRvzziaeCEPS0heMzB74WtyUhh0OOrDVS5
+	 7M2i3nvvFEqXJk1pmwjPaGL1v9KohIjsZvPA8wTc1+Q1znmzSelMG9/cYf1xmMgvhC
+	 usJKvUFG3fzRYXjuTJSU0W3sROF14PRgcHf6rXrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Oliver Neuku <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 202/215] cdc-acm: Add DISABLE_ECHO quirk for GE HealthCare UI Controller
-Date: Sun,  1 Sep 2024 18:18:34 +0200
-Message-ID: <20240901160830.990498130@linuxfoundation.org>
+	ZHANG Yuntian <yt@radxa.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 203/215] USB: serial: option: add MeiG Smart SRM825L
+Date: Sun,  1 Sep 2024 18:18:35 +0200
+Message-ID: <20240901160831.027408899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
 References: <20240901160823.230213148@linuxfoundation.org>
@@ -66,34 +65,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: ZHANG Yuntian <yt@radxa.com>
 
-commit 0b00583ecacb0b51712a5ecd34cf7e6684307c67 upstream.
+commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
 
-USB_DEVICE(0x1901, 0x0006) may send data before cdc_acm is ready, which
-may be misinterpreted in the default N_TTY line discipline.
+Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
 
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Acked-by: Oliver Neuku <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240814072905.2501-1-ian.ray@gehealthcare.com
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=6f345e48
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: ZHANG Yuntian <yt@radxa.com>
+Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1741,6 +1741,9 @@ static const struct usb_device_id acm_id
- 	{ USB_DEVICE(0x11ca, 0x0201), /* VeriFone Mx870 Gadget Serial */
- 	.driver_info = SINGLE_RX_URB,
- 	},
-+	{ USB_DEVICE(0x1901, 0x0006), /* GE Healthcare Patient Monitor UI Controller */
-+	.driver_info = DISABLE_ECHO, /* DISABLE ECHO in termios flag */
-+	},
- 	{ USB_DEVICE(0x1965, 0x0018), /* Uniden UBC125XLT */
- 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
- 	},
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,6 +619,8 @@ static void option_instat_callback(struc
+ 
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
++/* MeiG Smart SRM825L based on Qualcomm 315 */
++#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
+ 
+@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
