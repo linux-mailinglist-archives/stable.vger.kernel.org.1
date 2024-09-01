@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-71742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC096778C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0099677F3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD522281E6A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29FBD2816BC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D3B18132F;
-	Sun,  1 Sep 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39CE183CBF;
+	Sun,  1 Sep 2024 16:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohKpTprf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLETJTbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4125817E01C;
-	Sun,  1 Sep 2024 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9150E183CA4;
+	Sun,  1 Sep 2024 16:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207665; cv=none; b=rtSiXr+qFxqlVwBBQP6oYSsHRlKwUwaP8ZK7XItO0jpQBHzp5FbYhlS/ddHWYuKKNxj6Af0VZZ+by5QzlywK5uxs+nBon1pvO1PuXn4YOfHkN6ydR4XsmtOz37mEyX/Mch1sbMOZMGGQKQmt2fZtRVxiaDTKH3jXhg8+m19A7Ms=
+	t=1725207963; cv=none; b=gsbi8H/zGiWr2ae1vkQ5kI3ZpriHwjRPypUJipHZ20vtr6JXg9aJYEfaPYEq3h84x8c6WjZ229NxF9Kdc+CyfopKKDR1WxIgHna7vJz9A2UvCufd0RN+6xIbzocyn2LqZrFfAj88Cn94OYldXfQDpxw6M5HLmFcRwxhsrxUPgYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207665; c=relaxed/simple;
-	bh=kWvt8Z9FZEQeTPJkDUiibRDo3RTyr4bg8HdG8DCZZyo=;
+	s=arc-20240116; t=1725207963; c=relaxed/simple;
+	bh=lQQy1IJFj3S0K/2qIn0Re+XEQF9vZnX0aiPNE6EgDKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKJP4hUfjQTpQvbm3COjBdwNWLIiaYxZYcqBE54U3sx1iQuLhfT1m5z6SWXCFt3Bil80glOjW4+rhpDXa77jIQ9+BX8gDiNRRkbqWhZOwrM+HfWDNzBNCjJkp5hMFUPh86wKhJM2onJBB8vhNYACc1z+X47lSpkd3u/7hgvVIQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohKpTprf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC66C4CEC3;
-	Sun,  1 Sep 2024 16:21:04 +0000 (UTC)
+	 MIME-Version; b=dk6mW6EZDAg4hdPOvRYV1GqZ7ydBDqLRpevr3oChCxHdxeXnuU5QBDua7jinwLf0RKcYh0RO9jQppNwCHaooO5S2DKpcEsqgCZonfjatApu2H4IcxcsQZU5tnT7yjTJtRVAWgmuvKyC3FtqJuLzDdOrrzpW533Fr9IDHqRa7y6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLETJTbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F54C4CEC3;
+	Sun,  1 Sep 2024 16:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207664;
-	bh=kWvt8Z9FZEQeTPJkDUiibRDo3RTyr4bg8HdG8DCZZyo=;
+	s=korg; t=1725207963;
+	bh=lQQy1IJFj3S0K/2qIn0Re+XEQF9vZnX0aiPNE6EgDKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohKpTprfd+3jtsxSHtHs5pPyVM7S0c82OLl9smPWTDpmNc3lJCHcqiMBIDVZx6UB4
-	 AoN722b0hJAY0552f5+u/ViFRqwkNwJWfZjUWnh/rUgMdPyHtWzEIoI6c+XpdFKA4X
-	 xuzJFAgNCE4jg1ZIZffqo18wogix5fH54kYA3vJI=
+	b=XLETJTbUP/gvgpNi1J9eS9Zhl6Xle2bUPSKfmIFPFsdRKuJNWiTS9pOHWaQefOfDC
+	 DT7YIXeDcj7VAflRUq85ch/uA9E2vevAkfZmhet7p+DMWN5k/GvRulFAxLOC83JKek
+	 9G/aHpDFsoBuDM+gs6JQTt13GaT7JZxezImkTEaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 23/98] gfs2: setattr_chown: Add missing initialization
+	Richard Kojedzinszky <richard@kojedz.in>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Trevor Woerner <twoerner@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 06/93] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
 Date: Sun,  1 Sep 2024 18:15:53 +0200
-Message-ID: <20240901160804.567018829@linuxfoundation.org>
+Message-ID: <20240901160807.596122419@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 2d8d7990619878a848b1d916c2f936d3012ee17d ]
+commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
 
-Add a missing initialization of variable ap in setattr_chown().
-Without, chown() may be able to bypass quotas.
+The base iomux offsets for each GPIO pin line are accumulatively
+calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
+If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
+IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
+bytes, otherwise it would increase by 4 bytes.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
+into 4 bytes space with write mask, it actually take 8 bytes width for
+whole GPIO2-B line.
+
+Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
+GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
+iomux offset for line after GPIO2-B to be calculated wrong. Fix the
+iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
+correctly increased by 8, matching the actual width of GPIO2-B iomux.
+
+Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
+Cc: stable@vger.kernel.org
+Reported-by: Richard Kojedzinszky <richard@kojedz.in>
+Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
+Tested-by: Richard Kojedzinszky <richard@kojedz.in>
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Tested-by: Trevor Woerner <twoerner@gmail.com>
+Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/inode.c | 2 +-
+ drivers/pinctrl/pinctrl-rockchip.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index a52b8b0dceeb9..16febedaa4a5d 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1847,7 +1847,7 @@ static int setattr_chown(struct inode *inode, struct iattr *attr)
- 	kuid_t ouid, nuid;
- 	kgid_t ogid, ngid;
- 	int error;
--	struct gfs2_alloc_parms ap;
-+	struct gfs2_alloc_parms ap = {};
- 
- 	ouid = inode->i_uid;
- 	ogid = inode->i_gid;
--- 
-2.43.0
-
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -3802,7 +3802,7 @@ static struct rockchip_pin_bank rk3328_p
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     0,
++			     IOMUX_WIDTH_2BIT,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 
 
 
