@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AFB967A07
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79ACB96780A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022921C2146A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3217C281116
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D336A181CE1;
-	Sun,  1 Sep 2024 16:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F27183CA3;
+	Sun,  1 Sep 2024 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjKQXxA4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUXWDP+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9040F16B391;
-	Sun,  1 Sep 2024 16:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E4433987;
+	Sun,  1 Sep 2024 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209442; cv=none; b=WVAEFmInYdxha+l61w+AWB40zJPsnxYNF9E3/mb9rqr0WsU48QupxBtlC7kw9+6hERUgB+YhRCOK0eojLhUGSJ3A5fFRDGeeods26fcjCccIdvcd40lLXchnwu3vvzGcQPdFYhyQdHeCkfuK1wVvpOWc7Nu7WytbdI1DFrXh/j0=
+	t=1725208027; cv=none; b=I+B2jhM26GJVHkD8wXCDpklpTIicUNXx6EuzTure5viLL63aXwp1OVpQ9pGxl6eqdq5QdZwKcw3ULQ3iZYA3dqSETQDgezHIERyry0VYzCKG/X8m8QSTJ9j4IVmIS/8aqcqK7NPggaMYiYmdcHWUJv4R3kw+9/LSilYg6GdWHbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209442; c=relaxed/simple;
-	bh=amDc0jPnxENiGHOiWzBVVHffXzou77/sCe+3IdiGBvo=;
+	s=arc-20240116; t=1725208027; c=relaxed/simple;
+	bh=KJg/QnjQFcRmCw6V3dQiwl7mAGXfbfZ1PCxc95JG2do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ta6QRi2sAOsoGK5a/58zKySPRIp4JNxG8A+YAByzQ5NtK268uyedYdax5SP2j/HQbRWj+GSj9q1PJchRwsQihzGCMPa7KA3tLbpEVf0WDLHI9WPg8xyYIVxXnKxkt8VXdPI4KvSGBy44BivrM8Cv+Swq+MON/KaRrA/jkAG58X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjKQXxA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17753C4CEC3;
-	Sun,  1 Sep 2024 16:50:41 +0000 (UTC)
+	 MIME-Version; b=ZAxAJ5JEwQJ+mHRW4mIAq/An57XDhJ5G/ike1Zoes2hFg3GbWk420/B+hsqmaQXKT6z8kdsOFJ9exznsOMVW2lNAH87vftU9dDJaPl7M8zlWNpYaHz3aaV4bc/Mcr83A+3ANc8cirlDJReLq88rtPIducy+fLkqki3ruhJBJ+RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUXWDP+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F170CC4CEC3;
+	Sun,  1 Sep 2024 16:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209442;
-	bh=amDc0jPnxENiGHOiWzBVVHffXzou77/sCe+3IdiGBvo=;
+	s=korg; t=1725208027;
+	bh=KJg/QnjQFcRmCw6V3dQiwl7mAGXfbfZ1PCxc95JG2do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjKQXxA4GaU0PKwznhqB8w7hSrlWqyywYDLrE8DN1ibarWjg0BqQp+Pc2bZZVUFqR
-	 TBu1NrHISkjcnNYNV7gZdQuI/RLihQmfW4A+ke5bCu0l3L0cVu3ts0wmHHV4dFCUhe
-	 GjExthgkWjFO17VnOmS+UM+xWolm+74Np5zxDSoE=
+	b=DUXWDP+jQNwL0yL5Lrb56vhOmpQVxwcAmvZuE/LGcg+Z7tfmtt8vp2BEpf3KEl0Vh
+	 fINBrAABdUT/pYOEH6NAfqPtzEYjrXHCmlfIDbRk3+xNHCv5KC0CwqFs9MBIeMaJau
+	 5ncI25ps6gtkpipIhXoeoCRQ4ue612GafhbBllcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/151] staging: iio: resolver: ad2s1210: fix use before initialization
+Subject: [PATCH 6.6 51/93] Bluetooth: btnxpuart: Resolve TX timeout error in power save stress test
 Date: Sun,  1 Sep 2024 18:16:38 +0200
-Message-ID: <20240901160815.534627234@linuxfoundation.org>
+Message-ID: <20240901160809.284998090@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
 
-[ Upstream commit 7fe2d05cee46b1c4d9f1efaeab08cc31a0dfff60 ]
+[ Upstream commit e4db90e4eb8d5487098712ffb1048f3fa6d25e98 ]
 
-This fixes a use before initialization in ad2s1210_probe(). The
-ad2s1210_setup_gpios() function uses st->sdev but it was being called
-before this field was initialized.
+This fixes the tx timeout issue seen while running a stress test on
+btnxpuart for couple of hours, such that the interval between two HCI
+commands coincide with the power save timeout value of 2 seconds.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Test procedure using bash script:
+<load btnxpuart.ko>
+hciconfig hci0 up
+//Enable Power Save feature
+hcitool -i hci0 cmd 3f 23 02 00 00
+while (true)
+do
+    hciconfig hci0 leadv
+    sleep 2
+    hciconfig hci0 noleadv
+    sleep 2
+done
+
+Error log, after adding few more debug prints:
+Bluetooth: btnxpuart_queue_skb(): 01 0A 20 01 00
+Bluetooth: hci0: Set UART break: on, status=0
+Bluetooth: hci0: btnxpuart_tx_wakeup() tx_work scheduled
+Bluetooth: hci0: btnxpuart_tx_work() dequeue: 01 0A 20 01 00
+Can't set advertise mode on hci0: Connection timed out (110)
+Bluetooth: hci0: command 0x200a tx timeout
+
+When the power save mechanism turns on UART break, and btnxpuart_tx_work()
+is scheduled simultaneously, psdata->ps_state is read as PS_STATE_AWAKE,
+which prevents the psdata->work from being scheduled, which is responsible
+to turn OFF UART break.
+
+This issue is fixed by adding a ps_lock mutex around UART break on/off as
+well as around ps_state read/write.
+btnxpuart_tx_wakeup() will now read updated ps_state value. If ps_state is
+PS_STATE_SLEEP, it will first schedule psdata->work, and then it will
+reschedule itself once UART break has been turned off and ps_state is
+PS_STATE_AWAKE.
+
+Tested above script for 50,000 iterations and TX timeout error was not
+observed anymore.
+
+Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 35237475384a ("Bluetooth: btnxpuart: Fix random crash seen while removing driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/resolver/ad2s1210.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btnxpuart.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index a19cfb2998c93..f19bb5c796cf7 100644
---- a/drivers/staging/iio/resolver/ad2s1210.c
-+++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -658,9 +658,6 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 	st = iio_priv(indio_dev);
--	ret = ad2s1210_setup_gpios(st);
--	if (ret < 0)
--		return ret;
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index b5d40e0e05f31..2e18f89a931b8 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -126,6 +126,7 @@ struct ps_data {
+ 	struct hci_dev *hdev;
+ 	struct work_struct work;
+ 	struct timer_list ps_timer;
++	struct mutex ps_lock;
+ };
  
- 	spi_set_drvdata(spi, indio_dev);
+ struct wakeup_cmd_payload {
+@@ -333,6 +334,9 @@ static void ps_start_timer(struct btnxpuart_dev *nxpdev)
  
-@@ -671,6 +668,10 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	st->resolution = 12;
- 	st->fexcit = AD2S1210_DEF_EXCIT;
- 
-+	ret = ad2s1210_setup_gpios(st);
-+	if (ret < 0)
-+		return ret;
+ 	if (psdata->cur_psmode == PS_MODE_ENABLE)
+ 		mod_timer(&psdata->ps_timer, jiffies + msecs_to_jiffies(psdata->h2c_ps_interval));
 +
- 	indio_dev->info = &ad2s1210_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ad2s1210_channels;
++	if (psdata->ps_state == PS_STATE_AWAKE && psdata->ps_cmd == PS_CMD_ENTER_PS)
++		cancel_work_sync(&psdata->work);
+ }
+ 
+ static void ps_cancel_timer(struct btnxpuart_dev *nxpdev)
+@@ -353,6 +357,7 @@ static void ps_control(struct hci_dev *hdev, u8 ps_state)
+ 	    !test_bit(BTNXPUART_SERDEV_OPEN, &nxpdev->tx_state))
+ 		return;
+ 
++	mutex_lock(&psdata->ps_lock);
+ 	switch (psdata->cur_h2c_wakeupmode) {
+ 	case WAKEUP_METHOD_DTR:
+ 		if (ps_state == PS_STATE_AWAKE)
+@@ -366,12 +371,15 @@ static void ps_control(struct hci_dev *hdev, u8 ps_state)
+ 			status = serdev_device_break_ctl(nxpdev->serdev, 0);
+ 		else
+ 			status = serdev_device_break_ctl(nxpdev->serdev, -1);
++		msleep(20); /* Allow chip to detect UART-break and enter sleep */
+ 		bt_dev_dbg(hdev, "Set UART break: %s, status=%d",
+ 			   str_on_off(ps_state == PS_STATE_SLEEP), status);
+ 		break;
+ 	}
+ 	if (!status)
+ 		psdata->ps_state = ps_state;
++	mutex_unlock(&psdata->ps_lock);
++
+ 	if (ps_state == PS_STATE_AWAKE)
+ 		btnxpuart_tx_wakeup(nxpdev);
+ }
+@@ -407,17 +415,25 @@ static void ps_setup(struct hci_dev *hdev)
+ 
+ 	psdata->hdev = hdev;
+ 	INIT_WORK(&psdata->work, ps_work_func);
++	mutex_init(&psdata->ps_lock);
+ 	timer_setup(&psdata->ps_timer, ps_timeout_func, 0);
+ }
+ 
+-static void ps_wakeup(struct btnxpuart_dev *nxpdev)
++static bool ps_wakeup(struct btnxpuart_dev *nxpdev)
+ {
+ 	struct ps_data *psdata = &nxpdev->psdata;
++	u8 ps_state;
+ 
+-	if (psdata->ps_state != PS_STATE_AWAKE) {
++	mutex_lock(&psdata->ps_lock);
++	ps_state = psdata->ps_state;
++	mutex_unlock(&psdata->ps_lock);
++
++	if (ps_state != PS_STATE_AWAKE) {
+ 		psdata->ps_cmd = PS_CMD_EXIT_PS;
+ 		schedule_work(&psdata->work);
++		return true;
+ 	}
++	return false;
+ }
+ 
+ static int send_ps_cmd(struct hci_dev *hdev, void *data)
+@@ -1215,7 +1231,6 @@ static struct sk_buff *nxp_dequeue(void *data)
+ {
+ 	struct btnxpuart_dev *nxpdev = (struct btnxpuart_dev *)data;
+ 
+-	ps_wakeup(nxpdev);
+ 	ps_start_timer(nxpdev);
+ 	return skb_dequeue(&nxpdev->txq);
+ }
+@@ -1230,6 +1245,9 @@ static void btnxpuart_tx_work(struct work_struct *work)
+ 	struct sk_buff *skb;
+ 	int len;
+ 
++	if (ps_wakeup(nxpdev))
++		return;
++
+ 	while ((skb = nxp_dequeue(nxpdev))) {
+ 		len = serdev_device_write_buf(serdev, skb->data, skb->len);
+ 		hdev->stat.byte_tx += len;
 -- 
 2.43.0
 
