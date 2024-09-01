@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEFC9678A3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8DC967802
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C441F211E6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9D1C1C20B50
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A80183CDC;
-	Sun,  1 Sep 2024 16:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AB9183CA4;
+	Sun,  1 Sep 2024 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7De1/Bo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+do/nF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4486183CDB;
-	Sun,  1 Sep 2024 16:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E2733987;
+	Sun,  1 Sep 2024 16:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208431; cv=none; b=a6FI9oWOnV8jQQRRX83cFqouqQmkTrQuJmVA6UyRaPkg77Sxss/KqtfXGN+Rxwlcs/UVsalH39D4HKTuw1oKr6OQHOzO7wAwLAiRBQaruuvxNPZ+vrb7Z0Q4dce2qGHMULIiyy2gh10yAcW1Y2meUnLN4nRYnZkN5XWjjdfLv4U=
+	t=1725208001; cv=none; b=Vsy5TKpS4SYAkoaZTXlyI8aGnnV5teTawOf5TEXGQL4/dv1RvxtNKutKCAkYiequF9awiWIhPYphOhoBEt2qqGN9U3h0u+cl8K5NP+RRhvYAAlRZ/o8/7WW33NMQDgkKxat5xcG8T2OGfrCtBMk4WZ7duh9Dv/4wr9/3o3woDdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208431; c=relaxed/simple;
-	bh=Dcl75eP1JdYDBd0Izfnz5RSiiTHdSzJYonVFq6UcLgs=;
+	s=arc-20240116; t=1725208001; c=relaxed/simple;
+	bh=9TjyFAvUnlgTyoe4avufSvrRPwItTX+oi2Ew42v9+ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxp/VZi/DJ8q9gqJ3ag9TQ9JGF0nuUbfv2i9GH4Bzh8ockV20Js6EZ3Z0dDA7TJQdXVTY49k91lLULoGiKMPYbBmQhXCJcOKA5Df0tzdiX7pmGoHNbU1YmKbl7J/aNw45g+9WLF5PgCkMSqv4ulXfj+n+yQtExrRwKwf5NfoNEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7De1/Bo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48602C4CEC3;
-	Sun,  1 Sep 2024 16:33:51 +0000 (UTC)
+	 MIME-Version; b=G7+6y6jDkA9sazyTTCnJyumu5xSkUlYrJKM1dyGhNGSdfL+g/GVr/YmxMHIfpjUKTMD8AVG80I8VvcxJaTZRI80IDwSbiUzlEbs8okTTaQlkCQDYwqHR9NAZJkdtU8ZQKMOC5B+b1qC83bP/XR6FB7PcDAc8Y6i1WKG1BXEQ7ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+do/nF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16977C4CEC3;
+	Sun,  1 Sep 2024 16:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208431;
-	bh=Dcl75eP1JdYDBd0Izfnz5RSiiTHdSzJYonVFq6UcLgs=;
+	s=korg; t=1725208001;
+	bh=9TjyFAvUnlgTyoe4avufSvrRPwItTX+oi2Ew42v9+ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7De1/Bo3qYgSsZGD4sDrWNMayRNTdRzCQOG3hqKMcJbpMh6PSFGE9hs7SNPTeTiI
-	 0+htYFLGz56b8tHKzV6ow/ps/kg+WLYJMpQFRnos/nMK/b5e+wBfHPVZgUVDY1PZ/Y
-	 KiOsQMFg5s8naWxU0NjQJ/5faR7O8Fnp3qeMS0/I=
+	b=P+do/nF4alyQuSl1Tbc7mFBEWAbO2IpqYig6im0T7fxZ0kgddCYC/weXWF5r4nxYv
+	 UW+ok6G0Ct4Alb0knmR0f5kkZx6oDg0Ty/Z6NnrkqNPAmA2VFl6YLxiJlvnlnj7swJ
+	 eaOvRVIXH9VQ2He5gcy2FCAJYh2f81cXvAIDtpV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.10 080/149] soundwire: stream: fix programming slave ports for non-continous port maps
+Subject: [PATCH 6.6 44/93] phy: fsl-imx8mq-usb: fix tuning parameter name
 Date: Sun,  1 Sep 2024 18:16:31 +0200
-Message-ID: <20240901160820.478005976@linuxfoundation.org>
+Message-ID: <20240901160809.021071750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
+commit ce52c2532299c7ccfd34a52db8d071e890a78c59 upstream.
 
-Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
-'sink_ports' - define which ports to program in
-sdw_program_slave_port_params().  The masks are used to get the
-appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
-an array.
+According to fsl,imx8mq-usb-phy.yaml, this tuning parameter should be
+fsl,phy-pcs-tx-deemph-3p5db-attenuation-db.
 
-Bitmasks can be non-continuous or can start from index different than 0,
-thus when looking for matching port property for given port, we must
-iterate over mask bits, not from 0 up to number of ports.
-
-This fixes allocation and programming slave ports, when a source or sink
-masks start from further index.
-
-Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240801124642.1152838-1-xu.yang_2@nxp.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/stream.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1286,18 +1286,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
- 					    unsigned int port_num)
- {
- 	struct sdw_dpn_prop *dpn_prop;
--	u8 num_ports;
-+	unsigned long mask;
- 	int i;
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index 0b9a59d5b8f0..adc6394626ce 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -176,7 +176,7 @@ static void imx8m_get_phy_tuning_data(struct imx8mq_usb_phy *imx_phy)
+ 		imx_phy->comp_dis_tune =
+ 			phy_comp_dis_tune_from_property(imx_phy->comp_dis_tune);
  
- 	if (direction == SDW_DATA_DIR_TX) {
--		num_ports = hweight32(slave->prop.source_ports);
-+		mask = slave->prop.source_ports;
- 		dpn_prop = slave->prop.src_dpn_prop;
- 	} else {
--		num_ports = hweight32(slave->prop.sink_ports);
-+		mask = slave->prop.sink_ports;
- 		dpn_prop = slave->prop.sink_dpn_prop;
- 	}
- 
--	for (i = 0; i < num_ports; i++) {
-+	for_each_set_bit(i, &mask, 32) {
- 		if (dpn_prop[i].num == port_num)
- 			return &dpn_prop[i];
- 	}
+-	if (device_property_read_u32(dev, "fsl,pcs-tx-deemph-3p5db-attenuation-db",
++	if (device_property_read_u32(dev, "fsl,phy-pcs-tx-deemph-3p5db-attenuation-db",
+ 				     &imx_phy->pcs_tx_deemph_3p5db))
+ 		imx_phy->pcs_tx_deemph_3p5db = PHY_TUNE_DEFAULT;
+ 	else
+-- 
+2.46.0
+
 
 
 
