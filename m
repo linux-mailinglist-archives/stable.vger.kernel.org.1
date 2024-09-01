@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-71797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5309677CD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1AA967AD1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60DA1F2131D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE482281C78
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCF3183CB4;
-	Sun,  1 Sep 2024 16:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939B23398B;
+	Sun,  1 Sep 2024 17:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRT5Qz85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8pAEFz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CFA17F394;
-	Sun,  1 Sep 2024 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEFB17C;
+	Sun,  1 Sep 2024 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207848; cv=none; b=QzOvt8Kg2Gr50b0zXex9v2/487w8EItt4C873tvRuSs7Hzed7YvvwR0ZnSL2fsxxKHOHq0aR5oYhYWEL71uKV78hw0PB4Cb10GKbGVI1BlflIhm0LIK6F+OMDSfZlnxOgu00jDrDlE8HVkpLEmg/hcA4iqYgrua5rNLeuo73Ztw=
+	t=1725210078; cv=none; b=At92njdHWhYVQ1FdJbV5zXytw7gAyJ+5elxZU6KIa18dXDb8M5OuSct3eIirf2I/eERYCil5JyQZg4uixpGPEkhCr0e8WLe1Z1OgEJtIsmI42dyCrzw2+vKP8MGRTYiF+03Sx024klSGPyruF8luab9WMLqdWvFe1O1Bzw7EJkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207848; c=relaxed/simple;
-	bh=mvJo1Jqt7jp8k/aPLsa5QWYkeFauGeqM9rddAcKpYVY=;
+	s=arc-20240116; t=1725210078; c=relaxed/simple;
+	bh=QlPc3L7DFFTMahRxtX2G6PMyoydTa+6zmA2aeqG/Vw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCCSEPF0CtTicbHBhx+c7d/oIM9SzTB3wYtRfjYnzAFYhrTHez5dTnuDb6wrdUsJ4eExCpCVkkkgc+yMQOvfQGepxgBL9pEzbh/ab08ICyx4BZJ2eRBg5AKTloisQ/B6umk7rXWJYF8AjBP3pXojaa9c2A82uI7U7D52ioa17LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRT5Qz85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD34AC4CEC3;
-	Sun,  1 Sep 2024 16:24:07 +0000 (UTC)
+	 MIME-Version; b=mMHsPTYucq1Yqi4QB/Gb3JMqDONuiHDmFg08myTcNjVLl3TAkP7zZmVni/M2GxO/YRrt3ojPJFTmL/4QKZ11CRMxM7PMNRzSWMfx+ycKN4ewUnhlweU3Gjs5pNtWSMLo1bY30kwePjZ6Wwf+2oOoYzdSmiVGWNAqyu4w/h9vB+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8pAEFz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F735C4CEC3;
+	Sun,  1 Sep 2024 17:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207848;
-	bh=mvJo1Jqt7jp8k/aPLsa5QWYkeFauGeqM9rddAcKpYVY=;
+	s=korg; t=1725210077;
+	bh=QlPc3L7DFFTMahRxtX2G6PMyoydTa+6zmA2aeqG/Vw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRT5Qz85mNkTEt5eF22xog9eCdPod5oCvw0BbSyrtGoAB/ROAnmm1pAeh58n2k45L
-	 cA+vFdy4F00d/R+S0PF6EgyodkS76JERSeuWSiFM+GKObv8PpR3bVIdNM/trILBEHH
-	 kFXcnTx2UfzhjIscct4Fh71a5984VBOzCEB0KYQw=
+	b=F8pAEFz58hy+1LiIufcYN5zLj+e6t+9EriBJtEffb63r0PwiaNWYD94Xma+zriSyH
+	 rnJUEogcjA/Brz1TDHvEPMTjerN1E23+apyj0N7QR7V+fF/xZQJsaPhOzUoljXuF4W
+	 73p2kYAR2SYt57Fo2WmBw1uIgtlUi5DWuwGP9flA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable <stable@kernel.org>,
-	Griffin Kroah-Hartman <griffin@kroah.com>,
-	Yiwei Zhang <zhan4630@purdue.edu>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 64/98] Bluetooth: MGMT: Add error handling to pair_device()
+	y0un9n132@gmail.com,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 082/215] x86: Increase brk randomness entropy for 64-bit systems
 Date: Sun,  1 Sep 2024 18:16:34 +0200
-Message-ID: <20240901160806.113781723@linuxfoundation.org>
+Message-ID: <20240901160826.456577968@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Griffin Kroah-Hartman <griffin@kroah.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit 538fd3921afac97158d4177139a0ad39f056dbb2 upstream.
+[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
 
-hci_conn_params_add() never checks for a NULL value and could lead to a NULL
-pointer dereference causing a crash.
+In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
+defined to use a 32MB range (13 bits of entropy), but was never increased
+when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
+32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
 
-Fixed by adding error handling in the function.
+Update x86_64 to match the entropy used by arm64 and other 64-bit
+architectures.
 
-Cc: Stable <stable@kernel.org>
-Fixes: 5157b8a503fa ("Bluetooth: Fix initializing conn_params in scan phase")
-Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-Reported-by: Yiwei Zhang <zhan4630@purdue.edu>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: y0un9n132@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
+Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/process.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2913,6 +2913,10 @@ static int pair_device(struct sock *sk,
- 		 * will be kept and this function does nothing.
- 		 */
- 		p = hci_conn_params_add(hdev, &cp->addr.bdaddr, addr_type);
-+		if (!p) {
-+			err = -EIO;
-+			goto unlock;
-+		}
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index e6b28c689e9a9..720d99520316a 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -937,7 +937,10 @@ unsigned long arch_align_stack(unsigned long sp)
  
- 		if (p->auto_connect == HCI_AUTO_CONN_EXPLICIT)
- 			p->auto_connect = HCI_AUTO_CONN_DISABLED;
+ unsigned long arch_randomize_brk(struct mm_struct *mm)
+ {
+-	return randomize_page(mm->brk, 0x02000000);
++	if (mmap_is_ia32())
++		return randomize_page(mm->brk, SZ_32M);
++
++	return randomize_page(mm->brk, SZ_1G);
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
