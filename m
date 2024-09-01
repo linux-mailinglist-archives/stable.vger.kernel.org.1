@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D0396798E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF64967A53
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A90282263
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 706E61F23E85
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4F4183CA5;
-	Sun,  1 Sep 2024 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9672E17E900;
+	Sun,  1 Sep 2024 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJeZ3CdT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQxr1BqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B900183CCA;
-	Sun,  1 Sep 2024 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545791DFD1;
+	Sun,  1 Sep 2024 16:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209105; cv=none; b=s4aQrX9Af0ptSOTcoiHuZOgTPQwiKdC57NG9wNUOQ0AZ1JktY94RyVTMWr5NeRkUctWezkrpgX/UqFxrcbtJkZtw5hLe2hloFiD6KRd8bgazEl9E/yawhN1sFWu36xjOsIG6Dr+6CtAhtNi5SVu6rIY8KTRB8TTrso/twc9E2wo=
+	t=1725209674; cv=none; b=s3tbZUEGstUQ7R0X5yKf8nXPAtQ2b1ZSGSMG4Zxv9IUrUTTvTT/2gllCCcM3Zew+4QZ1K9m/Ld66J0mQ4Wc8hq2nK3dgHeEm15AIA7aAl193ICwGKn5s5IjI0V15yy84mqUTSDET5YsSyd1RyXfEL7tgXdWuX9uJJOl+UbLtrwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209105; c=relaxed/simple;
-	bh=rvyB60pX/FK6L1DGsRGLlvjeHQxz9zMV8QoPhYeZouU=;
+	s=arc-20240116; t=1725209674; c=relaxed/simple;
+	bh=heviHjN1/TtsO5boUCAv1y2eh6tFlK7KBbE+Aza6TyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMVDI7yHaMMG6OD3a0PChbD9d0OCBiPC4Ae6AkOs3RpbH8gXH284u5zNXLQMZGyR/oJsKXFiQUCHHqmgmLrbkhU97E7rkwAH+IzJl1Fzu9h1E0fQZPzGWZ3zBixBugUYKVaCgBNsRfO0ubLzWNwLhJvn8G4SkyB4HFoup8cDGZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJeZ3CdT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C876C4CEC3;
-	Sun,  1 Sep 2024 16:45:04 +0000 (UTC)
+	 MIME-Version; b=pN36J/TblVLLujuQ6YNPiMUIGFvvV+HHF06jJmS871K9f8Y2RVPF4sxeI0YRMPfIyFiK6My1cgPmerfCihONL672aY15EFzaqPDTfrLA2OAplA5yH71ymTHd4AjtxuGIVcDVBhdl0NC1z/JsrJlXr6X4eyF+X7UUCCp4wUf0e+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQxr1BqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F30C4CEC3;
+	Sun,  1 Sep 2024 16:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209105;
-	bh=rvyB60pX/FK6L1DGsRGLlvjeHQxz9zMV8QoPhYeZouU=;
+	s=korg; t=1725209673;
+	bh=heviHjN1/TtsO5boUCAv1y2eh6tFlK7KBbE+Aza6TyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJeZ3CdTguYHKki4lRJ3verhsrU0ltiwnajsO4VgE0mueos3OjMjtglJv1NXEzPoi
-	 G90O5KNehD6pLVUCtvo/UXKch2mgw2wGeId+Un/eSaPdwmBSmJVfiaKlcPIJ6awUx0
-	 d1NcZFqyqDY0WpMOd4IaF++PmOpioPP0J1EkLijs=
+	b=DQxr1BqZM/Gb+E6mPq5/UMkGEc0srsolcKAJdNFgWTd5pNTt+kSzSsUNlYGqn2K/O
+	 nW2S/zGK8W7/gf6zETgzsSeufUGP4pmghKpSW31ntc6Nf3ltFAaAFCe6udMj7VlbnO
+	 FjTyMW5R1FlL19CO5eWdl7HMLVCwFT+hUyJz3KOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 124/134] nfc: pn533: Add poll mod list filling check
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 110/151] HID: wacom: Defer calculation of resolution until resolution_code is known
 Date: Sun,  1 Sep 2024 18:17:50 +0200
-Message-ID: <20240901160814.746594437@linuxfoundation.org>
+Message-ID: <20240901160818.245782275@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
+commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
 
-In case of im_protocols value is 1 and tm_protocols value is 0 this
-combination successfully passes the check
-'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
-But then after pn533_poll_create_mod_list() call in pn533_start_poll()
-poll mod list will remain empty and dev->poll_mod_count will remain 0
-which lead to division by zero.
+The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
+for historic reasons. When the code to support twist was introduced in
+commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
+and twist usages"), we were careful to write it in such a way that it had
+HID calculate the resolution of the twist axis assuming ABS_RZ instead
+(so that we would get correct angular behavior). This was broken with
+the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
+resolution for older tablets"), which moved the resolution calculation
+to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
 
-Normally no im protocol has value 1 in the mask, so this combination is
-not expected by driver. But these protocol values actually come from
-userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
-broken or malicious program may pass a message containing a "bad"
-combination of protocol parameter values so that dev->poll_mod_count
-is not incremented inside pn533_poll_create_mod_list(), thus leading
-to division by zero.
-Call trace looks like:
-nfc_genl_start_poll()
-  nfc_start_poll()
-    ->start_poll()
-    pn533_start_poll()
+This commit moves the calculation of resolution after the point that
+we are finished setting things up for its proper use.
 
-Add poll mod list filling check.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/pn533.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/wacom_wac.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-index 1c3da3675d7df..9610a9b1929f1 100644
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1751,6 +1751,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1920,12 +1920,14 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
+-	int resolution = hidinput_calc_abs_res(field, resolution_code);
++	int resolution;
+ 
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
  	}
  
- 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
-+	if (!dev->poll_mod_count) {
-+		nfc_err(dev->dev,
-+			"Poll mod list is empty\n");
-+		return -EINVAL;
-+	}
- 
- 	/* Do not always start polling from the same modulation */
- 	get_random_bytes(&rand_mod, sizeof(rand_mod));
--- 
-2.43.0
-
++	resolution = hidinput_calc_abs_res(field, resolution_code);
++
+ 	if (equivalent_usage == HID_GD_X) {
+ 		fmin += features->offset_left;
+ 		fmax -= features->offset_right;
 
 
 
