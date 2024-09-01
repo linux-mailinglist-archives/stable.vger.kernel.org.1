@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F3D967924
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323FB967ACF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FBE51F21248
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F62FB20CCC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EFB17E46E;
-	Sun,  1 Sep 2024 16:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA442376EC;
+	Sun,  1 Sep 2024 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnBiRe3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHm0W71V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1F1C68C;
-	Sun,  1 Sep 2024 16:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6E17C;
+	Sun,  1 Sep 2024 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208811; cv=none; b=DJv2QDVHAf/V7Wyf1r9GlYYzg2jgghey+DdxQdhJk6gpU4CkArpHq3jPHBNA+gOKmcuMyAU5r3DOJ1oTZ4vPcnzuUdNyEObCgFkIvrrFi1ljXsnXHUrbRmcLs42bl6AoZcNU8BFQUzhUEBnNzodfG1NTNJy31Vl756pxbutxeIg=
+	t=1725210071; cv=none; b=n/NjlL0lWMAsFciR/htxQ9geZKVZhkVv5d2PPs5wAODwdFC534/A7txyKuRk1gXAvfKRj+Q+diJoSCpR5FFWSySpnyAqE8Zl6RTMErCT5QiKTqcE8PJPb20w9xVPu52sUTon9EIB8xKu7U1BqWMntmdYo179vm/NKX9SC6OJT2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208811; c=relaxed/simple;
-	bh=RZ0WaFEufdslru1dju8yvL8sqmUWDyLSRvTmn/975kk=;
+	s=arc-20240116; t=1725210071; c=relaxed/simple;
+	bh=QXxB5rsbhmIQ+bixkbs8lL/13h1632cP0InlRQ/QzPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJoVn1gQXwCTCwNdhZgoCEFcnNlcfaZr98NcuNI6blgk5Ju8lQ/97hncmwR0ZBU8WzSWIkQpJpCsLHtnjYmWX+eWB+XlWLBCnnQ+tovggwFuUNNR8dk41Tnb2RvWQADbC4ZTc5kw5S1Mhq/MDWOMFA9qkZi9DYJXONBUQPv+uck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnBiRe3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D528FC4CEC3;
-	Sun,  1 Sep 2024 16:40:10 +0000 (UTC)
+	 MIME-Version; b=eA8CMRlVi6fHTpG//wzBliUAoSSwicGwa37zgEV5N2aHLpG+i6bjVbzV7bzaH+c7wa169iOWliQ18hKkWOj1HbyLoUQns55GJhYMx+aiHZJrW4aCOCXraarEs3cg2RsBbl5+M1PfNSlPnDeN1MQJ0diBbPKUbHQqd0jks1IXHqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHm0W71V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059BBC4CEC3;
+	Sun,  1 Sep 2024 17:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208811;
-	bh=RZ0WaFEufdslru1dju8yvL8sqmUWDyLSRvTmn/975kk=;
+	s=korg; t=1725210071;
+	bh=QXxB5rsbhmIQ+bixkbs8lL/13h1632cP0InlRQ/QzPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnBiRe3vsamCVb4J5t+w7FSIOtXqHdppWBdK/pbtrUgiWymYd5nG4NGEwmw0fZlj4
-	 7tNtxvGIjpQQPAkNNUnzOOSnpSTkUA3BdE83oJmflCpzaWmL5pa17LsdG6PdGA43Hb
-	 892YnWzRJLtvHHYOBrDoTxWkU3sitXVcv6u/BWf0=
+	b=eHm0W71V5CtqyZref01hbtb22VUNVChSa3Oex7FXGGYYbj4y+ZsxdYhwSFjAsf83X
+	 CYfcICKBHrTwVF5G+VFljdVUAbfw03ljTIRSawGlmO9qXvXT0cYdCKz8B8q1sdM1i0
+	 v0TTH+Vl/hiH0YC+xwiInEpSHN0H8omfcJTBnGLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 046/134] fs: binfmt_elf_efpic: dont use missing interpreters properties
+Subject: [PATCH 5.15 080/215] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
 Date: Sun,  1 Sep 2024 18:16:32 +0200
-Message-ID: <20240901160811.841254531@linuxfoundation.org>
+Message-ID: <20240901160826.378294870@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
+[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
 
-Static FDPIC executable may get an executable stack even when it has
-non-executable GNU_STACK segment. This happens when STACK segment has rw
-permissions, but does not specify stack size. In that case FDPIC loader
-uses permissions of the interpreter's stack, and for static executables
-with no interpreter it results in choosing the arch-default permissions
-for the stack.
+__netlink_dump_start() releases nlk->cb_mutex right before
+calling netlink_dump() which grabs it again.
 
-Fix that by using the interpreter's properties only when the interpreter
-is actually used.
+This seems dangerous, even if KASAN did not bother yet.
 
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Add a @lock_taken parameter to netlink_dump() to let it
+grab the mutex if called from netlink_recvmsg() only.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netlink/af_netlink.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 28aef31a6e6f2..aeeba59fa7342 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -320,7 +320,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	else
- 		executable_stack = EXSTACK_DEFAULT;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 18a38db2b27eb..258d885548ae4 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -128,7 +128,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
+ 	"nlk_cb_mutex-MAX_LINKS"
+ };
  
--	if (stack_size == 0) {
-+	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
- 		stack_size = interp_params.stack_size;
- 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
- 			executable_stack = EXSTACK_ENABLE_X;
+-static int netlink_dump(struct sock *sk);
++static int netlink_dump(struct sock *sk, bool lock_taken);
+ 
+ /* nl_table locking explained:
+  * Lookup and traversal are protected with an RCU read-side lock. Insertion
+@@ -2000,7 +2000,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+-		ret = netlink_dump(sk);
++		ret = netlink_dump(sk, false);
+ 		if (ret) {
+ 			WRITE_ONCE(sk->sk_err, -ret);
+ 			sk_error_report(sk);
+@@ -2210,7 +2210,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static int netlink_dump(struct sock *sk)
++static int netlink_dump(struct sock *sk, bool lock_taken)
+ {
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+ 	struct netlink_ext_ack extack = {};
+@@ -2222,7 +2222,8 @@ static int netlink_dump(struct sock *sk)
+ 	int alloc_min_size;
+ 	int alloc_size;
+ 
+-	mutex_lock(nlk->cb_mutex);
++	if (!lock_taken)
++		mutex_lock(nlk->cb_mutex);
+ 	if (!nlk->cb_running) {
+ 		err = -EINVAL;
+ 		goto errout_skb;
+@@ -2378,9 +2379,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
+ 
+-	mutex_unlock(nlk->cb_mutex);
+-
+-	ret = netlink_dump(sk);
++	ret = netlink_dump(sk, true);
+ 
+ 	sock_put(sk);
+ 
 -- 
 2.43.0
 
