@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-72249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A2F9679DE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9348A9679E1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01287280A16
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509A728184E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857D185936;
-	Sun,  1 Sep 2024 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32655184523;
+	Sun,  1 Sep 2024 16:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYY0Zq0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du+Jwddq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C201E87B;
-	Sun,  1 Sep 2024 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F291DFD1;
+	Sun,  1 Sep 2024 16:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209317; cv=none; b=L+t8YHj+7K+zNrnWp6IThHbTU2W3mbvcr0wjYyvE0XItauimz7eU7tL0V63TqCiK0U+2zNbs0OwLMoV/WcQjEIx07HAsX9M2H/7c0lY4gGHoVehRb2fDh5GchwpVpDefylwGKLwZ2ztOs7kZ0iZAmDVq5Gq0y6J1MXKIJ9h0SBo=
+	t=1725209327; cv=none; b=f/USS5XqLss2r4xXIsO85UsXTqc8z6g52nB2o6pomzSsO7KMrM4X884CHIeh6ztP4BpRE/dcULZVeTocwbxGv12+977+zTLIKTE6sGQQJbLfDV6h++lmoa6AF/mnlCwZqeQ7rZgn5sxoyBG2YAxGfj3qHMPbthZP1o696QlssDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209317; c=relaxed/simple;
-	bh=N1wRxK6F6gaIwM+5wwPnXi5Gf0Eg33wzEXdr4XbsPbU=;
+	s=arc-20240116; t=1725209327; c=relaxed/simple;
+	bh=DqOUYdPq1GKpPOJOvmHfYbomnGsKC7ooTDQ32n/5k3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLKjD8X9paUBTnoTxf5v2ejryB3T7SmXiuyF2IKiv0FCpF2SS/n9AR19J61VR3HseoY7g50tKfnmGnpW5LVKE/3VwkRv5yfo6wNSgQfWDtJ0yYTXZgG9Okl2ac9fR0sOkhQgj3RRoMhOc4OZmtXEZACarmDklvl0KR3sdN+X6+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYY0Zq0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C12FC4CEC3;
-	Sun,  1 Sep 2024 16:48:36 +0000 (UTC)
+	 MIME-Version; b=Jkw5aDgqu7jzqcsmQg8K2JAtbuGGEVe/2/OP4aaYR4xC8N9fmbYxpjEil1pdYwHbt91c2MbwZkv0S9ux0IYpnP5fa8k3YDNVG4KgPeJ4rXv9R/11n71KHj2hdJR094y2oOziyXwqEuncwyycgpGXJQrfDVCvZpI2v3y7EuobM+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du+Jwddq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B54AC4CEC3;
+	Sun,  1 Sep 2024 16:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209317;
-	bh=N1wRxK6F6gaIwM+5wwPnXi5Gf0Eg33wzEXdr4XbsPbU=;
+	s=korg; t=1725209326;
+	bh=DqOUYdPq1GKpPOJOvmHfYbomnGsKC7ooTDQ32n/5k3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYY0Zq0r86nFyMISgM2cqp5kgnFdu9qaz7BE0LT5uUpQyDriHGfDBE/eEPukHBBTK
-	 8emHWAX/vHbjpC2xGXAZz19ilbS8Y/qx0p5Kef1xtmVt8lqGb7AHphTb99X77/Oqv3
-	 J6kwBJK0x4A8D9U2BrSP2AyIRJYz9m43SA4aEVGg=
+	b=Du+JwddqVWOtm9uk58IgXfLKivZuoEyDBv7rTvmocgJJUvH69iH+O6gKe/yVf4OTy
+	 QYxX4i0KQeB3wvOfVgkb9XSZrZhe/fndUvc9ptFyD7jgjN/xB1dTRjY/qI+IH/aimS
+	 1WdstZL6f0DC3rw76kKn/hzcuGNwNjfYQtitIRJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 52/71] sctp: fix association labeling in the duplicate COOKIE-ECHO case
-Date: Sun,  1 Sep 2024 18:17:57 +0200
-Message-ID: <20240901160803.853537177@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 53/71] drm/amd/display: avoid using null object of framebuffer
+Date: Sun,  1 Sep 2024 18:17:58 +0200
+Message-ID: <20240901160803.891405146@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
 References: <20240901160801.879647959@linuxfoundation.org>
@@ -68,94 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 3a0504d54b3b57f0d7bf3d9184a00c9f8887f6d7 ]
+[ Upstream commit 3b9a33235c773c7a3768060cf1d2cf8a9153bc37 ]
 
-sctp_sf_do_5_2_4_dupcook() currently calls security_sctp_assoc_request()
-on new_asoc, but as it turns out, this association is always discarded
-and the LSM labels never get into the final association (asoc).
+Instead of using state->fb->obj[0] directly, get object from framebuffer
+by calling drm_gem_fb_get_obj() and return error code when object is
+null to avoid using null object of framebuffer.
 
-This can be reproduced by having two SCTP endpoints try to initiate an
-association with each other at approximately the same time and then peel
-off the association into a new socket, which exposes the unitialized
-labels and triggers SELinux denials.
-
-Fix it by calling security_sctp_assoc_request() on asoc instead of
-new_asoc. Xin Long also suggested limit calling the hook only to cases
-A, B, and D, since in cases C and E the COOKIE ECHO chunk is discarded
-and the association doesn't enter the ESTABLISHED state, so rectify that
-as well.
-
-One related caveat with SELinux and peer labeling: When an SCTP
-connection is set up simultaneously in this way, we will end up with an
-association that is initialized with security_sctp_assoc_request() on
-both sides, so the MLS component of the security context of the
-association will get swapped between the peers, instead of just one side
-setting it to the other's MLS component. However, at that point
-security_sctp_assoc_request() had already been called on both sides in
-sctp_sf_do_unexpected_init() (on a temporary association) and thus if
-the exchange didn't fail before due to MLS, it won't fail now either
-(most likely both endpoints have the same MLS range).
-
-Tested by:
- - reproducer from https://src.fedoraproject.org/tests/selinux/pull-request/530
- - selinux-testsuite (https://github.com/SELinuxProject/selinux-testsuite/)
- - sctp-tests (https://github.com/sctp/sctp-tests) - no tests failed
-   that wouldn't fail also without the patch applied
-
-Fixes: c081d53f97a1 ("security: pass asoc to sctp_assoc_request and sctp_sk_clone")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Paul Moore <paul@paul-moore.com> (LSM/SELinux)
-Link: https://patch.msgid.link/20240826130711.141271-1-omosnace@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 73dd0ad9e5dad53766ea3e631303430116f834b3)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 5383b6a9da61c..a56749a50e5c5 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2261,12 +2261,6 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
- 		}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index cd6e99cf74a06..08b10df93c317 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -28,6 +28,7 @@
+ #include <drm/drm_blend.h>
+ #include <drm/drm_gem_atomic_helper.h>
+ #include <drm/drm_plane_helper.h>
++#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fourcc.h>
+ 
+ #include "amdgpu.h"
+@@ -848,10 +849,14 @@ static int dm_plane_helper_prepare_fb(struct drm_plane *plane,
  	}
  
--	/* Update socket peer label if first association. */
--	if (security_sctp_assoc_request(new_asoc, chunk->head_skb ?: chunk->skb)) {
--		sctp_association_free(new_asoc);
--		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
--	}
--
- 	/* Set temp so that it won't be added into hashtable */
- 	new_asoc->temp = 1;
- 
-@@ -2275,6 +2269,22 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
- 	 */
- 	action = sctp_tietags_compare(new_asoc, asoc);
- 
-+	/* In cases C and E the association doesn't enter the ESTABLISHED
-+	 * state, so there is no need to call security_sctp_assoc_request().
-+	 */
-+	switch (action) {
-+	case 'A': /* Association restart. */
-+	case 'B': /* Collision case B. */
-+	case 'D': /* Collision case D. */
-+		/* Update socket peer label if first association. */
-+		if (security_sctp_assoc_request((struct sctp_association *)asoc,
-+						chunk->head_skb ?: chunk->skb)) {
-+			sctp_association_free(new_asoc);
-+			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+		}
-+		break;
+ 	afb = to_amdgpu_framebuffer(new_state->fb);
+-	obj = new_state->fb->obj[0];
++	obj = drm_gem_fb_get_obj(new_state->fb, 0);
++	if (!obj) {
++		DRM_ERROR("Failed to get obj from framebuffer\n");
++		return -EINVAL;
 +	}
 +
- 	switch (action) {
- 	case 'A': /* Association restart. */
- 		retval = sctp_sf_do_dupcook_a(net, ep, asoc, chunk, commands,
+ 	rbo = gem_to_amdgpu_bo(obj);
+ 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
+-
+ 	r = amdgpu_bo_reserve(rbo, true);
+ 	if (r) {
+ 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
 -- 
 2.43.0
 
