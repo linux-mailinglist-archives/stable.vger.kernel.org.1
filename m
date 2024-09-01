@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-71897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CED96783F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBBB96793B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D74D1F21701
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5C381F21A96
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D4214290C;
-	Sun,  1 Sep 2024 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A257181CE1;
+	Sun,  1 Sep 2024 16:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2fFCgWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTiZ9TdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52213181B88;
-	Sun,  1 Sep 2024 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1780817E900;
+	Sun,  1 Sep 2024 16:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208178; cv=none; b=PTqAAXK1LjOHiGAYtDeyQX/EV83xktc3LFEIercSfN33TFR9f5WBgCAu1Ai48WNUrNbXDzkBlmemCGm6bb4QfAOjhmq3tohvl8JgdcnvUkQuefF+yuW0XIIxTsqLd6lqkMOlcjzVmVHpfrOx8tKWMDJBufNH0NusC89Bq5QkvLg=
+	t=1725208880; cv=none; b=WgCcpq/QxNSpqNwUWvyBYrs0yXQLXC/e4hvQYU1N0Ny3RoHmTJcEzY4CULxZIwpP703ueyyByzCRs19XMYNaEeSyvGJVDgQRcawlsQ5v5o3LpgZLIKdnK2/kBz8Wz8Zyvx2xo8b/c3vUWlvuxtZvYt7CBCgQs4uLY8rdPv1fjAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208178; c=relaxed/simple;
-	bh=ohKshwXyi8Yn/B/SrTtH68zgYd4Mk8Y/LnO7owUxb3s=;
+	s=arc-20240116; t=1725208880; c=relaxed/simple;
+	bh=TcQCz3fd78ZU2g2ZGnDtVrsbODsQCZD6g/8TiyebfL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGrTkUosQtj0yFmLzqxHrlVkv4i4nAh3zXeMVAzA7tyOtDxSKguQdpfQUZfRU0ZyW6HEZdOm6IH4Aw9FMkgkNTaScFs/igRabHwDTcw2y0xelOqSGYAXXhZPfAMh3o2CZUem5lL0VmMJtBCXpz7FPMJFfs/YtjA7V7UUMHBzBdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2fFCgWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BC4C4CEC3;
-	Sun,  1 Sep 2024 16:29:37 +0000 (UTC)
+	 MIME-Version; b=hkKbb3gVjSITdteynpTMDouy7f1onr7pKvCD3SKyl8P3XmRQM+DNEJrccT+ndo1WRkQVdEyCeojopLHo4PkENUPORRBrK6VZb18JsLVCgiNY0IGcGGCajgNWcvX60ZhudzhgEsBVpRNuOLqiKouXA8O/pBxeAcjSmtu7InUH6/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTiZ9TdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EE6C4CEC3;
+	Sun,  1 Sep 2024 16:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208178;
-	bh=ohKshwXyi8Yn/B/SrTtH68zgYd4Mk8Y/LnO7owUxb3s=;
+	s=korg; t=1725208880;
+	bh=TcQCz3fd78ZU2g2ZGnDtVrsbODsQCZD6g/8TiyebfL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2fFCgWF6ZBcOEvCM7SVP6IYgw9neGiWeE8js9k1xAl2PIsNnTbMmnw1bMnVLADcV
-	 3d0VoGWKAiDSon29TsK/mDDHUGvp2abDrRdJvfSDLUnZnGKa3/g3GAGqKm+OcHyJg7
-	 duAYLZZyYGjPZPgQ90eTV56Mqox0CvgxP5ONSyts=
+	b=yTiZ9TdGk6if/tiHSA8uasWP2K+2JaFVIcd/ZMyXR0zjAc2SR/8zZLO/E8N0fLTSO
+	 5OQOmxoKhg3FPYwPlcAEO2sJ4yVto4cdcaX7XQWiWdl2Crm05hRgzV4AwIyQe90hv3
+	 ZYq7P9DkaGAeqdOWcwkyxvLhBRNyJyjLF79aH05s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johan Hovold <johan@kernel.org>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 67/93] drm/amd/display: avoid using null object of framebuffer
+Subject: [PATCH 5.4 068/134] usb: dwc3: core: Skip setting event buffers for host only controllers
 Date: Sun,  1 Sep 2024 18:16:54 +0200
-Message-ID: <20240901160809.887357436@linuxfoundation.org>
+Message-ID: <20240901160812.658703893@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 3b9a33235c773c7a3768060cf1d2cf8a9153bc37 ]
+[ Upstream commit 89d7f962994604a3e3d480832788d06179abefc5 ]
 
-Instead of using state->fb->obj[0] directly, get object from framebuffer
-by calling drm_gem_fb_get_obj() and return error code when object is
-null to avoid using null object of framebuffer.
+On some SoC's like SA8295P where the tertiary controller is host-only
+capable, GEVTADDRHI/LO, GEVTSIZ, GEVTCOUNT registers are not accessible.
+Trying to access them leads to a crash.
 
-Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 73dd0ad9e5dad53766ea3e631303430116f834b3)
+For DRD/Peripheral supported controllers, event buffer setup is done
+again in gadget_pullup. Skip setup or cleanup of event buffers if
+controller is host-only capable.
+
+Suggested-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240420044901.884098-4-quic_kriskura@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index cc74dd69acf2b..fa9f53b310793 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -28,6 +28,7 @@
- #include <drm/drm_blend.h>
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_plane_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_fourcc.h>
- 
- #include "amdgpu.h"
-@@ -848,10 +849,14 @@ static int dm_plane_helper_prepare_fb(struct drm_plane *plane,
- 	}
- 
- 	afb = to_amdgpu_framebuffer(new_state->fb);
--	obj = new_state->fb->obj[0];
-+	obj = drm_gem_fb_get_obj(new_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return -EINVAL;
-+	}
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 12e72e804278e..cbe475134b3c6 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -391,6 +391,13 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
+ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
+ {
+ 	struct dwc3_event_buffer *evt;
++	unsigned int hw_mode;
 +
- 	rbo = gem_to_amdgpu_bo(obj);
- 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
--
- 	r = amdgpu_bo_reserve(rbo, true);
- 	if (r) {
- 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
++	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
++	if (hw_mode == DWC3_GHWPARAMS0_MODE_HOST) {
++		dwc->ev_buf = NULL;
++		return 0;
++	}
+ 
+ 	evt = dwc3_alloc_one_event_buffer(dwc, length);
+ 	if (IS_ERR(evt)) {
+@@ -412,6 +419,9 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
+ 
++	if (!dwc->ev_buf)
++		return 0;
++
+ 	evt = dwc->ev_buf;
+ 	evt->lpos = 0;
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTADRLO(0),
+@@ -429,6 +439,9 @@ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
+ 
++	if (!dwc->ev_buf)
++		return;
++
+ 	evt = dwc->ev_buf;
+ 
+ 	evt->lpos = 0;
 -- 
 2.43.0
 
