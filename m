@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-72451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58497967AAE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA0A967783
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8B54B20DAE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E326B21B6B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FBC183CA3;
-	Sun,  1 Sep 2024 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF98183CCA;
+	Sun,  1 Sep 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pj3WFICC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKrRaIzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BBE18132A;
-	Sun,  1 Sep 2024 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC9E2C1B4;
+	Sun,  1 Sep 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209967; cv=none; b=AVOtdE1Yi0IiJLnivzA2A0WDOt3iMex5h1581spfWLoThUkeAVyr4U7eKptJk0PosB+QYty+/4Hi90LrObwFSPZaaHeLjXnh0O4YYBNF/p5TxbF/UDPZniVmoUX4xdfIaSzKyA9RqJJ/Yluefgokx8LhaMSkR+KsRQ+4dcWbddo=
+	t=1725207632; cv=none; b=CWSKEMTa//QCrNxj4g9iXngzlZ44IZf8SNy1XDTTdfEE5B3nfRzWJowEnDG4iBEg8c1G9m7jCv+mOad3wsLVsvX3a7NmEiBhiRn5s4u41TWfQjdmKP+CyoQr68QPU1Ie1X9XCj9tGfK5T+zsfPj3pJ8+QGdeJH2OSV1usw6i5Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209967; c=relaxed/simple;
-	bh=E+SDNm5G/IOUcPEYB6eO2GKuElij+B3M4HMym7gUxn0=;
+	s=arc-20240116; t=1725207632; c=relaxed/simple;
+	bh=tDjP8V8tBip5pTlVwKOHpJA7CeyDXvPdEY6s0OoGEfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwOof14ERbaJMmS4SBLnXbKgOAB8SzpqNqHtlyFRvKFPOfdYkiD1l5neygCMGJG+4YDs9DjPlC9ajnnwcyLhvpuTJzcpgJg3YXugXoC5KqlbyxVJXExCAfW/xU5JAfpPRHlJEQymj+HPwcHeyBf9mIMKRy3KcR35AxD2IR3zXEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pj3WFICC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524FBC4CEC3;
-	Sun,  1 Sep 2024 16:59:26 +0000 (UTC)
+	 MIME-Version; b=E+xQAwQrN8FacFPA1fmdDuLjP52/xyDmeicug04ZR68XTOEKBGf4qfvBY7Dih5Gb95LL3jrYGhXJX5w0HLXeVmSTJfQjViMLPPMleGqxxGrGUN1xH5xwtjSPSNKJH6HXFabl23EhMUdkA7oHKIPnXfMxmKS7ASROibY6rgK8ZiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKrRaIzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E83C4CEC3;
+	Sun,  1 Sep 2024 16:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209967;
-	bh=E+SDNm5G/IOUcPEYB6eO2GKuElij+B3M4HMym7gUxn0=;
+	s=korg; t=1725207632;
+	bh=tDjP8V8tBip5pTlVwKOHpJA7CeyDXvPdEY6s0OoGEfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pj3WFICCLTIaPrIuu4Ao4udG+K+coaVzlmJ+oOzaKlxxR3MBFznSwC82s/VSfoNxi
-	 Ob4uStuCf+iRpme37DB4GWrkpPc5sjngVTGFUSQ1cS1LBbLp2Fsy1KJoFdjbJZamGj
-	 Wi/8F1FSG5GPtWnrBE7ZL2VsWQFBWxU2QOMEL/to=
+	b=XKrRaIzQcmKqJ8Kb3D0+ABwMRzu93IU2202j+7melJDwo9ENV1RYU86pvcXk9gKm/
+	 79GpuCNg0W8kz/RWril1Br+4fX/s5XmW7K+N5En/DIFm1bK72bEKW7ldZUYDGWyY5U
+	 qHAZwATqQcnmTgP/QD0dLC4F6CF5Ms4ctQjSFxM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Sam Creasey <sammy@sammy.net>,
+	Kees Cook <keescook@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/215] RDMA/rtrs: Fix the problem of variable not initialized fully
-Date: Sun,  1 Sep 2024 18:16:00 +0200
-Message-ID: <20240901160825.169338105@linuxfoundation.org>
+Subject: [PATCH 4.19 31/98] net/sun3_82586: Avoid reading past buffer in debug output
+Date: Sun,  1 Sep 2024 18:16:01 +0200
+Message-ID: <20240901160804.870981240@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit c5930a1aa08aafe6ffe15b5d28fe875f88f6ac86 ]
+[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
 
-No functionality change. The variable which is not initialized fully
-will introduce potential risks.
+Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
+-Warraybounds, this build warning is visible[1]:
 
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20230919020806.534183-1-yanjun.zhu@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
+drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
+  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
+      |                                                                                                               ~~~~~~~~~~~~^~~
+...
+drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
+  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
+
+Avoid accessing index 1 since it doesn't exist.
+
+Link: https://github.com/KSPP/linux/issues/325 [1]
+Cc: Sam Creasey <sammy@sammy.net>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs.c | 2 +-
+ drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
-index 4745f33d7104a..7f0f3ce8f1151 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs.c
-@@ -255,7 +255,7 @@ static int create_cq(struct rtrs_con *con, int cq_vector, int nr_cqe,
- static int create_qp(struct rtrs_con *con, struct ib_pd *pd,
- 		     u32 max_send_wr, u32 max_recv_wr, u32 max_sge)
- {
--	struct ib_qp_init_attr init_attr = {NULL};
-+	struct ib_qp_init_attr init_attr = {};
- 	struct rdma_cm_id *cm_id = con->cm_id;
- 	int ret;
- 
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 1a86184d44c0a..e0c9fee4e1e65 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -990,7 +990,7 @@ static void sun3_82586_timeout(struct net_device *dev)
+ 	{
+ #ifdef DEBUG
+ 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
+-		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
++		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
+ 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
+ #endif
+ 		sun3_82586_close(dev);
 -- 
 2.43.0
 
