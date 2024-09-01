@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81B39679EC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C87D96778F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1517D1C21447
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C122AB2157C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A7744C93;
-	Sun,  1 Sep 2024 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA4D44C97;
+	Sun,  1 Sep 2024 16:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LN9Mebs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0W4kAhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236CE183092;
-	Sun,  1 Sep 2024 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E75E155A24;
+	Sun,  1 Sep 2024 16:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209361; cv=none; b=tgekoXbaF1UeXP9wQ+CahSJ5pGbl/H+Uk2TmkMVnPIiGSgvV0jF8rlIwhxVcLoMzAygxsWq6G3xnUDjxzy1UKuPoib9SOcCw9zYhqFidbOQfZQ4ur0HeO+anmBeq9/om8Erw/B/y5Yy2XEmrBdUXKghEe7LE8hsRE9cai8v5ays=
+	t=1725207672; cv=none; b=RA2WkD9YySixrJZnfRVSyb9u5nI4sB4Wc8DokWR4URCQtE0ugWbz27Y8brXw5aYD1Z+IqGRMiwXmSD1WTmSxJOdBQShhN5mDIbDPPGQtt5yOk7ht/RYmMvs0sZ+OVxS1dyYwX0q8FVpOCddo6h6N4YaSfJ56vWDuNeKbb11pPdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209361; c=relaxed/simple;
-	bh=jzaemdfIJgLmQoqXW4iB3o6xzckJDJiM0dCkG47hTVc=;
+	s=arc-20240116; t=1725207672; c=relaxed/simple;
+	bh=s0D3repaL939DupniR4g+5qt66BPDck7myl9FXk10VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2EZPFZY36uiOaKqp2bT2vnxdgrVB6NKLJnECtDU47jkkXK3GIK4VrJZL7FNIc6Ousq0WhWgjUzn2iSuWolvLczG9St+9NujqruOB0VTYeAXZLNhiQnVaaWqWja/XchDGUb+jdxpLJtNkZLtZo34x0HROSr8JtM/569KmDIdcwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LN9Mebs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EE7C4CEC3;
-	Sun,  1 Sep 2024 16:49:20 +0000 (UTC)
+	 MIME-Version; b=csVXpHBRpWtV+Wpw8cpGAKwEj1CbeQ6sMuHk+lh6MaNhYmmXV0QgSN4rmCSWOf/MfOetVw9k/Rhm2MhbrxQZxL3Nv3NNSoi08mjSxgvmajoFLOkS8SX13fdzuhb47OXkr3F9KOCUQX00/7uTRVQ/XaRLOqLf72lkJNym/4t8KYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0W4kAhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278E6C4CEC3;
+	Sun,  1 Sep 2024 16:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209361;
-	bh=jzaemdfIJgLmQoqXW4iB3o6xzckJDJiM0dCkG47hTVc=;
+	s=korg; t=1725207671;
+	bh=s0D3repaL939DupniR4g+5qt66BPDck7myl9FXk10VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LN9MebsdN7Qas2iZDlD12Er8JR1x3ALMNVI5Bh+n6n8FHdEDOLUYC1GvP8eQscyB
-	 C4mmLX1ypM2Dx+Exl07ygxBtPACmeGJkQLfxktF3OPODJOMNsDT08E1kFo4tku1te8
-	 5ZuWlTxmLRqtPGO61e5dWiEAg4MrnrJUN8lNlImc=
+	b=y0W4kAhy1xHUFqb/5u1kIAdXrIRckBVASBTXvDjOqGIDoSzjCo7wed00+M5MzwAUX
+	 in51l0L4+4ttoyXtxDSwxDaX2j/avUEuhImt1jB5sdp0TE3h+n/wYLiIvTSKkwSk8f
+	 ZOj7a79kaA4eocmVuFeS6ZxncK90fy7clqUfSWK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 012/151] selinux: fix potential counting error in avc_add_xperms_decision()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 42/98] Bluetooth: bnep: Fix out-of-bound access
 Date: Sun,  1 Sep 2024 18:16:12 +0200
-Message-ID: <20240901160814.562266150@linuxfoundation.org>
+Message-ID: <20240901160805.287388141@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 379d9af3f3da2da1bbfa67baf1820c72a080d1f1 upstream.
+[ Upstream commit 0f0639b4d6f649338ce29c62da3ec0787fa08cd1 ]
 
-The count increases only when a node is successfully added to
-the linked list.
+This fixes attempting to access past ethhdr.h_source, although it seems
+intentional to copy also the contents of h_proto this triggers
+out-of-bound access problems with the likes of static analyzer, so this
+instead just copy ETH_ALEN and then proceed to use put_unaligned to copy
+h_proto separetely.
 
-Cc: stable@vger.kernel.org
-Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/avc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/bnep/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/security/selinux/avc.c
-+++ b/security/selinux/avc.c
-@@ -332,12 +332,12 @@ static int avc_add_xperms_decision(struc
- {
- 	struct avc_xperms_decision_node *dest_xpd;
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index 7b3965861013c..a16d584a6c0d0 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -385,7 +385,8 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
  
--	node->ae.xp_node->xp.len++;
- 	dest_xpd = avc_xperms_decision_alloc(src->used);
- 	if (!dest_xpd)
- 		return -ENOMEM;
- 	avc_copy_xperms_decision(&dest_xpd->xpd, src);
- 	list_add(&dest_xpd->xpd_list, &node->ae.xp_node->xpd_head);
-+	node->ae.xp_node->xp.len++;
- 	return 0;
- }
+ 	case BNEP_COMPRESSED_DST_ONLY:
+ 		__skb_put_data(nskb, skb_mac_header(skb), ETH_ALEN);
+-		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN + 2);
++		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN);
++		put_unaligned(s->eh.h_proto, (__be16 *)__skb_put(nskb, 2));
+ 		break;
  
+ 	case BNEP_GENERAL:
+-- 
+2.43.0
+
 
 
 
