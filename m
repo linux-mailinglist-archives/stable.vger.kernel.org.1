@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-72557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075F7967B1D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A9E967998
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A351F214EA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F55282273
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469F717E005;
-	Sun,  1 Sep 2024 17:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A90D18132A;
+	Sun,  1 Sep 2024 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvXNXxw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hu7oCs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049192C6AF;
-	Sun,  1 Sep 2024 17:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085DB185958;
+	Sun,  1 Sep 2024 16:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210318; cv=none; b=tNAMH00Wo+WoHoGClb4MzhginLn/Oqo+JRHZt5Be68ne2FajuJFvOpRhlVDp10Bqay3oFh+punPMJDElRvSRggB38f7yyKctz6UnTACPPWKhcgqKYNSJjUHkfPBLsAnH7Da6pDXWdL+OMSEF+fPcuCm300r0Mzl661rn57Lu3v0=
+	t=1725209127; cv=none; b=iMTi1B1DiHx2/wECcud27DwE17fDoCAUwAl6Ocppq9AXm1Hfb4759XHdZdLnN/idPki93msbLy0UW/tAIqaoEOBVJmcgqMhL69NvZ7jmOZ2eUBqH0oqvVC26ofL965DonSkTFjBb2FaAzQIhxmnbiugurtsEsqaI2p59e3d2TmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210318; c=relaxed/simple;
-	bh=vUejE+m6dUWJfwXIWgvYUBI6margt+gXg1iNlbmGveo=;
+	s=arc-20240116; t=1725209127; c=relaxed/simple;
+	bh=okG9X9ptlte5a9gfZLGYOhWJ5ByaCgp0PUylW8fCtj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8A2t3Xz6Cvo5MH+qzZgKGwW0wHVzCA2QlgUEY4pu6sMC88ybJpZ61z4IpPvzDslfE8qHrRQv8X6W9YKoCEK6D5VVjpCvqt2sQy7cNAMFBoukh3AoMmhFYkRt0mZ3NnjS9uJL1g8O2DQBowJZDDEP1d1T1dYCko7R4VycUiffGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvXNXxw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66530C4CEC3;
-	Sun,  1 Sep 2024 17:05:17 +0000 (UTC)
+	 MIME-Version; b=HBXRU0J9InkxAKFW3NTjB5WRyGjSfIgui9Waqh7SCoVQ5YZ79Vsf5wRjWh2EWCailD7BTizJwu6wrVuXNkgfBFUuoqxKsTwsacFFL1W6u3WHeRHLc7JIo7fxORkiJgPVq7O4wqSVapl5VfB/saEBhZfqYiAwFgSI75NkGtRbRxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hu7oCs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D560C4CEC3;
+	Sun,  1 Sep 2024 16:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210317;
-	bh=vUejE+m6dUWJfwXIWgvYUBI6margt+gXg1iNlbmGveo=;
+	s=korg; t=1725209126;
+	bh=okG9X9ptlte5a9gfZLGYOhWJ5ByaCgp0PUylW8fCtj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvXNXxw3JIwgCn/TEWDHDRT5SDpUOEjZRRiHMyJFd5+fXMUSZs3M1TN72mD4LMt8s
-	 tB1vzp3pn1PfOSAneGvy0gGS2gOyf844Xh9H4jxZovAchrLSOGTYt8Lq49Z50HOFwQ
-	 ++S81474+kMZJibimTYYf6rS8wy5rdz6r3VDB5Zg=
+	b=2Hu7oCs7NgmLRmWGry0CVckgIEIlzsLpiXeT5oPsmgatEIQhs52EUHuSf2zuuVJ3t
+	 Hue1GIBlOlwObkd8bdWtj2VJdu9z6UrEXwZr5N/vmSoUB+nvxZXlsXh2B6MO7g3Ryd
+	 w7E87car7o/dT1iY3uWUyhMzyFOYMts9KF9tJpIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Joe Damato <jdamato@fastly.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/215] net: xilinx: axienet: Fix dangling multicast addresses
-Date: Sun,  1 Sep 2024 18:17:46 +0200
-Message-ID: <20240901160829.184437889@linuxfoundation.org>
+Subject: [PATCH 5.4 121/134] net: busy-poll: use ktime_get_ns() instead of local_clock()
+Date: Sun,  1 Sep 2024 18:17:47 +0200
+Message-ID: <20240901160814.635230325@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 797a68c9de0f5a5447baf4bd3bb9c10a3993435b ]
+[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
 
-If a multicast address is removed but there are still some multicast
-addresses, that address would remain programmed into the frame filter.
-Fix this by explicitly setting the enable bit for each filter.
+Typically, busy-polling durations are below 100 usec.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-3-sean.anderson@linux.dev
+When/if the busy-poller thread migrates to another cpu,
+local_clock() can be off by +/-2msec or more for small
+values of HZ, depending on the platform.
+
+Use ktimer_get_ns() to ensure deterministic behavior,
+which is the whole point of busy-polling.
+
+Fixes: 060212928670 ("net: add low latency socket poll")
+Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
+Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 21 ++++++++-----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ include/net/busy_poll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index cbf637078c38a..bdda836115095 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -169,6 +169,7 @@
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
- #define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
-+#define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
- 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 79f559178bb38..0ca350faa4848 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -409,7 +409,7 @@ static int netdev_set_mac_address(struct net_device *ndev, void *p)
-  */
- static void axienet_set_multicast_list(struct net_device *ndev)
+diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
+index 16258c0c7319e..36259516ec0d2 100644
+--- a/include/net/busy_poll.h
++++ b/include/net/busy_poll.h
+@@ -61,7 +61,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
+ static inline unsigned long busy_loop_current_time(void)
  {
--	int i;
-+	int i = 0;
- 	u32 reg, af0reg, af1reg;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
-@@ -431,7 +431,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 
--		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
- 				break;
-@@ -450,6 +449,7 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
- 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-+			axienet_iow(lp, XAE_FFE_OFFSET, 1);
- 			i++;
- 		}
- 	} else {
-@@ -457,18 +457,15 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
--
--		for (i = 0; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
--			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
--			reg |= i;
--
--			axienet_iow(lp, XAE_FMI_OFFSET, reg);
--			axienet_iow(lp, XAE_AF0_OFFSET, 0);
--			axienet_iow(lp, XAE_AF1_OFFSET, 0);
--		}
--
- 		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
- 	}
-+
-+	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-+		reg |= i;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+		axienet_iow(lp, XAE_FFE_OFFSET, 0);
-+	}
- }
- 
- /**
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+-	return (unsigned long)(local_clock() >> 10);
++	return (unsigned long)(ktime_get_ns() >> 10);
+ #else
+ 	return 0;
+ #endif
 -- 
 2.43.0
 
