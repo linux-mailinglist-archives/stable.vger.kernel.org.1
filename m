@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257F596792C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9579677E5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 462901C20A58
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871E61F2109C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500BC17E900;
-	Sun,  1 Sep 2024 16:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EED7181B88;
+	Sun,  1 Sep 2024 16:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhIh+OQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmbKAm3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B21C68C;
-	Sun,  1 Sep 2024 16:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EBB143C6E;
+	Sun,  1 Sep 2024 16:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208838; cv=none; b=IO78y50TnAAGYGYHsfocWCimT6IDuYXUvZJSOzv6Aq2bPX8dHjILPuNx/bJW02KrO8TswZaDUNTbLt2LrEYdfm2rkhNPEMiU0tHXqqODqp+rURjey3eefToI7cYSkGxeZnHYLKfM8nqKv1EC31hKW3L7WDM/ae6V4SPXizoh5Qk=
+	t=1725207931; cv=none; b=TPjimLJcwDsw6pxgO8Tb6vgcRTkhUnnO3YhJVxJlFkYZ9Gh3z81dHJXT/4teAbFSK4jlCX3BjVl5OcEUuhC57RYgLFPJdW/jUpfxSHhFWizQHPJrcBg7dI2gteGfGerSeJMYcYdtGd5w6MaJ1yZT0Wa+OIAXAbs+Ryb1YxfYOEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208838; c=relaxed/simple;
-	bh=gGyE7gjJzCKcroMXJx+heZEhZ4Sjma37MEQ3+yuBiZ4=;
+	s=arc-20240116; t=1725207931; c=relaxed/simple;
+	bh=MNbxKstlr0o7CmhBA6NhWp8hRr4a0eLwsABiKWdyj0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3xLIl31EmvlGY2W0hspK488Sth9O7qyRqQopGICNBmn99t3STWruRd7KXGKxmKBln6GlwgnyYXjmJoV6H/OoT0v+x+oecKWdTY1liFMQE6+5BGoGAVaL/uRP7Bi26iJeguFSYGgEskXR4dIN7DFianqq4ViA1CDN/7GpcwiChU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhIh+OQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8979DC4CEC3;
-	Sun,  1 Sep 2024 16:40:37 +0000 (UTC)
+	 MIME-Version; b=i2xGv4E8TQO0pHoUPiy3wPzlk29IMy8dKW1yncw4FS3lbp9Zpr9uHeILu/36+utWYhtShMj42OX0dcuZ+zVFDPTjpdYeAEIj/Pg1FVekRv1pA3mr8AJnTW8j7WqyaW4DI2ZEjMlqMAXX502TzWVxfgQwZktAumUnWkwIJpqO0BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmbKAm3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407BEC4CEC3;
+	Sun,  1 Sep 2024 16:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208837;
-	bh=gGyE7gjJzCKcroMXJx+heZEhZ4Sjma37MEQ3+yuBiZ4=;
+	s=korg; t=1725207931;
+	bh=MNbxKstlr0o7CmhBA6NhWp8hRr4a0eLwsABiKWdyj0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhIh+OQZz9uxIIyCR+Aoj2CqTd40pdyOpXzwWfVgGvLy9yW4Z6iGVu8LUP4CwbASJ
-	 Cbtg97Y33OcRq60IJhapuW9RvzHG/O95HH4IRZcoCWLNpligvxeSnMAD2cYgyezdWC
-	 MYjLtKEdes/nMsxCgGp5ypuksZVf2nq+9uFeCFrM=
+	b=VmbKAm3uNdgxbZeW2F5/QgBzs1ZkuzGEpdyr39OOfG0AZjX/evfOkKJaaYo23kuKC
+	 IA9l5AV2yCvFX4XWzxT3G3m2sb5eSogqcq4KIDd8Rd8ni6HVgw3v/u+ySfwz/EPgMZ
+	 GCKH46MBx5hbTEtgJgoS2DtHrc7VV8qudy8gg2HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 022/134] net: axienet: Check for DMA mapping errors
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 21/93] selftests: mptcp: join: check removing ID 0 endpoint
 Date: Sun,  1 Sep 2024 18:16:08 +0200
-Message-ID: <20240901160810.944574724@linuxfoundation.org>
+Message-ID: <20240901160808.158105680@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 71791dc8bdea55eeb2a0caefe98a0b7450c6e0af ]
+commit 5f94b08c001290acda94d9d8868075590931c198 upstream.
 
-Especially with the default 32-bit DMA mask, DMA buffers are a limited
-resource, so their allocation can fail.
-So as the DMA API documentation requires, add error checking code after
-dma_map_single() calls to catch the case where we run out of "low" memory.
+Removing the endpoint linked to the initial subflow should trigger a
+RM_ADDR for the right ID, and the removal of the subflow. That's what is
+now being verified in the "delete and re-add" test.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that removing the initial subflow will not decrement the 'subflows'
+counters, which corresponds to the *additional* subflows. On the other
+hand, when the same endpoint is re-added, it will increment this
+counter, as it will be seen as an additional subflow this time.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 31 ++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   25 +++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 4467719095432..88bb3b0663ae4 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -249,6 +249,11 @@ static int axienet_dma_bd_init(struct net_device *ndev)
- 						     skb->data,
- 						     lp->max_frm_size,
- 						     DMA_FROM_DEVICE);
-+		if (dma_mapping_error(ndev->dev.parent, lp->rx_bd_v[i].phys)) {
-+			netdev_err(ndev, "DMA mapping error\n");
-+			goto out;
-+		}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3578,8 +3578,9 @@ endpoint_tests()
+ 
+ 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 0 2
+-		pm_nl_set_limits $ns2 0 2
++		pm_nl_set_limits $ns1 0 3
++		pm_nl_set_limits $ns2 0 3
++		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		test_linkfail=4 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+@@ -3588,17 +3589,17 @@ endpoint_tests()
+ 		wait_mpj $ns2
+ 		pm_nl_check_endpoint "creation" \
+ 			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
+-		chk_subflow_nr "before delete" 2
++		chk_subflow_nr "before delete id 2" 2
+ 		chk_mptcp_info subflows 1 subflows 1
+ 
+ 		pm_nl_del_endpoint $ns2 2 10.0.2.2
+ 		sleep 0.5
+-		chk_subflow_nr "after delete" 1
++		chk_subflow_nr "after delete id 2" 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		wait_mpj $ns2
+-		chk_subflow_nr "after re-add" 2
++		chk_subflow_nr "after re-add id 2" 2
+ 		chk_mptcp_info subflows 1 subflows 1
+ 
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+@@ -3613,10 +3614,20 @@ endpoint_tests()
+ 		chk_subflow_nr "after no reject" 3
+ 		chk_mptcp_info subflows 2 subflows 2
+ 
++		pm_nl_del_endpoint $ns2 1 10.0.1.2
++		sleep 0.5
++		chk_subflow_nr "after delete id 0" 2
++		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
 +
- 		lp->rx_bd_v[i].cntrl = lp->max_frm_size;
- 	}
- 
-@@ -680,6 +685,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	dma_addr_t tail_p;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 	struct axidma_bd *cur_p;
-+	u32 orig_tail_ptr = lp->tx_bd_tail;
- 
- 	num_frag = skb_shinfo(skb)->nr_frags;
- 	cur_p = &lp->tx_bd_v[lp->tx_bd_tail];
-@@ -715,9 +721,15 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		cur_p->app0 |= 2; /* Tx Full Checksum Offload Enabled */
- 	}
- 
--	cur_p->cntrl = skb_headlen(skb) | XAXIDMA_BD_CTRL_TXSOF_MASK;
- 	cur_p->phys = dma_map_single(ndev->dev.parent, skb->data,
- 				     skb_headlen(skb), DMA_TO_DEVICE);
-+	if (unlikely(dma_mapping_error(ndev->dev.parent, cur_p->phys))) {
-+		if (net_ratelimit())
-+			netdev_err(ndev, "TX DMA mapping error\n");
-+		ndev->stats.tx_dropped++;
-+		return NETDEV_TX_OK;
-+	}
-+	cur_p->cntrl = skb_headlen(skb) | XAXIDMA_BD_CTRL_TXSOF_MASK;
- 
- 	for (ii = 0; ii < num_frag; ii++) {
- 		if (++lp->tx_bd_tail >= lp->tx_bd_num)
-@@ -728,6 +740,16 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 					     skb_frag_address(frag),
- 					     skb_frag_size(frag),
- 					     DMA_TO_DEVICE);
-+		if (unlikely(dma_mapping_error(ndev->dev.parent, cur_p->phys))) {
-+			if (net_ratelimit())
-+				netdev_err(ndev, "TX DMA mapping error\n");
-+			ndev->stats.tx_dropped++;
-+			axienet_free_tx_chain(ndev, orig_tail_ptr, ii + 1,
-+					      NULL);
-+			lp->tx_bd_tail = orig_tail_ptr;
++		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
++		wait_mpj $ns2
++		chk_subflow_nr "after re-add id 0" 3
++		chk_mptcp_info subflows 3 subflows 3
 +
-+			return NETDEV_TX_OK;
-+		}
- 		cur_p->cntrl = skb_frag_size(frag);
- 	}
+ 		mptcp_lib_kill_wait $tests_pid
  
-@@ -808,6 +830,13 @@ static void axienet_recv(struct net_device *ndev)
- 		cur_p->phys = dma_map_single(ndev->dev.parent, new_skb->data,
- 					     lp->max_frm_size,
- 					     DMA_FROM_DEVICE);
-+		if (unlikely(dma_mapping_error(ndev->dev.parent, cur_p->phys))) {
-+			if (net_ratelimit())
-+				netdev_err(ndev, "RX DMA mapping error\n");
-+			dev_kfree_skb(new_skb);
-+			return;
-+		}
-+
- 		cur_p->cntrl = lp->max_frm_size;
- 		cur_p->status = 0;
- 		cur_p->skb = new_skb;
--- 
-2.43.0
-
+-		chk_join_nr 3 3 3
+-		chk_rm_nr 1 1
++		chk_join_nr 4 4 4
++		chk_rm_nr 2 2
+ 	fi
+ }
+ 
 
 
 
