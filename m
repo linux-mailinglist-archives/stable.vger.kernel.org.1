@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBE49679B3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5EA9678EC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A7A1F21C79
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41863B21656
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A4D186E4A;
-	Sun,  1 Sep 2024 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BE417E00C;
+	Sun,  1 Sep 2024 16:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Man1/0Ys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zj4uX3Sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F20A183CD7;
-	Sun,  1 Sep 2024 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B49537FF;
+	Sun,  1 Sep 2024 16:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209196; cv=none; b=Ef9/QK+lyxvxv8nUdmRQaRzUl9AjJopFSa+dMtM+TUNBnJFGbp4VtAFcFZaclA/iA7mEJXe6x8+yl+T5DEkSxCEMfSVBifhdGwpyIzPC9IpXU8/7hBLEcPffiGUfzMjACVUSbAqDzq8QNYQ722MxjhdcDJbiefvzJQ9e71CUQs8=
+	t=1725208643; cv=none; b=d4zMhCWRXl45J5T76F4ae8TZXEE00LzfpRS4922JNvbylNrwvsDY+3ypUaBcCq1ffMLBZ4Fg0rAeHP8mngAG8/CyWAlyHE/YJ8OuxHxWk7EiHkxSymzaFN4OffRKHO99+F/EEXr7pLbec03auhMnquvIkL68XzAK54XJB5B7Pak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209196; c=relaxed/simple;
-	bh=AUThN5kgPouPnuNvSnVPDq7p1KXovvVAwLMH/upSos4=;
+	s=arc-20240116; t=1725208643; c=relaxed/simple;
+	bh=XuWU6JqykbFbPZQ9yp7InJfmiNIKP+xlmuPcltmztaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/tUvoNFfP7WTjo+GnlOXpZ3Ca4HyOhktf+tCJ324FxZ91+SE0K+3+bciduj8+h+wX8Uqv1pHttRDjivqj+jWMhlLoqv4FncVyTJWTFF80ZTDf4g4+hGvKVXXmT996zq3anXSWxw7UziosRfzQ5f7R28RTqJTPKw3MGuVEg/G1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Man1/0Ys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181E9C4CEC3;
-	Sun,  1 Sep 2024 16:46:35 +0000 (UTC)
+	 MIME-Version; b=LRaYsPwAQKGlRPmzoMi6ZJxAK7NUModEGH9d2ehCPOJ/WUio95+xMOoRgAgySquFBJk6OPwScEu/lMpgM/Jaj2ph22qw0e/xxd3UTEYGyTdmFhLuB42lRYu74l2e5upWQHsNMtVq+HAlFobzEtSvKVvU67hcX2QDuXVfcjagyas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zj4uX3Sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BC7C4CEC3;
+	Sun,  1 Sep 2024 16:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209196;
-	bh=AUThN5kgPouPnuNvSnVPDq7p1KXovvVAwLMH/upSos4=;
+	s=korg; t=1725208643;
+	bh=XuWU6JqykbFbPZQ9yp7InJfmiNIKP+xlmuPcltmztaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Man1/0YsBFW3xi2z2fAgBEJEwFPUhFJbSDOIkU33w5KVkAmn6eovAihpwvreiHT3e
-	 hM6ih8jzM8SOmW4ywMg5SFuVE9BGO6IZpH0exCAOY9QVbtm91pOGylVUW5ySHitEo0
-	 +v7sbSREVrgm4cjnzhKUDPLN83PGiAqC0hpZT8Bk=
+	b=Zj4uX3Sn2Ul0sznzrOdjw7w9YQ+59hBi9uoP+XVhwZ4cn/i63440l2Sql6Jgbs2GG
+	 QPoKuM02En4SflLBRpL5JQyB78ZYlqLNKX2LqTDKW+fWJjyZRPr97Iw8i3n2A25479
+	 XDEcjexAfMfHo2fkRPdWWqourli3UwvHt9T62H3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Liu <liuyuntao12@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/71] ASoC: amd: acp: fix module autoloading
+Subject: [PATCH 6.10 145/149] arm64: dts: freescale: imx93-tqma9352-mba93xxla: fix typo
 Date: Sun,  1 Sep 2024 18:17:36 +0200
-Message-ID: <20240901160803.065873194@linuxfoundation.org>
+Message-ID: <20240901160822.899034770@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Liu <liuyuntao12@huawei.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 164199615ae230ace4519141285f06766d6d8036 ]
+[ Upstream commit 5f0a894bfa3c26ce61deda4c52b12e8ec84d876a ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from platform_device_id table.
+Fix typo in assignment of SD-Card cd-gpios.
 
-Fixes: 9d8a7be88b336 ("ASoC: amd: acp: Add legacy sound card support for Chrome audio")
-Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
-Link: https://patch.msgid.link/20240815084923.756476-1-liuyuntao12@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c982ecfa7992 ("arm64: dts: freescale: add initial device tree for MBa93xxLA SBC board")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-mach.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
-index 1f4878ff7d372..2f98f3da0ad0b 100644
---- a/sound/soc/amd/acp/acp-legacy-mach.c
-+++ b/sound/soc/amd/acp/acp-legacy-mach.c
-@@ -144,6 +144,8 @@ static const struct platform_device_id board_ids[] = {
- 	},
- 	{ }
- };
-+MODULE_DEVICE_TABLE(platform, board_ids);
-+
- static struct platform_driver acp_asoc_audio = {
- 	.driver = {
- 		.pm = &snd_soc_pm_ops,
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+index eb3f4cfb69863..ad77a96c5617b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+@@ -438,7 +438,7 @@
+ 	pinctrl-0 = <&pinctrl_usdhc2_hs>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-1 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
+-	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	bus-width = <4>;
+ 	no-sdio;
 -- 
 2.43.0
 
