@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB65D9678B6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F7B9679EE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 806BC1F2124F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840081C2142D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D1C184523;
-	Sun,  1 Sep 2024 16:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9400F183CD2;
+	Sun,  1 Sep 2024 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwHZOPFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1fj8/s/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECF5183CC2;
-	Sun,  1 Sep 2024 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A0B183CBD;
+	Sun,  1 Sep 2024 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208479; cv=none; b=d0Vf8aRFSGksMK3j7GZ1JYECE/4cRvjHW0dOrVZfK+EO0ww00YomkUgbt3rVGcyCsNhXxfw/tvwAB0vEjryNp8Txe5f4u8ukjbLtywUwRJDX3wsDqJcykdy7jW0UHVieU8cXkKdBdNJ18/Zffy6pa5HppldKUSy5S6MySJccqGY=
+	t=1725209367; cv=none; b=r9avH4rJm4a+QINETOOwWPvtioEzRhuVBaaRB3eDNu8y9AH1gHeAy+t4K3m8+YsdGdqbYDvORl6PwJPXLx1naE4D/uedRSrR6R8pK9CRosi9EYuETigBoL0QtYnhwuoJe16CM/K/2RQrJT2O1Icj6e7XlOIdK63YPIKhacNF/5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208479; c=relaxed/simple;
-	bh=aoneMT/uicfKVc7Kh8Q5Jde3sb+kT9zEOUhU22unMqg=;
+	s=arc-20240116; t=1725209367; c=relaxed/simple;
+	bh=bTD1ytSV/Jy0jZvaxZ4GCkmoahoukXAPYHqgELCocQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ5y/UpBfAtGm+WXzK84xrra225ndgpYUYyRVuLGphDr93lrzGoA3tMPUnPFJqymnP46aFzIB+Mvij+9+i7AkR7LcGeIiKhzmlv0STI9R6UnKdBXGiicJp/YskQl2gqn3yXyfuKsDwJ5AJ7Dmf7iZY2dpE1SSV0jsnD9VTcrHEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwHZOPFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B56C4CEC3;
-	Sun,  1 Sep 2024 16:34:37 +0000 (UTC)
+	 MIME-Version; b=LQtQCoe+FbX8ODswhJIk2Cch79DEq29pa+xeHHUEmfvQVLln+Ew8dpc2Edrkr8f/wCRh53LDcD8IJdKhavD8w+PUS7lE/fsVuoHx+Atm0MfDr/j7+YCX5mdz/Wd3N2X8CwoBTyNpwwNKXUq+9go2wSb2pwyhvcD57xtFdDo3OuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1fj8/s/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC723C4CEC3;
+	Sun,  1 Sep 2024 16:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208478;
-	bh=aoneMT/uicfKVc7Kh8Q5Jde3sb+kT9zEOUhU22unMqg=;
+	s=korg; t=1725209367;
+	bh=bTD1ytSV/Jy0jZvaxZ4GCkmoahoukXAPYHqgELCocQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwHZOPFumfmvPN+ioG/NVuVnTWX0R35+7iSBvuc3rnML6jz18phmmbzoozs8HreR8
-	 aH7Cxny00zkXLvm/KCfUvJJgIusx/gE1IbMaHnz0U0ok64meryeJGQjpDK8XqSMxU8
-	 iz5hiaMgATt8wgibmhpnLHb5ZDAQ0qCF7biGd3tM=
+	b=j1fj8/s/70GybSWxMTOAlJkVsbLdOj7H3ty+yyKAV78YiQF8YwKRx8RNOVVGtRCA5
+	 wJI6stuk4qbCszIIK+iY7fwmRRo722sAQu4cp++afKW06Awyp+Zr6SEu9bVYxRMHvc
+	 gvU7AS15mMxaBEUKmLJlmPRKJAAeJ4nOzfeyIEF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 063/149] pinctrl: starfive: jh7110: Correct the level trigger configuration of iev register
+	Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 014/151] drm/amdgpu: Actually check flags for all context ops.
 Date: Sun,  1 Sep 2024 18:16:14 +0200
-Message-ID: <20240901160819.836744644@linuxfoundation.org>
+Message-ID: <20240901160814.638780599@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hal Feng <hal.feng@starfivetech.com>
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 
-[ Upstream commit 639766ca10d1e218e257ae7eabe76814bae6ab89 ]
+commit 0573a1e2ea7e35bff08944a40f1adf2bb35cea61 upstream.
 
-A mistake was made in level trigger register configuration. Correct it.
+Missing validation ...
 
-Fixes: 447976ab62c5 ("pinctrl: starfive: Add StarFive JH7110 sys controller driver")
-Signed-off-by: Hal Feng <hal.feng@starfivetech.com>
-Link: https://lore.kernel.org/20240812070108.100923-1-hal.feng@starfivetech.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Checked libdrm and it clears all the structs, so we should be
+safe to just check everything.
+
+Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c6b86421f1f9ddf9d706f2453159813ee39d0cf9)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-index 9609eb1ecc3d8..7637de7452b91 100644
---- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-+++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-@@ -795,12 +795,12 @@ static int jh7110_irq_set_type(struct irq_data *d, unsigned int trigger)
- 	case IRQ_TYPE_LEVEL_HIGH:
- 		irq_type  = 0;    /* 0: level triggered */
- 		edge_both = 0;    /* 0: ignored */
--		polarity  = mask; /* 1: high level */
-+		polarity  = 0;    /* 0: high level */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
+@@ -386,16 +386,24 @@ int amdgpu_ctx_ioctl(struct drm_device *
+ 
+ 	switch (args->in.op) {
+ 	case AMDGPU_CTX_OP_ALLOC_CTX:
++		if (args->in.flags)
++			return -EINVAL;
+ 		r = amdgpu_ctx_alloc(adev, fpriv, filp, priority, &id);
+ 		args->out.alloc.ctx_id = id;
  		break;
- 	case IRQ_TYPE_LEVEL_LOW:
- 		irq_type  = 0;    /* 0: level triggered */
- 		edge_both = 0;    /* 0: ignored */
--		polarity  = 0;    /* 0: low level */
-+		polarity  = mask; /* 1: low level */
+ 	case AMDGPU_CTX_OP_FREE_CTX:
++		if (args->in.flags)
++			return -EINVAL;
+ 		r = amdgpu_ctx_free(fpriv, id);
+ 		break;
+ 	case AMDGPU_CTX_OP_QUERY_STATE:
++		if (args->in.flags)
++			return -EINVAL;
+ 		r = amdgpu_ctx_query(adev, fpriv, id, &args->out);
+ 		break;
+ 	case AMDGPU_CTX_OP_QUERY_STATE2:
++		if (args->in.flags)
++			return -EINVAL;
+ 		r = amdgpu_ctx_query2(adev, fpriv, id, &args->out);
  		break;
  	default:
- 		return -EINVAL;
--- 
-2.43.0
-
 
 
 
