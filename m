@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EA0967793
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291E9967AC2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48909B21721
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0131C214D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CAB181B88;
-	Sun,  1 Sep 2024 16:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2B62C190;
+	Sun,  1 Sep 2024 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7649IA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZR+RZG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C2A44C97;
-	Sun,  1 Sep 2024 16:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE6717C;
+	Sun,  1 Sep 2024 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207688; cv=none; b=jYBi0eoYhwUHPPnkmoj/dRdWOWWIUf5jszzAlNPx5sGEybaa4dvvIRL3Oby9QxxvpjwDLEQwBlQwqKALIPQYRZCXfFnvxMjtQl02/+qza/VTDC9GZzo457K7oWf/z5uGQc4IaorKlztx/kvYm8P3D9jJ/lsTIgI1ElJjlt+PK/w=
+	t=1725210030; cv=none; b=clE+HK+uskBxtGaPJtXRe+SwwuTK2ySfVH9t3aNMJBUBpjgWCYzTmsDZB7lon7lnPQyacKS1GEqrbvQxT73Ep72ea3GpKdw7KXn/M7Heyh7xsjf1ky20oo3z/VlqyLcLRHbQLRYSCussAmR+e76JsC0DuiXNaCz0v/M1OU/oZbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207688; c=relaxed/simple;
-	bh=5DLmwOKDQKfIfG1u8ccLyDiipZt/dhcQGuA/6Oml/LY=;
+	s=arc-20240116; t=1725210030; c=relaxed/simple;
+	bh=EAHUtizIOU+wwZOpUToe7KF548IUTpkmj0fjJ6I7GmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCCjC626Dx6vOx2smiY8gF4Xvsdfe/A1nP8P5qJwFsVmqeZ8BErB91xCpFqXklhr3l6/JO/aXTLPnnIbepEUaiG52U6rmishM5epViMN1/u2tXA8RygL/3k73t7FDWyKWnnyBuqk9a8AH6J29a/1uFbkBmbEM5yAFNBq74pzBwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7649IA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A5FC4CEC3;
-	Sun,  1 Sep 2024 16:21:27 +0000 (UTC)
+	 MIME-Version; b=SRLusFRKCkktG97KtqNqxOwDVPV5WNqBTSkogO8YulxOJj2YST0+7GrHa1J0WY8aFND9mD/emlOapHIr5h07LuOFJQErq44rx83kC/vKd9URE0TgEhlRJ98/7ItrT/x50+m6P3BdSaNubxD9oj/DbTrKALdasTqeR/bK9vFCvoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZR+RZG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B83C4CEC3;
+	Sun,  1 Sep 2024 17:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207688;
-	bh=5DLmwOKDQKfIfG1u8ccLyDiipZt/dhcQGuA/6Oml/LY=;
+	s=korg; t=1725210030;
+	bh=EAHUtizIOU+wwZOpUToe7KF548IUTpkmj0fjJ6I7GmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7649IA91ynorX7h0igWo71W+f2WzpD2tGVDlI6tkEi/k+pqiIWGwgmiD1/e7ujzn
-	 w59LWSlQd1SKU9stoMFm3aS4BpNEIb5Ya+TQ39Ebrife7K/NV2QNH9/hFKUCnujNQa
-	 XjPMpIlbSRe5lisnDsdJriue7cMIrRNJLImdd9ew=
+	b=CZR+RZG2T3Lh6CWsB/sI0b97c0rku/GOlUbc8n/3VXreNiI9kVsp0FrbKmIqRcCN3
+	 +3fK72q7I4RbjuiC7BDwFQY0C7QrSoGEPktaCPhi+AVVVjxTZW0IEr1BC7x3VQxpdY
+	 hlBYDfkThqfQeyXV2lTGLJDrok6rGuDhjc+vWqq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Ashish Mhetre <amhetre@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 47/98] fbdev: offb: replace of_node_put with __free(device_node)
+Subject: [PATCH 5.15 065/215] memory: tegra: Skip SID programming if SID registers arent set
 Date: Sun,  1 Sep 2024 18:16:17 +0200
-Message-ID: <20240901160805.474469928@linuxfoundation.org>
+Message-ID: <20240901160825.811630576@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+From: Ashish Mhetre <amhetre@nvidia.com>
 
-[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
+[ Upstream commit 0d6c918011ce4764ed277de4726a468b7ffe5fed ]
 
-Replaced instance of of_node_put with __free(device_node)
-to simplify code and protect against any memory leaks
-due to future changes in the control flow.
+There are few MC clients where SID security and override register
+offsets are not specified like "sw_cluster0" in tegra234. Don't program
+SID override for such clients because it leads to access to invalid
+addresses.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Ashish Mhetre <amhetre@nvidia.com>
+Link: https://lore.kernel.org/r/20231107112713.21399-2-amhetre@nvidia.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/offb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/memory/tegra/tegra186.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index 77c0a2f45b3b9..b52c6080abe44 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -352,7 +352,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			par->cmap_type = cmap_gxt2000;
- 	} else if (dp && !strncmp(name, "vga,Display-", 12)) {
- 		/* Look for AVIVO initialized by SLOF */
--		struct device_node *pciparent = of_get_parent(dp);
-+		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
- 		const u32 *vid, *did;
- 		vid = of_get_property(pciparent, "vendor-id", NULL);
- 		did = of_get_property(pciparent, "device-id", NULL);
-@@ -364,7 +364,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			if (par->cmap_adr)
- 				par->cmap_type = cmap_avivo;
- 		}
--		of_node_put(pciparent);
- 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
- #ifdef __BIG_ENDIAN
- 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
+diff --git a/drivers/memory/tegra/tegra186.c b/drivers/memory/tegra/tegra186.c
+index 4bed0e54fd456..2ff586c6b1021 100644
+--- a/drivers/memory/tegra/tegra186.c
++++ b/drivers/memory/tegra/tegra186.c
+@@ -43,6 +43,9 @@ static void tegra186_mc_client_sid_override(struct tegra_mc *mc,
+ {
+ 	u32 value, old;
+ 
++	if (client->regs.sid.security == 0 && client->regs.sid.override == 0)
++		return;
++
+ 	value = readl(mc->regs + client->regs.sid.security);
+ 	if ((value & MC_SID_STREAMID_SECURITY_OVERRIDE) == 0) {
+ 		/*
 -- 
 2.43.0
 
