@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D635C967ABE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FE396790D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62671B20BD7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E70D9B214D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD463B79C;
-	Sun,  1 Sep 2024 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13861184524;
+	Sun,  1 Sep 2024 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap/skHun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j34vLRrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5912617C;
-	Sun,  1 Sep 2024 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67011822F8;
+	Sun,  1 Sep 2024 16:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210017; cv=none; b=PE4U8LvsJgedjdcopCMP2qikcjCP13NRGH1fSThYRCW0C3oOapbIzecI4Z+se0m76kFBTR0hEmxfLqKkOI6duXu5hyazzVEA5LD4p1lZN3odTtn4SRNFQp/WJpJWjPbIarTBDai5ElqqRMxqFB5VormRjwUdV2tij1y8IddKu7I=
+	t=1725208748; cv=none; b=s91SNEAWyDq9qk2pX+20tVKr0yaQ/q+A+JXdvEO12BBycOrKgUhWMMo8I6lguW6nkX/FXO7PITdpKwI+jIUpgYBTYAV0IyLDRj8FOpYC2j7zuZ3y1GYDScla5sBZsRR/Ya04PQ2QFslwbHTXU1+wX2s66ArpbWbnOtATPZDucDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210017; c=relaxed/simple;
-	bh=BQf4QdBhJOUOzItU8G85tRj4P6Fy/YVyqxVWNh0Ek8c=;
+	s=arc-20240116; t=1725208748; c=relaxed/simple;
+	bh=V8FHagceNYPJ9zTNlhnXv0DF8M25cw4l5vwbrGBENTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZiUj8D0Srvn0YV/ES1aTidAPNJrAzqvUlnQAXRc0QkZ6pyU85Jst1HDTNVGciR4qVstOmA06tLqRMmxTROxN/9OlTxV2/nFi1aW5Jopq6SOP9bWNkFs1WXYyGA+j2l2eK83H2T231eb67od1k02/fcz2l20VmjroKQlDZfkgsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap/skHun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF46CC4CEC3;
-	Sun,  1 Sep 2024 17:00:16 +0000 (UTC)
+	 MIME-Version; b=K3GAAgXmHiinbNpdyy06uD/AoloaHuOgqnC9kKMlI+QKmxuTe9m1XwnL6x5ROfJS+RH+ov8kVOsqml3zq/Z6wgBh/dKqic+0S9OzVmLstZfWGeqrxecXoqm/h6H0/BW07NYpIWSGOJGTg8EORYX/dbfPmkU+RXxPNnYig03ZA5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j34vLRrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B88C4CEC4;
+	Sun,  1 Sep 2024 16:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210017;
-	bh=BQf4QdBhJOUOzItU8G85tRj4P6Fy/YVyqxVWNh0Ek8c=;
+	s=korg; t=1725208748;
+	bh=V8FHagceNYPJ9zTNlhnXv0DF8M25cw4l5vwbrGBENTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ap/skHun/CqLBs/ZHwB+bHBGmFyAvVe7D3RS9PqDwj7YInxKNWjaeDjCcpKWv18Ef
-	 P/4io/7V5TPRT4MhhDN/0B4SHVWyyoplDWiW0aeBerUj56VObI/aSYLduN9sWeDXjx
-	 L3iszLOUoJKzWVDz6dRYGwghQz8D11v9/wp3C7N4=
+	b=j34vLRrGp4EtVp/VKALi6hjRogksZYYjxIXw34i9S0hRI9j8lrhEodIb/GUvScz7z
+	 tOnjlOvBirID6spmIOwl2cbTKQZxTTFanW2E+V9fmlWZVNu0Naldcc9KjjuTEAeNQD
+	 t8j8LBbuRDKUz03sEriDW5m3qia38f19Taass3hU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/215] IB/hfi1: Fix potential deadlock on &irq_src_lock and &dd->uctxt_lock
+Subject: [PATCH 5.4 028/134] net: dsa: vsc73xx: pass value in phy_write operation
 Date: Sun,  1 Sep 2024 18:16:14 +0200
-Message-ID: <20240901160825.700137822@linuxfoundation.org>
+Message-ID: <20240901160811.166816351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 2f19c4b8395ccb6eb25ccafee883c8cfbe3fc193 ]
+[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
 
-handle_receive_interrupt_napi_sp() running inside interrupt handler
-could introduce inverse lock ordering between &dd->irq_src_lock
-and &dd->uctxt_lock, if read_mod_write() is preempted by the isr.
+In the 'vsc73xx_phy_write' function, the register value is missing,
+and the phy write operation always sends zeros.
 
-          [CPU0]                                        |          [CPU1]
-hfi1_ipoib_dev_open()                                   |
---> hfi1_netdev_enable_queues()                         |
---> enable_queues(rx)                                   |
---> hfi1_rcvctrl()                                      |
---> set_intr_bits()                                     |
---> read_mod_write()                                    |
---> spin_lock(&dd->irq_src_lock)                        |
-                                                        | hfi1_poll()
-                                                        | --> poll_next()
-                                                        | --> spin_lock_irq(&dd->uctxt_lock)
-                                                        |
-                                                        | --> hfi1_rcvctrl()
-                                                        | --> set_intr_bits()
-                                                        | --> read_mod_write()
-                                                        | --> spin_lock(&dd->irq_src_lock)
-<interrupt>                                             |
-   --> handle_receive_interrupt_napi_sp()               |
-   --> set_all_fastpath()                               |
-   --> hfi1_rcd_get_by_index()                          |
-   --> spin_lock_irqsave(&dd->uctxt_lock)               |
+This commit passes the value variable into the proper register.
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch use spin_lock_irqsave()
-on &dd->irq_src_lock inside read_mod_write() to prevent the possible
-deadlock scenario.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926101116.2797-1-dg573847474@gmail.com
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/chip.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
-index b69dd618146ef..c6d9a828050df 100644
---- a/drivers/infiniband/hw/hfi1/chip.c
-+++ b/drivers/infiniband/hw/hfi1/chip.c
-@@ -13182,15 +13182,16 @@ static void read_mod_write(struct hfi1_devdata *dd, u16 src, u64 bits,
- {
- 	u64 reg;
- 	u16 idx = src / BITS_PER_REGISTER;
-+	unsigned long flags;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index c7ff98c26ee39..a1dd82d25ce3c 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -531,7 +531,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 		return 0;
+ 	}
  
--	spin_lock(&dd->irq_src_lock);
-+	spin_lock_irqsave(&dd->irq_src_lock, flags);
- 	reg = read_csr(dd, CCE_INT_MASK + (8 * idx));
- 	if (set)
- 		reg |= bits;
- 	else
- 		reg &= ~bits;
- 	write_csr(dd, CCE_INT_MASK + (8 * idx), reg);
--	spin_unlock(&dd->irq_src_lock);
-+	spin_unlock_irqrestore(&dd->irq_src_lock, flags);
- }
- 
- /**
+-	cmd = (phy << 21) | (regnum << 16);
++	cmd = (phy << 21) | (regnum << 16) | val;
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
