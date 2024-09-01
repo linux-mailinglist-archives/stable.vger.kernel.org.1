@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693D39677DD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5329677A3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E02DAB21801
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DDB2281FCF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACE217F394;
-	Sun,  1 Sep 2024 16:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735232C1B4;
+	Sun,  1 Sep 2024 16:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOuF4mN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQoCb2ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283EB14290C;
-	Sun,  1 Sep 2024 16:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301B8364AB;
+	Sun,  1 Sep 2024 16:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207902; cv=none; b=d/aazEM4hs7rkYaFZk11vLOgqlUAoz5wDWzb7mfU+s/Mw/BqwqTDyVrtAxfGFHSZ5DETB2N8UveZ0JmYfNl4Ow/CiW1CTw/09CfRAVUH+MrP0C0FBdy6T4239+ndt3PtW3EgNrgejUJmgkmbSzLcNegLJ3RAQgw1OwF9/Qqcy2Y=
+	t=1725207734; cv=none; b=Jh6/n3s1e1YS1kxvEHPI0j5eObC0hosaOrJFkVvSQAO9P5528J6Z5gNOUlESXd6g+4EDyXI6tzB59w8fSsBgg7ooBD2o51L2o9YqphJhN3E9n4ddWKRG4LwqzyI7NGnXs6DnKNuVt9eQ/nQtkMVZOocF6eqWGvpAjyHgQfeff4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207902; c=relaxed/simple;
-	bh=Wqr4nrmj2A1X+oZCCwAz5uJaAiz+sdf9J4Q/Tr571fg=;
+	s=arc-20240116; t=1725207734; c=relaxed/simple;
+	bh=OptLJJ3lhI4G94b4N1wK1yd0O12UHrB1nxIZ0cDGrbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dX0GIuAGFylsnrDgD+HB3xpC2AR5yEmmcBspkfL7rKWE41cwV+Ug9C4O1D4NXaevjJwd9U6VL7XZmraMyocoC0ISCq8PGJ3NCbJzXUYVoeCSZnf5qd1dBAeBxQv5pNGPrfZo8TT402D+n1FqiZ+faUi2J8kd6SWr8EwEcknCAtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOuF4mN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A43C4CEC3;
-	Sun,  1 Sep 2024 16:25:01 +0000 (UTC)
+	 MIME-Version; b=Zz+GPXgynnKALFa5vuDz1DRByFcBwpI6A2IzUDKqWzSvPU1UdB0HDcxDfm6RnLs8qJFJy1mfL804vyOg/JnNAYcsOtUtcSZhM0SOilwXYb+D32AyF/wgGZvfQ2P3uWf9qQo7HyiAxtoMgAGQm+jXCSFxscjl3RFRdZ5btVxTofo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQoCb2ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6805C4CEC3;
+	Sun,  1 Sep 2024 16:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207902;
-	bh=Wqr4nrmj2A1X+oZCCwAz5uJaAiz+sdf9J4Q/Tr571fg=;
+	s=korg; t=1725207734;
+	bh=OptLJJ3lhI4G94b4N1wK1yd0O12UHrB1nxIZ0cDGrbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOuF4mN1ZY0219Yo/fcD5X9zLneg9T+V5wCKcB3KkyXV6n3Y2OfvFQZM004AWu1L2
-	 L/HzXVSyu/PJV8blpvWekBT9DECDpZGMxkWc1A7jzItoaLn13UxRbtniEn+7QJcIhx
-	 FKw6mQxu0nTHcllDMDnHWlzF6IKeuMDSeWwh75JM=
+	b=QQoCb2qlgDIRVo1SSssZ/zySrvH8W1Pk8ehxPqYgCkkFZgUGb368BGm66fRPPgCW/
+	 8LI5vrS/4CjHA2vZNbKE/qALrFLUWRcxCJVOf4e9eY5TgKPE9OWrPKPyJp7PIux1NJ
+	 4NvzGZrP9Ns3Csz4EJEEarhOQ8epFf9EnZyYrQ4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 13/93] mptcp: sched: check both backup in retrans
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 30/98] scsi: lpfc: Initialize status local variable in lpfc_sli4_repost_sgl_list()
 Date: Sun,  1 Sep 2024 18:16:00 +0200
-Message-ID: <20240901160807.858156085@linuxfoundation.org>
+Message-ID: <20240901160804.832492848@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 2a1f596ebb23eadc0f9b95a8012e18ef76295fc8 upstream.
+[ Upstream commit 3d0f9342ae200aa1ddc4d6e7a573c6f8f068d994 ]
 
-The 'mptcp_subflow_context' structure has two items related to the
-backup flags:
+A static code analyzer tool indicates that the local variable called status
+in the lpfc_sli4_repost_sgl_list() routine could be used to print garbage
+uninitialized values in the routine's log message.
 
- - 'backup': the subflow has been marked as backup by the other peer
+Fix by initializing to zero.
 
- - 'request_bkup': the backup flag has been set by the host
-
-Looking only at the 'backup' flag can make sense in some cases, but it
-is not the behaviour of the default packet scheduler when selecting
-paths.
-
-As explained in the commit b6a66e521a20 ("mptcp: sched: check both
-directions for backup"), the packet scheduler should look at both flags,
-because that was the behaviour from the beginning: the 'backup' flag was
-set by accident instead of the 'request_bkup' one. Now that the latter
-has been fixed, get_retrans() needs to be adapted as well.
-
-Fixes: b6a66e521a20 ("mptcp: sched: check both directions for backup")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-3-905199fe1172@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240131185112.149731-2-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    2 +-
+ drivers/scsi/lpfc/lpfc_sli.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2289,7 +2289,7 @@ struct sock *mptcp_subflow_get_retrans(s
- 			continue;
- 		}
- 
--		if (subflow->backup) {
-+		if (subflow->backup || subflow->request_bkup) {
- 			if (!backup)
- 				backup = ssk;
- 			continue;
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index e72fc88aeb40e..9da9d5ee0b8ef 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -6597,7 +6597,7 @@ lpfc_sli4_repost_sgl_list(struct lpfc_hba *phba,
+ 	struct lpfc_sglq *sglq_entry = NULL;
+ 	struct lpfc_sglq *sglq_entry_next = NULL;
+ 	struct lpfc_sglq *sglq_entry_first = NULL;
+-	int status, total_cnt;
++	int status = 0, total_cnt;
+ 	int post_cnt = 0, num_posted = 0, block_cnt = 0;
+ 	int last_xritag = NO_XRI;
+ 	LIST_HEAD(prep_sgl_list);
+-- 
+2.43.0
+
 
 
 
