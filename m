@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D299679D6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F04E967B36
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9951C21454
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCA1281615
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA09A185939;
-	Sun,  1 Sep 2024 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E797E3BB48;
+	Sun,  1 Sep 2024 17:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIe3VnzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVKR7sSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BB8183CBD;
-	Sun,  1 Sep 2024 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A599426AC1;
+	Sun,  1 Sep 2024 17:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209305; cv=none; b=CORtkj1E2EK3kChrwzsfBNjgiOaND3frun0/9RCRAk/NSNNRh1+xvE+0/KhbwRqCjSy2d2J9BvQw3LyjmpvHreILvrDy3GZNfEdO+v6Jm0JaAA3VuFCO3yG29Qx3FCGFfmfIpSXZ/6PbbCZhuVqPd0qtYbMZVtg7oBWF7f4pexU=
+	t=1725210400; cv=none; b=dh8wdfDNLbJrxFcEOyL6Mghk+yPRxR4wJN2KoQU9bcFmSNdO1F096GJ9KFXBMRVUbWZRCM3CyxS6pHjOwUQy1MN/fEN9stOyJw28BnKeqVehQ3lom9C0ZSstSg6ooVl0oqF0k7Cc1Mw9QYpQs5Gg4XPFr7m9N6mMCXc9/mLLw/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209305; c=relaxed/simple;
-	bh=VPP4fNpO0iOZ48N9jdgM5W7n4AR25413wWNr9PSIQak=;
+	s=arc-20240116; t=1725210400; c=relaxed/simple;
+	bh=XoLeniHt+UFC/yUp4mCRxn7VOdAfADXgFwLVffi7LYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0ZpJvcB2Bs68WBZ+WdbF2cWfViygtqf6jtZPSJjq9nRGLY1V3zxtOtUSp124JDC7CaXbCS9b3fJIKxFsakU4LBIegnt/+fkkQXSh1lpMj1jLgu46Os2es/mwlZWSoF1GUoCXNPOuQL0ZerxDV1xn5fPGTjubBZRltysCAigGNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIe3VnzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B452FC4CEC3;
-	Sun,  1 Sep 2024 16:48:24 +0000 (UTC)
+	 MIME-Version; b=LpI9OB/H5MtEZ2uZDajGRTWZQdzuuhRZO8nFh3n1u1QeP4tnOBCX9D/M6/HQFtQMTZU0UKGxJWRkiFFO1iaexTaHjx/lhNqdTRNDon5HPLEQFhMgtaBYQs2NL3wHm35dH8ADpD8J6G1BaBe2VFLjQNF0xGpWrgUZP8cQjLjg1H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVKR7sSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2964BC4CEC3;
+	Sun,  1 Sep 2024 17:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209305;
-	bh=VPP4fNpO0iOZ48N9jdgM5W7n4AR25413wWNr9PSIQak=;
+	s=korg; t=1725210400;
+	bh=XoLeniHt+UFC/yUp4mCRxn7VOdAfADXgFwLVffi7LYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIe3VnzXpM67mxRDFMLVHf0qolcGaVrvoc0xEDabqp2qyFRK0J0hC/O2HFDYJkVl+
-	 /yt1AhDORaZmWnZKCo1kS6siqfK5TFyKp3eaT+OF8IVdCfszhNR26Ah6UQCi23P1ij
-	 Eexviwj1lBKPRlh4ZHsD7I0P6W5wQPTn/OU2hi0c=
+	b=MVKR7sSH3P7WKI8OMRuW3MVlF1Eqn/FLztsH+6x53XuFP7utTB4VCmsG+4Siaoknj
+	 Cov0TaowXtj6UervAkaaxYsikqoGD/22o+DyiVFDtrT4zK1XFZe1pLWoi8/Y5ByTup
+	 QkQ8UYJi70Sgkgj8WynId2ZOO/fnf1jvJvLmKVcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 66/71] phy: zynqmp: Enable reference clock correctly
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.15 179/215] wifi: mwifiex: duplicate static structs used in driver instances
 Date: Sun,  1 Sep 2024 18:18:11 +0200
-Message-ID: <20240901160804.377391752@linuxfoundation.org>
+Message-ID: <20240901160830.127698251@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 687d6bccb28238fcfa65f7c1badfdfeac498c428 upstream.
+commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
 
-Lanes can use other lanes' reference clocks, as determined by refclk.
-Use refclk to determine the clock to enable/disable instead of always
-using the lane's own reference clock. This ensures the clock selected in
-xpsgtr_configure_pll is the one enabled.
+mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+used and modified in driver instances. Duplicate them before using
+them in driver instances so that different driver instances do not
+influence each other.
 
-For the other half of the equation, always program REF_CLK_SEL even when
-we are selecting the lane's own clock. This ensures that Linux's idea of
-the reference clock matches the hardware. We use the "local" clock mux
-for this instead of going through the ref clock network.
+This was observed on a board which has one PCIe and one SDIO mwifiex
+adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+the statically allocated struct which is modified in this function.
 
-Fixes: 25d700833513 ("phy: xilinx: phy-zynqmp: dynamic clock support for power-save")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://lore.kernel.org/r/20240628205540.3098010-2-sean.anderson@linux.dev
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/xilinx/phy-zynqmp.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/xilinx/phy-zynqmp.c
-+++ b/drivers/phy/xilinx/phy-zynqmp.c
-@@ -81,7 +81,8 @@
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4328,11 +4328,27 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
  
- /* Reference clock selection parameters */
- #define L0_Ln_REF_CLK_SEL(n)		(0x2860 + (n) * 4)
--#define L0_REF_CLK_SEL_MASK		0x8f
-+#define L0_REF_CLK_LCL_SEL		BIT(7)
-+#define L0_REF_CLK_SEL_MASK		0x9f
+-	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
+-	if (adapter->config_bands & BAND_A)
+-		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
+-	else
++	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
++						       &mwifiex_band_2ghz,
++						       sizeof(mwifiex_band_2ghz),
++						       GFP_KERNEL);
++	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	if (adapter->config_bands & BAND_A) {
++		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
++							       &mwifiex_band_5ghz,
++							       sizeof(mwifiex_band_5ghz),
++							       GFP_KERNEL);
++		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	} else {
+ 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
++	}
  
- /* Calibration digital logic parameters */
- #define L3_TM_CALIB_DIG19		0xec4c
-@@ -396,11 +397,12 @@ static void xpsgtr_configure_pll(struct
- 		       PLL_FREQ_MASK, ssc->pll_ref_clk);
+ 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
+ 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
+@@ -4425,8 +4441,7 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ret < 0) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "%s: wiphy_register failed: %d\n", __func__, ret);
+-		wiphy_free(wiphy);
+-		return ret;
++		goto err;
+ 	}
  
- 	/* Enable lane clock sharing, if required */
--	if (gtr_phy->refclk != gtr_phy->lane) {
--		/* Lane3 Ref Clock Selection Register */
-+	if (gtr_phy->refclk == gtr_phy->lane)
-+		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
-+			       L0_REF_CLK_SEL_MASK, L0_REF_CLK_LCL_SEL);
-+	else
- 		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
- 			       L0_REF_CLK_SEL_MASK, 1 << gtr_phy->refclk);
--	}
+ 	if (!adapter->regd) {
+@@ -4468,4 +4483,9 @@ int mwifiex_register_cfg80211(struct mwi
  
- 	/* SSC step size [7:0] */
- 	xpsgtr_clr_set_phy(gtr_phy, L0_PLL_SS_STEP_SIZE_0_LSB,
-@@ -620,7 +622,7 @@ static int xpsgtr_phy_init(struct phy *p
- 	mutex_lock(&gtr_dev->gtr_mutex);
- 
- 	/* Configure and enable the clock when peripheral phy_init call */
--	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->lane]))
-+	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->refclk]))
- 		goto out;
- 
- 	/* Skip initialization if not required. */
-@@ -672,7 +674,7 @@ static int xpsgtr_phy_exit(struct phy *p
- 	gtr_phy->skip_phy_init = false;
- 
- 	/* Ensure that disable clock only, which configure for lane */
--	clk_disable_unprepare(gtr_dev->clk[gtr_phy->lane]);
-+	clk_disable_unprepare(gtr_dev->clk[gtr_phy->refclk]);
- 
- 	return 0;
+ 	adapter->wiphy = wiphy;
+ 	return ret;
++
++err:
++	wiphy_free(wiphy);
++
++	return ret;
  }
 
 
