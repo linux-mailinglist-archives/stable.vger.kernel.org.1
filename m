@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D10967AFA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4763967A2C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D96F1F21C14
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61131C212A4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E553BB48;
-	Sun,  1 Sep 2024 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233E244393;
+	Sun,  1 Sep 2024 16:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1nqaJIF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRJB/lTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C8F381BD;
-	Sun,  1 Sep 2024 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D252517B50B;
+	Sun,  1 Sep 2024 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210203; cv=none; b=K9i7QQhEtLu3w51Tdn+Ts6U9KilI0EIL6o2obWEHw7vr63Q56DPpIh61dwbdSnC+KAGwX/3qgEMNCfq7spjaZx1XoWbo2rHb6r1lI2hqtiQlMRTMvzK9GBINQbRkXE0r7Ac1perzMiZHS0MaAaxDqh3W0mb7ZsjIzBqhsqZHsnA=
+	t=1725209550; cv=none; b=YUfoD3IUOfFA1EWqZVmwY2hVevHoClXhiTJr+/G0TyrEKJvkH70rOm6ICjufC4NDF/fzQXc+Hhz9N1Sjb+W9hYcxBN90qttNdMDJEpCMqH/6CinAjT6R1XxITx3kvlH5kJFgOUicfZeEiymeyXw5zJJA1bY1Mq/9mMbpWYclZLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210203; c=relaxed/simple;
-	bh=w8G5KHM9Erufzp8I7zw1NRWgUUfX1BxSebAywSSOR3c=;
+	s=arc-20240116; t=1725209550; c=relaxed/simple;
+	bh=g+SsTHGXFwafjm/1GekxbHOwWnaFRV6Sw3y0UO4n2KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJTZsWXuHnKrINDW15OgkF9NaOpMoI6QZOlxMx3WfAsfyRLKxwJI3gfq63ShHGcL96TjJuvs++u/44oB3/XIPKGFiQfDDRWZYyKGV8Q/W5ixLPsA2jkhvqi9aShDCbUtN5Gg7QH3RHqB4GqGI12ICLoF0cbH5gJHZW53ne7XCeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1nqaJIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67241C4CEC3;
-	Sun,  1 Sep 2024 17:03:22 +0000 (UTC)
+	 MIME-Version; b=XtDL7TCv4la+yhoFnKLfbE814LikWzVEl+kl0is6+LWAfbAQAOt82+ssubedy8xhqJ+uHGr4mQjEaQEIxJhL9PtRtTzgepuVCyiQXBMTdwermQyRDUXvJvVvYl9ojxfErFiEHUBJZL6sgTXZWVA8fEjVNhWmM+Y0nqWCvT1q6jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRJB/lTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ECAC4CEC3;
+	Sun,  1 Sep 2024 16:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210202;
-	bh=w8G5KHM9Erufzp8I7zw1NRWgUUfX1BxSebAywSSOR3c=;
+	s=korg; t=1725209550;
+	bh=g+SsTHGXFwafjm/1GekxbHOwWnaFRV6Sw3y0UO4n2KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1nqaJIFzwL9IgNZJ99HOGmT/A5ZFwfoKtr0x7UOi5pJJ+lcTZWwVknma7DkejKdc
-	 DIS+sWVZnhjqMmRI8OJO6Q0t+KZIbNsDq8wOdOy0kGy1uAYTKiAjEVyr/Wu89G2RBa
-	 BAAy9b2CjHDBiMp5tluAAtFrE3XkqggAmfuJwzfc=
+	b=XRJB/lTcDLbZjc+Vl5cW5iSiXK/T+loi5mLlP4kfvhdHMW9nr1C7Lq/S/eXqj19XX
+	 /U1pxl50IoydnJVu7WCxYURX8RSo+Mj7iyMUPzqxZBlMmrQpCd1ALWJz/NW14VYBWO
+	 WOpm1ig7sI8tPpOAN5fosjD0oZaCsWk2UD4qVqpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 120/215] sunrpc: pass in the sv_stats struct through svc_create_pooled
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/151] nvmet-tcp: do not continue for invalid icreq
 Date: Sun,  1 Sep 2024 18:17:12 +0200
-Message-ID: <20240901160827.891007905@linuxfoundation.org>
+Message-ID: <20240901160816.823770705@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
+[ Upstream commit 0889d13b9e1cbef49e802ae09f3b516911ad82a1 ]
 
-Since only one service actually reports the rpc stats there's not much
-of a reason to have a pointer to it in the svc_program struct.  Adjust
-the svc_create_pooled function to take the sv_stats as an argument and
-pass the struct through there as desired instead of getting it from the
-svc_program->pg_stats.
+When the length check for an icreq sqe fails we should not
+continue processing but rather return immediately as all
+other contents of that sqe cannot be relied on.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v5.15.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c           |    3 ++-
- include/linux/sunrpc/svc.h |    4 +++-
- net/sunrpc/svc.c           |   12 +++++++-----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/nvme/target/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -665,7 +665,8 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
-+	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index d70a2fa4ba45f..e493fc709065a 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -846,6 +846,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
+ 		pr_err("bad nvme-tcp pdu length (%d)\n",
+ 			le32_to_cpu(icreq->hdr.plen));
+ 		nvmet_tcp_fatal_error(queue);
++		return -EPROTO;
+ 	}
  
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -483,7 +483,9 @@ void		   svc_rqst_replace_page(struct sv
- 					 struct page *page);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
--struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
-+struct svc_serv *  svc_create_pooled(struct svc_program *prog,
-+				     struct svc_stat *stats,
-+				     unsigned int bufsize,
- 				     int (*threadfn)(void *data));
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
- int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -447,8 +447,8 @@ __svc_init_bc(struct svc_serv *serv)
-  * Create an RPC service
-  */
- static struct svc_serv *
--__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
--	     int (*threadfn)(void *data))
-+__svc_create(struct svc_program *prog, struct svc_stat *stats,
-+	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
- {
- 	struct svc_serv	*serv;
- 	unsigned int vers;
-@@ -460,7 +460,7 @@ __svc_create(struct svc_program *prog, u
- 	serv->sv_name      = prog->pg_name;
- 	serv->sv_program   = prog;
- 	kref_init(&serv->sv_refcnt);
--	serv->sv_stats     = prog->pg_stats;
-+	serv->sv_stats     = stats;
- 	if (bufsize > RPCSVC_MAXPAYLOAD)
- 		bufsize = RPCSVC_MAXPAYLOAD;
- 	serv->sv_max_payload = bufsize? bufsize : 4096;
-@@ -522,26 +522,28 @@ __svc_create(struct svc_program *prog, u
- struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
- 			    int (*threadfn)(void *data))
- {
--	return __svc_create(prog, bufsize, 1, threadfn);
-+	return __svc_create(prog, NULL, bufsize, 1, threadfn);
- }
- EXPORT_SYMBOL_GPL(svc_create);
- 
- /**
-  * svc_create_pooled - Create an RPC service with pooled threads
-  * @prog: the RPC program the new service will handle
-+ * @stats: the stats struct if desired
-  * @bufsize: maximum message size for @prog
-  * @threadfn: a function to service RPC requests for @prog
-  *
-  * Returns an instantiated struct svc_serv object or NULL.
-  */
- struct svc_serv *svc_create_pooled(struct svc_program *prog,
-+				   struct svc_stat *stats,
- 				   unsigned int bufsize,
- 				   int (*threadfn)(void *data))
- {
- 	struct svc_serv *serv;
- 	unsigned int npools = svc_pool_map_get();
- 
--	serv = __svc_create(prog, bufsize, npools, threadfn);
-+	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
- 	if (!serv)
- 		goto out_err;
- 	return serv;
+ 	if (icreq->pfv != NVME_TCP_PFV_1_0) {
+-- 
+2.43.0
+
 
 
 
