@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-71834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC609677F5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C5B967AA9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2115F1F212DC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD66E1F22168
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC1918132F;
-	Sun,  1 Sep 2024 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3431183CC3;
+	Sun,  1 Sep 2024 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4c6uGhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cz6qHF90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C423183090;
-	Sun,  1 Sep 2024 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91129183092;
+	Sun,  1 Sep 2024 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207970; cv=none; b=jCo1WuyFfN2w5nnkfNgrSCz1QgU1f0KRTBNEKxIUk+zPoiZb82LaTtOmmsqdHEulHvExHFhAJKYKhKnj4/Y9O8t6Ocxdro0wunhVNtTGVfxLAJCD9sLX07zKDpOwoUNXGgG+5l27PDJBNT/pxmKXxGeezVyUnNydDeprnd3stQQ=
+	t=1725209950; cv=none; b=mUvyz0yF3wCUe3mdvYfMFict3MrXRAxHWx/Hu+vmZsFLgiZ8W3fuAhduVRDaf2lm5BR4Hx6SGD7PTU7s0QF3ZOIIPS4aB04V7dtKA3Qz3uE0pE38fk712RWkpiHX3LmbEZzkK+XiooG5z2Qa/oIlkaUN/zQ7LbpyUqvhj5hZtwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207970; c=relaxed/simple;
-	bh=O7dTY7xQPXIm2ibmPhkuEmG9cvrZSyF8U2cqe2LT/aY=;
+	s=arc-20240116; t=1725209950; c=relaxed/simple;
+	bh=Py8/KlINwenuukJfRslLgBdYVZypYjSEkQYVizsH/uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHGcVU34nmisDXkOq8CDkZ75ffHdj17GZkW2xD5KCMNSb3pvW3artZfgKVCpByUZXnm1g+6Z4U38X+RyTHC0EzmEAvmycErfI8YItCKX7spXFD3TuhCUQ4uSfaDsEekToNzUNq4okgMWxTCWjxervfw5GBnFlafTfe181sCp1vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4c6uGhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F37AC4CEC3;
-	Sun,  1 Sep 2024 16:26:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kf2vhDNYYmViK1Z8mdE0cPbbv3HFW8WV70cBhpXLULHrSKY76R8BjjF7kecwb2NqblmdA4R88FkMEB3sQ1cOqdoo8TOZ5Z8+045/f8+6KM9Q5NZo/DPaNnHAqU2BnfZLMhcko0IU/liYVvttdx94im/YgGVT1k8E+GMQX8XAA6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cz6qHF90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000B0C4CEC3;
+	Sun,  1 Sep 2024 16:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207969;
-	bh=O7dTY7xQPXIm2ibmPhkuEmG9cvrZSyF8U2cqe2LT/aY=;
+	s=korg; t=1725209950;
+	bh=Py8/KlINwenuukJfRslLgBdYVZypYjSEkQYVizsH/uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4c6uGhQzRzkhxlIi6mkY1/e6S1x4oO8Prx0dHkKzsRrO9z9M6z7WZeQwB0bYIHa9
-	 kym0dFCDth6FG3shDPF2Yd9ZKLaE/zqYA3DzDZYAmbRKF4BnPt4L9YqzAxL4teZ75h
-	 B6f7wiAWwou8en72n6H1/5NoHZylxO1+3JNF0pjg=
+	b=Cz6qHF90DKpQkme0BBsPe5jfQ+MvG+PyfxyvH+72Wp/Du2dh4tUXqcSEXETZ+dbOD
+	 wXTpUCqtSnVRAr2o+tb6hj3GGHL3KRueWJCQ6ySeFq1w6KfbWKghbv0b4rLMeGh3N7
+	 Fn+RDiDLB/YKdnF5utaFcooP/I0jnrgo8zC7IRqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.6 08/93] of: Add cleanup.h based auto release via __free(device_node) markings
+	Rand Deeb <rand.sec96@gmail.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 043/215] ssb: Fix division by zero issue in ssb_calc_clock_rate
 Date: Sun,  1 Sep 2024 18:15:55 +0200
-Message-ID: <20240901160807.670309006@linuxfoundation.org>
+Message-ID: <20240901160824.975932195@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit 9448e55d032d99af8e23487f51a542d51b2f1a48 upstream.
+[ Upstream commit e0b5127fa134fe0284d58877b6b3133939c8b3ce ]
 
-The recent addition of scope based cleanup support to the kernel
-provides a convenient tool to reduce the chances of leaking reference
-counts where of_node_put() should have been called in an error path.
+In ssb_calc_clock_rate(), there is a potential issue where the value of
+m1 could be zero due to initialization using clkfactor_f6_resolv(). This
+situation raised concerns about the possibility of a division by zero
+error.
 
-This enables
-	struct device_node *child __free(device_node) = NULL;
+We fixed it by following the suggestions provided by Larry Finger
+<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
+involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
+This modification ensures the proper functioning of the code and
+eliminates the risk of division by zero errors.
 
-	for_each_child_of_node(np, child) {
-		if (test)
-			return test;
-	}
-
-with no need for a manual call of of_node_put().
-A following patch will reduce the scope of the child variable to the
-for loop, to avoid an issues with ordering of autocleanup, and make it
-obvious when this assigned a non NULL value.
-
-In this simple example the gains are small but there are some very
-complex error handling cases buried in these loops that will be
-greatly simplified by enabling early returns with out the need
-for this manual of_node_put() call.
-
-Note that there are coccinelle checks in
-scripts/coccinelle/iterators/for_each_child.cocci to detect a failure
-to call of_node_put(). This new approach does not cause false positives.
-Longer term we may want to add scripting to check this new approach is
-done correctly with no double of_node_put() calls being introduced due
-to the auto cleanup. It may also be useful to script finding places
-this new approach is useful.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20240225142714.286440-2-jic23@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Michael Büsch <m@bues.ch>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230904232346.34991-1-rand.sec96@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/of.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ssb/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -13,6 +13,7 @@
-  */
- #include <linux/types.h>
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/errno.h>
- #include <linux/kobject.h>
- #include <linux/mod_devicetable.h>
-@@ -134,6 +135,7 @@ static inline struct device_node *of_nod
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 8a93c83cb6f80..d52e91258e989 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -837,7 +837,7 @@ static u32 clkfactor_f6_resolve(u32 v)
+ 	case SSB_CHIPCO_CLK_F6_7:
+ 		return 7;
+ 	}
+-	return 0;
++	return 1;
  }
- static inline void of_node_put(struct device_node *node) { }
- #endif /* !CONFIG_OF_DYNAMIC */
-+DEFINE_FREE(device_node, struct device_node *, if (_T) of_node_put(_T))
  
- /* Pointer for first entry in chain of all nodes. */
- extern struct device_node *of_root;
+ /* Calculate the speed the backplane would run at a given set of clockcontrol values */
+-- 
+2.43.0
+
 
 
 
