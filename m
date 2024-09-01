@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F45967898
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D86D96779B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E550E280D9D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF251C20E21
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD629181B87;
-	Sun,  1 Sep 2024 16:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E9E183CBC;
+	Sun,  1 Sep 2024 16:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxLEEenR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8110Rxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCC6184530;
-	Sun,  1 Sep 2024 16:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350EA44C97;
+	Sun,  1 Sep 2024 16:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208399; cv=none; b=IbbwWt/U1KVHA/UXwqwzWwhHd3TY2zTy+dLTVQiEYoi7EUMLDqZ8DXWAVw9Lotyy527nxMXroXnMAeEHtmsUrIsZXw3dVIavZEMvmMxFJvz8epgSVzRShojEVdw5mgw5D0KAE11fKxHDnZ+9L5cdHXcd9rm/76ExpTWy2KYli2s=
+	t=1725207708; cv=none; b=YHLUgdt0V2bx2NiJ0XRSSEYfCLJLnJrYd/r0KUV1SbXRmiBCy3VmScFJk5ohKH9lQQSmQi6IgIq1h4UpEoqhbPvUYK21hteM2a72dsjF23bt9eLgF54tvCzcmVDZuVMurlgRGC0IFPebLSZ0q6yiXNTAjKgb2rBK+GsHg3PVJ/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208399; c=relaxed/simple;
-	bh=Tlh4OJXMRH8HpRbgaRcd1tx5MJYujpDnn5LwH9I+E/0=;
+	s=arc-20240116; t=1725207708; c=relaxed/simple;
+	bh=v4O9fUbWTqRMzjFH4GehARcV9yjEhjWho2EmVv02ckE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5qSzRqV1BeSYFPwLi3Fk/nTMpmby8sUpaID306CbXAFFs4FdJxRaZZ9Q1pAhoWKjU58NZV/MvbdrqIVP8mdC8jRgxKt2LDS8TEe+7awVdc49crdhje7xhxrwHO7r5OwnXMuLLOf3Uz9zjYxViiKS5J04HRjdHBzyQW1UevxKyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxLEEenR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C6BC4CEC3;
-	Sun,  1 Sep 2024 16:33:18 +0000 (UTC)
+	 MIME-Version; b=dhTZd2UeHwbq20L586jY28WyRmercKtJZoaUkwNC3JosGwFo/7s7e+ZWiz5Vq0qq7unkE8AdlZlNsITRvjn+ycZY1d1Hvves3DGhaUfmsfaZowhqrirVvC1pAKuEhTxTTr0QlKqCoMPIXN7yAgkmjwSJBgEbXMwe7yiKU+Eti3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8110Rxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E4AC4CEC3;
+	Sun,  1 Sep 2024 16:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208399;
-	bh=Tlh4OJXMRH8HpRbgaRcd1tx5MJYujpDnn5LwH9I+E/0=;
+	s=korg; t=1725207708;
+	bh=v4O9fUbWTqRMzjFH4GehARcV9yjEhjWho2EmVv02ckE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxLEEenROlM9xowrn26ROTWAKv0BcS7yNLUFHaHqWlkmFbDdQGL2zja04FtgV3BHJ
-	 xAKejjtH7xrMKEgnvnGMlrgn/SHNVXG4ZSpZA3aUOnZ7hpFGQkcEkB/KIuFWz+Lfo4
-	 9aB1n2oibdl+qbgQB8FgoBg3Ch2vQOijivZWIsqM=
+	b=E8110RxjXTln99Vkz5axhCgDCQs3APXIfKaWM9Nyw9ToUG4gKYwrLYsnm0+rlzneO
+	 bgUsWkt6J4LGMllN+x6CnplYjxEnYoSFP9QPqhfYGJe7CY+EzxyW9IHwuLT8moxd+R
+	 fZSN0vqlPMyV54gSM35OM6zRmH9yBFFUazrUq3bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 071/149] smb/client: remove unused rq_iter_size from struct smb_rqst
+	Eric Dumazet <edumazet@google.com>,
+	Harald Welte <laforge@gnumonks.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 52/98] gtp: pull network headers in gtp_dev_xmit()
 Date: Sun,  1 Sep 2024 18:16:22 +0200
-Message-ID: <20240901160820.135682111@linuxfoundation.org>
+Message-ID: <20240901160805.662953235@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b608e2c318789aeba49055747166e13bee57df4a ]
+commit 3a3be7ff9224f424e485287b54be00d2c6bd9c40 upstream.
 
-Reviewed-by: David Howells <dhowells@redhat.com>
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+syzbot/KMSAN reported use of uninit-value in get_dev_xmit() [1]
+
+We must make sure the IPv4 or Ipv6 header is pulled in skb->head
+before accessing fields in them.
+
+Use pskb_inet_may_pull() to fix this issue.
+
+[1]
+BUG: KMSAN: uninit-value in ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+ BUG: KMSAN: uninit-value in gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+ BUG: KMSAN: uninit-value in gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+  gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+  gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  __netdev_start_xmit include/linux/netdevice.h:4913 [inline]
+  netdev_start_xmit include/linux/netdevice.h:4922 [inline]
+  xmit_one net/core/dev.c:3580 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3596
+  __dev_queue_xmit+0x358c/0x5610 net/core/dev.c:4423
+  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3145 [inline]
+  packet_sendmsg+0x90e3/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3994 [inline]
+  slab_alloc_node mm/slub.c:4037 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4080
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
+  alloc_skb include/linux/skbuff.h:1320 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6526
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2815
+  packet_alloc_skb net/packet/af_packet.c:2994 [inline]
+  packet_snd net/packet/af_packet.c:3088 [inline]
+  packet_sendmsg+0x749c/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 7115 Comm: syz.1.515 Not tainted 6.11.0-rc1-syzkaller-00043-g94ede2a3e913 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+
+Fixes: 999cb275c807 ("gtp: add IPv6 support")
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Harald Welte <laforge@gnumonks.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240808132455.3413916-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h | 1 -
- fs/smb/client/cifssmb.c  | 1 -
- fs/smb/client/smb2ops.c  | 2 --
- fs/smb/client/smb2pdu.c  | 2 --
- 4 files changed, 6 deletions(-)
+ drivers/net/gtp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 0a271b9fbc622..1e4da268de3b4 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -254,7 +254,6 @@ struct cifs_open_info_data {
- struct smb_rqst {
- 	struct kvec	*rq_iov;	/* array of kvecs */
- 	unsigned int	rq_nvec;	/* number of kvecs in array */
--	size_t		rq_iter_size;	/* Amount of data in ->rq_iter */
- 	struct iov_iter	rq_iter;	/* Data iterator */
- 	struct xarray	rq_buffer;	/* Page buffer for encryption */
- };
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 595c4b673707e..6dce70f172082 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1713,7 +1713,6 @@ cifs_async_writev(struct cifs_io_subrequest *wdata)
- 	rqst.rq_iov = iov;
- 	rqst.rq_nvec = 2;
- 	rqst.rq_iter = wdata->subreq.io_iter;
--	rqst.rq_iter_size = iov_iter_count(&wdata->subreq.io_iter);
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -577,6 +577,9 @@ static netdev_tx_t gtp_dev_xmit(struct s
+ 	if (skb_cow_head(skb, dev->needed_headroom))
+ 		goto tx_err;
  
- 	cifs_dbg(FYI, "async write at %llu %zu bytes\n",
- 		 wdata->subreq.start, wdata->subreq.len);
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 7fe59235f0901..cfbca3489ece1 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4428,7 +4428,6 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
- 			}
- 			iov_iter_xarray(&new->rq_iter, ITER_SOURCE,
- 					buffer, 0, size);
--			new->rq_iter_size = size;
- 		}
- 	}
++	if (!pskb_inet_may_pull(skb))
++		goto tx_err;
++
+ 	skb_reset_inner_headers(skb);
  
-@@ -4474,7 +4473,6 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
- 	rqst.rq_nvec = 2;
- 	if (iter) {
- 		rqst.rq_iter = *iter;
--		rqst.rq_iter_size = iov_iter_count(iter);
- 		iter_size = iov_iter_count(iter);
- 	}
- 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 52b95f33db57d..d262e70100c9c 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4517,7 +4517,6 @@ smb2_readv_callback(struct mid_q_entry *mid)
- 
- 	if (rdata->got_bytes) {
- 		rqst.rq_iter	  = rdata->subreq.io_iter;
--		rqst.rq_iter_size = iov_iter_count(&rdata->subreq.io_iter);
- 	}
- 
- 	WARN_ONCE(rdata->server != mid->server,
-@@ -4969,7 +4968,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	rqst.rq_iov = iov;
- 	rqst.rq_nvec = 1;
- 	rqst.rq_iter = wdata->subreq.io_iter;
--	rqst.rq_iter_size = iov_iter_count(&rqst.rq_iter);
- 	if (test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
- 		smb2_set_replay(server, &rqst);
- #ifdef CONFIG_CIFS_SMB_DIRECT
--- 
-2.43.0
-
+ 	/* PDP context lookups in gtp_build_skb_*() need rcu read-side lock. */
 
 
 
