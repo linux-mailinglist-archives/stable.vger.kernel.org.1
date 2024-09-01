@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA50967B02
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D4A9678F3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6501C21510
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28109B21034
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE0717ADE1;
-	Sun,  1 Sep 2024 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6990017E46E;
+	Sun,  1 Sep 2024 16:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA/3HwjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSQSrfNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEF02A1B8;
-	Sun,  1 Sep 2024 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FCF1C68C;
+	Sun,  1 Sep 2024 16:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210226; cv=none; b=Ij4BYXjWQYiDeS0vhBXBZU7+XeHaBBxuRjOq2ha64RyY/eePxmoTpUegyd/THA+5zT3yFOVQUz9/N58XL75nU/ADF1Ze1OwyJD3YAL5FCr6q5mhDuLla1ZK4yFPfgLaktSGSQExeTdY4q1Xa6kFwt9QEJRyBqJpOMVeZd8Z4+T4=
+	t=1725208666; cv=none; b=JguSFtw/bbEkDqmZbe57XGx0OvUuGHjdh+AqdThgiMLvP2hKdkPLlGO8Xur4iZa3fXaSJth+rTK5D4d1mBgCkGLmdFdtdzhJ6YoCV5PBnPJPL8s92E/R+XgbsPMnXjMn18yNhFxlSmMeO0XZwQCY0UG2VaawApITe+918tupanU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210226; c=relaxed/simple;
-	bh=2gydjGcY9Mxsk+rv+DOagCA20hoh54gZrzeQOqoGDDA=;
+	s=arc-20240116; t=1725208666; c=relaxed/simple;
+	bh=rT9V43RbkMJYEU4kDz/Ojf2HwDQ1ud2lU6eWPlUZhbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn2JXr/XgnLtpgdgtAg8xkhN1OuGFXqocPeKgUSM2CMa4zMgHzuajvUfLplOjPE4NpGzBlSNiuOxePwG1XE0AW8PRxC3jvnqEa4UHyvQX4YLy+2ZMnqQMQx8jZ0UCHu99NfHl5eqnBRPWOBDRSM3YoxinRY932hhjPiPBhPBrcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA/3HwjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE01C4CEC3;
-	Sun,  1 Sep 2024 17:03:45 +0000 (UTC)
+	 MIME-Version; b=as+rGfK7E8OvemBhVxDbjf1IXMYYFyEjFuMByQSVspSXceilJwoNzYWJN39j7NUBMejEC+yqhU/wPy1eG/oOcSQ3cHgF6z976QWa9NnEStr8fjt8Mva0nZS2LJQ4dwcJhp6F79oRRNL+AW81AzftE8oFzSCsiM6lGKA+k7g0vWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSQSrfNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D759C4CEC3;
+	Sun,  1 Sep 2024 16:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210226;
-	bh=2gydjGcY9Mxsk+rv+DOagCA20hoh54gZrzeQOqoGDDA=;
+	s=korg; t=1725208666;
+	bh=rT9V43RbkMJYEU4kDz/Ojf2HwDQ1ud2lU6eWPlUZhbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YA/3HwjKjgUOmpTHy/Fz5nXKFqFNSQHAS+z8LLloYHfFOvyo8ZGARuQKvumCOUdgF
-	 MKmYJIDSOsXefgP5ltkrQHrnhgr0eImgpCbDFXVRHtwkpuyIO+Bz3HUXaYMllsdn5h
-	 i8BedhIdOj4GikV6RjKPlAIYMs0nerjV6YFys+3I=
+	b=cSQSrfNmp0yVOEX+1ivXcD1XYZCQF63gB/CM+jEll49So1x64QtUeWbFBw8MDAiZL
+	 Zat9y4nZA9ODHNY98uibzK3FBIRgxeDXWxzLzPnhz1g5aBQcsHQC0rWqsH9cyViMbd
+	 0Z2R7lVlRHS7Yn6W/4amaOxb3v+uO9jm2t2gn5XE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 126/215] nfsd: remove nfsd_stats, make th_cnt a global counter
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 127/149] arm64: dts: qcom: x1e80100: add missing PCIe minimum OPP
 Date: Sun,  1 Sep 2024 18:17:18 +0200
-Message-ID: <20240901160828.126236228@linuxfoundation.org>
+Message-ID: <20240901160822.229977617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit e41ee44cc6a473b1f414031782c3b4283d7f3e5f ]
+commit 98abf2fbd179017833c38edc9f3b587c69d07e2a upstream.
 
-This is the last global stat, take it out of the nfsd_stats struct and
-make it a global part of nfsd, report it the same as always.
+Add the missing PCIe CX performance level votes to avoid relying on
+other drivers (e.g. USB) to maintain the nominal performance level
+required for Gen3 speeds.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Cc: stable@vger.kernel.org	# 6.9
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240722094249.26471-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsd.h   |    1 +
- fs/nfsd/nfssvc.c |    5 +++--
- fs/nfsd/stats.c  |    3 +--
- fs/nfsd/stats.h  |    6 ------
- 4 files changed, 5 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -69,6 +69,7 @@ extern struct mutex		nfsd_mutex;
- extern spinlock_t		nfsd_drc_lock;
- extern unsigned long		nfsd_drc_max_mem;
- extern unsigned long		nfsd_drc_mem_used;
-+extern atomic_t			nfsd_th_cnt;		/* number of available threads */
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -2814,6 +2814,7 @@
+ 				      "link_down";
  
- extern const struct seq_operations nfs_exports_op;
+ 			power-domains = <&gcc GCC_PCIE_6A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
  
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -34,6 +34,7 @@
+ 			phys = <&pcie6a_phy>;
+ 			phy-names = "pciephy";
+@@ -2935,6 +2936,7 @@
+ 				      "link_down";
  
- #define NFSDDBG_FACILITY	NFSDDBG_SVC
+ 			power-domains = <&gcc GCC_PCIE_4_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
  
-+atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
- extern struct svc_program	nfsd_program;
- static int			nfsd(void *vrqstp);
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
-@@ -941,7 +942,7 @@ nfsd(void *vrqstp)
- 
- 	current->fs->umask = 0;
- 
--	atomic_inc(&nfsdstats.th_cnt);
-+	atomic_inc(&nfsd_th_cnt);
- 
- 	set_freezable();
- 
-@@ -965,7 +966,7 @@ nfsd(void *vrqstp)
- 		validate_process_creds();
- 	}
- 
--	atomic_dec(&nfsdstats.th_cnt);
-+	atomic_dec(&nfsd_th_cnt);
- 
- out:
- 	/* Release the thread */
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,7 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct nfsd_stats	nfsdstats;
- struct svc_stat		nfsd_svcstats = {
- 	.program	= &nfsd_program,
- };
-@@ -47,7 +46,7 @@ static int nfsd_show(struct seq_file *se
- 		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_IO_WRITE]));
- 
- 	/* thread usage: */
--	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
-+	seq_printf(seq, "th %u 0", atomic_read(&nfsd_th_cnt));
- 
- 	/* deprecated thread usage histogram stats */
- 	for (i = 0; i < 10; i++)
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,12 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--struct nfsd_stats {
--	atomic_t	th_cnt;		/* number of available threads */
--};
--
--extern struct nfsd_stats	nfsdstats;
--
- extern struct svc_stat		nfsd_svcstats;
- 
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
+ 			phys = <&pcie4_phy>;
+ 			phy-names = "pciephy";
 
 
 
