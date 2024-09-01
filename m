@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D73967A41
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531669679CE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBC01F23B82
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC66A1F20F21
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9988317CA1F;
-	Sun,  1 Sep 2024 16:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E800D184554;
+	Sun,  1 Sep 2024 16:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQGtoPGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCtEKG+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581411DFD1;
-	Sun,  1 Sep 2024 16:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C381E87B;
+	Sun,  1 Sep 2024 16:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209615; cv=none; b=MiQ9GjFY3CNhKtOGaBlF0BSgMdPHjsJ/yaWBih8otBUoQrbWkGpYkVshIU+K+JpV4HFA1LdoxDlEnjRmfqGkaktzd+Wx1SJq1qrwy7BK/LBZQtT53u17K1qmeFyKzHtHlbD4aLBGlkr4y6AtmI1uqcLaWMm7b7MsViV88D8szyY=
+	t=1725209277; cv=none; b=hRPAJVeGcpM9Y4db2vXxIxu9LochBes1OaxstrkKwrcHzPEnN+nsQf+UlDzxzcjndCSTqDAej704SPNrYWSoGT7KkwNE0lPBfNBqehfxUutS1p4/foSyICkg2JuRSsLLfg/6LJu2XIC96iuX55bFHu67W7vNWlXnQFKX5/pOREI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209615; c=relaxed/simple;
-	bh=/1x2SCRcQdwx+KL6FtwOVCTQc2YvOShc4n3a+FAJSXo=;
+	s=arc-20240116; t=1725209277; c=relaxed/simple;
+	bh=DRsALNr0Pg16LpkYz22pE/BjDIIqegrtI0AiO0vlSl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLp4CTVbEFhkWlo32TAhkmyfcv3J7afZqvUkQHqolo5E37RjQICnlLLS7DStFl5+QmCIXtw5CqN8uHZmr93yYzGft4Rdk4i+nH1pkHjUUAm2tzq+mRtEi8G8YfCPJIsDohoJCzM4G6V4j18OlQ2EMxR1JDu1MS8OyKZ1JywT7q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQGtoPGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E56C4CEC3;
-	Sun,  1 Sep 2024 16:53:34 +0000 (UTC)
+	 MIME-Version; b=VdnwSfFfCaGmvSuwL2JWeqd1LZwAC/UftFlH+muBiYqRYiurDN9zOv/R68nqb/5iRZT6rmgdYfnZR7YrZE7NfD7O/rj4219f2lyZIitkreRoHL0wDLDxD/4pid6j2x4wB9NMTc8qPd3BMW5A02+sr0LrB2mU+Le6/a23BlDIvxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCtEKG+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297E4C4CEC3;
+	Sun,  1 Sep 2024 16:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209615;
-	bh=/1x2SCRcQdwx+KL6FtwOVCTQc2YvOShc4n3a+FAJSXo=;
+	s=korg; t=1725209277;
+	bh=DRsALNr0Pg16LpkYz22pE/BjDIIqegrtI0AiO0vlSl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQGtoPGGUyFUtPhRW2Zlmr+hffXqJZIfij8yW4zN2BiqdWRE8bvvTnGCDjX2XjMIJ
-	 91tRmAlIYqgW0BUw1L53eHmw/sgVgxd8rdFJICHDehUieWQgwASELQ90rApFhgpN+U
-	 zjAkOgjw7NubytudCy3rSif/qGqRGKEzq6sCHqFw=
+	b=DCtEKG+w7PGFAOgvkNUtfP4wWo8a8c3sl9f6LZZYqdHJF72/BWmrfSG5mpxdj8O/O
+	 CF191uzCiaIUjj1Vqfj3HBXjbbl0oqhb4l4eO7pEbeD7i21cTf9Cz9cpDxApimA0tV
+	 DShkvTYaSZ6bR6xHXxOFt86N/w+Mu80HP/+acMxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/151] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
+Subject: [PATCH 6.1 25/71] mptcp: pm: remove mptcp_pm_remove_subflow()
 Date: Sun,  1 Sep 2024 18:17:30 +0200
-Message-ID: <20240901160817.502471404@linuxfoundation.org>
+Message-ID: <20240901160802.839065311@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
+[ Upstream commit f448451aa62d54be16acb0034223c17e0d12bc69 ]
 
-nft_counter_reset() resets the counter by subtracting the previously
-retrieved value from the counter. This is a write operation on the
-counter and as such it requires to be performed with a write sequence of
-nft_counter_seq to serialize against its possible reader.
+This helper is confusing. It is in pm.c, but it is specific to the
+in-kernel PM and it cannot be used by the userspace one. Also, it simply
+calls one in-kernel specific function with the PM lock, while the
+similar mptcp_pm_remove_addr() helper requires the PM lock.
 
-Update the packets/ bytes within write-sequence of nft_counter_seq.
+What's left is the pr_debug(), which is not that useful, because a
+similar one is present in the only function called by this helper:
 
-Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  mptcp_pm_nl_rm_subflow_received()
+
+After these modifications, this helper can be marked as 'static', and
+the lock can be taken only once in mptcp_pm_flush_addrs_and_subflows().
+
+Note that it is not a bug fix, but it will help backporting the
+following commits.
+
+Fixes: 0ee4261a3681 ("mptcp: implement mptcp_pm_remove_subflow")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-7-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/pm.c         | 10 ----------
+ net/mptcp/pm_netlink.c | 16 +++++++---------
+ net/mptcp/protocol.h   |  3 ---
+ 3 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index 75fa6fcd6cd6c..ea102b9a168b8 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -105,11 +105,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
- 			      struct nft_counter *total)
- {
- 	struct nft_counter *this_cpu;
-+	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
-+	myseq = this_cpu_ptr(&nft_counter_seq);
-+
-+	write_seqcount_begin(myseq);
- 	this_cpu->packets -= total->packets;
- 	this_cpu->bytes -= total->bytes;
-+	write_seqcount_end(myseq);
- 	local_bh_enable();
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 5d9baade5c3b4..5646c7275a92d 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -59,16 +59,6 @@ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_
+ 	return 0;
  }
  
+-int mptcp_pm_remove_subflow(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list)
+-{
+-	pr_debug("msk=%p, rm_list_nr=%d", msk, rm_list->nr);
+-
+-	spin_lock_bh(&msk->pm.lock);
+-	mptcp_pm_nl_rm_subflow_received(msk, rm_list);
+-	spin_unlock_bh(&msk->pm.lock);
+-	return 0;
+-}
+-
+ /* path manager event handlers */
+ 
+ void mptcp_pm_new_connection(struct mptcp_sock *msk, const struct sock *ssk, int server_side)
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 6a85e9665080c..3b3e656a2ab09 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -883,8 +883,8 @@ static void mptcp_pm_nl_rm_addr_received(struct mptcp_sock *msk)
+ 	mptcp_pm_nl_rm_addr_or_subflow(msk, &msk->pm.rm_list_rx, MPTCP_MIB_RMADDR);
+ }
+ 
+-void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk,
+-				     const struct mptcp_rm_list *rm_list)
++static void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk,
++					    const struct mptcp_rm_list *rm_list)
+ {
+ 	mptcp_pm_nl_rm_addr_or_subflow(msk, rm_list, MPTCP_MIB_RMSUBFLOW);
+ }
+@@ -1526,7 +1526,9 @@ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
+ 
+ 		if (remove_subflow) {
+-			mptcp_pm_remove_subflow(msk, &list);
++			spin_lock_bh(&msk->pm.lock);
++			mptcp_pm_nl_rm_subflow_received(msk, &list);
++			spin_unlock_bh(&msk->pm.lock);
+ 		} else if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+ 			/* If the subflow has been used, but now closed */
+ 			spin_lock_bh(&msk->pm.lock);
+@@ -1674,18 +1676,14 @@ void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+ 			alist.ids[alist.nr++] = entry->addr.id;
+ 	}
+ 
++	spin_lock_bh(&msk->pm.lock);
+ 	if (alist.nr) {
+-		spin_lock_bh(&msk->pm.lock);
+ 		msk->pm.add_addr_signaled -= alist.nr;
+ 		mptcp_pm_remove_addr(msk, &alist);
+-		spin_unlock_bh(&msk->pm.lock);
+ 	}
+-
+ 	if (slist.nr)
+-		mptcp_pm_remove_subflow(msk, &slist);
+-
++		mptcp_pm_nl_rm_subflow_received(msk, &slist);
+ 	/* Reset counters: maybe some subflows have been removed before */
+-	spin_lock_bh(&msk->pm.lock);
+ 	bitmap_fill(msk->pm.id_avail_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
+ 	msk->pm.local_addr_used = 0;
+ 	spin_unlock_bh(&msk->pm.lock);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b4d6710e6ca3a..c3cd68edab779 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -836,7 +836,6 @@ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
+ 			   const struct mptcp_addr_info *addr,
+ 			   bool echo);
+ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
+-int mptcp_pm_remove_subflow(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list);
+ void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+ 					struct list_head *rm_list);
+@@ -931,8 +930,6 @@ static inline u8 subflow_get_local_id(const struct mptcp_subflow_context *subflo
+ 
+ void __init mptcp_pm_nl_init(void);
+ void mptcp_pm_nl_work(struct mptcp_sock *msk);
+-void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk,
+-				     const struct mptcp_rm_list *rm_list);
+ unsigned int mptcp_pm_get_add_addr_signal_max(const struct mptcp_sock *msk);
+ unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk);
+ unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk);
 -- 
 2.43.0
 
