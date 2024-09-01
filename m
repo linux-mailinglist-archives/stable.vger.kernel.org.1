@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD2B9678C6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BB8967A35
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D287DB21920
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E43F282362
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D3017CA1F;
-	Sun,  1 Sep 2024 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E167717DFE7;
+	Sun,  1 Sep 2024 16:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o72uL8Db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch2Es0pD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35982B9C7;
-	Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCF1DFD1;
+	Sun,  1 Sep 2024 16:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208532; cv=none; b=nrDNvJyRIBnUqh3rdFHZRKIVpnCkBPBWpVDsHhHkPkrQMmV870zfWkbD93dmEfpxPvHo12b2xRuHo+aEpP5D3UlOdzba9ZL6xyEj767QRW4uQLAbIIcx4FEKlb3mKCu7V4Ib1KtyWAywVqDELhFpvIYfhTJ2JNCo/KG4UjzvzG8=
+	t=1725209576; cv=none; b=UNyVxBodTELQXoOShMjlO9UUU8uF/wGzQXHLa+TqexyHjCcBAzCBubeHovp79bDpfrnRKCJ9ufUA9fl58Gy6GzmszgqxqWZnHt61DXFYwVut2450+vpa7K3vVAVKiyV1EnZn3+F/0X1bUcRHKstAXy65G8JILwxkyID2ahaCvgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208532; c=relaxed/simple;
-	bh=Ftz4wo2u1su45f/Q5QkoxPVM1Y8Xd+nBOucyzi7VJ6k=;
+	s=arc-20240116; t=1725209576; c=relaxed/simple;
+	bh=mKrjhLzgqmZNxkB3V70cx0UC/7edfm3SAZKQ4s2esvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzcwzQvtQiGxu7Va3EQGETe96vqb3PUGO2KpXQv1JFE/1rXgWqeA29a8MffIiY7ZTB4E75DisSSmsmLkIK8v5Tvms/X8GLBn7Q33Ljciv8sePGVkX3eoIsQQbRkplNFuS6C5EuflFcU7pbQPHH2EKr7BTbGAEwJP2pkREfMtPIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o72uL8Db; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D9BC4CEC3;
-	Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
+	 MIME-Version; b=LHetQucc4Q0m4tFrJ68IPditY3ZZLen/rayEuBeTx/t/7n+mSJ8/RvqGoHNg4kUOj8619ebz0CrNQ2Iq7NEH2IY1IFEDw5m8J4hlDlnbzKiQ76VdU3HduVFn+nxrDC/CS7YUjY7PD3G5lhnSc5/JmMLZt0M7+FMnz3aTAh0PhsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch2Es0pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1834EC4CEC3;
+	Sun,  1 Sep 2024 16:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208531;
-	bh=Ftz4wo2u1su45f/Q5QkoxPVM1Y8Xd+nBOucyzi7VJ6k=;
+	s=korg; t=1725209576;
+	bh=mKrjhLzgqmZNxkB3V70cx0UC/7edfm3SAZKQ4s2esvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o72uL8DbuxHK1H7FEuCm7u+vZCEDlTJNkaxt2WYTJCeFSUqjX7APX7O+6cXJR7WvH
-	 Ll6EaBLLYyr0+/l0+m6pP6kgkbx5TmPXPHbFOmeawZLmh/gUj8h+ZzS+NicgqqWDoc
-	 YiH6zpAqBZDKGxwK3yea0LcCXvo8ZSa3BxTk7D8M=
+	b=Ch2Es0pDCM1lK0PtHw9E+o014FEpW5ND/VrvJaYshcXx417TddY4tZgnAThMx366C
+	 lkkv3/y06L6Go0WD+30l+xjYI6y45H0KtzXhp7R146BHeM56WYTtJ9DimcFMGoD9fg
+	 7Zl5Rj1Rf/nVvYAIh9b9dilHW1as/4fw162wC9nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Li zeming <zeming@nfschina.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 110/149] drm/amd/display: avoid using null object of framebuffer
-Date: Sun,  1 Sep 2024 18:17:01 +0200
-Message-ID: <20240901160821.592504238@linuxfoundation.org>
+Subject: [PATCH 5.10 062/151] powerpc/boot: Handle allocation failure in simple_realloc()
+Date: Sun,  1 Sep 2024 18:17:02 +0200
+Message-ID: <20240901160816.450817673@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Li zeming <zeming@nfschina.com>
 
-[ Upstream commit 3b9a33235c773c7a3768060cf1d2cf8a9153bc37 ]
+[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
 
-Instead of using state->fb->obj[0] directly, get object from framebuffer
-by calling drm_gem_fb_get_obj() and return error code when object is
-null to avoid using null object of framebuffer.
+simple_malloc() will return NULL when there is not enough memory left.
+Check pointer 'new' before using it to copy the old data.
 
-Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 73dd0ad9e5dad53766ea3e631303430116f834b3)
+Signed-off-by: Li zeming <zeming@nfschina.com>
+[mpe: Reword subject, use change log from Christophe]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/boot/simple_alloc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index 311c62d2d1ebb..70e45d980bb93 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -28,6 +28,7 @@
- #include <drm/drm_blend.h>
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_plane_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_fourcc.h>
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index 65ec135d01579..188c4f996512a 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -114,7 +114,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
- #include "amdgpu.h"
-@@ -854,10 +855,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
- 	}
- 
- 	afb = to_amdgpu_framebuffer(new_state->fb);
--	obj = new_state->fb->obj[0];
-+	obj = drm_gem_fb_get_obj(new_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return -EINVAL;
-+	}
+ 	new = simple_malloc(size);
+-	memcpy(new, ptr, p->size);
++	if (new)
++		memcpy(new, ptr, p->size);
 +
- 	rbo = gem_to_amdgpu_bo(obj);
- 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
--
- 	r = amdgpu_bo_reserve(rbo, true);
- 	if (r) {
- 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
+ 	simple_free(ptr);
+ 	return new;
+ }
 -- 
 2.43.0
 
