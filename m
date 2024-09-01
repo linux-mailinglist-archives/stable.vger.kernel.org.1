@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30326967A10
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7C9677BE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86DE1F22F3A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA302807B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5597E17E00C;
-	Sun,  1 Sep 2024 16:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB41F183061;
+	Sun,  1 Sep 2024 16:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf3Qbhiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILzhf0h1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141D41C68C;
-	Sun,  1 Sep 2024 16:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F2B44C97;
+	Sun,  1 Sep 2024 16:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209468; cv=none; b=jjBtQ/zrEhrpeshpWzCnJ40MRY8H3RlSYY4EWOLcIZtdwITKZsNoJXEx2yyriVDPQMRIS7gbAVgw1GewGbALcyLoLOf5Parzh+ragUg7kUONbv+jza3d+cWSj7D/suuy1PBQoMHGNy6BIvzIeQw00UVgV3oyyaBUrYNSX5sAZ4c=
+	t=1725207814; cv=none; b=MR0pv3rzy12aWV2bjXeQffDXCZ8rUl+iMC8vpFiv5YVJqWJ5y87DFPAVZk3lv7krJqkzjXBolvUbDw1WSlqyNyX1TBS71LqDQk8wkTIB1vqmx8JhrWZ6pz1N7T69fEF0lGyp4oOuLMqi9XIvRWQJvXrNi3EVOpmPbQKphdT8DEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209468; c=relaxed/simple;
-	bh=2rcf6Ahy0k5HAy/Di0TepiruEd2VBYoW+OXMXJPE7So=;
+	s=arc-20240116; t=1725207814; c=relaxed/simple;
+	bh=aX9ro6Kj+FbbynFSZ7Vh5a6xWfX0RDAMQS/QmLLNkgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eT+nvCMBbda2MpSbVZdzRU4kd7xftbVksyrOfIydwxcLar8UtFcc748aBnIgIVYovntN962a7orpCAiFvl94rScr+xouCo26S8N7g8nlBW5Dn+R0UrfJznvFre+EZAsc/kG5Mf5MX7XQ4swT0Ad36FTIRhPG/+N7YRNQeAp5koM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf3Qbhiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9030FC4CEC3;
-	Sun,  1 Sep 2024 16:51:07 +0000 (UTC)
+	 MIME-Version; b=DS/G7tkFbGdZeYZp7x2Y7vnItxJom/ykz7Rp83oLgM3L1rUlTyJI0eaeYlFTAA4mQARWvV1knBJKAJduEjhkOxnOY6wViGgMiURSCE6wZUNNkihc36Fk0nH3oDmFKd7mcocauE/VR2R9y5hrQU3luGqfJcDS0AAm531nE43YKSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILzhf0h1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A29C4CEC3;
+	Sun,  1 Sep 2024 16:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209467;
-	bh=2rcf6Ahy0k5HAy/Di0TepiruEd2VBYoW+OXMXJPE7So=;
+	s=korg; t=1725207814;
+	bh=aX9ro6Kj+FbbynFSZ7Vh5a6xWfX0RDAMQS/QmLLNkgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qf3Qbhiz8U2SqfPsK9mmuqq6M+yIM+6qz5RNO79Kv8xM83uwhxblhyGjZPked2OIz
-	 gU/J4vbTy+rlZM04By8YOOZpMOgys3fcNdC0MzktGQmsxSTCHtaicLIqJksUAS2UD7
-	 R/oaAaJqpVsZvoEmLXl4zEyweru69Fh+CZnj7TrM=
+	b=ILzhf0h1nZcY6Y3/JL9Li3aY5KbNhhzxtrBm3bQEQQGHuEfeoenk/bHfW9FisGe4Y
+	 YY5oR2gC2E65QdWyLZicxuxjo5PkUfYnSaKdp08AUV+nkXPYGPfmxjyHEc73Z0N2r1
+	 f04GaLxp81I+JQzZ0DSLdhBouque6LPVa6FiFa/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/151] net: hns3: fix wrong use of semaphore up
+Subject: [PATCH 4.19 58/98] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
 Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160815.156117877@linuxfoundation.org>
+Message-ID: <20240901160805.886523435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
+[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
 
-Currently, if hns3 PF or VF FLR reset failed after five times retry,
-the reset done process will directly release the semaphore
-which has already released in hclge_reset_prepare_general.
-This will cause down operation fail.
+nft_counter_reset() resets the counter by subtracting the previously
+retrieved value from the counter. This is a write operation on the
+counter and as such it requires to be performed with a write sequence of
+nft_counter_seq to serialize against its possible reader.
 
-So this patch fixes it by adding reset state judgement. The up operation is
-only called after successful PF FLR reset.
+Update the packets/ bytes within write-sequence of nft_counter_seq.
 
-Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
-Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nft_counter.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 5dbee850fef53..885793707a5f1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10051,8 +10051,8 @@ static void hclge_flr_done(struct hnae3_ae_dev *ae_dev)
- 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index a61d7edfc290d..b4a4ed00506f1 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -108,11 +108,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv __percpu *priv,
+ 			      struct nft_counter *total)
+ {
+ 	struct nft_counter *this_cpu;
++	seqcount_t *myseq;
  
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
++	myseq = this_cpu_ptr(&nft_counter_seq);
++
++	write_seqcount_begin(myseq);
+ 	this_cpu->packets -= total->packets;
+ 	this_cpu->bytes -= total->bytes;
++	write_seqcount_end(myseq);
+ 	local_bh_enable();
  }
  
- static void hclge_clear_resetting_state(struct hclge_dev *hdev)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index be41117ec1465..755935f9efc81 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -2093,8 +2093,8 @@ static void hclgevf_flr_done(struct hnae3_ae_dev *ae_dev)
- 			 ret);
- 
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
- }
- 
- static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
 -- 
 2.43.0
 
