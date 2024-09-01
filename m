@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298D9967B13
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD4196795D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBDC4281513
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48AAF2821C6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790943BB48;
-	Sun,  1 Sep 2024 17:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F71017E00C;
+	Sun,  1 Sep 2024 16:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv2ii8TD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jok/NdjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E5F17C;
-	Sun,  1 Sep 2024 17:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404321C68C;
+	Sun,  1 Sep 2024 16:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210284; cv=none; b=mUnhNtHc0ZWr/510KO9ebNpZYNZQAH6wMf8M2th4WpdlQkHiGWiqN5wOyRbpnyNo3vVo+Rooki8gZjUozi74NyWwKg9h0BcyS+R7Ezohp3U/UfLjaBEz7XPVz2I6+9nNi9PIPeBi49bYivUV2SnMIbOznCEtL/HCNmksGrlgm/4=
+	t=1725208992; cv=none; b=CwX109WWnLkqJ8Eh3X6sBo7Jyh4vbcFT1QFKDkeFFGJEQn626hdbm/vwUQdXQMd1MgbAZ1lYA0iCVKsNjjH+h13ExYkn48Zg6Hsu8gScKiAR0j3zWJlx/c0+Kb5YAyHF6D2qwQN+S4QVE0/O7NwogqGPNSSDECYkrxHMZHMMqDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210284; c=relaxed/simple;
-	bh=Af2sexPmeGHoBZwe3fvuwYgsPEse6kxJFivMbfh53T0=;
+	s=arc-20240116; t=1725208992; c=relaxed/simple;
+	bh=TfSqHZBtHlrt4trEkweoBgCp8UZN61kpCOHJ6CLdZkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cF1e+L64hlrCQxUKuqLKx2x8BFLygNu+vGGUOjb7M21bQfl96syCOipkerwj6v7WYXPauwKtbpA78dWdyTAt/gREV1lSczte3+YrCqbLr82gwyb3aDF6IqD7UCDoxj2OmaTpwn7BIXGWU95ZaYlJ9Zjc5PXUOG/Z32sjPfPQ1D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv2ii8TD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A64C4CEC3;
-	Sun,  1 Sep 2024 17:04:43 +0000 (UTC)
+	 MIME-Version; b=X1mR1XoIWjTvrLZCespT4KRZf63y3d9e0GjIFeqJksl2JWysaTKqxYHt1zzFcVkphGhUYTQAq0u0W2zXYZ1Ie+u9/3mTNrPtXTN3ZmJ+NPghK34rI8mYVT7VU7YHKwtSVTBK/7eI4GI2uzWLD9tllKotbBg8wzWr/UBmtJ1F1/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jok/NdjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0C4C4CEC3;
+	Sun,  1 Sep 2024 16:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210284;
-	bh=Af2sexPmeGHoBZwe3fvuwYgsPEse6kxJFivMbfh53T0=;
+	s=korg; t=1725208992;
+	bh=TfSqHZBtHlrt4trEkweoBgCp8UZN61kpCOHJ6CLdZkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dv2ii8TDShvZUv5q+wJCtS/MeXtx/ieAnAuBsiThM87AOLyeFqaWo4D4z/z8OH3i2
-	 WvmeHRvtChd19/YeWSRPvBmgi6FPjuctg9IiQlOVpkX6Tn7LphSuuctpbNRNEwkSkh
-	 eZTdjgiDC32LaU1tMBz48NggQDE58dbRDHpbC9Os=
+	b=jok/NdjSorSqkdQASP3as+G1DbcZh2zOjflulUmXx7T65eKmUugI/oXAEWb2yrQNl
+	 h7LyBtnFJiI9GrmNXOk6F9P3WCeIYixFUkg8SQDmk5yQ0dPr0RXWPott2zgj93YMnW
+	 qrETCQaxyWgpaaPGmZHF/JhAJpP60n/Wcmk92IwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/215] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
+	Ben Whitten <ben.whitten@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 102/134] mmc: dw_mmc: allow biu and ciu clocks to defer
 Date: Sun,  1 Sep 2024 18:17:28 +0200
-Message-ID: <20240901160828.506890956@linuxfoundation.org>
+Message-ID: <20240901160813.928704308@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Ben Whitten <ben.whitten@gmail.com>
 
-[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
+commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
 
-The sequence counter nft_counter_seq is a per-CPU counter. There is no
-lock associated with it. nft_counter_do_eval() is using the same counter
-and disables BH which suggest that it can be invoked from a softirq.
-This in turn means that nft_counter_offload_stats(), which disables only
-preemption, can be interrupted by nft_counter_do_eval() leading to two
-writer for one seqcount_t.
-This can lead to loosing stats or reading statistics while they are
-updated.
+Fix a race condition if the clock provider comes up after mmc is probed,
+this causes mmc to fail without retrying.
+When given the DEFER error from the clk source, pass it on up the chain.
 
-Disable BH during stats update in nft_counter_offload_stats() to ensure
-one writer at a time.
-
-Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
+Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_counter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/dw_mmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index 1b468a16b5237..f10d36c693b13 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -264,7 +264,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	struct nft_counter *this_cpu;
- 	seqcount_t *myseq;
- 
--	preempt_disable();
-+	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
- 	myseq = this_cpu_ptr(&nft_counter_seq);
- 
-@@ -272,7 +272,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	this_cpu->packets += stats->pkts;
- 	this_cpu->bytes += stats->bytes;
- 	write_seqcount_end(myseq);
--	preempt_enable();
-+	local_bh_enable();
- }
- 
- static struct nft_expr_type nft_counter_type;
--- 
-2.43.0
-
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3179,6 +3179,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->biu_clk = devm_clk_get(host->dev, "biu");
+ 	if (IS_ERR(host->biu_clk)) {
+ 		dev_dbg(host->dev, "biu clock not available\n");
++		ret = PTR_ERR(host->biu_clk);
++		if (ret == -EPROBE_DEFER)
++			return ret;
++
+ 	} else {
+ 		ret = clk_prepare_enable(host->biu_clk);
+ 		if (ret) {
+@@ -3190,6 +3194,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
+ 	if (IS_ERR(host->ciu_clk)) {
+ 		dev_dbg(host->dev, "ciu clock not available\n");
++		ret = PTR_ERR(host->ciu_clk);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_biu;
++
+ 		host->bus_hz = host->pdata->bus_hz;
+ 	} else {
+ 		ret = clk_prepare_enable(host->ciu_clk);
 
 
 
