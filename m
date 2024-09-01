@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323FB967ACF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73029677C7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F62FB20CCC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2711F210F5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA442376EC;
-	Sun,  1 Sep 2024 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7853E183CA4;
+	Sun,  1 Sep 2024 16:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHm0W71V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejtOv5lV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6E17C;
-	Sun,  1 Sep 2024 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E3117E01C;
+	Sun,  1 Sep 2024 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210071; cv=none; b=n/NjlL0lWMAsFciR/htxQ9geZKVZhkVv5d2PPs5wAODwdFC534/A7txyKuRk1gXAvfKRj+Q+diJoSCpR5FFWSySpnyAqE8Zl6RTMErCT5QiKTqcE8PJPb20w9xVPu52sUTon9EIB8xKu7U1BqWMntmdYo179vm/NKX9SC6OJT2Q=
+	t=1725207842; cv=none; b=KVNPpgCCS7ogbD4MUOMXAtUiYj6oq0a1EH19MwkIWRIkK88RHt5uZpWpPyzYaeM3frkRegadWTIGojKiqMSHvQiIv+4krjhJ4Gu9CxwqjaQNJ5mKpYKIqMyfkk9BsXX/oMCH/Vfh7HyZOBcN9o/E76+Jq6so11C+AX8YHjkNchY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210071; c=relaxed/simple;
-	bh=QXxB5rsbhmIQ+bixkbs8lL/13h1632cP0InlRQ/QzPw=;
+	s=arc-20240116; t=1725207842; c=relaxed/simple;
+	bh=S8x1dzzgaVWeDGqtzjl1NLpIdOjK68ALQdzpv0PP3hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA8CMRlVi6fHTpG//wzBliUAoSSwicGwa37zgEV5N2aHLpG+i6bjVbzV7bzaH+c7wa169iOWliQ18hKkWOj1HbyLoUQns55GJhYMx+aiHZJrW4aCOCXraarEs3cg2RsBbl5+M1PfNSlPnDeN1MQJ0diBbPKUbHQqd0jks1IXHqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHm0W71V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059BBC4CEC3;
-	Sun,  1 Sep 2024 17:01:10 +0000 (UTC)
+	 MIME-Version; b=uknHTzQqHujn/yuYaPviqJ+/PSGEBOOO3iWlcbUeoal3HNdq2H04QWzAQ8DKSKrGxn7X7KfvsJHuH5+ANmy2wQyxrk+qzYbFuIwqIlUqw5UMVTmxVl4XLpPbeVOYO/UJQE6N7eHRWlOcJLQ56HxEACdlTi2qQ7qfgykbfLwXAaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejtOv5lV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56696C4CEC3;
+	Sun,  1 Sep 2024 16:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210071;
-	bh=QXxB5rsbhmIQ+bixkbs8lL/13h1632cP0InlRQ/QzPw=;
+	s=korg; t=1725207841;
+	bh=S8x1dzzgaVWeDGqtzjl1NLpIdOjK68ALQdzpv0PP3hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHm0W71V5CtqyZref01hbtb22VUNVChSa3Oex7FXGGYYbj4y+ZsxdYhwSFjAsf83X
-	 CYfcICKBHrTwVF5G+VFljdVUAbfw03ljTIRSawGlmO9qXvXT0cYdCKz8B8q1sdM1i0
-	 v0TTH+Vl/hiH0YC+xwiInEpSHN0H8omfcJTBnGLs=
+	b=ejtOv5lVLrM+N1i1Ah21iiQyh9aeLrs7pYEbRUz+KDTkra0AgvceLIJJzAhuCErdn
+	 7p9qJU1do9rwweJ8O22CDvJvjmQseUXaCYH2xbrrOYytengeGnI+taJSr4wK3pp/V8
+	 kACFlyxerEmHWzlga8OnYEc2xXRc0AIXq7C1yIvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/215] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
+Subject: [PATCH 4.19 62/98] drm/msm/dpu: dont play tricks with debug macros
 Date: Sun,  1 Sep 2024 18:16:32 +0200
-Message-ID: <20240901160826.378294870@linuxfoundation.org>
+Message-ID: <20240901160806.038198292@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
+[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
 
-__netlink_dump_start() releases nlk->cb_mutex right before
-calling netlink_dump() which grabs it again.
+DPU debugging macros need to be converted to a proper drm_debug_*
+macros, however this is a going an intrusive patch, not suitable for a
+fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
+to make sure that DPU debugging messages always end up in the drm debug
+messages and are controlled via the usual drm.debug mask.
 
-This seems dangerous, even if KASAN did not bother yet.
+I don't think that it is a good idea for a generic DPU_DEBUG macro to be
+tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
+default it should go to the DRM_UT_DRIVER channel. While refactoring
+debug macros later on we might end up with particular messages going to
+ATOMIC or KMS, but DRIVER should be the default.
 
-Add a @lock_taken parameter to netlink_dump() to let it
-grab the mutex if called from netlink_recvmsg() only.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606932/
+Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 18a38db2b27eb..258d885548ae4 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -128,7 +128,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
- 	"nlk_cb_mutex-MAX_LINKS"
- };
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index 97840b29fd7a2..2023cb0d21a8e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -41,24 +41,14 @@
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG(fmt, ...)                                                \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_KMS))                         \
+-			DRM_DEBUG(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
--static int netlink_dump(struct sock *sk);
-+static int netlink_dump(struct sock *sk, bool lock_taken);
+ /**
+  * DPU_DEBUG_DRIVER - macro for hardware driver logging
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
+-			DRM_ERROR(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
- /* nl_table locking explained:
-  * Lookup and traversal are protected with an RCU read-side lock. Insertion
-@@ -2000,7 +2000,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	if (READ_ONCE(nlk->cb_running) &&
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
--		ret = netlink_dump(sk);
-+		ret = netlink_dump(sk, false);
- 		if (ret) {
- 			WRITE_ONCE(sk->sk_err, -ret);
- 			sk_error_report(sk);
-@@ -2210,7 +2210,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
- 	return 0;
- }
- 
--static int netlink_dump(struct sock *sk)
-+static int netlink_dump(struct sock *sk, bool lock_taken)
- {
- 	struct netlink_sock *nlk = nlk_sk(sk);
- 	struct netlink_ext_ack extack = {};
-@@ -2222,7 +2222,8 @@ static int netlink_dump(struct sock *sk)
- 	int alloc_min_size;
- 	int alloc_size;
- 
--	mutex_lock(nlk->cb_mutex);
-+	if (!lock_taken)
-+		mutex_lock(nlk->cb_mutex);
- 	if (!nlk->cb_running) {
- 		err = -EINVAL;
- 		goto errout_skb;
-@@ -2378,9 +2379,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
- 	WRITE_ONCE(nlk->cb_running, true);
- 	nlk->dump_done_errno = INT_MAX;
- 
--	mutex_unlock(nlk->cb_mutex);
--
--	ret = netlink_dump(sk);
-+	ret = netlink_dump(sk, true);
- 
- 	sock_put(sk);
- 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
+ #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
 -- 
 2.43.0
 
