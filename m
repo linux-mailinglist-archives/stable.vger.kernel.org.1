@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989C1967786
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DE6967934
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16D89B21B73
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96DC1C21278
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B6E183090;
-	Sun,  1 Sep 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6429C184523;
+	Sun,  1 Sep 2024 16:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlfkE58Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwmC2h84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C352C1B4;
-	Sun,  1 Sep 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21129183CDC;
+	Sun,  1 Sep 2024 16:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207642; cv=none; b=NzF09Jg/Y82y1KPrkI+JfmYISEIt68ZWEGAL/Cm3gDzLW9+RHU/UeBFQsvB2v0vfijajcjkyakejkLrH3q+rRL0sDmwWYcp93xVhOEPVeHgHQ8KHHJW5kcB6HevC1HGjkGbFG6ZNoXH/xAmS26Tschue90WyxNpSP1apro4YocE=
+	t=1725208858; cv=none; b=SdvLzshJASVFMDsEdWPujMlh6jPusvNkffBAtfbSltwP3omaCeThumRHhnM27t1MgTuDAY9G6NlchNIXqSflUzF3I+i79DpPYoikc4aqkVGQ/kWPDaj3ghXBKHY7FWzTpZ4DcW8uti4sP+Kq8vfxyWh1yP0x5q39sIxFGGFjauw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207642; c=relaxed/simple;
-	bh=kRwqkHIOD9i6yjTKpahYW2ae48QNQ/fuyVbicz/wZmw=;
+	s=arc-20240116; t=1725208858; c=relaxed/simple;
+	bh=nETjvpv1nRABiGzCtPlgLtc+NdT/PSw3ApV4xsvRP8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bO5xSUF12E/qKQy895PfWDHYI1Hyd78SR+IXN/R3x3s7CC01Jco66WB6zn4ldkJ4cqXEL3Jr0eUUkbEIbJOWhmvdh/amsAF910a8FEDKPm1n/OxFxeDcSfelGqhBPx+9dOQjJVZMkEAWhrDz++3cvqb5CV9R2H8XEpwMVjMxxsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlfkE58Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB28C4CEC3;
-	Sun,  1 Sep 2024 16:20:41 +0000 (UTC)
+	 MIME-Version; b=tYaOugzGkf+9Ub0ZROmHDirVDjY3Qalld5Y3/0BDGuEC0YAd452QIyuuxohIGQY11x5LV91Y8IusTYsAOkQFBc0AXF36+qKF2CdxyTNjjoz16O404KiGiSmXjWP4BGm+NQLjXMSRbhznCPhIE7WWvXfFSx6Ourj/D7fZ0pME9Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwmC2h84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437CCC4CEC3;
+	Sun,  1 Sep 2024 16:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207642;
-	bh=kRwqkHIOD9i6yjTKpahYW2ae48QNQ/fuyVbicz/wZmw=;
+	s=korg; t=1725208857;
+	bh=nETjvpv1nRABiGzCtPlgLtc+NdT/PSw3ApV4xsvRP8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlfkE58Qy0ASM72Zeuv/Rx/SbyDWdTN1PUVVqmKVpy2jiLHVQaRnnfj6FthPIoEMY
-	 BM1lozbE0qgOudYEkMcafs/gXvx2Xwdu7tWxldHKo7swJOgObSrimH8t4kywPh+bWh
-	 e+sq1sw3+8R8KKddr3+DQoQgosCICcjsKQ5egWBQ=
+	b=FwmC2h84DYGAoHW/NKkTPAjyt+bbvEiNtJ0TCOApbtqjmaQ8HHPovhW9+ja7+sK+4
+	 DYHlJxsee7C1NsBVide0gqUTLy27/ownt2EQXzrq8j4+1A3eDDKD+T1wxvsIn/Yb0B
+	 FENmxwHcMWuv+jsKu+Iaexdeb69fwgvLQB+pNhws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li zeming <zeming@nfschina.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 34/98] powerpc/boot: Handle allocation failure in simple_realloc()
+Subject: [PATCH 5.4 018/134] atm: idt77252: prevent use after free in dequeue_rx()
 Date: Sun,  1 Sep 2024 18:16:04 +0200
-Message-ID: <20240901160804.984801373@linuxfoundation.org>
+Message-ID: <20240901160810.796945926@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li zeming <zeming@nfschina.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
+[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
 
-simple_malloc() will return NULL when there is not enough memory left.
-Check pointer 'new' before using it to copy the old data.
+We can't dereference "skb" after calling vcc->push() because the skb
+is released.
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
-[mpe: Reword subject, use change log from Christophe]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/atm/idt77252.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 65ec135d01579..188c4f996512a 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -114,7 +114,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index 605e992d25df5..06e2fea1ffa92 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -1117,8 +1117,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 	rpp->len += skb->len;
  
- 	new = simple_malloc(size);
--	memcpy(new, ptr, p->size);
-+	if (new)
-+		memcpy(new, ptr, p->size);
-+
- 	simple_free(ptr);
- 	return new;
- }
+ 	if (stat & SAR_RSQE_EPDU) {
++		unsigned int len, truesize;
+ 		unsigned char *l1l2;
+-		unsigned int len;
+ 
+ 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
+ 
+@@ -1188,14 +1188,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 		ATM_SKB(skb)->vcc = vcc;
+ 		__net_timestamp(skb);
+ 
++		truesize = skb->truesize;
+ 		vcc->push(vcc, skb);
+ 		atomic_inc(&vcc->stats->rx);
+ 
+-		if (skb->truesize > SAR_FB_SIZE_3)
++		if (truesize > SAR_FB_SIZE_3)
+ 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_2)
++		else if (truesize > SAR_FB_SIZE_2)
+ 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_1)
++		else if (truesize > SAR_FB_SIZE_1)
+ 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
+ 		else
+ 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
 -- 
 2.43.0
 
