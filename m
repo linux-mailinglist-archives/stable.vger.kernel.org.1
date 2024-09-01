@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB97F967931
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFEE96778E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA43281E55
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E2101C20B01
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5996717E46E;
-	Sun,  1 Sep 2024 16:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668F417E01C;
+	Sun,  1 Sep 2024 16:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9fjU2cu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="md4Opwe6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4231C68C;
-	Sun,  1 Sep 2024 16:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EDB16EB4B;
+	Sun,  1 Sep 2024 16:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208854; cv=none; b=HrasTKIFdJ++Aezx1hzGQWP0iDuIcpgtEmzbXyq5tBUuPM185HesEfQsj4RlrsC5GkUpdb8Cbcwqz6fLJsxaHVTDj/mLReF1geZy9rT0SVHMaaG3l8CXWil3OYwEAqBv0DjQadooW55qTuIbhiD8Jhoan9YYAjSThjcAipKId3E=
+	t=1725207675; cv=none; b=L9Ls+GpXPd/Bcib5qhBAzd7+wmO6uRg/jPyUNhBDFyYDWkZy1Ik+p9gkqWM713N/b+GpwXSaU7yyCHjIX9jGxnoxSIqikVkJIy+BHnNgGNlVcswcchGaQ4xM7yYQv65alVhHRmIoxIJokeuiTpPKp+PejGEA3zETEtFdjz+wcOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208854; c=relaxed/simple;
-	bh=RpsoFlqU6eFmJJhh70bJI6qzLPzpJu8bftfB5Uq3ta8=;
+	s=arc-20240116; t=1725207675; c=relaxed/simple;
+	bh=shXGe0sxiUgBw0WuoEvS7wAlXI0jyKkVtSyan+KPcEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DF7v4V5+B6cNEiUkg+pNGVJPEJAVLmH7QAJ816Mq2nN5NpJkMiHSCTiIx05/ycb6mFZr1lCtE2XN/TaXINEPchifvnJ3JfS/FSoARCm2NdQRb2WK5D+14CISR+pFTYSdlHzmqWNUuyyUph4ONxwAXcxx2/Kkpmhg7pycIHngllY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9fjU2cu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A06EC4CEC3;
-	Sun,  1 Sep 2024 16:40:53 +0000 (UTC)
+	 MIME-Version; b=j0gW7Z9DwqOT3yjPO55D7dOvGPpV/D1akOxj3Ez8kdaj6gDHfyFuvEHs6XubYgdCqaYLdzCx3MrGh6lA9UD06yppR1cqUMxk+6qQJhJX6KE+BLfNwdw0zXfuIlABhcUs501eVC7Qo74//Bb1ivzahn/m7Sq98k5iqdDOHn7/0fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=md4Opwe6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DA1C4CEC3;
+	Sun,  1 Sep 2024 16:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208853;
-	bh=RpsoFlqU6eFmJJhh70bJI6qzLPzpJu8bftfB5Uq3ta8=;
+	s=korg; t=1725207675;
+	bh=shXGe0sxiUgBw0WuoEvS7wAlXI0jyKkVtSyan+KPcEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9fjU2cuPf//meLtotifhpfT16DRMqORgeCVhi5posM1QtsdFKmcBCL3X/qD1OJlx
-	 7pElPA62PB2OTP1hyuDlrZryZXremY7/icqAn/u1LjmeuEDBglR5UMjEnliCu53NQQ
-	 RdZo7eU8H5yDnZ6ZMvb3Wij0ORcBbW+CUM9BeKSo=
+	b=md4Opwe6oqUzfAQXs1L/miVFJKICttZn1n/+L5rL7mmxMTpbCibERVEP7VtmzfDik
+	 fXspKtIxEMDyl1IZ1OoUMbO4hrdWyFXHmUxYGvlH1fp6ww4E1pn3SkPeJGkiKDo+B9
+	 AKBjaeinOx8FwJAs4jeBjtANVThl8/HnaFoGnuGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	NeilBrown <neilb@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/134] net: axienet: Fix register defines comment description
+Subject: [PATCH 4.19 43/98] NFS: avoid infinite loop in pnfs_update_layout.
 Date: Sun,  1 Sep 2024 18:16:13 +0200
-Message-ID: <20240901160811.129851595@linuxfoundation.org>
+Message-ID: <20240901160805.324169944@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 9ff2f816e2aa65ca9a1cdf0954842f8173c0f48d ]
+[ Upstream commit 2fdbc20036acda9e5694db74a032d3c605323005 ]
 
-In axiethernet header fix register defines comment description to be
-inline with IP documentation. It updates MAC configuration register,
-MDIO configuration register and frame filter control description.
+If pnfsd_update_layout() is called on a file for which recovery has
+failed it will enter a tight infinite loop.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+NFS_LAYOUT_INVALID_STID will be set, nfs4_select_rw_stateid() will
+return -EIO, and nfs4_schedule_stateid_recovery() will do nothing, so
+nfs4_client_recover_expired_lease() will not wait.  So the code will
+loop indefinitely.
+
+Break the loop by testing the validity of the open stateid at the top of
+the loop.
+
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/nfs/pnfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index fbaf3c987d9c1..bf1a19a00adc6 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -159,16 +159,16 @@
- #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
- #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
- #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
--#define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
--#define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
-+#define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
-+#define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
- #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
--#define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
--#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
--#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
--#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MII Management Read Data */
-+#define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
-+#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
-+#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
-+#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MDIO Read Data */
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
--#define XAE_FMI_OFFSET		0x00000708 /* Filter Mask Index */
-+#define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index cfb1fe5dfb1e1..7a0d9a1e6d134 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1889,6 +1889,14 @@ pnfs_update_layout(struct inode *ino,
+ 	}
  
-@@ -307,7 +307,7 @@
-  */
- #define XAE_UAW1_UNICASTADDR_MASK	0x0000FFFF
- 
--/* Bit masks for Axi Ethernet FMI register */
-+/* Bit masks for Axi Ethernet FMC register */
- #define XAE_FMI_PM_MASK			0x80000000 /* Promis. mode enable */
- #define XAE_FMI_IND_MASK		0x00000003 /* Index Mask */
- 
+ lookup_again:
++	if (!nfs4_valid_open_stateid(ctx->state)) {
++		trace_pnfs_update_layout(ino, pos, count,
++					 iomode, lo, lseg,
++					 PNFS_UPDATE_LAYOUT_INVALID_OPEN);
++		lseg = ERR_PTR(-EIO);
++		goto out;
++	}
++
+ 	lseg = ERR_PTR(nfs4_client_recover_expired_lease(clp));
+ 	if (IS_ERR(lseg))
+ 		goto out;
 -- 
 2.43.0
 
