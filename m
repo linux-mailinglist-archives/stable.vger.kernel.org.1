@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DA89677F1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C8E967AC7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEB471F2131D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F143D1F213AE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8ACF181B88;
-	Sun,  1 Sep 2024 16:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5572C190;
+	Sun,  1 Sep 2024 17:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9PFswNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ww5cssLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66647143894;
-	Sun,  1 Sep 2024 16:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0A417C;
+	Sun,  1 Sep 2024 17:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207960; cv=none; b=hBFXL2YxxQiYg/V8EXTeN7ROWdDJQYbmn3My7wmG77h3Y70YlyrbZzq35Rv9g/kVtv16Dvc7DlcaWBWjueLiaCHYva6HQyQzxdZsf0E8QhhrehP/SsjfDxbFWxiGw93LBr2xWJ99ui2u/spjg3KNHLxx5zxKOY0wqB0Pz3K9yFY=
+	t=1725210046; cv=none; b=pPlO6dX5KMFnk0lglUwTofZ8ifQ0B1c19oSjGCRoZI4z2I59bsGjSPTOpRdN7LlLn3usH7gmMjdiNcTBNrZ3pb8Hv1vn4lY5s9muTLIw7wFKHjGZ+uf55bkzJ/uVRAqzkDNPewPL6ZHccL9eT3HfDuJINQrZr4eTU7WR2G3aelc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207960; c=relaxed/simple;
-	bh=btUpvuseOLguA06Ld7KYZI9Fx9MYMcQiGbz5VRrEsXk=;
+	s=arc-20240116; t=1725210046; c=relaxed/simple;
+	bh=J+9bkZ2TaBDtONW1F0xcOBZBT47VvvXBvsO5e43ogJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kjdw9n/N7vLtPJgE7AkTSqYmIDIGucVPJGt6JWNibp1An45O7vC0wksclp+UO90TIuxUptD/hGcZVfIGqnMCYExZa9WDqN5268LQ3e0pu+y8/+Mho07c7mOzFohzgvS29xkg5lfA30OpcPa+kkw68XTnaWuTIkIZU2YE2eVIuEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9PFswNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB833C4CEC3;
-	Sun,  1 Sep 2024 16:25:59 +0000 (UTC)
+	 MIME-Version; b=bB45aUtTSejl4fyv1ugUEaiSe3PC4yE+xa/fTu5TcOw0nas5rS36DhiOEkuj/8gXeQfozMyGBczHWNC2+N12TIQvGMJfqByWAEdgFnleqVOzxFbVJpYnfO+WdSLWdM1u+HiB3xj2EH2kxGBp+k87eoKRhy4RV6XBfd63f9Zv9Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ww5cssLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FA8C4CEC3;
+	Sun,  1 Sep 2024 17:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207960;
-	bh=btUpvuseOLguA06Ld7KYZI9Fx9MYMcQiGbz5VRrEsXk=;
+	s=korg; t=1725210046;
+	bh=J+9bkZ2TaBDtONW1F0xcOBZBT47VvvXBvsO5e43ogJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9PFswNWsKbdd6BtMKQIUQR4b478KWHIiyRZy87XLfzGdcxC7uGesyIrkuz9Om6Em
-	 DPmdA6gho3KD26xJgQVUpEpZnflZeOkhKF+IOEFXwCgpUVeExEIYmKX8JPbSaftGSM
-	 zMMuV2vx517wMU7jKuxF0kS1s3+uNRQE40E3KZhA=
+	b=ww5cssLEjRTeB1zN6qA8yoFXfqKjnSHtkSuTi7oF0vqMstiN2HlAwiVXU3PpdcZmV
+	 G3xthu5tr/8kssbUOBKBEgQzCTk6a4M5ahhjT806OeXAVePZb4tSFLqPyQ9GzEGgA7
+	 2wJ3bRLwktdREpOdnd0I8gHb5jeusZ97MT1Y4iUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 05/93] smb/client: avoid dereferencing rdata=NULL in smb2_new_read_req()
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 040/215] net: hns3: fix wrong use of semaphore up
 Date: Sun,  1 Sep 2024 18:15:52 +0200
-Message-ID: <20240901160807.557724841@linuxfoundation.org>
+Message-ID: <20240901160824.860296210@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit c724b2ab6a46435b4e7d58ad2fbbdb7a318823cf upstream.
+[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
 
-This happens when called from SMB2_read() while using rdma
-and reaching the rdma_readwrite_threshold.
+Currently, if hns3 PF or VF FLR reset failed after five times retry,
+the reset done process will directly release the semaphore
+which has already released in hclge_reset_prepare_general.
+This will cause down operation fail.
 
-Cc: stable@vger.kernel.org
-Fixes: a6559cc1d35d ("cifs: split out smb3_use_rdma_offload() helper")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So this patch fixes it by adding reset state judgement. The up operation is
+only called after successful PF FLR reset.
+
+Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
+Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4431,7 +4431,7 @@ smb2_new_read_req(void **buf, unsigned i
- 	 * If we want to do a RDMA write, fill in and append
- 	 * smbd_buffer_descriptor_v1 to the end of read request
- 	 */
--	if (smb3_use_rdma_offload(io_parms)) {
-+	if (rdata && smb3_use_rdma_offload(io_parms)) {
- 		struct smbd_buffer_descriptor_v1 *v1;
- 		bool need_invalidate = server->dialect == SMB30_PROT_ID;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c3690e49c3d95..eb902e80a8158 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11636,8 +11636,8 @@ static void hclge_reset_done(struct hnae3_ae_dev *ae_dev)
+ 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
  
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
+ }
+ 
+ static void hclge_clear_resetting_state(struct hclge_dev *hdev)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index a41e04796b0b6..5b861a2a3e73e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2217,8 +2217,8 @@ static void hclgevf_reset_done(struct hnae3_ae_dev *ae_dev)
+ 			 ret);
+ 
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
+ }
+ 
+ static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
+-- 
+2.43.0
+
 
 
 
