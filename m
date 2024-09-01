@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690E9967B3C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3733E967A6F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 982C31C20D3C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E495C281B8E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FF53BB59;
-	Sun,  1 Sep 2024 17:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64333181CE1;
+	Sun,  1 Sep 2024 16:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhwSaRNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnBnGNNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0426AC1;
-	Sun,  1 Sep 2024 17:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2049044C93;
+	Sun,  1 Sep 2024 16:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210420; cv=none; b=gVpHK75nFlOAxMl3nnY4GG8LXLIgROyBY+HfIzU/NDdlNb2j/tp3QvAmUHbuf1LnUGV4ad6zDR9NLN96C2Tp0Bk1kRvI0E8vcm25+1PuNeQ2UAXyrkjacanwJnKAjLh2buO9So3O/hEDGj368Yo80GExsiRCLY1lwOYEM/PNAGE=
+	t=1725209764; cv=none; b=Ei+GxlALE/q/ML+XOZwc9dsWg2ADx4Sqm/w8wSDE1yFWXWsADTa7C+UCqjjYrLFoeMahAUhujyESG3HQY5jUQ75OzimiyMaYVBvtAaubmRpNdSdUbF1cwv8cGNeOjtvfM0IOAxzb2GAyq2dNmfxJWhTmn+IYBs9fMJU1yFt43mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210420; c=relaxed/simple;
-	bh=0bq8dO+o4EyDs5jqZWGQA2vljOhGezsfK7qy96DG1T8=;
+	s=arc-20240116; t=1725209764; c=relaxed/simple;
+	bh=2i56TGGo1KJPMhDyWOV1mlzb6lxctA0KUm+yzmueWAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYO/tLY+QPfIWxWOv/60FLVA4azIoOjjpKrX+nVjsZvw2y2yhthzbSTSZHvWHb4aIhsxp/AwhkRBFP+gURtimaNC3FMWQlLAJVD1D8MZsZTPehfPNxHbeS555tzZc/yedd02jECOoIKhfVvTPR572C0lngCeULn/LIVBIGusJIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhwSaRNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293C3C4CEC3;
-	Sun,  1 Sep 2024 17:06:59 +0000 (UTC)
+	 MIME-Version; b=lg4OqMFjSWdHHiQwgN5n+ZFfKKQyLdxDgC4uP+o0tZMCO2D1dniU/RT8Sv5Yc5Ck3Twf8ahBjfgDf0vNGTFrEixP3eWaItN5jonEQ+Gda2JFc8hLxoKstlL3ynxyzY9eYlBpTTzXh+Ioh/J0shawlmIRmRsdjbUakfam4fTQO8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnBnGNNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE20C4CEC3;
+	Sun,  1 Sep 2024 16:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210420;
-	bh=0bq8dO+o4EyDs5jqZWGQA2vljOhGezsfK7qy96DG1T8=;
+	s=korg; t=1725209764;
+	bh=2i56TGGo1KJPMhDyWOV1mlzb6lxctA0KUm+yzmueWAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhwSaRNnPYafnOyWIwRphQ3DEP8Eyya6ldq/6zwGjDfQc8PNaKRykbW7nXyLI/P1S
-	 nkeeE8BgBOCdkb0gaI6zwQ3YaN3Baf7UB2+ssjYGRWFhenuF95HSLJC+csPwGTaTtS
-	 bDPGbd5f+oqDS+H6ZX9UfVFmIATf+E1qzrPgH1V0=
+	b=WnBnGNNNnGnWztuSTH5XeXCJLLFMt+FukdzvWt+cmAVwDJRRMdMV6n9ikLW+1eUMj
+	 oOViye15HEyx7+AGNooZxqlV8P9LQ20CLgtJmHqmO3CjKd+5fLGfQoXqbP/9Z79Gn5
+	 NCmBwGH97db5KQJascfBoFRHyYP1mVUitEQyHaxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.15 185/215] cgroup/cpuset: Prevent UAF in proc_cpuset_show()
-Date: Sun,  1 Sep 2024 18:18:17 +0200
-Message-ID: <20240901160830.351279942@linuxfoundation.org>
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 138/151] ethtool: check device is present when getting link settings
+Date: Sun,  1 Sep 2024 18:18:18 +0200
+Message-ID: <20240901160819.297700110@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-commit 1be59c97c83ccd67a519d8a49486b3a8a73ca28a upstream.
+[ Upstream commit a699781c79ecf6cfe67fb00a0331b4088c7c8466 ]
 
-An UAF can happen when /proc/cpuset is read as reported in [1].
+A sysfs reader can race with a device reset or removal, attempting to
+read device state when the device is not actually present. eg:
 
-This can be reproduced by the following methods:
-1.add an mdelay(1000) before acquiring the cgroup_lock In the
- cgroup_path_ns function.
-2.$cat /proc/<pid>/cpuset   repeatly.
-3.$mount -t cgroup -o cpuset cpuset /sys/fs/cgroup/cpuset/
-$umount /sys/fs/cgroup/cpuset/   repeatly.
+     [exception RIP: qed_get_current_link+17]
+  #8 [ffffb9e4f2907c48] qede_get_link_ksettings at ffffffffc07a994a [qede]
+  #9 [ffffb9e4f2907cd8] __rh_call_get_link_ksettings at ffffffff992b01a3
+ #10 [ffffb9e4f2907d38] __ethtool_get_link_ksettings at ffffffff992b04e4
+ #11 [ffffb9e4f2907d90] duplex_show at ffffffff99260300
+ #12 [ffffb9e4f2907e38] dev_attr_show at ffffffff9905a01c
+ #13 [ffffb9e4f2907e50] sysfs_kf_seq_show at ffffffff98e0145b
+ #14 [ffffb9e4f2907e68] seq_read at ffffffff98d902e3
+ #15 [ffffb9e4f2907ec8] vfs_read at ffffffff98d657d1
+ #16 [ffffb9e4f2907f00] ksys_read at ffffffff98d65c3f
+ #17 [ffffb9e4f2907f38] do_syscall_64 at ffffffff98a052fb
 
-The race that cause this bug can be shown as below:
+ crash> struct net_device.state ffff9a9d21336000
+    state = 5,
 
-(umount)		|	(cat /proc/<pid>/cpuset)
-css_release		|	proc_cpuset_show
-css_release_work_fn	|	css = task_get_css(tsk, cpuset_cgrp_id);
-css_free_rwork_fn	|	cgroup_path_ns(css->cgroup, ...);
-cgroup_destroy_root	|	mutex_lock(&cgroup_mutex);
-rebind_subsystems	|
-cgroup_free_root 	|
-			|	// cgrp was freed, UAF
-			|	cgroup_path_ns_locked(cgrp,..);
+state 5 is __LINK_STATE_START (0b1) and __LINK_STATE_NOCARRIER (0b100).
+The device is not present, note lack of __LINK_STATE_PRESENT (0b10).
 
-When the cpuset is initialized, the root node top_cpuset.css.cgrp
-will point to &cgrp_dfl_root.cgrp. In cgroup v1, the mount operation will
-allocate cgroup_root, and top_cpuset.css.cgrp will point to the allocated
-&cgroup_root.cgrp. When the umount operation is executed,
-top_cpuset.css.cgrp will be rebound to &cgrp_dfl_root.cgrp.
+This is the same sort of panic as observed in commit 4224cfd7fb65
+("net-sysfs: add check for netdevice being present to speed_show").
 
-The problem is that when rebinding to cgrp_dfl_root, there are cases
-where the cgroup_root allocated by setting up the root for cgroup v1
-is cached. This could lead to a Use-After-Free (UAF) if it is
-subsequently freed. The descendant cgroups of cgroup v1 can only be
-freed after the css is released. However, the css of the root will never
-be released, yet the cgroup_root should be freed when it is unmounted.
-This means that obtaining a reference to the css of the root does
-not guarantee that css.cgrp->root will not be freed.
+There are many other callers of __ethtool_get_link_ksettings() which
+don't have a device presence check.
 
-Fix this problem by using rcu_read_lock in proc_cpuset_show().
-As cgroup_root is kfree_rcu after commit d23b5c577715
-("cgroup: Make operations on the cgroup root_list RCU safe"),
-css->cgroup won't be freed during the critical section.
-To call cgroup_path_ns_locked, css_set_lock is needed, so it is safe to
-replace task_get_css with task_css.
+Move this check into ethtool to protect all callers.
 
-[1] https://syzkaller.appspot.com/bug?extid=9b1ff7be974a403aa4cd
-
-Fixes: a79a908fd2b0 ("cgroup: introduce cgroup namespaces")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d519e17e2d01 ("net: export device speed and duplex via sysfs")
+Fixes: 4224cfd7fb65 ("net-sysfs: add check for netdevice being present to speed_show")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Link: https://patch.msgid.link/8bae218864beaa44ed01628140475b9bf641c5b0.1724393671.git.jamie.bainbridge@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/core/net-sysfs.c | 2 +-
+ net/ethtool/ioctl.c  | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -22,6 +22,7 @@
-  *  distribution for more details.
-  */
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 989b3f7ee85f4..99303897b7bb7 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -213,7 +213,7 @@ static ssize_t speed_show(struct device *dev,
+ 	if (!rtnl_trylock())
+ 		return restart_syscall();
  
-+#include "cgroup-internal.h"
- #include <linux/cpu.h>
- #include <linux/cpumask.h>
- #include <linux/cpuset.h>
-@@ -3780,10 +3781,14 @@ int proc_cpuset_show(struct seq_file *m,
- 	if (!buf)
- 		goto out;
+-	if (netif_running(netdev) && netif_device_present(netdev)) {
++	if (netif_running(netdev)) {
+ 		struct ethtool_link_ksettings cmd;
  
--	css = task_get_css(tsk, cpuset_cgrp_id);
--	retval = cgroup_path_ns(css->cgroup, buf, PATH_MAX,
--				current->nsproxy->cgroup_ns);
--	css_put(css);
-+	rcu_read_lock();
-+	spin_lock_irq(&css_set_lock);
-+	css = task_css(tsk, cpuset_cgrp_id);
-+	retval = cgroup_path_ns_locked(css->cgroup, buf, PATH_MAX,
-+				       current->nsproxy->cgroup_ns);
-+	spin_unlock_irq(&css_set_lock);
-+	rcu_read_unlock();
+ 		if (!__ethtool_get_link_ksettings(netdev, &cmd))
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 12bf740e2fb31..0a588545d3526 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -432,6 +432,9 @@ int __ethtool_get_link_ksettings(struct net_device *dev,
+ 	if (!dev->ethtool_ops->get_link_ksettings)
+ 		return -EOPNOTSUPP;
+ 
++	if (!netif_device_present(dev))
++		return -ENODEV;
 +
- 	if (retval >= PATH_MAX)
- 		retval = -ENAMETOOLONG;
- 	if (retval < 0)
+ 	memset(link_ksettings, 0, sizeof(*link_ksettings));
+ 	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
+ }
+-- 
+2.43.0
+
 
 
 
