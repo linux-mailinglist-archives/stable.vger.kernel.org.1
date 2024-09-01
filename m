@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE1967936
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C44B967AE3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF1F1C209B8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DCE01C21279
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0AA181CE1;
-	Sun,  1 Sep 2024 16:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0980017E918;
+	Sun,  1 Sep 2024 17:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYkIsQOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhAsMjrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6AA17CA1F;
-	Sun,  1 Sep 2024 16:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6753B79C;
+	Sun,  1 Sep 2024 17:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208867; cv=none; b=S8pzVDVyptYIrjrZGpMWjY5tf4Dsf/IRGnMfZ3EQEaD1SBYB9zKY3IJzRrXox4lnxibJoC3ujixrxFWU7a76Y+TfkSYA9SJc79T0LuX5sJ275tS06p6wHAfB6RfnwKoYcnGZRsq6ldnNsDryNSroMlXonlwpOwnfCTAsTKbRhTg=
+	t=1725210136; cv=none; b=HEZ7odqfqhd+CaQH7yfWtm/ZJn35rCAmDJ/QesAusyo7qQPEEtW0EA0Zzo57wEW+3UBwQ465bYl1jN8srRQOhBbgQ6UzVZh7ROzwWmWVHC1e7Aa3mfl0aFGVYWxywYgVC3tQnPQLLsH/lXrDrup5WjLpAWXI3tdtSlligBTCLnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208867; c=relaxed/simple;
-	bh=wYiKBCmR/TI2wJcccArIh6l9yefFl06tMXqEjXAPVz4=;
+	s=arc-20240116; t=1725210136; c=relaxed/simple;
+	bh=q8VHbLgDdv/fsbJAurdtZBUYulTn3P0doaZvNBvB6XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYRmHu7BxBKKNnclKY08pP7zFdN4ySxKYz47bBiW68w4n/UKG7GCdc4/Qs0XaRkTOWT40S6ccJoH7wlMo3b+3kLpODAos53ycYYrKVCyrhDiH+xv421dIsHmAdzMFMnzmpIkFGzS+GNr3349JAz+p1QBgdAjRUqAEF7En1ydQr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYkIsQOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921BFC4CEC3;
-	Sun,  1 Sep 2024 16:41:06 +0000 (UTC)
+	 MIME-Version; b=KwdvpFybCNYj1neVBdbrxmQo9ZBuQKZ8cMhP+ju9sGhElR/PyI1+HwzfyCuAr7PBtpPpoETk9fh4JBQWoLlVxhBoMfuRUFfRTvS1+wVqnhYnJ2ozkQI+LsVnx10DW1a6YhwsgY4ycWuHowbSx2C5u9Bej4NKss9SQx42kx+wspw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhAsMjrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E78C4CEC3;
+	Sun,  1 Sep 2024 17:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208867;
-	bh=wYiKBCmR/TI2wJcccArIh6l9yefFl06tMXqEjXAPVz4=;
+	s=korg; t=1725210136;
+	bh=q8VHbLgDdv/fsbJAurdtZBUYulTn3P0doaZvNBvB6XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYkIsQOgOxLk9P/NJk5mzvFD9a+hQnt0nw1tqcMgMgCnc6/EggoPnAYo4tcbl/0Hu
-	 LSfnP00ES7nkdh4KjISC/jYXsLv7H0Y4FPkH6nZ7c+EOfm+bknYpD+1k1546yX56S2
-	 LfRC3EOHD7sKI8IQu+RK13GG17SukfflvBeVw24I=
+	b=AhAsMjrwjr4ZEBqP59CizBzdSyCPnx1BlpJehDKkrk0ukv3lxZz57sXTjzTdpkQLU
+	 vfobWuwlF3nnjvMuN+GqXaoV949yJ5Mm/mhVSFxxZbtMJWkEHoRZJASgxU1ag3Rco+
+	 jILAWKL3nMQmFyPwtlOxx6imZRKX/mQIN7pC7WGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/134] nvmet-tcp: do not continue for invalid icreq
+Subject: [PATCH 5.15 098/215] openrisc: Call setup_memory() earlier in the init sequence
 Date: Sun,  1 Sep 2024 18:16:50 +0200
-Message-ID: <20240901160812.510562967@linuxfoundation.org>
+Message-ID: <20240901160827.055534146@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
 
-[ Upstream commit 0889d13b9e1cbef49e802ae09f3b516911ad82a1 ]
+[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
 
-When the length check for an icreq sqe fails we should not
-continue processing but rather return immediately as all
-other contents of that sqe cannot be relied on.
+The unflatten_and_copy_device_tree() function contains a call to
+memblock_alloc(). This means that memblock is allocating memory before
+any of the reserved memory regions are set aside in the setup_memory()
+function which calls early_init_fdt_scan_reserved_mem(). Therefore,
+there is a possibility for memblock to allocate from any of the
+reserved memory regions.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Hence, move the call to setup_memory() to be earlier in the init
+sequence so that the reserved memory regions are set aside before any
+allocations are done using memblock.
+
+Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/openrisc/kernel/setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index d40bd57537ba1..fa6e7fbf356e7 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -792,6 +792,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 		pr_err("bad nvme-tcp pdu length (%d)\n",
- 			le32_to_cpu(icreq->hdr.plen));
- 		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
- 	}
+diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
+index 0cd04d936a7a1..f2fe45d3094df 100644
+--- a/arch/openrisc/kernel/setup.c
++++ b/arch/openrisc/kernel/setup.c
+@@ -270,6 +270,9 @@ void calibrate_delay(void)
  
- 	if (icreq->pfv != NVME_TCP_PFV_1_0) {
+ void __init setup_arch(char **cmdline_p)
+ {
++	/* setup memblock allocator */
++	setup_memory();
++
+ 	unflatten_and_copy_device_tree();
+ 
+ 	setup_cpuinfo();
+@@ -293,9 +296,6 @@ void __init setup_arch(char **cmdline_p)
+ 	}
+ #endif
+ 
+-	/* setup memblock allocator */
+-	setup_memory();
+-
+ 	/* paging_init() sets up the MMU and marks all pages as reserved */
+ 	paging_init();
+ 
 -- 
 2.43.0
 
