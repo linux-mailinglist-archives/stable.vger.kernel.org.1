@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B6A967B26
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B646967A58
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C77FB2084C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267C81F23E40
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F617ADE1;
-	Sun,  1 Sep 2024 17:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B834A18132A;
+	Sun,  1 Sep 2024 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6d/6crL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVMbunCH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209FB376EC;
-	Sun,  1 Sep 2024 17:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76453208A7;
+	Sun,  1 Sep 2024 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210348; cv=none; b=HhgqsOAchXHEUi+hlT+e2unwFO3Y9lwYjNKX5nnny7bvQ76ieLZYqEge8ZaJj4qlLE3qqIt9KrXVvP6ZhmuFE7jG8B39hthMnlffGOMAWKRJ7TF0uU7yAsrrwY0kLnX8iAtsHVHEsMJBO9R3WEkr76NiQZpX2LJJ7iAWgTXdYhE=
+	t=1725209690; cv=none; b=gqr8bKEVcRc+5MRxQD5kFTv9v7SDVz3Yd2Tj3tHlUSxh0EWu/OC8z4llYGTrCfKsiIbYVpztYs2ifbD+5onQcsnZv911kvRRTyP1JFeKbZuqs5rskusOJrrBTS1Yp2wNdf62J+9qjOTNOXRXMW3Ripr7I34qxmPB9MseDzYWiWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210348; c=relaxed/simple;
-	bh=12cekVmXKJp+HTsp75JrFRnrkVoqR+wF4F07LVsh/pM=;
+	s=arc-20240116; t=1725209690; c=relaxed/simple;
+	bh=p7RpoQeqGGYCL+2dgULjvTYWlkuSJ1dqR17aZXx8Qdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Miqv5PNNiDM45iGA1JqniS5kVHO91XauA5W8iKg9wCtmFQ2TMFPgU4MXnNWaYKIiq89VDAuIZaG5/vfKNErUhtTrDOnZGSmcTppzpoGxDM6R2terFMrgyCteZfI5spaBdgsQVIzmY9M0IAqycXiqsJehPgXFk1iNLf/HMktRRdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6d/6crL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E2BC4CEC3;
-	Sun,  1 Sep 2024 17:05:47 +0000 (UTC)
+	 MIME-Version; b=b6f35mh6ven5FnyoJtgGMX6K12+ZHt32QTb4q4QmjMEatb6IdXVcW/c+NpPUMGLOtb472aoP2deIAhVBwX+zj13jboQdewasbbdQ6Oevb7PsTVLcmvsJp8W7Es9716HFxjuvFKYezpiroy5MAZj2+jQx3YYl0zuRb9mrF5IZsSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVMbunCH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D6DC4CEC3;
+	Sun,  1 Sep 2024 16:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210348;
-	bh=12cekVmXKJp+HTsp75JrFRnrkVoqR+wF4F07LVsh/pM=;
+	s=korg; t=1725209690;
+	bh=p7RpoQeqGGYCL+2dgULjvTYWlkuSJ1dqR17aZXx8Qdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6d/6crLJFoTP7323JBL6jGt3yIu96apbl0IKxRFM3T9hghntx/CHuIgRQ0eAeby5
-	 xm1vnVl7JlZSIS09lxT19A647AQGm2JCZEPDOPQFncrv86neko9blbYlvw+9HDfGdt
-	 Ezni+WmPBRjJKT4vYIoFuyGTYUS1C7yE9ynBqnKs=
+	b=jVMbunCH8k5uLzlpAJPWTFHWbZtueXKxlkmEBPMOx86MoV6uBoPc70Xfohp+aJFDm
+	 AjkTeT/bYQ2rk44dV85nAWxH059OL+Td6IFEVQRP2OklgP3R8obHsKYnd2AWIQnHFG
+	 Bc5CzQnVlzNbAH/BWAFy5sY88sJz6kLgX4ySb0xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 162/215] HID: wacom: Defer calculation of resolution until resolution_code is known
+	Ben Whitten <ben.whitten@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 114/151] mmc: dw_mmc: allow biu and ciu clocks to defer
 Date: Sun,  1 Sep 2024 18:17:54 +0200
-Message-ID: <20240901160829.484131454@linuxfoundation.org>
+Message-ID: <20240901160818.398411511@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Ben Whitten <ben.whitten@gmail.com>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+Fix a race condition if the clock provider comes up after mmc is probed,
+this causes mmc to fail without retrying.
+When given the DEFER error from the clk source, pass it on up the chain.
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
+Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
+Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/dw_mmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1924,12 +1924,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
- 
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
- 	}
- 
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3171,6 +3171,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->biu_clk = devm_clk_get(host->dev, "biu");
+ 	if (IS_ERR(host->biu_clk)) {
+ 		dev_dbg(host->dev, "biu clock not available\n");
++		ret = PTR_ERR(host->biu_clk);
++		if (ret == -EPROBE_DEFER)
++			return ret;
 +
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
+ 	} else {
+ 		ret = clk_prepare_enable(host->biu_clk);
+ 		if (ret) {
+@@ -3182,6 +3186,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
+ 	if (IS_ERR(host->ciu_clk)) {
+ 		dev_dbg(host->dev, "ciu clock not available\n");
++		ret = PTR_ERR(host->ciu_clk);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_biu;
++
+ 		host->bus_hz = host->pdata->bus_hz;
+ 	} else {
+ 		ret = clk_prepare_enable(host->ciu_clk);
 
 
 
