@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14F9967A09
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C75F9678B9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC341C214A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB93BB22507
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD41183087;
-	Sun,  1 Sep 2024 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBA52B9C7;
+	Sun,  1 Sep 2024 16:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWwb9AXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3oUB0Wh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267EB1C68C;
-	Sun,  1 Sep 2024 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8A917E900;
+	Sun,  1 Sep 2024 16:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209449; cv=none; b=jnztc5SoPxK0ShNvUC6uaks6YR2h6zYqmPd3xF9CCY2WZ1/lJVkF7t/y4o1ZfsFeT6nZBl92Drl63znWp5nJS/r0MW8w8d3Tsu8mncqdB7jQ9J9k7dJJg6iuQAbkLdk5P7jAMGAezH79/XSO47yCwjnEff/NEzcFCHq8Vo0M3/w=
+	t=1725208485; cv=none; b=tgIVjlWUo/pPoNEXlBik3UC9yHPjoNg8shNVCGwwtbcff81hXtV//qWxKFdxGbmiAf0z7eOVzdtj7ktUm+WpJKStRAC5fOLG7YHNB0JmnNUnQLqFgwvsG2U8MEIMGdYczGaHkyNH1jtCv3lsQbDPUvGhTQwSzylGbiI74tkOB1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209449; c=relaxed/simple;
-	bh=fQj6k945/yIcPc0t5TcaXFNOGqhXdTZ5q6T13wAF9CM=;
+	s=arc-20240116; t=1725208485; c=relaxed/simple;
+	bh=PyfanMebsZwRu/Emy2Kcd1E+FAWV8xojvAMsojqpDU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGYXUaJqHIvXKIcCCQIU/QvyymWf4Fv0Qp+aTyPAT+pxTCFItWHSmrGaxGP/mfXDsOY3sPPFWtoNkuPBzUN6EnhZXAMVfZW272IiqxRIx0W/kHdV6T3O+hyfiMEqysaysEG6eSzv5R3ee9A51FFZr80eLk+GABltjrenKolM5pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWwb9AXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28FCC4CEC3;
-	Sun,  1 Sep 2024 16:50:48 +0000 (UTC)
+	 MIME-Version; b=B2efQiG6LSURXDQKaMOYol/c7LvwKEYHfjMOPr21/vNlTTzDv8mEDkY1RIMu7WkmHOZo/7lWZXheyaQuiL42k0an5yWVUNE+NKad1GG6vkYTOOdxzZjTD7t9NCKAp236l2nj6j9RIYz55JoJ3atOoTPYtWSg9eEMa/LlXb4KPDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3oUB0Wh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5099CC4CEC3;
+	Sun,  1 Sep 2024 16:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209449;
-	bh=fQj6k945/yIcPc0t5TcaXFNOGqhXdTZ5q6T13wAF9CM=;
+	s=korg; t=1725208484;
+	bh=PyfanMebsZwRu/Emy2Kcd1E+FAWV8xojvAMsojqpDU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWwb9AXHyprvWrCKmtT46GUk5mSILWXzn7Sg8JBqY+jIsxL9hl85vbsRvnrVQS2N2
-	 kCRgmsXk9nY8qBimNoRgmFLcl8BOq594ccYUBWt2HWYBO4uhlQtUbvQdfPMwLjUpDW
-	 O4IQe9Kv/ZAqgMo3/aQ0zYMsss1B80b5V1+Vhgxw=
+	b=q3oUB0Wheg+VOHVejOvfkESER92dHeV/C3Zbo80cGjxPbmdZD3a2c6opOWvuCAjJE
+	 dhDGq9jZM+3rB5/jmYKKo/YgQt3MzcIEfsM+LK9Oxs7ultoqoWnUkBHwojdy+kaPU4
+	 L+7iF78My2/niiy50piYouB7e/qrvcVvoP7mHDf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/151] staging: ks7010: disable bh on tx_dev_lock
+Subject: [PATCH 6.10 089/149] cpufreq/amd-pstate-ut: Dont check for highest perf matching on prefcore
 Date: Sun,  1 Sep 2024 18:16:40 +0200
-Message-ID: <20240901160815.609310566@linuxfoundation.org>
+Message-ID: <20240901160820.812819880@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
+[ Upstream commit 9983a9cd4d429dc9ca01770083c4c1f366214b65 ]
 
-As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
-could be call from timer under softirq context, use spin_lock_bh()
-on it to prevent potential deadlock.
+If a system is using preferred cores the highest perf will be inconsistent
+as it can change from system events.
 
-hostif_sme_work()
---> hostif_sme_set_pmksa()
---> hostif_mib_set_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
+Skip the checks for it.
 
-ks_wlan_start_xmit()
---> hostif_data_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e571a5e2068e ("cpufreq: amd-pstate: Update amd-pstate preferred core ranking dynamically")
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/amd-pstate-ut.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
-index 8c740c771f509..8e3fc4b78fd20 100644
---- a/drivers/staging/ks7010/ks7010_sdio.c
-+++ b/drivers/staging/ks7010/ks7010_sdio.c
-@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
- 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
- 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
+diff --git a/drivers/cpufreq/amd-pstate-ut.c b/drivers/cpufreq/amd-pstate-ut.c
+index 66b73c308ce67..b7318669485e4 100644
+--- a/drivers/cpufreq/amd-pstate-ut.c
++++ b/drivers/cpufreq/amd-pstate-ut.c
+@@ -160,14 +160,17 @@ static void amd_pstate_ut_check_perf(u32 index)
+ 			lowest_perf = AMD_CPPC_LOWEST_PERF(cap1);
+ 		}
  
--	spin_lock(&priv->tx_dev.tx_dev_lock);
-+	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
- 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
--	spin_unlock(&priv->tx_dev.tx_dev_lock);
-+	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
- 
- 	if (txq_has_space(priv))
- 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
+-		if ((highest_perf != READ_ONCE(cpudata->highest_perf)) ||
+-			(nominal_perf != READ_ONCE(cpudata->nominal_perf)) ||
++		if (highest_perf != READ_ONCE(cpudata->highest_perf) && !cpudata->hw_prefcore) {
++			pr_err("%s cpu%d highest=%d %d highest perf doesn't match\n",
++				__func__, cpu, highest_perf, cpudata->highest_perf);
++			goto skip_test;
++		}
++		if ((nominal_perf != READ_ONCE(cpudata->nominal_perf)) ||
+ 			(lowest_nonlinear_perf != READ_ONCE(cpudata->lowest_nonlinear_perf)) ||
+ 			(lowest_perf != READ_ONCE(cpudata->lowest_perf))) {
+ 			amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
+-			pr_err("%s cpu%d highest=%d %d nominal=%d %d lowest_nonlinear=%d %d lowest=%d %d, they should be equal!\n",
+-				__func__, cpu, highest_perf, cpudata->highest_perf,
+-				nominal_perf, cpudata->nominal_perf,
++			pr_err("%s cpu%d nominal=%d %d lowest_nonlinear=%d %d lowest=%d %d, they should be equal!\n",
++				__func__, cpu, nominal_perf, cpudata->nominal_perf,
+ 				lowest_nonlinear_perf, cpudata->lowest_nonlinear_perf,
+ 				lowest_perf, cpudata->lowest_perf);
+ 			goto skip_test;
 -- 
 2.43.0
 
