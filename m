@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9744967930
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DF1967ABD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939B21F20F17
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21EEFB20AC6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED39717DFFC;
-	Sun,  1 Sep 2024 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E5D181BA8;
+	Sun,  1 Sep 2024 17:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL/QzCvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lALrrYOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0B81C68C;
-	Sun,  1 Sep 2024 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0CC17B50B;
+	Sun,  1 Sep 2024 17:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208850; cv=none; b=AK0R8Ivx0aqGRhSLr7btxqV7OcQhbGUT7Y8L2yzWE//ScbcxiVFVp9LQtj1PqKTSDNCLtVBenyfRdxiNfJUrqzNMJMYEn7s7JtMOXFfk4hahvurZ5/Z/kwOl330SdFvzaqqDFMB6qE+ef3b9865s1Y3X9/968X9mJuB2I5lY190=
+	t=1725210014; cv=none; b=tymfWEJEANUA9YURpvTqWct4C+PJoehMAcuKbKWY7eIHAl9E/ZYeMuF3+JtVhWIZtVZqs8PKRHoeVTNOtnuE6OUNOt4/4LfC97sgE6o/XDCBzXa5/SDNhS/Ey4OzXitoW9pp9z03vptbNgd3diQevTtRJtd9wlejt6MKot1bY6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208850; c=relaxed/simple;
-	bh=4Hv8NubanigQLE6LQEnBB96RRjUbHzLetrdYXEvQkdI=;
+	s=arc-20240116; t=1725210014; c=relaxed/simple;
+	bh=Ga9XYBiPlvnjH+3ItzQkp9/frPS4zjcs5JgICdZjLUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLDG3jNosOCi+moxf8zxsR2JyxbH7/r+qNnGz7B2/VzeOQuW0YqCBUaMK+ZLswapGsDDecWnF1LHibzdF2rutQKsp0gaGZCFSYuIUlXLfXxXY6pTDJFPnOREcps2cwBm0V6+99d4qzNI2OoKK4iJS/DkF1IdXR310V8wbo2233c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL/QzCvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6FBC4CEC3;
-	Sun,  1 Sep 2024 16:40:49 +0000 (UTC)
+	 MIME-Version; b=krrmaEjavK5OLX73ZgxDYikaiPLsl1WqLNv9Z03prYMoDCXoXPor2Z6S10jFsnu6lp67mNpV54cPp3IdCO8TpCccD7Yb++L2a3NyKiN7NJOQDRUj4cMQOTkgJvBNweNPYuxns7B2vC6mKqSYlX4b2h4cVbhnHxY4pVc44e84fyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lALrrYOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91124C4CEC3;
+	Sun,  1 Sep 2024 17:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208850;
-	bh=4Hv8NubanigQLE6LQEnBB96RRjUbHzLetrdYXEvQkdI=;
+	s=korg; t=1725210014;
+	bh=Ga9XYBiPlvnjH+3ItzQkp9/frPS4zjcs5JgICdZjLUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eL/QzCvB7vVUPexWuLr9l/T/VosUuxcYqXndKKCk1VPmBbRxeYhun5fwEdZgRM4ga
-	 LXk8AC1knuUDT66IYrUnfZiFfP1IpUe7R/uDU3uSjxGD/FV2prXWJPj8isZlis8zU5
-	 +I+OPifZOvDExtqEVL9hx2WQxgm6r3XtnwIT014Y=
+	b=lALrrYOfERovj/CGexAlyuCaAlWzB75S1ERxlpg3elzsXN/9P+MxejElr5BbGAPOh
+	 C3/NqhxFXwOo7ca+d3af961lCHEOve4KvjEGbGjgB39S76iW/AbG0XBsUfqa6eyGqR
+	 vyEz9jFYyUofXkCebjYORdxTMy9iA/WVu6A9AzaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/134] net: axienet: Autodetect 64-bit DMA capability
-Date: Sun,  1 Sep 2024 18:16:12 +0200
-Message-ID: <20240901160811.092353197@linuxfoundation.org>
+Subject: [PATCH 5.15 061/215] wifi: iwlwifi: fw: Fix debugfs command sending
+Date: Sun,  1 Sep 2024 18:16:13 +0200
+Message-ID: <20240901160825.662251564@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit f735c40ed93ccaeb52d026def47ac1a423df7133 ]
+[ Upstream commit 048449fc666d736a1a17d950fde0b5c5c8fd10cc ]
 
-When newer revisions of the Axienet IP are configured for a 64-bit bus,
-we *need* to write to the MSB part of the an address registers,
-otherwise the IP won't recognise this as a DMA start condition.
-This is even true when the actual DMA address comes from the lower 4 GB.
+During debugfs command handling transport function is used directly,
+this bypasses the locking used by runtime operation function
+and leads to a kernel warning when two commands are
+sent in parallel.
 
-To autodetect this configuration, at probe time we write all 1's to such
-an MSB register, and see if any bits stick. If this is configured for a
-32-bit bus, those MSB registers are RES0, so reading back 0 indicates
-that no MSB writes are necessary.
-On the other hands reading anything other than 0 indicated the need to
-write the MSB registers, so we set the respective flag.
+Fix it by using runtime operations function when sending
+debugfs command.
 
-The actual DMA mask stays at 32-bit for now. To help bisecting, a
-separate patch will enable allocations from higher addresses.
-
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9ff2f816e2aa ("net: axienet: Fix register defines comment description")
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.4f80ac90658a.Ia1dfa1195c919f3002fe08db3eefbd2bfa921bbf@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 26 +++++++++++++++++++
- 2 files changed, 27 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 84c4c3655516a..fbaf3c987d9c1 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -161,6 +161,7 @@
- #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
- #define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
- #define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
-+#define XAE_ID_OFFSET		0x000004F8 /* Identification register */
- #define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
- #define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
- #define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 5440f39c5760d..1156719210cdb 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -152,6 +152,9 @@ static void axienet_dma_out_addr(struct axienet_local *lp, off_t reg,
- 				 dma_addr_t addr)
- {
- 	axienet_dma_out32(lp, reg, lower_32_bits(addr));
-+
-+	if (lp->features & XAE_FEATURE_DMA_64BIT)
-+		axienet_dma_out32(lp, reg + 4, upper_32_bits(addr));
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index e372f935f6983..6419fbfec5aca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -163,7 +163,11 @@ static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
  
- static void desc_set_phys_addr(struct axienet_local *lp, dma_addr_t addr,
-@@ -1954,6 +1957,29 @@ static int axienet_probe(struct platform_device *pdev)
- 		goto free_netdev;
- 	}
+ 	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
  
-+	/* Autodetect the need for 64-bit DMA pointers.
-+	 * When the IP is configured for a bus width bigger than 32 bits,
-+	 * writing the MSB registers is mandatory, even if they are all 0.
-+	 * We can detect this case by writing all 1's to one such register
-+	 * and see if that sticks: when the IP is configured for 32 bits
-+	 * only, those registers are RES0.
-+	 * Those MSB registers were introduced in IP v7.1, which we check first.
-+	 */
-+	if ((axienet_ior(lp, XAE_ID_OFFSET) >> 24) >= 0x9) {
-+		void __iomem *desc = lp->dma_regs + XAXIDMA_TX_CDESC_OFFSET + 4;
+-	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
++	if (fwrt->ops && fwrt->ops->send_hcmd)
++		ret = fwrt->ops->send_hcmd(fwrt->ops_ctx, &hcmd);
++	else
++		ret = -EPERM;
 +
-+		iowrite32(0x0, desc);
-+		if (ioread32(desc) == 0) {	/* sanity check */
-+			iowrite32(0xffffffff, desc);
-+			if (ioread32(desc) > 0) {
-+				lp->features |= XAE_FEATURE_DMA_64BIT;
-+				dev_info(&pdev->dev,
-+					 "autodetected 64-bit DMA range\n");
-+			}
-+			iowrite32(0x0, desc);
-+		}
-+	}
-+
- 	/* Check for Ethernet core IRQ (optional) */
- 	if (lp->eth_irq <= 0)
- 		dev_info(&pdev->dev, "Ethernet core IRQ not defined\n");
+ 	IWL_INFO(fwrt,
+ 		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
+ 		 enabled_severities, ret);
 -- 
 2.43.0
 
