@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36B39677EF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D424967778
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42A051F219B7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A8CCB216E0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C22E183CC5;
-	Sun,  1 Sep 2024 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0B818132F;
+	Sun,  1 Sep 2024 16:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nSRBhWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiqGQ8Sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B9183CA4;
-	Sun,  1 Sep 2024 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6644C97;
+	Sun,  1 Sep 2024 16:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207954; cv=none; b=OzjfjNh8AdvEfg6lwpVjSG8AniXWLfobWs8ugNzlb3DpXzY4ZHr8IrH7/Du5YGiHTcIEGQMAxGVtVBC5rM4pSDd9VTpmkxyIZ4WQg/O1TaldefBpYvg8cOewJDPzfeTRJ/l+PlogI4t5XJ8vN4HbEDJQSEwcUwGTk6frRnq4ZjQ=
+	t=1725207599; cv=none; b=KXDSC5OaU1HiEVXBKwik9jcUxjudeyVvGZZYWKkVyqw13kG3X8UHF7g238aavVQ7DhEBvTk8eSgWamDObPm/cn4XlUjREX19BuqK2zkO/4Y+uAwtExNJ9ELVHZPHvkTcoILJRbdXMvXzENI+T2PewoMAWj7HYqmye4tbfv0/Xaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207954; c=relaxed/simple;
-	bh=G0gIMXPuJlKC5ZiJozuaRSaIOP1FNF0HIGsUQIepNPM=;
+	s=arc-20240116; t=1725207599; c=relaxed/simple;
+	bh=tyalicEz71vLNQLXmroOyHpIUo6AMaRbM1uWv4f6qdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FToBLyhNvNFYXCR1YpzZw05RkyCn3q7vYWnxiavQW/jChX/2db3qKRPbT8Kkn83BIBgY9yoq4x2E0vOf40Ro7ulkuDjiPmywYST9fNCy/hxZ8DVdPfpLrNbYKwRNKv+fx1PCobCX8hCjuebewRN/Z9OKTniX3UU4vStJmwDxRj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nSRBhWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7C8C4CEC4;
-	Sun,  1 Sep 2024 16:25:53 +0000 (UTC)
+	 MIME-Version; b=O4lYT1qg5bBuoX7Vr53uodEGMArJHMUWzSC/mcbR/ssMMfMNbMhszEARUxLKCshGcW8e8R1fp7zNz/XFka6XaAZe6GrV7qD3igucTMnNYBkQBoS2jsGpDSQNRkX8rMlhpSHuy7+z2/bIhW9MwFpIkmJ6092X2brMYL3jgRV14/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiqGQ8Sq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEF3C4CEC3;
+	Sun,  1 Sep 2024 16:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207953;
-	bh=G0gIMXPuJlKC5ZiJozuaRSaIOP1FNF0HIGsUQIepNPM=;
+	s=korg; t=1725207599;
+	bh=tyalicEz71vLNQLXmroOyHpIUo6AMaRbM1uWv4f6qdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nSRBhWAeZYDJbuS/G/VEw3I9VWECONJaZKhIj/9vSWF1CT/R+q73j9iFuklhEsvB
-	 huppKF5IZ0w56k4cHEQAM3pBlTYLufgWXFwsMl+mDU8IKwDXstiLyKN/aerABE8U2n
-	 OSx0AOXPpzHEBipBAT3ZfLBDJ9M7bvHmmrJIwMww=
+	b=LiqGQ8Sqc8+eDvxbZwz1DRmD0wCy3rbG2sdZqZ7lKIeWTIQUmkqbdvokRbVodH4/o
+	 Yrdz0FZfH9HVHsulDBctPnljDvrPeU9aNWCxpVs0xxbUrLzhnY7Y7RNwpsgtvqzmlr
+	 sOjRwkhVY84Ww/baA+WNGQODwOiNGhe7SITsJEVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>
-Subject: [PATCH 6.6 03/93] btrfs: fix a use-after-free when hitting errors inside btrfs_submit_chunk()
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 20/98] staging: ks7010: disable bh on tx_dev_lock
 Date: Sun,  1 Sep 2024 18:15:50 +0200
-Message-ID: <20240901160807.480352793@linuxfoundation.org>
+Message-ID: <20240901160804.453203874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,205 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 10d9d8c3512f16cad47b2ff81ec6fc4b27d8ee10 upstream.
+[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
 
-[BUG]
-There is an internal report that KASAN is reporting use-after-free, with
-the following backtrace:
+As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
+could be call from timer under softirq context, use spin_lock_bh()
+on it to prevent potential deadlock.
 
-  BUG: KASAN: slab-use-after-free in btrfs_check_read_bio+0xa68/0xb70 [btrfs]
-  Read of size 4 at addr ffff8881117cec28 by task kworker/u16:2/45
-  CPU: 1 UID: 0 PID: 45 Comm: kworker/u16:2 Not tainted 6.11.0-rc2-next-20240805-default+ #76
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Workqueue: btrfs-endio btrfs_end_bio_work [btrfs]
-  Call Trace:
-   dump_stack_lvl+0x61/0x80
-   print_address_description.constprop.0+0x5e/0x2f0
-   print_report+0x118/0x216
-   kasan_report+0x11d/0x1f0
-   btrfs_check_read_bio+0xa68/0xb70 [btrfs]
-   process_one_work+0xce0/0x12a0
-   worker_thread+0x717/0x1250
-   kthread+0x2e3/0x3c0
-   ret_from_fork+0x2d/0x70
-   ret_from_fork_asm+0x11/0x20
+hostif_sme_work()
+--> hostif_sme_set_pmksa()
+--> hostif_mib_set_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
 
-  Allocated by task 20917:
-   kasan_save_stack+0x37/0x60
-   kasan_save_track+0x10/0x30
-   __kasan_slab_alloc+0x7d/0x80
-   kmem_cache_alloc_noprof+0x16e/0x3e0
-   mempool_alloc_noprof+0x12e/0x310
-   bio_alloc_bioset+0x3f0/0x7a0
-   btrfs_bio_alloc+0x2e/0x50 [btrfs]
-   submit_extent_page+0x4d1/0xdb0 [btrfs]
-   btrfs_do_readpage+0x8b4/0x12a0 [btrfs]
-   btrfs_readahead+0x29a/0x430 [btrfs]
-   read_pages+0x1a7/0xc60
-   page_cache_ra_unbounded+0x2ad/0x560
-   filemap_get_pages+0x629/0xa20
-   filemap_read+0x335/0xbf0
-   vfs_read+0x790/0xcb0
-   ksys_read+0xfd/0x1d0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ks_wlan_start_xmit()
+--> hostif_data_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
 
-  Freed by task 20917:
-   kasan_save_stack+0x37/0x60
-   kasan_save_track+0x10/0x30
-   kasan_save_free_info+0x37/0x50
-   __kasan_slab_free+0x4b/0x60
-   kmem_cache_free+0x214/0x5d0
-   bio_free+0xed/0x180
-   end_bbio_data_read+0x1cc/0x580 [btrfs]
-   btrfs_submit_chunk+0x98d/0x1880 [btrfs]
-   btrfs_submit_bio+0x33/0x70 [btrfs]
-   submit_one_bio+0xd4/0x130 [btrfs]
-   submit_extent_page+0x3ea/0xdb0 [btrfs]
-   btrfs_do_readpage+0x8b4/0x12a0 [btrfs]
-   btrfs_readahead+0x29a/0x430 [btrfs]
-   read_pages+0x1a7/0xc60
-   page_cache_ra_unbounded+0x2ad/0x560
-   filemap_get_pages+0x629/0xa20
-   filemap_read+0x335/0xbf0
-   vfs_read+0x790/0xcb0
-   ksys_read+0xfd/0x1d0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-[CAUSE]
-Although I cannot reproduce the error, the report itself is good enough
-to pin down the cause.
-
-The call trace is the regular endio workqueue context, but the
-free-by-task trace is showing that during btrfs_submit_chunk() we
-already hit a critical error, and is calling btrfs_bio_end_io() to error
-out.  And the original endio function called bio_put() to free the whole
-bio.
-
-This means a double freeing thus causing use-after-free, e.g.:
-
-1. Enter btrfs_submit_bio() with a read bio
-   The read bio length is 128K, crossing two 64K stripes.
-
-2. The first run of btrfs_submit_chunk()
-
-2.1 Call btrfs_map_block(), which returns 64K
-2.2 Call btrfs_split_bio()
-    Now there are two bios, one referring to the first 64K, the other
-    referring to the second 64K.
-2.3 The first half is submitted.
-
-3. The second run of btrfs_submit_chunk()
-
-3.1 Call btrfs_map_block(), which by somehow failed
-    Now we call btrfs_bio_end_io() to handle the error
-
-3.2 btrfs_bio_end_io() calls the original endio function
-    Which is end_bbio_data_read(), and it calls bio_put() for the
-    original bio.
-
-    Now the original bio is freed.
-
-4. The submitted first 64K bio finished
-   Now we call into btrfs_check_read_bio() and tries to advance the bio
-   iter.
-   But since the original bio (thus its iter) is already freed, we
-   trigger the above use-after free.
-
-   And even if the memory is not poisoned/corrupted, we will later call
-   the original endio function, causing a double freeing.
-
-[FIX]
-Instead of calling btrfs_bio_end_io(), call btrfs_orig_bbio_end_io(),
-which has the extra check on split bios and do the proper refcounting
-for cloned bios.
-
-Furthermore there is already one extra btrfs_cleanup_bio() call, but
-that is duplicated to btrfs_orig_bbio_end_io() call, so remove that
-label completely.
-
-Reported-by: David Sterba <dsterba@suse.com>
-Fixes: 852eee62d31a ("btrfs: allow btrfs_submit_bio to split bios")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/bio.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -646,7 +646,6 @@ static bool btrfs_submit_chunk(struct bt
- {
- 	struct btrfs_inode *inode = bbio->inode;
- 	struct btrfs_fs_info *fs_info = bbio->fs_info;
--	struct btrfs_bio *orig_bbio = bbio;
- 	struct bio *bio = &bbio->bio;
- 	u64 logical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
- 	u64 length = bio->bi_iter.bi_size;
-@@ -682,7 +681,7 @@ static bool btrfs_submit_chunk(struct bt
- 		bbio->saved_iter = bio->bi_iter;
- 		ret = btrfs_lookup_bio_sums(bbio);
- 		if (ret)
--			goto fail_put_bio;
-+			goto fail;
- 	}
+diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
+index 79d0513bd2828..85c4e27f571b1 100644
+--- a/drivers/staging/ks7010/ks7010_sdio.c
++++ b/drivers/staging/ks7010/ks7010_sdio.c
+@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
+ 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
+ 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
  
- 	if (btrfs_op(bio) == BTRFS_MAP_WRITE) {
-@@ -704,13 +703,13 @@ static bool btrfs_submit_chunk(struct bt
+-	spin_lock(&priv->tx_dev.tx_dev_lock);
++	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
+ 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
+-	spin_unlock(&priv->tx_dev.tx_dev_lock);
++	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
  
- 			ret = btrfs_bio_csum(bbio);
- 			if (ret)
--				goto fail_put_bio;
-+				goto fail;
- 		} else if (use_append ||
- 			   (btrfs_is_zoned(fs_info) && inode &&
- 			    inode->flags & BTRFS_INODE_NODATASUM)) {
- 			ret = btrfs_alloc_dummy_sum(bbio);
- 			if (ret)
--				goto fail_put_bio;
-+				goto fail;
- 		}
- 	}
- 
-@@ -718,12 +717,23 @@ static bool btrfs_submit_chunk(struct bt
- done:
- 	return map_length == length;
- 
--fail_put_bio:
--	if (map_length < length)
--		btrfs_cleanup_bio(bbio);
- fail:
- 	btrfs_bio_counter_dec(fs_info);
--	btrfs_bio_end_io(orig_bbio, ret);
-+	/*
-+	 * We have split the original bbio, now we have to end both the current
-+	 * @bbio and remaining one, as the remaining one will never be submitted.
-+	 */
-+	if (map_length < length) {
-+		struct btrfs_bio *remaining = bbio->private;
-+
-+		ASSERT(bbio->bio.bi_pool == &btrfs_clone_bioset);
-+		ASSERT(remaining);
-+
-+		remaining->bio.bi_status = ret;
-+		btrfs_orig_bbio_end_io(remaining);
-+	}
-+	bbio->bio.bi_status = ret;
-+	btrfs_orig_bbio_end_io(bbio);
- 	/* Do not submit another chunk */
- 	return true;
- }
+ 	if (txq_has_space(priv))
+ 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
+-- 
+2.43.0
+
 
 
 
