@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97419677A8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD1E967929
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5261C20B36
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA5D281C52
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FBA17F394;
-	Sun,  1 Sep 2024 16:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538AD17E900;
+	Sun,  1 Sep 2024 16:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8eCpCvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NImbHk8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66E42C1B4;
-	Sun,  1 Sep 2024 16:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102DA2B9C7;
+	Sun,  1 Sep 2024 16:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207748; cv=none; b=CxqA+fO/GEJfnnEdg+Hj+roKnngcWEq5Uz29MJdgdM/Y1Gyb0L1VY3NiEGakcA87EVO+sUXg+qwEpgHLRu7UqNG6gnhNwwK7Sq6U1ga0sBmHEQcQYcdhufuGgnfMAOS+KbF3gIjBPln7Y0l14YuTjSsiL3535nOg1dLwRUy9QQc=
+	t=1725208828; cv=none; b=fp6cSv+CC9+V43Z101UUFTShWFGE/5RCLeo6A1bv7RoRnYtcOhXrGYZMC/40pXIxUDnGUXlv+nVOX5AtumaS0K/4+cYzCPpUsGzaaBjU7Pi6Usrz2OoiRhBqh8VdMsfY0ku4Vvcn5IUH1eEp/OblDP3Krm8WCqpo2jOR3biCsFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207748; c=relaxed/simple;
-	bh=FmtlUBC4dMQWRZIc9vsE6EcpaCZx+ocyLAMtw2Ay0bM=;
+	s=arc-20240116; t=1725208828; c=relaxed/simple;
+	bh=GN79wNiymmKEtr1Y0yAE3MnAd/SkEDnPAcNCBVXPzp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+4oCCo81XrfLlqVlax+IgCjC0NOUuXoMZuDgafOCL2cOn7zyd2Lmli0yr6Lm2gO6ETqeQtll82MeBz+YnkmBjkbNCnFjpaDWImcijpF6zzSAIOT+T/9tV3cj0WHZDkZDmC8QNqIBDRyj4n5/8OYp8/imJAKgbu0glQNAIUxWJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8eCpCvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF14C4CEC3;
-	Sun,  1 Sep 2024 16:22:27 +0000 (UTC)
+	 MIME-Version; b=Ru57JBYYvLWDPZA97QCpPBkcGvkZ+PUkAlygdE2YytDG1eKaw5VQsY1Ce8dHX6IiSckC5Jmlo5PqFGUVMpNSo8djd0X9xz80NvmKtCvCnAPFJoF7Fh2LzNccZ5HHvZbvoC3Fe3LEXqYqBrFkA96u7tf/fJu7xOF7Bu+umAOiV5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NImbHk8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790D2C4CEC3;
+	Sun,  1 Sep 2024 16:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207747;
-	bh=FmtlUBC4dMQWRZIc9vsE6EcpaCZx+ocyLAMtw2Ay0bM=;
+	s=korg; t=1725208827;
+	bh=GN79wNiymmKEtr1Y0yAE3MnAd/SkEDnPAcNCBVXPzp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8eCpCvR91EUs1UIKShEXci8T+CzFtN9WOxGCOJF/ofqFb/j8qNQIeIM0IVJoYfyh
-	 Iv2cNIKTv2gtj8kNM8dOCZ/fs6vBChq5BZRUMcRzEZw3PsqhZ4uIoJfroU/+DEfBmr
-	 Lsl/mL7UNvln/j7aCEaaENo+gOWbUxqmsxgLmCIo=
+	b=NImbHk8h0uaH2TEf9dc6CdsXzwKr1BlJqF9mCt9wKqpWVtu9PXMKNWAf7CdAFLa+l
+	 ju/awdV77gweTTq4DQpIXEdxqCyjd8csQwJSG5oDGXBtOE1cKvu7DdBnRqqPW3bg+3
+	 ectHdAVojvZl7Twj3LirilJZsIwNz4zfie9DD4t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 66/98] cxgb4: add forgotten u64 ivlan cast before shift
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/134] virtiofs: forbid newlines in tags
 Date: Sun,  1 Sep 2024 18:16:36 +0200
-Message-ID: <20240901160806.187335284@linuxfoundation.org>
+Message-ID: <20240901160811.992453661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
+[ Upstream commit 40488cc16f7ea0d193a4e248f0d809c25cc377db ]
 
-It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
-There is no reason it should not be done here
+Newlines in virtiofs tags are awkward for users and potential vectors
+for string injection attacks.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/fuse/virtio_fs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-@@ -940,7 +940,8 @@ static u64 hash_filter_ntuple(struct ch_
- 	 * in the Compressed Filter Tuple.
- 	 */
- 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
--		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
-+		ntuple |= (u64)(FT_VLAN_VLD_F |
-+				fs->val.ivlan) << tp->vlan_shift;
+diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+index fadf6fb90fe22..48f144d083813 100644
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -237,6 +237,16 @@ static int virtio_fs_read_tag(struct virtio_device *vdev, struct virtio_fs *fs)
+ 		return -ENOMEM;
+ 	memcpy(fs->tag, tag_buf, len);
+ 	fs->tag[len] = '\0';
++
++	/* While the VIRTIO specification allows any character, newlines are
++	 * awkward on mount(8) command-lines and cause problems in the sysfs
++	 * "tag" attr and uevent TAG= properties. Forbid them.
++	 */
++	if (strchr(fs->tag, '\n')) {
++		dev_dbg(&vdev->dev, "refusing virtiofs tag with newline character\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
  
- 	if (tp->port_shift >= 0 && fs->mask.iport)
- 		ntuple |= (u64)fs->val.iport << tp->port_shift;
+-- 
+2.43.0
+
 
 
 
