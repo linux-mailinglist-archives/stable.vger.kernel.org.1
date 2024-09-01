@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CE59678D4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187AA9679A4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BF92813CB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C28F71F21C26
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E97117E00C;
-	Sun,  1 Sep 2024 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79E1183CAB;
+	Sun,  1 Sep 2024 16:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rCdeaz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaAAJDdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF8517B50B;
-	Sun,  1 Sep 2024 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6593E185B63;
+	Sun,  1 Sep 2024 16:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208567; cv=none; b=CQlVZ8jz3OMK7xx8PJsvlpMr+f9/2ERDIHgCFVMjD8w1xejxZkL/p3evj/S4N5L1jXy8nb/RFGspn3KXSDn/L5QuLd8C1JRfRZLhXsIumT8Dq8YR7PotxU/kBhAjc/ZWw1uMRARi2NPg6B20PevGtPPzo5/AcDBW7Y+/iyjQZJs=
+	t=1725209163; cv=none; b=QNp2pqEsO0BVwZj0RItr8ttE6rkh02+oaZoc0EkGeqbmmrSzZ7WIfV305q6dotn0vwddWq9BN2kC0PmWkJnf6BjOUvIfXD+T1n4SE+vdNi2S1iEeercA0pjiKSYwmXydTCYGWbD3oqyRnlBeqQd8y2iPUjLmRTZc3qKUsKxocJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208567; c=relaxed/simple;
-	bh=rdhjF2nEqR7BmRMsqpVE4+yqGD2VvCNyavsUKGyOmWY=;
+	s=arc-20240116; t=1725209163; c=relaxed/simple;
+	bh=t0Ir/OfEDQf0yupz54NIB4LuIYdKwxzZlLwcIkVNEMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPuqwN+SXvaaWnCaa9HbXTg/14+go8rOC+y8mJA4NXVEa4LDEkYx6z7F3OlkYD5ooM9m7fX1mspdmwyxoCMCBJYfF5IqQpu8Fx+i8ZKdqe1RG1/HKMerKv8E4VJRw4qM/NVy/nGoztSnZOqJUCPBxzKGLCRVpmhJhsL2T3TuSGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rCdeaz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAF1C4CEC3;
-	Sun,  1 Sep 2024 16:36:06 +0000 (UTC)
+	 MIME-Version; b=WDHmhbMGTawfxxDGezNhtrmmyRh9BRV3gHpZfdls34cKUvW+FsHR2VmTZ8p0yJrPSl0KRaQEPAQ+k0PbddSqveG6SwO6K64UIxFp3DQPR8qMrpYmijBuewH8n0a0mr1E0IThCXFU5/CaejVr/a7/gQxiUp2Of89HD8g0cajE3yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaAAJDdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B490CC4CEC3;
+	Sun,  1 Sep 2024 16:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208567;
-	bh=rdhjF2nEqR7BmRMsqpVE4+yqGD2VvCNyavsUKGyOmWY=;
+	s=korg; t=1725209163;
+	bh=t0Ir/OfEDQf0yupz54NIB4LuIYdKwxzZlLwcIkVNEMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rCdeaz4suAUP4ZAVt8+JxkrX+hGnXNzQDhgimELqFx2ppE+j6Rrunnjdhp8all6J
-	 wQrLNsXb0z39D+ekhScTu3xIGTHaGycGhXqmnB1bD8nwRi56Sx5gtTfLqEx0hLPv8f
-	 H8hJxH1HoqPuiOm72l3ibrrsyep0FV5f5VG2G8+g=
+	b=gaAAJDddug+QbW5OhgfMEJb4j8dCO9leBKNPJ1/fShd6xJQf4kqJN7OVT7ouA7Xnr
+	 CaF4UcwZTICzMvRvYo9nNWU9EE1gLhmAEzFHcezei9yobQkbavkZ+WfvKGjLCoalNi
+	 CAs1gNQaQLCoviDwqDYHepVMifqFYlyY5jXE7SLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murali Nalajala <quic_mnalajal@quicinc.com>,
-	Unnathi Chalicheemala <quic_uchalich@quicinc.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 120/149] firmware: qcom: scm: Mark get_wq_ctx() as atomic call
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 06/71] pinctrl: single: fix potential NULL dereference in pcs_get_function()
 Date: Sun,  1 Sep 2024 18:17:11 +0200
-Message-ID: <20240901160821.967113754@linuxfoundation.org>
+Message-ID: <20240901160802.127032720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murali Nalajala <quic_mnalajal@quicinc.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 9960085a3a82c58d3323c1c20b991db6045063b0 upstream.
+commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
 
-Currently get_wq_ctx() is wrongly configured as a standard call. When two
-SMC calls are in sleep and one SMC wakes up, it calls get_wq_ctx() to
-resume the corresponding sleeping thread. But if get_wq_ctx() is
-interrupted, goes to sleep and another SMC call is waiting to be allocated
-a waitq context, it leads to a deadlock.
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
-To avoid this get_wq_ctx() must be an atomic call and can't be a standard
-SMC call. Hence mark get_wq_ctx() as a fast call.
+Found by code review.
 
-Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
 Cc: stable@vger.kernel.org
-Signed-off-by: Murali Nalajala <quic_mnalajal@quicinc.com>
-Signed-off-by: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Link: https://lore.kernel.org/r/20240814223244.40081-1-quic_uchalich@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/qcom/qcom_scm-smc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/qcom/qcom_scm-smc.c
-+++ b/drivers/firmware/qcom/qcom_scm-smc.c
-@@ -71,7 +71,7 @@ int scm_get_wq_ctx(u32 *wq_ctx, u32 *fla
- 	struct arm_smccc_res get_wq_res;
- 	struct arm_smccc_args get_wq_ctx = {0};
- 
--	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_STD_CALL,
-+	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,
- 				ARM_SMCCC_SMC_64, ARM_SMCCC_OWNER_SIP,
- 				SCM_SMC_FNID(QCOM_SCM_SVC_WAITQ, QCOM_SCM_WAITQ_GET_WQ_CTX));
- 
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -350,6 +350,8 @@ static int pcs_get_function(struct pinct
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 
 
 
