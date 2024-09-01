@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A64967886
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E78496790F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1765B211A9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D076AB21C8E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7017C17DFFC;
-	Sun,  1 Sep 2024 16:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA5E17E46E;
+	Sun,  1 Sep 2024 16:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ay6zPs1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu5y/lwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1A91C68C;
-	Sun,  1 Sep 2024 16:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2722B9C7;
+	Sun,  1 Sep 2024 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208376; cv=none; b=olIOi0OI6S228YYXjFdilEIFxMOIR1P88+VvkxnG2zemHhahoYlmx+z89uHQ16flsgrGhbuGBL4ZIUFH1lklssZQHF3qHswuFsgTUQBYCZPH/GNWQLtPnZ1s5UCFDjegOH0Zs283tVGFU/l742XLCdurkxxX2J11vqqh1AWGDFg=
+	t=1725208752; cv=none; b=ktRMP6fGOr2c9wshZIZryyhozZCB3mhA6QipdRRr2lUak3Kn4zhBIxCxfJtratT8fFaEWszAupoc6lnMKSzMGIFQrQxCDDPtWr9h/GOsudZdA1+3jMgxAB2wQHWRxHNzxo/ayc/f17TUCASt5KzgaJso4iSfNGkFtH6Hc1HV7f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208376; c=relaxed/simple;
-	bh=DvA/GBr+DBJaPabzwgNrnm2avMX8KWayy4Nr4MCLfds=;
+	s=arc-20240116; t=1725208752; c=relaxed/simple;
+	bh=Q8qsO7K8W9NCtRxyIyML5zJECtGmtivSeeHZCZfBSJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXhtEa69uW+w/0A83IgCo91iVVY+G8/cXHGtFxg/GnZXg+w3baFoVod6rmAgi37Ng6ZTaZ1Pc3gMHPfjO1b7t1iN+zJAxj/CW/IB49MNXr7Dnqj8gMaXRVpTYtcITBQt146+I33Ya1Ry3NvpHSCO2nVF/ysIbdZkbn38jp553D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ay6zPs1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75A5C4CEC3;
-	Sun,  1 Sep 2024 16:32:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TPG+KaSxhpuabkvoW27L9q64C806tdjG3FmuVDjkqbHjZFrdqDUXl48Vom9xzhdlCYIU0rgEKlTTJ2TsdHLdZAcqXIaBbSGEahKRrZGJLnlopnqyM39JdF9qnAzKx0+55gEi1fzu09E7S78m18aKPoMSVS5VvyGmqO3yOjx1RrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu5y/lwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604ECC4CEC3;
+	Sun,  1 Sep 2024 16:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208376;
-	bh=DvA/GBr+DBJaPabzwgNrnm2avMX8KWayy4Nr4MCLfds=;
+	s=korg; t=1725208751;
+	bh=Q8qsO7K8W9NCtRxyIyML5zJECtGmtivSeeHZCZfBSJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ay6zPs1YvYuf675IS0TZrtRVu8j7K/6GPPUD/w+oa+mQYd1nhEIBoaU1oKE8BKhiF
-	 /ea9F1GuTKXrm8AlLYXPCH9U7Jod04xJE+ZPpSJq/KOEOXMH8N/8DmzpxytoFyFqUY
-	 YlwfpdbVXD6IxqbGKSaftfHiaIGsv6++vAU6o0u0=
+	b=Iu5y/lwVhi6n+YEeEgY5sl+9BYuGF+yqvwxqk8bd7GBJj467EpUnhAdLMySu7uyDa
+	 D5FT0APXH/RTaHbRumVf0ZUrvcz5JcsCkaWl0JWVsLes5iRbDmN9sHSSekYzLAoQ6x
+	 RDYqURI/HM3rkToTqzCRTFpo7F4u0qk4m/h2RehQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 064/149] nfsd: prevent panic for nfsv4.0 closed files in nfs4_show_open
+Subject: [PATCH 5.4 029/134] net: hns3: fix a deadlock problem when config TC during resetting
 Date: Sun,  1 Sep 2024 18:16:15 +0200
-Message-ID: <20240901160819.874025648@linuxfoundation.org>
+Message-ID: <20240901160811.202969617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit a204501e1743d695ca2930ed25a2be9f8ced96d3 ]
+[ Upstream commit be5e816d00a506719e9dbb1a9c861c5ced30a109 ]
 
-Prior to commit 3f29cc82a84c ("nfsd: split sc_status out of
-sc_type") states_show() relied on sc_type field to be of valid
-type before calling into a subfunction to show content of a
-particular stateid. From that commit, we split the validity of
-the stateid into sc_status and no longer changed sc_type to 0
-while unhashing the stateid. This resulted in kernel oopsing
-for nfsv4.0 opens that stay around and in nfs4_show_open()
-would derefence sc_file which was NULL.
+When config TC during the reset process, may cause a deadlock, the flow is
+as below:
+                             pf reset start
+                                 │
+                                 ▼
+                              ......
+setup tc                         │
+    │                            ▼
+    ▼                      DOWN: napi_disable()
+napi_disable()(skip)             │
+    │                            │
+    ▼                            ▼
+  ......                      ......
+    │                            │
+    ▼                            │
+napi_enable()                    │
+                                 ▼
+                           UINIT: netif_napi_del()
+                                 │
+                                 ▼
+                              ......
+                                 │
+                                 ▼
+                           INIT: netif_napi_add()
+                                 │
+                                 ▼
+                              ......                 global reset start
+                                 │                      │
+                                 ▼                      ▼
+                           UP: napi_enable()(skip)    ......
+                                 │                      │
+                                 ▼                      ▼
+                              ......                 napi_disable()
 
-Instead, for closed open stateids forgo displaying information
-that relies of having a valid sc_file.
+In reset process, the driver will DOWN the port and then UINIT, in this
+case, the setup tc process will UP the port before UINIT, so cause the
+problem. Adds a DOWN process in UINIT to fix it.
 
-To reproduce: mount the server with 4.0, read and close
-a file and then on the server cat /proc/fs/nfsd/clients/2/states
-
-[  513.590804] Call trace:
-[  513.590925]  _raw_spin_lock+0xcc/0x160
-[  513.591119]  nfs4_show_open+0x78/0x2c0 [nfsd]
-[  513.591412]  states_show+0x44c/0x488 [nfsd]
-[  513.591681]  seq_read_iter+0x5d8/0x760
-[  513.591896]  seq_read+0x188/0x208
-[  513.592075]  vfs_read+0x148/0x470
-[  513.592241]  ksys_read+0xcc/0x178
-
-Fixes: 3f29cc82a84c ("nfsd: split sc_status out of sc_type")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: bb6b94a896d4 ("net: hns3: Add reset interface implementation in client")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index a20c2c9d7d457..dafff707e23a4 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2789,15 +2789,18 @@ static int nfs4_show_open(struct seq_file *s, struct nfs4_stid *st)
- 		deny & NFS4_SHARE_ACCESS_READ ? "r" : "-",
- 		deny & NFS4_SHARE_ACCESS_WRITE ? "w" : "-");
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index d09cc10b3517f..8736e254f098b 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4388,6 +4388,9 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	int ret;
  
--	spin_lock(&nf->fi_lock);
--	file = find_any_file_locked(nf);
--	if (file) {
--		nfs4_show_superblock(s, file);
--		seq_puts(s, ", ");
--		nfs4_show_fname(s, file);
--		seq_puts(s, ", ");
--	}
--	spin_unlock(&nf->fi_lock);
-+	if (nf) {
-+		spin_lock(&nf->fi_lock);
-+		file = find_any_file_locked(nf);
-+		if (file) {
-+			nfs4_show_superblock(s, file);
-+			seq_puts(s, ", ");
-+			nfs4_show_fname(s, file);
-+			seq_puts(s, ", ");
-+		}
-+		spin_unlock(&nf->fi_lock);
-+	} else
-+		seq_puts(s, "closed, ");
- 	nfs4_show_owner(s, oo);
- 	if (st->sc_status & SC_STATUS_ADMIN_REVOKED)
- 		seq_puts(s, ", admin-revoked");
++	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
++		hns3_nic_net_stop(netdev);
++
+ 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
+ 		netdev_warn(netdev, "already uninitialized\n");
+ 		return 0;
 -- 
 2.43.0
 
