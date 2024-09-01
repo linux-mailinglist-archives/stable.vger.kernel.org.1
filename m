@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-71900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C624967843
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0B796793E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D21281297
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F4D1F21A84
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03F4183CA3;
-	Sun,  1 Sep 2024 16:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1B117DFFC;
+	Sun,  1 Sep 2024 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSHPuyNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IflE0XPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0B113D53B;
-	Sun,  1 Sep 2024 16:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BE92B9C7;
+	Sun,  1 Sep 2024 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208188; cv=none; b=aAhuGJJuAiCPIWiS1ev93kTFAzPzCTQemBoWjWYA3yIApYQqQhLU/sXFrD1KAGNPXY5oQcc4hXtbKmdQE+q+vKtzgFKgmK64AjoAGwvnBGZgCScBDLHxnOwYomODGV2TA5G/NIhFHKHOASxKrWC/Q4EQaHP8z/kn1ZHiJPelgGk=
+	t=1725208889; cv=none; b=XWE57o1PjRGlni4lA8U/3thzZffCemvbZRjA8Lj++ZRBKTlkY3V5HS6sP2y22joxwV/yUW4iyDS3bOBb1m4Uyhk3PBlzb47VoqJjAkJHiPCMpSssp7KbYu40C2mzweZBQZm5Eb7dap4AM8bhbwSot8izc8kBlgFzlus9VVxrA/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208188; c=relaxed/simple;
-	bh=BodOPQSKmC/JUGnFS0U2umJhlU3RQvaz5ufeRXrcmp0=;
+	s=arc-20240116; t=1725208889; c=relaxed/simple;
+	bh=WRU8RP/ZGjYZED8A4xue+6K4BkqqTGT07nYaLsqskZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtguLt6iFhWdvWd6ydYPesiAaKNyE9nubB5aPGY+6RUVVte9lKhklskXKE6TNQIik5+TYubrowQytoaI92pQFWQKKz2K8R/cc/wxABqPKZKotoO3FZbxqsbUm0gCsqSvKfLKXh31q15HHqMp2ZZgtaMBCPX7Z106mEK2ud9sTVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSHPuyNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C60CC4CEC3;
-	Sun,  1 Sep 2024 16:29:47 +0000 (UTC)
+	 MIME-Version; b=rpuLfbwvEp1e3K9IZYeqpficJP8RjYbZ6ooYpGCN+3VqNnQ1432BoO1PNsSe2rlKZFl25wBJ2exJG38Uiy/9J1QifE8dzsK/rDeg2GEHBAvVw5L9kuzHTHKhQtfmvBvLk5yVFLnqWaxSReNNuhsb6HPYGbr3/lXm2r18ZSQiUEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IflE0XPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168A9C4CEC3;
+	Sun,  1 Sep 2024 16:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208187;
-	bh=BodOPQSKmC/JUGnFS0U2umJhlU3RQvaz5ufeRXrcmp0=;
+	s=korg; t=1725208889;
+	bh=WRU8RP/ZGjYZED8A4xue+6K4BkqqTGT07nYaLsqskZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSHPuyNkiTVNFtMFG0IPK8P9H0ze79oj/Bferf5Akse4oVoU9Icr8qvg/lcd03tO7
-	 AenDr8mroGsRJvgJHOU+1iV5WVp9Co7QQCo8uiAPb6APwrKYTDJxRrK/EFJ1UJPFrp
-	 NDPPhWBjeUVnMA/lKPvdxJNoRGw3ETXZHTJwyxtg=
+	b=IflE0XPRrWLkfl/h/H10OPYJejDWrizcLUiHlRjTPkKqFUTFT4fWkmdyFwicxLdY5
+	 7Ov62cisNUUxDbpCnITWKlbt1QTYSyjG584z46ljNtEaLdeVFvgNHu6O4YBuPqYzS8
+	 a5jb2jKkIeMzIttb2OV8WzNMPqgDNny5+JZqmG9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Nikita Travkin <nikita@trvn.ru>
-Subject: [PATCH 6.6 70/93] soc: qcom: cmd-db: Map shared memory as WC, not WB
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/134] ext4: set the type of max_zeroout to unsigned int to avoid overflow
 Date: Sun,  1 Sep 2024 18:16:57 +0200
-Message-ID: <20240901160809.999591403@linuxfoundation.org>
+Message-ID: <20240901160812.773764064@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit f9bb896eab221618927ae6a2f1d566567999839d upstream.
+[ Upstream commit 261341a932d9244cbcd372a3659428c8723e5a49 ]
 
-Linux does not write into cmd-db region. This region of memory is write
-protected by XPU. XPU may sometime falsely detect clean cache eviction
-as "write" into the write protected region leading to secure interrupt
-which causes an endless loop somewhere in Trust Zone.
+The max_zeroout is of type int and the s_extent_max_zeroout_kb is of
+type uint, and the s_extent_max_zeroout_kb can be freely modified via
+the sysfs interface. When the block size is 1024, max_zeroout may
+overflow, so declare it as unsigned int to avoid overflow.
 
-The only reason it is working right now is because Qualcomm Hypervisor
-maps the same region as Non-Cacheable memory in Stage 2 translation
-tables. The issue manifests if we want to use another hypervisor (like
-Xen or KVM), which does not know anything about those specific mappings.
-
-Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
-removes dependency on correct mappings in Stage 2 tables. This patch
-fixes the issue by updating the mapping to MEMREMAP_WC.
-
-I tested this on SA8155P with Xen.
-
-Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Tested-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-9-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/cmd-db.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -354,7 +354,7 @@ static int cmd_db_dev_probe(struct platf
- 		return -EINVAL;
- 	}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 90b12c7c0f20a..fed3dfed2c249 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3591,9 +3591,10 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 	struct ext4_extent *ex, *abut_ex;
+ 	ext4_lblk_t ee_block, eof_block;
+ 	unsigned int ee_len, depth, map_len = map->m_len;
+-	int allocated = 0, max_zeroout = 0;
+ 	int err = 0;
+ 	int split_flag = EXT4_EXT_DATA_VALID2;
++	int allocated = 0;
++	unsigned int max_zeroout = 0;
  
--	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WB);
-+	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
- 	if (!cmd_db_header) {
- 		ret = -ENOMEM;
- 		cmd_db_header = NULL;
+ 	ext_debug("ext4_ext_convert_to_initialized: inode %lu, logical"
+ 		"block %llu, max_blocks %u\n", inode->i_ino,
+-- 
+2.43.0
+
 
 
 
