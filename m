@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A439678E0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A375967959
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2D50B22137
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234911F21A57
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B8E181B87;
-	Sun,  1 Sep 2024 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE5217E8EA;
+	Sun,  1 Sep 2024 16:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khSqRHLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAlSRHWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7E91C68C;
-	Sun,  1 Sep 2024 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBD21C68C;
+	Sun,  1 Sep 2024 16:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208604; cv=none; b=ETNoH0yunDN/42Xusq37+hmKsz7msJwl2lKZwUyjh78QdwP8Q+7gCiXbZH8swrkUwLF8BKnzRWpknzspX8Wi65cT+Zk5S9MqDx8Y5qiA23HQLIIiLRj8ahdYO+XFT3+9zgjhyFDR01N+gKg5SeDp5UlC4jBu4cFsPzv4wPtd7HU=
+	t=1725208983; cv=none; b=uiYjLpX/3PHttGyWzRwL32yA+l7bETGFQwlGisut922fKPZjlsv1qBqmaMN32H5NbIzgDG8Tgaed/Wu97YQxgHrmZm87ror256QT99vdJjjxLR80JVxj3cAQLA9YesUWTJLZm9cYrBNlLFNK7rg5yks+2MeHPEzkhKoHM9OacDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208604; c=relaxed/simple;
-	bh=4Yrorg14aKmBbHdyrsHnZBbZ2roBrDaiA7VnHqkvzwk=;
+	s=arc-20240116; t=1725208983; c=relaxed/simple;
+	bh=Afkp9BNXa3p5fzPy9CVZN2u/c/I21UQ3ir77R6nDyyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dK0KuKbCYVkA/r7G1AErVXL9b2ApIsgsPMmKzqAW6MIUOkgoS5a6LXPfzorkBF+smvrxRmS/Kbh7QRsvP5xAj5aXTrh7fJWBsHuyJ2lef3B+BeKS4olTu1XwFItQ0S9emi/MPXXEb7+nrxXgLdUuXX3oKI/+lRmIiT+c4KVHk5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khSqRHLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1BBC4CEC3;
-	Sun,  1 Sep 2024 16:36:44 +0000 (UTC)
+	 MIME-Version; b=tslsPQQ1+q0rupm21okBFB7JrWlcdexQSK6D20zvitDsAWlAIzbLb2ij9Iuly2r0LSzMEXga4F3Fc5qx8P+ojyzYOUlw9iMyexudhQWVLFHyUfl10hhGgGKkne6EMD2mcK38ObznjDce6SXKnB4hvMYGBSdT3MWkcVOC8+s+FFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAlSRHWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7C0C4CEC3;
+	Sun,  1 Sep 2024 16:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208604;
-	bh=4Yrorg14aKmBbHdyrsHnZBbZ2roBrDaiA7VnHqkvzwk=;
+	s=korg; t=1725208983;
+	bh=Afkp9BNXa3p5fzPy9CVZN2u/c/I21UQ3ir77R6nDyyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khSqRHLlD3LRfIuqbOaaUAPXX2LYoGFWce0vFB+IDoKmFRZtuEamupyjRZxpW+Hlg
-	 EifZe6xIi+D97/7Fhp3VH52aXIpnY2FkWkCbcIfyU4HHKzRmsLJN7psxug7VZAMfUZ
-	 JXzP1z5WjwzhHBtkDZFGCnRgg2aAjfcM35yhXRXc=
+	b=AAlSRHWZgCNMME+wrAASyq+yC03TgDz9XlylKuouxbTPj2E0d6GMBy8xMElRlUpd3
+	 V++/62UWk+xGgaK5qlbK8qYt0l6c3n3F+7Hw+Ac4cI0nx5rdDuA0ypWvk1IJlp+rgZ
+	 6tZGVuACyPXUwQkN31eVpyFkMJZDW0s2mXtSFfs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>
-Subject: [PATCH 6.10 134/149] usb: dwc3: st: fix probed platform device ref count on probe error path
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.4 099/134] HID: wacom: Defer calculation of resolution until resolution_code is known
 Date: Sun,  1 Sep 2024 18:17:25 +0200
-Message-ID: <20240901160822.490184946@linuxfoundation.org>
+Message-ID: <20240901160813.818146965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-commit ddfcfeba891064b88bb844208b43bef2ef970f0c upstream.
+commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
 
-The probe function never performs any paltform device allocation, thus
-error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
-reference count from the platform device being probed.  If error path is
-triggered, this will lead to unbalanced device reference counts and
-premature release of device resources, thus possible use-after-free when
-releasing remaining devm-managed resources.
+The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
+for historic reasons. When the code to support twist was introduced in
+commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
+and twist usages"), we were careful to write it in such a way that it had
+HID calculate the resolution of the twist axis assuming ABS_RZ instead
+(so that we would get correct angular behavior). This was broken with
+the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
+resolution for older tablets"), which moved the resolution calculation
+to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
 
-Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+This commit moves the calculation of resolution after the point that
+we are finished setting things up for its proper use.
+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://lore.kernel.org/r/20240814093957.37940-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-st.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/hid/wacom_wac.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-st.c
-+++ b/drivers/usb/dwc3/dwc3-st.c
-@@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform
- 	dwc3_data->regmap = regmap;
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1920,12 +1920,14 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
+-	int resolution = hidinput_calc_abs_res(field, resolution_code);
++	int resolution;
  
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
--	if (!res) {
--		ret = -ENXIO;
--		goto undo_platform_dev_alloc;
--	}
-+	if (!res)
-+		return -ENXIO;
- 
- 	dwc3_data->syscfg_reg_off = res->start;
- 
-@@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform
- 		devm_reset_control_get_exclusive(dev, "powerdown");
- 	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
- 		dev_err(&pdev->dev, "could not get power controller\n");
--		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
--		goto undo_platform_dev_alloc;
-+		return PTR_ERR(dwc3_data->rstc_pwrdn);
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
  	}
  
- 	/* Manage PowerDown */
-@@ -300,8 +297,6 @@ undo_softreset:
- 	reset_control_assert(dwc3_data->rstc_rst);
- undo_powerdown:
- 	reset_control_assert(dwc3_data->rstc_pwrdn);
--undo_platform_dev_alloc:
--	platform_device_put(pdev);
- 	return ret;
- }
- 
++	resolution = hidinput_calc_abs_res(field, resolution_code);
++
+ 	if (equivalent_usage == HID_GD_X) {
+ 		fmin += features->offset_left;
+ 		fmax -= features->offset_right;
 
 
 
