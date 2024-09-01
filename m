@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D4A9678F3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A4D96799C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28109B21034
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05ADB28096B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6990017E46E;
-	Sun,  1 Sep 2024 16:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A81E17E900;
+	Sun,  1 Sep 2024 16:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSQSrfNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O471W/Q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FCF1C68C;
-	Sun,  1 Sep 2024 16:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D05185928;
+	Sun,  1 Sep 2024 16:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208666; cv=none; b=JguSFtw/bbEkDqmZbe57XGx0OvUuGHjdh+AqdThgiMLvP2hKdkPLlGO8Xur4iZa3fXaSJth+rTK5D4d1mBgCkGLmdFdtdzhJ6YoCV5PBnPJPL8s92E/R+XgbsPMnXjMn18yNhFxlSmMeO0XZwQCY0UG2VaawApITe+918tupanU=
+	t=1725209142; cv=none; b=nuCRyXpI4h647c1/D+WI3RGou19r7B4HFo9+ALVD7Q8jNTdPM8x1WSH0PqZuiG8GStjpEtDPa3nZ62dFkyANb30NjEYgh6zLffRuLIgZCmPRbWS5j8v9bk0GhjNyc8iLKusLETwePcDqj/2+bESP+TdXxj17qYut2/vNuUaAw7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208666; c=relaxed/simple;
-	bh=rT9V43RbkMJYEU4kDz/Ojf2HwDQ1ud2lU6eWPlUZhbM=;
+	s=arc-20240116; t=1725209142; c=relaxed/simple;
+	bh=9NfQkAYW2wC70AgCsVyz424WDVDCDdDT7NSJHoHvPG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as+rGfK7E8OvemBhVxDbjf1IXMYYFyEjFuMByQSVspSXceilJwoNzYWJN39j7NUBMejEC+yqhU/wPy1eG/oOcSQ3cHgF6z976QWa9NnEStr8fjt8Mva0nZS2LJQ4dwcJhp6F79oRRNL+AW81AzftE8oFzSCsiM6lGKA+k7g0vWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSQSrfNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D759C4CEC3;
-	Sun,  1 Sep 2024 16:37:45 +0000 (UTC)
+	 MIME-Version; b=Cg4jzK2OAU7fTQN2G5QKCu+sDoUMVwdvZv11PK8jt7cGy2qEoz/WX8p/VoOhvnQjNTGhNavkTGw7irBE8TBJQIDik5/W/VVfYRXQSSKIUK38GKrvvBS7dROLm+Lj7otPiBtLEU6Af6fsUiUsnjUo7S1E0pB3wLBRe7Hu3H2T/Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O471W/Q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CADC4CEC3;
+	Sun,  1 Sep 2024 16:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208666;
-	bh=rT9V43RbkMJYEU4kDz/Ojf2HwDQ1ud2lU6eWPlUZhbM=;
+	s=korg; t=1725209142;
+	bh=9NfQkAYW2wC70AgCsVyz424WDVDCDdDT7NSJHoHvPG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSQSrfNmp0yVOEX+1ivXcD1XYZCQF63gB/CM+jEll49So1x64QtUeWbFBw8MDAiZL
-	 Zat9y4nZA9ODHNY98uibzK3FBIRgxeDXWxzLzPnhz1g5aBQcsHQC0rWqsH9cyViMbd
-	 0Z2R7lVlRHS7Yn6W/4amaOxb3v+uO9jm2t2gn5XE=
+	b=O471W/Q96vDFissxBkw2wqWwGrGnpHK1JmsNEGziQe41y7kv6jkilKlshewGUPBCc
+	 Ls1KE0sj3JTSQJxYQKp38lNR8ODq0H9et1L+Vi9txs6yZWAK87yMiY5e5yZhzdZuCB
+	 Oh+Cd3swvYa5jyxW6K225QO/DzHqINHSoZwXh4tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 127/149] arm64: dts: qcom: x1e80100: add missing PCIe minimum OPP
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 13/71] mptcp: pm: skip connecting to already established sf
 Date: Sun,  1 Sep 2024 18:17:18 +0200
-Message-ID: <20240901160822.229977617@linuxfoundation.org>
+Message-ID: <20240901160802.389610794@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 98abf2fbd179017833c38edc9f3b587c69d07e2a upstream.
+commit bc19ff57637ff563d2bdf2b385b48c41e6509e0d upstream.
 
-Add the missing PCIe CX performance level votes to avoid relying on
-other drivers (e.g. USB) to maintain the nominal performance level
-required for Gen3 speeds.
+The lookup_subflow_by_daddr() helper checks if there is already a
+subflow connected to this address. But there could be a subflow that is
+closing, but taking time due to some reasons: latency, losses, data to
+process, etc.
 
-Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
-Cc: stable@vger.kernel.org	# 6.9
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240722094249.26471-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+If an ADD_ADDR is received while the endpoint is being closed, it is
+better to try connecting to it, instead of rejecting it: the peer which
+has sent the ADD_ADDR will not be notified that the ADD_ADDR has been
+rejected for this reason, and the expected subflow will not be created
+at the end.
+
+This helper should then only look for subflows that are established, or
+going to be, but not the ones being closed.
+
+Fixes: d84ad04941c3 ("mptcp: skip connecting the connected address")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/pm_netlink.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -2814,6 +2814,7 @@
- 				      "link_down";
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -134,12 +134,15 @@ static bool lookup_subflow_by_daddr(cons
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_addr_info cur;
+-	struct sock_common *skc;
  
- 			power-domains = <&gcc GCC_PCIE_6A_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
+ 	list_for_each_entry(subflow, list, node) {
+-		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
  
- 			phys = <&pcie6a_phy>;
- 			phy-names = "pciephy";
-@@ -2935,6 +2936,7 @@
- 				      "link_down";
- 
- 			power-domains = <&gcc GCC_PCIE_4_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie4_phy>;
- 			phy-names = "pciephy";
+-		remote_address(skc, &cur);
++		if (!((1 << inet_sk_state_load(ssk)) &
++		      (TCPF_ESTABLISHED | TCPF_SYN_SENT | TCPF_SYN_RECV)))
++			continue;
++
++		remote_address((struct sock_common *)ssk, &cur);
+ 		if (mptcp_addresses_equal(&cur, daddr, daddr->port))
+ 			return true;
+ 	}
 
 
 
