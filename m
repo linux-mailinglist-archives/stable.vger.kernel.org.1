@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-72267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237439679F2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461CB967888
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C716B224D9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1C99B2157E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65ED184540;
-	Sun,  1 Sep 2024 16:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8111F17F389;
+	Sun,  1 Sep 2024 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ramYeGL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2K7dAMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F58184534;
-	Sun,  1 Sep 2024 16:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDC21C68C;
+	Sun,  1 Sep 2024 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209373; cv=none; b=r/nay+Pljpx25YGT9slQ1h2apUZOBV7TGkI00rXu31DLCxqqcFAHP5bnuM760GJH+k+6T69iPZfgqWesBgQ1B3twA/5K739eSR4miPS/ZZOs1C68px03CfQGgWNfAh9uj+S5VtS8CqM+938f31ih2eWiFubReCU9QZ8Lpy/Jg4U=
+	t=1725208379; cv=none; b=T0i/LqPcBFKUQtgMLceKyLwqvHwSm5B4ABhkQVglbcO3KJmuQaIN3A11iCCG9P85mbtEmRPZ6JqEnIh2ZIBxUL5tsDcGkosiZiuSafHOwjigQsW068Ruhf7Ss4rR92thsZlcBGYkPyo3j+lJlxe7KhHmqfBMwEHxrCUZuP2VRnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209373; c=relaxed/simple;
-	bh=k29DVda3nVwFTPYA5s/7bow5NeN2atInj5DhTZ62e8c=;
+	s=arc-20240116; t=1725208379; c=relaxed/simple;
+	bh=UIALWQ3/FCQWvFNh2VqExjMGio+ih0PHhKLoO5IhNRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKhzNN6F8BnpZOL9ZhCo3y1nLCvjSZxCjwLBx3u0NN/a2TLwjRUPJg7+R9te8qW1SIO8zQXA546uhL1RCbGTWn9Tc9224eESWdEPuIN3OxqiveW1rSW/8pMG+QBq/ehWH1bcR2l/kdMXee8zL8E52140FJBtqhvc3YRbjNrGABs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ramYeGL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12071C4CEC3;
-	Sun,  1 Sep 2024 16:49:32 +0000 (UTC)
+	 MIME-Version; b=mg2mcNTFWqpIJf2qprGK4FvJ2ujFxUChfC3mkitOei7rrU6Mhq2woytEzhDC5m/QJXzjw3Cqg6v4QHUL3oeFFvsF9nQPKPrQHvyRjJvQJGXzYpxfcKn/W7xJrb2NJBhZ0ItHL0AeXhAZyqjcrGgtevQSROeTyGRw3BEkclDJWnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2K7dAMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A5C4CEC3;
+	Sun,  1 Sep 2024 16:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209373;
-	bh=k29DVda3nVwFTPYA5s/7bow5NeN2atInj5DhTZ62e8c=;
+	s=korg; t=1725208379;
+	bh=UIALWQ3/FCQWvFNh2VqExjMGio+ih0PHhKLoO5IhNRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ramYeGL1h1V9I3BX393ufsNQxuzil48DfE+p1wWOcLCZDU35vFYi8YO93iNLPRomY
-	 AAIzEo35aZ554M0QRmoDdcXsTHBJIJSE8cUhSdnIrA22+93wFGMdDGk3pyUJDGfa4A
-	 M4Iv9u5/+9VTs39quyDamN3Yjtwskj+d/l0ozsaY=
+	b=C2K7dAMof9gKHeZ96HH3T/jNjriTjp+Up1X7jjwt1eRaLpDbNxE5gwJfkFtEELmOo
+	 Pc9i2TRaykVg2oVK+HUnPlzdV7mfcah1/6TldRIwxBMVkWDk4JYFmf+czFKeIAq6by
+	 Ig5Zn+YAUs4SDSMuKRoGEAWyzcIRgN10yRSfv4kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 016/151] drm/amdgpu/jpeg2: properly set atomics vmid field
+	David Howells <dhowells@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 065/149] mm: Fix missing folio invalidation calls during truncation
 Date: Sun,  1 Sep 2024 18:16:16 +0200
-Message-ID: <20240901160814.712343967@linuxfoundation.org>
+Message-ID: <20240901160819.911773395@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +70,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: David Howells <dhowells@redhat.com>
 
-commit e414a304f2c5368a84f03ad34d29b89f965a33c9 upstream.
+[ Upstream commit 0aa2e1b2fb7a75aa4b5b4347055ccfea6f091769 ]
 
-This needs to be set as well if the IB uses atomics.
+When AS_RELEASE_ALWAYS is set on a mapping, the ->release_folio() and
+->invalidate_folio() calls should be invoked even if PG_private and
+PG_private_2 aren't set.  This is used by netfslib to keep track of the
+point above which reads can be skipped in favour of just zeroing pagecache
+locally.
 
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 35c628774e50b3784c59e8ca7973f03bcb067132)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There are a couple of places in truncation in which invalidation is only
+called when folio_has_private() is true.  Fix these to check
+folio_needs_release() instead.
+
+Without this, the generic/075 and generic/112 xfstests (both fsx-based
+tests) fail with minimum folio size patches applied[1].
+
+Fixes: b4fa966f03b7 ("mm, netfs, fscache: stop read optimisation when folio removed from pagecache")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240815090849.972355-1-kernel@pankajraghav.com/ [1]
+Link: https://lore.kernel.org/r/20240823200819.532106-2-dhowells@redhat.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+cc: Pankaj Raghav <p.raghav@samsung.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c |    4 ++--
+ mm/truncate.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-@@ -553,11 +553,11 @@ void jpeg_v2_0_dec_ring_emit_ib(struct a
+diff --git a/mm/truncate.c b/mm/truncate.c
+index e99085bf3d34d..a2af7f088407f 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -174,7 +174,7 @@ static void truncate_cleanup_folio(struct folio *folio)
+ 	if (folio_mapped(folio))
+ 		unmap_mapping_folio(folio);
  
- 	amdgpu_ring_write(ring, PACKETJ(mmUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
-+	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+-	if (folio_has_private(folio))
++	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, 0, folio_size(folio));
  
- 	amdgpu_ring_write(ring, PACKETJ(mmUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
-+	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 	/*
+@@ -235,7 +235,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	 */
+ 	folio_zero_range(folio, offset, length);
  
- 	amdgpu_ring_write(ring,	PACKETJ(mmUVD_LMI_JRBC_IB_64BIT_BAR_LOW_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
+-	if (folio_has_private(folio))
++	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+ 		return true;
+-- 
+2.43.0
+
 
 
 
