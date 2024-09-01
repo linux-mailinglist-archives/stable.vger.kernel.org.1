@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574649678ED
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED8D967967
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F8F1C20B6F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A0F1B21EE8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA43317E46E;
-	Sun,  1 Sep 2024 16:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58A617E46E;
+	Sun,  1 Sep 2024 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnb1E2zD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfRrdrfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E61537FF;
-	Sun,  1 Sep 2024 16:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C372B9C7;
+	Sun,  1 Sep 2024 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208646; cv=none; b=OiEZG4vAs9dDPgmIHMlstmq0Mm7hNeAPSAMXlzK+rDNAm8cNN6KzwrF/qje+kxnvJbT8Ohrx9wRjg9KhLqoAKUmxzgXnIV63UBwAdA5v5Jwi+yL7s+c9hYHadj1uTMfcvzviVMMQyDtHF/hnfwChQzfiHnfMqVrPqikRLpSJD50=
+	t=1725209027; cv=none; b=cT+8f4/kK34flSEyBj0YwLiYFcHCo2sClJtzIGRq+tpcu9HEbdtw5r0coX/Hu1YjlNVDzjDP82fhUwKgq5u0ENrvZXK9d80ooFeiA0G28Tk/KTmvFanyVRuY5XoRWN8RxjtLwirQUC9RVWFIR5LD/VBB2uz7deFCG2di3DjWALA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208646; c=relaxed/simple;
-	bh=65OwdB0w3oF4b7LrA/v+KXVOSUnCyZTsBsLmb3Hqa4k=;
+	s=arc-20240116; t=1725209027; c=relaxed/simple;
+	bh=fPKPuQ0VYzdJOc4SAQBLQ08GBwe6ni6JDlWpq5yOG9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9lJB85N32YHy1ygz9SuwDxNWFqNP6ph8ztwx835k+F43M6FOOKBM8qSEr6zQT5Ry4oibL8PCGPgxVcUyaWpi6ghneRJ4i5Gl7/zHKgYsrOvzUinTS4/xbyfNAutve+5eFvK9ubfVUJzi+6W8IVBZ6qhsDxp8HUr7/CXXEN7r9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnb1E2zD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0119DC4CEC8;
-	Sun,  1 Sep 2024 16:37:25 +0000 (UTC)
+	 MIME-Version; b=fEniBkhGmnU+tgvH0KpQqzxx6Sd83B/vCF4ri4sbq/y/O6zkMjGbbv+NWmmPiTNE4t//WmhsvzF5ySNxOg8il2lyVVShyrbMPG5CeXmTnysanHoEHGZrH3oBdXQneQ6ppRP1poDHtwi4+3ID1m3ry6ZbtCyeMbVPAjSUl5ATv+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfRrdrfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E119C4CEC3;
+	Sun,  1 Sep 2024 16:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208646;
-	bh=65OwdB0w3oF4b7LrA/v+KXVOSUnCyZTsBsLmb3Hqa4k=;
+	s=korg; t=1725209027;
+	bh=fPKPuQ0VYzdJOc4SAQBLQ08GBwe6ni6JDlWpq5yOG9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bnb1E2zD4+UxG7CgZJDKxKzdmbP7TNQNlIxCXJwpVo01zv8IwpdzEg7A/IQH3up6v
-	 kE1M43YN8h1DcehWmvVOkoIPiVHQzC/Y8tHJoCsWizd1Dn7hdIo4zqdsrupY8NsJzb
-	 ep6ZnGcl2MkTR+RTnFQaxG+m/fRputu9VZXSqNXg=
+	b=BfRrdrfmmPg9LB+XZ4Dwi3FnKuGKXDOIygZrKaqgb/kDLXDo+ESsyBqhkMvKv0ztm
+	 ByuiXr1ka4bKzIiiDuYTziJuEq2mb83AD/pE9XiaRVKWD8SV1TxG5ORhhdXOJC9aZg
+	 wf5drV5Uuho0NX1yzgcGxaL2auMDzbmeGMrnrqYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wilkins <steve.wilkins@raymarine.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 146/149] firmware: microchip: fix incorrect error report of programming:timeout on success
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 111/134] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
 Date: Sun,  1 Sep 2024 18:17:37 +0200
-Message-ID: <20240901160822.937050713@linuxfoundation.org>
+Message-ID: <20240901160814.261481646@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wilkins <steve.wilkins@raymarine.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 591940e22e287fb64ac07be275e343d860cb72d6 ]
+commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
 
-After successfully programming the SPI flash with an MFPS auto update
-image, the error sysfs attribute reports programming:timeout.
-This is caused by an incorrect check on the return value from
-wait_for_completion_timeout() in mpfs_auto_update_poll_complete().
+We don't get the right offset in that case.  The GPU has
+an unused 4K area of the register BAR space into which you can
+remap registers.  We remap the HDP flush registers into this
+space to allow userspace (CPU or GPU) to flush the HDP when it
+updates VRAM.  However, on systems with >4K pages, we end up
+exposing PAGE_SIZE of MMIO space.
 
-Fixes: ec5b0f1193ad ("firmware: microchip: add PolarFire SoC Auto Update support")
-Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/microchip/mpfs-auto-update.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/microchip/mpfs-auto-update.c b/drivers/firmware/microchip/mpfs-auto-update.c
-index 835a19a7a3a09..4a95fbbf4733e 100644
---- a/drivers/firmware/microchip/mpfs-auto-update.c
-+++ b/drivers/firmware/microchip/mpfs-auto-update.c
-@@ -153,7 +153,7 @@ static enum fw_upload_err mpfs_auto_update_poll_complete(struct fw_upload *fw_up
- 	 */
- 	ret = wait_for_completion_timeout(&priv->programming_complete,
- 					  msecs_to_jiffies(AUTO_UPDATE_TIMEOUT_MS));
--	if (ret)
-+	if (!ret)
- 		return FW_UPLOAD_ERR_TIMEOUT;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1278,7 +1278,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
+ 		if (args->size != PAGE_SIZE)
+ 			return -EINVAL;
+ 		offset = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
+-		if (!offset)
++		if (!offset || (PAGE_SIZE > 4096))
+ 			return -ENOMEM;
+ 	}
  
- 	return FW_UPLOAD_ERR_NONE;
--- 
-2.43.0
-
+@@ -1872,6 +1872,9 @@ static int kfd_mmio_mmap(struct kfd_dev
+ 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+ 		return -EINVAL;
+ 
++	if (PAGE_SIZE > 4096)
++		return -EINVAL;
++
+ 	address = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
+ 
+ 	vma->vm_flags |= VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
 
 
 
