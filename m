@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55A9967960
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8B59678E6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FF22818AE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD692281D6A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B8E181B87;
-	Sun,  1 Sep 2024 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531A917E00C;
+	Sun,  1 Sep 2024 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yafyI60g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqOw/H7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D5208A7;
-	Sun,  1 Sep 2024 16:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106EA1C68C;
+	Sun,  1 Sep 2024 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209002; cv=none; b=cZi+2GWNcIGq6e1I7AUg6lVxHygVXyWtdQRnhRoDwxrFqOqMXEgAxdyGGtycIZpScZFme20qWDScuS9z0vh9L+RpaNDPtebettJG/Xfh1PBhNhDedzbJahinHEr1HW8CISPLHa/Myn+8F7BTrhZbGjpLzxYWssV1xUvQnixLwRw=
+	t=1725208624; cv=none; b=TF9ObyOVakQux8hwI5BWvZUGP8gR7nrmaa3pbAdY9K+NqThpf/x6kK/K1KA4Hjt0dW9gnmw7nsEiNkLLkZhLLK7J7KWmr7pV8EqM0S+l8nGst1KmhUIvs1gpo9DGQjIrRA831wkW9TvNzvx9H6Hl56RxV+e/JaNQ3e2JIBi7pFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209002; c=relaxed/simple;
-	bh=opU+exKxuPirAbWTqX0KPK3fmvEi92jKmCa6q+Io4c0=;
+	s=arc-20240116; t=1725208624; c=relaxed/simple;
+	bh=i1EgrYOHDHeB5aomN/mKuRJI+g+nu+MtBYY+Ufnp79g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qppXi7HhlBwPF+vgjOTqKp78e+utoeAZq3mfWdlbOqPgI5gxboOuWTCVbJQ1itDZ0RknJlgU/HN7E4rW1XIeYIK0wvl2+T3uboXlUDQSUXTZ7IC3dTJgyxFmxM+EjjEuquwcXLi49gVJRzy4aoGFpfjZzFCKSh8A7nHxlIPaxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yafyI60g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44006C4CEC3;
-	Sun,  1 Sep 2024 16:43:22 +0000 (UTC)
+	 MIME-Version; b=XbZ43OHjGud4ZWdGabLJg+OjETDA/e42wId7TYnf2gup9u6TfEY100D2m04pMOheSVOyYa445HW4C4kWSsQ40l4aNT5Mb0O5xKKeomd85uGwD1KEAQaq494OLu4Q3GzV1jTevmkhyn5x6ygdEAT7CIgUkF5tIMUAtvPDzfbpMsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqOw/H7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0F0C4CEC3;
+	Sun,  1 Sep 2024 16:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209002;
-	bh=opU+exKxuPirAbWTqX0KPK3fmvEi92jKmCa6q+Io4c0=;
+	s=korg; t=1725208623;
+	bh=i1EgrYOHDHeB5aomN/mKuRJI+g+nu+MtBYY+Ufnp79g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yafyI60gnCmKAx2DMi3hBuEvU1mbESqSz1YzvCUkO9upPyevzpsUYW9zrc4bHim6z
-	 A7LipKA1gZZJRdvKxjWLL6xHt2mj3sxAqVyMFGJ+jDOpE5rSiXebSwaDuKD0TBX0Ry
-	 oYRTBqirCE7i9fl7QH77tfJFKFNh1WF+5F6OoIjY=
+	b=XqOw/H7v0Ec8dJq00xZo9+ZTyQal4LumuEMZyUtITsyg9kQmNOaM53UlxxSq3aqHg
+	 rvREb76z9h8RyMAfNS5IJO7nCnY0FTCciA5twIqqfpor54nfwNWw5yg8lhwSW8IQcM
+	 NIOtwIDJNhIaK3HfEkoYDHhbSDHnrUPfcdD3DqCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 5.4 105/134] Input: MT - limit max slots
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Varadarajan Narayanan <quic_varada@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 140/149] arm64: dts: qcom: ipq5332: Fix interrupt trigger type for usb
 Date: Sun,  1 Sep 2024 18:17:31 +0200
-Message-ID: <20240901160814.040376246@linuxfoundation.org>
+Message-ID: <20240901160822.712276182@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
+[ Upstream commit 60a76f7826b88ebf7697a56fdcd9596b23c2b616 ]
 
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
+Trigger type is incorrectly specified as IRQ_TYPE_EDGE_BOTH
+instead of IRQ_TYPE_LEVEL_HIGH. This trigger type is not
+supported for SPIs and results in probe failure with -EINVAL.
 
-Since nobody knows possible max slots, this patch chose 1024.
-
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 927173bf8a0e ("arm64: dts: qcom: Add missing interrupts for qcs404/ipq5332")
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Link: https://lore.kernel.org/r/20240723100151.402300-3-quic_varada@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/input-mt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq5332.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -45,6 +45,9 @@ int input_mt_init_slots(struct input_dev
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
+diff --git a/arch/arm64/boot/dts/qcom/ipq5332.dtsi b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
+index 770d9c2fb4562..e3064568f0221 100644
+--- a/arch/arm64/boot/dts/qcom/ipq5332.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
+@@ -321,8 +321,8 @@
+ 			reg = <0x08af8800 0x400>;
  
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
+ 			interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 53 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 52 IRQ_TYPE_EDGE_BOTH>;
++				     <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "pwr_event",
+ 					  "dp_hs_phy_irq",
+ 					  "dm_hs_phy_irq";
+-- 
+2.43.0
+
 
 
 
