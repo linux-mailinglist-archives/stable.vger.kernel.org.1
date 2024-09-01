@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8764967803
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F3D967924
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110E21C209CE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FBE51F21248
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A41183090;
-	Sun,  1 Sep 2024 16:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EFB17E46E;
+	Sun,  1 Sep 2024 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfFzmobb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnBiRe3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEAF143894;
-	Sun,  1 Sep 2024 16:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1F1C68C;
+	Sun,  1 Sep 2024 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208004; cv=none; b=Qrspevf7c8JRPYiAajXqMpxPtjce21UZSKdWt5pKfaTkvV+z3hHsaOar/eQNNIOMtYEpKkrUkXgH4pnIm54oUjJzJDWpkh2VmYWoXqgputN32uNasPRh/FqF3J+xexH2RmrPBZUFehS2Vf6mKMqpHpKC0+zZ7Y1CV3uBQLJqwgY=
+	t=1725208811; cv=none; b=DJv2QDVHAf/V7Wyf1r9GlYYzg2jgghey+DdxQdhJk6gpU4CkArpHq3jPHBNA+gOKmcuMyAU5r3DOJ1oTZ4vPcnzuUdNyEObCgFkIvrrFi1ljXsnXHUrbRmcLs42bl6AoZcNU8BFQUzhUEBnNzodfG1NTNJy31Vl756pxbutxeIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208004; c=relaxed/simple;
-	bh=EPF5SRjjc19aLCHWKI5DhdPEg5+aXc6hLitiPbQPB3A=;
+	s=arc-20240116; t=1725208811; c=relaxed/simple;
+	bh=RZ0WaFEufdslru1dju8yvL8sqmUWDyLSRvTmn/975kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enjyDEEASyHcSSXcCckOL0TEgeIR5EUejV4LIGPZ3DafBVY74g6+i5DYKbAEavraV+1WPGe26UF8WEf28T0BTZ6hz9BbkFTivjewVYVBYSF0P562YYGjwPIpj9SoSk9O70tAznefoE+AJUnHJYlvn6oqHe6AJcLjVy1Pq9dBL4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfFzmobb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBF8C4CEC3;
-	Sun,  1 Sep 2024 16:26:44 +0000 (UTC)
+	 MIME-Version; b=IJoVn1gQXwCTCwNdhZgoCEFcnNlcfaZr98NcuNI6blgk5Ju8lQ/97hncmwR0ZBU8WzSWIkQpJpCsLHtnjYmWX+eWB+XlWLBCnnQ+tovggwFuUNNR8dk41Tnb2RvWQADbC4ZTc5kw5S1Mhq/MDWOMFA9qkZi9DYJXONBUQPv+uck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnBiRe3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D528FC4CEC3;
+	Sun,  1 Sep 2024 16:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208004;
-	bh=EPF5SRjjc19aLCHWKI5DhdPEg5+aXc6hLitiPbQPB3A=;
+	s=korg; t=1725208811;
+	bh=RZ0WaFEufdslru1dju8yvL8sqmUWDyLSRvTmn/975kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfFzmobbIus/XTBgntP6gis6n19yNwZx62qK33BRCIE1KiUtCWbRzRzLHPlNYbnSz
-	 t96OG+gxPpW3wJGp25OHNMqK5B+jt4fjNLEVNTk2xf+iCi2idh6W8Vf2P2spfjvADZ
-	 Ekpd1f2mA0JICkHGKNc3Rlp8n3TLAzpce1U0bxMk=
+	b=OnBiRe3vsamCVb4J5t+w7FSIOtXqHdppWBdK/pbtrUgiWymYd5nG4NGEwmw0fZlj4
+	 7tNtxvGIjpQQPAkNNUnzOOSnpSTkUA3BdE83oJmflCpzaWmL5pa17LsdG6PdGA43Hb
+	 892YnWzRJLtvHHYOBrDoTxWkU3sitXVcv6u/BWf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 45/93] soundwire: stream: fix programming slave ports for non-continous port maps
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 046/134] fs: binfmt_elf_efpic: dont use missing interpreters properties
 Date: Sun,  1 Sep 2024 18:16:32 +0200
-Message-ID: <20240901160809.057830052@linuxfoundation.org>
+Message-ID: <20240901160811.841254531@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
+[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
 
-Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
-'sink_ports' - define which ports to program in
-sdw_program_slave_port_params().  The masks are used to get the
-appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
-an array.
+Static FDPIC executable may get an executable stack even when it has
+non-executable GNU_STACK segment. This happens when STACK segment has rw
+permissions, but does not specify stack size. In that case FDPIC loader
+uses permissions of the interpreter's stack, and for static executables
+with no interpreter it results in choosing the arch-default permissions
+for the stack.
 
-Bitmasks can be non-continuous or can start from index different than 0,
-thus when looking for matching port property for given port, we must
-iterate over mask bits, not from 0 up to number of ports.
+Fix that by using the interpreter's properties only when the interpreter
+is actually used.
 
-This fixes allocation and programming slave ports, when a source or sink
-masks start from further index.
-
-Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/stream.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/binfmt_elf_fdpic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1286,18 +1286,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
- 					    unsigned int port_num)
- {
- 	struct sdw_dpn_prop *dpn_prop;
--	u8 num_ports;
-+	unsigned long mask;
- 	int i;
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 28aef31a6e6f2..aeeba59fa7342 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -320,7 +320,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 	else
+ 		executable_stack = EXSTACK_DEFAULT;
  
- 	if (direction == SDW_DATA_DIR_TX) {
--		num_ports = hweight32(slave->prop.source_ports);
-+		mask = slave->prop.source_ports;
- 		dpn_prop = slave->prop.src_dpn_prop;
- 	} else {
--		num_ports = hweight32(slave->prop.sink_ports);
-+		mask = slave->prop.sink_ports;
- 		dpn_prop = slave->prop.sink_dpn_prop;
- 	}
- 
--	for (i = 0; i < num_ports; i++) {
-+	for_each_set_bit(i, &mask, 32) {
- 		if (dpn_prop[i].num == port_num)
- 			return &dpn_prop[i];
- 	}
+-	if (stack_size == 0) {
++	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
+ 		stack_size = interp_params.stack_size;
+ 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
+ 			executable_stack = EXSTACK_ENABLE_X;
+-- 
+2.43.0
+
 
 
 
