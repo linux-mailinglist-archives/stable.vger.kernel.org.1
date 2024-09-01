@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-72273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0299679F6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A838967896
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCD71C20C16
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E311F218CC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECDD181B86;
-	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD18185606;
+	Sun,  1 Sep 2024 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9E4MfV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuBrMipr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB2144C93;
-	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B11181B87;
+	Sun,  1 Sep 2024 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209392; cv=none; b=T7lcHIahNgq9AWJjsmF4Nn64doj9xvXPenGB9UiBzetj73pVkcreqSx/+aQdFrUgl2uy1uCta07UJDXT6lFtPBTVQmqn8UTaPvRVUsTyrhRV6du8VtMRodVbzM02mHIPzZtOrcJhYWF6AZ6Wfbm99QWNZMo/VLb8Gp5caQKjNAQ=
+	t=1725208396; cv=none; b=VRCOx4BW1owEvLilBm9tQvQIbK0ah/kk66R7vDUqS/ER6VdjHaNIWsiqb6L9Ra+Grmh8qoY8TYyb12Urwld4c9mV0MvIdcGTi0FwL6z83ElE65nZYZ12jaBtFb3rvzHfuvuU6sK/yBXZqQdTH8sI4p1MjJQYswgzbR4sWACtzaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209392; c=relaxed/simple;
-	bh=IDpmmLK4Xqa0ToYGEJ//CadYBJ29OIsTzORe9C4OruU=;
+	s=arc-20240116; t=1725208396; c=relaxed/simple;
+	bh=mL4t1330ZVJydAYtzT9QEIsfT+natLABjBqOK5ayafU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RikekgVj0JmRjjUNqiWdV27dNMWHtC+5Ff0HiZsWKwF6G1LN7eshi6DKAPVKEViNCSys0XXTZeL/bqKe303akHg/RZne2bGP3BxIrOCoWOE7ksJPeY7mT1qdel8aklLp8hIrNIOBnvF6wt9NV0cKWbHU6f7DmoQOcYBYpiL/WCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9E4MfV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302D8C4CEC3;
-	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
+	 MIME-Version; b=BgtFww8K7A4eC/Q3Ya/fQf6lc3Cjomo0/vEH1oedA/QHPlQ+R5EOueD5kL4jyovQshchQFqisfSTA8X3smI75cnxb1n4XLtery8SpqnFYBuxpEiJjAo22II56pxC7NxU6rwc894K1zPLNmXI/pr760ELiMdgEqIPF4hkhofDPKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuBrMipr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0F0C4CEC3;
+	Sun,  1 Sep 2024 16:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209392;
-	bh=IDpmmLK4Xqa0ToYGEJ//CadYBJ29OIsTzORe9C4OruU=;
+	s=korg; t=1725208395;
+	bh=mL4t1330ZVJydAYtzT9QEIsfT+natLABjBqOK5ayafU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9E4MfV5idsEcpjHa4hmxyv1Drz75rJfpMvgVI1OEAdyQ8rWgK3e9iuNV96aVsZU6
-	 /gkMT8TWXrjbY4AsoJtoSlTLx9ohvIH14PMevl0dBjCIHj1MnyKJl3dQH0pO1SEbW5
-	 5G/ybKuTuLZCOT3/BWQZZWeknVwR+uDeBV46HgLM=
+	b=kuBrMipr2QUZ++oX9/HkbCpJppkHrJt51yyYVGF3YO1VM3ozXLCoB/dlYpA5Oe3wn
+	 Qey7TXBkxDYKEVIJKwPx1U9JyPPOK3fHVziVOM7R3T3XFlax1hDpkpEiFK8esogK9w
+	 W9p7Wz6ge9AxkGVLt5UR1fM+gD3GU+8jt0NpX7uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/151] atm: idt77252: prevent use after free in dequeue_rx()
+Subject: [PATCH 6.10 070/149] netfs: Fix interaction of streaming writes with zero-point tracker
 Date: Sun,  1 Sep 2024 18:16:21 +0200
-Message-ID: <20240901160814.897535613@linuxfoundation.org>
+Message-ID: <20240901160820.098239104@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +68,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
+[ Upstream commit e00e99ba6c6b8e5239e75cd6684a6827d93c39a2 ]
 
-We can't dereference "skb" after calling vcc->push() because the skb
-is released.
+When a folio that is marked for streaming write (dirty, but not uptodate,
+with partial content specified in the private data) is written back, the
+folio is effectively switched to the blank state upon completion of the
+write.  This means that if we want to read it in future, we need to reread
+the whole folio.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+However, if the folio is above the zero_point position, when it is read
+back, it will just be cleared and the read skipped, leading to apparent
+local corruption.
+
+Fix this by increasing the zero_point to the end of the dirty data in the
+folio when clearing the folio state after writeback.  This is analogous to
+the folio having ->release_folio() called upon it.
+
+This was causing the config.log generated by configuring a cpython tree on
+a cifs share to get corrupted because the scripts involved were appending
+text to the file in small pieces.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/563286.1724500613@warthog.procyon.org.uk
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/idt77252.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/netfs/write_collect.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index e616e33c8a209..25fd73fafb371 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 	rpp->len += skb->len;
- 
- 	if (stat & SAR_RSQE_EPDU) {
-+		unsigned int len, truesize;
- 		unsigned char *l1l2;
--		unsigned int len;
- 
- 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
- 
-@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 		ATM_SKB(skb)->vcc = vcc;
- 		__net_timestamp(skb);
- 
-+		truesize = skb->truesize;
- 		vcc->push(vcc, skb);
- 		atomic_inc(&vcc->stats->rx);
- 
--		if (skb->truesize > SAR_FB_SIZE_3)
-+		if (truesize > SAR_FB_SIZE_3)
- 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
--		else if (skb->truesize > SAR_FB_SIZE_2)
-+		else if (truesize > SAR_FB_SIZE_2)
- 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
--		else if (skb->truesize > SAR_FB_SIZE_1)
-+		else if (truesize > SAR_FB_SIZE_1)
- 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
- 		else
- 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 488147439fe0f..a2b697b4aa401 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -33,6 +33,7 @@
+ int netfs_folio_written_back(struct folio *folio)
+ {
+ 	enum netfs_folio_trace why = netfs_folio_trace_clear;
++	struct netfs_inode *ictx = netfs_inode(folio->mapping->host);
+ 	struct netfs_folio *finfo;
+ 	struct netfs_group *group = NULL;
+ 	int gcount = 0;
+@@ -41,6 +42,12 @@ int netfs_folio_written_back(struct folio *folio)
+ 		/* Streaming writes cannot be redirtied whilst under writeback,
+ 		 * so discard the streaming record.
+ 		 */
++		unsigned long long fend;
++
++		fend = folio_pos(folio) + finfo->dirty_offset + finfo->dirty_len;
++		if (fend > ictx->zero_point)
++			ictx->zero_point = fend;
++
+ 		folio_detach_private(folio);
+ 		group = finfo->netfs_group;
+ 		gcount++;
 -- 
 2.43.0
 
