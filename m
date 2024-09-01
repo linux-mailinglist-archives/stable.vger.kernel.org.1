@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5EF967A05
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59846967808
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 042001F22B18
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE49CB216A6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD394183CC3;
-	Sun,  1 Sep 2024 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ACF183090;
+	Sun,  1 Sep 2024 16:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltQvri3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOx6qJ5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C817E00C;
-	Sun,  1 Sep 2024 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A40143894;
+	Sun,  1 Sep 2024 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209436; cv=none; b=kgTlwBQCPtZ5yu4VmLVW6Rw3R0sXpYpAtJCH8GzTFtQOQDXYMU0G9xx8Qd2EyerxHbG9j4Ew4eBclLcJBpA6SGWFXzjEVeDJTpvsRsBoGldULhk+9ScPGTKTHkKYzVzmw3UWXRG4LTOxMiRNaipTeMSWCOoTBc/0X/tcAUur4zs=
+	t=1725208021; cv=none; b=Q/sQgGL5Ft7IXD7GwoVszktnloG72IyKL/MrR0ns5bPzJbfQm95GN90+laWPZt/fs+g0a+CxqzdFg4Gn6uVIDWTXxaTN6M9FECMH75ea7ILcenw1kgjUlpwr1Q4qFJRioK1ULcTuk8GooeLQb9KbAoBmTkP6rI3OEWl3c2F8iVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209436; c=relaxed/simple;
-	bh=m2XyC+hQosY1ynU7U+HJwfylcM0jbbNm8fl5tOSManc=;
+	s=arc-20240116; t=1725208021; c=relaxed/simple;
+	bh=1medUTK2MkYqEruxAINJHSNTPsjyxKauy2ABJsYPjvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0KbuTRUvpohUdFurGafC5n4Uz6egvdOy8rz0L2LGqd1pr9qj/PuccxRCGRrKJ4R2vRKDlw8oaax49CjmAr8CQwnKZQ4qsms59QfSz+tm1eVwNWCcYFt0dGuwfeoQEMysoWZidYkQe6GiWvaIdSOBNpDvnXEd63cYuBVzRAFF+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltQvri3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66C1C4CEC3;
-	Sun,  1 Sep 2024 16:50:35 +0000 (UTC)
+	 MIME-Version; b=BPWayRZ/rQDHU/SDUoIe9dwv+D5SrE8FeNK1K1NcJxbMNKOd6PCy4QQTY9R4V6xCpfxM22OSkd5RNWSP2DfW5Jffh7oNEo1MT+lOVnKMjL/zUTa/SLp3hTXk2XlTTRX3eNweEXi0cKmgLY9G+2rveGWDty6lQ9n5FPbuanRpGfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOx6qJ5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7ADC4CEC3;
+	Sun,  1 Sep 2024 16:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209436;
-	bh=m2XyC+hQosY1ynU7U+HJwfylcM0jbbNm8fl5tOSManc=;
+	s=korg; t=1725208020;
+	bh=1medUTK2MkYqEruxAINJHSNTPsjyxKauy2ABJsYPjvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltQvri3Tgvj19bTpHbdnMMmbqQXTaaIk6Tpp58SSSFbjBSsyvPXvA51XIBNNjLj2C
-	 LQxfM1+TqyrtJ3as9u3afs5X/OLeySALVb8kLHs1RHaT31yEcLfcru0ge+EFrIv9se
-	 wX3t7n8kCDrsq/a4YT5kP4AmdGM5/aD+KPcE4UY0=
+	b=MOx6qJ5+v4OEAcaGjm+GurMto5zQqMeC9R651o3jUqK4xdBq2NrP2LYZgS+Fte8B1
+	 dsH/xVEorkvj+4YI6/79WZ7/jwZv8IFTFopTaPPCdy3bkc2UVdpSeORAu+cRQhtzFa
+	 2LpVpwEWgCwOK2gYPLum9+kG9nsOFh/Svz0LxF8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/151] s390/smp,mcck: fix early IPI handling
+Subject: [PATCH 6.6 49/93] dmaengine: dw: Add peripheral bus width verification
 Date: Sun,  1 Sep 2024 18:16:36 +0200
-Message-ID: <20240901160815.459161741@linuxfoundation.org>
+Message-ID: <20240901160809.208180923@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 4a1725281fc5b0009944b1c0e1d2c1dc311a09ec ]
+[ Upstream commit b336268dde75cb09bd795cb24893d52152a9191f ]
 
-Both the external call as well as the emergency signal submask bits in
-control register 0 are set before any interrupt handler is registered.
+Currently the src_addr_width and dst_addr_width fields of the
+dma_slave_config structure are mapped to the CTLx.SRC_TR_WIDTH and
+CTLx.DST_TR_WIDTH fields of the peripheral bus side in order to have the
+properly aligned data passed to the target device. It's done just by
+converting the passed peripheral bus width to the encoded value using the
+__ffs() function. This implementation has several problematic sides:
 
-Change the order and first register the interrupt handler and only then
-enable the interrupts by setting the corresponding bits in control
-register 0.
+1. __ffs() is undefined if no bit exist in the passed value. Thus if the
+specified addr-width is DMA_SLAVE_BUSWIDTH_UNDEFINED, __ffs() may return
+unexpected value depending on the platform-specific implementation.
 
-This prevents that the second part of the machine check handler for
-early machine check handling is not executed: the machine check handler
-sends an IPI to the CPU it runs on. If the corresponding interrupts are
-enabled, but no interrupt handler is present, the interrupt is ignored.
+2. DW AHB DMA-engine permits having the power-of-2 transfer width limited
+by the DMAH_Mk_HDATA_WIDTH IP-core synthesize parameter. Specifying
+bus-width out of that constraints scope will definitely cause unexpected
+result since the destination reg will be only partly touched than the
+client driver implied.
 
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Let's fix all of that by adding the peripheral bus width verification
+method and calling it in dwc_config() which is supposed to be executed
+before preparing any transfer. The new method will make sure that the
+passed source or destination address width is valid and if undefined then
+the driver will just fallback to the 1-byte width transfer.
+
+Fixes: 029a40e97d0d ("dmaengine: dw: provide DMA capabilities")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Acked-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20240802075100.6475-2-fancer.lancer@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c | 12 +++---------
- arch/s390/kernel/smp.c   |  4 ++--
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/dma/dw/core.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 985e1e7553336..bac1be43d36cb 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -252,15 +252,9 @@ static inline void save_vector_registers(void)
- #endif
+diff --git a/drivers/dma/dw/core.c b/drivers/dma/dw/core.c
+index 5f7d690e3dbae..11e269a31a092 100644
+--- a/drivers/dma/dw/core.c
++++ b/drivers/dma/dw/core.c
+@@ -16,6 +16,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/log2.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -780,10 +781,43 @@ bool dw_dma_filter(struct dma_chan *chan, void *param)
  }
+ EXPORT_SYMBOL_GPL(dw_dma_filter);
  
--static inline void setup_control_registers(void)
-+static inline void setup_low_address_protection(void)
++static int dwc_verify_p_buswidth(struct dma_chan *chan)
++{
++	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
++	struct dw_dma *dw = to_dw_dma(chan->device);
++	u32 reg_width, max_width;
++
++	if (dwc->dma_sconfig.direction == DMA_MEM_TO_DEV)
++		reg_width = dwc->dma_sconfig.dst_addr_width;
++	else if (dwc->dma_sconfig.direction == DMA_DEV_TO_MEM)
++		reg_width = dwc->dma_sconfig.src_addr_width;
++	else /* DMA_MEM_TO_MEM */
++		return 0;
++
++	max_width = dw->pdata->data_width[dwc->dws.p_master];
++
++	/* Fall-back to 1-byte transfer width if undefined */
++	if (reg_width == DMA_SLAVE_BUSWIDTH_UNDEFINED)
++		reg_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	else if (!is_power_of_2(reg_width) || reg_width > max_width)
++		return -EINVAL;
++	else /* bus width is valid */
++		return 0;
++
++	/* Update undefined addr width value */
++	if (dwc->dma_sconfig.direction == DMA_MEM_TO_DEV)
++		dwc->dma_sconfig.dst_addr_width = reg_width;
++	else /* DMA_DEV_TO_MEM */
++		dwc->dma_sconfig.src_addr_width = reg_width;
++
++	return 0;
++}
++
+ static int dwc_config(struct dma_chan *chan, struct dma_slave_config *sconfig)
  {
--	unsigned long reg;
--
--	__ctl_store(reg, 0, 0);
--	reg |= CR0_LOW_ADDRESS_PROTECTION;
--	reg |= CR0_EMERGENCY_SIGNAL_SUBMASK;
--	reg |= CR0_EXTERNAL_CALL_SUBMASK;
--	__ctl_load(reg, 0, 0);
-+	__ctl_set_bit(0, 28);
- }
+ 	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+ 	struct dw_dma *dw = to_dw_dma(chan->device);
++	int ret;
  
- static inline void setup_access_registers(void)
-@@ -313,7 +307,7 @@ void __init startup_init(void)
- 	save_vector_registers();
- 	setup_topology();
- 	sclp_early_detect();
--	setup_control_registers();
-+	setup_low_address_protection();
- 	setup_access_registers();
- 	lockdep_on();
- }
-diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-index 5674792726cd9..2e0c3b0a5a58a 100644
---- a/arch/s390/kernel/smp.c
-+++ b/arch/s390/kernel/smp.c
-@@ -982,12 +982,12 @@ void __init smp_fill_possible_mask(void)
+ 	memcpy(&dwc->dma_sconfig, sconfig, sizeof(*sconfig));
  
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
--	/* request the 0x1201 emergency signal external interrupt */
- 	if (register_external_irq(EXT_IRQ_EMERGENCY_SIG, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1201");
--	/* request the 0x1202 external call external interrupt */
-+	ctl_set_bit(0, 14);
- 	if (register_external_irq(EXT_IRQ_EXTERNAL_CALL, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1202");
-+	ctl_set_bit(0, 13);
- }
+@@ -792,6 +826,10 @@ static int dwc_config(struct dma_chan *chan, struct dma_slave_config *sconfig)
+ 	dwc->dma_sconfig.dst_maxburst =
+ 		clamp(dwc->dma_sconfig.dst_maxburst, 0U, dwc->max_burst);
  
- void __init smp_prepare_boot_cpu(void)
++	ret = dwc_verify_p_buswidth(chan);
++	if (ret)
++		return ret;
++
+ 	dw->encode_maxburst(dwc, &dwc->dma_sconfig.src_maxburst);
+ 	dw->encode_maxburst(dwc, &dwc->dma_sconfig.dst_maxburst);
+ 
 -- 
 2.43.0
 
