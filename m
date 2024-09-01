@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A375967959
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC28D967A3B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234911F21A57
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60ED1B20A86
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE5217E8EA;
-	Sun,  1 Sep 2024 16:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BD917E919;
+	Sun,  1 Sep 2024 16:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAlSRHWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGqOF3x8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBD21C68C;
-	Sun,  1 Sep 2024 16:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB281DFD1;
+	Sun,  1 Sep 2024 16:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208983; cv=none; b=uiYjLpX/3PHttGyWzRwL32yA+l7bETGFQwlGisut922fKPZjlsv1qBqmaMN32H5NbIzgDG8Tgaed/Wu97YQxgHrmZm87ror256QT99vdJjjxLR80JVxj3cAQLA9YesUWTJLZm9cYrBNlLFNK7rg5yks+2MeHPEzkhKoHM9OacDI=
+	t=1725209595; cv=none; b=qlItwR/91prehuwpq1e/odVfPvO12BXUzUklX2BHs6APPu/j2QAmy7t5wpDLLLgsWkSvnSc+CkBiJrt1NIXIfCgFNU/KL6n/eKhskXJulhGCTNmshg2+t5syEl0ek6Zp9TSlU+O39sR79CuCI4zCfd1k9Haby2mzoZx8JUUj+0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208983; c=relaxed/simple;
-	bh=Afkp9BNXa3p5fzPy9CVZN2u/c/I21UQ3ir77R6nDyyo=;
+	s=arc-20240116; t=1725209595; c=relaxed/simple;
+	bh=0ldbB0CY/Lh1KwTUbvPpZUrs71qVU2wT0lJRSKn8MP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tslsPQQ1+q0rupm21okBFB7JrWlcdexQSK6D20zvitDsAWlAIzbLb2ij9Iuly2r0LSzMEXga4F3Fc5qx8P+ojyzYOUlw9iMyexudhQWVLFHyUfl10hhGgGKkne6EMD2mcK38ObznjDce6SXKnB4hvMYGBSdT3MWkcVOC8+s+FFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAlSRHWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7C0C4CEC3;
-	Sun,  1 Sep 2024 16:43:02 +0000 (UTC)
+	 MIME-Version; b=NX/2FTzk28nRmqIQzMfxXHtxzY4tNevjS6+q6LIF9KpMZ0+dOMx25AOJ5/bSckMXlMBR3wuLu9YyVaKgBuflw12eqO7CG7dm5/g29T1+GeBdiagbjgh+90726oKsOn1R2qp/sqfRWIowqMc7DeoO9n0NQY3W08f9MeEeYbjSq9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGqOF3x8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D79C4CEC3;
+	Sun,  1 Sep 2024 16:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208983;
-	bh=Afkp9BNXa3p5fzPy9CVZN2u/c/I21UQ3ir77R6nDyyo=;
+	s=korg; t=1725209595;
+	bh=0ldbB0CY/Lh1KwTUbvPpZUrs71qVU2wT0lJRSKn8MP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAlSRHWZgCNMME+wrAASyq+yC03TgDz9XlylKuouxbTPj2E0d6GMBy8xMElRlUpd3
-	 V++/62UWk+xGgaK5qlbK8qYt0l6c3n3F+7Hw+Ac4cI0nx5rdDuA0ypWvk1IJlp+rgZ
-	 6tZGVuACyPXUwQkN31eVpyFkMJZDW0s2mXtSFfs0=
+	b=LGqOF3x8aA95LpfSM4w7nqW2mYtZ4Hfpi/jqejFPWjbKThrpuykGQ928qJ+v0fWGa
+	 lekOcoFh6pB11AC3xK0pSEEDJI+jRo6g6GQL8Hd+1feewm1teKgDMkj+sRF+5hJy/d
+	 /xzeZIGXv5Z/3Y+4HMI6Etbes0SdQnCTyQjOW1s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 099/134] HID: wacom: Defer calculation of resolution until resolution_code is known
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 085/151] dm suspend: return -ERESTARTSYS instead of -EINTR
 Date: Sun,  1 Sep 2024 18:17:25 +0200
-Message-ID: <20240901160813.818146965@linuxfoundation.org>
+Message-ID: <20240901160817.317434443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+[ Upstream commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 ]
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+This commit changes device mapper, so that it returns -ERESTARTSYS
+instead of -EINTR when it is interrupted by a signal (so that the ioctl
+can be restarted).
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
+The manpage signal(7) says that the ioctl function should be restarted if
+the signal was handled with SA_RESTART.
 
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1920,12 +1920,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index dc8498b4b5c13..b56ea42ab7d2b 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2343,7 +2343,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, long task_state
+ 			break;
  
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
- 	}
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
  
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
-+
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
+@@ -2368,7 +2368,7 @@ static int dm_wait_for_completion(struct mapped_device *md, long task_state)
+ 			break;
+ 
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
