@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA88B9679B8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612D29678F0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A831C2132C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7C32812C1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42367184523;
-	Sun,  1 Sep 2024 16:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9439717CA1F;
+	Sun,  1 Sep 2024 16:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlmJJgDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhohs0qq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F171F186E3A;
-	Sun,  1 Sep 2024 16:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E791C68C;
+	Sun,  1 Sep 2024 16:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209209; cv=none; b=q+qrMOjgtWhU17cq//se4n0ZAsevRtzlb49p47cj5WIkBnZZZzk7LF2Z+xCRTde1waFQmC9EC/GS8LJW7s10zcRCdo4sm6AC8Yq1gZTDlKYoG44dzIr0R6SmjO+/XeIJgAZ1Pt8GxFstymVYfjfzKn267PxxzJ7MYxLmZ39tnP4=
+	t=1725208656; cv=none; b=icSqyRgV8p0BnIoRYm4Xk0+ipBwwbHJXqRACfrGROib1ZVDlEPZJtDUiJI7Z2x75J6OSkWeAzxrp/d5tVYmgi638WnPhFVjld0sdlpcADz3s1evoGvPzaTO5JPoUmvE6Cl8ly2COTgcWKPW4bPCt+92q528bfJIhcjs1hyG5Qpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209209; c=relaxed/simple;
-	bh=8OvfHofNySDWd/ztkLweigl2dZt5zDmrIHfUdJYHzs0=;
+	s=arc-20240116; t=1725208656; c=relaxed/simple;
+	bh=E5907xIhxg3SCP8CY4QKO1UlaSj3oO7hzU25ihyVXQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFxHur9OPgK5UqPahAX4eb5XYkaWUhXM8TtGv4qDnG8oSv0Lzp3T7ZSyXCrGol853tlIdrceESIIYMNarnpSvGoY3dppt98dO9Fv9xi154ziYS0v3o1xioVQiEzKaY6P4HMxrNSoFH78oxzDtAVwSzURxQhaQhI7BcdWoUXasvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlmJJgDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CEFC4CEC3;
-	Sun,  1 Sep 2024 16:46:48 +0000 (UTC)
+	 MIME-Version; b=RmROtpAtJugEzfIWqhldhsLeidQCTcDi3L3vBNZTtPemMHIK8hI6t0v+OuPjTInPGg4gvL36AUSzs/Q2+6C3h608yyo9V25ojCEa41uWGhwJ1FpCruz0FVvnd4q6uc/BTXBjvMEVV541B7xNlNBYjTiCWe9X3lDI+hZvEQwLHuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhohs0qq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6097C4CEC3;
+	Sun,  1 Sep 2024 16:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209208;
-	bh=8OvfHofNySDWd/ztkLweigl2dZt5zDmrIHfUdJYHzs0=;
+	s=korg; t=1725208656;
+	bh=E5907xIhxg3SCP8CY4QKO1UlaSj3oO7hzU25ihyVXQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlmJJgDdamCIfl8tHydbGzVLprZV7ALypP/aW8RA2gW+iiLRPl3oglA6YUZ2tKshX
-	 HjIdQCR1mGEqnertWegDQ3yKDVCeHXILG5piW0+t1f5yTTtWwREfbjqXlAoEkfterH
-	 L3jy6r3hvUHYw4CvWWg4yeFV2H6Di1Dz3wD+dbf0=
+	b=bhohs0qqH86EVJ9xvKKarx+BD5x1goO0h7q0h0UYugs6iUQH7LwiQAEtvbsWblUue
+	 LHmRaijmNFJODfJYCpHFa8UtHk86jS/KQjrBAIKjzTgg3YrrXQ2uIBEcLvIHdIPZKN
+	 R2ddL4lRhrY56HVU677rsEH/BjwL7FfvSbimq/4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Subject: [PATCH 6.1 35/71] btrfs: fix extent map use-after-free when adding pages to compressed bio
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 149/149] nfsd: fix nfsd4_deleg_getattr_conflict in presence of third party lease
 Date: Sun,  1 Sep 2024 18:17:40 +0200
-Message-ID: <20240901160803.216809339@linuxfoundation.org>
+Message-ID: <20240901160823.049123999@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 8e7860543a94784d744c7ce34b78a2e11beefa5c upstream.
+[ Upstream commit 40927f3d0972bf86357a32a5749be71a551241b6 ]
 
-At add_ra_bio_pages() we are accessing the extent map to calculate
-'add_size' after we dropped our reference on the extent map, resulting
-in a use-after-free. Fix this by computing 'add_size' before dropping our
-extent map reference.
+It is not safe to dereference fl->c.flc_owner without first confirming
+fl->fl_lmops is the expected manager.  nfsd4_deleg_getattr_conflict()
+tests fl_lmops but largely ignores the result and assumes that flc_owner
+is an nfs4_delegation anyway.  This is wrong.
 
-Reported-by: syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000038144061c6d18f2@google.com/
-Fixes: 6a4049102055 ("btrfs: subpage: make add_ra_bio_pages() compatible")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this patch we restore the "!= &nfsd_lease_mng_ops" case to behave
+as it did before the change mentioned below.  This is the same as the
+current code, but without any reference to a possible delegation.
+
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/compression.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/compression.c
-+++ b/fs/btrfs/compression.c
-@@ -613,6 +613,7 @@ static noinline int add_ra_bio_pages(str
- 			put_page(page);
- 			break;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 07f2496850c4c..a366fb1c1b9b4 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8859,7 +8859,15 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
+ 			 */
+ 			if (type == F_RDLCK)
+ 				break;
+-			goto break_lease;
++
++			nfsd_stats_wdeleg_getattr_inc(nn);
++			spin_unlock(&ctx->flc_lock);
++
++			status = nfserrno(nfsd_open_break_lease(inode, NFSD_MAY_READ));
++			if (status != nfserr_jukebox ||
++			    !nfsd_wait_for_delegreturn(rqstp, inode))
++				return status;
++			return 0;
  		}
-+		add_size = min(em->start + em->len, page_end + 1) - cur;
- 		free_extent_map(em);
- 
- 		if (page->index == end_index) {
-@@ -625,7 +626,6 @@ static noinline int add_ra_bio_pages(str
+ 		if (type == F_WRLCK) {
+ 			struct nfs4_delegation *dp = fl->c.flc_owner;
+@@ -8868,7 +8876,6 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
+ 				spin_unlock(&ctx->flc_lock);
+ 				return 0;
  			}
- 		}
- 
--		add_size = min(em->start + em->len, page_end + 1) - cur;
- 		ret = bio_add_page(cb->orig_bio, page, add_size, offset_in_page(cur));
- 		if (ret != add_size) {
- 			unlock_extent(tree, cur, page_end, NULL);
+-break_lease:
+ 			nfsd_stats_wdeleg_getattr_inc(nn);
+ 			dp = fl->c.flc_owner;
+ 			refcount_inc(&dp->dl_stid.sc_count);
+-- 
+2.43.0
+
 
 
 
