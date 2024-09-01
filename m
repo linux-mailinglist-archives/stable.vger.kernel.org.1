@@ -1,75 +1,58 @@
-Return-Path: <stable+bounces-71841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A4B9677FF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8B0967920
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D3F1F2131D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6791C2097A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C06183CCA;
-	Sun,  1 Sep 2024 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0117E46E;
+	Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeFzGpIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDfmwoQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B803183CC4;
-	Sun,  1 Sep 2024 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A28E1C68C;
+	Sun,  1 Sep 2024 16:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207992; cv=none; b=Ks/q/zTK46vLR9hEuGrStMtaRJofu/xIcKMA0/ouKczH2lYYP5O/4C+VbRQk/DW4/Q5P2VxGXM4J2KgHdruJHvoAGnZLsaz99+AmFV0ANKuQOb8LRhP/1Flvkkn1G0DawS+H5NxINr8Ks3Q4uRvUeHr3G3oAyE+Lv15wC4pnMFE=
+	t=1725208798; cv=none; b=A87N/q53pgIf8J2GFZcVHp1QaFcj22HeXIMgb8cG1PwSuFEEUpOvc47kggEBPzVxzsqiccYhKukTNcsz2i7DGu0BISaRPGaPZ8gxOvKxFf+7cp2nYiVypfYakxqFBiv3mcStN402JiIf3ZhXMnwn07TyteeGX3jy/j1VI1SuR0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207992; c=relaxed/simple;
-	bh=84aHd2qO6C+6ZXSzKg0OQGFRxJ9gnx40ZfglbApCZHU=;
+	s=arc-20240116; t=1725208798; c=relaxed/simple;
+	bh=6tXgB703y893M6UWgpr8bbmXLxQHd400AeX1DAhNLi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qHkmm6dkZnCCwPeRf6Tvcp14pmEqhyFQuLpg7/Rp2VYaaT7wXLQvPCo6duDY5o0RMEWkFx6x4xr3UI3Zbwcl+8hn9upo4vB5F+6J/1OKG9NDeulr12WD1MMFYQZXZZtFoIkbKKG5sHxIMmjSLAQMzxSWtPNAXCABrqPOAlUmoS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeFzGpIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75041C4CEC3;
-	Sun,  1 Sep 2024 16:26:31 +0000 (UTC)
+	 MIME-Version; b=n1uuR0Knp9arlF1KjgapO0cUIvHvxqnA1DhUoSZyoF8rqoKhDiW/ThTCKqfEy2qsJ/gu0cM45QQQtmlGvXNzMrTn6fYKCm1G2uyrxTaCVlf273IiVwV2fWaO9+fiDJrBKsA7Am4cNrzRxJsFXtMMGQ84ffHtCXQKmC19inc85ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDfmwoQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6B2C4CEC3;
+	Sun,  1 Sep 2024 16:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207992;
-	bh=84aHd2qO6C+6ZXSzKg0OQGFRxJ9gnx40ZfglbApCZHU=;
+	s=korg; t=1725208798;
+	bh=6tXgB703y893M6UWgpr8bbmXLxQHd400AeX1DAhNLi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeFzGpIAyfIGVGjutT+OdEMSYBbxRswIzdL+O9UCfGl8wzfG3vqs4vzoJnq8gFuHi
-	 rfd0yJOupo6r7JUQA9IekXcCULF8I9Cikz60Oaw6e66HqbO2xWGrriBljidsmzLhcL
-	 2o2iWxcBbu4KB/ByOl1Xbjsj6S2CiHZvhb3zAe/Q=
+	b=uDfmwoQUpH6QJ0L5mjk85oskX/hyUWxtUrVSnN7ZGzBmnHEMzqoQ22wxDApzxXQHy
+	 wayKX8pU3M51ZoBIAa0ZwM4EhzW2JZkVN3pX8hUyM+Vc3urr/HXX+kkgNZHvkN9Ihd
+	 Fu6n9CKSOUigr4zExAVokXYNBPJwfQBMe1VfDuug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Christoph Lameter <cl@linux.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tejun Heo <tj@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 41/93] Revert "change alloc_pages name in dma_map_ops to avoid name conflicts"
+Subject: [PATCH 5.4 042/134] nvmet-trace: avoid dereferencing pointer too early
 Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160808.908613948@linuxfoundation.org>
+Message-ID: <20240901160811.692181193@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,215 +62,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Daniel Wagner <dwagner@suse.de>
 
-This reverts commit 983e6b2636f0099dbac1874c9e885bbe1cf2df05 which is
-commit 8a2f11878771da65b8ac135c73b47dae13afbd62 upstream.
+[ Upstream commit 0e716cec6fb11a14c220ee17c404b67962e902f7 ]
 
-It wasn't needed and caused a build break on s390, so just revert it
-entirely.
+The first command issued from the host to the target is the fabrics
+connect command. At this point, neither the target queue nor the
+controller have been allocated. But we already try to trace this command
+in nvmet_req_init.
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240830221217.GA3837758@thelio-3990X
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Benno Lossin <benno.lossin@proton.me>
-Cc: "Björn Roy Baron" <bjorn3_gh@protonmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported by KASAN.
+
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/kernel/pci_iommu.c           |    2 +-
- arch/mips/jazz/jazzdma.c                |    2 +-
- arch/powerpc/kernel/dma-iommu.c         |    2 +-
- arch/powerpc/platforms/ps3/system-bus.c |    4 ++--
- arch/powerpc/platforms/pseries/vio.c    |    2 +-
- arch/x86/kernel/amd_gart_64.c           |    2 +-
- drivers/iommu/dma-iommu.c               |    2 +-
- drivers/parisc/ccio-dma.c               |    2 +-
- drivers/parisc/sba_iommu.c              |    2 +-
- drivers/xen/grant-dma-ops.c             |    2 +-
- drivers/xen/swiotlb-xen.c               |    2 +-
- include/linux/dma-map-ops.h             |    2 +-
- kernel/dma/mapping.c                    |    4 ++--
- 13 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/nvme/target/trace.c |  6 +++---
+ drivers/nvme/target/trace.h | 28 +++++++++++++++++-----------
+ 2 files changed, 20 insertions(+), 14 deletions(-)
 
---- a/arch/alpha/kernel/pci_iommu.c
-+++ b/arch/alpha/kernel/pci_iommu.c
-@@ -929,7 +929,7 @@ const struct dma_map_ops alpha_pci_ops =
- 	.dma_supported		= alpha_pci_supported,
- 	.mmap			= dma_common_mmap,
- 	.get_sgtable		= dma_common_get_sgtable,
--	.alloc_pages_op		= dma_common_alloc_pages,
-+	.alloc_pages		= dma_common_alloc_pages,
- 	.free_pages		= dma_common_free_pages,
- };
- EXPORT_SYMBOL(alpha_pci_ops);
---- a/arch/mips/jazz/jazzdma.c
-+++ b/arch/mips/jazz/jazzdma.c
-@@ -617,7 +617,7 @@ const struct dma_map_ops jazz_dma_ops =
- 	.sync_sg_for_device	= jazz_dma_sync_sg_for_device,
- 	.mmap			= dma_common_mmap,
- 	.get_sgtable		= dma_common_get_sgtable,
--	.alloc_pages_op		= dma_common_alloc_pages,
-+	.alloc_pages		= dma_common_alloc_pages,
- 	.free_pages		= dma_common_free_pages,
- };
- EXPORT_SYMBOL(jazz_dma_ops);
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -216,6 +216,6 @@ const struct dma_map_ops dma_iommu_ops =
- 	.get_required_mask	= dma_iommu_get_required_mask,
- 	.mmap			= dma_common_mmap,
- 	.get_sgtable		= dma_common_get_sgtable,
--	.alloc_pages_op		= dma_common_alloc_pages,
-+	.alloc_pages		= dma_common_alloc_pages,
- 	.free_pages		= dma_common_free_pages,
- };
---- a/arch/powerpc/platforms/ps3/system-bus.c
-+++ b/arch/powerpc/platforms/ps3/system-bus.c
-@@ -695,7 +695,7 @@ static const struct dma_map_ops ps3_sb_d
- 	.unmap_page = ps3_unmap_page,
- 	.mmap = dma_common_mmap,
- 	.get_sgtable = dma_common_get_sgtable,
--	.alloc_pages_op = dma_common_alloc_pages,
-+	.alloc_pages = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
- };
- 
-@@ -709,7 +709,7 @@ static const struct dma_map_ops ps3_ioc0
- 	.unmap_page = ps3_unmap_page,
- 	.mmap = dma_common_mmap,
- 	.get_sgtable = dma_common_get_sgtable,
--	.alloc_pages_op = dma_common_alloc_pages,
-+	.alloc_pages = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
- };
- 
---- a/arch/powerpc/platforms/pseries/vio.c
-+++ b/arch/powerpc/platforms/pseries/vio.c
-@@ -611,7 +611,7 @@ static const struct dma_map_ops vio_dma_
- 	.get_required_mask = dma_iommu_get_required_mask,
- 	.mmap		   = dma_common_mmap,
- 	.get_sgtable	   = dma_common_get_sgtable,
--	.alloc_pages_op	   = dma_common_alloc_pages,
-+	.alloc_pages	   = dma_common_alloc_pages,
- 	.free_pages	   = dma_common_free_pages,
- };
- 
---- a/arch/x86/kernel/amd_gart_64.c
-+++ b/arch/x86/kernel/amd_gart_64.c
-@@ -676,7 +676,7 @@ static const struct dma_map_ops gart_dma
- 	.get_sgtable			= dma_common_get_sgtable,
- 	.dma_supported			= dma_direct_supported,
- 	.get_required_mask		= dma_direct_get_required_mask,
--	.alloc_pages_op			= dma_direct_alloc_pages,
-+	.alloc_pages			= dma_direct_alloc_pages,
- 	.free_pages			= dma_direct_free_pages,
- };
- 
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1614,7 +1614,7 @@ static const struct dma_map_ops iommu_dm
- 	.flags			= DMA_F_PCI_P2PDMA_SUPPORTED,
- 	.alloc			= iommu_dma_alloc,
- 	.free			= iommu_dma_free,
--	.alloc_pages_op		= dma_common_alloc_pages,
-+	.alloc_pages		= dma_common_alloc_pages,
- 	.free_pages		= dma_common_free_pages,
- 	.alloc_noncontiguous	= iommu_dma_alloc_noncontiguous,
- 	.free_noncontiguous	= iommu_dma_free_noncontiguous,
---- a/drivers/parisc/ccio-dma.c
-+++ b/drivers/parisc/ccio-dma.c
-@@ -1022,7 +1022,7 @@ static const struct dma_map_ops ccio_ops
- 	.map_sg =		ccio_map_sg,
- 	.unmap_sg =		ccio_unmap_sg,
- 	.get_sgtable =		dma_common_get_sgtable,
--	.alloc_pages_op =	dma_common_alloc_pages,
-+	.alloc_pages =		dma_common_alloc_pages,
- 	.free_pages =		dma_common_free_pages,
- };
- 
---- a/drivers/parisc/sba_iommu.c
-+++ b/drivers/parisc/sba_iommu.c
-@@ -1090,7 +1090,7 @@ static const struct dma_map_ops sba_ops
- 	.map_sg =		sba_map_sg,
- 	.unmap_sg =		sba_unmap_sg,
- 	.get_sgtable =		dma_common_get_sgtable,
--	.alloc_pages_op =	dma_common_alloc_pages,
-+	.alloc_pages =		dma_common_alloc_pages,
- 	.free_pages =		dma_common_free_pages,
- };
- 
---- a/drivers/xen/grant-dma-ops.c
-+++ b/drivers/xen/grant-dma-ops.c
-@@ -282,7 +282,7 @@ static int xen_grant_dma_supported(struc
- static const struct dma_map_ops xen_grant_dma_ops = {
- 	.alloc = xen_grant_dma_alloc,
- 	.free = xen_grant_dma_free,
--	.alloc_pages_op = xen_grant_dma_alloc_pages,
-+	.alloc_pages = xen_grant_dma_alloc_pages,
- 	.free_pages = xen_grant_dma_free_pages,
- 	.mmap = dma_common_mmap,
- 	.get_sgtable = dma_common_get_sgtable,
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -403,7 +403,7 @@ const struct dma_map_ops xen_swiotlb_dma
- 	.dma_supported = xen_swiotlb_dma_supported,
- 	.mmap = dma_common_mmap,
- 	.get_sgtable = dma_common_get_sgtable,
--	.alloc_pages_op = dma_common_alloc_pages,
-+	.alloc_pages = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
- 	.max_mapping_size = swiotlb_max_mapping_size,
- };
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -28,7 +28,7 @@ struct dma_map_ops {
- 			unsigned long attrs);
- 	void (*free)(struct device *dev, size_t size, void *vaddr,
- 			dma_addr_t dma_handle, unsigned long attrs);
--	struct page *(*alloc_pages_op)(struct device *dev, size_t size,
-+	struct page *(*alloc_pages)(struct device *dev, size_t size,
- 			dma_addr_t *dma_handle, enum dma_data_direction dir,
- 			gfp_t gfp);
- 	void (*free_pages)(struct device *dev, size_t size, struct page *vaddr,
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -570,9 +570,9 @@ static struct page *__dma_alloc_pages(st
- 	size = PAGE_ALIGN(size);
- 	if (dma_alloc_direct(dev, ops))
- 		return dma_direct_alloc_pages(dev, size, dma_handle, dir, gfp);
--	if (!ops->alloc_pages_op)
-+	if (!ops->alloc_pages)
- 		return NULL;
--	return ops->alloc_pages_op(dev, size, dma_handle, dir, gfp);
-+	return ops->alloc_pages(dev, size, dma_handle, dir, gfp);
+diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
+index 1373a3c67962a..a3564e12927b6 100644
+--- a/drivers/nvme/target/trace.c
++++ b/drivers/nvme/target/trace.c
+@@ -195,7 +195,7 @@ const char *nvmet_trace_disk_name(struct trace_seq *p, char *name)
+ 	return ret;
  }
  
- struct page *dma_alloc_pages(struct device *dev, size_t size,
+-const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
++const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id)
+ {
+ 	const char *ret = trace_seq_buffer_ptr(p);
+ 
+@@ -208,8 +208,8 @@ const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
+ 	 * If we can know the extra data of the connect command in this stage,
+ 	 * we can update this print statement later.
+ 	 */
+-	if (ctrl)
+-		trace_seq_printf(p, "%d", ctrl->cntlid);
++	if (ctrl_id)
++		trace_seq_printf(p, "%d", ctrl_id);
+ 	else
+ 		trace_seq_printf(p, "_");
+ 	trace_seq_putc(p, 0);
+diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
+index 3f61b6657175e..5b00a338d52ca 100644
+--- a/drivers/nvme/target/trace.h
++++ b/drivers/nvme/target/trace.h
+@@ -32,18 +32,24 @@ const char *nvmet_trace_parse_fabrics_cmd(struct trace_seq *p, u8 fctype,
+ 	 nvmet_trace_parse_nvm_cmd(p, opcode, cdw10) :			\
+ 	 nvmet_trace_parse_admin_cmd(p, opcode, cdw10)))
+ 
+-const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl);
+-#define __print_ctrl_name(ctrl)				\
+-	nvmet_trace_ctrl_name(p, ctrl)
++const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id);
++#define __print_ctrl_id(ctrl_id)			\
++	nvmet_trace_ctrl_id(p, ctrl_id)
+ 
+ const char *nvmet_trace_disk_name(struct trace_seq *p, char *name);
+ #define __print_disk_name(name)				\
+ 	nvmet_trace_disk_name(p, name)
+ 
+ #ifndef TRACE_HEADER_MULTI_READ
+-static inline struct nvmet_ctrl *nvmet_req_to_ctrl(struct nvmet_req *req)
++static inline u16 nvmet_req_to_ctrl_id(struct nvmet_req *req)
+ {
+-	return req->sq->ctrl;
++	/*
++	 * The queue and controller pointers are not valid until an association
++	 * has been established.
++	 */
++	if (!req->sq || !req->sq->ctrl)
++		return 0;
++	return req->sq->ctrl->cntlid;
+ }
+ 
+ static inline void __assign_req_name(char *name, struct nvmet_req *req)
+@@ -60,7 +66,7 @@ TRACE_EVENT(nvmet_req_init,
+ 	TP_ARGS(req, cmd),
+ 	TP_STRUCT__entry(
+ 		__field(struct nvme_command *, cmd)
+-		__field(struct nvmet_ctrl *, ctrl)
++		__field(u16, ctrl_id)
+ 		__array(char, disk, DISK_NAME_LEN)
+ 		__field(int, qid)
+ 		__field(u16, cid)
+@@ -73,7 +79,7 @@ TRACE_EVENT(nvmet_req_init,
+ 	),
+ 	TP_fast_assign(
+ 		__entry->cmd = cmd;
+-		__entry->ctrl = nvmet_req_to_ctrl(req);
++		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
+ 		__assign_req_name(__entry->disk, req);
+ 		__entry->qid = req->sq->qid;
+ 		__entry->cid = cmd->common.command_id;
+@@ -87,7 +93,7 @@ TRACE_EVENT(nvmet_req_init,
+ 	),
+ 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
+ 		  "meta=%#llx, cmd=(%s, %s)",
+-		__print_ctrl_name(__entry->ctrl),
++		__print_ctrl_id(__entry->ctrl_id),
+ 		__print_disk_name(__entry->disk),
+ 		__entry->qid, __entry->cid, __entry->nsid,
+ 		__entry->flags, __entry->metadata,
+@@ -101,7 +107,7 @@ TRACE_EVENT(nvmet_req_complete,
+ 	TP_PROTO(struct nvmet_req *req),
+ 	TP_ARGS(req),
+ 	TP_STRUCT__entry(
+-		__field(struct nvmet_ctrl *, ctrl)
++		__field(u16, ctrl_id)
+ 		__array(char, disk, DISK_NAME_LEN)
+ 		__field(int, qid)
+ 		__field(int, cid)
+@@ -109,7 +115,7 @@ TRACE_EVENT(nvmet_req_complete,
+ 		__field(u16, status)
+ 	),
+ 	TP_fast_assign(
+-		__entry->ctrl = nvmet_req_to_ctrl(req);
++		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
+ 		__entry->qid = req->cq->qid;
+ 		__entry->cid = req->cqe->command_id;
+ 		__entry->result = le64_to_cpu(req->cqe->result.u64);
+@@ -117,7 +123,7 @@ TRACE_EVENT(nvmet_req_complete,
+ 		__assign_req_name(__entry->disk, req);
+ 	),
+ 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, res=%#llx, status=%#x",
+-		__print_ctrl_name(__entry->ctrl),
++		__print_ctrl_id(__entry->ctrl_id),
+ 		__print_disk_name(__entry->disk),
+ 		__entry->qid, __entry->cid, __entry->result, __entry->status)
+ 
+-- 
+2.43.0
+
 
 
 
