@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04D99677D2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871B4967826
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F1D92811D1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E73B21899
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB405183CA5;
-	Sun,  1 Sep 2024 16:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69033183CAF;
+	Sun,  1 Sep 2024 16:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrRm29E0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoPZ8ujJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87CA16EB4B;
-	Sun,  1 Sep 2024 16:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4728387;
+	Sun,  1 Sep 2024 16:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207865; cv=none; b=oM/Ppwk/MyLktojt4RSQfxqIZJVoFSDiXNk4phhGgTzuq2i8AZzg5ippf11s0A4MQayTK1EMtHe1LXSbqQq6dHAoQuR2Gfk8ww+9PU1po/Xo73DgBF5FVUmfBJm1HYq6a1JWgRtThFcFeIS5SZQ5mkqLItnCbbQQQdz2ZF+zR/I=
+	t=1725208108; cv=none; b=GpLE4cBAJcthjro4+6pyrhdaPymg4EoLTJxuQuM7A0eTVRYX4HwWOavDzE+HjYgP1hVdiVKhojPlCVgGpejKycMXB7Nku90Z5NAPR4uoTFEX4NIRRECng1Qc3k5GAFZsEDn6sTkgXW+MlBFvBIcbQ7ogrIP6TOimV5wo7RNHrOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207865; c=relaxed/simple;
-	bh=57hPJ4kSLy6NUUBsJfkq+o7RMvsGv5qTlXi2eUkUGXA=;
+	s=arc-20240116; t=1725208108; c=relaxed/simple;
+	bh=FGQFXL4qI712IwoATlskeAXW8EzOH9HrLBaXcBzaeCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ0rWXU39L6FSE6X5XsNgUWJjCCr0EIT1eLCIsyU/UVm8dg+K0J3bnWb1GeKBydPYRBPmGX6UCCv0DlR5EVwdMAWwKG82M+VboPB/yd3r2dK5re95fk26VWgfSAwbXYzR9vHJ8rP8sMui72LtucS7b6CbvhmB1n+KHlPDRAiksE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrRm29E0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B6C4CEC3;
-	Sun,  1 Sep 2024 16:24:24 +0000 (UTC)
+	 MIME-Version; b=BTIwbS+j3aFvbXm40daHo8dLI912G7Nm1/mRRlJ2hOItUtex+xGuyWjPZsWblWhlwz191gYPC3XSjtoenWAQEDJbFcLdxV5QhVjRPQThsHKouFt09ycXKr8sI0qSW5Q7xCa61/2dX1ZTKsGAK5uQuZEeuEU3F9/HJxy7mII8U20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoPZ8ujJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CF1C4CEC3;
+	Sun,  1 Sep 2024 16:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207865;
-	bh=57hPJ4kSLy6NUUBsJfkq+o7RMvsGv5qTlXi2eUkUGXA=;
+	s=korg; t=1725208108;
+	bh=FGQFXL4qI712IwoATlskeAXW8EzOH9HrLBaXcBzaeCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrRm29E0hiiW/jsX9Ot0y9JZiKp8K0KrP8KGZ/iHRSsnnJ+t6WRmdLWOeZNaPe8pz
-	 cA8vBnfhrYffFvotgirNdXhyxJjr+9mbgC5iFsakP5MBAY4IecPO/dSQVE+Tb4TcLT
-	 Vsla6GgiCsx2rFy21bUHdpGbC91ZL7jPoDELFTi8=
+	b=XoPZ8ujJhEI8bh+8G8k/q+PIjGx3QYfrj3dL2IWUzVg/pA1esaIw6v0Wi5hWE48WV
+	 YK778+WWPhjDusYwH8PcS4d+Q0vH0rUjETn9IMbIya81BWD0DJisWHTbs7DlqtYrdj
+	 EoEL+EGQ0JTU7NWMeK9AXWCoP8z3bPbSvpXaix9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 4.19 93/98] usb: dwc3: core: Prevent USB core invalid event buffer address access
+	ZHANG Yuntian <yt@radxa.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 76/93] USB: serial: option: add MeiG Smart SRM825L
 Date: Sun,  1 Sep 2024 18:17:03 +0200
-Message-ID: <20240901160807.203981096@linuxfoundation.org>
+Message-ID: <20240901160810.598824411@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: ZHANG Yuntian <yt@radxa.com>
 
-commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
+commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
 
-This commit addresses an issue where the USB core could access an
-invalid event buffer address during runtime suspend, potentially causing
-SMMU faults and other memory issues in Exynos platforms. The problem
-arises from the following sequence.
-        1. In dwc3_gadget_suspend, there is a chance of a timeout when
-        moving the USB core to the halt state after clearing the
-        run/stop bit by software.
-        2. In dwc3_core_exit, the event buffer is cleared regardless of
-        the USB core's status, which may lead to an SMMU faults and
-        other memory issues. if the USB core tries to access the event
-        buffer address.
+Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
 
-To prevent this hardware quirk on Exynos platforms, this commit ensures
-that the event buffer address is not cleared by software  when the USB
-core is active during runtime suspend by checking its status before
-clearing the buffer address.
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=6f345e48
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
+Signed-off-by: ZHANG Yuntian <yt@radxa.com>
+Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -419,9 +419,17 @@ int dwc3_event_buffers_setup(struct dwc3
- void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
-+	u32				reg;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,6 +619,8 @@ static void option_instat_callback(struc
  
- 	if (!dwc->ev_buf)
- 		return;
-+	/*
-+	 * Exynos platforms may not be able to access event buffer if the
-+	 * controller failed to halt on dwc3_core_exit().
-+	 */
-+	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
-+	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
-+		return;
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
++/* MeiG Smart SRM825L based on Qualcomm 315 */
++#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
  
- 	evt = dwc->ev_buf;
- 
+@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
