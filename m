@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB4D96778A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BB8967A01
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91B61F2171D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E6B20923
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829BD17E01C;
-	Sun,  1 Sep 2024 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AADA17E919;
+	Sun,  1 Sep 2024 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llsSw8D7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XycM9ici"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E29144C97;
-	Sun,  1 Sep 2024 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE71143894;
+	Sun,  1 Sep 2024 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207658; cv=none; b=PXTx1/BbIIpRbIbheCtpT2MZdh5Esv6DWvxYddpaeroRPAHT0OnJ8B7GB016rGWZYWLceOvpKjeIj70PXMQi4JJ4MXmX7HQD85ncvs3d8CgK/NhaRW1OODvjBKUUXX+bixBwofp76kCHHwkRrBIDkNhZs8J6z17fSBjQojvSoTI=
+	t=1725209426; cv=none; b=bL0x3zsoc4PAtdY3JYQhb9K1vVsvfxAHGlIaOwqwHNxmg6Om4Wfl2mtjeMn9s++VETOWUcmfvj/LFCH8xsG6mot9rzqMVgOXE7wPYnQkc9jvQ6+TUa2SgUPCoI1pd1baRAIPnJjQrbnUlKF2/pflZSaqLTXPXY+dFuWdGdlZbQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207658; c=relaxed/simple;
-	bh=kU+0+RapXi5Oul8uhZGsV3634GPRs5Ka6/nfU03YsoA=;
+	s=arc-20240116; t=1725209426; c=relaxed/simple;
+	bh=A59qfPWwLxgN8MrOrXedJcMmulONCq+Xl8O8BFiZjLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MI9nB6ml/WvyeUllG7ZwQROUHI6IsDKvqKDl7YcAIKfBbPYGbP0whDZf4tC8DY5mZDcADt2CyNlm7Sgm3afhRLi9gUYRg1/B5vG/DPvXeGYU1WtlsTcMKx+heUj7BCts1opbWt3W/1LbU/3xWKRVlIL+4LAaSnPgRESAFv0MjS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llsSw8D7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DECBC4CEC3;
-	Sun,  1 Sep 2024 16:20:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C4sTumapF+FMBCaNTf8W1iL+nNMdy8IfQAa+IZHt4Pg/OhS+JXrfzHa+XV6+ot54eeSSACPu0bpdhHDYIzYH8UiBHf0bm20BtLqE6dh1p7t84TozJNyao11zc25dIaTwVtS/KW7U6xajGiAGzYiqRzj/bhMmz3kTOxTKPcxhvbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XycM9ici; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C106C4CEC3;
+	Sun,  1 Sep 2024 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207658;
-	bh=kU+0+RapXi5Oul8uhZGsV3634GPRs5Ka6/nfU03YsoA=;
+	s=korg; t=1725209426;
+	bh=A59qfPWwLxgN8MrOrXedJcMmulONCq+Xl8O8BFiZjLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llsSw8D7HQ/RTpuPq2hPVAFswB+6qDT4Va1xTEYTCXze3iNEsJAq+2yu6NXjv1trR
-	 XwnVRdEiiZhlLupknUcT1Gqsx6xAGLP3qeSpTACUJ//3ZHn0oYyWZmhMAljoDoKyAa
-	 bQAZNS9TPxDOfRZkbFBhkxuZe95T7wAvUn7RgTgc=
+	b=XycM9iciHUbkZDA3Z8875mRsTNdkS3LGT2xEA6OaG/8PXM/pTumQpX9I/jLJRwluE
+	 RHRRwy9K6l4vo5IMVn/3vw4Lya3kEdfDf5KHbXrF6VtvjvgZDWzrgMBDRjbGQqW8lP
+	 kIp7Mh2FIlGJ6OEdPMTSBCtBKB7SRzPVMT+Su78s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 39/98] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 009/151] vfs: Dont evict inode under the inode lru traversing context
 Date: Sun,  1 Sep 2024 18:16:09 +0200
-Message-ID: <20240901160805.174327721@linuxfoundation.org>
+Message-ID: <20240901160814.449968247@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +61,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
+commit 2a0629834cd82f05d424bbc193374f9a43d1f87d upstream.
 
-The BUG_ON is deep in the qgroup code where we can expect that it
-exists. A NULL pointer would cause a crash.
+The inode reclaiming process(See function prune_icache_sb) collects all
+reclaimable inodes and mark them with I_FREEING flag at first, at that
+time, other processes will be stuck if they try getting these inodes
+(See function find_inode_fast), then the reclaiming process destroy the
+inodes by function dispose_list(). Some filesystems(eg. ext4 with
+ea_inode feature, ubifs with xattr) may do inode lookup in the inode
+evicting callback function, if the inode lookup is operated under the
+inode lru traversing context, deadlock problems may happen.
 
-It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
-calculation function btrfs_qgroup_account_extents()."). It maybe made
-sense back then as the quota enable/disable state machine was not that
-robust as it is nowadays, so we can just delete it.
+Case 1: In function ext4_evict_inode(), the ea inode lookup could happen
+        if ea_inode feature is enabled, the lookup process will be stuck
+	under the evicting context like this:
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ 1. File A has inode i_reg and an ea inode i_ea
+ 2. getfattr(A, xattr_buf) // i_ea is added into lru // lru->i_ea
+ 3. Then, following three processes running like this:
+
+    PA                              PB
+ echo 2 > /proc/sys/vm/drop_caches
+  shrink_slab
+   prune_dcache_sb
+   // i_reg is added into lru, lru->i_ea->i_reg
+   prune_icache_sb
+    list_lru_walk_one
+     inode_lru_isolate
+      i_ea->i_state |= I_FREEING // set inode state
+     inode_lru_isolate
+      __iget(i_reg)
+      spin_unlock(&i_reg->i_lock)
+      spin_unlock(lru_lock)
+                                     rm file A
+                                      i_reg->nlink = 0
+      iput(i_reg) // i_reg->nlink is 0, do evict
+       ext4_evict_inode
+        ext4_xattr_delete_inode
+         ext4_xattr_inode_dec_ref_all
+          ext4_xattr_inode_iget
+           ext4_iget(i_ea->i_ino)
+            iget_locked
+             find_inode_fast
+              __wait_on_freeing_inode(i_ea) ----→ AA deadlock
+    dispose_list // cannot be executed by prune_icache_sb
+     wake_up_bit(&i_ea->i_state)
+
+Case 2: In deleted inode writing function ubifs_jnl_write_inode(), file
+        deleting process holds BASEHD's wbuf->io_mutex while getting the
+	xattr inode, which could race with inode reclaiming process(The
+        reclaiming process could try locking BASEHD's wbuf->io_mutex in
+	inode evicting function), then an ABBA deadlock problem would
+	happen as following:
+
+ 1. File A has inode ia and a xattr(with inode ixa), regular file B has
+    inode ib and a xattr.
+ 2. getfattr(A, xattr_buf) // ixa is added into lru // lru->ixa
+ 3. Then, following three processes running like this:
+
+        PA                PB                        PC
+                echo 2 > /proc/sys/vm/drop_caches
+                 shrink_slab
+                  prune_dcache_sb
+                  // ib and ia are added into lru, lru->ixa->ib->ia
+                  prune_icache_sb
+                   list_lru_walk_one
+                    inode_lru_isolate
+                     ixa->i_state |= I_FREEING // set inode state
+                    inode_lru_isolate
+                     __iget(ib)
+                     spin_unlock(&ib->i_lock)
+                     spin_unlock(lru_lock)
+                                                   rm file B
+                                                    ib->nlink = 0
+ rm file A
+  iput(ia)
+   ubifs_evict_inode(ia)
+    ubifs_jnl_delete_inode(ia)
+     ubifs_jnl_write_inode(ia)
+      make_reservation(BASEHD) // Lock wbuf->io_mutex
+      ubifs_iget(ixa->i_ino)
+       iget_locked
+        find_inode_fast
+         __wait_on_freeing_inode(ixa)
+          |          iput(ib) // ib->nlink is 0, do evict
+          |           ubifs_evict_inode
+          |            ubifs_jnl_delete_inode(ib)
+          ↓             ubifs_jnl_write_inode
+     ABBA deadlock ←-----make_reservation(BASEHD)
+                   dispose_list // cannot be executed by prune_icache_sb
+                    wake_up_bit(&ixa->i_state)
+
+Fix the possible deadlock by using new inode state flag I_LRU_ISOLATING
+to pin the inode in memory while inode_lru_isolate() reclaims its pages
+instead of using ordinary inode reference. This way inode deletion
+cannot be triggered from inode_lru_isolate() thus avoiding the deadlock.
+evict() is made to wait for I_LRU_ISOLATING to be cleared before
+proceeding with inode cleanup.
+
+Link: https://lore.kernel.org/all/37c29c42-7685-d1f0-067d-63582ffac405@huaweicloud.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219022
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Fixes: 7959cf3a7506 ("ubifs: journal: Handle xattrs like files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240809031628.1069873-1-chengzhihao@huaweicloud.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Suggested-by: Jan Kara <jack@suse.cz>
+Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/inode.c         |   39 +++++++++++++++++++++++++++++++++++++--
+ include/linux/fs.h |    5 +++++
+ 2 files changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index ef95525fa6cdf..770e6f652a1e5 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2095,8 +2095,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
- 	if (nr_old_roots == 0 && nr_new_roots == 0)
- 		goto out_free;
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -453,6 +453,39 @@ static void inode_lru_list_del(struct in
+ 		this_cpu_dec(nr_unused);
+ }
  
--	BUG_ON(!fs_info->quota_root);
--
- 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
- 					num_bytes, nr_old_roots, nr_new_roots);
++static void inode_pin_lru_isolating(struct inode *inode)
++{
++	lockdep_assert_held(&inode->i_lock);
++	WARN_ON(inode->i_state & (I_LRU_ISOLATING | I_FREEING | I_WILL_FREE));
++	inode->i_state |= I_LRU_ISOLATING;
++}
++
++static void inode_unpin_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	WARN_ON(!(inode->i_state & I_LRU_ISOLATING));
++	inode->i_state &= ~I_LRU_ISOLATING;
++	smp_mb();
++	wake_up_bit(&inode->i_state, __I_LRU_ISOLATING);
++	spin_unlock(&inode->i_lock);
++}
++
++static void inode_wait_for_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	if (inode->i_state & I_LRU_ISOLATING) {
++		DEFINE_WAIT_BIT(wq, &inode->i_state, __I_LRU_ISOLATING);
++		wait_queue_head_t *wqh;
++
++		wqh = bit_waitqueue(&inode->i_state, __I_LRU_ISOLATING);
++		spin_unlock(&inode->i_lock);
++		__wait_on_bit(wqh, &wq, bit_wait, TASK_UNINTERRUPTIBLE);
++		spin_lock(&inode->i_lock);
++		WARN_ON(inode->i_state & I_LRU_ISOLATING);
++	}
++	spin_unlock(&inode->i_lock);
++}
++
+ /**
+  * inode_sb_list_add - add inode to the superblock list of inodes
+  * @inode: inode to add
+@@ -565,6 +598,8 @@ static void evict(struct inode *inode)
  
--- 
-2.43.0
-
+ 	inode_sb_list_del(inode);
+ 
++	inode_wait_for_lru_isolating(inode);
++
+ 	/*
+ 	 * Wait for flusher thread to be done with the inode so that filesystem
+ 	 * does not start destroying it while writeback is still running. Since
+@@ -764,7 +799,7 @@ static enum lru_status inode_lru_isolate
+ 	}
+ 
+ 	if (inode_has_buffers(inode) || inode->i_data.nrpages) {
+-		__iget(inode);
++		inode_pin_lru_isolating(inode);
+ 		spin_unlock(&inode->i_lock);
+ 		spin_unlock(lru_lock);
+ 		if (remove_inode_buffers(inode)) {
+@@ -777,7 +812,7 @@ static enum lru_status inode_lru_isolate
+ 			if (current->reclaim_state)
+ 				current->reclaim_state->reclaimed_slab += reap;
+ 		}
+-		iput(inode);
++		inode_unpin_lru_isolating(inode);
+ 		spin_lock(lru_lock);
+ 		return LRU_RETRY;
+ 	}
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2249,6 +2249,9 @@ static inline void kiocb_clone(struct ki
+  *			Used to detect that mark_inode_dirty() should not move
+  * 			inode between dirty lists.
+  *
++ * I_LRU_ISOLATING	Inode is pinned being isolated from LRU without holding
++ *			i_count.
++ *
+  * Q: What is the difference between I_WILL_FREE and I_FREEING?
+  */
+ #define I_DIRTY_SYNC		(1 << 0)
+@@ -2271,6 +2274,8 @@ static inline void kiocb_clone(struct ki
+ #define I_CREATING		(1 << 15)
+ #define I_DONTCACHE		(1 << 16)
+ #define I_SYNC_QUEUED		(1 << 17)
++#define __I_LRU_ISOLATING	19
++#define I_LRU_ISOLATING		(1 << __I_LRU_ISOLATING)
+ 
+ #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
+ #define I_DIRTY (I_DIRTY_INODE | I_DIRTY_PAGES)
 
 
 
