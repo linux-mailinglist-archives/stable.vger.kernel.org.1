@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF045967825
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CBF967B11
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01921C20358
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB25D1C214D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DCC181B88;
-	Sun,  1 Sep 2024 16:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AB017C;
+	Sun,  1 Sep 2024 17:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlSpMORJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVU8sXfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C419F44C97;
-	Sun,  1 Sep 2024 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0222C6AF;
+	Sun,  1 Sep 2024 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208104; cv=none; b=DxhOrngz1XctUXN0T3ayIn31hzmRBQAJAyGAzZOFjHakN5afDCH4kgca7x4YmoM2HOjoxET6aEQLsk6on3iIj2z9fbI9X2jIQzvWyfCV88uX7Rxzy6LvaNxPGoHG+ARWMWaE6vOa0U+gEv5Ppuvt4wK9J7zvhzxt7duz9OUJOZA=
+	t=1725210277; cv=none; b=OYTWEpNh85wVXIuFNabv0ijxEsrDqSpuzpOQb8oF0BVkRHBG+IdEU4I05VFfqyBFdR/AXBUqPfCSyZNfI51GG6ByRx1UA+gEda6QeLr5xOgPw75rt/yHX4J3znJHCIS54xtXs7yCU1zEHTd5jYrqX0pMio23e6UNl8Z9fbCoXZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208104; c=relaxed/simple;
-	bh=EDZ3krE2XCzQlxEBs7piYdVJX9YJZZ42ux2KsDa0hfE=;
+	s=arc-20240116; t=1725210277; c=relaxed/simple;
+	bh=i2TnmzUsvDzpu43yLvuvhDAURecQROQsXx0zWH+E5ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nd8LOjOCU/MLTBaFsdLrSLjzwBmizy8gfZ2VHVP3jJDyGNoj2+dK+th65BREKbOmW1Gukg9hVjGJAN7Z5J5YuFS5k8zRt6JddKbSQ9DJuWhEtsR69iEI9bQXqyybnsH6YdoyUO0HrUF3qz7bdQBK2AaYsyfI8Am5KEGLyZz1jZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlSpMORJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF42C4CEC3;
-	Sun,  1 Sep 2024 16:28:24 +0000 (UTC)
+	 MIME-Version; b=VsK/yfGY2c/Av0xhugcghDGOhADdspp5LGyV5+m8zamKBOtLigUdIZIJqqDQwZ9A3Q6B4hY7FE8Sdq+MWPTiOTRTYoOQznnGIeSO+LY3+gC9AntxEBats+41zgAv122C35vY5eHYYk3YAKKqFiQ82aM3MccED5+5Ni4YS+plU7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVU8sXfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF32C4CEC3;
+	Sun,  1 Sep 2024 17:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208104;
-	bh=EDZ3krE2XCzQlxEBs7piYdVJX9YJZZ42ux2KsDa0hfE=;
+	s=korg; t=1725210277;
+	bh=i2TnmzUsvDzpu43yLvuvhDAURecQROQsXx0zWH+E5ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DlSpMORJOqeU07ABGHUZablYNBw9QdJmgSJx47f4cRksInlssiuxSZPyrprHMbr5A
-	 iyzTFt57BLWI5XpfMEYJlYHLa9iJWBrYjwvpYGqrF0yToHyhL3qNfaTdCXoG8n5D0h
-	 QwJGefdQohtSoy/MbxvDIpT7KHJMx9rccRW7slBM=
+	b=HVU8sXfxAl3CPND9IyVXZgQUBgpZ7gD1TFP0bxkk+RfZ7kGVL0DET/h90oRyHnLYr
+	 7bZfCk8VESfsBuf682o0WaLedhpbC6hmJUpa6+f0YDsAuxVmGTO12G5chV9689lR/q
+	 3E/MrB8ku7Ft1/IZI+vhpZXvrRzrFCvBa3fgKrrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 75/93] scsi: sd: Ignore command SYNCHRONIZE CACHE error if format in progress
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 110/215] nfsd: move reply cache initialization into nfsd startup
 Date: Sun,  1 Sep 2024 18:17:02 +0200
-Message-ID: <20240901160810.560626716@linuxfoundation.org>
+Message-ID: <20240901160827.506483620@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 4f9eedfa27ae5806ed10906bcceee7bae49c8941 upstream.
+[ Upstream commit f5f9d4a314da88c0a5faa6d168bf69081b7a25ae ]
 
-If formatting a suspended disk (such as formatting with different DIF
-type), the disk will be resuming first, and then the format command will
-submit to the disk through SG_IO ioctl.
+There's no need to start the reply cache before nfsd is up and running,
+and doing so means that we register a shrinker for every net namespace
+instead of just the ones where nfsd is running.
 
-When the disk is processing the format command, the system does not
-submit other commands to the disk. Therefore, the system attempts to
-suspend the disk again and sends the SYNCHRONIZE CACHE command. However,
-the SYNCHRONIZE CACHE command will fail because the disk is in the
-formatting process. This will cause the runtime_status of the disk to
-error and it is difficult for user to recover it. Error info like:
+Move it to the per-net nfsd startup instead.
 
-[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
-[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
-[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
-[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
-
-To solve the issue, ignore the error and return success/0 when format is
-in progress.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20240819090934.2130592-1-liyihang9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: ed9ab7346e90 ("nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/nfsd/nfsctl.c |    8 --------
+ fs/nfsd/nfssvc.c |   10 +++++++++-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -1690,13 +1690,15 @@ static int sd_sync_cache(struct scsi_dis
- 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
- 				/* this is no error here */
- 				return 0;
-+
- 			/*
--			 * This drive doesn't support sync and there's not much
--			 * we can do because this is called during shutdown
--			 * or suspend so just return success so those operations
--			 * can proceed.
-+			 * If a format is in progress or if the drive does not
-+			 * support sync, there is not much we can do because
-+			 * this is called during shutdown or suspend so just
-+			 * return success so those operations can proceed.
- 			 */
--			if (sshdr.sense_key == ILLEGAL_REQUEST)
-+			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
-+			    sshdr.sense_key == ILLEGAL_REQUEST)
- 				return 0;
- 		}
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1461,16 +1461,11 @@ static __net_init int nfsd_init_net(stru
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+-	retval = nfsd_reply_cache_init(nn);
+-	if (retval)
+-		goto out_cache_error;
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
  
+ 	return 0;
+ 
+-out_cache_error:
+-	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+ 	nfsd_export_shutdown(net);
+ out_export_error:
+@@ -1479,9 +1474,6 @@ out_export_error:
+ 
+ static __net_exit void nfsd_exit_net(struct net *net)
+ {
+-	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+-
+-	nfsd_reply_cache_shutdown(nn);
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+ 	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -427,16 +427,23 @@ static int nfsd_startup_net(struct net *
+ 	ret = nfsd_file_cache_start_net(net);
+ 	if (ret)
+ 		goto out_lockd;
+-	ret = nfs4_state_start_net(net);
++
++	ret = nfsd_reply_cache_init(nn);
+ 	if (ret)
+ 		goto out_filecache;
+ 
++	ret = nfs4_state_start_net(net);
++	if (ret)
++		goto out_reply_cache;
++
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
+ 	nfsd4_ssc_init_umount_work(nn);
+ #endif
+ 	nn->nfsd_net_up = true;
+ 	return 0;
+ 
++out_reply_cache:
++	nfsd_reply_cache_shutdown(nn);
+ out_filecache:
+ 	nfsd_file_cache_shutdown_net(net);
+ out_lockd:
+@@ -454,6 +461,7 @@ static void nfsd_shutdown_net(struct net
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
+ 	nfs4_state_shutdown_net(net);
++	nfsd_reply_cache_shutdown(nn);
+ 	nfsd_file_cache_shutdown_net(net);
+ 	if (nn->lockd_up) {
+ 		lockd_down(net);
 
 
 
