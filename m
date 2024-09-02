@@ -1,155 +1,157 @@
-Return-Path: <stable+bounces-72744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A24D968CD2
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 19:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF85968D91
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 20:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17900B21B44
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 17:25:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F6B5B224A3
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 18:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B4A1AB6E8;
-	Mon,  2 Sep 2024 17:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9B71A3027;
+	Mon,  2 Sep 2024 18:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6lZDSqh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iuV2Reh+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E91183CBB;
-	Mon,  2 Sep 2024 17:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518181A2640;
+	Mon,  2 Sep 2024 18:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725297936; cv=none; b=YfGV3m/fZyxGoTzWfxX9Z+ciuc2PBXNPAjneqSSxOhd6o3+iQqKzK4ylwjjxtC5vdmiTXfDhCJVQwl9Q59RmNRhI/Mca/OLXeYwp5x4EQ44+1cvMGqWeeSyJKVQXMjXnQutStBJhHQW+lvkhp7YWnImJ9/THAiUz+XfT9ii5XT0=
+	t=1725302225; cv=none; b=mvcO+2KFylTgbhJoTggi+Tt3Q4crqBw2O8pXO2gAfGlBwjSExQ9zcZAakCtP16wRuXUaXyEOX+bTKma+fvE27V+BH9LmDtZAXSyACgriDlnV/lDJxvo5sjBFqfyYVDNJPnfz+OccB/WUAiVxePh16StJB2rNJB4v9VZC/uzoTyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725297936; c=relaxed/simple;
-	bh=i0GO9cmEnkQKQz1YiJmYHXmZrGBPLKjp35I3BqNj7d0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0VVa5pVLemsnCgD6p8mI0YQOzIwQUYGu06pmWjxqsSs8Yg4butAKj2rd2KlCvIco/IiNtmd7xdgUYXGHkcELJRtTf6K+gSEMwwPdORAn63WnDP7oXFU1uzHHnW0J0CB2J4jNioy23Pj3UHeT+v3wCc8r0I0f81BxC7vYbcpEcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6lZDSqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B7FC4CEC8;
-	Mon,  2 Sep 2024 17:25:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725297935;
-	bh=i0GO9cmEnkQKQz1YiJmYHXmZrGBPLKjp35I3BqNj7d0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6lZDSqhhzeEUZilvoOZr15pMfb0RHSLw14KmjsOuPj7YkN72irqumCYJoia4mfkF
-	 34Xa6zOfk5xKslq7SkrekdHnChuRTnT6tOqcibY9Hvft91/vKjHbaVxq9CsFaliEfL
-	 tEa27e5IcmdHDYDXF/V3wSiSZm+6PGkltL0YCyyQ4cnDMEYQxrsEQ3WO/iJB72DKuX
-	 kp4H43N74/EGkMoIlTCZL2F1zmB+sYchNjdrjBVKVKe8TVslrQPw7FtIZSB7j1gVTT
-	 Q/7sos/4+O6x1GKhyVikpw6HfWM4KIDDlcLcAypl5KKQLXVapjeoECv6AvUVzePtvV
-	 J+Zn8q6M8ciNQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10.y 6/6] selftests: mptcp: join: check re-re-adding ID 0 signal
-Date: Mon,  2 Sep 2024 19:25:23 +0200
-Message-ID: <20240902172516.3021978-14-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024082617-malt-arbitrary-2f17@gregkh>
-References: <2024082617-malt-arbitrary-2f17@gregkh>
+	s=arc-20240116; t=1725302225; c=relaxed/simple;
+	bh=D5J89S1x0WwCnAyIAIn2/88qHN+ZopZnOz4e06Hs5aM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u1dmZ/1viJWMfXfMxXm13YCCqbkbjv1Q2uMpwjKCZx4302WM8MxS4KUEOzs9TLhPuBn6kEDi9gox5EtpiZXp0+tJvnTUlnf3w8qfhrmCH867ZVCX1wNMEZ4LVYRp5FIn6ZAhRu62dPDMf+RaYpstNqozfEwRIAeuQAe4npghvGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iuV2Reh+; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4567587224eso24134781cf.0;
+        Mon, 02 Sep 2024 11:37:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725302223; x=1725907023; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iVvbh8FGsIT9BHzhsJ4cAukYSZF9qBJd+bkTB1fiEQs=;
+        b=iuV2Reh+K7MP4p0rG4xc3NxGb/QoeBYeidPiwqf0SnQSwEZaEAkbPVkz0qgp01cvDf
+         VoCHwFxQgQy+nzFe4CXvoUnI670y6WhlNuE5UQHZlgr+o50VwQWvAt1eHSPZW24k8JDN
+         cxUXXj/gD9iKjEvL9+TS3/5at158f8HS1n89sIOjG6Z/4j04yMtMCkzCnij8vatfhPh4
+         T4Lu0XYqIyyfXsrekJ9AQvhHluSBYkmDGfqZfUM6FGw/SUuWXN99Fuc/dNpV1RTABWtR
+         e7FVpbVh/ixO0J5Gr/iAgJZ9UHRHySEoMFKlcTxMP3ZdNlmyLjIrN0EzIuP8XNVPM1hs
+         VtUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725302223; x=1725907023;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iVvbh8FGsIT9BHzhsJ4cAukYSZF9qBJd+bkTB1fiEQs=;
+        b=pNINObTKEDYC75dXD9PV09snvvrBcnHBNjT5TwdcsEIAmVMABLrd9EzDfOzq1VF6Md
+         VaZSqUOLeSxt+RFmY3svr7DPd0O9elDnTP3aZASt1xUG8gdkzhHe4D9YklkgT8bdajvB
+         7EuqeTXMZeHv+Mqc+M4NS4fkr6tdZyIq7GN2glswFs+hteSIrmipJMISZ8SNO0Gck+p5
+         h8anxeopnXSC0tSqAHPcuAYGThnDEPZ1KyrfdPGOrWIZ8C6F12K2PViuaVOXiw8zaZVe
+         fjT0jAtGrBfE7pWgTI0viE/Zmt7IF2zyvezGAWoBWuSs4c+A8saHuFRRN8ja1jQc3qnr
+         kFqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpB2G9Qh83VzVElUfOXuMhAxL8jC9hUlcBg1DlNG7ZJSNq4yylsdRZ6w/VgwAObj7xbQZPcRywJddkIhA=@vger.kernel.org, AJvYcCVCiPAqhjBa0QJweGOdGVg1C1zSYcCXQ8U3Ubfj5o3W7t8/DGkLsJgQT+4k2+/Nzj8meUSQoKxz@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHs/eBfIN3sXKwMlZGLV6MNgF8/43HFC3lC0citRmEV2afP8LR
+	zJQnTl7HsNJS474X1F/KeiU6KhQAKdHYx/STtKmA1ZYdWXIBwVyr
+X-Google-Smtp-Source: AGHT+IGNsLD++8M8KptYDzRk4rj2Vou4jf4/J7cmJ7/3TLrKrT13a2Bhjxez+JfSkbUXpwvdSLgMjQ==
+X-Received: by 2002:a05:6214:320a:b0:6c3:6f34:eba6 with SMTP id 6a1803df08f44-6c36f35002cmr14423086d6.42.1725302223039;
+        Mon, 02 Sep 2024 11:37:03 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c366bb814asm13321966d6.94.2024.09.02.11.36.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Sep 2024 11:37:02 -0700 (PDT)
+Message-ID: <63111bfd-33cd-4a4e-aebc-6ca45cffddf3@gmail.com>
+Date: Mon, 2 Sep 2024 11:36:56 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3347; i=matttbe@kernel.org; h=from:subject; bh=i0GO9cmEnkQKQz1YiJmYHXmZrGBPLKjp35I3BqNj7d0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm1fT9DCndlvkCM47XBITNmZf0NJR5VhCedb6X5 Ujbjn1pvBKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtX0/QAKCRD2t4JPQmmg c0igEACXtComh9cc/SseE/9t3+50bUDhwTRv7PT5CSmf8gXxIbhTpLaWcg2Ic1KsDjqPIOWwNUs pUawrX2vTnY3oxMRJ7KC0RKaQUnBlGJik3YzNRkFjTQXW5mlTwu1yfl76+IEfZnUgVmmR9UOyDw C7A4K973Bd8CLpJCA6YNfFUYajJbUHShIjp01wjvf51gAUXTl5gEAdtIF9uIT9hFfp52tVagIYs MHy11ivDYzaKaTHRRq88Gwrz1njcQ2EL/Xzaz1SBD7LWwnCx+mwIZni3asOlloPsJ6dUeGPnmUZ VdDjrdfmkg7bvHHwER3fQId+lRmS58eylp7u+Tb5fiQ7UzU6sMnwslJxrXdo6axRLhCQLSfW/QL /59r0wsRwyIRWxZpq2pX22VpGN+DWVNyJkakU+YFcLN89aqHEfAkWCnzdqQiijSPCrTzC0E/nwo XLQl3/Colh3Ndrucmw6+Ax+kEqKo5L/FS+W4ZnKxsa9qihMp90AblcpaTc9DeYl0Al2T88qzfsj 1W+vvyY67/K0CL6fJI6hG9nwgA1YExoge4Olz4fiWSa+fGM2k63ZUZjm7v/TVMyBhpmLmLzqyxh LJ8oYXOXTNtqY42xjCSsDF1U/0LBjE5hLc0fyd5h9HYiTsICa2S5LH2BK/YkzARawg/mzbuCeJJ 7vVb8b4eWz9DtXw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/215] 5.15.166-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240901160823.230213148@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit f18fa2abf81099d822d842a107f8c9889c86043c upstream.
 
-This test extends "delete re-add signal" to validate the previous
-commit: when the 'signal' endpoint linked to the initial subflow (ID 0)
-is re-added multiple times, it will re-send the ADD_ADDR with id 0. The
-client should still be able to re-create this subflow, even if the
-add_addr_accepted limit has been reached as this special address is not
-considered as a new address.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+On 9/1/2024 9:15 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.166 release.
+> There are 215 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.166-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- .../testing/selftests/net/mptcp/mptcp_join.sh | 32 ++++++++++++-------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index a8ea0fe200fb..a4762c49a878 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3688,7 +3688,7 @@ endpoint_tests()
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
--		test_linkfail=4 speed=20 \
-+		test_linkfail=4 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
- 
-@@ -3717,7 +3717,17 @@ endpoint_tests()
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
--		chk_subflow_nr "after re-add" 3
-+		chk_subflow_nr "after re-add ID 0" 3
-+		chk_mptcp_info subflows 3 subflows 3
-+
-+		pm_nl_del_endpoint $ns1 99 10.0.1.1
-+		sleep 0.5
-+		chk_subflow_nr "after re-delete ID 0" 2
-+		chk_mptcp_info subflows 2 subflows 2
-+
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 88 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
- 		mptcp_lib_kill_wait $tests_pid
- 
-@@ -3727,19 +3737,19 @@ endpoint_tests()
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_ESTABLISHED 1
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_ANNOUNCED 0
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_REMOVED 0
--		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
--		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 5
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 3
- 
- 		chk_evt_nr ns2 MPTCP_LIB_EVENT_CREATED 1
- 		chk_evt_nr ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 5
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 3
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 6
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 4
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 5
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 3
- 
--		chk_join_nr 4 4 4
--		chk_add_nr 5 5
--		chk_rm_nr 3 2 invert
-+		chk_join_nr 5 5 5
-+		chk_add_nr 6 6
-+		chk_rm_nr 4 3 invert
- 	fi
- 
- 	# flush and re-add
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+
 -- 
-2.45.2
+Florian
 
 
