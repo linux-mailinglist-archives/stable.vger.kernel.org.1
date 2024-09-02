@@ -1,156 +1,170 @@
-Return-Path: <stable+bounces-72728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E2C968AD0
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 17:24:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468DB968AE1
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 17:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFB561C21A3B
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 15:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E67BF1F22A3A
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 15:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D88C1CB506;
-	Mon,  2 Sep 2024 15:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4D51A302E;
+	Mon,  2 Sep 2024 15:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbQ2nH6d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ds/RoX93"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1D31CB501;
-	Mon,  2 Sep 2024 15:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D8D19F135;
+	Mon,  2 Sep 2024 15:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725290646; cv=none; b=DtoqxKBzx5JwjAVNKQsE8+n2YFPiWoC2F9enH4RUdz8H9DEKT26RPIi5n4T7ODtC/VxgyFILwg6t4MSasztpygv5t1uRM+8XsUYkhYGzlZyMSsaP4Et2MjNY3vRUQKp/2Ngx6OLuzwdniwt6sgN0SzpD2GjCMh+xWljk7cz79ZQ=
+	t=1725290759; cv=none; b=qE9534OsKGNaFm7EjKH3Bb8rJhgCXjhY/ZotDYUQ+9FvJm4A9F49ORe6EKlJ8oyWg7E6iNMwFuY5uGFSI3oE8Ru2zIEadfacdzu+zDi69k7ZVQm/hyn4MejIkuItyZ9qiSjAMzNUBOTIdvDGKc0tuUvhvEcY+wdVR/W8HgAKZOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725290646; c=relaxed/simple;
-	bh=BQlWppU1FjT13p5RNU/hm+K+MGXMedldji8RVUArZTk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OdP2uIY4GWWFGsUYIAbaz73AhgpLjEc6vU7YERvPurbUAAT2EGI2aU4pUL86HcbIelRcI9BG/b1Vqu31hdHzVF9Gh2EhAB7zaqfFzMg+8JJCRMPodFfIVG/1gSrn+liyvBDeS9nA/NG5I/9m9sAU5f2vEtU5z8DsiosJeQS7aRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbQ2nH6d; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e02b79c6f21so4580708276.2;
-        Mon, 02 Sep 2024 08:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725290644; x=1725895444; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FPsVJPiJtjRlKkPsEO4YPaUEVPKqVLMBrGZTiyY4gOg=;
-        b=AbQ2nH6dfAlwppvHb3kYQW04eHorAo82vG4nMajIbWf1tx/w3KH4IbR9n+bmYNxZlR
-         Isi8+UFouQS6LZ7yxWKMglKqhaV8VtJTap3AfXynoK/X5j6FyN6YEi9YzbrBZJ1nIGWj
-         QJiaWQL4Jv0wZkS1mpW4Oldm0Di+88/PcKGHy0TcYYvPe+f5uZ0CgQ+Xv7lVHVwNrdDn
-         bydKJXsV3B/XjdMgrtszwSydVawoWnn87QsTOB0vsdsYpiAVgwYJWaLiTqAdfUIwReGp
-         ZRRGjzlEhAk7sikel4DYRfYo/3a+MeeePB2jigx2sXu0TlwNkCsH5+9wB3CgaSo628tQ
-         jRYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725290644; x=1725895444;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FPsVJPiJtjRlKkPsEO4YPaUEVPKqVLMBrGZTiyY4gOg=;
-        b=stkTSu43Z78XgpyNybU15ZF2k2Ds5xvBVOwDtBxt+i80lYriHI949jM3DBw7vxLOhG
-         lurSBs5UXpmzHQ8/3YfgYRrOlEW/LfmwHwS/5NU4gejMR/ozIc6x3NTXBUVa5bLnUYLL
-         VxgvVy3oIQFUP7a2WAQnvYBMw8tiCCcUdVm/W++csRKFcUfogTHha1VSWg6y4c6WxC0R
-         DsxwgZqUuOyle4Fv69sZ2bcJzIuruVp5F6nP4d+xlI64roB9dNGs2b+C577N2EZHf9tJ
-         8edwgL3ELB+VavMwZLSmsD77wOFouLXUeGxiwijS9ukiBoaeTNQ7x40FKNvyvm3ylXtq
-         7Vyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUN/v8vZ12efAelk9MUoAkAYT1sby3VccrtAlCSI4Wm6UyIN2mZaNg038ebo6U/8m+bns2OlT1vBRRvi/w=@vger.kernel.org, AJvYcCXDp7YLu3QY/Z/K28E94QawBdw2za9ydUdwAiC2gWTH9uuVMtTKlwEmxB8j8hxuigBorHZ3XDBY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqPh76k9o/80pR/8EdbSfoo12DG1FP+Zh1DpQ4hP6g7IYJ/7hG
-	0dbI8WKAIGd2hgU2t8tSU0gK/0IsMrT6FiSVJvRI5dkTbyurOMus
-X-Google-Smtp-Source: AGHT+IGJ+k8zxaJWQWNZApEWPsQIcWeoLE4f4a06WrEMM7aQzV3Zko2qhOjjVG1ljIIfkUmCCNab+w==
-X-Received: by 2002:a05:6902:2788:b0:e1a:af1e:d3c7 with SMTP id 3f1490d57ef6-e1aaf1ed70emr4684657276.46.1725290643617;
-        Mon, 02 Sep 2024 08:24:03 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c340dafffdsm42607606d6.140.2024.09.02.08.24.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 08:24:02 -0700 (PDT)
-Message-ID: <02a2db3d-a0e1-42bc-9cdb-3b24c94fc6fe@gmail.com>
-Date: Mon, 2 Sep 2024 08:23:59 -0700
+	s=arc-20240116; t=1725290759; c=relaxed/simple;
+	bh=Vn+vbILnEWPZel6iiH6ofez7iKyV+9ORZYvdR68PlGk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nF5uqO8JWLR5+4pYDLJ/j2W8/gm8yLs4VdLsQeT8qFWLs/0iXG93Kln62YINfRB6Yo4Dfy73VxzgrmD2WiScscafFq42dmNQV/hYPWQB9W6CSSKgqWeCrCL0p/nVlXgfMmOhxSrTlXSxvnv+yz+e6+Q2oTLkUdWGf6RVpI7xJlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ds/RoX93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F80C4CECB;
+	Mon,  2 Sep 2024 15:25:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725290758;
+	bh=Vn+vbILnEWPZel6iiH6ofez7iKyV+9ORZYvdR68PlGk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ds/RoX93hAWPSBPAHCEGQbFMq6FqumiuLioi8NaSEZ0qzH8RIKOM06/OcYnNATj74
+	 NLYFqpXeF0q4lMWE1m3aF9bcSM5d6NITMJraBKcajTFnT972Z0a6ur07BJ0AFHX6Rx
+	 Ds4wh+tvkPTjgfBBfUV593MSwnmrFI3b9DYzV6hE9RR2cUsxIhg+UTE79aT1zp7BXU
+	 FcBk667n7fMK3OeDQRXEyWzZofYdi7sH4t4dI18pN+034HfgnjokSAtovDz+uPwLy0
+	 dxwSq55tCJiz/gqYguyJx9wz3XZxmWbTdzYJ4KpWMMBWM2MHeEJ3sQySWAwC8X5pkA
+	 IoeMfAMsQgGjQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1sl8wX-000000000Fd-12zI;
+	Mon, 02 Sep 2024 17:26:13 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	=?UTF-8?q?=27N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado=27?= <nfraprado@collabora.com>,
+	linux-arm-msm@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/8] serial: qcom-geni: fix fifo polling timeout
+Date: Mon,  2 Sep 2024 17:24:44 +0200
+Message-ID: <20240902152451.862-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240902152451.862-1-johan+linaro@kernel.org>
+References: <20240902152451.862-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/134] 5.4.283-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240901160809.752718937@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+The qcom_geni_serial_poll_bit() can be used to wait for events like
+command completion and is supposed to wait for the time it takes to
+clear a full fifo before timing out.
 
+As noted by Doug, the current implementation does not account for start,
+stop and parity bits when determining the timeout. The helper also does
+not currently account for the shift register and the two-word
+intermediate transfer register.
 
-On 9/1/2024 9:15 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.283 release.
-> There are 134 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.283-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Instead of determining the fifo timeout on every call, store the timeout
+when updating it in set_termios() and wait for up to 19/16 the time it
+takes to clear the 16 word fifo to account for the shift and
+intermediate registers. Note that serial core has already added a 20 ms
+margin to the fifo timeout.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Also note that the current uart_fifo_timeout() interface does
+unnecessary calculations on every call and also did not exists in
+earlier kernels so only store its result once. This also facilitates
+backports as earlier kernels can derive the timeout from uport->timeout,
+which has since been removed.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable@vger.kernel.org	# 4.17
+Reported-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/tty/serial/qcom_geni_serial.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 69a632fefc41..e1926124339d 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -124,7 +124,7 @@ struct qcom_geni_serial_port {
+ 	dma_addr_t tx_dma_addr;
+ 	dma_addr_t rx_dma_addr;
+ 	bool setup;
+-	unsigned int baud;
++	unsigned long fifo_timeout_us;
+ 	unsigned long clk_rate;
+ 	void *rx_buf;
+ 	u32 loopback;
+@@ -270,22 +270,21 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
+ {
+ 	u32 reg;
+ 	struct qcom_geni_serial_port *port;
+-	unsigned int baud;
+-	unsigned int fifo_bits;
+ 	unsigned long timeout_us = 20000;
+ 	struct qcom_geni_private_data *private_data = uport->private_data;
+ 
+ 	if (private_data->drv) {
+ 		port = to_dev_port(uport);
+-		baud = port->baud;
+-		if (!baud)
+-			baud = 115200;
+-		fifo_bits = port->tx_fifo_depth * port->tx_fifo_width;
++
+ 		/*
+-		 * Total polling iterations based on FIFO worth of bytes to be
+-		 * sent at current baud. Add a little fluff to the wait.
++		 * Wait up to 19/16 the time it would take to clear a full
++		 * FIFO, which accounts for the three words in the shift and
++		 * intermediate registers.
++		 *
++		 * Note that fifo_timeout_us already has a 20 ms margin.
+ 		 */
+-		timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
++		if (port->fifo_timeout_us)
++			timeout_us = 19 * port->fifo_timeout_us / 16;
+ 	}
+ 
+ 	/*
+@@ -1248,7 +1247,6 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+ 	qcom_geni_serial_stop_rx(uport);
+ 	/* baud rate */
+ 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
+-	port->baud = baud;
+ 
+ 	sampling_rate = UART_OVERSAMPLING;
+ 	/* Sampling rate is halved for IP versions >= 2.5 */
+@@ -1326,8 +1324,10 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+ 	else
+ 		tx_trans_cfg |= UART_CTS_MASK;
+ 
+-	if (baud)
++	if (baud) {
+ 		uart_update_timeout(uport, termios->c_cflag, baud);
++		port->fifo_timeout_us = jiffies_to_usecs(uart_fifo_timeout(uport));
++	}
+ 
+ 	if (!uart_console(uport))
+ 		writel(port->loopback,
 -- 
-Florian
+2.44.2
 
 
