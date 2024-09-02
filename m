@@ -1,123 +1,151 @@
-Return-Path: <stable+bounces-72693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563A09682B4
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:08:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B252C9682C1
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED2331F21D8D
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E3A528205C
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547F6187356;
-	Mon,  2 Sep 2024 09:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C106218733D;
+	Mon,  2 Sep 2024 09:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uuD8bzvM"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GvS4fPt+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iGX83XVz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D35B1311AC
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 09:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3BC2D7B8;
+	Mon,  2 Sep 2024 09:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725268126; cv=none; b=B08KzGqC79J8RWTGbfAHqWxYW3mg5wNapBu9KL2FWdKmRzLSKzUThCm60EofVaVcnOVxYRyinoS9Twl2M0lMHXi1qCfHFbvfE9OZR9YKy/ZZzNkQ++c7iy3bAiCdWJo1izGiIMb+Ca+sd1/UoWVJakUNdFzbCknkuPi4yERMSxg=
+	t=1725268220; cv=none; b=re4K1CO/tAeMTaHVHdxzhd/St42SnX+mgRRWVkIRZ0GngK9XLOhaGQtcW4mMpv1aGDd+GhuD97BQPeNHamcm0P9fK4GoYutAYWrdSLpmdv12nRAThYqofNwOJUUqqiR6VQo9sSakDh6hfl8Hwt0N9niTbYDhUXwgnLhlhSKFA7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725268126; c=relaxed/simple;
-	bh=ItlPypp6WrCWIb6a+iZ6UnRF5dm/ZOiMxnKIf5htWU8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iaS9h7qStVzjFkleqQ8yjT2RtD7OHu2+3WWbJVRh4PiKWFTr2t+at3wSfs+B46wNCIHPRcCzG8PudVKMDXkl2Y+0yrua23absDGKganYHh5/3zLVrcy/RMY/i1xRt8AgDH7GXeoV1H0MStcKv6nZudrwUDWL2baSHE9Xu6KpzAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uuD8bzvM; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53345604960so4424464e87.3
-        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 02:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725268121; x=1725872921; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ItlPypp6WrCWIb6a+iZ6UnRF5dm/ZOiMxnKIf5htWU8=;
-        b=uuD8bzvM5C/y53wR6FUbASg+81EL8koD7lGuCaa/PrYnbVC4tphzuiUMNWzrPBrvkn
-         QmrRjFFLVscLw54V0oWPo058hxyxoe619I0jMbd26JFST4M/LG/XA/pNL+Eg7EIgj1yI
-         3CfAkGCJKLMxY1F2Uhhzbfv5eoI+EtVzU5uZlScYbhjkdBlZB+/DyNjChHXI+DIkO+4O
-         QHXHZGzPT1a/4dQkldFj+dc/B4YhywFYcOwi8t+pONPkbLX9TGTGIPA8wWkVgTFCYKTm
-         zCoYqIjA1eLMg+jP+u7ycYXFzBGK/9PCtOeubwSE/axuDrrFy41t4mmDvbOT0HTPNiG+
-         hbuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725268121; x=1725872921;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ItlPypp6WrCWIb6a+iZ6UnRF5dm/ZOiMxnKIf5htWU8=;
-        b=QQ9IUfHQbVmvrWQ8R+ZsKcW4/pDkDj0AVyfU2arnTUKyOTo1MkjL/eIDbJ4o3x5Vdu
-         gF1/DWLKXSCl69KvTzgzWTFZYhey+smPEJxwSSNsKfukSF4YSfIwothFpavls8Ltb8Gu
-         a5lDE5ixUvOB8DIae7El3vF6c7rF2dNyeclmxKkdK8ZQS6qXPX6gyaaw6rK+pJl6hbBc
-         tzDDvXhh1bOHO5hAmq9R0+7W2MXPeFNQWKatsjRg184OGgoX8B8RHKuGGnTcHwVWxl55
-         eWNUSF9aUI9T+3hyst/9nVNnZmouEiw/36ONjzzDMOj9UavRrMM4hdVN8efEGvQRze6e
-         2u8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVa2BRITAjA/SHUMU2WERyV1r33UShOod5L8tXywrEx2DD6FwpbHcheLU1qz9YyUXut2JIRc2w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKT8uTvcVSxbK1tvpzUCF/yg6iQ0rratlNbhS+X7IPrA0zP03r
-	hMBO1276SCLD+F+RWbUGdnDwom5x9iUXJ/eD2cGSdgstFaaXpA/cllEl/HhG0mQpdpbv0dl+aQO
-	FW6H23xSV9kz20Sc1CvfOwjw6jvpws6E9NCICWQ==
-X-Google-Smtp-Source: AGHT+IE7Gmr8DRXU57qN/PlvHfcPdekTg2Ympj1QWPZ+v6eYceQhpU7ghw98R1G+yXBVxygGtcP2A1ooOEzFQ96QHpg=
-X-Received: by 2002:a05:6512:3d24:b0:52e:a68a:6076 with SMTP id
- 2adb3069b0e04-53546bb4d0fmr7358027e87.49.1725268120534; Mon, 02 Sep 2024
- 02:08:40 -0700 (PDT)
+	s=arc-20240116; t=1725268220; c=relaxed/simple;
+	bh=6j0Oy77vc3k7Bm97cy+0sWSoGWBccV07dWxxIiN5yTg=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Zqp0Fzo+ZLv20DTDKqr3aqKRm2M049hrznqUNCujMSTzUVBg938+4vbjfThCo3hGIRG6U12XAckqzNmEPom5y597Q+2CQmKclKqxr7Ffi3xC6BrR/lJXooQ7aSBRCuVpMS1s/MGt/rUlg/0KzsIKDN5qKMkdCubrolhYXjBvI4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=GvS4fPt+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iGX83XVz; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id DA62111402A6;
+	Mon,  2 Sep 2024 05:10:17 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-04.internal (MEProxy); Mon, 02 Sep 2024 05:10:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1725268217;
+	 x=1725354617; bh=bzaUZvBR6GY2fVCjdmz9wFgI6HiU4z7HCwf2miDnwYA=; b=
+	GvS4fPt+9jtPThPXCzHUZbVhVte9hekuZsxDuetitVoYOHcXDzlGMvxagUBSBs+Y
+	gWO1ZjbblIjtYEFSzM7Cy6+3L7hgXo2jSMqusFnu1BWonO9x7qPADYCEKnUiJqg8
+	KNNnmP0fgYOin2LxZCw1SkZl2oUV+V/R2Sd493BivMAq6H9fWoXXtGYBojuGgZkr
+	uYIskeOO645P/8et/V11ne5V6yr7YeLuBLTQ3j75wuQDyLmeiCSwexNxN6UXZmiY
+	l9lPBSCFOV3FuLJEC7N1RcdAijZtipDtn9e0lCcVwlBM7asEO+Bh+D2wNUBC1lKE
+	p39I8IBv/2JrfjzHNrLFfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725268217; x=
+	1725354617; bh=bzaUZvBR6GY2fVCjdmz9wFgI6HiU4z7HCwf2miDnwYA=; b=i
+	GX83XVzAoGLYdZx2vbv5UP4w29BGMp9szfjvexA7zY/zvv+cpwxcXp7HTdXqLgCK
+	a1Sl5CVaCmF6wjx/PS54odSwp6n5VOPgXNcjOHESt20QrGIJygkBGYCoBbnbpc6W
+	pZx2qTIpy5Rzg5rICCypPmIftKnFC4RqDdAa6u9q+ug40IYF5a/lRHQnfE4TKTHg
+	Rmf2v1CxAnNAyXxenNYkpAQkjb8ajh6+SHVY027B4IPDGxM7D/Q1nNKU4Vnh8zgh
+	mnFceguqwrlh3qtBiAcCCwT5DqqgI+s6l29Vym8SH29NrBWxvm7yYIv5MEuS6BdW
+	pjMrWBntCChPZvy7fExgA==
+X-ME-Sender: <xms:-YDVZoJtGIfQ-SaB70EHDJmU1AS_aHtyq9G07YCD9ka7SFfK2G7jUQ>
+    <xme:-YDVZoKIl28I_f7LJnmk0YVmkDyO2srCnsC_PVxPIidohgDF3H5AmAGZGc6xQIXmv
+    FK-qmbi5j7ms_BiG_w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehfedguddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvdef
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguihgvthhmrghrrdgvghhgvghmrg
+    hnnhesrghrmhdrtghomhdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdr
+    tghomhdprhgtphhtthhopegthihphhgrrhestgihphhhrghrrdgtohhmpdhrtghpthhtoh
+    eprhhoshhtvgguthesghhoohgumhhishdrohhrghdprhgtphhtthhopegsshgvghgrlhhl
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrug
+    drohhrghdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhuhgrhheskhgvrh
+    hnvghlrdhorhhg
+X-ME-Proxy: <xmx:-YDVZotDYjNwOLmbepGuzRbve8dpg4PUkv-Z3Z5HZ4thEqpif7IOFw>
+    <xmx:-YDVZlYQjTxLpm4yBsjpAQNUQK56ngTLtrSpT_4M6EI8MfCOstHtAg>
+    <xmx:-YDVZvb8SGQi2U9tYXOv94ItwL-JifN3KKNb6FctzcRFlq2JVp6zow>
+    <xmx:-YDVZhBVB07Hh6OWpB_irfc3Q8tn58t4BJbVaJHchXxoOgq9Jz6ecQ>
+    <xmx:-YDVZsJwLH0OCSZIqhg0QIi80Ml9hJvUQLfbZ2iagsSkpsES3sM5MBEJ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 3C9DA2220083; Mon,  2 Sep 2024 05:10:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240830-x1e80100-bypass-pdc-v1-1-d4c00be0c3e3@linaro.org>
-In-Reply-To: <20240830-x1e80100-bypass-pdc-v1-1-d4c00be0c3e3@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 2 Sep 2024 11:08:29 +0200
-Message-ID: <CACRpkdY97ZOOu66FkLcCSF9vd5uw9N6i239t8aeuaAR4B_ccxA@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: x1e80100: Bypass PDC wakeup parent for now
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, Maulik Shah <quic_mkshah@quicinc.com>, 
-	Sibi Sankar <quic_sibis@quicinc.com>, Abel Vesa <abel.vesa@linaro.org>, 
-	Johan Hovold <johan@kernel.org>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-arm-msm@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Sep 2024 09:09:55 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Aleksa Sarai" <cyphar@cyphar.com>, "Ingo Molnar" <mingo@redhat.com>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Juri Lelli" <juri.lelli@redhat.com>,
+ "Vincent Guittot" <vincent.guittot@linaro.org>,
+ "Dietmar Eggemann" <dietmar.eggemann@arm.com>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Benjamin Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
+ "Valentin Schneider" <vschneid@redhat.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ shuah <shuah@kernel.org>
+Cc: "Kees Cook" <kees@kernel.org>, "Florian Weimer" <fweimer@redhat.com>,
+ "Mark Rutland" <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+Message-Id: <63193b87-7057-4ad0-aef2-fdb5d15138c3@app.fastmail.com>
+In-Reply-To: 
+ <20240902-extensible-structs-check_fields-v1-3-545e93ede2f2@cyphar.com>
+References: 
+ <20240902-extensible-structs-check_fields-v1-0-545e93ede2f2@cyphar.com>
+ <20240902-extensible-structs-check_fields-v1-3-545e93ede2f2@cyphar.com>
+Subject: Re: [PATCH RFC 3/8] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 30, 2024 at 11:09=E2=80=AFAM Stephan Gerhold
-<stephan.gerhold@linaro.org> wrote:
+On Mon, Sep 2, 2024, at 07:06, Aleksa Sarai wrote:
+> While we do currently return -EFAULT in this case, it seems prudent to
+> follow the behaviour of other syscalls like clone3. It seems quite
+> unlikely that anyone depends on this error code being EFAULT, but we can
+> always revert this if it turns out to be an issue.
 
-> On X1E80100, GPIO interrupts for wakeup-capable pins have been broken sin=
-ce
-> the introduction of the pinctrl driver. This prevents keyboard and touchp=
-ad
-> from working on most of the X1E laptops. So far we have worked around thi=
-s
-> by manually building a kernel with the "wakeup-parent" removed from the
-> pinctrl node in the device tree, but we cannot expect all users to do tha=
-t.
->
-> Implement a similar workaround in the driver by clearing the wakeirq_map
-> for X1E80100. This avoids using the PDC wakeup parent for all GPIOs
-> and handles the interrupts directly in the pinctrl driver instead.
->
-> The PDC driver needs additional changes to support X1E80100 properly.
-> Adding a workaround separately first allows to land the necessary PDC
-> changes through the normal release cycle, while still solving the more
-> critical problem with keyboard and touchpad on the current stable kernel
-> versions. Bypassing the PDC is enough for now, because we have not yet
-> enabled the deep idle states where using the PDC becomes necessary.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 05e4941d97ef ("pinctrl: qcom: Add X1E80100 pinctrl driver")
-> Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Right, it's probably a good idea to have a limit there rather than
+having a busy loop with a user-provided length when the only bound is
+the available virtual memory.
 
-Patch applied for fixes, excellent work as always. Thanks!
+>  	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
+>  		return -EINVAL;
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -E2BIG;
+> 
 
-Yours,
-Linus Walleij
+Is PAGE_SIZE significant here? If there is a need to enforce a limit,
+I would expect this to be the same regardless of kernel configuration,
+since the structure layout is also independent of the configuration.
+
+Where is the current -EFAULT for users passing more than a page?
+I only see it for reads beyond the VMA, but not e.g. when checking
+terabytes of zero pages from an anonymous mapping.
+
+    Arnd
 
