@@ -1,362 +1,166 @@
-Return-Path: <stable+bounces-72706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4C6968350
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:33:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320019683A3
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3D2AB2352C
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:33:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F0E1C222B2
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8481D417F;
-	Mon,  2 Sep 2024 09:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F74F1D2791;
+	Mon,  2 Sep 2024 09:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="So8XPv4l"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KFVkMLnr"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E57F1D415B;
-	Mon,  2 Sep 2024 09:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120A815C15E;
+	Mon,  2 Sep 2024 09:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725269582; cv=none; b=FdnP+jTo8W2ekdfzScqbKqjzTxm261tDUY852riMhB1JFh0iWZlxPNefUC3nDzd/PgudxJ2ywr1Te7PXNOm9Pg268ZhnMzJPOBQ+bDmeS1hN/zm0W22uXMX+9C9Datgz9b+G/FfosI/C+45CThyJfN0l5jznCt8uHlMZJHdsdgU=
+	t=1725270668; cv=none; b=Kyz3tXokax0QoqIG+s2a205tackxT+zqiH57x9OLgOVK95YeRN1U/ZkpJH7Mzu5lV6Dr4H7gDC2vqCAmpwr/N3R2zTjtm83HQLAiEohSDP6ZJUuuTKjqa+dR6t3suJMXeA6XR7y4dAW0ik/R7qdNZiRDFv1opml6mqPCf3bowaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725269582; c=relaxed/simple;
-	bh=YcdA+s1MA1liFZDn9WPllshJguevDqI4JGq93Sjld2s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OhU+2p+px9IaO2S7zHB3y4LPAlVjQ9/y+Ds5FNLJFfKvwIAoiRAmeIwMQzX+FFIPjax0Aeq8G6SsWZ6fMQzDJ65egMVPbMwHS7aalyK9S2mSDGxokuv0SiV6lMRIVmVRcnZXR6vOEBLF26hAJd2gDo70b4pgvYuVxk/zEXgeRcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=So8XPv4l; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 54073b6a690e11ef8b96093e013ec31c-20240902
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=L9Wu6rx3KCGAWq6ekbxjZ5jLmdlzmC0KjoOowIWL+gw=;
-	b=So8XPv4lHYShcaFMcrn+gJXNZvvd4bjyjPAHa1ROo0f6gYO1dfn2JgYR/kjAV/zlwYsuxiFS76mBb3wNJcrOq0/LBUV3v4eWbmv5tI7BjslSG+6F6x8GjcKqcT8vvItQ4o6ayEGq1imbFLfvnKDDravCSPvqTD0A8uun0sYSv5g=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:e3ecc288-8cfd-4311-9141-9335f6563c92,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:81c94fbf-d7af-4351-93aa-42531abf0c7b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 54073b6a690e11ef8b96093e013ec31c-20240902
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <yenchia.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1066174418; Mon, 02 Sep 2024 17:32:53 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 2 Sep 2024 17:32:53 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 2 Sep 2024 17:32:53 +0800
-From: Yenchia Chen <yenchia.chen@mediatek.com>
-To: <stable@vger.kernel.org>
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Yenchia Chen
-	<yenchia.chen@mediatek.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 6.6 1/1] PM: sleep: Restore asynchronous device resume optimization
-Date: Mon, 2 Sep 2024 17:32:48 +0800
-Message-ID: <20240902093249.17275-2-yenchia.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240902093249.17275-1-yenchia.chen@mediatek.com>
-References: <20240902093249.17275-1-yenchia.chen@mediatek.com>
+	s=arc-20240116; t=1725270668; c=relaxed/simple;
+	bh=vK3X2eh5jgaDvYS5+wA6Y3V4gUEsx93OdhdgDcslbPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qbYMOueYCLujAfD22fOtOg/XmcagkfwTkNNSMdScJ2ewPgw+1p3nyqLGXpFkfOCJp1Yrj+iJHBWdpqSkAySieUJEe88VcdbiyOczzZudtQtgMLztYCzdXf0NzYb8HTpCjcKI/njQ96OE7DQ6ine2u9/7ACGe1ltyyXVCOidVQSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KFVkMLnr; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=h0wfIOWK5PRLKNr57WCqFk3j0F/4/yO4rPKo+XkKcec=; b=KFVkMLnrmNrPO9JKH/tbWmfHXv
+	oVcNQTZwm/BCzRqRvbs20mnJO/Y2vVH0aabd/ut5qmIC0RK+7M79tTY1TiIbt02JddtZMaC8iFR6J
+	/8zE9GiNx8vyqR8V677UZl2yESaWTD8b9P9TtUesYi3Yf/Fm1iLWnPqySSOXA7+AS76c6LlQvOwNL
+	RTcGC6X9SKi++J0KltbzVZEp1Qb+cqMsgb4ij7Jz+yFtMoSpnkYJmfnTp/towemkw9t24DVRH1Nzm
+	/ipm7ktGaGt/niNR6v8vSGJBtmgNUVv5/NlHblGnA1QoU7ec/b6d9RYC1+3vSZzgVOdx6zF8I4hBQ
+	1KeZpFZg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sl3i2-0000000C7iW-3l0v;
+	Mon, 02 Sep 2024 09:50:55 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 583BE300642; Mon,  2 Sep 2024 11:50:54 +0200 (CEST)
+Date: Mon, 2 Sep 2024 11:50:54 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Luo Gengkun <luogengkun@huaweicloud.com>
+Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
+	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] perf/core: Fix incorrect time diff in tick adjust
+ period
+Message-ID: <20240902095054.GD4723@noisy.programming.kicks-ass.net>
+References: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
+ <20240831074316.2106159-3-luogengkun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240831074316.2106159-3-luogengkun@huaweicloud.com>
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Sat, Aug 31, 2024 at 07:43:16AM +0000, Luo Gengkun wrote:
+> Perf events has the notion of sampling frequency which is implemented in
+> software by dynamically adjusting the counter period so that samples occur
+> at approximately the target frequency.  Period adjustment is done in 2
+> places:
+>  - when the counter overflows (and a sample is recorded)
+>  - each timer tick, when the event is active
+> The later case is slightly flawed because it assumes that the time since
+> the last timer-tick period adjustment is 1 tick, whereas the event may not
+> have been active (e.g. for a task that is sleeping).
+> 
+> Fix by using jiffies to determine the elapsed time in that case.
+> 
+> Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> ---
+>  include/linux/perf_event.h |  1 +
+>  kernel/events/core.c       | 12 +++++++++---
+>  2 files changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+> index 1a8942277dda..d29b7cf971a1 100644
+> --- a/include/linux/perf_event.h
+> +++ b/include/linux/perf_event.h
+> @@ -265,6 +265,7 @@ struct hw_perf_event {
+>  	 * State for freq target events, see __perf_event_overflow() and
+>  	 * perf_adjust_freq_unthr_context().
+>  	 */
+> +	u64				freq_tick_stamp;
+>  	u64				freq_time_stamp;
+>  	u64				freq_count_stamp;
+>  #endif
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index a9395bbfd4aa..183291e0d070 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -55,6 +55,7 @@
+>  #include <linux/pgtable.h>
+>  #include <linux/buildid.h>
+>  #include <linux/task_work.h>
+> +#include <linux/jiffies.h>
+>  
+>  #include "internal.h"
+>  
+> @@ -4120,9 +4121,11 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>  {
+>  	struct perf_event *event;
+>  	struct hw_perf_event *hwc;
+> -	u64 now, period = TICK_NSEC;
+> +	u64 now, period, tick_stamp;
+>  	s64 delta;
+>  
+> +	tick_stamp = jiffies64_to_nsecs(get_jiffies_64());
+> +
+>  	list_for_each_entry(event, event_list, active_list) {
+>  		if (event->state != PERF_EVENT_STATE_ACTIVE)
+>  			continue;
+> @@ -4148,6 +4151,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>  		 */
+>  		event->pmu->stop(event, PERF_EF_UPDATE);
+>  
+> +		period = tick_stamp - hwc->freq_tick_stamp;
+> +		hwc->freq_tick_stamp = tick_stamp;
+> +
+>  		now = local64_read(&event->count);
+>  		delta = now - hwc->freq_count_stamp;
+>  		hwc->freq_count_stamp = now;
+> @@ -4157,9 +4163,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>  		 * reload only if value has changed
+>  		 * we have stopped the event so tell that
+>  		 * to perf_adjust_period() to avoid stopping it
+> -		 * twice.
+> +		 * twice. And skip if it is the first tick adjust period.
+>  		 */
+> -		if (delta > 0)
+> +		if (delta > 0 && likely(period != tick_stamp))
+>  			perf_adjust_period(event, period, delta, false);
+>  
+>  		event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
 
-commit 3e999770ac1c7c31a70685dd5b88e89473509e9c upstream.
+This one I'm less happy with.. that condition 'period != tick_stamp'
+doesn't make sense to me. That's only false if hwc->freq_tick_stamp ==
+0, which it will only be once after event creation. Even through the
+Changelog babbles about event scheduling.
 
-Before commit 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core
-system-wide PM code"), the resume of devices that were allowed to resume
-asynchronously was scheduled before starting the resume of the other
-devices, so the former did not have to wait for the latter unless
-functional dependencies were present.
+Also, that all should then be written something like:
 
-Commit 7839d0078e0d removed that optimization in order to address a
-correctness issue, but it can be restored with the help of a new device
-power management flag, so do that now.
+	if (delta > 0 && ...) {
+		perf_adjust_period(...);
+		adjusted = true;
+	}
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Yenchia Chen <yenchia.chen@mediatek.com>
----
- drivers/base/power/main.c | 117 +++++++++++++++++++++-----------------
- include/linux/pm.h        |   1 +
- 2 files changed, 65 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 9c5a5f4dba5a..fadcd0379dc2 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -579,7 +579,7 @@ bool dev_pm_skip_resume(struct device *dev)
- }
- 
- /**
-- * __device_resume_noirq - Execute a "noirq resume" callback for given device.
-+ * device_resume_noirq - Execute a "noirq resume" callback for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-@@ -587,7 +587,7 @@ bool dev_pm_skip_resume(struct device *dev)
-  * The driver of @dev will not receive interrupts while this function is being
-  * executed.
-  */
--static void __device_resume_noirq(struct device *dev, pm_message_t state, bool async)
-+static void device_resume_noirq(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -674,16 +674,22 @@ static bool dpm_async_fn(struct device *dev, async_func_t func)
- {
- 	reinit_completion(&dev->power.completion);
- 
--	if (!is_async(dev))
--		return false;
--
--	get_device(dev);
-+	if (is_async(dev)) {
-+		dev->power.async_in_progress = true;
- 
--	if (async_schedule_dev_nocall(func, dev))
--		return true;
-+		get_device(dev);
- 
--	put_device(dev);
-+		if (async_schedule_dev_nocall(func, dev))
-+			return true;
- 
-+		put_device(dev);
-+	}
-+	/*
-+	 * Because async_schedule_dev_nocall() above has returned false or it
-+	 * has not been called at all, func() is not running and it is safe to
-+	 * update the async_in_progress flag without extra synchronization.
-+	 */
-+	dev->power.async_in_progress = false;
- 	return false;
- }
- 
-@@ -691,18 +697,10 @@ static void async_resume_noirq(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume_noirq(dev, pm_transition, true);
-+	device_resume_noirq(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume_noirq(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume_noirq))
--		return;
--
--	__device_resume_noirq(dev, pm_transition, false);
--}
--
- static void dpm_noirq_resume_devices(pm_message_t state)
- {
- 	struct device *dev;
-@@ -712,18 +710,28 @@ static void dpm_noirq_resume_devices(pm_message_t state)
- 	mutex_lock(&dpm_list_mtx);
- 	pm_transition = state;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_noirq_list, power.entry)
-+		dpm_async_fn(dev, async_resume_noirq);
-+
- 	while (!list_empty(&dpm_noirq_list)) {
- 		dev = to_device(dpm_noirq_list.next);
--		get_device(dev);
- 		list_move_tail(&dev->power.entry, &dpm_late_early_list);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			get_device(dev);
- 
--		device_resume_noirq(dev);
-+			mutex_unlock(&dpm_list_mtx);
- 
--		put_device(dev);
-+			device_resume_noirq(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			put_device(dev);
-+
-+			mutex_lock(&dpm_list_mtx);
-+		}
- 	}
- 	mutex_unlock(&dpm_list_mtx);
- 	async_synchronize_full();
-@@ -747,14 +755,14 @@ void dpm_resume_noirq(pm_message_t state)
- }
- 
- /**
-- * __device_resume_early - Execute an "early resume" callback for given device.
-+ * device_resume_early - Execute an "early resume" callback for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-  *
-  * Runtime PM is disabled for @dev while this function is being executed.
-  */
--static void __device_resume_early(struct device *dev, pm_message_t state, bool async)
-+static void device_resume_early(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -820,18 +828,10 @@ static void async_resume_early(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume_early(dev, pm_transition, true);
-+	device_resume_early(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume_early(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume_early))
--		return;
--
--	__device_resume_early(dev, pm_transition, false);
--}
--
- /**
-  * dpm_resume_early - Execute "early resume" callbacks for all devices.
-  * @state: PM transition of the system being carried out.
-@@ -845,18 +845,28 @@ void dpm_resume_early(pm_message_t state)
- 	mutex_lock(&dpm_list_mtx);
- 	pm_transition = state;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_late_early_list, power.entry)
-+		dpm_async_fn(dev, async_resume_early);
-+
- 	while (!list_empty(&dpm_late_early_list)) {
- 		dev = to_device(dpm_late_early_list.next);
--		get_device(dev);
- 		list_move_tail(&dev->power.entry, &dpm_suspended_list);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			get_device(dev);
- 
--		device_resume_early(dev);
-+			mutex_unlock(&dpm_list_mtx);
- 
--		put_device(dev);
-+			device_resume_early(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			put_device(dev);
-+
-+			mutex_lock(&dpm_list_mtx);
-+		}
- 	}
- 	mutex_unlock(&dpm_list_mtx);
- 	async_synchronize_full();
-@@ -876,12 +886,12 @@ void dpm_resume_start(pm_message_t state)
- EXPORT_SYMBOL_GPL(dpm_resume_start);
- 
- /**
-- * __device_resume - Execute "resume" callbacks for given device.
-+ * device_resume - Execute "resume" callbacks for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-  */
--static void __device_resume(struct device *dev, pm_message_t state, bool async)
-+static void device_resume(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -975,18 +985,10 @@ static void async_resume(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume(dev, pm_transition, true);
-+	device_resume(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume))
--		return;
--
--	__device_resume(dev, pm_transition, false);
--}
--
- /**
-  * dpm_resume - Execute "resume" callbacks for non-sysdev devices.
-  * @state: PM transition of the system being carried out.
-@@ -1006,16 +1008,25 @@ void dpm_resume(pm_message_t state)
- 	pm_transition = state;
- 	async_error = 0;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_suspended_list, power.entry)
-+		dpm_async_fn(dev, async_resume);
-+
- 	while (!list_empty(&dpm_suspended_list)) {
- 		dev = to_device(dpm_suspended_list.next);
- 
- 		get_device(dev);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			mutex_unlock(&dpm_list_mtx);
- 
--		device_resume(dev);
-+			device_resume(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			mutex_lock(&dpm_list_mtx);
-+		}
- 
- 		if (!list_empty(&dev->power.entry))
- 			list_move_tail(&dev->power.entry, &dpm_prepared_list);
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 629c1633bbd0..943b553720f8 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -681,6 +681,7 @@ struct dev_pm_info {
- 	bool			wakeup_path:1;
- 	bool			syscore:1;
- 	bool			no_pm_callbacks:1;	/* Owned by the PM core */
-+	bool			async_in_progress:1;	/* Owned by the PM core */
- 	unsigned int		must_resume:1;	/* Owned by the PM core */
- 	unsigned int		may_skip_resume:1;	/* Set by subsystems */
- #else
--- 
-2.18.0
-
+	event->pmu->start(event, adjusted ? PERF_EF_RELOAD : 0);
 
