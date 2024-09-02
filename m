@@ -1,166 +1,130 @@
-Return-Path: <stable+bounces-72707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320019683A3
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:51:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13594968404
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F0E1C222B2
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:51:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B48BB2446A
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 10:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F74F1D2791;
-	Mon,  2 Sep 2024 09:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F8E17F394;
+	Mon,  2 Sep 2024 10:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KFVkMLnr"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="W+ObnJhf"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120A815C15E;
-	Mon,  2 Sep 2024 09:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F16013D51C
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 10:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725270668; cv=none; b=Kyz3tXokax0QoqIG+s2a205tackxT+zqiH57x9OLgOVK95YeRN1U/ZkpJH7Mzu5lV6Dr4H7gDC2vqCAmpwr/N3R2zTjtm83HQLAiEohSDP6ZJUuuTKjqa+dR6t3suJMXeA6XR7y4dAW0ik/R7qdNZiRDFv1opml6mqPCf3bowaY=
+	t=1725271366; cv=none; b=TT9ClONjT7YYlTWVIR3bZNZ0eBAwR8ZBKcBUOTeB5gdVzk+qcIOsdduDU25QBgTHiZkkJoYVArHh9qZoVQBdkFtIcTgvRgzJsqCn7rWw1BOjgdMD7CmeZZs/8ZuI4Qo4ijHMmlk0E7+x/Ga2QCKRX5EBRgzcgkLbuVAwPQC0kp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725270668; c=relaxed/simple;
-	bh=vK3X2eh5jgaDvYS5+wA6Y3V4gUEsx93OdhdgDcslbPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qbYMOueYCLujAfD22fOtOg/XmcagkfwTkNNSMdScJ2ewPgw+1p3nyqLGXpFkfOCJp1Yrj+iJHBWdpqSkAySieUJEe88VcdbiyOczzZudtQtgMLztYCzdXf0NzYb8HTpCjcKI/njQ96OE7DQ6ine2u9/7ACGe1ltyyXVCOidVQSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KFVkMLnr; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=h0wfIOWK5PRLKNr57WCqFk3j0F/4/yO4rPKo+XkKcec=; b=KFVkMLnrmNrPO9JKH/tbWmfHXv
-	oVcNQTZwm/BCzRqRvbs20mnJO/Y2vVH0aabd/ut5qmIC0RK+7M79tTY1TiIbt02JddtZMaC8iFR6J
-	/8zE9GiNx8vyqR8V677UZl2yESaWTD8b9P9TtUesYi3Yf/Fm1iLWnPqySSOXA7+AS76c6LlQvOwNL
-	RTcGC6X9SKi++J0KltbzVZEp1Qb+cqMsgb4ij7Jz+yFtMoSpnkYJmfnTp/towemkw9t24DVRH1Nzm
-	/ipm7ktGaGt/niNR6v8vSGJBtmgNUVv5/NlHblGnA1QoU7ec/b6d9RYC1+3vSZzgVOdx6zF8I4hBQ
-	1KeZpFZg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl3i2-0000000C7iW-3l0v;
-	Mon, 02 Sep 2024 09:50:55 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 583BE300642; Mon,  2 Sep 2024 11:50:54 +0200 (CEST)
-Date: Mon, 2 Sep 2024 11:50:54 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Luo Gengkun <luogengkun@huaweicloud.com>
-Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
-	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] perf/core: Fix incorrect time diff in tick adjust
- period
-Message-ID: <20240902095054.GD4723@noisy.programming.kicks-ass.net>
-References: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
- <20240831074316.2106159-3-luogengkun@huaweicloud.com>
+	s=arc-20240116; t=1725271366; c=relaxed/simple;
+	bh=yu05MG49Y96wNnlCUSqbQDKyaIQsanfK87VEISGQHk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mjM3eqNZ13uZR7c7TJ67J5vY7sG7+Fz4bWaobfvrsTk4uY0cSY4IrRhM8J4MouUqhfFk8ai7TUtXfRsHl9mz+Nr60EV4Zar3YxF7GvrFW89zTsj9FRSH9fK5FAzjv0VKXq108bS+icGeSNAwMcD8x/N1KgfVHYKJUK+7nqERaSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=W+ObnJhf; arc=none smtp.client-ip=159.100.241.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 97FB220113
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 10:02:42 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id 99035203E4;
+	Mon,  2 Sep 2024 10:02:34 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 3785840096;
+	Mon,  2 Sep 2024 10:02:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1725271354; bh=yu05MG49Y96wNnlCUSqbQDKyaIQsanfK87VEISGQHk8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=W+ObnJhfIKWvb+1dMGalYrT5Vh3kRfxKBZNDWa7ZP91OWY/vPWOGoUDJzb0yW5YZf
+	 6K+u7qqWuEDR9oHFznf3lciugjSm/iv+xD3g0C0pQN26AJt4zOBN8YU1XYlSH8x8BK
+	 ugs/GMTWGyh+MA7/ItgyiA5l1dBXOZ6D4uv/k8LA=
+Received: from localhost.localdomain (unknown [58.32.40.121])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id B44AD4107A;
+	Mon,  2 Sep 2024 10:02:31 +0000 (UTC)
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+To: gregkh@linuxfoundation.org
+Cc: jarkko@kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	stefanb@linux.ibm.com,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	kernel test robot <lkp@intel.com>,
+	Mingcong Bai <jeffbai@aosc.io>
+Subject: [PATCH v2] tpm: export tpm2_sessions_init() to fix ibmvtpm building
+Date: Mon,  2 Sep 2024 17:58:36 +0800
+Message-ID: <20240902095835.16925-2-kexybiscuit@aosc.io>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240901160817.780395041@linuxfoundation.org>
+References: <20240901160817.780395041@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240831074316.2106159-3-luogengkun@huaweicloud.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: 3785840096
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [1.40 / 10.00];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
 
-On Sat, Aug 31, 2024 at 07:43:16AM +0000, Luo Gengkun wrote:
-> Perf events has the notion of sampling frequency which is implemented in
-> software by dynamically adjusting the counter period so that samples occur
-> at approximately the target frequency.  Period adjustment is done in 2
-> places:
->  - when the counter overflows (and a sample is recorded)
->  - each timer tick, when the event is active
-> The later case is slightly flawed because it assumes that the time since
-> the last timer-tick period adjustment is 1 tick, whereas the event may not
-> have been active (e.g. for a task that is sleeping).
-> 
-> Fix by using jiffies to determine the elapsed time in that case.
-> 
-> Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-> ---
->  include/linux/perf_event.h |  1 +
->  kernel/events/core.c       | 12 +++++++++---
->  2 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> index 1a8942277dda..d29b7cf971a1 100644
-> --- a/include/linux/perf_event.h
-> +++ b/include/linux/perf_event.h
-> @@ -265,6 +265,7 @@ struct hw_perf_event {
->  	 * State for freq target events, see __perf_event_overflow() and
->  	 * perf_adjust_freq_unthr_context().
->  	 */
-> +	u64				freq_tick_stamp;
->  	u64				freq_time_stamp;
->  	u64				freq_count_stamp;
->  #endif
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index a9395bbfd4aa..183291e0d070 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -55,6 +55,7 @@
->  #include <linux/pgtable.h>
->  #include <linux/buildid.h>
->  #include <linux/task_work.h>
-> +#include <linux/jiffies.h>
->  
->  #include "internal.h"
->  
-> @@ -4120,9 +4121,11 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->  {
->  	struct perf_event *event;
->  	struct hw_perf_event *hwc;
-> -	u64 now, period = TICK_NSEC;
-> +	u64 now, period, tick_stamp;
->  	s64 delta;
->  
-> +	tick_stamp = jiffies64_to_nsecs(get_jiffies_64());
-> +
->  	list_for_each_entry(event, event_list, active_list) {
->  		if (event->state != PERF_EVENT_STATE_ACTIVE)
->  			continue;
-> @@ -4148,6 +4151,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->  		 */
->  		event->pmu->stop(event, PERF_EF_UPDATE);
->  
-> +		period = tick_stamp - hwc->freq_tick_stamp;
-> +		hwc->freq_tick_stamp = tick_stamp;
-> +
->  		now = local64_read(&event->count);
->  		delta = now - hwc->freq_count_stamp;
->  		hwc->freq_count_stamp = now;
-> @@ -4157,9 +4163,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->  		 * reload only if value has changed
->  		 * we have stopped the event so tell that
->  		 * to perf_adjust_period() to avoid stopping it
-> -		 * twice.
-> +		 * twice. And skip if it is the first tick adjust period.
->  		 */
-> -		if (delta > 0)
-> +		if (delta > 0 && likely(period != tick_stamp))
->  			perf_adjust_period(event, period, delta, false);
->  
->  		event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
+Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
+which could be built as a module. However, tpm2_sessions_init() wasn't
+exported, causing libmvtpm to fail to build as a module:
 
-This one I'm less happy with.. that condition 'period != tick_stamp'
-doesn't make sense to me. That's only false if hwc->freq_tick_stamp ==
-0, which it will only be once after event creation. Even through the
-Changelog babbles about event scheduling.
+ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
 
-Also, that all should then be written something like:
+Export tpm2_sessions_init() to resolve the issue.
 
-	if (delta > 0 && ...) {
-		perf_adjust_period(...);
-		adjusted = true;
-	}
+Cc: stable@vger.kernel.org # v6.10+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
+Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+---
+V1 -> V2: Added Fixes tag and fixed email format
 
-	event->pmu->start(event, adjusted ? PERF_EF_RELOAD : 0);
+ drivers/char/tpm/tpm2-sessions.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..44f60730cff4 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+ 
+ 	return rc;
+ }
++EXPORT_SYMBOL(tpm2_sessions_init);
+ #endif /* CONFIG_TCG_TPM2_HMAC */
+-- 
+2.46.0
+
 
