@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1100D967D9F
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:57:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E9B967DAA
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 04:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C403A281BF1
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 01:57:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259251F213FE
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 02:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288EA28683;
-	Mon,  2 Sep 2024 01:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92E26AE4;
+	Mon,  2 Sep 2024 02:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="tHn15Xxm"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="Kp5o5Ok5"
 X-Original-To: stable@vger.kernel.org
 Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92474282F7
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 01:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07D61804A
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 02:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725242227; cv=none; b=ncV/f5/5opY2m2aGXg6ptZWLfGq/Hu9wmD5XW3xTb66DI5WYYAsNoVOiFTecAMzacgSeGnAid/EZUrQ82HF2P4JvjXrxiFtC6i/ZaPUCteUiESAu8WpPW7d6vh0DRrYqoGeZo2rGcU34LUsoYJK+RdZoTWc0JXPO9GQKrHqxEwQ=
+	t=1725242725; cv=none; b=oXeY2X0+V9JDbJn7S2JqimPdvsdcutnZG6fx53UODjws8kYawnSK3QzieFDwmlsVRCqcd4Huvkx008+ir1rM2661ak3yw/M9d3Ojlo+idqpPPKujUNJDkL4NRcLoD74FRpRZl6o3zIVrHvcSLLZP7luB04mz0dt8lptag4b5QZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725242227; c=relaxed/simple;
-	bh=R/yiV9s8Z3jqlBYw2L7Um1OXYJNKCGfHGoDM/ulLzxY=;
+	s=arc-20240116; t=1725242725; c=relaxed/simple;
+	bh=3bsjVY8bldJihatLeQZqJT5FdnEmepoai4xFY/QtUX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmhPwv3ycAPwe2RScMBoIGX6VZXwWplXa2Be4M9DGsdVB8KyZeByJGL58ss2Q0rJJXcI8Jh76ndCuDeGX4Z808MGpIBTvudbKMhEypdOB9+b2eetWHhTcBnQBg1Ez7ABMdNjxa+NzkNUUcyRKqW/T5/B3GVeTPeGOMLqoXGjf0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=tHn15Xxm; arc=none smtp.client-ip=159.100.248.207
+	 MIME-Version; b=M/7Y90p3y/zPuM4Anx68yMHnk/skthMtcfE1m7PP/45EWuU9WfMImMfwJ5QFGGpe9qC6KU+qcLmX4OtB5NSNYUBtHeq7H0YHAID77aL0BaQHzle+mr7l/6B9yvcX7SP17b/mnAcpOx7dxYYf5XbxG2B27BGjkCmwNSfDoyvA0nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=Kp5o5Ok5; arc=none smtp.client-ip=159.100.248.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id D843C2619F
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 01:56:57 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 9EE3E3E8D0;
-	Mon,  2 Sep 2024 03:56:49 +0200 (CEST)
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 236D12619F
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 02:05:22 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id CC8773E970;
+	Mon,  2 Sep 2024 04:05:13 +0200 (CEST)
 Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id A2ACE40095;
-	Mon,  2 Sep 2024 01:56:48 +0000 (UTC)
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 6683C4007A;
+	Mon,  2 Sep 2024 02:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1725242207; bh=R/yiV9s8Z3jqlBYw2L7Um1OXYJNKCGfHGoDM/ulLzxY=;
+	t=1725242713; bh=3bsjVY8bldJihatLeQZqJT5FdnEmepoai4xFY/QtUX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHn15XxmiK31Fem9XJirBWFI+EuAXxmZsPtGfU56ahUIAkRYi1R+egnX0WDB35BVi
-	 cmH6+gN/nh5RMqJVUEY3SRl+r6lFwvSru31+Trm0MBJc2ttoYT4ol4HmIMpUmn3G8b
-	 w8mAPP85WPxCp4eXY9w4ALzDrqTVt7fKwz9487VY=
+	b=Kp5o5Ok5i7dVrIej6wXKyGoX7aS+s0Nn5AmAMKPutY2YEFNhZQg2x8CTQsAynre0I
+	 lSaUVFfHbxnrpr/PQbI68IiwWU/ppR3j/U7h67/VjQO+g01OlCjnNLPN6u8MpzAOxv
+	 hYP5reQbGNbagU5F6RKf+LfWBPIF5xLb4/bqUxGQ=
 Received: from localhost.localdomain (unknown [58.32.40.121])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 8840040CF0;
-	Mon,  2 Sep 2024 01:56:41 +0000 (UTC)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 05E57406F1;
+	Mon,  2 Sep 2024 02:05:10 +0000 (UTC)
 From: Kexy Biscuit <kexybiscuit@aosc.io>
 To: gregkh@linuxfoundation.org
 Cc: jarkko@kernel.org,
@@ -61,9 +61,9 @@ Cc: jarkko@kernel.org,
 	kernel test robot <lkp@intel.com>,
 	Kexy Biscuit <kexybiscuit@aosc.io>,
 	Mingcong Bai <jeffbai@aosc.io>
-Subject: breaks ibmvtpm to be built as a module, since tpm2_sessions_init isn't
-Date: Mon,  2 Sep 2024 09:54:31 +0800
-Message-ID: <20240902015430.54159-2-kexybiscuit@aosc.io>
+Subject: [PATCH] tpm: export tpm2_sessions_init() to fix ibmvtpm building
+Date: Mon,  2 Sep 2024 09:59:13 +0800
+Message-ID: <20240902015912.56377-2-kexybiscuit@aosc.io>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160817.780395041@linuxfoundation.org>
 References: <20240901160817.780395041@linuxfoundation.org>
@@ -74,8 +74,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A2ACE40095
-X-Rspamd-Server: nf2.mymailcheap.com
+X-Rspamd-Queue-Id: 6683C4007A
+X-Rspamd-Server: nf1.mymailcheap.com
 X-Spamd-Result: default: False [1.40 / 10.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -93,7 +93,12 @@ X-Spamd-Result: default: False [1.40 / 10.00];
 	RCVD_TLS_ALL(0.00)[]
 X-Rspamd-Action: no action
 
-------------------
+"tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support"
+breaks ibmvtpm to be built as a module, since tpm2_sessions_init isn't
+an exported symbol. Proposing the following patch to resolve the issue.
+
+Also, please disregard for the previous incorrectly formatted email.
+---
 
 From 3e43cfa3466178ec7f4309031647e93565bc70bf Mon Sep 17 00:00:00 2001
 From: Kexy Biscuit <kexybiscuit@aosc.io>
