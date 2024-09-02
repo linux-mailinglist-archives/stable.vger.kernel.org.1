@@ -1,376 +1,243 @@
-Return-Path: <stable+bounces-72699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23CB96830E
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:22:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19812968312
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 424DAB21B8E
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC141C22558
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608D11C32E4;
-	Mon,  2 Sep 2024 09:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FC91C2DB2;
+	Mon,  2 Sep 2024 09:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="nLTTS1xH"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YJPwqr3P"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F3D1C32FC;
-	Mon,  2 Sep 2024 09:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413E71C2DDD
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 09:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725268912; cv=none; b=moT0I7Col48IlGm4c7UcufDjys0ApASBeceV4ZVcJGRoH4sJXlnXnCzqKB89Ph88ElE1l7Lil4R7LH8rXtNf3ssFT1HlF5lVDDfyIQ2Ol9GlUWz/q5ytI2Y+7bonmiO7AiHvto6mfbRKhslSl0BCXkLe7rMBB3hiIIoROJfKyis=
+	t=1725268946; cv=none; b=r23fJHDjc9hUEDSGVKYd8cqIybcHPqYr3SGPNiQKqH3W/9vtaWp/FXJEtcVmAcAPGpHfVrRQ/RiJsdU14MnLVDLWg3jm9TYkOL7NDzsGwgOvbklOKax47gjOrxI8syXLsFm56Fuug4f6jfrYRboZip0KknYARJhfFiqk6pWgrew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725268912; c=relaxed/simple;
-	bh=9y4KPKveOubZLlZJiVMWJ82HEm4mQDc/4QnFr/Zi8dY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1q7UlTTiHxFPlvgReUm25piLqmBF+9t5y3sjlB9Huub8uq1wYtTUN0QfVNUqrQDgOtmWozKholA0JCSRXdMZJdJM5ztY8pYICOnzV3JamlQ0Z9dhgpn7jX/9w2SYHCvXakAkT/st6T6X+XxRBAUBsdfG2mq0H7X79Ze8SFCAeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=nLTTS1xH; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: c3717d82690c11ef8593d301e5c8a9c0-20240902
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=0TyVDYav3Nzbmm84YEt4RiUopjs6QxdUyqIWaillQHM=;
-	b=nLTTS1xHlJldfud33WnQxJLYYWnjVR+xszccl8WLp4psuV+PUxlKzo1IA/ftAe8ZGciXK4NZkz8Se473m9nOEwvG04BqC390UR0I4BiOCQDfL4fyK9WPvdQxEpqOkSyS85jphJhkKESQ6nfTct4qsQswBY+HOn4RPaYL8hfZ1fI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:aa3d2d99-3f3c-4b18-86be-0eea9dc28c9e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:a1368ecf-7921-4900-88a1-3aef019a55ce,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: c3717d82690c11ef8593d301e5c8a9c0-20240902
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
-	(envelope-from <yenchia.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 832729975; Mon, 02 Sep 2024 17:21:41 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 2 Sep 2024 17:21:42 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 2 Sep 2024 17:21:42 +0800
-From: Yenchia Chen <yenchia.chen@mediatek.com>
-To: <stable@vger.kernel.org>
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Yenchia Chen
-	<yenchia.chen@mediatek.com>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len
- Brown" <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 6.1 1/1] PM: sleep: Restore asynchronous device resume optimization
-Date: Mon, 2 Sep 2024 17:21:20 +0800
-Message-ID: <20240902092121.16369-2-yenchia.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240902092121.16369-1-yenchia.chen@mediatek.com>
-References: <20240902092121.16369-1-yenchia.chen@mediatek.com>
+	s=arc-20240116; t=1725268946; c=relaxed/simple;
+	bh=2o0ULimK06zWkew5dzj7e6hQxDRTLukcoM9dm+eYN1g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Cxzk/Ub4Xl8rQM9l7AgtFPyV8/Ppa9PAQ/w4RqG1/2XcFh7jLq7nU0VBAMhEC2g5dIKJofSV1uB1SMaPY3/yWTgYQPsNSHO9xi1bfX5kABiO/RLYOwitgDwGUDSfq8/QM5qOHGhhion8ZL7t9IuZBEfE8jvHVNw+gZI+qlE2ek4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YJPwqr3P; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2055136b612so13698685ad.0
+        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 02:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1725268944; x=1725873744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WGC2/wr/WrQEE/BTETF77jc4B4si+qDhZdrDFSYRq0o=;
+        b=YJPwqr3PBGfJwDs3VV+XnqBHTJuSFrEarjZoA+q5ZhRNdvho9rfjXcMd2eNVVCarof
+         9lnIOad0PnV4xnrD/TXeKjtTBh0SROhe18uOfJMJRpdiJSFfz4seshCctz45rD3nCAgX
+         1pE8GMNR/bOWUYPiQafs2HktX8NoIb/gGiVpY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725268944; x=1725873744;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WGC2/wr/WrQEE/BTETF77jc4B4si+qDhZdrDFSYRq0o=;
+        b=suxtCbX3cAqnuCPhiN3+tIgfLi4cY+3B1UILglXgwARRgd/rBnpdhZQU2t1Fcbs1kX
+         Ac5R0Yf704HWvWR//82j8VLytNbWbuIo8VPI9WE6tIJu8kScyPLc2YKoPqqOhD51lxYD
+         zdbfyBhwo/7GaDnSBZrjVrx0oOTnWN//hJeQnHYt8UK3iHW4uETIlw3spr7QZ/VUyDF6
+         YdrQIUw+jjQ6Ey7PfU+9o+Pbsul02TPD9s1SAJWlpvL0AdksVq3S+k5LxoQlbfnAVVjC
+         G2N3FeYvD5UXJgtsuLH3nB2leAvmAY11CYa4rMAkQIQMm4WOyo7e7sTEVRUsPh8dM6NW
+         DYZA==
+X-Gm-Message-State: AOJu0Yz0J7Oroib85Ok/Joec8IRzmlwUqVTKT92VVNLUBzHrGnj2Uz9J
+	FetLA0NOSfqpVW39MzRg/pdCMp1uc1uS0oexvWZXLFHHwHw+asMjee3YLK60Tq7mMUTEyXfnR0g
+	UMpQd86kkS21fMFdX5URmzRe0BKsWDzKhA4YqLYWr5S0PWu8Y1+7sYYPi+wFKmQto7bNv7MhxBb
+	x7BOPrFX7OxAu/jpTtVuaYozLugkPtX2veub19B2su263V9GAARQ==
+X-Google-Smtp-Source: AGHT+IHvDWC+orccoTAH9Nz3IAZQPy84jFzwKssu8xWtUujKJAW/7Ch2F+6bGNdqKjZicYipFJdvnQ==
+X-Received: by 2002:a17:903:22ce:b0:202:3a75:ec89 with SMTP id d9443c01a7336-205466f906dmr67691635ad.31.1725268943866;
+        Mon, 02 Sep 2024 02:22:23 -0700 (PDT)
+Received: from shivania.eng.vmware.com ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-205152cd65esm62705985ad.77.2024.09.02.02.22.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 02:22:23 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: jaegeuk@kernel.org,
+	chao@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	chenyuwen <yuwen.chen@xjmz.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v6.1] f2fs: fix to truncate preallocated blocks in f2fs_file_open()
+Date: Mon,  2 Sep 2024 02:22:13 -0700
+Message-Id: <20240902092213.4982-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--5.609000-8.000000
-X-TMASE-MatchedRID: BBt3isQeX+AhSBTdgDTdzWivjLE8DPtZFAr+wPWe7jF3vUA6/Pi03D6w
-	DkfdfiqcXr7NXg/pSgQefN6Epq6WAQtrOhDKumbSFYJUGv4DL3y1k3bRIdXVNGojx25puFlrKT3
-	PsaLyojR2Drq+F6jWouKOmN63egZIZW+a5JK8E6htzb3s8Aa1ZoEcpMn6x9cZCqIJhrrDy2/j6f
-	SiVX5Avye7w8ymgFM4n88pz6ki3TziteLUiHQ2KjCIlN/eSPB9pQH4ogtVQP0ifM7JMNHW67Ed0
-	qNn8ZtHviELeOq3H9dv+GfOK6fpuGf/awmfCAYuqb4ybQC/JXM3GofkGVB3jpkd+ko3Vgxli18y
-	270V9usnMrhHFzIbpcTKrSvo7uRnHxPMjOKY7A8LbigRnpKlKTpcQTtiHDgW8uEWPj8FUvT1QcP
-	yn7Jx71FwKxCoIs0l76R+Ne/F29gGYeMEsOGG3UMMprcbiest
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--5.609000-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP:
-	EB139BE01F5C4CA15EB7AB3C3F70AE66EEA8A0798DB991896ED73109B1010E052000:8
+Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 3e999770ac1c7c31a70685dd5b88e89473509e9c upstream.
+[ Upstream commit 298b1e4182d657c3e388adcc29477904e9600ed5 ]
 
-Before commit 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core
-system-wide PM code"), the resume of devices that were allowed to resume
-asynchronously was scheduled before starting the resume of the other
-devices, so the former did not have to wait for the latter unless
-functional dependencies were present.
+chenyuwen reports a f2fs bug as below:
 
-Commit 7839d0078e0d removed that optimization in order to address a
-correctness issue, but it can be restored with the help of a new device
-power management flag, so do that now.
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000011
+ fscrypt_set_bio_crypt_ctx+0x78/0x1e8
+ f2fs_grab_read_bio+0x78/0x208
+ f2fs_submit_page_read+0x44/0x154
+ f2fs_get_read_data_page+0x288/0x5f4
+ f2fs_get_lock_data_page+0x60/0x190
+ truncate_partial_data_page+0x108/0x4fc
+ f2fs_do_truncate_blocks+0x344/0x5f0
+ f2fs_truncate_blocks+0x6c/0x134
+ f2fs_truncate+0xd8/0x200
+ f2fs_iget+0x20c/0x5ac
+ do_garbage_collect+0x5d0/0xf6c
+ f2fs_gc+0x22c/0x6a4
+ f2fs_disable_checkpoint+0xc8/0x310
+ f2fs_fill_super+0x14bc/0x1764
+ mount_bdev+0x1b4/0x21c
+ f2fs_mount+0x20/0x30
+ legacy_get_tree+0x50/0xbc
+ vfs_get_tree+0x5c/0x1b0
+ do_new_mount+0x298/0x4cc
+ path_mount+0x33c/0x5fc
+ __arm64_sys_mount+0xcc/0x15c
+ invoke_syscall+0x60/0x150
+ el0_svc_common+0xb8/0xf8
+ do_el0_svc+0x28/0xa0
+ el0_svc+0x24/0x84
+ el0t_64_sync_handler+0x88/0xec
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Yenchia Chen <yenchia.chen@mediatek.com>
+It is because inode.i_crypt_info is not initialized during below path:
+- mount
+ - f2fs_fill_super
+  - f2fs_disable_checkpoint
+   - f2fs_gc
+    - f2fs_iget
+     - f2fs_truncate
+
+So, let's relocate truncation of preallocated blocks to f2fs_file_open(),
+after fscrypt_file_open().
+
+Fixes: d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
+Reported-by: chenyuwen <yuwen.chen@xjmz.com>
+Closes: https://lore.kernel.org/linux-kernel/20240517085327.1188515-1-yuwen.chen@xjmz.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- drivers/base/power/main.c | 117 +++++++++++++++++++++-----------------
- include/linux/pm.h        |   1 +
- 2 files changed, 65 insertions(+), 53 deletions(-)
+ fs/f2fs/f2fs.h  |  1 +
+ fs/f2fs/file.c  | 42 +++++++++++++++++++++++++++++++++++++++++-
+ fs/f2fs/inode.c |  8 --------
+ 3 files changed, 42 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 9c5a5f4dba5a..fadcd0379dc2 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -579,7 +579,7 @@ bool dev_pm_skip_resume(struct device *dev)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index a02c74875..2b540d878 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -788,6 +788,7 @@ enum {
+ 	FI_ALIGNED_WRITE,	/* enable aligned write */
+ 	FI_COW_FILE,		/* indicate COW file */
+ 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
++	FI_OPENED_FILE,         /* indicate file has been opened */
+ 	FI_MAX,			/* max flag, never be used */
+ };
+ 
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index c6fb179f9..62f2521cd 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -538,6 +538,42 @@ static int f2fs_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return 0;
  }
  
- /**
-- * __device_resume_noirq - Execute a "noirq resume" callback for given device.
-+ * device_resume_noirq - Execute a "noirq resume" callback for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-@@ -587,7 +587,7 @@ bool dev_pm_skip_resume(struct device *dev)
-  * The driver of @dev will not receive interrupts while this function is being
-  * executed.
-  */
--static void __device_resume_noirq(struct device *dev, pm_message_t state, bool async)
-+static void device_resume_noirq(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -674,16 +674,22 @@ static bool dpm_async_fn(struct device *dev, async_func_t func)
- {
- 	reinit_completion(&dev->power.completion);
- 
--	if (!is_async(dev))
--		return false;
--
--	get_device(dev);
-+	if (is_async(dev)) {
-+		dev->power.async_in_progress = true;
- 
--	if (async_schedule_dev_nocall(func, dev))
--		return true;
-+		get_device(dev);
- 
--	put_device(dev);
-+		if (async_schedule_dev_nocall(func, dev))
-+			return true;
- 
-+		put_device(dev);
++static int finish_preallocate_blocks(struct inode *inode)
++{
++	int ret;
++
++	inode_lock(inode);
++	if (is_inode_flag_set(inode, FI_OPENED_FILE)) {
++		inode_unlock(inode);
++		return 0;
 +	}
-+	/*
-+	 * Because async_schedule_dev_nocall() above has returned false or it
-+	 * has not been called at all, func() is not running and it is safe to
-+	 * update the async_in_progress flag without extra synchronization.
-+	 */
-+	dev->power.async_in_progress = false;
- 	return false;
++
++	if (!file_should_truncate(inode)) {
++		set_inode_flag(inode, FI_OPENED_FILE);
++		inode_unlock(inode);
++		return 0;
++	}
++
++	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++	filemap_invalidate_lock(inode->i_mapping);
++
++	truncate_setsize(inode, i_size_read(inode));
++	ret = f2fs_truncate(inode);
++
++	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++
++	if (!ret)
++		set_inode_flag(inode, FI_OPENED_FILE);
++
++	inode_unlock(inode);
++	if (ret)
++		return ret;
++
++	file_dont_truncate(inode);
++	return 0;
++}
++
+ static int f2fs_file_open(struct inode *inode, struct file *filp)
+ {
+ 	int err = fscrypt_file_open(inode, filp);
+@@ -554,7 +590,11 @@ static int f2fs_file_open(struct inode *inode, struct file *filp)
+ 
+ 	filp->f_mode |= FMODE_NOWAIT;
+ 
+-	return dquot_file_open(inode, filp);
++	err = dquot_file_open(inode, filp);
++	if (err)
++		return err;
++
++	return finish_preallocate_blocks(inode);
  }
  
-@@ -691,18 +697,10 @@ static void async_resume_noirq(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume_noirq(dev, pm_transition, true);
-+	device_resume_noirq(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume_noirq(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume_noirq))
--		return;
--
--	__device_resume_noirq(dev, pm_transition, false);
--}
--
- static void dpm_noirq_resume_devices(pm_message_t state)
- {
- 	struct device *dev;
-@@ -712,18 +710,28 @@ static void dpm_noirq_resume_devices(pm_message_t state)
- 	mutex_lock(&dpm_list_mtx);
- 	pm_transition = state;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_noirq_list, power.entry)
-+		dpm_async_fn(dev, async_resume_noirq);
-+
- 	while (!list_empty(&dpm_noirq_list)) {
- 		dev = to_device(dpm_noirq_list.next);
--		get_device(dev);
- 		list_move_tail(&dev->power.entry, &dpm_late_early_list);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			get_device(dev);
- 
--		device_resume_noirq(dev);
-+			mutex_unlock(&dpm_list_mtx);
- 
--		put_device(dev);
-+			device_resume_noirq(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			put_device(dev);
-+
-+			mutex_lock(&dpm_list_mtx);
-+		}
+ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index ff4a4e92a..5b672df19 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -549,14 +549,6 @@ struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
  	}
- 	mutex_unlock(&dpm_list_mtx);
- 	async_synchronize_full();
-@@ -747,14 +755,14 @@ void dpm_resume_noirq(pm_message_t state)
- }
+ 	f2fs_set_inode_flags(inode);
  
- /**
-- * __device_resume_early - Execute an "early resume" callback for given device.
-+ * device_resume_early - Execute an "early resume" callback for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-  *
-  * Runtime PM is disabled for @dev while this function is being executed.
-  */
--static void __device_resume_early(struct device *dev, pm_message_t state, bool async)
-+static void device_resume_early(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -820,18 +828,10 @@ static void async_resume_early(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume_early(dev, pm_transition, true);
-+	device_resume_early(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume_early(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume_early))
--		return;
+-	if (file_should_truncate(inode) &&
+-			!is_sbi_flag_set(sbi, SBI_POR_DOING)) {
+-		ret = f2fs_truncate(inode);
+-		if (ret)
+-			goto bad_inode;
+-		file_dont_truncate(inode);
+-	}
 -
--	__device_resume_early(dev, pm_transition, false);
--}
--
- /**
-  * dpm_resume_early - Execute "early resume" callbacks for all devices.
-  * @state: PM transition of the system being carried out.
-@@ -845,18 +845,28 @@ void dpm_resume_early(pm_message_t state)
- 	mutex_lock(&dpm_list_mtx);
- 	pm_transition = state;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_late_early_list, power.entry)
-+		dpm_async_fn(dev, async_resume_early);
-+
- 	while (!list_empty(&dpm_late_early_list)) {
- 		dev = to_device(dpm_late_early_list.next);
--		get_device(dev);
- 		list_move_tail(&dev->power.entry, &dpm_suspended_list);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			get_device(dev);
- 
--		device_resume_early(dev);
-+			mutex_unlock(&dpm_list_mtx);
- 
--		put_device(dev);
-+			device_resume_early(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			put_device(dev);
-+
-+			mutex_lock(&dpm_list_mtx);
-+		}
- 	}
- 	mutex_unlock(&dpm_list_mtx);
- 	async_synchronize_full();
-@@ -876,12 +886,12 @@ void dpm_resume_start(pm_message_t state)
- EXPORT_SYMBOL_GPL(dpm_resume_start);
- 
- /**
-- * __device_resume - Execute "resume" callbacks for given device.
-+ * device_resume - Execute "resume" callbacks for given device.
-  * @dev: Device to handle.
-  * @state: PM transition of the system being carried out.
-  * @async: If true, the device is being resumed asynchronously.
-  */
--static void __device_resume(struct device *dev, pm_message_t state, bool async)
-+static void device_resume(struct device *dev, pm_message_t state, bool async)
- {
- 	pm_callback_t callback = NULL;
- 	const char *info = NULL;
-@@ -975,18 +985,10 @@ static void async_resume(void *data, async_cookie_t cookie)
- {
- 	struct device *dev = data;
- 
--	__device_resume(dev, pm_transition, true);
-+	device_resume(dev, pm_transition, true);
- 	put_device(dev);
- }
- 
--static void device_resume(struct device *dev)
--{
--	if (dpm_async_fn(dev, async_resume))
--		return;
--
--	__device_resume(dev, pm_transition, false);
--}
--
- /**
-  * dpm_resume - Execute "resume" callbacks for non-sysdev devices.
-  * @state: PM transition of the system being carried out.
-@@ -1006,16 +1008,25 @@ void dpm_resume(pm_message_t state)
- 	pm_transition = state;
- 	async_error = 0;
- 
-+	/*
-+	 * Trigger the resume of "async" devices upfront so they don't have to
-+	 * wait for the "non-async" ones they don't depend on.
-+	 */
-+	list_for_each_entry(dev, &dpm_suspended_list, power.entry)
-+		dpm_async_fn(dev, async_resume);
-+
- 	while (!list_empty(&dpm_suspended_list)) {
- 		dev = to_device(dpm_suspended_list.next);
- 
- 		get_device(dev);
- 
--		mutex_unlock(&dpm_list_mtx);
-+		if (!dev->power.async_in_progress) {
-+			mutex_unlock(&dpm_list_mtx);
- 
--		device_resume(dev);
-+			device_resume(dev, state, false);
- 
--		mutex_lock(&dpm_list_mtx);
-+			mutex_lock(&dpm_list_mtx);
-+		}
- 
- 		if (!list_empty(&dev->power.entry))
- 			list_move_tail(&dev->power.entry, &dpm_prepared_list);
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 93cd34f00822..bfc441099d8e 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -653,6 +653,7 @@ struct dev_pm_info {
- 	bool			wakeup_path:1;
- 	bool			syscore:1;
- 	bool			no_pm_callbacks:1;	/* Owned by the PM core */
-+	bool			async_in_progress:1;	/* Owned by the PM core */
- 	unsigned int		must_resume:1;	/* Owned by the PM core */
- 	unsigned int		may_skip_resume:1;	/* Set by subsystems */
- #else
+ 	unlock_new_inode(inode);
+ 	trace_f2fs_iget(inode);
+ 	return inode;
 -- 
-2.18.0
+2.39.4
 
 
