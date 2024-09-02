@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-72644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95C7967D2B
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:00:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86470967D2C
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34B821F215D8
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 01:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B92281940
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 01:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A84B182D2;
-	Mon,  2 Sep 2024 00:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5738F20B0F;
+	Mon,  2 Sep 2024 00:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BsHBOHns"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EaGu9LFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84384A0F;
-	Mon,  2 Sep 2024 00:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138D81D12FA;
+	Mon,  2 Sep 2024 00:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725238786; cv=none; b=euUIm/ovr4IuQsoezluALJr8ilgIvYv3XJMPPJTpI3x7iT2eyNUF2yAlk3N6gRl5SBHk31wDqeG5e4YFR23MwaSI8PNSuxRF0KLAk9KOFE5XsXkjNY3Kbdk0h9T8FBXHSWQ/ApC4TpQrDo9QfS3p5GYMVrWYe0gm7dp5B27juB0=
+	t=1725238789; cv=none; b=HuLzcloblH5BF41iBF79pXrSml8XgHoUUm5E2Cf7VgekX/1dhcd9vLPo/P48OAeLd//maKsWWny31TIOHhTZ5kS6vteCirGqaxoslbdpwIiq6LBsYF4841m+BU+m4W8Yv4ilkRTiE4WS0gCgkPM7PMTTaLM7W0fJkn/io2iIOLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725238786; c=relaxed/simple;
-	bh=1jn4TGDHWfYKXirAXT27VjoHje+4G/jU/u9G17bPcw4=;
-	h=Date:To:From:Subject:Message-Id; b=C6+lI2t8PdnMBz6oAXZ9u6zMLHEszvDknfEy6dCoYt1cFhH/ylVUYW1T16ob3qsipulet2wZv2J8RBobs7EyXWURZ0zfWPPWxu9Poftno1ZTNpb2LnIy2S2U2ZbEZdlIDBP3qgBzy3MkJ6AYdE5jcbmu4sHaPvo0zmCwzxaZK30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BsHBOHns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7DCC4CEC3;
-	Mon,  2 Sep 2024 00:59:46 +0000 (UTC)
+	s=arc-20240116; t=1725238789; c=relaxed/simple;
+	bh=3jABO3yEBMI4VoDb7kP9xeAVVAJGkkNCtZATznIZIj8=;
+	h=Date:To:From:Subject:Message-Id; b=kbCuOEQXBgd/Ti7A2BylIXswfp/5eCGdTg3jXAYetVJVXcsDgKdXa1UssJuzf39kCtYm/ozjvq9khfvWlx+GhsjzrZ4MXhFc+b2Ze9BmV3n0xlsbNxWJ8a0ZDcGBJpFqprtGtIp0HCCpDel0UKLXw3+1ArD3fENIRk1r7tOQDkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EaGu9LFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD270C4CEC3;
+	Mon,  2 Sep 2024 00:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725238786;
-	bh=1jn4TGDHWfYKXirAXT27VjoHje+4G/jU/u9G17bPcw4=;
+	s=korg; t=1725238789;
+	bh=3jABO3yEBMI4VoDb7kP9xeAVVAJGkkNCtZATznIZIj8=;
 	h=Date:To:From:Subject:From;
-	b=BsHBOHnssm+t5ja13LbdXH9zpd4tkkNmnzkkypSVhz9wjsUv7npNg7/BQMhgLWA/4
-	 P5uKelCGwGVvLlPzhpL5EtP1Sguje63tg3U45F++v+u/mNmEwOAmXdR8CMJAGX4JL1
-	 3D4zUKgTSgIDtfUPYaHC47oQ9raZOPysZHzfj5Kg=
-Date: Sun, 01 Sep 2024 17:59:46 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,pasha.tatashin@soleen.com,nao.horiguchi@gmail.com,linmiaohe@huawei.com,kent.overstreet@linux.dev,david@redhat.com,gehao@kylinos.cn,akpm@linux-foundation.org
+	b=EaGu9LFL/+Yu1WINg16cXtD43EE1faqZFs1eXbVhNrgc2VeiL6VaEIHuDLJA8anNs
+	 7w1sfoHtyfSHj8bRcKJug+5GRM1vzXcrYGF0aQ9xzgwxat4b7QFAAuFvjpJ9o92MYG
+	 dkDxR1vAP/kaqAU+wcDNhTGxAsOFg3HEIZjVBbkM=
+Date: Sun, 01 Sep 2024 17:59:48 -0700
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hch@infradead.org,ahuang12@lenovo.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] codetag-debug-mark-codetags-for-poisoned-page-as-empty.patch removed from -mm tree
-Message-Id: <20240902005946.9D7DCC4CEC3@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch removed from -mm tree
+Message-Id: <20240902005948.DD270C4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,110 +50,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: codetag: debug: mark codetags for poisoned page as empty
+     Subject: mm: vmalloc: optimize vmap_lazy_nr arithmetic when purging each vmap_area
 has been removed from the -mm tree.  Its filename was
-     codetag-debug-mark-codetags-for-poisoned-page-as-empty.patch
+     mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Hao Ge <gehao@kylinos.cn>
-Subject: codetag: debug: mark codetags for poisoned page as empty
-Date: Mon, 26 Aug 2024 00:36:49 +0800
+From: Adrian Huang <ahuang12@lenovo.com>
+Subject: mm: vmalloc: optimize vmap_lazy_nr arithmetic when purging each vmap_area
+Date: Thu, 29 Aug 2024 21:06:33 +0800
 
-When PG_hwpoison pages are freed they are treated differently in
-free_pages_prepare() and instead of being released they are isolated.
+When running the vmalloc stress on a 448-core system, observe the average
+latency of purge_vmap_node() is about 2 seconds by using the eBPF/bcc
+'funclatency.py' tool [1].
 
-Page allocation tag counters are decremented at this point since the page
-is considered not in use.  Later on when such pages are released by
-unpoison_memory(), the allocation tag counters will be decremented again
-and the following warning gets reported:
+  # /your-git-repo/bcc/tools/funclatency.py -u purge_vmap_node & pid1=$! && sleep 8 && modprobe test_vmalloc nr_threads=$(nproc) run_test_mask=0x7; kill -SIGINT $pid1
 
-[  113.930443][ T3282] ------------[ cut here ]------------
-[  113.931105][ T3282] alloc_tag was not set
-[  113.931576][ T3282] WARNING: CPU: 2 PID: 3282 at ./include/linux/alloc_tag.h:130 pgalloc_tag_sub.part.66+0x154/0x164
-[  113.932866][ T3282] Modules linked in: hwpoison_inject fuse ip6t_rpfilter ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 xt_conntrack ebtable_nat ebtable_broute ip6table_nat ip6table_man4
-[  113.941638][ T3282] CPU: 2 UID: 0 PID: 3282 Comm: madvise11 Kdump: loaded Tainted: G        W          6.11.0-rc4-dirty #18
-[  113.943003][ T3282] Tainted: [W]=WARN
-[  113.943453][ T3282] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-[  113.944378][ T3282] pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  113.945319][ T3282] pc : pgalloc_tag_sub.part.66+0x154/0x164
-[  113.946016][ T3282] lr : pgalloc_tag_sub.part.66+0x154/0x164
-[  113.946706][ T3282] sp : ffff800087093a10
-[  113.947197][ T3282] x29: ffff800087093a10 x28: ffff0000d7a9d400 x27: ffff80008249f0a0
-[  113.948165][ T3282] x26: 0000000000000000 x25: ffff80008249f2b0 x24: 0000000000000000
-[  113.949134][ T3282] x23: 0000000000000001 x22: 0000000000000001 x21: 0000000000000000
-[  113.950597][ T3282] x20: ffff0000c08fcad8 x19: ffff80008251e000 x18: ffffffffffffffff
-[  113.952207][ T3282] x17: 0000000000000000 x16: 0000000000000000 x15: ffff800081746210
-[  113.953161][ T3282] x14: 0000000000000000 x13: 205d323832335420 x12: 5b5d353031313339
-[  113.954120][ T3282] x11: ffff800087093500 x10: 000000000000005d x9 : 00000000ffffffd0
-[  113.955078][ T3282] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008236ba90 x6 : c0000000ffff7fff
-[  113.956036][ T3282] x5 : ffff000b34bf4dc8 x4 : ffff8000820aba90 x3 : 0000000000000001
-[  113.956994][ T3282] x2 : ffff800ab320f000 x1 : 841d1e35ac932e00 x0 : 0000000000000000
-[  113.957962][ T3282] Call trace:
-[  113.958350][ T3282]  pgalloc_tag_sub.part.66+0x154/0x164
-[  113.959000][ T3282]  pgalloc_tag_sub+0x14/0x1c
-[  113.959539][ T3282]  free_unref_page+0xf4/0x4b8
-[  113.960096][ T3282]  __folio_put+0xd4/0x120
-[  113.960614][ T3282]  folio_put+0x24/0x50
-[  113.961103][ T3282]  unpoison_memory+0x4f0/0x5b0
-[  113.961678][ T3282]  hwpoison_unpoison+0x30/0x48 [hwpoison_inject]
-[  113.962436][ T3282]  simple_attr_write_xsigned.isra.34+0xec/0x1cc
-[  113.963183][ T3282]  simple_attr_write+0x38/0x48
-[  113.963750][ T3282]  debugfs_attr_write+0x54/0x80
-[  113.964330][ T3282]  full_proxy_write+0x68/0x98
-[  113.964880][ T3282]  vfs_write+0xdc/0x4d0
-[  113.965372][ T3282]  ksys_write+0x78/0x100
-[  113.965875][ T3282]  __arm64_sys_write+0x24/0x30
-[  113.966440][ T3282]  invoke_syscall+0x7c/0x104
-[  113.966984][ T3282]  el0_svc_common.constprop.1+0x88/0x104
-[  113.967652][ T3282]  do_el0_svc+0x2c/0x38
-[  113.968893][ T3282]  el0_svc+0x3c/0x1b8
-[  113.969379][ T3282]  el0t_64_sync_handler+0x98/0xbc
-[  113.969980][ T3282]  el0t_64_sync+0x19c/0x1a0
-[  113.970511][ T3282] ---[ end trace 0000000000000000 ]---
+     usecs             : count    distribution
+        0 -> 1         : 0       |                                        |
+        2 -> 3         : 29      |                                        |
+        4 -> 7         : 19      |                                        |
+        8 -> 15        : 56      |                                        |
+       16 -> 31        : 483     |****                                    |
+       32 -> 63        : 1548    |************                            |
+       64 -> 127       : 2634    |*********************                   |
+      128 -> 255       : 2535    |*********************                   |
+      256 -> 511       : 1776    |**************                          |
+      512 -> 1023      : 1015    |********                                |
+     1024 -> 2047      : 573     |****                                    |
+     2048 -> 4095      : 488     |****                                    |
+     4096 -> 8191      : 1091    |*********                               |
+     8192 -> 16383     : 3078    |*************************               |
+    16384 -> 32767     : 4821    |****************************************|
+    32768 -> 65535     : 3318    |***************************             |
+    65536 -> 131071    : 1718    |**************                          |
+   131072 -> 262143    : 2220    |******************                      |
+   262144 -> 524287    : 1147    |*********                               |
+   524288 -> 1048575   : 1179    |*********                               |
+  1048576 -> 2097151   : 822     |******                                  |
+  2097152 -> 4194303   : 906     |*******                                 |
+  4194304 -> 8388607   : 2148    |*****************                       |
+  8388608 -> 16777215  : 4497    |*************************************   |
+ 16777216 -> 33554431  : 289     |**                                      |
 
-To fix this, clear the page tag reference after the page got isolated
-and accounted for.
+  avg = 2041714 usecs, total: 78381401772 usecs, count: 38390
 
-Link: https://lkml.kernel.org/r/20240825163649.33294-1-hao.ge@linux.dev
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hao Ge <gehao@kylinos.cn>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>	[6.10+]
+  The worst case is over 16-33 seconds, so soft lockup is triggered [2].
+
+[Root Cause]
+1) Each purge_list has the long list. The following shows the number of
+   vmap_area is purged.
+
+   crash> p vmap_nodes
+   vmap_nodes = $27 = (struct vmap_node *) 0xff2de5a900100000
+   crash> vmap_node 0xff2de5a900100000 128 | grep nr_purged
+     nr_purged = 663070
+     ...
+     nr_purged = 821670
+     nr_purged = 692214
+     nr_purged = 726808
+     ...
+
+2) atomic_long_sub() employs the 'lock' prefix to ensure the atomic
+   operation when purging each vmap_area. However, the iteration is over
+   600000 vmap_area (See 'nr_purged' above).
+
+   Here is objdump output:
+
+     $ objdump -D vmlinux
+     ffffffff813e8c80 <purge_vmap_node>:
+     ...
+     ffffffff813e8d70:  f0 48 29 2d 68 0c bb  lock sub %rbp,0x2bb0c68(%rip)
+     ...
+
+   Quote from "Instruction tables" pdf file [3]:
+     Instructions with a LOCK prefix have a long latency that depends on
+     cache organization and possibly RAM speed. If there are multiple
+     processors or cores or direct memory access (DMA) devices, then all
+     locked instructions will lock a cache line for exclusive access,
+     which may involve RAM access. A LOCK prefix typically costs more
+     than a hundred clock cycles, even on single-processor systems.
+
+   That's why the latency of purge_vmap_node() dramatically increases
+   on a many-core system: One core is busy on purging each vmap_area of
+   the *long* purge_list and executing atomic_long_sub() for each
+   vmap_area, while other cores free vmalloc allocations and execute
+   atomic_long_add_return() in free_vmap_area_noflush().
+
+[Solution]
+Employ a local variable to record the total purged pages, and execute
+atomic_long_sub() after the traversal of the purge_list is done. The
+experiment result shows the latency improvement is 99%.
+
+[Experiment Result]
+1) System Configuration: Three servers (with HT-enabled) are tested.
+     * 72-core server: 3rd Gen Intel Xeon Scalable Processor*1
+     * 192-core server: 5th Gen Intel Xeon Scalable Processor*2
+     * 448-core server: AMD Zen 4 Processor*2
+
+2) Kernel Config
+     * CONFIG_KASAN is disabled
+
+3) The data in column "w/o patch" and "w/ patch"
+     * Unit: micro seconds (us)
+     * Each data is the average of 3-time measurements
+
+         System        w/o patch (us)   w/ patch (us)    Improvement (%)
+     ---------------   --------------   -------------    -------------
+     72-core server          2194              14            99.36%
+     192-core server       143799            1139            99.21%
+     448-core server      1992122            6883            99.65%
+
+[1] https://github.com/iovisor/bcc/blob/master/tools/funclatency.py
+[2] https://gist.github.com/AdrianHuang/37c15f67b45407b83c2d32f918656c12
+[3] https://www.agner.org/optimize/instruction_tables.pdf
+
+Link: https://lkml.kernel.org/r/20240829130633.2184-1-ahuang12@lenovo.com
+Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_alloc.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/vmalloc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c~codetag-debug-mark-codetags-for-poisoned-page-as-empty
-+++ a/mm/page_alloc.c
-@@ -1054,6 +1054,13 @@ __always_inline bool free_pages_prepare(
- 		reset_page_owner(page, order);
- 		page_table_check_free(page, order);
- 		pgalloc_tag_sub(page, 1 << order);
-+
-+		/*
-+		 * The page is isolated and accounted for.
-+		 * Mark the codetag as empty to avoid accounting error
-+		 * when the page is freed by unpoison_memory().
-+		 */
-+		clear_page_tag_ref(page);
- 		return false;
+--- a/mm/vmalloc.c~mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area
++++ a/mm/vmalloc.c
+@@ -2191,6 +2191,7 @@ static void purge_vmap_node(struct work_
+ {
+ 	struct vmap_node *vn = container_of(work,
+ 		struct vmap_node, purge_work);
++	unsigned long nr_purged_pages = 0;
+ 	struct vmap_area *va, *n_va;
+ 	LIST_HEAD(local_list);
+ 
+@@ -2208,7 +2209,7 @@ static void purge_vmap_node(struct work_
+ 			kasan_release_vmalloc(orig_start, orig_end,
+ 					      va->va_start, va->va_end);
+ 
+-		atomic_long_sub(nr, &vmap_lazy_nr);
++		nr_purged_pages += nr;
+ 		vn->nr_purged++;
+ 
+ 		if (is_vn_id_valid(vn_id) && !vn->skip_populate)
+@@ -2219,6 +2220,8 @@ static void purge_vmap_node(struct work_
+ 		list_add(&va->list, &local_list);
  	}
+ 
++	atomic_long_sub(nr_purged_pages, &vmap_lazy_nr);
++
+ 	reclaim_list_global(&local_list);
+ }
  
 _
 
-Patches currently in -mm which might be from gehao@kylinos.cn are
+Patches currently in -mm which might be from ahuang12@lenovo.com are
 
-mm-cma-change-the-addition-of-totalcma_pages-in-the-cma_init_reserved_mem.patch
+mm-vmalloc-combine-all-tlb-flush-operations-of-kasan-shadow-virtual-address-into-one-operation.patch
 
 
