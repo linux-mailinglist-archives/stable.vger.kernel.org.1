@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-72658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6FB967E3F
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 05:46:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17AD967E45
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 05:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC57B2113C
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:46:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A091F22496
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26C91465B8;
-	Mon,  2 Sep 2024 03:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CB114B970;
+	Mon,  2 Sep 2024 03:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mkuqj15Q"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="P49izUIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9179E7DA7B;
-	Mon,  2 Sep 2024 03:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B40149C69;
+	Mon,  2 Sep 2024 03:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725248756; cv=none; b=i1iaGxk1EqOTX0oDmbvsxqwROKbLm+FuR8LKXiuRt7aCCzbmpa77MawX91TsvROw2Cq4SZ5S3iDePc7HcKk2t1Gc0ay4sEEkSGEZ74MgRgksjl3c9K3iFCI4l7KLqG/mBI9tjvB0Sh42yC4JLZOmjiayOvs7sm357cy8Wj0L73c=
+	t=1725248785; cv=none; b=HeHjFhgFDlaCv/Jw84FILwQPikAKRDvWYZitcZ5Nvc/OU5ZxPMSNaR6i0tW3Q/LA1PpUV6r9SSMXauIc2i5EqQpWkrwD1c0Gi7JXu8RB9enYTbq1zOv0zZ2PERgKvoGfSFKZXpcRanlvNMZ4BlzUNQjkmU9IMWBfG+V+KBCm0kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725248756; c=relaxed/simple;
-	bh=HZ2tuSX8G8EG3sjziunwSkDRF5wRnq3haKFHhBNK/Rc=;
-	h=Date:To:From:Subject:Message-Id; b=DSEOF+woAd+je1lFmFILSGHVghqbkHukgrkMGI5MboB1tY9gk6ve++TVWma0LmdYWKZixlonyPo14OrKJ9x4OnoW321aL+I7ZzgB+h9LKma8q5yX6BCI2UOxQiPTE65Em+J7ld5CSO1pptvoTB8NRdLnxIwN5jzf4udpo/PpPHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mkuqj15Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CE1C4CEC7;
-	Mon,  2 Sep 2024 03:45:56 +0000 (UTC)
+	s=arc-20240116; t=1725248785; c=relaxed/simple;
+	bh=x+bcvbZkG757CNKuZt90iGpdSojdnNJunkJf3IVnZP0=;
+	h=Date:To:From:Subject:Message-Id; b=pYX1OCgZelbTK9k5MErY350kKxAQPnuEzTsDl1TQbTF7DjSU+qKarJoJVnHl/zQ1vscRhv3tFDvU9PVgOA/VIFfuPtDYoHmke5AfmF7EnA0xa+1S7u2t9I8vSKaZNNJKMBde4IEuAL25LgUJzA0gg0eZEj+/rClavHUQSWFNWlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=P49izUIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F1BC4CEC2;
+	Mon,  2 Sep 2024 03:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725248756;
-	bh=HZ2tuSX8G8EG3sjziunwSkDRF5wRnq3haKFHhBNK/Rc=;
+	s=korg; t=1725248783;
+	bh=x+bcvbZkG757CNKuZt90iGpdSojdnNJunkJf3IVnZP0=;
 	h=Date:To:From:Subject:From;
-	b=mkuqj15QHd5rp10RIvp7J/HPnlObQLrEd6DET8AlrQNw59+WNvX6qpArGep3NKz2p
-	 Xf6d2lnqSXn+mr1W9pxRnQlTUQDhZgmx0pf3s1TNurtE6CTdGLVA8MhsebBWeAbQrH
-	 lq89SLsXPuieDGBTKnnNuO7vM7quiUbrnzP+DfCA=
-Date: Sun, 01 Sep 2024 20:45:55 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,glass.su@suse.com,ghe@suse.com,gechangwei@live.cn,heming.zhao@suse.com,akpm@linux-foundation.org
+	b=P49izUIwtNRGy/kpMSbTF0jC5Ab9uCsL08Pd7sHrkLH2WDxjOarGU47VxtwOtLRcY
+	 WmYyxAdAHKl/DcUn/W3/ZKV1X1+8bUN1H+5MZgCy5R7wGCAoczhfIWsLF93Ffdl09D
+	 2kTjcI2zLlnCsxq8QbVlZIbILpG82akrwVIlZmW4=
+Date: Sun, 01 Sep 2024 20:46:22 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,jan.kiszka@siemens.com,kuan-ying.lee@canonical.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume.patch removed from -mm tree
-Message-Id: <20240902034556.07CE1C4CEC7@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] scripts-gdb-fix-timerlist-parsing-issue.patch removed from -mm tree
+Message-Id: <20240902034623.71F1BC4CEC2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,72 +50,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: fix the la space leak when unmounting an ocfs2 volume
+     Subject: scripts/gdb: fix timerlist parsing issue
 has been removed from the -mm tree.  Its filename was
-     ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume.patch
+     scripts-gdb-fix-timerlist-parsing-issue.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Heming Zhao <heming.zhao@suse.com>
-Subject: ocfs2: fix the la space leak when unmounting an ocfs2 volume
-Date: Fri, 19 Jul 2024 19:43:10 +0800
+From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+Subject: scripts/gdb: fix timerlist parsing issue
+Date: Tue, 23 Jul 2024 14:48:57 +0800
 
-This bug has existed since the initial OCFS2 code.  The code logic in
-ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
-free bits, which causes an OCFS2 volume to lose the last free clusters of
-LA window on each umount command.
+Patch series "Fix some GDB command error and add some GDB commands", v3.
 
-Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
+Fix some GDB command errors and add some useful GDB commands.
+
+
+This patch (of 5):
+
+Commit 7988e5ae2be7 ("tick: Split nohz and highres features from
+nohz_mode") and commit 7988e5ae2be7 ("tick: Split nohz and highres
+features from nohz_mode") move 'tick_stopped' and 'nohz_mode' to flags
+field which will break the gdb lx-mounts command:
+
+(gdb) lx-timerlist
+Python Exception <class 'gdb.error'>: There is no member named nohz_mode.
+Error occurred in Python: There is no member named nohz_mode.
+
+(gdb) lx-timerlist
+Python Exception <class 'gdb.error'>: There is no member named tick_stopped.
+Error occurred in Python: There is no member named tick_stopped.
+
+We move 'tick_stopped' and 'nohz_mode' to flags field instead.
+
+Link: https://lkml.kernel.org/r/20240723064902.124154-1-kuan-ying.lee@canonical.com
+Link: https://lkml.kernel.org/r/20240723064902.124154-2-kuan-ying.lee@canonical.com
+Fixes: a478ffb2ae23 ("tick: Move individual bit features to debuggable mask accesses")
+Fixes: 7988e5ae2be7 ("tick: Split nohz and highres features from nohz_mode")
+Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ scripts/gdb/linux/timerlist.py |   31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
---- a/fs/ocfs2/localalloc.c~ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume
-+++ a/fs/ocfs2/localalloc.c
-@@ -1002,6 +1002,25 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
+--- a/scripts/gdb/linux/timerlist.py~scripts-gdb-fix-timerlist-parsing-issue
++++ a/scripts/gdb/linux/timerlist.py
+@@ -87,21 +87,22 @@ def print_cpu(hrtimer_bases, cpu, max_cl
+             text += "\n"
  
-+	/* clear the contiguous bits until the end boundary */
-+	if (count) {
-+		blkno = la_start_blk +
-+			ocfs2_clusters_to_blocks(osb->sb,
-+					start - count);
-+
-+		trace_ocfs2_sync_local_to_main_free(
-+				count, start - count,
-+				(unsigned long long)la_start_blk,
-+				(unsigned long long)blkno);
-+
-+		status = ocfs2_release_clusters(handle,
-+				main_bm_inode,
-+				main_bm_bh, blkno,
-+				count);
-+		if (status < 0)
-+			mlog_errno(status);
-+	}
-+
- bail:
- 	if (status)
- 		mlog_errno(status);
+         if constants.LX_CONFIG_TICK_ONESHOT:
+-            fmts = [("  .{}      : {}", 'nohz_mode'),
+-                    ("  .{}      : {} nsecs", 'last_tick'),
+-                    ("  .{}   : {}", 'tick_stopped'),
+-                    ("  .{}   : {}", 'idle_jiffies'),
+-                    ("  .{}     : {}", 'idle_calls'),
+-                    ("  .{}    : {}", 'idle_sleeps'),
+-                    ("  .{} : {} nsecs", 'idle_entrytime'),
+-                    ("  .{}  : {} nsecs", 'idle_waketime'),
+-                    ("  .{}  : {} nsecs", 'idle_exittime'),
+-                    ("  .{} : {} nsecs", 'idle_sleeptime'),
+-                    ("  .{}: {} nsecs", 'iowait_sleeptime'),
+-                    ("  .{}   : {}", 'last_jiffies'),
+-                    ("  .{}     : {}", 'next_timer'),
+-                    ("  .{}   : {} nsecs", 'idle_expires')]
+-            text += "\n".join([s.format(f, ts[f]) for s, f in fmts])
++            TS_FLAG_STOPPED = 1 << 1
++            TS_FLAG_NOHZ = 1 << 4
++            text += f"  .{'nohz':15s}: {int(bool(ts['flags'] & TS_FLAG_NOHZ))}\n"
++            text += f"  .{'last_tick':15s}: {ts['last_tick']}\n"
++            text += f"  .{'tick_stopped':15s}: {int(bool(ts['flags'] & TS_FLAG_STOPPED))}\n"
++            text += f"  .{'idle_jiffies':15s}: {ts['idle_jiffies']}\n"
++            text += f"  .{'idle_calls':15s}: {ts['idle_calls']}\n"
++            text += f"  .{'idle_sleeps':15s}: {ts['idle_sleeps']}\n"
++            text += f"  .{'idle_entrytime':15s}: {ts['idle_entrytime']} nsecs\n"
++            text += f"  .{'idle_waketime':15s}: {ts['idle_waketime']} nsecs\n"
++            text += f"  .{'idle_exittime':15s}: {ts['idle_exittime']} nsecs\n"
++            text += f"  .{'idle_sleeptime':15s}: {ts['idle_sleeptime']} nsecs\n"
++            text += f"  .{'iowait_sleeptime':15s}: {ts['iowait_sleeptime']} nsecs\n"
++            text += f"  .{'last_jiffies':15s}: {ts['last_jiffies']}\n"
++            text += f"  .{'next_timer':15s}: {ts['next_timer']}\n"
++            text += f"  .{'idle_expires':15s}: {ts['idle_expires']} nsecs\n"
+             text += "\njiffies: {}\n".format(jiffies)
+ 
+         text += "\n"
 _
 
-Patches currently in -mm which might be from heming.zhao@suse.com are
+Patches currently in -mm which might be from kuan-ying.lee@canonical.com are
 
 
 
