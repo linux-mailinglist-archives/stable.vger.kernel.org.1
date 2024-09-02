@@ -1,192 +1,152 @@
-Return-Path: <stable+bounces-72722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403D39687DE
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 14:49:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F459687D8
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 14:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAA1F282F38
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3677F1C21D21
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D9619C55D;
-	Mon,  2 Sep 2024 12:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F89F1D1F44;
+	Mon,  2 Sep 2024 12:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="A7EdX6XC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D7y3iaBU"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BF32570;
-	Mon,  2 Sep 2024 12:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B199619C55C
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 12:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725281347; cv=none; b=REwN5Fi70jT9HJgIEehbj/FsFdkRll1QOZyQgbWmYLtMJpqkNMZAyUPgKQLLetx9hk/qjH4/TztvAtVzkKmDWSkC8aNMk6aGW+WRC3Ilk7fbwHNvS/bWfGa2pBu2MIxuxgs5fsD2gHlkwlbE3bJesmhrWiSZLFXybBwilMb65Ak=
+	t=1725281250; cv=none; b=hVHMjyxBwjQVjM4Vmz85Ccph61fQZ7v7YQdk0PKB9f4iJsL2+dFdy9qRGiPUECOKLy9LYf3w0Z1ksWLq6kwk9hbyIFfSCOb6lYyx7QhH61YVypwzBWdvmzCCvHnQRKGdmaXejkE023XvjlPK12PxR5yvHxrn64+TpqNn/4cRlZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725281347; c=relaxed/simple;
-	bh=YzWM6nwQGHK9jZzcaTacrJZ4xwlKlWEBZBYAcAKWIvI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=OqoxGp4RygxmFBwGv/4e5i4a1BUv3bfOrYwle7JCoSl1VNYmyLIFMjnHHiBuUBiZpWEB61+jK7rDDsCagTYQ1QILGYu8KsCIoWsyxWjg/kuVbPM+Dw7C/dXCgYRZD5JJB6Q2FZ28evcK8oK/9YcSHTiJcrbGigq6VCGoEIQF75A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=A7EdX6XC; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-	id DB4F420B7165; Mon,  2 Sep 2024 05:43:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DB4F420B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1725281029;
-	bh=QePnS9pURR28M4mdGDE4ee0nwvMcy04D78FQiNn5+gs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=A7EdX6XCbR97yDKc1g7nc9ONNtgRX0kgdvaN2lqrwN1MEnWXGUOIJ1ATOB+2MB6Q6
-	 WdRk32R+7XuprFBDbpuO7JvJkib7TSbCCFovfhw0kan9+elWNrIr8hxs6gKXb14H3h
-	 vntKNmGXMtp/R2GvfRttz5qSr/0o+oIxaVwd+Tc8=
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	davem@davemloft.net,
-	longli@microsoft.com,
-	ssengar@linux.microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: schakrabarti@microsoft.com,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH V4 net] net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
-Date: Mon,  2 Sep 2024 05:43:47 -0700
-Message-Id: <1725281027-29331-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1725281250; c=relaxed/simple;
+	bh=wF+TDzVSJ2YjjfA3NeGCW28IVmyODfLzxaDM+fl+FHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=efv1fJ8YvFEG7Lu0sjatbwT2J8NTQ1EvFrfwah7XlG0thFSYl93Y3RlSlF7iaLPkFczpztOOWR8caoBkOTVfX1zx8e6fdnkFkCxR7CjR/7PJJtjJrPoWrgSKIZpkUxOBMF4OKCf5aIIKCbt0iKDKrSC5UYxwdmIZQgkGAYDgfmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D7y3iaBU; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-715cc93694fso3614783b3a.2
+        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 05:47:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725281248; x=1725886048; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sw56HONjylV3zP4q+WSmMqj4D4zJNduIGjeb5jWNs/E=;
+        b=D7y3iaBUDV4W8AREiDBPtobdyHc0MbJbkyFnawRRq2UgD+LGkaBnWAPzZdWF6OSJgT
+         baX/8s2Tf3wMlXsBcC2lI1IUybFOBVmRLRXKf51vSVPW+RxYpBEjQl1SBG+Ilb6y8LHd
+         RcqOYVD2YRk9KCXogddYguzsJN+vjYhgcsoMbCCddFZfKLSIWu1cOckqSYhQJrYnRWYx
+         J5xFkybBuLo51BnqFjveVmWvJEG2hDEQhpLecYRG5LgVgaFgOn1wUs4SLusmkBFgdKU2
+         imKrnRTzCAwi7Zj6rVutx6ekbNsbdyWBf/yQUgyg2OwZk8h0A3GkibF//Vp+O/k2ZQfL
+         T0/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725281248; x=1725886048;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sw56HONjylV3zP4q+WSmMqj4D4zJNduIGjeb5jWNs/E=;
+        b=vtZTqu297Sr4bGTkZA4j52GwGjsUZ/ry2gck7XB2tvglkkGOnfVGOsn/MEaPmyK3GQ
+         9w+SwDo8++IIAZkRSLqILmBZVr8QG0/uZxRJlzkN4lz1VoC0GOfN2gbA8X2c3Uox++jA
+         oKEgis4bKlwNoRbp2t1YSnXiVIMTCOh62SuVpHUVdwO3UkwoLyCdagEXxRke6wcy92bo
+         qO3eQSW4mXx3040ymrwXGPWtOHDd92eDpeoHL0zPrZvjo4yD+8U/mac0jR7hEo/m1DPq
+         5FbUeToMtInT+Y+H8Tq2W9GUfDQw2wVC0eGVmdOKN1TJIRDB8HprSyE1IPbwU7JUfS+P
+         a4Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWoq3AO3hPz7ap0g9wZtz9bcocTFAHZnIvLmBJpZeEeVkFYiBefXnAgRgm2Yn3RgtZ6Z2bdF2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMbBjvQII/NuDJkMzrFk0ibUTxQcC7lNNH7KZhKuiEKNAdmR72
+	ls3IUYS5j805zwvNtsD3Q3+sI8GPe9+Bqih1DPzPJoxhG6sBNqxW1EuRguO4rA==
+X-Google-Smtp-Source: AGHT+IFm74MUePoqdJK4/q3NgMhKFYLf6zUq00FAgFNFSomryCyuaX6pCUOEG8+oPT7dru6YDuaHVg==
+X-Received: by 2002:a05:6a20:b58b:b0:1c0:f2d9:a44a with SMTP id adf61e73a8af0-1ced0469115mr6570664637.22.1725281247917;
+        Mon, 02 Sep 2024 05:47:27 -0700 (PDT)
+Received: from thinkpad ([120.60.129.190])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e9d77f2sm7438317a12.89.2024.09.02.05.47.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 05:47:27 -0700 (PDT)
+Date: Mon, 2 Sep 2024 18:17:20 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Manish Pandey <quic_mapa@quicinc.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, quic_nitirawa@quicinc.com,
+	quic_bhaskarv@quicinc.com, quic_narepall@quicinc.com,
+	quic_rampraka@quicinc.com, quic_cang@quicinc.com,
+	quic_nguyenb@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH V5] scsi: ufs: qcom: update MODE_MAX cfg_bw value
+Message-ID: <20240902124720.coeidzis2xcmglzl@thinkpad>
+References: <20240902114737.3740-1-quic_mapa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240902114737.3740-1-quic_mapa@quicinc.com>
 
-Currently napi_disable() gets called during rxq and txq cleanup,
-even before napi is enabled and hrtimer is initialized. It causes
-kernel panic.
+On Mon, Sep 02, 2024 at 05:17:37PM +0530, Manish Pandey wrote:
+> Commit 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
+> bandwidth values for Gear 5") updates the ufs_qcom_bw_table for
 
-? page_fault_oops+0x136/0x2b0
-  ? page_counter_cancel+0x2e/0x80
-  ? do_user_addr_fault+0x2f2/0x640
-  ? refill_obj_stock+0xc4/0x110
-  ? exc_page_fault+0x71/0x160
-  ? asm_exc_page_fault+0x27/0x30
-  ? __mmdrop+0x10/0x180
-  ? __mmdrop+0xec/0x180
-  ? hrtimer_active+0xd/0x50
-  hrtimer_try_to_cancel+0x2c/0xf0
-  hrtimer_cancel+0x15/0x30
-  napi_disable+0x65/0x90
-  mana_destroy_rxq+0x4c/0x2f0
-  mana_create_rxq.isra.0+0x56c/0x6d0
-  ? mana_uncfg_vport+0x50/0x50
-  mana_alloc_queues+0x21b/0x320
-  ? skb_dequeue+0x5f/0x80
+s/updates/updated
 
-Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
----
-V4 -> V3:
-Made napi_initialized from atomic_t to bool in txq, as per review comment.
-Also used validate_state for rxq as a check.
+> Gear 5. However, it misses updating the cfg_bw value for the max
 
-V3 -> V2:
-Instead of using napi internal attribute, using an atomic
-attribute to verify napi is initialized for a particular txq / rxq.
+s/misses/missed
 
-V2 -> V1:
-Addressed the comment on cleaning up napi for the queues,
-where queue creation was successful.
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 22 +++++++++++--------
- include/net/mana/mana.h                       |  2 ++
- 2 files changed, 15 insertions(+), 9 deletions(-)
+> mode.
+> 
+> Hence update the cfg_bw value for the max mode for UFS 4.x devices.
+> 
+> Fixes: 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
+> bandwidth values for Gear 5")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Manish Pandey <quic_mapa@quicinc.com>
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 39f56973746d..3d151700f658 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 
- 	for (i = 0; i < apc->num_queues; i++) {
- 		napi = &apc->tx_qp[i].tx_cq.napi;
--		napi_synchronize(napi);
--		napi_disable(napi);
--		netif_napi_del(napi);
--
-+		if (apc->tx_qp[i].txq.napi_initialized) {
-+			napi_synchronize(napi);
-+			napi_disable(napi);
-+			netif_napi_del(napi);
-+			apc->tx_qp[i].txq.napi_initialized = false;
-+		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
- 
- 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
-@@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 		txq->ndev = net;
- 		txq->net_txq = netdev_get_tx_queue(net, i);
- 		txq->vp_offset = apc->tx_vp_offset;
-+		txq->napi_initialized = false;
- 		skb_queue_head_init(&txq->pending_skbs);
- 
- 		memset(&spec, 0, sizeof(spec));
-@@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 
- 		netif_napi_add_tx(net, &cq->napi, mana_poll);
- 		napi_enable(&cq->napi);
-+		txq->napi_initialized = true;
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- 	}
-@@ -2008,7 +2012,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- }
- 
- static void mana_destroy_rxq(struct mana_port_context *apc,
--			     struct mana_rxq *rxq, bool validate_state)
-+			     struct mana_rxq *rxq, bool napi_initialized)
- 
- {
- 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
-@@ -2023,15 +2027,15 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 
- 	napi = &rxq->rx_cq.napi;
- 
--	if (validate_state)
-+	if (napi_initialized) {
- 		napi_synchronize(napi);
- 
--	napi_disable(napi);
-+		napi_disable(napi);
- 
-+		netif_napi_del(napi);
-+	}
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
--	netif_napi_del(napi);
--
- 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
- 
- 	mana_deinit_cq(apc, &rxq->rx_cq);
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 7caa334f4888..b8a6c7504ee1 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -98,6 +98,8 @@ struct mana_txq {
- 
- 	atomic_t pending_sends;
- 
-+	bool napi_initialized;
-+
- 	struct mana_stats_tx stats;
- };
- 
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+> Changes from v4:
+> - Updated commit message.
+> 
+> Changes from v3:
+> - Cced stable@vger.kernel.org.
+> 
+> Changes from v2:
+> - Addressed Mani comment, added fixes tag.
+> 
+> Changes from v1:
+> - Updated commit message.
+> ---
+>  drivers/ufs/host/ufs-qcom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+> index c87fdc849c62..ecdfff2456e3 100644
+> --- a/drivers/ufs/host/ufs-qcom.c
+> +++ b/drivers/ufs/host/ufs-qcom.c
+> @@ -93,7 +93,7 @@ static const struct __ufs_qcom_bw_table {
+>  	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
+>  	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
+>  	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
+> -	[MODE_MAX][0][0]		    = { 7643136,	307200 },
+> +	[MODE_MAX][0][0]		    = { 7643136,	819200 },
+>  };
+>  
+>  static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);
+> -- 
+> 2.17.1
+> 
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
