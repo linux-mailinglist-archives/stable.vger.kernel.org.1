@@ -1,120 +1,105 @@
-Return-Path: <stable+bounces-72671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033B9968005
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:08:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3255967FFD
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B20AA2821B4
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 07:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F66DB21E50
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 07:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA19178388;
-	Mon,  2 Sep 2024 07:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB6E161310;
+	Mon,  2 Sep 2024 07:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="Hy2StFKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q13wcI0Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82216149E03;
-	Mon,  2 Sep 2024 07:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2353F155A2F;
+	Mon,  2 Sep 2024 07:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725260856; cv=none; b=e/qH7KrLaLIezwxx6ULsF95TYvf53UltAcL+4V5ZrR1lvp5z1svw8Bc6XgyDvjgFt+3G50ZAQVTDw8N54orucIoJ22+QdwmU1BGLyWFBRJnpt41RA6TRpKP8pBdmVX8xVSd+uJLyFmmLfwkHObJyz3xDb+oRbJ7PRgncXjo+97k=
+	t=1725260838; cv=none; b=EB4aHSLMLiKZb9CeEwoRfo6UMqlxumBYdwvjQeMxGWBwLwJBqiH/lrm+8u8+BjJm6PL7Zkx6Fu4pVtUVBHDxLBaTsXwouvVenB0EZw3IcUMb1+f8e3oIlYFPn1QVaqUagaBSBECqLG0HZkwMNc4tNIZUsOl4wRlEhaEpPkVud2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725260856; c=relaxed/simple;
-	bh=c4dE2X3D8jNW7VIHknDX4GKLOebCJIX98K1SweWgq9g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TdjkqVyORhfmDhC8y7QShOSkR+L/Sf1bL7FTDEXH7lKXg5lE3tKPMQgdvhtx+E5P6BSdOttIFN9CgrsfBy8bBzB7WnSOECaoL1nPmktCVGH6ZRUYMoz21RH2LAHmmvghy+Q++rCeBmwywwiblx7W7nzbx8WUK9Lrjgu4pHVzXeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=Hy2StFKc; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4Wy0F94X8Lz9scM;
-	Mon,  2 Sep 2024 09:07:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-	t=1725260845;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YeczAUMJPFpgcChSC2NOpYh4duarO6U/B6665/OuVEY=;
-	b=Hy2StFKc/4fKf2gCKEaSL7UxDpWJxwxLk2pIp3OJ2n0a8eq6IW3vyQEhkRp9UJOLiTiunW
-	YVTgg2HXuIfJngk+nyBMbisgCqKp0kocbdERctb3CL37YgSXM/OKuHCK11SCUJi+Rm+DHr
-	d/RS7NpLLmiXwVHtJr1MG9rUNGeOyL4iPgnzY+CHiPuHVq8ooP/7CH8HAR9k3bDkr4U+R+
-	MJuJVkrkZ0uI4B5q/enV9pEvNdplFH8PT1Tox0tMbtr48T4Ewf1d5fyeUq0xy+talR9bzS
-	oiAEfpPnttmh/2ruGnsLF7CYK1q1QPyMWhX5xUUMPN3y3Qg7LIXZKDqCID++eA==
-From: Aleksa Sarai <cyphar@cyphar.com>
-Date: Mon, 02 Sep 2024 17:06:25 +1000
-Subject: [PATCH RFC 3/8] openat2: explicitly return -E2BIG for (usize >
- PAGE_SIZE)
+	s=arc-20240116; t=1725260838; c=relaxed/simple;
+	bh=KG3FfFVr0J5N9JkhiRWMquhd15fD18BTlr/nqhCv00g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e6mykFV3wJ6Dd5yqY/xPhBeesgv/ORK2P77oKVvI9IvXn2QCDkBUCQbIzLgD2IzJdBvyLBL+ZEhUDSX2hqvnosz4eyRGSPjEIGBmG5lR0mbyTC1f5qUQaiuvn86TvPAPzJV3xzor8JEUA2QzIsr50ITlWYX39FiQCczR9hZvN2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q13wcI0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CF2C4CEC2;
+	Mon,  2 Sep 2024 07:07:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725260837;
+	bh=KG3FfFVr0J5N9JkhiRWMquhd15fD18BTlr/nqhCv00g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q13wcI0QY7rDrnreizvYuyB7KSYgkhCnNh6pXIHQZXhLJQLSJTfBpsVric1syZoLu
+	 9KKQsFoQhyD/ZeaJcc03avUSegb+SqqcepOTkeMYpfY1vqKLcDahMH7+L9p/TtJXk/
+	 3P8CDgZ6tQympg38BMsge63ZvggAK2zkwV5omncE=
+Date: Mon, 2 Sep 2024 09:07:14 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 130/151] Revert "Input: ioc3kbd - convert to
+ platform remove callback returning void"
+Message-ID: <2024090238-icky-unselect-3134@gregkh>
+References: <20240901160814.090297276@linuxfoundation.org>
+ <20240901160818.998146019@linuxfoundation.org>
+ <ZtURsofEb-WmU69f@codewreck.org>
+ <2024090259-sultry-cartel-8e0e@gregkh>
+ <ZtVeWUa4L3F-EDc2@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240902-extensible-structs-check_fields-v1-3-545e93ede2f2@cyphar.com>
-References: <20240902-extensible-structs-check_fields-v1-0-545e93ede2f2@cyphar.com>
-In-Reply-To: <20240902-extensible-structs-check_fields-v1-0-545e93ede2f2@cyphar.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Florian Weimer <fweimer@redhat.com>, 
- Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>, 
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>, 
- stable@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=891; i=cyphar@cyphar.com;
- h=from:subject:message-id; bh=c4dE2X3D8jNW7VIHknDX4GKLOebCJIX98K1SweWgq9g=;
- b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaRdTWGRbE3TnMVyMdt3/7qP1bN/2Gyw2jHlR07LlQNPj
- xpsTOPk6yhlYRDjYpAVU2TZ5ucZumn+4ivJn1aywcxhZQIZwsDFKQATmS3OyHBd5dLj/ifJLEc2
- z/o4p+HyZJ/uo1XTcvh+nt7n8dBBxFmU4b/b7UkqGo/ddocHbXU6cMVNSOsM471neR8eL2uIuvH
- zuRQXAA==
-X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
- fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZtVeWUa4L3F-EDc2@codewreck.org>
 
-While we do currently return -EFAULT in this case, it seems prudent to
-follow the behaviour of other syscalls like clone3. It seems quite
-unlikely that anyone depends on this error code being EFAULT, but we can
-always revert this if it turns out to be an issue.
+On Mon, Sep 02, 2024 at 03:42:33PM +0900, Dominique Martinet wrote:
+> Greg Kroah-Hartman wrote on Mon, Sep 02, 2024 at 08:03:24AM +0200:
+> > On Mon, Sep 02, 2024 at 10:15:30AM +0900, Dominique Martinet wrote:
+> > > Greg Kroah-Hartman wrote on Sun, Sep 01, 2024 at 06:18:10PM +0200:
+> > > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > 
+> > > > This reverts commit 0096d223f78cb48db1ae8ae9fd56d702896ba8ae which is
+> > > > commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b upstream.
+> > > > 
+> > > > It breaks the build and shouldn't be here, it was applied to make a
+> > > > follow-up one apply easier.
+> > > > 
+> > > > Reported-by: Dominique Martinet <asmadeus@codewreck.org>
+> > > 
+> > > It's a detail but if you fix anything else in this branch I'd appreciate
+> > > this mail being updated to my work address:
+> > > Reported-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> > > 
+> > > (Sorry for the annoyance, just trying to keep the boundary with stable
+> > > kernel work I do for $job and 9p work on I do on my free time; if you're
+> > > not updating the patches feel free to leave it that way - thanks for
+> > > having taken the time to revert the commit in the first place!)
+> > 
+> > We can't really change things that are already in the tree, so we just
+> > copy the commit directly from that, sorry.
+> 
+> This commit isn't in tree yet -- it's a patch specific to the 5.10
+> branch that doesn't exist anywhere else (not a backport), and 5.10.225
+> hasn't been tagged yet.
+> 
+> With that said I'll reiterate it's probably not worth the trouble,
+> just replying because I don't understand where that "already in the
+> tree" came from.
 
-Cc: <stable@vger.kernel.org> # v5.6+
-Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
----
- fs/open.c | 2 ++
- 1 file changed, 2 insertions(+)
+Ah, you are right, sorry about that.  Dealing with thousands of patches
+here...
 
-diff --git a/fs/open.c b/fs/open.c
-index 22adbef7ecc2..30bfcddd505d 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -1458,6 +1458,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const char __user *, filename,
- 
- 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
- 		return -EINVAL;
-+	if (unlikely(usize > PAGE_SIZE))
-+		return -E2BIG;
- 
- 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
- 	if (err)
+I'll go fix it up right now, not a problem.
 
--- 
-2.46.0
-
+greg k-h
 
