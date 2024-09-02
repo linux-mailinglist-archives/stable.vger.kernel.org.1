@@ -1,148 +1,94 @@
-Return-Path: <stable+bounces-72646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DD6967D2D
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0110E967D40
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D688D1F2160C
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 01:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973841F2160D
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 01:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA58224FA;
-	Mon,  2 Sep 2024 00:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD9679C0;
+	Mon,  2 Sep 2024 01:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MBtGtjbf"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Mx8lzy16"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A44A0F;
-	Mon,  2 Sep 2024 00:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DC02F30
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 01:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725238790; cv=none; b=RjGfyxvgzjwi3SunvuMxiwqhEet7yjS10VGqs7wX9zl7UPGbMiuzYBgUohPQQcNOt/sh3HZuwoFPDG6j4NbECfXqQhYAtB2c4onLw3f0v9e77XThdId/bHOwcf098U0lhlxq+7ciPtsnyJeHoRkv43kchNPh8lRKxErKztOaom4=
+	t=1725239754; cv=none; b=Rd8Rtjm6duGGQHFJ1AGr8nn2FVO18iqGEteVgdlk/Wv3Gqtf28NUN82TAfgjAh+07CGjpywGfSZqCiB+EIHI/Siw04JMrwsRNdO90Y964TW6RnEaWOOakbOPmgznWmGdVZm4ZVKWlO5LxDfKF7El1dNRoIQ0u5GIGO9wUdLZops=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725238790; c=relaxed/simple;
-	bh=fQt6aUknUi4+WUPE9ICg1g9dE+1VNdAPuPR0YT36K5k=;
-	h=Date:To:From:Subject:Message-Id; b=gPM3BfDC8U7lFmNpp5LZC8f7Bg/GB8ARocOka1BkHno2uQtcSZKtxYLH+IACrD6jrN3NKvNYH1D3AI7V6zYeFlguCv12WcQDT28SVojyB/oGDKGaPmkYVCGqh6GWVSVceWKBd0cNUBEb/reohQ4FNMftHA/L8nZVEtnTmTovdb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MBtGtjbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081E9C4CEC3;
-	Mon,  2 Sep 2024 00:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725238790;
-	bh=fQt6aUknUi4+WUPE9ICg1g9dE+1VNdAPuPR0YT36K5k=;
-	h=Date:To:From:Subject:From;
-	b=MBtGtjbfV+JPj6LMbMgxd4G+VW9q1jycW5A7x3iyQrPmHfju3nfxrxUilNfFe6FyP
-	 tw9FoeCVjWuNx9hoO87slV5t1FMszPKlhfLDnQcxWS4GlWBFBLTSc2MvCutrz1Ai/k
-	 LfOlRzf7mTdKViMfee7A7LEazGj82Xf9iC6ab4fM=
-Date: Sun, 01 Sep 2024 17:59:49 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,keescook@chromium.org,david@redhat.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch removed from -mm tree
-Message-Id: <20240902005950.081E9C4CEC3@smtp.kernel.org>
+	s=arc-20240116; t=1725239754; c=relaxed/simple;
+	bh=DHelPONrrGuP94Ep8CDeXojOJOEwWE6+O5SSi5VY4Gk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=grpdBlSM8nkZOVS2tZrVySXs+NZyeYebMIIuu1q2yyU7MbMWqnA++J76WGiookdrYyaSmt54oBkL2mVm7gZI/lQy69J/MgW67mFgezqZqC+adr7RN+KXN3ly0Lbms94ebKAvomgrf/uugIGd3kR1PK5YfOLVY+2yEcw/obpJRCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Mx8lzy16; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id AF8D014C1E1;
+	Mon,  2 Sep 2024 03:15:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1725239749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sQJR2ONbfC8kwd5wz2n0IpjJsfQljFhf/xj3xdxkih8=;
+	b=Mx8lzy16BSBNXE63YI/iTuwun/WDfvMpSIs55+K44oMh8W2UJjYlwy/sQmPTQ5mVsFVSqU
+	whb6moqMz+D+SMYiyGq7/5DCdslagbruAkO5IUztLRO42N2RqdUBUQ7IhlYBmk6WeVwFAk
+	yV+8KwKQ8m+BQqN/RRD4lua9KFK4KDEC6E+oJDoG3AB7n5czX4D5ivYs8OFBSqYWSCBnsJ
+	dA+6pAgCnCgdfRugJW4nhZdtO5x02ww4QfyGkZ/le3DCl8Mb3rmFC1cGv4SEw80gBrPDkO
+	ofIVwZ7UztrhX1Rj1i7TvCSblfg4/MeuMEgS/nH9FKHXqZfGY8MqdmT3US1qOw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7f28c78b;
+	Mon, 2 Sep 2024 01:15:45 +0000 (UTC)
+Date: Mon, 2 Sep 2024 10:15:30 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 130/151] Revert "Input: ioc3kbd - convert to
+ platform remove callback returning void"
+Message-ID: <ZtURsofEb-WmU69f@codewreck.org>
+References: <20240901160814.090297276@linuxfoundation.org>
+ <20240901160818.998146019@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240901160818.998146019@linuxfoundation.org>
 
+Greg Kroah-Hartman wrote on Sun, Sep 01, 2024 at 06:18:10PM +0200:
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> This reverts commit 0096d223f78cb48db1ae8ae9fd56d702896ba8ae which is
+> commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b upstream.
+> 
+> It breaks the build and shouldn't be here, it was applied to make a
+> follow-up one apply easier.
+> 
+> Reported-by: Dominique Martinet <asmadeus@codewreck.org>
 
-The quilt patch titled
-     Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
-has been removed from the -mm tree.  Its filename was
-     alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
+It's a detail but if you fix anything else in this branch I'd appreciate
+this mail being updated to my work address:
+Reported-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+(Sorry for the annoyance, just trying to keep the boundary with stable
+kernel work I do for $job and 9p work on I do on my free time; if you're
+not updating the patches feel free to leave it that way - thanks for
+having taken the time to revert the commit in the first place!)
 
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
-Date: Wed, 28 Aug 2024 16:15:36 -0700
-
-codetag_module_init() is used to initialize sections containing allocation
-tags.  This function is used to initialize module sections as well as core
-kernel sections, in which case the module parameter is set to NULL.  This
-function has to be called even when CONFIG_MODULES=n to initialize core
-kernel allocation tag sections.  When CONFIG_MODULES=n, this function is a
-NOP, which is wrong.  This leads to /proc/allocinfo reported as empty. 
-Fix this by making it independent of CONFIG_MODULES.
-
-Link: https://lkml.kernel.org/r/20240828231536.1770519-1-surenb@google.com
-Fixes: 916cc5167cc6 ("lib: code tagging framework")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/codetag.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
---- a/lib/codetag.c~alloc_tag-fix-allocation-tag-reporting-when-config_modules=n
-+++ a/lib/codetag.c
-@@ -125,7 +125,6 @@ static inline size_t range_size(const st
- 			cttype->desc.tag_size;
- }
- 
--#ifdef CONFIG_MODULES
- static void *get_symbol(struct module *mod, const char *prefix, const char *name)
- {
- 	DECLARE_SEQ_BUF(sb, KSYM_NAME_LEN);
-@@ -155,6 +154,15 @@ static struct codetag_range get_section_
- 	};
- }
- 
-+static const char *get_mod_name(__maybe_unused struct module *mod)
-+{
-+#ifdef CONFIG_MODULES
-+	if (mod)
-+		return mod->name;
-+#endif
-+	return "(built-in)";
-+}
-+
- static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
- {
- 	struct codetag_range range;
-@@ -164,8 +172,7 @@ static int codetag_module_init(struct co
- 	range = get_section_range(mod, cttype->desc.section);
- 	if (!range.start || !range.stop) {
- 		pr_warn("Failed to load code tags of type %s from the module %s\n",
--			cttype->desc.section,
--			mod ? mod->name : "(built-in)");
-+			cttype->desc.section, get_mod_name(mod));
- 		return -EINVAL;
- 	}
- 
-@@ -199,6 +206,7 @@ static int codetag_module_init(struct co
- 	return 0;
- }
- 
-+#ifdef CONFIG_MODULES
- void codetag_load_module(struct module *mod)
- {
- 	struct codetag_type *cttype;
-@@ -248,9 +256,6 @@ bool codetag_unload_module(struct module
- 
- 	return unload_ok;
- }
--
--#else /* CONFIG_MODULES */
--static int codetag_module_init(struct codetag_type *cttype, struct module *mod) { return 0; }
- #endif /* CONFIG_MODULES */
- 
- struct codetag_type *
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-
+Cheers,
+-- 
+Dominique
 
