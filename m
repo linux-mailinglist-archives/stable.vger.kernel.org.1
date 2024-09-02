@@ -1,136 +1,87 @@
-Return-Path: <stable+bounces-72676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A687B9680A6
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBB59680C6
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648A2281045
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 07:33:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D638281DFE
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 07:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE961714AC;
-	Mon,  2 Sep 2024 07:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305AA17A93C;
+	Mon,  2 Sep 2024 07:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jm+wZYrN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNN4hcTP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06457EAD0
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 07:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF823C00;
+	Mon,  2 Sep 2024 07:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725262424; cv=none; b=UUpLpQYqVlylriGW0f8+NibQ8F0hkJ9YlKarBMS52pppW0sKlHzuxAA08VOw+RGdx+6mtBLC1TFTpIdHPS+3U74P72j0c9kCWSb8tC5cT50SBP2QVTeOiNHXgUb3Y7/yOGWjTAiDGWFLDflg6s78yUmpVdL03AVY9VSt56kZ+ic=
+	t=1725262682; cv=none; b=KHFtGS5ba7t1y4YGXmJFCkmh9usETKVcG+6LZAePl4TsXlJ/oFJmhvkJw35I3MoYSJwUwSPycmD5rs5q2xUTi6Dg9BcvtdOWRjZhBvHNv4Kv7Ns0UyQ3CGxJi44CLqS8R74RLc0PY/Vfga36Nrgf77p3wTWcPxwrjIFlvY3dojc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725262424; c=relaxed/simple;
-	bh=keakdINUGQQykwIW03n+sUlMVBu4gHUpnFRuqxOzes8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pc6P4k1h02rpWoSJMr6DoEy5V5qpracyt1AWHxjnkPH751RzOV6kVcKGf3Eqa+WuUSvhVYScIGIBlXK76ObM1ypxF0U/LEQ4nxXXMLzYZ6rO+BWfzXpC7ExBNJkrO9HA+8X47N0qFFbqtW8blrAIyHBocAZwOay7Qoby3ivfqYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jm+wZYrN; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so2808471b3a.1
-        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 00:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725262422; x=1725867222; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=K/HbDe/HSz6pkXiW0JkEGHwpwJAfk4nlDzkL2IIO73Y=;
-        b=Jm+wZYrNDyp4ha/GwbJDLllPKL+7RKSeNNjKIG0ICQjbgaDpxjT3hVvjxzmnVps1Tk
-         ar1rlHb4VlEom0S1pPMhX59BuQ9SpqgkME6RWt/g4SNLTk8Ykdj30gAOZb7Sd7sYNT/F
-         kYPKojlaqGDq/kW+jPmpVJN3ubeGJkw9XBz+nOFLG/M325ZXVoCawSJjLOQJf5PQsHY9
-         p9YQoJGrywTn+H/L3Gux1NkUC9QKBU+Ne78dblqUB/PR33RznbDsHP+6ApPIJULbMTzO
-         BOhVVQEB8XITSn1MPLyZmDTWp3hMEFXkPlcuI3RZ4fNsh0iqHvl1SuYut461pAFL+3x0
-         FEXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725262422; x=1725867222;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K/HbDe/HSz6pkXiW0JkEGHwpwJAfk4nlDzkL2IIO73Y=;
-        b=NW6cC7I0HSF+1ffu6HavI2JIE7miS8FzCJoZBudN+hIG8P4QhIPqam/5lEfsGYUv7e
-         lWJyEFh7lRa7Vv0eVztsAHUMJvnXWbUGgIQvtTBro0ffNEqTQMqN3F8+f0i1BM2edaId
-         tAkAOAm/TnGT8peSzA+kjOcE26GMIZ310pEpcCpUPXoiZqCOX+qmpzi3gBRrYGsAsDvv
-         7JQenf50njBzgrz60/X3Zy8MMH0jZn7YPUqR+paQVba+FsvCiORAu/u2CMt7URgW96v4
-         e09GnSE1PneNeZnrVsdZQ5FO9b3I7HkyEyRTsoUmXveCM5lKrNmOgkTWU5PWUCTWvbCw
-         ogSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBFIyDuX/8AgQA9axGaDb2PbIW8oSU1ra0S8ATFZxgCFy8ZiwWSfO8Qogi/XKNy1nvtoxXEU8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6mwZjCj4AK2obnjYBawjr7WfmUh/vy7+jx65OMIcYySCjx2fU
-	CPns0F10thrR1ZXiMNrZYx1PbM3uWUnKBn/VrD1WRTU1+ZwjcbMCbaivCgSTVw==
-X-Google-Smtp-Source: AGHT+IEQZNvphTM9Na+10ZEQH+EVEVCFHgFa3BpTs1lm8QBLXCV8lFWg/7nLZZbMHQm9nljqgMjFIA==
-X-Received: by 2002:a05:6a20:ae86:b0:1cc:e41d:58f0 with SMTP id adf61e73a8af0-1cce41d59b5mr10376233637.13.1725262422332;
-        Mon, 02 Sep 2024 00:33:42 -0700 (PDT)
-Received: from thinkpad ([120.60.58.247])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-205152cd543sm60805665ad.76.2024.09.02.00.33.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 00:33:41 -0700 (PDT)
-Date: Mon, 2 Sep 2024 13:03:36 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, vigneshr@ti.com, kishon@kernel.org,
-	j-keerthy@ti.com, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	u-kumar1@ti.com, srk@ti.com
-Subject: Re: [PATCH 1/2] PCI: dra7xx: Fix threaded IRQ request for
- "dra7xx-pcie-main" IRQ
-Message-ID: <20240902073336.fwyjm27ruvfb7gva@thinkpad>
-References: <20240827122422.985547-1-s-vadapalli@ti.com>
- <20240827122422.985547-2-s-vadapalli@ti.com>
+	s=arc-20240116; t=1725262682; c=relaxed/simple;
+	bh=2fqXB2uqKlFhoNQVceRy621qnr6rZrc7c4Uatrn0b4c=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DKSYzxvF0OwSm7CQHNcyQf2FEPVb7lEaZmggiBvXd7vXL8JnYpI9JyEyX+6oiw8ox1YL8UFSFTvN9PYSjFC4kFP4EbDMQ05IM/1+OjpBXxFtKBiUweHjIJCCLEZmNKNt4lbdfLv/O2947hwOGRV2I/F3FyZkUzYGXOfQJi7tZ+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNN4hcTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C56C4CEC2;
+	Mon,  2 Sep 2024 07:38:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725262681;
+	bh=2fqXB2uqKlFhoNQVceRy621qnr6rZrc7c4Uatrn0b4c=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=mNN4hcTPHFfYhNFjW198YuYBH1Ut8jJDepS0ywqv3EACBlcvk/MnMmQZX77nPlY7j
+	 cxK4AI9FF5xLyiwYRCYSeS/vlADOw7oyvjI0H6PRmtJ0w5efhkwHbBS1ulJz53uFFY
+	 RiAS7/pBxD+6vRWgeH8mFy65OHwnng/jCVMDcw3MIqgIrRaARM8i5PvQPoAowf8F1H
+	 oZ7bm5hm72Jmu+tbKn3Bhz8gMpfLe51KeNq2zmx7mRsS22aH+r9cX0KzzqXYmAMS3o
+	 X7L89R9nVxiGKnWu8KCbFdi/b6V55Zb404BgLldP+1Cj96tZG+50DV63su6UXaiFV0
+	 7O4vvgVvip4Ig==
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Ajay Sharma <sharmaajay@microsoft.com>, 
+ Konstantin Taranov <kotaranov@microsoft.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ longli@linuxonhyperv.com
+Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Long Li <longli@microsoft.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <1725030993-16213-1-git-send-email-longli@linuxonhyperv.com>
+References: <1725030993-16213-1-git-send-email-longli@linuxonhyperv.com>
+Subject: Re: [PATCH rdma-next v2 1/2] RDMA/mana_ib: use the correct page
+ table index based on hardware page size
+Message-Id: <172526267715.400537.4084099228794202996.b4-ty@kernel.org>
+Date: Mon, 02 Sep 2024 10:37:57 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240827122422.985547-2-s-vadapalli@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-On Tue, Aug 27, 2024 at 05:54:21PM +0530, Siddharth Vadapalli wrote:
-> Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
-> "dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
-> devm_request_threaded_irq() for the "dra7xx-pcie-main" interrupt.
-> Since the primary handler was set to NULL, the "IRQF_ONESHOT" flag
-> should have also been set. Fix this.
+
+On Fri, 30 Aug 2024 08:16:32 -0700, longli@linuxonhyperv.com wrote:
+> MANA hardware uses 4k page size. When calculating the page table index,
+> it should use the hardware page size, not the system page size.
 > 
-> Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Udit Kumar <u-kumar1@ti.com>
-> Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-- Mani
-
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index 4fe3b0cb72ec..20fb50741f3d 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -850,7 +850,8 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
->  	dra7xx->mode = mode;
->  
->  	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
-> -			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
-> +					IRQF_SHARED | IRQF_ONESHOT,
-> +					"dra7xx-pcie-main", dra7xx);
->  	if (ret) {
->  		dev_err(dev, "failed to request irq\n");
->  		goto err_gpio;
-> -- 
-> 2.40.1
 > 
 
+Applied, thanks!
+
+[1/2] RDMA/mana_ib: use the correct page table index based on hardware page size
+      https://git.kernel.org/rdma/rdma/c/9e517a8e9d9a30
+[2/2] RDMA/mana_ib: use the correct page size for mapping user-mode doorbell page
+      https://git.kernel.org/rdma/rdma/c/4a3b99bc04e501
+
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Leon Romanovsky <leon@kernel.org>
+
 
