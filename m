@@ -1,204 +1,162 @@
-Return-Path: <stable+bounces-72689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4988796824F
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 10:47:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B4396829B
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 11:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0981C21E17
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 08:47:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAC21B23914
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 09:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB33156C4D;
-	Mon,  2 Sep 2024 08:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC626187550;
+	Mon,  2 Sep 2024 09:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ab2ZaHKr"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="GfezLxj1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637F212C484
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 08:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CF8DF71;
+	Mon,  2 Sep 2024 09:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725266823; cv=none; b=O0Yha+r2VvWD6kR7SewK2N+tCqX1HyMnr3Ohs2IoeshntJT8tTB8ZZLdXR/P48Qq5ixQuy0zbsZRfei3JeKVZc8HpN+TVlfBmaeRY3C9yQqVyhavrB2dW3nf8rl0ItHrddDVLXcA1n+/3Sk4XpP8QHJ36URffRcVcgfXvo8QuMk=
+	t=1725267668; cv=none; b=k4Q7LXZ1UY5X8rti4o9/t5+5XN89ya598MGzuam87DTuucqDaUaBi7hnmIr1lwVg+q6xGwr7lQBRXXPAPprPtMyHzr6gTmihRaMONr05qiv7D+TrjqjdQ/aM1g9QELgFm02RMPtdPtTWanQ4YKYViBYn9mGxkV3xOtEMm08AnyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725266823; c=relaxed/simple;
-	bh=5koipN301NbdmYrqYHB4egArEglH64vZt7s8+esDVR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f3ap1ujr79CQZoUecOFgaBNM/GNlwJaXVbv88wfTIz4AsckX0bGQDFSThpjv+y1qh/iJ2QV5JqF6goEkmeoQ1Blu6AORfNOocjktGXyHEQBCaicvDQd98UQ2DvqVhs92rFy/jGzND3YuviNIVF7zifkuZpge7mc5J39xVoq5BGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ab2ZaHKr; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4fce352bd28so1127891e0c.2
-        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 01:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725266820; x=1725871620; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KsE6U/k1vC2HTRZ1j0u0FBej1GCe3nPlUj861Ab8TNU=;
-        b=ab2ZaHKrnu8OfdA9vst8/za5DA33ej4MAX0YdaHll1+hGtU4brg0nIP8Re6G/IyZJw
-         VTQ/DuXqSy+YAePzjJ2kn4/YJIyJ/D7qb6OfpVQjwULBpCcmrutuvUp3nVCEYRsak32K
-         pIo5F3GoaB9ITl28hrOwP+sE5TMnFGChvZ/EWvBx9vo0IP9D2V8jFcHE+Oc4z8HMN5+t
-         NYT8j2mkrSUg0KmO4KRQaHuu1uHI0lMRmljIBZ5MNrvOzcYGkC1rVg1CpV3x+n9lTp07
-         bJyQkbYMFbQCFWN2VOZCJRAeU5ZKosb+1S6qpv7M4WotBj3hKIA97sf5j0v5f+mvQHZM
-         4HcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725266820; x=1725871620;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KsE6U/k1vC2HTRZ1j0u0FBej1GCe3nPlUj861Ab8TNU=;
-        b=pQNJUf1OiqA1YMDUVAStkO4So7IG+7iYSdtOmaC/axlKcbwqQi13Yt2GL6FOm4nuMm
-         YuM5RxYlAGkGGqDy1EfwxsmAicp8qzGrAmNGlaspj+KjlI522PTjbJcuyCar+2rsYLE5
-         83TJ9QCYiJpVJRzpqhU66U5jLVHRTo2UoRs+JyWQWspul+aA6y6Adh+gydqvx3k7R64c
-         JeWZ76SiQ97FXuUuqKSFimixlnUgvF7LgiTJvYYfhaF1IQlAUja3EAs8+SiHiBf/uqBF
-         Cmp2ic8HWYOrpyNTkEiyCYdw9e2gdD9Onc05EwMfkM3v3A2zBOIEpCS6eA+efvYR5a96
-         FQuQ==
-X-Gm-Message-State: AOJu0Yy3rlm9/tABOaxS95hvMWU2tPqPUJHSJ6RuuUPPw7EI3E8yar77
-	SBe5OoQNAiaJ7xm9wH2T0/s8KHtvSD7BIj1X1V3FQOHW98z2O+oZXeSt2PEGsWmuNoa3T1mC9HF
-	9VJUR5bECVMg0dy0n7TsgTh/cRUvbQpPeC6Rx7A==
-X-Google-Smtp-Source: AGHT+IGvJFgpWZW72qkUe5lgjauVaBz/o+InxFAah8g4mLKkhioQWBVrVTLkZiBIbyncFCcLhz/zHgWGk2gh5yVhBqk=
-X-Received: by 2002:a05:6122:3b06:b0:4f6:ae34:9659 with SMTP id
- 71dfb90a1353d-5009ac36f2amr7433710e0c.5.1725266820224; Mon, 02 Sep 2024
- 01:47:00 -0700 (PDT)
+	s=arc-20240116; t=1725267668; c=relaxed/simple;
+	bh=DeE2ACGbq72KzqysLxPXuHQEe4//m6Oifjw5h6reQeE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NTJCBAG3C4MQoxYPcbB8PcA6Cxl3X2DtLFIo42EOhQPjcoaSLAY2LEHwb9DxNdzb4h1HSxMF/Lcbkynws2s8Eu1Eu9Q6IRqqhcJVkdigASh1zTx7dWFjpyQTZj9j7Pci9QcubYYA7IC7rHmmxFr/L0z7VfjKaYCZUtI4s1p6WWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=GfezLxj1; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: def011d4690911ef8b96093e013ec31c-20240902
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=a8pwBEAn/PiKve4MsqUFcYOogJa73FkNa5F6NZMlHrI=;
+	b=GfezLxj1BLhQFL8Tq+kgY1nedV0f5Xpz0ZUqX2339mCdYdchpswcFZziRRnzBDdC9DVNZdWNQS9680FAzoxcSF27IDQEx1hC/aJ4s1SAtWKFQFe+k+fcKOGMpYAz6bHghgixYTUflGFg+8lQ1vdT7OiTenuKF+D82V4YsZltSV0=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:ecd700e6-745f-42d3-a8a0-a792a504965e,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:38db8dcf-7921-4900-88a1-3aef019a55ce,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: def011d4690911ef8b96093e013ec31c-20240902
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1685570361; Mon, 02 Sep 2024 17:00:58 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 2 Sep 2024 17:00:58 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 2 Sep 2024 17:00:58 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Michael Lo <michael.lo@mediatek.com>,
+	<stable@vger.kernel.org>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: fix a potential association failure upon resuming
+Date: Mon, 2 Sep 2024 17:00:54 +0800
+Message-ID: <20240902090054.15806-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240901160803.673617007@linuxfoundation.org>
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 2 Sep 2024 14:16:48 +0530
-Message-ID: <CA+G9fYvS_NL7bcKkOJEX2irsBHcrYHz_yOOU84T9V9XB7n92RQ@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/98] 4.19.321-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Anders Roxell <anders.roxell@linaro.org>, abdulrasaqolawani@gmail.com, 
-	Helge Deller <deller@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-On Sun, 1 Sept 2024 at 21:50, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 4.19.321 release.
-> There are 98 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.321-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Michael Lo <michael.lo@mediatek.com>
 
-The Powerpc defconfig builds failed on Linux stable-rc due to following
-build warnings / errors with clang-18 and gcc-12.
+In multi-channel scenarios, the granted channel must be aborted before
+suspending. Otherwise, the firmware will be put into a wrong state,
+resulting in an association failure after resuming.
 
-This is a same problem on current stable-rc review on
-   - 4.19.321-rc1 review
-   - 5.4.283-rc1 review
-   - 5.10.225-rc1 review
-   - 5.15.166-rc1 review
+With this patch, the granted channel will be aborted before suspending
+if necessary.
 
-In the case of stable-rc linux-4.19.y
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c  | 15 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c   |  2 ++
+ 3 files changed, 18 insertions(+)
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 8c0768bf9343..7c05aebd3c20 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -439,6 +439,19 @@ static void mt7925_roc_iter(void *priv, u8 *mac,
+ 	mt7925_mcu_abort_roc(phy, &mvif->bss_conf, phy->roc_token_id);
+ }
+ 
++void mt7925_roc_abort_sync(struct mt792x_dev *dev)
++{
++	struct mt792x_phy *phy = &dev->phy;
++
++	del_timer_sync(&phy->roc_timer);
++	cancel_work_sync(&phy->roc_work);
++	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
++		ieee80211_iterate_interfaces(mt76_hw(dev),
++					     IEEE80211_IFACE_ITER_RESUME_ALL,
++					     mt7925_roc_iter, (void *)phy);
++}
++EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
++
+ void mt7925_roc_work(struct work_struct *work)
+ {
+ 	struct mt792x_phy *phy;
+@@ -1109,6 +1122,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_id);
+ 
++	mt7925_roc_abort_sync(dev);
++
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
+ 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 669f3a079d04..c5ea431998e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -307,6 +307,7 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 		       enum mt7925_roc_req type, u8 token_id);
+ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 			 u8 token_id);
++void mt7925_roc_abort_sync(struct mt792x_dev *dev);
+ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 			    int cmd, int *wait_seq);
+ int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index 6e4f4e78c350..39305c39362f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -449,6 +449,8 @@ static int mt7925_pci_suspend(struct device *device)
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
++	mt7925_roc_abort_sync(dev);
++
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+ 		goto restore_suspend;
+-- 
+2.45.2
 
-Anders bisected this to first bad commit id as,
-  fbdev: offb: replace of_node_put with __free(device_node)
-  [ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
-
-build log:
---------
-kernel/profile.c: In function 'profile_dead_cpu':
-kernel/profile.c:346:27: warning: the comparison will always evaluate
-as 'true' for the address of 'prof_cpu_mask' will never be NULL
-[-Waddress]
-  346 |         if (prof_cpu_mask != NULL)
-      |                           ^~
-kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-   49 | static cpumask_var_t prof_cpu_mask;
-      |                      ^~~~~~~~~~~~~
-kernel/profile.c: In function 'profile_online_cpu':
-kernel/profile.c:383:27: warning: the comparison will always evaluate
-as 'true' for the address of 'prof_cpu_mask' will never be NULL
-[-Waddress]
-  383 |         if (prof_cpu_mask != NULL)
-      |                           ^~
-kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-   49 | static cpumask_var_t prof_cpu_mask;
-      |                      ^~~~~~~~~~~~~
-kernel/profile.c: In function 'profile_tick':
-kernel/profile.c:413:47: warning: the comparison will always evaluate
-as 'true' for the address of 'prof_cpu_mask' will never be NULL
-[-Waddress]
-  413 |         if (!user_mode(regs) && prof_cpu_mask != NULL &&
-      |                                               ^~
-kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-   49 | static cpumask_var_t prof_cpu_mask;
-      |                      ^~~~~~~~~~~~~
-fs/xfs/libxfs/xfs_inode_fork.c: In function 'xfs_ifork_verify_attr':
-fs/xfs/libxfs/xfs_inode_fork.c:731:13: warning: the comparison will
-always evaluate as 'true' for the address of 'i_df' will never be NULL
-[-Waddress]
-  731 |         if (!XFS_IFORK_PTR(ip, XFS_ATTR_FORK))
-      |             ^
-In file included from fs/xfs/libxfs/xfs_inode_fork.c:14:
-fs/xfs/xfs_inode.h:38:33: note: 'i_df' declared here
-   38 |         struct xfs_ifork        i_df;           /* data fork */
-      |                                 ^~~~
-drivers/video/fbdev/offb.c: In function 'offb_init_palette_hacks':
-drivers/video/fbdev/offb.c:355:47: error: expected '=', ',', ';',
-'asm' or '__attribute__' before '__free'
-  355 |                 struct device_node *pciparent
-__free(device_node) = of_get_parent(dp);
-      |                                               ^~~~~~
-drivers/video/fbdev/offb.c:355:47: error: implicit declaration of
-function '__free'; did you mean 'kzfree'?
-[-Werror=implicit-function-declaration]
-  355 |                 struct device_node *pciparent
-__free(device_node) = of_get_parent(dp);
-      |                                               ^~~~~~
-      |                                               kzfree
-drivers/video/fbdev/offb.c:355:54: error: 'device_node' undeclared
-(first use in this function)
-  355 |                 struct device_node *pciparent
-__free(device_node) = of_get_parent(dp);
-      |                                                      ^~~~~~~~~~~
-drivers/video/fbdev/offb.c:355:54: note: each undeclared identifier is
-reported only once for each function it appears in
-drivers/video/fbdev/offb.c:356:17: warning: ISO C90 forbids mixed
-declarations and code [-Wdeclaration-after-statement]
-  356 |                 const u32 *vid, *did;
-      |                 ^~~~~
-drivers/video/fbdev/offb.c:357:39: error: 'pciparent' undeclared
-(first use in this function); did you mean 'pci_alert'?
-  357 |                 vid = of_get_property(pciparent, "vendor-id", NULL);
-      |                                       ^~~~~~~~~
-      |                                       pci_alert
-cc1: some warnings being treated as errors
-
-Build Log links,
---------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19.320-99-g0cc44dd838a6/testrun/24994095/suite/build/test/gcc-12-ppc64e_defconfig/log
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
