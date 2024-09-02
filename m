@@ -1,77 +1,112 @@
-Return-Path: <stable+bounces-72719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD71968757
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 14:15:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31DB96879E
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 14:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF886B26E05
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D22C1F22AAA
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B324819E960;
-	Mon,  2 Sep 2024 12:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5970D185929;
+	Mon,  2 Sep 2024 12:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vI5ZCxP"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Ni60zbqu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D2919E96B;
-	Mon,  2 Sep 2024 12:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C258F19E98E
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 12:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725279293; cv=none; b=YpgD2BvvGtUMFpfDuiKtArsFZxYK/hENggNfqyfW7t6zA4L6KRnpwVtHUh9Ak2X7PfGdwWAZ8doLPpQbf+3V8FAJ0q73HU86Um+IBkZSlVGCXxZtwxxjnRZouZoGqDsH/7+QlNgaWTFidd49DfNJFhuGe8m5PXP2dXeFJUipduk=
+	t=1725280631; cv=none; b=VBVke/o0I9Ms23rJNeOp5TAU1imM94vyEfvdkfZW2ZByHe3brdmEzIvI+DGnpmFiGxWF9LtdcUQh1mlJM8Z+PPH+5tqJF4fK5aA6wRdJF7wiba7BiBo2etmh+xA6K+pESzo2NkkAF9ih6VT10esfJKin02LyeiPNa0y60qK7AMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725279293; c=relaxed/simple;
-	bh=n601jGxcwbLz5zKu9HSp5uYcLAZIHKllavn+kEnf+Ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YGSCnbGvsn+P4NvUl8XiFVtj/QBcWfi1oXs34Uh8hBbcjaqA2m6M4I7sD+GSIqbmRc3WfDExS2oh4nnNI/RdNL4b4uJsN/yDhv+6bVYF/56KRk0oitOcoAFFfnG922DF9QjNcP5bdKq7eEarIkqsaESAxVVVtDaiMHXEzZ62gZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vI5ZCxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683BAC4CEC2;
-	Mon,  2 Sep 2024 12:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725279293;
-	bh=n601jGxcwbLz5zKu9HSp5uYcLAZIHKllavn+kEnf+Ro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0vI5ZCxPvJUx2Ek04kWkcq0ibB0vYrvouMQLskDZLCdq7+ai12ozER/Znc5bkWrwb
-	 vHureAhzvx8OjG79jN+NSm5vBTJ2al9PtnK8Azgjnst9QM8Gjw7PxnRM+JBoRjZw+R
-	 KGwLwz33qAxXRj3TeLgPqd6fo9BJ35sgQDp9munA=
-Date: Mon, 2 Sep 2024 14:14:49 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: linux-usb@vger.kernel.org, peter.chen@kernel.org, sashal@kernel.org,
-	stable@vger.kernel.org, hui.pu@gehealthcare.com
-Subject: Re: [GIT PULL] USB chipidea patches for linux-5.15.y and linux-6.1.y
-Message-ID: <2024090208-throat-sponge-79cc@gregkh>
-References: <20240902092711.jwuf4kxbbmqsn7xk@hippo>
+	s=arc-20240116; t=1725280631; c=relaxed/simple;
+	bh=x3VMkYXbuHfdwVH6vUwVtXYde0skuWvWWFtgUjSB8Cc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i59n6e+o/1UwflD0rh8Mus1ljm3OJjY/rNM7QE/Hqx5dLohj2Oovp276o4lZs7oLES8LTESWxS1xbWVW+xyBVaBh26WF2hKDpZB5Ifhc+sieJmTTKIgjFRgqxiJbhCiSaoQvQjI7fWtoGaQqkLP9I3CRgKT6VfwvPPtDpZGOvdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Ni60zbqu; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 0ca0c66e692811ef8593d301e5c8a9c0-20240902
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From; bh=x3VMkYXbuHfdwVH6vUwVtXYde0skuWvWWFtgUjSB8Cc=;
+	b=Ni60zbquNjeJzyr6tE7Dg0CzSt/xLYeWdeZy5OO7mny2IezkSXEq9y2G5zXL7lplCVE5Kl0QSi0YWENOIJMZQXCkUsYxjZVzKJnCmw9DEjXrT7m+yUf3MMc1BLXqGbl54+wQGtmZ2aQJ/dWo0EGSd/DFObWLDZU3fOm8Cc6CtzY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:744325ef-6993-45ad-b0fb-5db337277767,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6dc6a47,CLOUDID:8e6490cf-7921-4900-88a1-3aef019a55ce,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:817|102,TC:nil,Content:0|-5,EDM:-3,I
+	P:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+	,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 1,FCT|NGT
+X-CID-BAS: 1,FCT|NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 0ca0c66e692811ef8593d301e5c8a9c0-20240902
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+	(envelope-from <yenchia.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1699633856; Mon, 02 Sep 2024 20:37:00 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 2 Sep 2024 20:37:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 2 Sep 2024 20:37:00 +0800
+From: Yenchia Chen <yenchia.chen@mediatek.com>
+To: <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.15 0/1] pm, restore async device resume optimization
+Date: Mon, 2 Sep 2024 20:37:00 +0800
+Message-ID: <20240902123700.24554-1-yenchia.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <2024090220-uncaring-pretext-4391@gregkh>
+References: <2024090220-uncaring-pretext-4391@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240902092711.jwuf4kxbbmqsn7xk@hippo>
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--4.983300-8.000000
+X-TMASE-MatchedRID: O/y65JfDwws4HKI/yaqRm3a57ruHAnHxBdebOqawiLu67Q3uPo9KI4KO
+	HgdS51oIebn5rQJdjFELBuUtVo7wD8tFT6VhpbG+dARARTk4h59Rpe71pI4bhVFFa3XGCWSdLIH
+	ZB0nMVDEYzVld32AnFNf8/AhWGke7r78SC5iivxwURSScn+QSXmMVPzx/r2cb+gtHj7OwNO33FL
+	eZXNZS4IzHo47z5Aa+g8Fy5UwPKTgPyr4VOMFylzIMcyDwn4bkwtkm7FZ36V95HLhdLyNQ+eyRR
+	/voKhHnBYaWE5EoPNzlfj12Nivgy2zm9dF7+VpejaRiIIsdo3aF2gNkHzkVPzYxDXt2x44FGooo
+	nKCoGe5WXGvUUmKP2w==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--4.983300-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	7C707A376D33DB621EA7D981FB410A70DA972F50C00D72B92A0BF08176AF0E8F2000:8
 
-On Mon, Sep 02, 2024 at 05:27:11PM +0800, Xu Yang wrote:
-> Hi Greg,
-> 
-> The below two patches are needed on linux-5.15.y and linux-6.1.y, please
-> help to add them to the stable tree. 
-> 
-> b7a62611fab7 usb: chipidea: add USB PHY event
-> 87ed257acb09 usb: phy: mxs: disconnect line when USB charger is attached
-> 
-> They are available in the Git repository at:
->   git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git branch usb-testing
+>> From: "yenchia.chen" <yenchia.chen@mediatek.com>
+>>
+>> We have met a deadlock issue on our device when resuming.
+>> After applying this patch which is picked from mainline, issue solved.
+>> We'd like to backport to 5.15.y and could you help to review? thanks.
+>>
+>> [ Upstream commit 3e999770ac1c7c31a70685dd5b88e89473509e9c ]
 
-Also, wait, this wouldn't work anyway, you are asking me to pull a
-random testing branch into the stable tree?
+> For obvious reasons (and as per the documentation), we can't take
+> commits that are not also in all newer kernel releases, otherwise you
+> would have a regression if you moved to a newer kernel, right?
 
-confused,
+> Please submit a series for all affected releases if you wish for a patch
+> to be applied to the trees.
 
-greg k-h
+> thanks,
+
+> greg k-h
+
+Another mail thread for 6.1.y and 6.6.y are created.
+
 
