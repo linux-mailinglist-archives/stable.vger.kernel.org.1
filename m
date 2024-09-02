@@ -1,256 +1,217 @@
-Return-Path: <stable+bounces-72723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4499687FB
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 14:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258F696883F
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 15:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F8B1F230B6
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 12:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C33AB26949
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 13:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB6719C555;
-	Mon,  2 Sep 2024 12:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7572A19C56C;
+	Mon,  2 Sep 2024 13:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="L/J73pKE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xj1ubEtf"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893B0181B80;
-	Mon,  2 Sep 2024 12:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8632746E
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 13:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725281651; cv=none; b=tN/7Xfp7b8adgo/lVxUhSniiaISYI0PQpK3I96xXJAaF0gwBB81KPRAiskWbNpS1dkqHPZYOnjy6sR9KMLhh4bEb7DMBJK9wt6pDelTZ9K75jQ+vRL/HLVeuZJBAiVBjgVSASvYsoH1YBiZWm3rx9iTm6LksvQKo5qO2CxhpIXA=
+	t=1725282071; cv=none; b=bTxZRBXQjsLj8mj8hk9rEf8TZz5gnW2tDEO3Fok+9Kuypp7bB10kMasNxJqaRjgl/fONBsrkx2g41h8tUZboT2RQjL+c0MpBFVuz1WbghwPTgSqcrTE79kALGJSe6InIIDt4sXv/FYoexZcS/lgh8TWgrWELJ+8s7obyVYTrAQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725281651; c=relaxed/simple;
-	bh=rFQOK6VJteuZXKwiLuPjVYiP9/LxQxEj94oSEVurGjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g7izKGkGJH/E4krGHl/T2L8nH02bmcuvobWuAUMXACtC3dJA/AVVCEgMSUcEvUjT2ThNzRJJZzVAitPB/WUY2euYD1zGHJ2bIrVErMiC/2d1nRHQS6sji2GEZTl4/jU+4srkctAOTjzgvWAWNeYUvB7ySE+Al42LQ43tUFrtR2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=L/J73pKE; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=SSKrWHfr3RQQxlj73LfGosa+rJRjxqlAnWYQ+2sQHwM=;
-	t=1725281649; x=1725713649; b=L/J73pKEMTny+tWvvZ5T4k0PwUtlJ1YkrVHMW/D1p/8H7qY
-	eatahSeZQl8GNUcNOUL4ACRtuIvqv4S8rGWYI5Jodg1yxHGOFSmYhO5+g8NJp5zz+Ts0rbDYJfZOv
-	cuEXN8TNZnbDuw/F44gH2tkn6Z06VvtnvesgM4fVqC+zLP9golVfY3L7NgbnfkKc2k6XPbQMJgtv2
-	syrsdT9rGKkWJq2QTo9snvYUqmZeNIXoNvYOHCtSy1xbQ45oYpGZoNtxEhsyzrPyZhb3l1BHWZ6Z4
-	sPYbEqsbddN3yAP/i1hDmD9u7RG7zDOgCqxPHIXm2hOSnP6s2ttXdo88PiIzKNPQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sl6ZA-0000Ot-MO; Mon, 02 Sep 2024 14:53:56 +0200
-Message-ID: <56651be8-1466-475f-b1c5-4087995cc5ae@leemhuis.info>
-Date: Mon, 2 Sep 2024 14:53:55 +0200
+	s=arc-20240116; t=1725282071; c=relaxed/simple;
+	bh=BoNVOtDr+VrUOkBVF3JBkCILloNfEoHqSjUAIRQBmzY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KSXEE40gmIFjxF3Gkib3EJ7DM03VGHAfQUZ0r4fEIc/6dw9w62888sXdavoE5JLhC8IWqdgbz0om0oa2+7x1eWJHiKCWSlkFB/1bT0SHakbqWLu2V02pyl6od2zFXlcqDgaz0+641E87xW8m9q3HPWLLlkVq7pgEY8JIwnhKEKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xj1ubEtf; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2059204f448so3521515ad.0
+        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 06:01:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725282069; x=1725886869; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BoNVOtDr+VrUOkBVF3JBkCILloNfEoHqSjUAIRQBmzY=;
+        b=Xj1ubEtfq5oFklFDr6Jt7KkuDMPQ98cRsjlNK7bZdyrr2+NVAM502tdtsJ2o9xHvx0
+         GEMk26WO0QfKur8s/zNJQftd+qbzAnoFjyx44EC0XuUhKoF6YDBpjPJ8uK/1uIsyixPf
+         IVApvYOZcak5iWpZGh8G42aGhhRRSqxP35KdQuBrnyiNUgfrHjRNpxm6BsFcZmiEMS4X
+         UsD8m2ZuzUvD6Ju71YdUicloZmt3fYhYKVdad4qo2HdNvDNSDEIGct/I9MO2J1wNAD/B
+         I9JMIxomXEzkpIt1/AijL/LqY2NmCR+nwkqqCHyq+v6WWqaXxQvd6ebWqCUPsU9ZDRwi
+         Rr3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725282069; x=1725886869;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BoNVOtDr+VrUOkBVF3JBkCILloNfEoHqSjUAIRQBmzY=;
+        b=KNnf9pqBsYnCmSht3NbSyqiiapiP4ESDNNIGqeAToTTAsh1ntKPCM6EEz1frvMfnfN
+         HtkWxpY7BlaGZD4A87yPxmFS577mM+kjuDj1KjqWV0KOW/SWDHhPOVhhi+kgHN5Pr6xt
+         3Q7r2q8STICc4AynjpgaIhiIsqZTipgSPERITctz5o+n8R31kdXUCM8WVoQK3cx+q3wi
+         rHLAeMQnwAaXmj6RMBeV8mveS6MaagbvDGKxoM9qLDmG1jvJSulz9OuZDQgMBG01ZKup
+         ei7pawP0v+MQrleblQOF7a+q6JaRs1VkxjGyPLGnp86NNvcohxeHmXi1wnaZV7SCuCiJ
+         CoWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrapVHf6elGtN8+Ch20P907c2qF0r49zmobDL5JUiVeuu8QSm9hwMdJ/0eeBTG6QUvbKEWF7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMvCZZ5+HpaI2YHrhXHaQ8aZkE9ck6Lr8kHMtaxwK//ULYXBtE
+	4A8G0lfqbG2R1P/unPvB4ZZIs7ZgKJLoDAc80S0FW0VQ/TBPMWI9
+X-Google-Smtp-Source: AGHT+IEYlOZ1tNxKqmlqm0I3UXHQMbJrtLOYA/TfiVNX348opQCdQS5u0PCaJyMkkMz88hu7oq1BrQ==
+X-Received: by 2002:a17:902:f549:b0:205:76f3:fc2c with SMTP id d9443c01a7336-20576f3ff48mr27866685ad.16.1725282066601;
+        Mon, 02 Sep 2024 06:01:06 -0700 (PDT)
+Received: from [127.0.0.1] ([103.85.75.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20515537890sm65785455ad.180.2024.09.02.06.01.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 06:01:05 -0700 (PDT)
+Message-ID: <8edbc0b87074fb9adcccb8b67032dc3a693c9bfa.camel@gmail.com>
+Subject: Re: [PATCH v2] f2fs: Do not check the FI_DIRTY_INODE flag when
+ umounting a ro fs.
+From: Julian Sun <sunjunchao2870@gmail.com>
+To: Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+Cc: jaegeuk@kernel.org,
+ syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org
+Date: Mon, 02 Sep 2024 21:01:02 +0800
+In-Reply-To: <0f1e5069-7ff0-4d5f-8a3a-3806c8d21487@kernel.org>
+References: <20240828165425.324845-1-sunjunchao2870@gmail.com>
+	 <0f1e5069-7ff0-4d5f-8a3a-3806c8d21487@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: Chris Li <chrisl@kernel.org>, Kairui Song <ryncsn@gmail.com>
-Cc: Ge Yang <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
- Barry Song <21cnbao@gmail.com>, David Hildenbrand <david@redhat.com>,
- baolin.wang@linux.alibaba.com, liuzixing@hygon.cn,
- Hugh Dickins <hughd@google.com>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
- <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
- <0f9f7a2e-23c3-43fe-b5c1-dab3a7b31c2d@126.com>
- <CACePvbXU8K4wxECroEPr5T3iAsG6cCDLa12WmrvEBMskcNmOuQ@mail.gmail.com>
- <b5f5b215-fdf2-4287-96a9-230a87662194@126.com>
- <CACePvbV4L-gRN9UKKuUnksfVJjOTq_5Sti2-e=pb_w51kucLKQ@mail.gmail.com>
- <00a27e2b-0fc2-4980-bc4e-b383f15d3ad9@126.com>
- <CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com>
- <CAMgjq7CLObfnEcPgrPSHtRw0RtTXLjiS=wjGnOT+xv1BhdCRHg@mail.gmail.com>
- <CAMgjq7DLGczt=_yWNe-CY=U8rW+RBrx+9VVi4AJU3HYr-BdLnQ@mail.gmail.com>
- <CACePvbXJKskfo-bd5jr2GfagaFDoYz__dbQTKmq2=rqOpJzqYQ@mail.gmail.com>
- <CACePvbWTALuB7-jH5ZxCDAy_Dxeh70Y4=eYE5Mixr2qW+Z9sVA@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CACePvbWTALuB7-jH5ZxCDAy_Dxeh70Y4=eYE5Mixr2qW+Z9sVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1725281649;ebc597c7;
-X-HE-SMSGID: 1sl6ZA-0000Ot-MO
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
+On Mon, 2024-09-02 at 16:13 +0800, Chao Yu wrote:
+> > On 2024/8/29 0:54, Julian Sun wrote:
+> > > > Hi, all.
+> > > >=20
+> > > > Recently syzbot reported a bug as following:
+> > > >=20
+> > > > kernel BUG at fs/f2fs/inode.c:896!
+> > > > CPU: 1 UID: 0 PID: 5217 Comm: syz-executor605 Not tainted
+> > > > 6.11.0-rc4-syzkaller-00033-g872cf28b8df9 #0
+> > > > RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
+> > > > Call Trace:
+> > > > =C2=A0 <TASK>
+> > > > =C2=A0 evict+0x532/0x950 fs/inode.c:704
+> > > > =C2=A0 dispose_list fs/inode.c:747 [inline]
+> > > > =C2=A0 evict_inodes+0x5f9/0x690 fs/inode.c:797
+> > > > =C2=A0 generic_shutdown_super+0x9d/0x2d0 fs/super.c:627
+> > > > =C2=A0 kill_block_super+0x44/0x90 fs/super.c:1696
+> > > > =C2=A0 kill_f2fs_super+0x344/0x690 fs/f2fs/super.c:4898
+> > > > =C2=A0 deactivate_locked_super+0xc4/0x130 fs/super.c:473
+> > > > =C2=A0 cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1373
+> > > > =C2=A0 task_work_run+0x24f/0x310 kernel/task_work.c:228
+> > > > =C2=A0 ptrace_notify+0x2d2/0x380 kernel/signal.c:2402
+> > > > =C2=A0 ptrace_report_syscall include/linux/ptrace.h:415 [inline]
+> > > > =C2=A0 ptrace_report_syscall_exit include/linux/ptrace.h:477
+> > > > [inline]
+> > > > =C2=A0 syscall_exit_work+0xc6/0x190 kernel/entry/common.c:173
+> > > > =C2=A0 syscall_exit_to_user_mode_prepare kernel/entry/common.c:200
+> > > > [inline]
+> > > > =C2=A0 __syscall_exit_to_user_mode_work kernel/entry/common.c:205
+> > > > [inline]
+> > > > =C2=A0 syscall_exit_to_user_mode+0x279/0x370
+> > > > kernel/entry/common.c:218
+> > > > =C2=A0 do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
+> > > > =C2=A0 entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > > >=20
+> > > > The syzbot constructed the following scenario: concurrently
+> > > > creating directories and setting the file system to read-only.
+> > > > In this case, while f2fs was making dir, the filesystem
+> > > > switched to
+> > > > readonly, and when it tried to clear the dirty flag, it
+> > > > triggered
+> > > > this
+> > > > code path: f2fs_mkdir()-> f2fs_sync_fs()-
+> > > > >f2fs_write_checkpoint()
+> > > > ->f2fs_readonly(). This resulted FI_DIRTY_INODE flag not being
+> > > > cleared,
+> > > > which eventually led to a bug being triggered during the
+> > > > FI_DIRTY_INODE
+> > > > check in f2fs_evict_inode().
+> > > >=20
+> > > > In this case, we cannot do anything further, so if filesystem
+> > > > is
+> > > > readonly,
+> > > > do not trigger the BUG. Instead, clean up resources to the best
+> > > > of
+> > > > our
+> > > > ability to prevent triggering subsequent resource leak checks.
+> > > >=20
+> > > > If there is anything important I'm missing, please let me know,
+> > > > thanks.
+> > > >=20
+> > > > Reported-by:
+> > > > syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com
+> > > > Closes:=20
+> > > > https://syzkaller.appspot.com/bug?extid=3Debea2790904673d7c618
+> > > > Fixes: ca7d802a7d8e ("f2fs: detect dirty inode in evict_inode")
+> > > > CC: stable@vger.kernel.org
+> > > > Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+> > > > ---
+> > > > =C2=A0 fs/f2fs/inode.c | 3 ++-
+> > > > =C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+> > > > index aef57172014f..ebf825dba0a5 100644
+> > > > --- a/fs/f2fs/inode.c
+> > > > +++ b/fs/f2fs/inode.c
+> > > > @@ -892,7 +892,8 @@ void f2fs_evict_inode(struct inode *inode)
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0atomic_read(&fi->i_compr_blocks));
+> > > > =C2=A0=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (likely(!f2fs_cp=
+_error(sbi) &&
+> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0!is_sbi_flag_set(sbi,
+> > > > SBI_CP_DISABLED)))
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0!is_sbi_flag_set(sbi,
+> > > > SBI_CP_DISABLED)) &&
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0!f2fs_readonly(sbi->sb))
+> >=20
+> > Is it fine to drop this dirty inode? Since once it remounts f2fs as
+> > rw one,
+> > previous updates on such inode may be lost? Or am I missing
+> > something?
 
-Chris et. al., was that fix from Yu ever submitted? From here it looks
-like fixing this regression fell through the cracks; but at the same
-time I have this strange feeling that I'm missing something obvious here
-and will look stupid by writing this mail... If that's the case: sorry
-for the noise.
+The purpose of calling this here is mainly to avoid triggering the
+f2fs_bug_on(sbi, 1); statement in the subsequent f2fs_put_super() due
+to a reference count check failure.=C2=A0
+I would say it's possible, but there doesn't seem to be much more we
+can do in this scenario: the inode is about to be freed, and the file
+system is read-only. Or do we need a mechanism to save the inode that
+is about to be freed and then write it back to disk at the appropriate
+time after the file system becomes rw again? But such a mechanism
+sounds somewhat complex and a little bit of weird... Do you have any
+suggestions?
+> >=20
+> > Thanks,
+> >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0f2fs_bug_on(sbi, is_inode_flag_set(inode,
+> > > > FI_DIRTY_INODE));
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0else
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0f2fs_inode_synced(inode);
+> >=20
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 
-On 04.08.24 21:11, Chris Li wrote:
-> On Sun, Aug 4, 2024 at 10:51 AM Chris Li <chrisl@kernel.org> wrote:
->> On Sun, Aug 4, 2024 at 5:22 AM Kairui Song <ryncsn@gmail.com> wrote:
->
->>>> Hi Yu, I tested your patch, on my system, the OOM still exists (96
->>>> core and 256G RAM), test memcg is limited to 512M and 32 thread ().
->>>>
->>>> And I found the OOM seems irrelevant to either your patch or Ge's
->>>> patch. (it may changed the OOM chance slight though)
->>>>
->>>> After the very quick OOM (it failed to untar the linux source code),
->>>> checking lru_gen_full:
->>>> memcg    47 /build-kernel-tmpfs
->>>>  node     0
->>>>         442       1691      29405           0
->>>>                      0          0r          0e          0p         57r
->>>>        617e          0p
->>>>                      1          0r          0e          0p          0r
->>>>          4e          0p
->>>>                      2          0r          0e          0p          0r
->>>>          0e          0p
->>>>                      3          0r          0e          0p          0r
->>>>          0e          0p
->>>>                                 0           0           0           0
->>>>          0           0
->>>>         443       1683      57748         832
->>>>                      0          0           0           0           0
->>>>          0           0
->>>>                      1          0           0           0           0
->>>>          0           0
->>>>                      2          0           0           0           0
->>>>          0           0
->>>>                      3          0           0           0           0
->>>>          0           0
->>>>                                 0           0           0           0
->>>>          0           0
->>>>         444       1670      30207         133
->>>>                      0          0           0           0           0
->>>>          0           0
->>>>                      1          0           0           0           0
->>>>          0           0
->>>>                      2          0           0           0           0
->>>>          0           0
->>>>                      3          0           0           0           0
->>>>          0           0
->>>>                                 0           0           0           0
->>>>          0           0
->>>>         445       1662          0           0
->>>>                      0          0R         34T          0          57R
->>>>        238T          0
->>>>                      1          0R          0T          0           0R
->>>>          0T          0
->>>>                      2          0R          0T          0           0R
->>>>          0T          0
->>>>                      3          0R          0T          0           0R
->>>>         81T          0
->>>>                             13807L        324O        867Y       2538N
->>>>         63F         18A
->>>>
->>>> If I repeat the test many times, it may succeed by chance, but the
->>>> untar process is very slow and generates about 7000 generations.
->>>>
->>>> But if I change the untar cmdline to:
->>>> python -c "import sys; sys.stdout.buffer.write(open('$linux_src',
->>>> mode='rb').read())" | tar zx
->>>>
->>>> Then the problem is gone, it can untar the file successfully and very fast.
->>>>
->>>> This might be a different issue reported by Chris, I'm not sure.
->>>
->>> After more testing, I think these are two problems (note I changed the
->>> memcg limit to 600m later so the compile test can run smoothly).
->>>
->>> 1. OOM during the untar progress (can be workarounded by the untar
->>> cmdline I mentioned above).
->>
->> There are two different issues here.
->> My recent test script has moved the untar phase out of memcg limit
->> (mostly I want to multithreading untar) so the bisect I did is only
->> catch the second one.
->> The untar issue might not be a regression from this patch.
->>
->>> 2. OOM during the compile progress (this should be the one Chris encountered).
->>>
->>> Both 1 and 2 only exist for MGLRU.
->>> 1 can be workarounded using the cmdline I mentioned above.
->>> 2 is caused by Ge's patch, and 1 is not.
->>>
->>> I can confirm Yu's patch fixed 2 on my system, but the 1 seems still a
->>> problem, it's not related to this patch, maybe can be discussed
->>> elsewhere.
->>
->> I will do a test run now with Yu's patch and report back.
-> 
-> Confirm Yu's patch fixes the regression for me. Now it can sustain
-> 470M pressure without causing OOM kill.
-> 
-> Yu, please submit your patch.  This regression has merged into Linus'
-> tree already.
-> 
-> Feel free to add:
-> 
-> Tested-by: Chris Li <chrisl@kernel.org>
-> 
-> Chris
-> 
-
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-#regzbot poke
+Thanks,
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
