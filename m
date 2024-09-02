@@ -1,95 +1,89 @@
-Return-Path: <stable+bounces-72629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CA0967C55
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 23:32:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B43967D1C
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 02:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3691F215C8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 21:32:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9432D1C20DD6
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 00:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A2A18594D;
-	Sun,  1 Sep 2024 21:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7358BEE;
+	Mon,  2 Sep 2024 00:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l90DbWeJ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="IiMxtUUI"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE2118308A;
-	Sun,  1 Sep 2024 21:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283EB4A29;
+	Mon,  2 Sep 2024 00:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725226323; cv=none; b=YlgvaqdrBUqV3Y2evVgiVpDomlTXeoZ/N/yzCpGJm5cy5WZ6n36BnvNyhBS8g+29v7rYTzcdZQBWpZFUNhR0QraNVK2KVb62YWyuHjWonQzqhfgkkNJhrsbWfw/Ez8rJOCOeYQz0Wk5S/4aMn0i1hLBRs4IWN6gvn0tXwixqI9E=
+	t=1725238641; cv=none; b=oHvd3ife8h67wF3graksmpb72qCz26gVErPKNmbhFxl9Pq404Aj/n75Uu1zY9YakYBSNtjFvCftyPpDxi/K5tsrGrrWEaf60ktoMfhXw0l7i7RmasbYQg3JWhogixp50t5P0WseMdj25svrBn/y9K98l5l2boZYarRPHufi+kAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725226323; c=relaxed/simple;
-	bh=hAKxii2AHA4r0SKAFo3pvPOxzOVgeBfKCGIQJSUYPXU=;
+	s=arc-20240116; t=1725238641; c=relaxed/simple;
+	bh=MaPmVxulV2klEvBUto/0dUhphxIMQveDnJvQ339rxus=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SDuSarLX2xeu0jfLOo5xXljI3Gc7U3UJ4q3CvtaNxm9DXAc+r6Br+a6VRxnQb8i5ppCLBCzdI8GhHeJtz04bGJk6MCcB0uptBc7gN1i1VMcKj/bAEFIMxMO4z91XhTCg719oaoPDWn2ia2nAsIgyZU7t/3aHYIypcKMtrWS6GH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l90DbWeJ; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 452F114C1E1;
-	Sun,  1 Sep 2024 23:31:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1725226312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IjF8kFSC1OaoOTtQg6ZwHQDUnXTJvG+nyTqgCngUekA=;
-	b=l90DbWeJ0eSih6v7OKDYJeda3OTeGVgfxuPJZRrmAa2xtWUjyjAH4eceGrjcJNg+V/Qubh
-	O6Uuskt4Je8JiudgTu1SAdW97eUZzPoPFpBBITz+mLgvCLUq76aN30n3ANOF5i2b0babl2
-	wXtdylEN2mxJhNut5rxX4+pJS5LWIZMj6KfVYei0Erc7zpebX9LSDVk7ElQaEHdB5hcID6
-	FzEBwdJGLVqkBtRiz6f/J1SDYirCOz9lhfMO6fCNPxY2mmrr0lNKPoMcMsebqPBnN4jrSU
-	K/TdWmcXG4oXJ+I69it8kbF3Mjg1KErbmw3vgEucOnszsmUFh3wsPpdeetR1gA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f91a7026;
-	Sun, 1 Sep 2024 21:31:45 +0000 (UTC)
-Date: Mon, 2 Sep 2024 06:31:30 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/151] 5.10.225-rc1 review
-Message-ID: <ZtTdMijfnu0mqanS@codewreck.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=T3nL4qQfec6jpIMI9NhjsT+17d9LMe25y1xFqvkpcs2lEHjGDNUVdNOaK+6emK2H8QlFqxQ51T9Cw+IxOlCC32LGa0DnOxFsRz/1b4LBFY4HD9r5iEdrL3ELlov/Pl8OrxbA6A88lt09xSoct/pYqxoP/br4cCR/0Q6YTlkZEBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=IiMxtUUI; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=XGVn9bbamNrnXSoS6civZQ68s+RVUPDpsuvPeT4kxqY=;
+	b=IiMxtUUI8nB/BA2sbwuzz+X9VTvc8ZV4bGhIRBbphXsAns2dqUx8bbULnKPWBt
+	nQGHv+WmFAyAPKcoulVrUjtEZvBC2OTSxyLuyyXGZoqLl6TvoqcZm5CrgvgKUBVs
+	WgIVdBFAEz4utKTVxBL1eFLd+A0d3ivpzgMicpkAe1Svc=
+Received: from dragon (unknown [114.216.210.89])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3t0MZDdVm0ZxMAA--.30459S3;
+	Mon, 02 Sep 2024 08:55:55 +0800 (CST)
+Date: Mon, 2 Sep 2024 08:55:53 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] ARM: dts: imx6ul-geam: fix fsl,pins property in
+ tscgrp pinctrl
+Message-ID: <ZtUNGdH3U4HbN2ok@dragon>
+References: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+X-CM-TRANSID:Ms8vCgD3t0MZDdVm0ZxMAA--.30459S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW5Kr45WFy8Jw1fJFy7Wr1fXrb_yoWxXwb_CF
+	y8Ja4xXwnrWr92qw1xKFs2vr929a18AryUWrW0vFsIgryak3yUZ3yfJry5Kr90qr45uFyD
+	J348WF1DWrZ7GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0eyIUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiER5OZWbU5TRObAAAsl
 
-Greg Kroah-Hartman wrote on Sun, Sep 01, 2024 at 06:16:00PM +0200:
-> This is the start of the stable review cycle for the 5.10.225 release.
-> There are 151 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, Aug 31, 2024 at 12:11:28PM +0200, Krzysztof Kozlowski wrote:
+> The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+> configuration was not applied.  Fixes dtbs_check warnings:
 > 
-> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> Anything received after that time might be too late.
+>   imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+>   imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.225-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> Cc: <stable@vger.kernel.org>
+> Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Tested ee485d4aa099 ("Linux 5.10.225-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+Applied both, thanks!
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
--- 
-Dominique Martinet
 
