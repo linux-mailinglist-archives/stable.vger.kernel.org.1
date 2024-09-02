@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-72659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31ACA967E44
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 05:46:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9088D967E48
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 05:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4A4BB219AF
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:46:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5E31F2211C
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 03:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBDF149C50;
-	Mon,  2 Sep 2024 03:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170AC14F105;
+	Mon,  2 Sep 2024 03:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="znYDQo28"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2pu3HgeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB398149003;
-	Mon,  2 Sep 2024 03:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C800A14E2F5;
+	Mon,  2 Sep 2024 03:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725248784; cv=none; b=kOcKuBtJPUouolmFAC5mqk0Nn1N6a6NExLiiq/B4jJx6JxOkFSb1YkiAPShfR2Mr514OMi6FuocMr+ydpNQWFrjwqHmXGALD1sWUwbwoReFziAJ4nrEWHsoA6qJ1cO/hBC8OYUB/lEaCboMX0HCgVZkydWURVVQQm5xhzPEzuCI=
+	t=1725248785; cv=none; b=OA4xwx5oM75CyfB1nTCxZzFdHEy8kUqCpFLg/6ecRh6VP7J7F6p89fnclQpuh1ufxJCFa9kDJ568uHqvB9AOijEFhIPO60eYXl18jdR6dv0Jc8z2EZU61P+3T8YoExSreTZfo3rRpQjEAa5KqpqroxXU2CNjYU9Kv+lM91TyHE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725248784; c=relaxed/simple;
-	bh=yM4ZQvzz2lwWgRAe1/vcVKz91hXkWwyTxPqyojz2JNY=;
-	h=Date:To:From:Subject:Message-Id; b=YH/Cm3zTiFnNNG4LIrh3B0+k1eXIOUUjtEMvIRuhS0n31kgtF2oUZKWOKbrgcWPI+iVA+3Kv7fuDV06FMz62KGdJt6+Z1FL4pwBCRmKu1y4MJoLzb07dlDMkLUz2RwVo0lM5KY0M/S14uCI+fLHmbjSJdujKWZg3/R5ojpcEo8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=znYDQo28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800FAC4CEC7;
-	Mon,  2 Sep 2024 03:46:24 +0000 (UTC)
+	s=arc-20240116; t=1725248785; c=relaxed/simple;
+	bh=CgtmVjpY3nwg+EqiNbEYNE1YaLeowC0MurHxaKFTOOk=;
+	h=Date:To:From:Subject:Message-Id; b=b0yn0gZ/ayDXz+gJyqMvnW7AMeb7OA9I7QENFCfeC/qZKCIkwS/r8is12xHYQYQat8HpiPDoRMoY40lLa2e0qLUQOAKD2Wb5FY6r/USvwc3klS5CCHOv0Q3cLS3tZem+gBMla7v54cpHUK+WEDQ+xfflBIGsZGX66K6cLo603EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2pu3HgeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97188C4CED0;
+	Mon,  2 Sep 2024 03:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725248784;
-	bh=yM4ZQvzz2lwWgRAe1/vcVKz91hXkWwyTxPqyojz2JNY=;
+	s=korg; t=1725248785;
+	bh=CgtmVjpY3nwg+EqiNbEYNE1YaLeowC0MurHxaKFTOOk=;
 	h=Date:To:From:Subject:From;
-	b=znYDQo28ZF3tOMjXlSpK+VA93OTxnF7qe3c9AvKr0AzJuXTIXfgGmoAYLWKCzAt9d
-	 kQuLCFzN5wVKZomH8DDPImv8cvpp9m+OiFVeGm42SR0Y1v1ZnBTejvPdkJOvkwzyYo
-	 Ssf3mF3WDlaSYyAV+eYfY4PW6EsYy9vZNwFgCOjA=
-Date: Sun, 01 Sep 2024 20:46:24 -0700
+	b=2pu3HgeB1AKyN9NGUFRdAfGf+CD9kfrZ9pRNBbrOoXyOYTdLLGJ/OFZzLQyRjOGn2
+	 hoZ9sZEbXQfEhP0jUJk7QoLL39X5vDLqr1M27G0WR1BMgWr6LbNEce/lxogkVcQ08Y
+	 +9jRCkdmRV8EH3Ht5QAAxSXVMHrL2oxs1ilTOoz8=
+Date: Sun, 01 Sep 2024 20:46:25 -0700
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,jan.kiszka@siemens.com,kuan-ying.lee@canonical.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] scripts-gdb-add-iteration-function-for-rbtree.patch removed from -mm tree
-Message-Id: <20240902034624.800FAC4CEC7@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] scripts-gdb-fix-lx-mounts-command-error.patch removed from -mm tree
+Message-Id: <20240902034625.97188C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,24 +50,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: scripts/gdb: add iteration function for rbtree
+     Subject: scripts/gdb: fix lx-mounts command error
 has been removed from the -mm tree.  Its filename was
-     scripts-gdb-add-iteration-function-for-rbtree.patch
+     scripts-gdb-fix-lx-mounts-command-error.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
-Subject: scripts/gdb: add iteration function for rbtree
-Date: Tue, 23 Jul 2024 14:48:58 +0800
+Subject: scripts/gdb: fix lx-mounts command error
+Date: Tue, 23 Jul 2024 14:48:59 +0800
 
-Add inorder iteration function for rbtree usage.
+(gdb) lx-mounts
+      mount          super_block     devname pathname fstype options
+Python Exception <class 'gdb.error'>: There is no member named list.
+Error occurred in Python: There is no member named list.
 
-This is a preparation patch for the next patch to fix the gdb mounts
-issue.
+We encounter the above issue after commit 2eea9ce4310d ("mounts: keep
+list of mounts in an rbtree"). The commit move a mount from list into
+rbtree.
 
-Link: https://lkml.kernel.org/r/20240723064902.124154-3-kuan-ying.lee@canonical.com
+So we can instead use rbtree to iterate all mounts information.
+
+Link: https://lkml.kernel.org/r/20240723064902.124154-4-kuan-ying.lee@canonical.com
 Fixes: 2eea9ce4310d ("mounts: keep list of mounts in an rbtree")
 Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
 Cc: Jan Kiszka <jan.kiszka@siemens.com>
@@ -76,30 +82,29 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/gdb/linux/rbtree.py |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ scripts/gdb/linux/proc.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/gdb/linux/rbtree.py~scripts-gdb-add-iteration-function-for-rbtree
-+++ a/scripts/gdb/linux/rbtree.py
-@@ -9,6 +9,18 @@ from linux import utils
- rb_root_type = utils.CachedType("struct rb_root")
- rb_node_type = utils.CachedType("struct rb_node")
+--- a/scripts/gdb/linux/proc.py~scripts-gdb-fix-lx-mounts-command-error
++++ a/scripts/gdb/linux/proc.py
+@@ -18,6 +18,7 @@ from linux import utils
+ from linux import tasks
+ from linux import lists
+ from linux import vfs
++from linux import rbtree
+ from struct import *
  
-+def rb_inorder_for_each(root):
-+    def inorder(node):
-+        if node:
-+            yield from inorder(node['rb_left'])
-+            yield node
-+            yield from inorder(node['rb_right'])
-+
-+    yield from inorder(root['rb_node'])
-+
-+def rb_inorder_for_each_entry(root, gdbtype, member):
-+    for node in rb_inorder_for_each(root):
-+        yield utils.container_of(node, gdbtype, member)
  
- def rb_first(root):
-     if root.type == rb_root_type.get_type():
+@@ -172,8 +173,7 @@ values of that process namespace"""
+         gdb.write("{:^18} {:^15} {:>9} {} {} options\n".format(
+                   "mount", "super_block", "devname", "pathname", "fstype"))
+ 
+-        for mnt in lists.list_for_each_entry(namespace['list'],
+-                                             mount_ptr_type, "mnt_list"):
++        for mnt in rbtree.rb_inorder_for_each_entry(namespace['mounts'], mount_ptr_type, "mnt_node"):
+             devname = mnt['mnt_devname'].string()
+             devname = devname if devname else "none"
+ 
 _
 
 Patches currently in -mm which might be from kuan-ying.lee@canonical.com are
