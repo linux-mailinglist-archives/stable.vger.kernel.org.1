@@ -1,185 +1,233 @@
-Return-Path: <stable+bounces-72732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DD7968AED
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 17:26:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B174968B28
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 17:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C52B0283BA0
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 15:26:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FB6A1C223D0
+	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 15:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99671A3054;
-	Mon,  2 Sep 2024 15:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0382D19F116;
+	Mon,  2 Sep 2024 15:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQWDqHxu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PpdVfrQR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774561A2658;
-	Mon,  2 Sep 2024 15:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C0B19C563
+	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 15:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725290759; cv=none; b=PQnFFPz1Ojc9j2M9IaLFKNDv6dl+AHqtZ6U3ay0dArav5ns+bJLkfokdmqqCdZlbhgOq/0g4WPuihaHTLlFv2fwSMEN256G2Krm0fP+s4g8VLcoTykh37PFxLPopHk5D31V7EVIb3IEc9PDVRX2g4PJS3xLP7+/GxUEgb0gUBWM=
+	t=1725291518; cv=none; b=VoovW1YolVMelya8GSfMH90yws4p/8ws02135tvLQv46Bc+O1sOT6WwInC2zQXoR0b+0RJjMfdjmEzqVsVRVhNIJIYeS5bAmxhyNXiVl5sr2NmOZOlfheJTZWO256M0phtBkadkWOJxSbHdIeEKYz8kKqTDBVoTjSBcwogk/fL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725290759; c=relaxed/simple;
-	bh=V5hACLzeVR15kWP871kA/q+aCfEhF0lIeJeWRbN4eF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxa5SnnA9ubWELY2LoBcLz67Z7iGrHstFIVsji9avnL0svJVLqL/1hp2pvu0R8WYAcZbQ7SeiUSVP81bQXQ1OVhsWHMSo5BL/OjEzLeoNMc3cWGzVGKPimR1oVw+A3YJI9HiY5VIMwTDN/UNlkKz8qvp6w46ZEOphN4Uz2Dz8eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQWDqHxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B43C4AF14;
-	Mon,  2 Sep 2024 15:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725290759;
-	bh=V5hACLzeVR15kWP871kA/q+aCfEhF0lIeJeWRbN4eF4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQWDqHxugk34rZI2XEcCsQ7W4d1dHbbiY5FbmIyyIqXI7zkNVpk37Jh3dp6MNSW44
-	 gJqNls0b/Cv8C7CUZD7uZ+tv8eUIAdBCbPICRln4T8gqJPE8eIVCUPJCaFogcC0LGg
-	 Cgk+RpbQsi1js1Ji2JKnelQzVZvuHIyzS0FXUPb1Vz9Awnzc17rtGfhePLlQqJXPOn
-	 nDYN5qlDuj1xDJkG9HZ3nFfMU5o/PpFKRuvyU4dGSUPKIhAz1XSRzgLvfMjnI57NHq
-	 JrlfjEGPrOpiu5bH7OLg0AD8c78KRKvCAIDBeHGSDSRmmvl+VGHtdz8xq6ewNCPJni
-	 ITOTwwQm+jbcw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1sl8wX-000000000Fw-3rFq;
-	Mon, 02 Sep 2024 17:26:13 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	=?UTF-8?q?=27N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado=27?= <nfraprado@collabora.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 8/8] serial: qcom-geni: fix polled console corruption
-Date: Mon,  2 Sep 2024 17:24:51 +0200
-Message-ID: <20240902152451.862-9-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240902152451.862-1-johan+linaro@kernel.org>
-References: <20240902152451.862-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1725291518; c=relaxed/simple;
+	bh=+nfLd6UxJsEWwMxHZZj/0lyToCpTA44CP5Z+n9QIWTo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DT8rVJSLtKyB2AcPVG/UiL7eOO3Z+1xcUhJKSj7Q+ZgCTMYw3tIUAr/CkjNgzEX4DpZsz4o4S4tIJ9GXK0+K9o56QZ6cl0VtAOCFfeb50R/ClsUL3iuCJLHo28dCnOlg/y0juw78mKfsUb2/RNiDmjyHMI7gyhE9BVdfq3L68+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PpdVfrQR; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4fd094c88afso1462837e0c.0
+        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 08:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725291515; x=1725896315; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SkFbpUnzf3sssS4aIyE4C8Gye+7dq6aX/LwYe/LHKK4=;
+        b=PpdVfrQRzHn6+AW7Aff87ZRWQWFq0Z6B1GVkVzs7x5iny+qYwJtWC6Jbq7iHAXLgt0
+         BR/NbQVicXR9Y+UeLyeL8hs/jrHv4ykdW9ShPLKqKDxSrSHUomf93/EaVQm5IOzO3mM6
+         3WmWpiJSeMp0QWqWri5PQrQJ5+PgWKPmVfN+GocpuTODAkNfS2L5elrTHO2c9HDQfxI+
+         ng4yhIJP9SJmG6RoteY7XDrl5r50CHAd66cIkR++PgYU9Jwl8gxwMF1tOrnmOi/M+Dvc
+         c4zVSfanCusskw+eaZJFdcjnS+tqIEMaHHfBt5uOwVQXW/0RCbtbAtxNxLq5HlrY9Vxq
+         VY3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725291515; x=1725896315;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SkFbpUnzf3sssS4aIyE4C8Gye+7dq6aX/LwYe/LHKK4=;
+        b=cRynPrJEh3kN5T1JangLoZTa5DSooPBaLcpXt8ynMSnwgIJBm/C1KfmFB0Quvdh6AM
+         sxGgn9Hsl2+Uuh7hmh/tI9oIcA3yDzeZMKoglt+V5u3kNE8bBMx62HfMAlkWpf8DrKUu
+         G8eu5jfenWwzGbXH7IBXtdjvqKPtt8J7A33lbPlPHbbYC09doKOyvJQVOBhvvqCdteAn
+         emip4GOhoo1PqDKsMWTlptmKOnrtAGxj27gwgYDKgTLRAAOJIvEL1x7UawNUCJ31fAPv
+         efANjjxMdWoRECDT+aUFXWU+rA073SO3Fa481YmVvsob3ZPx/aug0iPG4HfGyWyul8zG
+         kb/w==
+X-Gm-Message-State: AOJu0YxT/ft4EUcuzNbeLJDoxJsCTbhQuoIgk+KrCdull/mVQ94/q4+C
+	hADQYzKjwCaCdaGcCIk+jThMUOq0acSWHVOWhcQeMBdiggBM9X5oshXQ4TkIkOnpasUy1SV6Als
+	GTujijmWg5GIWUJ/VzPON9HEAi1OXNaQNincc9w==
+X-Google-Smtp-Source: AGHT+IEFiqCPj5ClWa+oAUuBhCOBhK8IXXtwLicW2kMJMvr8eV33HNEKEAufefXW9vtva1PNWsyrq8a7E/8QsHSq1Z0=
+X-Received: by 2002:a05:6122:182a:b0:4df:1d06:eeb7 with SMTP id
+ 71dfb90a1353d-5009ac02acfmr8471169e0c.1.1725291514630; Mon, 02 Sep 2024
+ 08:38:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 2 Sep 2024 21:08:23 +0530
+Message-ID: <CA+G9fYufnSwnzUdu9wNfSXAw=u6CPnvhYWcNpX8V41h_XatjDw@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/93] 6.6.49-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The polled UART operations are used by the kernel debugger (KDB, KGDB),
-which can interrupt the kernel at any point in time. The current
-Qualcomm GENI implementation does not really work when there is on-going
-serial output as it inadvertently "hijacks" the current tx command,
-which can result in both the initial debugger output being corrupted as
-well as the corruption of any on-going serial output (up to 4k
-characters) when execution resumes:
+On Sun, 1 Sept 2024 at 21:56, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.49 release.
+> There are 93 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.49-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-0190: abcdefghijklmnopqrstuvwxyz0123456789 0190: abcdefghijklmnopqrstuvwxyz0123456789
-0191: abcdefghijklmnop[   50.825552] sysrq: DEBUG
-qrstuvwxyz0123456789 0191: abcdefghijklmnopqrstuvwxyz0123456789
-Entering kdb (current=0xffff53510b4cd280, pid 640) on processor 2 due to Keyboard Entry
-[2]kdb> go
-omlji3h3h2g2g1f1f0e0ezdzdycycxbxbwawav :t72r2rp
-o9n976k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawavu:t7t8s8s8r2r2q0q0p
-o9n9n8ml6k6k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawav v u:u:t9t0s4s4rq0p
-o9n9n8m8m7l7l6k6k5j5j40q0p                                              p o
-o9n9n8m8m7l7l6k6k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawav :t8t9s4s4r4r4q0q0p
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Fix this by making sure that the polled output implementation waits for
-the tx fifo to drain before cancelling any on-going longer transfers. As
-the polled code cannot take any locks, leave the state variables as they
-are and instead make sure that the interrupt handler always starts a new
-tx command when there is data in the write buffer.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Since the debugger can interrupt the interrupt handler when it is
-writing data to the tx fifo, it is currently not possible to fully
-prevent losing up to 64 bytes of tty output on resume.
+## Build
+* kernel: 6.6.49-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 8723d70ba720be0b854d252a378ac45c0a6db8a7
+* git describe: v6.6.48-94-g8723d70ba720
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.4=
+8-94-g8723d70ba720
 
-Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
-Cc: stable@vger.kernel.org      # 4.17
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/tty/serial/qcom_geni_serial.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+## Test Regressions (compared to v6.6.47-342-g0ec2cf1e20ad)
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index fbed143c90a3..cf8bafd99a09 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -145,6 +145,7 @@ static const struct uart_ops qcom_geni_uart_pops;
- static struct uart_driver qcom_geni_console_driver;
- static struct uart_driver qcom_geni_uart_driver;
- 
-+static void __qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport);
- static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport);
- 
- static inline struct qcom_geni_serial_port *to_dev_port(struct uart_port *uport)
-@@ -403,13 +404,14 @@ static int qcom_geni_serial_get_char(struct uart_port *uport)
- static void qcom_geni_serial_poll_put_char(struct uart_port *uport,
- 							unsigned char c)
- {
--	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
-+	if (qcom_geni_serial_main_active(uport)) {
-+		qcom_geni_serial_poll_tx_done(uport);
-+		__qcom_geni_serial_cancel_tx_cmd(uport);
-+	}
-+
- 	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
- 	qcom_geni_serial_setup_tx(uport, 1);
--	WARN_ON(!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
--						M_TX_FIFO_WATERMARK_EN, true));
- 	writel(c, uport->membase + SE_GENI_TX_FIFOn);
--	writel(M_TX_FIFO_WATERMARK_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
- 	qcom_geni_serial_poll_tx_done(uport);
- }
- #endif
-@@ -688,13 +690,10 @@ static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
- 	writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
- }
- 
--static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
-+static void __qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
- {
- 	struct qcom_geni_serial_port *port = to_dev_port(uport);
- 
--	if (!qcom_geni_serial_main_active(uport))
--		return;
--
- 	geni_se_cancel_m_cmd(&port->se);
- 	if (!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
- 						M_CMD_CANCEL_EN, true)) {
-@@ -704,6 +703,16 @@ static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
- 		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
- 	}
- 	writel(M_CMD_CANCEL_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
-+}
-+
-+static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
-+{
-+	struct qcom_geni_serial_port *port = to_dev_port(uport);
-+
-+	if (!qcom_geni_serial_main_active(uport))
-+		return;
-+
-+	__qcom_geni_serial_cancel_tx_cmd(uport);
- 
- 	port->tx_remaining = 0;
- 	port->tx_queued = 0;
-@@ -930,7 +939,7 @@ static void qcom_geni_serial_handle_tx_fifo(struct uart_port *uport,
- 	if (!chunk)
- 		goto out_write_wakeup;
- 
--	if (!port->tx_remaining) {
-+	if (!active) {
- 		qcom_geni_serial_setup_tx(uport, pending);
- 		port->tx_remaining = pending;
- 		port->tx_queued = 0;
--- 
-2.44.2
+## Metric Regressions (compared to v6.6.47-342-g0ec2cf1e20ad)
 
+## Test Fixes (compared to v6.6.47-342-g0ec2cf1e20ad)
+
+## Metric Fixes (compared to v6.6.47-342-g0ec2cf1e20ad)
+
+## Test result summary
+total: 198423, pass: 174521, fail: 1723, skip: 21956, xfail: 223
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 28 total, 26 passed, 2 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 35 passed, 1 failed
+* riscv: 19 total, 19 passed, 0 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kselftesu
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
