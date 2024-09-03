@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-72797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B54F9699D5
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:14:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2976F969A23
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9811C230B6
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:14:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4CA2B2190B
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9853817C9B3;
-	Tue,  3 Sep 2024 10:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026341B982F;
+	Tue,  3 Sep 2024 10:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD7fREAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8BjeMpT"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AFD1A0BFE
-	for <Stable@vger.kernel.org>; Tue,  3 Sep 2024 10:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52E01A0BD1
+	for <Stable@vger.kernel.org>; Tue,  3 Sep 2024 10:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725358497; cv=none; b=ewTHpBvG8RAjQ/dOol5JujWhPOkwnQ/7F+LBN42yZ1gEB6G7+ETb2+CYy91mWCjDHFW3WeIP5LKbaw1P+G1Dz4BjPrCkxGf5YcXg+PJyWa3UzuTCtnugni1VYxOAeB9+je0uFhGLyte+lRj+GC4MHz5s+z9UxCWmCizatCZCHsw=
+	t=1725359324; cv=none; b=SkAd/2GMSUYxbACuhzDbYcAB9bTC5RAzViTeB6YXQzf00tVMvo2uDbOa9XgcNi9d2ygcCs32ICwkqDDmrL0qVWJDuRqTp2Jd6+u73K0JpPPItprHPU8gpW3gawVmaxNNbFWcSMgd1YkU2QTIg0EzAaWdRNy6hOoKrjGGCRkYbp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725358497; c=relaxed/simple;
-	bh=0yWiAQ7ae1woxdSNZkNVH04HMg9OdU+djS7Na5NQ3n8=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ACh+CU+Z4AeC/CzRzBKGpSNL8TYhDiSI48xjuVupdJrEipTsvjhOqTH+kDpkfYZWb3DsCeZjnntZ/+qESdPrDwB/noGymPsrI/XXxGvqnNLl7WxM8uDk2a6AzpGskCiDG1RdNuE6Gw0iaCAW7BJumITK5VhMmY4qrthuRpiMdns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD7fREAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE41C4CEC4;
-	Tue,  3 Sep 2024 10:14:56 +0000 (UTC)
+	s=arc-20240116; t=1725359324; c=relaxed/simple;
+	bh=tlcEtSt4IOBB15i320vFz4gTh56ebNu8Zj7NwkV0pbE=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=YHlkx56hHH5LE6oShZD9y1XM3qbylecjmpEU8zUgQSYUib+ZX2VLv8cg9vZN7CQDnH+liSLM1UuwYmjHEjLJdclCCVrHTsrRTQ5Sh5F9YYNOM0z9sybfoNN/7oItLStc/PNpjvlwa53R+73uOsgdR80IVL73WT/beSXZxwB+Fb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8BjeMpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F56C4CEC9;
+	Tue,  3 Sep 2024 10:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725358497;
-	bh=0yWiAQ7ae1woxdSNZkNVH04HMg9OdU+djS7Na5NQ3n8=;
+	s=korg; t=1725359324;
+	bh=tlcEtSt4IOBB15i320vFz4gTh56ebNu8Zj7NwkV0pbE=;
 	h=Subject:To:From:Date:From;
-	b=aD7fREAX7PFiYsko4lKltvMTMIUq6C63oOBAtOZ/19lifOOjBJ/o4rzfu5uj4uOrC
-	 RQiSIKSCWMRuIRWzG+b8qdMnjfaGwgOP7KDnQ7ZB0oZBtkskIchqVf/CQ5DmsUMxSV
-	 um7J7Wohu1CEhOCV7gPs2ILUdVb+gQM+EKc13y40=
-Subject: patch "iio: pressure: bmp280: Fix regmap for BMP280 device" added to char-misc-testing
+	b=x8BjeMpTLgkvUtz3J1nNxdlbHoJF5nEbyHfdNuHTyKRfx/gG9jEBsWLUsKhdi4Rr1
+	 Qcwy2fc7RlME5S2Or3OBHSLOTosnVc3IZZMu61OOoeyNihKuc+lDPI8KvCYnZL7lXJ
+	 8Z1sIz66/RdvS13MpdIx/uh0ZSpBgwJVC1osVm1M=
+Subject: patch "iio: pressure: bmp280: Fix regmap for BMP280 device" added to char-misc-next
 To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Sep 2024 11:34:43 +0200
-Message-ID: <2024090342-rebuttal-prowess-7697@gregkh>
+Date: Tue, 03 Sep 2024 12:01:09 +0200
+Message-ID: <2024090309-chance-streak-0ca0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
