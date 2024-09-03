@@ -1,210 +1,155 @@
-Return-Path: <stable+bounces-72848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C5296A5EC
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 19:54:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170A996A603
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 19:58:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5106286519
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 17:54:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35D8282103
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 17:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0032D18F2C3;
-	Tue,  3 Sep 2024 17:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25449190064;
+	Tue,  3 Sep 2024 17:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FvzrLjiH"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QaRTZn2Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E651418EFF3
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 17:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4816E190073
+	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 17:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725386041; cv=none; b=WUq/UVbpU5syLJ7EdhvIrbPq9tGvf2YzmsF67bg5qRTr0S02+lSbr8GpKq5MEVUvtsSdRLI/zF+K2azPFOdprAUJ7h7Uc8ldsSxA/gAbv4LpzVLvl73wtY2EWxmlEZnXHgGgK7DqLx4JJSBA+cstJEbC02b2/q7wRVlyx/V7k+A=
+	t=1725386293; cv=none; b=eQMZpsgd+/7miESJ8qSkaf6z1mm0hYZfvIG76Pa5U3jvhc3uC46R+NqA8v21pMRK81fCIUBnzAckM0/Y8/2fAsiygkMp3+YifhsOEXhcP1TcX8WbsoPhOOdGohVTjUl/QH6O5Gnw8RrilHv4xzWMaQK+vgFBag+FZ/D1sH0OVdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725386041; c=relaxed/simple;
-	bh=m+pfgB926aNdCyINxiYtptaS9sR1+Po8T4qlAiuIzfQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XZwMLCLnjEM91bK2+EcyxWuZTmUMpjli/pW+Hwy7bQunzkfO7mZzWSGEPHp1rTPbolTtNsovZf5PON8Q6ufTb6RyyV9ghucTq3zlh5FmBLtWmhwobvn3FhglxLL+h2oYdUTb7I9EMs7VF/YukIULo9ajSiQJTbPn44HkkUFdKIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FvzrLjiH; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5353d0b7463so9555543e87.3
-        for <stable@vger.kernel.org>; Tue, 03 Sep 2024 10:53:59 -0700 (PDT)
+	s=arc-20240116; t=1725386293; c=relaxed/simple;
+	bh=stHicUucsegKO71SAj1/KL9WPLmA8VTgZfhUoLPukRg=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=sjuBvIC+PEiM7f45GjB4C4l7GICJ6kS6qycyc809Jcp8HRLztx02YgF4USDOkJOEquKC4CcGa7sEtJOL9to5gcREwGde4VimCbmddmxFLgSu9CRaEPYR6iuLAROe50GE0Xv+IbNUxGdYPnyDNIwAMJnqiRVPJ3Hu52BASEGFbfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QaRTZn2Q; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso48937035e9.1
+        for <stable@vger.kernel.org>; Tue, 03 Sep 2024 10:58:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725386038; x=1725990838; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MPIfMmfxiAGOTOYrKOKeyFV2+/a3tmmFy8LnbxS/cpA=;
-        b=FvzrLjiHDs5A+U6CLJLwBdv5GWEjFEyc2Ds1CZeTDSVAhMuREl1qfOj+fGMhVo54oM
-         YZIW13qivB4MO64L19oGyn8mQSuGYQPouUVqTIAI5EP4oi1LwGR42Hlkanzbqv2SSA6W
-         ubZ2gcp4PIWsbLZlwwYVOfIlOUhbJrNl+fFVMlJUGb0MJl6f3yYQL+NLc7kSfwvXjhKL
-         DtQFo7R4vK+muUlV71/Y3WHkAChlLnvrkxcvdXmFwuJmTVHXgFqKec792rwrVeq4vX+8
-         PgJCTre4EExAflc8guRF6PR5h8WACX+OMykqDxX7A0oKuCBEpMEh2F+wUc3hn4WRJUmM
-         iNVA==
+        d=broadcom.com; s=google; t=1725386291; x=1725991091; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGOuW5YwL2FIu5pmIeJzfRaokSatabRSgmpdBuikasM=;
+        b=QaRTZn2QZ/JYdG0GfKobdwzKmccHr0wK8mrATdE0bUMs45dDxle31qZAHQaLhI75YT
+         qu1HyKWO1XEDyfebZsZJywOBn6BVpH+UxZdx/OIfdX2HjlttoupboYbPd5v2CyTwAV9D
+         BH+QMt1gN/7ZClAhR24Tw90dTQ4cUgJUI/r8c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725386038; x=1725990838;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MPIfMmfxiAGOTOYrKOKeyFV2+/a3tmmFy8LnbxS/cpA=;
-        b=k9lspxblXk/TixNfKo0IbY59k+aEAVCzPAEWZq2quhAwZlAZ1AUC1y3r/SrCz67ITn
-         rdeIspU9D2X8ARU1ZQVNriqr8Sgp5eB66ACxj7Z0+s0q5GW8O3jsU6WBEQ+BVzPR6N4h
-         JxEkHgk87lyHw1wkbshu/3FQFISwFrxOaoSzPnfht9s7gQdmq072NW4wFA0D3MZxGvy7
-         n/HTtQhDmJXcjSL2+a8cWHhuK6JI8xwBP46SnactmTNQhunkm8Ef23XYTC/WBDQHMwUm
-         QbKeX+RFZKc3AceNSCxJdGwebh+GyyLqwa7ZjIL3ig339OGncdu4qCXDtmGFDkaFMHap
-         Q06Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVdcImfYhgP0ahUhzJDkHCd+dstcxmb5nGxaLQ9Mx78GzJNFTelia9diNn3vHGUC2cRLv0dBtw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ4j0hj7ybAr6tiUBEC0Ld7VSzxxME3XkLiSpJqHTqzFKzPeQz
-	qVe2sFthDGMqFKdQ2iOhBDYp/bzHVKzQSlnZlQ1y7wivJrsZlru1T0lN46IJPOIPSO8zSZf7baB
-	BuXY3FotuPLQiMCgNruFU7fqm9q/S8OtJubQd
-X-Google-Smtp-Source: AGHT+IF2t+uT18eN1K0vaLH5xqiAjw86XpOr4HdwzrTGeyad54ig2xRfXarGF2TBLwQ0tIXwymfT1tgdevI7I9LnBoA=
-X-Received: by 2002:a05:6512:acb:b0:533:4505:5b2a with SMTP id
- 2adb3069b0e04-53546b4a8c9mr12317296e87.28.1725386037206; Tue, 03 Sep 2024
- 10:53:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725386291; x=1725991091;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGOuW5YwL2FIu5pmIeJzfRaokSatabRSgmpdBuikasM=;
+        b=kamfrvVWFsdHQyAawUI3aGsHr9vDBS7JF45/hHcniDGcMGnLuoSgEIFkj4wbwG+74U
+         io/vatHX25UUQdPerW4zqBlFrYiYXV+z4Ux9OnK5cthtIr/hodwkt678h5xt3+515JHR
+         OrUEvwGBtZmPIr9MJ2DY2dz6qVAjvbMtSL/DDMNEgFYamkDkHoJ7B6NZKLYqKpfpH36T
+         N3xFdbiCXhq0heeLBIbCpYJPOJgydPhAd7GieyjiZbQGK41j0oiF6f7YaiV7yw93wo7L
+         78DFloE+KIMwtQo3VWIUEKKOom7dFbfQHMKD/RvRSbx4MaGnrApHl8mlcktTbqjMOFee
+         I44g==
+X-Forwarded-Encrypted: i=1; AJvYcCVoDrZGOugtyDwLpEbu5uegzjT/B1lRdz7e+6hQVawSYzSbrCztmjoQZ3T2c4gRSNG6gk/BVoI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp3NNUJlxrZglWecNFv8bMkHujg8dEdPpivZ7kgiqCIOfcfTAw
+	xhaJKHx0q4eQGGYp0Ke1sOZ+taMIekARSv8jH/130vFMJB9pWkYgtgWMWPVfcg==
+X-Google-Smtp-Source: AGHT+IHPl3b+URUQd3W36EU7ONol/0MH2gm2E/V+FoZlsccSAjjwphnkP3leQEP9pl1QtFJ1qwU2Bw==
+X-Received: by 2002:a05:600c:1d19:b0:427:ab29:30cf with SMTP id 5b1f17b1804b1-42c8de5f599mr13734265e9.4.1725386290410;
+        Tue, 03 Sep 2024 10:58:10 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6deb43esm179450195e9.7.2024.09.03.10.58.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Sep 2024 10:58:09 -0700 (PDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+X-Google-Original-From: Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <4ae307e4-5d01-49fc-97e4-dfbab222c22b@gmail.com>
+Date: Tue, 3 Sep 2024 10:58:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902005945.34B0FC4CEC3@smtp.kernel.org>
-In-Reply-To: <20240902005945.34B0FC4CEC3@smtp.kernel.org>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 3 Sep 2024 10:53:21 -0700
-Message-ID: <CAJD7tkYtM8gQDX8RrT1cnkfDQ0dRv4woNY4jrwjc1oUuavbuTg@mail.gmail.com>
-Subject: Re: [merged mm-hotfixes-stable] mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch
- removed from -mm tree
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, shakeel.butt@linux.dev, 
-	roman.gushchin@linux.dev, nphamcs@gmail.com, muchun.song@linux.dev, 
-	mkoutny@suse.com, mhocko@kernel.org, hannes@cmpxchg.org, me@yhndnzj.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 000/149] 6.10.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240901160817.461957599@linuxfoundation.org>
+Content-Language: en-US
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCZtdNBQUJMNWh3gAKCRBhV5kVtWN2DhBgAJ9D8p3pChCfpxunOzIK7lyt
+ +uv8dQCgrNubjaY9TotNykglHlGg2NB0iOLOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
+ WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
+ pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
+ hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
+ OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
+ Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
+ oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
+ 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
+ BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
+ +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
+ FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
+ 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
+ vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
+ WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
+ HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
+ HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
+ Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
+ kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
+ aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
+ y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
+ X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Sep 1, 2024 at 5:59=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
->
-> The quilt patch titled
->      Subject: mm/memcontrol: respect zswap.writeback setting from parent =
-cg too
-> has been removed from the -mm tree.  Its filename was
->      mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patc=
-h
->
-> This patch was dropped because it was merged into the mm-hotfixes-stable =
-branch
-> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->
-> ------------------------------------------------------
-> From: Mike Yuan <me@yhndnzj.com>
-> Subject: mm/memcontrol: respect zswap.writeback setting from parent cg to=
-o
-> Date: Fri, 23 Aug 2024 16:27:06 +0000
->
-> Currently, the behavior of zswap.writeback wrt.  the cgroup hierarchy
-> seems a bit odd.  Unlike zswap.max, it doesn't honor the value from paren=
-t
-> cgroups.  This surfaced when people tried to globally disable zswap
-> writeback, i.e.  reserve physical swap space only for hibernation [1] -
-> disabling zswap.writeback only for the root cgroup results in subcgroups
-> with zswap.writeback=3D1 still performing writeback.
->
-> The inconsistency became more noticeable after I introduced the
-> MemoryZSwapWriteback=3D systemd unit setting [2] for controlling the knob=
-.
-> The patch assumed that the kernel would enforce the value of parent
-> cgroups.  It could probably be workarounded from systemd's side, by going
-> up the slice unit tree and inheriting the value.  Yet I think it's more
-> sensible to make it behave consistently with zswap.max and friends.
->
-> [1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hiberna=
-te#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
-> [2] https://github.com/systemd/systemd/pull/31734
->
-> Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
-> Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback disabl=
-ing")
-> Signed-off-by: Mike Yuan <me@yhndnzj.com>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Yosry Ahmed <yosryahmed@google.com>
 
-We wanted to CC stable here, it's too late at this point, right?
 
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Michal Koutn=C3=BD <mkoutny@suse.com>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  Documentation/admin-guide/cgroup-v2.rst |    7 ++++---
->  mm/memcontrol.c                         |   12 +++++++++---
->  2 files changed, 13 insertions(+), 6 deletions(-)
->
-> --- a/Documentation/admin-guide/cgroup-v2.rst~mm-memcontrol-respect-zswap=
-writeback-setting-from-parent-cg-too
-> +++ a/Documentation/admin-guide/cgroup-v2.rst
-> @@ -1717,9 +1717,10 @@ The following nested keys are defined.
->         entries fault back in or are written out to disk.
->
->    memory.zswap.writeback
-> -       A read-write single value file. The default value is "1". The
-> -       initial value of the root cgroup is 1, and when a new cgroup is
-> -       created, it inherits the current value of its parent.
-> +       A read-write single value file. The default value is "1".
-> +       Note that this setting is hierarchical, i.e. the writeback would =
-be
-> +       implicitly disabled for child cgroups if the upper hierarchy
-> +       does so.
->
->         When this is set to 0, all swapping attempts to swapping devices
->         are disabled. This included both zswap writebacks, and swapping d=
-ue
-> --- a/mm/memcontrol.c~mm-memcontrol-respect-zswapwriteback-setting-from-p=
-arent-cg-too
-> +++ a/mm/memcontrol.c
-> @@ -3613,8 +3613,7 @@ mem_cgroup_css_alloc(struct cgroup_subsy
->         memcg1_soft_limit_reset(memcg);
->  #ifdef CONFIG_ZSWAP
->         memcg->zswap_max =3D PAGE_COUNTER_MAX;
-> -       WRITE_ONCE(memcg->zswap_writeback,
-> -               !parent || READ_ONCE(parent->zswap_writeback));
-> +       WRITE_ONCE(memcg->zswap_writeback, true);
->  #endif
->         page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
->         if (parent) {
-> @@ -5320,7 +5319,14 @@ void obj_cgroup_uncharge_zswap(struct ob
->  bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
->  {
->         /* if zswap is disabled, do not block pages going to the swapping=
- device */
-> -       return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_wr=
-iteback);
-> +       if (!zswap_is_enabled())
-> +               return true;
-> +
-> +       for (; memcg; memcg =3D parent_mem_cgroup(memcg))
-> +               if (!READ_ONCE(memcg->zswap_writeback))
-> +                       return false;
-> +
-> +       return true;
->  }
->
->  static u64 zswap_current_read(struct cgroup_subsys_state *css,
-> _
->
-> Patches currently in -mm which might be from me@yhndnzj.com are
->
-> documentation-cgroup-v2-clarify-that-zswapwriteback-is-ignored-if-zswap-i=
-s-disabled.patch
-> selftests-test_zswap-add-test-for-hierarchical-zswapwriteback.patch
->
+On 9/1/2024 9:15 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.8 release.
+> There are 149 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
+
+
 
