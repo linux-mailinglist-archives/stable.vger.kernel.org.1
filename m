@@ -1,151 +1,115 @@
-Return-Path: <stable+bounces-72801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4D89699E9
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:18:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74A2969A60
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3F1283831
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:18:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 494EEB22030
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C72319F430;
-	Tue,  3 Sep 2024 10:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3CB1A4E7C;
+	Tue,  3 Sep 2024 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlgAJ1e3"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOqmGOV9"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDA72904;
-	Tue,  3 Sep 2024 10:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF58919CC3F
+	for <Stable@vger.kernel.org>; Tue,  3 Sep 2024 10:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725358683; cv=none; b=IBpljqYMXmHSs00K1CgKFxJt8JO0Dru42TAOwk1X6qQN4GZRt/hgVwVX4YKUaCTKxd9pi6BlOFlZaeoFAROBly0Z2AkYj3d6CVPEIehyLKDnf9hvF7s5AFarqcXHG7jX8xIOg+NJejz1EC9t9+zZB2b0zb01lBLrYc+EdGvZ9X8=
+	t=1725360104; cv=none; b=Sz0UYs+//CrIXEksHtGlXEj3n1BNDbK8zP1Agzov1+Jmzwo9YPI1Y7KUm0q4zGiyauOCGYZhnbfHUwAYZsOL2jLsEZ+KxQcoxP67pnOBRS1jmrchYjdN38FuK2VHvuTfNrx1DoegBItQ4M80zsyJ5sQsKBm0O87Qts7lpvMT0gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725358683; c=relaxed/simple;
-	bh=/NiMOcEwEirDGhkQiJg+esLtNVzlbZxQb/wpX4p23LQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TbBTHHK5+OIU4PKyXv6HmOo/pLqMVTD9ioetcDqoAXlud7+c9vVcLIuX9ihvseUpy7a2MfFkRfdFWRvgjTyQPQufKs+APUgjy77tsgKLKzmTh1vn0AOIqWRGi7xBJlJ+E3PUAOLttwAuQKlsxm3b+xvK7Tw/cMxkUUGLgZiWioc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlgAJ1e3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B424FC4CEC5;
-	Tue,  3 Sep 2024 10:18:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725358682;
-	bh=/NiMOcEwEirDGhkQiJg+esLtNVzlbZxQb/wpX4p23LQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlgAJ1e3rKCA3/eRcMHbxqXiJ218et6opg7xcXpzcTKY57F7qdfpnCHAJKzeM1hvV
-	 nvrfTvypjuvuOyyeVsZ9sXHutDs7JHAg6BuFQsj8IaXRLzDe6Ap+mkRk5cEjJzHctL
-	 FMAUljQm64DA9aZNz0hIRsN+cXf0BTBzVm7SFoz1XZg/gUVYH6zxK9AD/rW/5MHqHW
-	 4Bo5ZVO3nbyH4hYBwPUz5/KNaMxeurmrkjW+/dzMUml3dwHg9xNKlVe4xTxqr1E2he
-	 ntPb2+7BBp/4+2xkQuyvqtzKFYBx5mmK2tBsHMEmkOuAXgAmUlc/HvxycgDBs67P1A
-	 3yF1G4yWkbkow==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6.y] mptcp: avoid duplicated SUB_CLOSED events
-Date: Tue,  3 Sep 2024 12:17:48 +0200
-Message-ID: <20240903101747.3377518-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024083026-snooper-unbundle-373f@gregkh>
-References: <2024083026-snooper-unbundle-373f@gregkh>
+	s=arc-20240116; t=1725360104; c=relaxed/simple;
+	bh=AkFZyHKQwlV/sQpD5xruzAMVGzmCIxLl1RPUxcYtJRw=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=LulDHh2hP5sKNEpli8QP2qUgzuSalDeMz499vHb4F87X4PdgmV7SGSEc1Hk9V6IaDAY82pmYLf3hbze/ND/qYyjJl/qF9YsPqohwIW2ogSho7RatutBqrIn51bwM1FO9fDjH3fNhD4+xbGkL+QaQvKF0UQklEgmOhzr1zP3qU1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOqmGOV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B1CC4CEC4;
+	Tue,  3 Sep 2024 10:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725360103;
+	bh=AkFZyHKQwlV/sQpD5xruzAMVGzmCIxLl1RPUxcYtJRw=;
+	h=Subject:To:From:Date:From;
+	b=qOqmGOV9GuDRgs0kl2/4nzZGmGE8FIzN+QdvbQ5pFVlJLBoGX/5NxK8eOI4h0PwfR
+	 U0Y7izeo9Fiabk7WLl0DDTZ7COtnrfzGtxjYEDCN9jTxi8bjoywfDgZYOagqEsl9kg
+	 T/HARaCKG7L48wWIfgyk87EdQumSbBW18yOEmf3I=
+Subject: patch "staging: iio: frequency: ad9834: Validate frequency parameter value" added to char-misc-linus
+To: amishin@t-argos.ru,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dan.carpenter@linaro.org
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 Sep 2024 12:18:01 +0200
+Message-ID: <2024090301-donut-depletion-a67e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3242; i=matttbe@kernel.org; h=from:subject; bh=/NiMOcEwEirDGhkQiJg+esLtNVzlbZxQb/wpX4p23LQ=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm1uJLIHAjcXjAI+AerY/+50gan49ZCX/hywhoi OvnRNCCbZmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtbiSwAKCRD2t4JPQmmg c+4uD/sGVcrEIix1LTLOWAsZre+VSxm5qhAPChmuzBYm/vyxY+TRO2bMAeORhRQrX4DYcary+/N e8Y4VnA75kA3cdcatPQ7Om5rXqfIVsDE8v+BC+thZlo5qFXvC86n3cTRLsrN4f+I/oT3kEVmgD0 JDnP8QTZzq8XkUbAeTlCaKmNK+9J48oYzYiVPP115x8Ama7tmG5ie0XXMFDLLDj0DTcXnStXoBT paYf3/ch4DvUZjAYBqa/MFMLvwqc2yko86ymJWnAZh0An4j1IDlgoLxbJ9bMIrIfD3ZYheoz6DP Sb21cu9ZlgzUlkoBsJ1Gm5sWd4AJHqtf7qd2Coo1L0Sb74umzw1SmvwljmU3x79YSuEkRYcg5sd eqBQmv5faOmN8UrPjm6zCqhx5Xpvyx9kQ8KrqAR0R+K6Wmp/UCmTTjw+Vr16OFFXiZkQm7X9Fy8 eWeUNqM/waQIe4v7TTmMbKSi02q/BHRml+kxmldbTI1tFDlOFkjHZdg80WebYnaOxRhw2s0UO+h 5O7Cbc+ikXEbqNcy8F0iZtFBtaWAMDmxHBP742UkkEuj+4kos4WcIDZVHfJ/0LEdCLzCL9+8Lt2 CbIt5yavzX+ih/7nOJ+MY7ykQMjY8tiZQDTaWEGoAaYJ+VmbWycDavQs2/C7dFAIbxfeHkqRgIq LxNFgJ/rZn07Vxw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-commit d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 upstream.
 
-The initial subflow might have already been closed, but still in the
-connection list. When the worker is instructed to close the subflows
-that have been marked as closed, it might then try to close the initial
-subflow again.
+This is a note to let you know that I've just added the patch titled
 
- A consequence of that is that the SUB_CLOSED event can be seen twice:
+    staging: iio: frequency: ad9834: Validate frequency parameter value
 
-  # ip mptcp endpoint
-  1.1.1.1 id 1 subflow dev eth0
-  2.2.2.2 id 2 subflow dev eth1
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
 
-  # ip mptcp monitor &
-  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-  # ip mptcp endpoint delete id 1
-  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
 
-The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
-second one from __mptcp_close_subflow().
+If you have any questions about this process, please let me know.
 
-To avoid doing the post-closed processing twice, the subflow is now
-marked as closed the first time.
 
-Note that it is not enough to check if we are dealing with the first
-subflow and check its sk_state: the subflow might have been reset or
-closed before calling mptcp_close_ssk().
+From b48aa991758999d4e8f9296c5bbe388f293ef465 Mon Sep 17 00:00:00 2001
+From: Aleksandr Mishin <amishin@t-argos.ru>
+Date: Wed, 3 Jul 2024 18:45:06 +0300
+Subject: staging: iio: frequency: ad9834: Validate frequency parameter value
 
-Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
-Cc: stable@vger.kernel.org
-Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflict in protocol.h due to commit f1f26512a9bf ("mptcp: use plain
-  bool instead of custom binary enum") and more that are not in this
-  version, because they modify the context and the size of __unused. The
-  conflict is easy to resolve, by not modifying data_avail type. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+In ad9834_write_frequency() clk_get_rate() can return 0. In such case
+ad9834_calc_freqreg() call will lead to division by zero. Checking
+'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
+ad9834_write_frequency() is called from ad9834_write(), where fout is
+taken from text buffer, which can contain any value.
+
+Modify parameters checking.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- net/mptcp/protocol.c | 6 ++++++
- net/mptcp/protocol.h | 3 ++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/staging/iio/frequency/ad9834.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e4d446f32761..ba6248372aee 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2471,6 +2471,12 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 		     struct mptcp_subflow_context *subflow)
- {
-+	/* The first subflow can already be closed and still in the list */
-+	if (subflow->close_event_done)
-+		return;
-+
-+	subflow->close_event_done = true;
-+
- 	if (sk->sk_state == TCP_ESTABLISHED)
- 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index a7a5cdcc6590..47e7d7e6d920 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
  
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index ecbea95970f6..b9a4f6364b78 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -500,7 +500,8 @@ struct mptcp_subflow_context {
- 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
- 		valid_csum_seen : 1,        /* at least one csum validated */
- 		is_mptfo : 1,	    /* subflow is doing TFO */
--		__unused : 10;
-+		close_event_done : 1,       /* has done the post-closed part */
-+		__unused : 9;
- 	enum mptcp_data_avail data_avail;
- 	bool	scheduled;
- 	u32	remote_nonce;
+ 	clk_freq = clk_get_rate(st->mclk);
+ 
+-	if (fout > (clk_freq / 2))
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
+ 
+ 	regval = ad9834_calc_freqreg(clk_freq, fout);
 -- 
-2.45.2
+2.46.0
+
 
 
