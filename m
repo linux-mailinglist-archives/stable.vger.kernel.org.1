@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-72887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B579796A8F6
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:50:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989D996A8F9
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40A24B23265
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:50:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 443371F24B68
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452FE1E1A03;
-	Tue,  3 Sep 2024 20:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8B81E1A36;
+	Tue,  3 Sep 2024 20:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqrzahnE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rAeIbSDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007501DB550;
-	Tue,  3 Sep 2024 20:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61F71E1A2D;
+	Tue,  3 Sep 2024 20:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396250; cv=none; b=YZIRENqJ7wMcz1unajiKQiVMlDo/LMemcEN0jVnhUcgOXdUlgleiCYXxfF5UmOOsVqE2VR1666EKX/gI5c4vS363FLbrYnPQemUpzFdBpPxOXPwZ5HO2m4YW7Pt5zKo0+C47UQKqtNbK6K+EoFOjGr/0pVgB3VUZT9XEDnQsiQM=
+	t=1725396253; cv=none; b=IYpW3FV9AuGw5zs8YXRQNgZd5xHFrMjIXlYriczZZgUirpAVVmtqqi49kaQkbiTObolKQo4+impjH/BY9Ux9bBQ7WTGR4OooLiRGIZ5dBMk6Vt4XMaj3xROQdYKn5Km+L7KImf+krnWgZWKaNTzlydbXUAZRPNqIgxBETd62rRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396250; c=relaxed/simple;
-	bh=ktpNedWiKVoT5UydmXwBJ1Ij8Q+ec0nP0x9MYK8iiVU=;
+	s=arc-20240116; t=1725396253; c=relaxed/simple;
+	bh=F+4OrwZxjWWjq1MSc2g4l0z4qr4wyms+G514YBypbQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H2OVxvOSBTGHBUytg/N57z8jYashE7TecLXiFhlmDVv97uBPAtINrYTYrNHZyQezYoMUWKGpdlQtYeNEra3nbf/XI77xLCk7hbBSBiAZ5ZX8wzd6RDp66pYT3gTet0CwFTb7XO+j/fO4cLKeO/T6GhGPXeIjQkLRcjihD/QopM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqrzahnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2DDC4CECA;
-	Tue,  3 Sep 2024 20:44:08 +0000 (UTC)
+	 MIME-Version; b=nUgkkwV6JPz4mf1uSZIuwMM55cDWfWiFgGBQX5kdPVAVG1GFlL+8Glm15/51hFDn0E02QDmykoYbA4HZWF4k4OSLcBNEq4KBtVng8OVImz7EUwQ9nM4bTOlHaI6Nf7wDAEL3v7zjsP/eWa90W6BXZjQE2YuDzCTIZ6mVRlW+7oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rAeIbSDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD68C4CEC5;
+	Tue,  3 Sep 2024 20:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396249;
-	bh=ktpNedWiKVoT5UydmXwBJ1Ij8Q+ec0nP0x9MYK8iiVU=;
+	s=k20201202; t=1725396253;
+	bh=F+4OrwZxjWWjq1MSc2g4l0z4qr4wyms+G514YBypbQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqrzahnEymISnLUGqnTTwryuMT8+jLrWwOZ+VWjHg8zxS9Eq0rs4qYQqOl91SFH/5
-	 b2IcIwF5bDu/wrCqNqxyUAjh/BU9gBoIYIec+JG6UjmEwIHfgrNM+H5Y99zXPQhSC8
-	 JRXG/dkIbc0u4Rv6kAZjfSBJ0feFJM/vkJPL1QsXly5vPWPP0hEloHjAr7qLxDwJR1
-	 +1EHSpV8OeN1Cl3hZbsEaCwFhbhffB3jVS2XID+0pG+ntPFKPMKPJLjunEVQ0PC8cz
-	 GcO6y2nfnUk35+u8sA8/y2jkMiuEG3TCyaZYVTpFmNZJW9+xGZYd+uKdSLMihLfbF0
-	 T7aYkUQDZeGcg==
+	b=rAeIbSDjo2ninNrIZb4rcZ4DaUjfoSXx50z8nKfMi4xcSx3dukYzdWQGGCb9AYHqo
+	 nxqFJ7mYDvLldzo/BKBn3ceD+68xCH9TCsGKVA8njlQC0m7E56iaYvsP1tYHryp7f3
+	 ZUM8hfeu2FJgfDDmiNVX3EbJCFDCF7M7SX6foS3oRooVB75lefju+FMllO0Aui1rJr
+	 JXggp+ckl0s9DOUgzWxZXZHmegBkASEkZvFv94lPxKF+GFlhIMd/Xke95hAwv5McSn
+	 Qed5SoO5KVYhsGwVWYrMQSbqpk3rVO87SscaOwLaXQYdBe9+rf9nRhDs6FbA3e5A5H
+	 WjKu9tLzjpz+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Jacky Chou <jacky_chou@aspeedtech.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 11/20] platform/x86: x86-android-tablets: Make Lenovo Yoga Tab 3 X90F DMI match less strict
-Date: Tue,  3 Sep 2024 15:23:43 -0400
-Message-ID: <20240903192425.1107562-11-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	u.kleine-koenig@pengutronix.de,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 12/20] net: ftgmac100: Ensure tx descriptor updates are visible
+Date: Tue,  3 Sep 2024 15:23:44 -0400
+Message-ID: <20240903192425.1107562-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192425.1107562-1-sashal@kernel.org>
 References: <20240903192425.1107562-1-sashal@kernel.org>
@@ -60,46 +64,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.48
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit a3379eca24a7da5118a7d090da6f8eb8611acac8 ]
+[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+The driver must ensure TX descriptor updates are visible
+before updating TX pointer and TX clear pointer.
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
+This resolves TX hangs observed on AST2600 when running
+iperf3.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240825132415.8307-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/dmi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/dmi.c b/drivers/platform/x86/x86-android-tablets/dmi.c
-index 5d6c12494f082..0c9d9caf074cb 100644
---- a/drivers/platform/x86/x86-android-tablets/dmi.c
-+++ b/drivers/platform/x86/x86-android-tablets/dmi.c
-@@ -122,7 +122,6 @@ const struct dmi_system_id x86_android_tablet_ids[] __initconst = {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90F */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 		.driver_data = (void *)&lenovo_yt3_info,
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+index 9135b918dd490..848e41a4b1dbb 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -572,7 +572,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
+ 	(*processed)++;
+ 	return true;
+ 
+- drop:
++drop:
+ 	/* Clean rxdes0 (which resets own bit) */
+ 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
+ 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
+@@ -656,6 +656,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
+ 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
+ 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
+ 
+ 	return true;
+@@ -809,6 +814,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	dma_wmb();
+ 	first->txdes0 = cpu_to_le32(f_ctl_stat);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	/* Update next TX pointer */
+ 	priv->tx_pointer = pointer;
+ 
+@@ -829,7 +839,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 
+ 	return NETDEV_TX_OK;
+ 
+- dma_err:
++dma_err:
+ 	if (net_ratelimit())
+ 		netdev_err(netdev, "map tx fragment failed\n");
+ 
+@@ -851,7 +861,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	 * last fragment, so we know ftgmac100_free_tx_packet()
+ 	 * hasn't freed the skb yet.
+ 	 */
+- drop:
++drop:
+ 	/* Drop the packet */
+ 	dev_kfree_skb_any(skb);
+ 	netdev->stats.tx_dropped++;
+@@ -1344,7 +1354,7 @@ static void ftgmac100_reset(struct ftgmac100 *priv)
+ 	ftgmac100_init_all(priv, true);
+ 
+ 	netdev_dbg(netdev, "Reset done !\n");
+- bail:
++bail:
+ 	if (priv->mii_bus)
+ 		mutex_unlock(&priv->mii_bus->mdio_lock);
+ 	if (netdev->phydev)
+@@ -1543,15 +1553,15 @@ static int ftgmac100_open(struct net_device *netdev)
+ 
+ 	return 0;
+ 
+- err_ncsi:
++err_ncsi:
+ 	napi_disable(&priv->napi);
+ 	netif_stop_queue(netdev);
+- err_alloc:
++err_alloc:
+ 	ftgmac100_free_buffers(priv);
+ 	free_irq(netdev->irq, netdev);
+- err_irq:
++err_irq:
+ 	netif_napi_del(&priv->napi);
+- err_hw:
++err_hw:
+ 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
+ 	ftgmac100_free_rings(priv);
+ 	return err;
 -- 
 2.43.0
 
