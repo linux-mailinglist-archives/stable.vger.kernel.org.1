@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-72916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD4D96A946
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112A896A949
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446191F25419
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C608B232DF
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E7C1DCB12;
-	Tue,  3 Sep 2024 20:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B7D1DCB27;
+	Tue,  3 Sep 2024 20:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IE0F7Ghq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jSsq+p5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFFC1DCB07;
-	Tue,  3 Sep 2024 20:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72BA1DCB1E;
+	Tue,  3 Sep 2024 20:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396402; cv=none; b=XKo89eqC7T+PzHuVj2Pk5jSVL9Hh65t+PIHrCv4A+XFj2nPwY8n83jYSiI4gGggzZ7wdCg91Ob0rJQrcU4t+vJf2QnpyWalnHqdyhJaa4cjrZvgRgm/9OXqIVbkEPyD2478ghKk7QRslD6fcr9iAt0pDr1Agydncar306El13Ms=
+	t=1725396403; cv=none; b=CWCTJ0i0lgXb8drL2dyz4RV1S4tbYnzDygvimVVNy+KFAchGYMdmcLHmJW8IRs2vNlpe01R41ywNK1zyo5hEwK+XsHsFI+RNbnQLSdQ/xtOlRnBhWXubOI3HRPY4s3T2YFiX/xJwthvzputs7U1P3/yjCMR95Uf6dJNsN3SQFY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396402; c=relaxed/simple;
-	bh=isvfGKmY5cC485PePP+xpjvCY+6MbdM4gY2GRFWMhMI=;
+	s=arc-20240116; t=1725396403; c=relaxed/simple;
+	bh=gyKmTyTWsLFKWuyb1CViguXxZW6EghA9L1hLyOY/2+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpELWUKD7SaH8qyvpBJb+a9kuX8+dsg8wgYIOix8WVFlwskXDtSr8QzRwA3Y70/GsBsPVie2Ob3yGkMm+CLE0HjypdVh0J2pDL6NloZ4D66mstXMtFkS8/0FdiN3g1wvr3L1RXKz9uxmbV6mMEMR3ESMTnokVhIaOrOf8kipLxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IE0F7Ghq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AA0C4CEC4;
-	Tue,  3 Sep 2024 20:46:40 +0000 (UTC)
+	 MIME-Version; b=CKkyKhWu9rjww9z3p4jz8UM3s7ncg/Yetl9gLyZGfvii8xQuPoxJE18UYFejO8T7HHXLaTCGKjCYBNKCnkdoXzZaQn6cyaj1nKWNF1WBDqEWpKwD3bKQqdNfRc4/zB0nbzIat72BoSNV0ajRElt562f5TAiNs+htc62DcZdWrOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jSsq+p5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B34C4CEC5;
+	Tue,  3 Sep 2024 20:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396402;
-	bh=isvfGKmY5cC485PePP+xpjvCY+6MbdM4gY2GRFWMhMI=;
+	s=k20201202; t=1725396403;
+	bh=gyKmTyTWsLFKWuyb1CViguXxZW6EghA9L1hLyOY/2+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IE0F7GhqLGLXhe956QoknJHu7WHG8yoktHotO7p2O4w6YaStk2CbDUYbrurpg4P8k
-	 /UAsfa8zHAw45egqzNr9B0NoD+7vN0yAIgXdtkIPC3ud1MHSjzig4UAzuQ5srU7K/g
-	 Snt2LVSeXOWz5bTr69mHZ0Lzzcv8ACXy/d8Xz739cGLq0APrPGzZy1Zl9eiCNuMHjj
-	 kQ53JP53NtweNRp91MkoayUZArPD1aDSl4Yku4hlIl9MY5yeE/FB9B1m5olYfZEFiT
-	 9gJkpLlkCY07iqOoCqujLkSdibRDGo7B6wbJ4upVsvPr/NtlDzdLaUmUqIOwU9itQp
-	 eKN6o56GMcvtg==
+	b=jSsq+p5DXz7504YkA4dpgdREt+zsahPtNYYmOxY1nkU5MW6H0flgzy5OrToc2OSJx
+	 OExvBQcXQ/bSWZn5aWC8p35ZABleTEMpb7Lj+GYOs5Q/HgGDSmEs0mpi704A7NiDXI
+	 S3O5BbVFEcuVcsKZBSx/blbIm3TOvH/QD5mm3xR1RxXf27y7k+3FsCkwEuU8AhdqQ6
+	 Id2iFAdtDB5NJN8twoVH9d5vQnNHoosgqfHER/5yNBCvv1cNqEBHAZwowLE7KZ9ZLq
+	 jbIf4D50sQ3vKEwlK1V5YOIIl2GBmgGp5JxdL/yRnu0Fb6huI2NfFW/ZSgW+E7XALS
+	 WOFOguyHTiRRA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Sherry Yang <sherry.yang@oracle.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 03/12] ALSA: hda/realtek - FIxed ALC285 headphone no sound
-Date: Tue,  3 Sep 2024 15:26:47 -0400
-Message-ID: <20240903192718.1108456-3-sashal@kernel.org>
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 04/12] scsi: lpfc: Fix overflow build issue
+Date: Tue,  3 Sep 2024 15:26:48 -0400
+Message-ID: <20240903192718.1108456-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192718.1108456-1-sashal@kernel.org>
 References: <20240903192718.1108456-1-sashal@kernel.org>
@@ -71,98 +69,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.165
 Content-Transfer-Encoding: 8bit
 
-From: Kailang Yang <kailang@realtek.com>
+From: Sherry Yang <sherry.yang@oracle.com>
 
-[ Upstream commit 1fa7b099d60ad64f559bd3b8e3f0d94b2e015514 ]
+[ Upstream commit 3417c9574e368f0330637505f00d3814ca8854d2 ]
 
-Dell platform with ALC215 ALC285 ALC289 ALC225 ALC295 ALC299, plug
-headphone or headset.
-It had a chance to get no sound from headphone.
-Replace depop procedure will solve this issue.
+Build failed while enabling "CONFIG_GCOV_KERNEL=y" and
+"CONFIG_GCOV_PROFILE_ALL=y" with following error:
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/d0de1b03fd174520945dde216d765223@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c: In function 'lpfc_get_cgnbuf_info':
+BUILDSTDERR: ./include/linux/fortify-string.h:114:33: error: '__builtin_memcpy' accessing 18446744073709551615 bytes at offsets 0 and 0 overlaps 9223372036854775807 bytes at offset -9223372036854775808 [-Werror=restrict]
+BUILDSTDERR:   114 | #define __underlying_memcpy     __builtin_memcpy
+BUILDSTDERR:       |                                 ^
+BUILDSTDERR: ./include/linux/fortify-string.h:637:9: note: in expansion of macro '__underlying_memcpy'
+BUILDSTDERR:   637 |         __underlying_##op(p, q, __fortify_size);                        \
+BUILDSTDERR:       |         ^~~~~~~~~~~~~
+BUILDSTDERR: ./include/linux/fortify-string.h:682:26: note: in expansion of macro '__fortify_memcpy_chk'
+BUILDSTDERR:   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+BUILDSTDERR:       |                          ^~~~~~~~~~~~~~~~~~~~
+BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c:5468:9: note: in expansion of macro 'memcpy'
+BUILDSTDERR:  5468 |         memcpy(cgn_buff, cp, cinfosz);
+BUILDSTDERR:       |         ^~~~~~
+
+This happens from the commit 06bb7fc0feee ("kbuild: turn on -Wrestrict by
+default"). Address this issue by using size_t type.
+
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Link: https://lore.kernel.org/r/20240821065131.1180791-1-sherry.yang@oracle.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 477ba33d991ab..018649100248b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5066,6 +5066,7 @@ static void alc_headset_mode_unplugged(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
-+		alc_hp_mute_disable(codec, 75);
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
- 		break;
-@@ -5291,6 +5292,7 @@ static void alc_headset_mode_default(struct hda_codec *codec)
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0255:
- 		alc_process_coef_fw(codec, coef0255);
-@@ -5450,6 +5452,7 @@ static void alc_headset_mode_ctia(struct hda_codec *codec)
- 			alc_process_coef_fw(codec, coef0225_2);
- 		else
- 			alc_process_coef_fw(codec, coef0225_1);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0867:
- 		alc_update_coefex_idx(codec, 0x57, 0x5, 1<<14, 0);
-@@ -5555,6 +5558,7 @@ static void alc_headset_mode_omtp(struct hda_codec *codec)
- 	case 0x10ec0289:
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	}
- 	codec_dbg(codec, "Headset jack set to Nokia-style headset mode.\n");
-@@ -5714,12 +5718,6 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
--
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x1000);
- 		val = alc_read_coef_idx(codec, 0x45);
-@@ -5736,15 +5734,19 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 			val = alc_read_coef_idx(codec, 0x46);
- 			is_ctia = (val & 0x00f0) == 0x00f0;
- 		}
-+		if (!is_ctia) {
-+			alc_update_coef_idx(codec, 0x45, 0x3f<<10, 0x38<<10);
-+			alc_update_coef_idx(codec, 0x49, 3<<8, 1<<8);
-+			msleep(100);
-+			val = alc_read_coef_idx(codec, 0x46);
-+			if ((val & 0x00f0) == 0x00f0)
-+				is_ctia = false;
-+			else
-+				is_ctia = true;
-+		}
- 		alc_update_coef_idx(codec, 0x4a, 7<<6, 7<<6);
- 		alc_update_coef_idx(codec, 0x4a, 3<<4, 3<<4);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
--
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
- 		break;
- 	case 0x10ec0867:
- 		is_ctia = true;
+diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
+index ed827f198cb68..45c59006945b9 100644
+--- a/drivers/scsi/lpfc/lpfc_bsg.c
++++ b/drivers/scsi/lpfc/lpfc_bsg.c
+@@ -5761,7 +5761,7 @@ lpfc_get_cgnbuf_info(struct bsg_job *job)
+ 	struct get_cgnbuf_info_req *cgnbuf_req;
+ 	struct lpfc_cgn_info *cp;
+ 	uint8_t *cgn_buff;
+-	int size, cinfosz;
++	size_t size, cinfosz;
+ 	int  rc = 0;
+ 
+ 	if (job->request_len < sizeof(struct fc_bsg_request) +
 -- 
 2.43.0
 
