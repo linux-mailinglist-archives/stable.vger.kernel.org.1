@@ -1,140 +1,114 @@
-Return-Path: <stable+bounces-72896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18E596A911
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:52:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D0496A913
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA871C23EE7
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61795284632
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B5B1DA630;
-	Tue,  3 Sep 2024 20:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DE11D9D82;
+	Tue,  3 Sep 2024 20:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqHM5ZpU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Junl84Vh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AE51DA62A;
-	Tue,  3 Sep 2024 20:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A35B189B8E;
+	Tue,  3 Sep 2024 20:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396282; cv=none; b=FNGNlZ93f5hJ/sjUpA39thSzRMSrMZIPsCtKcAp7W+sy4UBJcD9gObxVjVjPgEkom5HDkL/Pa5IcTgEaOQ08VREapq7ELO6PuPp0cJbxkxRmnjuyyTQbC7H+D8nS1nC6p0Wa0LpbHzfyV/vZP7msEH1aNK92A3HSZ8UHXHKY8JI=
+	t=1725396317; cv=none; b=E1DurX34OnfAllOml/p35kj5U/70NSR/PRVfEG1Rhs5lZCD0RArDk4dGi2K1wft1V740UcG/ty9X0XMm7vefGSPdsYKYgj76hUIeLtHjZm05NMAl46s/bA3/NM2kYCmjA0LmdIER4p9ieADzO3UiGp/ViXlDAFh/JVRDVLNxWYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396282; c=relaxed/simple;
-	bh=QhEjdKuSVvUPDTFS1QSJFkWBGO04f8qBHIiFo9Xuoag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDpsHgMJ7ly9cmp+MApFW5L6BpB4Ehbe5NBCv88humUDLjMjvbytzeXvXTcFKOdqWFQIbRjdMMLyeXo9M8OXl4/o2DDMwvdrVR5kUNwf7ncCqVmOh98jrvXKZ2V33IjA5fB3AxdDaKFG1ClEdWFzSylGaRYNedz560yQ7oFH4nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqHM5ZpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2607FC4CECB;
-	Tue,  3 Sep 2024 20:44:41 +0000 (UTC)
+	s=arc-20240116; t=1725396317; c=relaxed/simple;
+	bh=ZN3aHPQfFSmVtl+HuC3jUfcxPgpdLvgJItoky229XU0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PBneVuaLBwmlhjAhbsyDUJpVNYjW22zPrIdEZJlGGEl0Y1zLS+k6icDVIRgCfzsdYwG91wdmrCO/sDiViezbrWa01qNzSLcH8/aj3wDUMKWeCvbIFyClPlDLl3XO0ASmbWpW3rerxw6N5TFKP8Jf+Zk0U7bI/To5um3/SZkix2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Junl84Vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C4BC4CEC4;
+	Tue,  3 Sep 2024 20:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396282;
-	bh=QhEjdKuSVvUPDTFS1QSJFkWBGO04f8qBHIiFo9Xuoag=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqHM5ZpU102o5Z9z4CYWpYdgZCovhvj7XKYhOuYMom7ztLVFqWm9pkLFeuTZALlpF
-	 WH7FnMXPXUJitk7ygWPUWjLLZCPe4i8M9FD6GWy0X7p3Iz0soIrpj47E73yB2HeYaY
-	 VJNLxzGESnr8MgXIIpXdwLPRViG8yYJbB1XyJs9/zfLKTELEB7OfsHQMO+B7ckW5Ds
-	 hU0zrUr8O8OcBsyN0PYmTTGslQ3sT8Q+x5n4PTsmabgT0ghB1KNpyjG34UzMBHaP/X
-	 RFZwwpX0vGhXK0T1vAptY2+5Xm6EIWQhoyOe1oI9yL+TcAhESfz8HAyPH1ugLFIpOS
-	 Rwp9d7FRv4XeQ==
+	s=k20201202; t=1725396317;
+	bh=ZN3aHPQfFSmVtl+HuC3jUfcxPgpdLvgJItoky229XU0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Junl84VhaoF1CmOGzsuGmdkbNHrrjZDdttT9rk99W/PLqoh285hua+AnlY+cYpGwp
+	 /1tcVZMhU2YDmVITSpV2lpPeMtBmwjL5Vazl8o9cUHifCbld50/I4RmKFYIOBWWgj8
+	 IFiLUHNS7padTNwGwwdazhjbiOEt7pT29HgBq4/4AMOTzqS97o2NpmgTc6DQ3+xNZF
+	 7BsyQdPX+1sizQNOLXwd6BgO9IfUmPTmkVTN5sFnNWyVbg/0iLHGDvJm4bjCm0pKji
+	 +eelscbudlFwldF2hbudHgUrTxEZileYvjjo2VFwzZ5cf7G1j16HwBwUHAA91/8kvO
+	 bfX/mB0vyk1VA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: =?UTF-8?q?Albert=20Jakie=C5=82a?= <jakiela@google.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	daniel.gabay@intel.com,
-	justinstitt@google.com,
-	yedidya.ben.shimol@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 20/20] wifi: iwlwifi: clear trans->state earlier upon error
-Date: Tue,  3 Sep 2024 15:23:52 -0400
-Message-ID: <20240903192425.1107562-20-sashal@kernel.org>
+	pierre-louis.bossart@linux.intel.com,
+	lgirdwood@gmail.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	daniel.baluta@nxp.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	kuninori.morimoto.gx@renesas.com,
+	trevor.wu@mediatek.com,
+	christophe.jaillet@wanadoo.fr,
+	sound-open-firmware@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 01/17] ASoC: SOF: mediatek: Add missing board compatible
+Date: Tue,  3 Sep 2024 15:25:15 -0400
+Message-ID: <20240903192600.1108046-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903192425.1107562-1-sashal@kernel.org>
-References: <20240903192425.1107562-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.48
+X-stable-base: Linux 6.1.107
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Albert Jakieła <jakiela@google.com>
 
-[ Upstream commit 094513f8a2fbddee51b055d8035f995551f98fce ]
+[ Upstream commit c0196faaa927321a63e680427e075734ee656e42 ]
 
-When the firmware crashes, we first told the op_mode and only then,
-changed the transport's state. This is a problem if the op_mode's
-nic_error() handler needs to send a host command: it'll see that the
-transport's state still reflects that the firmware is alive.
+Add Google Dojo compatible.
 
-Today, this has no consequences since we set the STATUS_FW_ERROR bit and
-that will prevent sending host commands. iwl_fw_dbg_stop_restart_recording
-looks at this bit to know not to send a host command for example.
-
-To fix the hibernation, we needed to reset the firmware without having
-an error and checking STATUS_FW_ERROR to see whether the firmware is
-alive will no longer hold, so this change is necessary as well.
-
-Change the flow a bit.
-Change trans->state before calling the op_mode's nic_error() method and
-check trans->state instead of STATUS_FW_ERROR. This will keep the
-current behavior of iwl_fw_dbg_stop_restart_recording upon firmware
-error, and it'll allow us to call iwl_fw_dbg_stop_restart_recording
-safely even if STATUS_FW_ERROR is clear, but yet, the firmware is not
-alive.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.9d7427fbdfd7.Ia056ca57029a382c921d6f7b6a6b28fc480f2f22@changeid
-[I missed this was a dependency for the hibernation fix, changed
- the commit message a bit accordingly]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Albert Jakieła <jakiela@google.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20240809135627.544429-1-jakiela@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/mediatek/mt8195/mt8195.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 62aee4965021d..2a408e1ce06ec 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3206,7 +3206,7 @@ void iwl_fw_dbg_stop_restart_recording(struct iwl_fw_runtime *fwrt,
- {
- 	int ret __maybe_unused = 0;
- 
--	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return;
- 
- 	if (fw_has_capa(&fwrt->fw->ucode_capa,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 9dcc1506bd0b0..e8f48cb8d2da1 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1554,8 +1554,8 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans, bool sync)
- 
- 	/* prevent double restarts due to the same erroneous FW */
- 	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status)) {
--		iwl_op_mode_nic_error(trans->op_mode, sync);
- 		trans->state = IWL_TRANS_NO_FW;
-+		iwl_op_mode_nic_error(trans->op_mode, sync);
- 	}
- }
- 
+diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
+index 53cadbe8a05cc..ac96ea07e591b 100644
+--- a/sound/soc/sof/mediatek/mt8195/mt8195.c
++++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
+@@ -663,6 +663,9 @@ static struct snd_sof_of_mach sof_mt8195_machs[] = {
+ 	{
+ 		.compatible = "google,tomato",
+ 		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682.tplg"
++	}, {
++		.compatible = "google,dojo",
++		.sof_tplg_filename = "sof-mt8195-mt6359-max98390-rt5682.tplg"
+ 	}, {
+ 		.compatible = "mediatek,mt8195",
+ 		.sof_tplg_filename = "sof-mt8195.tplg"
 -- 
 2.43.0
 
