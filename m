@@ -1,209 +1,143 @@
-Return-Path: <stable+bounces-72760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0CF9692FA
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 06:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34EC9693D3
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 08:37:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C953728467B
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 04:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709722873BA
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 06:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF76A1CE6EA;
-	Tue,  3 Sep 2024 04:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86B1D460A;
+	Tue,  3 Sep 2024 06:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QkSB7icF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Z1mYGaP8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0D1CDA02
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 04:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0982F2E3EB;
+	Tue,  3 Sep 2024 06:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725339534; cv=none; b=Y7H8neGMdCpvNtrHM/wxC+jsn6oAekHLlRVUwKrPfZ++2mO/0m/C3NAsxXs/Cf5AcjM5or5d6Fg+SiMlF4isELrIkOOQ5zr472J6tge64/tZ1s90fQObNnspD3eI6vjcaLXoQ57MTQKWnSaXTCSJrOAhgBSCosQb4Tb2AiJSOBw=
+	t=1725345451; cv=none; b=gkE4qrBLC3zOCX6EgOvs6uX4Wp7DuG6lEcvWLkbDtVVsu7I1eTNAaLz0M9NSKHIHzRKfmpc6j1Hh/dHy0fLO2GO8grm9dQ+u8t4limj3Je9id1rffr7m+nk/g3Qpak4FZUVH8/CgNvTyUbu4PrCGkUWpmCTDSttV9Sd1HTAYMUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725339534; c=relaxed/simple;
-	bh=8o85C8EbJOznl3BLIG+cQfhkgOXbYiQlzAjPgnN+QnU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GYR1naN9IHPRVnMdxGavXBUa2wTPcyUoukEP1rSi6c140jpEHASuNYxHMN/ddqZkyXwRxGIyhG2t6dfZJf3nK9WvcwyLXbd8wpGIuyQqqJxquMoRI/E3pyKBZ/zRv/CTN5WznGf8vRmsFCmk7Zb/NcKCJTOHW+uC1X839xFZnzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QkSB7icF; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7093b53f315so1698954a34.2
-        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 21:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1725339532; x=1725944332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sPhZdW35wA0lKARiWkZjmf+aWFeCFp2ESl8o+4bQ7rQ=;
-        b=QkSB7icFuZD4j2OvZYLn0LuHd2Zs//PGbdQKPeb2vTgN82g7rCGDGzx3CVU9L4jfCi
-         fVMJVSN6CjXOLxFDwzgfiZIM6mGmbITLyyc9ab9hyxuSzXB7A3ex3YNyxT7NSw8uX0zB
-         D6ftEYuvHb++lGwyG4EP0RU38QXEVDUwZUj5c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725339532; x=1725944332;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sPhZdW35wA0lKARiWkZjmf+aWFeCFp2ESl8o+4bQ7rQ=;
-        b=uOdw79oH5A4i+/4Q0jaIAEaRERzZf0zjN17MTcV60LX9dM8cAIlKtxcBSxT2Epsv5u
-         fK1SPualcPyAtdEEMNU4c1NjL5kooPd0qk0Ls62MfXxD+GHYaSyRFrd1gyJpH1LKuEDx
-         AnZFcNMPftbXnOkuDSvCg1UbYZX+ioS7OWXBwjRGxXCiWElq6M1NGzXMxqkHosCErCat
-         7Uoz96szNyR8ioY/LfEWVe4yLBNPwmwhHOdsvlGlmmEzTCDN8DvXdoYLsU0OAsvTP3A5
-         EiCl5z4lg4/cbAgiSeG6vLNoFKr3Susn6Dx4kugIPL/A/VXaeVh6qOn/FcfH1DXgjLRO
-         8cRw==
-X-Gm-Message-State: AOJu0YwHVxAULnh0KMpC5BFb/hjRAQxkaeqhzZNAmJBRz+ssP4lHMTol
-	fo0qMZdCAkKx98YDxMyAr8d15GcJKmjipJSJuXAkthNCkmN5fariB+W8gWsvTG3YSupGAfytX/s
-	wHBo+BJIuWvi4fu3zmOpVhkl4eNZv4Ku1ZWGM1z2iODgXgryZFtXJ3/Zn5uK4jSPlrAMohVp+P2
-	Z95LfE6TQlNhhIyBiqAm9AmZRkSGK5PLKYYE2G2FUoRSQGJWx+aQ==
-X-Google-Smtp-Source: AGHT+IG8me1bSENR4wRx/OKAQejDcXWKY5+HZ/AzEltyhw/WRh8aAe2pXkZG/Vr0P7/zTKqlGwLNxQ==
-X-Received: by 2002:a05:6358:4429:b0:1aa:b9f2:a0c4 with SMTP id e5c5f4694b2df-1b8117bccf4mr268303755d.11.1725339531470;
-        Mon, 02 Sep 2024 21:58:51 -0700 (PDT)
-Received: from photon-a190c64c6e7e.. ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d8d06c9340sm3599334a91.22.2024.09.02.21.58.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 21:58:51 -0700 (PDT)
-From: sikkamukul <mukul.sikka@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: evan.quan@amd.com,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	airlied@linux.ie,
-	daniel@ffwll.ch,
-	Jun.Ma2@amd.com,
-	kevinyang.wang@amd.com,
-	sashal@kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Bob Zhou <bob.zhou@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Mukul Sikka <mukul.sikka@broadcom.com>
-Subject: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
-Date: Tue,  3 Sep 2024 04:58:09 +0000
-Message-Id: <20240903045809.5025-1-mukul.sikka@broadcom.com>
-X-Mailer: git-send-email 2.39.4
+	s=arc-20240116; t=1725345451; c=relaxed/simple;
+	bh=Vb2ayZcxVYJI7Oj9Q+AdxHY/5Iq8m3iAdvArdzNkNEo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ujJH4BaAVIaGdPJ6WtNpDnntnYunQKXM9C9N7KKP72T+OMQ0wSUxhT/8HfZJnbrnOIDiAOE7Jb2RBydiU33ElTUPpNf/lgjhg7Y8GgRElMI6nWSYNQ4z88US0k/2VRI3PcgcMHQrY2DKXcZiorFmxi5d0q36YKPkoGYrgNPFalI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Z1mYGaP8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4831LiJs001041;
+	Tue, 3 Sep 2024 06:37:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=oiQkwmuVOshle+cB69tX4B8eAUbAPjYvOD/Pld37iA8=; b=Z1
+	mYGaP8QwbPi5x3Tpsx1W6CRz2qSAQCz9uTeRC9KLJZcl+FFqZpREVAr4EZVe7dvE
+	jfZ7fuB1cnqFt0CSAg3rL1uEscPLEQwtFY/y3O7GqmkIpXUf2X6hNpLVjuAth9bJ
+	UETIErKw26rm7CWS5cApZw+v2qQU80qCUgRaSo6kCL9ZjfHFZa9nmFg/kIzQtwQA
+	0gngKO215hgeA7aNMTLE2SAcfjXLzZPYIxhxpXVuVRQXTmXecbpMthyj24xRYbRf
+	0+9XNU6RfYmjSHYbbuduDq24JxQU9fH1wZSDJQg+SH3+ecOR0Gs+OsR48K5NsTcB
+	fYPjQfKCAfMrpb7OmwHQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41drqe0j1f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Sep 2024 06:37:26 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4836bOuj008257
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 3 Sep 2024 06:37:24 GMT
+Received: from hu-mapa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 2 Sep 2024 23:37:20 -0700
+From: Manish Pandey <quic_mapa@quicinc.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "Martin K. Petersen"
+	<martin.petersen@oracle.com>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <quic_nitirawa@quicinc.com>,
+        <quic_bhaskarv@quicinc.com>, <quic_narepall@quicinc.com>,
+        <quic_rampraka@quicinc.com>, <quic_mapa@quicinc.com>,
+        <quic_cang@quicinc.com>, <quic_nguyenb@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH V6] scsi: ufs: qcom: update MODE_MAX cfg_bw value
+Date: Tue, 3 Sep 2024 12:07:09 +0530
+Message-ID: <20240903063709.4335-1-quic_mapa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: OZ4-rYUq8lpixTI0qUy7JQKqfkJI7qzF
+X-Proofpoint-ORIG-GUID: OZ4-rYUq8lpixTI0qUy7JQKqfkJI7qzF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-02_06,2024-09-02_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ impostorscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2409030051
 
-From: Bob Zhou <bob.zhou@amd.com>
+Commit 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
+bandwidth values for Gear 5") updated the ufs_qcom_bw_table for
+Gear 5. However, it missed updating the cfg_bw value for the max
+mode.
 
-[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
+Hence update the cfg_bw value for the max mode for UFS 4.x devices.
 
-Check return value and conduct null pointer handling to avoid null pointer dereference.
-
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
+Fixes: 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
+bandwidth values for Gear 5")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manish Pandey <quic_mapa@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 30 ++++++++++++++++---
- 1 file changed, 26 insertions(+), 4 deletions(-)
+Changes from v5:
+- Updated commit message.
+- Added Reviewed-by tag.
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 10678b519..304874cba 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3391,13 +3391,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
- 	const struct vega10_power_state *vega10_ps =
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
--	uint32_t sclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].gfx_clock;
- 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
--	uint32_t mclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].mem_clock;
-+	uint32_t sclk, mclk;
- 	uint32_t i;
+Changes from v4:
+- Updated commit message.
+
+Changes from v3:
+- Cced stable@vger.kernel.org.
+
+Changes from v2:
+- Addressed Mani comment, added fixes tag.
+
+Changes from v1:
+- Updated commit message.
+---
+ drivers/ufs/host/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index c87fdc849c62..ecdfff2456e3 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -93,7 +93,7 @@ static const struct __ufs_qcom_bw_table {
+ 	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
+ 	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
+ 	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
+-	[MODE_MAX][0][0]		    = { 7643136,	307200 },
++	[MODE_MAX][0][0]		    = { 7643136,	819200 },
+ };
  
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+	sclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].gfx_clock;
-+	mclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].mem_clock;
-+
- 	for (i = 0; i < sclk_table->count; i++) {
- 		if (sclk == sclk_table->dpm_levels[i].value)
- 			break;
-@@ -3704,6 +3708,9 @@ static int vega10_generate_dpm_level_enable_mask(
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	int i;
- 
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+
- 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
- 			"Attempt to Trim DPM States Failed!",
- 			return -1);
-@@ -4828,6 +4835,9 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
- 
- 	psa = cast_const_phw_vega10_power_state(pstate1);
- 	psb = cast_const_phw_vega10_power_state(pstate2);
-+	if (psa == NULL || psb == NULL)
-+		return -EINVAL;
-+
- 	/* If the two states don't even have the same number of performance levels they cannot be the same state. */
- 	if (psa->performance_level_count != psb->performance_level_count) {
- 		*equal = false;
-@@ -4953,6 +4963,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
- 		return -EINVAL;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].gfx_clock =
-@@ -5004,6 +5016,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
- 		return -EINVAL;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].mem_clock =
-@@ -5239,6 +5253,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
- 		return;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
-+
- 	max_level = vega10_ps->performance_level_count - 1;
- 
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5261,6 +5278,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
- 
- 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
-+
- 	max_level = vega10_ps->performance_level_count - 1;
- 
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5451,6 +5471,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
- 		return -EINVAL;
- 
- 	ps = cast_const_phw_vega10_power_state(state);
-+	if (ps == NULL)
-+		return -EINVAL;
- 
- 	i = index > ps->performance_level_count - 1 ?
- 			ps->performance_level_count - 1 : index;
+ static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);
 -- 
-2.39.4
+2.17.1
 
 
