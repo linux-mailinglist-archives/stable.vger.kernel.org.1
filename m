@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-72945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9337A96A993
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8502E96A997
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 257E728A363
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AF191F2139A
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A7C1EB947;
-	Tue,  3 Sep 2024 20:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB4A1D7E31;
+	Tue,  3 Sep 2024 20:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qkSxFZDM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iO0HGyyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3509D1EB92D;
-	Tue,  3 Sep 2024 20:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4511E00B3;
+	Tue,  3 Sep 2024 20:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396540; cv=none; b=RjuUxUWnJzTUY2HXutpm4xnQV4Rt/706sfvyH2tIb6eExnzhaxHSGY64WP2fGrNmhBdIBfbyNxwWDnT2kE15CAEukqCwS+p2pyTlLqNsRG02G5Tx448Ro23sj4r3NzkvC3z4INtW5v6cmybE6d3uiiAeMp6rwmTRhfIaClsgz8k=
+	t=1725396543; cv=none; b=fMiHX5UMoyfAe0vh9iToxEpuUdo3PwQunWnQxIV/dCHP/VVIc0KZkWCHIGi6e1HtliLcU1I4qDCD8qoYbZeNe6U9YxzchHCyG0Tk4Pt3wdeh3n/vxm56QmZ5cGZf0sISg239ZK/F5gqEdIE5/ObjUFzJhbcGbsjHm8G0btLxMNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396540; c=relaxed/simple;
-	bh=5dGQXYgwaL/nIaqNLzT7zvFRYHO6hfBf1vx3MMVjnZ8=;
+	s=arc-20240116; t=1725396543; c=relaxed/simple;
+	bh=C1hdTBqi1CQKXIDW4NVretcVSsxRArCO0Ef/KfTkxP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cL2bMA0VJqEc4uULDoLxUyECy0dvXIU8XULtXyG1fOZHVH7QYAMbzyTAk7GDCVKRXzbq9+DFFWBOX1f2TNP0L9qRxvqGt4zs8gaPSdE0ijxX6ADldAFjnIxjImBWi0IWzRvmOxHpoux8WROLjexUqtunwJIkvCoRwIprKWRGOi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qkSxFZDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84722C4CEC4;
-	Tue,  3 Sep 2024 20:48:58 +0000 (UTC)
+	 MIME-Version; b=P/skzVSLUExCblhW62lNc48JiJrc+OELxejjgfqJz8nn7PYabjUg+g/KkEzV5TYCDgTcvVpzDrnFermifT8YlScl9vH6Z1ebQpgRPq8eJ7BvOpR9cMg2nMLb3vZuzixpKu3/rbWafW7aoKRplMKQqsSiNp9h45aVT1MIO9TduC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iO0HGyyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EACCC4CECC;
+	Tue,  3 Sep 2024 20:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396539;
-	bh=5dGQXYgwaL/nIaqNLzT7zvFRYHO6hfBf1vx3MMVjnZ8=;
+	s=k20201202; t=1725396543;
+	bh=C1hdTBqi1CQKXIDW4NVretcVSsxRArCO0Ef/KfTkxP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkSxFZDMJkZkpSJy6P1HCd9izqj1Kq5qRQuSbbY4CMpW+5YnL5RmrV2ws6Qan4hnD
-	 r/fW5ET0w8yHQuYvEVSt3K0i4R+nb6FeDNAeHD0vGJkD95SklXf20kYe4lJEbs8nsS
-	 I7IIxRD6rRK/unjPonwReekmofzkfpdzP4bxcQ7W+RQXMXc+78K+GM8mDsHQ0/X7WO
-	 n9jCNuRMu/PeePcoQ5Zhq/dOwU7r62p9ixBodI+mqNs0ObpiP5P/AUTN+dFZdgwgwC
-	 vaAwjOJYwZxXhzZz283JlqizR7vPGMjpioCcPdMWDOH7hSbEksmy1K948l5gqa0o7V
-	 VsdnF4Qi2xYWQ==
+	b=iO0HGyyLkGqcHoKU1YMJv5PqkkmreLWF+l/pb5vcmbKQ34qXz6MM0drD8sTd2PSXF
+	 NEnElHBHYkFneuNjGGCs82TqPkEXFrH0zZZ+EPUDJl0H/ay9SAIFJUX7Dg8IAf4npw
+	 Z1w6MVtn2lFSQrYyMRbtwedUyqOl8FUNCWhPxZiO49SSea4HDZ2ik8lrI6hLKq8G7w
+	 QIWyxbI3s3uulJJIXQo/VanUKUlQ+PqKQ5P1PF2XWOCdZ1sWM7GWNrBl82dWNLdHaP
+	 yJvrpsfXEwnoykLwC80XGBv4WeSRGBv9JZFwTDQnZSRLUwRJ33lpLFh2uPZh4C9tBQ
+	 WJ85e2QATXdwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jacky Chou <jacky_chou@aspeedtech.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	u.kleine-koenig@pengutronix.de,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 4/6] net: ftgmac100: Ensure tx descriptor updates are visible
-Date: Tue,  3 Sep 2024 15:29:24 -0400
-Message-ID: <20240903192937.1109185-4-sashal@kernel.org>
+	kvalo@kernel.org,
+	ayala.beker@intel.com,
+	benjamin.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 5/6] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+Date: Tue,  3 Sep 2024 15:29:25 -0400
+Message-ID: <20240903192937.1109185-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192937.1109185-1-sashal@kernel.org>
 References: <20240903192937.1109185-1-sashal@kernel.org>
@@ -69,107 +70,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.320
 Content-Transfer-Encoding: 8bit
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
+[ Upstream commit 916a5d9c5354c426220a0a6533a5e8ea1287d6ea ]
 
-The driver must ensure TX descriptor updates are visible
-before updating TX pointer and TX clear pointer.
+Driver creates also the WFA TPC element, consider that in the
+calculation.
 
-This resolves TX hangs observed on AST2600 when running
-iperf3.
-
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 23c019d1278cd..f6ed8d167d53c 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -579,7 +579,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
- 	(*processed)++;
- 	return true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 16b614cc16ab5..940018a1f0ee7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -91,6 +91,8 @@
+ /* adaptive dwell default APs number in social channels (1, 6, 11) */
+ #define IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL 10
  
-- drop:
-+drop:
- 	/* Clean rxdes0 (which resets own bit) */
- 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
- 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
-@@ -663,6 +663,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
- 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
- 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
++#define WFA_TPC_IE_LEN	9
 +
- 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
+ struct iwl_mvm_scan_timing_params {
+ 	u32 suspend_time;
+ 	u32 max_out_time;
+@@ -328,8 +330,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
  
- 	return true;
-@@ -816,6 +821,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	dma_wmb();
- 	first->txdes0 = cpu_to_le32(f_ctl_stat);
+ 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
  
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	/* Update next TX pointer */
- 	priv->tx_pointer = pointer;
+-	/* we create the 802.11 header and SSID element */
+-	max_probe_len -= 24 + 2;
++	/* we create the 802.11 header SSID element and WFA TPC element */
++	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
  
-@@ -836,7 +846,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	/* DS parameter set element is added on 2.4GHZ band if required */
+ 	if (iwl_mvm_rrm_scan_needed(mvm))
+@@ -727,8 +729,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
+ 	return newpos;
+ }
  
- 	return NETDEV_TX_OK;
- 
-- dma_err:
-+dma_err:
- 	if (net_ratelimit())
- 		netdev_err(netdev, "map tx fragment failed\n");
- 
-@@ -858,7 +868,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	 * last fragment, so we know ftgmac100_free_tx_packet()
- 	 * hasn't freed the skb yet.
- 	 */
-- drop:
-+drop:
- 	/* Drop the packet */
- 	dev_kfree_skb_any(skb);
- 	netdev->stats.tx_dropped++;
-@@ -1444,7 +1454,7 @@ static void ftgmac100_reset_task(struct work_struct *work)
- 	ftgmac100_init_all(priv, true);
- 
- 	netdev_dbg(netdev, "Reset done !\n");
-- bail:
-+bail:
- 	if (priv->mii_bus)
- 		mutex_unlock(&priv->mii_bus->mdio_lock);
- 	if (netdev->phydev)
-@@ -1515,15 +1525,15 @@ static int ftgmac100_open(struct net_device *netdev)
- 
- 	return 0;
- 
-- err_ncsi:
-+err_ncsi:
- 	napi_disable(&priv->napi);
- 	netif_stop_queue(netdev);
-- err_alloc:
-+err_alloc:
- 	ftgmac100_free_buffers(priv);
- 	free_irq(netdev->irq, netdev);
-- err_irq:
-+err_irq:
- 	netif_napi_del(&priv->napi);
-- err_hw:
-+err_hw:
- 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
- 	ftgmac100_free_rings(priv);
- 	return err;
+-#define WFA_TPC_IE_LEN	9
+-
+ static void iwl_mvm_add_tpc_report_ie(u8 *pos)
+ {
+ 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
 -- 
 2.43.0
 
