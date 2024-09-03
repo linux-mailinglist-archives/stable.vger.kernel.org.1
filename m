@@ -1,167 +1,169 @@
-Return-Path: <stable+bounces-72833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABC3969E05
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 14:44:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CB6969E51
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 14:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCF66B24383
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:44:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21A12288291
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33821D6C7E;
-	Tue,  3 Sep 2024 12:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368341CA6B1;
+	Tue,  3 Sep 2024 12:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="RpQsetTt"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="SCTIEJoW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ke7gOsRH"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
+Received: from pfhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28701D094E
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 12:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E123B5227;
+	Tue,  3 Sep 2024 12:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725367448; cv=none; b=X+F8SEPvACKuflUQ0lzeJjdJZy10IzrDvPcgMft+StIkCHywZIMS30Uyh7k1Z1YplmikgxJygRrjl6fIHy8RXy0GmyN4ghRO1754r0B9zTNcteF/v4flpvztLejZGBrO8Kr4aqVjHd0PzDTlFvXqV0pJUZO3Kxvu46xyGSOn9XU=
+	t=1725367793; cv=none; b=l8zUwOCtdiDkVuodGyvoo2JZNHZX7LAtufeZOa/yh5esuTSgQpOjqks92gLNb/gydcfslowM3AWDx+sH5+EzuRfS7rLeCthUt8LraJLRtpeVuRN9HGLvWQBZL39oOYh2z2oT6mfXYGs0hAlFiY2i/goH767s40JgxLvkQbGLitc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725367448; c=relaxed/simple;
-	bh=NCxLoS7pJBA/A6sZejri9a3QzwC1XvakjDQEyT5H520=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=h0Ac5AnKVIOubbxQf8MklkUf/AB3n6ShTjbbD39K2UswFOOJ85nnxyqaQtu+oNvS1IGYBMzsQdz8I/zOSfxN2DmcVEvdq16dRRQLigYjIAJlrfqU7qP6LoN+X1qaW9PijnDlGlz+2P0cfBZHy4NRx3vyIhgR021P6T3HiVyZicU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=RpQsetTt; arc=none smtp.client-ip=17.58.6.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1725367446;
-	bh=tEfTAfNjlVglE6qtj9e61J5uaCFS+zpjP4F6IfurRvs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=RpQsetTtpYAcAZDJdo5WBAxLsuubUbh2IDwdNMXXN88kD0LbyDCyEwOdSEFZlRZE+
-	 8vUdzYeglDnnmaBRdYIBj+eGfeDBOe951MCx+SZbJwIoR7/H/VihtKIvqg3NZIAh9G
-	 Ok8iXN4hck/ImVBlr3YnRNuxOln/Kcaw+egEtGwC4WpA0jJpc3T/iQtwlq1WlQjqBm
-	 jRTmAcOLoSq76MXcH5CwkvG2Y1+NsZ1e+QB6iHbV8fGjVlBuBd2XDJ2ipusSKtL0yT
-	 I1stCPSCs2HhWa3CZIezd6R1UIknc45Y1nGIxsSsXnvxPMxx0onU6R6sG+iRqpE2ge
-	 kuPtzMPCwWUEw==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 2DDC220102BD;
-	Tue,  3 Sep 2024 12:43:59 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 03 Sep 2024 20:41:44 +0800
-Subject: [PATCH] cxl/region: Fix logic for finding a free cxl decoder
+	s=arc-20240116; t=1725367793; c=relaxed/simple;
+	bh=f0KKhbrLThdJMjZSEehIjis59dSoFnO019R8uYSZr34=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GJbuX+Xu/yeo6szU5rlQL8ACWo49a2WOV6m04fbPttdJLZYrJGIyj0nlYtmmamfY80kycNVwk7TWjB2U2ug3bo47R1Xpi6iGZbs6Kux9OXBvsKAY/6L9tvex4DXIN92KhTNrbtgbCukmSnRd+XaeHR/qqmFCTXX7XNeki5F334w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=invisiblethingslab.com; spf=none smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=SCTIEJoW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ke7gOsRH; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id EEB041140312;
+	Tue,  3 Sep 2024 08:49:50 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 03 Sep 2024 08:49:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm1;
+	 t=1725367790; x=1725454190; bh=1E+BR3n5Z2r9Job4iJ8m7+Qj6dAdD2l1
+	1Popp9sAYmE=; b=SCTIEJoWndflLhuisooQw4Fajc3sPxUIHH4AELiNjRpS2lAc
+	coaBOMZQL6xbbqPdDWrO1bwlTMRnc2euR53c1UGRP4oghYwSC9ZuXMSR0rADu0rC
+	tfQEbMFnvdFVROKDsx4cqtMyHQu5JM0H6OuuMaX0oWzxgOGJqqxdJbmR28/o6864
+	hK8viT4V84uoMovvZPosV2H1iQNuowuRYCGmozb8hOBkeZD6GXBHNwG5QBxbU/zD
+	IjCDLMN7Rc6Ik7o5EJ2adKkU0w7LMnvVwiangLjZjDZ5PIxd4ezL+kCYl6sEc8+e
+	d/LV305FkcR88SOBSsbc0lB+OMNP4fazLKUVkg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1725367790; x=1725454190; bh=1E+BR3n5Z2r9J
+	ob4iJ8m7+Qj6dAdD2l11Popp9sAYmE=; b=ke7gOsRH5cfxHIwJqdYFsVFTuUo8x
+	/4SzdEPACUSiNf1U4ekVEXYrWmF62Hpvp9Kte7AL596v6BQ7rs9PxeFjmGzz68Gh
+	YsrS3o01CfFXzb/07G/CY97ZKzVaM7aBQ+r9VMG5YvXcsOBdyuqtFIUn7hZ1paTD
+	pBelaNSs8tAuJMwEYgUWK2JDC9T93B6niYpbgVW3ZySD+WLH7gCkDSTSKjACq+12
+	XF9/4Exyf/XkiQzDtzHPZxnpqtRt+Wp7S1lLiOBflwDqa0+4cRrE4J4oFC0G0Cyd
+	3MFvvQWRYORHJXw6ECNMK0G9kOUYw7Wh534c/9bEYxparStJdpNHIyfbg==
+X-ME-Sender: <xms:7QXXZroU0JDe7zPRYsPzIkDCocXmuqZY6hjjH7rb2yh8fFdVCs9Dbw>
+    <xme:7QXXZloLpkr2EjMucq-Al0eQCxAclkGNb_NZGbSnzNZ31jH4PMYcY0KrZADsYUVHz
+    Fd41nNaxpt0iA>
+X-ME-Received: <xmr:7QXXZoMJPnENco3m9sWDtkmea9HPREBDsY_-eENQRyzk80iYNUl6sd1eNdijnwi3pjuF19PCm_LYbKsCfSK4h9PnH4vfdqkF4f5ddJ3ZWt8PoyRD6z0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehhedgheeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhephffvvefufffkofggtgfgsehtkeertdertdejnecu
+    hfhrohhmpeforghrvghkucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrg
+    hrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffr
+    rghtthgvrhhnpeelkefhudelteelleelteetveeffeetffekteetjeehlefggeekleeghe
+    fhtdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+    pehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhmpdhnsg
+    gprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrh
+    hmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdprhgtphhtthho
+    pehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthh
+    grlhdrkhhophgvtgesfehmuggvsgdrtghomhdprhgtphhtthhopehpvghrvgigsehpvghr
+    vgigrdgtiidprhgtphhtthhopehtihifrghisehsuhhsvgdrtghomhdprhgtphhtthhope
+    hkrghilhgrnhhgsehrvggrlhhtvghkrdgtohhmpdhrtghpthhtohepshgsihhnughinhhg
+    sehophgvnhhsohhurhgtvgdrtghirhhruhhsrdgtohhmpdhrtghpthhtohepshhimhhonh
+    htsehophgvnhhsohhurhgtvgdrtghirhhruhhsrdgtohhm
+X-ME-Proxy: <xmx:7QXXZu4qnZc0yP8zYaFPa2u2EW7WZnj5rOYx3PJbo5V6gu6jaZNBIQ>
+    <xmx:7QXXZq7fKPZFc67adNu71liSYSm0S8zOvAofRlaEhKalPb20vAQl7A>
+    <xmx:7QXXZmgtrCGCDEzlufIgzLvKcsUh2O---JKjyAb5Iqqqpp1PjuDJ-Q>
+    <xmx:7QXXZs5WmIXAZnikbQ-hvRiZDnnuVNNXwhPehEaMDRttvteUpcaERQ>
+    <xmx:7gXXZihqyLaLla69jKMWz3CClVBpO3mTb2F1VKVSNgnThQ3HbtVZozA1>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Sep 2024 08:49:48 -0400 (EDT)
+From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Athaariq Ardhiansyah <foss@athaariq.my.id>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	linux-sound@vger.kernel.org (open list:SOUND)
+Subject: [PATCH] ALSA: hda/realtek: extend quirks for Clevo V5[46]0
+Date: Tue,  3 Sep 2024 14:49:31 +0200
+Message-ID: <20240903124939.6213-1-marmarek@invisiblethingslab.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240903-fix_cxld-v1-1-61acba7198ae@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAAcE12YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDSwNj3bTMivjkipwUXZM0M1Nz00RLAzNDSyWg8oKiVKAc2Kjo2NpaAOd
- 52OZaAAAA
-To: Davidlohr Bueso <dave@stgolabs.net>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>, 
- Dave Jiang <dave.jiang@intel.com>, 
- Alison Schofield <alison.schofield@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Dan Williams <dan.j.williams@intel.com>, Ben Widawsky <bwidawsk@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Zijun Hu <zijun_hu@icloud.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-cxl@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-GUID: hjGKpDrPx5TerylKFjNZHA9BMEHdaUxu
-X-Proofpoint-ORIG-GUID: hjGKpDrPx5TerylKFjNZHA9BMEHdaUxu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-02_06,2024-09-03_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- malwarescore=0 clxscore=1011 mlxlogscore=999 phishscore=0 bulkscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2409030103
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+The mic in those laptops suffers too high gain resulting in mostly (fan
+or else) noise being recorded. In addition to the existing fixup about
+mic detection, apply also limiting its boost. While at it, extend the
+quirk to also V5[46]0TNE models, which have the same issue.
 
-match_free_decoder()'s logic for finding a free cxl decoder depends on
-a prerequisite that all child decoders are sorted by ID in ascending order
-but the prerequisite may not be guaranteed, fix by finding a free cxl
-decoder with minimal ID.
-
-Fixes: 384e624bb211 ("cxl/region: Attach endpoint decoders")
-Closes: https://lore.kernel.org/all/cdfc6f98-1aa0-4cb5-bd7d-93256552c39b@icloud.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Cc: <stable@vger.kernel.org>
 ---
- drivers/cxl/core/region.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 21ad5f242875..b9607b4fc40b 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -797,21 +797,26 @@ static size_t show_targetN(struct cxl_region *cxlr, char *buf, int pos)
- static int match_free_decoder(struct device *dev, void *data)
- {
- 	struct cxl_decoder *cxld;
--	int *id = data;
-+	struct cxl_decoder *target_cxld;
-+	struct device **target_device = data;
- 
- 	if (!is_switch_decoder(dev))
- 		return 0;
- 
- 	cxld = to_cxl_decoder(dev);
--
--	/* enforce ordered allocation */
--	if (cxld->id != *id)
-+	if (cxld->region)
- 		return 0;
- 
--	if (!cxld->region)
--		return 1;
--
--	(*id)++;
-+	if (!*target_device) {
-+		*target_device = get_device(dev);
-+		return 0;
-+	}
-+	/* enforce ordered allocation */
-+	target_cxld = to_cxl_decoder(*target_device);
-+	if (cxld->id < target_cxld->id) {
-+		put_device(*target_device);
-+		*target_device = get_device(dev);
-+	}
- 
- 	return 0;
- }
-@@ -839,8 +844,7 @@ cxl_region_find_decoder(struct cxl_port *port,
- 			struct cxl_endpoint_decoder *cxled,
- 			struct cxl_region *cxlr)
- {
--	struct device *dev;
--	int id = 0;
-+	struct device *dev = NULL;
- 
- 	if (port == cxled_to_port(cxled))
- 		return &cxled->cxld;
-@@ -849,7 +853,8 @@ cxl_region_find_decoder(struct cxl_port *port,
- 		dev = device_find_child(&port->dev, &cxlr->params,
- 					match_auto_decoder);
- 	else
--		dev = device_find_child(&port->dev, &id, match_free_decoder);
-+		/* Need to put_device(@dev) after use */
-+		device_for_each_child(&port->dev, &dev, match_free_decoder);
- 	if (!dev)
- 		return NULL;
- 	/*
-
+Cc: Michał Kopeć <michal.kopec@3mdeb.com>
 ---
-base-commit: 67784a74e258a467225f0e68335df77acd67b7ab
-change-id: 20240903-fix_cxld-4f6575a90619
+ sound/pci/hda/patch_realtek.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Best regards,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 588738ce7380..01e2414b8839 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7637,6 +7637,7 @@ enum {
+ 	ALC287_FIXUP_LENOVO_14ARP8_LEGION_IAH7,
+ 	ALC287_FIXUP_LENOVO_SSID_17AA3820,
+ 	ALCXXX_FIXUP_CS35LXX,
++	ALC245_FIXUP_CLEVO_NOISY_MIC,
+ };
+ 
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -9970,6 +9971,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35lxx_autodet_fixup,
+ 	},
++	[ALC245_FIXUP_CLEVO_NOISY_MIC] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_limit_int_mic_boost,
++		.chained = true,
++		.chain_id = ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -10619,7 +10626,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+-	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0xa741, "Clevo V54x_6x_TNE", ALC245_FIXUP_CLEVO_NOISY_MIC),
++	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC245_FIXUP_CLEVO_NOISY_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb022, "Clevo NH77D[DC][QW]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+2.46.0
 
 
