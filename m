@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-72918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE91F96A94C
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFF596A94E
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D2C51C20C72
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D23828099A
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29841E6DDC;
-	Tue,  3 Sep 2024 20:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37111CF5FA;
+	Tue,  3 Sep 2024 20:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBsRy34F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5g48Pox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7C21E6DD0;
-	Tue,  3 Sep 2024 20:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C471E6DD0;
+	Tue,  3 Sep 2024 20:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396405; cv=none; b=jJ1rMRt3/HmBcv2ii7gG67JeaOQIWe9yxGqkMXYNI4qYen8j1b5mz8haWlFMrYqYeJKTJASQ0IL6NZLmH45kHPGa27afNwTDnmaMzrWnHedUZwZ7ZIILij13iHAkoLBAUVZ9IJmSNm0bST+656KjWmF5ihfIUniXbzrf/abgbpc=
+	t=1725396408; cv=none; b=kDcpkNa+KqzKPgGFwMeqlFUY2wtkjblGnNR75y/jWb7USsL3wHHGTvuz6oLR7s/yVSqBRLPJs0fgzVyF1xOYPzo7yUZLO/M3e30fS0ncy5IY8V7JUnE0e7oMzdX8G3AqWL4OQVbGjp8tAnM3vMq99k+PmC+Mxhy/O3J5sffOkyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396405; c=relaxed/simple;
-	bh=K2XP8FQ5/gFQqUzjnGgIsdTXx1wvqouRnQ17Vs3MY8g=;
+	s=arc-20240116; t=1725396408; c=relaxed/simple;
+	bh=xyYr14IxjoZMwPMba6buTnhg5EZOEiv+NqeMqEXV0mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cX4nOmLVsrI6vLdcxSM3+42CZDG3KthY1nG/MGfRiKRmunVSl4xlQhatr8UI4Z/1r5NMPw0fq0IDq4W5x+37t6Z3sS15ZRIk7zK/gqNTNHEL6BDGt0DcunvmsMngmDYe8dIeeiTbbsNJcrtf0QPUmNqNED2l+tKYI3RUIUnii5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBsRy34F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F02BC4CECA;
-	Tue,  3 Sep 2024 20:46:44 +0000 (UTC)
+	 MIME-Version; b=ZRuHElksfqn8nwGPqW6exVI2hcr+OtAdl1AgKULkdNmUxgM+ETpXXzZ3eifv6SE3tupX3PB7HXAsPDbn8T0TIvNcKZMHezD71WGPY4iAoCHSo2yMSA0BgLFAr0/FLjIFnJYHm4g1C/oaKBRxyJ2uk2Yhj1Fc+fKI6mXV/PI26sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5g48Pox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECFCC4CEC5;
+	Tue,  3 Sep 2024 20:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396405;
-	bh=K2XP8FQ5/gFQqUzjnGgIsdTXx1wvqouRnQ17Vs3MY8g=;
+	s=k20201202; t=1725396408;
+	bh=xyYr14IxjoZMwPMba6buTnhg5EZOEiv+NqeMqEXV0mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBsRy34Fiorc9QhhPt93hbPjCFSd8M9lD3/1ydS4SMFFx52DK0UQp/HTuMJ5WoFus
-	 Vsvn7IKDyBAEb5M2VqbMfENkWxg0vUUgPZOqAzvDG9qEcE9C8FCMNfqlHloUjUKhwB
-	 LGAsJJXDblRvZW0Mip5t1R4Unhhvxk9RuIA2oWPRJj0cbXx8aWxUwgiU1DI3gVeIC/
-	 cwrNklv0eW84sds6BX0krAlVsMOYOSrT8aMdwB6Dt0vMlEcgNZs4r/MVoSkhYUxrgZ
-	 KbLU+BHAkthLr5n4iE/V8u4cbqBkE8+iI+nNRIcDp3rpqBtvcBMGinlnm2wviFdHP9
-	 tf8rbAm4aMrsA==
+	b=a5g48PoxitQUYN1/6YTuE0HqDyz1VRUSQnXgfHPKhshM4eLOzcBuAfktct515DzXU
+	 axgEh7sZCNd8FJWBNNKbdweCsQGEEL2UwRC3A54BfQSHbhTxqmMWC0DDv/vxQW0hbQ
+	 B8JlSpPPfrwfHW9i8veEw5yQUCDzl0Iv0Scg3XxQusX+9WKiXBsTGMltiGCJGj+Wes
+	 eDfJuzInNv24SOFcevp4qjZTJWFwGy1uL3FZVBve1uTic8BBL/pxTNwMIzIf9ic6u7
+	 zQQ5CxCZxEnfomGgkflmhfCdN09P+VczCpvulM+bP7YxeWEBKQVc19XQmQTYOcKrro
+	 rK+X5KHnp1kQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Blocher <thomas.blocher@ek-dev.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wei Yang <richard.weiyang@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ludovic.desroches@microchip.com,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 05/12] pinctrl: at91: make it work with current gpiolib
-Date: Tue,  3 Sep 2024 15:26:49 -0400
-Message-ID: <20240903192718.1108456-5-sashal@kernel.org>
+	monstr@monstr.eu
+Subject: [PATCH AUTOSEL 5.15 06/12] microblaze: don't treat zero reserved memory regions as error
+Date: Tue,  3 Sep 2024 15:26:50 -0400
+Message-ID: <20240903192718.1108456-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192718.1108456-1-sashal@kernel.org>
 References: <20240903192718.1108456-1-sashal@kernel.org>
@@ -70,49 +66,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.165
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Blocher <thomas.blocher@ek-dev.de>
+From: Mike Rapoport <rppt@kernel.org>
 
-[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
+[ Upstream commit 0075df288dd8a7abfe03b3766176c393063591dd ]
 
-pinctrl-at91 currently does not support the gpio-groups devicetree
-property and has no pin-range.
-Because of this at91 gpios stopped working since patch
-commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
-This was discussed in the patches
-commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+Before commit 721f4a6526da ("mm/memblock: remove empty dummy entry") the
+check for non-zero of memblock.reserved.cnt in mmu_init() would always
+be true either because  memblock.reserved.cnt is initialized to 1 or
+because there were memory reservations earlier.
 
-As a workaround manually set pin-range via gpiochip_add_pin_range() until
-a) pinctrl-at91 is reworked to support devicetree gpio-groups
-b) another solution as mentioned in
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
-is found
+The removal of dummy empty entry in memblock caused this check to fail
+because now memblock.reserved.cnt is initialized to 0.
 
-Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
-Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Remove the check for non-zero of memblock.reserved.cnt because it's
+perfectly fine to have an empty memblock.reserved array that early in
+boot.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Mike Rapoport <rppt@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240729053327.4091459-1-rppt@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/microblaze/mm/init.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index 3b0341c730ee0..9c92838428b8f 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -1403,8 +1403,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
+index 952f35b335b26..71ad7ffc3eff3 100644
+--- a/arch/microblaze/mm/init.c
++++ b/arch/microblaze/mm/init.c
+@@ -192,11 +192,6 @@ asmlinkage void __init mmu_init(void)
+ {
+ 	unsigned int kstart, ksize;
  
- 	/* We will handle a range of GPIO pins */
- 	for (i = 0; i < gpio_banks; i++)
--		if (gpio_chips[i])
-+		if (gpio_chips[i]) {
- 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
-+			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
-+				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
-+		}
- 
- 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
- 
+-	if (!memblock.reserved.cnt) {
+-		pr_emerg("Error memory count\n");
+-		machine_restart(NULL);
+-	}
+-
+ 	if ((u32) memblock.memory.regions[0].size < 0x400000) {
+ 		pr_emerg("Memory must be greater than 4MB\n");
+ 		machine_restart(NULL);
 -- 
 2.43.0
 
