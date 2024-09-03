@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-72903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D1796A920
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:54:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78A996A924
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33EE0281B17
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:54:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26BE91C24646
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27BE1E4114;
-	Tue,  3 Sep 2024 20:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110D61E4109;
+	Tue,  3 Sep 2024 20:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0aHLluh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cm8+P0uU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC341E410D;
-	Tue,  3 Sep 2024 20:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04191E4125;
+	Tue,  3 Sep 2024 20:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396335; cv=none; b=CppQ9xGKKxXC0CwGRnQPE1KRdZku2aX5yx8neqaBGPfIec/k2aKnXAfevHqTPU0Su/C7ltVuhm3NW/1aOfOpcj23OqWd7TUe2NfOg7/XbwL3HBUMfmHN4ORapMAXkvK2uqBze9wXegF0cSzW98B5ZPZ7Bj1ZcED2I1xpqKq+pLs=
+	t=1725396336; cv=none; b=M12H9CzUCB0lYWqT5DnI6AszdRzSovMv4YzzaTToGF/znYthqwy06dXA6JmKT+LIragd0ftmd8rZLU6wuMwSUnxxJ5Hh8/7rHzzCAcnaXhUcOO9JU2SNN0TGS1MHtXUDAfRRgGlIgA2a6tnWQM391XvlrPC8WuUN111jlU3dmY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396335; c=relaxed/simple;
-	bh=EXJ5tIqYx2d5HUlqX/rUKbbqFPLaR29YltOoP6OggNY=;
+	s=arc-20240116; t=1725396336; c=relaxed/simple;
+	bh=NakiwtTYinhxeOjkF47hrXF4IPqcNM1LMougrhOEANk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5iMwe2iOC9ebwrlKKirNWKDWhmz2K+ewEo0bMEMXfapij5Q5sJUKx6UVyYxUBhx1zQ9z7dR+GqZwtHYNsa5AYzrmZyPMzjrCnZyMiFdw3aG04oOktXSoiE3F7Niv2FLK0+kLu+eszw4qcQVxXJkBTd3yBz69BPjWO13uNXUZyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0aHLluh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC841C4CEC9;
-	Tue,  3 Sep 2024 20:45:33 +0000 (UTC)
+	 MIME-Version; b=KOsBi8TvzIodfAgB3AjhfjZu3F6oXVY9txCw79U5Fxtlsu0kql748Gm/U+blQX+H+EEcRFKQP85Rf8lOMmeM3yeUBwHAzMFS7vw/CkjvvLOxUmSU9bUgOhGUCZqV26DW9tr0AjD5W9xvDWnyNZu9OPkf+frenEW4YF+8RYWex1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cm8+P0uU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98F1C4CEC5;
+	Tue,  3 Sep 2024 20:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396335;
-	bh=EXJ5tIqYx2d5HUlqX/rUKbbqFPLaR29YltOoP6OggNY=;
+	s=k20201202; t=1725396336;
+	bh=NakiwtTYinhxeOjkF47hrXF4IPqcNM1LMougrhOEANk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0aHLluh7pOwOqc5PKtbpPnG00xeY07Eyuyo1kaX7lNGo/TmA/yym0SFfZQbvpRAQ
-	 E/wSqBuN6u13Sdq+E/fzNgfFKVq2XDCQURR2g4xu69gct8ggC+opnB/8fosGfdXpS3
-	 fN49ajpIIPzSNQvnIPXp2dFzHNvCf8KZbdafPXu1gaYQVUs6YMuw281SUVm3OO48Cv
-	 krU/5jy5FmPcvTnuMKLSeBAN2qg+q8PHl2/t9rL3eof9TOv0q/W7nBOKdsR5xmERgU
-	 gII07LIx657nzf9/xJ2KnEOVKmA6th2Aoy+nTudHHN2YwtKec3mR1gk8hlXr8+exlY
-	 LlEt+JSPtRgWA==
+	b=cm8+P0uUbw93dCMUrsCtG8i0Tg/V8XT7CL2sn8PUOUJG/I9kkENqHOjtMC0DmBsR9
+	 2UdtYouYNd1DA8VfayRiiYA9WpXlliaL5xY2EZ9IOIQf0Gl8urAs32xb9QwJ9xb58d
+	 mU95amSLL7jTN7wihPiAKk7Hz/wEa8c3T0wB0Z7x90fJCB9Wt10asq1KkZ0oXW1y16
+	 r6vRAucCY4Khaw4ytt9DdsLoOBlPedGBPPjIrjEmB1LpzG1TYrnqY1+KSOEz/VBTmU
+	 AhJpQfjAJNDaD+Z8ukMf+zR2Z2hlggOuULrlDKGT8lUx2bLVAZj89MkzQGbVDpv/wa
+	 MMUoDwOcOQIQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Blocher <thomas.blocher@ek-dev.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Ross Brown <true.robot.ross@gmail.com>,
+	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	ludovic.desroches@microchip.com,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/17] pinctrl: at91: make it work with current gpiolib
-Date: Tue,  3 Sep 2024 15:25:21 -0400
-Message-ID: <20240903192600.1108046-7-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/17] hwmon: (asus-ec-sensors) remove VRM temp X570-E GAMING
+Date: Tue,  3 Sep 2024 15:25:22 -0400
+Message-ID: <20240903192600.1108046-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192600.1108046-1-sashal@kernel.org>
 References: <20240903192600.1108046-1-sashal@kernel.org>
@@ -70,49 +67,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.107
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Blocher <thomas.blocher@ek-dev.de>
+From: Ross Brown <true.robot.ross@gmail.com>
 
-[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
+[ Upstream commit 9efaebc0072b8e95505544bf385c20ee8a29d799 ]
 
-pinctrl-at91 currently does not support the gpio-groups devicetree
-property and has no pin-range.
-Because of this at91 gpios stopped working since patch
-commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
-This was discussed in the patches
-commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+X570-E GAMING does not have VRM temperature sensor.
 
-As a workaround manually set pin-range via gpiochip_add_pin_range() until
-a) pinctrl-at91 is reworked to support devicetree gpio-groups
-b) another solution as mentioned in
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
-is found
-
-Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
-Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Ross Brown <true.robot.ross@gmail.com>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+Link: https://lore.kernel.org/r/20240730062320.5188-2-eugene.shalygin@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/asus-ec-sensors.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index ff3b6a8a0b170..333f9d70c7f48 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -1420,8 +1420,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index b4d65916b3c00..d893cfd1cb829 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -369,7 +369,7 @@ static const struct ec_board_info board_info_strix_b550_i_gaming = {
  
- 	/* We will handle a range of GPIO pins */
- 	for (i = 0; i < gpio_banks; i++)
--		if (gpio_chips[i])
-+		if (gpio_chips[i]) {
- 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
-+			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
-+				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
-+		}
- 
- 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
- 
+ static const struct ec_board_info board_info_strix_x570_e_gaming = {
+ 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
+-		SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM |
++		SENSOR_TEMP_T_SENSOR |
+ 		SENSOR_FAN_CHIPSET | SENSOR_CURR_CPU |
+ 		SENSOR_IN_CPU_CORE,
+ 	.mutex_path = ASUS_HW_ACCESS_MUTEX_ASMX,
 -- 
 2.43.0
 
