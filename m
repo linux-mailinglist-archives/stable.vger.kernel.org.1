@@ -1,52 +1,64 @@
-Return-Path: <stable+bounces-72754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F769690F9
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 03:34:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7F6969104
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 03:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED711F24C2D
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 01:34:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E39284149
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 01:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111F81C68B0;
-	Tue,  3 Sep 2024 01:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C6E1CCEE8;
+	Tue,  3 Sep 2024 01:39:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41054185947;
-	Tue,  3 Sep 2024 01:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE241A4E9F;
+	Tue,  3 Sep 2024 01:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725327234; cv=none; b=rDbeX+gCcnhlYlQXSMGlNibO43WrUyxrQSxCdErKHotebR45ZnHOwX5kd7va+VUuRcvClQoBM2KkBLhdOXC3sstdDvGEKN48sbscsroWdq2k17qNPd+R6/x767N26iF7FvgCNgFY/9rudS5bXgPBgHZtrMrwT8TEpg3gfhhYAfo=
+	t=1725327576; cv=none; b=Nfe5hUeaxEmoT7uUSMW9VcKzrhl44R2PtLBuSTx5r1q1oBt/4C3JY5uA8pO5fIrRStEGFev2HtO/zjpNDTSkYs1sTyE8mje4lRZBY3BgXj8a79dNcK9YaMjTbCBufKHcpS6ghQwMAmDfofGbdSePeiegDjxyXwIZSZnriF8t7ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725327234; c=relaxed/simple;
-	bh=L6008oDfcpGOdp3sZj7mO4v81wzU3PhcgEhuJkxXEyk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ATKRoF9QpiuArZNrZ/t2Rz69hEhEj5bFq1ejIche3Tzmk8Bc3xgfUw7sRcCVfwVOsmpYq1xfW2uyi7xSE5OJHBvdrDN8wNkOdp8zL1JahXpTtETs7IG2HkT1qAL6Eg6bKSFCkAWXu9z5I8n3INpAErt9Tr/7or0uyWPGgsVvm+A=
+	s=arc-20240116; t=1725327576; c=relaxed/simple;
+	bh=BZ+tG3sPqkdp1r8WVl3AmA1qeUmicg7w7NSIoJ6H0IM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=coXIDD9oh/QaqmsCNwAF3Wnzf5fPB6MBZ9mrq6MyUc60B+0K4+xrC4ig6x8L8XoJ2ynE7pzlyEhM4xS3sXXIy10oaDqHCCZii030u4Io+v1wg6jZL/8GLh17h5Uu+vP1gwyWBscoIzJzjR+XRkCAc6CqMSJoqBpY0qoeDC0pJX0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAC3aKhhZ9ZmJHyyAA--.34444S2;
-	Tue, 03 Sep 2024 09:33:33 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowABnGanCaNZmM6+yAA--.35268S2;
+	Tue, 03 Sep 2024 09:39:22 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	make24@iscas.ac.cn,
-	airlied@redhat.com,
-	bskeggs@redhat.com,
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	StanleyYP.Wang@mediatek.com,
+	benjamin-jw.lin@mediatek.com,
+	allen.ye@mediatek.com,
+	chank.chen@mediatek.com,
+	meichia.chiu@mediatek.com,
+	Money.Wang@mediatek.com,
+	Bo.Jiao@mediatek.com,
 	akpm@linux-foundation.org
-Cc: dri-devel@lists.freedesktop.org,
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] drm/nouveau: fix a possible null pointer dereference
-Date: Tue,  3 Sep 2024 09:33:19 +0800
-Message-Id: <20240903013319.4142585-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+Date: Tue,  3 Sep 2024 09:39:13 +0800
+Message-Id: <20240903013913.4143602-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,62 +67,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3aKhhZ9ZmJHyyAA--.34444S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFykCryUWr4DuFyDCF1ftFb_yoW8GFWkpF
-	srG34YyFW5JFZruF18Ja4avF15G3W7JF1xuw10van3C3ZayryUtryrXryYgryfAFW3Kr12
-	qwnFvFy7WF12krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+X-CM-TRANSID:qwCowABnGanCaNZmM6+yAA--.35268S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw4DZw1UtrWxKF1xJr13Jwb_yoWDXrXE9r
+	n29FnIqw48Kw48Kr429wnxuryay3ykZF97Gay5tayfta97J3yUZF1IvFn3Ar13uFn7ZF1U
+	J3ZrJFy0y395WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
 	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
 	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28Icx
 	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
 	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
 	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRRH7K3UUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In ch7006_encoder_get_modes(), the return value of drm_mode_duplicate() is
-used directly in drm_mode_probed_add(), which will lead to a NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
+routine adding an sta interface to the mt7996 driver.
+
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/gpu/drm/i2c/ch7006_drv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
-index 131512a5f3bd..48bf6e4e8bdb 100644
---- a/drivers/gpu/drm/i2c/ch7006_drv.c
-+++ b/drivers/gpu/drm/i2c/ch7006_drv.c
-@@ -229,6 +229,7 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
- {
- 	struct ch7006_priv *priv = to_ch7006_priv(encoder);
- 	const struct ch7006_mode *mode;
-+	struct drm_display_mode *encoder_mode = NULL;
- 	int n = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 2e4fa9f48dfb..cba28d8d5562 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
  
- 	for (mode = ch7006_modes; mode->mode.clock; mode++) {
-@@ -236,8 +237,11 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
- 		    ~mode->valid_norms & 1<<priv->norm)
- 			continue;
- 
--		drm_mode_probed_add(connector,
--				drm_mode_duplicate(encoder->dev, &mode->mode));
-+		encoder_mode = drm_mode_duplicate(encoder->dev, &mode->mode);
-+		if (!encoder_mode)
-+			return 0;
++	if (!vc)
++		return;
 +
-+		drm_mode_probed_add(connector, encoder_mode);
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
  
- 		n++;
- 	}
+ 	mt7996_mcu_sta_sounding_rate(bf);
 -- 
 2.25.1
 
