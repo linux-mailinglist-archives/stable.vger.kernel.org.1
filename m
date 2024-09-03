@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-72931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C6F96A96F
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:02:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3023696A971
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DED1F23A70
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95711F21904
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8461E9766;
-	Tue,  3 Sep 2024 20:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBD31D79B0;
+	Tue,  3 Sep 2024 20:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZaw6W0T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnTOSs3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0644B1E974E;
-	Tue,  3 Sep 2024 20:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBCC1E974E;
+	Tue,  3 Sep 2024 20:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396468; cv=none; b=XMMqHpUUtVKcNbKWM3f+y3m9SsvfrFpgueKUBWjNJegnXzwfwJM9frsmvXvEXNjJ9vMrwF/Nj30xIbUQYJc+ojmE2JnldZ5ACMGM5el8MtUXGMyz31CgrlBBpi4valFGqzItawy9ULjnj2w8rE23tptjZifBbuwr2a5AXERjzxc=
+	t=1725396471; cv=none; b=bzWZnv7gtdzTPOzjKVkYSt+WG71moKIhapd7RSUZlyreyVA62YaYbGZzPRlg23sGPZ7IOetRZQiObggTcvl7zAVKXbY5SwXdsBK7nh3B7B55hTw4nfLJWOq0MDRLNWg5E04Va5ClFsk6c47thc/gDazRTZCg37/DzR2Yxi06pt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396468; c=relaxed/simple;
-	bh=DkmnPP7Rnck3U13b0kVYRAQ4fci1gmvH7X2CEfWg4wQ=;
+	s=arc-20240116; t=1725396471; c=relaxed/simple;
+	bh=+jOhbuIzUGAYMO7CmA8QYLO1aUmswmbfAOUxoe25ewE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pt30XgfvadHm3m4irf0aUDd6jp+247OEUPaicVppEUl6YJkrz/w4Yi6YXG7tEBF3vcxZ2CowmvVboafJt2Nn3fbJI6IvOOUaAJxqvg2o+72pn+j3qLcwyrzAwF/3uxk9oNyeQ5MDDo6/EXnGza7wvLAma5RLpGgPje6A1EghF6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZaw6W0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DD7C4CEC5;
-	Tue,  3 Sep 2024 20:47:46 +0000 (UTC)
+	 MIME-Version; b=KNXTsht2OteA8BgaKz3Eh7QHKDUhoYh92sg7y/Orv43pPl5ktBpzriVmPXIEHlzAwL3YjJ0QMUpwJDegMLsBMargwGb6O3Ak2jXNLurlved/duhainogEi5s4k3xcX+BaTnalfiFdM6mb73x4VLuIPumg/AqAiHZz/wPHGlOaHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnTOSs3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510EFC4CEC5;
+	Tue,  3 Sep 2024 20:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396467;
-	bh=DkmnPP7Rnck3U13b0kVYRAQ4fci1gmvH7X2CEfWg4wQ=;
+	s=k20201202; t=1725396471;
+	bh=+jOhbuIzUGAYMO7CmA8QYLO1aUmswmbfAOUxoe25ewE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZaw6W0THvHlVWjk5KA0Uy/dSipRLsY4qjkWLdqHXcLRNR/DfluiKkGocLJtYY/Dt
-	 2SxzIGiKz2xDrwZiOaOG7r8vToLPvVaxZBXj/zvvL3BRDKY1Wp2rryVeX2LuMNF0eE
-	 gE/R6U5zexigXh5oHR2XRfKifZZRTFE3RtpostNA2WIM+MDTKSnC4zaTlH/mp4AHFA
-	 x67uyBkPW4Z2LkUrV3rglKebumtG99Rjp52POL5SoyB5oIXptnl+6cTo0h5GWfx15C
-	 L8p9OuAOxg+aWo7buQLqbZERbzVw1dmAcvsiKjUFhZvqG/mKe0air0T2OgEFvRyZez
-	 s+ZuyPpPjIRPQ==
+	b=pnTOSs3uFliLgM2154pRERx7mVZLjwco9ksDpSUbn06QQz6e1U+wMTahgfugq1I5q
+	 tA4tGvFjUcoufIrMNUMxJK7uqkYIuDz56J+NPN1b6ga3WChi+bJ1DRWvmmCSXOvVc7
+	 OIncU52xgg76jo6Ix2q4XiBo6Nou/Os27WbtfXYrQrOw9jxppC4/0G+4VAN1ObPbOX
+	 yUpFuBoWqfhFbui66iP9Um6/RZ3HK9PNQHWZ6V78t08i6Q9XDO4r4DQmdLM9bBKK4e
+	 ES6Ey2Kh3tWe0RaoemwJt9FlWkDoB2jlaQPTsCgvhfysFnGd+PeXBUth3Zrv7B8C0O
+	 torUmpyHsMfmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jacky Chou <jacky_chou@aspeedtech.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	u.kleine-koenig@pengutronix.de,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 6/8] net: ftgmac100: Ensure tx descriptor updates are visible
-Date: Tue,  3 Sep 2024 15:27:56 -0400
-Message-ID: <20240903192815.1108754-6-sashal@kernel.org>
+	kvalo@kernel.org,
+	daniel.gabay@intel.com,
+	ofer.kimelman@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 7/8] wifi: iwlwifi: lower message level for FW buffer destination
+Date: Tue,  3 Sep 2024 15:27:57 -0400
+Message-ID: <20240903192815.1108754-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192815.1108754-1-sashal@kernel.org>
 References: <20240903192815.1108754-1-sashal@kernel.org>
@@ -69,107 +70,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.224
 Content-Transfer-Encoding: 8bit
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
+[ Upstream commit f8a129c1e10256c785164ed5efa5d17d45fbd81b ]
 
-The driver must ensure TX descriptor updates are visible
-before updating TX pointer and TX clear pointer.
+An invalid buffer destination is not a problem for the driver and it
+does not make sense to report it with the KERN_ERR message level. As
+such, change the message to use IWL_DEBUG_FW.
 
-This resolves TX hangs observed on AST2600 when running
-iperf3.
-
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Len Brown <lenb@kernel.org>
+Closes: https://lore.kernel.org/r/CAJvTdKkcxJss=DM2sxgv_MR5BeZ4_OC-3ad6tA40TYH2yqHCWw@mail.gmail.com
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.20abf78f05bc.Ifbcecc2ae9fb40b9698302507dcba8b922c8d856@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 969af4dd64055..bc9a7f2d23504 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -569,7 +569,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
- 	(*processed)++;
- 	return true;
- 
-- drop:
-+drop:
- 	/* Clean rxdes0 (which resets own bit) */
- 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
- 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
-@@ -653,6 +653,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
- 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
- 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
- 
- 	return true;
-@@ -806,6 +811,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	dma_wmb();
- 	first->txdes0 = cpu_to_le32(f_ctl_stat);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	/* Update next TX pointer */
- 	priv->tx_pointer = pointer;
- 
-@@ -826,7 +836,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 
- 	return NETDEV_TX_OK;
- 
-- dma_err:
-+dma_err:
- 	if (net_ratelimit())
- 		netdev_err(netdev, "map tx fragment failed\n");
- 
-@@ -848,7 +858,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	 * last fragment, so we know ftgmac100_free_tx_packet()
- 	 * hasn't freed the skb yet.
- 	 */
-- drop:
-+drop:
- 	/* Drop the packet */
- 	dev_kfree_skb_any(skb);
- 	netdev->stats.tx_dropped++;
-@@ -1419,7 +1429,7 @@ static void ftgmac100_reset_task(struct work_struct *work)
- 	ftgmac100_init_all(priv, true);
- 
- 	netdev_dbg(netdev, "Reset done !\n");
-- bail:
-+bail:
- 	if (priv->mii_bus)
- 		mutex_unlock(&priv->mii_bus->mdio_lock);
- 	if (netdev->phydev)
-@@ -1490,15 +1500,15 @@ static int ftgmac100_open(struct net_device *netdev)
- 
- 	return 0;
- 
-- err_ncsi:
-+err_ncsi:
- 	napi_disable(&priv->napi);
- 	netif_stop_queue(netdev);
-- err_alloc:
-+err_alloc:
- 	ftgmac100_free_buffers(priv);
- 	free_irq(netdev->irq, netdev);
-- err_irq:
-+err_irq:
- 	netif_napi_del(&priv->napi);
-- err_hw:
-+err_hw:
- 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
- 	ftgmac100_free_rings(priv);
- 	return err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index 56f63f5f5dd34..2afa5c91bc76b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -111,7 +111,8 @@ iwl_pcie_ctxt_info_dbg_enable(struct iwl_trans *trans,
+ 		}
+ 		break;
+ 	default:
+-		IWL_ERR(trans, "WRT: Invalid buffer destination\n");
++		IWL_DEBUG_FW(trans, "WRT: Invalid buffer destination (%d)\n",
++			     le32_to_cpu(fw_mon_cfg->buf_location));
+ 	}
+ out:
+ 	if (dbg_flags)
 -- 
 2.43.0
 
