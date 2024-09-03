@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-72917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112A896A949
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE91F96A94C
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C608B232DF
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D2C51C20C72
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B7D1DCB27;
-	Tue,  3 Sep 2024 20:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29841E6DDC;
+	Tue,  3 Sep 2024 20:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jSsq+p5D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBsRy34F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72BA1DCB1E;
-	Tue,  3 Sep 2024 20:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7C21E6DD0;
+	Tue,  3 Sep 2024 20:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396403; cv=none; b=CWCTJ0i0lgXb8drL2dyz4RV1S4tbYnzDygvimVVNy+KFAchGYMdmcLHmJW8IRs2vNlpe01R41ywNK1zyo5hEwK+XsHsFI+RNbnQLSdQ/xtOlRnBhWXubOI3HRPY4s3T2YFiX/xJwthvzputs7U1P3/yjCMR95Uf6dJNsN3SQFY4=
+	t=1725396405; cv=none; b=jJ1rMRt3/HmBcv2ii7gG67JeaOQIWe9yxGqkMXYNI4qYen8j1b5mz8haWlFMrYqYeJKTJASQ0IL6NZLmH45kHPGa27afNwTDnmaMzrWnHedUZwZ7ZIILij13iHAkoLBAUVZ9IJmSNm0bST+656KjWmF5ihfIUniXbzrf/abgbpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396403; c=relaxed/simple;
-	bh=gyKmTyTWsLFKWuyb1CViguXxZW6EghA9L1hLyOY/2+o=;
+	s=arc-20240116; t=1725396405; c=relaxed/simple;
+	bh=K2XP8FQ5/gFQqUzjnGgIsdTXx1wvqouRnQ17Vs3MY8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKkyKhWu9rjww9z3p4jz8UM3s7ncg/Yetl9gLyZGfvii8xQuPoxJE18UYFejO8T7HHXLaTCGKjCYBNKCnkdoXzZaQn6cyaj1nKWNF1WBDqEWpKwD3bKQqdNfRc4/zB0nbzIat72BoSNV0ajRElt562f5TAiNs+htc62DcZdWrOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jSsq+p5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B34C4CEC5;
-	Tue,  3 Sep 2024 20:46:42 +0000 (UTC)
+	 MIME-Version; b=cX4nOmLVsrI6vLdcxSM3+42CZDG3KthY1nG/MGfRiKRmunVSl4xlQhatr8UI4Z/1r5NMPw0fq0IDq4W5x+37t6Z3sS15ZRIk7zK/gqNTNHEL6BDGt0DcunvmsMngmDYe8dIeeiTbbsNJcrtf0QPUmNqNED2l+tKYI3RUIUnii5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBsRy34F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F02BC4CECA;
+	Tue,  3 Sep 2024 20:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396403;
-	bh=gyKmTyTWsLFKWuyb1CViguXxZW6EghA9L1hLyOY/2+o=;
+	s=k20201202; t=1725396405;
+	bh=K2XP8FQ5/gFQqUzjnGgIsdTXx1wvqouRnQ17Vs3MY8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSsq+p5DXz7504YkA4dpgdREt+zsahPtNYYmOxY1nkU5MW6H0flgzy5OrToc2OSJx
-	 OExvBQcXQ/bSWZn5aWC8p35ZABleTEMpb7Lj+GYOs5Q/HgGDSmEs0mpi704A7NiDXI
-	 S3O5BbVFEcuVcsKZBSx/blbIm3TOvH/QD5mm3xR1RxXf27y7k+3FsCkwEuU8AhdqQ6
-	 Id2iFAdtDB5NJN8twoVH9d5vQnNHoosgqfHER/5yNBCvv1cNqEBHAZwowLE7KZ9ZLq
-	 jbIf4D50sQ3vKEwlK1V5YOIIl2GBmgGp5JxdL/yRnu0Fb6huI2NfFW/ZSgW+E7XALS
-	 WOFOguyHTiRRA==
+	b=SBsRy34Fiorc9QhhPt93hbPjCFSd8M9lD3/1ydS4SMFFx52DK0UQp/HTuMJ5WoFus
+	 Vsvn7IKDyBAEb5M2VqbMfENkWxg0vUUgPZOqAzvDG9qEcE9C8FCMNfqlHloUjUKhwB
+	 LGAsJJXDblRvZW0Mip5t1R4Unhhvxk9RuIA2oWPRJj0cbXx8aWxUwgiU1DI3gVeIC/
+	 cwrNklv0eW84sds6BX0krAlVsMOYOSrT8aMdwB6Dt0vMlEcgNZs4r/MVoSkhYUxrgZ
+	 KbLU+BHAkthLr5n4iE/V8u4cbqBkE8+iI+nNRIcDp3rpqBtvcBMGinlnm2wviFdHP9
+	 tf8rbAm4aMrsA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sherry Yang <sherry.yang@oracle.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Thomas Blocher <thomas.blocher@ek-dev.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	james.smart@broadcom.com,
-	dick.kennedy@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 04/12] scsi: lpfc: Fix overflow build issue
-Date: Tue,  3 Sep 2024 15:26:48 -0400
-Message-ID: <20240903192718.1108456-4-sashal@kernel.org>
+	ludovic.desroches@microchip.com,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 05/12] pinctrl: at91: make it work with current gpiolib
+Date: Tue,  3 Sep 2024 15:26:49 -0400
+Message-ID: <20240903192718.1108456-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192718.1108456-1-sashal@kernel.org>
 References: <20240903192718.1108456-1-sashal@kernel.org>
@@ -69,52 +70,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.165
 Content-Transfer-Encoding: 8bit
 
-From: Sherry Yang <sherry.yang@oracle.com>
+From: Thomas Blocher <thomas.blocher@ek-dev.de>
 
-[ Upstream commit 3417c9574e368f0330637505f00d3814ca8854d2 ]
+[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
 
-Build failed while enabling "CONFIG_GCOV_KERNEL=y" and
-"CONFIG_GCOV_PROFILE_ALL=y" with following error:
+pinctrl-at91 currently does not support the gpio-groups devicetree
+property and has no pin-range.
+Because of this at91 gpios stopped working since patch
+commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
+This was discussed in the patches
+commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
 
-BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c: In function 'lpfc_get_cgnbuf_info':
-BUILDSTDERR: ./include/linux/fortify-string.h:114:33: error: '__builtin_memcpy' accessing 18446744073709551615 bytes at offsets 0 and 0 overlaps 9223372036854775807 bytes at offset -9223372036854775808 [-Werror=restrict]
-BUILDSTDERR:   114 | #define __underlying_memcpy     __builtin_memcpy
-BUILDSTDERR:       |                                 ^
-BUILDSTDERR: ./include/linux/fortify-string.h:637:9: note: in expansion of macro '__underlying_memcpy'
-BUILDSTDERR:   637 |         __underlying_##op(p, q, __fortify_size);                        \
-BUILDSTDERR:       |         ^~~~~~~~~~~~~
-BUILDSTDERR: ./include/linux/fortify-string.h:682:26: note: in expansion of macro '__fortify_memcpy_chk'
-BUILDSTDERR:   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
-BUILDSTDERR:       |                          ^~~~~~~~~~~~~~~~~~~~
-BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c:5468:9: note: in expansion of macro 'memcpy'
-BUILDSTDERR:  5468 |         memcpy(cgn_buff, cp, cinfosz);
-BUILDSTDERR:       |         ^~~~~~
+As a workaround manually set pin-range via gpiochip_add_pin_range() until
+a) pinctrl-at91 is reworked to support devicetree gpio-groups
+b) another solution as mentioned in
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+is found
 
-This happens from the commit 06bb7fc0feee ("kbuild: turn on -Wrestrict by
-default"). Address this issue by using size_t type.
-
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Link: https://lore.kernel.org/r/20240821065131.1180791-1-sherry.yang@oracle.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
+Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-at91.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index ed827f198cb68..45c59006945b9 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -5761,7 +5761,7 @@ lpfc_get_cgnbuf_info(struct bsg_job *job)
- 	struct get_cgnbuf_info_req *cgnbuf_req;
- 	struct lpfc_cgn_info *cp;
- 	uint8_t *cgn_buff;
--	int size, cinfosz;
-+	size_t size, cinfosz;
- 	int  rc = 0;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 3b0341c730ee0..9c92838428b8f 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -1403,8 +1403,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
  
- 	if (job->request_len < sizeof(struct fc_bsg_request) +
+ 	/* We will handle a range of GPIO pins */
+ 	for (i = 0; i < gpio_banks; i++)
+-		if (gpio_chips[i])
++		if (gpio_chips[i]) {
+ 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
++			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
++				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
++		}
+ 
+ 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
+ 
 -- 
 2.43.0
 
