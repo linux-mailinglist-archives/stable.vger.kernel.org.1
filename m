@@ -1,78 +1,109 @@
-Return-Path: <stable+bounces-72771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CF99695E8
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:46:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4291A969611
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED85D2824E6
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:46:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3D5DB2377B
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7E01D67AC;
-	Tue,  3 Sep 2024 07:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88F71DAC6C;
+	Tue,  3 Sep 2024 07:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theune.cc header.i=@theune.cc header.b="9RS35FQe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PO3adIGD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.theune.cc (mail.theune.cc [212.122.41.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580649654;
-	Tue,  3 Sep 2024 07:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B11865F0;
+	Tue,  3 Sep 2024 07:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725349559; cv=none; b=eTudpX2gqGg/c1w8tubzhkWxy9TjVVQFBU9FUPxJiJCZvsRG4fE5sx/Q6Dv//3pwKZsZges5x0HzJ2WULI61eNmgEJWzurH6LWYe4/K6d4igvcGBX6Y/NrYSxSUCnDu4dY6FzAC1Jrgkn9VbSOJHT0DUxj64yx8aKimLyXRfkeg=
+	t=1725349860; cv=none; b=cZEePB1xeW9KnCvGD7vzrM5vpTHtrWz3iulzkBk1GLfxeAAJsxdI5Nobql+B1rAhE45lVoEVm1ZFd7XBwvCdFwWWrfrycmy5PVj/vwp8hsGsiy0t3j6Ngcb6gdQ7SVeA78x4SLsuIF/8DP19jMoLj4prnFwKVPUTDqNfqnsib34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725349559; c=relaxed/simple;
-	bh=UQbVf6OKRCtWOwlejkZMkhRvD/SZFgavXNfB/+1B94g=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=JgkobMFxmq4kw0qw0PFdLE64t7btvvMFGqh8+MrC46D3A84dnR7Q1P7Z4U24luIEEjd/IsEthhFMbtgU9JIZrQk9i8wpIhvcFj4Yoja7mm2yJjyrCSuEBQMScfyH9UQlkDUgRviZ2co5WjNsvyLShWya4/h2+3VJXiv8dLjim8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=theune.cc; spf=pass smtp.mailfrom=theune.cc; dkim=pass (1024-bit key) header.d=theune.cc header.i=@theune.cc header.b=9RS35FQe; arc=none smtp.client-ip=212.122.41.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=theune.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theune.cc
-From: Christian Theune <christian@theune.cc>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theune.cc; s=mail;
-	t=1725349071; bh=UQbVf6OKRCtWOwlejkZMkhRvD/SZFgavXNfB/+1B94g=;
-	h=From:Subject:Date:Cc:To;
-	b=9RS35FQe8yhCh1MeaHbIsWvYfhvtJjJYdy1rH5cMMCnCd4B6eizhnx12ko82U37ro
-	 SJsuea6OoSCMypFk+dV+NZ3uCu9bpNmLWTL5Zmh91SeXSWC30DGy+RGATA6GC4+OpG
-	 7W7nKOZB2arrpm0UVCpzqBYGrTwtBL4PiGfic28c=
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1725349860; c=relaxed/simple;
+	bh=enMEnSyK0jNHPU7yp7IVPrx6oVxfPhkG/5GIYZ4dcKg=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=IT/JtTwCSAw6BmI8dOo91s2qzN5I5gCbvyDIjhFCKrVP3YWyOy7jv0BzSNoBdQFVwymlmFD000c6SjnPRx4V1806UqyPovfPaRVKIHWLrsz5/DLvIttOv0+wWoraiFhfkOZxImhg1JO8CIk7DdcR3VZoyiVM+HSKVvnwhTow8Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PO3adIGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74599C4CEC5;
+	Tue,  3 Sep 2024 07:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725349860;
+	bh=enMEnSyK0jNHPU7yp7IVPrx6oVxfPhkG/5GIYZ4dcKg=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=PO3adIGD9QXcaLxsn+UYkxTFEniu9l4gE1ID45KjMX3yLkH5DazB0u1IBB4d8vzLd
+	 l/5Fwl56gGpveG03eWt1WQIQ6p0u20PAR8qsqMsWDFDjeWnjFgGB4yB8ZntUoCyOYk
+	 i1+EQxTEc6gtNRk1puU0jPx9BWXqfdunZoZ0ergRNWaqwnEHL5xHi1KHsIv+qHZc85
+	 omyj9bce8K6nzb1MAWzf5BhEH6LvF2uxfoINz0TUt+DwPYibmNnq3U6fpx8Lbbch+5
+	 5irOVssMvG9hSRB0/kkowIxiu22jDabPJAvw/Pw/5ooAs73F4bifl/MVu3exXaWGme
+	 Picnt1dGInvMg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: nbd@nbd.name,  lorenzo@kernel.org,  ryder.lee@mediatek.com,
+  shayne.chen@mediatek.com,  sean.wang@mediatek.com,
+  matthias.bgg@gmail.com,  angelogioacchino.delregno@collabora.com,
+  mingyen.hsieh@mediatek.com,  deren.wu@mediatek.com,
+  ruanjinjie@huawei.com,  greearb@candelatech.com,
+  akpm@linux-foundation.org,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+  linux-mediatek@lists.infradead.org,  stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] wifi: mt76: mt7921: Check devm_kasprintf()
+ returned value
+References: <20240903014455.4144536-1-make24@iscas.ac.cn>
+Date: Tue, 03 Sep 2024 10:50:54 +0300
+In-Reply-To: <20240903014455.4144536-1-make24@iscas.ac.cn> (Ma Ke's message of
+	"Tue, 3 Sep 2024 09:44:55 +0800")
+Message-ID: <87wmjtjhup.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Follow-up to "net: drop bad gso csum_start and offset in
- virtio_net_hdr" - backport for 5.15 needed
-Message-Id: <89503333-86C5-4E1E-8CD8-3B882864334A@theune.cc>
-Date: Tue, 3 Sep 2024 09:37:30 +0200
-Cc: stable@vger.kernel.org,
- netdev@vger.kernel.org
-To: regressions@lists.linux.dev
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Hi,
+Ma Ke <make24@iscas.ac.cn> writes:
 
-the issue was so far handled in =
-https://lore.kernel.org/regressions/ZsyMzW-4ee_U8NoX@eldamar.lan/T/#m390d6=
-ef7b733149949fb329ae1abffec5cefb99b and =
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219129
+> devm_kasprintf() can return a NULL pointer on failure but this returned
+> value is not checked. Fix this lack and check the returned value.
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> index ef0c721d26e3..5ab395d9d93e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> @@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
+>  
+>  	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
+>  			      wiphy_name(wiphy));
+> +	if (!name)
+> +		return -ENOMEM;
+>  
+>  	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
+>  						       mt7921_hwmon_groups);
 
-I haven=E2=80=99t seen any communication whether a backport for 5.15 is =
-already in progress, so I thought I=E2=80=99d follow up here.=20
+You sent the previous version of this on August 26th:
 
-Today we rolled out 5.15.165 and immediately ran into the same issue. =
-There=E2=80=99s at least one other person asking for a 5.15 backport in =
-Bugzilla.
+https://patchwork.kernel.org/project/linux-wireless/patch/20240826095535.2603538-1-make24@iscas.ac.cn/
 
-Hugs,
-Christian
+Please stop spamming like this and understand that maintainers are busy.
 
--- =20
-Christian Theune - A97C62CE - 0179 7808366
-@theuni - christian@theune.cc
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
