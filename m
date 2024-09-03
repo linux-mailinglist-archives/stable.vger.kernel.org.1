@@ -1,131 +1,202 @@
-Return-Path: <stable+bounces-72769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99B4969596
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:33:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE5B9695B1
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E68F1F2498D
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF3B1F220EC
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B311DAC7D;
-	Tue,  3 Sep 2024 07:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871991D6DD3;
+	Tue,  3 Sep 2024 07:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="PbKTKQVW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lXPHq4MN"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DF7201244
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 07:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9981CEAC0;
+	Tue,  3 Sep 2024 07:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725348712; cv=none; b=Ti75r8/bvjd2iy/jVFwqfnbjeaLdNuGkhEDrTfCLLzfEkl0wIzXNUxCGBIwQbn8KTAJSaJMJWCwdVcgxCxdsAbnTxppzdzLgoipHGNLFyKb2NvWRYJSaMlqagFfqx1lkUiPvNQ9v/ixyjnO+ZFj+bW6nOvYtcOJixYN2j23Vgiw=
+	t=1725348896; cv=none; b=Pna6TDbc9CDHkRS3v/crohoug5jKpwDc8em2UTBdvg+C5Ar3F1MGrJmqV73EdK/h0SGlVS5ynHn45i7NjcHkAztkYUZo7HVQCmFl9TmRqxWRyffpvnZkg445u3ciiIq84+NcB+Rs1uYGyE9OLSpXLHVbmGRl4bx1qoVB7VAa6Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725348712; c=relaxed/simple;
-	bh=oaOtF3mnOGhPPknWuchy+VG4R9Md2oOdD/wELS/3P+0=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=QF3IJoRgSI/pI2bj5kR+6XJTqX41DHkyL9YMNIGp62B4JHVRzKh8ve5TVJMPd2Y3GlMl5Zafu9dBlEUZcVRN41T3Lf83EMdI/vtIoLBtQrKtldyQ23YfTwvPyrzQ5Q8orcXdl0Yx5lP9G824h7uCUyL67o5tvJIajABHLXpiw8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=PbKTKQVW; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
-	by cmsmtp with ESMTPS
-	id lGL7sYgdfvH7llO10sa4Hu; Tue, 03 Sep 2024 07:31:50 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id lO0zsqTyFV2ivlO0zsSk0d; Tue, 03 Sep 2024 07:31:50 +0000
-X-Authority-Analysis: v=2.4 cv=OLns3jaB c=1 sm=1 tr=0 ts=66d6bb66
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/JdGR1ElBqWoLMmUPKNOcI9zGa/tpf3safM59qtOubc=; b=PbKTKQVWWrpyNlg6JS12ZJwKHc
-	bZ7Ts9OADmy3Z/xGnnnRsYDdEYhm2ttsflpkGgs4DySgvOFE7H7zLJ6lpGLETl5yW4yiprZAf9w7E
-	g0O4ymuIBptQBScNGlCYtKjclHDZhpE7XT3v7Yctgc28q12s7JQSga5kiqh9kaggzOrzXsHY325OJ
-	cdV3gE3W+ZFWIYaDRz8rcOjLVOcy63KszVjA2gQcyE0G7X2mLgHW7Snw2PfcpnBHTLB5ivSAUnoMf
-	lqvqY0zVvzDRQHQT+jkstvYrKkAJ2hgccjiB7LsMNEYkqgbthwtzZZwQgu9n5YmSdENhjARrsFHs0
-	vDKsJKCQ==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:38110 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1slO0x-003tmn-1Z;
-	Tue, 03 Sep 2024 01:31:47 -0600
-Subject: Re: [PATCH 5.15 000/215] 5.15.166-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240901160823.230213148@linuxfoundation.org>
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <4fbb6c1d-bb54-778f-810d-8c6816ee01d7@w6rz.net>
-Date: Tue, 3 Sep 2024 00:31:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1725348896; c=relaxed/simple;
+	bh=4AJT32GBtfUx0n4zgp7GIkKvAN6ljEoZ5TCSEJ6nLVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sho9B7xq70NAt21H1mEVqvKJbOelcYorNXf7F1nYPORoilPqJfHV7xbD8OSc2K/EFeRP+S6echyGFIxUvS24WP919nDq7hak4IEtSeU6CCeVg9gyhA+VNMAOh6+US7s/ETtdGChsjlgT65I5K/wGJuBS2YS/SiN45n0X8NuiHvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lXPHq4MN; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725348895; x=1756884895;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4AJT32GBtfUx0n4zgp7GIkKvAN6ljEoZ5TCSEJ6nLVE=;
+  b=lXPHq4MNOWzeMjk7+4mZo5CwC97JBF6dQdrCeUx0N9eHf3fxtsby/ODz
+   mhZZ9v8cmeSMqdmqO6mgnn7OdWTqPc5kedb4lVII5XCvKZnl3HhqFU38F
+   fWNybb/9B3WCeC5JtlUgqEBuF5Bma+AHD/2IO8Ku8ctxCIQ7eXkRYg0m/
+   7v7YTDE9L70i3PWRc+Rm7jjFO9aZeJkh5+olBxTYIhyWAsETNiRq3KzyW
+   63AVsZ6BMcYc3kSAnhSvQGlfgvwrE44PxzvPFueRH2np66M/uoFasD1nB
+   xrLc1VAN6+CwU3rN76XlaBpSX4alFTD6pCNxmOlk1MMZfG4bnTC8a+2L3
+   g==;
+X-CSE-ConnectionGUID: jFE25404RjOGhk4JDmGGXQ==
+X-CSE-MsgGUID: fTYDnq24Q6WcXZ4VVhsp+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="23444570"
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="23444570"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 00:34:54 -0700
+X-CSE-ConnectionGUID: +XoVRmVvSsWR30tLGOqOMg==
+X-CSE-MsgGUID: UBzXbGaXRDqEI5fW6GMADQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="95623507"
+Received: from yungchua-mobl2.ccr.corp.intel.com (HELO [10.246.104.225]) ([10.246.104.225])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 00:34:51 -0700
+Message-ID: <b6c75eee-761d-44c8-8413-2a5b34ee2f98@linux.intel.com>
+Date: Tue, 3 Sep 2024 15:34:39 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: stream: fix programming slave ports for
+ non-continous port maps
+To: Vinod Koul <vkoul@kernel.org>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Sanyog Kale <sanyog.r.kale@intel.com>, Shreyas NC <shreyas.nc@intel.com>,
+ alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, bard.liao@intel.com
+References: <20240729140157.326450-1-krzysztof.kozlowski@linaro.org>
+ <095d7119-8221-450a-9616-2df6a0df4c77@linux.intel.com>
+ <ZqngD56bXkx6vGma@matsya>
 Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1slO0x-003tmn-1Z
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:38110
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfBRnJHE/+ZgUcoU0pwnsUkizGQdGvh8+qC32GcVUese/HpeZHscYhIqlH2uWONGrvrrkpUtrtj9fuzwaKlvo4mnf7BhYWxvyRve+hEVfb1/8JaXYHp2d
- IyEeUKPaI+/H3SbitZtO75XrPDNfHZt4WPk+p1yaOgtw0vuNYTCN/JneREPrfdoqaf+Cq5ukJD3t/Q==
+From: "Liao, Bard" <yung-chuan.liao@linux.intel.com>
+In-Reply-To: <ZqngD56bXkx6vGma@matsya>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/1/24 9:15 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.166 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.166-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+On 7/31/2024 2:56 PM, Vinod Koul wrote:
+> On 29-07-24, 16:25, Pierre-Louis Bossart wrote:
+>>
+>> On 7/29/24 16:01, Krzysztof Kozlowski wrote:
+>>> Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
+>>> 'sink_ports' - define which ports to program in
+>>> sdw_program_slave_port_params().  The masks are used to get the
+>>> appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
+>>> an array.
+>>>
+>>> Bitmasks can be non-continuous or can start from index different than 0,
+>>> thus when looking for matching port property for given port, we must
+>>> iterate over mask bits, not from 0 up to number of ports.
+>>>
+>>> This fixes allocation and programming slave ports, when a source or sink
+>>> masks start from further index.
+>>>
+>>> Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
+>>> Cc: <stable@vger.kernel.org>
+>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> This is a valid change to optimize how the port are accessed.
+>>
+>> But the commit message is not completely clear, the allocation in
+>> mipi_disco.c is not modified and I don't think there's anything that
+>> would crash. If there are non-contiguous ports, we will still allocate
+>> space that will not be initialized/used.
+>>
+>> 	/* Allocate memory for set bits in port lists */
+>> 	nval = hweight32(prop->source_ports);
+>> 	prop->src_dpn_prop = devm_kcalloc(&slave->dev, nval,
+>> 					  sizeof(*prop->src_dpn_prop),
+>> 					  GFP_KERNEL);
+>> 	if (!prop->src_dpn_prop)
+>> 		return -ENOMEM;
+>>
+>> 	/* Read dpn properties for source port(s) */
+>> 	sdw_slave_read_dpn(slave, prop->src_dpn_prop, nval,
+>> 			   prop->source_ports, "source");
+>>
+>> IOW, this is a valid change, but it's an optimization, not a fix in the
+>> usual sense of 'kernel oops otherwise'.
+>>
+>> Am I missing something?
+>>
+>> BTW, the notion of DPn is that n > 0. DP0 is a special case with
+>> different properties, BIT(0) cannot be set for either of the sink/source
+>> port bitmask.
+> The fix seems right to me, we cannot have assumption that ports are
+> contagious, so we need to iterate over all valid ports and not to N
+> ports which code does now!
 
-Tested-by: Ron Economos <re@w6rz.net>
 
+Sorry to jump in after the commit was applied. But, it breaks my test.
+
+The point is that dpn_prop[i].num where the i is the array index, and
+
+num is the port number. So, `for (i = 0; i < num_ports; i++)` will iterate
+
+over all valid ports.
+
+We can see in below drivers/soundwire/mipi_disco.c
+
+         nval = hweight32(prop->sink_ports);
+
+         prop->sink_dpn_prop = devm_kcalloc(&slave->dev, nval,
+
+sizeof(*prop->sink_dpn_prop),
+
+                                            GFP_KERNEL);
+
+And sdw_slave_read_dpn() set data port properties one by one.
+
+`for_each_set_bit(i, &mask, 32)` will break the system when port numbers
+
+are not continuous. For example, a codec has source port number = 1 and 3,
+
+then dpn_prop[0].num = 1 and dpn_prop[1].num = 3. And we need to go
+
+throuth dpn_prop[0] and dpn_prop[1] instead of dpn_prop[1] and dpn_prop[3].
+
+
+>
+>>
+>>> ---
+>>>   drivers/soundwire/stream.c | 8 ++++----
+>>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+>>> index 7aa4900dcf31..f275143d7b18 100644
+>>> --- a/drivers/soundwire/stream.c
+>>> +++ b/drivers/soundwire/stream.c
+>>> @@ -1291,18 +1291,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_prop(struct sdw_slave *slave,
+>>>   					    unsigned int port_num)
+>>>   {
+>>>   	struct sdw_dpn_prop *dpn_prop;
+>>> -	u8 num_ports;
+>>> +	unsigned long mask;
+>>>   	int i;
+>>>   
+>>>   	if (direction == SDW_DATA_DIR_TX) {
+>>> -		num_ports = hweight32(slave->prop.source_ports);
+>>> +		mask = slave->prop.source_ports;
+>>>   		dpn_prop = slave->prop.src_dpn_prop;
+>>>   	} else {
+>>> -		num_ports = hweight32(slave->prop.sink_ports);
+>>> +		mask = slave->prop.sink_ports;
+>>>   		dpn_prop = slave->prop.sink_dpn_prop;
+>>>   	}
+>>>   
+>>> -	for (i = 0; i < num_ports; i++) {
+>>> +	for_each_set_bit(i, &mask, 32) {
+>>>   		if (dpn_prop[i].num == port_num)
+>>>   			return &dpn_prop[i];
+>>>   	}
 
