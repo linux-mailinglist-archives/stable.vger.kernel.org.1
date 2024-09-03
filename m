@@ -1,143 +1,87 @@
-Return-Path: <stable+bounces-72761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34EC9693D3
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 08:37:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EDE969487
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709722873BA
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 06:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 401EB1F23EA7
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86B1D460A;
-	Tue,  3 Sep 2024 06:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447F01D6DB6;
+	Tue,  3 Sep 2024 07:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Z1mYGaP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzM/z1mP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0982F2E3EB;
-	Tue,  3 Sep 2024 06:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE671D6194;
+	Tue,  3 Sep 2024 07:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725345451; cv=none; b=gkE4qrBLC3zOCX6EgOvs6uX4Wp7DuG6lEcvWLkbDtVVsu7I1eTNAaLz0M9NSKHIHzRKfmpc6j1Hh/dHy0fLO2GO8grm9dQ+u8t4limj3Je9id1rffr7m+nk/g3Qpak4FZUVH8/CgNvTyUbu4PrCGkUWpmCTDSttV9Sd1HTAYMUs=
+	t=1725346971; cv=none; b=eSqPeGHn8eDvIW707N3MVVQCg8Rwy2E+nuLZyUNrYyGYex0cMsS/4ULkdu1wfN8bABrXUV6b4Ud/wrMdpUsV0jteCLGOVa130XKAT1z+e2loyH9KMsV6ZWujt0bIWheSIjWfL8Q3wL/vJCmgYEJ2vIozqumRT4VY9phUENSuXXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725345451; c=relaxed/simple;
-	bh=Vb2ayZcxVYJI7Oj9Q+AdxHY/5Iq8m3iAdvArdzNkNEo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ujJH4BaAVIaGdPJ6WtNpDnntnYunQKXM9C9N7KKP72T+OMQ0wSUxhT/8HfZJnbrnOIDiAOE7Jb2RBydiU33ElTUPpNf/lgjhg7Y8GgRElMI6nWSYNQ4z88US0k/2VRI3PcgcMHQrY2DKXcZiorFmxi5d0q36YKPkoGYrgNPFalI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Z1mYGaP8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4831LiJs001041;
-	Tue, 3 Sep 2024 06:37:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	qcppdkim1; bh=oiQkwmuVOshle+cB69tX4B8eAUbAPjYvOD/Pld37iA8=; b=Z1
-	mYGaP8QwbPi5x3Tpsx1W6CRz2qSAQCz9uTeRC9KLJZcl+FFqZpREVAr4EZVe7dvE
-	jfZ7fuB1cnqFt0CSAg3rL1uEscPLEQwtFY/y3O7GqmkIpXUf2X6hNpLVjuAth9bJ
-	UETIErKw26rm7CWS5cApZw+v2qQU80qCUgRaSo6kCL9ZjfHFZa9nmFg/kIzQtwQA
-	0gngKO215hgeA7aNMTLE2SAcfjXLzZPYIxhxpXVuVRQXTmXecbpMthyj24xRYbRf
-	0+9XNU6RfYmjSHYbbuduDq24JxQU9fH1wZSDJQg+SH3+ecOR0Gs+OsR48K5NsTcB
-	fYPjQfKCAfMrpb7OmwHQ==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41drqe0j1f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Sep 2024 06:37:26 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4836bOuj008257
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Sep 2024 06:37:24 GMT
-Received: from hu-mapa-hyd.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 2 Sep 2024 23:37:20 -0700
-From: Manish Pandey <quic_mapa@quicinc.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Martin K. Petersen"
-	<martin.petersen@oracle.com>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_nitirawa@quicinc.com>,
-        <quic_bhaskarv@quicinc.com>, <quic_narepall@quicinc.com>,
-        <quic_rampraka@quicinc.com>, <quic_mapa@quicinc.com>,
-        <quic_cang@quicinc.com>, <quic_nguyenb@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH V6] scsi: ufs: qcom: update MODE_MAX cfg_bw value
-Date: Tue, 3 Sep 2024 12:07:09 +0530
-Message-ID: <20240903063709.4335-1-quic_mapa@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1725346971; c=relaxed/simple;
+	bh=3qidJfQt+X4a5kMK7cfyTY7OkqPL4BDhOdGy6okPpKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GPWpWMJGC0cnSTe09COhtgLzHi8QJBT2J8YGuXzwVJaxy2/Fo4wf9TKAVs9SymLndCfZ13O3UBRyQMTM1icusUelOOXzEOq3+FkTj3cTkk2fhyyJJubmAwahSts7O/QYgweeoNLn3yMPJdMWfbB7tZnsmVHX8bCfe+O+JEdcUeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzM/z1mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B82C4CEC5;
+	Tue,  3 Sep 2024 07:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725346970;
+	bh=3qidJfQt+X4a5kMK7cfyTY7OkqPL4BDhOdGy6okPpKo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UzM/z1mPycuq4e2yNt8f7GA15sih3ir21E8Talxo4MlWCSmmpSmTueSUhufJ/kTq/
+	 n+7dvsgFyKe1KYXdSL/FJVfg9Szkry1FA46kTuCvhTdTDOs5uipkLfz53z/DQgoQ08
+	 LyVDpiIkc5hCdxJEAHOh0Nc1jEjY8ksZQOl3xIqc=
+Date: Tue, 3 Sep 2024 09:02:47 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: stable@vger.kernel.org, linux-usb@vger.kernel.org,
+	Charles Yo <charlesyo@google.com>, Kyle Tso <kyletso@google.com>,
+	Amit Sunil Dhamne <amitsd@google.com>, Ondrej Jirman <megi@xff.cz>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH 6.6] usb: typec: fix up incorrectly backported "usb:
+ typec: tcpm: unregister existing source caps before re-registration"
+Message-ID: <2024090336-spider-skirmish-2ac9@gregkh>
+References: <2024083008-granddad-unmoving-828c@gregkh>
+ <ZtVaaFD5wbmYlLCa@kuha.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: OZ4-rYUq8lpixTI0qUy7JQKqfkJI7qzF
-X-Proofpoint-ORIG-GUID: OZ4-rYUq8lpixTI0qUy7JQKqfkJI7qzF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-02_06,2024-09-02_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- impostorscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2409030051
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZtVaaFD5wbmYlLCa@kuha.fi.intel.com>
 
-Commit 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
-bandwidth values for Gear 5") updated the ufs_qcom_bw_table for
-Gear 5. However, it missed updating the cfg_bw value for the max
-mode.
+On Mon, Sep 02, 2024 at 09:25:44AM +0300, Heikki Krogerus wrote:
+> On Fri, Aug 30, 2024 at 04:00:09PM +0200, Greg Kroah-Hartman wrote:
+> > In commit b16abab1fb64 ("usb: typec: tcpm: unregister existing source
+> > caps before re-registration"), quilt, and git, applied the diff to the
+> > incorrect function, which would cause bad problems if exercised in a
+> > device with these capabilities.
+> > 
+> > Fix this all up (including the follow-up fix in commit 04c05d50fa79
+> > ("usb: typec: tcpm: fix use-after-free case in
+> > tcpm_register_source_caps") to be in the correct function.
+> > 
+> > Fixes: 04c05d50fa79 ("usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps")
+> > Fixes: b16abab1fb64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
+> > Reported-by: Charles Yo <charlesyo@google.com>
+> > Cc: Kyle Tso <kyletso@google.com>
+> > Cc: Amit Sunil Dhamne <amitsd@google.com>
+> > Cc: Ondrej Jirman <megi@xff.cz>
+> > Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Hence update the cfg_bw value for the max mode for UFS 4.x devices.
-
-Fixes: 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect
-bandwidth values for Gear 5")
-Cc: stable@vger.kernel.org
-Signed-off-by: Manish Pandey <quic_mapa@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
-Changes from v5:
-- Updated commit message.
-- Added Reviewed-by tag.
-
-Changes from v4:
-- Updated commit message.
-
-Changes from v3:
-- Cced stable@vger.kernel.org.
-
-Changes from v2:
-- Addressed Mani comment, added fixes tag.
-
-Changes from v1:
-- Updated commit message.
----
- drivers/ufs/host/ufs-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index c87fdc849c62..ecdfff2456e3 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -93,7 +93,7 @@ static const struct __ufs_qcom_bw_table {
- 	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
- 	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
- 	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
--	[MODE_MAX][0][0]		    = { 7643136,	307200 },
-+	[MODE_MAX][0][0]		    = { 7643136,	819200 },
- };
- 
- static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);
--- 
-2.17.1
-
+Thanks for the review!
 
