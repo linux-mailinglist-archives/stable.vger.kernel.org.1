@@ -1,127 +1,117 @@
-Return-Path: <stable+bounces-72753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7240969056
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 01:16:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F769690F9
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 03:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15559B20ACA
-	for <lists+stable@lfdr.de>; Mon,  2 Sep 2024 23:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED711F24C2D
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 01:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0798E1A4E71;
-	Mon,  2 Sep 2024 23:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTW2Xlfm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111F81C68B0;
+	Tue,  3 Sep 2024 01:33:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58F4CE13
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 23:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41054185947;
+	Tue,  3 Sep 2024 01:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725318979; cv=none; b=rn/42Uw9/ldO5h0Uc4YuqxaPEvvWWPzXyKggJD0CVvB+Uxw2QPufXQvAPk9MiEhbdRc+RcDaJBJ48BZXxPmWFPaRJNMWM5VdwVy14Y3vp8DbVCsh6wvnGw4lFLAHP3R8d441ql8LAI+o4rs4EFYG30gBAYzRiInAg0MAmijCYjU=
+	t=1725327234; cv=none; b=rDbeX+gCcnhlYlQXSMGlNibO43WrUyxrQSxCdErKHotebR45ZnHOwX5kd7va+VUuRcvClQoBM2KkBLhdOXC3sstdDvGEKN48sbscsroWdq2k17qNPd+R6/x767N26iF7FvgCNgFY/9rudS5bXgPBgHZtrMrwT8TEpg3gfhhYAfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725318979; c=relaxed/simple;
-	bh=Ej0QxayqmDqh+wOpxhn6PZ7Ekd6SK7fVmjZK7b/LTh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NiaGW8t9N8hMOT8OkugikP5FLt4x9KgiTYhpmSAl8SjLAULZO6bgSAcnGYH29XrdXdDhP21Z+oS6FdOTjzoZO/rTItsQt0Bit0kXP5+zmcg43i+uptB9BCRidsmcQwmolESnrqEJDpb2RSE7emPO1/taKzpUhOp0cqWNr9FaTfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTW2Xlfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630A8C4CEC9
-	for <stable@vger.kernel.org>; Mon,  2 Sep 2024 23:16:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725318979;
-	bh=Ej0QxayqmDqh+wOpxhn6PZ7Ekd6SK7fVmjZK7b/LTh0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LTW2XlfmLF1ioGde4BsCDN0IhOlKhZyC4ys/J/mC2HvjfI+D7/17gwGXcP8HaNdmz
-	 TqwYM0DdYC8al+NCgJRUdgnEM3Of+HQyu3Ojg11X+3mXmWfBCMpqDQffQiHV7NWZ5n
-	 LerQePfFo/SKWmyzAiqT/LoeVMvsYCdUb6RnoXsZLW9P7YSjmLCUzMEjpmgGCD5N2k
-	 De0SRcFP+YuIxcNSu0lLH4sV7quVXkbIM+Z3y8REWXGkHYc7Mn6Y3sWRBiHDlGAjcI
-	 vHIVSw+2g6m+PSfYbf/DZmVbdbUktpLW/iFiX9un3Tw61Q0LzfTDM3DUPEtJzb84Vx
-	 sdjuyENRl0Wkg==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5da686531d3so3162650eaf.3
-        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 16:16:19 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyGE8vFOfNde/C5Pv2kqBa2zLsTpx28MR2IqtxIafKOAS0Pnrd8
-	g3XpM+QIAG1yYCMMAY+rgNLpI+VtZ6EGm9lXs5yxvx/wh4hwK1esgkbGrwi/xL1+xh57sKrCXHI
-	onPDp+7wcXAxbDxywijGeQtfHWxk=
-X-Google-Smtp-Source: AGHT+IHZFLXQHfwF/+H01XPI7DZ1neDBClcyw6vG784FclEFN5UP5Vrolv7pexrAYKz2gd97A67gGOi+aBZMpKD7yDE=
-X-Received: by 2002:a05:6871:4e48:b0:25e:368:b5a4 with SMTP id
- 586e51a60fabf-277d03b127amr10124293fac.18.1725318978733; Mon, 02 Sep 2024
- 16:16:18 -0700 (PDT)
+	s=arc-20240116; t=1725327234; c=relaxed/simple;
+	bh=L6008oDfcpGOdp3sZj7mO4v81wzU3PhcgEhuJkxXEyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ATKRoF9QpiuArZNrZ/t2Rz69hEhEj5bFq1ejIche3Tzmk8Bc3xgfUw7sRcCVfwVOsmpYq1xfW2uyi7xSE5OJHBvdrDN8wNkOdp8zL1JahXpTtETs7IG2HkT1qAL6Eg6bKSFCkAWXu9z5I8n3INpAErt9Tr/7or0uyWPGgsVvm+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAC3aKhhZ9ZmJHyyAA--.34444S2;
+	Tue, 03 Sep 2024 09:33:33 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	make24@iscas.ac.cn,
+	airlied@redhat.com,
+	bskeggs@redhat.com,
+	akpm@linux-foundation.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drm/nouveau: fix a possible null pointer dereference
+Date: Tue,  3 Sep 2024 09:33:19 +0800
+Message-Id: <20240903013319.4142585-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240901160823.230213148@linuxfoundation.org> <20240901160830.426516431@linuxfoundation.org>
-In-Reply-To: <20240901160830.426516431@linuxfoundation.org>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Tue, 3 Sep 2024 08:16:07 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd_UvscfaXpnoJNv2GEeDU0sUfg3_=gG7VX7My60EzXgfA@mail.gmail.com>
-Message-ID: <CAKYAXd_UvscfaXpnoJNv2GEeDU0sUfg3_=gG7VX7My60EzXgfA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 187/215] ksmbd: the buffer of smb2 query dir response
- has at least 1 byte
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Steve French <stfrench@microsoft.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAC3aKhhZ9ZmJHyyAA--.34444S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFykCryUWr4DuFyDCF1ftFb_yoW8GFWkpF
+	srG34YyFW5JFZruF18Ja4avF15G3W7JF1xuw10van3C3ZayryUtryrXryYgryfAFW3Kr12
+	qwnFvFy7WF12krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Mon, Sep 2, 2024 at 2:07=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-Hi Greg,
-> 5.15-stable review patch.  If anyone has any objections, please let me kn=
-ow.
-Please drop this patch.
-I told you this patch was required for 6.1 kernel versions or later in
-previous mail.
+In ch7006_encoder_get_modes(), the return value of drm_mode_duplicate() is
+used directly in drm_mode_probed_add(), which will lead to a NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Thanks!
->
-> ------------------
->
-> From: Namjae Jeon <linkinjeon@kernel.org>
->
-> [ Upstream commit ce61b605a00502c59311d0a4b1f58d62b48272d0 ]
->
-> When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
-> ->StructureSize is set to 9, which mean buffer has 1 byte.
-> This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
-> flex-array.
->
-> Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-ar=
-rays")
-> Cc: stable@vger.kernel.org # v6.1+
-> Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/ksmbd/smb2pdu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-> index 57f59172d8212..3458f2ae5cee4 100644
-> --- a/fs/ksmbd/smb2pdu.c
-> +++ b/fs/ksmbd/smb2pdu.c
-> @@ -4160,7 +4160,8 @@ int smb2_query_dir(struct ksmbd_work *work)
->                 rsp->OutputBufferLength =3D cpu_to_le32(0);
->                 rsp->Buffer[0] =3D 0;
->                 rc =3D ksmbd_iov_pin_rsp(work, (void *)rsp,
-> -                                      sizeof(struct smb2_query_directory=
-_rsp));
-> +                                      offsetof(struct smb2_query_directo=
-ry_rsp, Buffer)
-> +                                      + 1);
->                 if (rc)
->                         goto err_out;
->         } else {
-> --
-> 2.43.0
->
->
->
+Cc: stable@vger.kernel.org
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/i2c/ch7006_drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
+index 131512a5f3bd..48bf6e4e8bdb 100644
+--- a/drivers/gpu/drm/i2c/ch7006_drv.c
++++ b/drivers/gpu/drm/i2c/ch7006_drv.c
+@@ -229,6 +229,7 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ {
+ 	struct ch7006_priv *priv = to_ch7006_priv(encoder);
+ 	const struct ch7006_mode *mode;
++	struct drm_display_mode *encoder_mode = NULL;
+ 	int n = 0;
+ 
+ 	for (mode = ch7006_modes; mode->mode.clock; mode++) {
+@@ -236,8 +237,11 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ 		    ~mode->valid_norms & 1<<priv->norm)
+ 			continue;
+ 
+-		drm_mode_probed_add(connector,
+-				drm_mode_duplicate(encoder->dev, &mode->mode));
++		encoder_mode = drm_mode_duplicate(encoder->dev, &mode->mode);
++		if (!encoder_mode)
++			return 0;
++
++		drm_mode_probed_add(connector, encoder_mode);
+ 
+ 		n++;
+ 	}
+-- 
+2.25.1
+
 
