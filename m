@@ -1,118 +1,131 @@
-Return-Path: <stable+bounces-72764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADE39694DB
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:12:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A3B969503
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 09:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37020285147
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CA041F264E4
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 07:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8101DAC49;
-	Tue,  3 Sep 2024 07:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243991CEAC3;
+	Tue,  3 Sep 2024 07:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STnHriJm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="pShoSYiJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136CD1D6194;
-	Tue,  3 Sep 2024 07:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87481D6DBC
+	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 07:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725347397; cv=none; b=dONOaUd+/kte/Hk2v9pO/yTEKJ7+7dln7hy5Td7wGnaZetTHkdIMJCpTXOkE88dHJu5I7fV3vrz4z0gpK883yChu8/CpnUP34hdweVdX5NfJvaPCdwM3/YNQLwsuM4MZR+2ByzYuS602BOWWRtgRa6fYcPv3Ub22YhBvI2HJ4es=
+	t=1725347787; cv=none; b=PyLc0l7OuzPy4c8PjsnCVxE6mDZc9+OlRHFoOvDnz+2+m10dYAniuHPre2iQByoLtq8hT+JEFHvOr441dPXT1557r3Bysh/4WCjoQZgC/1Iu97i7KGq3CJHtRPI6ADSstL3OwtI1q3GilQj7XiKkZR1fXILlfvfsVlLe/X1/vq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725347397; c=relaxed/simple;
-	bh=YEgWiHXBuskcPndGXIwLrLW9HeAxJb4B1CgKB0BFHno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4WIYJIJPWXP0r115jiQ8C43c+FEtaomJdPIGb1APuJDjA11oLw+upqaWN/JAxdIG8cd0xplGFsS+RBb8dC5Nkq0VHnVdlqoTwAvjgYq8La3rSXbuceCn/4j5/L0LHJusTI4xzXyYBbs+5ZwyfqOaQeGGYnr5EWD2VbTJ9kD2oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STnHriJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A8DC4CEC6;
-	Tue,  3 Sep 2024 07:09:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725347396;
-	bh=YEgWiHXBuskcPndGXIwLrLW9HeAxJb4B1CgKB0BFHno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=STnHriJmfSwk3zd7FKQ9ObfXGV0wHnu1Gp9iLdbedkLQ5S8WiZ4sS1Y4nvq7uIZn4
-	 2zf+kekIOdX8CdCQBcB/NO0NudqAqV428ExhJH16hX6+3uYSe9logxDogC9l2kwMtO
-	 EufZDOag7qHsBS9ih9W17bidAngDY9oRbWashrD4=
-Date: Tue, 3 Sep 2024 09:09:53 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>,
-	Marcello Sylvester Bauer <sylv@sylv.io>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Aleksandr Nogikh <nogikh@google.com>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
-	syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com,
-	stable@vger.kernel.org, andrey.konovalov@linux.dev
-Subject: Re: [PATCH] usb: gadget: dummy_hcd: execute hrtimer callback in
- softirq context
-Message-ID: <2024090332-whomever-careless-5b7d@gregkh>
-References: <20240729022316.92219-1-andrey.konovalov@linux.dev>
- <CA+fCnZc7qVTmH2neiCn3T44+C-CCyxfCKNc0FP3F9Cu0oKtBRQ@mail.gmail.com>
+	s=arc-20240116; t=1725347787; c=relaxed/simple;
+	bh=dbqZHXeY2GElJhu4chOZTfuww+6wbdw8Pspqnzri+P0=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=SqMtm9cur7B0iu+gomHmXKcEQjkkrRqWB6CXGtVwX8rYws8zwfqEUgzfRkyNZqkRvNQT/l2V5zDqEbklBJWlW2hhZlZvFC5uZ0faqjz61nSf2o2EAn+SNAZgSlxZH9bQ2vBnyUKVJfpoYAXTBN+yT4Gk6Zzt0yjZ2r4XEI2mZE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=pShoSYiJ; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
+	by cmsmtp with ESMTPS
+	id lJWrsSDIV1zuHlNm4sc02w; Tue, 03 Sep 2024 07:16:24 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id lNm3s3wghlBoelNm4salUL; Tue, 03 Sep 2024 07:16:24 +0000
+X-Authority-Analysis: v=2.4 cv=Lc066Cfi c=1 sm=1 tr=0 ts=66d6b7c8
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=W1KCT4/fDvFOriO9Ow8GKZ/URfk+QMxRSIoknlmeAHo=; b=pShoSYiJl8w5toR2rg22f6X6O8
+	6ccTXPVJjWKdZv3E2XC/W01YIHGxXF9uut9KrVMLM6sPpoecxyNGR5NuwqwDc8+8dhwHB7ZjTXp9O
+	9VU9zKWMPoxvx+uqgtN1VOnmZVzZI6yFSAmFTuxA0yhQ43LfA5p4VPczT6dn5pzEq6bK0y5Q4yzNm
+	jpDYPIBeTbI+RDiVbddsLWiFblZfUrrIElch3/0+pg3KEW1gJt0HznjJFxj3liJdn/JpQzTiB7Ywb
+	qoHTCgLc/2mzEmAyrauMZkP8WvHZTIEwf7qLQiFRX4ZiS2qRuzCE1ag0R3OoqyTlIswTYLxh7yDQP
+	aJ0W3baA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:38096 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1slNm1-003nZi-2I;
+	Tue, 03 Sep 2024 01:16:21 -0600
+Subject: Re: [PATCH 6.6 00/93] 6.6.49-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <ed637a40-4526-f17c-3f64-c4d5949ac316@w6rz.net>
+Date: Tue, 3 Sep 2024 00:16:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZc7qVTmH2neiCn3T44+C-CCyxfCKNc0FP3F9Cu0oKtBRQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1slNm1-003nZi-2I
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:38096
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 21
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfECE+Nqb5jJdhO6yndHM1rXcAWmGfjb9eUUW2VWElKWuMzJ0AUiGogUy951GbTltAMfMKnIw+tdfzQ++hOMOCoGcoF3IzJpg5jE4xJfXEtnNvXYP/zhX
+ Mrk8mhbzCwU+gmnvAm20xxGVmawZt7W7xiF3rmQhrLd3aqCu0xrbr5MD3TRMReBNYkXU3D54AE6VoA==
 
-On Tue, Aug 27, 2024 at 02:02:00AM +0200, Andrey Konovalov wrote:
-> On Mon, Jul 29, 2024 at 4:23 AM <andrey.konovalov@linux.dev> wrote:
-> >
-> > From: Andrey Konovalov <andreyknvl@gmail.com>
-> >
-> > Commit a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer
-> > scheduler") switched dummy_hcd to use hrtimer and made the timer's
-> > callback be executed in the hardirq context.
-> >
-> > With that change, __usb_hcd_giveback_urb now gets executed in the hardirq
-> > context, which causes problems for KCOV and KMSAN.
-> >
-> > One problem is that KCOV now is unable to collect coverage from
-> > the USB code that gets executed from the dummy_hcd's timer callback,
-> > as KCOV cannot collect coverage in the hardirq context.
-> >
-> > Another problem is that the dummy_hcd hrtimer might get triggered in the
-> > middle of a softirq with KCOV remote coverage collection enabled, and that
-> > causes a WARNING in KCOV, as reported by syzbot. (I sent a separate patch
-> > to shut down this WARNING, but that doesn't fix the other two issues.)
-> >
-> > Finally, KMSAN appears to ignore tracking memory copying operations
-> > that happen in the hardirq context, which causes false positive
-> > kernel-infoleaks, as reported by syzbot.
-> >
-> > Change the hrtimer in dummy_hcd to execute the callback in the softirq
-> > context.
-> >
-> > Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
-> > Reported-by: syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=17ca2339e34a1d863aad
-> > Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-> 
-> Hi Greg,
-> 
-> Could you pick up either this or Marcello's patch
-> (https://lkml.org/lkml/2024/6/26/969)? In case they got lost.
+On 9/1/24 9:15 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.49 release.
+> There are 93 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.49-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Both are lost now, (and please use lore.kernel.org, not lkml.org), can
-you resend the one that you wish to see accepted?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-thanks,
+Tested-by: Ron Economos <re@w6rz.net>
 
-greg k-h
 
