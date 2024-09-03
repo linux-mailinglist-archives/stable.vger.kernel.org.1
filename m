@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-72930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C2896A96C
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:01:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C6F96A96F
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41735283632
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:01:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DED1F23A70
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1171E9744;
-	Tue,  3 Sep 2024 20:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8461E9766;
+	Tue,  3 Sep 2024 20:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyNw+Zew"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZaw6W0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869DF20FAA6;
-	Tue,  3 Sep 2024 20:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0644B1E974E;
+	Tue,  3 Sep 2024 20:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396464; cv=none; b=eHAGhovH6ICOhBl+AcjKj7GSGy/WELxwYfGf8c2YThVZrvHyQYi8CT9+Wu5z83QRvm/0c5xtZwhezHH8poJztuVmHxXn9ElbfWYoV9dn51QLOdwtdSzAMR4Ym4aYp9Oh3q5FpbaFyk0gV+5bmoZadQ9QD4FH/zTjjbrruDq8Tjo=
+	t=1725396468; cv=none; b=XMMqHpUUtVKcNbKWM3f+y3m9SsvfrFpgueKUBWjNJegnXzwfwJM9frsmvXvEXNjJ9vMrwF/Nj30xIbUQYJc+ojmE2JnldZ5ACMGM5el8MtUXGMyz31CgrlBBpi4valFGqzItawy9ULjnj2w8rE23tptjZifBbuwr2a5AXERjzxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396464; c=relaxed/simple;
-	bh=adoHr7REJtqWhb6WopJLXNeslnFpPgQ5yZGKaG3Pa+Y=;
+	s=arc-20240116; t=1725396468; c=relaxed/simple;
+	bh=DkmnPP7Rnck3U13b0kVYRAQ4fci1gmvH7X2CEfWg4wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPPmGhLJVgNk41YxneRWW6b1Hukqfoo+SZGebfM1W4I0omcIIXbqvgVd0nhcMe5NxxNHDMVXziMi8ddgJl/zo8CwECnTD5LbgpTNrysdAYrt7aWGa7Mk1GJ5yHl8IKyxQPY/9z/ArCXbHDYzcTYrQjDhEzSDn9NrUCgLCA4wIFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyNw+Zew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A155C4CEC8;
-	Tue,  3 Sep 2024 20:47:43 +0000 (UTC)
+	 MIME-Version; b=Pt30XgfvadHm3m4irf0aUDd6jp+247OEUPaicVppEUl6YJkrz/w4Yi6YXG7tEBF3vcxZ2CowmvVboafJt2Nn3fbJI6IvOOUaAJxqvg2o+72pn+j3qLcwyrzAwF/3uxk9oNyeQ5MDDo6/EXnGza7wvLAma5RLpGgPje6A1EghF6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZaw6W0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DD7C4CEC5;
+	Tue,  3 Sep 2024 20:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396464;
-	bh=adoHr7REJtqWhb6WopJLXNeslnFpPgQ5yZGKaG3Pa+Y=;
+	s=k20201202; t=1725396467;
+	bh=DkmnPP7Rnck3U13b0kVYRAQ4fci1gmvH7X2CEfWg4wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyNw+ZewJI0b+muu9PE5hgRRvfT0KK5dVdSQyNFt2xlIOhREqx/LxZ9eEplM+a57z
-	 MEQYlCCWea7lDTqStrxwrNioVu3Bnvp31jcd9XQhS0iO0kcPY4JWYkYoWD4EJDmjdf
-	 7+gsL5pjI/ZaVo1Z6HwBuPjZ9gV0rq7VwfhwVXl9h4sCGSTpm7NnA408KxkUop/ltB
-	 338UwvISzSgxVK1fuwz5qwCDwtyfMzBcThC338szZYP8ii084ttaiOctYCVxmMuUTi
-	 i60xttJGfu7qHXdeAl3L4YWtszv//ZnE/KfehOgMXnuxULM9tSepDpaY90QL6uxg9o
-	 1E9Kk5B1xjmQg==
+	b=DZaw6W0THvHlVWjk5KA0Uy/dSipRLsY4qjkWLdqHXcLRNR/DfluiKkGocLJtYY/Dt
+	 2SxzIGiKz2xDrwZiOaOG7r8vToLPvVaxZBXj/zvvL3BRDKY1Wp2rryVeX2LuMNF0eE
+	 gE/R6U5zexigXh5oHR2XRfKifZZRTFE3RtpostNA2WIM+MDTKSnC4zaTlH/mp4AHFA
+	 x67uyBkPW4Z2LkUrV3rglKebumtG99Rjp52POL5SoyB5oIXptnl+6cTo0h5GWfx15C
+	 L8p9OuAOxg+aWo7buQLqbZERbzVw1dmAcvsiKjUFhZvqG/mKe0air0T2OgEFvRyZez
+	 s+ZuyPpPjIRPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wei Yang <richard.weiyang@gmail.com>,
+Cc: Jacky Chou <jacky_chou@aspeedtech.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	monstr@monstr.eu
-Subject: [PATCH AUTOSEL 5.10 5/8] microblaze: don't treat zero reserved memory regions as error
-Date: Tue,  3 Sep 2024 15:27:55 -0400
-Message-ID: <20240903192815.1108754-5-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	u.kleine-koenig@pengutronix.de,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 6/8] net: ftgmac100: Ensure tx descriptor updates are visible
+Date: Tue,  3 Sep 2024 15:27:56 -0400
+Message-ID: <20240903192815.1108754-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192815.1108754-1-sashal@kernel.org>
 References: <20240903192815.1108754-1-sashal@kernel.org>
@@ -66,49 +69,107 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.224
 Content-Transfer-Encoding: 8bit
 
-From: Mike Rapoport <rppt@kernel.org>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit 0075df288dd8a7abfe03b3766176c393063591dd ]
+[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
 
-Before commit 721f4a6526da ("mm/memblock: remove empty dummy entry") the
-check for non-zero of memblock.reserved.cnt in mmu_init() would always
-be true either because  memblock.reserved.cnt is initialized to 1 or
-because there were memory reservations earlier.
+The driver must ensure TX descriptor updates are visible
+before updating TX pointer and TX clear pointer.
 
-The removal of dummy empty entry in memblock caused this check to fail
-because now memblock.reserved.cnt is initialized to 0.
+This resolves TX hangs observed on AST2600 when running
+iperf3.
 
-Remove the check for non-zero of memblock.reserved.cnt because it's
-perfectly fine to have an empty memblock.reserved array that early in
-boot.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240729053327.4091459-1-rppt@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/mm/init.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 45da639bd22ca..a2cd139c5eb41 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -245,11 +245,6 @@ asmlinkage void __init mmu_init(void)
- {
- 	unsigned int kstart, ksize;
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+index 969af4dd64055..bc9a7f2d23504 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -569,7 +569,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
+ 	(*processed)++;
+ 	return true;
  
--	if (!memblock.reserved.cnt) {
--		pr_emerg("Error memory count\n");
--		machine_restart(NULL);
--	}
--
- 	if ((u32) memblock.memory.regions[0].size < 0x400000) {
- 		pr_emerg("Memory must be greater than 4MB\n");
- 		machine_restart(NULL);
+- drop:
++drop:
+ 	/* Clean rxdes0 (which resets own bit) */
+ 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
+ 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
+@@ -653,6 +653,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
+ 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
+ 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
+ 
+ 	return true;
+@@ -806,6 +811,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	dma_wmb();
+ 	first->txdes0 = cpu_to_le32(f_ctl_stat);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	/* Update next TX pointer */
+ 	priv->tx_pointer = pointer;
+ 
+@@ -826,7 +836,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 
+ 	return NETDEV_TX_OK;
+ 
+- dma_err:
++dma_err:
+ 	if (net_ratelimit())
+ 		netdev_err(netdev, "map tx fragment failed\n");
+ 
+@@ -848,7 +858,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	 * last fragment, so we know ftgmac100_free_tx_packet()
+ 	 * hasn't freed the skb yet.
+ 	 */
+- drop:
++drop:
+ 	/* Drop the packet */
+ 	dev_kfree_skb_any(skb);
+ 	netdev->stats.tx_dropped++;
+@@ -1419,7 +1429,7 @@ static void ftgmac100_reset_task(struct work_struct *work)
+ 	ftgmac100_init_all(priv, true);
+ 
+ 	netdev_dbg(netdev, "Reset done !\n");
+- bail:
++bail:
+ 	if (priv->mii_bus)
+ 		mutex_unlock(&priv->mii_bus->mdio_lock);
+ 	if (netdev->phydev)
+@@ -1490,15 +1500,15 @@ static int ftgmac100_open(struct net_device *netdev)
+ 
+ 	return 0;
+ 
+- err_ncsi:
++err_ncsi:
+ 	napi_disable(&priv->napi);
+ 	netif_stop_queue(netdev);
+- err_alloc:
++err_alloc:
+ 	ftgmac100_free_buffers(priv);
+ 	free_irq(netdev->irq, netdev);
+- err_irq:
++err_irq:
+ 	netif_napi_del(&priv->napi);
+- err_hw:
++err_hw:
+ 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
+ 	ftgmac100_free_rings(priv);
+ 	return err;
 -- 
 2.43.0
 
