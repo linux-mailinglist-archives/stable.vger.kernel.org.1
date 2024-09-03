@@ -1,149 +1,209 @@
-Return-Path: <stable+bounces-72759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820709692F2
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 06:56:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0CF9692FA
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 06:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A20AC1C22AAC
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 04:56:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C953728467B
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 04:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85971CDFDD;
-	Tue,  3 Sep 2024 04:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF76A1CE6EA;
+	Tue,  3 Sep 2024 04:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="lrRrLrd5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kkgRwXxK"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QkSB7icF"
 X-Original-To: stable@vger.kernel.org
-Received: from flow5-smtp.messagingengine.com (flow5-smtp.messagingengine.com [103.168.172.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722C02904;
-	Tue,  3 Sep 2024 04:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0D1CDA02
+	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 04:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725339366; cv=none; b=rXw/MhW4gQRugbXi+4pFM0lO0wRZFPehP4IpbYwR49EC3IoaO/IE58Msv3y5eAARtspE65d4xtUSNVI+S+PATpYnJz7qevJFfeSqaL1YA+68JVuHNKxSp9VR2AK01gFEGNekFSe/P0txUo6dDI90fr4rnSM+//7NVxWiVkg9y1Y=
+	t=1725339534; cv=none; b=Y7H8neGMdCpvNtrHM/wxC+jsn6oAekHLlRVUwKrPfZ++2mO/0m/C3NAsxXs/Cf5AcjM5or5d6Fg+SiMlF4isELrIkOOQ5zr472J6tge64/tZ1s90fQObNnspD3eI6vjcaLXoQ57MTQKWnSaXTCSJrOAhgBSCosQb4Tb2AiJSOBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725339366; c=relaxed/simple;
-	bh=6QgKRJ5Pc9xgqkDF9sMaV53v4Fz99GqqxpewHhlftzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PToHOUBm1UFS1BviX1ai1zsvD5225UMzOs+zr/iW0v55njnUEci8KsuCxYXlOVNzUAQakSCZY5WQCKnRlOa/TCagPn986h+BBtPU6uyk5iga/fpTUnKSd9a/Mx7ZlWZrmSWa6MaIDhfftr6TetAOQ9n6EQsoIUyhtmxSISv1fXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=lrRrLrd5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kkgRwXxK; arc=none smtp.client-ip=103.168.172.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.nyi.internal [10.202.2.48])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 6E99B200212;
-	Tue,  3 Sep 2024 00:55:59 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 03 Sep 2024 00:55:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1725339359; x=1725346559; bh=QaXgD3nnEB
-	f2FvN2o3oUkR2SpAKFJSDAPnp60cmG00M=; b=lrRrLrd5xSbH/ug6+KlAeIfBcR
-	qaQYhdGGV7g5qvomtuPvVCMlau0MKsFqfRc879wODFXaTZBZ/8QYTrmCO/6Yfpov
-	2ofD83p+Sx+1eM4rBcMiOnuOtYgX6NZqA7lqQ9ea6PLfY8fORimsjINWuFPFpg9w
-	nlrqOjfEMj8USskrW7U4iI+8fc5w4dBYU4TXmS6uw3npwQdgzbH6AD3aLaeBwN+i
-	nCOWnv5OCd6SaeCEN9mTkU/75o1nd/x0LRTNXgL9CCbe/aSLwnJvatF9R+Oxzxe3
-	pnQDJGCpME7OqAK9Ls1KWjwrTLgtcTTICWodNuDF+Flp0WugvWvWaPXVNGvw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1725339359; x=1725346559; bh=QaXgD3nnEBf2FvN2o3oUkR2SpAKF
-	JSDAPnp60cmG00M=; b=kkgRwXxKqXV4hca5Mw/+wTzndZFnOTrZVr5Yy5gSzUcN
-	l/Frz31dZBhO8irg8IrtIv8IUC8O+bGi7H+JS2I8VYCHwzTCUx8IiP9fHkSiFGJv
-	VxG+nPvPgjQBJW0InT1DKfDC+Qxrg3qNI50htHB8evCNGDSx4Y5LDD4yKvT/3r1V
-	5h5v2DJmeN3PlAisV2E1EPdB4dtKQrHIVHEOA4kSA7lQH7/cTVQQYlYpftnuJe/S
-	Mn5bIWK/wo3+LVK+Ws0RopxFA8dOMjLo9efsrIVhWClubstfR2RamDzUTzWvbidG
-	7Xv+gdG3LGqwddh44BV6gWO/z1kKQwsnS2uhV6Oahw==
-X-ME-Sender: <xms:3pbWZkZlMyT8nw3X75H33sZYTuBLrC2qifWq9WD_djnoYfCmXyhlCw>
-    <xme:3pbWZvYeXe-W_dw6QF1ChUzuwLRcmQ7EPqLqGaslQy4vdlg_VsX7Rnmg9ROs3-uVA
-    IW0HI9l_ifYiQ>
-X-ME-Received: <xmr:3pbWZu-Kn2oarZ8_9Ow94znknYYSJ9cGVsBC0eSNUTNqsPkrViiznZL2cnR9dzZFZw7RyeepUkvC_kFAqiQI10MUsueiXng_U3D_Dw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehgedgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeegkedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepmhgrkhgvvdegsehishgtrghsrdgrtgdrtghnpdhrtg
-    hpthhtohepnhgsugesnhgsugdrnhgrmhgvpdhrtghpthhtoheplhhorhgvnhiioheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheprhihuggvrhdrlhgvvgesmhgvughirghtvghkrd
-    gtohhmpdhrtghpthhtohepshhhrgihnhgvrdgthhgvnhesmhgvughirghtvghkrdgtohhm
-    pdhrtghpthhtohepshgvrghnrdifrghnghesmhgvughirghtvghkrdgtohhmpdhrtghpth
-    htohepkhhvrghloheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrthhthhhirghs
-    rdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnghgvlhhoghhiohgrtggthh
-    hinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomh
-X-ME-Proxy: <xmx:3pbWZupN-FcNMwfx2JqME2u1giu4qg3Knb8zOft___manRJ7U81gCA>
-    <xmx:3pbWZvostYbpJjibu84wEbU76J0ekjMUe3kGMLFc0Icz6nSJHJj9RQ>
-    <xmx:3pbWZsRe6-QfWiv-rn4CV96o3PV6tnGlWHsb91TvFygcH64qTChGPA>
-    <xmx:3pbWZvoCqbYWRGd-lJbR7yyo4QovcSguYwsB9V73AVlGZNw2wTnPgg>
-    <xmx:35bWZqHQxUchp1_GGGk2zcsVFWLUDcR1HYI8TELq0TunTNpuIIxF_hxh>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Sep 2024 00:55:57 -0400 (EDT)
-Date: Tue, 3 Sep 2024 06:55:55 +0200
-From: Greg KH <greg@kroah.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com, howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com, benjamin-jw.lin@mediatek.com,
-	allen.ye@mediatek.com, chank.chen@mediatek.com,
-	meichia.chiu@mediatek.com, Money.Wang@mediatek.com,
-	Bo.Jiao@mediatek.com, akpm@linux-foundation.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference
- in mt7996_mcu_sta_bfer_he
-Message-ID: <2024090332-waged-yummy-296b@gregkh>
-References: <20240903013913.4143602-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1725339534; c=relaxed/simple;
+	bh=8o85C8EbJOznl3BLIG+cQfhkgOXbYiQlzAjPgnN+QnU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GYR1naN9IHPRVnMdxGavXBUa2wTPcyUoukEP1rSi6c140jpEHASuNYxHMN/ddqZkyXwRxGIyhG2t6dfZJf3nK9WvcwyLXbd8wpGIuyQqqJxquMoRI/E3pyKBZ/zRv/CTN5WznGf8vRmsFCmk7Zb/NcKCJTOHW+uC1X839xFZnzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QkSB7icF; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7093b53f315so1698954a34.2
+        for <stable@vger.kernel.org>; Mon, 02 Sep 2024 21:58:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1725339532; x=1725944332; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sPhZdW35wA0lKARiWkZjmf+aWFeCFp2ESl8o+4bQ7rQ=;
+        b=QkSB7icFuZD4j2OvZYLn0LuHd2Zs//PGbdQKPeb2vTgN82g7rCGDGzx3CVU9L4jfCi
+         fVMJVSN6CjXOLxFDwzgfiZIM6mGmbITLyyc9ab9hyxuSzXB7A3ex3YNyxT7NSw8uX0zB
+         D6ftEYuvHb++lGwyG4EP0RU38QXEVDUwZUj5c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725339532; x=1725944332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sPhZdW35wA0lKARiWkZjmf+aWFeCFp2ESl8o+4bQ7rQ=;
+        b=uOdw79oH5A4i+/4Q0jaIAEaRERzZf0zjN17MTcV60LX9dM8cAIlKtxcBSxT2Epsv5u
+         fK1SPualcPyAtdEEMNU4c1NjL5kooPd0qk0Ls62MfXxD+GHYaSyRFrd1gyJpH1LKuEDx
+         AnZFcNMPftbXnOkuDSvCg1UbYZX+ioS7OWXBwjRGxXCiWElq6M1NGzXMxqkHosCErCat
+         7Uoz96szNyR8ioY/LfEWVe4yLBNPwmwhHOdsvlGlmmEzTCDN8DvXdoYLsU0OAsvTP3A5
+         EiCl5z4lg4/cbAgiSeG6vLNoFKr3Susn6Dx4kugIPL/A/VXaeVh6qOn/FcfH1DXgjLRO
+         8cRw==
+X-Gm-Message-State: AOJu0YwHVxAULnh0KMpC5BFb/hjRAQxkaeqhzZNAmJBRz+ssP4lHMTol
+	fo0qMZdCAkKx98YDxMyAr8d15GcJKmjipJSJuXAkthNCkmN5fariB+W8gWsvTG3YSupGAfytX/s
+	wHBo+BJIuWvi4fu3zmOpVhkl4eNZv4Ku1ZWGM1z2iODgXgryZFtXJ3/Zn5uK4jSPlrAMohVp+P2
+	Z95LfE6TQlNhhIyBiqAm9AmZRkSGK5PLKYYE2G2FUoRSQGJWx+aQ==
+X-Google-Smtp-Source: AGHT+IG8me1bSENR4wRx/OKAQejDcXWKY5+HZ/AzEltyhw/WRh8aAe2pXkZG/Vr0P7/zTKqlGwLNxQ==
+X-Received: by 2002:a05:6358:4429:b0:1aa:b9f2:a0c4 with SMTP id e5c5f4694b2df-1b8117bccf4mr268303755d.11.1725339531470;
+        Mon, 02 Sep 2024 21:58:51 -0700 (PDT)
+Received: from photon-a190c64c6e7e.. ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d8d06c9340sm3599334a91.22.2024.09.02.21.58.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 21:58:51 -0700 (PDT)
+From: sikkamukul <mukul.sikka@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: evan.quan@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	airlied@linux.ie,
+	daniel@ffwll.ch,
+	Jun.Ma2@amd.com,
+	kevinyang.wang@amd.com,
+	sashal@kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Bob Zhou <bob.zhou@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Mukul Sikka <mukul.sikka@broadcom.com>
+Subject: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
+Date: Tue,  3 Sep 2024 04:58:09 +0000
+Message-Id: <20240903045809.5025-1-mukul.sikka@broadcom.com>
+X-Mailer: git-send-email 2.39.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240903013913.4143602-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 03, 2024 at 09:39:13AM +0800, Ma Ke wrote:
-> Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
-> routine adding an sta interface to the mt7996 driver.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> index 2e4fa9f48dfb..cba28d8d5562 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> @@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
->  	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
->  	u8 snd_dim, sts;
->  
-> +	if (!vc)
-> +		return;
+From: Bob Zhou <bob.zhou@amd.com>
 
-Why is this the only place you are checking the return value of
-mt76_connac_get_he_phy_cap()?  Either fix them all in this driver or
-none as obviously it can not fail :(
+[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
 
-thanks,
+Check return value and conduct null pointer handling to avoid null pointer dereference.
 
-greg k-h
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
+---
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 30 ++++++++++++++++---
+ 1 file changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 10678b519..304874cba 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3391,13 +3391,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
+ 	const struct vega10_power_state *vega10_ps =
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
+-	uint32_t sclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].gfx_clock;
+ 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
+-	uint32_t mclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].mem_clock;
++	uint32_t sclk, mclk;
+ 	uint32_t i;
+ 
++	if (vega10_ps == NULL)
++		return -EINVAL;
++	sclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].gfx_clock;
++	mclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].mem_clock;
++
+ 	for (i = 0; i < sclk_table->count; i++) {
+ 		if (sclk == sclk_table->dpm_levels[i].value)
+ 			break;
+@@ -3704,6 +3708,9 @@ static int vega10_generate_dpm_level_enable_mask(
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	int i;
+ 
++	if (vega10_ps == NULL)
++		return -EINVAL;
++
+ 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
+ 			"Attempt to Trim DPM States Failed!",
+ 			return -1);
+@@ -4828,6 +4835,9 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
+ 
+ 	psa = cast_const_phw_vega10_power_state(pstate1);
+ 	psb = cast_const_phw_vega10_power_state(pstate2);
++	if (psa == NULL || psb == NULL)
++		return -EINVAL;
++
+ 	/* If the two states don't even have the same number of performance levels they cannot be the same state. */
+ 	if (psa->performance_level_count != psb->performance_level_count) {
+ 		*equal = false;
+@@ -4953,6 +4963,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].gfx_clock =
+@@ -5004,6 +5016,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].mem_clock =
+@@ -5239,6 +5253,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 		return;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
++
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5261,6 +5278,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 
+ 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
++
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5451,6 +5471,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
+ 		return -EINVAL;
+ 
+ 	ps = cast_const_phw_vega10_power_state(state);
++	if (ps == NULL)
++		return -EINVAL;
+ 
+ 	i = index > ps->performance_level_count - 1 ?
+ 			ps->performance_level_count - 1 : index;
+-- 
+2.39.4
+
 
