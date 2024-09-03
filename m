@@ -1,122 +1,133 @@
-Return-Path: <stable+bounces-72820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2C7969B33
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 13:08:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF3B969C33
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 13:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C321F242C1
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 11:08:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BA861F24975
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 11:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517941A42BA;
-	Tue,  3 Sep 2024 11:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E5B1AD254;
+	Tue,  3 Sep 2024 11:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hp0hZZI5"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="1W2fpLkc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D41A42B1;
-	Tue,  3 Sep 2024 11:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF231A42D1
+	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 11:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725361682; cv=none; b=q9egKryt5MUvGYB+m0bmKM+XOyEsvLKNQNWrBguW40LLCODWlYUPvZlU6cQOWrIrW8iyNw5VWK9CDT7xdNExIeVXWEsIMGqNyoUEBEjxiXcFfiWJcSlBWEIjmZhGZJBNJKmvbEsBPl9q2ZXD0pizcuY3QWFTKav14d4L7UfL3zM=
+	t=1725363717; cv=none; b=est2f1I231oNEMCGM7O+2R/Na4OTYFnZQVMefVOcmn17RCoyttQFswzxo6YVW2ouiRCNqjt4WNOkItka2HVcE7kwYTtx5Z3KnKO4jNa7pcEeQ5rdaaL238Ozie/9XpkEHldDTt9/d6oJCt0Lr77paz4xQ+UxwZoVK1++nmGpz2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725361682; c=relaxed/simple;
-	bh=mEcVNbYHLKu3C+nsiFwIVKcYGx2+N3Fz0vSzgHmdgr4=;
+	s=arc-20240116; t=1725363717; c=relaxed/simple;
+	bh=27rmC43+DKIhGwj8M1M31H9C6n8kaXdoV4uvdxhuEgQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NKOMk5/6iwttSXWV64DCmS8ng0hRQDRs3JY6R56YgJtjsk13l2lyQJ6djvANGGE5MNLzt9eKNUHori9fwnTpRSbsGDarfgeYdY16DPcxym6CxV9C0/hMNtPAuiGLWVoWUSlf5yvqisD8KT3yVpeRqRqgqIEBnxSSHad/d1EZwr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hp0hZZI5; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a869f6ce2b9so561943066b.2;
-        Tue, 03 Sep 2024 04:08:00 -0700 (PDT)
+	 To:Cc:Content-Type; b=Uf428Xg1xmzhP5NR4OJi4K3ex4xg2dJyhZPWPjSzZQwmra4DaYsu7un+77fSAPJsLyRd9BADgOjhYjGMDeX1A8TdI0pMR/HqYCfGg9RM0M3pXesgh8tdk6/KI8yR0S05BoqJwT42RgURXBto3oizbaaDHkIIHF43PNnOW+V5aHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=1W2fpLkc; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42bbd16fca8so33578225e9.0
+        for <stable@vger.kernel.org>; Tue, 03 Sep 2024 04:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725361679; x=1725966479; darn=vger.kernel.org;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1725363713; x=1725968513; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hFIlnHarQIbKAMrxp4Fmgj4Ee9vqqjajNpLRTZv79c8=;
-        b=Hp0hZZI5nKir0hy0vt2TMJcbg2Wd4h2lP1uiVrz8fM4WYV4iXTJcrt19wAbLOZUUH6
-         nt3YLqbYmXr5C17D3lvQ/pueLxutmWlWaB6pwsslXrf3QDG8D5pC32ler05K6DCsezuc
-         r/nRdxpJMNGgozs5HP2i6up1DAiCwzkn8VWEPwZvHJVVaaf8D5idRHXWMzBHq3KFDrqa
-         cKJxlMJNp3s+zTyasaGnqZW3BMKxKqPuIGg6+Py9qrs5Orueg9sWZhxhgMfnMxZRLkBa
-         CHc3+8/TiwIGssG19xmRh+8prqi10+IUF6jjR2rbFtdvPyb9xoVRKdVeV0ogy/G0HJmc
-         F1uw==
+        bh=TCRTP/YrsWgFoEXAwptIQeI3efMclrmBYYYgqSK6yfg=;
+        b=1W2fpLkcq5VaTLaNuWnQ0+HRRsKIy1oaq6ehhud1YZHmPS1Uk7lo9Iz1FetgJUM2T6
+         rdGMblqGRWjERSrleVvo27a9bMwPP9K9W24GPiyPHyH1O+0QM1L+nk9NGm2ee0DX+oGG
+         uh8bbkiQYwwTfO2uIEjErRjX4bNdQ3kfx2X1br+m2yTa/dFK2IjakSGq6CIJgKL3re+U
+         YFP7Xm8Yc/CJubboLM+Ep0vE+T76J+naBddfdPsGsNBCREy+2bSE02XELzysUISgn1Rd
+         jJH2L9mqvp9okYAy+BWbQc+IfU3rV8cMv5cduNrJZzDFcAg1HAFOnjr8SrCdaYV9IwM4
+         WPiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725361679; x=1725966479;
+        d=1e100.net; s=20230601; t=1725363713; x=1725968513;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hFIlnHarQIbKAMrxp4Fmgj4Ee9vqqjajNpLRTZv79c8=;
-        b=KYQT8NBQCj/rvdIqJHALw7DmEnpcnX1c4aoDERkG61PnpVuGteunyX6jPqYTTZOKSC
-         dj5Se4L8EsWzSeXSWLFIHSYMKuHi36E5va/MvPSYSVZH4q0H1ciXFQkQoGha7lZ3FC5R
-         TFerhZsT6TT9c/M5yrWLN4XWfVOwdv+XvjJXHqkW88JHqMsbkg5GghdN4mL7zt1kMqnt
-         JZPS1BgMXV4uadNMVL7HwImvwGzms2nc8FjGSs8/4JZa/10MKufnQOEVI/s9yQoXY0IL
-         u8gUhmvZ8tCvFXgBdhe85dXcCQKICne/52r3sEXH7k4BQW3JkvGd0Pd2rv4IeRIcvOL9
-         k2fA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZokdJ2amrTrfBKUe0j3KGN1k5cukAuXiEqHgqTGy6ceECuSPNIaJ0dKK7t1GMrLkCN9hiDkRT@vger.kernel.org, AJvYcCWNIFiiVyg2cZt9yxOv5C5oXliG1YetOTWDo9YzHzt2GljkWZlkWhfZDDj8m2wMpeN8xaN833dprbj/UJ2jb9r6I0JE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG378jWmppkVk9ihDD1NWkgOItZKcRn9hLg+79qo8nKhIZ9f2i
-	ytgsxXI+elvsyb6Kg69LvwBllstBf0RfvYamFwn0ZnWgNWjz4eYtHSfjcU8w636MsPPekYvJIfM
-	I9C2OoQ8iQgS67t4vqgHekwkTw2g=
-X-Google-Smtp-Source: AGHT+IGeLCVCGuTrDCP1v7sTj9PmT3VL0UJVY0431V7YlpLsPEdNsB9QwdkX17CttcryF4QkEsWzG3I/jvnVBqn/r+I=
-X-Received: by 2002:a17:907:2d9e:b0:a86:8368:860a with SMTP id
- a640c23a62f3a-a8a32edcf75mr24166866b.35.1725361678499; Tue, 03 Sep 2024
- 04:07:58 -0700 (PDT)
+        bh=TCRTP/YrsWgFoEXAwptIQeI3efMclrmBYYYgqSK6yfg=;
+        b=sGSLfEBxyIB0e1hXcH2xoSlwnu+GKq6P8DWbxIwcUbRocEOs9mO/PCa6PdWTxmPGpQ
+         LSklDAbA/kK7RBE0pmNKtW9fwWxxg6VyQUTjL/CiBwJAL4u0Rq6eU6mMgSG0szpVSd+M
+         ka5J0i/CPZpUIRW76YgKMu7WaFassFyuSGkfQyEoJHA5VEp7yEnzIKcHUFArV8N4kE/Y
+         9e6C/C/9a4OZ+Y+2drWstXtAiuwu/mzjs7Mb5P2l5Ir4twIiVvq0Fyn1wQZaXLx6ynr1
+         HkEOVT2KzWlx+mYoWJoanOtKQQQcFqAA+/onyjXgFNe/2WZujQE8+QLz8AYuIftNKdwR
+         uM4g==
+X-Gm-Message-State: AOJu0YznhSZfz9oMmvfGUf4136956VTH2Zo1PORFrVyeYMOzZ7o1dhjy
+	SrFHzXWSDk9XuBcj+lU/Gt159NF4yjnrMHzTtxksgV9ce6soQejUea48Ri34UL/QMYN8l/mlczB
+	vOwxlMWzlTfuIbBswI5AmpOMvlp/n2qCjK49TMz2+AP9WTnsbcn9+jQ==
+X-Google-Smtp-Source: AGHT+IGa92m2LMCXflLaiEs4By7t3Xb4VTHpL+lnmhdtVI77oh5nvoDYjhC/3FmPZ3/culI72AM73cH8LI2Ukit6TGI=
+X-Received: by 2002:a05:6000:1147:b0:374:c283:f7b7 with SMTP id
+ ffacd0b85a97d-374ecc8f661mr2369288f8f.21.1725363713010; Tue, 03 Sep 2024
+ 04:41:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903083533.9403-1-hdegoede@redhat.com> <20240903083533.9403-2-hdegoede@redhat.com>
- <a22f5196-7fa4-6fc4-7354-3fcf8e99c2d8@linux.intel.com>
-In-Reply-To: <a22f5196-7fa4-6fc4-7354-3fcf8e99c2d8@linux.intel.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 3 Sep 2024 14:07:22 +0300
-Message-ID: <CAHp75VdWUqza=rEmWeRcYYmRRscYSAJhpskgrY74m_45ua7xJQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] platform/x86: panasonic-laptop: Allocate 1 entry
- extra in the sinf array
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, Andy Shevchenko <andy@kernel.org>, 
-	James Harmison <jharmison@redhat.com>, platform-driver-x86@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 3 Sep 2024 20:41:41 +0900
+Message-ID: <CAKL4bV5SRyAq6Q6e7jQ5tvk6bDKzbuk-x5vnhT_TmBpHVchtRg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/93] 6.6.49-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 3, 2024 at 1:33=E2=80=AFPM Ilpo J=C3=A4rvinen
-<ilpo.jarvinen@linux.intel.com> wrote:
-> On Tue, 3 Sep 2024, Hans de Goede wrote:
+Hi Greg
 
-> > Some DSDT-s have an of by one bug where the SINF package count is
+On Mon, Sep 2, 2024 at 1:26=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> of -> off
-
-I even dare to ask for an "off-by-one" form (similar (grammatically!)
-to step-by-step).
-
-> > one higher then the SQTY reported value, allocate 1 entry extra.
-
-than
-
-> > +     /*
-> > +      * Some DSDT-s have an of by one bug where the SINF package count=
- is
+> This is the start of the stable review cycle for the 6.6.49 release.
+> There are 93 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> off
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.49-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Ditto.
+6.6.49-rc1 tested.
 
-> > +      * one higher then the SQTY reported value, allocate 1 entry extr=
-a.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-than
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-> > +      */
+[    0.000000] Linux version 6.6.49-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240805, GNU ld (GNU
+Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Tue Sep  3 19:41:58 JST 2024
 
---=20
-With Best Regards,
-Andy Shevchenko
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
