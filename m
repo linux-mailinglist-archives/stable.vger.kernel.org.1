@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-72942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B790896A98D
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C15D96A98E
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FF5B232A5
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:05:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA2DCB23598
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658211EB258;
-	Tue,  3 Sep 2024 20:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0301E008C;
+	Tue,  3 Sep 2024 20:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D5nQVivi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvF+RYMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0571EB253;
-	Tue,  3 Sep 2024 20:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1703D1E0085;
+	Tue,  3 Sep 2024 20:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396532; cv=none; b=qnsvSj3SYp5zr13zpc/BT0ACoC+SOuaVO4fIbDn1vLIkyxFeKv34YtHkVXlQVRc36VFIUnrb6zeOIgzMQqZcOMDfSnocNfxSXNIqSpH0GKjMR01iqr3n5U4VhNrtXzSiFCo7Yds14rbawOYJHJ56kd5uGhfKoY9ENcCzp8GyZEY=
+	t=1725396534; cv=none; b=fKk3ocRgsaLUw+7NNOUHZLLHISNMDQQ4yVOhysR1+A9OnxZqFWbGoTLNKbFYL0iW1wZnFHYgO86qcjR2ZsUayXS3+/8FDqx+De0dtNUb31iFKh9nc7CnH0sHsT0oUnmn03Kj2SznV8IoJZ7rx1nsEKDTL8/kErALl75bg9laeiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396532; c=relaxed/simple;
-	bh=iwF/iAtE6DjqPteDb0c6fqdLg0qoT9cjRDPaxMWSH5Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c+f6KwAexIEZH7I7gocbWRB2lwt2w6Yk+fv/90mZVji+SNQqGa43dQl9fD5PUE89Jmnkc5arbwPeZ5gg1L0eJNDvtS8RnKGOnTjit2CtT8ECaxKQMxIBxITNlw0TkXJEjoUbVlzfH0zs/hB4ILOJuThD8xXkZOaDMV8sQ3WWoJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D5nQVivi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCFBC4CEC4;
-	Tue,  3 Sep 2024 20:48:50 +0000 (UTC)
+	s=arc-20240116; t=1725396534; c=relaxed/simple;
+	bh=9drg3IuSqSlqrrUnylsLjOCWQUfV/OQPav5QXn07Dcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nvT9edpRizAIXjSFFyx5BS3vDzqlaMDWGuDHx4zPvD2CBvCA7Mskjvg6n0nGCV8Og6FCNhfiUdsGXsovnM8UuYeifLmy4At6ImMzX4nP+roubIcQIB3zkwciBXS0OY+W9nFSxv+fvIFUH9WGv1m5qSk6AageaJGphnMNzf8ttIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvF+RYMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F280C4CEC9;
+	Tue,  3 Sep 2024 20:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396532;
-	bh=iwF/iAtE6DjqPteDb0c6fqdLg0qoT9cjRDPaxMWSH5Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D5nQViviYHZ88D3pqiwOI1NCsM9Bejlrh+A0l0gtO8I7WFoxuewoqesGyrLVjUlsM
-	 3eSNqe7wHVLBcitRljUtGK6m2YJM61RdLh+1VyP9b1+uX8rVVesu/3nGbqnE98HqZa
-	 ZwmzIw2AaJAPOQo1lEe+vRID4/uHwTOLimdCRk7YwPAc+va3rlPBoeD0/qWef5w+mh
-	 wHm0MUSjk/q4rZ4t4v6TRMEYSr/3v5T3wAmFR40Rt38nIl308PwnAixQFjGUC9q0Sg
-	 nxSGQstdy3Y5ZQpRPwFpk+1X6lGqBgoyIjFxMzPkhHXPWkTuJH1183mB+ER2DlgQqH
-	 629j24CY5AmjA==
+	s=k20201202; t=1725396533;
+	bh=9drg3IuSqSlqrrUnylsLjOCWQUfV/OQPav5QXn07Dcw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JvF+RYMPIH7Du/oeWuPSyx/jf859FaErWOUhZlki6TjAaMT8xeVPb8qS8VGK/sPuE
+	 DVrugQRKVtkKTo7kWuxRv4nCGhiQ5xB7E5M0wSx3dUPoMMy8LpX0K+Q5ATItChit3X
+	 nq+J1i9E8+Cd6QsnBHtrXtpF99962DTNx2iu9SxVYoA4MwWdDNun6uaQPX5G64elfG
+	 7hqim7IwqefuoQjnGXnhzJPKg24qjN1b+NLW45w7QXFFSJuJZUFPw0DK651EEVD91t
+	 bzAWdLVsjfcgCk5lsYBErjYNhkZS4VWdOj1czJc6HuylUgbRR53BEjvP5kFCV3H9Ot
+	 W1kwRlLgxP7bw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hongbo Li <lihongbo22@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Thomas Blocher <thomas.blocher@ek-dev.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kuninori.morimoto.gx@renesas.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/6] ASoC: allow module autoloading for table db1200_pids
-Date: Tue,  3 Sep 2024 15:29:21 -0400
-Message-ID: <20240903192937.1109185-1-sashal@kernel.org>
+	ludovic.desroches@microchip.com,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 2/6] pinctrl: at91: make it work with current gpiolib
+Date: Tue,  3 Sep 2024 15:29:22 -0400
+Message-ID: <20240903192937.1109185-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240903192937.1109185-1-sashal@kernel.org>
+References: <20240903192937.1109185-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,32 +70,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.320
 Content-Transfer-Encoding: 8bit
 
-From: Hongbo Li <lihongbo22@huawei.com>
+From: Thomas Blocher <thomas.blocher@ek-dev.de>
 
-[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
+[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly
-autoloaded based on the alias from platform_device_id table.
+pinctrl-at91 currently does not support the gpio-groups devicetree
+property and has no pin-range.
+Because of this at91 gpios stopped working since patch
+commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
+This was discussed in the patches
+commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
 
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As a workaround manually set pin-range via gpiochip_add_pin_range() until
+a) pinctrl-at91 is reworked to support devicetree gpio-groups
+b) another solution as mentioned in
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+is found
+
+Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
+Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/au1x/db1200.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-at91.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
-index 301e1fc9a3773..24d16e6bf7501 100644
---- a/sound/soc/au1x/db1200.c
-+++ b/sound/soc/au1x/db1200.c
-@@ -43,6 +43,7 @@ static const struct platform_device_id db1200_pids[] = {
- 	},
- 	{},
- };
-+MODULE_DEVICE_TABLE(platform, db1200_pids);
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index ad01cc5798232..48374945b2d7b 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -1290,8 +1290,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
  
- /*-------------------------  AC97 PART  ---------------------------*/
+ 	/* We will handle a range of GPIO pins */
+ 	for (i = 0; i < gpio_banks; i++)
+-		if (gpio_chips[i])
++		if (gpio_chips[i]) {
+ 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
++			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
++				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
++		}
+ 
+ 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
  
 -- 
 2.43.0
