@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-72856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D37B96A8A0
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:42:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4472196A8A1
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E699B23DE5
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75FA01C23467
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDA91DB552;
-	Tue,  3 Sep 2024 20:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4E61D223D;
+	Tue,  3 Sep 2024 20:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0zxmjU9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXNcIJ0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1659B1DB537;
-	Tue,  3 Sep 2024 20:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B471D2236;
+	Tue,  3 Sep 2024 20:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396124; cv=none; b=W9rq2SFYGHEI2ir/t3gBj3T84NQHbRyNkMvQpz9ygSVS8SZo8W6UMy6tl/S2L1+HfI3eIWKFr9EJOlxBUh5jk0RL0hPogyUNatXzlArYcdnAyDn2FQ4nRkOsphT9QbMfv3Kp4F1TIGdJi0pD2QtoBX2qHdNnBmiZ+B7iC0r0UPk=
+	t=1725396127; cv=none; b=TjOjXE7yoEP9GvliQNLzBo3nRJHq0OkVLcMx8vlPkkqUn2wZ8rSi+ISeqpzkMFwguq4Od36GdBHZ7v0zecsdZ2hlAEmO2Cfbzcn+iUCd+aNpwxXcMWWDX6nvEktNrIn+xZKsB2+XrVUhBfWmG4B59dcz/+AHwjvUz+5J7iuPzvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396124; c=relaxed/simple;
-	bh=f77a1LdLPhKYcoJ9UhrtcEXRimOa6g5gNGHE4f1mX7M=;
+	s=arc-20240116; t=1725396127; c=relaxed/simple;
+	bh=w6fSv6FthRP/2c3MZzantN4l5vf2SRduU7qrhe5/nlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyL4NEqjNIi+261MMxhmRATRjHMeft0HmfS6kIPkMf1x81D5bOacN3TMfpvsJA3uXNuawDovWudrqw/QqB1De1hURZk6kV5045D5RaDGV0b4Z0Rzj+ksMcRRXd7EOImX+TzZmxo07qtCPD3fc70MQE7UUFr26NyGv2uuDoYZyQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0zxmjU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB15C4CEC9;
-	Tue,  3 Sep 2024 20:42:01 +0000 (UTC)
+	 MIME-Version; b=jjxN60ePzK2aAFV2n8ykZ9oFK2hpC36yqtTlrFkh7CsxR774+gZLYKvubIIGwggtrUYQcPUdcmWXLcrFaqBSzykhn9IlWgcJYTBC04PwVD2KtWzlGOMFjZcdDy3udZ7ZIw7wAo1tZlXF/nYInGO3J29hRcM89XcjkcwdMGNZ8UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXNcIJ0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7751FC4CEC8;
+	Tue,  3 Sep 2024 20:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396123;
-	bh=f77a1LdLPhKYcoJ9UhrtcEXRimOa6g5gNGHE4f1mX7M=;
+	s=k20201202; t=1725396126;
+	bh=w6fSv6FthRP/2c3MZzantN4l5vf2SRduU7qrhe5/nlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0zxmjU9R9qHYTmD4lWdb8R9J2QcxNt3y2i3ulRoVsJrYgFXDcnqOyYXwWI2ASxRp
-	 ELWstUDXBhF0ZplmpiqGNQdHWO7jM/IuqsgexFDOdzQMTEfNHke1jxxx4MTJsinG1J
-	 gxDGpGtYNxAwYScxXLX6rnx9FLosd/ZqVWdoQeObqx2pq93U3ZD5nwB0irbPkjcFl4
-	 XDeJCOfQcU46SiDMk9tLYnBf3B99XI+S4uyI8Rg/Sj/BHwu1alHQN0u9s30jxW+TnI
-	 15cgK32QDyKjGxqxyeKMsqyhMdY3c6RiQf/drkUCbhyFzU+L9Qn5AZKY2I2DzK1YZi
-	 De+VyLqJBo/7w==
+	b=AXNcIJ0ESShKMjo/rxHr4lhT8PeLY48sqX723AfZx6XWk63iUsW8Iji4eAq7lP+Wh
+	 rfkzy5wpps495+qRhrQS+wFwLo2nQQCUS6M4ZtxaY90DGlvME4J/wJYA1YeQs2bAm1
+	 QRAoZpbkKRB96pksZI45VPKGxg4igNrXrDNRYblt2dPv7ViSqHfeB0U0ErAoId/Qxd
+	 anVmPzZaZImBlJrpFQvvEwY+dafQQhGy/DAC9QDXEMol4USg2oYJ30EiWL2M3685dQ
+	 Z8rBk2q2wYfObmh+/tn/0sTnPiTlCcWovHX7RFJPYhHs0bioThHhU9WrFRdL1/XjzR
+	 pwOm0u+5TT86Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: YR Yang <yr.yang@mediatek.com>,
-	Fei Shao <fshao@chromium.org>,
-	Trevor Wu <trevor.wu@mediatek.com>,
+Cc: Hongbo Li <lihongbo22@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
 	kuninori.morimoto.gx@renesas.com,
-	krzysztof.kozlowski@linaro.org,
-	linux-sound@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 02/22] ASoC: mediatek: mt8188: Mark AFE_DAC_CON0 register as volatile
-Date: Tue,  3 Sep 2024 15:21:49 -0400
-Message-ID: <20240903192243.1107016-2-sashal@kernel.org>
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 03/22] ASoC: allow module autoloading for table db1200_pids
+Date: Tue,  3 Sep 2024 15:21:50 -0400
+Message-ID: <20240903192243.1107016-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192243.1107016-1-sashal@kernel.org>
 References: <20240903192243.1107016-1-sashal@kernel.org>
@@ -76,39 +69,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.7
 Content-Transfer-Encoding: 8bit
 
-From: YR Yang <yr.yang@mediatek.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit ff9f065318e17a1a97981d9e535fcfc6ce5d5614 ]
+[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
 
-Add AFE Control Register 0 to the volatile_register.
-AFE_DAC_CON0 can be modified by both the SOF and ALSA drivers.
-If this register is read and written in cache mode, the cached value
-might not reflect the actual value when the register is modified by
-another driver. It can cause playback or capture failures. Therefore,
-it is necessary to add AFE_DAC_CON0 to the list of volatile registers.
+Add MODULE_DEVICE_TABLE(), so modules could be properly
+autoloaded based on the alias from platform_device_id table.
 
-Signed-off-by: YR Yang <yr.yang@mediatek.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Trevor Wu <trevor.wu@mediatek.com>
-Link: https://patch.msgid.link/20240801084326.1472-1-yr.yang@mediatek.com
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-afe-pcm.c | 1 +
+ sound/soc/au1x/db1200.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-index ccb6c1f3adc7d..73e5c63aeec87 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-@@ -2748,6 +2748,7 @@ static bool mt8188_is_volatile_reg(struct device *dev, unsigned int reg)
- 	case AFE_ASRC12_NEW_CON9:
- 	case AFE_LRCK_CNT:
- 	case AFE_DAC_MON0:
-+	case AFE_DAC_CON0:
- 	case AFE_DL2_CUR:
- 	case AFE_DL3_CUR:
- 	case AFE_DL6_CUR:
+diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
+index 83a75a38705b4..81abe2e184024 100644
+--- a/sound/soc/au1x/db1200.c
++++ b/sound/soc/au1x/db1200.c
+@@ -44,6 +44,7 @@ static const struct platform_device_id db1200_pids[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(platform, db1200_pids);
+ 
+ /*-------------------------  AC97 PART  ---------------------------*/
+ 
 -- 
 2.43.0
 
