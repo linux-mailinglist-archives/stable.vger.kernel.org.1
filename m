@@ -1,256 +1,197 @@
-Return-Path: <stable+bounces-72784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1BF9697A5
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:47:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2677E96979B
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94F3AB223DA
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 08:47:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67997B26B72
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 08:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040661B9850;
-	Tue,  3 Sep 2024 08:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7501AD25B;
+	Tue,  3 Sep 2024 08:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nzc8AbFJ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lof5DmgG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2047.outbound.protection.outlook.com [40.107.92.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D0A1B984E
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 08:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725353032; cv=none; b=FItLrBQkKmWmjVCYGEl5aMSkI/TxrtVU7ubWUp4zUQzLh7hNjEmDQadpGJlXw7AJ1GAYOUhQrxWyd8I1wH5fMWR4DeQ2lNk2P910XcUZrOT+l5HY0CARZX7yrNuMTlUlg99GtHhfi7ZSbZD7N6O1e2acNQbWZE7KFGF6zGHCH5o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725353032; c=relaxed/simple;
-	bh=au3Bzne0cfXbrI/SSZYux8/FSYfMzNpAiZPF0VbkfDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VjV1ke/Zudhq/z3OtEyMsrAvYvXlJQNpdXlMZN3UXUMRJMKWJlEWnlbWKkWcyA8Epgw5gQGE/nDg+1WnN/dulxXkl27qrBND83j7uGggn7PsSGzFFxIOrcTBvranhi/bfLnUgiY4OOLTY4wZLYGm6ZB3T3UIdFxshXZlp5veyC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nzc8AbFJ; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42bbf138477so29306065e9.2
-        for <stable@vger.kernel.org>; Tue, 03 Sep 2024 01:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725353029; x=1725957829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7n0fHa0VKgwezs72ueNiKxl6EaorzdvI28g4TsbYQ2g=;
-        b=Nzc8AbFJFkL/WDfQbAZkEwi1LisGBUi2t0cfhc896s477nTCJ0FpjaR10R6mNBqrq7
-         jxlJ4NzmmrUhE6IbA5FJXhkcsrgNkaxyciWADDniMK9Iv/8LhJKj+sdoUyd9t7hm33r9
-         CQjhl/5RH0wWJBXlP2sIBNRSuTDW6H1czOSE0dD8nf6x9TXVpTfIYwPFxUwcvwXk/2xN
-         Jib2lLR6pwUeNjmXAw9n/mdJzW2MhAASeCRuMkSsdSIaRMapEOAVu0ww2DrrD29zBv7y
-         TWZmPV61+d6o360jzd0eJv7CowOjgtf373LgpjY4rmHg35eR7CtaQVa1UGb671300DiR
-         cUHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725353029; x=1725957829;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7n0fHa0VKgwezs72ueNiKxl6EaorzdvI28g4TsbYQ2g=;
-        b=RH32dTMZB2SSItVoCT3d+j0U72ZZ4OPZ8lmkNkB7mR2cN03KyH1/tJfrBFRtDbcSun
-         HwWrmjdsI5CLCo7LjWafbu/MK8USVuZXFGJ0vmfKHb5hw71ib4t+4NgTlcam4YUPcRS9
-         Jzd9skFdNXP7umO2FHFsTJEFufIseCKPOutO2ExuXldSWHTJ066qtdUuLC9GkxWkrehO
-         07y46IqIK/3Go0z/UJz0piiQPUbN4qP9LvNijlnxMhlQiGKoxpQrk3z5Ye/c3FHwwTw6
-         VESeRyB2OUcrH/gKJIJ6mfQbhQH/njLuODZwJAKDfjYc1Oq0Dg3fwD1wAx8Gv7jC9UCm
-         XmBA==
-X-Gm-Message-State: AOJu0YxA56JQHw3jOTAKY2fmunIH4qADQqkFlUJbh29Q3sctyJiFJngV
-	qXjVEWn5mOXLnbtaShn/DrQ55LNQTE/d1+fnr2Rb/crcRRW73FNehlIl2QEc
-X-Google-Smtp-Source: AGHT+IHLuXfS8eV7R4u3x2YVwVg/oN8S4KgXUtqUuib9Em4fPwBFoZ5Ib6aTKuAaXV1BqoJpm5Gzxg==
-X-Received: by 2002:a5d:5452:0:b0:36d:2984:ef6b with SMTP id ffacd0b85a97d-374ecc67b8fmr1797945f8f.11.1725353028498;
-        Tue, 03 Sep 2024 01:43:48 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:cb14:499:e600:1a5e:fff:fe3d:95be])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-374c90c6c06sm5837518f8f.84.2024.09.03.01.43.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 01:43:48 -0700 (PDT)
-From: mathieu.tortuyaux@gmail.com
-To: stable@vger.kernel.org
-Cc: Mathieu Tortuyaux <mtortuyaux@microsoft.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
-Date: Tue,  3 Sep 2024 10:42:26 +0200
-Message-ID: <20240903084307.20562-2-mathieu.tortuyaux@gmail.com>
-X-Mailer: git-send-email 2.44.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBA51AD255;
+	Tue,  3 Sep 2024 08:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725352974; cv=fail; b=pZafDJKAf0RxWOHtqMdTaRc9ZlECh2w9X84BR0UKrX44PE9xZdtbDNvrHfykTA+1HlP+0s4sjSZ8nRqlwW+XSDonTeoO1zSF8dxbGPAjEyY5sKneT0UkgldkqGYZaLLf1oNFigW2JDQRblkipVNzkOQNXJ9WxwaWmPRHqdYyKPA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725352974; c=relaxed/simple;
+	bh=bHib7BfAuFZJ5dwAWglVeofkYL7CHyKYnD6JMkxEeUY=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=j2c5WbzV5ZOTVC2W8KLg7zm7MNu5cCCNRmcw2ppisKlc5x6jW566sgJ/Bu50XIAHA8XjfgbKkCqT6HFxovgwSHZc+31v4aa+Vml3Fpp0x95C42TXrNpzDgqRD30WjtC5puC/4bU+K35/XgEWAMhsQe4HbKs6OxGR5FveqEXtZBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lof5DmgG; arc=fail smtp.client-ip=40.107.92.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RE/IvkNQxz/FKB9bLyQb4fFhlqNVolqoYVO2GHW5HE70kiiGuIXNdv6Yb2veVXM5e3Zn4da8OdI7cQ/djsMb2r9cqps4TPhKPnYbNkB64duPCZURKGDoDxSC1+f60VHsf756tGhcomATo6ll7rbG12qDtv6kyLufe4fFGBrqaWR622txa2fl2yUsF3WIMR/BISST3JfsPGWvtcFb44igh7ckTRSev9lNYnc4ccOSddYU2wmFLsD13jNQCPJpHZdkmb+3k4Yo8sZU+Tcv6/yZif38q+a/TFUR5E/rjxjXX8uX2vo9q5rOfTV9FsOY6AvxI3s5RVm7Ttibq5Bh4LqCcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nQVhii0tA4Om2uJTubK8ioKb/JmlvHFUJleyvo3oXwQ=;
+ b=UpaYiopoBZYm0eOPfII8b/a5tseuCOV/6Td9bQyUXoFMEb5RZgXguIfbjG9SdMFiszDtJv2gTIJ1dy4jCA7M/5ylnnKRHmIdu37pwC3V4Aw71jF076jPQD/xMoH2LVmz94IA06c7qIWdlxdVt9+0CFaTeNAhkRkwfI81wN0mLM+5eZW9birNjspxlfIxnIsoxH5ChBPGpLQ0ck+P10hRX7ZR7/hryDLJt1EVfV+hJm1azKmxzOpuaGz+aoar/bIIDhR59P1UhswCb/xUxQY6XbiC4AVDyKw31huGIiw5+sCUdpKWWCofv/ZQSPS6y2jtiT/chkrPqgId3sgH/DBn1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nQVhii0tA4Om2uJTubK8ioKb/JmlvHFUJleyvo3oXwQ=;
+ b=lof5DmgGUbKas93NLgIqdKR57xH7Q7o4mTnEaQRGWSgA5VD1VeTiMOgBxf9WVwaTTSiZ+HRBCdu10awhDym96cZjrbzVXRAaIidAFGhoGaoPEdVHLor+oexqmcW7MqMD+k34iYQMlq744AHXfCaoFsfzUyWrTz6EJRwKl9Mtu/BLyewIGeig+WXIPKunZfELHFvbMyrSeGXu1a7UmoV9ZtoibskG0cVO5fGrXv7/9PduAfFJEWja09+CnQTje0mFExC2/1wAi0Q3GzFG7OFyOPGklwWSaTQDz7h1KWtMBV6QH8NM//7VffiTb8zZ9ME1GDq2xIi+ORFtkmsWSO/KMQ==
+Received: from BL0PR02CA0008.namprd02.prod.outlook.com (2603:10b6:207:3c::21)
+ by CYYPR12MB8961.namprd12.prod.outlook.com (2603:10b6:930:bf::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Tue, 3 Sep
+ 2024 08:42:49 +0000
+Received: from BL6PEPF0001AB73.namprd02.prod.outlook.com
+ (2603:10b6:207:3c:cafe::e0) by BL0PR02CA0008.outlook.office365.com
+ (2603:10b6:207:3c::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25 via Frontend
+ Transport; Tue, 3 Sep 2024 08:42:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF0001AB73.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Tue, 3 Sep 2024 08:42:48 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Sep 2024
+ 01:42:38 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Sep 2024
+ 01:42:37 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Tue, 3 Sep 2024 01:42:37 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 00/98] 4.19.321-rc1 review
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <b6ed4e19-bd88-4cf3-8e47-7402f4d87c8a@rnnvmail201.nvidia.com>
+Date: Tue, 3 Sep 2024 01:42:37 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB73:EE_|CYYPR12MB8961:EE_
+X-MS-Office365-Filtering-Correlation-Id: c288be22-f2e1-43a5-a84f-08dccbf463dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bkl1NUg2RFFmc2N5OU5PZndQU0tUWmpqUTV4UXdTUmt1WVAwY1ZvOTc0RHdP?=
+ =?utf-8?B?OHo3NklEOEg2S2xXajJpQTYvMEZ3bFpEZlVxeFRqU1dwRWhpbjJubVRXYzdN?=
+ =?utf-8?B?THhoMmJ1Z2hZOEJ5YUxqUjBqMWFzVE9ONFlEWmVOSkFtYWJEbkppcndlUVk1?=
+ =?utf-8?B?NWRDN3dXRHNoU0ZZVXk4di9oNkJLOEp4cndPa2NTWWwxekh6Zzg1YThBRUxM?=
+ =?utf-8?B?NUF2SGdNNHU1THg3YTRRRjlSWFcyZ2NxdW9KTlRpRlI1OVErVEhvODd4VE1x?=
+ =?utf-8?B?alBBM0VFelREdnNxUUdNLzR0R0Z0L3k4dUlnR0R0NHZTZUF4MVZsYjlJaWpO?=
+ =?utf-8?B?bVRmZGhzUzFFTDlVejQxdy8wWUhnQ3ZzZjVoK0x6dVl5TFpNMVFRdjc0QVcx?=
+ =?utf-8?B?WDV4eFJCRCtxeEZYeG1ydmpWQkc5YjlXU1c0MjM2NnBSK0lQeGdJZ1JIQlV0?=
+ =?utf-8?B?ZmdMMFFXTWE3dEJRdys5bktFckVLSjlDblhHQ0UrWXYvcWtKSTUxV2ZGcUt1?=
+ =?utf-8?B?STNPYjl5aWNqRkpMa0Q2SGpjOUV1Q1JnelNRdm1mLzhqVGZPMTJUSUd5aVVE?=
+ =?utf-8?B?djZTQW1JaFhTSnJyN3ZmUytvVjhQTlNsc2hTK1BXdzBmeHptbmZ6c0txQlFE?=
+ =?utf-8?B?RWg1RmNWcVZYbTZ2OXpHK1FYME1KcDRiejhXZmRlVzdPb3VoNUdoaFdzY3ZG?=
+ =?utf-8?B?VDFjK3JXYzVFMzljTEtGN0ZlWjJuOGN0dDZKYUZWR3RySTBVYW1ZL1Nma05h?=
+ =?utf-8?B?c1N4Qnpud1JQdFhXSDR0WHV5WE1RS25aVWRTdFU2NmxGV1lKT01aanJOcURM?=
+ =?utf-8?B?SzF3dW9aUG9PcVR3RWw4ci9Ja05jQk9BOCszdm52d0hhRmw4c0tMZnhIOHVD?=
+ =?utf-8?B?Z2tVTDg1cEYyK2wzRU5QakhOSWNsT25LekFlWHJFUnZZMDhtZ3FuSWFhMnh2?=
+ =?utf-8?B?WlB4bVJRa2haZHBZUE5vWnBKd1laYjZHRGxsWTdNRm0wb2txNWFyUzVGY1py?=
+ =?utf-8?B?Umdka1ZQeitYT1pQWjlSMlc0UEYwemxhWE1HU2haa21DV2xiVzZJSkszVzdD?=
+ =?utf-8?B?c0wzTjlmM0xzdXRWWEtseFNCdnNXQ2prTkF3VVFMSCt6dFplTmNnUmwwdFRD?=
+ =?utf-8?B?MzNuMlNqeVJsYWZJcVhQenVxdmE2eXVNRzRVZXNOTmJLQUlLS3gvV3ZhSmkz?=
+ =?utf-8?B?VXIrNVZQZUFjNnp6TnMzRTdBaEZvUU5lajdZTjIrQ3JOblpVbGtPQ0lOWStN?=
+ =?utf-8?B?OHcySXZsaFFsbDRQT3RleGI0ZTRsbTQxeVZiamhhcnZucTlvcjdFcHJMZ3or?=
+ =?utf-8?B?bVYrNFh5SGRkUW9Qemk3QzFmVkZsOTJtUU1oZVBTNE1VeU9oZW1KVWk2VjZX?=
+ =?utf-8?B?WGdIalFUc1Q2MW1qTWwxMTlpYTAzcEg5ZWRNOGtBRHV4a2wycE9XM2N6NGZx?=
+ =?utf-8?B?T1VFSTFwQzU5eVMvazRUbUkxNXRMN1Rzcy84UkpEMm1JbnRGZWIwak5mREl6?=
+ =?utf-8?B?T1VUcm8zdlhpNENuK0owNTUyVU9aNVhSOUMvcVlRc0JRaExET0tXWXUyekI4?=
+ =?utf-8?B?bHN5T1lsQktjUVpWR2lXNW0yaHd4R1FUR3NPRW1NenpLT0ZML21kRm8vSHpS?=
+ =?utf-8?B?d1hIdGVyRlYxbUZMV1NySFpFbHB4Q1RtdE83WkxJS05GZ3JkQU81TXlRR0VR?=
+ =?utf-8?B?MStrTnk0SllNR2xvRWltOXcxRS8xZHZtdUNFYU1ZaitxY1A2dGgrcExESmpT?=
+ =?utf-8?B?L1Jyc3lHOFd6TGJWS0srdWh3VUVKYjBoc3liemMrRFBiTHljVUhqbWJlSEFW?=
+ =?utf-8?B?ZUZiRkczd1RFQmJRMjdjL1Q0WC9YMkJhNy9uRnY1MW9MS2IvWUtpYytUQ0VR?=
+ =?utf-8?B?MzhpTm5GYWswK3JvY2puLzVKenY5RmF4cnBncFNpSklXT053bXd6SEVBTVJO?=
+ =?utf-8?Q?waekDQs697ZUGMUvF5UqUFNS+1Kv7aat?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2024 08:42:48.5822
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c288be22-f2e1-43a5-a84f-08dccbf463dd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB73.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8961
 
-From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+On Sun, 01 Sep 2024 18:15:30 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.321 release.
+> There are 98 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.321-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit 89add40066f9ed9abe5f7f886fe5789ff7e0c50e ]
+All tests passing for Tegra ...
 
-Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
-for GSO packets.
+Test results for stable-v4.19:
+    10 builds:	10 pass, 0 fail
+    20 boots:	20 pass, 0 fail
+    37 tests:	37 pass, 0 fail
 
-The function already checks that a checksum requested with
-VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
-this might not hold for segs after segmentation.
+Linux version:	4.19.321-rc1-g0cc44dd838a6
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-Syzkaller demonstrated to reach this warning in skb_checksum_help
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-	offset = skb_checksum_start_offset(skb);
-	ret = -EINVAL;
-	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
-
-By injecting a TSO packet:
-
-WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
- ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
- ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
- __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
- iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
- ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
- __gre_xmit net/ipv4/ip_gre.c:469 [inline]
- ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
- __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
- netdev_start_xmit include/linux/netdevice.h:4864 [inline]
- xmit_one net/core/dev.c:3595 [inline]
- dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
- __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
- packet_snd net/packet/af_packet.c:3073 [inline]
-
-The geometry of the bad input packet at tcp_gso_segment:
-
-[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
-[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
-[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
-[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
-ip_summed=3 complete_sw=0 valid=0 level=0)
-
-Mitigate with stricter input validation.
-
-csum_offset: for GSO packets, deduce the correct value from gso_type.
-This is already done for USO. Extend it to TSO. Let UFO be:
-udp[46]_ufo_fragment ignores these fields and always computes the
-checksum in software.
-
-csum_start: finding the real offset requires parsing to the transport
-header. Do not add a parser, use existing segmentation parsing. Thanks
-to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
-Again test both TSO and USO. Do not test UFO for the above reason, and
-do not test UDP tunnel offload.
-
-GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
-CHECKSUM_NONE since commit 10154db ("udp: Allow GSO transmit
-from devices with no checksum offload"), but then still these fields
-are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
-need to test for ip_summed == CHECKSUM_PARTIAL first.
-
-This revises an existing fix mentioned in the Fixes tag, which broke
-small packets with GSO offload, as detected by kselftests.
-
-Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
-Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
-Fixes: e269d79 ("net: missing check virtio")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
----
-Hi,
-
-This patch fixes network failures on OpenStack VMs running with Kernel
-5.15.165.
-
-In 5.15.165, the commit "net: missing check virtio" is breaking networks
-on VMs that uses virtio in some conditions.
-
-I slightly adapted the patch to have it fitting this branch (5.15.y).
-
-Once patched and compiled it has been successfully tested on Flatcar CI
-with Kernel 5.15.165.
-
-NOTE: This patch has already been backported on other stable branches
-(like 6.6.y) 
-
-Thanks,
-
-Mathieu - @tormath1
-
- include/linux/virtio_net.h | 17 ++++++-----------
- net/ipv4/tcp_offload.c     |  3 +++
- net/ipv4/udp_offload.c     |  4 ++++
- 3 files changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 29b19d0a324c..d9410d97158d 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -51,7 +51,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 	unsigned int thlen = 0;
- 	unsigned int p_off = 0;
- 	unsigned int ip_proto;
--	u64 ret, remainder, gso_size;
- 
- 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
- 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-@@ -88,16 +87,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
- 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
- 
--		if (hdr->gso_size) {
--			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
--			ret = div64_u64_rem(skb->len, gso_size, &remainder);
--			if (!(ret && (hdr->gso_size > needed) &&
--						((remainder > needed) || (remainder == 0)))) {
--				return -EINVAL;
--			}
--			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
--		}
--
- 		if (!pskb_may_pull(skb, needed))
- 			return -EINVAL;
- 
-@@ -163,6 +152,12 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		if (gso_size == GSO_BY_FRAGS)
- 			return -EINVAL;
- 
-+		if ((gso_size & SKB_GSO_TCPV4) ||
-+			(gso_size & SKB_GSO_TCPV6)) {
-+				if (skb->csum_offset != offsetof(struct tcphdr, check))
-+					return -EINVAL;
-+		}
-+
- 		/* Too small packets are not really GSO ones. */
- 		if (skb->len - nh_off > gso_size) {
- 			shinfo->gso_size = gso_size;
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index fc61cd3fea65..76684cbd63a4 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -71,6 +71,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	if (thlen < sizeof(*th))
- 		goto out;
- 
-+    if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
-+        goto out;
-+
- 	if (!pskb_may_pull(skb, thlen))
- 		goto out;
- 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index c61268849948..61773a26fb34 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -279,6 +279,10 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 	if (gso_skb->len <= sizeof(*uh) + mss)
- 		return ERR_PTR(-EINVAL);
- 
-+    if (unlikely(skb_checksum_start(gso_skb) !=
-+                skb_transport_header(gso_skb)))
-+        return ERR_PTR(-EINVAL);
-+
- 	skb_pull(gso_skb, sizeof(*uh));
- 
- 	/* clear destructor to avoid skb_segment assigning it to tail */
--- 
-2.44.2
-
+Jon
 
