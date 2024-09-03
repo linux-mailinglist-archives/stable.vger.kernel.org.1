@@ -1,185 +1,131 @@
-Return-Path: <stable+bounces-72853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0047296A820
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:15:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031FE96A82D
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABCC1F242CF
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:15:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 611F6B21CC2
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7861D0177;
-	Tue,  3 Sep 2024 20:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3651A3057;
+	Tue,  3 Sep 2024 20:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="db01f5As"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dKHr6GCS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFDB1DC725;
-	Tue,  3 Sep 2024 20:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9D5190463
+	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 20:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725394503; cv=none; b=WEVXvxqoXeYgOOCh7R74lbRmNz/e49TJV9yCy3Z+cO81iPO5MWOXENZy2e1KsgK7RPIESZR84IOV/+zG40LxH74z8wqXkjWf/dgByXkgRgrfocUbWqLko5OEpLs6fPmcYEgsdLS63PfaGJKB19oaijQ2dhmYiDT786FkhMvcn6E=
+	t=1725394714; cv=none; b=MMYxTB53dgQok+VqC8ZX7szOESgZeSxVhREoAdOk1PzuOblE8jjYNtEkpTpWqPmgwILdrzW/ioHY0YijgRFCXsn6blkeaLs9U9hQBtwB8j9ThGi8MTAgD0D30T3NHu+jC+8ufuNybxa3U2LNaBJu+0MKymMh/6TCcua5eSCXLlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725394503; c=relaxed/simple;
-	bh=B2JZUSllFXbp81JbHZMl5Zrl7CI+1VuqCXFLo7QAxq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nJ4Jm+l2fabJvHji0BJS37CEMCLg9n5G+g5Hr4BLWEOna+1JuHiKr5GKXV/7XAHaFI/zZKtcvlAzMBeQxC/SnNpLT83jrKnKyBBfdufx5OfMcWNZ7tFMmzCz2zgbDsLaOVhXPUkgbwG/35OB+AZ1TNSDTh/FydSUxt75sfCKomw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=db01f5As; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725394502; x=1756930502;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B2JZUSllFXbp81JbHZMl5Zrl7CI+1VuqCXFLo7QAxq4=;
-  b=db01f5AsUXGCKcD58VZj6j2nO0lyoDwuLW74B6WAJDN0sxKhmc4XA/2R
-   j09Q0muBXGuSopalQ+EwpSHGusXHj9FQNOu40xt4xiTMAaHaH67X0nqqs
-   kxnEcksQm/MHrI/mOYY2vfDLjOlRCQiPPCw9Sg454khD8TG890hjlDIMA
-   hRWI7penqfTFRXWfuPaYncIb9sWrgxaHtTmi4rgXohFBiV9yMIl/0Aa2i
-   8b50B4nbRA0aRFbWWGRiiYFd9I7/cnoQkcQmrHvIAVbY1ROw/3r06Wsnr
-   Lt+UvTaVYfPh5hozeMXTpJerjjNun9inBD2NSyAga5EAW3W6vezQuYDcv
-   A==;
-X-CSE-ConnectionGUID: 0/QpKTqyQmqjIHsHdtxRQw==
-X-CSE-MsgGUID: AtvYaqc0T9S8gNDIkeWoBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23976179"
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="23976179"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 13:15:01 -0700
-X-CSE-ConnectionGUID: 5mF1nHTQQMyAhO32ckfY8g==
-X-CSE-MsgGUID: YGSrp2mjTeKat4m7spVk1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="65053363"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.109.20])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 13:14:59 -0700
-Date: Tue, 3 Sep 2024 13:14:57 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ben Widawsky <bwidawsk@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] cxl/region: Fix logic for finding a free cxl decoder
-Message-ID: <ZtduQeu2NNyVWTk7@aschofie-mobl2.lan>
-References: <20240903-fix_cxld-v1-1-61acba7198ae@quicinc.com>
+	s=arc-20240116; t=1725394714; c=relaxed/simple;
+	bh=hzAqGd3F7AgPkCeGGqromJaKIJXJKAOln3vKkvXFg18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hxnBBo5nBT2uKKmYHWP988ceEXiG5f7Jkef82Vslgw+pL9udgxe+KSAEHhCPUyDOg6Z21JqKujZnOPJh0czIgmCHGbsDOdhBC17BZvlwKh1igL+gAa8VJLqbVCir0oWFtIND2cNGT7CIO/dvzg+4IjqL2tJQLSlKK9x+zfts+Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dKHr6GCS; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8695cc91c8so581466966b.3
+        for <stable@vger.kernel.org>; Tue, 03 Sep 2024 13:18:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725394711; x=1725999511; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oWbMfvcljod0JpxC0uK+HPRl2MlFSfhObh8ySh6Wf0c=;
+        b=dKHr6GCSu1E9dNajNUGM0Ptso8C9KH3okxYNy/PRq31DIH+W5xkRJcZtW9nWI8FMMa
+         ac4vifZuqMFzxV5ZET2InYh3QHaDCKr/hU5apSu9kx3/G45ReIXLcznxCr8ITIh0XTtu
+         bS+oskDCQeTyGGwrTrM8yY79wNftAuweWMeYyczawGnDfs/6W6PhMaJaBUDVLRQiXRzb
+         GwQP1bKf2lsR9WTBOMorz5vWqZbV1uk4M8Ex44/aKBM+iuHj5pLeyllcbDPYYCHhAFhL
+         MGROiuGJjF8iTDHsm+PtTZ2HOMGfnjH9iIU2Aj9Og3Gt9bNwYu6hvoRhAEboKtnauURN
+         LvTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725394711; x=1725999511;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oWbMfvcljod0JpxC0uK+HPRl2MlFSfhObh8ySh6Wf0c=;
+        b=K9QXo6zKCRXTb4t35U17gRNPspJvlsB/4+ECS0uvZuYYBHoYcOuYQ8l6B8zBH+oGoK
+         /jLPibf6jQxwSHp6i4+744YxzARNI/zy1velzO9uyd4f4GqbBe6LckpOkrg1Cow63HYx
+         8QiiFtDkG34l4rjkFphX39G7pYRo+3huCyVeBerTyQsJlVOtXY0tGy68luiMStZrdO6m
+         B1jqhyPmNmWYNNowzuAy/0mc65H5rfc+Xpep941mGQY/Ed+rmBiZRcq7PPTUfaYpcnta
+         I3e6vFnq9FrSyNY92zJT+G3zJyIgYwsE8S2zlcgyslAuhet5BRB5abZ+PHs6hiKWML2l
+         6qQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbt/shJ9IDKZ92hg9bVajWfdvKWxN75e6oI5aOW5AI3w/AV9X/khF3jvfWNZ7pQ8Nk4meLBwM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFzYTCAI81t+a9YPFkzZRxPYkA6bXxrKZEHl5+sKgTayAGVKAi
+	/m6HKXr7dUpguhhliGuIWVhOvaT8UiygJDpRAhpSYP/o6rvQ1lnahmZ5SeZ9uEU4kiFP6ADuhgX
+	gnyu/G+whj4gnWr/6MTBCv9Yts5kfwnYuYOvY
+X-Google-Smtp-Source: AGHT+IFYUH/hVNuhhP40aPgAS7zEvNZTSTwvvuFNeAMEV+ZwBawVLkqTESoQZXwhziKheUUQ5XgC8wxLk0fxSFgcBAI=
+X-Received: by 2002:a17:907:9485:b0:a86:a41c:29b with SMTP id
+ a640c23a62f3a-a897f78cc4emr1417395766b.8.1725394710002; Tue, 03 Sep 2024
+ 13:18:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240903-fix_cxld-v1-1-61acba7198ae@quicinc.com>
+References: <20240902005945.34B0FC4CEC3@smtp.kernel.org> <CAJD7tkYtM8gQDX8RrT1cnkfDQ0dRv4woNY4jrwjc1oUuavbuTg@mail.gmail.com>
+ <20240903125329.726489169d81399a954f7787@linux-foundation.org>
+In-Reply-To: <20240903125329.726489169d81399a954f7787@linux-foundation.org>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Tue, 3 Sep 2024 13:17:52 -0700
+Message-ID: <CAJD7tkZ9PQXKkt=74dGHZgfCLs+jRz8KPPv5UZ2z9NScwOdT1w@mail.gmail.com>
+Subject: Re: [merged mm-hotfixes-stable] mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch
+ removed from -mm tree
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, shakeel.butt@linux.dev, 
+	roman.gushchin@linux.dev, nphamcs@gmail.com, muchun.song@linux.dev, 
+	mkoutny@suse.com, mhocko@kernel.org, hannes@cmpxchg.org, me@yhndnzj.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 03, 2024 at 08:41:44PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> match_free_decoder()'s logic for finding a free cxl decoder depends on
-> a prerequisite that all child decoders are sorted by ID in ascending order
-> but the prerequisite may not be guaranteed, fix by finding a free cxl
-> decoder with minimal ID.
+On Tue, Sep 3, 2024 at 12:53=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Tue, 3 Sep 2024 10:53:21 -0700 Yosry Ahmed <yosryahmed@google.com> wro=
+te:
+>
+> > > The inconsistency became more noticeable after I introduced the
+> > > MemoryZSwapWriteback=3D systemd unit setting [2] for controlling the =
+knob.
+> > > The patch assumed that the kernel would enforce the value of parent
+> > > cgroups.  It could probably be workarounded from systemd's side, by g=
+oing
+> > > up the slice unit tree and inheriting the value.  Yet I think it's mo=
+re
+> > > sensible to make it behave consistently with zswap.max and friends.
+> > >
+> > > [1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hib=
+ernate#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
+> > > [2] https://github.com/systemd/systemd/pull/31734
+> > >
+> > > Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
+> > > Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback di=
+sabling")
+> > > Signed-off-by: Mike Yuan <me@yhndnzj.com>
+> > > Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> > > Acked-by: Yosry Ahmed <yosryahmed@google.com>
+> >
+> > We wanted to CC stable here, it's too late at this point, right?
+>
+> It has cc:stable?
+>
+> > > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> > > Cc: Michal Hocko <mhocko@kernel.org>
+> > > Cc: Michal Koutn=C3=BD <mkoutny@suse.com>
+> > > Cc: Muchun Song <muchun.song@linux.dev>
+> > > Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > > Cc: <stable@vger.kernel.org>
+>
+> ^^ here
 
-After reading the 'Closes' tag below I have a better understanding of
-why you may be doing this, but I don't want to have to jump to that
-Link. Can you describe here examples of when the ordered allocation
-may not be guaranteed, and the impact when that happens.
-
-This includes a change to device_for_each_child() which I see mentioned
-in the Closes tag discussion too. Is that required for this fix?
-
-It's feeling like the fix and api update are comingled. Please clarify.
-
-Thanks,
-Alison
-
-> 
-> Fixes: 384e624bb211 ("cxl/region: Attach endpoint decoders")
-> Closes: https://lore.kernel.org/all/cdfc6f98-1aa0-4cb5-bd7d-93256552c39b@icloud.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/cxl/core/region.c | 27 ++++++++++++++++-----------
->  1 file changed, 16 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 21ad5f242875..b9607b4fc40b 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -797,21 +797,26 @@ static size_t show_targetN(struct cxl_region *cxlr, char *buf, int pos)
->  static int match_free_decoder(struct device *dev, void *data)
->  {
->  	struct cxl_decoder *cxld;
-> -	int *id = data;
-> +	struct cxl_decoder *target_cxld;
-> +	struct device **target_device = data;
->  
->  	if (!is_switch_decoder(dev))
->  		return 0;
->  
->  	cxld = to_cxl_decoder(dev);
-> -
-> -	/* enforce ordered allocation */
-> -	if (cxld->id != *id)
-> +	if (cxld->region)
->  		return 0;
->  
-> -	if (!cxld->region)
-> -		return 1;
-> -
-> -	(*id)++;
-> +	if (!*target_device) {
-> +		*target_device = get_device(dev);
-> +		return 0;
-> +	}
-> +	/* enforce ordered allocation */
-> +	target_cxld = to_cxl_decoder(*target_device);
-> +	if (cxld->id < target_cxld->id) {
-> +		put_device(*target_device);
-> +		*target_device = get_device(dev);
-> +	}
->  
->  	return 0;
->  }
-> @@ -839,8 +844,7 @@ cxl_region_find_decoder(struct cxl_port *port,
->  			struct cxl_endpoint_decoder *cxled,
->  			struct cxl_region *cxlr)
->  {
-> -	struct device *dev;
-> -	int id = 0;
-> +	struct device *dev = NULL;
->  
->  	if (port == cxled_to_port(cxled))
->  		return &cxled->cxld;
-> @@ -849,7 +853,8 @@ cxl_region_find_decoder(struct cxl_port *port,
->  		dev = device_find_child(&port->dev, &cxlr->params,
->  					match_auto_decoder);
->  	else
-> -		dev = device_find_child(&port->dev, &id, match_free_decoder);
-> +		/* Need to put_device(@dev) after use */
-> +		device_for_each_child(&port->dev, &dev, match_free_decoder);
->  	if (!dev)
->  		return NULL;
->  	/*
-> 
-> ---
-> base-commit: 67784a74e258a467225f0e68335df77acd67b7ab
-> change-id: 20240903-fix_cxld-4f6575a90619
-> 
-> Best regards,
-> -- 
-> Zijun Hu <quic_zijuhu@quicinc.com>
-> 
+Sorry for the noise, I'll go find an eye doctor.
 
