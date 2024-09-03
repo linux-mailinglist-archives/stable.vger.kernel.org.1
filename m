@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-72864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC8196A8B4
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E874C96A8B6
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 22:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4421B242B9
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:44:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9F01F23365
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 20:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CEF1D5CCB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EAF1D88D1;
 	Tue,  3 Sep 2024 20:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hscl3+VY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKRvDrev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422641D88B2;
-	Tue,  3 Sep 2024 20:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993CF1DB554;
+	Tue,  3 Sep 2024 20:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396147; cv=none; b=pPItCEfjrHY2vncAAAzIeeyJjWdhW1H4bBSjlVi6ct1YcKldcKRiOn3hMZ5Um8xb4WSvJjeBzwOz0KlRA7jbDmxQ7hPIE831xVmka6yER+zBp0rLeVAx8rNau4ZUSB6ZaY7rpR2pRec2vE+AMGUjgeugyDzTROLxMZL1merSVUQ=
+	t=1725396147; cv=none; b=A4vH4UNNZXljqdzoUKmAq0InvcDCkKVCtLMQFbHOQKfB4WAcw+p/E+Vmd90GzBOh0pd6/luDKWw4DpdNvGe7Gg3RVO7Vq/vjVe+DiZBfGPxng+zu9RocPiAq9FQWePhPJJ2cHpfPyZ5hnv8Sa62Jn+LxBd+oiLjmI2ewykKxSBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725396147; c=relaxed/simple;
-	bh=Po6usaYQMQ3yDFTMNisnhISK8ukF9eNFiy8sJm/aHjw=;
+	bh=RxI8GFXMoXcmGMJElSAc2SJChgm1aEv8s9B6Kz05nc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSP1thkkVenMtToi15zCPnIliPiyiOba+xQQ+iSQ2Ly/YZY/3VJh4UyWKwBjxT64QfIXDJ7bVld2qNMGwLDkm8djJHdWLakvQZgIkRA3jybDH1StizXYi0ACwQebjuptUNTcKDbz6C2SEjRagfv/fMpqnrNqGb2x4QsRSHCavi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hscl3+VY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66AAC4CEC5;
-	Tue,  3 Sep 2024 20:42:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RfpVLq3yh0ayQzhXNGzRzD1Ju4VHp1dJ45YTSMzYnuqdf64ho+UhAUUqYUuECMjZb6PLfUwD6WLQWi4daxeD5KEDuHKl0kXulCrOoGe/HAhzzrP96KnRsztwGMIyfHYXYBNTEizoMuoCDOS5ETgFv1cwwxvMM9BbsFcNn71L9r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKRvDrev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672D5C4CEC9;
+	Tue,  3 Sep 2024 20:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396145;
-	bh=Po6usaYQMQ3yDFTMNisnhISK8ukF9eNFiy8sJm/aHjw=;
+	s=k20201202; t=1725396147;
+	bh=RxI8GFXMoXcmGMJElSAc2SJChgm1aEv8s9B6Kz05nc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hscl3+VY3SUQPeSGFv12+OtWzBU9ik+XyXwYOtN6GLPtziS5YSddZqPHgxmXh/uUR
-	 Ijxo1Yg5dUc0tmGv99ai0xqnBdcdbacuuEQOVtO0R4WIQBMFogRMCE4GkR+BzVGHWa
-	 w5sXuM1kucVT7e0Ct915xd9EeMVygSgl6DfpmZ5axI2HbdE3OXE3jOmEQJiYxPHGdj
-	 84repuvZ5nNO6Z9nUya3JxQCXAR/3nML072ZOODb6t6Gyxu95B6whaHPiSY24+uumf
-	 aDS9y0ktdll53g8hIxqUCtsAB7MY069aKFFOBUaMdkf/9K/Ga0m+qywwNCiOoWt1s/
-	 2YjecPGYl9xJQ==
+	b=BKRvDrev8R1RaIWwUsjG0gZLP+rq8TSwt90Ci44iqMBG2H2P/TC25NCxH+vzy+RzO
+	 96fqfDryLTkX943PXLlm5OnjF7lojc7mH0eKDW+Fd9e/rCgK0Mz/0r+CerCGPS02Nm
+	 mUrzrQggWSgWkSy8D8MXkHoPSfm2EBeXmldz1gBh2IF8ZVybwmN31rr/C5Gw7TeNbI
+	 g/rbGLAqVOj4N1ILeFdcWag2LnKD088lTDxlPOTdsonW2otfCpG0T3CSKmPTSeclLY
+	 mfjm7tpmKGD1KwbK0mSjVi/9Du2r705Pv7itjudsN1Zq5PBeuB/vq/MqJuKJwZPx80
+	 ckaCi5bCmJwNw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wei Yang <richard.weiyang@gmail.com>,
+Cc: Mathieu Fenniak <mathieu@fenniak.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	monstr@monstr.eu
-Subject: [PATCH AUTOSEL 6.10 10/22] microblaze: don't treat zero reserved memory regions as error
-Date: Tue,  3 Sep 2024 15:21:57 -0400
-Message-ID: <20240903192243.1107016-10-sashal@kernel.org>
+	corentin.chary@gmail.com,
+	luke@ljones.dev,
+	hdegoede@redhat.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 11/22] platform/x86: asus-wmi: Fix spurious rfkill on UX8406MA
+Date: Tue,  3 Sep 2024 15:21:58 -0400
+Message-ID: <20240903192243.1107016-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192243.1107016-1-sashal@kernel.org>
 References: <20240903192243.1107016-1-sashal@kernel.org>
@@ -61,54 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.7
 Content-Transfer-Encoding: 8bit
 
-From: Mike Rapoport <rppt@kernel.org>
+From: Mathieu Fenniak <mathieu@fenniak.net>
 
-[ Upstream commit 0075df288dd8a7abfe03b3766176c393063591dd ]
+[ Upstream commit 9286dfd5735b9cceb6a14bdf15e13400ccb60fe7 ]
 
-Before commit 721f4a6526da ("mm/memblock: remove empty dummy entry") the
-check for non-zero of memblock.reserved.cnt in mmu_init() would always
-be true either because  memblock.reserved.cnt is initialized to 1 or
-because there were memory reservations earlier.
+The Asus Zenbook Duo (UX8406MA) has a keyboard which can be
+placed on the laptop to connect it via USB, or can be removed from the
+laptop to reveal a hidden secondary display in which case the keyboard
+operates via Bluetooth.
 
-The removal of dummy empty entry in memblock caused this check to fail
-because now memblock.reserved.cnt is initialized to 0.
+When it is placed on the secondary display to connect via USB, it emits
+a keypress for a wireless disable. This causes the rfkill system to be
+activated disconnecting the current wifi connection, which doesn't
+reflect the user's true intention.
 
-Remove the check for non-zero of memblock.reserved.cnt because it's
-perfectly fine to have an empty memblock.reserved array that early in
-boot.
+Detect this hardware and suppress any wireless switches from the
+keyboard; this keyboard does not have a wireless toggle capability so
+these presses are always spurious.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240729053327.4091459-1-rppt@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Mathieu Fenniak <mathieu@fenniak.net>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240823135630.128447-1-mathieu@fenniak.net
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/mm/init.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 20 +++++++++++++++++++-
+ drivers/platform/x86/asus-wmi.h    |  1 +
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 3827dc76edd82..4520c57415797 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -193,11 +193,6 @@ asmlinkage void __init mmu_init(void)
- {
- 	unsigned int kstart, ksize;
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index fceffe2082ec5..ed3633c5955d9 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -145,6 +145,10 @@ static struct quirk_entry quirk_asus_ignore_fan = {
+ 	.wmi_ignore_fan = true,
+ };
  
--	if (!memblock.reserved.cnt) {
--		pr_emerg("Error memory count\n");
--		machine_restart(NULL);
--	}
++static struct quirk_entry quirk_asus_zenbook_duo_kbd = {
++	.ignore_key_wlan = true,
++};
++
+ static int dmi_matched(const struct dmi_system_id *dmi)
+ {
+ 	pr_info("Identified laptop model '%s'\n", dmi->ident);
+@@ -516,6 +520,15 @@ static const struct dmi_system_id asus_quirks[] = {
+ 		},
+ 		.driver_data = &quirk_asus_ignore_fan,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "ASUS Zenbook Duo UX8406MA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "UX8406MA"),
++		},
++		.driver_data = &quirk_asus_zenbook_duo_kbd,
++	},
+ 	{},
+ };
+ 
+@@ -630,7 +643,12 @@ static void asus_nb_wmi_key_filter(struct asus_wmi_driver *asus_wmi, int *code,
+ 	case 0x32: /* Volume Mute */
+ 		if (atkbd_reports_vol_keys)
+ 			*code = ASUS_WMI_KEY_IGNORE;
 -
- 	if ((u32) memblock.memory.regions[0].size < 0x400000) {
- 		pr_emerg("Memory must be greater than 4MB\n");
- 		machine_restart(NULL);
++		break;
++	case 0x5D: /* Wireless console Toggle */
++	case 0x5E: /* Wireless console Enable */
++	case 0x5F: /* Wireless console Disable */
++		if (quirks->ignore_key_wlan)
++			*code = ASUS_WMI_KEY_IGNORE;
+ 		break;
+ 	}
+ }
+diff --git a/drivers/platform/x86/asus-wmi.h b/drivers/platform/x86/asus-wmi.h
+index cc30f18538472..d02f15fd3482f 100644
+--- a/drivers/platform/x86/asus-wmi.h
++++ b/drivers/platform/x86/asus-wmi.h
+@@ -40,6 +40,7 @@ struct quirk_entry {
+ 	bool wmi_force_als_set;
+ 	bool wmi_ignore_fan;
+ 	bool filter_i8042_e1_extended_codes;
++	bool ignore_key_wlan;
+ 	enum asus_wmi_tablet_switch_mode tablet_switch_mode;
+ 	int wapf;
+ 	/*
 -- 
 2.43.0
 
