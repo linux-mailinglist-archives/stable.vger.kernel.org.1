@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-72933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C771496A975
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:03:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBBF96A977
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E45C1F21948
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:03:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167A91F24470
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A291E9DE1;
-	Tue,  3 Sep 2024 20:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6D81D58AE;
+	Tue,  3 Sep 2024 20:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zdv6KO4P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KjVQUoVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3A41E9DDC;
-	Tue,  3 Sep 2024 20:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0782D1E9DF4;
+	Tue,  3 Sep 2024 20:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396476; cv=none; b=F4o/AwXFd+jpahSuOrthghXK64O/TWT+cz6IP2NEtHTOIequJ3qifETG3OLv52gzTTylE1NNITBy1MJ36I0d6z2IgPFsbKENnAeWD0wBlzoKft5TV81r7mIlrY8HniHZ8nV1Uwrh/ye+Iid4E/XX7Lc/YIHFC4awzK+OXT+fZ94=
+	t=1725396495; cv=none; b=ljyvHSRCDnzpv3uxQRU+2CA+Lq3VCG2V3qH3F4y9rLtXPdumMUnprSeprR8kWWFaPqLCc7dioRcePbJ6hjs4zQ6TwXAUoagvNvPZ1AXEs023jZTGF2EyBWNTr/4wHbt8AcSCXNT2RpLOml6Ua8Z2sZDzRbtUxyZ2mvkYufc12t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396476; c=relaxed/simple;
-	bh=uaEvcWWAGQyOMlI25WEvlbOI0juAyI/bwMtYZb8maoY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLYNCF+BIThsu0QwE/q+kwqVg03HgluT9yxkwbCn96otj/ifsUUJzm4mZAsr2o0TLrNelhBrHll7dEppWQqLMhUYH6E6EDT7UHPB9sCGz1tXWT+d0sJ1gedLtnqBbUM8IRFPP6AlRYVgDNNy5LmeFP/T09wYwGLqbLwXx+QKZbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zdv6KO4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42768C4CEC5;
-	Tue,  3 Sep 2024 20:47:54 +0000 (UTC)
+	s=arc-20240116; t=1725396495; c=relaxed/simple;
+	bh=4n2ee3jD1mw/ubKI5HBOzyv9yeDsJN/kMcQfuaznOHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V5BG5WVT+/4pn80gxvqNg3Bj+wPu2WguSGilREB7sdj0V6XcP9GiwBrDPdQica82aHoNLDKhYKpBHb4R639mGeqiqstNbu2/cTMxC2XHdAdaDmbTFCJGOjV09VDOndnLVaC7B8OA/P0nXES547d5TyZ4c027QKlpNocdOWNJbek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KjVQUoVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD60AC4CEC4;
+	Tue,  3 Sep 2024 20:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396475;
-	bh=uaEvcWWAGQyOMlI25WEvlbOI0juAyI/bwMtYZb8maoY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zdv6KO4PvtIO/uf44Op0DoUZn3PRHQgk5BMXIRrmGKJ8IF4KTjq9lJ0YaFAGfQwYE
-	 ClGLH8ZnIxY1RVrEt4GzhSS4iKLK79F/6cEkZFpONpth5nDadt1OKFCQvpGhh2+gmH
-	 7pzj2JKoCiUAORoyXRfNQhUvW+kQFoSujUh7QTSG/RP7FgcSy4t5PSz+9jxjsv9OlZ
-	 F0i+JCCfYnuumSCWC0XrDfD+ikWjIJJNmTooSc6k7oAJTovr35ZX8belbCJVtqbBNW
-	 tVh6TtWMlXv6rBJuz/lZkZNeQE2rx24M4sQWFeRb/+k7ocqCw6RyT4we0VAHdOWTJp
-	 K2Ac+K8su+Fcw==
+	s=k20201202; t=1725396494;
+	bh=4n2ee3jD1mw/ubKI5HBOzyv9yeDsJN/kMcQfuaznOHY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KjVQUoVk5GDQYJFecVf7UDCA+kYxghsjs0wYAHnj3idqJOwOQD5SAgE4m2ufmEDvA
+	 PvoFwr4xrMR6AlPzDV0rpuyEsCqlv1vyYCXPDk71xka80c+jwCOVtlI9xQg4FbkWc/
+	 z8fyI+76gzxEx0oiMBUQgT33T5HLJGnBSVZZPcU00uxjr6hIb8Nw0lcPF9m7Hnm06C
+	 pnFJW/ywL/U3GnPgyuX28fHOtP1TzUxZXRdibK1DIzbtFOWe+ZPih9PBPl5C3JIKaw
+	 TzwQGvbKXoOQlV/j5GKprqnBsDRYoGyirfwmUbcxjH2hTm05EHGLk7ZoaiCK36dsbB
+	 UGxQGoOxNnPZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Hongbo Li <lihongbo22@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	ilan.peer@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 8/8] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
-Date: Tue,  3 Sep 2024 15:27:58 -0400
-Message-ID: <20240903192815.1108754-8-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	kuninori.morimoto.gx@renesas.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/8] ASoC: allow module autoloading for table db1200_pids
+Date: Tue,  3 Sep 2024 15:28:37 -0400
+Message-ID: <20240903192859.1108979-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903192815.1108754-1-sashal@kernel.org>
-References: <20240903192815.1108754-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,60 +63,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.224
+X-stable-base: Linux 5.4.282
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
+[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
 
-There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
-recently converted from just a message), that can be hit if we
-wait for TX queues to become empty after firmware died. Clearly,
-we can't expect anything from the firmware after it's declared dead.
+Add MODULE_DEVICE_TABLE(), so modules could be properly
+autoloaded based on the alias from platform_device_id table.
 
-Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
-be a good idea to stop the flow earlier, the flush functions do some
-maintenance work that is not related to the firmware, so keep that part
-of the code running even when the firmware is not running.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
-[edit commit message]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/soc/au1x/db1200.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 08008b0c0637c..fa784d8352901 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4747,6 +4747,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 	int i;
+diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
+index d6b692fff29a2..cdde5ba2ec351 100644
+--- a/sound/soc/au1x/db1200.c
++++ b/sound/soc/au1x/db1200.c
+@@ -44,6 +44,7 @@ static const struct platform_device_id db1200_pids[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(platform, db1200_pids);
  
- 	if (!iwl_mvm_has_new_tx_api(mvm)) {
-+		/* we can't ask the firmware anything if it is dead */
-+		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+			     &mvm->status))
-+			return;
- 		if (drop) {
- 			mutex_lock(&mvm->mutex);
- 			iwl_mvm_flush_tx_path(mvm,
-@@ -4828,8 +4832,11 @@ static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
- 
- 	/* this can take a while, and we may need/want other operations
- 	 * to succeed while doing this, so do it without the mutex held
-+	 * If the firmware is dead, this can't work...
- 	 */
--	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
-+	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
-+	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+		      &mvm->status))
- 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
- }
+ /*-------------------------  AC97 PART  ---------------------------*/
  
 -- 
 2.43.0
