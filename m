@@ -1,124 +1,182 @@
-Return-Path: <stable+bounces-72838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA9C969E82
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 14:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25C6969EBD
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 15:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A941E281D77
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:58:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CF851F24D11
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 13:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51FD1A42CB;
-	Tue,  3 Sep 2024 12:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBF71A7241;
+	Tue,  3 Sep 2024 13:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qk9Hv9bs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="koi3WWFJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F61CA6A7;
-	Tue,  3 Sep 2024 12:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61491CA6B7;
+	Tue,  3 Sep 2024 13:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725368299; cv=none; b=TPBiesr0Z8lWWnDh4eTiYmWWmjOnYQV3WqY7LKAYmaPYno4a1pCJhNB3CGZZVTySnpI2l3eyolcM7/nMpB/Egp/H85M4w/PFkMhnSi2ZxrcZE3+vo1vwnc8zgmhgybq8vuOHyGVGx7somMSMPvBxr8nWHGk622IQZMb6PtalQ4M=
+	t=1725368991; cv=none; b=ssdYQxiMvIk9C6suYrpCjblfM2zK6CeqKv6p68af8kxeyGsNFJxanaUkMBmXaxveztO4sPxt1j7BJ26vygHXaC+7mCpcat2NyMxbOWdcTI+qc/bQ5wHWyOXyhA0d02Izta1cE7D4l6GvD5TjNoxRLOkIzuWC6/gGygn6YmgMZ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725368299; c=relaxed/simple;
-	bh=4T5S9DDic3SFOWYTFLHIzBWd3daU2H4dW6Ld0NcAHwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGIKNZzfvtN2e9QemURkBhRFvpu/6LGgWvjmH4OtvGDOY4l8SOZXVIQ3vwgBrbzFyfVPWe8oa4T/S/YWxJiAziMJ4y0AmsHg3fChJ3A8bgK/oDRBJAotmmkJ5E94YY1K1X6SrXR7n27F5o4EjZPK7Q50UjtTf1D0deubphCyXpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qk9Hv9bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB8C4CEC4;
-	Tue,  3 Sep 2024 12:58:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725368297;
-	bh=4T5S9DDic3SFOWYTFLHIzBWd3daU2H4dW6Ld0NcAHwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qk9Hv9bsuU0L98pUA2ilfqa5nh5zWcbyv3CnfdwyXywgF8PoxaKcUaccfIbaMOaDb
-	 lOZcyEwG899CJrITRGBPX0WSWEtrPAarVHZ/6ajYm2kr1+NXphjnMF9NMRktgI/myN
-	 D9aLW5Pw6DqACUjazsDAQfMLjBYR/RSPxQJtC/uQ=
-Date: Tue, 3 Sep 2024 14:58:14 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: CVE-2024-41041: udp: Set SOCK_RCU_FREE earlier in
- udp_lib_get_port().
-Message-ID: <2024090344-repave-clench-3d61@gregkh>
-References: <2024072924-CVE-2024-41041-ae0c@gregkh>
- <0ab22253fec2b0e65a95a22ceff799f39a2eaa0a.camel@oracle.com>
- <2024090305-starfish-hardship-dadc@gregkh>
- <CANn89iK5UMzkVaw2ed_WrOFZ4c=kSpGkKens2B-_cLhqk41yCg@mail.gmail.com>
+	s=arc-20240116; t=1725368991; c=relaxed/simple;
+	bh=8mw08bfGNoVPR6V3tmRj81krcv15qI2aaad6jNL/UlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZtXayvTvt+WSSY0iVSeLpkZqe3DWJPiUeXYPOCNz91UYh2YHxnnG5oQ3q2WejuHF6t9weuEk96dMMBq0s9sDiUlsO36hPrxjIwbjf7yEp4pDdeuexfoXrJpM3BxwA2hIfEjaqEuSnljPbpemFk1BajUmf+SQoqhEfa+6RHCARQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=koi3WWFJ; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725368989; x=1756904989;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8mw08bfGNoVPR6V3tmRj81krcv15qI2aaad6jNL/UlM=;
+  b=koi3WWFJqBxxvVXeN0hVKaAmKnG96IBjTv9JB0ib/Xy1F+8bMLPAyBuf
+   C25P7htYLkSmabu08X+mo+4Z4HleqKejm1nAQrrRuxZnGO9fwa/jpVaI1
+   +G4XcrHCTGEuYbbFAqA76y2KRkEhwc62aOg6tVcZ2Z0CD88sAnq0IOZf1
+   rOMrhq/R3xksuDzBT6/7QMbndiWuGskrJfYWwXCkKsvRBdnGC++Tcb2nC
+   CKSuI+Nu76//VE3ZwiWHVwB1+92wgmNxQ4yjSGup2sc/g/j5jI0rb5kn3
+   ksLIc76vX7lug6fPqtYAg1ente+CKpYXU2lGmp0THhvUEftDWCbJt5HeV
+   g==;
+X-CSE-ConnectionGUID: XPV2Y4+kSyyjVjtsTeYw3A==
+X-CSE-MsgGUID: mly3dnSjS0qnQy0vxZXfCA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="27845620"
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="27845620"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 06:09:48 -0700
+X-CSE-ConnectionGUID: 8aB2M8G7SV+BIySESXT8XQ==
+X-CSE-MsgGUID: emqfdTatSmi/rn4cL1xskA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="102322883"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by orviesa001.jf.intel.com with ESMTP; 03 Sep 2024 06:09:46 -0700
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] usb: typec: ucsi: Fix cable registration
+Date: Tue,  3 Sep 2024 16:09:44 +0300
+Message-ID: <20240903130945.3395291-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iK5UMzkVaw2ed_WrOFZ4c=kSpGkKens2B-_cLhqk41yCg@mail.gmail.com>
 
-On Tue, Sep 03, 2024 at 02:53:57PM +0200, Eric Dumazet wrote:
-> On Tue, Sep 3, 2024 at 2:07 PM gregkh@linuxfoundation.org
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Sep 03, 2024 at 11:56:17AM +0000, Siddh Raman Pant wrote:
-> > > On Mon, 29 Jul 2024 16:32:36 +0200, Greg Kroah-Hartman wrote:
-> > > > In the Linux kernel, the following vulnerability has been resolved:
-> > > >
-> > > > udp: Set SOCK_RCU_FREE earlier in udp_lib_get_port().
-> > > >
-> > > > [...]
-> > > >
-> > > > We had the same bug in TCP and fixed it in commit 871019b22d1b ("net:
-> > > > set SOCK_RCU_FREE before inserting socket into hashtable").
-> > > >
-> > > > Let's apply the same fix for UDP.
-> > > >
-> > > > [...]
-> > > >
-> > > > The Linux kernel CVE team has assigned CVE-2024-41041 to this issue.
-> > > >
-> > > >
-> > > > Affected and fixed versions
-> > > > ===========================
-> > > >
-> > > >     Issue introduced in 4.20 with commit 6acc9b432e67 and fixed in 5.4.280 with commit 7a67c4e47626
-> > > >     Issue introduced in 4.20 with commit 6acc9b432e67 and fixed in 5.10.222 with commit 9f965684c57c
-> > >
-> > > These versions don't have the TCP fix backported. Please do so.
-> >
-> > What fix backported exactly to where?  Please be more specific.  Better
-> > yet, please provide working, and tested, backports.
-> 
-> 
-> commit 871019b22d1bcc9fab2d1feba1b9a564acbb6e99
-> Author: Stanislav Fomichev <sdf@fomichev.me>
-> Date:   Wed Nov 8 13:13:25 2023 -0800
-> 
->     net: set SOCK_RCU_FREE before inserting socket into hashtable
-> ...
->     Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
-> 
-> It seems 871019b22d1bcc9fab2d1feba1b9a564acbb6e99 has not been pushed
-> to 5.10 or 5.4 lts
-> 
-> Stanislav mentioned a WARN_ONCE() being hit, I presume we could push
-> the patch to 5.10 and 5.4.
-> 
-> I guess this was skipped because of a merge conflict.
+The Cable PD Revision field in GET_CABLE_PROPERTY was
+introduced in UCSI v2.1, so adding check for that.
 
-Yes, the commit does not apply, we need someone to send a working
-backport for us to be able to take it.
+The cable properties are also not used anywhere after the
+cable is registered, so removing the cable_prop member
+from struct ucsi_connector while at it.
 
-Siddh, can you please do this?
+Fixes: 38ca416597b0 ("usb: typec: ucsi: Register cables based on GET_CABLE_PROPERTY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+Hi Greg,
+
+This version is for your usb-linus branch. The original [1] should
+apply on top of your usb-next branch.
 
 thanks,
 
-greg k-h
+[1] https://lore.kernel.org/linux-usb/20240830130217.2155774-1-heikki.krogerus@linux.intel.com/
+
+---
+ drivers/usb/typec/ucsi/ucsi.c | 30 +++++++++++++++---------------
+ drivers/usb/typec/ucsi/ucsi.h |  1 -
+ 2 files changed, 15 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 9a799637754c..17155ed17fdf 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -965,10 +965,20 @@ static void ucsi_unregister_plug(struct ucsi_connector *con)
+ 
+ static int ucsi_register_cable(struct ucsi_connector *con)
+ {
++	struct ucsi_cable_property cable_prop;
+ 	struct typec_cable *cable;
+ 	struct typec_cable_desc desc = {};
++	u64 command;
++	int ret;
++
++	command = UCSI_GET_CABLE_PROPERTY | UCSI_CONNECTOR_NUMBER(con->num);
++	ret = ucsi_send_command(con->ucsi, command, &cable_prop, sizeof(cable_prop));
++	if (ret < 0) {
++		dev_err(con->ucsi->dev, "GET_CABLE_PROPERTY failed (%d)\n", ret);
++		return ret;
++	}
+ 
+-	switch (UCSI_CABLE_PROP_FLAG_PLUG_TYPE(con->cable_prop.flags)) {
++	switch (UCSI_CABLE_PROP_FLAG_PLUG_TYPE(cable_prop.flags)) {
+ 	case UCSI_CABLE_PROPERTY_PLUG_TYPE_A:
+ 		desc.type = USB_PLUG_TYPE_A;
+ 		break;
+@@ -984,10 +994,10 @@ static int ucsi_register_cable(struct ucsi_connector *con)
+ 	}
+ 
+ 	desc.identity = &con->cable_identity;
+-	desc.active = !!(UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE &
+-			 con->cable_prop.flags);
+-	desc.pd_revision = UCSI_CABLE_PROP_FLAG_PD_MAJOR_REV_AS_BCD(
+-	    con->cable_prop.flags);
++	desc.active = !!(UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE & cable_prop.flags);
++
++	if (con->ucsi->version >= UCSI_VERSION_2_1)
++		desc.pd_revision = UCSI_CABLE_PROP_FLAG_PD_MAJOR_REV_AS_BCD(cable_prop.flags);
+ 
+ 	cable = typec_register_cable(con->port, &desc);
+ 	if (IS_ERR(cable)) {
+@@ -1193,21 +1203,11 @@ static int ucsi_check_connection(struct ucsi_connector *con)
+ 
+ static int ucsi_check_cable(struct ucsi_connector *con)
+ {
+-	u64 command;
+ 	int ret, num_plug_am;
+ 
+ 	if (con->cable)
+ 		return 0;
+ 
+-	command = UCSI_GET_CABLE_PROPERTY | UCSI_CONNECTOR_NUMBER(con->num);
+-	ret = ucsi_send_command(con->ucsi, command, &con->cable_prop,
+-				sizeof(con->cable_prop));
+-	if (ret < 0) {
+-		dev_err(con->ucsi->dev, "GET_CABLE_PROPERTY failed (%d)\n",
+-			ret);
+-		return ret;
+-	}
+-
+ 	ret = ucsi_register_cable(con);
+ 	if (ret < 0)
+ 		return ret;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 57129f3c0814..5a3481d36d7a 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -465,7 +465,6 @@ struct ucsi_connector {
+ 
+ 	struct ucsi_connector_status status;
+ 	struct ucsi_connector_capability cap;
+-	struct ucsi_cable_property cable_prop;
+ 	struct power_supply *psy;
+ 	struct power_supply_desc psy_desc;
+ 	u32 rdo;
+-- 
+2.45.2
+
 
