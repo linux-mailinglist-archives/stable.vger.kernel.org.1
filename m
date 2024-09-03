@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-72925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137D796A95F
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:00:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0725596A962
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C441028234E
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:00:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F3E1C2455A
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 21:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A851E8409;
-	Tue,  3 Sep 2024 20:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ECB1E8B6B;
+	Tue,  3 Sep 2024 20:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4GQIO5o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAtH/gj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6EC1E8403;
-	Tue,  3 Sep 2024 20:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AF71E8B60;
+	Tue,  3 Sep 2024 20:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396431; cv=none; b=eVESsD0qUzrZiTkjCms4cJGzKbSpZZ1mq080c/PS+QKmpa9v1XfgCZlL8jKcL4kOIJjB1yHwybBB4bGVzVu4coRuBik/H3ljs5Qgc2Db2CfFT2GuXQhZhJ0F2kKzB/tkYtwlIergBuI6pL6H/qY4dVLyczuw/3UdzUa4UGucnQw=
+	t=1725396450; cv=none; b=te/38NZpurf81BHKhNrcSTB3x0uJa++NL+CA10eMkBn88cZCVIY/PjfEVH9IX5OleJ60EoES+WdOoNUI1Ti9REqUAU1CjRruJljCIA0UNxIr5qD+9cUL65ZsCuV0dKB0kZLhaX1mBQ7OS4qJfvc6apxLs0FFX9UU2Oh2blRWUfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396431; c=relaxed/simple;
-	bh=n6eaSCxbSbkY42Jzi/5kjdbj6pXsgPDGUtNNCIwqb9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuDyBJ0TwacW3Kvd7uMJfL7Tm/Ggn557DIfEZrgATgIz0ZZ9udLd8OkX7dXarrxvshVirpsRQYL/P3ao//fx7Ltdcw28+enlYxZO3cKG5dXM/pLiqwtB3Iy/O6+WpTMHRcG4Uh44g83KVKjra4LQXf3kE+j4cP4Nrd/XFtbs744=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4GQIO5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7B6C4CEC5;
-	Tue,  3 Sep 2024 20:47:09 +0000 (UTC)
+	s=arc-20240116; t=1725396450; c=relaxed/simple;
+	bh=2l6V/xAgmqYJbUAyttYeN1cUcpBYiQ7bcEal4EZJot0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p0vvurB+0U8/fDKe3mcsGW1S8o32Ijp5TpKC6/JnfHxTbQacHp/KN2hNgqtk8XDHcxMm58gRz+wgSLeuJEAxuR9imAxn8ovOtjb6yDbJQdrd8pTEE7pCUAJD2bY8bCLb/mzSUFIdg9okzscZI02+Uo35J1rNPZLSgA0fqjUXLhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAtH/gj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED28C4CEC4;
+	Tue,  3 Sep 2024 20:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396430;
-	bh=n6eaSCxbSbkY42Jzi/5kjdbj6pXsgPDGUtNNCIwqb9w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4GQIO5osfwxXFfMMXdOXa7Vsy/kxp/KCsWrM1RS42ZiQMXn/AUNlxytSV8r2YlAR
-	 g3cywVUibFYRaKEdOCn7IaK+QSxp0VG6rhSaapFXvRHHvTv5T0Ono4Y8xWV3tuLcp7
-	 vBnpxyx5T2TyfIDQFirrZA8yPE/qGS+ZXAmu4ynFwAIIEotTZLRvkSvWTxfS8qrh74
-	 xYo30IJZG4A0Bil5+WiZpHpWFrwKA5ckAL/+DIJnT7J9SEd8dtrdCSH3yvKsuGADrH
-	 FXVcCaDz11/lHwSBj678/iAg5vxW/8caTwxFdvvBFz+1u5civSxiL8TCjw1B59Wi/K
-	 fOMTvmRzCbphg==
+	s=k20201202; t=1725396450;
+	bh=2l6V/xAgmqYJbUAyttYeN1cUcpBYiQ7bcEal4EZJot0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PAtH/gj+bmzobDU20drBGm9dX+hVhfLGw+q6YcxQEZQ6LolFKaaDTLTXM4l2w8ZG3
+	 LxYR4CuvBbyhwG/Lia4FlaaaJn708HhvW4+95BuQKULM479y/AP5uApKEm9/UZ9n2/
+	 fclDdndhRmD58NM0BvFgZvUo8jOH8G3VZ5zLmsp+AXtyuujDx4Jx89s0qcVDiPff5p
+	 6eXmfZ5VFEkh0mWhrqgC0ZvDrVuyxT2Y/yjrUYNBv4Bdl/gp2fXSpBGFi4ydVZxpJb
+	 rAzj9E0Ipyk0OfnAOBg1Zca55cccErOOm0m+KQKzXaz+kOJK4iCRqh4Cq7O4xhE3BV
+	 kOR9tpp3gEaWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Hongbo Li <lihongbo22@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	daniel.gabay@intel.com,
-	yedidya.ben.shimol@intel.com,
-	justinstitt@google.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 12/12] wifi: iwlwifi: clear trans->state earlier upon error
-Date: Tue,  3 Sep 2024 15:26:56 -0400
-Message-ID: <20240903192718.1108456-12-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	kuninori.morimoto.gx@renesas.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/8] ASoC: allow module autoloading for table db1200_pids
+Date: Tue,  3 Sep 2024 15:27:51 -0400
+Message-ID: <20240903192815.1108754-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903192718.1108456-1-sashal@kernel.org>
-References: <20240903192718.1108456-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,72 +63,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.165
+X-stable-base: Linux 5.10.224
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 094513f8a2fbddee51b055d8035f995551f98fce ]
+[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
 
-When the firmware crashes, we first told the op_mode and only then,
-changed the transport's state. This is a problem if the op_mode's
-nic_error() handler needs to send a host command: it'll see that the
-transport's state still reflects that the firmware is alive.
+Add MODULE_DEVICE_TABLE(), so modules could be properly
+autoloaded based on the alias from platform_device_id table.
 
-Today, this has no consequences since we set the STATUS_FW_ERROR bit and
-that will prevent sending host commands. iwl_fw_dbg_stop_restart_recording
-looks at this bit to know not to send a host command for example.
-
-To fix the hibernation, we needed to reset the firmware without having
-an error and checking STATUS_FW_ERROR to see whether the firmware is
-alive will no longer hold, so this change is necessary as well.
-
-Change the flow a bit.
-Change trans->state before calling the op_mode's nic_error() method and
-check trans->state instead of STATUS_FW_ERROR. This will keep the
-current behavior of iwl_fw_dbg_stop_restart_recording upon firmware
-error, and it'll allow us to call iwl_fw_dbg_stop_restart_recording
-safely even if STATUS_FW_ERROR is clear, but yet, the firmware is not
-alive.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.9d7427fbdfd7.Ia056ca57029a382c921d6f7b6a6b28fc480f2f22@changeid
-[I missed this was a dependency for the hibernation fix, changed
- the commit message a bit accordingly]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/au1x/db1200.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index f34a02b33ccd4..fc630a0d9c83c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2862,7 +2862,7 @@ void iwl_fw_dbg_stop_restart_recording(struct iwl_fw_runtime *fwrt,
- {
- 	int ret __maybe_unused = 0;
+diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
+index 5f8baad37a401..48243164b7ac8 100644
+--- a/sound/soc/au1x/db1200.c
++++ b/sound/soc/au1x/db1200.c
+@@ -44,6 +44,7 @@ static const struct platform_device_id db1200_pids[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(platform, db1200_pids);
  
--	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return;
- 
- 	if (fw_has_capa(&fwrt->fw->ucode_capa,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index a2919a32d7081..d2b31599340fc 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1393,8 +1393,8 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans, bool sync)
- 
- 	/* prevent double restarts due to the same erroneous FW */
- 	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status)) {
--		iwl_op_mode_nic_error(trans->op_mode, sync);
- 		trans->state = IWL_TRANS_NO_FW;
-+		iwl_op_mode_nic_error(trans->op_mode, sync);
- 	}
- }
+ /*-------------------------  AC97 PART  ---------------------------*/
  
 -- 
 2.43.0
