@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-72818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EFA969A72
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:42:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1513969A73
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 12:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F22D1F2423B
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:42:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EFB8B22F6F
+	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 10:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F511B984E;
-	Tue,  3 Sep 2024 10:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1FA1B9849;
+	Tue,  3 Sep 2024 10:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+HTKN7T"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGOLDWEc"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C291B9849
-	for <stable@vger.kernel.org>; Tue,  3 Sep 2024 10:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7014919CC3F
+	for <Stable@vger.kernel.org>; Tue,  3 Sep 2024 10:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725360132; cv=none; b=rzVNXvuIDzhZasmDkaayxNW/8hU/VhEq5Q9cC12PWBjax+hQXGBo9Ux+uclFY+R14ezvaawI1SG0ccor0I8kmOy46o+7p0vy01wHLa9bITZ9vA23znsm2D2lXTA3K9jX2GmHHpf+VdzI2La3Qhs9HydXWqhzKMwIGpkbYMXKOYg=
+	t=1725360135; cv=none; b=KPeNDpiU38GuAFgpwIHnNLavKXB/Tv6kHDWXeJbchVA5eWSeKCp0Qsyu7bjzxn8xLk/dz3Twt92uKVm1OOLw773KlSx0p7RrjB5Rzdb6la7tiN/j55TS31OZJtZS0mIpzf8URmOwbTFraVi5zy+akCvG7WwlxEaUpYItC6I65F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725360132; c=relaxed/simple;
-	bh=TsMgtBXeweQhwX54HU7gOknGM1YulXcSvsz8l6VOsY8=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=i/CTGyXuVAdt8DRifDIW/KdDO2j7s+Y2xcQPZwDhXV6i2Yyf20DOt6Uv2ir+I7Fyft3q7IZNr4f52hC+zBE9OqgZuW4ec1iNaMu6QZk9wymajC2CreiUxgLlGdwu29760VOAlXZTLzuZRO/LL9FxftFYHVsnvONBE5TP1bJH2mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+HTKN7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0424C4CEC4;
-	Tue,  3 Sep 2024 10:42:11 +0000 (UTC)
+	s=arc-20240116; t=1725360135; c=relaxed/simple;
+	bh=zQmgGLFUQ1O2NYcdXPEeh07eLJcrMfziVPmCfIAlr0E=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=s4H5jOVpiAGQyZhYT3FgwbgL7A6Hb8sMgLWyPLsrokwEIclTp8qQQTwP7BBKpo16/oZhnHoWuXVdRV7ca35Kf9QDRlNMaXstz1BU/nVCS+QwHZAUouYDTo7hb9sOl5FAonR5wzNrjqYIt3Le7BQCzMIdPMMc/BopFd3j9XoyFNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGOLDWEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE31EC4CEC9;
+	Tue,  3 Sep 2024 10:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725360132;
-	bh=TsMgtBXeweQhwX54HU7gOknGM1YulXcSvsz8l6VOsY8=;
+	s=korg; t=1725360135;
+	bh=zQmgGLFUQ1O2NYcdXPEeh07eLJcrMfziVPmCfIAlr0E=;
 	h=Subject:To:From:Date:From;
-	b=N+HTKN7TRvCYTdDFE0Qcw2fTz1Be4bqPV1DYGNbaFSfnRMFmcGtrLMkJH0uwoviwp
-	 U2OnnFRm0x5jm86Rk/VB8MJ5bwfZgW0fneGfJ2sFFfXMogs5hDc5GmFnpmJIATjyYI
-	 TGqUUYn2YBICv0pGFxJqIbIVtLpVFo8a+BNTqF5s=
-Subject: patch "iio: adc: ad_sigma_delta: fix irq_flags on irq request" added to char-misc-linus
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,stable@vger.kernel.org
+	b=uGOLDWEc2yrZD/Uy1ILkV7px+7uhl4jNYHcxC269DnrPRkZpRsXilYPL5YGxHUq0y
+	 9+C2igtViXZqNOdJtA0dUKumaqGedJebjkPKaLKtTXadnaW7LWAUQ6kxs2bZOuuOTX
+	 Vohghm6J/xOtTAdDJj2OtPzH/uTplcHSQv/sK878=
+Subject: patch "iio: adc: ad7173: fix GPIO device info" added to char-misc-linus
+To: mitrutzceclan@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dumitru.ceclan@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Sep 2024 12:18:06 +0200
-Message-ID: <2024090306-seismic-refute-1108@gregkh>
+Date: Tue, 03 Sep 2024 12:18:07 +0200
+Message-ID: <2024090307-upheld-flaky-f644@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad_sigma_delta: fix irq_flags on irq request
+    iio: adc: ad7173: fix GPIO device info
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,39 +69,53 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From e81bb580ec08d7503c14c92157d810d306290003 Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Tue, 6 Aug 2024 17:40:49 +0200
-Subject: iio: adc: ad_sigma_delta: fix irq_flags on irq request
+From f242967f4d1c024ac42bb47ea50b6360b4cb4556 Mon Sep 17 00:00:00 2001
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Date: Fri, 9 Aug 2024 16:49:08 +0300
+Subject: iio: adc: ad7173: fix GPIO device info
 
-With commit 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq
-selection"), we can get the irq line from struct ad_sigma_delta_info
-instead of the spi device. However, in devm_ad_sd_probe_trigger(), when
-getting the irq_flags with irq_get_trigger_type() we are still using
-the spi device irq instead of the one used for devm_request_irq().
+Models AD4114/5/6 have .higher_gpio_bits = true. This is not correct as
+the only models that have the GPIO bits to a higher position are AD4111/2.
 
-Fixes: 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq selection")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240806-dev-fix-ad-sigma-delta-v1-1-aa25b173c063@analog.com
-Cc: <stable@vger.kernel.org>
+Fix by removing the higher_gpio_bits = true from the AD4114/5/6 models.
+
+Fixes: 13d12e3ad12d ("iio: adc: ad7173: Add support for AD411x devices")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Link: https://patch.msgid.link/20240809134909.26829-1-dumitru.ceclan@analog.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7173.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 8c062b0d26e3..dcd557e93586 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -569,7 +569,7 @@ EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_SIGMA_DELTA);
- static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
--	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->spi->irq);
-+	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->irq_line);
- 	int ret;
- 
- 	if (dev != &sigma_delta->spi->dev) {
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index a854f2d30174..0702ec71aa29 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -302,7 +302,6 @@ static const struct ad7173_device_info ad4114_device_info = {
+ 	.num_configs = 8,
+ 	.num_voltage_in = 16,
+ 	.num_gpios = 4,
+-	.higher_gpio_bits = true,
+ 	.has_vincom_input = true,
+ 	.has_temp = true,
+ 	.has_input_buf = true,
+@@ -320,7 +319,6 @@ static const struct ad7173_device_info ad4115_device_info = {
+ 	.num_configs = 8,
+ 	.num_voltage_in = 16,
+ 	.num_gpios = 4,
+-	.higher_gpio_bits = true,
+ 	.has_vincom_input = true,
+ 	.has_temp = true,
+ 	.has_input_buf = true,
+@@ -338,7 +336,6 @@ static const struct ad7173_device_info ad4116_device_info = {
+ 	.num_configs = 8,
+ 	.num_voltage_in = 16,
+ 	.num_gpios = 4,
+-	.higher_gpio_bits = true,
+ 	.has_vincom_input = true,
+ 	.has_temp = true,
+ 	.has_input_buf = true,
 -- 
 2.46.0
 
