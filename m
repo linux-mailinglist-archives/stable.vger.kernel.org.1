@@ -1,113 +1,134 @@
-Return-Path: <stable+bounces-73047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92CC96BD44
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:57:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CA196BD60
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764601F2695A
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 12:57:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4419C1C24D00
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 12:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3632D1D9D91;
-	Wed,  4 Sep 2024 12:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914EE1DB92B;
+	Wed,  4 Sep 2024 12:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HqSZ6Csp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmNBYIit"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1B81D7999
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 12:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B84F1DB548;
+	Wed,  4 Sep 2024 12:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725454597; cv=none; b=W/stL8UJPp0/OUTBOsMHZgc+x89EkkZoLcjn60TyiQvnTCXXDMQxEnBliJq65p3sQJmuFe2ZyGJ9eFI4HyLnttyNm8GGkEYYG3vDVqULGxeiAHRN//PN5h59V1rvioY0awhMtqUH/hLzZrEpJ5/wDKrtw918ojLkebq5tNLPTac=
+	t=1725454621; cv=none; b=tVoBp50BjSL2lEWHqlIyw2b8nSqEqoGna7IRZWamwD6iuvEl2gYy5yvFjIzvaSA5LluETDA185Ar9DifpGrc6pkm+hkMYjNacLUNPafuESGvMacY2rF51+yfcXQV/wz4Hz6RGT9x+iRiHjC5UsXItIo9SE1dqdLvSzh9kVnGIpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725454597; c=relaxed/simple;
-	bh=w12zITrlcS7mKMPlkOl2ZGejq1Eo5bn874xDYkUxjBU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vq7n7qk2JW+Ax0Y1HjxFqzJI7m5G7F4hj7ctcChDIiwVWWLyEoMO+tGf5Vt1LRkRZEavBPiurHHWhwyYVHg6uV0ksz79zfktilqk4ZFBJ0uVW6VejE0lpzlLX3gARPRmodlEKE6464KT/R8L8xIyzaE02UOAWgybyy5HypdMII4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HqSZ6Csp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725454594;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Y6zLyuFowAQXUpe4yq3nH5ym9sfNZkhp6uZ2OTgfrU=;
-	b=HqSZ6CspTcwqSeSyQpMD3doc0PdWW6O2PJuv6PGZm4AV5/5isqRkQejN21usPgAw6ka7vW
-	37vOszGYH3PWVCvN732KhfmK7dZB/1jaO5uCAJEhPLlV3lIMYJOxil0rBMVKi6LKcVmX35
-	Te3CAdk76GvHmqeA8N7eOJ5pnidgrdw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-2-3Cjfp9NyMZSq6G0H6OWfpw-1; Wed,
- 04 Sep 2024 08:56:31 -0400
-X-MC-Unique: 3Cjfp9NyMZSq6G0H6OWfpw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AEDDE1955DD2;
-	Wed,  4 Sep 2024 12:56:29 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.59])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F0E5195605A;
-	Wed,  4 Sep 2024 12:56:23 +0000 (UTC)
-Date: Wed, 4 Sep 2024 20:56:18 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: axboe@kernel.dk, yukuai1@huaweicloud.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] block: fix ordering between checking
- QUEUE_FLAG_QUIESCED and adding requests
-Message-ID: <ZthY8prW0dZ0+Nco@fedora>
-References: <20240903081653.65613-1-songmuchun@bytedance.com>
- <20240903081653.65613-3-songmuchun@bytedance.com>
+	s=arc-20240116; t=1725454621; c=relaxed/simple;
+	bh=xtL14RmKMeu1w0uNEueDgZBSYhaFWT0O+TFimaUTWrI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=ngEjKYC3HOTll8TNok8etMW9T06cFaCGoaWGk5WJc8MARlkmv2FRs6n1BoQHYKJKPx3ukkw3ISisD07hI7vv/MyC8l62CdB0rOpJ1OUFAcUh7X6npT+OGYehgyQMpzS7GlvBoD4LFr1Lpc0F+d0+pHSVH/6gbfVmutFCh5XT69U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmNBYIit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948FBC4CEC2;
+	Wed,  4 Sep 2024 12:56:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725454620;
+	bh=xtL14RmKMeu1w0uNEueDgZBSYhaFWT0O+TFimaUTWrI=;
+	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+	b=NmNBYIitNccYW9m6a/hkhhyWYNvmJPXaBJSDLQt16E2NI3PYZTwOxZhkcyVjJovFu
+	 KYfsYvb1cf6XiGI9hd4pKVLrq792O3SVVoeu3P22XtoCDZLQSQRuSZa1cJ4oVvaMD7
+	 PvbMZduhKxI14wqEQGAy0g5U0u/zDZMI6mTy6enbwXlQijy2Twmi9v8mShy5zpwQOz
+	 gBoBk2EZC2s5JEx2zqCGCktZecTt+7Cn1pjjiocC+2tk3T11tHJjpmEknFI3g8uDGE
+	 6qyhjDYV+Aap1bdwcmxxVkoncV6/0FB87150gbchG4r+7BaACUTzSmK9CDkl7j4h2e
+	 kgY+0uJusz3XA==
+Message-ID: <d22f6a38-585f-4ec7-8c98-b5a1ebbceed2@kernel.org>
+Date: Wed, 4 Sep 2024 14:56:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240903081653.65613-3-songmuchun@bytedance.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.6.y 0/2] Backport of "mptcp: pm: fix RM_ADDR ID for the
+ initial subflow"
+Content-Language: en-GB
+To: gregkh@linuxfoundation.org, Sasha Levin <sashal@kernel.org>
+References: <2024083044-banked-tapered-91df@gregkh>
+ <20240903101654.3376356-4-matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, stable@vger.kernel.org
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240903101654.3376356-4-matttbe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 03, 2024 at 04:16:52PM +0800, Muchun Song wrote:
-> Supposing the following scenario.
-> 
-> CPU0                                        CPU1
-> 
-> blk_mq_insert_request()         1) store    blk_mq_unquiesce_queue()
-> blk_mq_run_hw_queue()                       blk_queue_flag_clear(QUEUE_FLAG_QUIESCED)       3) store
->     if (blk_queue_quiesced())   2) load         blk_mq_run_hw_queues()
->         return                                      blk_mq_run_hw_queue()
->     blk_mq_sched_dispatch_requests()                    if (!blk_mq_hctx_has_pending())     4) load
->                                                            return
-> 
-> The full memory barrier should be inserted between 1) and 2), as well as
-> between 3) and 4) to make sure that either CPU0 sees QUEUE_FLAG_QUIESCED is
-> cleared or CPU1 sees dispatch list or setting of bitmap of software queue.
-> Otherwise, either CPU will not re-run the hardware queue causing starvation.
-> 
-> So the first solution is to 1) add a pair of memory barrier to fix the
-> problem, another solution is to 2) use hctx->queue->queue_lock to synchronize
-> QUEUE_FLAG_QUIESCED. Here, we chose 2) to fix it since memory barrier is not
-> easy to be maintained.
-> 
-> Fixes: f4560ffe8cec1 ("blk-mq: use QUEUE_FLAG_QUIESCED to quiesce queue")
-> Cc: stable@vger.kernel.org
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Hi Greg, Sasha,
 
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
+On 03/09/2024 12:16, Matthieu Baerts (NGI0) wrote:
+> 87b5896f3f78 ("mptcp: pm: fix RM_ADDR ID for the initial subflow") 
+> depends on e38b117d7f3b ("mptcp: make pm_remove_addrs_and_subflows 
+> static") to avoid conflicts. Both can be backported to v6.6 without 
+> conflicts.
+> 
+> If you prefer, feel free to backport these commits to v6.6:
+> 
+>   e38b117d7f3b 87b5896f3f78
+> 
+> Details:
+> 
+> - e38b117d7f3b ("mptcp: make pm_remove_addrs_and_subflows static")
+> - 87b5896f3f78 ("mptcp: pm: fix RM_ADDR ID for the initial subflow")
 
+FYI, Sasha has recently queued these 2 patches for v6.6. Nothing else
+needs to be done here.
 
-thanks,
-Ming
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
 
