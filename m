@@ -1,55 +1,50 @@
-Return-Path: <stable+bounces-73060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB36E96C02F
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:23:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B0596C039
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 086E41C250CC
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0891F22ECC
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC25F1DC04B;
-	Wed,  4 Sep 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753061DB53C;
+	Wed,  4 Sep 2024 14:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="froQbjmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZH3iVmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763581D4170;
-	Wed,  4 Sep 2024 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7131DB53F;
+	Wed,  4 Sep 2024 14:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725459638; cv=none; b=aOik2hzm33EXwW5KdIfLt5slClWCn+47eSQTqx2boRHe4TO7mEHCK+boAML9dzcJEQlCXbcl0xQ6lS4erjg76Su3Tqqj8kmSCOQNKEvT5cCPzlxdhAqgSF2iuE3xSZs3BwHQyoO3dsZH8nbX96t3h6t3NzNmtw2I/suE+D2gh10=
+	t=1725459698; cv=none; b=j0XGwjc/WlxbGNYrZmat76eo2NT+2Zrbjt6MecxJG5PBnqETorXow9HVsfNSkwRrchLsKKz5giaOvAug9yefYpjaJdBRyX5Ps/jwAZH1GsjCW0XuvWyyDMvcZmX1R9IodZM0bcrxlGoCf8ybm7YZkKKqPQ8iy/veMhmdxe//chE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725459638; c=relaxed/simple;
-	bh=8TeTyxkPuqKs0E9KlcjCyubBjugwoozVVKl+fR8/568=;
+	s=arc-20240116; t=1725459698; c=relaxed/simple;
+	bh=i97rSaK8JA0WCSMbzW1kYNSBkFZC9zi0oI0AqGCZRtY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IoftiKdHnnUcXUusfR7Eq+NIj3hm1TaOKsNB6fJnSXcCvd83LYdPcHk4a2sI9Yj1dplrKqgMThfwl4Wb6i4K5WSiDBa+5GBcBGC81KPLAeT1zGrlr8mEr7SAEsCQDxPR1IuFwFs9yPzij/EWgLW6S00kvkz+dGtT7wrOG/jFJxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=froQbjmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A070FC4CEC2;
-	Wed,  4 Sep 2024 14:20:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ohR7gmKuWETBQhjcvgj+PBEooJjTcfsbcbfXL/k7vpVaxOHxtMe4yLiFIBx3ncq8Tf666pX3udeu2iJ6d23t9DWnZuwFg202Eph5nHbgYx+5QPwUVDl1iRkvET1Cz7SVNcVgtnWjN9nA3p9V8t1db8a2f0VPo8tkoP+8u9EnBxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZH3iVmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225EFC4CEC2;
+	Wed,  4 Sep 2024 14:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725459637;
-	bh=8TeTyxkPuqKs0E9KlcjCyubBjugwoozVVKl+fR8/568=;
+	s=korg; t=1725459697;
+	bh=i97rSaK8JA0WCSMbzW1kYNSBkFZC9zi0oI0AqGCZRtY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=froQbjmFZTxaLYOiosB3BTWeto7tmLASwku3J5xv9yABKCKVXzw+Nxa2y3gHTErHf
-	 UKEm35YYb4AlzQqyzlsMKfJCH1tJOV7PnVbirutO0ic7K9KBQxa04+nwnLcu2f/6f3
-	 lGgDJUFotoxX6JBw6ftLnAwMOOp0aplUcFKwX/T8=
-Date: Wed, 4 Sep 2024 16:20:33 +0200
+	b=KZH3iVmgDggqAa/BIolDd3jsb90xdmifyuSl3yU0UaqQLuLWP8Tm/qCZEWgVGLmtW
+	 s+73ZJq7xoxDTezonp1skWHxMUMDpoCkgNrpCV3cpzW53eTHWGNV2CTBoJR6oZZMCq
+	 VKZ/7bJxwaGIbMogOUNARGqJ6g5Bt3uy3+ptaAY4=
+Date: Wed, 4 Sep 2024 16:21:34 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: Re: [PATCH 6.6.y 2/4] selftests: mptcp: join: test for flush/re-add
- endpoints
-Message-ID: <2024090428-jingle-railway-8ddd@gregkh>
-References: <2024082617-capture-unbolted-5880@gregkh>
- <20240903100807.3365691-8-matttbe@kernel.org>
- <a5f25f18-d60f-4544-9f28-3a463911fd0b@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, stable@vger.kernel.org, sashal@kernel.org
+Subject: Re: [PATCH 6.6.y 0/2] Fixes for recent backports
+Message-ID: <2024090428-reapply-stonewall-1c59@gregkh>
+References: <20240904133755.67974-4-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,33 +53,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a5f25f18-d60f-4544-9f28-3a463911fd0b@kernel.org>
+In-Reply-To: <20240904133755.67974-4-matttbe@kernel.org>
 
-On Wed, Sep 04, 2024 at 02:59:07PM +0200, Matthieu Baerts wrote:
-> Hi Greg, Sasha,
+On Wed, Sep 04, 2024 at 03:37:56PM +0200, Matthieu Baerts (NGI0) wrote:
+> A few commits have been recently queued to v6.6 and needs to be adapted
+> for this kernel version:
 > 
-> On 03/09/2024 12:08, Matthieu Baerts (NGI0) wrote:
-> > commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
-> > 
-> > After having flushed endpoints that didn't cause the creation of new
-> > subflows, it is important to check endpoints can be re-created, re-using
-> > previously used IDs.
-> > 
-> > Before the previous commit, the client would not have been able to
-> > re-create the subflow that was previously rejected.
-> > 
-> > The 'Fixes' tag here below is the same as the one from the previous
-> > commit: this patch here is not fixing anything wrong in the selftests,
-> > but it validates the previous fix for an issue introduced by this commit
-> > ID.
+>   - 38f027fca1b7 ("selftests: mptcp: dump userspace addrs list")
+>   - 4cc5cc7ca052 ("selftests: mptcp: userspace pm get addr tests")
+>   - b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
 > 
-> FYI, Sasha has recently queued all the patches from this series for
-> v6.6, except this one, the backport of e06959e9eebd ("selftests: mptcp:
-> join: test for flush/re-add endpoints").
+> Matthieu Baerts (NGI0) (2):
+>   selftests: mptcp: join: disable get and dump addr checks
+>   selftests: mptcp: join: stop transfer when check is done (part 2.2)
 > 
-> In theory, this commit can be applied without any conflicts now that
-> commit b5e2fb832f48 ("selftests: mptcp: add explicit test case for
-> remove/readd") has been queued in v6.6.
+>  tools/testing/selftests/net/mptcp/mptcp_join.sh | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> -- 
+> 2.45.2
+> 
+> 
 
 Now queued up, thanks.
 
