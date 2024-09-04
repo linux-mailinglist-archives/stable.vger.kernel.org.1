@@ -1,191 +1,141 @@
-Return-Path: <stable+bounces-73044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FEC96BB28
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:46:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573F096BC9A
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041171F27AFC
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:46:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15C312858FE
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 12:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DE1D1F48;
-	Wed,  4 Sep 2024 11:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559831D933C;
+	Wed,  4 Sep 2024 12:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mK2HEZW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLpX653z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192E1D1F49
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 11:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079931D9337;
+	Wed,  4 Sep 2024 12:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725450236; cv=none; b=T22l0L5Q+jVL5dQ3bYSr+Oc9VksxpUsznQrLBs3C85kSKtYft3ThJS2qh5MjEA9hD33pYTtT76f5eFp2LJ6no7nmGkSeWL4y2b5oLm8/KXOqLybyWL65N2RlUH2fkwuJ136kanNPzQoNLN0tiiFkcNJ0r0PFP/kv6bZQZA3HQ5o=
+	t=1725453656; cv=none; b=qRcH01tuchUQPaYXn4bUZUENo0ejUqKlnHedeerTHIe4xLPfoIlemMosRCSXyAdddWn9SmMDC3qP2kNm4expUVqMvo+XCMO+oqjYGIPT1SdGP458Whb+8uAyyvDcEzxNtcm4f2Qv81fK7c/Sb1KKIlqGmqd3L+d8M2AgWOeMc30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725450236; c=relaxed/simple;
-	bh=TcvvGUzUyW7y66QoYl9NDBgaKlbsu4UGU0sFU9wFjBw=;
+	s=arc-20240116; t=1725453656; c=relaxed/simple;
+	bh=45ZH+VtyVCj83zuTb4TZIeGyl46YmjMUPNne01HEFVc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G65CVJ0YGndjcGCGKUxrNIHHnuR5IKJv7+vd7DeGh9bE2i6AsKGBigjsqlFDT4YDcEahIUiQKSq2u+Q0fl/cn2oRcj75FMuZ5/eOd1yYpo9C7MlyRdA0OrHwf/mNcyikcjNaHgXb37exf5BUJYVtR05OroIDGqTUW/UWa1SxbHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mK2HEZW8; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a86939e9d7cso24236666b.2
-        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 04:43:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725450233; x=1726055033; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/59KpQl/ENj5YnZpXPnbSALUPXSSb5VrZ9vlG/9vrBQ=;
-        b=mK2HEZW8wQpgglhp2jtn0eLt4O97fC84gi4uifiInt4nv/a/7+swAKhtGyhjZjZsoZ
-         c2LCN7R+SQddz89FhnDxoqofTAgzG41Ll0DsQwcIcfTbRQ19itpRQBcjwUfCOx7pMciX
-         j9QqGFUq9wcPZEhN1tjwQOr4Qwq4bc9VJ2TdganfUa37WnY0/Fw3T/0Nou4nZNJTxW/b
-         qLBX4WhUYfqVkPDKCHBfsEtR7EsbFPJA6/Aktt0BwbhZ5cHXiqEHLLx5Uw6U9GSu7Tuy
-         5frmeN2+DxBMZgvyfx/IflBocPsZFKsiqNiznhDPEtgFSIQrBRtP/F/v5fWT58szTqI5
-         zLuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725450233; x=1726055033;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/59KpQl/ENj5YnZpXPnbSALUPXSSb5VrZ9vlG/9vrBQ=;
-        b=tuTRhTSQ78T8aw2GU1qHmfvtsZV7rTC8GtfWfQPnNsjESpMH1G5DCLT3NLVQjV8Lzb
-         DzSGHlyx+1HHeZWEQ3JG/NEHDaCHee5eQQnVOH5UpsytqY5m+Qta5seyJO4GoJVMZGZE
-         SqGRJ7+eUVsUNiLUxoV0E6mgPhKjGWtJtkAeacZfYqTRqSqDZy0rkl8H9Aq9q9GRJv2B
-         cavcTefLHxbMk5EGLB2lv36xcRA4rZNBgAMqwi3uXWhc1ZKt+TkWDyhGfCKVfV1e+t2o
-         pA111Dr791GRZgl8CHtxFM4IiX9G440x3Cw4QMUBha83009iN9erSiB1tZJY1dXSHwm1
-         KGMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbSFDWYEqiHCX8fTO7PlM92NWG/SJK+MGeKNyRb+8aKq5ZSkhwT+sud+MijoWa6QmkO9u/zhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX+CqjpiWsEWHvzTZOf6bTxdZDhYkJRhwd6f0XPNvu9O/dyRcM
-	DUCVqZJeOAohF39UNY/qOqQDIO13XRNmgyW0a6cYugUpslIjDsPIBFuEk/QBorc=
-X-Google-Smtp-Source: AGHT+IGaWHDAbUbWROpXtvL3TzWtVqhkdhe/CfKY06N3Rz/z/TeQIlpyigCEhXFcyZnadufk631/bg==
-X-Received: by 2002:a17:907:eac:b0:a79:a1b8:257b with SMTP id a640c23a62f3a-a89a3958e1dmr522577966b.10.1725450232555;
-        Wed, 04 Sep 2024 04:43:52 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a1900d4fcsm266703266b.144.2024.09.04.04.43.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 04:43:51 -0700 (PDT)
-Message-ID: <acec443c-f9ab-4c1d-b1ab-b8620dfef77f@linaro.org>
-Date: Wed, 4 Sep 2024 13:43:50 +0200
+	 In-Reply-To:Content-Type; b=YRrTcR/VtJe7VY8DzH6/MEoWw5IYBYF19DhNBYLqsQBUD7sgdXj530m8Gh6KlAzc79XceyCN5Af2IPYY5yz9C45+Vf1If1MZAvi0DDEDjxVA/ZYiBO2hpduxlNRMxrxfoorEANgksJ8JKZj9QZes0G4ktEl7yV8bNvGy0xkhvdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLpX653z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD56C4CEC2;
+	Wed,  4 Sep 2024 12:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725453655;
+	bh=45ZH+VtyVCj83zuTb4TZIeGyl46YmjMUPNne01HEFVc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CLpX653z5ck5pPM6R2JQElF8QTUjfCJJMt6bICllW3PZerVuvzfY0fp7SsR95YatL
+	 lIVF7rMQ/VTYFHD5NYtFiG1G63by3Ssg6ry2Ne3fRkDD2QjORbChU2oZ0nJK/h7Gb+
+	 Y+GlIBHNS3cAfZheaLv5c0M13bX43iEAfydE8KXH7KrN4iCMgjhUnEDSZLI3bFy6aX
+	 FTGzwXm1wHz1phb0BF+V9vsuHqII2Z2C/0fBIwCN6RvDK24ucQ2z7NtEzMvZEiBhgV
+	 V+0PGRyhNvBXjVs5sMCGP6187CEC7Lqak8aiyHwqcAMn9yEnog3ia6e8edSsa59Ib2
+	 7B3l6FkMfrdQg==
+Message-ID: <1311d6a3-2007-4b26-aade-6c181ff67372@kernel.org>
+Date: Wed, 4 Sep 2024 14:40:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soundwire: stream: fix programming slave ports for
- non-continous port maps
-To: "Liao, Bard" <bard.liao@intel.com>,
- "Liao, Bard" <yung-chuan.liao@linux.intel.com>, Vinod Koul
- <vkoul@kernel.org>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: "Kale, Sanyog R" <sanyog.r.kale@intel.com>,
- Shreyas NC <shreyas.nc@intel.com>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240729140157.326450-1-krzysztof.kozlowski@linaro.org>
- <095d7119-8221-450a-9616-2df6a0df4c77@linux.intel.com>
- <ZqngD56bXkx6vGma@matsya>
- <b6c75eee-761d-44c8-8413-2a5b34ee2f98@linux.intel.com>
- <f5110f23-6d73-45b5-87a3-380bb70b9ac8@linaro.org>
- <SJ2PR11MB84242BC3EAED16BEE6B46F85FF932@SJ2PR11MB8424.namprd11.prod.outlook.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <SJ2PR11MB84242BC3EAED16BEE6B46F85FF932@SJ2PR11MB8424.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.10.y 2/6] selftests: mptcp: join: test for flush/re-add
+ endpoints
+Content-Language: en-GB
+To: gregkh@linuxfoundation.org
+Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ mptcp@lists.linux.dev, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+References: <2024082617-malt-arbitrary-2f17@gregkh>
+ <20240902172516.3021978-10-matttbe@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
+ YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
+ c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
+ WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
+ CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
+ nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
+ TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
+ nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
+ VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
+ 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
+ YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
+ AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
+ EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
+ /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
+ MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
+ cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
+ iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
+ jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
+ 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
+ VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
+ BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
+ ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
+ 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
+ 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
+ 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
+ mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
+ Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
+ Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
+ Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
+ x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
+ V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
+ Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
+ HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
+ 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
+ Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
+ voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
+ KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
+ UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
+ vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
+ mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
+ JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240902172516.3021978-10-matttbe@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/09/2024 17:17, Liao, Bard wrote:
+Hi Greg, Sasha,
 
->>>
->>> then dpn_prop[0].num = 1 and dpn_prop[1].num = 3. And we need to go
->>>
->>> throuth dpn_prop[0] and dpn_prop[1] instead of dpn_prop[1] and
->> dpn_prop[3].
->>>
->>
->> What are the source or sink ports in your case? Maybe you just generate
->> wrong mask?
+On 02/09/2024 19:25, Matthieu Baerts (NGI0) wrote:
+> commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
 > 
-> I checked my mask is 0xa when I do aplay and it matches the sink_ports of
-> the rt722 codec.
+> After having flushed endpoints that didn't cause the creation of new
+> subflows, it is important to check endpoints can be re-created, re-using
+> previously used IDs.
 > 
->>
->> It's not only my patch which uses for_each_set_bit(). sysfs_slave_dpn
->> does the same.
+> Before the previous commit, the client would not have been able to
+> re-create the subflow that was previously rejected.
 > 
-> What sysfs_slave_dpn does is 
->         i = 0;                          
->         for_each_set_bit(bit, &mask, 32) {
->                 if (bit == N) {
->                         return sprintf(buf, format_string,
->                                        dpn[i].field);
->                 }
->                 i++;
->         }                         
-> It uses a variable "i" to represent the array index of dpn[i].
-> But, it is for_each_set_bit(i, &mask, 32) in your patch and the variable "i"
-> which represents each bit of the mask is used as the index of dpn_prop[i].
-> 
-> Again, the point is that the bits of mask is not the index of the dpn_prop[]
-> array.
+> The 'Fixes' tag here below is the same as the one from the previous
+> commit: this patch here is not fixing anything wrong in the selftests,
+> but it validates the previous fix for an issue introduced by this commit
+> ID.
 
-Yes, you are right. I think I cannot achieve my initial goal of using
-same dpn array with different indices. My patch should be reverted, I
-believe.
+FYI, Sasha has applied all the patches from this series, except this
+one, the backport of e06959e9eebd ("selftests: mptcp: join: test for
+flush/re-add endpoints").
 
-I'll send a revert, sorry for the mess.
+In theory, this commit can be applied without any conflicts now that
+commit b5e2fb832f48 ("selftests: mptcp: add explicit test case for
+remove/readd") has been queued in v6.10.
 
-Best regards,
-Krzysztof
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
 
