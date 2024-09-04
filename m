@@ -1,209 +1,136 @@
-Return-Path: <stable+bounces-72969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3448B96B338
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7852B96B36B
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B08361F24EEF
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 07:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6F71C24595
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 07:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F849146A9F;
-	Wed,  4 Sep 2024 07:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22581714C9;
+	Wed,  4 Sep 2024 07:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="Up2hICz8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uv75SECy"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2054.outbound.protection.outlook.com [40.107.236.54])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C4315E88;
-	Wed,  4 Sep 2024 07:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725436038; cv=fail; b=oJkUcgQfcuXqAEXeNU5C8j8lQwEm9V9P1pam7IA7EzfrMxO7ls9+RUg4HStruRkU4jzbO8/LViLYO1E3/+IfcaFP2AcqWpQVBV+E+TTmPxPjIPptRt1VCu527ZqquCBGDdT/AX4p5WEIBWjMzOS0+a7lRiTCkoCPrKegmCKmadA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725436038; c=relaxed/simple;
-	bh=9W21zV/7bc07FG7Mc/I0dCnsc2pIaCXmyrrk8gkcWAM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IcYWhwz2BldZWz5TLtpkx6AcrTx8BlIrB2/DT+c5Co9jwKJ0/pOesd/LJvEw2Qcr+ANsRMbX2M0w/UdVXBhUxlxPzXfrnqVnYJ5wPji1f5F0i0qZwb2z9qbE07b+bLqgYjNxKMuOSbf+apQckWoeOmm07b8gqK4I6upCk06b1aQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=Up2hICz8; arc=fail smtp.client-ip=40.107.236.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gvQEgb/5E79sJLDNj7T6oQZSUvSumJOTXaWILliLE8QptFubxa2SB+qoDS5E31xP3QcV5RqOohPCw2LrCIJ4B2C2ufIwuST2nsOVJyYvgeluPrw2OhDAdAMf/EHbGEGSAsj3Ih1tF2n8bDKDUxgjsQmd/fztyxa+IQe+zenls779ncs41CKmIhjWCHVIb5kx3FjOkmSul3O0MwRh6Ksw3qh7gF+6y44pJMJI4mjbE2pCnK3zH8P811M1ius9QIg3LzBFvPp8iIOC4+HTlrhSI3s2wbhW2CTNDvb4+8VqN+6l7n63dPEgUP4aDNglSf/rzV04Q5rGIj0R9fmYQzQbMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l7L0rEXKA4wk2784oNx0F+s2n37dHeh19QmY3B3c2sY=;
- b=c0yYoArYda26MWLhTazQaf+Cy4oQtMM1Z8+A83B9NTqSKyXRSn9/CEvLxf6M6d4ff41cquK++XZ9emN85QI+aA5qCW5NgBQJKwcAMSSGH7h0LNfjiH4WimkTnxOLOBvUUfGwePh2ciL84g3U1Y7JXS+UBIU9YVntB9gt5QumspqehSs0B5vTzffO7PlSWQL8wiAJ69w0U6k6feboti7V8lt7eXxYu2AJS2YSJDfhZ6jrRhwjr49PJnBNQTPKUitATx+Pos0u5+stlIe9DPMJx7K9jSMlzk2BD2TKtmeItCItTn2RVp44n4mNpY81BUA8+bjdHwS0uEBki10/iDFtJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gehealthcare.com; dmarc=pass action=none
- header.from=gehealthcare.com; dkim=pass header.d=gehealthcare.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l7L0rEXKA4wk2784oNx0F+s2n37dHeh19QmY3B3c2sY=;
- b=Up2hICz8LNNEqhKPLpk0zcfD/auBxkqSEBoXFWrwVEIvm0QxH6FkB4PSOlaZ/4j8EH4FSx0rtjuY+eqTBiZkxIxxpJx7Uya6cRSuCdzXkiuXWIBerodYvEm5sP8VVAjmgP6Ote3RwzGOESMg9P3dNWlmTT6GkJD16zSRaurVsfOSckNMmVap8HNaf8shqfJby0tfTmyxnR6UWz4Gngt9EnVzKHI0vsC77CnghNaHn9s04l+hJi4CgWJC1O4Fkf9LkBWGLfK2hxC2Hou9Vdyfw99AfocacNwjT5lSgwBJV/Er1WrTL958SHKIx/VAOyvuNTG+GIak+Wu6d8fI7yo8IA==
-Received: from PH0PR22MB3884.namprd22.prod.outlook.com (2603:10b6:510:2a1::22)
- by SA1PR22MB4722.namprd22.prod.outlook.com (2603:10b6:806:3cf::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.24; Wed, 4 Sep
- 2024 07:47:15 +0000
-Received: from PH0PR22MB3884.namprd22.prod.outlook.com
- ([fe80::d41a:c85c:91fb:d6a4]) by PH0PR22MB3884.namprd22.prod.outlook.com
- ([fe80::d41a:c85c:91fb:d6a4%7]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
- 07:47:14 +0000
-From: "Pu, Hui" <Hui.Pu@gehealthcare.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sasha Levin
-	<sashal@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, "Wang, Huan Kitty"
-	<HuanWang@gehealthcare.com>, "Wang, Tao1" <taowang@gehealthcare.com>,
-	"sebastian.reichel@collabora.com" <sebastian.reichel@collabora.com>, "Ray,
- Ian" <ian.ray@gehealthcare.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] drm: imx: ipuv3-plane: fix HDMI cannot work for odd
- screen resolutions
-Thread-Topic: [PATCH] drm: imx: ipuv3-plane: fix HDMI cannot work for odd
- screen resolutions
-Thread-Index: AQHa/nQ6EpgruDDrAUGt+3bjowYOHrJHKG2AgAAXlbA=
-Date: Wed, 4 Sep 2024 07:47:14 +0000
-Message-ID:
- <PH0PR22MB388419B45F79DD56CB334B58E19C2@PH0PR22MB3884.namprd22.prod.outlook.com>
-References: <20240904024315.120-1-hui.pu@gehealthcare.com>
- <2024090452-canola-unwoven-1c6c@gregkh>
-In-Reply-To: <2024090452-canola-unwoven-1c6c@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gehealthcare.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR22MB3884:EE_|SA1PR22MB4722:EE_
-x-ms-office365-filtering-correlation-id: ec83aba7-ca47-414f-6132-08dcccb5caec
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?LuwQ7WVXBGWtAu1HAE5N6Di51/ju0z5nyuPJfgeQmsqSziRMfBFC4uWwy31F?=
- =?us-ascii?Q?aGNbO7ZNoqlf4+ZVILGYSDsUcvCwUQiVrzZEqDRIa8DUsqyjWoRcuSjZyC1e?=
- =?us-ascii?Q?4rIAHREx5R9xK8PNp9XBejiMlz0PLq6VYjbaP4Dzm/WfDEAOWqlfLcnYAcvH?=
- =?us-ascii?Q?LFz5nxAoeGVgjW5rdKmUfcnlSRdHe9UuSP9EnKdx9kxofdpMU/oP9YlUKvTn?=
- =?us-ascii?Q?q7Nba/8iq8BIfv+6ZMojvX0kOayIlz7CTL/HBe5AWurEFz1Feo8byxEf+zof?=
- =?us-ascii?Q?J8rNY8IAB9Xt32pVOmNLbHCmXPSPPycSMbtn+6ro+HkLjVKjahmYa3omifnT?=
- =?us-ascii?Q?QioWTpJFX6crlwtGeD3Wxy+QXjrRW+V9ljbrlfz3piFom9uEoPOl/eersQGv?=
- =?us-ascii?Q?y/vRKQd1PGGJOi9e+0tOLxC96tjkkNFG3xS6rK2DcEoc4ZM75nVIuCaKCqlL?=
- =?us-ascii?Q?uNrl0jQ+ozWMxmXD/VuO36Z/AKk+/xBCs+vTYxTlLUMXB4Wkk+Q3kdKOYhwe?=
- =?us-ascii?Q?M6EXwYW2eWpTZO1hND9+H0VBlJMD/VjbpMJwUXubmu31t3wzROJBUXaxvxjL?=
- =?us-ascii?Q?AL8Q2l1ZhTbXQkujxa0W14RLtICXvS1nrrsD65Z6eYTwyQ12w+uy9ht30fre?=
- =?us-ascii?Q?xbSIWAeDjvc6K+C5JnyEIqLrKT9+7GwmKeCm/L0W7Z1Nl68iNacKViFcwcpc?=
- =?us-ascii?Q?WEdoR/dSK3W31szmbKxg7RxTPlc9Wh+8btnMnOQbjEbZGCxoClaow6uHYDLu?=
- =?us-ascii?Q?ZLJHFs0ZsRXXRV/dVJW1CYAKjeqm0V4aDvVP3kvey+o7BA1PttJ6kyr9YNnt?=
- =?us-ascii?Q?yx1bZzg6HTLzYerl45WXF16F/B2f35xL82Xy9+IG+6YBOzQ6JJV6vQxJzspo?=
- =?us-ascii?Q?AOSyAevEZ9ukxjbvG+pGiPYx4t/xLa44P3Qj9xmyZQWO4A1/O6oE4CTxdgNK?=
- =?us-ascii?Q?8zOkrb+ehBin0C4ZS+AK5B7wOJQdmvW0jM7QWjOLVs61W/KXGjCZMB0kZIE/?=
- =?us-ascii?Q?CYlYyYIm01J+gPmvVVKtF43x3k6JbnRHnh6lW5q7Vxw5BLhO7FPxkjt3coOD?=
- =?us-ascii?Q?KExWUqg1Jm9aT0ujC86XfmRPrewwrtE6DCwYtyeAbWMmuVekW0W9f668dNWd?=
- =?us-ascii?Q?tFQI1as5JW1Eky6MbWJdnKyIekEWF3G3+A+k2tegvilsus02HKmoltJvmgeV?=
- =?us-ascii?Q?Z183dXpEYJZrKvjngB/hfsQ1tk2RgTIl3sIQGjoIFsokJXq5iJ5lL4q8zP1Q?=
- =?us-ascii?Q?mys2w/DUv1rw401+Hd22kg2cGDtxXaCh8eLuY5NXClIIyVOLj6eAa+GqEmam?=
- =?us-ascii?Q?o2fBnU+CCAuiyRBAeAUpkVKIHTfz55LGWYlqqNXPc8fp4/a0FiTy5A3wB2XF?=
- =?us-ascii?Q?wl8jLH0xL7Helf4UsKjFOCkRK3fO+5IAcbuIIsg2RRrvpxVIRg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR22MB3884.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?fIgz5awNX27Qp9MJqlRzkyP6h5Ix5a+sX6FBJXbhgHNe2mbCDSzrXe9r4Sw5?=
- =?us-ascii?Q?GalwrQBznmfGTnVB0L88vGFmTmk13ISQMuVQ+wQkvU1j2JNbBkVO6p8LSpbE?=
- =?us-ascii?Q?yudXVxQ6sAAu6UqU50uwXkK+ZaWt3E7L5yIqlgE/JtrIwV69D/8iBap3rcY9?=
- =?us-ascii?Q?fCwTqAOE8HN8oZBE7U0FOsYwfHfFDNBNQFKdZlQcbFw/vHmLy818rKPtlYPz?=
- =?us-ascii?Q?Gck4pufuJ2PbFgqFQyKkNGlOQ4Q39BtdKDVGTmuEuLODhwvNVtL/a1LGsKTi?=
- =?us-ascii?Q?KnpIvDCvmV4fAF4JTVrMx6vajxRsyfUh6G9pZDhviUgWPZwQ5waSLbu/GHcK?=
- =?us-ascii?Q?1pNfJ+k30XIYb+lBWjzMAGCjsUA3XHKb/CNk+npr4SzoWoS/GWs7F2CoxUlV?=
- =?us-ascii?Q?sRkFpc1m5nnZuvavHVmAWtieq5vnMI64txOAaSpVQoH4PvOISk3wcGEq5Otj?=
- =?us-ascii?Q?hhQmj7b7GHbKuQN3IMuMGOJNaPIwXt71RgyQbLCKamCmNrNrz5Q6dbl6fHYD?=
- =?us-ascii?Q?McqA9nPUfL7vd02OsETrGjPg63g2aywZh2p73kmU2dez+QCRzZAhai8LJ1JX?=
- =?us-ascii?Q?8HY7PMLbmDuU6C4w4aUfE8uzOrpzz3KQn1D5ZOQcVSUP9qZ8jJyGunbGzuGs?=
- =?us-ascii?Q?zoVXAOS0lXe0NCiQQMB1gqoqFWDPJ2fY9X6qicz5c+yfVLEwIB0akYNykt+D?=
- =?us-ascii?Q?fPGj1l81x1t41gz+vJaPxqzouTx0wYdumSadRDUjV4OErQnXTeRXBiNuv1IU?=
- =?us-ascii?Q?e6gBgJw3r6ePMuuYG9arcu6QIsPlPAhBzyjVeU86dJcolOflnQ4Xhu++ssMv?=
- =?us-ascii?Q?7u41GuSZqPL+06xWn26oYi/vJBH2HIxZ3Ne4oHUy172Y7jjI9knivGvRpKHh?=
- =?us-ascii?Q?xen+8NfIceZPbEYSAiFdYFin2J+5BcfftLRLGDKwee2JMZ6RXvjuw18COxAJ?=
- =?us-ascii?Q?D2tkjjEeJugz/qzPvI5rR5O+SF5kb03qnNnsSnq0kX5EdRLYcYLlxPdyQvLT?=
- =?us-ascii?Q?ZCl0ZsXsZx31Nl0x7EM7Th4iMRH4+ijJYTZBrcKHv86lDInOnAff8PD1klkJ?=
- =?us-ascii?Q?LKQR78Fx45r+61n0vwGoABOgC5K6mdY+bKL/vsKCN5Kn/7Xt7ljmc1W7QrHV?=
- =?us-ascii?Q?YsVIkhoHLwamQT9FZGNUyjiK1CLNtdCJNCwQ9UNAt7VGUnk9EQnCvNNXMTwR?=
- =?us-ascii?Q?vrcZpYo/ZfVMUG6/VgS0B46vd8sD1UIA0RfAPlyBdJCEkpl675x3LKdkP4Tt?=
- =?us-ascii?Q?MG+x4wmXuUaXfRIUj2h/d1pPmB+BC2MkMHq9AaAUMLj4wYZm/atj7kWhuFW0?=
- =?us-ascii?Q?Xuke2WC8BWgPDBoHDpNQ4EQDAgcnPC8xshcqjxGEsw3j+uA6Bcut/ItZUAJ1?=
- =?us-ascii?Q?usIrOkppYbyqsAarQ1Tu2kZARQgIzsohWnVUdoxndspakRGl0HhJzvCKbD9C?=
- =?us-ascii?Q?XL6DvUlqAs8VUfzQecq6kUqKpyD+tWAsLm9mt1snJnhviHtRFBMn398oQfGy?=
- =?us-ascii?Q?A6sfOcChexosrCgnWojwd0i8L6xPQknmSjUEaKfpKqhySdfc47ip4nPvHUqC?=
- =?us-ascii?Q?/WJzYzAy0yJFABIpkq2c7YbtJSJjI2WbAfS3hgjPQiMVhji7iq5fFONzuhky?=
- =?us-ascii?Q?Dg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F9E1509A5;
+	Wed,  4 Sep 2024 07:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725436201; cv=none; b=biLwYbIRCuq1iHbQQpQoY6h3/GCs5SIcyQrqb2s/hUac20rws4zi7G0hZZMIVJuPa5PuZa4qjWtBwKR1Buaz+/C+/hIx2YEKYRcUOK37KD41cqghUxdl3X2lCF2qFAEFdH2xODEDf8ijdEreWnevNF5YAuFlrd+l0Hjm5XKMakc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725436201; c=relaxed/simple;
+	bh=n11IIAFOIZVYrv0u/r7HWhEJ8P8Nh5SNpfJZTS/XAjA=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hLiEr6d5OpgcOzX8sNSHJAmt2GO+fjoBtHxSY9UebkzWoo5zcqfVPdEaReOq5EP4//LkXb9egZb2PlM1BPYthGMGRxgFcuafEhQcM5zh20NSrlLNuBlEj/gvAxYXYQCsAc5BUdibHQoAmv7fHlTr4/KnabSKVHU5MfeTpyK/DGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uv75SECy; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725436200; x=1756972200;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=n11IIAFOIZVYrv0u/r7HWhEJ8P8Nh5SNpfJZTS/XAjA=;
+  b=Uv75SECyOAJ4BEwdN1Bo8qJ7XTTvyZ5NlBkGwCuEm/6GVzQTnEhHNzyv
+   /EL9irednMA+w5CQl98pVIjq6y+IQV08G5Xu+Xwgn9yGAEldTkpsehOom
+   5pim1sAhXfLmqk19ijolwOs/8si5XEuhXL3PE4bKikbJcrvYDKtbgs8q3
+   FBWPNg4+Ym32oV5x8c41MjGASJhtM5cBjL0dwWwyqiI/ip35pBAfrIFUU
+   sgYrYkoz5QTjY6PS3pwpgy2pw7uhSPFlrykfDE7pwk2y56Lxky25rKQaM
+   QCnHHRJ4U1c86/4/Vt9NLEw1E6JA1ChB2ywT9qwU0RTMgwuROl7549/wL
+   w==;
+X-CSE-ConnectionGUID: zsJUoWlsQGaAUFIcfdOJBw==
+X-CSE-MsgGUID: HRj2S4CwS4ytRaS2tvmChA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23590569"
+X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
+   d="scan'208";a="23590569"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 00:49:49 -0700
+X-CSE-ConnectionGUID: J/BDhSG6SB+HftCxRzxsbA==
+X-CSE-MsgGUID: ZzFbso7eSf+ZuzZcEokpwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
+   d="scan'208";a="65706875"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.229.145]) ([10.124.229.145])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 00:49:47 -0700
+Message-ID: <9e183ce2-060a-4e0b-a956-03d767368ca4@linux.intel.com>
+Date: Wed, 4 Sep 2024 15:49:44 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: gehealthcare.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR22MB3884.namprd22.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec83aba7-ca47-414f-6132-08dcccb5caec
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2024 07:47:14.5176
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9a309606-d6ec-4188-a28a-298812b4bbbf
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: N4GG3hX6v1WqV6DWmfwySEBV/+K3F0G0JGV0P3tC4JNkeCg2ixZVBe2YIhyhb2lrRzMGAQeM3wUd5P4luEnGGbTFgJU53XppGIPxpJ/CcBk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR22MB4722
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, "Saarinen, Jani" <jani.saarinen@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices
+ requiring ATS
+To: "Tian, Kevin" <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+References: <20240904060705.90452-1-baolu.lu@linux.intel.com>
+ <BN9PR11MB5276428A5462738F89190A5A8C9C2@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB5276428A5462738F89190A5A8C9C2@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> On Wed, Sep 04, 2024 at 05:43:15AM +0300, Paul Pu wrote:
-> > This changes the judgement of if needing to round up the width or not,
-> > from using the `dp_flow` to the plane's type.
-> >
-> > The `dp_flow` can be -22(-EINVAL) even the plane is a PRIMARY one.
-> > See `client_reg[]` in `ipu-common.c`.
-> >
-> > [    0.605141] [drm:ipu_plane_init] channel 28, dp flow -22,
-> possible_crtcs=3D0x0
-> >
-> > Per the commit message in commit: 71f9fd5bcf09, using the plane type fo=
-r
-> > judging if rounding up is needed is correct.
-> >
-> > Fixes: 71f9fd5bcf09 ("drm/imx: ipuv3-plane: Fix overlay plane width")
->=20
-> That id is not in Linus's tree :(
+On 2024/9/4 14:49, Tian, Kevin wrote:
+>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>> Sent: Wednesday, September 4, 2024 2:07 PM
+>>
+>> SOC-integrated devices on some platforms require their PCI ATS enabled
+>> for operation when the IOMMU is in scalable mode. Those devices are
+>> reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
+>> field.
+>>
+>> The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
+>> ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
+>> can cause a conflict, leading to boot failure, especially if the device
+>> is a graphics device.
+>>
+>> To prevent this issue, check PCI ATS support before enumerating the IOMMU
+>> devices. If any device requires PCI ATS, but PCI ATS is disabled by
+>> 'pci=noats', switch the IOMMU to operate in legacy mode to ensure
+>> successful booting.
+> 
+> I guess the reason of switching to legacy mode is because the platform
+> automatically enables ATS in this mode, as the comment says in
+> dmar_ats_supported(). This should be explained otherwise it's unclear
+> why switching the mode can make ATS working for those devices.
 
-Thank you, I got it.
+Not 'automatically enable ATS,' but hardware provides something that is
+equivalent to PCI ATS. The ATS capability on the device is still
+disabled. That's the reason why such device must be an SOC-integrated
+one.
 
->=20
-> > Cc: stable@vger.kernel.org
-> >
-> > Signed-off-by: Paul Pu <hui.pu@gehealthcare.com>
->=20
-> No need for the blank line before this.
+> 
+> But then doesn't it break the meaning of 'pci=noats' which means
+> disabling ATS physically? It's described as "do not use PCIe ATS and
+> IOMMU device IOTLB" in kernel doc, which is not equivalent to
+> "leave PCIe ATS to be managed by HW".
 
-OK.
+Therefore, the PCI ATS is not used and the syntax of pci=noats is not
+broken.
 
->=20
-> thanks,
->=20
-> greg k-h
+> and why would one want to use 'pci=noats' on a platform which
+> requires ats?
+
+We don't recommend users to disable ATS on a platform which has devices
+that rely on it. But nothing can prevent users from doing so. I am not
+sure why it is needed. One possible reason that I can think of is about
+security. Sometimes, people don't trust ATS because it allows devices to
+access the memory with translated requests directly without any
+permission check on the IOMMU end.
+
+Thanks,
+baolu
 
