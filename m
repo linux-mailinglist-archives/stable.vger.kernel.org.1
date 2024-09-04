@@ -1,111 +1,157 @@
-Return-Path: <stable+bounces-73105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9065A96C96D
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:16:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A96796C96C
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D8C8281CFF
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:16:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBEF61C21D87
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0D316C69F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1C516BE15;
 	Wed,  4 Sep 2024 21:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="0UzoVCUg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ejKb0qgW"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F30213B7BE;
-	Wed,  4 Sep 2024 21:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BC314EC55;
+	Wed,  4 Sep 2024 21:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725484539; cv=none; b=Ve5PuxVTYS3t4RqT2JxHetZtJbcNK/f0p2OL7G8i+e1pU3nx7r+PD/XiZny/Z2N92iwoL8KzttJ72qBAOP7JaOutt9F7DTx1fdZ6fwFWJhA4f6n5ewm9Eh4tiIPsxdnwjSM/Q5N5KOW3xRtIxc9MC7S63/qHlxX7zVS5j6deUks=
+	t=1725484539; cv=none; b=Kg3Wq4mICoVBc35XimIQencZRZrm8xX1cRebF7MZcnjJ3EN0YB6cYB3oMgPvpeogUDSTuKRkpe0iRzfq7+WhbhlXMicd+dvaN2E769L4IVMwJ6Ql+1bAaAfbvvG+F7KdKLsCkRKf/+aTk7+38R7EsHd5mbkXTrwt72yVJPsL1oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725484539; c=relaxed/simple;
-	bh=0mf2sOICvR37qlpEb0StE7Dg6D5eD0OHMGownOtYVNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BU9tTSTAovzpjdmGFhDJ6OHBnyJ/KoawdcGmVHa2DuDZdg3cgD08T56t9Cbf1slPT6mv94Px+oe+K4g5WKB3xOZi41erQAACCBSScC+n8AMF6gYa1pIYNh2xumBlbsCfT3bJ4vuNeEM/TV2ros4WniPikGtPzQFAV+bIhSNkfJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=0UzoVCUg; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzZyw5gTgz6ClY8r;
-	Wed,  4 Sep 2024 21:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1725484533; x=1728076534; bh=PTn7uCqr87nKGbsl+iekTpqH
-	Ya4PCS8/oEzxgwQOmZ0=; b=0UzoVCUghDvPlnDLptJ5hlxAyC1oIBPLCHk8A6mB
-	UH5tdR2gsNKYMZKLntppjSPyJtGIvHs4JxM2Pgq02M4u2rs2JTPIupb7LI9NFWoJ
-	DujqorQCY4S4lu/R8dpm9B4cBSqbwBfwAynesb3gMSimyoSpCOJPM5EHKVQAnvLq
-	Aetw6NT5mbPXJOnqvQucacugUoav9wvPxaxCMEjdXJxvqy5Wv7Sq07HjQr1N/daH
-	GintJ+BB0RQgFBzz8uT6A/QiTwXPbm6m09mBun2DKqx1V+lKRSkLUM4S3W7iXMIn
-	vHarNPqrp/uzl67NQDYS4p+ZSlOuyoMpcZ9eXVIyfjbKAw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id OmQzftKipDjf; Wed,  4 Sep 2024 21:15:33 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzZyq61hVz6ClbFV;
-	Wed,  4 Sep 2024 21:15:31 +0000 (UTC)
-Message-ID: <8feac105-fa35-4c35-bbac-5d0265761c2d@acm.org>
-Date: Wed, 4 Sep 2024 14:15:29 -0700
+	bh=L7tzVIaRUcFP7vNEI/wBHn01KccTJaXEEey8D8UT91o=;
+	h=Date:To:From:Subject:Message-Id; b=Rz9efZmClOVyuv2NKP0hePi5ckxNB7tVV8kJQjRParvWHiwjKlH/YhKwxsggTXaQjZV6gOFpcRQKFFlEufw0LCvBjXYqrMkF5ZOyba8USbxuojEssoJO8Nl+jQCEVl+TIbudpSW2mtBmAmdM9tUGMLQ/C4KwVt6GNnIo2W3z2ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ejKb0qgW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE7CC4CEC2;
+	Wed,  4 Sep 2024 21:15:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1725484538;
+	bh=L7tzVIaRUcFP7vNEI/wBHn01KccTJaXEEey8D8UT91o=;
+	h=Date:To:From:Subject:From;
+	b=ejKb0qgWQqh+fUdVjFiEFurwbMHnwfhNVYGDS0sFfrq8SjMchm/jkQpTRkxfWjPVb
+	 xfbl+qp+mgekZFLJyT6LCIvs6gov/7kIqRUJ5T3kTBKuV0qHuEsntEdoSxTCY2qo6Y
+	 qmTxtWHG/cFbvOTW2ovDaRffDwEgE1MJAuVnhYnI=
+Date: Wed, 04 Sep 2024 14:15:36 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240904211538.4BE7CC4CEC2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: roles: Fix a false positive recursive locking
- complaint
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-usb@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, stable@vger.kernel.org,
- Amit Sunil Dhamne <amitsd@google.com>
-References: <20240904201839.2901330-1-bvanassche@acm.org>
- <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 9/4/24 2:00 PM, Badhri Jagan Sridharan wrote:
-> https://lore.kernel.org/all/ZsiYRAJST%2F2hAju1@kuha.fi.intel.com/ was
-> already accepted
 
-Thanks, I hadn't noticed this yet.
+The patch titled
+     Subject: ocfs2: cancel dqi_sync_work before freeing oinfo
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch
 
-> and is perhaps better than what you are suggesting as
-> it does not use the internal methods of mutex_init().
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch
 
-Although I do not have a strong opinion about which patch is sent to
-Linus, I think my patch has multiple advantages compared to the patch
-mentioned above:
-- Cleaner. lockdep_set_class() is not used. Hence, it is not possible
-   that the wrong lockdep key is used (the one assigned by
-   mutex_init()).
-- The lock_class_key declaration occurs close to the sw->lock
-   declaration.
-- The lockdep_register_key() call occurs close to __mutex_init() call
-   that uses the registered key.
-- Needs less memory in debug kernels. The advantage of __mutex_init()
-   compared to mutex_init() is that it does not allocate (static) memory
-   for a lockdep key.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Thanks,
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Bart.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: cancel dqi_sync_work before freeing oinfo
+Date: Wed, 4 Sep 2024 15:10:03 +0800
+
+ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
+end, if error occurs after successfully reading global quota, it will
+trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
+
+ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
+
+This reports that there is an active delayed work when freeing oinfo in
+error handling, so cancel dqi_sync_work first.  BTW, return status instead
+of -1 when .read_file_info fails.
+
+Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
+Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
+Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/quota_local.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+--- a/fs/ocfs2/quota_local.c~ocfs2-cancel-dqi_sync_work-before-freeing-oinfo
++++ a/fs/ocfs2/quota_local.c
+@@ -692,7 +692,7 @@ static int ocfs2_local_read_info(struct
+ 	int status;
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_quota_recovery *rec;
+-	int locked = 0;
++	int locked = 0, global_read = 0;
+ 
+ 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
+ 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
+@@ -700,6 +700,7 @@ static int ocfs2_local_read_info(struct
+ 	if (!oinfo) {
+ 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
+ 			       " info.");
++		status = -ENOMEM;
+ 		goto out_err;
+ 	}
+ 	info->dqi_priv = oinfo;
+@@ -712,6 +713,7 @@ static int ocfs2_local_read_info(struct
+ 	status = ocfs2_global_read_info(sb, type);
+ 	if (status < 0)
+ 		goto out_err;
++	global_read = 1;
+ 
+ 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
+ 	if (status < 0) {
+@@ -782,10 +784,12 @@ out_err:
+ 		if (locked)
+ 			ocfs2_inode_unlock(lqinode, 1);
+ 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
++		if (global_read)
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
+ 		kfree(oinfo);
+ 	}
+ 	brelse(bh);
+-	return -1;
++	return status;
+ }
+ 
+ /* Write local info to quota file */
+_
+
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
+
+ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch
 
 
