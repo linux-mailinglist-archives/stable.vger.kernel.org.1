@@ -1,58 +1,52 @@
-Return-Path: <stable+bounces-72993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1C896B763
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:51:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AA296B771
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CF8285E51
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:51:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7F11F261D0
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBA11CCECB;
-	Wed,  4 Sep 2024 09:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798CD1A42D2;
+	Wed,  4 Sep 2024 09:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kt653IpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaSfZaoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C9C145B35;
-	Wed,  4 Sep 2024 09:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E1C1EBFEA;
+	Wed,  4 Sep 2024 09:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725443506; cv=none; b=tIbAb5Zh2w1OwThLVIcEcqo0MtxlEqr84DyXnQpwjpjKrDaR+pASKfKJnLfaQ/OuKQf2a4v0qB1jRWoPPIdKmShhaMG0seTUVY+Banq6l+l6HM5InmPmNSzW/nVXJdB0ottQxD4se3PX/Ul58bAxWWvmt86jqeJ3SETQdCgpBWs=
+	t=1725443602; cv=none; b=SPb6CZe9XLcv2uCo65g6xDjJ05s5qDclMLxVmPv5v/1wj+0Ixsjzl/Rgifnyu6NW7ddYnwpO86VrYP+EipU7gp5CcWi6HBICpAdMXccASWgRiSqL2SBAZ/kMGUsDGGugBcvC1MFOwpnI6uzK5IXk2n39jcy+WOjDa+M56E+eCQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725443506; c=relaxed/simple;
-	bh=9v8g1rIECH33scUifS0SJLjKLhwqrmPT+U7zRZHR7aQ=;
+	s=arc-20240116; t=1725443602; c=relaxed/simple;
+	bh=NBh72CSFH3xrTu5kazoMl9N+ejgQmT44qsc98DLhg8g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GC8zOvZa5Q1Vxwu2ldA3LtrJZzZTwO+I72IuJyHSwi+DGZw2hP/jtzt4YWPKBHAcQDewFWIyLB1IUnjQ3zYYrfYhEERxhpLAwVjMkS07lVITf+2ZBiFYRccwkykK2qlrfTss92y1lUUyRa7lJjBf6WHFcn7K7aJ6OunyT+n2UaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kt653IpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC1BC4CEC2;
-	Wed,  4 Sep 2024 09:51:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=RnaRdU1IwBf6ZhSVfigG37mI6DijR0TyOjHDBkpnIEKD51BCRgfMEET+N3AQl832vH+0xfcBuHtJVqsodMM1RGZCMtof8+FI3upRzfnWEckAmrWEBbfUHqeg8gvRhiRXRyjkwb8nzNW5XfDd6HqG9MBiiBGMJjj9tVkuCv52Ido=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaSfZaoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F3BC4CEC6;
+	Wed,  4 Sep 2024 09:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725443505;
-	bh=9v8g1rIECH33scUifS0SJLjKLhwqrmPT+U7zRZHR7aQ=;
+	s=korg; t=1725443601;
+	bh=NBh72CSFH3xrTu5kazoMl9N+ejgQmT44qsc98DLhg8g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kt653IpMJgUa37vyxIoA3w6Y9fHCQ6jN3ejkCQo9mUejmBKRAkDi7UwqDMKGaqE7y
-	 wQDEEEbl1XaPaE1tarYBe9V5MRRUrChv3OsCRA7IAcz66WMWCK+yiy0mtQibNA2sDX
-	 bdzTPi9qUpXimz11f6JOLAF5vteJeIWxfzAveUUo=
-Date: Wed, 4 Sep 2024 11:51:42 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 4.19 00/98] 4.19.321-rc1 review
-Message-ID: <2024090459-glancing-vengeful-f3fb@gregkh>
-References: <20240901160803.673617007@linuxfoundation.org>
- <98f6ad0c-65d0-4a39-8a11-a55b3dd83b7b@oracle.com>
+	b=YaSfZaoENlPebWPb53Xjtvae3OqpsrD/7wvZUVtYVvb02xCj9EW91hzSzj+Qmlfky
+	 vcMui7R7v2fRy63fxB+3nhjs1mGF1egWObarP7pAOGADjxTk4/vwIsmk/923wuu+0G
+	 uaWfRCbx98sJeY4UXQXp0t4vm7sNCsE+suDodY+g=
+Date: Wed, 4 Sep 2024 11:53:18 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Richard Narron <richard@aaazen.com>
+Cc: Linux stable <stable@vger.kernel.org>,
+	Linux kernel <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 5.15 000/215] 5.15.166-rc1 review
+Message-ID: <2024090419-repent-resonant-14c1@gregkh>
+References: <8c0d05-19e-de6d-4f21-9af4229a7e@aaazen.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,77 +55,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98f6ad0c-65d0-4a39-8a11-a55b3dd83b7b@oracle.com>
+In-Reply-To: <8c0d05-19e-de6d-4f21-9af4229a7e@aaazen.com>
 
-On Mon, Sep 02, 2024 at 02:44:44PM +0530, Harshit Mogalapalli wrote:
-> Hi Greg,
+On Mon, Sep 02, 2024 at 03:39:49PM -0700, Richard Narron wrote:
+> I get an "out of memory" error when building Linux kernels 5.15.164,
+> 5.15.165 and 5.15.166-rc1:
+> ...
+>   LD [M]  drivers/mtd/tests/mtd_stresstest.o
+>   LD [M]  drivers/pcmcia/pcmcia_core.o
+>   LD [M]  drivers/mtd/tests/mtd_subpagetest.o
 > 
-> On 01/09/24 21:45, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 4.19.321 release.
-> > There are 98 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> > Anything received after that time might be too late.
+> cc1: out of memory allocating 180705472 bytes after a total of 283914240
+> bytes
+>   LD [M]  drivers/mtd/tests/mtd_torturetest.o
+>   CC [M]  drivers/mtd/ubi/wl.o
+>   LD [M]  drivers/pcmcia/pcmcia.o
+>   CC [M]  drivers/gpu/drm/nouveau/nvkm/engine/disp/headgv100.o
+>   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dmub_hw_lock_mgr.o
+>   LD [M]  drivers/mtd/tests/mtd_nandbiterrs.o
+>   CC [M]  drivers/mtd/ubi/attach.o
+>   LD [M]  drivers/staging/qlge/qlge.o
+> make[4]: *** [scripts/Makefile.build:289:
+> drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.o]
+> Error 1
+> make[3]: *** [scripts/Makefile.build:552: drivers/staging/media/atomisp]
+> Error 2
+> make[2]: *** [scripts/Makefile.build:552: drivers/staging/media] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+>   LD [M]  drivers/pcmcia/pcmcia_rsrc.o
+>   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dmub_outbox.o
+> make[1]: *** [scripts/Makefile.build:552: drivers/staging] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+>   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/calcs/dce_calcs.o
+>   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/calcs/custom_float.o
+>   CC [M]  drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib.o
+> ...
 > 
-> Build fails on our infrastructure.
+> #uname -a
+> Linux aragorn 5.15.166-rc1-smp #1 SMP PREEMPT Mon Sep 2 14:03:00 PDT 2024
+> i686 AMD Ryzen 9 5900X 12-Core Processor AuthenticAMD GNU/Linux
 > 
+> Attached is my config file.
 > 
-> BUILDSTDERR: In file included from /builddir/build/BUILD/kernel-4.19.321/linux-4.19.321-master.20240901.el7.dev/tools/include/linux/bitmap.h:6,
-> BUILDSTDERR:                  from /builddir/build/BUILD/kernel-4.19.321/linux-4.19.321-master.20240901.el7.dev/tools/perf/util/include/../../util/pmu.h:5,
-> BUILDSTDERR:                  from arch/x86/util/pmu.c:9:
-> BUILDSTDERR: /builddir/build/BUILD/kernel-4.19.321/linux-4.19.321-master.20240901.el7.dev/tools/include/linux/align.h:6:10:
-> fatal error: uapi/linux/const.h: No such file or directory
-> BUILDSTDERR:  #include <uapi/linux/const.h>
-> BUILDSTDERR:           ^~~~~~~~~~~~~~~~~~~~
-> BUILDSTDERR: compilation terminated.
+> I found a work around for this problem.
 > 
+> Remove the six minmax patches introduced with kernel 5.15.164:
 > 
-> Looked at the commits:
+> minmax: allow comparisons of 'int' against 'unsigned char/short'
+> minmax: allow min()/max()/clamp() if the arguments have the same
+> minmax: clamp more efficiently by avoiding extra comparison
+> minmax: fix header inclusions
+> minmax: relax check to allow comparison between unsigned arguments
+> minmax: sanity check constant bounds when clamping
 > 
-> This commit 993a20bf6225c: ("tools: move alignment-related macros to new
-> <linux/align.h>") is causing that perf build to fail.
-> 
-> Solution is not to drop this patch as this is probably pulled in to support
-> bitmap_size() macros in these commits(which are also part of this release):
-> 
-> 6fbe5a3920f48 fix bitmap corruption on close_range() with
-> CLOSE_RANGE_UNSHARE
-> ef9ebc42c10f8 bitmap: introduce generic optimized bitmap_size()
-> 
-> 
-> 
-> Applying the below diff, helps the perf build to pass: I think we should
-> fold this into: commit 993a20bf6225c: ("tools: move alignment-related macros
-> to new <linux/align.h>")
-> 
-> diff --git a/tools/include/linux/align.h b/tools/include/linux/align.h
-> index 14e34ace80dda..a27bc1edf6e5c 100644
-> --- a/tools/include/linux/align.h
-> +++ b/tools/include/linux/align.h
-> @@ -3,7 +3,7 @@
->  #ifndef _TOOLS_LINUX_ALIGN_H
->  #define _TOOLS_LINUX_ALIGN_H
-> 
-> -#include <uapi/linux/const.h>
-> +#include <linux/const.h>
-> 
->  #define ALIGN(x, a)            __ALIGN_KERNEL((x), (a))
->  #define ALIGN_DOWN(x, a)       __ALIGN_KERNEL((x) - ((a) - 1), (a))
+> Can these 6 patches be removed or fixed?
 
-Change now made, thanks.
+It's a bit late, as we rely on them for other changes.
 
-> !! But this breaks the build for arm here.
-> !! Not sure what is the best way to solve this problem.
-
-Are people building perf for arm on 4.19.y?  If so, wow, this thing is
-about to go end-of-life any week now, and I would be amazed if it built
-at all anymore as I can't get perf to build on _ANY_ lts kernel these
-days.
-
-Anyway, I'll make this change and if any arm build fixes want to show
-up, I'll be glad to take them.
+Perhaps just fixes for the files that you are seeing build crashes on?
+I know a bunch of them went into Linus's tree for this issue, but we
+didn't backport them as I didn't know what was, and was not, needed.  If
+you can pinpoint the files that cause crashes, I can dig them up.
 
 thanks,
 
