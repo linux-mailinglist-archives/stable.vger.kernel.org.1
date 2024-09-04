@@ -1,165 +1,218 @@
-Return-Path: <stable+bounces-72965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C12496B2E8
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:30:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AED96B332
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308C21C242A0
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 07:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E22A284B38
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 07:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB47824BB;
-	Wed,  4 Sep 2024 07:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E03813212B;
+	Wed,  4 Sep 2024 07:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="TWWtaDa5";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="iKkMIL/p"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="cD+KzbPB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout34.security-mail.net (smtpout34.security-mail.net [85.31.212.34])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73275146D5A
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 07:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725435006; cv=fail; b=rSc8FA4rlbuwSr+Pfpb0fW6nJAOGmabdB/uqVFyAzivnGoAaiIAwp4J2SYAQlqfJA7irqZ0/fXNs1bKn2XwKQPaQKtbWCp17yrsY4lBfpobW8PUKcZj00WBT61+dRAT0XZ9A8Fwsdnf96404e4+9Ssl1hXxjagJCc547hlzC9TM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725435006; c=relaxed/simple;
-	bh=Sj/rJgzBoHYf3QYBPC+6jd9aYnvjPwMWhTTokvmQDrU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=C5PjODSCteAWzqB6lmWuphpQEzseOGVyngb+3F104nJIzetti3drM3YTO4tIoMoQHV5x/YqbrT46Ih0DWXvkTpWOrt+echiPG+58mLVGBW4LOEomkhr+xqyuYutacAb3jzrRebhYz0yNpPDEgRfjZS+wsXpFwwmk59UaIAs9zXE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=TWWtaDa5; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=iKkMIL/p reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
-Received: from localhost (localhost [127.0.0.1])
-	by fx304.security-mail.net (Postfix) with ESMTP id 908B46E951B
-	for <stable@vger.kernel.org>; Wed, 04 Sep 2024 09:24:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1725434646;
-	bh=Sj/rJgzBoHYf3QYBPC+6jd9aYnvjPwMWhTTokvmQDrU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TWWtaDa5+A930Nr2bIMPE0QF7kTTROQhxRrmA9qmJh8vjBbQgzutokBqOS533A6s7
-	 wIA2UETwrY7vMfzQNf9P4D7NeZBsgxDVWbf/G4821NsXfLby7Bq+kCU/wNROChfNJb
-	 a2ULrrGFPmml1BQnmaOcMJxML0NlFb7dMEysENzE=
-Received: from fx304 (localhost [127.0.0.1]) by fx304.security-mail.net
- (Postfix) with ESMTP id 573C16E904E; Wed, 04 Sep 2024 09:24:06 +0200 (CEST)
-Received: from PAUP264CU001.outbound.protection.outlook.com
- (mail-francecentralazlp17011024.outbound.protection.outlook.com
- [40.93.76.24]) by fx304.security-mail.net (Postfix) with ESMTPS id
- B0BD26E8FCA; Wed, 04 Sep 2024 09:24:05 +0200 (CEST)
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
- by PR0P264MB2408.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e3::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 4 Sep
- 2024 07:24:03 +0000
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::7a6f:1976:3bf3:aa39]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::7a6f:1976:3bf3:aa39%4]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
- 07:24:03 +0000
-X-Secumail-id: <139d6.66d80b15.afac8.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JvAI8FYYp37HGkYZZUL0aoirlY02hsyV2S4hSeavsMkZ3xPzalNmPptLgxA7o2s0nqb1aSebyteB9F1yyr1h6/Iwquy9Pbs7IqaJJ8BWp+usrXj81fISNpGhJQfYMxIg6bjwqeiEuRj+pD9lZBLHALP5qwltRoU3M9/oKdp/DKOpAMtDpH6t4je0rlxmwXEBqt/ijVslqp0zWWaCqkFolSvdPVIllMy1th9wFyomdLXJstQsaWVoPuPM7eXW4EF6WQWXfci357FxB2sjl6Dp+NaPeTSQsoserhZnevVsfRTlA9/sQuFUXR2+sxDI9YZwHknhp4iReCddhob5He94lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MEdwQomjGQiuiI74slAnmz4Efbo0cTxGEWQv1TblVvM=;
- b=rjpQgqJtDb3bY4Tibvvkqp2rrUNhpnTY4QnWRumwwbI43XPQ2IxgJg6LfpgYB1E99JXA+/ccXcE81W5ej2FCPDsjY0TGmcXA82eawEyUliA8RC2Jf9R7IJXLKuD/VLrPXPrkyxvgCaX603+5Rtjd/nu43M4j/dsOnfTlTuc/Lx3g41/SOM8C3K1ubGi6SHBrmuzG113+aAQuudVVAi1if8UFk9fosO3XO+Pac/E9hiQoo7J3j8vy7HYYZ73XJ7g475w8+mrsBLB75BWETQItpTo/YPPKRPxuMhUoLgbg57OyKjcUrNp/bSDXa+axbzOWIFnFISl3tW6UYnMDAh8T6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MEdwQomjGQiuiI74slAnmz4Efbo0cTxGEWQv1TblVvM=;
- b=iKkMIL/pC90VYbse7jAQMcBTYFW5ySNpKNhuu5D9Z2FCJIfga8aT1vGPABiK6Y9vwVPc/d96c8ajqIscGgJbeKjOJQ30E0IeEmWrUGg7LriPtsEFMMheTSajaeO4OQASTVO92BZnOASzjbUxlf3cJ1gJQQmWmwhq2w2E6mfebjxjqOS463U1SioF9MHZ8d/K+CcK1vAOpDvw2m6G1xzxlpSahsNuX0TOSZb+KzRknaT1V8Ki3PbuahZtH6CCgTCK9GZgzRHFkEM3EQniHMaRgSotOoT3cRWenNySLBOlHenuza0GDxczRv1gvygdGAwplcplOZI8kHNKmRQQHI/nGg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kalrayinc.com;
-Message-ID: <4b77aa10-5ebd-42b9-8b82-2d0a10da95ec@kalrayinc.com>
-Date: Wed, 4 Sep 2024 09:24:01 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/71] 6.1.108-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240901160801.879647959@linuxfoundation.org>
-Content-Language: en-us, fr
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PR1P264CA0054.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:2ca::8) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:14b::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CC823DE
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 07:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725435955; cv=none; b=S9riQRIBekKztM+7ZsDwkARF93fRtsGeAG5E8jg4KPVFb5yzjXhX4OoXbnrwb4ho3yx+u76+CPiPw0di5nQIvaALX9i879nx4VzGHaRbNi2moVPlPtts+hYldd8mWZ9hVPYNPFZQbXNdRxGF3TGwmg/m6J1ayu17mMhzUZGORfc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725435955; c=relaxed/simple;
+	bh=wqC8/ZiPAlnc4dTaCQbC06y9eVGVoy/qaMRgWhMFIww=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Naclx+mX/SKar/tqIpvLm1sdVr++mAk23kXaspu1Y+S07EiwJbS2+t9ZFoyZ1komKgmeY2DqBEQRVIwEe+5SlU8Swb1ORypykggzpLe6JkhE7mUGC0mtgRu4JNL/sxoA8p5D5Waa9fItIffmHFCgFFY+TYlqX/xHjRDRz5QpoFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=cD+KzbPB; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1725435404;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bC5PrfUTDObRDleXarsjObmYqZdt/QmLj0WFkPAo3yI=;
+	b=cD+KzbPBJpfuPrm9kW2jOTpYOnvP4Hztw9Tdti7mgnvY/p7aSgoEZkxNgyiRGtdj1dvwnT
+	jP6YUePuxyvEWbM3Yz05AieG/jZH9gIYXrOTtRsXem37sNk0xk5Tia3uJv/2eEUsbPte0L
+	442lwxvApLZlNy8fQBi+ds7p5NmyQ3s=
+To: darefyev@mail.ru
+Cc: Willem de Bruijn <willemb@google.com>,
+	stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
+Date: Wed,  4 Sep 2024 10:36:44 +0300
+Message-Id: <20240904073644.11966-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|PR0P264MB2408:EE_
-X-MS-Office365-Filtering-Correlation-Id: 590c6409-08b8-4f0f-7f1f-08dcccb28d03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: 2yVuVgZ50AQa2pvy7UBxJOh8F2Ow/QNKTo8zyVkMifXsKuAw861+1QoybqGa6lu76dqfEVLMiszF31HKyalWL1hlLLoYX2bRQnLAHxYMNcRfKMnM7wtKFMYgacXYB0nTPwBe0kIza8gLqavfiFELLZ08qwKSJxNKq/oymzxLk5bRBn4+0HwNRqdDrd4hdHJOZB2N96M1oUpMVaTBxuOKU6R/Vh1ZNI+4V91hHKzkG099SbJuNSzzljUeKYkQQqfXXDd9NCvvxQgmyvCb0v01VBr6ecJwctGreCyKzC7fFcpyUzn5uk5p7gbHtI09FHHwNerM/aSp2rDzB2ajw2BOvmVAH2sDgvXe1CozzOLbSuw1VL5ZJNob0VCa4jp1ZNxTUcYwE5ov0yapGghdbGJx4svhe4ZmJDDHhZ0fTtoJd5i2bn1b3m8tcnJuOuRUj7pC8164kh6KCOSqLnJ/QMa1dP5mujYhJH5bzchiYHInDLwmrJC4Q96TWoajYWlJxb7DoCUO01GWVSkcLykkFyCPhIbi1H5zGLT/b46aPQY+gqTl0/xzqFuSoZZG5IWIUTnOWIz4P1doazL5yMIuzlAS4DhE6yAiVb1WX29LfwgmHBiDfcGwTipmYo92imaX+bpeYzgOAaNFe3+rwLCjOPglLoM1Ch/21GtvPz9knW+y1ENDSVY4XUN2Ws6FCrZFUWskdPjGDL7ywlr3MxaHpN4Cwz81Z7o212XJ5VVJ/IrxxmmWL1BLlqmqV+4dz+rnCc3oVYIxXNKKaw89er8Xb+KrSeNdCjH+hDkcQpemzvUC26DfcPJDVWOtxXRugEW7+TuZDb7Zf7guaaRu2hQr4QALOcRXG5mHtW1ovnPs48pBsdLJ0SJbSOrWzDCy9rmVN9E5U0KKWypBnHBKRfPWF4gCtAATsoCWO0KRpSVJevYeFpBd7rt7xIfDHow7Sl1G9f9RoY2
- kcieAjzvyRScGBa4cObnyR6wcHW5rf2bWL99Oiolzxpi2OtwQFsPDqFY+jt4gTTM9HhClWjGHmlyGS/d5qkCSx6KyqaKdJmMQj6+ITL73unePxpfvVNFhh6aERRnZRjO8ToZcFzxcGICAAOAJZ9/ww+2bMrbkaRLFXuYk2/J50RGlb/qHPrtaKf+q3E4zpmC4mFUgst6A12vcEEh6mt6zhEZWLUtjJY6IajobN1YBMTjJeRxANZArGVt4eE+h146RfCL4P7VD5Ea/JWlETkWS2cyNf3bwfT7D5s2R7wkhyshoJj1e7UWIeDgZdsSzpaK/T66fMzgIgNQGFcYXijt8LiZN14JkdR4KOKNjfVmb8fiNbRe+GLhMhwmf+VEE0oUkMsso9gWw2XIYJFdInqHA5HpDnyUZZ3d2PXgEkvE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: s1n7AQa96Y96ct0V7zPEeYXyZFLxU683fdXNdFhaILv+xkM/Fh64YNQeve2xOoPc8ORUWPkUGXnCsVqToXHgHHkSCqXT6ORl1YYWhjHcP0f0Y3p2HF/Ui/dYMrEiTvplEBd/X5Q3bjTMXtQly/OWcjr17+lNS7FBMFSmUzq4d4cbrmeF4J7XpPnquREDMLct5Hnruj4HIPaj0mFxTvXeWYUOqppVzxfP749RSe4gz4oEHUBPMwadYzQdBaBumS1pjiGoCWwghEUmZuypcLl1lT5r8os8K6z8S/lHUsCbrnjpMTpjD00E3NjmfOuLRc15TrhjJNK8bHwb7E7K1ZAIIm2b2TiYNd0GYxKTbM5ffjvmSqIiTWKAapOYuwLdJKN+r2n98xf7IjmtKLa/2AhNB7m1Eqxh1L3LxnZx7rraQ7rwBPGMGVFvzGYovBzBAuAPJRB0fTN1euL/YTPPmK8gZnjLp18nDPCNhDAXwRwuKC+XU7JKT0FHlnIW5tUkYQPVh4RVWzNwb6V25JJXclGoTj/UVOKi6W4JnDyaJLEFxf4+0aWiJwCZdKvRFpBO6vGeVEx3hRTGptUlo9eksEijfr2aq2R6a/OM2ytqJx4hD11GA86Wr0cd//5jkeQzZORifKYk7WdJnrPGib39NiCJFIrNhG0y+Wej6t18+tDHaqE7/ePitxb61R4pj97n+OKqR0K5bDjGgMA3iHk8nY3TolTqtcMSOfLputpvC2Qxe28KDvtOYepIeqm000tVGg7WjfQUKVy0mjRIN79I1vxwqX57iyZTDw5w3766zZk6cGnaPqq33BzCrRvkW9mUtQlCoBwVLEZ5YnzALX0XvYupMVv3bU2WloVs75cV9wSyYnhTEus3HgSAjxhlTnuQrI5ZeOqFrM2cdIlFIk4Sm1rZcUR740eTFyitk24c0Pw7o+h/jCDieqkfvAGlXOHK4COD
- ZM3F5YU8PfmkkUJhCPmP+DaDprL2IOiyECgdLLArsU8VUOgBwv+jZGajwk4kasA+Cfd80lFf//rzWdMLLhrw/Ms0FngBOGHDF3mtCx6h8q8zGpA+xdTQFnH5KS1IeY3BA01W6K+ogilxeaxa0ZdaAFYq3SKVlc0jpphEdkcaLOvA17/2MMC8HYhStFZAg18nD9tKTMf4VeOW8rx2JzltcBtN4WrIxfj57IIRvy576xO005J451PGtfCbbiKto3x/uhOdAtkI1GF6mUk0IHCj9kOtCJ3DVdZtbbbFe9nItE7vTfsYktzYYtKhGUYFd3OYdyhJOKhVut+uAzRxs1mpqRYp3d69xmOAh4wmwln7ZraH3Qt4yRTaHphr4RE5CGXLUBQoiCPDq7neVAsMEHnp9i5YICN+tTYQ4Sxx9B2boYEVj8XvsQx7RT8sw8jBMnuWZ4nzP9ZhJhnI9jjAdTvHNFZpgLPBm6bkiRNUswNnxGD06vzK4I2fFd5kk+9FXCZkORgjUFmDG8kxFCe4pnRSC6Q2hOihtR5mHhYEjPksK5YrsVs/QJQRlHRTkBGNJvPzwfk4XggAWHZj4m7SxWbUBST6Oa7AybPL8357fBAKtjcvaza3xz9SHNr/5Au1m966Edrq+UVd4mtNjZbjlqEvMQNQuAPSlZ7w3+3xrMMZDQusc4KYWX5mJbb9jqod+7682jdmYw5hsqWRKO+vdPUMjg==
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 590c6409-08b8-4f0f-7f1f-08dcccb28d03
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2024 07:24:03.6501
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5V7ifvi/ytNjRbsnIWUopm5ujqLHnBkqrmxwrheZIEDdE8ArMzMD+LVpuTGOmPzXX3fVG5NHrGCzy8a7685CDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2408
-X-ALTERMIMEV2_out: done
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+From: Willem de Bruijn <willemb@google.com>
 
-On 01/09/2024 18:17, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.108 release.
-> There are 71 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.108-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
+Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
+for GSO packets.
 
-I tested 6.1.108-rc1 (de2d512f4921) on Kalray kvx arch (not upstream yet) and everything looks good!
+The function already checks that a checksum requested with
+VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
+this might not hold for segs after segmentation.
 
-It ran on real hw (k200, k200lp and k300 boards), on qemu and on our internal instruction set simulator (ISS).
+Syzkaller demonstrated to reach this warning in skb_checksum_help
 
-Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
+	offset = skb_checksum_start_offset(skb);
+	ret = -EINVAL;
+	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
 
-Everything looks fine to us.
+By injecting a TSO packet:
 
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
+WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
+ ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
+ ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
+ __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
+ iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
+ __gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
+ __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4864 [inline]
+ xmit_one net/core/dev.c:3595 [inline]
+ dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
+ __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
+ packet_snd net/packet/af_packet.c:3073 [inline]
 
+The geometry of the bad input packet at tcp_gso_segment:
+
+[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
+[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
+[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
+[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
+ip_summed=3 complete_sw=0 valid=0 level=0)
+
+Mitigate with stricter input validation.
+
+csum_offset: for GSO packets, deduce the correct value from gso_type.
+This is already done for USO. Extend it to TSO. Let UFO be:
+udp[46]_ufo_fragment ignores these fields and always computes the
+checksum in software.
+
+csum_start: finding the real offset requires parsing to the transport
+header. Do not add a parser, use existing segmentation parsing. Thanks
+to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
+Again test both TSO and USO. Do not test UFO for the above reason, and
+do not test UDP tunnel offload.
+
+GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
+CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
+from devices with no checksum offload"), but then still these fields
+are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
+need to test for ip_summed == CHECKSUM_PARTIAL first.
+
+This revises an existing fix mentioned in the Fixes tag, which broke
+small packets with GSO offload, as detected by kselftests.
+
+Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
+Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
+Fixes: e269d79c7d35 ("net: missing check virtio")
+Cc: stable@vger.kernel.org
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 89add40066f9ed9abe5f7f886fe5789ff7e0c50e)
+---
+ include/linux/virtio_net.h | 22 ++++++++++++++++++++--
+ net/ipv4/tcp_offload.c     |  3 +++
+ net/ipv4/udp_offload.c     | 18 +++++++++++++++---
+ 3 files changed, 38 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 6047058d6703..6fe99dd3ca39 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -144,9 +144,27 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		unsigned int nh_off = p_off;
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 
+-		/* UFO may not include transport header in gso_size. */
+-		if (gso_type & SKB_GSO_UDP)
++		switch (gso_type & ~SKB_GSO_TCP_ECN) {
++		case SKB_GSO_UDP:
++			/* UFO may not include transport header in gso_size. */
+ 			nh_off -= thlen;
++			break;
++		case SKB_GSO_UDP_L4:
++			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
++				return -EINVAL;
++			if (skb->csum_offset != offsetof(struct udphdr, check))
++				return -EINVAL;
++			if (skb->len - p_off > gso_size * UDP_MAX_SEGMENTS)
++				return -EINVAL;
++			if (gso_type != SKB_GSO_UDP_L4)
++				return -EINVAL;
++			break;
++		case SKB_GSO_TCPV4:
++		case SKB_GSO_TCPV6:
++			if (skb->csum_offset != offsetof(struct tcphdr, check))
++				return -EINVAL;
++			break;
++		}
+ 
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+ 		if (gso_size == GSO_BY_FRAGS)
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index fc61cd3fea65..357d3be04f84 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -71,6 +71,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (thlen < sizeof(*th))
+ 		goto out;
+ 
++	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
++		goto out;
++
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
+ 
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index a0b569d0085b..0407b829e481 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -269,13 +269,25 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	__sum16 check;
+ 	__be16 newlen;
+ 
+-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+-
+ 	mss = skb_shinfo(gso_skb)->gso_size;
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (unlikely(skb_checksum_start(gso_skb) !=
++		     skb_transport_header(gso_skb) &&
++		     !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)))
++		return ERR_PTR(-EINVAL);
++
++	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
++		/* Packet is from an untrusted source, reset gso_segs. */
++		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
++							     mss);
++		return NULL;
++	}
++
++	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
++		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++
+ 	skb_pull(gso_skb, sizeof(*uh));
+ 
+ 	/* clear destructor to avoid skb_segment assigning it to tail */
 -- 
-Yann
-
-
-
-
+2.20.1
 
 
