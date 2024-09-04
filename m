@@ -1,112 +1,145 @@
-Return-Path: <stable+bounces-73000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5AA96B8A8
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 12:36:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F32596B977
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 12:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80D7D1C2219F
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 10:36:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B590DB27333
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 10:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBA01CC169;
-	Wed,  4 Sep 2024 10:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803631CF7AD;
+	Wed,  4 Sep 2024 10:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p+JX88Xz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwvyTybl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0415D84A40
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 10:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4431CEE87;
+	Wed,  4 Sep 2024 10:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725446185; cv=none; b=qncKNei0FnULkwBGDr2Ro1tcGb5sEOpYEw9N13l6faf+t/sSQvaYyzOg224tS+FzMj1JzBfGLP5Hf3YNPhVqiGTMUKYN4wWQ5V8/d/pXBagG2A/VEjSce9T9XmXaOgq0pgcnqz7u7JBC0x2GU0o4lL35BoVkCrd5s/RXukdagh8=
+	t=1725447420; cv=none; b=Gk660rIN0hBKuOFTDrcB9rXrbF8UQsDRD0385S3rcD8xRpHn1l+jvULLH+wxONnMhes572KlV9afW8C/rw3T3R9kfBTjyJR2Vs05W4A82KgteIOJ+P5h3BF38trA+Mkucwb5kLtCyH7NNjIEIMrjOU7uZc8GzfFIhXgiWME7RHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725446185; c=relaxed/simple;
-	bh=YH0TtsLp6zym9FUTrPBqkezxoM9K9mVcvUrz3Mxd8Xo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6eX4dfywyq3gukSO/P4h3uYN1vfxsAK8w64OvoEgHirXZs5p1x3UUQN0cLUa4IT+lD8SbagDAuZ7+SoIT+RFlcLHDk0gOeOBnEGWK92O8xU2i2gEWBMBi2QrddtlFWEh9KCh48Yqc9LJBHuRlLx/6BpvSWERjvcybGQsyJ1CfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p+JX88Xz; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42bb9d719d4so48725495e9.3
-        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 03:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725446182; x=1726050982; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F7ThHoGL9ATbLn8Z6ELJvHOLdmXbio31tKhUCMOrvCw=;
-        b=p+JX88XzvSVG5HgeYOClXf0ymdoT1LgZp0hN07CLp6leGjjheJs7OEMP4q+P0LWCXb
-         XixJ+JpEinzEXdHu7F8e6setZmzSVCIUPj2QvOpZ3vDeMZpjwkYCotFysDcgxyMXkNtU
-         QEInVQyq+J0pImC97dyM75y+fONcSIKELLoliJikLuUnna0XPYa1P3roPcknoYqBb6tS
-         ZckFka3aZUIiqEWep+NHrQPRPBy8nOWCkPyU93AZzyc7+x25qXVWe6qdPsbpJaMNHfGt
-         ufwjxSdWJ2RtdYNivcZhRPOL98bQhssz639XLVeNNT0qT/Ngf37NErT60mHnuZAdyVMU
-         vlYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725446182; x=1726050982;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F7ThHoGL9ATbLn8Z6ELJvHOLdmXbio31tKhUCMOrvCw=;
-        b=IVmW0wwFBJGQyyax91ZlN8NTnImsM/ldLaGK/GxvlLwjlkWu6j+ObYNOvO8eak4Ztd
-         8DY3sUWNILmowtvwX4N8mmMrYHsh2fN+JFkAdTaldrRFdBviUI8Tc0YyrCbFxxIP9OCE
-         DXbRC6qx+mV8KTS5kU7C28xnoqSUQgVOmXEjdzotXh+moW8BLvWIhKE9BFSfS6+GPMxD
-         k8cIchXoy//T2koGWckoucrHBvW6LTqwQV3pvVlz2U2Yxk/mj9ZzU0FYEEzK84JY48Wf
-         5IafWhf9T84ES2gMTlQJruiU9LqOpqbylLpMt151BVn/bAM4vfT/lV2E7mpEN3LygACH
-         LH4Q==
-X-Gm-Message-State: AOJu0Yza6rEOhHelZ5IMa4heJbpE+E9t6mM+YuHwSdHZ0HZHN7y/Gdyr
-	027spb+j+fkBZWX8n3FaVX8WsktOd474GDjUen2iq6G/oqbTpJrpl7PGH/PrrEQ=
-X-Google-Smtp-Source: AGHT+IGtQD3Yn0nbN+/WjsJx3pcA2XI9bB4EcC910kHJw2Z6hl4XhPtG2GB8FRhoqyDuToUoWmndxA==
-X-Received: by 2002:a05:600c:4f93:b0:426:622d:9e6b with SMTP id 5b1f17b1804b1-42c881030e7mr52159615e9.23.1725446181921;
-        Wed, 04 Sep 2024 03:36:21 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42c800554d6sm117852935e9.43.2024.09.04.03.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 03:36:20 -0700 (PDT)
-Date: Wed, 4 Sep 2024 13:36:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, jslaby@suse.cz, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH stable 4.19.y] ALSA: usb-audio: Sanity checks for pipes
-Message-ID: <4aa53a07-05d9-4f80-b4dc-c48d16ac240d@stanley.mountain>
-References: <2024081929-scoreless-cedar-6ad7@gregkh>
- <7656cec0-3e12-47cf-af5c-178b7103ef17@stanley.mountain>
- <2024090408-trustless-carload-35fe@gregkh>
+	s=arc-20240116; t=1725447420; c=relaxed/simple;
+	bh=Nvf+aIqxndz+ykJsN+C2RVMOEMKYXHXOshcmPUz7s6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OR2tnHGeGa3PRGoV2PG7BgdHhv6fUBEytLk4pa6cLB+q3vWIWlio4ouySOCC7ESLZ+7mVFYU40bdv98olMhKjEe8Q2a6wMRcI0DfqreZVw+L9tAwM+v6Q+wIoKaM7+FjSXXT5pNzTx7ePZIEeaJAKmC48LOnzVMEmevaD2FLviM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwvyTybl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5830FC4CEC2;
+	Wed,  4 Sep 2024 10:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725447419;
+	bh=Nvf+aIqxndz+ykJsN+C2RVMOEMKYXHXOshcmPUz7s6c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KwvyTyblgBCHFYkZUrHLmB5B23khqWbQ6ipUcP5ApSTvl94/1gBt9EutSCQAGhwmN
+	 WqHuKVAT4Y0HJBjFRCQFfHvEzwHB7Cxh8Uvud9vZwmX44fqBVe4Td9IKGS8Qq7akzR
+	 MBqrqJgJq9WzRDoY+ZYZ2uUPZXC9Jx5+8rYWJ/mBiYtbNc5PSCEIJ59apbgSP+rtzw
+	 PICsKozVftkaXTYeX2vX0xJf6gcLWk7AxwUJHebCgRT6f7fkb2FsKtNce24WlzAbII
+	 j7Zzo6/RWOXpnNNMbcUU+UaG3viKU/c2Kz56QDRMezrOgjK4BzYBYLzbrR6RssWanz
+	 Y/bTtPYMOyO1w==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: pm: fullmesh: select the right ID later
+Date: Wed,  4 Sep 2024 12:56:28 +0200
+Message-ID: <20240904105627.4074381-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024082640-recognize-omega-3192@gregkh>
+References: <2024082640-recognize-omega-3192@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024090408-trustless-carload-35fe@gregkh>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2952; i=matttbe@kernel.org; h=from:subject; bh=Nvf+aIqxndz+ykJsN+C2RVMOEMKYXHXOshcmPUz7s6c=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2DzbW8/NcuKoJWBW6xPlFrxB9LpGYCyPr0G6u MEFP51ebe+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtg82wAKCRD2t4JPQmmg c6jaD/9/rBXA6FJBiced30AB3KuzXZR71XhUw5lM7UqPl5QHlp9kjLj09CED2v+oBLXOoLuUn71 yFjSk35efHn/uR6f/UTxq1QgRHLSU7BdSYp5nA3iRvkMGvhlwrwBArTpjDEdZ/or2iGe5UICSAr zS2k1sr4j2vz+Ha5CeHIQFkGHi9292tOz8K+YwGYfrymaVdoiANcxFH9q/KKbj0IJ1YRH52Vz9i +DDQjR2IWPvf1PLwD7ZJvLoqGTGhXRSZ/xDbfRKnLRo1uPgOoEzsDhCTvoJDb+/2WPRXo2LZItW 00jZmYo/G2yMPaDDcgHj5KzxR8jreH88EqPLfb+RKhlVL62j3pW5R0mbeJU7vHZXrSKgG3sBhJB Rjeg2P/7dlfSuiZrAItCvj1MqgzfVcLJlk7UHnhkvHg3SHUzMX3zsbAUFfOAmiPxVHjuzUYLLhd nyz/BoXiG+yxqCLArvKHxS7Gmkvhq7xqtlZ+RlyM0mEGnke1GRuZWTIDxcn5KHiBfPIDzG+IMHF FDG7/D8J/osAiQ80omYdciw0W7nC77hLISLmGXyPSkPC8I6FACVLRUpfseUXfPODauC8UT3a0RL U5cCf9vBzQ7EwOK74SsYii7KfaVJFlyyWYydKKwAG74wBSx6NQUQSJLZQpM95VR2UdINLk1sZz+ x9JkoEM1Tgpb0AA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 04, 2024 at 12:01:32PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Sep 04, 2024 at 12:17:37PM +0300, Dan Carpenter wrote:
-> > We back ported these two commits:
-> > 
-> > 801ebf1043ae ("ALSA: usb-audio: Sanity checks for each pipe and EP types").
-> 
-> That commit is not in 4.19.y, it only is in the 5.2.8 and 5.3 releases.
-> 
-> > fcc2cc1f3561 ("USB: move snd_usb_pipe_sanity_check into the USB core")
-> 
-> Same here, not in 4.19.y, it's only in the 5.4.282 and 5.10 releases.
-> 
-> > However, some chunks were accidentally dropped.  Backport those chunks as
-> > well.
-> 
-> Perhaps those commits were never applied to 4.19.y and you should just
-> backport them instead?  :)
+commit 09355f7abb9fbfc1a240be029837921ea417bf4f upstream.
 
-Oh.  Duh.  :P
+When reacting upon the reception of an ADD_ADDR, the in-kernel PM first
+looks for fullmesh endpoints. If there are some, it will pick them,
+using their entry ID.
 
-Sure, I can backport them.
+It should set the ID 0 when using the endpoint corresponding to the
+initial subflow, it is a special case imposed by the MPTCP specs.
 
-regards,
-dan carpenter
+Note that msk->mpc_endpoint_id might not be set when receiving the first
+ADD_ADDR from the server. So better to compare the addresses.
+
+Fixes: 1a0d6136c5f0 ("mptcp: local addresses fullmesh")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-12-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.c, because the new 'mpc_addr' variable is
+  added where the 'local' one was, before commit b9d69db87fb7 ("mptcp:
+  let the in-kernel PM use mixed IPv4 and IPv6 addresses"), that is not
+  a candidate for the backports. This 'local' variable has been moved to
+  the new place to reduce the scope, and help with possible future
+  backports. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 9e16ae1b23fc..a152a3474d2c 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -648,7 +648,7 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ {
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct mptcp_pm_addr_entry *entry;
+-	struct mptcp_addr_info local;
++	struct mptcp_addr_info mpc_addr;
+ 	struct pm_nl_pernet *pernet;
+ 	unsigned int subflows_max;
+ 	int i = 0;
+@@ -656,6 +656,8 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 	pernet = pm_nl_get_pernet_from_msk(msk);
+ 	subflows_max = mptcp_pm_get_subflows_max(msk);
+ 
++	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
++
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
+ 		if (!(entry->flags & MPTCP_PM_ADDR_FLAG_FULLMESH))
+@@ -673,7 +675,13 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 
+ 		if (msk->pm.subflows < subflows_max) {
+ 			msk->pm.subflows++;
+-			addrs[i++] = entry->addr;
++			addrs[i] = entry->addr;
++
++			/* Special case for ID0: set the correct ID */
++			if (mptcp_addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
++				addrs[i].id = 0;
++
++			i++;
+ 		}
+ 	}
+ 	rcu_read_unlock();
+@@ -682,6 +690,8 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 	 * 'IPADDRANY' local address
+ 	 */
+ 	if (!i) {
++		struct mptcp_addr_info local;
++
+ 		memset(&local, 0, sizeof(local));
+ 		local.family = msk->pm.remote.family;
+ 
+-- 
+2.45.2
 
 
