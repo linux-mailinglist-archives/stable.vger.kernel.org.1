@@ -1,73 +1,111 @@
-Return-Path: <stable+bounces-73103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513FC96C963
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:12:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9065A96C96D
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F107D1F2162A
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:12:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D8C8281CFF
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286E71537DA;
-	Wed,  4 Sep 2024 21:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0D316C69F;
+	Wed,  4 Sep 2024 21:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="0UzoVCUg"
 X-Original-To: stable@vger.kernel.org
-Received: from c.mail.sonic.net (c.mail.sonic.net [64.142.111.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA6A84047
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 21:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.142.111.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F30213B7BE;
+	Wed,  4 Sep 2024 21:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725484360; cv=none; b=sil3yD8kto9x8W2C0QCmijbCj5gyHtSEyuox723uycuXH0CVX5XfPPGLBrQ+I9K2VFOEL3HF3ueSnoRd9JqElzK842b0thjDo1jzKPIyDsLOsjZct5dyhxnnlOXYfjNlPKhWkw4T4ftDQBpgg9Gis2l6pGELTdH9C2FvVaYhndo=
+	t=1725484539; cv=none; b=Ve5PuxVTYS3t4RqT2JxHetZtJbcNK/f0p2OL7G8i+e1pU3nx7r+PD/XiZny/Z2N92iwoL8KzttJ72qBAOP7JaOutt9F7DTx1fdZ6fwFWJhA4f6n5ewm9Eh4tiIPsxdnwjSM/Q5N5KOW3xRtIxc9MC7S63/qHlxX7zVS5j6deUks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725484360; c=relaxed/simple;
-	bh=guLfzvzHe/Ar8KjiPmsJlEXy+TxFLF80tnd+JVKmu0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=hZM78U/AfuFZjFQc1VVNaJn+0e67cDwKEaobVmnct5GsLC15Qy53V+poW5v4j6sq8copwtbiqG7PWFM5fZhFttxsqwoN0C0iSL5frE/cPnFbt18vDmUwh8iFPLo35pFwXmfMKo+VVY6bzJKFTdm7fFQRl+n6QzT+QlV6KWAC2jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one; spf=pass smtp.mailfrom=nom.one; arc=none smtp.client-ip=64.142.111.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nom.one
-Received: from 192-184-189-85.static.sonic.net (192-184-189-85.static.sonic.net [192.184.189.85])
-	(authenticated bits=0)
-	by c.mail.sonic.net (8.16.1/8.16.1) with ESMTPA id 484L28aW000373;
-	Wed, 4 Sep 2024 14:02:08 -0700
-From: Forest <forestix@nom.one>
-To: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>,
-        Shyam Prasad N <nspmangalore@gmail.com>,
-        Rohith Surabattula <rohiths.msft@gmail.com>,
-        Jeff Layton <jlayton@kernel.org>
-Cc: linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] cifs: triggers bad flatpak & ostree signatures, corrupts ffmpeg & mkvmerge outputs
-Date: Wed, 04 Sep 2024 14:02:08 -0700
-Message-ID: <1dihdj9avrsvritngbtie92i5udsf28168@sonic.net>
-References: <pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net>
-In-Reply-To: <pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net>
+	s=arc-20240116; t=1725484539; c=relaxed/simple;
+	bh=0mf2sOICvR37qlpEb0StE7Dg6D5eD0OHMGownOtYVNc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BU9tTSTAovzpjdmGFhDJ6OHBnyJ/KoawdcGmVHa2DuDZdg3cgD08T56t9Cbf1slPT6mv94Px+oe+K4g5WKB3xOZi41erQAACCBSScC+n8AMF6gYa1pIYNh2xumBlbsCfT3bJ4vuNeEM/TV2ros4WniPikGtPzQFAV+bIhSNkfJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=0UzoVCUg; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzZyw5gTgz6ClY8r;
+	Wed,  4 Sep 2024 21:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1725484533; x=1728076534; bh=PTn7uCqr87nKGbsl+iekTpqH
+	Ya4PCS8/oEzxgwQOmZ0=; b=0UzoVCUghDvPlnDLptJ5hlxAyC1oIBPLCHk8A6mB
+	UH5tdR2gsNKYMZKLntppjSPyJtGIvHs4JxM2Pgq02M4u2rs2JTPIupb7LI9NFWoJ
+	DujqorQCY4S4lu/R8dpm9B4cBSqbwBfwAynesb3gMSimyoSpCOJPM5EHKVQAnvLq
+	Aetw6NT5mbPXJOnqvQucacugUoav9wvPxaxCMEjdXJxvqy5Wv7Sq07HjQr1N/daH
+	GintJ+BB0RQgFBzz8uT6A/QiTwXPbm6m09mBun2DKqx1V+lKRSkLUM4S3W7iXMIn
+	vHarNPqrp/uzl67NQDYS4p+ZSlOuyoMpcZ9eXVIyfjbKAw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id OmQzftKipDjf; Wed,  4 Sep 2024 21:15:33 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzZyq61hVz6ClbFV;
+	Wed,  4 Sep 2024 21:15:31 +0000 (UTC)
+Message-ID: <8feac105-fa35-4c35-bbac-5d0265761c2d@acm.org>
+Date: Wed, 4 Sep 2024 14:15:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: roles: Fix a false positive recursive locking
+ complaint
+To: Badhri Jagan Sridharan <badhri@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, stable@vger.kernel.org,
+ Amit Sunil Dhamne <amitsd@google.com>
+References: <20240904201839.2901330-1-bvanassche@acm.org>
+ <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Sonic-CAuth: UmFuZG9tSVbf6qhAFZ29YVsyvEy6C+n4FasBrjvR+o3aEgrO/1vOqvbzlOlEcb+NyztygbtXqMYqLA8TJlo1h/NIWayd8fSz
-X-Sonic-ID: C;1leg8gBr7xGvzM+N3bHVhw== M;Igyv8gBr7xGvzM+N3bHVhw==
-X-Spam-Flag: No
-X-Sonic-Spam-Details: -0.0/5.0 by cerberusd
 
-On Sat, 24 Aug 2024 18:50:40 -0700, Forest wrote:
+On 9/4/24 2:00 PM, Badhri Jagan Sridharan wrote:
+> https://lore.kernel.org/all/ZsiYRAJST%2F2hAju1@kuha.fi.intel.com/ was
+> already accepted
 
->I think I have found a cifs regression in the 6.10 kernel series, which leads
->certain programs to write corrupt data.
-[...]
->3ee1a1fc39819906f04d6c62c180e760cd3a689d is the first bad commit
+Thanks, I hadn't noticed this yet.
 
-Write corruption still exists in 6.11.0-rc6.
+> and is perhaps better than what you are suggesting as
+> it does not use the internal methods of mutex_init().
 
-Bad ostree signatures may be fixed in 6.11.0-rc6. (My reproducer didn't
-trigger it in that version.)
+Although I do not have a strong opinion about which patch is sent to
+Linus, I think my patch has multiple advantages compared to the patch
+mentioned above:
+- Cleaner. lockdep_set_class() is not used. Hence, it is not possible
+   that the wrong lockdep key is used (the one assigned by
+   mutex_init()).
+- The lock_class_key declaration occurs close to the sw->lock
+   declaration.
+- The lockdep_register_key() call occurs close to __mutex_init() call
+   that uses the registered key.
+- Needs less memory in debug kernels. The advantage of __mutex_init()
+   compared to mutex_init() is that it does not allocate (static) memory
+   for a lockdep key.
+
+Thanks,
+
+Bart.
+
 
