@@ -1,66 +1,77 @@
-Return-Path: <stable+bounces-72983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B9996B63F
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:14:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CC096B64B
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91521B28838
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7763A1C21A7E
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4057F1CC174;
-	Wed,  4 Sep 2024 09:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09E1925B1;
+	Wed,  4 Sep 2024 09:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkz5c7K+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mSbgmHs2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693B17CA1D;
-	Wed,  4 Sep 2024 09:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1D0405C9
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 09:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725441227; cv=none; b=Fc7ahzhL8Qx1ItML8SMLm3ERjxjzWCVmlg7D3ZJSXvi3I/8cuEhdU76Zh/SGyFaJGBE83vr5wErIa5Y93bclnWNTYGUhWPdCwB9OubALwKC8e5FCadFPkWScn2DvZltx1jCoHIWAWdooGAC7KNKpc8osLYkNykmaKpSHtnFDrzU=
+	t=1725441466; cv=none; b=GqhwsMrM0BCVfm7SHAaKBXqqegq0rnlosG+EYTjwhgFA1v5W9Q1071Ap+oatPwk/jCABSmcphY7+rN67KPJ5r/Cgn0aPqxnyYWk3+hAOYxgL/Ik+3GBb4YbZcn4fMBqaAbt69a424RsobqjDOfMD33qDg/6zYUUOKS3ZsTHY7qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725441227; c=relaxed/simple;
-	bh=MYuWrpI57eWvfXTVBG8wRa47ghh9A7+OUqw8WpXjn6A=;
+	s=arc-20240116; t=1725441466; c=relaxed/simple;
+	bh=PmPnmZ2NmpDTrJT2ks6rkc1Zr4rD7IA3h4zqnn/3oME=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YctHRh+Z6INha66g4nzWYkvFhYVFcqsutAVh8HqeShzYiy6FXquNDdLm8FbvZ4scp5I6EWVPlgHuRTZw3n08raHsrAzbE8cTarljnAvUW52XiGYzXNXzOYy6Bo8h48s9p65PlAN4S7bfFNxhz+2R7nD2Scf/2PHOB6B+OROR/k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkz5c7K+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96995C4CEC2;
-	Wed,  4 Sep 2024 09:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725441226;
-	bh=MYuWrpI57eWvfXTVBG8wRa47ghh9A7+OUqw8WpXjn6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vkz5c7K+nsAveINoqWfTiRoZyWlaiQyw8mqLVTLmxHeNyFQDjUCkPTLJQMPfgpNQS
-	 UVTVXVcogfE0b6d/0WW2hHw9P5WYjXq9gu9zL7t5INH0FNKivXfXljctqXG8FA1gRv
-	 HnwpwcqmqNNA8DF6AULzvEH9dBkmdgIIUaLjQ6Kc=
-Date: Wed, 4 Sep 2024 11:13:43 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Paul Pu <hui.pu@gehealthcare.com>, p.zabel@pengutronix.de,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>, HuanWang@gehealthcare.com,
-	taowang@gehealthcare.com, sebastian.reichel@collabora.com,
-	ian.ray@gehealthcare.com, stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drm/imx/ipuv3: ipuv3-plane: Round up plane width for
- IPUV3_CHANNEL_MEM_DC_SYNC
-Message-ID: <2024090442-handrail-backwash-1493@gregkh>
-References: <20240904024315.120-1-hui.pu@gehealthcare.com>
- <20240904075417.53-1-hui.pu@gehealthcare.com>
- <918336db-3c3e-4b5e-a9c8-096c9290f9d1@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8OOzYDPvidSDluTxFGw545whQNWn2qWiv42BaFfD47R6uHv3NTmxcOvkgPNrSbHtQbVMa9DMsG2dJe09tDt9+LLAL0zQVAU5Kd+b0w5u8FqB0mZ/g1ceUgADzuwz9ulO1OHIkAFmfmVvq3fnyqcAe320D/g5nWGpUp+jsVUgQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mSbgmHs2; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42bb72a5e0bso55026135e9.1
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 02:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725441462; x=1726046262; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ynepl8UlvIYWtFTozo06Dnk8jJ++H1fOO9lM/5/91cE=;
+        b=mSbgmHs2vJrjXx4//vC6bkiuXxnfuCrPobANDRn/HcKkzbimisfNoro7L5eSfr8UKi
+         wohLQmg5YVIF+eT53i6uYuhSXk5Etd8EBqIA/sFrLanxIFWFAXhcRC5L4CwUTVguI+qU
+         f83LWQfdhp067ruaBkWteoWcksRBJFBuxfV7M/KtzYUI/iJz6sRpzUipMPOBzFxrxO/B
+         /QIa//85FI2Quxd7twJuQAdBFZ96W9xa9igQLaSak+TMTJo9Aw25p5BlWZ9G+1Sf5Lom
+         9FdIcoKOGuvPEsgkpH1+c71tko784eAGL2z5QjBvsmo/pbN52vx4jYFRxaBZcGfqdM/M
+         Bu5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725441462; x=1726046262;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ynepl8UlvIYWtFTozo06Dnk8jJ++H1fOO9lM/5/91cE=;
+        b=rTj3WETArPc5hnlf/1ye2X60JRHunzEAkb9Ml/yVftoWgiMf8KfGV9hZ6YYGjRcH+b
+         Y0agDlgiP94zcSgd5jBozqOXflCSPEzfswsYkQ9cpWghbQLH+Q+2IpMKpM8ObOQ6UVzJ
+         dKgDJwLN/+Nznacwi8RL5f1FeKvQyQ2Ak3onBNr1wHGwvyFUXKXl0JrOSYE4WQAOYhp/
+         FMHQiY7mGRLDjqovYpkYzVyyKZQwI/b8Y/c0xvhHEaGwDnWw6OqZ3R5auwdWG8iWIn43
+         6WIOAcYr03k632mBhk8gjQf+pcOkKc9Y3GYgnR56SznwG8Rp4fbaKc8t8JWzzv6tcEy2
+         +o4A==
+X-Gm-Message-State: AOJu0YxL0XZeW5A9wBh4YSlyiAysgPH87Uav/IPvy/c6a/om56F49B5b
+	rKpxCu+w0KWi+xe5vWDN4PmeLx5PzjmfXUcaXyq+w6fs2Rsw8s1UHAucZmBkkqw=
+X-Google-Smtp-Source: AGHT+IGsBaPBCu8fGAu+ZNrc6LjDJF2wLwMEmZfjGQXZ/Lt7M2qEoUmdYUb+QpJjSGmN4c5NVl9TUg==
+X-Received: by 2002:a05:6000:18a7:b0:376:7a68:bc42 with SMTP id ffacd0b85a97d-3767a68c23dmr3745816f8f.27.1725441462261;
+        Wed, 04 Sep 2024 02:17:42 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba639d512sm230815755e9.18.2024.09.04.02.17.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 02:17:41 -0700 (PDT)
+Date: Wed, 4 Sep 2024 12:17:37 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, jslaby@suse.cz, Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH stable 4.19.y] ALSA: usb-audio: Sanity checks for pipes
+Message-ID: <7656cec0-3e12-47cf-af5c-178b7103ef17@stanley.mountain>
+References: <2024081929-scoreless-cedar-6ad7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,20 +80,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <918336db-3c3e-4b5e-a9c8-096c9290f9d1@nxp.com>
+In-Reply-To: <2024081929-scoreless-cedar-6ad7@gregkh>
 
-On Wed, Sep 04, 2024 at 04:48:51PM +0800, Liu Ying wrote:
-> On 09/04/2024, Paul Pu wrote:
-> > Cc: stable@vger.kernel.org # 5.15+
-> 
-> Why 5.15+ ?
+We back ported these two commits:
 
-Because the commit referenced in Fixes: was backported there.
+801ebf1043ae ("ALSA: usb-audio: Sanity checks for each pipe and EP types").
+fcc2cc1f3561 ("USB: move snd_usb_pipe_sanity_check into the USB core")
 
-If you want to be picky, just drop the "# 5.15+" and our tools will rely
-on the Fixes: tag and everyone will be happy.
+However, some chunks were accidentally dropped.  Backport those chunks as
+well.
 
-thanks,
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+This is from manual review.  I checked 5.4.y and this was okay there.
 
-greg k-h
+diff --git a/sound/usb/helper.c b/sound/usb/helper.c
+index 7712e2b84183..3b39c53d5610 100644
+--- a/sound/usb/helper.c
++++ b/sound/usb/helper.c
+@@ -88,6 +88,9 @@ int snd_usb_ctl_msg(struct usb_device *dev, unsigned int pipe, __u8 request,
+ 	void *buf = NULL;
+ 	int timeout;
+ 
++	if (usb_pipe_type_check(dev, pipe))
++		return -EINVAL;
++
+ 	if (size > 0) {
+ 		buf = kmemdup(data, size, GFP_KERNEL);
+ 		if (!buf)
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 43cbaaff163f..b6df92fdf950 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -743,11 +743,13 @@ static int snd_usb_novation_boot_quirk(struct usb_device *dev)
+ static int snd_usb_accessmusic_boot_quirk(struct usb_device *dev)
+ {
+ 	int err, actual_length;
+-
+ 	/* "midi send" enable */
+ 	static const u8 seq[] = { 0x4e, 0x73, 0x52, 0x01 };
++	void *buf;
+ 
+-	void *buf = kmemdup(seq, ARRAY_SIZE(seq), GFP_KERNEL);
++	if (usb_pipe_type_check(dev, usb_sndintpipe(dev, 0x05)))
++		return -EINVAL;
++	buf = kmemdup(seq, ARRAY_SIZE(seq), GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 	err = usb_interrupt_msg(dev, usb_sndintpipe(dev, 0x05), buf,
+@@ -772,7 +774,11 @@ static int snd_usb_accessmusic_boot_quirk(struct usb_device *dev)
+ 
+ static int snd_usb_nativeinstruments_boot_quirk(struct usb_device *dev)
+ {
+-	int ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
++	int ret;
++
++	if (usb_pipe_type_check(dev, usb_sndctrlpipe(dev, 0)))
++		return -EINVAL;
++	ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
+ 				  0xaf, USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 				  1, 0, NULL, 0, 1000);
+ 
+@@ -879,6 +885,8 @@ static int snd_usb_axefx3_boot_quirk(struct usb_device *dev)
+ 
+ 	dev_dbg(&dev->dev, "Waiting for Axe-Fx III to boot up...\n");
+ 
++	if (usb_pipe_type_check(dev, usb_sndctrlpipe(dev, 0)))
++		return -EINVAL;
+ 	/* If the Axe-Fx III has not fully booted, it will timeout when trying
+ 	 * to enable the audio streaming interface. A more generous timeout is
+ 	 * used here to detect when the Axe-Fx III has finished booting as the
 
