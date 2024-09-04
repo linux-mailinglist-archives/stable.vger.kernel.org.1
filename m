@@ -1,73 +1,94 @@
-Return-Path: <stable+bounces-73087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD7496C0E4
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:38:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B199796C128
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38248282C2F
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E40C01C24D6E
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AC61D04A1;
-	Wed,  4 Sep 2024 14:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBrBjyh0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303DC1DB55B;
+	Wed,  4 Sep 2024 14:49:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.astralinux.ru (mx.astralinux.ru [89.232.161.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF4B29402;
-	Wed,  4 Sep 2024 14:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811D383A2;
+	Wed,  4 Sep 2024 14:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.232.161.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725460728; cv=none; b=OkM5NIU6tt2ad5TOg7W6PRnz/+cS77a9RomUcZDQpLEdGhC5azekeExtTXqr2F88gTJaqFwrMRjB42PsSdIk68G/lcMKHOnlADVRv7NnAhCZ/xog2OlmpoPBCt//NLI8KPNF00LmAP0cnQj29EgfOnJ8j28T0BTRtGA2XLEje0c=
+	t=1725461357; cv=none; b=Se5tgiehKls0hSNpQRPYqo6x/yuNFvkWJMbNK1pwugzm6CtUoDHGuRKmEydIdfyhUR1XBu6rQxm6vWxa4qWK8S6t8iIFb2+BlSoqtFGF+HFHw6SuR7pHmGhKS7fHaqCWRTntJ9qooX6P61TZ6TcDmrN2m4uVii/H4Keek4qVjeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725460728; c=relaxed/simple;
-	bh=9g4bcMefx4VsRdPiJTfFO6ZuTbj1DZwo2hj9Ax6QLM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ITIQ4gXY2T874kTeU4jzGgzjsS6DJMtTn+iH6rrdRRqPy550RfHOUH3UjK2oLgk5aRVitkRG0O79CiWGU4ksux2Sb6j6lMqL/NKlTj2FzKv3p6L+YuOK6VsOzToDcbmCkUDPWTZNi+SfS8gBkyYG1kxIRPhpgcP0CvZtk83Y1AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBrBjyh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E96C4CEC2;
-	Wed,  4 Sep 2024 14:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725460728;
-	bh=9g4bcMefx4VsRdPiJTfFO6ZuTbj1DZwo2hj9Ax6QLM4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RBrBjyh08Wzp+hex91O3p0ELH4SLaumyVzpKuoFP5v0+M9hNql293QcKQnJHkls9W
-	 ogpdYxNe8mf9Upihv17W16er3fFpXyvl50/x0k/JcmJYHovKYGkpNZrkDFym0aVskk
-	 WMbzxCYlSfv/jZrGlZyEsSb03mACZJ5gLa5raN6w=
-Date: Wed, 4 Sep 2024 16:38:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH 6.1.y] selftests: mptcp: join: validate event numbers
-Message-ID: <2024090420-passivism-garage-f753@gregkh>
-References: <2024083026-attire-hassle-e670@gregkh>
- <20240904111338.4095848-2-matttbe@kernel.org>
+	s=arc-20240116; t=1725461357; c=relaxed/simple;
+	bh=ih32sz16+1Bo8017jKrT+lylx+9UJQKMc0c26/f6B2E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y8aeNIJ8IQO6WyLDqTH6xIhma9UbusjUPvLHDtap71Rds0qNGiHNEmS2vKf4OXR0ksturwtKuJW1AyLDfsWMEB+oFZJRlDAijbzdE2T6rG/y6hmxSsDx6yC6pjHkCIF9Gj13B4FhUA5X5FbMDCXbOdiQjMrCkWLBz+HSPgYSXz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=89.232.161.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from [10.177.185.108] (helo=new-mail.astralinux.ru)
+	by mx.astralinux.ru with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <adiupina@astralinux.ru>)
+	id 1slrIK-009mJm-3t; Wed, 04 Sep 2024 17:47:40 +0300
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.198.38.84])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4WzQNW5xtsz1gx6v;
+	Wed,  4 Sep 2024 17:48:43 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>,
+	Steve French <sfrench@samba.org>,
+	stable@vger.kernel.org,
+	Aurelien Aptel <aaptel@suse.com>,
+	Paulo Alcantara <palcantara@suse.de>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10] cifs: Fix freeing non heap memory in dup_vol()
+Date: Wed,  4 Sep 2024 17:48:32 +0300
+Message-Id: <20240904144832.28857-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904111338.4095848-2-matttbe@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-DrWeb-SpamScore: 0
+X-DrWeb-SpamState: legit
+X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgrucffihhuphhinhgruceorgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeduleetfeehffekueeuffektefgudfgffeutdefudfghedvieffheehleeuieehteenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudelkedrfeekrdekgeenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdqfedtvdeiledtrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrdduleekrdefkedrkeegmeehkeefuddvpdhmrghilhhfrhhomheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopedutddprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrughiuhhpihhnrgesrghsthhrrghlihhnuhigrdhruhdprhgtphhtthhopehsfhhrvghntghhsehsrghmsggrrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggrphhtvghlse
+ hsuhhsvgdrtghomhdprhgtphhtthhopehprghltggrnhhtrghrrgesshhushgvrdguvgdprhgtphhtthhopehlihhnuhigqdgtihhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghmsggrqdhtvggthhhnihgtrghlsehlihhsthhsrdhsrghmsggrrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhvtgdqphhrohhjvggttheslhhinhhugihtvghsthhinhhgrdhorhhgnecuffhrrdghvggsucetnhhtihhsphgrmhemucenucfvrghgshem
+X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.7.202406240#1725456685#02
+X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128, SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12157423, Updated: 2024-Sep-04 13:08:53 UTC]
 
-On Wed, Sep 04, 2024 at 01:13:39PM +0200, Matthieu Baerts (NGI0) wrote:
-> commit 20ccc7c5f7a3aa48092441a4b182f9f40418392e upstream.
-> 
+Remove kfree(&vi->smb_vol), since &vi->smb_vol
+is a pointer to an area inside the allocated memory.
 
-This did not apply either.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-I think I've gone through all of the 6.1 patches now.  If I've missed
-anything, please let me know.
+Fixes: 54be1f6c1c37 ("cifs: Add DFS cache routines")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+---
+ fs/cifs/dfs_cache.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-thanks,
+diff --git a/fs/cifs/dfs_cache.c b/fs/cifs/dfs_cache.c
+index 7b6db272fd0b..da6d775102f2 100644
+--- a/fs/cifs/dfs_cache.c
++++ b/fs/cifs/dfs_cache.c
+@@ -1194,7 +1194,6 @@ static int dup_vol(struct smb_vol *vol, struct smb_vol *new)
+ 	kfree_sensitive(new->password);
+ err_free_username:
+ 	kfree(new->username);
+-	kfree(new);
+ 	return -ENOMEM;
+ }
+ 
+-- 
+2.30.2
 
-greg k-h
 
