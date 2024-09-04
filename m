@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-73078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D480996C0C0
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:36:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2068C96C0B8
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 632B3B29A33
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:35:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB7B1F224D8
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AC61DC73E;
-	Wed,  4 Sep 2024 14:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398D41DC197;
+	Wed,  4 Sep 2024 14:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do7OQI1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWaGbQy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22B61DA301;
-	Wed,  4 Sep 2024 14:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9511773D;
+	Wed,  4 Sep 2024 14:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725460430; cv=none; b=sfcy9nezmdj5w7e7vqr9NhtJmd9QvdRgq+CYbSzvzWV2DIFMCYNjLSxDaHrZ9nKs4jRJYvwNoR5A2LUkxHu4hMogE/3rsO79io6HGtcj/SQnEpOSQmsd45mxuwm2h710QRxWVdbJO/4HcPBoWV5I8lZOFHtAZpMIt/xyBS3GpfE=
+	t=1725460453; cv=none; b=VfB99ecGbyS/u3IMDD4qDLoTVrAkhE2IQ5N7gerVU8IFENY8Uxz/Lvm4HtUotDtsTzF13lZwwFdcBhEGpMjFrZrtMtOh7CO1MsVOxfGko/RXjk7mPIzb8x0mzlD7lfzk31nTCGJfxGW+kAZ+LYPEUqh+kcCVPmdmA03BOtwHlqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725460430; c=relaxed/simple;
-	bh=rVuaORk17sTnbnG8gdImMI5Om1MiiU8eKBa7r0w1qNg=;
+	s=arc-20240116; t=1725460453; c=relaxed/simple;
+	bh=13aFPTMnmuhiKv/uWoLnHBNyjR1SadB6h+QvKx4Efis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+dl35uBOD72+xwKFhSX6zdV9DUwhZSbc57vWZuM5jQMKxZr3f0dt272WoxPb2g7jkn++7sDho+eQ5DTrIfa7nHeOr7NCIOMifI572rV4+u2fYq9N9TqwuQezyuiUD9hej4mtED9Tef1nwMplULlECJMCREHqoJhuYer8ncngA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do7OQI1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034CCC4CEC2;
-	Wed,  4 Sep 2024 14:33:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sxncpex5m+E5pcR7K0xPZIkdKb2D9cf2dpkpgY/l6h68RRVLsOjFD4pZQqoNk/zPuayLdRlWzN39DrVqZVyBBMgUPjiQYanIJ9iwHc6bKJ+jcGs1M4soVlZ4FnLM1EbgiLBA0jDQdBuMUS7SfOae7UdGM1K8m3u2Vcbr2QZBCOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWaGbQy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33385C4CEC2;
+	Wed,  4 Sep 2024 14:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725460429;
-	bh=rVuaORk17sTnbnG8gdImMI5Om1MiiU8eKBa7r0w1qNg=;
+	s=korg; t=1725460452;
+	bh=13aFPTMnmuhiKv/uWoLnHBNyjR1SadB6h+QvKx4Efis=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Do7OQI1l1XtAcBejm9eIUruHfI/+aAHCPpoCOQFN35QwrnGlO0hCZ8hQ/lS0DBN9Q
-	 ZmTEIurW6cTHv/hlMtyRNXoFvojKW1VxulQh2rGa9RXq98dGo0n5Hu3EidTM6okggx
-	 XT4A8OGk7GfzSQs9cqI9ES5Y/veov8GXrOU6rbyM=
-Date: Wed, 4 Sep 2024 16:33:19 +0200
+	b=AWaGbQy13bvygOuDmm79QFbs1hc+8ZRXhM9qiTiv1G5AETO4kNblfOlHMmq98oDUv
+	 9cC7loz90qRP9JNlw4y/V3OjaA4BrEZ32zjMKgC8MD6V1pDdlCK5ufRMHtkreeDs4z
+	 B/+p5KBKX+NnwyjM0R4UIioUp+adkpdo+Zejz2/M=
+Date: Wed, 4 Sep 2024 16:34:09 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.1.y 2/2] selftests: mptcp: join: test for flush/re-add
- endpoints
-Message-ID: <2024090414-richly-nearest-a619@gregkh>
-References: <2024082618-wilt-deafness-0a89@gregkh>
- <20240904110611.4086328-3-matttbe@kernel.org>
- <20240904110611.4086328-4-matttbe@kernel.org>
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 6.1.y 1/2] mptcp: make pm_remove_addrs_and_subflows static
+Message-ID: <2024090401-ride-diffusive-629a@gregkh>
+References: <2024083045-mosaic-sniff-fe02@gregkh>
+ <20240904111014.4091498-3-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,11 +56,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240904110611.4086328-4-matttbe@kernel.org>
+In-Reply-To: <20240904111014.4091498-3-matttbe@kernel.org>
 
-On Wed, Sep 04, 2024 at 01:06:13PM +0200, Matthieu Baerts (NGI0) wrote:
-> commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
+On Wed, Sep 04, 2024 at 01:10:15PM +0200, Matthieu Baerts (NGI0) wrote:
+> From: Geliang Tang <tanggeliang@kylinos.cn>
+> 
+> commit e38b117d7f3b4a5d810f6d0069ad0f643e503796 upstream.
 > 
 
-Applied
+Already in the tree
 
