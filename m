@@ -1,69 +1,70 @@
-Return-Path: <stable+bounces-73099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB6F96C83C
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D160196C840
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B227928666D
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A468281538
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D1384A35;
-	Wed,  4 Sep 2024 20:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC901386A7;
+	Wed,  4 Sep 2024 20:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="clIYixfP"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ltJ3yTsM"
 X-Original-To: stable@vger.kernel.org
 Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29AF6BFA3
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 20:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7605E13D532;
+	Wed,  4 Sep 2024 20:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725481089; cv=none; b=Sv6xWytJ3rK8EfxGOjfXsBqEUIlqii9snGhLmx+IrVvMA6/o8Bxb0I6K8sEdreyqwUq08MYyzPl8qwNXREaA3nofx+uCmwbDWjKHn6z/zKPoAZczTOlWSeO1Vum+l391m6K+N4qLoseaqOFhB2oNXUiy/8S3iKS7RMCbjvkmdqc=
+	t=1725481142; cv=none; b=EzE9Fpu8JI1zvpNfE2dVHJdpNk22eig7LU05ZGkSmUntSU+Dd2iEE5VwqCOovMg/WVMKd77ZBd6a+ZirKvMeoQgfKHnxaWWkBH11WHk/FAu1x33YWLCY9VQwlPCoApt0NaTviQrQQCiyo+czQEStE+zWRaTQFR4Z33jkk0NF7Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725481089; c=relaxed/simple;
+	s=arc-20240116; t=1725481142; c=relaxed/simple;
 	bh=MAXsiQtJ6WIl6u3XvM9qP/wKwbWvsT+xDAqv0LL9ov0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cYqSKzbhw1PZqKRwejkDkk/RnnRd78QDy5HPyS6OZ51Q98sCymyADrTxQEnLFZVgVhyqRTMd7TjB776OjRG36qEK+0M5uuolpovcbuXjaQ5GXm6rZ6jDC40vNCESOpQnNEAxB4GiGXRhEFKkgVtaHRLT4Dw/+dgXbnVDvFVe2OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=clIYixfP; arc=none smtp.client-ip=199.89.1.11
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AvHdMN5R1oizYqjftZIMs5t5lnbbVmoDRRMy/ZJbl3KoR6Ju2RP92lnboaLlwKuQLTI8CN9r7piRY2HONR89KcRxAxB1RYAhCrUNZrGcFrMVziAy/1PrgsUL09lv5Xw+5q5e3Ldz4AxI92z10pr07eB6qgujeKcs0RmMPZnjNtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ltJ3yTsM; arc=none smtp.client-ip=199.89.1.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzYhT1zxkz6CmLxj;
-	Wed,  4 Sep 2024 20:18:01 +0000 (UTC)
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzYjb63Cnz6ClY8s;
+	Wed,  4 Sep 2024 20:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
 	content-transfer-encoding:mime-version:x-mailer:message-id:date
 	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1725481078; x=1728073079; bh=x+LXEvQo2gdj5yh0a6NeCfTwRObOEro4wzw
-	PVHiV6LM=; b=clIYixfPelmKMyl0KRRh6HBSqvzAOs1mAxyG8I9fG2snwZMM7l+
-	u7nfvQsWeNmWHbxdbjGWlElUs4O10M+ZmGbtJ77t9jA4ndiAXaD1NHyKrQZBgcjl
-	orwd8Ta/eRPBjqhewoRSN63Z5MYeejAqHwWUGox88nOmAheyA+uzsYp3mdRGdaR6
-	MQ7+0aWLP6hgE+2NoWBygP5Q7LkLcmqUW5IJS0Zusqn2P2MgLREfkBjDEgv1jj0D
-	pze/2FOKLySA+tTLyRwhVXQUL4IuTBR2z+p4pStel64EY4R5nD849CWIEli92Z0A
-	QjRH6wWBu3MdsgPuw/WyUL6VhBFE2egxr2A==
+	1725481136; x=1728073137; bh=x+LXEvQo2gdj5yh0a6NeCfTwRObOEro4wzw
+	PVHiV6LM=; b=ltJ3yTsMl4gmtEGn21e4mo6Jxztl0pklFFJGFlmV9tZBIM6kquC
+	/zAh4qMx2YOf4GlXXJyDtCnQ/hUHe5eWE2BI8SgJX7ni9jfkuICK+XyqiXH9mJ/R
+	FRJDg+mJEVzp3y8hqEJNCcopdCo+SDUj80/ELuFPz1c7ADw9Okrb1PrYcbi59Vbd
+	CKoVHuN+G2oIYD4aqCxbbcUhAgdva650MCCwoW6xZJvIKTYUEMUfatOt9vRqjPqH
+	3k7u404hk0UW9rkmaQbFmUXI6yM8GjbKF9mV3TQkufDavg2Silo9dfTe7tZ1wnNt
+	in3umpm9zpbS77yQ1CJmGD4U5NtdDB1Oa0Q==
 X-Virus-Scanned: by MailRoute
 Received: from 008.lax.mailroute.net ([127.0.0.1])
  by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id GoGObcMJ9H_W; Wed,  4 Sep 2024 20:17:58 +0000 (UTC)
+ id ytUEYCZNuGPI; Wed,  4 Sep 2024 20:18:56 +0000 (UTC)
 Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzYhN4r5Kz6ClbFV;
-	Wed,  4 Sep 2024 20:17:56 +0000 (UTC)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzYjW02lVz6ClY8q;
+	Wed,  4 Sep 2024 20:18:54 +0000 (UTC)
 From: Bart Van Assche <bvanassche@acm.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Bart Van Assche <bvanassche@acm.org>,
+Cc: linux-usb@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	stable@vger.kernel.org
 Subject: [PATCH] usb: roles: Fix a false positive recursive locking complaint
-Date: Wed,  4 Sep 2024 13:17:48 -0700
-Message-ID: <20240904201748.2901149-1-bvanassche@acm.org>
+Date: Wed,  4 Sep 2024 13:18:39 -0700
+Message-ID: <20240904201839.2901330-1-bvanassche@acm.org>
 X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
