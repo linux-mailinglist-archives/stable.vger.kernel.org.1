@@ -1,140 +1,140 @@
-Return-Path: <stable+bounces-73049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48B196BD7A
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 15:00:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD9896BDC9
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 15:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4C91F211EB
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:00:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A48C8B28C36
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19921DA2F5;
-	Wed,  4 Sep 2024 12:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9F81DA63E;
+	Wed,  4 Sep 2024 13:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHF2Cwro"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xr6oyYIM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C181DA2F8;
-	Wed,  4 Sep 2024 12:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16FE1DA114
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 13:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725454750; cv=none; b=bsIylE7qos3rGqJzVlupKrPVBsCryO0nU2DF16DWAWNFt+STyG1Cy0Sewf6QtXFiRgWQXa2G7Aom3uS8g1AWEauTcQ8fCGq/+OcumsjDR/kseQrESXPtT+ooE0zV8TGilLDm+xyloKiTz7xgKdx5jbtM9mvX/285qwFxginvnaw=
+	t=1725455089; cv=none; b=sby/3P1q6NOr8KR4ZDEZ2+l0c1XrYvy/W2x/cs3AHoM/UDDPvSflrpyS3d17PLPjkdBFRUn8WxNLCcO3FCHQKTuFVvwFlLUhpwTBaCV8hc3PAmDAQCsiI3sry9Ed/EPvxVeXSm8HiMVfWQ8gotOviiAnC8eC12En4NPnyipJlVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725454750; c=relaxed/simple;
-	bh=1/R2z0kZ0U/PBor35M5Yn+s1t4FCzjvMNUAowIyng0k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YxpoHwASFvRrnFUqsSVOn3ZCAEiftrg0c25myAfQTJwDvYGuL0GTvXvz7MSHk0NFhwXJYT32i6yB97h/3oXH9HanBQl6n5Xezi1tvOGGH4cDPnog9Nvkoa6/P6k0Y7RzJcNEQPZlg7m+f615eXhLQo2AVeeARSTPourVQZuF0do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHF2Cwro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9417C4CEC2;
-	Wed,  4 Sep 2024 12:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725454750;
-	bh=1/R2z0kZ0U/PBor35M5Yn+s1t4FCzjvMNUAowIyng0k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XHF2CwrocAYjhBqHtSo5kNRPKuBGbXfYG041MyTu/Zu22U/pb6eHHC5ZL1N6oY5yt
-	 5Qv6p3/x7OrSSV3ctj7RQ2bV/fyfrrBJwWfMT14K9OBcmfrkcm/B29PaYh2yqGTR7n
-	 GLdhSsnSHc2JJTrkVeRPR7VcTMBFWX16NxH8+SVfYyjr2KK1tgwvOhJUE0LM3TCwyp
-	 MLZ2ZYkqL1rDxyEemadsHd/xWOebpIlM/o5qBt7KNQeepWy5ub63BwLmmm/HJ7l83b
-	 SdRHCMGVNSmzyBGZFtJ0a80r73PUJkUOMGFaJkRtdPg0pFmKejTPdFwawtxUjXYR9+
-	 9fUADTLit/jiA==
-Message-ID: <a5f25f18-d60f-4544-9f28-3a463911fd0b@kernel.org>
-Date: Wed, 4 Sep 2024 14:59:07 +0200
+	s=arc-20240116; t=1725455089; c=relaxed/simple;
+	bh=7ak4XrEdnlRi2v/8yamUtfMc99iT2J630o3+jOFReH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gwxFdzpj8RP1kMmF/U7d84AE1rrvhSq8cCJOkDDYDogtqtU7F+EgeC6bowzZ4gGZ2MoaLtLdFuqvNQ+qAo9O93fthCPKoJHmvVUAbmjkIan2LwX/Px0XpKBMVgCLXY5oqFLlVin3tiN1XWbBTkIHh43Z536MrDZRKckjtk+IE0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xr6oyYIM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725455086;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zSmRkKcwStoVZz4ycbGuELyN9bbatZOLmay6g4DKLKw=;
+	b=Xr6oyYIMRuM9PBzxQ6hTHsL3Gmdi2W4Ak6Sel+CJR6KsxWkUQ+pypyo6q99haA3lS3grYz
+	+ebBV3C5qa57+vpdEC0yKOcz5E2eThxMNt01kUn0/bJN4+X5CPNaQ2UPQ1583qdBd7WW8I
+	PpXqU+FP6h4sHUNYf+JziawZBxef2pc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-8quKOHEAMIa7bzdo6jPLpQ-1; Wed,
+ 04 Sep 2024 09:04:43 -0400
+X-MC-Unique: 8quKOHEAMIa7bzdo6jPLpQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4ACF19560AE;
+	Wed,  4 Sep 2024 13:04:41 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.59])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95DF3195605A;
+	Wed,  4 Sep 2024 13:04:36 +0000 (UTC)
+Date: Wed, 4 Sep 2024 21:04:30 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: axboe@kernel.dk, yukuai1@huaweicloud.com, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] block: fix ordering between checking
+ BLK_MQ_S_STOPPED and adding requests
+Message-ID: <Ztha3hb962mok1wf@fedora>
+References: <20240903081653.65613-1-songmuchun@bytedance.com>
+ <20240903081653.65613-4-songmuchun@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.6.y 2/4] selftests: mptcp: join: test for flush/re-add
- endpoints
-Content-Language: en-GB
-To: gregkh@linuxfoundation.org, Sasha Levin <sashal@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- stable@vger.kernel.org, mptcp@lists.linux.dev
-References: <2024082617-capture-unbolted-5880@gregkh>
- <20240903100807.3365691-8-matttbe@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20240903100807.3365691-8-matttbe@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240903081653.65613-4-songmuchun@bytedance.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hi Greg, Sasha,
-
-On 03/09/2024 12:08, Matthieu Baerts (NGI0) wrote:
-> commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
+On Tue, Sep 03, 2024 at 04:16:53PM +0800, Muchun Song wrote:
+> Supposing first scenario with a virtio_blk driver.
 > 
-> After having flushed endpoints that didn't cause the creation of new
-> subflows, it is important to check endpoints can be re-created, re-using
-> previously used IDs.
+> CPU0                                                                CPU1
 > 
-> Before the previous commit, the client would not have been able to
-> re-create the subflow that was previously rejected.
+> blk_mq_try_issue_directly()
+>     __blk_mq_issue_directly()
+>         q->mq_ops->queue_rq()
+>             virtio_queue_rq()
+>                 blk_mq_stop_hw_queue()
+>                                                                     virtblk_done()
+>     blk_mq_request_bypass_insert()                                      blk_mq_start_stopped_hw_queues()
+>         /* Add IO request to dispatch list */   1) store                    blk_mq_start_stopped_hw_queue()
+>                                                                                 clear_bit(BLK_MQ_S_STOPPED)                 3) store
+>     blk_mq_run_hw_queue()                                                       blk_mq_run_hw_queue()
+>         if (!blk_mq_hctx_has_pending())                                             if (!blk_mq_hctx_has_pending())         4) load
+>             return                                                                      return
+>         blk_mq_sched_dispatch_requests()                                            blk_mq_sched_dispatch_requests()
+>             if (blk_mq_hctx_stopped())          2) load                                 if (blk_mq_hctx_stopped())
+>                 return                                                                      return
+>             __blk_mq_sched_dispatch_requests()                                          __blk_mq_sched_dispatch_requests()
 > 
-> The 'Fixes' tag here below is the same as the one from the previous
-> commit: this patch here is not fixing anything wrong in the selftests,
-> but it validates the previous fix for an issue introduced by this commit
-> ID.
+> Supposing another scenario.
+> 
+> CPU0                                                                CPU1
+> 
+> blk_mq_requeue_work()
+>     /* Add IO request to dispatch list */       1) store            virtblk_done()
+>     blk_mq_run_hw_queues()/blk_mq_delay_run_hw_queues()                 blk_mq_start_stopped_hw_queues()
+>         if (blk_mq_hctx_stopped())              2) load                     blk_mq_start_stopped_hw_queue()
+>             continue                                                            clear_bit(BLK_MQ_S_STOPPED)                 3) store
+>         blk_mq_run_hw_queue()/blk_mq_delay_run_hw_queue()                       blk_mq_run_hw_queue()
+>                                                                                     if (!blk_mq_hctx_has_pending())         4) load
+>                                                                                         return
+>                                                                                     blk_mq_sched_dispatch_requests()
+> 
+> Both scenarios are similar, the full memory barrier should be inserted between
+> 1) and 2), as well as between 3) and 4) to make sure that either CPU0 sees
+> BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list. Otherwise, either CPU
+> will not rerun the hardware queue causing starvation of the request.
+> 
+> The easy way to fix it is to add the essential full memory barrier into helper
+> of blk_mq_hctx_stopped(). In order to not affect the fast path (hardware queue
+> is not stopped most of the time), we only insert the barrier into the slow path.
+> Actually, only slow path needs to care about missing of dispatching the request
+> to the low-level device driver.
+> 
+> Fixes: 320ae51feed5c ("blk-mq: new multi-queue block IO queueing mechanism")
+> Cc: stable@vger.kernel.org
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-FYI, Sasha has recently queued all the patches from this series for
-v6.6, except this one, the backport of e06959e9eebd ("selftests: mptcp:
-join: test for flush/re-add endpoints").
+Looks fine,
 
-In theory, this commit can be applied without any conflicts now that
-commit b5e2fb832f48 ("selftests: mptcp: add explicit test case for
-remove/readd") has been queued in v6.6.
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+
+Thanks,
+Ming
 
 
