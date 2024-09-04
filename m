@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-73064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7741E96C043
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:25:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5686B96C04D
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2691C2513D
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:25:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F5428ED9C
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747EE1DC054;
-	Wed,  4 Sep 2024 14:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB9E1DCB38;
+	Wed,  4 Sep 2024 14:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c88XGUuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3Qc/M+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD5E1DB937;
-	Wed,  4 Sep 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF61DC04A;
+	Wed,  4 Sep 2024 14:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725459740; cv=none; b=KAcc5X5oUTELttaObyPxs63krU0F/m0UjSCuKxPqnTFFSptjDMreXJO9Ge+v3G9pX1nY0kOZaYas7TwbGfbN6Xg/QYFBF/xN2qWPihuZ8WCoFhmJipe5i/gz+nSNKA2Tt6WIO+jmqid4qpaH9lwLN22MMvfVVsoB86YsIFNwhn0=
+	t=1725459825; cv=none; b=YfpHOyvmpwz+0Q9CL04o5lLsmY8d5qmnOr9DEDnITrQOWtyCGVJGZaBtn61Y3eLKe/JkfdszUVvaGXbBpvMVq+PBcNiruok63v/xAgbTQVXKO1IlgLixk2Aj4TM5NBuAKqUBX5JXcyRMP3oeVJA1yZw+f5uNruSRuwVKuGMb15o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725459740; c=relaxed/simple;
-	bh=hIiIY41fkK2zy2zljqXTV1SqpfVoUzdq+U6aynT+NOg=;
+	s=arc-20240116; t=1725459825; c=relaxed/simple;
+	bh=upyMFhK2PT2U7+0NWGDIv0m1IqeBZy+daOSAhTHxgec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dyKoRT9C9E0Sq3UxplDUcyxADJfst/trTnE0Y+EJLdSlmiZ6GLb8bxqVtcrot5XpcKsZs78sKcmlZIUwDt6Hjz6RtHeCVTDHHQYxkZvRr/XKxCKpDs8TayWU4Wybb/u+OisWjjZ81ixbvCH7ix7I/YTCdWXGnM6yGlhXXDWvTQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c88XGUuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13719C4CEC2;
-	Wed,  4 Sep 2024 14:22:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=f67753J6XhGs96XpIPZ8jinIX71Y8EzfVQ+b/+06S36qoreLkWHcepFag1kJ/5MVdjjJ3ahpVaPeylHeojpl8ETULU5U6NtNeZ6D/iNtzjHtiJA+KLUauuFsTbRHpNz+G4MO3SoZNMlj140fQxJD6D2g/SVBFQH95pmp0GNRPio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3Qc/M+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C84AC4CEC2;
+	Wed,  4 Sep 2024 14:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725459738;
-	bh=hIiIY41fkK2zy2zljqXTV1SqpfVoUzdq+U6aynT+NOg=;
+	s=korg; t=1725459825;
+	bh=upyMFhK2PT2U7+0NWGDIv0m1IqeBZy+daOSAhTHxgec=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c88XGUuG/+bY63ciU91GiCJmooCOk9cBavobyHbHzDnYdMKTGvRkrjde55kgRaBNb
-	 6KYu113OMf0shHUa3f36IS0kSp41oEdW7/LgsOfzqRfZmLU9DTtgvkNieCCCFgKU22
-	 wqfcng8Dslv3UJeqfSabxMCCwlmr6vizSRf5/opQ=
-Date: Wed, 4 Sep 2024 16:22:15 +0200
+	b=A3Qc/M+gEmKz7lWfvOBFjTNaY0JATLI3xxWYhw9DIf7cxKEWTyNA1g/W1ILhwVeKd
+	 DLqApFksvp/PPYuneJqwWioAP6pTolRgqxX3SxijUBHP9YjkiRAY+piN1nNhNZMjEp
+	 eeLDk57jvbLgj7kzgwX66osETYWGSUNhFvqzAQ9I=
+Date: Wed, 4 Sep 2024 16:23:42 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, MPTCP Upstream <mptcp@lists.linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] selftests: mptcp: join: cannot rm sf if closed
-Message-ID: <2024090455-debate-underfeed-d667@gregkh>
-References: <2024083052-unedited-earache-8049@gregkh>
- <20240903101845.3378766-2-matttbe@kernel.org>
- <129aa31e-44e9-4327-ba0a-d976a5e00d06@kernel.org>
+To: Richard Narron <richard@aaazen.com>
+Cc: Linux stable <stable@vger.kernel.org>,
+	Linux kernel <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 5.15 000/215] 5.15.166-rc1 review
+Message-ID: <2024090413-unwed-ranging-befe@gregkh>
+References: <8c0d05-19e-de6d-4f21-9af4229a7e@aaazen.com>
+ <2024090419-repent-resonant-14c1@gregkh>
+ <fc713222-f7b1-d1c0-2aa2-c15f42d3873e@aaazen.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,50 +57,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <129aa31e-44e9-4327-ba0a-d976a5e00d06@kernel.org>
+In-Reply-To: <fc713222-f7b1-d1c0-2aa2-c15f42d3873e@aaazen.com>
 
-On Wed, Sep 04, 2024 at 03:43:03PM +0200, Matthieu Baerts wrote:
-> Hi Greg, Sasha,
+On Wed, Sep 04, 2024 at 05:48:09AM -0700, Richard Narron wrote:
+> On Wed, 4 Sep 2024, Greg KH wrote:
 > 
-> On 03/09/2024 12:18, Matthieu Baerts (NGI0) wrote:
-> > commit e93681afcb96864ec26c3b2ce94008ce93577373 upstream.
-> > 
-> > Thanks to the previous commit, the MPTCP subflows are now closed on both
-> > directions even when only the MPTCP path-manager of one peer asks for
-> > their closure.
-> > 
-> > In the two tests modified here -- "userspace pm add & remove address"
-> > and "userspace pm create destroy subflow" -- one peer is controlled by
-> > the userspace PM, and the other one by the in-kernel PM. When the
-> > userspace PM sends a RM_ADDR notification, the in-kernel PM will
-> > automatically react by closing all subflows using this address. Now,
-> > thanks to the previous commit, the subflows are properly closed on both
-> > directions, the userspace PM can then no longer closes the same
-> > subflows if they are already closed. Before, it was OK to do that,
-> > because the subflows were still half-opened, still OK to send a RM_ADDR.
-> > 
-> > In other words, thanks to the previous commit closing the subflows, an
-> > error will be returned to the userspace if it tries to close a subflow
-> > that has already been closed. So no need to run this command, which mean
-> > that the linked counters will then not be incremented.
-> > 
-> > These tests are then no longer sending both a RM_ADDR, then closing the
-> > linked subflow just after. The test with the userspace PM on the server
-> > side is now removing one subflow linked to one address, then sending
-> > a RM_ADDR for another address. The test with the userspace PM on the
-> > client side is now only removing the subflow that was previously
-> > created.
-> FYI, Sasha has recently queued this patch to v6.6, with a bunch of
-> dependences.
+> > On Mon, Sep 02, 2024 at 03:39:49PM -0700, Richard Narron wrote:
+> > > I get an "out of memory" error when building Linux kernels 5.15.164,
+> > > 5.15.165 and 5.15.166-rc1:
+> > > ...
+> > > cc1: out of memory allocating 180705472 bytes after a total of 283914240
+> > > bytes
+> > > ...
+> > > make[4]: *** [scripts/Makefile.build:289:
+> > > drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.o]
+> > > Error 1
+> > > ...
+> > >
+> > > I found a work around for this problem.
+> > >
+> > > Remove the six minmax patches introduced with kernel 5.15.164:
+> > >
+> > > minmax: allow comparisons of 'int' against 'unsigned char/short'
+> > > minmax: allow min()/max()/clamp() if the arguments have the same
+> > > minmax: clamp more efficiently by avoiding extra comparison
+> > > minmax: fix header inclusions
+> > > minmax: relax check to allow comparison between unsigned arguments
+> > > minmax: sanity check constant bounds when clamping
+> > >
+> > > Can these 6 patches be removed or fixed?
+> >
+> > It's a bit late, as we rely on them for other changes.
+> >
+> > Perhaps just fixes for the files that you are seeing build crashes on?
+> > I know a bunch of them went into Linus's tree for this issue, but we
+> > didn't backport them as I didn't know what was, and was not, needed.  If
+> > you can pinpoint the files that cause crashes, I can dig them up.
+> >
 > 
-> I'm OK with that, no need to take this version here where I resolved the
-> conflicts not to take the dependences. But then, please also queue the 2
-> patches that are needed for new dependences that have been added:
+> The first one to fail on 5.15.164 was:
+> drivers/media/pci/solo6x10/solo6x10-core.o
 > 
->   https://lore.kernel.org/20240904133755.67974-4-matttbe@kernel.org
+> So I found and applied this patch to 5.15.164:
+> [PATCH] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
 
-Ok, I think I've got this all right for 6.6.y now, if not, please let me
-know.
+What is the git commit id of that change?  I can't seem to find it.
+
+> Then the next to fail on 5.15.164 was:
+> drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.o
+
+What .c file is this happening for?
 
 thanks,
 
