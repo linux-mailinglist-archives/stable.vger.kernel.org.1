@@ -1,84 +1,114 @@
-Return-Path: <stable+bounces-72990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D8B96B6CD
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41F496B6F3
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF48F1F25B3A
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80FCE284D0D
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0451CEAA4;
-	Wed,  4 Sep 2024 09:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868FD1CEE96;
+	Wed,  4 Sep 2024 09:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyJjmxxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSabC1xj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEA01CCB26;
-	Wed,  4 Sep 2024 09:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFC21CEE8B;
+	Wed,  4 Sep 2024 09:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725442502; cv=none; b=lzYKuHoh8omzkq4ewu4Anwf9EmLLtmOYlewHSuSl7Hd4QcZLPdMB/6CY1lI2fUT3vDFKP/GZggShQqHc1WZ0X0+GkHzORHbocW4Whp2XvDAwIsc7Onmv77yWkEGvufLOWZ36/cAXT2+0H3/CkSzJsEwmnP4WEaUZufh4jqANlFM=
+	t=1725442689; cv=none; b=EBOk6qnHrjBLDyPvCfe8Blu4+KA9ykYKuwJOtLKq0caKMQVD42hOylu446zDGuMJzXJFPxuYBAruvjhTEEwcfJpqkHfFglW2UMns4UTC5PXlnc9ell63A8+s19FJy129vd34JJJsYkAjeef89BM6T2u92b3rfEoEzsmGuUM1O5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725442502; c=relaxed/simple;
-	bh=etQsRFqDOsSDuim1MqlIjuHK2o6JooOUeqtKdpk9YhA=;
+	s=arc-20240116; t=1725442689; c=relaxed/simple;
+	bh=IKirc6HevZIvUKJ+85aPDDWvupVvCnVxgat3yoXt4Mc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a9Ws9aPgypjIxf24Gg9e9LBOAZ8yGDYvuONjk6FbRXetccO4DVcGMjOUVxIM99F2fTSMzjC4K0g0bDIhKMWAZDjA1H0UwA2f/dm6D2itmUsfiK9mAXN5LDqyqVOGX5Wr6It/rut7nc8VQUnHbH95WlfDK9A57NDn8ajaCRABDsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyJjmxxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9ABC4CEC2;
-	Wed,  4 Sep 2024 09:35:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=V6YoCiPPG/rFI7EaQAkrEG4QsGoLooW+v5hg/PXmRUwVYJdJNZ8DaoE/vnfI8Ak8IpnsELDKmjvXkfoVW4bsg8+bDetyVoVvPS1QtbvpHCTl4Md6nRIIqA9IngP9FsXsY7245Va0Qotxf0Qd6Gl5pc6Tp+evAoBpYIO2tiZKP+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSabC1xj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0C3C4CEC2;
+	Wed,  4 Sep 2024 09:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725442502;
-	bh=etQsRFqDOsSDuim1MqlIjuHK2o6JooOUeqtKdpk9YhA=;
+	s=korg; t=1725442688;
+	bh=IKirc6HevZIvUKJ+85aPDDWvupVvCnVxgat3yoXt4Mc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OyJjmxxvq0GnhUm6Elst4+tsbJu78CeKW3/TV7Fl2dmKCHOUdXUusfvJ1APwx9nRI
-	 mFNLIQwcf7FEC2K1IwCArgfV0gC9yF7NfxOqu4Mg3g1lRPoY4DdIbGn/+0QCsIQl45
-	 ZBjEs4Rqw6xWe47VQAKXFsX3MoB1+ubpQdug0lBk=
-Date: Wed, 4 Sep 2024 11:34:59 +0200
+	b=GSabC1xjeQi546QZ83/KA3NhitTdMJaFd0r4H7JYFMe6oaDFZUale8NPYaPwS6r7J
+	 D7u9fCkaaDm/hZCaqFNv/+04TLGOHh47s1mYMFILeDLJcO11ATut+dyOa3miU9mbvz
+	 15Ig8bZL2cr8drjJkcOGBGXoCY4TRXhQvwmEoKD4=
+Date: Wed, 4 Sep 2024 11:38:05 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Namjae Jeon <linkinjeon@kernel.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 187/215] ksmbd: the buffer of smb2 query dir
- response has at least 1 byte
-Message-ID: <2024090406-uncertain-casket-d946@gregkh>
-References: <20240901160823.230213148@linuxfoundation.org>
- <20240901160830.426516431@linuxfoundation.org>
- <CAKYAXd_UvscfaXpnoJNv2GEeDU0sUfg3_=gG7VX7My60EzXgfA@mail.gmail.com>
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Anders Roxell <anders.roxell@linaro.org>,
+	aleksander.lobakin@intel.com,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 4.19 00/98] 4.19.321-rc1 review
+Message-ID: <2024090449-reselect-charter-575b@gregkh>
+References: <20240901160803.673617007@linuxfoundation.org>
+ <CA+G9fYscUiPT0Eo9yo4UhJq2jjYtvLhOofQKhAMEOiVueR-Vaw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKYAXd_UvscfaXpnoJNv2GEeDU0sUfg3_=gG7VX7My60EzXgfA@mail.gmail.com>
+In-Reply-To: <CA+G9fYscUiPT0Eo9yo4UhJq2jjYtvLhOofQKhAMEOiVueR-Vaw@mail.gmail.com>
 
-On Tue, Sep 03, 2024 at 08:16:07AM +0900, Namjae Jeon wrote:
-> On Mon, Sep 2, 2024 at 2:07 AM Greg Kroah-Hartman
+On Mon, Sep 02, 2024 at 02:30:57PM +0530, Naresh Kamboju wrote:
+> On Sun, 1 Sept 2024 at 21:50, Greg Kroah-Hartman
 > <gregkh@linuxfoundation.org> wrote:
 > >
-> Hi Greg,
-> > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> Please drop this patch.
-> I told you this patch was required for 6.1 kernel versions or later in
-> previous mail.
+> > This is the start of the stable review cycle for the 4.19.321 release.
+> > There are 98 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.321-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> Apart from Powerpc build regressions we have noticed s390 build regression.
+> The S390 defconfig builds failed on Linux stable-rc 4.19.321-rc1 due to
+> following build warnings / errors with clang-18 and gcc-12.
+> 
+> This is a same problem on current stable-rc review on
+>    - 4.19.321-rc1 review
+> 
+> In the case of stable-rc linux-4.19.y
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> Following two commits have been added on 4.19.321-rc1.
+> -------
+>   s390/cio: rename bitmap_size() -> idset_bitmap_size()
+>   commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
+> 
+>   bitmap: introduce generic optimized bitmap_size()
+>   commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
 
-This was added because commit eb3e28c1e89b ("smb3: Replace smb2pdu
-1-element arrays with flex-arrays") has been backported to 5.15 and 5.10
-stable kernels.
+Odd, this should have also shown up in your 5.4.y builds too.
 
-But hey, I'll go drop it now, and will be glad to add it back later if
-needed.
-
-thanks,
+I'll go drop this from both trees now, thanks.
 
 greg k-h
 
