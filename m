@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-73108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1D196C9CB
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:51:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A93596C9D5
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 23:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD2D286004
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E032863F3
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 21:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA98C1741D2;
-	Wed,  4 Sep 2024 21:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816D81714C1;
+	Wed,  4 Sep 2024 21:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C8B4Pu7m"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bDkWiP0O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3400F1714A9
-	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 21:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED3A17C9AA
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 21:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725486695; cv=none; b=M7cdD2o1PBj0VoeqdVwTSs4w76+C3fouSsn7WUtwSTd5O2m7enJ9N00Ol2CINSm9DVeE0a+xaUEFCJp1xO9HknppjxQuNKkWMebglqE0h/KgyIHrXyK2KzK+RrWeW+lfP5wK0UdwXUzDDnytR3ZOcgDCrDsxCwcv/RuR/s1M4Z8=
+	t=1725486712; cv=none; b=j5H4CT+t4dNAdo8bjrPMdz0e6NmJj/0mn+fsoAsQIcqpG+u4+H8prDSB0mzRqZ1XOHDhm3WfSbwBMj1wLb58ANtgV9vhS4auxmzqjFoMqM1wSN6QIfxRqduJUNsJWOuVkcXXg01y541XHd4HhSXPgTGjf0/b37ailuRIUNh95dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725486695; c=relaxed/simple;
-	bh=52OavEbDbnnXzGVYj1cdimeK3fNcZ3tbnsTSFU90N5o=;
+	s=arc-20240116; t=1725486712; c=relaxed/simple;
+	bh=3HkNVCxJy56k3u+LITc9D7/1LsDfdZXPVJ2TlkcFnSs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UpllB3hQaxmHO9tduSuOCsXIE61nqAOgje2/DS9QewrGPw6kUCuHMQzb/aW/P5Rg+xsC4j9OmnI3NLpowmJOCr8i5MlzHdDzAQp/jHnuSpxMneDO2591ypXj6Z0avE8B6/JYzP6YNp65Jtni03MnC861d+zPAI4uw3FWopLz3AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C8B4Pu7m; arc=none smtp.client-ip=209.85.210.54
+	 To:Cc:Content-Type; b=RB3f6w/Q8n8uCscy0EITbXiSBIwvt8ifWy0Tgkd6SKO0zv4clMzhUFm/d0bbKKc3QcvE/uMwFnEvttO1nMjK1Ybyvf3sArkUtO2JcHPQoe+8lf52TZfpPH6HhoiOsby7j9qw0I1kB7naJWcFYOlJDJJS2nvMLA5Oa43LxP4V2Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bDkWiP0O; arc=none smtp.client-ip=209.85.128.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-70f657cc420so87900a34.0
-        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 14:51:34 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6b747f2e2b7so146687b3.3
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 14:51:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1725486693; x=1726091493; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1725486707; x=1726091507; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GEVB0OaxtEANZF8G4JgUXQ7IBpjIjKgmyEACvOZxq44=;
-        b=C8B4Pu7m+yGIBipLecwld/aykc2j6fT05QvwJUKZtzO/gjHu4lqFiM8aCcNcrr3Ayl
-         hTAu+A/hSofKApJOjdK5zRnjzBm/UfVzSeNBHyxXnVlPGuLxJ/tPstfRycF8mo3/gYjF
-         Rz+gkJVntXToufnGfBlMIAd9F0iiMKm9BFflo=
+        bh=9yUwPDHkK2WMXQHvh/6LMKlWFNebPcDI2OCZ0Tor/Kg=;
+        b=bDkWiP0OWbahkdJJV862dxvCBBGEyc9Fe3I3Ne9SfD/UsmcqGlpNINc+JbC4P4S9Nd
+         0LU9tf5JjE4bgzcT6uYMkBu5fNF+EcilHbicB8rNezYhzikTeMKPdVwWcAQfC/LZOoIw
+         xyWENCa3H/rcw21vr3vgtYgV8EslwAraLdq/s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725486693; x=1726091493;
+        d=1e100.net; s=20230601; t=1725486707; x=1726091507;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GEVB0OaxtEANZF8G4JgUXQ7IBpjIjKgmyEACvOZxq44=;
-        b=wO9aKAlKRpQzE4VxZRN/tFAv48BZgYVLM7OExiaFHik8DldmsRQjuUUOjpcWSnVRUa
-         rdoQ2JXtFSWCNhbWDYCH6xmPuGIGyIFq0dPGaRSqWhEApjrrwGLqBW0ZmljYCKJHYVyn
-         EfHh2r2zV5XnCfmECy70ZWte/osILqB/o8rq0Dzw+W+KzsNPCxsFD7oTLQnlJdKqw0GW
-         MfZjm30E7gXhc2k0WNeNSojDiOU5RE8XWJLKitAA537QoAj+6QJ59CmYlKdOysTEN14n
-         UTzKFvyY95EwZfDX7f8q1bTxTz/jSzT3DCpWHyeZF9nFtWzddI2RMAUidvfQLvj8Ub44
-         zytw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNwTJtRrjS0ySgr0lWIBYlnVbVMMUUfyFfBBa28yumJ/el05/He2DkEK4+okOFE4f8FQ2YD9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL4cEeVe6HlIW4WFBEVucvcHIsOl6/H1vdZnPEAnHEYDWwtd//
-	TKkK1Y4yaxZGavF2T4LROhpgOcTr1LEfdlrO/ly6UD2ZgKTOrbjtxWVZRJ9wO/YTWjVaD+nhgG0
+        bh=9yUwPDHkK2WMXQHvh/6LMKlWFNebPcDI2OCZ0Tor/Kg=;
+        b=MJjH2work/VmJqIVWSwqRb7WtEoRqO4r3q9DWhycPCIT9p11vAWHpoRNQOTAAdUg2q
+         ltfkdwPcC7kKmZoFEHmgUjKsSdfeHE2rc4Zh0BcCr+zJeomgyHOmGCGzI+BnxLg+/AAO
+         de9OveqjrVqNlxRIuSZ6zQw0CgfxPUAaSWAU9xJkDEPzII+xG6A4RAJZZ1Bkzf5Q86I/
+         ONVHqx24N8CjlcdA9cDdp2RA9ZEUA8Cwrvwi52axEXPNlDOKSEtcN3OXJWsvNh4gtNcF
+         wq1WeqIfP9lw5uclf5Bqqq6ABRlm+JFQo8Yka6TTHGnNJ6Ca7UcX/FU733YiuE9gcPsE
+         KbPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXc5jmUVcVznTQYssFqeNTaqrGopU8J+4A3TJPlHGTjJaiq+unFmZVV10bnY5iJc9y8qtESxdo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1tK9JHTFEb5AonDh/nZP+O0Zi+3N2LLAg3KnaArWq2GMCKPwI
+	MtovAwkMxyM1uI5VqoYDuTpb0E/ND/ffhqDphUMI2NVPf06VqLa6pzyk6XIwQzRRupZ5Yvi6riE
 	=
-X-Google-Smtp-Source: AGHT+IFrefq2/GkULd1h++htTcPtIDhsDzwRhldzTQyKX6QMFUBi7l2KUe4NTnObS6nElnJjwiLT+w==
-X-Received: by 2002:a05:6830:3747:b0:709:4094:2a68 with SMTP id 46e09a7af769-70f5c42d45emr28264072a34.30.1725486692747;
-        Wed, 04 Sep 2024 14:51:32 -0700 (PDT)
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com. [209.85.210.43])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70f671a8938sm3020747a34.53.2024.09.04.14.51.32
+X-Google-Smtp-Source: AGHT+IEf5/TLs4rccv7sEdN9Ih+fr7yg9mC1k+BcHJGRx8+PM+JkZgHyqy9sERswkq++NlFOxHt72Q==
+X-Received: by 2002:a05:690c:f8f:b0:62f:a250:632b with SMTP id 00721157ae682-6daf484a81emr79621467b3.8.1725486707078;
+        Wed, 04 Sep 2024 14:51:47 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6d46c4aefc3sm20601857b3.31.2024.09.04.14.51.45
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 14:51:32 -0700 (PDT)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-70f657cc420so87878a34.0
-        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 14:51:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUBrUMaoUTSMJIgPsMVQg8JOBkCb4GwWuLTRK8k9Wyr5t3iGO53AoAk7qfvbyWNzmVfS2FNoFY=@vger.kernel.org
-X-Received: by 2002:a05:6830:6d08:b0:70a:988a:b5fd with SMTP id
- 46e09a7af769-70f5c406907mr29012888a34.24.1725486691455; Wed, 04 Sep 2024
- 14:51:31 -0700 (PDT)
+        Wed, 04 Sep 2024 14:51:46 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e1a9b40f6b3so170642276.1
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 14:51:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW/3UpQd25eX3UznfPQI2u5BqVK2/YHpLB0jW0onpt5MKj89ILgOHCtj4G/INdYC5sRQdC79ZE=@vger.kernel.org
+X-Received: by 2002:a05:6902:1886:b0:e1b:27d7:76c4 with SMTP id
+ 3f1490d57ef6-e1b27d77c64mr13543115276.30.1725486703973; Wed, 04 Sep 2024
+ 14:51:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902152451.862-1-johan+linaro@kernel.org> <20240902152451.862-7-johan+linaro@kernel.org>
-In-Reply-To: <20240902152451.862-7-johan+linaro@kernel.org>
+References: <20240902152451.862-1-johan+linaro@kernel.org> <20240902152451.862-9-johan+linaro@kernel.org>
+In-Reply-To: <20240902152451.862-9-johan+linaro@kernel.org>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 4 Sep 2024 14:51:15 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XnpPnSToWV3f2Z-DWm2-1rdgYmDZeicGGRQD-_YjS2Bw@mail.gmail.com>
-Message-ID: <CAD=FV=XnpPnSToWV3f2Z-DWm2-1rdgYmDZeicGGRQD-_YjS2Bw@mail.gmail.com>
-Subject: Re: [PATCH 6/8] serial: qcom-geni: fix console corruption
+Date: Wed, 4 Sep 2024 14:51:28 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WGbjWXB95Rk5Np7Fp6sN+_AySVw0WtdNXE9xURxdVU5A@mail.gmail.com>
+Message-ID: <CAD=FV=WGbjWXB95Rk5Np7Fp6sN+_AySVw0WtdNXE9xURxdVU5A@mail.gmail.com>
+Subject: Re: [PATCH 8/8] serial: qcom-geni: fix polled console corruption
 To: Johan Hovold <johan+linaro@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
@@ -99,45 +99,46 @@ Hi,
 On Mon, Sep 2, 2024 at 8:26=E2=80=AFAM Johan Hovold <johan+linaro@kernel.or=
 g> wrote:
 >
-> +static void qcom_geni_serial_drain_fifo(struct uart_port *uport)
-> +{
-> +       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
-> +
-> +       if (!qcom_geni_serial_main_active(uport))
-> +               return;
-
-It seems like all callers already do the check and only ever call you
-if the port is active. Do you really need to re-check?
-
-
-> @@ -308,6 +311,17 @@ static bool qcom_geni_serial_poll_bit(struct uart_po=
-rt *uport,
->         return qcom_geni_serial_poll_bitfield(uport, offset, field, set ?=
- field : 0);
->  }
+> The polled UART operations are used by the kernel debugger (KDB, KGDB),
+> which can interrupt the kernel at any point in time. The current
+> Qualcomm GENI implementation does not really work when there is on-going
+> serial output as it inadvertently "hijacks" the current tx command,
+> which can result in both the initial debugger output being corrupted as
+> well as the corruption of any on-going serial output (up to 4k
+> characters) when execution resumes:
 >
-> +static void qcom_geni_serial_drain_fifo(struct uart_port *uport)
-> +{
-> +       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
-> +
-> +       if (!qcom_geni_serial_main_active(uport))
-> +               return;
-> +
-> +       qcom_geni_serial_poll_bitfield(uport, SE_GENI_M_GP_LENGTH, GP_LEN=
-GTH,
-> +                       port->tx_queued);
+> 0190: abcdefghijklmnopqrstuvwxyz0123456789 0190: abcdefghijklmnopqrstuvwx=
+yz0123456789
+> 0191: abcdefghijklmnop[   50.825552] sysrq: DEBUG
+> qrstuvwxyz0123456789 0191: abcdefghijklmnopqrstuvwxyz0123456789
+> Entering kdb (current=3D0xffff53510b4cd280, pid 640) on processor 2 due t=
+o Keyboard Entry
+> [2]kdb> go
+> omlji3h3h2g2g1f1f0e0ezdzdycycxbxbwawav :t72r2rp
+> o9n976k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawavu:t7t8s8s8r2r2q0q0p
+> o9n9n8ml6k6k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawav v u:u:t9t0s4s4rq0p
+> o9n9n8m8m7l7l6k6k5j5j40q0p                                              p=
+ o
+> o9n9n8m8m7l7l6k6k5j5j4i4i3h3h2g2g1f1f0e0ezdzdycycxbxbwawav :t8t9s4s4r4r4q=
+0q0p
+>
+> Fix this by making sure that the polled output implementation waits for
+> the tx fifo to drain before cancelling any on-going longer transfers. As
+> the polled code cannot take any locks, leave the state variables as they
+> are and instead make sure that the interrupt handler always starts a new
+> tx command when there is data in the write buffer.
+>
+> Since the debugger can interrupt the interrupt handler when it is
+> writing data to the tx fifo, it is currently not possible to fully
+> prevent losing up to 64 bytes of tty output on resume.
+>
+> Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver sup=
+port for GENI based QUP")
+> Cc: stable@vger.kernel.org      # 4.17
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/tty/serial/qcom_geni_serial.c | 27 ++++++++++++++++++---------
+>  1 file changed, 18 insertions(+), 9 deletions(-)
 
-nit: indent "port->tx_queued" to match open parenthesis?
-
-...also: as the kernel test robot reported, w/ certain CONFIGs this is
-defined / not used.
-
-Aside from the nit / robot issue, this solution looks reasonable to
-me. It's been long enough that I've already paged out much of the past
-digging I did into this driver, but this seems like it should work.
-Feel free to add my Reviewed-by when the robot issue is fixed.
-
-
-
--Doug
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
