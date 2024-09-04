@@ -1,127 +1,91 @@
-Return-Path: <stable+bounces-73100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D160196C840
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:19:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479AB96C848
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A468281538
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:19:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CC98B210D0
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC901386A7;
-	Wed,  4 Sep 2024 20:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F87413D532;
+	Wed,  4 Sep 2024 20:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ltJ3yTsM"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="tV+X64Df"
 X-Original-To: stable@vger.kernel.org
 Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7605E13D532;
-	Wed,  4 Sep 2024 20:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94C31386A7
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 20:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725481142; cv=none; b=EzE9Fpu8JI1zvpNfE2dVHJdpNk22eig7LU05ZGkSmUntSU+Dd2iEE5VwqCOovMg/WVMKd77ZBd6a+ZirKvMeoQgfKHnxaWWkBH11WHk/FAu1x33YWLCY9VQwlPCoApt0NaTviQrQQCiyo+czQEStE+zWRaTQFR4Z33jkk0NF7Cc=
+	t=1725481231; cv=none; b=smhbS8H1mF9vJoDsQ6D94DKxpIXVpGF2umfnEyUc6PsNG02oCdwgPQYKV35YDBv4wCfPuaUClFsBMEHmRT29d5AVI91wTWKNOKVPejll+m8i7iW+LdwHBoox8fsxXDZtD6IuOsSLF9bliFnfHfAjkTc+arZgiWcKut8b6INWNc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725481142; c=relaxed/simple;
-	bh=MAXsiQtJ6WIl6u3XvM9qP/wKwbWvsT+xDAqv0LL9ov0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AvHdMN5R1oizYqjftZIMs5t5lnbbVmoDRRMy/ZJbl3KoR6Ju2RP92lnboaLlwKuQLTI8CN9r7piRY2HONR89KcRxAxB1RYAhCrUNZrGcFrMVziAy/1PrgsUL09lv5Xw+5q5e3Ldz4AxI92z10pr07eB6qgujeKcs0RmMPZnjNtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ltJ3yTsM; arc=none smtp.client-ip=199.89.1.11
+	s=arc-20240116; t=1725481231; c=relaxed/simple;
+	bh=IoQ1BmnxDoXfoHo6T3iQZSXcD1PKsWq+WQDxMIPN8Kc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PbrKHZ7ZSbKtzybfXGiC2M5chUdLWKPYSqvhl2qa4+y2I4TlnFAGXsZQXNeOb7XrW8T689EITk09hyNoozYkEQhROhLiI2REfzacLHjdcl6IWMELlKDv5/jSzEQQdrzvNXupyR7go7cCvyTv+I98LhfQfumCgwlVkA+IBABGheY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=tV+X64Df; arc=none smtp.client-ip=199.89.1.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzYjb63Cnz6ClY8s;
-	Wed,  4 Sep 2024 20:18:59 +0000 (UTC)
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzYlK39C4z6ClY8q;
+	Wed,  4 Sep 2024 20:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1725481136; x=1728073137; bh=x+LXEvQo2gdj5yh0a6NeCfTwRObOEro4wzw
-	PVHiV6LM=; b=ltJ3yTsMl4gmtEGn21e4mo6Jxztl0pklFFJGFlmV9tZBIM6kquC
-	/zAh4qMx2YOf4GlXXJyDtCnQ/hUHe5eWE2BI8SgJX7ni9jfkuICK+XyqiXH9mJ/R
-	FRJDg+mJEVzp3y8hqEJNCcopdCo+SDUj80/ELuFPz1c7ADw9Okrb1PrYcbi59Vbd
-	CKoVHuN+G2oIYD4aqCxbbcUhAgdva650MCCwoW6xZJvIKTYUEMUfatOt9vRqjPqH
-	3k7u404hk0UW9rkmaQbFmUXI6yM8GjbKF9mV3TQkufDavg2Silo9dfTe7tZ1wnNt
-	in3umpm9zpbS77yQ1CJmGD4U5NtdDB1Oa0Q==
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1725481227; x=1728073228; bh=IoQ1BmnxDoXfoHo6T3iQZSXc
+	D1PKsWq+WQDxMIPN8Kc=; b=tV+X64Df2b/OMVOc89zbMmFxz5KmBzYTjjWAckEk
+	AXUiuZbkBFYbBDh27xB0pvyyDqwK/ladS3pf8YdcQdn1vvGd2Z9C6fsV5izwlKLe
+	aSn6r9nzj5HYSKvn1Fwqt8JZtQ9Vbw3Nz9plaMgBnf1dOA4V1ZN6RdoHrvDyEby3
+	v2Prwt4faTxp8CzLNRmdLT0vslPUkCqAFh2ijijxLiFQfHOEG+lgGrAa2xGyoA8Y
+	GWhr5jiwZgkqRYFxHVgWBACo8yZCzJ1AZH33ZXBdzWa8FqQ9vyXJCn/STBVXDlTR
+	vuXj2dL0kIthv/xiBQzlKWiMiWwSNejC/CSyuAJ2kD3nWg==
 X-Virus-Scanned: by MailRoute
 Received: from 008.lax.mailroute.net ([127.0.0.1])
  by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id ytUEYCZNuGPI; Wed,  4 Sep 2024 20:18:56 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+ id a9yTrYmVkHWR; Wed,  4 Sep 2024 20:20:27 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzYjW02lVz6ClY8q;
-	Wed,  4 Sep 2024 20:18:54 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: roles: Fix a false positive recursive locking complaint
-Date: Wed,  4 Sep 2024 13:18:39 -0700
-Message-ID: <20240904201839.2901330-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzYlG5960z6CmLxj;
+	Wed,  4 Sep 2024 20:20:26 +0000 (UTC)
+Message-ID: <0ef2df38-560e-4f6c-8c81-f03a947d3dd4@acm.org>
+Date: Wed, 4 Sep 2024 13:20:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: roles: Fix a false positive recursive locking
+ complaint
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, stable@vger.kernel.org
+References: <20240904201748.2901149-1-bvanassche@acm.org>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240904201748.2901149-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Suppress the following lockdep complaint:
+On 9/4/24 1:17 PM, Bart Van Assche wrote:
+> Suppress the following lockdep complaint: [ ... ]
 
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
+Please ignore this patch and instead take a look at the one that has
+been posted on the linux-usb mailing list.
 
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/usb/roles/class.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Thanks,
 
-diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index d7aa913ceb8a..f648ce3dd9b5 100644
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -21,6 +21,7 @@ static const struct class role_class =3D {
-=20
- struct usb_role_switch {
- 	struct device dev;
-+	struct lock_class_key key;
- 	struct mutex lock; /* device lock*/
- 	struct module *module; /* the module this device depends on */
- 	enum usb_role role;
-@@ -326,6 +327,8 @@ static void usb_role_switch_release(struct device *de=
-v)
- {
- 	struct usb_role_switch *sw =3D to_role_switch(dev);
-=20
-+	mutex_destroy(&sw->lock);
-+	lockdep_unregister_key(&sw->key);
- 	kfree(sw);
- }
-=20
-@@ -364,7 +367,8 @@ usb_role_switch_register(struct device *parent,
- 	if (!sw)
- 		return ERR_PTR(-ENOMEM);
-=20
--	mutex_init(&sw->lock);
-+	lockdep_register_key(&sw->key);
-+	__mutex_init(&sw->lock, "usb_role_switch_desc::lock", &sw->key);
-=20
- 	sw->allow_userspace_control =3D desc->allow_userspace_control;
- 	sw->usb2_port =3D desc->usb2_port;
+Bart.
+
 
