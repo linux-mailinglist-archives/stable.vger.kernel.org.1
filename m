@@ -1,113 +1,124 @@
-Return-Path: <stable+bounces-72958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D579296AF29
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 05:22:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3958C96AFBC
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 06:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13C131C21013
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 03:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5261F252AF
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 04:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A0461674;
-	Wed,  4 Sep 2024 03:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB67762DF;
+	Wed,  4 Sep 2024 04:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSUNarub"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vsFjC5h4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA464F602;
-	Wed,  4 Sep 2024 03:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0306F2EB;
+	Wed,  4 Sep 2024 04:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725420074; cv=none; b=i7GgSQcgHz4RzPKBNC53D4DMeJAeJQMyCXYG5HxyGaO8504mCzaM0G5T0QlFZ9TY8GYJZylpbT8f3TOQNOXN1/irlj8c8KJRp4uBkg7pxyO/IoM1OWCj/nc0kM+G1f5c4lXb3tJUnttSKteAPj7owJ1YYtHUiIV5x6rZbUbkSq0=
+	t=1725423493; cv=none; b=FEXxhf4T1XEai5Gp3oyvUbzNbV0qB0kZwNWgvY4lzy9qQtn2+m0ifcRUE+uBpzHV5SunSGgHjFIPzoCgfP5zfjWjIIZKmOTnYaSilHbytmgKqv1ekcdIKM6Ej5NrQfqLD0HDiLiYlBDrra48NdHV35FRBMikzoEb2jrjj0NKaj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725420074; c=relaxed/simple;
-	bh=7W7hSFh6fbzMu1DJBOBbHsI5RIQMTJ2hInRBKWxu5IA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oDiR34kRBG6ygYcIUBoGPKtmxlCckcRm4UJcuSKrB/MtExdpPkJc3ZKIRZbd+KxhL4gWaHTJPD2/hdZLokt9RzZNHKza+iAV+L8tk1oesHqh4AY9u6pRY2TVeY7jA3P2R3fmRn45Uv0qtENmAPD9BhGTU9etv1MMyat9lNXzTzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSUNarub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590B1C4CEC4;
-	Wed,  4 Sep 2024 03:21:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725420073;
-	bh=7W7hSFh6fbzMu1DJBOBbHsI5RIQMTJ2hInRBKWxu5IA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=QSUNarubdzImUCws3SMfJfYvb7vpJ3+zEAqxD8MTeRnEt484c/BSAx6jJzzsHqsLj
-	 o+ClAQ/NVA7gIpQGNqmzcC15bSCQ8EpzyTlJKyRXzuAQ99RSZqU/7nopUuX6k4cC2V
-	 8yXAbSg4cnXX5Hn+S14ywgiOp5nwLssmfBik9qtFxasjy+yLA06/NFsw7to/IIAox7
-	 GU1mAhc2wKJGJIWPJSDfpLxywKo2hCoJqfgfJpKESNj8JqR8MBFfbbSBcd1TrHsZpp
-	 3U8ZDAy1a25HNeNgRjxl5ylCO46x62MStPbvAw7s0HDBGaZ/FLvUNPrveBLlEyEu1S
-	 ZGeS2qyi3e/jg==
-From: Chao Yu <chao@kernel.org>
-To: jaegeuk@kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Chao Yu <chao@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] f2fs: fix to check atomic_file in f2fs ioctl interfaces
-Date: Wed,  4 Sep 2024 11:20:47 +0800
-Message-Id: <20240904032047.1264706-1-chao@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1725423493; c=relaxed/simple;
+	bh=IJmVIUHdes8t+IvRAKQuW+Qcet8o3Bn6hRLaf8XK4Vo=;
+	h=Date:To:From:Subject:Message-Id; b=r26zlf2scR217pC5RFuRXB5XN7Yt9iWe0c+00mgjs5TiZKfEnVEKZZZ8BhOMGdRFA48waJo58WBdw2n9qz8PI0U1dPNM9iIyO7Hyv3sbQ9RuBDgpMzjRo95ICFYazhiY0qIkp3gt/s1EKEEx3M8p/GYX9SK5DuEfdyB+rLU/Ftk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vsFjC5h4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E646EC4CEC2;
+	Wed,  4 Sep 2024 04:18:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1725423493;
+	bh=IJmVIUHdes8t+IvRAKQuW+Qcet8o3Bn6hRLaf8XK4Vo=;
+	h=Date:To:From:Subject:From;
+	b=vsFjC5h4Avkjx4KCUUmRIkNzV7EyWmYRfeXX3RSjXBIkJQRFich9oVsjJ7JJ2ouhw
+	 5baZo8PZL89Kj5f1zHKv5I2LhZXUNadIdQXaSfYC0Mv6nkT3ws4Li+cYBAHcljy0Gi
+	 D8Hk9QZDhVjcFNi3zjXQKjAZwVOYtzlPlxKkmvQM=
+Date: Tue, 03 Sep 2024 21:18:12 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,roman.gushchin@linux.dev,rientjes@google.com,penberg@kernel.org,iamjoonsoo.kim@lge.com,cl@linux.com,42.hyeyoo@gmail.com,dakr@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-krealloc-consider-spare-memory-for-__gfp_zero.patch removed from -mm tree
+Message-Id: <20240904041812.E646EC4CEC2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Some f2fs ioctl interfaces like f2fs_ioc_set_pin_file(),
-f2fs_move_file_range(), and f2fs_defragment_range() missed to
-check atomic_write status, which may cause potential race issue,
-fix it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
+The quilt patch titled
+     Subject: mm: krealloc: consider spare memory for __GFP_ZERO
+has been removed from the -mm tree.  Its filename was
+     mm-krealloc-consider-spare-memory-for-__gfp_zero.patch
+
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Danilo Krummrich <dakr@kernel.org>
+Subject: mm: krealloc: consider spare memory for __GFP_ZERO
+Date: Tue, 13 Aug 2024 00:34:34 +0200
+
+As long as krealloc() is called with __GFP_ZERO consistently, starting
+with the initial memory allocation, __GFP_ZERO should be fully honored.
+
+However, if for an existing allocation krealloc() is called with a
+decreased size, it is not ensured that the spare portion the allocation is
+zeroed.  Thus, if krealloc() is subsequently called with a larger size
+again, __GFP_ZERO can't be fully honored, since we don't know the previous
+size, but only the bucket size.
+
+Example:
+
+	buf = kzalloc(64, GFP_KERNEL);
+	memset(buf, 0xff, 64);
+
+	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+
+	/* After this call the last 16 bytes are still 0xff. */
+	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+
+Fix this, by explicitly setting spare memory to zero, when shrinking an
+allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+
+Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/f2fs/file.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index a8d153eb0a95..99903eafa7fe 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2710,7 +2710,8 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
- 				(range->start + range->len) >> PAGE_SHIFT,
- 				DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE));
+ mm/slab_common.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/mm/slab_common.c~mm-krealloc-consider-spare-memory-for-__gfp_zero
++++ a/mm/slab_common.c
+@@ -1273,6 +1273,13 @@ __do_krealloc(const void *p, size_t new_
  
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) ||
-+		f2fs_is_atomic_file(inode)) {
- 		err = -EINVAL;
- 		goto unlock_out;
- 	}
-@@ -2943,6 +2944,11 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
- 		goto out_unlock;
- 	}
- 
-+	if (f2fs_is_atomic_file(src) || f2fs_is_atomic_file(dst)) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
+ 	/* If the object still fits, repoison it precisely. */
+ 	if (ks >= new_size) {
++		/* Zero out spare memory. */
++		if (want_init_on_alloc(flags)) {
++			kasan_disable_current();
++			memset((void *)p + new_size, 0, ks - new_size);
++			kasan_enable_current();
++		}
 +
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
-@@ -3326,6 +3332,11 @@ static int f2fs_ioc_set_pin_file(struct file *filp, unsigned long arg)
- 
- 	inode_lock(inode);
- 
-+	if (f2fs_is_atomic_file(inode)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!pin) {
- 		clear_inode_flag(inode, FI_PIN_FILE);
- 		f2fs_i_gc_failures_write(inode, 0);
--- 
-2.40.1
+ 		p = kasan_krealloc((void *)p, new_size, flags);
+ 		return (void *)p;
+ 	}
+_
+
+Patches currently in -mm which might be from dakr@kernel.org are
+
 
 
