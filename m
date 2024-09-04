@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-73059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5066096C022
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:22:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB36E96C02F
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 16:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016021F2661E
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:22:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 086E41C250CC
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 14:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060C41DB927;
-	Wed,  4 Sep 2024 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC25F1DC04B;
+	Wed,  4 Sep 2024 14:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsxZhY4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="froQbjmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AEA1D0495;
-	Wed,  4 Sep 2024 14:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763581D4170;
+	Wed,  4 Sep 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725459579; cv=none; b=jlp6sJwpoeNIPANdv2n+XS1tAgeFFeEqnJGEOmsyU2b/s0RYDnAk62M9Wfgb88kHE5jqyXRtJhw8F112qwi4rdy6CVMR5/q2IxtMCe2E4cfskizDZ91BNCKwMJylfAp2mia3udg7bAznBMZFwUP4Wm5U+xF3rUeF2pepRbRQwos=
+	t=1725459638; cv=none; b=aOik2hzm33EXwW5KdIfLt5slClWCn+47eSQTqx2boRHe4TO7mEHCK+boAML9dzcJEQlCXbcl0xQ6lS4erjg76Su3Tqqj8kmSCOQNKEvT5cCPzlxdhAqgSF2iuE3xSZs3BwHQyoO3dsZH8nbX96t3h6t3NzNmtw2I/suE+D2gh10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725459579; c=relaxed/simple;
-	bh=oJyojKlM/C+yToRnqM61qH45uf5mvwOG2dI32gxQlVY=;
+	s=arc-20240116; t=1725459638; c=relaxed/simple;
+	bh=8TeTyxkPuqKs0E9KlcjCyubBjugwoozVVKl+fR8/568=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cJ740AkyS+kM+X5c3Pu3aIutnr7yDAB0moQXk51ZseGAQeYTO/sbdvmvTFxJ3w5yExhxO1DuJI2/2LBxMoUzynGUfP8q2jsw9G+48A9uiMvFsdS4JzGfaj1AHbieKrMxsB6NbwAFCo7JagWDcpgsDZi0i4HvRX5dZvJTxkUi5JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsxZhY4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EBAC4CEC2;
-	Wed,  4 Sep 2024 14:19:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IoftiKdHnnUcXUusfR7Eq+NIj3hm1TaOKsNB6fJnSXcCvd83LYdPcHk4a2sI9Yj1dplrKqgMThfwl4Wb6i4K5WSiDBa+5GBcBGC81KPLAeT1zGrlr8mEr7SAEsCQDxPR1IuFwFs9yPzij/EWgLW6S00kvkz+dGtT7wrOG/jFJxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=froQbjmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A070FC4CEC2;
+	Wed,  4 Sep 2024 14:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725459579;
-	bh=oJyojKlM/C+yToRnqM61qH45uf5mvwOG2dI32gxQlVY=;
+	s=korg; t=1725459637;
+	bh=8TeTyxkPuqKs0E9KlcjCyubBjugwoozVVKl+fR8/568=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VsxZhY4V0mf3a2d/nphDZnpSQbeATEFV2iWzKcgNiqFq3MK1wzCFozOuuM96c+hfO
-	 o5xvwTy/ZprJM0nwFKHBACbxX33x87jALH/yvWjl/JpEDx0J0AyOOWfqqn5F+ganVO
-	 24aZScIodimjbkN4WpJpj+dDukoEyVutGRdBOM0U=
-Date: Wed, 4 Sep 2024 16:19:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Yenchia Chen <yenchia.chen@mediatek.com>
-Cc: stable@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 6.6 1/1] PM: sleep: Restore asynchronous device resume
- optimization
-Message-ID: <2024090420-protozoan-clench-cca7@gregkh>
-References: <20240902093249.17275-1-yenchia.chen@mediatek.com>
- <20240902093249.17275-2-yenchia.chen@mediatek.com>
+	b=froQbjmFZTxaLYOiosB3BTWeto7tmLASwku3J5xv9yABKCKVXzw+Nxa2y3gHTErHf
+	 UKEm35YYb4AlzQqyzlsMKfJCH1tJOV7PnVbirutO0ic7K9KBQxa04+nwnLcu2f/6f3
+	 lGgDJUFotoxX6JBw6ftLnAwMOOp0aplUcFKwX/T8=
+Date: Wed, 4 Sep 2024 16:20:33 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: Re: [PATCH 6.6.y 2/4] selftests: mptcp: join: test for flush/re-add
+ endpoints
+Message-ID: <2024090428-jingle-railway-8ddd@gregkh>
+References: <2024082617-capture-unbolted-5880@gregkh>
+ <20240903100807.3365691-8-matttbe@kernel.org>
+ <a5f25f18-d60f-4544-9f28-3a463911fd0b@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,34 +58,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240902093249.17275-2-yenchia.chen@mediatek.com>
+In-Reply-To: <a5f25f18-d60f-4544-9f28-3a463911fd0b@kernel.org>
 
-On Mon, Sep 02, 2024 at 05:32:48PM +0800, Yenchia Chen wrote:
-> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Wed, Sep 04, 2024 at 02:59:07PM +0200, Matthieu Baerts wrote:
+> Hi Greg, Sasha,
 > 
-> commit 3e999770ac1c7c31a70685dd5b88e89473509e9c upstream.
+> On 03/09/2024 12:08, Matthieu Baerts (NGI0) wrote:
+> > commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
+> > 
+> > After having flushed endpoints that didn't cause the creation of new
+> > subflows, it is important to check endpoints can be re-created, re-using
+> > previously used IDs.
+> > 
+> > Before the previous commit, the client would not have been able to
+> > re-create the subflow that was previously rejected.
+> > 
+> > The 'Fixes' tag here below is the same as the one from the previous
+> > commit: this patch here is not fixing anything wrong in the selftests,
+> > but it validates the previous fix for an issue introduced by this commit
+> > ID.
 > 
-> Before commit 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core
-> system-wide PM code"), the resume of devices that were allowed to resume
-> asynchronously was scheduled before starting the resume of the other
-> devices, so the former did not have to wait for the latter unless
-> functional dependencies were present.
+> FYI, Sasha has recently queued all the patches from this series for
+> v6.6, except this one, the backport of e06959e9eebd ("selftests: mptcp:
+> join: test for flush/re-add endpoints").
 > 
-> Commit 7839d0078e0d removed that optimization in order to address a
-> correctness issue, but it can be restored with the help of a new device
-> power management flag, so do that now.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> Signed-off-by: Yenchia Chen <yenchia.chen@mediatek.com>
-> ---
->  drivers/base/power/main.c | 117 +++++++++++++++++++++-----------------
->  include/linux/pm.h        |   1 +
->  2 files changed, 65 insertions(+), 53 deletions(-)
+> In theory, this commit can be applied without any conflicts now that
+> commit b5e2fb832f48 ("selftests: mptcp: add explicit test case for
+> remove/readd") has been queued in v6.6.
 
-Why does this need to be backported?  What bug is it fixing?
-
-confused,
+Now queued up, thanks.
 
 greg k-h
 
