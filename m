@@ -1,142 +1,97 @@
-Return-Path: <stable+bounces-72962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DB296B111
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 08:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3572F96B174
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 08:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33316281D6D
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 06:11:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD57282F84
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 06:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD58284A5E;
-	Wed,  4 Sep 2024 06:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0696512FF7B;
+	Wed,  4 Sep 2024 06:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C8pPL0f0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVDDzh6Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B849F9D6;
-	Wed,  4 Sep 2024 06:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0CA823DE;
+	Wed,  4 Sep 2024 06:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725430269; cv=none; b=i9NwFhru/uT+jowmCC4KT3L/GT8fObjCVUVBoiYt0zSxtBmE6Dl/HWkUa0/eH/LXTlUh0ZRhHNtLybfN+BgRCa3+cJF3xp+3mo1k4lfD1pHPW3wmRMWrnZSxFmKPQ3AbjkZ0QVXPFT0szBrUCkhPXApYLyfx8EQbI8+fH3XkY9M=
+	t=1725430888; cv=none; b=QtG4m2BOnzpd6TsVOV/PaiNwMMUQRJaDFYcFXZ099qQUJwZQrD4/rO4LwgW3kHHnv0slEUVQ5IjsbT7eswN4OmWbBnLQdzH4HKvspAwC33qix4VY8Vcbtec/DN/G46zDsgxa+1LvVYfFJz/SFCnWz2fIA/W+1mRylS9Ew/8Iewc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725430269; c=relaxed/simple;
-	bh=aCL6Zb5OWsKvfMi2Mef+7SbyF16Z/0kioNzL8s98yzY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dfO2k/8nGMeSKgzXzaEtXxU8OSopDKEpZTiYZGKgLbRjTUBcgO/RwpazMDhLDIvroTWeMnB3FgKlFQeAL5tJ8Jm3AwZmAQB0GTZgeNkCWK9UAyWcm0H6GAMENBXJiwhLWhnMGFFUdF4BnJvmRb71GCZm94GmvsCKAYOOub42rCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C8pPL0f0; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725430267; x=1756966267;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=aCL6Zb5OWsKvfMi2Mef+7SbyF16Z/0kioNzL8s98yzY=;
-  b=C8pPL0f0bZh+fYb4u05yMbJXBDC0B60FMb9nSHZI3Q0yyJOAZmKKyqQc
-   SJBxQcvSIwiQPTJVrUpFESi0Yrzv9cyN7tpzfqfMtZfz+hX4lzedvPJ8c
-   L7weEBDA/XeNCa2EWJZGTZ4Np1Fs2NIPqRLr6QwZd4gC95X9bDXxIb2Rt
-   HqqjCj3ihueWffCQA7JH3Oo/bGvvmQjiFUtRo77QGWT8PgoMRtnj1FUFv
-   2L/5s21oCFZlcXGKpb+fh7UMknLRB91iLXSarmhLGQNL7ZH0SxUah1Xci
-   wD2kCL9P2LVWwvSApWmRb6kJenjXVW/qwqOFjb+RQAR01kzSytP7zic1q
-   w==;
-X-CSE-ConnectionGUID: L4rp+t4TTEmrMIgwx4DfBQ==
-X-CSE-MsgGUID: 0B6NOFdNS6KnXQlYgxTC/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="24228420"
-X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
-   d="scan'208";a="24228420"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 23:11:07 -0700
-X-CSE-ConnectionGUID: KzfF9kMAQ0OqQa6Zrw86Ig==
-X-CSE-MsgGUID: 9BOHvZ2FQ4G8g0K6TXpRig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
-   d="scan'208";a="70018930"
-Received: from allen-box.sh.intel.com ([10.239.159.127])
-  by orviesa004.jf.intel.com with ESMTP; 03 Sep 2024 23:11:04 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Cc: jani.saarinen@intel.com,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices requiring ATS
-Date: Wed,  4 Sep 2024 14:07:05 +0800
-Message-Id: <20240904060705.90452-1-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1725430888; c=relaxed/simple;
+	bh=45T0UdM4XULpq6I/wvSmgNZL5OfJfMSSqZmgV1iBb8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pwSMTONvUeFijIirvW82rvS/Kq5Y66zs3nqCBJR1rHxIYBcOF7qxp3pgCmzz1QfityfhCp+AnV7blxVwnm4UE20isBHY1Rdd5pku8ySgT3rWRdrwWmFdZOOQGGF6mswq+OOKUyUExdaW7Ujf42lvTvyVJZ+C7oxUhWv8fzq34Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVDDzh6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D618C4CEC2;
+	Wed,  4 Sep 2024 06:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725430888;
+	bh=45T0UdM4XULpq6I/wvSmgNZL5OfJfMSSqZmgV1iBb8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kVDDzh6QVMrQmWm/Ayy6BLEtPbpWxLD7Dmok9kpi96Xv/j0ze8gum1MQweUGRZbqZ
+	 31M1w8Yh3WWSQU6f7wOP33I8H5JvRqJZUjUc19FCXDNw81VsJpVLEVOi+xUaEzIhOj
+	 SWymqg1X2y7EYjHRJXXnn0znfNviyj2J1jFaQMw8=
+Date: Wed, 4 Sep 2024 08:21:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paul Pu <hui.pu@gehealthcare.com>
+Cc: p.zabel@pengutronix.de,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>, HuanWang@gehealthcare.com,
+	taowang@gehealthcare.com, sebastian.reichel@collabora.com,
+	ian.ray@gehealthcare.com, stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm: imx: ipuv3-plane: fix HDMI cannot work for odd
+ screen resolutions
+Message-ID: <2024090452-canola-unwoven-1c6c@gregkh>
+References: <20240904024315.120-1-hui.pu@gehealthcare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240904024315.120-1-hui.pu@gehealthcare.com>
 
-SOC-integrated devices on some platforms require their PCI ATS enabled
-for operation when the IOMMU is in scalable mode. Those devices are
-reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
-field.
+On Wed, Sep 04, 2024 at 05:43:15AM +0300, Paul Pu wrote:
+> This changes the judgement of if needing to round up the width or not,
+> from using the `dp_flow` to the plane's type.
+> 
+> The `dp_flow` can be -22(-EINVAL) even the plane is a PRIMARY one.
+> See `client_reg[]` in `ipu-common.c`.
+> 
+> [    0.605141] [drm:ipu_plane_init] channel 28, dp flow -22, possible_crtcs=0x0
+> 
+> Per the commit message in commit: 71f9fd5bcf09, using the plane type for
+> judging if rounding up is needed is correct.
+> 
+> Fixes: 71f9fd5bcf09 ("drm/imx: ipuv3-plane: Fix overlay plane width")
 
-The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
-ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
-can cause a conflict, leading to boot failure, especially if the device
-is a graphics device.
+That id is not in Linus's tree :(
 
-To prevent this issue, check PCI ATS support before enumerating the IOMMU
-devices. If any device requires PCI ATS, but PCI ATS is disabled by
-'pci=noats', switch the IOMMU to operate in legacy mode to ensure
-successful booting.
+> Cc: stable@vger.kernel.org
+> 
+> Signed-off-by: Paul Pu <hui.pu@gehealthcare.com>
 
-Fixes: 97f2f2c5317f ("iommu/vt-d: Enable ATS for the devices in SATC table")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12036
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/iommu.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+No need for the blank line before this.
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 4aa070cf56e7..8f275e046e91 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3127,10 +3127,26 @@ int dmar_iommu_notify_scope_dev(struct dmar_pci_notify_info *info)
- 					(void *)satc + satc->header.length,
- 					satc->segment, satcu->devices,
- 					satcu->devices_cnt);
--			if (ret > 0)
--				break;
--			else if (ret < 0)
-+			if (ret < 0)
- 				return ret;
-+
-+			if (ret > 0) {
-+				/*
-+				 * The device requires PCI/ATS when the IOMMU
-+				 * works in the scalable mode. If PCI/ATS is
-+				 * disabled using the pci=noats kernel parameter,
-+				 * the IOMMU will default to legacy mode. Users
-+				 * are informed of this change.
-+				 */
-+				if (intel_iommu_sm && satcu->atc_required &&
-+				    !pci_ats_supported(info->dev)) {
-+					pci_warn(info->dev,
-+						 "PCI/ATS not supported, system working in IOMMU legacy mode\n");
-+					intel_iommu_sm = 0;
-+				}
-+
-+				break;
-+			}
- 		} else if (info->event == BUS_NOTIFY_REMOVED_DEVICE) {
- 			if (dmar_remove_dev_scope(info, satc->segment,
- 					satcu->devices, satcu->devices_cnt))
--- 
-2.34.1
+thanks,
 
+greg k-h
 
