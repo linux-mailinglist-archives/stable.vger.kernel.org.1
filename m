@@ -1,150 +1,112 @@
-Return-Path: <stable+bounces-73024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF8C96BA15
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:19:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A8D96BA7A
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EDE9B28632
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29627284E71
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13ACC1D0140;
-	Wed,  4 Sep 2024 11:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E491D2233;
+	Wed,  4 Sep 2024 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQHxoK+O"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yGoy+T+U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A671D0976;
-	Wed,  4 Sep 2024 11:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4915F1D2223
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 11:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448556; cv=none; b=LV7ad4UkF61kwXpxZ1Jn3ebTQ4JLJCQ+xt8YDZ3wX9iVXyZzlQaSOaDU3n2a+kA2N9mhSp1Ae+Yuiy68eK1Yfi4aQMqXa2ah33EqvbVIZ19HbrXqagkaKa7b287umLW5Kix/1yn1yYizmIW6LUBCPpps23wsFa4KGzf/5YDZ5AM=
+	t=1725448923; cv=none; b=FPMZQMSQeymDic6rqPULwMZOUqOSHCcOQCvW0AVondq7+gE9AcHuBDHRxXCn5VBhQrikQmn5o9K0EVRV9H2gjNuQJmbW8R/+u0ld4FiAf0RNIpuDJh9rjAeB0Evod1JXdTk258qzNvC0hJy0W98C3WT4K/CT7G7NNOP5qX6iVuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725448556; c=relaxed/simple;
-	bh=FAFLbHTTBQD6IIVaBMJz74h35fL2BM6CL3lul3lrF3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g8KlrQd7TMivYtgg1Y2Dt8Dwp+4n+SiJEjmBS2AfNqFo+Dd2B07fDyFxS5T1Pcwj5RxTCSWyyG1fSz2g2pR8VknTMY7DW2cs5xmiVtRsXXMW+/6S0oq9dE3CmOIh7shmuOXXhUowxn7ITAaY6W2HQMJe78daB5283x6IsojKP/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQHxoK+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EF3C4CEC2;
-	Wed,  4 Sep 2024 11:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725448556;
-	bh=FAFLbHTTBQD6IIVaBMJz74h35fL2BM6CL3lul3lrF3w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YQHxoK+OIsQ6+3QcRn0pyxgI48S1Ccpmp4B0hH8Zm3x1npg0lX2VGeH9CmusxvcTM
-	 OLBW9aMZdMY0xMUKl6ubksosJ11M5dWbBhNdiGP7u4UwONvNI+zLWn2vWI3LXI0VOF
-	 e72lVoG+a11hylyajjdPcrSVL1vzxgn0HqZdLA9YVTPcLczlOc11h4cAClKUrbNi5K
-	 THTMbarGCv/kckps99vdlEbrLLHipWlDYqEoPUf3xHGdgv3umRowQiq7FsrHz6zLKe
-	 VvzueMkpCOrzt1OYyf9SlH1XfCpC/ctBK6JgMRGG3dVTMm84Eg65oNz6mWyDa5zToQ
-	 GW3ePWyep4o8A==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y] selftests: mptcp: join: cannot rm sf if closed
-Date: Wed,  4 Sep 2024 13:15:48 +0200
-Message-ID: <20240904111548.4098486-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1725448923; c=relaxed/simple;
+	bh=tUGnitL1oJl0KMESzrvT175K61tGZWpysgJ6DXWcXJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DNFm/2s/9qTvjJNVDyvVFgirnJKgahJi40UfiTF8Psrq9UDtRflNhIkdTmZPoteJKOkVCCXlQ4WqgtDnapw1pyeUKb58IRmg4fkqGYOnBJwBgCAgOUErzHof0gjB3nPyfwMhm1rxwu8TXEMsy1mWyDdjNzxWL6SITvn27TAhbNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yGoy+T+U; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a868b739cd9so780230266b.2
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 04:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725448921; x=1726053721; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MltCR2kUJ+u6ewwt3PqnT/txTdUpl2+plAUyJiRYims=;
+        b=yGoy+T+UqVCQvPDFjmslyxscPHNx+uVcJspvVIXfmAwBNNPAnR2q0cr9pgu6NRIsve
+         gEKQGOE1EoPWLzTyI039FNnP85yTxLz9rPSCkNpD0l5JxTTLS6Hw64XCfnakNoHJTdEP
+         849LJnStPLHbAiqPuUL37J8ACQQQSY+ijLiCKqqR6uVnZc2CTLcjkzauvAUTCXR55a+6
+         u8toLaYDCUh+AAsEa02dqkUnAdmgSimN6LxjosmqTOjZNuHb8K2m5BBOzR+/Qz4X5dEN
+         hEkO45bOFm1zAxz+MGB97rfJSIVm1gYAsLQhHmqG7gM6IQ1ZvukL/m+YOcDkAc6FT37b
+         2Nlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725448921; x=1726053721;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MltCR2kUJ+u6ewwt3PqnT/txTdUpl2+plAUyJiRYims=;
+        b=Jx0QGxWO+4lH90GxN4eoXtAaL+M9NZIpkxxGIuqDymFrvXBTe2gy9g6dN7b2pKV+U4
+         ICo5th1vVsyC1hCutNbOhE1bZUjWoKhOpjekhfi/wYa0l/1DY0Y28WoVQI97daYtddvO
+         I20xgUX/uGC1vg96SPojGaEsACiiCDYpc+TM3qIPg/WeMudoHxWEKXbwf+G50iCXc762
+         nmrS8S++EW7XrJskF/ck7h9/nfeh2ACI5LkwEzVrb/EQ6/O7PwEM6gjfLixjPATZ8UDz
+         d3JYtf3vqlprFnrAiLKfi9xov4fIjc0KP+VEM4zVuqg3aSopNN55k1oOYKa81nluOI4i
+         2miQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxSy3CKldX7smMXCmSexwWxOg59uWy/2Cgys+Ga8dpqqm8yY+OMk9P/b6OCBUbqjcGSLKQa+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz63vOswl+zNzcIYx/XX9RxU2U/CRCqArZOdxg6zROS3CJx3anV
+	zmOVXQJQmgFLeXccjC4T6mCDyMCp5bdh+3N0MwcASKqtDxcHZoxY3/jhbTpIRbY=
+X-Google-Smtp-Source: AGHT+IEQMSaBJ2FULqhSKBJMnPPhxjYwbXKozHJSAugRmi+lZj/dOm7MB00O2RV/p9wBRd67mSyVFw==
+X-Received: by 2002:a17:907:7f88:b0:a86:92fa:cd22 with SMTP id a640c23a62f3a-a897fad710emr1171240266b.68.1725448920563;
+        Wed, 04 Sep 2024 04:22:00 -0700 (PDT)
+Received: from [192.168.0.25] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a898900f26asm801371066b.58.2024.09.04.04.21.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Sep 2024 04:22:00 -0700 (PDT)
+Message-ID: <4e0529d2-0277-4a41-8d4d-915e4ec0baa1@linaro.org>
+Date: Wed, 4 Sep 2024 12:21:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3794; i=matttbe@kernel.org; h=from:subject; bh=FAFLbHTTBQD6IIVaBMJz74h35fL2BM6CL3lul3lrF3w=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2EFklylmSaVmfHfwQOyHhdGbkzPmSORDVegSV eifndqeUUiJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZthBZAAKCRD2t4JPQmmg cwKKEACTmgm61CoGLmt3uyXA6tJla5bKCuJVF+TR7xzNsqX0TvSSeFKu8aUUub+pEQR1c4SI2aD thuqIKsbVgqSFBNWC5zpT+au9KvKdxN0YLVX5k6tgfROnclXcvG/vQB8TmWHI8ud1U7KH/SX7OE zOrlbWgpsR3wuD36BK65LTF1AcOrMcstBwOCDtPP8wAH3/II8IlKC3Ffhe/HPXemj/Nwfn+x/wz OOcFC7wrJwyasRtA7aQEIg0TtHmsHQruaMeJRyYCVDzVIxC3M7djm+enyHr5NrfVUQPRwhnduQl W3IwHvzECBGnreJ0P+pxCILkehU+opbgM8RoRlHM/B3FdfQ6iVXlMtD7hjH/cn/34NMavCJeEpX 11cT3hcdj2VBLVA35dRfooRrPND39axuoFPNSECJJbgUIvvoPXX+xa2/6kh5HfM4nCwPlw+UjtA yad/lw+C1MG7hGNa9Q8a0Gz3BZfCk7pTTKsNofF8mS2ykx7UQ9OlGyezH47lNMXt4L501nPY+iM vSMazQY3dWNbU66KDKAO4Ps0j6M+zbVyqobGPghmPdzW7wwufGWNRzdbURnPBYFZeCJni3sMILC F50dvLPk+hKkcVinGmXptv0d2psv3mU4IoRJSpn5+MRJGQxirQZuu3GB3MsnASlNdqZKA60D2Tq f/Zzg2flyMXrv6w==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] (no cover subject)
+To: Vikram Sharma <quic_vikramsa@quicinc.com>, Robert Foss
+ <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kapatrala Syed <akapatra@quicinc.com>,
+ Hariram Purushothaman <hariramp@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ cros-qcom-dts-watchers@chromium.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Suresh Vankadara <quic_svankada@quicinc.com>,
+ Trishansh Bhardwaj <quic_tbhardwa@quicinc.com>, stable@vger.kernel.org,
+ Hariram Purushothaman <quic_hariramp@quicinc.com>
+References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit e93681afcb96864ec26c3b2ce94008ce93577373 upstream.
+On 04/09/2024 12:10, Vikram Sharma wrote:
+> SC7280 is a Qualcomm SoC. This series adds support to
+> bring up the CSIPHY, CSID, VFE/RDI interfaces in SC7280.
+> 
+> SC7280 provides
 
-Thanks to the previous commit, the MPTCP subflows are now closed on both
-directions even when only the MPTCP path-manager of one peer asks for
-their closure.
-
-In the two tests modified here -- "userspace pm add & remove address"
-and "userspace pm create destroy subflow" -- one peer is controlled by
-the userspace PM, and the other one by the in-kernel PM. When the
-userspace PM sends a RM_ADDR notification, the in-kernel PM will
-automatically react by closing all subflows using this address. Now,
-thanks to the previous commit, the subflows are properly closed on both
-directions, the userspace PM can then no longer closes the same
-subflows if they are already closed. Before, it was OK to do that,
-because the subflows were still half-opened, still OK to send a RM_ADDR.
-
-In other words, thanks to the previous commit closing the subflows, an
-error will be returned to the userspace if it tries to close a subflow
-that has already been closed. So no need to run this command, which mean
-that the linked counters will then not be incremented.
-
-These tests are then no longer sending both a RM_ADDR, then closing the
-linked subflow just after. The test with the userspace PM on the server
-side is now removing one subflow linked to one address, then sending
-a RM_ADDR for another address. The test with the userspace PM on the
-client side is now only removing the subflow that was previously
-created.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-2-905199fe1172@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: 97040cf9806e ("selftests: mptcp: userspace pm address tests")
-Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
-[ It looks like this patch is needed for the same reasons as mentioned
-  above, but the resolution is different: the subflows and addresses are
-  removed elsewhere. The same type of adaptations have been applied
-  here. The Fixes tag has been replaced by better appropriated ones. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 20561d569697..446b8daa23e0 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -984,8 +984,6 @@ do_transfer()
- 				dp=$(grep "type:10" "$evts_ns1" |
- 				     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
- 				ip netns exec ${listener_ns} ./pm_nl_ctl rem token $tk id $id
--				ip netns exec ${listener_ns} ./pm_nl_ctl dsf lip "$addr" \
--							lport $sp rip $da rport $dp token $tk
- 			fi
- 
- 			counter=$((counter + 1))
-@@ -1051,7 +1049,6 @@ do_transfer()
- 				sleep 1
- 				sp=$(grep "type:10" "$evts_ns2" |
- 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
--				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
- 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
- 									rip $da rport $dp token $tk
- 			fi
-@@ -3280,7 +3277,7 @@ userspace_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 userspace_1 0 slow
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_rm_nr 1 1 invert
-+		chk_rm_nr 1 0 invert
- 	fi
- 
- 	# userspace pm create destroy subflow
-@@ -3290,7 +3287,7 @@ userspace_tests()
- 		pm_nl_set_limits $ns1 0 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
- 		chk_join_nr 1 1 1
--		chk_rm_nr 1 1
-+		chk_rm_nr 0 1
- 	fi
- }
- 
--- 
-2.45.2
+Please RESEND with a subject !
 
 
