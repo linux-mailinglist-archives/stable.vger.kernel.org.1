@@ -1,139 +1,126 @@
-Return-Path: <stable+bounces-73098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A69396C82F
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:11:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB6F96C83C
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 22:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1351C224F2
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B227928666D
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 20:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DA340C03;
-	Wed,  4 Sep 2024 20:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D1384A35;
+	Wed,  4 Sep 2024 20:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0FPp0t0"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="clIYixfP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCD41E7672;
-	Wed,  4 Sep 2024 20:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29AF6BFA3
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 20:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725480693; cv=none; b=TDmUdhqEQ7mI3DVui0kz17vUvtCmWc0zvr6ZimhKb6LRyvdQ3/GjJheD4Pvay7g+L6fOQBf3PxLtBETMa7oTd7vXgr6G6ay1HxlqSyWe6jX8zDgotqIZ+IxYB/0IMTp6zXn/xGEgPxECVGfR0yF8ALmiUUNLfD+XsEmbgiKdj4o=
+	t=1725481089; cv=none; b=Sv6xWytJ3rK8EfxGOjfXsBqEUIlqii9snGhLmx+IrVvMA6/o8Bxb0I6K8sEdreyqwUq08MYyzPl8qwNXREaA3nofx+uCmwbDWjKHn6z/zKPoAZczTOlWSeO1Vum+l391m6K+N4qLoseaqOFhB2oNXUiy/8S3iKS7RMCbjvkmdqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725480693; c=relaxed/simple;
-	bh=DehHu6xAbURmG/4IvfJez3Wa6rd3rh+a7c46iCV4kV4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Se8LxHk+/hgMzxWSqL7Uo4WosNRHXGx61774DIh2p7+z4eyJde5SCEXkEQJGdDsyoQyEnyws3TfgfedxyTLhJNpb4TZjp7OH5QLWk+UdKuxiXOOfKrLCXM6V/6LbJrlVZf+HJpBgVOu6OgsI2Yh4M/HVYQ5j1VJYa3kl/1m9ORc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0FPp0t0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEA4C4CEC2;
-	Wed,  4 Sep 2024 20:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725480693;
-	bh=DehHu6xAbURmG/4IvfJez3Wa6rd3rh+a7c46iCV4kV4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M0FPp0t0h8bZR/Sis1VAY93F+bmKmXpbR5CK4M2AZ4VYTmoA/50rxA7UhgOX+8cEi
-	 ChWOIBx70ZpOpjuJKNrSQ3bdTd5OBuS9dtLX0sOIPm0z4vD8Vd/IeT5xjE9iAKEROM
-	 TKKY2YiIC4j/qhRGaATiqyko2nyGw0WUHmmwMjZE=
-Date: Wed, 4 Sep 2024 22:11:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Richard Narron <richard@aaazen.com>
-Cc: Linux stable <stable@vger.kernel.org>,
-	Linux kernel <linux-kernel@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: Re: [PATCH 5.15 000/215] 5.15.166-rc1 review
-Message-ID: <2024090454-cardiac-headway-730b@gregkh>
-References: <8c0d05-19e-de6d-4f21-9af4229a7e@aaazen.com>
- <2024090419-repent-resonant-14c1@gregkh>
- <fc713222-f7b1-d1c0-2aa2-c15f42d3873e@aaazen.com>
- <2024090413-unwed-ranging-befe@gregkh>
- <c84d90fc-9c71-c8f-c6a5-fd88c166f8f4@aaazen.com>
+	s=arc-20240116; t=1725481089; c=relaxed/simple;
+	bh=MAXsiQtJ6WIl6u3XvM9qP/wKwbWvsT+xDAqv0LL9ov0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cYqSKzbhw1PZqKRwejkDkk/RnnRd78QDy5HPyS6OZ51Q98sCymyADrTxQEnLFZVgVhyqRTMd7TjB776OjRG36qEK+0M5uuolpovcbuXjaQ5GXm6rZ6jDC40vNCESOpQnNEAxB4GiGXRhEFKkgVtaHRLT4Dw/+dgXbnVDvFVe2OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=clIYixfP; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WzYhT1zxkz6CmLxj;
+	Wed,  4 Sep 2024 20:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1725481078; x=1728073079; bh=x+LXEvQo2gdj5yh0a6NeCfTwRObOEro4wzw
+	PVHiV6LM=; b=clIYixfPelmKMyl0KRRh6HBSqvzAOs1mAxyG8I9fG2snwZMM7l+
+	u7nfvQsWeNmWHbxdbjGWlElUs4O10M+ZmGbtJ77t9jA4ndiAXaD1NHyKrQZBgcjl
+	orwd8Ta/eRPBjqhewoRSN63Z5MYeejAqHwWUGox88nOmAheyA+uzsYp3mdRGdaR6
+	MQ7+0aWLP6hgE+2NoWBygP5Q7LkLcmqUW5IJS0Zusqn2P2MgLREfkBjDEgv1jj0D
+	pze/2FOKLySA+tTLyRwhVXQUL4IuTBR2z+p4pStel64EY4R5nD849CWIEli92Z0A
+	QjRH6wWBu3MdsgPuw/WyUL6VhBFE2egxr2A==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id GoGObcMJ9H_W; Wed,  4 Sep 2024 20:17:58 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WzYhN4r5Kz6ClbFV;
+	Wed,  4 Sep 2024 20:17:56 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: roles: Fix a false positive recursive locking complaint
+Date: Wed,  4 Sep 2024 13:17:48 -0700
+Message-ID: <20240904201748.2901149-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c84d90fc-9c71-c8f-c6a5-fd88c166f8f4@aaazen.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 04, 2024 at 01:00:26PM -0700, Richard Narron wrote:
-> On Wed, 4 Sep 2024, Greg KH wrote:
-> 
-> > On Wed, Sep 04, 2024 at 05:48:09AM -0700, Richard Narron wrote:
-> > > On Wed, 4 Sep 2024, Greg KH wrote:
-> > >
-> > > > On Mon, Sep 02, 2024 at 03:39:49PM -0700, Richard Narron wrote:
-> > > > > I get an "out of memory" error when building Linux kernels 5.15.164,
-> > > > > 5.15.165 and 5.15.166-rc1:
-> > > > > ...
-> > > > > cc1: out of memory allocating 180705472 bytes after a total of 283914240
-> > > > > bytes
-> > > > > ...
-> > > > > make[4]: *** [scripts/Makefile.build:289:
-> > > > > drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.o]
-> > > > > Error 1
-> > > > > ...
-> > > > >
-> > > > > I found a work around for this problem.
-> > > > >
-> > > > > Remove the six minmax patches introduced with kernel 5.15.164:
-> > > > >
-> > > > > minmax: allow comparisons of 'int' against 'unsigned char/short'
-> > > > > minmax: allow min()/max()/clamp() if the arguments have the same
-> > > > > minmax: clamp more efficiently by avoiding extra comparison
-> > > > > minmax: fix header inclusions
-> > > > > minmax: relax check to allow comparison between unsigned arguments
-> > > > > minmax: sanity check constant bounds when clamping
-> > > > >
-> > > > > Can these 6 patches be removed or fixed?
-> > > >
-> > > > It's a bit late, as we rely on them for other changes.
-> > > >
-> > > > Perhaps just fixes for the files that you are seeing build crashes on?
-> > > > I know a bunch of them went into Linus's tree for this issue, but we
-> > > > didn't backport them as I didn't know what was, and was not, needed.  If
-> > > > you can pinpoint the files that cause crashes, I can dig them up.
-> > > >
-> > >
-> > > The first one to fail on 5.15.164 was:
-> > > drivers/media/pci/solo6x10/solo6x10-core.o
-> > >
-> > > So I found and applied this patch to 5.15.164:
-> > > [PATCH] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
-> >
-> > What is the git commit id of that change?  I can't seem to find it.
-> 
-> 31e97d7c9ae3
-> 
-> >From Salvatore Bonaccorso to stable on 22 Aug 2024 19:19:27 +0200
-> 
->   Subject: Please apply commit 31e97d7c9ae3 ("media: solo6x10: replace
-> max(a, min(b, c)) by clamp(b, a, c)") to 6.1.y
-> ...
->   "Note I suspect it is required as well for 5.15.164 (as the commits
-> were backported there as well and 31e97d7c9ae3 now missing there)"
+Suppress the following lockdep complaint:
 
-That is already in 5.15.166, can you verify it is resolved for you
-there?
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
 
-> > > Then the next to fail on 5.15.164 was:
-> > > drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.o
-> >
-> > What .c file is this happening for?
-> 
-> Probably this one:
-> drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.c
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/usb/roles/class.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Did you see this also building this file in 6.10 or anything newer than
-5.15.y?
-
-thanks,
-
-greg k-h
+diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
+index d7aa913ceb8a..f648ce3dd9b5 100644
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -21,6 +21,7 @@ static const struct class role_class =3D {
+=20
+ struct usb_role_switch {
+ 	struct device dev;
++	struct lock_class_key key;
+ 	struct mutex lock; /* device lock*/
+ 	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
+@@ -326,6 +327,8 @@ static void usb_role_switch_release(struct device *de=
+v)
+ {
+ 	struct usb_role_switch *sw =3D to_role_switch(dev);
+=20
++	mutex_destroy(&sw->lock);
++	lockdep_unregister_key(&sw->key);
+ 	kfree(sw);
+ }
+=20
+@@ -364,7 +367,8 @@ usb_role_switch_register(struct device *parent,
+ 	if (!sw)
+ 		return ERR_PTR(-ENOMEM);
+=20
+-	mutex_init(&sw->lock);
++	lockdep_register_key(&sw->key);
++	__mutex_init(&sw->lock, "usb_role_switch_desc::lock", &sw->key);
+=20
+ 	sw->allow_userspace_control =3D desc->allow_userspace_control;
+ 	sw->usb2_port =3D desc->usb2_port;
 
