@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-73004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4EF96B995
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:04:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E3C96B997
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC231B23EBD
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:04:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB734B23D21
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F9B1D0140;
-	Wed,  4 Sep 2024 11:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375651D0160;
+	Wed,  4 Sep 2024 11:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJclhyVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jw37PH6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420731CFECB;
-	Wed,  4 Sep 2024 11:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61AA1CFECB;
+	Wed,  4 Sep 2024 11:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725447797; cv=none; b=CG5oOYuhnlGH4LJtPoCtE6hP0/P4Bp320pf0YrbzIAiQb/ju3TLOh7fUEgIDZuq9zxU2tZ9ui1i3NoKQdFCEuVt4vjkxP610QULui4s+16qGmyg3Ouw2rsV47brPbWSmb4dVS/30B1ng4f2Z2NT+FZVfiBKeT6vtxBxbd1+rvYY=
+	t=1725447799; cv=none; b=kKJUajkT2KOcaEwmI2TV5Ii+R/znV4k1Y6qSFXLrmVvdgLaxwztE8k1nGj1dpFB1q8RCENdw33chzTRg5dHlUMIf5Qob79fNXIg8SfYVAIPI13AttRA+5G2UHEd3gDU7T85hTI5ApQvdnO2dMqx8d5afsyLezGUcQ7UON8X7Ge8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725447797; c=relaxed/simple;
-	bh=Nb5xjIIce9wUtDPSeZCSRm/Ua+5kp+iBduiF2bdExoo=;
+	s=arc-20240116; t=1725447799; c=relaxed/simple;
+	bh=ftGq5/zhSqpqgd3h2SqOmjFU0bHUZidkAU6bL3ixTKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M8E2sIa9s2k+tyCv/iLKYs268Wv3qTd7G/PRpJoqBMD7MJRrq3TkX0WXBL6aTiTScghNPNMHbssTxYyaI3ShMKIxKuhIlX0VQNp2RjO10l45d19s5ggkX6f3vAOe/2K7I1o3B8VGxCHtqGY65M2IFUWDYoXJA01snWiqJsj1cZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJclhyVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D20C4CEC2;
-	Wed,  4 Sep 2024 11:03:15 +0000 (UTC)
+	 MIME-Version; b=VHmv3OSZcLJq1P7zTrzx9ZZDPaMgqzJPHmPxaFEWrGEszmKuGxlpKj6kVggk8c7iKpYMmjcSh4J6Xf0/qD6/asSiiTZcNSm/ItaUN2QhCQcss8uZ52yzVTSSioOnakaMyJPKxm4b8pG9wS6SzC7Tv7RZJm9Lh5C8Eq5dF4Kqmlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jw37PH6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F1EC4CEC9;
+	Wed,  4 Sep 2024 11:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725447796;
-	bh=Nb5xjIIce9wUtDPSeZCSRm/Ua+5kp+iBduiF2bdExoo=;
+	s=k20201202; t=1725447798;
+	bh=ftGq5/zhSqpqgd3h2SqOmjFU0bHUZidkAU6bL3ixTKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJclhyVLjkYt3kzR0Osil2lToA6LSDYT82G1i5vZSOmJa8jkukf4n0aMLldEeYB4y
-	 MkG+5bk3bl8zQpCj3tM56pxpkmfxt0C65JyG3s95uEu6BC1H/DH2h+Z+ehI8zvyV4A
-	 h2ZGwloNppqhRb0oe1QOI93TgG/BTu4ZdjhC31fpPu2lmQyEPn28wGHrcV72H9IRUT
-	 uh9UA0ZUx4tX9hNQH9lKFjIy3gazWEPqtXnW3QwM0EDVnhAlYs1Ed3iPhnSOQ1qBXj
-	 PXdkkbesp/v2WfcLEBHv1XtexfkF5O8DO6lydMBhXbnKk1Acuvgj5Oou7JIVDPjCGJ
-	 QV2n3ndgo0Gdw==
+	b=Jw37PH6v4HtCd6oW9ozXUcWsEl33ljUxc9hH25/vKt8u2zpcvVbOHlEKXZRH10jNs
+	 WpkGEjAfWXcFeN3hnKd+zOXpK2zQKk3o08/1ricPv9UNzdCOsyCNchUSeQgltL+XbF
+	 UvPAQcDDND8PU/TsZ6zFgK9I7PeXxD2kWr6kwWPn+e4drccdBuv1TDyMyx1md+cxhW
+	 XpczxqkkqnKjiFZOGre49rrTg2aq3gFH/PnLrXqJDVYSgwOSo/tml/XLEJsD5xhn5K
+	 ZrB3FAfSrB/UMhTlrVWCAo2HJTyUe2A5NfwylaCtXE0AGLhEpRPG8Z6BxlPGyL0qHo
+	 Hdp6mRBIWP7Xw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1.y 0/2] Backport of "mptcp: pm: reuse ID 0 after delete and re-add" and more
-Date: Wed,  4 Sep 2024 13:03:07 +0200
-Message-ID: <20240904110306.4082410-4-matttbe@kernel.org>
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1.y 1/2] mptcp: pm: reuse ID 0 after delete and re-add
+Date: Wed,  4 Sep 2024 13:03:08 +0200
+Message-ID: <20240904110306.4082410-5-matttbe@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240904105721.4075460-2-matttbe@kernel.org>
 References: <20240904105721.4075460-2-matttbe@kernel.org>
@@ -58,27 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=691; i=matttbe@kernel.org; h=from:subject; bh=Nb5xjIIce9wUtDPSeZCSRm/Ua+5kp+iBduiF2bdExoo=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2D5qE9sk84dHvOmouhSL6Bc2gA0c6B8Y5OrDG 8VKjma78SKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtg+agAKCRD2t4JPQmmg c9gZD/9YmVrOGzkU+jCGrRehy6gyG3LZOEXp+gYoopRGoPZ/9BbMX61alQ4cmtqJcfPOHmCtdeW 10m4QbKO32zF+7mnq6pH7ZclqSFktvEJjmRo1XF24M8pZ66InvQsmisBYSa6IvPegYpmEvPj6a3 8ww2sh6XS3pny9Cxg+kxa2vD4emoXJ6+Xg+U5Cyh3JU7o0l2csq0kUdMVB8KS80QGEf2GBb+uMb om70sOPqOFqK/MqWHwoZ3vMOdndUz+H8sLvW3sf6ydzWXSKfNs1vK0RYshYOYtyeJfOp/3JCSvb IIpN0XSQJLnsK8GvzVsIaczeY76Rjy8jKWD3Mr8Eb6kOX794y7UH8EeZOhHBoCdNgpBu+bolQTw qY7+1C2EEqVeE3bpmV2+SAS7fmvK2ioA/laQvXsNhHWrd9x61hALg4OnX5FgT8jtTVxO+0n3Vgu NfPH+0Ab0YVLGG9T3JAQyN+5PsLXsvrw5qg7k97cmQ0rKlOEvTtccATjD8t9X8dHQUlMntEa+lX uN+b+zVf/EtfOgxT124CVbtLmt/f+jPKHqqQ6xhuImpU1Lci0cj/H2+l+9b3hFEx3sizR6ZVwOP i5/QsvCJyjH1Vwn9696kfZ1l46w83BQaVVSI88SeaqrMjL7Y3MTXPUrxDSkj0v6Onj1u1MJtolI +VPZJ93Bf5yq5cA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1705; i=matttbe@kernel.org; h=from:subject; bh=ftGq5/zhSqpqgd3h2SqOmjFU0bHUZidkAU6bL3ixTKI=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2D5qQBa7SeF0c4FMoAy+BIJuPIGV3k2TjaZUU xl/Us9S39aJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtg+agAKCRD2t4JPQmmg c2MdEACMWLQSbH11400BAsAY/u6VaoW7bRn95YIjU6zLO8+m8mBV26p3IIYeP3DmHDGDi2evgK/ tmK0B+b8GF6tkcq5VYdoaU407KJ4hyfD9GSQngBK25qZwLITdQhdDm+qKEPtp0Fpl8KqRjzJTcd 2VigpFtv/ojVnX2bEBT2K1e+O4iNUymGEhXWQeAiP88+cQmwI8mz4/waEC8FEntD6FSGVPi6uTx L9sXrUkuqOnBxqH3rT3Dy0xlseHC+OFHUWbib5mKqYlDZU8eRVzAyiAC+GmzfuGzQy9GrJl9JLH kxIjo+6HHS+DHSDWOKArEL9z9KExy0Q30k1y/Pj6OohWvDNLSbGvJXDIOf7r1ZrYDpbJI1MCBVw +jXTBiWcY97EjdksR40wO99+W998bn8WJ49XnI1sEMi+N/V8xi+5gE9ZIY11oYHJlsc9Mc0rskx 1aApk2EwqtqSqYm737AYTqatAL9hslzldf8mSV+q1kxK1Tq5Ikzlp7LdsmrPeNyUOYiIdrd/mse WPb7LhQzxcyY69woyZwzvHMm30JjEyc9QjtkvO8VES5wKlzTDW/w6j2dF6sO7NfEk/zWEnxH+f2 Bk236Sns+07w0iY1ByMvbqySkdHDTHR0KdPehyytTGA8YSmGE9HHgG70lTkf6OztftmW0/LfQqi 9ixCP/biPKEUc6A==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-After having applied the patch "mptcp: pm: avoid possible UaF when
-selecting endp" in v6.1 with the adaptations proposed in the parent
-message [1], the two following patches can be applied without conflicts:
+commit 8b8ed1b429f8fa7ebd5632555e7b047bc0620075 upstream.
 
-- 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
-- 9366922adc6a ("mptcp: pm: fix ID 0 endp usage after multiple re-creations")
+When the endpoint used by the initial subflow is removed and re-added
+later, the PM has to force the ID 0, it is a special case imposed by the
+MPTCP specs.
 
-[1] https://lore.kernel.org/20240904105721.4075460-2-matttbe@kernel.org
+Note that the endpoint should then need to be re-added reusing the same
+ID.
 
-Matthieu Baerts (NGI0) (2):
-  mptcp: pm: reuse ID 0 after delete and re-add
-  mptcp: pm: fix ID 0 endp usage after multiple re-creations
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
- net/mptcp/pm_netlink.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 44b036abe30f..c834de47bddc 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -600,6 +600,11 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		mptcp_pm_announce_addr(msk, &local.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+ 
+@@ -624,6 +629,11 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 
+ 		msk->pm.local_addr_used++;
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
++
++		/* Special case for ID0: set the correct ID */
++		if (local.addr.id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
+ 		if (nr == 0)
+ 			continue;
 -- 
 2.45.2
 
