@@ -1,322 +1,494 @@
-Return-Path: <stable+bounces-72952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF4F96AD23
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 01:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C73196ADF8
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 03:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E5E1C244EB
-	for <lists+stable@lfdr.de>; Tue,  3 Sep 2024 23:56:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70E001C2123C
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 01:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156D41D79A3;
-	Tue,  3 Sep 2024 23:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33AA8479;
+	Wed,  4 Sep 2024 01:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j03uaLNi"
+	dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b="WZdEwuis"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479D4B647;
-	Tue,  3 Sep 2024 23:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A6A1EBFF0
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 01:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.152.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725407760; cv=none; b=dhxYKKqTBIBVyT+kkWHocF5NGWwZWJQeszIi04ZlOnoegG2ieC5M4hB7/OXxGClnyUxGDstCtfWntBZP3obxzqi6fE+RygYg1MmK10b3euocF/YSlFyMx4jDgc+wI0GHqzEBkdElkrBAA9YxEAL5X/l7Ownp+0xL78lPiw45CsE=
+	t=1725413772; cv=none; b=q7+/N739jZm7Ryk2kdvtv8ZlW8R3bEIER91Fkdae5CW3Jtea7uyU98M5Zx4FoQuyMOqPAzJEJfLKymBzHFsPDtOn/2GRDRSgwLyzr0RrMyi3XiMgKblkrqoZP3kV8zsgNKmPFh0owXd92g/nJPlO28sz1xbfdOX8W6DduwJ62ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725407760; c=relaxed/simple;
-	bh=LSOwYuGCKvbFWo4iN2ovI4ZnBGmZF6NN5+HSYIkfa6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NcK1n+CodWuUibA8v+gmGWHHJL2nwSUfFRZagOkHSeYW2IxXiFU+niJquBWkC+P5OOl6L9lkFuWeoD59fAAuoolss2LS6SPQ7IeLw4bOWDH1TICA4VYiCzfyv2FgzM64xsbNpJFHEvYZHS7yAUF5Y4UdIYFSFSmX/r4W+kkiDYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j03uaLNi; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2d8a744aa9bso2260862a91.3;
-        Tue, 03 Sep 2024 16:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725407758; x=1726012558; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cFMiOs/yfweXq3uJON9KHqWX+3Y5SezGqg1af6CUqlg=;
-        b=j03uaLNihtNvPPbucbwH9S+Ruu2VCgsiS54hm6PAdMYFOik47PEw9Xdq8t7TohHCrJ
-         /9ZIVyjvVVonftTr/WKLya4A4ytLDCK1dWZwteZpzA9Oeqv5/w4utMGI27X2ClPkClCM
-         xSTDitBq2t9uSMJ8ufqILefbpUHkla6VXcXUoX1eCHmLJLQnDHkFjZ7JrHvhmzbvmn6O
-         DCKNerIUF++yWZB+HGVB7/10ZYQ4Qy7rsqkdJJ/6yiVQbQzHvk67o2U02T6IKFlrkSok
-         kDp38k8KcaHh54y+IOgX6F8ehWneQ4nh2J2Eb/Gcf5eT25loQStqRHESLxZwRn1Rkr0W
-         Qs5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725407758; x=1726012558;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cFMiOs/yfweXq3uJON9KHqWX+3Y5SezGqg1af6CUqlg=;
-        b=rk0iiJ9t2UZ13tNbTWHQro/7/3sOcUB7A4ck5s7P1I7IoNsa5vdOcQouJnSa2Vhkaq
-         2qUhT83PosHU2V43diw5yGNYeT/bEebt5SKswlmgi+OuoTMXGlDwz6NuC3WAYMNP4ZnS
-         PpnqGnyvVYi6kD9ndW+oA1rHEMX2zl6giiUi062P5cadiJvBHwgJs4QfsYN11r5fX7ru
-         oaYM7i/BsCH1bJL61oBNxW7JX7JlSYuRmo5h/BLpjaxZgWVzd83knf0+t1xi1C7G53Ol
-         k2WobyUBZ6BLrE3jElViw5rPw1FJZe0OepiUMl7jyrAJ1sqNHZTbpiQChTdGpR2AzFWf
-         ReOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8oDpm7ljJj+lTqFvCfw7o2gLNnwhbysZyj3EpKITwdx30AVPfj/n5PS/PmfhMwXRJMUsRuhp1@vger.kernel.org, AJvYcCXffZr0D6tlrDPIXrFQyEE1BCvHGWlLPgbBm7nDfJSab1I6NO3o4I7cXL0uABSlaFW5pwSxAH9/AwtrNQ==@vger.kernel.org, AJvYcCXj5tLVVuM/bm1zQuV7Jy3ZpP1iAOuL6dRcTQMj6KfmcpgdlQeMbuvno7QGijeimLHT3lWxwCR4UEg/go9PaPOm9wK26Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCKOUdGQ/xzqUiRMl2PhBVHI0RR+MX3ihuWSgWqADEgh8VoJoP
-	ZfF15rp+guYIhAkQhbO/FWa6NnE7vFqNRnsXAHSanfVAibeYI46v
-X-Google-Smtp-Source: AGHT+IFOE3cS1YC5tzzgZ3r3i9jiYZTer9F1jlK7UVk75TthuSEWg3rssXTq8VbDN1pkNJIVezZA2Q==
-X-Received: by 2002:a17:90b:101:b0:2c3:2557:3de8 with SMTP id 98e67ed59e1d1-2d8973a5a50mr10867409a91.33.1725407758168;
-        Tue, 03 Sep 2024 16:55:58 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:e682:e3dc:908:eef0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d85b3b95e8sm12010806a91.54.2024.09.03.16.55.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 16:55:57 -0700 (PDT)
-Date: Tue, 3 Sep 2024 16:55:54 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Maxim Mikityanskiy <maxtram95@gmail.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, Ike Panhc <ike.pan@canonical.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	platform-driver-x86@vger.kernel.org, linux-input@vger.kernel.org,
-	Jonathan Denose <jdenose@chromium.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] platform/x86: ideapad-laptop: Stop calling
- i8042_command()
-Message-ID: <ZteiClP9jabjHFkG@google.com>
-References: <5c5120a7-4739-4d92-a5b8-9b9c60edc3b7@redhat.com>
- <ZroaE5Q6OdGe6ewz@mail.gmail.com>
- <80dc479e-33af-4d09-8177-7862c34a4882@redhat.com>
- <ZrpFSnCQ0T4_7zAB@google.com>
- <2d5be262-3bfd-4b66-bee4-97c89a9a4707@redhat.com>
- <Zrph94r8haR_nbj7@google.com>
- <ZsJZ7fKJtNTbXhi7@google.com>
- <ZsR0HdzglEH19dVH@mail.gmail.com>
- <ZsUNUh7IGeduDUNX@mail.gmail.com>
- <ZsV6-NRkJLJhHxiq@google.com>
+	s=arc-20240116; t=1725413772; c=relaxed/simple;
+	bh=vCoVxegwvh1xRHl64lK4GjpW/HoTxm0BccaCesNpYmg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S7uCteO5/U46X9cVDHcGsn59v2gfWeL1J59aOn/NTr9v1I0qSHXGd89vIpERui7haseV/oWBh2aTEGdLNv7kh8Rvy5M1mQv3cP7fgt/qzAHTR4GKT7O/kWvojVLjgII5uMxkqguF0Jdl7tvX0IhvbmVuK0pjWcEZ/ezpVp80ul4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=WZdEwuis; arc=none smtp.client-ip=148.163.152.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crowdstrike.com
+Received: from pps.filterd (m0354655.ppops.net [127.0.0.1])
+	by mx0b-00206402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483JXpxU006221;
+	Wed, 4 Sep 2024 01:29:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=default; bh=GFsoBJHphipjg
+	3YDPcmzvBcQjOGZ5+LTJ1CO28E3OdI=; b=WZdEwuistKoFKnJoLOvukB0YoHhVg
+	0+tVjFh33eiLXGxEShJgq0tyPkGrAhKl26ewOW0+FeYTSDAUxMsOIDYR+yJKvhko
+	VZmfTYtRzoZ6kGe+yjhKuxpam78gifEYsTXGFzegKl709AC+0xSDQ6lnoKhf6ZJu
+	dGE/Fc5QgbzwkNnqrBx7Z7Xdb5zaYb6QBay58+LMQiQi4izqeMNVfV+0p3J3+9/j
+	MLXV4jPt6ABbSC3+HBxnpb92/i+ml0odWvszHnw7qAI9nv1sSTvDXCsq0N6woCBL
+	/F/YVPxhtc/u0vL3EQxeTbB5Ej9uPfbFI5kWEgf+SuAqKIwf/JNPfczAA==
+Received: from 04wpexch11.crowdstrike.sys (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
+	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 41e7w50vu3-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Sep 2024 01:29:00 +0000 (GMT)
+Received: from ML-C02GH20XMD6T.crowdstrike.sys (10.100.11.122) by
+ 04WPEXCH11.crowdstrike.sys (10.100.11.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 4 Sep 2024 01:28:58 +0000
+From: Connor O'Brien <connor.obrien@crowdstrike.com>
+To: <stable@vger.kernel.org>
+CC: <martin.kelly@crowdstrike.com>, Daniel Borkmann <daniel@iogearbox.net>,
+        Connor O'Brien <connor.obrien@crowdstrike.com>
+Subject: [PATCH 1/2] bpf, cgroups: Fix cgroup v2 fallback on v1/v2 mixed mode
+Date: Tue, 3 Sep 2024 18:28:50 -0700
+Message-ID: <20240904012851.58167-1-connor.obrien@crowdstrike.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZsV6-NRkJLJhHxiq@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: 04WPEXCH10.crowdstrike.sys (10.100.11.114) To
+ 04WPEXCH11.crowdstrike.sys (10.100.11.115)
+X-Disclaimer: USA
+X-Proofpoint-GUID: DjeD_4Js8EIJpiaRwOhBK3MAvLpqDhH4
+X-Authority-Analysis: v=2.4 cv=WsB5Msfv c=1 sm=1 tr=0 ts=66d7b7dc cx=c_pps a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17 a=EjBHVkixTFsA:10 a=EaEq8P2WXUwA:10 a=hWMQpYRtAAAA:8 a=NEAV23lmAAAA:8 a=aPlHU-BSAAAA:8 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=pl6vuDidAAAA:8 a=qzKVyHLyrWJ79ptqYHEA:9 a=KCsI-UfzjElwHeZNREa_:22 a=PUeqMozfM-10x8LD7Utv:22
+X-Proofpoint-ORIG-GUID: DjeD_4Js8EIJpiaRwOhBK3MAvLpqDhH4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-03_13,2024-09-03_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ phishscore=0 clxscore=1011 mlxscore=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2409040009
 
-On Tue, Aug 20, 2024 at 10:28:24PM -0700, Dmitry Torokhov wrote:
-> On Wed, Aug 21, 2024 at 12:40:34AM +0300, Maxim Mikityanskiy wrote:
-> > On Tue, 20 Aug 2024 at 13:46:53 +0300, Maxim Mikityanskiy wrote:
-> > > On Sun, 18 Aug 2024 at 13:30:37 -0700, Dmitry Torokhov wrote:
-> > > > 
-> > > > Maybe something like below can work?
-> > > 
-> > > Great patch, thank you, I'll test it and report the results. See some
-> > > minor comments below.
-> > > 
-> > > > 
-> > > > 
-> > > > platform/x86: ideapad-laptop: do not poke keyboard controller
-> > > > 
-> > > > From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > > 
-> > > > On Ideapad Z570 the driver tries to disable and reenable data coming
-> > > > from the touchpad by poking directly into 8042 keyboard controller.
-> > > > This may coincide with the controller resuming and leads to spews in
-> > > > dmesg and potentially other instabilities.
-> > > > 
-> > > > Instead of using i8042_command() to control the touchpad state create a
-> > > > input handler that serves as a filter and drop events coming from the
-> > > > touchpad when it is supposed to be off.
-> > > > 
-> > > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > > ---
-> > > >  drivers/platform/x86/ideapad-laptop.c |  171 ++++++++++++++++++++++++++++++++-
-> > > >  1 file changed, 168 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-> > > > index fcf13d88fd6e..2f40feefd5e3 100644
-> > > > --- a/drivers/platform/x86/ideapad-laptop.c
-> > > > +++ b/drivers/platform/x86/ideapad-laptop.c
-> > > > @@ -17,7 +17,6 @@
-> > > >  #include <linux/device.h>
-> > > >  #include <linux/dmi.h>
-> > > >  #include <linux/fb.h>
-> > > > -#include <linux/i8042.h>
-> > > >  #include <linux/init.h>
-> > > >  #include <linux/input.h>
-> > > >  #include <linux/input/sparse-keymap.h>
-> > > > @@ -157,6 +156,13 @@ struct ideapad_private {
-> > > >  		struct led_classdev led;
-> > > >  		unsigned int last_brightness;
-> > > >  	} fn_lock;
-> > > > +	struct {
-> > > > +		bool initialized;
-> > > > +		bool active;
-> > > > +		struct input_handler handler;
-> > > > +		struct input_dev *tp_dev;
-> > > > +		spinlock_t lock;
-> > > > +	} tp_switch;
-> > > >  };
-> > > >  
-> > > >  static bool no_bt_rfkill;
-> > > > @@ -1236,6 +1242,158 @@ static void ideapad_check_special_buttons(struct ideapad_private *priv)
-> > > >  	}
-> > > >  }
-> > > >  
-> > > > +struct ideapad_tpswitch_handle {
-> > > > +	struct input_handle handle;
-> > > > +	struct ideapad_private *priv;
-> > > > +};
-> > > > +
-> > > > +#define to_tpswitch_handle(h) \
-> > > > +	container_of(h, struct ideapad_tpswitch_handle, handle);
-> > > > +
-> > > > +static int ideapad_tpswitch_connect(struct input_handler *handler,
-> > > > +				    struct input_dev *dev,
-> > > > +				    const struct input_device_id *id)
-> > > > +{
-> > > > +	struct ideapad_private *priv =
-> > > > +		container_of(handler, struct ideapad_private, tp_switch.handler);
-> > > > +	struct ideapad_tpswitch_handle *h;
-> > > > +	int error;
-> > > > +
-> > > > +	h = kzalloc(sizeof(*h), GFP_KERNEL);
-> > > > +	if (!h)
-> > > > +		return -ENOMEM;
-> > > > +
-> > > > +	h->priv = priv;
-> > > > +	h->handle.dev = dev;
-> > > > +	h->handle.handler = handler;
-> > > > +	h->handle.name = "ideapad-tpswitch";
-> > > > +
-> > > > +	error = input_register_handle(&h->handle);
-> > > > +	if (error)
-> > > > +		goto err_free_handle;
-> > > > +
-> > > > +	/*
-> > > > +	 * FIXME: ideally we do not want to open the input device here
-> > > > +	 * if there are no other users. We need a notion of "observer"
-> > > > +	 * handlers in the input core.
-> > > > +	 */
-> > > > +	error = input_open_device(&h->handle);
-> > > > +	if (error)
-> > > > +		goto err_unregister_handle;
-> > > > +
-> > > > +	scoped_guard(spinlock_irq, &priv->tp_switch.lock)
-> > > > +		priv->tp_switch.tp_dev = dev;
-> > > > +
-> > > > +	return 0;
-> > > > +
-> > > > + err_unregister_handle:
-> > > > +	input_unregister_handle(&h->handle);
-> > > > +err_free_handle:
-> > > > +	kfree(h);
-> > > > +	return error;
-> > > > +}
-> > > > +
-> > > > +static void ideapad_tpswitch_disconnect(struct input_handle *handle)
-> > > > +{
-> > > > +	struct ideapad_tpswitch_handle *h = to_tpswitch_handle(handle);
-> > > > +	struct ideapad_private *priv = h->priv;
-> > > > +
-> > > > +	scoped_guard(spinlock_irq, &priv->tp_switch.lock)
-> > > 
-> > > Nice syntax, I didn't know about it before.
-> > > 
-> > > > +		priv->tp_switch.tp_dev = NULL;
-> > > > +
-> > > > +	input_close_device(handle);
-> > > > +	input_unregister_handle(handle);
-> > > > +	kfree(h);
-> > > > +}
-> > > > +
-> > > > +static bool ideapad_tpswitch_filter(struct input_handle *handle,
-> > > > +				    unsigned int type, unsigned int code,
-> > > > +				    int value)
-> > > > +{
-> > > > +	struct ideapad_tpswitch_handle *h = to_tpswitch_handle(handle);
-> > > > +	struct ideapad_private *priv = h->priv;
-> > > > +
-> > > > +	if (!priv->tp_switch.active)
-> > > 
-> > > This check seems inverted. ideapad_tpswitch_toggle assigns true when the
-> > > touchpad is enabled.
-> > 
-> > I tested the patch on Z570 (with this check inverted), and it seems to
-> > work great.
-> > 
-> > Also tested what happens on resume from suspend: the laptop reenables
-> > the touchpad (the LED turns off on suspend and blinks briefly on
-> > resume), and the driver handles it properly.
-> 
-> Great, thank you! Give me a couple of days and I think I will implement
-> observer/passive handler support and we can figure out how to merge
-> this...
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-OK, so if you could try the patch below that would be great.
-Don't forget to set ".passive_observer = 1" in the ideapad handler.
+commit 8520e224f547cd070c7c8f97b1fc6d58cff7ccaa upstream.
 
-Thanks!
+Fix cgroup v1 interference when non-root cgroup v2 BPF programs are used.
+Back in the days, commit bd1060a1d671 ("sock, cgroup: add sock->sk_cgroup")
+embedded per-socket cgroup information into sock->sk_cgrp_data and in order
+to save 8 bytes in struct sock made both mutually exclusive, that is, when
+cgroup v1 socket tagging (e.g. net_cls/net_prio) is used, then cgroup v2
+falls back to the root cgroup in sock_cgroup_ptr() (&cgrp_dfl_root.cgrp).
 
--- 
-Dmitry
+The assumption made was "there is no reason to mix the two and this is in line
+with how legacy and v2 compatibility is handled" as stated in bd1060a1d671.
+However, with Kubernetes more widely supporting cgroups v2 as well nowadays,
+this assumption no longer holds, and the possibility of the v1/v2 mixed mode
+with the v2 root fallback being hit becomes a real security issue.
 
+Many of the cgroup v2 BPF programs are also used for policy enforcement, just
+to pick _one_ example, that is, to programmatically deny socket related system
+calls like connect(2) or bind(2). A v2 root fallback would implicitly cause
+a policy bypass for the affected Pods.
 
-Input: introduce notion of passive observers for input handlers
+In production environments, we have recently seen this case due to various
+circumstances: i) a different 3rd party agent and/or ii) a container runtime
+such as [0] in the user's environment configuring legacy cgroup v1 net_cls
+tags, which triggered implicitly mentioned root fallback. Another case is
+Kubernetes projects like kind [1] which create Kubernetes nodes in a container
+and also add cgroup namespaces to the mix, meaning programs which are attached
+to the cgroup v2 root of the cgroup namespace get attached to a non-root
+cgroup v2 path from init namespace point of view. And the latter's root is
+out of reach for agents on a kind Kubernetes node to configure. Meaning, any
+entity on the node setting cgroup v1 net_cls tag will trigger the bypass
+despite cgroup v2 BPF programs attached to the namespace root.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Generally, this mutual exclusiveness does not hold anymore in today's user
+environments and makes cgroup v2 usage from BPF side fragile and unreliable.
+This fix adds proper struct cgroup pointer for the cgroup v2 case to struct
+sock_cgroup_data in order to address these issues; this implicitly also fixes
+the tradeoffs being made back then with regards to races and refcount leaks
+as stated in bd1060a1d671, and removes the fallback, so that cgroup v2 BPF
+programs always operate as expected.
+
+  [0] https://github.com/nestybox/sysbox/
+  [1] https://kind.sigs.k8s.io/
+
+Fixes: bd1060a1d671 ("sock, cgroup: add sock->sk_cgroup")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/bpf/20210913230759.2313-1-daniel@iogearbox.net
+[resolve trivial conflicts]
+Signed-off-by: Connor O'Brien <connor.obrien@crowdstrike.com>
 ---
- drivers/input/input.c |    7 +++++++
- include/linux/input.h |    5 +++++
- 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index 54c57b267b25..60a9445d78d5 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -605,6 +605,9 @@ int input_open_device(struct input_handle *handle)
+Hello,
+
+Requesting that these patches be applied to 5.10-stable. Tested to confirm that
+the cgroup_v1v2 bpf selftest for this issue passes on 5.10 with the first patch
+applied and fails without it. The syzkaller crash referenced in the second patch
+reproduces on 5.10 after applying just the first patch, but not with both
+patches applied.
+
+Conflicts were due to unrelated changes to the surrounding context; the actual
+code change remains the same as in the upstream patch.
+
+Thanks,
+Connor O'Brien
+
+ include/linux/cgroup-defs.h  | 107 +++++++++--------------------------
+ include/linux/cgroup.h       |  22 +------
+ kernel/cgroup/cgroup.c       |  50 ++++------------
+ net/core/netclassid_cgroup.c |   7 +--
+ net/core/netprio_cgroup.c    |  10 +---
+ 5 files changed, 41 insertions(+), 155 deletions(-)
+
+diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
+index c9fafca1c30c..6c6323a01d43 100644
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -764,107 +764,54 @@ static inline void cgroup_threadgroup_change_end(struct task_struct *tsk) {}
+  * sock_cgroup_data is embedded at sock->sk_cgrp_data and contains
+  * per-socket cgroup information except for memcg association.
+  *
+- * On legacy hierarchies, net_prio and net_cls controllers directly set
+- * attributes on each sock which can then be tested by the network layer.
+- * On the default hierarchy, each sock is associated with the cgroup it was
+- * created in and the networking layer can match the cgroup directly.
+- *
+- * To avoid carrying all three cgroup related fields separately in sock,
+- * sock_cgroup_data overloads (prioidx, classid) and the cgroup pointer.
+- * On boot, sock_cgroup_data records the cgroup that the sock was created
+- * in so that cgroup2 matches can be made; however, once either net_prio or
+- * net_cls starts being used, the area is overriden to carry prioidx and/or
+- * classid.  The two modes are distinguished by whether the lowest bit is
+- * set.  Clear bit indicates cgroup pointer while set bit prioidx and
+- * classid.
+- *
+- * While userland may start using net_prio or net_cls at any time, once
+- * either is used, cgroup2 matching no longer works.  There is no reason to
+- * mix the two and this is in line with how legacy and v2 compatibility is
+- * handled.  On mode switch, cgroup references which are already being
+- * pointed to by socks may be leaked.  While this can be remedied by adding
+- * synchronization around sock_cgroup_data, given that the number of leaked
+- * cgroups is bound and highly unlikely to be high, this seems to be the
+- * better trade-off.
++ * On legacy hierarchies, net_prio and net_cls controllers directly
++ * set attributes on each sock which can then be tested by the network
++ * layer. On the default hierarchy, each sock is associated with the
++ * cgroup it was created in and the networking layer can match the
++ * cgroup directly.
+  */
+ struct sock_cgroup_data {
+-	union {
+-#ifdef __LITTLE_ENDIAN
+-		struct {
+-			u8	is_data : 1;
+-			u8	no_refcnt : 1;
+-			u8	unused : 6;
+-			u8	padding;
+-			u16	prioidx;
+-			u32	classid;
+-		} __packed;
+-#else
+-		struct {
+-			u32	classid;
+-			u16	prioidx;
+-			u8	padding;
+-			u8	unused : 6;
+-			u8	no_refcnt : 1;
+-			u8	is_data : 1;
+-		} __packed;
++	struct cgroup	*cgroup; /* v2 */
++#ifdef CONFIG_CGROUP_NET_CLASSID
++	u32		classid; /* v1 */
++#endif
++#ifdef CONFIG_CGROUP_NET_PRIO
++	u16		prioidx; /* v1 */
+ #endif
+-		u64		val;
+-	};
+ };
  
- 	handle->open++;
- 
-+	if (handle->handler->passive_observer)
-+		goto out;
-+
- 	if (dev->users++ || dev->inhibited) {
- 		/*
- 		 * Device is already opened and/or inhibited,
-@@ -668,6 +671,9 @@ void input_close_device(struct input_handle *handle)
- 
- 	__input_release_device(handle);
- 
-+	if (handle->handler->passive_observer)
-+		goto out;
-+
- 	if (!--dev->users && !dev->inhibited) {
- 		if (dev->poller)
- 			input_dev_poller_stop(dev->poller);
-@@ -684,6 +690,7 @@ void input_close_device(struct input_handle *handle)
- 		synchronize_rcu();
- 	}
- 
-+out:
- 	mutex_unlock(&dev->mutex);
+-/*
+- * There's a theoretical window where the following accessors race with
+- * updaters and return part of the previous pointer as the prioidx or
+- * classid.  Such races are short-lived and the result isn't critical.
+- */
+ static inline u16 sock_cgroup_prioidx(const struct sock_cgroup_data *skcd)
+ {
+-	/* fallback to 1 which is always the ID of the root cgroup */
+-	return (skcd->is_data & 1) ? skcd->prioidx : 1;
++#ifdef CONFIG_CGROUP_NET_PRIO
++	return READ_ONCE(skcd->prioidx);
++#else
++	return 1;
++#endif
  }
- EXPORT_SYMBOL(input_close_device);
-diff --git a/include/linux/input.h b/include/linux/input.h
-index 89a0be6ee0e2..6437c35f0796 100644
---- a/include/linux/input.h
-+++ b/include/linux/input.h
-@@ -286,6 +286,10 @@ struct input_handle;
-  * @start: starts handler for given handle. This function is called by
-  *	input core right after connect() method and also when a process
-  *	that "grabbed" a device releases it
-+ * @passive_observer: set to %true by drivers only interested in observing
-+ *	data stream from devices if there are other users present. Such
-+ *	drivers will not result in starting underlying hardware device
-+ *	when input_open_device() is called for their handles
-  * @legacy_minors: set to %true by drivers using legacy minor ranges
-  * @minor: beginning of range of 32 legacy minors for devices this driver
-  *	can provide
-@@ -321,6 +325,7 @@ struct input_handler {
- 	void (*disconnect)(struct input_handle *handle);
- 	void (*start)(struct input_handle *handle);
  
-+	bool passive_observer;
- 	bool legacy_minors;
- 	int minor;
- 	const char *name;
+ static inline u32 sock_cgroup_classid(const struct sock_cgroup_data *skcd)
+ {
+-	/* fallback to 0 which is the unconfigured default classid */
+-	return (skcd->is_data & 1) ? skcd->classid : 0;
++#ifdef CONFIG_CGROUP_NET_CLASSID
++	return READ_ONCE(skcd->classid);
++#else
++	return 0;
++#endif
+ }
+ 
+-/*
+- * If invoked concurrently, the updaters may clobber each other.  The
+- * caller is responsible for synchronization.
+- */
+ static inline void sock_cgroup_set_prioidx(struct sock_cgroup_data *skcd,
+ 					   u16 prioidx)
+ {
+-	struct sock_cgroup_data skcd_buf = {{ .val = READ_ONCE(skcd->val) }};
+-
+-	if (sock_cgroup_prioidx(&skcd_buf) == prioidx)
+-		return;
+-
+-	if (!(skcd_buf.is_data & 1)) {
+-		skcd_buf.val = 0;
+-		skcd_buf.is_data = 1;
+-	}
+-
+-	skcd_buf.prioidx = prioidx;
+-	WRITE_ONCE(skcd->val, skcd_buf.val);	/* see sock_cgroup_ptr() */
++#ifdef CONFIG_CGROUP_NET_PRIO
++	WRITE_ONCE(skcd->prioidx, prioidx);
++#endif
+ }
+ 
+ static inline void sock_cgroup_set_classid(struct sock_cgroup_data *skcd,
+ 					   u32 classid)
+ {
+-	struct sock_cgroup_data skcd_buf = {{ .val = READ_ONCE(skcd->val) }};
+-
+-	if (sock_cgroup_classid(&skcd_buf) == classid)
+-		return;
+-
+-	if (!(skcd_buf.is_data & 1)) {
+-		skcd_buf.val = 0;
+-		skcd_buf.is_data = 1;
+-	}
+-
+-	skcd_buf.classid = classid;
+-	WRITE_ONCE(skcd->val, skcd_buf.val);	/* see sock_cgroup_ptr() */
++#ifdef CONFIG_CGROUP_NET_CLASSID
++	WRITE_ONCE(skcd->classid, classid);
++#endif
+ }
+ 
+ #else	/* CONFIG_SOCK_CGROUP_DATA */
+diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
+index c9c430712d47..15c27a2c98e2 100644
+--- a/include/linux/cgroup.h
++++ b/include/linux/cgroup.h
+@@ -816,33 +816,13 @@ static inline void cgroup_account_cputime_field(struct task_struct *task,
+  */
+ #ifdef CONFIG_SOCK_CGROUP_DATA
+ 
+-#if defined(CONFIG_CGROUP_NET_PRIO) || defined(CONFIG_CGROUP_NET_CLASSID)
+-extern spinlock_t cgroup_sk_update_lock;
+-#endif
+-
+-void cgroup_sk_alloc_disable(void);
+ void cgroup_sk_alloc(struct sock_cgroup_data *skcd);
+ void cgroup_sk_clone(struct sock_cgroup_data *skcd);
+ void cgroup_sk_free(struct sock_cgroup_data *skcd);
+ 
+ static inline struct cgroup *sock_cgroup_ptr(struct sock_cgroup_data *skcd)
+ {
+-#if defined(CONFIG_CGROUP_NET_PRIO) || defined(CONFIG_CGROUP_NET_CLASSID)
+-	unsigned long v;
+-
+-	/*
+-	 * @skcd->val is 64bit but the following is safe on 32bit too as we
+-	 * just need the lower ulong to be written and read atomically.
+-	 */
+-	v = READ_ONCE(skcd->val);
+-
+-	if (v & 3)
+-		return &cgrp_dfl_root.cgrp;
+-
+-	return (struct cgroup *)(unsigned long)v ?: &cgrp_dfl_root.cgrp;
+-#else
+-	return (struct cgroup *)(unsigned long)skcd->val;
+-#endif
++	return skcd->cgroup;
+ }
+ 
+ #else	/* CONFIG_CGROUP_DATA */
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 11400eba6124..3ec531ef50d8 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -6557,74 +6557,44 @@ int cgroup_parse_float(const char *input, unsigned dec_shift, s64 *v)
+  */
+ #ifdef CONFIG_SOCK_CGROUP_DATA
+ 
+-#if defined(CONFIG_CGROUP_NET_PRIO) || defined(CONFIG_CGROUP_NET_CLASSID)
+-
+-DEFINE_SPINLOCK(cgroup_sk_update_lock);
+-static bool cgroup_sk_alloc_disabled __read_mostly;
+-
+-void cgroup_sk_alloc_disable(void)
+-{
+-	if (cgroup_sk_alloc_disabled)
+-		return;
+-	pr_info("cgroup: disabling cgroup2 socket matching due to net_prio or net_cls activation\n");
+-	cgroup_sk_alloc_disabled = true;
+-}
+-
+-#else
+-
+-#define cgroup_sk_alloc_disabled	false
+-
+-#endif
+-
+ void cgroup_sk_alloc(struct sock_cgroup_data *skcd)
+ {
+-	if (cgroup_sk_alloc_disabled) {
+-		skcd->no_refcnt = 1;
+-		return;
+-	}
+-
+ 	/* Don't associate the sock with unrelated interrupted task's cgroup. */
+ 	if (in_interrupt())
+ 		return;
+ 
+ 	rcu_read_lock();
+-
+ 	while (true) {
+ 		struct css_set *cset;
+ 
+ 		cset = task_css_set(current);
+ 		if (likely(cgroup_tryget(cset->dfl_cgrp))) {
+-			skcd->val = (unsigned long)cset->dfl_cgrp;
++			skcd->cgroup = cset->dfl_cgrp;
+ 			cgroup_bpf_get(cset->dfl_cgrp);
+ 			break;
+ 		}
+ 		cpu_relax();
+ 	}
+-
+ 	rcu_read_unlock();
+ }
+ 
+ void cgroup_sk_clone(struct sock_cgroup_data *skcd)
+ {
+-	if (skcd->val) {
+-		if (skcd->no_refcnt)
+-			return;
+-		/*
+-		 * We might be cloning a socket which is left in an empty
+-		 * cgroup and the cgroup might have already been rmdir'd.
+-		 * Don't use cgroup_get_live().
+-		 */
+-		cgroup_get(sock_cgroup_ptr(skcd));
+-		cgroup_bpf_get(sock_cgroup_ptr(skcd));
+-	}
++	struct cgroup *cgrp = sock_cgroup_ptr(skcd);
++
++	/*
++	 * We might be cloning a socket which is left in an empty
++	 * cgroup and the cgroup might have already been rmdir'd.
++	 * Don't use cgroup_get_live().
++	 */
++	cgroup_get(cgrp);
++	cgroup_bpf_get(cgrp);
+ }
+ 
+ void cgroup_sk_free(struct sock_cgroup_data *skcd)
+ {
+ 	struct cgroup *cgrp = sock_cgroup_ptr(skcd);
+ 
+-	if (skcd->no_refcnt)
+-		return;
+ 	cgroup_bpf_put(cgrp);
+ 	cgroup_put(cgrp);
+ }
+diff --git a/net/core/netclassid_cgroup.c b/net/core/netclassid_cgroup.c
+index 41b24cd31562..b6de5ee22391 100644
+--- a/net/core/netclassid_cgroup.c
++++ b/net/core/netclassid_cgroup.c
+@@ -72,11 +72,8 @@ static int update_classid_sock(const void *v, struct file *file, unsigned n)
+ 	struct update_classid_context *ctx = (void *)v;
+ 	struct socket *sock = sock_from_file(file, &err);
+ 
+-	if (sock) {
+-		spin_lock(&cgroup_sk_update_lock);
++	if (sock)
+ 		sock_cgroup_set_classid(&sock->sk->sk_cgrp_data, ctx->classid);
+-		spin_unlock(&cgroup_sk_update_lock);
+-	}
+ 	if (--ctx->batch == 0) {
+ 		ctx->batch = UPDATE_CLASSID_BATCH;
+ 		return n + 1;
+@@ -122,8 +119,6 @@ static int write_classid(struct cgroup_subsys_state *css, struct cftype *cft,
+ 	struct css_task_iter it;
+ 	struct task_struct *p;
+ 
+-	cgroup_sk_alloc_disable();
+-
+ 	cs->classid = (u32)value;
+ 
+ 	css_task_iter_start(css, 0, &it);
+diff --git a/net/core/netprio_cgroup.c b/net/core/netprio_cgroup.c
+index 9bd4cab7d510..d4c71e382a13 100644
+--- a/net/core/netprio_cgroup.c
++++ b/net/core/netprio_cgroup.c
+@@ -207,8 +207,6 @@ static ssize_t write_priomap(struct kernfs_open_file *of,
+ 	if (!dev)
+ 		return -ENODEV;
+ 
+-	cgroup_sk_alloc_disable();
+-
+ 	rtnl_lock();
+ 
+ 	ret = netprio_set_prio(of_css(of), dev, prio);
+@@ -222,12 +220,10 @@ static int update_netprio(const void *v, struct file *file, unsigned n)
+ {
+ 	int err;
+ 	struct socket *sock = sock_from_file(file, &err);
+-	if (sock) {
+-		spin_lock(&cgroup_sk_update_lock);
++
++	if (sock)
+ 		sock_cgroup_set_prioidx(&sock->sk->sk_cgrp_data,
+ 					(unsigned long)v);
+-		spin_unlock(&cgroup_sk_update_lock);
+-	}
+ 	return 0;
+ }
+ 
+@@ -236,8 +232,6 @@ static void net_prio_attach(struct cgroup_taskset *tset)
+ 	struct task_struct *p;
+ 	struct cgroup_subsys_state *css;
+ 
+-	cgroup_sk_alloc_disable();
+-
+ 	cgroup_taskset_for_each(p, css, tset) {
+ 		void *v = (void *)(unsigned long)css->id;
+ 
+-- 
+2.34.1
+
 
