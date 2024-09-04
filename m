@@ -1,171 +1,187 @@
-Return-Path: <stable+bounces-72978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447C596B5BC
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:01:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746D996B5F4
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9F8F1F21EBA
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E436B2896E
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 09:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCE51CEABF;
-	Wed,  4 Sep 2024 09:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74E51CC8A8;
+	Wed,  4 Sep 2024 09:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAYGXF11"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="H5xRZP74"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27621CDA2D;
-	Wed,  4 Sep 2024 09:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B90E19AD56
+	for <stable@vger.kernel.org>; Wed,  4 Sep 2024 09:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725440432; cv=none; b=OmblQbqsqNQ9mw7JXcDJ1SKUUKNLR+r79FDiqixeK7iaLIvPNQolnsH/9GzOg+/J/R+++XFqWH+ETnOIxmKy4zH93MX5mUDR6LAX0MUuQyWlaDqDJziCAhiFI++2zJT0JONUw8TARLY5/EdH7FfbYBJcWmdSjLpvcMZ0yHlNXdk=
+	t=1725440604; cv=none; b=X/xczSDiq5ZLI/F0A5aM28ikbUSKS2jSm608xhhVx+Q6E5PAZZET+jd+t5MKOzzMEp2ExozfRilgzgFqNaA5N+JmPEz+gzTpv8pNhiuDDV9w5Opi6XCOheMmxCQV04V/BGIqyNcYlD2FjPZ3BedelQ0xkCB3L+JV8Eh8v0Rtp1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725440432; c=relaxed/simple;
-	bh=DmSbgFEJfyXc5l1S0wrl47FI2LdMhVBHo8RFVw75fyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u7yXO+8WNZsJCURxx9lDVvNnpvXdpwPQC9C3Nxn75Oh3lds8PalzpL4S/l72PWg1/s9zCR4T4l9rJIaRy1CiQ2M0PjvgHhZMByqsYAwFDe3TugfSsbqtCYDFK6sjkJ8YxiWo0i7Go71OJXBOTNLfQ0vuZqoggWHgd9QrRtz90KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAYGXF11; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42bbf138477so40256595e9.2;
-        Wed, 04 Sep 2024 02:00:30 -0700 (PDT)
+	s=arc-20240116; t=1725440604; c=relaxed/simple;
+	bh=5nUIKTbSg4q4zjEfAj6auMPQ/ltfU+x864zJsQBxEAA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W/BMiDfW0wfOmK9Dg6RJY1IJEatXgoIukb4h6okA2LG9SBDFXyIrAQoxq+XrAeIhbQ7+/WsPHUp6dAy1k4A21m7uoTpMfbgiKBszeaYnWmvxEC0DguGuNr5T1AGfqak1dnnROqxBgO1hsgZRam/VmbOmW84+zonJxK9cHVe2UTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=H5xRZP74; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7141feed424so4968822b3a.2
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 02:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725440429; x=1726045229; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vy90VFulS8e/nyhzi0U0xOoN1F9n1Y4+P2Hnc5uXLeE=;
-        b=IAYGXF11cmGEygyNHupn6Eb2KAP4ImBjUNjGkB+3AMbHZVPWvn8b711zXxFKS7UesE
-         WBD4uJsqPNoZBeMe1XyqFCkoThLq7tpnFaSuE6wDS82W2DtyFFywIMXholiXOIR7euwi
-         +2eBUbv1+27QqHgc7KYgzPHLCJ6a3K93k+11BI/j8DKbCiJQDGEhWkPgBtQvmMr1uuuc
-         YarsZzzsQmAut1OAY/vawO7TDtrlAedGeCSRRn1hzxrjOlPgt4AtnDYSwXgLTRQKQxjY
-         VROpOKUAOgkeyPMCsW/XYRQ6toSBMPq1zuiyrygP5zFWR5lqyvBsQP95QGbTl9AFPeBa
-         hkow==
+        d=broadcom.com; s=google; t=1725440602; x=1726045402; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4wB/yV3+rf4Y8RzFigd5SfHDxwKiBR/fUQmaqW/rq9o=;
+        b=H5xRZP74yiq6CULYThxBPoqKL/FragXqdV26dQjb0JgwRiTtfJDg462EMY6VG3loil
+         JkM+5rn3nV/iqwFD8MAJQVYZpL+ITwbLgUsOY0h+wVfNOHNyf+inOK25r5zEx/ANJUV9
+         U3r62EY33GJ02/cELDZGV1YphpJckvNbXM5z8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725440429; x=1726045229;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vy90VFulS8e/nyhzi0U0xOoN1F9n1Y4+P2Hnc5uXLeE=;
-        b=mX4OXin5RxB3ggPif0ueEd4/IkBeUo3lRCX7Oc4Ny0RqecTcs1WS7GHYVofTgNob8j
-         R71CqwpG1RR1CpoipOtvkSQyUt5qO7ei9z0obfLCPYTXEdPOjSgKj+rYNe53PDqdpCgL
-         PrBh753mkgzfmIVQhCVUfRNV9Pd0IVdzzXLZxh6MNra0pFiafDfG4U9rjPymXHgIWmSt
-         1LTpe3ozVju5M+tLcNCXIFOcL8fdqAFwWADOINmfjve7+tsWIGqguWC1lWOdm+nnfKMI
-         +t3QmIai09E2rQhC1XX/G3UlC9snxTVeFpD8PKtnBUZk8WVvL2fIhugWQhSZNE0IvSUl
-         yx0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUXQmw1GoNswdSSyZUG0mIwXn7DnEYCcaJrbPP4WPmxUtfwEUsoduYC5HU+61Mwln4iIfSnXv3e@vger.kernel.org, AJvYcCUnBTE3ukPSS9Xu64X9YCEe4DlAiYbYc1iZW2P7pJZJxWYTBvPhWcn5xWOgrgaEP7fB225rIwRDIaT3Zts=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvUiLGKnGzgg0itOtrEOL0O+l1f2Us3m1+PzeDbg2Emti2m/ME
-	2+m2lBCm8aTxQc7yJspkUE7F3RXcFvLod5H5BJUsMYKBE0Zyw99B
-X-Google-Smtp-Source: AGHT+IEtlT/yGsPphh+1fUhiEvpB+7pooR/GcaT/vc+N+I6fSNITQKA/Tm7hayaCxE8vwNZ1yEM4fA==
-X-Received: by 2002:a05:600c:1c06:b0:42b:b594:4a8c with SMTP id 5b1f17b1804b1-42c881030dcmr49127195e9.27.1725440429094;
-        Wed, 04 Sep 2024 02:00:29 -0700 (PDT)
-Received: from [192.168.0.20] ([148.56.230.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6e274ccsm200917995e9.37.2024.09.04.02.00.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 02:00:28 -0700 (PDT)
-Message-ID: <f48db1ae-23e2-4587-a4ab-3844d0822194@gmail.com>
-Date: Wed, 4 Sep 2024 11:00:24 +0200
+        d=1e100.net; s=20230601; t=1725440602; x=1726045402;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4wB/yV3+rf4Y8RzFigd5SfHDxwKiBR/fUQmaqW/rq9o=;
+        b=MfXTf39Q/A0QbyST39yw0hXILwRI8fVjCAqWdA9F6YsuRo21d7rmhDpJrgCusSq6DQ
+         1j1PvapIiA4evlYtY5FQOxUDqLgiUEqPnHPvJhpbbo2KAL5sS/MPSi59eBh6wD5t25VG
+         ieHZOPjwzCna5RM59dfn0i/naYVF5y0dxS8aMpEhFnPLxRr0crCsAp6tg9gQyBjqRnEF
+         MVtkOtul+I8cya4lphJKN1IPMwPDU+W0EvjwEcOEr9jpsa2ifnxcQrr2ioPY4aF5K864
+         QkhCV0rv36Euv1zqb3pcBUfqFZXkwERlIs/tQEBHnpH+VXUX20e/FHg0X8z2QjF3xtk8
+         lyEg==
+X-Gm-Message-State: AOJu0Yx8pkkm3x49IeS5nmjJWxM7P6a+E6d8rKI5QXtvIdTzPUmt7YN/
+	REbsEa6vcYfVIMiLpjnwGlMJFKqM02ew5/CAtlAAFC8eveohArZB3cZjDlzkZJNQRqnzrYtNVFQ
+	Dw4QPlynFY8t7NSFQXKdHpoVv4Hx8fcwuF52mjW9NZz5YW0qMWwk1/PAnZH852RFBwcSOCScfZv
+	iUiOlC3uyY3iiqWI0YQ94BybN+8eVGh4PRcq93iLTLXhwjo6wpjw==
+X-Google-Smtp-Source: AGHT+IGJsrgHqz53yFeaiETqupdXCgzC4IvuSfWziAhSvnu7Z3D7dTorU48dhFcm1em0e/sX0x2smQ==
+X-Received: by 2002:a05:6a21:6e4a:b0:1c2:8c32:1392 with SMTP id adf61e73a8af0-1cece503be4mr14192666637.22.1725440601553;
+        Wed, 04 Sep 2024 02:03:21 -0700 (PDT)
+Received: from shivania.eng.vmware.com ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206b93468b3sm6483905ad.120.2024.09.04.02.03.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 02:03:20 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: mst@redhat.com,
+	jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Breno Leitao <leitao@debian.org>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v6.1] virtio_net: Fix napi_skb_cache_put warning
+Date: Wed,  4 Sep 2024 02:03:12 -0700
+Message-Id: <20240904090312.14965-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] wifi: mt76: mt7921: Check devm_kasprintf()
- returned value
-To: Ma Ke <make24@iscas.ac.cn>, nbd@nbd.name, lorenzo@kernel.org,
- ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
- kvalo@kernel.org, angelogioacchino.delregno@collabora.com,
- mingyen.hsieh@mediatek.com, deren.wu@mediatek.com, ruanjinjie@huawei.com,
- greearb@candelatech.com, akpm@linux-foundation.org
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org
-References: <20240903014455.4144536-1-make24@iscas.ac.cn>
-Content-Language: en-US, ca-ES, es-ES
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Autocrypt: addr=matthias.bgg@gmail.com; keydata=
- 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
-In-Reply-To: <20240903014455.4144536-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Breno Leitao <leitao@debian.org>
 
+[ Upstream commit f8321fa75102246d7415a6af441872f6637c93ab ]
 
-On 03/09/2024 03:44, Ma Ke wrote:
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+After the commit bdacf3e34945 ("net: Use nested-BH locking for
+napi_alloc_cache.") was merged, the following warning began to appear:
 
-Reviwed-by: Matthias Brugger <matthias.bgg@gmail.com>
+	WARNING: CPU: 5 PID: 1 at net/core/skbuff.c:1451 napi_skb_cache_put+0x82/0x4b0
 
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index ef0c721d26e3..5ab395d9d93e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
->   
->   	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
->   			      wiphy_name(wiphy));
-> +	if (!name)
-> +		return -ENOMEM;
->   
->   	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
->   						       mt7921_hwmon_groups);
+	  __warn+0x12f/0x340
+	  napi_skb_cache_put+0x82/0x4b0
+	  napi_skb_cache_put+0x82/0x4b0
+	  report_bug+0x165/0x370
+	  handle_bug+0x3d/0x80
+	  exc_invalid_op+0x1a/0x50
+	  asm_exc_invalid_op+0x1a/0x20
+	  __free_old_xmit+0x1c8/0x510
+	  napi_skb_cache_put+0x82/0x4b0
+	  __free_old_xmit+0x1c8/0x510
+	  __free_old_xmit+0x1c8/0x510
+	  __pfx___free_old_xmit+0x10/0x10
+
+The issue arises because virtio is assuming it's running in NAPI context
+even when it's not, such as in the netpoll case.
+
+To resolve this, modify virtnet_poll_tx() to only set NAPI when budget
+is available. Same for virtnet_poll_cleantx(), which always assumed that
+it was in a NAPI context.
+
+Fixes: df133f3f9625 ("virtio_net: bulk free tx skbs")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Link: https://patch.msgid.link/20240712115325.54175-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on v6.1.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ drivers/net/virtio_net.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 61cc0ed1ddc1..e3e5107adaca 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1638,7 +1638,7 @@ static bool is_xdp_raw_buffer_queue(struct virtnet_info *vi, int q)
+ 		return false;
+ }
+ 
+-static void virtnet_poll_cleantx(struct receive_queue *rq)
++static void virtnet_poll_cleantx(struct receive_queue *rq, int budget)
+ {
+ 	struct virtnet_info *vi = rq->vq->vdev->priv;
+ 	unsigned int index = vq2rxq(rq->vq);
+@@ -1656,7 +1656,7 @@ static void virtnet_poll_cleantx(struct receive_queue *rq)
+ 
+ 		do {
+ 			virtqueue_disable_cb(sq->vq);
+-			free_old_xmit_skbs(sq, true);
++			free_old_xmit_skbs(sq, !!budget);
+ 		} while (unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
+ 
+ 		if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS)
+@@ -1675,7 +1675,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ 	unsigned int received;
+ 	unsigned int xdp_xmit = 0;
+ 
+-	virtnet_poll_cleantx(rq);
++	virtnet_poll_cleantx(rq, budget);
+ 
+ 	received = virtnet_receive(rq, budget, &xdp_xmit);
+ 
+@@ -1778,7 +1778,7 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
+ 	txq = netdev_get_tx_queue(vi->dev, index);
+ 	__netif_tx_lock(txq, raw_smp_processor_id());
+ 	virtqueue_disable_cb(sq->vq);
+-	free_old_xmit_skbs(sq, true);
++	free_old_xmit_skbs(sq, !!budget);
+ 
+ 	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS)
+ 		netif_tx_wake_queue(txq);
+-- 
+2.39.4
+
 
