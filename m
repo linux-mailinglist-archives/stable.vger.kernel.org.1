@@ -1,166 +1,118 @@
-Return-Path: <stable+bounces-73018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3186696B9C6
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:12:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABB996B9B1
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 13:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624391C21A92
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:12:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382DB2850CB
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 11:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301F21D095C;
-	Wed,  4 Sep 2024 11:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BA21CF7A4;
+	Wed,  4 Sep 2024 11:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Hxt8zByh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uohWGbCO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769A91D04B3;
-	Wed,  4 Sep 2024 11:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D5D126C01;
+	Wed,  4 Sep 2024 11:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448326; cv=none; b=BD7Cu9PSO0A0kEfGR/TQOoaWPSE3/Q8lV1A02z+5sajiWRqKNrh0fNZ92nWVoGl4Ahe7h6upmbz3KwoXHkwypD+m6lx0lRKzZIwhLJEUSuOfACkl5fwJ10yOKdwLO+c8ZJIqwdO275yl8fT7klZZBb8MZL6HMd+6B6+zV4AOn2o=
+	t=1725448237; cv=none; b=FM4rzm9r4bARanEpveX14f0ZJq3S95RD3mGBhWyAlECrKsqp+ilHULHcuJ9TalaVbpwr0IcuRn7pEvJSRK9il9nFPqQVxH4q1zvo9zTzNhDNmk+uqYdYG3r2hF6q1SrhDRBNZ14esbSPsWRMKr1R6eX+kSlgM7dNzPPO64N7hII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725448326; c=relaxed/simple;
-	bh=Qfo4SG04JA1avzMunJkHpOPgO4ke3s3rGLlQH1I3nyk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=m/6LDfSrB1tFNQmpD9BYF9LfZK027MbDUSEpD6ywL73/2yskEKI37O1/fPxmTrz6gw48mTBY53/HAVSp357XWeNUyjZXgrwRxyaNuqUzXxqR/Bk3Sk2jYL4b2/lYQo74/qr6KMgGN2wCLoWN950geJIsxxU+qE97bfpzZWSnOQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Hxt8zByh; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4849vUX6029938;
-	Wed, 4 Sep 2024 11:11:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tWlGfHBVtQOmxS9NVYbXksZ8cvR3jgjROa3dS+WJ5xU=; b=Hxt8zByhrPSmKOQc
-	y6uLf2Rl5Z+brr32Rio8FzxbUZjsqR3UOvJf2d5jon00/HF4FgdQnT5VJDOiIeVk
-	RzslXBfiyKHJdcSMzt1o8hIbpJbifFAaKFqlkme41di2/Zl6ueJ53gUca+JRcoYp
-	d0c4LWxmB2487nh3K7ZIgwz6P+qewqz/GJGyxIZbSKLbh9zyvuaYRr+Y4CV0xyRL
-	7ohemALJoxFRMT6D0jYJ0oagTutwruR5wHE+CBvH/HZWBGWkJiLtsds6Op3W9iGm
-	rE1y2NQKoBRdiCZB92rPASFzWo4z66jxwhkpAuLVCq0mghMNiNSKvQkrD8xSg11c
-	4D79dw==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41dxy23wt8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 11:11:55 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 484BBse5002289
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Sep 2024 11:11:54 GMT
-Received: from [169.254.0.1] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Sep 2024
- 04:11:48 -0700
-From: Vikram Sharma <quic_vikramsa@quicinc.com>
-Date: Wed, 4 Sep 2024 16:40:09 +0530
-Subject: [PATCH 03/10] media: qcom: camss: Fix potential crash if domain
- attach fails
+	s=arc-20240116; t=1725448237; c=relaxed/simple;
+	bh=RBCC7cUoHBmu97wTma4VbvUaoCWhlOpWYCkYOJfm2A8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MQa+KnQ+JhKAyR/n8/KaJoyyp84XDcZ+LmHYfVd/QAZqH1crebQkKY6hqfDsB3DtU1Xc9X1+WAG2c6v8DOHBskx5AbpHJP+mtCd6VFGEWpLBlrkL0BS2PVZVYy256ZYB9tnTQA6t+UtXlrNk1y/IqfRWhAM9UbonNiDWZwZavF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uohWGbCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B1AC4CEC2;
+	Wed,  4 Sep 2024 11:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725448237;
+	bh=RBCC7cUoHBmu97wTma4VbvUaoCWhlOpWYCkYOJfm2A8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uohWGbCOdPaQStNzbXtmqh34++zUv1HNamXnVueW2UlyJ8OdvenJ5bLJG4/tbjRKD
+	 rv/nOfUNak1OvBI87z4TzxI4G5OVJSGQ1WnMoDD2ftyNMI5LBQVkctKYRbd2dKuen7
+	 aG5uHdnr6+oL/l2W7MIEge6UA/hW1ssGDNrc5wNxC/4VXv7oKUbeGp+zF8zU5/pzgX
+	 Vbm5hyef54ZMlFGQ9mmqu1A0rbcJmxQXhOO/H7HeypeNg65dgvHCXoayiJeJJdNIRh
+	 Yi4QynZvy05AlOyy4WDEAfqAtf9vuVmL7Z5a40/MVp9X5Nd7YB+P2J5z2VQSoy+vRH
+	 A9x7Q0jNxKkPw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1.y 1/2] mptcp: make pm_remove_addrs_and_subflows static
+Date: Wed,  4 Sep 2024 13:10:15 +0200
+Message-ID: <20240904111014.4091498-3-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024083045-mosaic-sniff-fe02@gregkh>
+References: <2024083045-mosaic-sniff-fe02@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-3-b18ddcd7d9df@quicinc.com>
-References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
-In-Reply-To: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-        "Bryan
- O'Donoghue" <bryan.odonoghue@linaro.org>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kapatrala Syed
-	<akapatra@quicinc.com>,
-        Hariram Purushothaman <hariramp@quicinc.com>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        <cros-qcom-dts-watchers@chromium.org>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Vikram Sharma
-	<quic_vikramsa@quicinc.com>, <stable@vger.kernel.org>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725448289; l=1333;
- i=quic_vikramsa@quicinc.com; s=20240628; h=from:subject:message-id;
- bh=Qfo4SG04JA1avzMunJkHpOPgO4ke3s3rGLlQH1I3nyk=;
- b=wAtJvj1IJ4SSelejjIF4WasEAIO8cqACdGS3sGDSchgU6EypI00JHnGxqFlr+O5l/qCHCI6cq
- JiO2wdtPtc5AWq42hm0tBC/NBnYTPu5GcaGTBftF8OpQJwhyinmZAyI
-X-Developer-Key: i=quic_vikramsa@quicinc.com; a=ed25519;
- pk=vQBkwZr1Hv+VXogAyTAu7AEx8/6bvkOmgrzYFbNGCDI=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: cjBJNoG6w3gpnKxVfNv_GfhM86DHbszL
-X-Proofpoint-ORIG-GUID: cjBJNoG6w3gpnKxVfNv_GfhM86DHbszL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_09,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- lowpriorityscore=0 mlxlogscore=999 spamscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409040084
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2063; i=matttbe@kernel.org; h=from:subject; bh=Hf6nOZzdQqe/85EIo+VaVSliU5rKwlQDhLlf0nvqFDc=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2EAWL+zvp1QTzXf+Toem69XbjGC3EbNNmulDg MnX6HDOaYKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZthAFgAKCRD2t4JPQmmg cz9iEADcXYM7vRubpbQn+oWoxJ+H5UbIFrgnIV5gRyaVCK1sdvSiV84Uhpzjawh76aFqr+lYLWY PI4lczNAxeGkh0vBFnzz/A0U12BMYkocpZdi5/LmNZ6GSL1qUuqk8SKA73bjvu90iilrJOg/Nc9 iOW13qYnJ7FP69qt3H4g/lxLJJuEGCylaMjI5AQHg/6SbgxSgTpd20XFvf4VdIfkftM9hH2ZSTe t1KEKwdrcE8EJoeG/BaIUdBFt8ycxfz6QGBrhSMSSQ+Zs4bhPNGAO4UrkPcbJptIQPJC4MaTCt0 2J5sSDE6PMOSVcPCunkuiAQAR6LBNNSIQ4Rnpp1axO0lVqS1zM/ataGJ8r6oudqvkFQtsHoigXB OoTfNfSlytSzRca0FCmvoFygNeKpghU+NoLo0omzaghDptM1Cuw/y7VL32+makt/KuKYZHhm1S2 kJJNHp27EQJ1+JpeGP8rX3H8cV80cucEoymMqI3NO+JNZKfkY0Itjs0cN64bkielSPXEBE3XsAk yE6ItKvvDjnA4nhUD/pCfBprARdJDCODHTIo0Y5uo66/yV7bspl2DYUHBsKMWdwaxZzFpY+KiIv dPiFFzfCxOiZhPrZEtLs8WL476CLUtJ7PQ1u+bC5M+nRrq3ofiZF01IOESQOrpL718miyebfbgZ kxPRUP5SQB9HslA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Fix a potential crash in camss by ensuring detach is skipped if attach
-is unsuccessful.
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-Fixes: d89751c61279 ("media: qcom: camss: Add support for named power-domains")
-CC: stable@vger.kernel.org
-Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+commit e38b117d7f3b4a5d810f6d0069ad0f643e503796 upstream.
+
+mptcp_pm_remove_addrs_and_subflows() is only used in pm_netlink.c, it's
+no longer used in pm_userspace.c any more since the commit 8b1c94da1e48
+("mptcp: only send RM_ADDR in nl_cmd_remove"). So this patch changes it
+to a static function.
+
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87b5896f3f78 ("mptcp: pm: fix RM_ADDR ID for the initial subflow")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c | 4 ++--
+ net/mptcp/protocol.h   | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index d64985ca6e88..447b89d07e8a 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2132,7 +2132,7 @@ static int camss_configure_pd(struct camss *camss)
- 							    camss->res->pd_name);
- 		if (IS_ERR(camss->genpd)) {
- 			ret = PTR_ERR(camss->genpd);
--			goto fail_pm;
-+			goto fail_pm_attach;
- 		}
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index f148610c64e4..46e61130a514 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1696,8 +1696,8 @@ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
  	}
- 
-@@ -2149,7 +2149,7 @@ static int camss_configure_pd(struct camss *camss)
- 			ret = -ENODEV;
- 		else
- 			ret = PTR_ERR(camss->genpd);
--		goto fail_pm;
-+		goto fail_pm_attach;
- 	}
- 	camss->genpd_link = device_link_add(camss->dev, camss->genpd,
- 					    DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
-@@ -2164,6 +2164,7 @@ static int camss_configure_pd(struct camss *camss)
- fail_pm:
- 	dev_pm_domain_detach(camss->genpd, true);
- 
-+fail_pm_attach:
- 	return ret;
  }
  
-
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list)
++static void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
++					       struct list_head *rm_list)
+ {
+ 	struct mptcp_rm_list alist = { .nr = 0 }, slist = { .nr = 0 };
+ 	struct mptcp_pm_addr_entry *entry;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 837703405d85..9a367405c1e0 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -837,8 +837,6 @@ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
+ 			   bool echo);
+ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list);
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list);
+ 
+ void mptcp_free_local_addr_list(struct mptcp_sock *msk);
+ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info);
 -- 
-2.25.1
+2.45.2
 
 
