@@ -1,124 +1,260 @@
-Return-Path: <stable+bounces-72959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3958C96AFBC
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 06:18:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2532B96B097
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 07:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5261F252AF
-	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 04:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484771C21E44
+	for <lists+stable@lfdr.de>; Wed,  4 Sep 2024 05:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB67762DF;
-	Wed,  4 Sep 2024 04:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB3F83CA3;
+	Wed,  4 Sep 2024 05:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vsFjC5h4"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b1fF7u0Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011013.outbound.protection.outlook.com [52.101.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0306F2EB;
-	Wed,  4 Sep 2024 04:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725423493; cv=none; b=FEXxhf4T1XEai5Gp3oyvUbzNbV0qB0kZwNWgvY4lzy9qQtn2+m0ifcRUE+uBpzHV5SunSGgHjFIPzoCgfP5zfjWjIIZKmOTnYaSilHbytmgKqv1ekcdIKM6Ej5NrQfqLD0HDiLiYlBDrra48NdHV35FRBMikzoEb2jrjj0NKaj4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725423493; c=relaxed/simple;
-	bh=IJmVIUHdes8t+IvRAKQuW+Qcet8o3Bn6hRLaf8XK4Vo=;
-	h=Date:To:From:Subject:Message-Id; b=r26zlf2scR217pC5RFuRXB5XN7Yt9iWe0c+00mgjs5TiZKfEnVEKZZZ8BhOMGdRFA48waJo58WBdw2n9qz8PI0U1dPNM9iIyO7Hyv3sbQ9RuBDgpMzjRo95ICFYazhiY0qIkp3gt/s1EKEEx3M8p/GYX9SK5DuEfdyB+rLU/Ftk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vsFjC5h4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E646EC4CEC2;
-	Wed,  4 Sep 2024 04:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725423493;
-	bh=IJmVIUHdes8t+IvRAKQuW+Qcet8o3Bn6hRLaf8XK4Vo=;
-	h=Date:To:From:Subject:From;
-	b=vsFjC5h4Avkjx4KCUUmRIkNzV7EyWmYRfeXX3RSjXBIkJQRFich9oVsjJ7JJ2ouhw
-	 5baZo8PZL89Kj5f1zHKv5I2LhZXUNadIdQXaSfYC0Mv6nkT3ws4Li+cYBAHcljy0Gi
-	 D8Hk9QZDhVjcFNi3zjXQKjAZwVOYtzlPlxKkmvQM=
-Date: Tue, 03 Sep 2024 21:18:12 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,roman.gushchin@linux.dev,rientjes@google.com,penberg@kernel.org,iamjoonsoo.kim@lge.com,cl@linux.com,42.hyeyoo@gmail.com,dakr@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-krealloc-consider-spare-memory-for-__gfp_zero.patch removed from -mm tree
-Message-Id: <20240904041812.E646EC4CEC2@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8055B1E0;
+	Wed,  4 Sep 2024 05:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725428390; cv=fail; b=q3pNXKDbAUPoD1JXJDtLoNlIAuAF22sRXhFRNHi/Bi3d4/CdtTCI2C3e5ns8UfuhnLmzZz2sWZWzwXe+v690EfLS+BebXCxNrAYPB9fqNAgyO9MT3nTX/vuc9OOQeXUVYceDnlg8byqXJeHTCRCp0fq3LGlQQmnIwWmp17rOedE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725428390; c=relaxed/simple;
+	bh=d/KTAXdAMto0FhwNSIwzRAE82Gc8wdWygG47Vx0mLJ0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MuRw2s/OSRRdajcB6EmATimyq5jjMJu0gx3FaEIRPvVV0s7gua6C4RjJurmQWfldTIFfxaK+uoH55US+mbRzRNiffTTMiCAtpwU0JoVMgQXBYtOZbGQ9M86DnDtY9EXDuBPyqEDd5D/NBPgaZy5nMUATM1aSe/IgDgKHhEpup0I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b1fF7u0Z; arc=fail smtp.client-ip=52.101.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CqqdP3xZ01C4Olw4bNooTSRwennLFdEousJy3/UK5SbrUpLZqsTJhoz/Xz+/0L9oO3RtZrvf1kX4vqQSny39HaRwtBI90WatCa9GnYE++mqob4VyvcD1f9QrLuG8UVd4rIerZ8npcIR7S3qU10BoCA2k56PnWLM25yrGcYiN9v8goEB5gFIpmY+y0mh+eT42cY42Zyhm1Mb2gVzSFJ2Q7kntTEV9r9RofUCPeeE+SgieKWhNOOvKQvvTm7H9eY3IDpXSrIxcfYffdYhFPTOuojS3k0xT/j1R9WfJArUVAhP4HzMeWszSAWsLpmuMkTMYMx1k4481w/LwgrHa/p9D2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W++hHnw+xuwwamRgAAY3IniNRrfD8olDAxvuV75/JcQ=;
+ b=Gx+VKHkh42/9Oi0PwIkaRbx6t4lLS4q7i+767cgC8zcp6weFPznlWJbJGtmb3f2zudaxu/61GZhvQjDViMmSSq7532MpLOewKo8U7wtMTEU7l2rR2MzsnlBEeA2JJQnDto1mF+0SrxD3RboicjbnSRDcdVQ9N36UJWkrBxYXkkId7kqeK4DhgGRMVB4Sc6Bo++0F73jey/a5+Bg+fGK5WU8C3oTmK5DncZQI0TN+sSOsBtOEZzSF6ydkUz/2P+V7ym6U6lFXR6GkKtzCQ8HR+d3z5Seqv9xvaJD5/I3MMm0vnQ9f8nmrDIor4gWqMXnmCx8epCT0hfB1hTyo2ZnKYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W++hHnw+xuwwamRgAAY3IniNRrfD8olDAxvuV75/JcQ=;
+ b=b1fF7u0ZbI70IFF+mwhisfeln83TJeP2V0vmnjyFFE0FrlIMQ0GRouZbLpxuGOF9vWxSHxj93vzG1KmyYEiC6m+1+YXDXKGufv6wkfI9jy9XHA7VCohXZtiqovFOzYrkgZqbSk+cINHcgMdk6Rvx/+YG4333Hn1DH5cHGqELlxe4QomRIMtTqcnaDACsaolFh/jqbw8LLw3bQc93wYV0XN+eeOF1EQ4pIUjZ9OTxivi1rnfuzWQ5d80U9LmcqXwtmRjGzmu+rCdg75fPujKI3GL4SE3QcJOTSKKL8FLkogc5uEeO2V6LNk9IuiAeGAA6zjCx6J3dRCiuxXdgDuftzg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by DU2PR04MB9050.eurprd04.prod.outlook.com (2603:10a6:10:2e5::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 4 Sep
+ 2024 05:39:44 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
+ 05:39:44 +0000
+Message-ID: <01b335a8-0802-453b-a792-ceb5c54a41aa@nxp.com>
+Date: Wed, 4 Sep 2024 13:40:10 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm: imx: ipuv3-plane: fix HDMI cannot work for odd
+ screen resolutions
+To: Paul Pu <hui.pu@gehealthcare.com>, p.zabel@pengutronix.de,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>
+Cc: HuanWang@gehealthcare.com, taowang@gehealthcare.com,
+ sebastian.reichel@collabora.com, ian.ray@gehealthcare.com,
+ stable@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240904024315.120-1-hui.pu@gehealthcare.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20240904024315.120-1-hui.pu@gehealthcare.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SGBP274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::30)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU2PR04MB9050:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7fe06645-b6a0-4ba5-fd56-08dccca3facf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?a1ovckdaN0MxVFVKQS9KSVhCazNpMTFDK1QyeVM3USt0MnRFTkRGNDhnUEVT?=
+ =?utf-8?B?SUlEd0FZdzVqZkN4TWdTeUhOek90dDBZc3g1bjdPeEtIeDdqaElpOVFhMlBs?=
+ =?utf-8?B?cGprT3hpSDUrQUpwUk1kVVlEamt2L255ZHpwK290QVVTUVI5QUlCRGZ0clJu?=
+ =?utf-8?B?VXpLcXNBOGRDRGVka0RiYm1SY3E0K1RLNzNXR29ySkRxSWNUZlFETlBpeXlB?=
+ =?utf-8?B?WXpubWFFY1NCbXo2MG55R3haVEwrUmh1cEt0ZFY4THRZa0dIUEgxTi9tQ2Rj?=
+ =?utf-8?B?OTJsbktvdExpT1cxaklmb0JRK285Q1lMSEJCbFFRREE5RkZVdW0vQmJXbHVU?=
+ =?utf-8?B?Sk0wWXRiNUpFaEl4N1RienhPT2JPS2wxZjNVeDdmQWx4NUNmdlZEdUt4UGp4?=
+ =?utf-8?B?TkZQeWhEODhtZFJJd29RS0hTaW9WSWx6TjVTb05YZnBxL3ZtdXJlbldWenpD?=
+ =?utf-8?B?V1djT1o5SU0yMU44YkZaVEU0eE1IR0x6aExpNjNXMk9BRk1wVWQ1K24wbWF1?=
+ =?utf-8?B?U2xoY3Vid1RjVk11RGRpWUNTWms5ODRUb2NVcU1Ub0VOTHQyRDRLeDRGWFpi?=
+ =?utf-8?B?RDhEUHpxT0E5dWxOeXFLcjNqODduUEc1UHZGdlhnaVpodlNLSU5Rc0hIMENE?=
+ =?utf-8?B?WW54V2tzdjNzUjZaMldYR1FjSWRQSHVvWVZ2MHZVNU41c3ZQZzZVL0JiWWhx?=
+ =?utf-8?B?UGxQeWZMbWFGMDhMeU5XcGlocHYvbXFXSkRFS1E5eVVIc3laSG5qd0hTSzJW?=
+ =?utf-8?B?eGI3TnYyMEN5Z0JJT2ZYVHVhT0JwVnowL2NXcGFveVRrSUVLdW1YeHRWaWlC?=
+ =?utf-8?B?MDJmSitsNGlMK2wwQ1NoMjVZUzBKNXlzQWt1WWVVSlA5K3QxZUk0TGp1Um44?=
+ =?utf-8?B?UDZQRHhsc1ZwSlRZanBXbnlyMGdFYm9wMHYwQ2tkQldKSlNFZjVNRTRINUJ6?=
+ =?utf-8?B?TGZiVG9nRlIvVUo5VlkxNVJTMTFTVWlLMVpza3Bhdm9nckQyVkZSWDNubDNT?=
+ =?utf-8?B?cGhrVHBES3hUeG9TaFBQY0lpTlpJVXRFRkVlY1dDTjBzYXhmclBCN0NxWmdS?=
+ =?utf-8?B?WGYyMFUwNVZpbFdMTCtNbllTZWJKbE5sWTdNeXdkN0xVZ09Ob2ZTWFBWd1k0?=
+ =?utf-8?B?K3hGVk5WZWJMaG5iRzVVak5WcHlwLzNKbDFQbkdsd2lCTXlqOTRXKzRMNEow?=
+ =?utf-8?B?NCtDMm0yM2o1dkhOaWdxaGh5NGd6VW1XUkErUDlISjhzTlM0cUNkTnJKUE9q?=
+ =?utf-8?B?dWxkM3duTWZDTkE5MnlUUTFCOEgraDJRanRsNWpxdm9qcTN4cjVhdlBYbzZB?=
+ =?utf-8?B?MytQcEU2NGFMQjRPREZ0Y2t2cFJlREd1Nlh0OWo0dXcxcmJhSTQ0em5vbE81?=
+ =?utf-8?B?d09iSElKRHJrMmxrQnRBZi82aHp2RGZBRWl6VVA3Nks1UlpGZnN6YjB4M1Bp?=
+ =?utf-8?B?ZHA1cmZ5REEzblk3VlhKb3NxT2xqaHRNRHo3WlY4NFNhUmJ4d3lBZXdmdkVV?=
+ =?utf-8?B?UnJtOERrTFV6clBXOU5ZNzc5bVZUOUJoWWhOU0RuYmZHMUZ2ellpZ25FcE8x?=
+ =?utf-8?B?dmx2NTZKVWFrQTNLK0dabGlkRVRqTjU0Q2c5N29nUndLTU5zWkxhTVk3a244?=
+ =?utf-8?B?dVFzNm9USGZ1U2dhMWlMdnBjU3N0enN2VFdLUmFPQ2RNZUIwdloxWjFlN3Zn?=
+ =?utf-8?B?cm00bEk5MS9tem9SU3lDSFIzamtBaVhPWXQwMTV3ZVV1cHZIcUduRU1QRlFG?=
+ =?utf-8?B?TVFRYVBtV3VrT2ZrQm01cVllOG92SWZBZmtGbmwrQTdrbVhyWU5jaE5HeFBK?=
+ =?utf-8?B?dE5zc3hvOXVYdVRwR0V0SzM5bnVXR3NFN3J5ekVYQW5LNWhrajAyRmtvZ25w?=
+ =?utf-8?Q?XZwAgm/mM1Wjz?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MzhFN2prcTZqTDl0N3NqaGtzcmZadW5JblRONHdRZ0hqK3EvTU1wNUJNYTVj?=
+ =?utf-8?B?RVNGOGRuU3R0RjNHQWVHYXM1Zmc3MXdHNzVybWs2NVA3VDZyY0xpajZ2eXN6?=
+ =?utf-8?B?QkpFZE9XZGwxOXEzWXlYVmVlR1ROVFFFVWd6bFc4WE12ellXc3JjNnpxME1p?=
+ =?utf-8?B?bWhLNWwxUDJmUXFKbE90UFdFODhqWEJueDFDSUxYN2l1b0ZOWUQ3NlJBeG5r?=
+ =?utf-8?B?RExMeXVEYzlISmZ5d3BJaWkva1pCSjc1MlRZYWErWHUyZEl3dTgrT3E4eHVM?=
+ =?utf-8?B?aGFmdkRuUW5QeDhWczZPSlE1c0dSVVlIQlAyUjFMc2VwZ3FJUGV3OFlBZk1k?=
+ =?utf-8?B?SVJVMG9LZlpuTWdnMmFPNVg1VXA5MXZvWm9WaXdYeXFWNWh0Qjl0b1dUR0lx?=
+ =?utf-8?B?eVNMUldtNThuSU5VZzR0ODBuVE5LVC9jbVJBRGF4aVpaSWlnS045Yk0rWDF0?=
+ =?utf-8?B?d3BabW45VzhzQkNqN1BrWVF6dGlLYnhTOWN2R3EzcDFLUnVGQXJhQWlYMmpk?=
+ =?utf-8?B?UTV0amNpQWx6cGlCQkNvMm1hcGhBbi9Ra1kvN2pOQVJpV1NMbnpIMDV3WWxG?=
+ =?utf-8?B?ZUlnb2FobDQ5bUFDOWFnTmF4emFZT3BjVjF1dUxYT2hxYkplSTd1V014dHVs?=
+ =?utf-8?B?NWtHL2Z1YkVhc2NaVDBST1RMK25Obi9ncWZRbVV1alREVjFhem50WnFiT2dm?=
+ =?utf-8?B?c3RJNk5Mb0ZjbEtnWkk1bmx3OU5yZE5DenlaNEFzaG9uR1JMeGEzVDRqaEt2?=
+ =?utf-8?B?bFd5cnh3Tjc0cUpLWmJpYzFFaFpiSFlUN1RrTm50OHNiVHBqRktHbmtTRmNI?=
+ =?utf-8?B?RlkyWVJyUTRIRjhmd05idEpLb3JWRUtNN0NLcHBjcVBzZExTY0s4RXJQTnFq?=
+ =?utf-8?B?SVJJM3J6VU51bG1rYzBKM1RtazkvdWxkNFdMelJCSEpCdWdwRmdQRjhEcHQ4?=
+ =?utf-8?B?NEJlTUFFV1Rla2dsekVYei9naDE2NVU5OWsySCsyWnVXQzRuRUxHY2RMWFRk?=
+ =?utf-8?B?clFkdENzU29LS1J2dlRJOFF3RE1vTnNCN0F5ZHp0WGVHcFZNamRYTnA1Ky9Y?=
+ =?utf-8?B?bmY0NG1zOXZlenoxS2VtajViTjZ2ZGw4RzZnczBRY25TWFo4MUxOYy9lZlR5?=
+ =?utf-8?B?QzFOeE4zaEJFeTZsYm5qc3hDYTJUaGRsbjFoRXFwbDNnZTd5QllPYnI4U0RL?=
+ =?utf-8?B?aVNlcStraU1GcEVaZDhZMG9rUHhlUEZ3TDhVdXVZeG1DOW5IWDRLV0dFZ3Zo?=
+ =?utf-8?B?YVVPczNDdDdWUUdzaTRhK3hNelVDVVhGSkZveC9FQitGRzVVenorc3h0VFdS?=
+ =?utf-8?B?dkRidEwxNkVOTmtVRWRaQ09VWVg4YUtWV2hiR3VzWWtQYkJxN2xnVVpMRkgx?=
+ =?utf-8?B?MVRuaERjZE5IUjljd2drK3VtTE9DZ3pRaG5iL3RQdnNCdVVxUDhhWVloM1Jw?=
+ =?utf-8?B?OG1YZlJ3d21yaktJMyt0c2RNVmJLN2VkSU94WWlYSkpzbGE2M2NPS2VnblEy?=
+ =?utf-8?B?TW9taDdnWmdnSXllcFFoT0RZVGR0Zm05bUZQOGZwNmFpZjRZSDlYeWptdGlx?=
+ =?utf-8?B?TGladndFcjNsaUEyOVRJSGJVMWpMVXFZT0pxc05JMzZ1UW5kTXNBc3pGNDBo?=
+ =?utf-8?B?cHo1d3pDOXZXTnAvL1UwSXBPenQ2R0dSM2pPMFFmYlNUWUJUT2pWZzJieU1E?=
+ =?utf-8?B?RStMZW1XMk1tdFR0QmZFUGc5amRKbFJDSjhuRDZYRVlrbnZWYkwrTldJN2Fs?=
+ =?utf-8?B?V1hIaExmVXFzZm1SQVRuamwrVGdvT0tIMk5TcGVuL2lPNklQcUxnUkRKVEVW?=
+ =?utf-8?B?VWp6VHJzeVRlbUM5QnFXdFpzMmV2Mk5lY0JBeFVobk9rUEVBY0JERW9kSzJq?=
+ =?utf-8?B?SlRiM0Jpa1lpczY0WXoyVklqeFo0WGQ5RWEvSmN4cjNMNjNKR2RqREVTSDVn?=
+ =?utf-8?B?bS9reFVWQTU3VnA0M3k1ZjNVN2doTys0ZGlldGlHZnBXV3h4dEtaZkNQbWVY?=
+ =?utf-8?B?RFUxbkpRM0krRlpDRUI3cksycGVWbE43bGxBMFZKeVVWZ1FNK05KcVlFLzFD?=
+ =?utf-8?B?dk81YnFmbEl2WWdVV2Jsb3RqVmRxcHg3QUlLcGpLdnBwbjVlbGkvdnRXN052?=
+ =?utf-8?Q?iNXlxHgREQ8DwhlKtposLTfNr?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fe06645-b6a0-4ba5-fd56-08dccca3facf
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2024 05:39:44.0360
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PDYVZ8de9GD1tWUP3OQ+gyN/aK3WabKRle0JXl0zf3MiY0X6xe4yyDeXDZXCwNtfwZShvcyIfb+lG0MXijMSkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9050
 
+Hi Paul,
 
-The quilt patch titled
-     Subject: mm: krealloc: consider spare memory for __GFP_ZERO
-has been removed from the -mm tree.  Its filename was
-     mm-krealloc-consider-spare-memory-for-__gfp_zero.patch
+Thanks for your patch.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On 09/04/2024, Paul Pu wrote:
+> This changes the judgement of if needing to round up the width or not,
+> from using the `dp_flow` to the plane's type.
+> 
+> The `dp_flow` can be -22(-EINVAL) even the plane is a PRIMARY one.
 
-------------------------------------------------------
-From: Danilo Krummrich <dakr@kernel.org>
-Subject: mm: krealloc: consider spare memory for __GFP_ZERO
-Date: Tue, 13 Aug 2024 00:34:34 +0200
+s/even/even if/
 
-As long as krealloc() is called with __GFP_ZERO consistently, starting
-with the initial memory allocation, __GFP_ZERO should be fully honored.
+> See `client_reg[]` in `ipu-common.c`.
+> 
+> [    0.605141] [drm:ipu_plane_init] channel 28, dp flow -22, possible_crtcs=0x0
+> 
+> Per the commit message in commit: 71f9fd5bcf09, using the plane type for
 
-However, if for an existing allocation krealloc() is called with a
-decreased size, it is not ensured that the spare portion the allocation is
-zeroed.  Thus, if krealloc() is subsequently called with a larger size
-again, __GFP_ZERO can't be fully honored, since we don't know the previous
-size, but only the bucket size.
+Commit 71f9fd5bcf09 is a commit that only exists in downstream kernel.
 
-Example:
+> judging if rounding up is needed is correct.
+> 
+> Fixes: 71f9fd5bcf09 ("drm/imx: ipuv3-plane: Fix overlay plane width")
 
-	buf = kzalloc(64, GFP_KERNEL);
-	memset(buf, 0xff, 64);
+Commit 4333472f8d7b is the one to fix in upstream kernel.
 
-	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+s/71f9fd5bcf09/4333472f8d7b/
 
-	/* After this call the last 16 bytes are still 0xff. */
-	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+> Cc: stable@vger.kernel.org
 
-Fix this, by explicitly setting spare memory to zero, when shrinking an
-allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+Better to mark the versions for backporting the fix.
+Cc: stable@vger.kernel.org # 6.3+
 
-Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+> 
 
- mm/slab_common.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+No blank line between tags.
 
---- a/mm/slab_common.c~mm-krealloc-consider-spare-memory-for-__gfp_zero
-+++ a/mm/slab_common.c
-@@ -1273,6 +1273,13 @@ __do_krealloc(const void *p, size_t new_
- 
- 	/* If the object still fits, repoison it precisely. */
- 	if (ks >= new_size) {
-+		/* Zero out spare memory. */
-+		if (want_init_on_alloc(flags)) {
-+			kasan_disable_current();
-+			memset((void *)p + new_size, 0, ks - new_size);
-+			kasan_enable_current();
-+		}
-+
- 		p = kasan_krealloc((void *)p, new_size, flags);
- 		return (void *)p;
- 	}
-_
+> Signed-off-by: Paul Pu <hui.pu@gehealthcare.com>
+> ---
+>  drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patches currently in -mm which might be from dakr@kernel.org are
+Maybe, the patch subject can be something like:
+drm/imx/ipuv3: ipuv3-plane: Round up plane width for IPUV3_CHANNEL_MEM_DC_SYNC
 
+You may find example patch subject prefixes by looking at previous commits
+which touch the same file, like
+commit 71e3657cb126 ("drm/imx/ipuv3: ipuv3-plane: reuse local variable height
+in atomic_update")
+
+You may specify those fixed odd screen resolutions of your "HDMI" case in commit
+message.
+
+> 
+> diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+> index 704c549750f9..cee83ac70ada 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+> @@ -614,7 +614,7 @@ static void ipu_plane_atomic_update(struct drm_plane *plane,
+>  		break;
+>  	}
+>  
+> -	if (ipu_plane->dp_flow == IPU_DP_FLOW_SYNC_BG)
+> +	if (ipu_plane->base.type == DRM_PLANE_TYPE_PRIMARY)
+
+plane->type is more readable. 
+
+>  		width = ipu_src_rect_width(new_state);
+>  	else
+>  		width = drm_rect_width(&new_state->src) >> 16;
+> 
+> base-commit: 431c1646e1f86b949fa3685efc50b660a364c2b6
+
+-- 
+Regards,
+Liu Ying
 
 
