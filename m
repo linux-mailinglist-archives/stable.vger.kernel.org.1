@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-73433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A342C96D4D9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D707696D537
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1CD1F2920E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8269B1F2A2C3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C934198824;
-	Thu,  5 Sep 2024 09:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CA119538A;
+	Thu,  5 Sep 2024 10:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9hV9d2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R06Rjr88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABCE19413B;
-	Thu,  5 Sep 2024 09:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EDD1494DB;
+	Thu,  5 Sep 2024 10:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530215; cv=none; b=gTaVCaxWOwsY6nHyQ/ZkbDSwypvKf0B9BMQnaLC/jujFTbkqbPYM9xV/vEfULgVTSHCiXMGgTvYTV/hyWrmNin/0tm5s2UcxPWtOICoLKvqzxb2Wb8ySdWeZyHfrKORGCR3zICKSKOES5c6RskiAzVTfDvpCM7tQOfM233lkynQ=
+	t=1725530503; cv=none; b=r7JjZPq0CBCf0DeH7exQLeNwuxzuK2Fx+DrRnlnrdReFJ5GRWdw5VryKYDXDnGwluKuXnLq6tAKf4CG/+WIXIh5Lu/F+1lDvDS2eIeCDqpKTroTE5jjcBPcrUFFsuT2gS0C1s1aUJ9V28NphZMlHZKjdhNJHwqTz5BzlMQLHj/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530215; c=relaxed/simple;
-	bh=4V3RyuzLxF1ys9JSbGHzA8bC9Xs/W9oSwGYUMHwMt1s=;
+	s=arc-20240116; t=1725530503; c=relaxed/simple;
+	bh=NlIE6Vh1WPntNKxIyKgMOo1ipxatzBRUlNWLAPEAldQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcdroePxc4db55E8WE8lIRbkJf9WL3Mssy+O/NAnTfkbbUATcsJcxc4S0jwagChtcDWcZo0S6uHsar6bjT6+agxFaqoorOwk3BimiUliqO9ErxsFsPicjTF6c2pe21uAns8r7CVUKJcSaEq4A+MJEA5lnrrloMpZwRzwNaAuV8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9hV9d2X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D858C4CEC3;
-	Thu,  5 Sep 2024 09:56:54 +0000 (UTC)
+	 MIME-Version; b=d/RT67ARUPXKNNaplXmbr4MTwe9oxLGggc3n+a1XX0SbxVY5vgEVV5YFBkwTJl3qRxcMrZSkOmb7GKIm1YzTRYStpypeoqi8hfaeqZlUY/cbcx1svyVdywo9yaGhbEvkd8XsemEDVsTo377Q8YC9gZ0craVa1AuoNzfDJFCTCYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R06Rjr88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65583C4CEC3;
+	Thu,  5 Sep 2024 10:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530214;
-	bh=4V3RyuzLxF1ys9JSbGHzA8bC9Xs/W9oSwGYUMHwMt1s=;
+	s=korg; t=1725530503;
+	bh=NlIE6Vh1WPntNKxIyKgMOo1ipxatzBRUlNWLAPEAldQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9hV9d2XMHaeqnUfvPYj0ZonzWoGngGSFAxvW2QaIQUnPOeWFT/rSuP19Z7/OtX5G
-	 qPPbheX5TFuX7O3pGIRIexU25srewEdTn8+5+O+lj8ljmR70bnocSdXnkDIZMfxvsl
-	 +QPCyoqZT0k5pjI30wVkRDPB4fJMxAk6TIgoIquc=
+	b=R06Rjr88ohdBXaFqIJreScTeZ+mrDU4O7XGxW2n9HBAJ5XIJpd/ov6VrEsXJz1Kiu
+	 BRMUlpbx6MluY9NdRMY4JXTbgorqT04BpvhuFz4K/hY+x0w9S4BkhlfA01jx+ViH12
+	 R7OlziM1NXTjGyW8KzPfmVmCoh0SyBi95A6QpncE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/132] wifi: iwlwifi: remove fw_running op
+Subject: [PATCH 6.1 044/101] drm/amd/display: Check msg_id before processing transcation
 Date: Thu,  5 Sep 2024 11:41:16 +0200
-Message-ID: <20240905093725.708044305@linuxfoundation.org>
+Message-ID: <20240905093717.863014492@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
+[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
 
-fw_running assumes that memory can be retrieved only after alive.
-This assumption is no longer true as we support dump before alive.
-To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
-bit in trans status is set before dumping instead of the prior check.
+[WHY & HOW]
+HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
+array index, and it needs checking before used.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This fixes 4 OVERRUN issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 3356e36e2af7..0b71a71ca240 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -230,8 +230,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
- 		.data = { NULL, },
+diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+index 4233955e3c47..c9851492ec84 100644
+--- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
++++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+@@ -131,13 +131,21 @@ static bool hdmi_14_process_transaction(
+ 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
+ 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
+ 	struct i2c_command i2c_command;
+-	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
++	uint8_t offset;
+ 	struct i2c_payload i2c_payloads[] = {
+-		{ true, 0, 1, &offset },
++		{ true, 0, 1, 0 },
+ 		/* actual hdcp payload, will be filled later, zeroed for now*/
+ 		{ 0 }
  	};
  
--	if (fwrt->ops && fwrt->ops->fw_running &&
--	    !fwrt->ops->fw_running(fwrt->ops_ctx))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return -EIO;
- 
- 	if (count < header_size + 1 || count > 1024 * 4)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 702586945533..5812b58c92b0 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -18,7 +18,6 @@
- struct iwl_fw_runtime_ops {
- 	void (*dump_start)(void *ctx);
- 	void (*dump_end)(void *ctx);
--	bool (*fw_running)(void *ctx);
- 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
- 	bool (*d3_debug_enable)(void *ctx);
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 5336a4afde4d..945524470a1e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -702,11 +702,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
- 	mutex_unlock(&mvm->mutex);
- }
- 
--static bool iwl_mvm_fwrt_fw_running(void *ctx)
--{
--	return iwl_mvm_firmware_running(ctx);
--}
--
- static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
++	offset = hdcp_i2c_offsets[message_info->msg_id];
++	i2c_payloads[0].data = &offset;
++
+ 	switch (message_info->link) {
+ 	case HDCP_LINK_SECONDARY:
+ 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
+@@ -311,6 +319,11 @@ static bool dp_11_process_transaction(
+ 	struct dc_link *link,
+ 	struct hdcp_protection_message *message_info)
  {
- 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
-@@ -727,7 +722,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
- static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
- 	.dump_start = iwl_mvm_fwrt_dump_start,
- 	.dump_end = iwl_mvm_fwrt_dump_end,
--	.fw_running = iwl_mvm_fwrt_fw_running,
- 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
- 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
- };
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
+ 	return dpcd_access_helper(
+ 		link,
+ 		message_info->length,
 -- 
 2.43.0
 
