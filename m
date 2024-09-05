@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-73582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDDE96D574
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:05:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CFF96D575
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F34B1C2313C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C63F1C23155
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA6197A92;
-	Thu,  5 Sep 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26F7194A5A;
+	Thu,  5 Sep 2024 10:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziOPXBR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY75bF1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B19D1494DB;
-	Thu,  5 Sep 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD9F1494DB;
+	Thu,  5 Sep 2024 10:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530699; cv=none; b=Pl0P5lEvvarLvMaJAYKNtoLQcXGesN3kY08dgJ17EmfeMdyGErYkzZpJe3VeCajb/JSjSy8S151ecxIGWYY8unxqNw8SHzdnUVjNtW5Vx8f2VNNpB/gPXDtjHTLOyPo4P5oxA84XfAVcXAnoCXKc1FWHroF2vHKgj0N+UfpHYCM=
+	t=1725530702; cv=none; b=Bu+JkiHrm9wa5UweYQ6yVVHf8NCvJzxiaeWYqad9b04pgSrwdNSVMLZ5zzAAnqgM/g4W+n4uTKkRJYFJQAV+5ceQL5BmRTjEapFxUxpI9Eh3cC8LiPHocCUSRJXKin2b/QN3ZHdPzd7wb0SDHbPhF6bjU+lTR3JYxVeyoOjRUHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530699; c=relaxed/simple;
-	bh=qN2/EINIaFt5TBmYit86ba1EvOS0xto3eFVXkCNsulE=;
+	s=arc-20240116; t=1725530702; c=relaxed/simple;
+	bh=CS/YmHa9dlgdbz1B0Xh4BDdnQ9IFtGgXnJn+xOlBCb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEb/e+mIu+8Pl/0QOFWmSKxoEuIKzI7y6g8nBNtrHId9aDFX/Qnyq3E4hpb/wVtfzpZkW5AKxNHfuKQJEcG7HYjSJPRL09OMaAGqwHx8UE5oy9I6gPCYS6bbOe7anzWpgxBzdTr02N4v5tbBM5vYoy9Jab1sYxvGyqkOjH+ZVIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziOPXBR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E11C4CEC3;
-	Thu,  5 Sep 2024 10:04:58 +0000 (UTC)
+	 MIME-Version; b=QYUSNodWBrko4FeHxfuxW0KJs+6nDolCr04bYmzfYoDlhdnfOrvAp82bZDDEZB0Berf2Y6lK5omBd36xMwBtKE/HPa/VksuhxMcGbqPwh+GW9GX3WXrAvrOaWNqswNjZYSxvu7r/s+knn0Ql7LFu65MKUHvsA412nHJZkHGZsA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY75bF1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FF4C4CEC3;
+	Thu,  5 Sep 2024 10:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530699;
-	bh=qN2/EINIaFt5TBmYit86ba1EvOS0xto3eFVXkCNsulE=;
+	s=korg; t=1725530702;
+	bh=CS/YmHa9dlgdbz1B0Xh4BDdnQ9IFtGgXnJn+xOlBCb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziOPXBR//pYIKCIFXnGKLRKjdvmx8WB8PKLMlyjZQZPluUYuP9266BmvNQsNQSomo
-	 43jN17FBAYQGrUoJA30ajOB2JX1jZjeGnDVBulgCyBqODwW8Fb1eb2Dr/YGrAu8U02
-	 nSPqAfbw6UX8nHVE+qc4hv+0GPxB0tXiEKn5V1tU=
+	b=nY75bF1yEsaJWNDzxL6jjAP+L90/6WhvivyC2KJrM2+Y4H6gcZT2QToSAwGwislZr
+	 dZ1lYHXGojPfb3RDVjxZX+supQYxOYKipcV7BeDmXpeBKt0jNaZHg1MPqIzcP/O97I
+	 3zs43iHDQpNx9n/Sq+4ozQkAUNO2/miYroDbBAC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 096/101] Bluetooth: SCO: fix sco_conn related locking and validity issues
-Date: Thu,  5 Sep 2024 11:42:08 +0200
-Message-ID: <20240905093719.877944417@linuxfoundation.org>
+	zhanchengbin <zhanchengbin1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 097/101] ext4: fix inode tree inconsistency caused by ENOMEM
+Date: Thu,  5 Sep 2024 11:42:09 +0200
+Message-ID: <20240905093719.916337677@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
 References: <20240905093716.075835938@linuxfoundation.org>
@@ -65,96 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: zhanchengbin <zhanchengbin1@huawei.com>
 
-commit 3dcaa192ac2159193bc6ab57bc5369dcb84edd8e upstream.
+commit 3f5424790d4377839093b68c12b130077a4e4510 upstream.
 
-Operations that check/update sk_state and access conn should hold
-lock_sock, otherwise they can race.
+If ENOMEM fails when the extent is splitting, we need to restore the length
+of the split extent.
+In the ext4_split_extent_at function, only in ext4_ext_create_new_leaf will
+it alloc memory and change the shape of the extent tree,even if an ENOMEM
+is returned at this time, the extent tree is still self-consistent, Just
+restore the split extent lens in the function ext4_split_extent_at.
 
-The order of taking locks is hci_dev_lock > lock_sock > sco_conn_lock,
-which is how it is in connect/disconnect_cfm -> sco_conn_del ->
-sco_chan_del.
+ext4_split_extent_at
+ ext4_ext_insert_extent
+  ext4_ext_create_new_leaf
+   1)ext4_ext_split
+     ext4_find_extent
+   2)ext4_ext_grow_indepth
+     ext4_find_extent
 
-Fix locking in sco_connect to take lock_sock around updating sk_state
-and conn.
-
-sco_conn_del must not occur during sco_connect, as it frees the
-sco_conn. Hold hdev->lock longer to prevent that.
-
-sco_conn_add shall return sco_conn with valid hcon. Make it so also when
-reusing an old SCO connection waiting for disconnect timeout (see
-__sco_sock_close where conn->hcon is set to NULL).
-
-This should not reintroduce the issue fixed in the earlier
-commit 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking
-dependency on sco_connect_cfm"), the relevant fix of releasing lock_sock
-in sco_sock_connect before acquiring hdev->lock is retained.
-
-These changes mirror similar fixes earlier in ISO sockets.
-
-Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: zhanchengbin <zhanchengbin1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230103022812.130603-1-zhanchengbin1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/sco.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ fs/ext4/extents.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -130,8 +130,11 @@ static struct sco_conn *sco_conn_add(str
- 	struct hci_dev *hdev = hcon->hdev;
- 	struct sco_conn *conn = hcon->sco_data;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3229,7 +3229,7 @@ static int ext4_split_extent_at(handle_t
+ 		ext4_ext_mark_unwritten(ex2);
  
--	if (conn)
-+	if (conn) {
-+		if (!conn->hcon)
-+			conn->hcon = hcon;
- 		return conn;
-+	}
+ 	err = ext4_ext_insert_extent(handle, inode, ppath, &newex, flags);
+-	if (err != -ENOSPC && err != -EDQUOT)
++	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+ 		goto out;
  
- 	conn = kzalloc(sizeof(struct sco_conn), GFP_KERNEL);
- 	if (!conn)
-@@ -272,21 +275,21 @@ static int sco_connect(struct sock *sk)
- 		goto unlock;
- 	}
- 
--	hci_dev_unlock(hdev);
--	hci_dev_put(hdev);
--
- 	conn = sco_conn_add(hcon);
- 	if (!conn) {
- 		hci_conn_drop(hcon);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto unlock;
- 	}
- 
--	err = sco_chan_add(conn, sk, NULL);
--	if (err)
--		return err;
--
- 	lock_sock(sk);
- 
-+	err = sco_chan_add(conn, sk, NULL);
-+	if (err) {
-+		release_sock(sk);
-+		goto unlock;
-+	}
-+
- 	/* Update source addr of the socket */
- 	bacpy(&sco_pi(sk)->src, &hcon->src);
- 
-@@ -300,8 +303,6 @@ static int sco_connect(struct sock *sk)
- 
- 	release_sock(sk);
- 
--	return err;
--
- unlock:
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
 
 
 
