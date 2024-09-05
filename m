@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-73397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FB196D4B0
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8042996D525
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D168D1F28330
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E58B9B26FE6
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2BA194A5B;
-	Thu,  5 Sep 2024 09:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DDF195F04;
+	Thu,  5 Sep 2024 10:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRNbj8R0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2s9Y9q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAB5154BFF;
-	Thu,  5 Sep 2024 09:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F871494DB;
+	Thu,  5 Sep 2024 10:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530098; cv=none; b=EfYcQQLf1+sDT+1+fox8fovJ/NknKLoC1L6BXORpCmi9M5ES9huZHijeQi6Qb2UH8t9jWROeUKG4SWWBcktXIhXNB1TNWRQZzKxLf70g8XJBeVL1OsvRh/yqdTpRA+aEzIaF2LfEv7P1XqKt1edUVJVHSPVW925kEyA8ocBjl0E=
+	t=1725530449; cv=none; b=p3loy4Z075+m8WduKAbfQgE05C+Zpis80wl8denFVhh8xJ0XyuMDMIoxK6noE8I5DLMByJkyEy+CzoEU1aZBPkG1i7RsFLXncWbu7Of5KeDinufRLr6J6i5vYsRnEovXdh5x1VFp9wMO3AJqotku+mP7Z6QSR5uDoToNyvo6f+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530098; c=relaxed/simple;
-	bh=pUFGV5yh1LUWW1GsDLy+aEcDmAyTtvzwed2r13tqNIg=;
+	s=arc-20240116; t=1725530449; c=relaxed/simple;
+	bh=lnW1smJhF4zoNkTuVQYgHmlAIKrQ33W52f9I3PnZpR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgUeohOXs2Eh6FQmka5S0MIAC7QSRADU17olpzGgvdA27yZqBQrTGua0YHhpy3s6n1KkvvqoF5nIZ2FJXEYcGNpLZjGU1G7Scc8SGVBNchPNuCO0F4o31fh0hku1vmaRHYWwkf7hftEXdtfLv8KjJSdgwqaHe3oZ03NERJcSBTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRNbj8R0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59069C4CEC3;
-	Thu,  5 Sep 2024 09:54:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gu8i7/zmGSrpArg5pG2KtMyZCGJ9h9iVa4THax6Fiy/drNUfAqRLI8mFYDGU4vfhoc8BvjCu205RBHhJINsqmrFGQZJBanXqvrHkKeWNuXFS9ef5fthrvMZAUImD50v0i7kV7wcPJ5uhXFf67ldViewJlLAlmaxE0z0NMcSAPLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2s9Y9q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A095C4CEC3;
+	Thu,  5 Sep 2024 10:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530097;
-	bh=pUFGV5yh1LUWW1GsDLy+aEcDmAyTtvzwed2r13tqNIg=;
+	s=korg; t=1725530449;
+	bh=lnW1smJhF4zoNkTuVQYgHmlAIKrQ33W52f9I3PnZpR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRNbj8R0vRhdd9YwL/ItRJ9vaZx9a9VuHPG/IuzCYjxA2elUH69OdNjoaDSlp2MQn
-	 kE7a9qqmBWE+JvUlLzaBkCU6DfSM5r/JdF3YxYXkREBnhQ9QpKlg7WcFVd8Gii5Kv7
-	 rdLZHvJ/sSHiFTyzj/lwtt2UiaOAPmyYni6hy2xw=
+	b=t2s9Y9q8xbsOr5ACNPLDJH1jmh27MiEx6449/l4t5XTCPRKV/l8sOEWtqM8EcTv9Q
+	 XKBzXcel+dODtk3fARTcCKz8axgqqVleBCg0NiMXS9Qvojw4mctYW8zvrb8hNXxDFE
+	 1sM1KIISjDAOcJ3cQbBl65yG7+uM8hymBXChvP5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Krzysztof=20St=C4=99pniak?= <kfs.szk@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/132] drm/amd/display: Check index for aux_rd_interval before using
+Subject: [PATCH 6.1 008/101] ASoC: amd: yc: Support mic on Lenovo Thinkpad E14 Gen 6
 Date: Thu,  5 Sep 2024 11:40:40 +0200
-Message-ID: <20240905093724.320814748@linuxfoundation.org>
+Message-ID: <20240905093716.413883256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Krzysztof Stępniak <kfs.szk@gmail.com>
 
-[ Upstream commit 9ba2ea6337b4f159aecb177555a6a81da92d302e ]
+[ Upstream commit 23a58b782f864951485d7a0018549729e007cb43 ]
 
-aux_rd_interval has size of 7 and should be checked.
+Lenovo Thinkpad E14 Gen 6 (model type 21M3)
+needs a quirk entry for internal mic to work.
 
-This fixes 3 OVERRUN and 1 INTEGER_OVERFLOW issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Krzysztof Stępniak <kfs.szk@gmail.com>
+Link: https://patch.msgid.link/20240807001219.1147-1-kfs.szk@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c  | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-index 16a62e018712..9d1adfc09fb2 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-@@ -914,10 +914,10 @@ static enum dc_status configure_lttpr_mode_non_transparent(
- 			/* Driver does not need to train the first hop. Skip DPCD read and clear
- 			 * AUX_RD_INTERVAL for DPTX-to-DPIA hop.
- 			 */
--			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA)
-+			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA && repeater_cnt > 0 && repeater_cnt < MAX_REPEATER_CNT)
- 				link->dpcd_caps.lttpr_caps.aux_rd_interval[--repeater_cnt] = 0;
- 
--			for (repeater_id = repeater_cnt; repeater_id > 0; repeater_id--) {
-+			for (repeater_id = repeater_cnt; repeater_id > 0 && repeater_id < MAX_REPEATER_CNT; repeater_id--) {
- 				aux_interval_address = DP_TRAINING_AUX_RD_INTERVAL_PHY_REPEATER1 +
- 						((DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE) * (repeater_id - 1));
- 				core_link_read_dpcd(
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index b4a40a880035c..de655f687dd7d 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M3"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
