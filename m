@@ -1,122 +1,251 @@
-Return-Path: <stable+bounces-73129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4985696CF21
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:24:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B530E96CF7B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B46B21F25394
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:24:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AF1EB22F1E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312B518A6CF;
-	Thu,  5 Sep 2024 06:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E9318BC02;
+	Thu,  5 Sep 2024 06:38:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD751898EB
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 06:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7D318950D;
+	Thu,  5 Sep 2024 06:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725517473; cv=none; b=Un/mjIhrrY1xujoRfRf/MI7uRdDYk4WXC1YO0QlZf+0DeCVAz9I6A+SLS//5bfoJnHLv7OaknK2arbddCi3zKWJyiXl9Jt0pXcqaE2Ujv/QhVP6OLIYTXNzRXfgMzSSpuXFwLFaZY5OErJBFYNJbpjzQvkVJzJoZdxfu+T2J7Bc=
+	t=1725518300; cv=none; b=H4CV3WvY0XZVrNczhn2YQePfO5NV+UVzs3c77bUCcBgYnS0P3Vn7sfnTPAzF4SMZrxx8JZomDf3SxxIwgqDY7BoWHKyfLfiAlmXNHDzm17tcoKAfZTEhMqpg9SCfarc9TbcAXV3VcYdU+RHj6QLb+V0M5Ye2h/dFuWCh26pjpHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725517473; c=relaxed/simple;
-	bh=U31ifcW1zCYkk+mQ1FZjKYpJy+llLB4fiw1S/WBEkCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=boKOCr2aSoJnhA7hOhWhiXi68Vgi7QKT6YaElpEZBVv0DOvc2CcNbHRnp57eLiFt20pM1qaGWbjkqFS77gNbAU0GZAsBVDqklc+Q4knTSzYKTW70KV0GKIWRNvBaS2pi8Nz+s2AeUPfjPS1GWBr93sYsugAu6oL4vfAK13qO7X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sm5uj-0008SY-Pt; Thu, 05 Sep 2024 08:24:17 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sm5ui-005daQ-Sp; Thu, 05 Sep 2024 08:24:16 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 84667333088;
-	Thu, 05 Sep 2024 06:24:16 +0000 (UTC)
-Date: Thu, 5 Sep 2024 08:24:15 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Stefan =?utf-8?B?TcOkdGpl?= <stefan.maetje@esd.eu>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Frank Jungclaus <frank.jungclaus@esd.eu>, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] can: esd_usb: Remove CAN_CTRLMODE_3_SAMPLES for
- CAN-USB/3-FD
-Message-ID: <20240905-apricot-lionfish-of-philosophy-183c7e-mkl@pengutronix.de>
-References: <20240904222740.2985864-1-stefan.maetje@esd.eu>
- <20240904222740.2985864-2-stefan.maetje@esd.eu>
+	s=arc-20240116; t=1725518300; c=relaxed/simple;
+	bh=7zB2IUb6fIamtfkCm1HDrghKHlQBMF4TBsQrkt4ArLQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PEi6yGDDBk1JpTvEkbyY8rhd//VzjhipNR0ADY/OxfsWeM5PkaVtWED39VlDCFztuQHlCIzpBjiOGxzE0glsxQ1oi2cRdOgP3eFzIhAtQ2AzMbOd60OrnYuxgUoRZFTDET59nt7mQqAMCu9RN93YSN3vXLlVOdSsnEepl5NP7sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WzqRn0kDYz4f3jYJ;
+	Thu,  5 Sep 2024 14:37:57 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 2706B1A018D;
+	Thu,  5 Sep 2024 14:38:12 +0800 (CST)
+Received: from [10.67.108.244] (unknown [10.67.108.244])
+	by APP4 (Coremail) with SMTP id gCh0CgD3KsfSUdlmfivGAQ--.6895S3;
+	Thu, 05 Sep 2024 14:38:11 +0800 (CST)
+Message-ID: <38ceaabe-0a2c-43f2-8f04-b93215f1f94c@huaweicloud.com>
+Date: Thu, 5 Sep 2024 14:38:10 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xvlldxndayfojpdl"
-Content-Disposition: inline
-In-Reply-To: <20240904222740.2985864-2-stefan.maetje@esd.eu>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] perf/core: Fix incorrect time diff in tick adjust
+ period
+Content-Language: en-US
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
+ mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+ irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
+ <20240831074316.2106159-3-luogengkun@huaweicloud.com>
+ <20240902095054.GD4723@noisy.programming.kicks-ass.net>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
+In-Reply-To: <20240902095054.GD4723@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgD3KsfSUdlmfivGAQ--.6895S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xr1Dur4DCw1kCF4DCr4UJwb_yoWxAw4Upr
+	4kAFnxtrW8Jr1kXw15J3WDJ34UGw1kJw4DWF1UGF18Aw1UXrZFqF1UXryjgr15Jrs7JFy7
+	Jw1jqr1UZ3yUtFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: 5oxrwvpqjn3046kxt4xhlfz01xgou0bp/
 
 
---xvlldxndayfojpdl
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2024/9/2 17:50, Peter Zijlstra wrote:
+> On Sat, Aug 31, 2024 at 07:43:16AM +0000, Luo Gengkun wrote:
+>> Perf events has the notion of sampling frequency which is implemented in
+>> software by dynamically adjusting the counter period so that samples occur
+>> at approximately the target frequency.  Period adjustment is done in 2
+>> places:
+>>   - when the counter overflows (and a sample is recorded)
+>>   - each timer tick, when the event is active
+>> The later case is slightly flawed because it assumes that the time since
+>> the last timer-tick period adjustment is 1 tick, whereas the event may not
+>> have been active (e.g. for a task that is sleeping).
+>>
+>> Fix by using jiffies to determine the elapsed time in that case.
+>>
+>> Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+>> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+>> ---
+>>   include/linux/perf_event.h |  1 +
+>>   kernel/events/core.c       | 12 +++++++++---
+>>   2 files changed, 10 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+>> index 1a8942277dda..d29b7cf971a1 100644
+>> --- a/include/linux/perf_event.h
+>> +++ b/include/linux/perf_event.h
+>> @@ -265,6 +265,7 @@ struct hw_perf_event {
+>>   	 * State for freq target events, see __perf_event_overflow() and
+>>   	 * perf_adjust_freq_unthr_context().
+>>   	 */
+>> +	u64				freq_tick_stamp;
+>>   	u64				freq_time_stamp;
+>>   	u64				freq_count_stamp;
+>>   #endif
+>> diff --git a/kernel/events/core.c b/kernel/events/core.c
+>> index a9395bbfd4aa..183291e0d070 100644
+>> --- a/kernel/events/core.c
+>> +++ b/kernel/events/core.c
+>> @@ -55,6 +55,7 @@
+>>   #include <linux/pgtable.h>
+>>   #include <linux/buildid.h>
+>>   #include <linux/task_work.h>
+>> +#include <linux/jiffies.h>
+>>   
+>>   #include "internal.h"
+>>   
+>> @@ -4120,9 +4121,11 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>>   {
+>>   	struct perf_event *event;
+>>   	struct hw_perf_event *hwc;
+>> -	u64 now, period = TICK_NSEC;
+>> +	u64 now, period, tick_stamp;
+>>   	s64 delta;
+>>   
+>> +	tick_stamp = jiffies64_to_nsecs(get_jiffies_64());
+>> +
+>>   	list_for_each_entry(event, event_list, active_list) {
+>>   		if (event->state != PERF_EVENT_STATE_ACTIVE)
+>>   			continue;
+>> @@ -4148,6 +4151,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>>   		 */
+>>   		event->pmu->stop(event, PERF_EF_UPDATE);
+>>   
+>> +		period = tick_stamp - hwc->freq_tick_stamp;
+>> +		hwc->freq_tick_stamp = tick_stamp;
+>> +
+>>   		now = local64_read(&event->count);
+>>   		delta = now - hwc->freq_count_stamp;
+>>   		hwc->freq_count_stamp = now;
+>> @@ -4157,9 +4163,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
+>>   		 * reload only if value has changed
+>>   		 * we have stopped the event so tell that
+>>   		 * to perf_adjust_period() to avoid stopping it
+>> -		 * twice.
+>> +		 * twice. And skip if it is the first tick adjust period.
+>>   		 */
+>> -		if (delta > 0)
+>> +		if (delta > 0 && likely(period != tick_stamp))
+>>   			perf_adjust_period(event, period, delta, false);
+>>   
+>>   		event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
+> This one I'm less happy with.. that condition 'period != tick_stamp'
+> doesn't make sense to me. That's only false if hwc->freq_tick_stamp ==
+> 0, which it will only be once after event creation. Even through the
+> Changelog babbles about event scheduling.
+>
+> Also, that all should then be written something like:
+>
+> 	if (delta > 0 && ...) {
+> 		perf_adjust_period(...);
+> 		adjusted = true;
+> 	}
+>
+> 	event->pmu->start(event, adjusted ? PERF_EF_RELOAD : 0);
 
-On 05.09.2024 00:27:40, Stefan M=C3=A4tje wrote:
-> Remove the CAN_CTRLMODE_3_SAMPLES announcement for CAN-USB/3-FD devices
-> because these devices don't support it.
->=20
-> The hardware has a Microchip SAM E70 microcontroller that uses a Bosch
-> MCAN IP core as CAN FD controller. But this MCAN core doesn't support
-> triple sampling.
->=20
-> Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Stefan M=C3=A4tje <stefan.maetje@esd.eu>
+Thank for your review! That is a good point.
 
-Applied to linux-can.
+If freq_tick_stamp is initialized when an event is created
 
-Thanks,
-Marc
+or enabled, the additional condition can be removed as follows:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
++static bool is_freq_event(struct perf_event *event)
++{
++       return event->attr.freq && event->attr.sample_freq;
++}
++
+  static void
+  perf_event_set_state(struct perf_event *event, enum perf_event_state 
+state)
+  {
+@@ -665,6 +670,12 @@ perf_event_set_state(struct perf_event *event, enum 
+perf_event_state state)
+          */
+         if ((event->state < 0) ^ (state < 0))
+                 perf_event_update_sibling_time(event);
++       /*
++        * Update freq_tick_stamp for freq event just enabled
++        */
++       if (is_freq_event(event) && state == PERF_EVENT_STATE_INACTIVE &&
++                                   event->state < 
+PERF_EVENT_STATE_INACTIVE)
++               event->hw.freq_tick_stamp = 
+jiffies64_to_nsecs(get_jiffies_64());
 
---xvlldxndayfojpdl
-Content-Type: application/pgp-signature; name="signature.asc"
+         WRITE_ONCE(event->state, state);
+  }
+@@ -4165,7 +4176,7 @@ static void perf_adjust_freq_unthr_events(struct 
+list_head *event_list)
+                  * to perf_adjust_period() to avoid stopping it
+                  * twice. And skip if it is the first tick adjust period.
+                  */
+-               if (delta > 0 && likely(period != tick_stamp))
++               if (delta > 0)
+                         perf_adjust_period(event, period, delta, false);
 
------BEGIN PGP SIGNATURE-----
+                 event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
+@@ -12061,8 +12072,11 @@ perf_event_alloc(struct perf_event_attr *attr, 
+int cpu,
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbZTosACgkQKDiiPnot
-vG+S/wf/UZZmMUVspBBw7nyBTivsUaIMl3+6v7uSUHbxNxE/ynJCCrsMfBRHNO8N
-EAaTSmb4j3qo3txc9JybM6h/EDQ8RZLgyTx9OyNyXSguK33sLDrC6/s+jZv00H4f
-Hbxmnt7YrD+PETqUD9qNzrIC15p1GITmJJsLVay7TAURdzwQzIY/wWdHyWcaE4s4
-mTMjs7JcIeORWHT+c6P8ua8osFoXEKPF4Uo+2mWcUJiQ3GEfUPjZBD3JFJLuVTuL
-szpAd/4C6/u0GtNAGotXf5WPtRT+eWqDRiOjiKlb5uz9PY0y3MnjKf30FH9ZQBK7
-S9PqJJ05Q0sZpLaii3uL4rP8vGtKWg==
-=mRIA
------END PGP SIGNATURE-----
+         hwc = &event->hw;
+         hwc->sample_period = attr->sample_period;
+-       if (attr->freq && attr->sample_freq)
++       if (is_freq_event(event)) {
+                 hwc->sample_period = 1;
++               if (event->state == PERF_EVENT_STATE_INACTIVE)
++                       event->hw.freq_tick_stamp = 
+jiffies64_to_nsecs(get_jiffies_64());
++       }
 
---xvlldxndayfojpdl--
+
+And  I'm wondering if we also need to update freq_count_stamp when
+
+the freq event is enabled for the reason to keep they on the same "period".
+
++       if (is_freq_event(event) && state == PERF_EVENT_STATE_INACTIVE &&
++                                   event->state < 
+PERF_EVENT_STATE_INACTIVE) {
++               event->hw.freq_tick_stamp = 
+jiffies64_to_nsecs(get_jiffies_64());
++               event->hw.freq_count_stamp = local64_read(&event->count);
++       }
+
+Looking for your reply!
+
+Thanks.
+
 
