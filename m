@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AFC96D542
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF8896D506
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CF31C2190F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD761F2A2C6
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5A01494DB;
-	Thu,  5 Sep 2024 10:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFCE194A64;
+	Thu,  5 Sep 2024 09:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvEL8tZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4COuy3H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE79219413B;
-	Thu,  5 Sep 2024 10:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7EF83CC8;
+	Thu,  5 Sep 2024 09:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530538; cv=none; b=FgFKK5wbIF0wgF/5iUp3LG1AxQExVq/uLLawgyBbVZHS4zKJ+dEigqHCLES9UsSMQtDZckE4jJ/iML4u2z3vLu0gJDzuiDmdukjRXwD2WyK+Qatz6IVDlg8yohYMEcbWl+teDhIsmetN24ivYFP1i0tJcsa/eodRyudw3wfuJTE=
+	t=1725530353; cv=none; b=Pp0dyWLpJNXA0d+i+9HhhsmisbrIg9GA5x0IuG91/CjUjPCURxchRhXqdKtYODisvets/QtsJG1bDawRVAD/XEwBZWWNzLxN3FEY2qFOGkM5kfxQSmZh24tmfiXYZ8gYl+HkUP3t/ET1Qof7vcxp2Z4xA3VsDcTnV1LsmljlAP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530538; c=relaxed/simple;
-	bh=dNOs1CcROZHSaJe0jT/ElweRZ1XN2TPGMrOzjjlk4UA=;
+	s=arc-20240116; t=1725530353; c=relaxed/simple;
+	bh=GT2e5ROpwcr+W88jPmep/C4cv4i42nZXUT3nJcCoffM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tim/VdplxszL1gNrOgvX+y83d738Afx8JYoao019qCdWvK/vKGVyaIMODNT52ZaIVgzMrzItriQUZGv5Qtrb6Iu3Q4OF6Zyk9oOXy64nCaCpfyXnJaYK1Cj0pHjV4UHJpac4R8BdCm29e6w2vClpvS5s0X8DWOVWJWZFrgF9fV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvEL8tZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522F7C4CEC3;
-	Thu,  5 Sep 2024 10:02:18 +0000 (UTC)
+	 MIME-Version; b=tsufdImUO34lqMDuLKNMJVNe1ua/n0Ng2orlcIyl2shc2NEvW7ixsPU2lHxo+OaTiAvGlgk37VeGkutXfLA4/tbKHL1YN5rJOm8qLcrwT/gOw6LeC/EFUwUaTLqC9javziGguo4+XT3NlLSMRGpBB6oVm3PRe46ehu3RcwLCfYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4COuy3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85FDC4CEC3;
+	Thu,  5 Sep 2024 09:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530538;
-	bh=dNOs1CcROZHSaJe0jT/ElweRZ1XN2TPGMrOzjjlk4UA=;
+	s=korg; t=1725530353;
+	bh=GT2e5ROpwcr+W88jPmep/C4cv4i42nZXUT3nJcCoffM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvEL8tZPXDn5Abp6g3mYHCoYrPgfQR2JTyUpohiGAx4X/JcBLalyQ+ygfUwwjAbai
-	 4P5cAfXV99ClgiW5PMK+8gNw/X7pqANbctTgSu4qE2p1ZtcIlpz/Eqk7PQ5h8eGpQt
-	 jQRkHZJ3kuQcpRNWG0RNkwyUIZjM6NwtOxeRsmfI=
+	b=p4COuy3HnMpH9QCg50+w7CzePFlt+1B3Grz0F2PqwPQn7yAOxgRp9MriRVWpF6qnC
+	 DaNRGHE9ffdnXfyZ9bxhjGpFmYYB6Qw4lDqcwdD1SfM27bNVQ1RK6ggTbNREVWEBjg
+	 aDcamNvNTaEZMFy3/3jzWib9M4zr0e8DIhxurYqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Simon Holesch <simon@holesch.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Hongren Zheng <i@zenithal.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/101] drm/amdgpu: Fix out-of-bounds read of df_v1_7_channel_number
-Date: Thu,  5 Sep 2024 11:41:26 +0200
-Message-ID: <20240905093718.248882586@linuxfoundation.org>
+Subject: [PATCH 6.6 100/132] usbip: Dont submit special requests twice
+Date: Thu,  5 Sep 2024 11:41:27 +0200
+Message-ID: <20240905093726.130069988@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Simon Holesch <simon@holesch.de>
 
-[ Upstream commit d768394fa99467bcf2703bde74ddc96eeb0b71fa ]
+[ Upstream commit 8b6b386f9aa936ed0c190446c71cf59d4a507690 ]
 
-Check the fb_channel_number range to avoid the array out-of-bounds
-read error
+Skip submitting URBs, when identical requests were already sent in
+tweak_special_requests(). Instead call the completion handler directly
+to return the result of the URB.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Even though submitting those requests twice should be harmless, there
+are USB devices that react poorly to some duplicated requests.
+
+One example is the ChipIdea controller implementation in U-Boot: The
+second SET_CONFIGURATION request makes U-Boot disable and re-enable all
+endpoints. Re-enabling an endpoint in the ChipIdea controller, however,
+was broken until U-Boot commit b272c8792502 ("usb: ci: Fix gadget
+reinit").
+
+Signed-off-by: Simon Holesch <simon@holesch.de>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Tested-by: Hongren Zheng <i@zenithal.me>
+Link: https://lore.kernel.org/r/20240519141922.171460-1-simon@holesch.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/df_v1_7.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/usbip/stub_rx.c | 77 ++++++++++++++++++++++++-------------
+ 1 file changed, 50 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-index b991609f46c1..d4909ee97cd2 100644
---- a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-@@ -70,6 +70,8 @@ static u32 df_v1_7_get_hbm_channel_number(struct amdgpu_device *adev)
- 	int fb_channel_number;
- 
- 	fb_channel_number = adev->df.funcs->get_fb_channel_number(adev);
-+	if (fb_channel_number >= ARRAY_SIZE(df_v1_7_channel_number))
-+		fb_channel_number = 0;
- 
- 	return df_v1_7_channel_number[fb_channel_number];
+diff --git a/drivers/usb/usbip/stub_rx.c b/drivers/usb/usbip/stub_rx.c
+index fc01b31bbb87..6338d818bc8b 100644
+--- a/drivers/usb/usbip/stub_rx.c
++++ b/drivers/usb/usbip/stub_rx.c
+@@ -144,53 +144,62 @@ static int tweak_set_configuration_cmd(struct urb *urb)
+ 	if (err && err != -ENODEV)
+ 		dev_err(&sdev->udev->dev, "can't set config #%d, error %d\n",
+ 			config, err);
+-	return 0;
++	return err;
  }
+ 
+ static int tweak_reset_device_cmd(struct urb *urb)
+ {
+ 	struct stub_priv *priv = (struct stub_priv *) urb->context;
+ 	struct stub_device *sdev = priv->sdev;
++	int err;
+ 
+ 	dev_info(&urb->dev->dev, "usb_queue_reset_device\n");
+ 
+-	if (usb_lock_device_for_reset(sdev->udev, NULL) < 0) {
++	err = usb_lock_device_for_reset(sdev->udev, NULL);
++	if (err < 0) {
+ 		dev_err(&urb->dev->dev, "could not obtain lock to reset device\n");
+-		return 0;
++		return err;
+ 	}
+-	usb_reset_device(sdev->udev);
++	err = usb_reset_device(sdev->udev);
+ 	usb_unlock_device(sdev->udev);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /*
+  * clear_halt, set_interface, and set_configuration require special tricks.
++ * Returns 1 if request was tweaked, 0 otherwise.
+  */
+-static void tweak_special_requests(struct urb *urb)
++static int tweak_special_requests(struct urb *urb)
+ {
++	int err;
++
+ 	if (!urb || !urb->setup_packet)
+-		return;
++		return 0;
+ 
+ 	if (usb_pipetype(urb->pipe) != PIPE_CONTROL)
+-		return;
++		return 0;
+ 
+ 	if (is_clear_halt_cmd(urb))
+ 		/* tweak clear_halt */
+-		 tweak_clear_halt_cmd(urb);
++		err = tweak_clear_halt_cmd(urb);
+ 
+ 	else if (is_set_interface_cmd(urb))
+ 		/* tweak set_interface */
+-		tweak_set_interface_cmd(urb);
++		err = tweak_set_interface_cmd(urb);
+ 
+ 	else if (is_set_configuration_cmd(urb))
+ 		/* tweak set_configuration */
+-		tweak_set_configuration_cmd(urb);
++		err = tweak_set_configuration_cmd(urb);
+ 
+ 	else if (is_reset_device_cmd(urb))
+-		tweak_reset_device_cmd(urb);
+-	else
++		err = tweak_reset_device_cmd(urb);
++	else {
+ 		usbip_dbg_stub_rx("no need to tweak\n");
++		return 0;
++	}
++
++	return !err;
+ }
+ 
+ /*
+@@ -468,6 +477,7 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 	int support_sg = 1;
+ 	int np = 0;
+ 	int ret, i;
++	int is_tweaked;
+ 
+ 	if (pipe == -1)
+ 		return;
+@@ -580,8 +590,11 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 		priv->urbs[i]->pipe = pipe;
+ 		priv->urbs[i]->complete = stub_complete;
+ 
+-		/* no need to submit an intercepted request, but harmless? */
+-		tweak_special_requests(priv->urbs[i]);
++		/*
++		 * all URBs belong to a single PDU, so a global is_tweaked flag is
++		 * enough
++		 */
++		is_tweaked = tweak_special_requests(priv->urbs[i]);
+ 
+ 		masking_bogus_flags(priv->urbs[i]);
+ 	}
+@@ -594,22 +607,32 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 
+ 	/* urb is now ready to submit */
+ 	for (i = 0; i < priv->num_urbs; i++) {
+-		ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
++		if (!is_tweaked) {
++			ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
+ 
+-		if (ret == 0)
+-			usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
+-					pdu->base.seqnum);
+-		else {
+-			dev_err(&udev->dev, "submit_urb error, %d\n", ret);
+-			usbip_dump_header(pdu);
+-			usbip_dump_urb(priv->urbs[i]);
++			if (ret == 0)
++				usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
++						pdu->base.seqnum);
++			else {
++				dev_err(&udev->dev, "submit_urb error, %d\n", ret);
++				usbip_dump_header(pdu);
++				usbip_dump_urb(priv->urbs[i]);
+ 
++				/*
++				 * Pessimistic.
++				 * This connection will be discarded.
++				 */
++				usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
++				break;
++			}
++		} else {
+ 			/*
+-			 * Pessimistic.
+-			 * This connection will be discarded.
++			 * An identical URB was already submitted in
++			 * tweak_special_requests(). Skip submitting this URB to not
++			 * duplicate the request.
+ 			 */
+-			usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
+-			break;
++			priv->urbs[i]->status = 0;
++			stub_complete(priv->urbs[i]);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
