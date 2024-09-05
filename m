@@ -1,185 +1,94 @@
-Return-Path: <stable+bounces-73640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4714C96DE68
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:32:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3255696DFA4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2F4AB27977
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E40A1C2364E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A716C1A01AD;
-	Thu,  5 Sep 2024 15:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3051A01B7;
+	Thu,  5 Sep 2024 16:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B43p5Gvk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpoWgOQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665877F7FC;
-	Thu,  5 Sep 2024 15:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5F719FA7B
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 16:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725550296; cv=none; b=oGFIhFMsGlC6AGPLJa6avhiQciRudIKSHYL4DcWnDLgHtsErBmTmlIrdJE0BrbjBVBsKtRhwOcAsXC+2BtZYO39WGPtzhNGEkixOoE6ldIEQB+3d8JVVg7tP+GP86iSQqA/2khz0XHO9m3PYZlkKR/c/XFQIIhN0ORQEWJkSB7I=
+	t=1725553802; cv=none; b=azpRDnGYvaMD67LZvbn/jLc107MZhOEl46bV4YPdKrckHN4GJ35BXcFA+TIX/BmDEr5MgiBV8tNxOK83Qcm4UviNY7s+HuMFpUFV6YK5r4NDcEQwalDjGdy+UM74HJuNXay8RzSkqcn1H6ChyM3CbXsn2CJkosmtHKhGmLhVVvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725550296; c=relaxed/simple;
-	bh=qeo6ewdnKU5DP0IlzPjd35vqcu4NHaXv9jGfiyMCywM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZlmwqVRmUWwkeAxBNNYxCss3H4LMqaPs0McHrmVdIKqi/+GLW1LtiX+kKMCNxE4bKBbwmwzPFMzOZPCY4sKjh5YvF02L+YbIAmtWoNVuAFXFMWqeyHLfSOlbbWdm68gPbGoCv//i9dvJgbSCRzKyQFdCZBRi189OLlMnVW3fdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B43p5Gvk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381E2C4CECB;
-	Thu,  5 Sep 2024 15:31:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725550296;
-	bh=qeo6ewdnKU5DP0IlzPjd35vqcu4NHaXv9jGfiyMCywM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B43p5GvkV3o6jm9fFqoYOkv//Arf/1M+RwVgwOBgFsFQW+IbqSoIqqAuqIfk5vYaA
-	 aVTNGwWbw8pUJ0r1NFVr+TUrSO1GL1jsmpL24gy3dPEz18eqiAs9BattUYm2sun3DL
-	 H2v9s9zG7dyRdmdMhC9flSPES8TgU5Jc+axtHCyN1WG+Fu4+v2Z5l+Ncb99vkA3EK2
-	 cPPKcyf8t4nrDlWTsMLtqeJcAy647WJboUM35Y0Bg2hSxwv6mIks5yt8vpeABtjUz1
-	 XQtMP055/95c5jWTbrQLsayTMYFKsRWHXj0QXML34I+OzHDgcsmwXjBg5e8YVs0Tzr
-	 67T0m86DxeKFw==
-From: cel@kernel.org
-To: <stable@vger.kernel.org>
-Cc: <linux-nfs@vger.kernel.org>,
-	Petr Vorel <pvorel@suse.cz>,
-	sherry.yang@oracle.com,
-	calum.mackay@oracle.com,
-	kernel-team@fb.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.10.y 19/19] nfsd: make svc_stat per-network namespace instead of global
-Date: Thu,  5 Sep 2024 11:31:01 -0400
-Message-ID: <20240905153101.59927-20-cel@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240905153101.59927-1-cel@kernel.org>
-References: <20240905153101.59927-1-cel@kernel.org>
+	s=arc-20240116; t=1725553802; c=relaxed/simple;
+	bh=xWDZEJKCAOe9ljWrApkLr4zWbHZ3imYeYtkkE7/qmow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PCNsQwahb9Jb4uCLSnW/iI47hxPM9xmuyRRcCkzimlPYXn2o13HYDyYWHpkwks+oE6o3ZlSs8ArmrlUBYt7Bd145vwrv4nTTYCGWxzPid6PsZ2p9ikEoh9Lcf31VvC0+NaZy3HC7n/Izvi4HgY+IRmCa0ARO+9NjBTSK8uJHBRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpoWgOQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C97BC4CEC9;
+	Thu,  5 Sep 2024 16:30:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725553802;
+	bh=xWDZEJKCAOe9ljWrApkLr4zWbHZ3imYeYtkkE7/qmow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OpoWgOQCa16Xdi7mKlJQjlw0p5ax0qvKQkA2p9M4w+Xyy7nUPXp8i4UDzSzRwCK1d
+	 PpPJg3Qc7zy4cNm5ZNLhXCUeLj1L12OhTItLO3nvPJHrAj9yZyp2EG6a+K9d/itTC8
+	 q1tFL1PkzWvjQoy+1XaqGra3OQYWOlZ1FygIPfPI=
+Date: Thu, 5 Sep 2024 18:29:58 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Hillf Danton <hdanton@sina.com>, alsa-devel@alsa-project.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2 4.19.y] ALSA: usb-audio: Sanity checks for each pipe
+ and EP types
+Message-ID: <2024090535-drinking-unsocial-6170@gregkh>
+References: <76c0ef6b-f4bf-41f7-ad36-55f5b4b3180a@stanley.mountain>
+ <599b79d0-0c0f-425e-b2a2-1af9f81539b8@stanley.mountain>
+ <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
+ <2024090557-hurry-armful-dbe0@gregkh>
+ <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
 
-From: Josef Bacik <josef@toxicpanda.com>
+On Thu, Sep 05, 2024 at 06:11:49PM +0300, Dan Carpenter wrote:
+> On Thu, Sep 05, 2024 at 03:49:14PM +0200, Greg KH wrote:
+> > On Thu, Sep 05, 2024 at 04:34:45PM +0300, Dan Carpenter wrote:
+> > > Sorry,
+> > > 
+> > > I completely messed these emails up.  It has Takashi Iwai and Hillf Danton's
+> > > names instead of mine in the From header.  It still has my email address, but
+> > > just the names are wrong.
+> > > 
+> > > Also I should have used a From header in the body of the email.
+> > > 
+> > > Also the threading is messed up.
+> > > 
+> > > Will try again tomorrow.
+> > 
+> > It looks good to me, now queued up.
+> > 
+> 
+> The code is okay but the Author header is messed up.  It has my email address.
+> 
+> From: Hillf Danton <dan.carpenter@linaro.org>
+> 
+> From: Takashi Iwai <dan.carpenter@linaro.org>
 
-[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
+Ah that's really odd, how did you do that?  :)
 
-The final bit of stats that is global is the rpc svc_stat.  Move this
-into the nfsd_net struct and use that everywhere instead of the global
-struct.  Remove the unused global struct.
+Now fixed up in the patches, don't worry about it.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/netns.h  |  4 ++++
- fs/nfsd/nfsctl.c |  2 ++
- fs/nfsd/nfssvc.c |  2 +-
- fs/nfsd/stats.c  | 10 ++++------
- fs/nfsd/stats.h  |  2 --
- 5 files changed, 11 insertions(+), 9 deletions(-)
-
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 55ab92326384..548422b24a7d 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -13,6 +13,7 @@
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/siphash.h>
-+#include <linux/sunrpc/stats.h>
- 
- /* Hash tables for nfs4_clientid state */
- #define CLIENT_HASH_BITS                 4
-@@ -183,6 +184,9 @@ struct nfsd_net {
- 	/* Per-netns stats counters */
- 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
- 
-+	/* sunrpc svc stats */
-+	struct svc_stat          nfsd_svcstats;
-+
- 	/* longest hash chain seen */
- 	unsigned int             longest_chain;
- 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index e7fa64834d7d..2feaa49fb9fe 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1461,6 +1461,8 @@ static __net_init int nfsd_init_net(struct net *net)
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
-+	nn->nfsd_svcstats.program = &nfsd_program;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 3f02a9a44c6b..29eb9861684e 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -664,7 +664,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
- 				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index 6b2135bfb509..7a58dba0045c 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,10 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct svc_stat		nfsd_svcstats = {
--	.program	= &nfsd_program,
--};
--
- static int nfsd_show(struct seq_file *seq, void *v)
- {
- 	struct net *net = PDE_DATA(file_inode(seq->file));
-@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *seq, void *v)
- 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
- 
- 	/* show my rpc info */
--	svc_seq_show(seq, &nfsd_svcstats);
-+	svc_seq_show(seq, &nn->nfsd_svcstats);
- 
- #ifdef CONFIG_NFSD_V4
- 	/* Show count for individual nfsv4 operations */
-@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
- 
- void nfsd_proc_stat_init(struct net *net)
- {
--	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index 9b22b1ae929f..14525e854cba 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,8 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--extern struct svc_stat		nfsd_svcstats;
--
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
--- 
-2.45.1
-
+greg k-h
 
