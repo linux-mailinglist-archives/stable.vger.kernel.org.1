@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2CF96D54F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489FE96D4F4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE20A1C216B9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F302A1F29B3C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E0619538A;
-	Thu,  5 Sep 2024 10:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1B415574C;
+	Thu,  5 Sep 2024 09:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF0i9PCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yovvXNwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6561494DB;
-	Thu,  5 Sep 2024 10:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAEF18D65E;
+	Thu,  5 Sep 2024 09:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530580; cv=none; b=se5YR5ZcVyO48rYWJ/3geJVSe5rWfficnAJfUga6E0h0uSLvMl/1r0TZdCcjF1tAYxieYrTgkeuRO3PUqVJhAaBOsdLWXk+bzLAlQGP6hySdv0T8D4U8grQqMedSEMk8MdA5+8NamG9NRZUfxaJRbqmBFzXF6qI6q0DVSGKGOfw=
+	t=1725530298; cv=none; b=R+s9TelK7BAs2grpyaoaxSKZtMz4+5CZqnt4RDy32rG9ar8YIR4LgPX90PVdESJ/mDcAYkyYoS5vqt5sFG1qKBHnKErwHJJQnIoVHWCuSTbmYFY8jhVQxSrHeIm76pC+eVYh9DV07voBtFdGLDsH1jhHk5iIqxEFpmYSfFr74jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530580; c=relaxed/simple;
-	bh=RjCqldgrfdq6/b4GcMc6S/CPcbRzJRcaaeDPJAksICs=;
+	s=arc-20240116; t=1725530298; c=relaxed/simple;
+	bh=uDPdmNjJOlOu7LWy/3yV2Q6eKcKnchaomhDLCWE3rOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxV5Rrz3lksYC1UEyvZL2PJb3rJk1zCnUr+HCjFDdGnUcBdg1s9BZ2LL8v08uFeAvIp7Vcy/lUw3DTxLhGY2tl4fVWYq/FsrIA+neCLK6pTkVkx4P+oPWIpll/+1czeS5kWVme4ztZuJ5HlbaeCOv3hxyK5+eZnD5Nl7DpPqivk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF0i9PCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA35C4CEC4;
-	Thu,  5 Sep 2024 10:03:00 +0000 (UTC)
+	 MIME-Version; b=kPZmiCGZZjqrmLR2fA5rsVQ3RZ97v6XbvnADc9jZ8+8FiqUaO2ARmJjoHwWoi2HdmuYytxK82cYUDblJrT7/E5/gTyzi3goGJnHXkYjfYS72rO0gflYAxxurvz6E2dGx9BjJ1UeKRWBEiS09ymoqmLkyZ1ofEq3P0ctnxQeFXko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yovvXNwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F695C4CEC3;
+	Thu,  5 Sep 2024 09:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530580;
-	bh=RjCqldgrfdq6/b4GcMc6S/CPcbRzJRcaaeDPJAksICs=;
+	s=korg; t=1725530297;
+	bh=uDPdmNjJOlOu7LWy/3yV2Q6eKcKnchaomhDLCWE3rOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF0i9PCVtflWko/1+5ECcrK4N4deZk83rNydNJ3OzHgR4BLFNQjjHmW2N6qVBMsbQ
-	 kScjRr0Qcgj22hu3qq+b2XPlgUEsLeVqf+XGnDhpGdKYE2RxRoQOF+UnELisl/GTXB
-	 umo6yzVcYo/zS05GDegDF6dGl7y9J5gDxkzRZEqQ=
+	b=yovvXNwVIVf18A4irmBRnsPXTGoQeb1e5H4mn1DAA3tKoUGmqSiMPynHWzYhuzsRb
+	 5cusIyYvxTbAOOTnZ+N57CkFJ1b+nyMf/gWPbKEpdb0Xyy7NS3AqRTymBTA76JyLHu
+	 y3tZ2inxDPbzb6s3DRJuF22XWGISFOJTOnG0iVf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jagadeesh Kona <quic_jkona@quicinc.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Olivier Dautricourt <olivierdautricourt@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/101] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Subject: [PATCH 6.6 114/132] dmaengine: altera-msgdma: properly free descriptor in msgdma_free_descriptor
 Date: Thu,  5 Sep 2024 11:41:41 +0200
-Message-ID: <20240905093718.836380541@linuxfoundation.org>
+Message-ID: <20240905093726.659182427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <quic_jkona@quicinc.com>
+From: Olivier Dautricourt <olivierdautricourt@gmail.com>
 
-[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
+[ Upstream commit 54e4ada1a4206f878e345ae01cf37347d803d1b1 ]
 
-Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
-can lead to overflow if the multiplied result is greater than
-UINT_MAX, since type of target_freq is unsigned int. Avoid this
-overflow by assigning target_freq to unsigned long variable for
-converting it to HZ.
+Remove list_del call in msgdma_chan_desc_cleanup, this should be the role
+of msgdma_free_descriptor. In consequence replace list_add_tail with
+list_move_tail in msgdma_free_descriptor.
 
-Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+This fixes the path:
+   msgdma_free_chan_resources -> msgdma_free_descriptors ->
+   msgdma_free_desc_list -> msgdma_free_descriptor
+
+which does not correctly free the descriptors as first nodes were not
+removed from the list.
+
+Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Link: https://lore.kernel.org/r/20240608213216.25087-3-olivierdautricourt@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/altera-msgdma.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 028df8a5f537..079940c69ee0 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -62,9 +62,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 					     unsigned int target_freq)
- {
- 	struct scmi_data *priv = policy->driver_data;
-+	unsigned long freq = target_freq;
+diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
+index 8c479a3676fc..711e3756a39a 100644
+--- a/drivers/dma/altera-msgdma.c
++++ b/drivers/dma/altera-msgdma.c
+@@ -233,7 +233,7 @@ static void msgdma_free_descriptor(struct msgdma_device *mdev,
+ 	struct msgdma_sw_desc *child, *next;
  
--	if (!perf_ops->freq_set(ph, priv->domain_id,
--				target_freq * 1000, true))
-+	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
- 		return target_freq;
+ 	mdev->desc_free_cnt++;
+-	list_add_tail(&desc->node, &mdev->free_list);
++	list_move_tail(&desc->node, &mdev->free_list);
+ 	list_for_each_entry_safe(child, next, &desc->tx_list, node) {
+ 		mdev->desc_free_cnt++;
+ 		list_move_tail(&child->node, &mdev->free_list);
+@@ -588,8 +588,6 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+ 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
+ 		struct dmaengine_desc_callback cb;
  
- 	return 0;
+-		list_del(&desc->node);
+-
+ 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
+ 		if (dmaengine_desc_callback_valid(&cb)) {
+ 			spin_unlock_irqrestore(&mdev->lock, irqflags);
 -- 
 2.43.0
 
