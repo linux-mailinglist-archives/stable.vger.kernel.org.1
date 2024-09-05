@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213AB96D456
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE9F96D4B4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E618B20B4A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11731B26361
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CE6198E77;
-	Thu,  5 Sep 2024 09:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85564192D73;
+	Thu,  5 Sep 2024 09:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2F/KkGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXQJl5py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10B619884A;
-	Thu,  5 Sep 2024 09:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441BB154BFF;
+	Thu,  5 Sep 2024 09:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529847; cv=none; b=fhKqn99npA1121RFmXLTBg5I77Ov5in+SOwNBw3eoJHK+0jMOkwSHxUpFuKbfL6DQ3BgcZxwf2VfnYw8yYk5QZGAtJWoAZtiyFuqwp4B2Ii6VoalLdA5a9VwY+Y7d13VowgzTL8my5gud+6sBoGjRksMkvviFy24eENgy2rWcYk=
+	t=1725530111; cv=none; b=gxaRW49uG9K3JQ8Ks4ypVZUwXrKvYBWTAtJwPFxuMoqV27PQjgyxvfOMP5md0NScEpsMGGvuo6WYGaL5xDkWY8zPcqgtBkVSrpP7tDxb6jW9jU2kj1xHd5yPETN09duwyV9goiZv/oUelDf99k16Zu7ObYuFBpYE9+FQbUx76Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529847; c=relaxed/simple;
-	bh=R0IQkmkCVvFvoR9LupYLtcopnM/VzfkMdirfnVSHYzs=;
+	s=arc-20240116; t=1725530111; c=relaxed/simple;
+	bh=OQN8Q4FDIh7Vu9lGwtG4ujwcW1KOCSrhYrl3frDwje8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdNqDfKe4I+AwLBA5z0Nj/G0lBWHIPCgnKYtZrrIkrAsklKkx1reP7Lr8inWLDAXr25kBEkSu1cKbGonC2vDuAEsegmP/l6TB3Y8I2rjl75QH9TSSMTbnwGgU4sMxbCEc44sRMQlrAaw7GufoegIZD/Q743UH2TXJDyOqOX13s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2F/KkGi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8FFC4CEC3;
-	Thu,  5 Sep 2024 09:50:47 +0000 (UTC)
+	 MIME-Version; b=DTFdFkPPPtk6fqgWFDcA0JC7Frny+EyNE0xNzGIQB9Fwa54Tv6ImYmFm6sJZ2UVFq1GEOWzCj4GksVsmiMUtlebs1UooFPN/tTM3amgQppNPcr2nEZLGalUBc8vI32FFz5w0aZuv/2+/PlhJnQ7avky7MfhFKM5jJloNDu4V6QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXQJl5py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4C0C4CEC3;
+	Thu,  5 Sep 2024 09:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529847;
-	bh=R0IQkmkCVvFvoR9LupYLtcopnM/VzfkMdirfnVSHYzs=;
+	s=korg; t=1725530110;
+	bh=OQN8Q4FDIh7Vu9lGwtG4ujwcW1KOCSrhYrl3frDwje8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2F/KkGiTwZqwWxQnwBMkn3wEZv+yKihNVYehC1sBKSh7bUXY7yMkS1upS7UUjQon
-	 eVs9lNZ0tvsU9HI7UVt0FiiEog2Mp9nnNhkSWyLxc9z/yhRboAtpGgKxDUz2254JJ2
-	 HwSxHs1Sm7bTByfg3q23tkjT5oRGSfkUpMVGtCpc=
+	b=JXQJl5pyh/E9quxfsAzMKFniAhk3fwK/godPXLpmbo/OAXka4O7XJN3TrDtzHNvga
+	 vOH08H5h32cC8ov9+HhqZ3cptvmMcpXTrJOLd9Wgg1TUz9yknjaS10WsqXZ8h003iQ
+	 IepzXulDAPWQ56oSy+fY8UbGHi8ZA1misNm7S9DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Sloat <ksloat@designlinxhs.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Sean Anderson <sean.anderson@seco.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 130/184] pwm: xilinx: Fix u32 overflow issue in 32-bit width PWM mode.
+Subject: [PATCH 6.6 056/132] drm/amd/display: Check msg_id before processing transcation
 Date: Thu,  5 Sep 2024 11:40:43 +0200
-Message-ID: <20240905093737.301186949@linuxfoundation.org>
+Message-ID: <20240905093724.436164775@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ken Sloat <ksloat@designlinxhs.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 56f45266df67aa0f5b2a6881c8c4d16dbfff6b7d ]
+[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
 
-This timer HW supports 8, 16 and 32-bit timer widths. This
-driver currently uses a u32 to store the max possible value
-of the timer. However, statements perform addition of 2 in
-xilinx_pwm_apply() when calculating the period_cycles and
-duty_cycles values. Since priv->max is a u32, this will
-result in an overflow to 1 which will not only be incorrect
-but fail on range comparison. This results in making it
-impossible to set the PWM in this timer mode.
+[WHY & HOW]
+HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
+array index, and it needs checking before used.
 
-There are two obvious solutions to the current problem:
-1. Cast each instance where overflow occurs to u64.
-2. Change priv->max from a u32 to a u64.
+This fixes 4 OVERRUN issues reported by Coverity.
 
-Solution #1 requires more code modifications, and leaves
-opportunity to introduce similar overflows if other math
-statements are added in the future. These may also go
-undetected if running in non 32-bit timer modes.
-
-Solution #2 is the much smaller and cleaner approach and
-thus the chosen method in this patch.
-
-This was tested on a Zynq UltraScale+ with multiple
-instances of the PWM IP.
-
-Signed-off-by: Ken Sloat <ksloat@designlinxhs.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/SJ0P222MB0107490C5371B848EF04351CA1E19@SJ0P222MB0107.NAMP222.PROD.OUTLOOK.COM
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/clocksource/timer-xilinx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/include/clocksource/timer-xilinx.h b/include/clocksource/timer-xilinx.h
-index c0f56fe6d22a..d116f18de899 100644
---- a/include/clocksource/timer-xilinx.h
-+++ b/include/clocksource/timer-xilinx.h
-@@ -41,7 +41,7 @@ struct regmap;
- struct xilinx_timer_priv {
- 	struct regmap *map;
- 	struct clk *clk;
--	u32 max;
-+	u64 max;
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+index 25ffc052d53b..df2cb5279ce5 100644
+--- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
++++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+@@ -130,13 +130,21 @@ static bool hdmi_14_process_transaction(
+ 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
+ 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
+ 	struct i2c_command i2c_command;
+-	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
++	uint8_t offset;
+ 	struct i2c_payload i2c_payloads[] = {
+-		{ true, 0, 1, &offset },
++		{ true, 0, 1, 0 },
+ 		/* actual hdcp payload, will be filled later, zeroed for now*/
+ 		{ 0 }
+ 	};
  
- /**
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
++	offset = hdcp_i2c_offsets[message_info->msg_id];
++	i2c_payloads[0].data = &offset;
++
+ 	switch (message_info->link) {
+ 	case HDCP_LINK_SECONDARY:
+ 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
+@@ -310,6 +318,11 @@ static bool dp_11_process_transaction(
+ 	struct dc_link *link,
+ 	struct hdcp_protection_message *message_info)
+ {
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
+ 	return dpcd_access_helper(
+ 		link,
+ 		message_info->length,
 -- 
 2.43.0
 
