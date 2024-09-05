@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D0A96D46B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2727D96D4EA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10A021C225FC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB53B281525
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D66199248;
-	Thu,  5 Sep 2024 09:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E548C19755E;
+	Thu,  5 Sep 2024 09:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDpDOi0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1qUqdry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DAF19922D;
-	Thu,  5 Sep 2024 09:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAC4194A45;
+	Thu,  5 Sep 2024 09:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529908; cv=none; b=Du/OA58SL7eEhQdJidy7bkeM/D25i4W0MhTSWzM2lcKe2WDJt7Xm0+IyJ7vSgCPh+2awY+sejPRx/jGJtrayG9yYxp1tscslJDgllvMLFHuO+nYcCADFmM2XtU+eLdqndoFOHBsg+0MogSH18CpYj5pGWDdd/rw7xkIi5DCHY74=
+	t=1725530264; cv=none; b=QieJLr5qcbzwg39GQhoXH7/1chzva5AZ9eCRuParGBi2QJy0A+BbP4RhEO8dntgYJyADlT/RJeaLAaMDFSaEpjmyC79AkC36pk4Tija0Txf9TB1P1PqawTaYVl2izH8nHvTqc1/VEB2SE4J0OG0IlxKIFuJavm4qvqVChqhiHxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529908; c=relaxed/simple;
-	bh=CxH+nQzC6iwKAeBH6cnDhQA8OLIAbbPJpUEaY9osKV4=;
+	s=arc-20240116; t=1725530264; c=relaxed/simple;
+	bh=FuO+tHYegSfaV9rSOjeMwnFD/uGlnXWPA2xmQIJGEVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASu3o72sZkbtRBjvW4wQCwsjwLlH8YmVWt49jo4YoL4oE3WY8mTpGIgzx+bB8wPEXf86ozMtrY5yIXi9G+nkx9o+arAygA5Fn09SPU2wGTkBK8c4mBU4GdfOXLRdBQw3sozNIJSxaxLr/8XwfWu4SwBVloXkTk4EM2AYEPioZhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDpDOi0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FB6C4CEC3;
-	Thu,  5 Sep 2024 09:51:47 +0000 (UTC)
+	 MIME-Version; b=eoV+iihYwk1uFh5qs7cKPhWFIViNK0DU2Zj1FbcFn1JyQpxvaulz7hfT444t5eClb/pa0KBB0nkpVtkUwIM+N1mns1+tJ4MK4ZLyF+K7zPaGSnDVVwsZe8yjX3nglRFhXz0/HTPEoYnFTsizCwmy/WJdEw9v1lztimoNjFOBjSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1qUqdry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087C2C4CEC3;
+	Thu,  5 Sep 2024 09:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529908;
-	bh=CxH+nQzC6iwKAeBH6cnDhQA8OLIAbbPJpUEaY9osKV4=;
+	s=korg; t=1725530264;
+	bh=FuO+tHYegSfaV9rSOjeMwnFD/uGlnXWPA2xmQIJGEVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDpDOi0f0FX1Ibg7BWXAFZfuiBk8DlCJl6gYnYmkhUkxxrwRiuQUljQSQfGVTGBd5
-	 YTEt1p4ywHIRWan2R7ZtwxMBupOt86D5BhrQ3oRMtPh5l+soB5cGnS5VwXc3inIciA
-	 q7EcAPWK70Cvn/prFrzfEHul+dWrQ8YaICdUURPc=
+	b=a1qUqdryGCzQefT7byVtP3bliQAIvvW+BPUxGrr48QhwnQqc2yjPzMu3g7p3lN9lE
+	 yZAzVTEsqAk+AFkkJ4wOEUyXAhqlbQlS9QdNdsTI0oVnvsoCTfNfzwzY5SBMEUz0hJ
+	 rXTFps8D5MfvH5SpZqmWBXQl2qEIsv55UlZ/onc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 179/184] media: uvcvideo: Enforce alignment of frame and interval
+Subject: [PATCH 6.6 105/132] regmap: spi: Fix potential off-by-one when calculating reserved size
 Date: Thu,  5 Sep 2024 11:41:32 +0200
-Message-ID: <20240905093739.319548766@linuxfoundation.org>
+Message-ID: <20240905093726.318196138@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
+[ Upstream commit d4ea1d504d2701ba04412f98dc00d45a104c52ab ]
 
-Struct uvc_frame and interval (u32*) are packaged together on
-streaming->formats on a single contiguous allocation.
+If we ever meet a hardware that uses weird register bits and padding,
+we may end up in off-by-one error since x/8 + y/8 might not be equal
+to (x + y)/8 in some cases.
 
-Right now they are allocated right after uvc_format, without taking into
-consideration their required alignment.
+bits    pad   x/8+y/8 (x+y)/8
+4..7    0..3    0       0 // x + y from 4 up to 7
+4..7    4..7    0       1 // x + y from 8 up to 11
+4..7    8..11   1       1 // x + y from 12 up to 15
+8..15   0..7    1       1 // x + y from 8 up to 15
+8..15   8..15   2       2 // x + y from 16 up to 23
 
-This is working fine because both structures have a field with a
-pointer, but it will stop working when the sizeof() of any of those
-structs is not a multiple of the sizeof(void*).
+Fix this by using (x+y)/8.
 
-Enforce that alignment during the allocation.
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://msgid.link/r/20240605205315.19132-1-andy.shevchenko@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/base/regmap/regmap-spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index d435b6a6c295..13c2c11cfdf6 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -687,16 +687,26 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 		goto error;
- 	}
+diff --git a/drivers/base/regmap/regmap-spi.c b/drivers/base/regmap/regmap-spi.c
+index 37ab23a9d034..7f14c5ed1e22 100644
+--- a/drivers/base/regmap/regmap-spi.c
++++ b/drivers/base/regmap/regmap-spi.c
+@@ -122,8 +122,7 @@ static const struct regmap_bus *regmap_get_spi_bus(struct spi_device *spi,
+ 			return ERR_PTR(-ENOMEM);
  
--	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
-+	/*
-+	 * Allocate memory for the formats, the frames and the intervals,
-+	 * plus any required padding to guarantee that everything has the
-+	 * correct alignment.
-+	 */
-+	size = nformats * sizeof(*format);
-+	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
-+	size = ALIGN(size, __alignof__(*interval))
- 	     + nintervals * sizeof(*interval);
-+
- 	format = kzalloc(size, GFP_KERNEL);
--	if (format == NULL) {
-+	if (!format) {
- 		ret = -ENOMEM;
- 		goto error;
- 	}
+ 		max_msg_size = spi_max_message_size(spi);
+-		reg_reserve_size = config->reg_bits / BITS_PER_BYTE
+-				 + config->pad_bits / BITS_PER_BYTE;
++		reg_reserve_size = (config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
+ 		if (max_size + reg_reserve_size > max_msg_size)
+ 			max_size -= reg_reserve_size;
  
--	frame = (struct uvc_frame *)&format[nformats];
--	interval = (u32 *)&frame[nframes];
-+	frame = (void *)format + nformats * sizeof(*format);
-+	frame = PTR_ALIGN(frame, __alignof__(*frame));
-+	interval = (void *)frame + nframes * sizeof(*frame);
-+	interval = PTR_ALIGN(interval, __alignof__(*interval));
- 
- 	streaming->formats = format;
- 	streaming->nformats = 0;
 -- 
 2.43.0
 
