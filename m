@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3C996D3FC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A46B96D482
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F5E2817FE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A482281E79
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D921991DB;
-	Thu,  5 Sep 2024 09:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3638A198E77;
+	Thu,  5 Sep 2024 09:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyFz7RR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHNRQ4j9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DCE198E81;
-	Thu,  5 Sep 2024 09:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA03F198A3E;
+	Thu,  5 Sep 2024 09:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529616; cv=none; b=Yn8txm9Ttqd9P5M6h+wW6lT5kgVISwGhmR9MIkZFV+OK6QdiuZax2769rEb0pMU8D0dLju1IgRTcDQRaRSt6bv7uvHLiFRP64RxfH1PGPc3Qc7J+ZypZGIYeiH+8KTC5Qhl6Elxa8rXy3/N7wNLkx1wnZTFWEb+7Wwjl4CX+gfk=
+	t=1725529972; cv=none; b=rNVH/XlvvTOhOCVUx50LtG5lp8q+GTlljcQ50aDSfJau4MYk0PEqLp3IgZfjVnm9Cw/Drw9WZU/VI1vTd7PpbVogba4OdFE6deuoc1niQv6CwcuT0yJUNLDtdvIwPUhOqDxMQ0iJXfNzzRZE9FqnKyQ3GOEvmr8h+4AuKQecFqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529616; c=relaxed/simple;
-	bh=qbcDWiKUysSLf98S3DSv+YEpSYCH0SRJbUL9Rp07M/4=;
+	s=arc-20240116; t=1725529972; c=relaxed/simple;
+	bh=M4suhzXjy8WJb3iDtECSMmcoVuIaBWgZ3fMksLUc314=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWpK+HmbPhdlXr0xm2JsWx0Lg1ULmAj+bo05SP3vJDwMQAJLGt/5CP5dtQ1Eq5ugNdFNFyKPoXpCe+53A/Ivxp25IKI0GohWa5R972Qdd7NE+wY2rw3i6Kn9YLEtJRJk7u5uW3AYsVc0rL3aPuQroYbFf2EGib7xHXCg/3iFzz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyFz7RR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8084CC4CEC3;
-	Thu,  5 Sep 2024 09:46:55 +0000 (UTC)
+	 MIME-Version; b=kvNxSThhmVZMPm3Dawg15AYzqOpqoexQoH48eGClxcnSUaB8xWVtmLbFyuXrUBFGAhxbnzpl4Rf6LTqPggQf+9U9Z2QMRIQZorR+hi249hERWwPmUSUjHoLcWigvqeiG8+RtjKXKvuLnu9mCKnpG8rPRub6fcgnhKqNE7yILVWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHNRQ4j9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4E5C4CEC4;
+	Thu,  5 Sep 2024 09:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529616;
-	bh=qbcDWiKUysSLf98S3DSv+YEpSYCH0SRJbUL9Rp07M/4=;
+	s=korg; t=1725529971;
+	bh=M4suhzXjy8WJb3iDtECSMmcoVuIaBWgZ3fMksLUc314=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyFz7RR9gP1ZPRsQ7aI0l0yZ0txDhET7TitEy1rkqrc+fQ/bszuHuUeiwzl8Jwebm
-	 iWgjRrGO47nNMk2GkiHnhjYJLYKkguJMaxdnHJzMO2qhvoQ+S0vzaVEOFK7USa6ANt
-	 sSEnm32s74Ay3kUoIyzwdZGhdOSpEbCwBA5d0reg=
+	b=tHNRQ4j9UvzNUPwOQstM0tS7A9CKbEjmwqqei+150TLSiGv8mGuLYCc0kx8GDRl7v
+	 MRJkEJDLlD99kNvaWLKBSUwgyzTTsjpJL7eegx2ntJdmnHWn3bWvDdqHBsOZLZWs5n
+	 Z3XsohtBqn2xFQaxJZ5Hz3x3b28ZI307Vd+jZyDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bruno Ancona <brunoanconasala@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 088/184] drm/amdgpu: fix uninitialized variable warning for amdgpu_xgmi
-Date: Thu,  5 Sep 2024 11:40:01 +0200
-Message-ID: <20240905093735.677195732@linuxfoundation.org>
+Subject: [PATCH 6.6 015/132] ASoC: amd: yc: Support mic on HP 14-em0002la
+Date: Thu,  5 Sep 2024 11:40:02 +0200
+Message-ID: <20240905093722.829938905@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Bruno Ancona <brunoanconasala@gmail.com>
 
-[ Upstream commit 8f184f8e7a07fddc33ee4e6a38b717c770c3aedd ]
+[ Upstream commit c118478665f467e57d06b2354de65974b246b82b ]
 
-Clear warning that using uninitialized variable current_node.
+Add support for the internal microphone for HP 14-em0002la laptop using
+a quirk entry.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bruno Ancona <brunoanconasala@gmail.com>
+Link: https://patch.msgid.link/20240729045032.223230-1-brunoanconasala@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-index dd2ec48cf5c2..4a14f9c1bfe8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-@@ -434,6 +434,9 @@ static ssize_t amdgpu_xgmi_show_connected_port_num(struct device *dev,
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index d597e59863ee3..e933d07614527 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -430,6 +430,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
  		}
- 	}
- 
-+	if (i == top->num_nodes)
-+		return -EINVAL;
-+
- 	for (i = 0; i < top->num_nodes; i++) {
- 		for (j = 0; j < top->nodes[i].num_links; j++)
- 			/* node id in sysfs starts from 1 rather than 0 so +1 here */
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8B27"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
