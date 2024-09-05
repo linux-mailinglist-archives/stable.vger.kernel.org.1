@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-73398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C6696D4B1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E0B96D454
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 252891C233BD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EFD3B28127
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5856B19413B;
-	Thu,  5 Sep 2024 09:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2391C19885E;
+	Thu,  5 Sep 2024 09:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcaAu1u2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghuF4I3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F2D154BFF;
-	Thu,  5 Sep 2024 09:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B6719884A;
+	Thu,  5 Sep 2024 09:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530101; cv=none; b=LEdSBOMW09OvsnOkvnWQ3b0mIn67U2m0FzciQ8P34BSsEiBRnpBudNJlfTNOQPG+2jeIzDjoDAq9pkEVBBNPOnSQA4cprLNEHeG6a99516Zj5bparzIeMWw8oVRA/EYEVN0H0kXPIwcKf9HmH6p+XicXusRt6o9h39agUNTiWCI=
+	t=1725529840; cv=none; b=oghGfe64b+TbV3PQIZxidFXCnNaeUWpHTExQ2WquALUhI6qgvAK5HE1iQmRnU53EHqbVsop15MsN/yF2wcfq2QBMgZKxcpSZHpZdE2GlmXh7BPbJwiKuFx4kD1e2CtwFdMJ4LgBuxsd7cOXKr/WZablevlbx2fwNE9GmarvKPnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530101; c=relaxed/simple;
-	bh=/8IpxaC6QsWQLLcgM0y4fMLQ4TlKCaFXTrAyaYGXsGs=;
+	s=arc-20240116; t=1725529840; c=relaxed/simple;
+	bh=l1OerHW4bW1ru+zy+jzu0S2ItJ1GroIwN4jCSFEVBDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjKf2Ny1DaFj9GA7t0IIB6u6fNdGcd/9tHYsRkdWeUYr7tcpfMDZllLin7R6ieCXJs2fBIQdSWQ0s5IKDFvg72ftMQVPjNy+nViDsQR8GddvsDgf8X0CTJLuFqcFCiGX0S/mllSCXDVj+uepIFGr9cfBkJoFFYRspniEL7rqx4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcaAu1u2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A27CC4CEC3;
-	Thu,  5 Sep 2024 09:55:00 +0000 (UTC)
+	 MIME-Version; b=HNrM/0LOyaqxCxCVtCWaaRC+OJmuaE6n815daCn60cvyaHCoJNgTv6pwyNHRh98r35ioE2e6rhDP53c7fqxLVu+pNDCUCURsrwA2rM9IAblniIJMclDOGr8y5GjXEliLiChH1x/kNZeOWYyIRYEL9IhiNhWz+9fRG47jB9PtT7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghuF4I3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306C0C4CEC3;
+	Thu,  5 Sep 2024 09:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530101;
-	bh=/8IpxaC6QsWQLLcgM0y4fMLQ4TlKCaFXTrAyaYGXsGs=;
+	s=korg; t=1725529840;
+	bh=l1OerHW4bW1ru+zy+jzu0S2ItJ1GroIwN4jCSFEVBDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcaAu1u2QOInqkFd4dEJPiNEV+D0oYTcC2pmSev2UycoipKABlfLjv7FwaFcgnzJp
-	 KBwZMl6JIEHuWkhQf2TIHEWQ4upB+d6WN/aP6v4v+omvR0ipZOW7oy9OTcrZwbawQk
-	 gQw4fYUZ3Q79SlF4s7JBm2V6jYYjs5Uh65zfVgc0=
+	b=ghuF4I3x1mmOKuLz+cqR6wsqPN3lSTiGv5KEqpT1s9AfBrQj2Su7ckvgKDeGhrGw8
+	 RMCA8cnd9meAgKR5E37Da07KTRIDgApbFBTNIP/j+s/PsZ+zRsUKfu+KoNQh2JTz1Q
+	 4xBvOT52F7dLeBJ7j1b1/pXq/HB17d3u8LobSkdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Firas Jahjah <firasj@amazon.com>,
+	Yehuda Yitschak <yehuday@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/132] drm/amd/display: Add array index check for hdcp ddc access
+Subject: [PATCH 6.10 128/184] RDMA/efa: Properly handle unexpected AQ completions
 Date: Thu,  5 Sep 2024 11:40:41 +0200
-Message-ID: <20240905093724.360192921@linuxfoundation.org>
+Message-ID: <20240905093737.224164202@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
+[ Upstream commit 2d0e7ba468eae365f3c4bc9266679e1f8dd405f0 ]
 
-[Why]
-Coverity reports OVERRUN warning. Do not check if array
-index valid.
+Do not try to handle admin command completion if it has an unexpected
+command id and print a relevant error message.
 
-[How]
-Check msg_id valid and valid array index.
-
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yehuda Yitschak <yehuday@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://lore.kernel.org/r/20240513064630.6247-1-mrgolin@amazon.com
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/efa/efa_com.c | 30 ++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index 8e9caae7c955..1b2df97226a3 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
+index 16a24a05fc2a..bafd210dd43e 100644
+--- a/drivers/infiniband/hw/efa/efa_com.c
++++ b/drivers/infiniband/hw/efa/efa_com.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+ /*
+- * Copyright 2018-2021 Amazon.com, Inc. or its affiliates. All rights reserved.
++ * Copyright 2018-2024 Amazon.com, Inc. or its affiliates. All rights reserved.
+  */
  
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
+ #include "efa_com.h"
+@@ -406,8 +406,8 @@ static struct efa_comp_ctx *efa_com_submit_admin_cmd(struct efa_com_admin_queue
+ 	return comp_ctx;
+ }
  
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
-@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		success = hdcp->config.ddc.funcs.read_i2c(
- 				hdcp->config.ddc.handle,
- 				HDCP_I2C_ADDR,
-@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+-static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
+-						   struct efa_admin_acq_entry *cqe)
++static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
++						  struct efa_admin_acq_entry *cqe)
+ {
+ 	struct efa_comp_ctx *comp_ctx;
+ 	u16 cmd_id;
+@@ -416,11 +416,11 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
+ 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
  
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
+ 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
+-	if (!comp_ctx) {
++	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
+ 		ibdev_err(aq->efa_dev,
+-			  "comp_ctx is NULL. Changing the admin queue running state\n");
+-		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
+-		return;
++			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
++			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
++		return -EINVAL;
+ 	}
  
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
+ 	comp_ctx->status = EFA_CMD_COMPLETED;
+@@ -428,14 +428,17 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
+ 
+ 	if (!test_bit(EFA_AQ_STATE_POLLING_BIT, &aq->state))
+ 		complete(&comp_ctx->wait_event);
 +
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.write_dpcd(
-@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
- 		memmove(&hdcp->buf[1], buf, buf_len);
- 		success = hdcp->config.ddc.funcs.write_i2c(
++	return 0;
+ }
+ 
+ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ {
+ 	struct efa_admin_acq_entry *cqe;
+ 	u16 queue_size_mask;
+-	u16 comp_num = 0;
++	u16 comp_cmds = 0;
+ 	u8 phase;
++	int err;
+ 	u16 ci;
+ 
+ 	queue_size_mask = aq->depth - 1;
+@@ -453,10 +456,12 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ 		 * phase bit was validated
+ 		 */
+ 		dma_rmb();
+-		efa_com_handle_single_admin_completion(aq, cqe);
++		err = efa_com_handle_single_admin_completion(aq, cqe);
++		if (!err)
++			comp_cmds++;
+ 
++		aq->cq.cc++;
+ 		ci++;
+-		comp_num++;
+ 		if (ci == aq->depth) {
+ 			ci = 0;
+ 			phase = !phase;
+@@ -465,10 +470,9 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ 		cqe = &aq->cq.entries[ci];
+ 	}
+ 
+-	aq->cq.cc += comp_num;
+ 	aq->cq.phase = phase;
+-	aq->sq.cc += comp_num;
+-	atomic64_add(comp_num, &aq->stats.completed_cmd);
++	aq->sq.cc += comp_cmds;
++	atomic64_add(comp_cmds, &aq->stats.completed_cmd);
+ }
+ 
+ static int efa_com_comp_status_to_errno(u8 comp_status)
 -- 
 2.43.0
 
