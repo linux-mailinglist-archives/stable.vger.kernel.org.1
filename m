@@ -1,127 +1,92 @@
-Return-Path: <stable+bounces-73609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A2A96DBD4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:32:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B425296DC30
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873E02851A9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:32:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7185A288FC5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAE55FB9C;
-	Thu,  5 Sep 2024 14:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C41E175BF;
+	Thu,  5 Sep 2024 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yj5sV8Rf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8i0Qj7f"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E14654F87;
-	Thu,  5 Sep 2024 14:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE1A4DA1F;
+	Thu,  5 Sep 2024 14:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725546694; cv=none; b=hYRV/dxHbGCmGb6BQjO0JjfBOSSpOpRSB19A55omNrfbI44vBQPnrr6W5s2kH3WxD6eCNrb9BkUkiIeaCQxLTU5F6lYBG7GmWQ+WL2MV2Ti/e14Hdgcz0nNG7FT6a9JZXBCjCIIt70kvdnLe9k6aggGydwe/Uo+8MYLQzr55wPE=
+	t=1725547461; cv=none; b=BEX8T94cMP1Dd5Q4jxckO2FviRbSv88Ze14o+PKziiHo6fDsWqpL4MKp8EYwb3qNXiGBSv85O6B0pHI1LbWLi0UqcgeDk9yBk9fM3qmju1Nczr3Niq29SaE/dQdQQ53dKN14x22fd0Kwx7/m46fDn4rrFZDTfIt/guu7nVoq8Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725546694; c=relaxed/simple;
-	bh=uGI6SGIrD/O2eBQ4Wq4v9jYmgtUXRGyG4r1dvAlrzFM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L+4XtslcFXMvWPxXHQNIVqSx06rw97XCOYPKwC/HNI2icVWhiwBg+mUrghdoxXE0bKLdnScYnWKIhm8e7d/oUZ94iYz15tDE6A5CrzQJJsAhdOYBCPK+Xnrz9xWXBM/Qn2W9snvfkGT45nLRho2x8uJ/kqC0OTylGS5TRgoFePQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yj5sV8Rf; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725546693; x=1757082693;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=uGI6SGIrD/O2eBQ4Wq4v9jYmgtUXRGyG4r1dvAlrzFM=;
-  b=Yj5sV8RfKMOiwbBbhSyTCMTv980JjQ1ODr5/sKKkZ9JU34FlZHiSV91W
-   U0ttmxbXv73FrVZvekoPKfCtxFI+V2TDICTA0bFbV0zQjN4cmhLP/U2Al
-   YM/jeR6kUHXyU0hgFVhJ/yzHOGGHG2crbgRV3/FFJpuAGhzw2zWo1TrLY
-   ghfo5zy+9WKkzKexLyFNq1ySxvZi58YhFasIsltg/6ENHvnQ25fiUmyIG
-   GGcPTsT/FH5MUna3I3PSFcUPecqOeekDC0H91sIX+i39+Si1BMlKCyudK
-   lPPfjkiqJT7umueLDw4DcMQqxeWQOwm79+CzT4y19byAICqmq+8rkFr7p
-   A==;
-X-CSE-ConnectionGUID: qqrLFIq6RnueAyUiz5M15Q==
-X-CSE-MsgGUID: Yf882uCmTACDAD6RGlMCBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="49677561"
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="49677561"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 07:31:33 -0700
-X-CSE-ConnectionGUID: qgWnCSLvROWaQC2raElYlw==
-X-CSE-MsgGUID: Ism/uomFQDWtq9U3m0egiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="88883235"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Sep 2024 07:31:31 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 11/12] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.
-Date: Thu,  5 Sep 2024 17:32:59 +0300
-Message-Id: <20240905143300.1959279-12-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240905143300.1959279-1-mathias.nyman@linux.intel.com>
-References: <20240905143300.1959279-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1725547461; c=relaxed/simple;
+	bh=+sIPEZMtPOfdcAWBRS1JF5uCvn0JmI6nsavk0vNBCzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E9LQ9WMvy6eehfKyuiGs5DASaPYtqkzVe57Bt2w1zpDF4PR42F9nw4MStJGzacLyEtf7vmXycGl9exBBefpnspIO3y28AVN4nMVaUtRP2Nhlx0FcnDVTFsqM6XxHV/FM2ZDhucMFmKUHkvbFxi5MARIsCYgq9OWasq8NWRDr/1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8i0Qj7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8BFC4CEC5;
+	Thu,  5 Sep 2024 14:44:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725547460;
+	bh=+sIPEZMtPOfdcAWBRS1JF5uCvn0JmI6nsavk0vNBCzc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=n8i0Qj7foJPPZf/o6QopLpj9UFARP9QYAiOvOKc/tkzFH4tESYdR8EiKSfTuIQkRV
+	 J/Mkc+TpllnzdLgchT9l5Gftefy0A0f8iOQbCfnM909K40iUD9EInbK1dYGzr+tvdg
+	 0jlGbPDAOHW4SVSXl5o1dB0/mYgDKSasli3jcPMU//dZqoWDT5Na4F49nVUUdQ/w67
+	 IuWvqIBPIoFF0o9U819DAC5kN06kd6WR3La0PeT+SvLchqmNMWQqHzP/vkxMOV8F7h
+	 NE8N9iWuAvHzsByqztTT+Yux3EjGYlF08F6sgzIVyUib+5U/AFA7PzA96olUQ/UMyh
+	 FjIO11hXIXb8w==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1.y 0/3] selftests: mptcp: fix backport issues
+Date: Thu,  5 Sep 2024 16:43:07 +0200
+Message-ID: <20240905144306.1192409-5-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <220913e1-603f-4399-a595-bb602942161a@kernel.org>
+References: <220913e1-603f-4399-a595-bb602942161a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1192; i=matttbe@kernel.org; h=from:subject; bh=+sIPEZMtPOfdcAWBRS1JF5uCvn0JmI6nsavk0vNBCzc=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2cN6rmtVq7N+xCsSx+5AvgVolwUZbvYGPGYLm TJiM6oJixOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtnDegAKCRD2t4JPQmmg c7t5EACzTNdSg4Q33IvsTSWbWRUndbnktzpNAEzOVdAWj0xs0O2ClTCqCL+o5x7uuf1b+enss96 fWzXp6UQ3BEQop+5xgHkfV0JAy0oX3FOR0mbYSD8Xeyz4xHB4v9dGqeLbSxmgFVYeSFhah2Oc33 fsVCH7F9fW1Nc4GJYg+muJMkmuWejxCd3LeVHe1ykGm3KBvF/ArEXlPeVCci+gr9h6fqgjIvUbt wPpmJ3gIbJ7g734WvTk4kiEab88ySNPToYUZOjs8ktwbXim9zcH5E1W7L55grnZTZrw3I+ogcXY 51IQ30MM1kJNXL8UM329tyRdQT2yTRhm+rcA5LEhGn32ms3NM5WNp+mMQyT+AqC24P4Jpg36qG2 SekajaBhyxn1aKzApJQqzUJfAZVWhC9niHpcRRoPN6eREOHDuzXgUH97lvAWHtJo6h22YOD97Yk 9QejHODer77Lo+tb8gdVjVx+uXOL4EOojtPwFa3ybKQxkwqsC1YWIsUPFh2s5UocQ7vtdyjOFPX bmwbFEUhJKQK+J2RHBAK1aPZGjpJoLqwazqgqnYlqoEgMODZHjm4Di+ozR3mRiXi9wbc74META6 xI/NIC0+tk+MsNw6euwHRz/Wxb1UAjLErqlPH12U2QVcIUPMIMz+yMPMc/zvC19lG9RmMQBVHto CDocCh8gJ2cqPqA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-PCI xHC host should be stopped and xhci driver memory freed before putting
-host to PCI D3 state during PCI remove callback.
+Greg recently reported that two of the backport patches I sent for v6.1
+could not be applied [1][2]. It looks like it was because some other
+patches have been applied twice, using different versions [3].
 
-Hosts with XHCI_SPURIOUS_WAKEUP quirk did this the wrong way around
-and set the host to D3 before calling usb_hcd_pci_remove(dev), which will
-access the host to stop it, and then free xhci.
+After having dropped the duplicated patches, the backport patches that 
+couldn't be applied were still causing issues. It looks like it is due 
+to quilt/patch having applied some code at the wrong place. This is 
+fixed in patch 1/3. After that, the same two patches can be applied 
+without any issue. They have been added in this series to help just in 
+case.
 
-Fixes: f1f6d9a8b540 ("xhci: don't dereference a xhci member after removing xhci")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci-pci.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Link: https://lore.kernel.org/2024090455-precook-unplanned-52b3@gregkh [1]
+Link: https://lore.kernel.org/2024090420-passivism-garage-f753@gregkh [2]
+Link: https://lore.kernel.org/fc21db4a-508d-41db-aa45-e3bc06d18ce7@kernel.org [3]
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 526739af2070..de50f5ba60df 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -657,8 +657,10 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- void xhci_pci_remove(struct pci_dev *dev)
- {
- 	struct xhci_hcd *xhci;
-+	bool set_power_d3;
- 
- 	xhci = hcd_to_xhci(pci_get_drvdata(dev));
-+	set_power_d3 = xhci->quirks & XHCI_SPURIOUS_WAKEUP;
- 
- 	xhci->xhc_state |= XHCI_STATE_REMOVING;
- 
-@@ -671,11 +673,11 @@ void xhci_pci_remove(struct pci_dev *dev)
- 		xhci->shared_hcd = NULL;
- 	}
- 
-+	usb_hcd_pci_remove(dev);
-+
- 	/* Workaround for spurious wakeups at shutdown with HSW */
--	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
-+	if (set_power_d3)
- 		pci_set_power_state(dev, PCI_D3hot);
--
--	usb_hcd_pci_remove(dev);
- }
- EXPORT_SYMBOL_NS_GPL(xhci_pci_remove, xhci);
- 
+Matthieu Baerts (NGI0) (3):
+  selftests: mptcp: fix backport issues
+  selftests: mptcp: join: validate event numbers
+  selftests: mptcp: join: check re-re-adding ID 0 signal
+
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 234 ++++++++++++------
+ .../testing/selftests/net/mptcp/mptcp_lib.sh  |  15 ++
+ 2 files changed, 180 insertions(+), 69 deletions(-)
+
 -- 
-2.25.1
+2.45.2
 
 
