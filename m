@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADEF96D55A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BF996D501
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146871F286BB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9594A1C24891
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377C0197A76;
-	Thu,  5 Sep 2024 10:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02A6194A5B;
+	Thu,  5 Sep 2024 09:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErdskQ5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ncDikEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2191922CC;
-	Thu,  5 Sep 2024 10:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E24618D65E;
+	Thu,  5 Sep 2024 09:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530616; cv=none; b=P41j5r+pgL0BV+q6vcE/tzKzqp4pHQHBjVTYkuVABDlr5a4xgnbSAChKVdE22ijy2Vrlfz75wALs2B9cactJBbiGiBeW0CzYRg5CL+qD1N3RHoBsbLBlVDNpo18yjgWTAPVhC5rY1dx7U/SYPR5nV1+k334BDrC6LQkiFx7GJ/k=
+	t=1725530337; cv=none; b=rG8/h9wBjngfj0ucPR/p3KW38Qec7GCpU6WVuO+ns5F0faTOYnW5CkeLp28SctyTMbIUqvhRfnjS1u38n8WnhAt1Mm7DKsHKJhd33PsV1xA+MLF8PFRQfrOEhYdtVpLQ8iHR3o4Agymes8+3oQfL6vRpGSe3mtLt5eQyoi9gzrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530616; c=relaxed/simple;
-	bh=uFfg4h6ZjF/8JSYqUllz50N3WyXxsTU7KypnoJ2fTK4=;
+	s=arc-20240116; t=1725530337; c=relaxed/simple;
+	bh=0pP/wUTGw9lEFz+X/PUM2EBF69dy0kkEF73anu3TMe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=injQzuAnn5mWA8ZvbO+Peg1kMeaQE86DAbFz/Ecvh3is287lhY5z8xHDbAWjl7v2TvuCb8hOpeC51dFHHRfDOOASnx5l9XJht15mPeXLCKdrzv3VcsIfSQ1W6EEvVmTljq2kbE0tRoGUnMcAUYEY1aIYX1owPzSwcnptfrmgGGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErdskQ5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0B3C4CEC3;
-	Thu,  5 Sep 2024 10:03:35 +0000 (UTC)
+	 MIME-Version; b=Pj7IVFvLg69sbeWiPFB7WCwhImkHhz9x6532CnVYdORvDakeD+0PXvW2qDurcHaYuQo7wprfqHC28lAuvu+imgyGrkt03ieBC86xcpHb6K5CChZnYZAas1e9fjFdxKT/e3MSnjWcNg/d5uLJtGOhGJkJ4/Z4Nb4xJX6TfqkCMRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ncDikEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2AFC4CEC3;
+	Thu,  5 Sep 2024 09:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530615;
-	bh=uFfg4h6ZjF/8JSYqUllz50N3WyXxsTU7KypnoJ2fTK4=;
+	s=korg; t=1725530337;
+	bh=0pP/wUTGw9lEFz+X/PUM2EBF69dy0kkEF73anu3TMe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErdskQ5Ll7w88N+cJsC5mtYpFZTW0xbGKNhAKOe4vHs1tCbk0GrObzvCPgMSZgUIi
-	 24CTDOuaI/EukNy2fvEih1sogFfJo4kXXkaTl5bT8quiG65VrYU3fsamnkRS1PyMrw
-	 eM+vN2/ataBJwW+KPIdMplFO3+6kIXmxuVnmhrF8=
+	b=0ncDikEEwDe33ykD1B+iDm+mEPkBrVXQBuVEIweUkqpo2qUDjPB05kpvuASeaD22D
+	 Z3wL+w/HbExvbKR9wqAA+aOd2UYA41z+B5uzlw2GC6Q8AEBpYHDYa2WZmr93eEc1rc
+	 9VSytOni49Rd1SpcPV2h76+JJ/SZiuGGDcrjHUtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/101] regmap: spi: Fix potential off-by-one when calculating reserved size
-Date: Thu,  5 Sep 2024 11:41:51 +0200
-Message-ID: <20240905093719.219351070@linuxfoundation.org>
+Subject: [PATCH 6.6 125/132] drm/amd/display: Correct the defined value for AMDGPU_DMUB_NOTIFICATION_MAX
+Date: Thu,  5 Sep 2024 11:41:52 +0200
+Message-ID: <20240905093727.075433955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-[ Upstream commit d4ea1d504d2701ba04412f98dc00d45a104c52ab ]
+[ Upstream commit ad28d7c3d989fc5689581664653879d664da76f0 ]
 
-If we ever meet a hardware that uses weird register bits and padding,
-we may end up in off-by-one error since x/8 + y/8 might not be equal
-to (x + y)/8 in some cases.
+[Why & How]
+It actually exposes '6' types in enum dmub_notification_type. Not 5. Using smaller
+number to create array dmub_callback & dmub_thread_offload has potential to access
+item out of array bound. Fix it.
 
-bits    pad   x/8+y/8 (x+y)/8
-4..7    0..3    0       0 // x + y from 4 up to 7
-4..7    4..7    0       1 // x + y from 8 up to 11
-4..7    8..11   1       1 // x + y from 12 up to 15
-8..15   0..7    1       1 // x + y from 8 up to 15
-8..15   8..15   2       2 // x + y from 16 up to 23
-
-Fix this by using (x+y)/8.
-
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://msgid.link/r/20240605205315.19132-1-andy.shevchenko@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap-spi.c b/drivers/base/regmap/regmap-spi.c
-index 37ab23a9d034..7f14c5ed1e22 100644
---- a/drivers/base/regmap/regmap-spi.c
-+++ b/drivers/base/regmap/regmap-spi.c
-@@ -122,8 +122,7 @@ static const struct regmap_bus *regmap_get_spi_bus(struct spi_device *spi,
- 			return ERR_PTR(-ENOMEM);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 9e4cc5eeda76..88606b805330 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -49,7 +49,7 @@
  
- 		max_msg_size = spi_max_message_size(spi);
--		reg_reserve_size = config->reg_bits / BITS_PER_BYTE
--				 + config->pad_bits / BITS_PER_BYTE;
-+		reg_reserve_size = (config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
- 		if (max_size + reg_reserve_size > max_msg_size)
- 			max_size -= reg_reserve_size;
+ #define AMDGPU_DM_MAX_NUM_EDP 2
  
+-#define AMDGPU_DMUB_NOTIFICATION_MAX 5
++#define AMDGPU_DMUB_NOTIFICATION_MAX 6
+ 
+ #define HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_IEEE_REGISTRATION_ID 0x00001A
+ #define AMD_VSDB_VERSION_3_FEATURECAP_REPLAYMODE 0x40
 -- 
 2.43.0
 
