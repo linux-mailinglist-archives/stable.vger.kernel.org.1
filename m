@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8201B96D42F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB9896D4CD
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 394361F21E7E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C9411C24C3B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F83194C7A;
-	Thu,  5 Sep 2024 09:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B84194AC7;
+	Thu,  5 Sep 2024 09:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvxpR3EV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8BAlA//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CC114A08E;
-	Thu,  5 Sep 2024 09:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D890156225;
+	Thu,  5 Sep 2024 09:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529761; cv=none; b=SOGnp42VGPhNPBxTvetajFgv46QYAmCayU5q1o//1gbvI4KQ3eHzIKbmCOmLbRvpWrS53OQBAdsEEMEdaPZPBGwo3ysDJyNyy8jnYXanbW0IpaC4olfxhfHk1ZGhQKb67HIiYIMOmjUhimjEyDKa3XRwKFHs5Ykh8KCjJpz0zXI=
+	t=1725530183; cv=none; b=UiinZDtugk04EiUbfwYyTmiSN+Bgqmyq5OjiZCBFWpe72oLeWnq0/mJlXXzE9+BSkodJmOXLvpkpRPs1sS1TUXZAE31TjjpRC8e+9AQk7c3VRz8Ilnl4Xjgr2UE+avAkClfBEZjBp9IBIIM1E02j86kKjYa2NulSI45PXR4XAGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529761; c=relaxed/simple;
-	bh=g1/gv6Ag/qm0sKBf4BYfrlZn977GE3r1RCjiN/9gW8M=;
+	s=arc-20240116; t=1725530183; c=relaxed/simple;
+	bh=P7tsCFAu6nDC5OR7aydgx8G4PuT1BJ0V/+qByE3tN2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZ5zkXVzS9x4EJAB90I1GB5+h1urYmhvVgWbarVEvTujSM+JsI0795cEo1gFPoZx9U/YRzqNty10w/Z0PXA+hgGy/l9iCpSPISJ5+7L9UL0n6vE6UpwuwHjXpI5mHLTcGL45sMfxBOXmX3VN1VDy1Q+x/xz7vgv0pKJoumvyhf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvxpR3EV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B307FC4CEC3;
-	Thu,  5 Sep 2024 09:49:20 +0000 (UTC)
+	 MIME-Version; b=immCJgMNq+SUZOuiUiTJ12SfEIdt+9hyC3rMfBIKJpTkMVpFDUv2OT9rhnRmmMtYcE+1+MXWTlKV9E7DfE9m74SIPvAqxzVCt4SJ1uSfzcRsl7Oge11W31TNdzSuHm8ADbn1a1DRWuDqgEMU4+2L0jBh5EYG7qEMG5/YZsFPzLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8BAlA//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA4AC4CEC3;
+	Thu,  5 Sep 2024 09:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529761;
-	bh=g1/gv6Ag/qm0sKBf4BYfrlZn977GE3r1RCjiN/9gW8M=;
+	s=korg; t=1725530183;
+	bh=P7tsCFAu6nDC5OR7aydgx8G4PuT1BJ0V/+qByE3tN2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvxpR3EVeEauvX98+eYuNJjKNK8P1ycc4p+JAeT16DKmqMy0W/wailLxJhOIP+WQH
-	 HvABy7J+X3yEBN8OgyxlmTPiPGdd6I99PizZzse+d7sMGnGdlNy+j8mwFcnk/Yx0tI
-	 1Hw02eIRbeGymDyT9x9dAL1WGnjk/hS+XQafvakE=
+	b=G8BAlA//kxAIlNM1QmL7ohXbdnrnmmOqh2V2YafxcRBeFUTWAsK+oAec1zpwb5Ex0
+	 WDzwTrjxwWBXcXG9iYM5/t4Q1c6k3/xpg7cEPTrpVDjBw/0zaGRJHM5HKMOpyAAQu6
+	 diI99j757fgaVT3N1LgwKSwkD6JOXCUtC3vMYQ88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 135/184] drm/xe: Use missing lock in relay_needs_worker
-Date: Thu,  5 Sep 2024 11:40:48 +0200
-Message-ID: <20240905093737.491250306@linuxfoundation.org>
+Subject: [PATCH 6.6 062/132] drm/amd/display: Skip inactive planes within ModeSupportAndSystemConfiguration
+Date: Thu,  5 Sep 2024 11:40:49 +0200
+Message-ID: <20240905093724.667145947@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 8b01f970ee890574b3607c85781354a765c849bd ]
+[ Upstream commit a54f7e866cc73a4cb71b8b24bb568ba35c8969df ]
 
-Add missing lock that is protecting relay->incoming_actions.
+[Why]
+Coverity reports Memory - illegal accesses.
 
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240603081723.18775-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+[How]
+Skip inactive planes.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_relay.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
-index c0a2d8d5d3b3..b49137ea6d84 100644
---- a/drivers/gpu/drm/xe/xe_guc_relay.c
-+++ b/drivers/gpu/drm/xe/xe_guc_relay.c
-@@ -757,7 +757,14 @@ static void relay_process_incoming_action(struct xe_guc_relay *relay)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
+index 9a3ded311195..85453bbb4f9b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
+@@ -1099,8 +1099,13 @@ void ModeSupportAndSystemConfiguration(struct display_mode_lib *mode_lib)
  
- static bool relay_needs_worker(struct xe_guc_relay *relay)
- {
--	return !list_empty(&relay->incoming_actions);
-+	bool is_empty;
+ 	// Total Available Pipes Support Check
+ 	for (k = 0; k < mode_lib->vba.NumberOfActivePlanes; ++k) {
+-		total_pipes += mode_lib->vba.DPPPerPlane[k];
+ 		pipe_idx = get_pipe_idx(mode_lib, k);
++		if (pipe_idx == -1) {
++			ASSERT(0);
++			continue; // skip inactive planes
++		}
++		total_pipes += mode_lib->vba.DPPPerPlane[k];
 +
-+	spin_lock(&relay->lock);
-+	is_empty = list_empty(&relay->incoming_actions);
-+	spin_unlock(&relay->lock);
-+
-+	return !is_empty;
-+
- }
- 
- static void relay_kick_worker(struct xe_guc_relay *relay)
+ 		if (mode_lib->vba.cache_pipes[pipe_idx].clks_cfg.dppclk_mhz > 0.0)
+ 			mode_lib->vba.DPPCLK[k] = mode_lib->vba.cache_pipes[pipe_idx].clks_cfg.dppclk_mhz;
+ 		else
 -- 
 2.43.0
 
