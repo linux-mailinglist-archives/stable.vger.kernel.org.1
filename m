@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D319196D405
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D62D96D486
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B18B1F22C81
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06621C20E3A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14EB197A76;
-	Thu,  5 Sep 2024 09:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8BF1990A1;
+	Thu,  5 Sep 2024 09:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVkrG5of"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McxrOAoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCE314A08E;
-	Thu,  5 Sep 2024 09:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2241990B3;
+	Thu,  5 Sep 2024 09:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529645; cv=none; b=g9jlDUHLSUHyK6iQGSbNs8mErEc7CvS49RLFmXpacuYg9zfS1PCn9OWdJHG2XTUKxQ0+mwWsfU2tSSRmBHNYU1kyNoE0O+JEPJXuxnq0Zdrw3zH1h54hJagUlV1+Q1mhvx2oKbdTKBaQxDJvChzw9tUeZrac0MibGsaNFBhddXI=
+	t=1725529978; cv=none; b=PlehB0oCI4ZyWknMu4VyJ3bmeF5JYCaZeMI20MoOtuBKK5Kxy8P1OO2CLO7uH8H2IqAMljPkfMVmO+Y0GIqKvfcR+yFOEt/2vMAHFU0Q8kkBPW50z1DCm7uUaeyjqqyQajRGx+m+Dc7V2N9RKp+MltVFmepWLUx6Rg5YyIwlcHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529645; c=relaxed/simple;
-	bh=zaTbc0o1knnnA0JpQiHbXO/z/5tyaMxa0sJW8EP5UlM=;
+	s=arc-20240116; t=1725529978; c=relaxed/simple;
+	bh=An4GKBVV1b1S672uRY42cqU+68ZfmJ7OJn3i8aDeyIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cd9WT53PJZ9GMDDLc635p19E4+UDxB0+z51J/7Tnrmu0yYVJXdT4x9qKlPhHGEgBwgBJtR0B93zuFNfsuNbGkNRAtQf7tZyjKLiidAxZGug3Tfj7839Bl+QZlcNHXMEphLEdCKjD55pgRczC7QGpuIWwcrCCKkPOi6sRQ/pz3l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVkrG5of; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68DBC4CEC3;
-	Thu,  5 Sep 2024 09:47:24 +0000 (UTC)
+	 MIME-Version; b=hAHzWlLbz90491AVo/CTQzJkeDDXHJ+6Yg9bEjIDej/wftDHuStRytqB+1PXw28Me//3kRQCRcvuckgPj0MUWjllEHRPlrLIJbDY26Z/gigSKQh8m61mhArPcArYkKPKtjZDeQ40YQ0C380FISpZPz2xbiwYbxSF44npwToODKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McxrOAoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8114C4CEC3;
+	Thu,  5 Sep 2024 09:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529645;
-	bh=zaTbc0o1knnnA0JpQiHbXO/z/5tyaMxa0sJW8EP5UlM=;
+	s=korg; t=1725529978;
+	bh=An4GKBVV1b1S672uRY42cqU+68ZfmJ7OJn3i8aDeyIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVkrG5ofHX39PWPkWT4RkhejyuhiZL49C9yRAJekTCPu30oDsBvlvaezbG0wszdaA
-	 RbhQyXLGC9H1Ja1j/9hiFXHt3BLDcGJlcvj2hM4Q5cWXNclgJCP1/jvityhS+e0Uju
-	 QbEfSReNsC8FTElO52uo0ovxQJW/e7nMlkwSxPEg=
+	b=McxrOAoDmj3KgfS46Djy5VlXLG+gFBbKEOcsUmEi9FmAVi45Dfsu+vn33IDUEFRFd
+	 E9Q0bV7Vv6zfhyafp7gMfwCiB4ccQwlvBw8+MYoUaGvv/NfaUeUPq/dE4ho7IMMTI5
+	 tOaisRb/aHni+S1o1UtFOd44kfXuo0AeGZf7n4wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 091/184] drm/amdgpu: Fix uninitialized variable warning in amdgpu_info_ioctl
+Subject: [PATCH 6.6 017/132] i2c: Fix conditional for substituting empty ACPI functions
 Date: Thu,  5 Sep 2024 11:40:04 +0200
-Message-ID: <20240905093735.794531827@linuxfoundation.org>
+Message-ID: <20240905093722.907510320@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 0991e49d2b73bb4189f83a49eb41cdf16976bbf6 ]
+[ Upstream commit f17c06c6608ad4ecd2ccf321753fb511812d821b ]
 
-Check the return value of amdgpu_xcp_get_inst_details, otherwise we
-may use an uninitialized variable inst_mask
+Add IS_ENABLED(CONFIG_I2C) to the conditional around a bunch of ACPI
+functions.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The conditional around these functions depended only on CONFIG_ACPI.
+But the functions are implemented in I2C core, so are only present if
+CONFIG_I2C is enabled.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/i2c.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index a0ea6fe8d060..977cde6d1362 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -623,25 +623,32 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 			switch (type) {
- 			case AMD_IP_BLOCK_TYPE_GFX:
- 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_GFX, &inst_mask);
-+				if (ret)
-+					return ret;
- 				count = hweight32(inst_mask);
- 				break;
- 			case AMD_IP_BLOCK_TYPE_SDMA:
- 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_SDMA, &inst_mask);
-+				if (ret)
-+					return ret;
- 				count = hweight32(inst_mask);
- 				break;
- 			case AMD_IP_BLOCK_TYPE_JPEG:
- 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_VCN, &inst_mask);
-+				if (ret)
-+					return ret;
- 				count = hweight32(inst_mask) * adev->jpeg.num_jpeg_rings;
- 				break;
- 			case AMD_IP_BLOCK_TYPE_VCN:
- 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_VCN, &inst_mask);
-+				if (ret)
-+					return ret;
- 				count = hweight32(inst_mask);
- 				break;
- 			default:
- 				return -EINVAL;
- 			}
--			if (ret)
--				return ret;
-+
- 			return copy_to_user(out, &count, min(size, 4u)) ? -EFAULT : 0;
- 		}
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 0dae9db275380..296e7e73a75ef 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -1033,7 +1033,7 @@ static inline int of_i2c_get_board_info(struct device *dev,
+ struct acpi_resource;
+ struct acpi_resource_i2c_serialbus;
  
+-#if IS_ENABLED(CONFIG_ACPI)
++#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
+ bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
+ 			       struct acpi_resource_i2c_serialbus **i2c);
+ int i2c_acpi_client_count(struct acpi_device *adev);
 -- 
 2.43.0
 
