@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD7C96D50F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B53696D55E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFF928380D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26BE2830C4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB71194AD6;
-	Thu,  5 Sep 2024 09:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83856195F04;
+	Thu,  5 Sep 2024 10:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmozLa+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMNfwuhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6D883CC8;
-	Thu,  5 Sep 2024 09:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BBA1494DB;
+	Thu,  5 Sep 2024 10:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530383; cv=none; b=WN5lqNLE3spOWRZaQkLAJ4tWmL0HdKAZOybLn0qC8JXhROQrUlpRaLwCtGYxGqmfxB5y16i0B6hZSBxioboHm1cctTJW/7fRJRJS9UPnyXrEDTmDYqFIeIOnpelKSQR8X2xmjL841E2zLvR4cuR+V//caLB65H0K8NzyOUkg18s=
+	t=1725530629; cv=none; b=MoG8Gn/LDTVeRayhv6i2jToeOYYsznLtN9eq+6DbfiwkzDfZdWtVxJDBAWqRCzMbZVUhmMo0h4GfXm3+o2MphNe/wrTPgIvF0WF/AEnAiD/KzCFucS3RgBHg0V2onRt0cPe2/PaPJ2PyxuW0GcakhXu1qHVEsxqCsG1qwhT2Mtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530383; c=relaxed/simple;
-	bh=zmEsjU/Dlw1vicDrusbUhvgXK9zeDP533lv0GPsMEag=;
+	s=arc-20240116; t=1725530629; c=relaxed/simple;
+	bh=WC7nOt0OIUFnjGm+k+XKQpNJwIIMG9wqf+j3bAeZmTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXziyQyrua+E8YBZ7OXf2IE9i4ZZXectBVZnoy+H5R8VGePVAjSnPL8BDGrr7bMQ6Jo9ZfQx8vx0PVhKWztxXm/hEKlBOHqIXXAsFeVHSiNBHv5hkfBYXsF5fMo7RjipaOklVscrSEgwCrjOYGsQohRif5wxpD6ynjh1KLbM20Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmozLa+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96051C4CEC3;
-	Thu,  5 Sep 2024 09:59:42 +0000 (UTC)
+	 MIME-Version; b=IpaHqh8/WEwmhtJoHxGqV1YMjacBBOimGDwVtgyqiEd7dfBioyPKjTbHdWqvwn8+V8MS6quSVt9UqikSzFzRUKAnPYZWiT2O/mETmU98AWFob6ogxD+txrj2wkCpXP2cesjUtn0mVBHwgd0GdzbzpXxjotMPb7Ro+UNujBUlOIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMNfwuhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F561C4CEC3;
+	Thu,  5 Sep 2024 10:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530383;
-	bh=zmEsjU/Dlw1vicDrusbUhvgXK9zeDP533lv0GPsMEag=;
+	s=korg; t=1725530629;
+	bh=WC7nOt0OIUFnjGm+k+XKQpNJwIIMG9wqf+j3bAeZmTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmozLa+LumoJ9JN/qbkRsAWAHta0KAd18BTOtfLUSJ7w3pzwned8l7tgMpplludWs
-	 lLWk/F3SqCocf8TA/BHteAnSh9yNx2IppxAmdPtaIxF2rmrWSKNwp6/W1+dcMs7Rff
-	 FV+GVvA24Ib9vq0YBfytW8lARFhSNEJZ/gFMhKQ0=
+	b=NMNfwuhh1t/KDHhbJrJGhOVcKBPdTKThTbphP8c91oC4n44NbyU+/TJoqL2nhu5dv
+	 Vn6EhVRFbV0ZueTpsCktvmiJahnOhmUM7z38Brghntw5Xio8ZvjmB/DZsHsL0Gz9Uk
+	 27rE+ztvRD/o9i5fEnuwd9KVugq5Ppx19DmJnPNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Marek Vasut <marex@denx.de>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/132] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
+Subject: [PATCH 6.1 083/101] drm/bridge: tc358767: Check if fully initialized before signalling HPD event via IRQ
 Date: Thu,  5 Sep 2024 11:41:55 +0200
-Message-ID: <20240905093727.191050410@linuxfoundation.org>
+Message-ID: <20240905093719.376454919@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
+[ Upstream commit 162e48cb1d84c2c966b649b8ac5c9d4f75f6d44f ]
 
-Callers can pass null in filter (i.e. from returned from the function
-wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
-not the case.
+Make sure the connector is fully initialized before signalling any
+HPD events via drm_kms_helper_hotplug_event(), otherwise this may
+lead to NULL pointer dereference.
 
-This fixes 4 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240531203333.277476-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-index 994fb732a7cb..a0d437f0ce2b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
- 	int pair;
- 	uint16_t odd_coef, even_coef;
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index 926ab5c3c31a..0af2bd8706e4 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -1841,7 +1841,7 @@ static irqreturn_t tc_irq_handler(int irq, void *arg)
+ 		dev_err(tc->dev, "syserr %x\n", stat);
+ 	}
  
-+	if (!filter)
-+		return;
-+
- 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
- 		for (pair = 0; pair < tap_pairs; pair++) {
- 			even_coef = filter[phase * taps + 2 * pair];
+-	if (tc->hpd_pin >= 0 && tc->bridge.dev) {
++	if (tc->hpd_pin >= 0 && tc->bridge.dev && tc->aux.drm_dev) {
+ 		/*
+ 		 * H is triggered when the GPIO goes high.
+ 		 *
 -- 
 2.43.0
 
