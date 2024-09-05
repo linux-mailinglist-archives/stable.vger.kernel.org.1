@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-73238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E80996D3EB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD8A96D492
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFF61F21D26
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B082B24775
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C903198822;
-	Thu,  5 Sep 2024 09:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0343A198841;
+	Thu,  5 Sep 2024 09:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGFrG11v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kp1Yg76V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A571155730;
-	Thu,  5 Sep 2024 09:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150514A08E;
+	Thu,  5 Sep 2024 09:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529584; cv=none; b=k7oGla7hba9h8qZVrfaHq9roL8POVCQfWppk5Skp9Md1AH0rxtNg/v1CaSiQrC62y9dFEV+2vQEpiQoZC+6ipzI13CMipGjLZHnPs9+GrREAzBbhUtgqKUdRRBn6vgdGBlpuLM10wIPr9LTpFC+qFskrfDBw4Vn/zumZCheindE=
+	t=1725530016; cv=none; b=ZeEXxEn08BTJrdeFvnHwqOcmY2V31WcwebScZtV4Ui3ra0pip8FdoFii7R8QA2fosOxk3fpQXABaJ7gpfoVZfCCr68hiABHnFYqRukcVIef9fmrbgYLDMeEL4h/25/bwrA6pzBqkaY+r6Q1v0w1GDvJBnYOC5GrxnLDtFoGz9q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529584; c=relaxed/simple;
-	bh=MCZ2P3bBJ8FjrpxLGDjAM7yrDn1kIdOj2pmrLBHkJ4k=;
+	s=arc-20240116; t=1725530016; c=relaxed/simple;
+	bh=4JnQz5rCaBL5Uki9L5eRUcwAF4RBy+6PwvetKLTYOgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TwwWnmncb/ZDVjp+6gv24jYsmST9YLOvgoFUxP/iGFtayALOiVSJcXr8oG2rJA2iDPkV0eqV0CvuJ3v0gerT8vwUW4chTxTj9q01Ea77G2UsqJsDWL6IBjmWcse9h/ubMTrU7NyZsbr95CLHcJxMGkG3ktIHiDjVu2Vq3m6Eipc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGFrG11v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733CBC4CEC3;
-	Thu,  5 Sep 2024 09:46:23 +0000 (UTC)
+	 MIME-Version; b=ltfFIe7xkhVgx8Q5qRBdAtf26OPe9BYAlFLMmYPpB8cXcu1Y49SQvUizwWPbh5n2SoV3URHf1v37WxepxVmucnhwQPdzL1AuLWxcaLuktHjqbVXTjCH9HcmXRYuydD2os2tYIMDVZmGKLJAhDThWSuv7feHvE3x7ZzblJzZTLlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kp1Yg76V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AAC4CEC3;
+	Thu,  5 Sep 2024 09:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529583;
-	bh=MCZ2P3bBJ8FjrpxLGDjAM7yrDn1kIdOj2pmrLBHkJ4k=;
+	s=korg; t=1725530016;
+	bh=4JnQz5rCaBL5Uki9L5eRUcwAF4RBy+6PwvetKLTYOgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGFrG11vTVxXT2V/0uD+e2HzQxOTW/493vlVNnVbVrfpt1+5OciOfm0KZnyXppdkj
-	 +HyUwcY6QimlR/cS0e2fYg9z3je105myUg7MsWtzCaWpMPtMRwd00ywOUAYNy1ddsW
-	 R2V12r7glP1Qkvv1rUxI1Ezqwst2vaGTk3UWKyAA=
+	b=Kp1Yg76VR6kYEOvswdK1fZQ54wd6a2+O2lzftBMnPSR3E+eZEid7hfpAhQhfAuljm
+	 Lj18bvo5t3CmCbXbQq2xqB3Kqyt7O4/xLVJowvxokUX98q99Nh4MR/sIcNunEnxnMu
+	 snSLtobhM5vEgP0BHxZYoAx4U4fFm1vlm6kNfEQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kai Krakow <hurikhan77@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 079/184] drm/amd/amdgpu: Check tbo resource pointer
+Subject: [PATCH 6.6 005/132] btrfs: tree-checker: validate dref root and objectid
 Date: Thu,  5 Sep 2024 11:39:52 +0200
-Message-ID: <20240905093735.324517690@linuxfoundation.org>
+Message-ID: <20240905093722.444952688@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
+[ Upstream commit f333a3c7e8323499aa65038e77fe8f3199d4e283 ]
 
-Validate tbo resource pointer, skip if NULL
+[CORRUPTION]
+There is a bug report that btrfs flips RO due to a corruption in the
+extent tree, the involved dumps looks like this:
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ 	item 188 key (402811572224 168 4096) itemoff 14598 itemsize 79
+ 		extent refs 3 gen 3678544 flags 1
+ 		ref#0: extent data backref root 13835058055282163977 objectid 281473384125923 offset 81432576 count 1
+ 		ref#1: shared data backref parent 1947073626112 count 1
+ 		ref#2: shared data backref parent 1156030103552 count 1
+ BTRFS critical (device vdc1: state EA): unable to find ref byte nr 402811572224 parent 0 root 265 owner 28703026 offset 81432576 slot 189
+ BTRFS error (device vdc1: state EA): failed to run delayed ref for logical 402811572224 num_bytes 4096 type 178 action 2 ref_mod 1: -2
+
+[CAUSE]
+The corrupted entry is ref#0 of item 188.
+The root number 13835058055282163977 is beyond the upper limit for root
+items (the current limit is 1 << 48), and the objectid also looks
+suspicious.
+
+Only the offset and count is correct.
+
+[ENHANCEMENT]
+Although it's still unknown why we have such many bytes corrupted
+randomly, we can still enhance the tree-checker for data backrefs by:
+
+- Validate the root value
+  For now there should only be 3 types of roots can have data backref:
+  * subvolume trees
+  * data reloc trees
+  * root tree
+    Only for v1 space cache
+
+- validate the objectid value
+  The objectid should be a valid inode number.
+
+Hopefully we can catch such problem in the future with the new checkers.
+
+Reported-by: Kai Krakow <hurikhan77@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAMthOuPjg5RDT-G_LXeBBUUtzt3cq=JywF+D1_h+JYxe=WKp-Q@mail.gmail.com/#t
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/tree-checker.c | 47 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 89cf9ac6da17..13b54e00a247 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5012,7 +5012,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
- 		shadow = vmbo->shadow;
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 7ff61909648d7..46c1f74983956 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1266,6 +1266,19 @@ static void extent_err(const struct extent_buffer *eb, int slot,
+ 	va_end(args);
+ }
  
- 		/* No need to recover an evicted BO */
--		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
-+		if (!shadow->tbo.resource ||
-+		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
- 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
- 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
- 			continue;
++static bool is_valid_dref_root(u64 rootid)
++{
++	/*
++	 * The following tree root objectids are allowed to have a data backref:
++	 * - subvolume trees
++	 * - data reloc tree
++	 * - tree root
++	 *   For v1 space cache
++	 */
++	return is_fstree(rootid) || rootid == BTRFS_DATA_RELOC_TREE_OBJECTID ||
++	       rootid == BTRFS_ROOT_TREE_OBJECTID;
++}
++
+ static int check_extent_item(struct extent_buffer *leaf,
+ 			     struct btrfs_key *key, int slot,
+ 			     struct btrfs_key *prev_key)
+@@ -1418,6 +1431,8 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 		struct btrfs_extent_data_ref *dref;
+ 		struct btrfs_shared_data_ref *sref;
+ 		u64 seq;
++		u64 dref_root;
++		u64 dref_objectid;
+ 		u64 dref_offset;
+ 		u64 inline_offset;
+ 		u8 inline_type;
+@@ -1461,11 +1476,26 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 		 */
+ 		case BTRFS_EXTENT_DATA_REF_KEY:
+ 			dref = (struct btrfs_extent_data_ref *)(&iref->offset);
++			dref_root = btrfs_extent_data_ref_root(leaf, dref);
++			dref_objectid = btrfs_extent_data_ref_objectid(leaf, dref);
+ 			dref_offset = btrfs_extent_data_ref_offset(leaf, dref);
+ 			seq = hash_extent_data_ref(
+ 					btrfs_extent_data_ref_root(leaf, dref),
+ 					btrfs_extent_data_ref_objectid(leaf, dref),
+ 					btrfs_extent_data_ref_offset(leaf, dref));
++			if (unlikely(!is_valid_dref_root(dref_root))) {
++				extent_err(leaf, slot,
++					   "invalid data ref root value %llu",
++					   dref_root);
++				return -EUCLEAN;
++			}
++			if (unlikely(dref_objectid < BTRFS_FIRST_FREE_OBJECTID ||
++				     dref_objectid > BTRFS_LAST_FREE_OBJECTID)) {
++				extent_err(leaf, slot,
++					   "invalid data ref objectid value %llu",
++					   dref_root);
++				return -EUCLEAN;
++			}
+ 			if (unlikely(!IS_ALIGNED(dref_offset,
+ 						 fs_info->sectorsize))) {
+ 				extent_err(leaf, slot,
+@@ -1601,6 +1631,8 @@ static int check_extent_data_ref(struct extent_buffer *leaf,
+ 		return -EUCLEAN;
+ 	}
+ 	for (; ptr < end; ptr += sizeof(*dref)) {
++		u64 root;
++		u64 objectid;
+ 		u64 offset;
+ 
+ 		/*
+@@ -1608,7 +1640,22 @@ static int check_extent_data_ref(struct extent_buffer *leaf,
+ 		 * overflow from the leaf due to hash collisions.
+ 		 */
+ 		dref = (struct btrfs_extent_data_ref *)ptr;
++		root = btrfs_extent_data_ref_root(leaf, dref);
++		objectid = btrfs_extent_data_ref_objectid(leaf, dref);
+ 		offset = btrfs_extent_data_ref_offset(leaf, dref);
++		if (unlikely(!is_valid_dref_root(root))) {
++			extent_err(leaf, slot,
++				   "invalid extent data backref root value %llu",
++				   root);
++			return -EUCLEAN;
++		}
++		if (unlikely(objectid < BTRFS_FIRST_FREE_OBJECTID ||
++			     objectid > BTRFS_LAST_FREE_OBJECTID)) {
++			extent_err(leaf, slot,
++				   "invalid extent data backref objectid value %llu",
++				   root);
++			return -EUCLEAN;
++		}
+ 		if (unlikely(!IS_ALIGNED(offset, leaf->fs_info->sectorsize))) {
+ 			extent_err(leaf, slot,
+ 	"invalid extent data backref offset, have %llu expect aligned to %u",
 -- 
 2.43.0
 
