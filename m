@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-73513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB4296D52F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25096D47C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7760B1F2A2DD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A69E28268E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4A519538A;
-	Thu,  5 Sep 2024 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BDE19885E;
+	Thu,  5 Sep 2024 09:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcjOqPyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rW3FD4Me"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82C1494DB;
-	Thu,  5 Sep 2024 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1274A14A08E;
+	Thu,  5 Sep 2024 09:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530477; cv=none; b=lQ2JiiViHcWd3KCJgP6+gWn1XLSpxSYFDtVu2QJk/hRMoksoQLxD+EIsgEtCTz9HkC3UR9jYqgYR4N43N3+ET2yAq4OA6y2zlYWPqXUiJnmst9jIDd+7rCJwLEQDI8H4k4H+nsEynYwBv4HY28kr5kgPTeFWILjejmx9lHbTf0I=
+	t=1725529950; cv=none; b=hARq5H9R8emfx4SIZcFp7u3e3vleSUILCgBe63M0NICgh/Wd1U5uoUyAAYIhZIaQNB1Y5I+ztCH5s5ScgnwhIVlOQCJ8f/MRoQo+h+agOhifybiHYNX6MnLmwCdTeaYYfVM1zgJXJtvJEFs5ZO2T8hqMkI9hp3qYqUE97rJ7zGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530477; c=relaxed/simple;
-	bh=adAa39WKMvSzCvC6p4PMlsHPlyfACTOS2S+48g9nj9A=;
+	s=arc-20240116; t=1725529950; c=relaxed/simple;
+	bh=uVWGiM77UPzAImtresMYS5KjV93ovd6eYiZ8479etzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuqxfSDU5kaPK6/M7h8FQzYXQQCpbqIOfyfMn+NOM9Ojvx5GN/NBa++z3+JiXFA9ZBW7jK6jd7IJYBP9ZF5+lpB8Oe5px9TLL1s87trGQwaedTkvBbj14dHfw7eZHO+DdAjdX41UJY0K1B/903qYJ95Q+hGWbm1vcwsL7eIHkPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcjOqPyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080CCC4CEC3;
-	Thu,  5 Sep 2024 10:01:16 +0000 (UTC)
+	 MIME-Version; b=UYqwJ8ErpfwUR597m6l7XdoOaMmzfOQDj02g7PGHBSxoDiu4p+7KaxJjaerSj74IorFQH8WkgX0wkjoYe3GHZIYjb4RgiTzDNqM6/74iqX23KksHwkJO7Zl9O0rcy2TWZ7DmM2EvhZNp5H5f8tWb3dHnqzJC9gFahDiG9joF/k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rW3FD4Me; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70241C4CEC3;
+	Thu,  5 Sep 2024 09:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530477;
-	bh=adAa39WKMvSzCvC6p4PMlsHPlyfACTOS2S+48g9nj9A=;
+	s=korg; t=1725529949;
+	bh=uVWGiM77UPzAImtresMYS5KjV93ovd6eYiZ8479etzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcjOqPyhOJQKRkVVzjyY7YzLlHtEwgLu+d0xxJ8OnKSYWZBaZpgVZ0tUm0BAnB3YX
-	 semAt1721FEHMIRWNmEDWUjhn08dUBLLUIMuTLzrZHz5sSnGLVkdMwRvaJHp5kHPnE
-	 vuuAvhbhQ41hASUvaXyvrQ4Kf2aldAXzRVuCFbVk=
+	b=rW3FD4Mepzp8LzwKEI2VWz73UfUjLyGZl5++ptLkwiS6qOieZzRiTWjvP0UnG5Kse
+	 dwDm9XxOFd/hrhAhP3BZXzyheJyyHIYy4ryePRkM5UelgDIOaTNk7ApKtkk1CMyZOL
+	 T2HpKHKcXAWQ74IouQBPAwgPiOm3SyZYUI+lLdiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/101] drm/amd/pm: fix the Out-of-bounds read warning
+Subject: [PATCH 6.10 156/184] thermal: trip: Use READ_ONCE() for lockless access to trip properties
 Date: Thu,  5 Sep 2024 11:41:09 +0200
-Message-ID: <20240905093717.581559768@linuxfoundation.org>
+Message-ID: <20240905093738.435471543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 12c6967428a099bbba9dfd247bb4322a984fcc0b ]
+[ Upstream commit a52641bc6293a24f25956a597e7f32148b0e2bb8 ]
 
-using index i - 1U may beyond element index
-for mc_data[] when i = 0.
+When accessing trip temperature and hysteresis without locking, it is
+better to use READ_ONCE() to prevent compiler optimizations possibly
+affecting the read from being applied.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Of course, for the READ_ONCE() to be effective, WRITE_ONCE() needs to
+be used when updating their values.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_sysfs.c | 6 +++---
+ drivers/thermal/thermal_trip.c  | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index f503e61faa60..cc3b62f73394 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -73,8 +73,9 @@ static int atomctrl_retrieve_ac_timing(
- 					j++;
- 				} else if ((table->mc_reg_address[i].uc_pre_reg_data &
- 							LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
--					table->mc_reg_table_entry[num_ranges].mc_data[i] =
--						table->mc_reg_table_entry[num_ranges].mc_data[i-1];
-+					if (i)
-+						table->mc_reg_table_entry[num_ranges].mc_data[i] =
-+							table->mc_reg_table_entry[num_ranges].mc_data[i-1];
- 				}
- 			}
- 			num_ranges++;
+diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
+index 88211ccdfbd6..5be6113e7c80 100644
+--- a/drivers/thermal/thermal_sysfs.c
++++ b/drivers/thermal/thermal_sysfs.c
+@@ -150,7 +150,7 @@ trip_point_temp_show(struct device *dev, struct device_attribute *attr,
+ 	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
+ 		return -EINVAL;
+ 
+-	return sprintf(buf, "%d\n", tz->trips[trip_id].trip.temperature);
++	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.temperature));
+ }
+ 
+ static ssize_t
+@@ -174,7 +174,7 @@ trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
+ 	trip = &tz->trips[trip_id].trip;
+ 
+ 	if (hyst != trip->hysteresis) {
+-		trip->hysteresis = hyst;
++		WRITE_ONCE(trip->hysteresis, hyst);
+ 
+ 		thermal_zone_trip_updated(tz, trip);
+ 	}
+@@ -194,7 +194,7 @@ trip_point_hyst_show(struct device *dev, struct device_attribute *attr,
+ 	if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
+ 		return -EINVAL;
+ 
+-	return sprintf(buf, "%d\n", tz->trips[trip_id].trip.hysteresis);
++	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.hysteresis));
+ }
+ 
+ static ssize_t
+diff --git a/drivers/thermal/thermal_trip.c b/drivers/thermal/thermal_trip.c
+index 49e63db68517..b4e7411b2fe7 100644
+--- a/drivers/thermal/thermal_trip.c
++++ b/drivers/thermal/thermal_trip.c
+@@ -152,7 +152,7 @@ void thermal_zone_set_trip_temp(struct thermal_zone_device *tz,
+ 	if (trip->temperature == temp)
+ 		return;
+ 
+-	trip->temperature = temp;
++	WRITE_ONCE(trip->temperature, temp);
+ 	thermal_notify_tz_trip_change(tz, trip);
+ 
+ 	if (temp == THERMAL_TEMP_INVALID) {
 -- 
 2.43.0
 
