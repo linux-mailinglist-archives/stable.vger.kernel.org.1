@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CF096D4CC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862E796D450
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FFBF1C22C6B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402401F2313B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9E8194A45;
-	Thu,  5 Sep 2024 09:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6119882B;
+	Thu,  5 Sep 2024 09:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diSGXiya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYN54tgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3C9156225;
-	Thu,  5 Sep 2024 09:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1552714A08E;
+	Thu,  5 Sep 2024 09:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530180; cv=none; b=fae9xh6SwYsUQV2xFKYKHvx3J7mHTnRmGQyRUNeRYlYVDYP2kS7Z4HJ+9SHoiFwotAAPuzOunlvKE9zRbU+DqOiiTT1SZHjHIbRROQgrclclvddVUYKSuH1uZMrS32LDqVPrsT97kQ/TKgAuNbi7xD9ET0gEy9hI1vrixzMH0vU=
+	t=1725529832; cv=none; b=ffQ3ibzCRKar/8z+99AdxIUKluD0D+Y3e4YfrCIG7PEhwBFTQBdLqO1Wsio29bQidyIpoJ4xkxiDf4/KoMO7ZEBpuNHbGOJwLBB7M6ojDemORaOLnoOvLrMQAlSk7r/6CbHWN8PEML8WLlVMnmLJYxkk/bPg031g+J8ybADVy/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530180; c=relaxed/simple;
-	bh=38s0XOuEPWA7FivWGZjajY0EXDa7RYv43JAK+3C33To=;
+	s=arc-20240116; t=1725529832; c=relaxed/simple;
+	bh=Xhmgfp7AC8+w9OyNlB15hRTqLkGZs18ZKzpN9fOaiCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNx4q6+iF6L9IQMo92umHJW3yQe2s+QmNsUWig4tyctx2WZSxwm4gLK0Q+15pNYHL50EYvZjgPDNDu/Itblms/ti/hxjBtpxrzC+GX7h3JLIxgKPabDYLmoqyfqWAHApm2epxRUXjjPhPhnEFZYG3xA1SyqRMMOTUMUyyzMpesk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diSGXiya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55356C4CEC3;
-	Thu,  5 Sep 2024 09:56:19 +0000 (UTC)
+	 MIME-Version; b=SXqQhMPs6/4nM9EVh5CRemk5AJA62paxNZMFD44MM4WoWDxkFfyXCoT+3vfMRRntzut998k6E/ZumU2DF3t32fGV08q0iiwqx1O1GDYvCY4us5E40t7dERGBFijDL9HRUdouj9FewAjNJUH9AkR4U1kL92LjG0eKkARzb0lQfho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYN54tgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A042C4CEC3;
+	Thu,  5 Sep 2024 09:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530179;
-	bh=38s0XOuEPWA7FivWGZjajY0EXDa7RYv43JAK+3C33To=;
+	s=korg; t=1725529831;
+	bh=Xhmgfp7AC8+w9OyNlB15hRTqLkGZs18ZKzpN9fOaiCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diSGXiyaz7HurAQhFb0f5BsktfdF9ggTdnVOPssYzoW6uJkBsMNdL1FxgZvTgEYtP
-	 LvOxYye4Vr/uqpvBWFprqz+78Bx87jZE5LOg2dFzyrRPIHHKFwTE4rOuAKvxvMmUIJ
-	 UnuXMO8oWRGhLdS9xW5B3XrqAiUGSbw40MF43Dyo=
+	b=pYN54tgkI9tl0yTXfoQV3107uFPjJFUTY6E/3qcgy6mSmOIpC2GPgHunyHDJfk0Ka
+	 RTFuX+oEldFwqDUip8XfKZyWHcHlG0fE+ByrRClOtr1m/3G/M3PY09sIMohPtX9F+x
+	 1vx8H8yIGc7aQqEzkc8KODvD40lZpoP3ceyjXYM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Olivier Dautricourt <olivierdautricourt@gmail.com>,
+	Eric Schwarz <eas@sw-optimization.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/132] drm/amdgpu: Fix the warning division or modulo by zero
-Date: Thu,  5 Sep 2024 11:41:06 +0200
-Message-ID: <20240905093725.324065002@linuxfoundation.org>
+Subject: [PATCH 6.10 154/184] dmaengine: altera-msgdma: use irq variant of spin_lock/unlock while invoking callbacks
+Date: Thu,  5 Sep 2024 11:41:07 +0200
+Message-ID: <20240905093738.358819554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Olivier Dautricourt <olivierdautricourt@gmail.com>
 
-[ Upstream commit 1a00f2ac82d6bc6689388c7edcd2a4bd82664f3c ]
+[ Upstream commit 261d3a85d959841821ca0d69f9d7b0d4087661c4 ]
 
-Checks the partition mode and returns an error for an invalid mode.
+As we first take the lock with spin_lock_irqsave in msgdma_tasklet, Lockdep
+might complain about this. Inspired by commit 9558cf4ad07e
+("dmaengine: zynqmp_dma: fix lockdep warning in tasklet")
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Suggested-by: Eric Schwarz <eas@sw-optimization.com>
+Link: https://lore.kernel.org/r/20240608213216.25087-1-olivierdautricourt@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/dma/altera-msgdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-index 0284c9198a04..6c6f9d9b5d89 100644
---- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-@@ -500,6 +500,12 @@ static int aqua_vanjaram_switch_partition_mode(struct amdgpu_xcp_mgr *xcp_mgr,
+diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
+index a8e3615235b8..160a465b06dd 100644
+--- a/drivers/dma/altera-msgdma.c
++++ b/drivers/dma/altera-msgdma.c
+@@ -583,6 +583,7 @@ static void msgdma_issue_pending(struct dma_chan *chan)
+ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+ {
+ 	struct msgdma_sw_desc *desc, *next;
++	unsigned long irqflags;
  
- 	if (mode == AMDGPU_AUTO_COMPUTE_PARTITION_MODE) {
- 		mode = __aqua_vanjaram_get_auto_mode(xcp_mgr);
-+		if (mode == AMDGPU_UNKNOWN_COMPUTE_PARTITION_MODE) {
-+			dev_err(adev->dev,
-+				"Invalid config, no compatible compute partition mode found, available memory partitions: %d",
-+				adev->gmc.num_mem_partitions);
-+			return -EINVAL;
-+		}
- 	} else if (!__aqua_vanjaram_is_valid_mode(xcp_mgr, mode)) {
- 		dev_err(adev->dev,
- 			"Invalid compute partition mode requested, requested: %s, available memory partitions: %d",
+ 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
+ 		struct dmaengine_desc_callback cb;
+@@ -591,9 +592,9 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+ 
+ 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
+ 		if (dmaengine_desc_callback_valid(&cb)) {
+-			spin_unlock(&mdev->lock);
++			spin_unlock_irqrestore(&mdev->lock, irqflags);
+ 			dmaengine_desc_callback_invoke(&cb, NULL);
+-			spin_lock(&mdev->lock);
++			spin_lock_irqsave(&mdev->lock, irqflags);
+ 		}
+ 
+ 		/* Run any dependencies, then free the descriptor */
 -- 
 2.43.0
 
