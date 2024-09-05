@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-73347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FDC96D478
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C6C96D536
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FBB1F24023
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DD71F2A31C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AAD198822;
-	Thu,  5 Sep 2024 09:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD85194A5A;
+	Thu,  5 Sep 2024 10:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZGWHe/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJjRudDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B4514A08E;
-	Thu,  5 Sep 2024 09:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF0519413B;
+	Thu,  5 Sep 2024 10:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529937; cv=none; b=olvQoX1g0rPIxO0MmxG6EnCCWfUna8W2PNV7R0w397edxcKvm0VvP0Lww3INO0EhvsZNI7cT1bkIbequlSWzwtbtB+jCv14u03WGxKLFL0p8rDZkQjTGYGrCWv5SAvk8kccSRhU20MsTi0JP9zGG3zysoU7iL0pzHkK3qfwIM5E=
+	t=1725530501; cv=none; b=iYKzITSL/VcS6OGd+2cujXMJAqM9KDGWGh5Lp+rKJjdakD4wLU5MR8mATmxftGq5nG+vVRbG8eZQRqBc+Yr+omCGjctrEGJmVfBsBJ63ma/gVqHIOqghM7TRrT8Qf09gsXhj0Dtf96yvAuyrIYvSf6t4U1r0ETPz4w1uMPAS32c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529937; c=relaxed/simple;
-	bh=1SmMMTbTYmWM5XwemCXAWf/E9W6XyzfeSEUI1K9Kkjc=;
+	s=arc-20240116; t=1725530501; c=relaxed/simple;
+	bh=+dxYXN4K4y9V4V0y/xV30lKKFdLhrs3onvyHs2whnvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1rAr4UVEy3QLbHWo8yJATCPNKaBkC+90kk7xO7T3n8VfrBlF+pyOJFwP7vxXKKZjkuILITayrtbtmO9jk6rbqxkM0+rx6CZqgF5eJU5kgkXFW6JaB+Lv1HJAWWpLysPLnSFEj4FU6GBA5NhqH2Z2++71rOyX54mV1tqF+KPcUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZGWHe/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68096C4CEC3;
-	Thu,  5 Sep 2024 09:52:16 +0000 (UTC)
+	 MIME-Version; b=kovVpXxWfZ7/Pi9rKFikyUb6gDqjwENp4YChpHj2R+maOOoLMXG/vHtyUZE3rb4fEFS2QkTiVRq77lDvrt2JHHhRS5SYS6aT3oXdvh/SV+RgS6d03p1t4Sn7aytcXX4KbmHRNKDZ5emNZZNsiKkfyMCKts4aYCZOOw6BflhmuYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJjRudDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7558DC4CEC3;
+	Thu,  5 Sep 2024 10:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529936;
-	bh=1SmMMTbTYmWM5XwemCXAWf/E9W6XyzfeSEUI1K9Kkjc=;
+	s=korg; t=1725530500;
+	bh=+dxYXN4K4y9V4V0y/xV30lKKFdLhrs3onvyHs2whnvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZGWHe/KOdx839ZZd74ayXd9WMPDj13SzZzsnYKbIVVOoov/LVgSzLikjnH7kRpuZ
-	 Jaz/L0yQjJsH6u+IlOX00eWDdaG9pxw7/kkOPD5G1vS/DDdyCazzGNLBRMKgobdnA7
-	 9rsSqIbIpf7uEHx+Z9JZJhqAqRi0kwnvT+A9qX38=
+	b=ZJjRudDxrwXvCv2XoOP/YuvLR6U2JZ/Vaws4POyt+wojMqLC9N10mk0ODmDDyPuOb
+	 CVf19e0vvm3o5KKu4j0MRvm+H9riMhm5wh+5aYUaW6uSEtXods3HqM7gFkajAj+zWu
+	 17JWacf4Z1rMZiHIH0BoBTp18dqzEXK0dg17HXkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 162/184] block: remove the blk_flush_integrity call in blk_integrity_unregister
+Subject: [PATCH 6.1 043/101] drm/amd/display: Check num_valid_sets before accessing reader_wm_sets[]
 Date: Thu,  5 Sep 2024 11:41:15 +0200
-Message-ID: <20240905093738.664881513@linuxfoundation.org>
+Message-ID: <20240905093717.821834249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit e8bc14d116aeac8f0f133ec8d249acf4e0658da7 ]
+[ Upstream commit b38a4815f79b87efb196cd5121579fc51e29a7fb ]
 
-Now that there are no indirect calls for PI processing there is no
-way to dereference a NULL pointer here.  Additionally drivers now always
-freeze the queue (or in case of stacking drivers use their internal
-equivalent) around changing the integrity profile.
+[WHY & HOW]
+num_valid_sets needs to be checked to avoid a negative index when
+accessing reader_wm_sets[num_valid_sets - 1].
 
-This is effectively a revert of commit 3df49967f6f1 ("block: flush the
-integrity workqueue in blk_integrity_unregister").
+This fixes an OVERRUN issue reported by Coverity.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240613084839.1044015-7-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-integrity.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index ccbeb6dfa87a..8dd8a0126274 100644
---- a/block/blk-integrity.c
-+++ b/block/blk-integrity.c
-@@ -397,8 +397,6 @@ void blk_integrity_unregister(struct gendisk *disk)
- 	if (!bi->profile)
- 		return;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
+index ca6dfd2d7561..35386011c56c 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
+@@ -484,7 +484,8 @@ static void build_watermark_ranges(struct clk_bw_params *bw_params, struct pp_sm
+ 			ranges->reader_wm_sets[num_valid_sets].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
  
--	/* ensure all bios are off the integrity workqueue */
--	blk_flush_integrity();
- 	blk_queue_flag_clear(QUEUE_FLAG_STABLE_WRITES, disk->queue);
- 	memset(bi, 0, sizeof(*bi));
- }
+ 			/* Modify previous watermark range to cover up to max */
+-			ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
++			if (num_valid_sets > 0)
++				ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
+ 		}
+ 		num_valid_sets++;
+ 	}
 -- 
 2.43.0
 
