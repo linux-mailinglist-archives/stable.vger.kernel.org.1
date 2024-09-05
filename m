@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB29196D43A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BB796D4C2
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 197201C23513
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227C3281C32
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D397D19882B;
-	Thu,  5 Sep 2024 09:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06871192D73;
+	Thu,  5 Sep 2024 09:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lkTZm2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcZQszpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9111A154BFF;
-	Thu,  5 Sep 2024 09:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D5154BFF;
+	Thu,  5 Sep 2024 09:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529794; cv=none; b=TBTEpTLIzuz4DL9KnLJtFMuLlO6FYtiYYD8neVhwFX5HYgKDusBL7HzmkP63E8+AE6l5oewZ15siO/A1KxbFVV+fjjVQDseidmW3VAljN8zm7FNhJ/x+Ms9DBEHw6/5AJ38W0sj7g21NudV+MNyegnscrPB5lgWTWFTt6jWtv3I=
+	t=1725530150; cv=none; b=olaK3GaS4+9fwKG6fgYFqXoTBbILiYv42aVws7TuJt/ser4mpHaVbhRaLPUp6kWCWNlIWj8C3nPVt7sR7QFb6rJRnl5c8PUZ+50Kp2iIf5YnU9Fya++bdYnKLZ+pzyy7tHJ9C9cLgGFFbtW9aEyHNI07b5IGCoZyIj4J7nUPph4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529794; c=relaxed/simple;
-	bh=MfaoUPMCva0m4LfjGdU+DXj77VRcMnh4CbAsTmHR19s=;
+	s=arc-20240116; t=1725530150; c=relaxed/simple;
+	bh=VIPFISC4mtgJqLXYCpfHlsJeZhAmswYvHrKodB57jP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spRwL2hHnjqJSsXKGWrD15UOJ9DXKxlOHP7Jv/ZBw19wijlvWNjqW9Pb7r/z/wyeDCkpUULl7f+D1Z+gIy0eje7fP0u3jIzrureDIpqxTSBVtXiOIYPRYiys9oqpHCJcaqKRM6pLGufknC5XiEJY7dE5oYuna6VjTdCAXLEyga8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lkTZm2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE364C4CECB;
-	Thu,  5 Sep 2024 09:49:53 +0000 (UTC)
+	 MIME-Version; b=q3LixuH+QaehTGUd2F80R5SNebF+/w6e/o/7BDEiXFqaPU+BlNuRTuATucr0BxeqL201HNCRnjlnlvGjjcRPOkfewGrikYuzQ4Nrw9pOzmPoFTBLmYkVbpRkHyVeVqWLT1LP/IVk9U0gBCwkKEbQD6gaUpA4JeQMyC1oJ6+ezNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcZQszpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B01C4CEC3;
+	Thu,  5 Sep 2024 09:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529794;
-	bh=MfaoUPMCva0m4LfjGdU+DXj77VRcMnh4CbAsTmHR19s=;
+	s=korg; t=1725530150;
+	bh=VIPFISC4mtgJqLXYCpfHlsJeZhAmswYvHrKodB57jP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lkTZm2JqYKfNk+Yi1xRdpBCUDqJaXtrZXHE40lhREM3u03bdSufk0YRcLMluDxi9
-	 APUF+ZpdakUBtejv8JQ5mqlYaBcLccvIkKHH0rzCmmXwrmRPmVThyK7+/CMgIwVTau
-	 I91NGyAS+WrtIu1TXs85YVBdY1p4JOO7yCGUTXFs=
+	b=WcZQszpnMKriL+i3MKVlDESiHWe29JhSvhg8PdZllf59lk9xRDD69i02QOQs9WY6x
+	 0c4hW0CDAX/O0zwhCCb8iz15Dhn5kB9dSJiHfT1ASN+KdikHsrOIzcXd84JeOgAB/f
+	 7yMnFBeUH+fqzh3Eqe4kO/bXMJrsyRIB6TM6nGVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Lin.Cao" <lincao12@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 144/184] net/mlx5e: SHAMPO, Fix incorrect page release
+Subject: [PATCH 6.6 070/132] drm/amdkfd: Check debug trap enable before write dbg_ev_file
 Date: Thu,  5 Sep 2024 11:40:57 +0200
-Message-ID: <20240905093737.960107228@linuxfoundation.org>
+Message-ID: <20240905093724.980986883@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit 70bd03b89f20b9bbe51a7f73c4950565a17a45f7 ]
+[ Upstream commit 547033b593063eb85bfdf9b25a5f1b8fd1911be2 ]
 
-Under the following conditions:
-1) No skb created yet
-2) header_size == 0 (no SHAMPO header)
-3) header_index + 1 % MLX5E_SHAMPO_WQ_HEADER_PER_PAGE == 0 (this is the
-   last page fragment of a SHAMPO header page)
+In interrupt context, write dbg_ev_file will be run by work queue. It
+will cause write dbg_ev_file execution after debug_trap_disable, which
+will cause NULL pointer access.
+v2: cancel work "debug_event_workarea" before set dbg_ev_file as NULL.
 
-a new skb is formed with a page that is NOT a SHAMPO header page (it
-is a regular data page). Further down in the same function
-(mlx5e_handle_rx_cqe_mpwrq_shampo()), a SHAMPO header page from
-header_index is released. This is wrong and it leads to SHAMPO header
-pages being released more than once.
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240603212219.1037656-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_debug.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index cdc84a27a04e..0138f77eaeed 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2369,7 +2369,8 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
- 	if (flush)
- 		mlx5e_shampo_flush_skb(rq, cqe, match);
- free_hd_entry:
--	mlx5e_free_rx_shampo_hd_entry(rq, header_index);
-+	if (likely(head_size))
-+		mlx5e_free_rx_shampo_hd_entry(rq, header_index);
- mpwrq_cqe_out:
- 	if (likely(wi->consumed_strides < rq->mpwqe.num_strides))
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
+index 9ec750666382..94aaf2fc556c 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
+@@ -103,7 +103,8 @@ void debug_event_write_work_handler(struct work_struct *work)
+ 			struct kfd_process,
+ 			debug_event_workarea);
+ 
+-	kernel_write(process->dbg_ev_file, &write_data, 1, &pos);
++	if (process->debug_trap_enabled && process->dbg_ev_file)
++		kernel_write(process->dbg_ev_file, &write_data, 1, &pos);
+ }
+ 
+ /* update process/device/queue exception status, write to descriptor
+@@ -645,6 +646,7 @@ int kfd_dbg_trap_disable(struct kfd_process *target)
+ 	else if (target->runtime_info.runtime_state != DEBUG_RUNTIME_STATE_DISABLED)
+ 		target->runtime_info.runtime_state = DEBUG_RUNTIME_STATE_ENABLED;
+ 
++	cancel_work_sync(&target->debug_event_workarea);
+ 	fput(target->dbg_ev_file);
+ 	target->dbg_ev_file = NULL;
+ 
 -- 
 2.43.0
 
