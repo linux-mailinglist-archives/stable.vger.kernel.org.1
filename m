@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-73246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F246E96D3F7
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB8196D481
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DECD1F211B3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA8B9B23783
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF1A199237;
-	Thu,  5 Sep 2024 09:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154B914A08E;
+	Thu,  5 Sep 2024 09:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BET05Prs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqoWS1tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F69B199231;
-	Thu,  5 Sep 2024 09:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A67194A45;
+	Thu,  5 Sep 2024 09:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529609; cv=none; b=eIFUqkzFSeqaoQiRMPhlIeYADtiFQzh+pivU1kcGM/W4+fs3BY9To1O07E5pz0rVbrpj7CiEz1753yhpTob+EC2v8PTcM88Zok8ocnv1pgTTZg3OG9sLrtNiY+80la9iRnHizzs0EfGgiHVPNbnOkxPYMi1MzfjRNKUUHiBw/S8=
+	t=1725529962; cv=none; b=ODImIIZlAI2iphlFPOqn4D8lniP4CVHdP5QNVpEMxm9yEdogpvMP66OmNjFV+Tz+raouKjACcPlzUtpoQFca/iGTzsMICD1pao0Z9OXceYKFsHpSAAiFEuRH+xWwR4gkMZBb2hz1lzpTpC7Eo4b697wEe1id2EivhdyKggh4VJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529609; c=relaxed/simple;
-	bh=3uAffZ+FThe+KLMMTphyw0t7XpjXkpEZ92MLJQGVXqE=;
+	s=arc-20240116; t=1725529962; c=relaxed/simple;
+	bh=M+3glSluoSjRiG59hriN9jbOhSr9Lhjby+IchGev4Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DwsMbxZO+sAqKDz54p2FRJf8ygkolVEmrBiA1JM+jxm7IjvH44dFHKlmyk2ypbBLbhf+WAjdc+AVHLMWn7N46YXV6N2pTP/et37P/zN6ihfSWmlm+V66zrG7yF15e7DRzLq20Y5hMslNlneYujGnKL5iuhBuuk3BcoJDUGPQIko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BET05Prs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8391C4CEC7;
-	Thu,  5 Sep 2024 09:46:48 +0000 (UTC)
+	 MIME-Version; b=g5TylIAf9TTvDGaNwy3vh637WCyrBvyEMUoUnYbI8JNBN4tn7gOA6LXrF5fqDdEpO94+KRrHmVlr7CJdWTeLA9ulN0lrVZClScd6kpUGkhVjXvU0MNN6F29Fgk77jwCMuJUlAnyRsfWnu+K7hQ6TKN767dCsm0xr95RxahY9QpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqoWS1tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C96EC4CEC3;
+	Thu,  5 Sep 2024 09:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529609;
-	bh=3uAffZ+FThe+KLMMTphyw0t7XpjXkpEZ92MLJQGVXqE=;
+	s=korg; t=1725529962;
+	bh=M+3glSluoSjRiG59hriN9jbOhSr9Lhjby+IchGev4Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BET05PrsWB78Fl2IacaCCFUiKxS/zNCTyvpfUumE2u5owoArFZFZ196qulcb4IHn4
-	 33eZKMuML3IZXfY/zGGcgDKxqkXGLqyH3888gsSNobHXRKY6SLk34B8Rvdbh58x8zx
-	 71EzVhaMiHorQkFf526U82mZNvNRD1KRbMdqq6K0=
+	b=mqoWS1tjvjWjplalsxNiE0fIO7Ums7lZ702sufe/UBb3OQSiofVu6vECP8m+3mTmY
+	 xGczh9dx0mll3WZ0uLWT0Xo5lpBNdlWH1JuThI2piusa3SxcKREEu6TnWiDA1AO7gg
+	 4gIxmPdjLpvFdpZEHwsL/PO2WBIpTvLZ7MKMUTgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 086/184] drm/amdgpu: Fix out-of-bounds write warning
+Subject: [PATCH 6.6 012/132] ALSA: seq: ump: Explicitly reset RPN with Null RPN
 Date: Thu,  5 Sep 2024 11:39:59 +0200
-Message-ID: <20240905093735.597112572@linuxfoundation.org>
+Message-ID: <20240905093722.712836448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
+[ Upstream commit 98ea612dd1150adb61cd2a0e93875e1cc77e6b87 ]
 
-Check the ring type value to fix the out-of-bounds
-write warning
+RPN with 127:127 is treated as a Null RPN, just to reset the
+parameters, and it's not translated to MIDI2.  Although the current
+code can work as is in most cases, better to implement the RPN reset
+explicitly for Null message.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20240731130528.12600-6-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_ump_convert.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index d20405d84e12..e6344a6b0a9f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -354,7 +354,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
- 	ring->max_dw = max_dw;
- 	ring->hw_prio = hw_prio;
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index 7ca62667f28d3..4dd540cbb1cbb 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -789,6 +789,15 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 	return 1;
+ }
  
--	if (!ring->no_scheduler) {
-+	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
- 		hw_ip = ring->funcs->type;
- 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
- 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
++static void reset_rpn(struct ump_cvt_to_ump_bank *cc)
++{
++	cc->rpn_set = 0;
++	cc->nrpn_set = 0;
++	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
++	cc->cc_data_msb = cc->cc_data_lsb = 0;
++	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
++}
++
+ /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
+ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
+ 		    union snd_ump_midi2_msg *data,
+@@ -817,11 +826,7 @@ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
+ 					     cc->cc_data_lsb);
+ 	data->rpn.channel = channel;
+ 
+-	cc->rpn_set = 0;
+-	cc->nrpn_set = 0;
+-	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
+-	cc->cc_data_msb = cc->cc_data_lsb = 0;
+-	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
++	reset_rpn(cc);
+ 	return 1;
+ }
+ 
+@@ -843,11 +848,15 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 		ret = fill_rpn(cc, data, channel, true);
+ 		cc->rpn_set = 1;
+ 		cc->cc_rpn_msb = val;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
+ 	case UMP_CC_RPN_LSB:
+ 		ret = fill_rpn(cc, data, channel, true);
+ 		cc->rpn_set = 1;
+ 		cc->cc_rpn_lsb = val;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
+ 	case UMP_CC_NRPN_MSB:
+ 		ret = fill_rpn(cc, data, channel, true);
+@@ -961,6 +970,8 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 		cc->cc_rpn_msb = msb;
+ 		cc->cc_rpn_lsb = lsb;
+ 		cc->rpn_set = 1;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
+ 	case UMP_CC_NRPN_MSB:
+ 	case UMP_CC_NRPN_LSB:
 -- 
 2.43.0
 
