@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-73474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D6696D505
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE9896D462
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217C3287263
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B725028153F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BFC194AC7;
-	Thu,  5 Sep 2024 09:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A6C1991C6;
+	Thu,  5 Sep 2024 09:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDH4WyPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udpSkbi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B1983CC8;
-	Thu,  5 Sep 2024 09:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0630E19755E;
+	Thu,  5 Sep 2024 09:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530350; cv=none; b=SDoRuCGbZb2/nRA6+c7H4jufqijaYYinsQF1dCDwYp7rW8KyGb28gSJEvEeK4RjPdtH68Np6pD4D1yBCBOJaSp6smvGQlzkju0THAuvaoDaEIc0iLJWAh+OzYFHPzST+d36kwo9jqTegAtNgLo4FTRP0SDz97BEllFyUsoQ8y3o=
+	t=1725529886; cv=none; b=HiKCu8Iauo4RNwSyoBFY9uIrtP2tq3RAXzTxWTNd0Sj+3kNoe7F2e9Vh8Gw4IDuMHPTEukyBuLKdRAmbRk+lRELCPdrDg9PjBKJr8kTx7epdF2c/B2VAMYSS3KRdUa6QSjanASVJFILYRyorWw7EeZaRgMdXT3Eh0GHktudveXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530350; c=relaxed/simple;
-	bh=y82+R9/W6lPZBKuV9N0Ef96GLCFtciRnMWbLLKdtKF8=;
+	s=arc-20240116; t=1725529886; c=relaxed/simple;
+	bh=ia9uwI/TcZjaodgDU6zhg9lwQJp36Hk6QD5/IDCbReI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4KvdEKFVzsXUTZVfqWMBlgacpmYqnn4VFSTAgcxHG6NGYqjmLHI68oioLSf0YGoYGM+8K8wSdwUS0H3VB/p4KPPAxxZghN9X7bpA84yJo1vw0ACj67bXuz6P6rckOz1CT9XgDuodSfDSXFpr6IzYNdoq/BUJ6+3qsf+bZhSAFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDH4WyPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC25C4CEC3;
-	Thu,  5 Sep 2024 09:59:09 +0000 (UTC)
+	 MIME-Version; b=SFsTr0pVfKbEarUThL997IylefuKDKNLvv9VyLmQQe0bfJB8W0pFG560/0QTG4/y2GXqBfXpVmgTo0J1dcRTnY3qyAYHIsbazVwja4rK1BF8triCElspOLJ3uZRMLFZcnKXfEwp+6gCY5AqMfWvfdIuVIdRrOdW2mD324oFLAhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udpSkbi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE17C4CEC3;
+	Thu,  5 Sep 2024 09:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530350;
-	bh=y82+R9/W6lPZBKuV9N0Ef96GLCFtciRnMWbLLKdtKF8=;
+	s=korg; t=1725529885;
+	bh=ia9uwI/TcZjaodgDU6zhg9lwQJp36Hk6QD5/IDCbReI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDH4WyPKKsWNexts3pLDzr4qUR9pGeIX75MP3CrirfYr0D+m39FLOJF94opzQDU0+
-	 t1INFDOYgMxRMSVdWc6JHwxUzknLjATgayDVlkV1m00qKA1hTRoGPzwocct3S8YW6W
-	 2nQORS67oMHuc1nlN4nbmmk5qMfU3DEo/H1Zjkkk=
+	b=udpSkbi2jcgU1lDKTc5lirD6hOVXO7aq1nmjWiGRw/x0d9dHo7UuQa7gmpWlSvDmL
+	 cGvipOdSdvmxa6Yb+cO5NQxfPH2byRbto66gY4o1NhS47QpKyCoxulTGxILnEIjJ0z
+	 bsrIZy8DmYWIySX/0S7c79xQJTx7uDEjV6AWx4TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/132] media: v4l2-cci: Always assign *val
+Subject: [PATCH 6.10 173/184] drm/amd/display: Avoid overflow from uint32_t to uint8_t
 Date: Thu,  5 Sep 2024 11:41:26 +0200
-Message-ID: <20240905093726.091275382@linuxfoundation.org>
+Message-ID: <20240905093739.090832903@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 7417b1b1f36cc214dc458e717278a27a912d3b51 ]
+[ Upstream commit d6b54900c564e35989cf6813e4071504fa0a90e0 ]
 
-Always assign *val to 0 in cci_read(). This has the benefit of not
-requiring initialisation of the variables data is read to using
-cci_read(). Once smatch is fixed, it could catch the use of uninitialised
-reads.
+[WHAT & HOW]
+dmub_rb_cmd's ramping_boundary has size of uint8_t and it is assigned
+0xFFFF. Fix it by changing it to uint8_t with value of 0xFF.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-cci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c       | 2 +-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
-index ee3475bed37f..1ff94affbaf3 100644
---- a/drivers/media/v4l2-core/v4l2-cci.c
-+++ b/drivers/media/v4l2-core/v4l2-cci.c
-@@ -23,6 +23,15 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 	u8 buf[8];
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
+index b851fc65f5b7..5c2d6642633d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
+@@ -258,7 +258,7 @@ bool dmub_abm_set_pipe(struct abm *abm,
+ {
+ 	union dmub_rb_cmd cmd;
+ 	struct dc_context *dc = abm->ctx;
+-	uint32_t ramping_boundary = 0xFFFF;
++	uint8_t ramping_boundary = 0xFF;
  
-+	/*
-+	 * TODO: Fix smatch. Assign *val to 0 here in order to avoid
-+	 * failing a smatch check on caller when the caller proceeds to
-+	 * read *val without initialising it on caller's side. *val is set
-+	 * to a valid value whenever this function returns 0 but smatch
-+	 * can't figure that out currently.
-+	 */
-+	*val = 0;
-+
- 	if (err && *err)
- 		return *err;
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.abm_set_pipe.header.type = DMUB_CMD__ABM;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+index 804be977ea47..3de65a9f0e6f 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+@@ -142,7 +142,7 @@ static bool dmub_abm_set_pipe(struct abm *abm, uint32_t otg_inst,
+ {
+ 	union dmub_rb_cmd cmd;
+ 	struct dc_context *dc = abm->ctx;
+-	uint32_t ramping_boundary = 0xFFFF;
++	uint8_t ramping_boundary = 0xFF;
  
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.abm_set_pipe.header.type = DMUB_CMD__ABM;
 -- 
 2.43.0
 
