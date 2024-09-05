@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-73525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0943C96D53B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024DD96D45B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24801F2A307
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABFA71F23432
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3E195F04;
-	Thu,  5 Sep 2024 10:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F911990DD;
+	Thu,  5 Sep 2024 09:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkIEez8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKrGGY7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2351494DB;
-	Thu,  5 Sep 2024 10:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281E0194A45;
+	Thu,  5 Sep 2024 09:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530516; cv=none; b=sbytjU7u644Db9tSxM+PMy1/MMxap+3VrsCWuVKD2Cw1pqERAxsTmk9pyuVywGvgjAslhgCrK0Q0pSBHY8sLHx0beUXMQes4njtYJL58yGdjswVpGCvn1JR/FZ9KsTsB/eq7i5hSGL/f+VQwP1/Z6y+0K2HD2jSk1WGlOXW9Apo=
+	t=1725529866; cv=none; b=smIwCVSuLPwv0l8Gy29cV4MiKqX3ABoaq/uOzVxT9mlzJ5ta+vQw776pogTTn9R+n7aGCb9JAM9od2+nJkwH+6zR9g22cT9Id0KHpdPb22QAWNSt858K50qTmYJkDWihaiYJsjCYhkQVprAIkhnx7TeVloVLOYqAX52RbRxkTpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530516; c=relaxed/simple;
-	bh=B2fY8SuiFtTe73brBiMsSAg0e7jxkzeIb9QnSGR+gT4=;
+	s=arc-20240116; t=1725529866; c=relaxed/simple;
+	bh=XaUCuh/vXbuH4AbV5XVy+yygCm9nPJGx2VYm3wEE5cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihsJ7JyBg04Cm6gEFkHq+1psNMXI8Jvy4vtS0DppfmHX8zG7pSJyGLdzQLmaZVVm281tYmcgJnywD20FH6YMx7mKLodMSL44Xry6WzFV5EYE/D7waYL/z4j775SSfX+NhpqevMIPh/80VXyqqaygL8/YRWLWpMl+3cfeFXOMoX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkIEez8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8E2C4CEC3;
-	Thu,  5 Sep 2024 10:01:55 +0000 (UTC)
+	 MIME-Version; b=ZK70lZwXWPlvuoP4DCMpRzPcSw22bWHkwjamQb7KGBCpTOSToyZAIG7XPUNy+ZWfSRW18ywyYfNTRQUX5yP+iakcZqgcpSBF4gVPCi6cn7yjO/7Pqk/9YYRCp7FHbm1JGFhqMov/JOP4nsBlaAgOwn5GCAvTzmviTPBSna9PsLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKrGGY7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550B2C4CEC3;
+	Thu,  5 Sep 2024 09:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530516;
-	bh=B2fY8SuiFtTe73brBiMsSAg0e7jxkzeIb9QnSGR+gT4=;
+	s=korg; t=1725529865;
+	bh=XaUCuh/vXbuH4AbV5XVy+yygCm9nPJGx2VYm3wEE5cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkIEez8sZ2mYJ72leOUVVuttnyHiDFthZ3M+xbPNweQ00/wLI6Ei60UFfwKIn6t9k
-	 Beave439Fj8H7IQidphDxo4XY/KyhMw4MBPJ/HmOg3gCGuhzj+L06jkJv2dxA0aWsu
-	 /wLbW7G4OpmeiAExrRLxoN8hqOqLM++lHQAuwuo0=
+	b=SKrGGY7zu6KfuqBgy6jeM3NgKzBkMq+xMBjgAZEufzAc35AW5OayblG66qi7dP0jz
+	 AQnmGaXrn7ov0j2TCXb/8gZEkYDc8EbQHLS0uNGiCv9bD6CxganarRyP8Bu/3lLk+6
+	 eA/DyaPG0zs7F4AEjk8JjnCuuZ3khxEMxws8BYE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/101] drm/amd/display: Skip inactive planes within ModeSupportAndSystemConfiguration
+Subject: [PATCH 6.10 167/184] drm/amd/display: Dont use fsleep for PSR exit waits on dmub replay
 Date: Thu,  5 Sep 2024 11:41:20 +0200
-Message-ID: <20240905093718.017708683@linuxfoundation.org>
+Message-ID: <20240905093738.858560409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit a54f7e866cc73a4cb71b8b24bb568ba35c8969df ]
+[ Upstream commit b5236da757adc75d7e52c69bdc233d29249a0d0c ]
 
 [Why]
-Coverity reports Memory - illegal accesses.
+These functions can be called from high IRQ levels and the OS will hang
+if it tries to use a usleep_highres or a msleep.
 
 [How]
-Skip inactive planes.
+Replace the flseep with a udelay for dmub_replay_enable.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-index 1070cf870196..b2ad56c459ba 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-@@ -1099,8 +1099,13 @@ void ModeSupportAndSystemConfiguration(struct display_mode_lib *mode_lib)
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
+index 09cf54586fd5..424669632b3b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
+@@ -102,7 +102,8 @@ static void dmub_replay_enable(struct dmub_replay *dmub, bool enable, bool wait,
+ 					break;
+ 			}
  
- 	// Total Available Pipes Support Check
- 	for (k = 0; k < mode_lib->vba.NumberOfActivePlanes; ++k) {
--		total_pipes += mode_lib->vba.DPPPerPlane[k];
- 		pipe_idx = get_pipe_idx(mode_lib, k);
-+		if (pipe_idx == -1) {
-+			ASSERT(0);
-+			continue; // skip inactive planes
-+		}
-+		total_pipes += mode_lib->vba.DPPPerPlane[k];
-+
- 		if (mode_lib->vba.cache_pipes[pipe_idx].clks_cfg.dppclk_mhz > 0.0)
- 			mode_lib->vba.DPPCLK[k] = mode_lib->vba.cache_pipes[pipe_idx].clks_cfg.dppclk_mhz;
- 		else
+-			fsleep(500);
++			/* must *not* be fsleep - this can be called from high irq levels */
++			udelay(500);
+ 		}
+ 
+ 		/* assert if max retry hit */
 -- 
 2.43.0
 
