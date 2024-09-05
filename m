@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-73531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C0A96D541
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4BF96D461
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8776A283543
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7A42816E7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CAE19538A;
-	Thu,  5 Sep 2024 10:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0286F1991BE;
+	Thu,  5 Sep 2024 09:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aN4suwA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBLLO6J9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94851494DB;
-	Thu,  5 Sep 2024 10:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5619755E;
+	Thu,  5 Sep 2024 09:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530535; cv=none; b=aY7PilBFRoN3YIlvCIZxKwdcD4AmptP7ERaVhQIhWl6khEwbNTLYA83ZjqZqV+bJoaH9eAB0HoQoslhxfbBYTGdtqpFtrnegRRMsCLAPTCPQegytAQVtmTeEWXxb163kQPzTVpwXVc1TmNz0F7VNO260rUY6nNLV8vLYQq8Egog=
+	t=1725529882; cv=none; b=JBKvfb6CXk+PciDeX9EHzLGavuaqQmmY7PKI++wUnAaFWpyk4BqBxbxmpjreRVI6jYBPHpNclpkTfEXY3gaTErdjJ0yZTsEzLBZSDRZixs7HxJuY2fZFbmzHiRtcC/llxLyzI6w4zYeFI9Di/qUpL62EbHHq9fK2Jtb/6AB+DUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530535; c=relaxed/simple;
-	bh=Kb9AETA76ppfvHcXOmQ+4aUxPOBuZ66ZqnKxrgU4Ta0=;
+	s=arc-20240116; t=1725529882; c=relaxed/simple;
+	bh=F2jqXMTyEphzrx0diXfzsLTxfws4PcTUBxQ8ycjyKck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mk3b8nN2wTD2dDcO6q/xrDMsrCi4K1EqclxuDANi94USdUddMRKKxdnXJ49f8drnQ8rrUPIWLh7eqgPaMgqJoAXELoHw3gPOjbiZwe5h1gi5uSAWJyREcBBBmA5r4yswb1OslpgSjNb6dB4arAmr/nRKnjZEhFMfWF9LU47IC08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aN4suwA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7ACC4CEC3;
-	Thu,  5 Sep 2024 10:02:14 +0000 (UTC)
+	 MIME-Version; b=R68fxP84NRT0Uj3SCJNf0fk6apWPjI/D7ZyO+eiUsfezCqqaWfvywuF9rDLUdzQ/niMDfJGcCSHy7t8GM+wzzYJm1lbvNsoxLfUAcrE0h401lEzKZULBUAuZkpMStaW23Y/tTL2WZyTMpsYD+8I06wbbVhis7FAJOcj+BIEJflo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBLLO6J9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0348AC4CEC3;
+	Thu,  5 Sep 2024 09:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530535;
-	bh=Kb9AETA76ppfvHcXOmQ+4aUxPOBuZ66ZqnKxrgU4Ta0=;
+	s=korg; t=1725529882;
+	bh=F2jqXMTyEphzrx0diXfzsLTxfws4PcTUBxQ8ycjyKck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aN4suwA5r1wtVV57xxYyzcUTngbyBYNr/K84H4vFQkKUm0j73zt6pyA6vVafL3lGN
-	 Lfa38/GdS0duyZK5fquXHm/UysQPcWcbPMleGEBetAmSsOTSXTKWW3mEVuLYPmaRi2
-	 l01hmMQilUwnDBk4R7kPnpuLvM2mvjvW49vORTlE=
+	b=oBLLO6J9ore+tZo/RyD8FHgEPcjh/Mf5OJlXi5uAZWjsUIwjZ1GA6Ls5ZqK7ooHu5
+	 5Inu3cZOyPlvOZ2tSu1BEr5qH4N3VtBQTej7wY5ietLHzZKqJt9BlZ26+wu1Xpd7x5
+	 jEQgQl0lQOAbBU2on+y49VZlwWIpB5Q4JK/4N/RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/101] drm/amdgpu: Fix out-of-bounds write warning
+Subject: [PATCH 6.10 172/184] drm/amd/display: Disable DMCUB timeout for DCN35
 Date: Thu,  5 Sep 2024 11:41:25 +0200
-Message-ID: <20240905093718.210944973@linuxfoundation.org>
+Message-ID: <20240905093739.053077760@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
+[ Upstream commit 7c70e60fbf4bff1123f0e8d5cb1ae71df6164d7f ]
 
-Check the ring type value to fix the out-of-bounds
-write warning
+[Why]
+DMCUB can intermittently take longer than expected to process commands.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Old ASIC policy was to continue while logging a diagnostic error - which
+works fine for ASIC without IPS, but with IPS this could lead to a race
+condition where we attempt to access DCN state while it's inaccessible,
+leading to a system hang when the NIU port is not disabled or register
+accesses that timeout and the display configuration in an undefined
+state.
+
+[How]
+We need to investigate why these accesses take longer than expected, but
+for now we should disable the timeout on DCN35 to avoid this race
+condition. Since the waits happen only at lower interrupt levels the
+risk of taking too long at higher IRQ and causing a system watchdog
+timeout are minimal.
+
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index 2001c7d27a53..cb73d06e1d38 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -324,7 +324,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
- 	ring->max_dw = max_dw;
- 	ring->hw_prio = hw_prio;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index 28c459907698..915d68cc04e9 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -785,6 +785,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.ips2_entry_delay_us = 800,
+ 	.disable_dmub_reallow_idle = false,
+ 	.static_screen_wait_frames = 2,
++	.disable_timeout = true,
+ };
  
--	if (!ring->no_scheduler) {
-+	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
- 		hw_ip = ring->funcs->type;
- 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
- 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
+ static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.43.0
 
