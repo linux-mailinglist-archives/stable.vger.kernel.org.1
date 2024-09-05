@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4B996D47A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4513196D538
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7D32282263
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32791F2A324
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EFA198841;
-	Thu,  5 Sep 2024 09:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7152B197A76;
+	Thu,  5 Sep 2024 10:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pqZO9vO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uICVb/Eo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342314A08E;
-	Thu,  5 Sep 2024 09:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEB41494DB;
+	Thu,  5 Sep 2024 10:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529943; cv=none; b=IBTmQSHWhCilsYg8V9An3ZeB+Xls9fIp+JQRrEwmnzKQOK2xAJrJGORYELSQR8sqBLQBL95qFWvYNsTBOIUoqouRaeurClz15D1A6yWx3zBRxc7abcxL8TtK339KvWeZcWYCd5rTnEyUUwD99tCN+6kK5xvQApRuM/D0bmYK13U=
+	t=1725530507; cv=none; b=rQuRnEjoxrzb4AAf1eD1O0mNkSWslt9T4NdZa6BtFc3KD4TxG0hal8rO9zrMIiZJf4eTozyV4FbvdNwc0WvB++EYgPPXKAXxuE/hgIPxQfFByA52XtpGZ1F8DC8B64R9LN41Z6uSMnp+6b1lF9NVZtYLNxrM2iZR+s6S9qxZV3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529943; c=relaxed/simple;
-	bh=mJhmp/6A0q+bHszcci7QJSHBjPbBqF2N9kaK5RDAnio=;
+	s=arc-20240116; t=1725530507; c=relaxed/simple;
+	bh=JXBLMDzf4VVjWS7Q6aMvo/4OLLskozPnc6Kw8Gi+ePE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JdNsOvs03Ow+9urArxZ62n9a8y/PofJzaq309PB9ZQaEAHqS3RuC/zoqAVvw9uB+F5fHoHadxz0FGC7BQ/wDXElxM1EiLi7Mbn3hldwmBf5Q6MC5p6XP6GCz+tefWcVAQbNF64HPGFtDBhZ4VeT4Bv4eePXPEOvGo1Ha3jkdU/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pqZO9vO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDCFC4CEC4;
-	Thu,  5 Sep 2024 09:52:22 +0000 (UTC)
+	 MIME-Version; b=MQHZ+tP/0z6yB3RAotNTbwHPjTCQpwqCYDqZPwdKL5ncOOijd++XaUo6aDm620KoLmmDwZXOASFMJ+FKyp6ECJXEnWK54AIpJdFjxD7iuru6X+U7mg+WEFRkncp2QD/MAcj4IV5yXWlXd+1At/5W6jdOcFVTXci40peZt1SZzb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uICVb/Eo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1DFC4CEC3;
+	Thu,  5 Sep 2024 10:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529943;
-	bh=mJhmp/6A0q+bHszcci7QJSHBjPbBqF2N9kaK5RDAnio=;
+	s=korg; t=1725530507;
+	bh=JXBLMDzf4VVjWS7Q6aMvo/4OLLskozPnc6Kw8Gi+ePE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pqZO9vOEhaicIfJu5SUg/It2ba4hsSk4IPN39Kfn9zUdDTBRvw0wK6tij9CLg0Wg
-	 I1K3zkdhZn4Z+7+H16vBqgA94Mu5hH1tfWUyHhx6DD1d27F3TVvvmnPb3XZCIPGjOZ
-	 0t9niAxGU84CLPW3J/d1PTJzQtiN1u9g35tHExo0=
+	b=uICVb/EoIHm4TC4VQk4UuuF4Obt0sC8CeDNZoVC/hAIt7MQn2cgm4JBJNKl4Yzc4Y
+	 a1I2F3VsBpMAXVTPE1/GSLJ77bgzSwBACscFeEH5fjMQI3VwNYi0wFLxCGeswjVw6d
+	 V1uYzgavCiQSlrDM1QRk9DUmUwXUefrvAEK2o7F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 164/184] drm/amdgpu: add lock in amdgpu_gart_invalidate_tlb
+Subject: [PATCH 6.1 045/101] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within dal_gpio_service_create
 Date: Thu,  5 Sep 2024 11:41:17 +0200
-Message-ID: <20240905093738.742341837@linuxfoundation.org>
+Message-ID: <20240905093717.900628286@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunxiang Li <Yunxiang.Li@amd.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 18f2525d31401e5142db95ff3a6ec0f4147be818 ]
+[ Upstream commit c6077aa66fa230d12f37fef01161ef080d13b726 ]
 
-We need to take the reset domain lock before flush hdp. We can't put the
-lock inside amdgpu_device_flush_hdp itself because it is used during
-reset where we already take the write side lock.
+[Why]
+For subtraction, coverity reports integer overflow
+warning message when variable type is uint32_t.
 
-Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+[How]
+Change variable type to int32_t.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-index c623e23049d1..a6ddffbf8b4d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -34,6 +34,7 @@
- #include <asm/set_memory.h>
- #endif
- #include "amdgpu.h"
-+#include "amdgpu_reset.h"
- #include <drm/drm_drv.h>
- #include <drm/ttm/ttm_tt.h>
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index 2f8ca831afa2..f2037d78f71a 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -56,7 +56,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	struct dc_context *ctx)
+ {
+ 	struct gpio_service *service;
+-	uint32_t index_of_id;
++	int32_t index_of_id;
  
-@@ -408,7 +409,10 @@ void amdgpu_gart_invalidate_tlb(struct amdgpu_device *adev)
- 		return;
+ 	service = kzalloc(sizeof(struct gpio_service), GFP_KERNEL);
  
- 	mb();
--	amdgpu_device_flush_hdp(adev, NULL);
-+	if (down_read_trylock(&adev->reset_domain->sem)) {
-+		amdgpu_device_flush_hdp(adev, NULL);
-+		up_read(&adev->reset_domain->sem);
-+	}
- 	for_each_set_bit(i, adev->vmhubs_mask, AMDGPU_MAX_VMHUBS)
- 		amdgpu_gmc_flush_gpu_tlb(adev, 0, i, 0);
- }
+@@ -112,7 +112,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	return service;
+ 
+ failure_2:
+-	while (index_of_id) {
++	while (index_of_id > 0) {
+ 		--index_of_id;
+ 		kfree(service->busyness[index_of_id]);
+ 	}
 -- 
 2.43.0
 
