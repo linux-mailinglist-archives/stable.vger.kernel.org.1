@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0274A96D54D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDB396D4F1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77522B20D5A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3D91C24000
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35E9197A76;
-	Thu,  5 Sep 2024 10:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23CB19413B;
+	Thu,  5 Sep 2024 09:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQGfbBSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyYJGxuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7206E1494DB;
-	Thu,  5 Sep 2024 10:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6159D15574C;
+	Thu,  5 Sep 2024 09:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530574; cv=none; b=svXModZpQ9861rkM+GFlG3I3/3ZaHtkFAOsSpXfPg1bvYI0cCWYyuGMer7HcSTct2wImYIFHxuQ2jVaXfcsX+L5O22/fJ6QFgOvY0a6KlGi3FrqzbWcA4cR6qj+/vnw+LYcIx2T18E1YDzMg8/mDPWmwGHrvljgIyKulxM1G30o=
+	t=1725530288; cv=none; b=TRg9bgO4uGlKkJapNvAKuBSeoo30YiDy3j6xPaaIXUT5Z48E6z5k+B9f7w3qGYkjg7nQF/Uaq4WeegZXT/goW8dQdZXIqRnPIMksEEf9RrxqAs55H1DSW2svcN492gScJQ0MbInBuer1qd6r7PROFB2QuqHNLuJ0eRqxRC/KXS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530574; c=relaxed/simple;
-	bh=iquHOJMjA+ZNVXeTuYYmoyXuPKO0PjqEyMcZAHtNdgY=;
+	s=arc-20240116; t=1725530288; c=relaxed/simple;
+	bh=ndJtuwdSrhxoYnHIUPeIZ8qg+GDKu4rx27iS76CR1Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4wp6TUP91wbGsn1gqpLLMMieru8aSeLMpr5i0DwLWWkmzU8oVKk1qx4UiUqX2vxFyKHNrPy9GNN41MzJy8PKf82XC69OVwS3PQ3A+M1pzcCVGngFuiJEhRsv+WhzNMYqodOWuuR7080aLbHRm4RG74zxObNwa4RX30FzkH8mfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQGfbBSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2AEC4CEC3;
-	Thu,  5 Sep 2024 10:02:53 +0000 (UTC)
+	 MIME-Version; b=FuKWGtJkevkuD1vNBprcABr35Rxcqc6xKsF/Ob7UfPerIdJdM49B3sRgGo+dy3x/WzytSGBnwXxIW8GSaDOFldnTTc8uTcYegZpIWoFfSgu39uj6pmXjFhKSOYwhhSbOt5WDXo4f/1PxWKY0MLY0nyUozrVeqeJVyK/lzAbsl7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyYJGxuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1084C4CEC3;
+	Thu,  5 Sep 2024 09:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530574;
-	bh=iquHOJMjA+ZNVXeTuYYmoyXuPKO0PjqEyMcZAHtNdgY=;
+	s=korg; t=1725530288;
+	bh=ndJtuwdSrhxoYnHIUPeIZ8qg+GDKu4rx27iS76CR1Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQGfbBSo+HlEVLWNbREmQfOubZ+dHiupiIhiW8I20sX+kFFwI/eyptH6PSCM2zXJg
-	 3vbJPDphMvlNbJBS4aDyRX+IJDyXWgzeuQ9mX3QnERndlMBObVrnN8/tKTjMzRxju7
-	 7cJxx1/1dZHiKDnkn2kGFoaRoypviaLzpJqDKt9U=
+	b=KyYJGxuyJlQyigijouDBu9af/bsz3/zWnNa2yQNLTDlrRk/C/FKfT6dXZoFutBEaJ
+	 q9VoeDCS/459iw4TNrRdX2e0wu2iSKeGkST36WEPP17YxZ/3l63Jk/Kh9B2Sm4bURH
+	 msZPiooni75CIZQzbBy+vKrOm8hRfYdDVeYA65jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Marek Vasut <marex@denx.de>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/101] drm/amdgpu: update type of buf size to u32 for eeprom functions
+Subject: [PATCH 6.6 112/132] drm/bridge: tc358767: Check if fully initialized before signalling HPD event via IRQ
 Date: Thu,  5 Sep 2024 11:41:39 +0200
-Message-ID: <20240905093718.761261752@linuxfoundation.org>
+Message-ID: <20240905093726.583360424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Zhou <tao.zhou1@amd.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 2aadb520bfacec12527effce3566f8df55e5d08e ]
+[ Upstream commit 162e48cb1d84c2c966b649b8ac5c9d4f75f6d44f ]
 
-Avoid overflow issue.
+Make sure the connector is fully initialized before signalling any
+HPD events via drm_kms_helper_hotplug_event(), otherwise this may
+lead to NULL pointer dereference.
 
-Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240531203333.277476-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c | 6 +++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-index d6c4293829aa..3e4912f1f92a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-@@ -179,7 +179,7 @@ static int __amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
-  * Returns the number of bytes read/written; -errno on error.
-  */
- static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
--			      u8 *eeprom_buf, u16 buf_size, bool read)
-+			      u8 *eeprom_buf, u32 buf_size, bool read)
- {
- 	const struct i2c_adapter_quirks *quirks = i2c_adap->quirks;
- 	u16 limit;
-@@ -226,7 +226,7 @@ static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index d941c3a0e611..7fd4a5fe03ed 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -2034,7 +2034,7 @@ static irqreturn_t tc_irq_handler(int irq, void *arg)
+ 		dev_err(tc->dev, "syserr %x\n", stat);
+ 	}
  
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes)
-+		       u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  true);
-@@ -234,7 +234,7 @@ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes)
-+			u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  false);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-index 6935adb2be1f..8083b8253ef4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-@@ -28,10 +28,10 @@
- 
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes);
-+		       u32 bytes);
- 
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes);
-+			u32 bytes);
- 
- #endif
+-	if (tc->hpd_pin >= 0 && tc->bridge.dev) {
++	if (tc->hpd_pin >= 0 && tc->bridge.dev && tc->aux.drm_dev) {
+ 		/*
+ 		 * H is triggered when the GPIO goes high.
+ 		 *
 -- 
 2.43.0
 
