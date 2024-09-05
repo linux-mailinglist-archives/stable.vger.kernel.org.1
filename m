@@ -1,120 +1,158 @@
-Return-Path: <stable+bounces-73165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5809996D377
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:38:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BC796D387
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B2F61C22D1C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:38:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20AE1F21164
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8689D196446;
-	Thu,  5 Sep 2024 09:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F77D19538D;
+	Thu,  5 Sep 2024 09:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP77nZHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0de78IU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067D72107;
-	Thu,  5 Sep 2024 09:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E0B1925AA;
+	Thu,  5 Sep 2024 09:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529118; cv=none; b=mD89XmlieJ3QueFpYZI7t6Afq7HOfqWGK1D2m5c8aCd3VDuU8bPOwHDICuiC4vPa8IQTNi6z8Cq+EQv73uCREE6rf9FNOwRrIGiA0Eclq6Gfwivia0Nn1W7QXLkqQikaLXHyTAbtETPX/p//26yBEDzNkL4ko8k2h4c5gzbQsr8=
+	t=1725529363; cv=none; b=HhGzb/saLiZjbVG50tD+qLe2RWwdrTjgDeQeZ1N+9jcR86qm4oiMGgUq0QIrRdM/K6vIpxLkqCP6z5Nvsklq+gCTzdTQTZfKKeGaYn4yP768RbmaDFJmEZvETVSVE5/tEkYraEmn6V26CiBh3JbOOh4ad5K/zln778otXXIipsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529118; c=relaxed/simple;
-	bh=05nyWH3zDvfgm6No8VHxM0pYql7MSg6Js/yn8Qs8Bsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oq96IndvaVrQsQSSNSXqitEAAtmDbY32ZaVpo6wHL6YZW/QMPsr2YSvcqVJCiCocogNYvLPTbtlIviXWV/Q002voQcbLAlbY25a60XwOdKANO9Y0TPm3ZNA6mCTmA/wA7phMQzAqxoYUKeurF6m/8qqT3TD8me7s17syIroKFqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP77nZHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB646C4CEC3;
-	Thu,  5 Sep 2024 09:38:36 +0000 (UTC)
+	s=arc-20240116; t=1725529363; c=relaxed/simple;
+	bh=KoFWGkrs3JiX051oEiRZKk2vGMyRzMFeLMsNnAoQtlo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BWPkTFCHXxoQUuYNJbiCWKR1s83HGrd6BBQiFdgsPkfK1khyetS1cP6lO/XF+AIyPfubsStVd0l8s2KNCzhxZXh7N/Ldm2yZXHalpjpxAQJrNUvDAwipxIfcNqF4LSEX8szG0h2GKKDuV3tnJGnjqoSemBpneiEfYM8zH63uCig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0de78IU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B71C4CEC3;
+	Thu,  5 Sep 2024 09:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529117;
-	bh=05nyWH3zDvfgm6No8VHxM0pYql7MSg6Js/yn8Qs8Bsc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fP77nZHLAPM6ZraNGGjZbGuTz5aW+cgt66qS0Q97+Ej12U+wAZHbDWQYMZwKtfHvT
-	 CIAqs3MPtvBPjjyoCNWsruuB5ObjjLnHBvK4K84jXwVoWnO7h5ie3pslleb36+JKaq
-	 uBnTa+1sCNpgiFe7AJ63t2kq53dlraXadpB2ASMo=
-Date: Thu, 5 Sep 2024 11:38:34 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Yenchia Chen <yenchia.chen@mediatek.com>
-Cc: angelogioacchino.delregno@collabora.com, len.brown@intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
-	matthias.bgg@gmail.com, pavel@ucw.cz, rafael.j.wysocki@intel.com,
-	rafael@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6 1/1] PM: sleep: Restore asynchronous device resume
- optimization
-Message-ID: <2024090534-footage-player-10e5@gregkh>
-References: <2024090420-protozoan-clench-cca7@gregkh>
- <20240905093433.4798-1-yenchia.chen@mediatek.com>
+	s=korg; t=1725529361;
+	bh=KoFWGkrs3JiX051oEiRZKk2vGMyRzMFeLMsNnAoQtlo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e0de78IUg2I6PUs52IYC4nBXAeMkIPtaWPrYa1Lv6FbMQTWqNn4viU+m8y+2AL7Os
+	 KNz3qMK5sr+E29Wy5isFiBok5Kzf1Nu4AQXn09TxlxOW9bijaXPe/i8bWTvowLBSzq
+	 ApEsZ3ySkrTmLH5TL3X7w7lD7LpXVUpcDBp/DMRY=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Yudong Wang <yudong.wang@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	"Maarten Lankhorst,,," <maarten.lankhorst@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 001/184] drm/fb-helper: Dont schedule_work() to flush frame buffer during panic()
+Date: Thu,  5 Sep 2024 11:38:34 +0200
+Message-ID: <20240905093732.300307924@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240905093433.4798-1-yenchia.chen@mediatek.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 05, 2024 at 05:34:33PM +0800, Yenchia Chen wrote:
-> >> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> >> 
-> >> commit 3e999770ac1c7c31a70685dd5b88e89473509e9c upstream.
-> >> 
-> >> Before commit 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core
-> >> system-wide PM code"), the resume of devices that were allowed to resume
-> >> asynchronously was scheduled before starting the resume of the other
-> >> devices, so the former did not have to wait for the latter unless
-> >> functional dependencies were present.
-> >> 
-> >> Commit 7839d0078e0d removed that optimization in order to address a
-> >> correctness issue, but it can be restored with the help of a new device
-> >> power management flag, so do that now.
-> >> 
-> >> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >> Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> >> Signed-off-by: Yenchia Chen <yenchia.chen@mediatek.com>
-> >> ---
-> >>  drivers/base/power/main.c | 117 +++++++++++++++++++++-----------------
-> >>  include/linux/pm.h        |   1 +
-> >>  2 files changed, 65 insertions(+), 53 deletions(-)
-> 
-> >Why does this need to be backported?  What bug is it fixing?
-> 
-> >confused,
-> 
-> >greg k-h
-> 
-> Below is the scenario we met the issue:
-> 1) use command 'echo 3 > /proc/sys/vm/drop_caches'
->    and enter suspending stage immediately.
-> 2) power on device, our driver try to read mmc after leaving resume callback
->    and got stucked.
-> 
-> We found if we did not drop caches, mmc_blk_resume will be called and
-> system works fine.
-> 
-> If we drop caches before suspending, there is a high possibility that
-> mmc_blk_resume not be called and our driver stucked at filp_open.
-> 
-> We still try to find the root casue is but with this patch, it works.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
-I think you are getting lucky as this is just changing the order in
-which things are suspending.  Please find and fix the root problem.
+------------------
 
-> Since it has been merged in mainline, we'd like to know it is ok to merge to stable.
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-It changes the behavior of the system overall, and doesn't really fix a
-bug on its own, so I don't want to, sorry.
+[ Upstream commit 833cd3e9ad8360785b6c23c82dd3856df00732d9 ]
 
-Please find the real problem in your driver, or the mmc subsystem.
+Sometimes the system [1] hangs on x86 I/O machine checks. However, the
+expected behavior is to reboot the system, as the machine check handler
+ultimately triggers a panic(), initiating a reboot in the last step.
 
-thanks,
+The root cause is that sometimes the panic() is blocked when
+drm_fb_helper_damage() invoking schedule_work() to flush the frame buffer.
+This occurs during the process of flushing all messages to the frame
+buffer driver as shown in the following call trace:
 
-greg k-h
+  Machine check occurs [2]:
+    panic()
+      console_flush_on_panic()
+        console_flush_all()
+          console_emit_next_record()
+            con->write()
+              vt_console_print()
+                hide_cursor()
+                  vc->vc_sw->con_cursor()
+                    fbcon_cursor()
+                      ops->cursor()
+                        bit_cursor()
+                          soft_cursor()
+                            info->fbops->fb_imageblit()
+                              drm_fbdev_generic_defio_imageblit()
+                                drm_fb_helper_damage_area()
+                                  drm_fb_helper_damage()
+                                    schedule_work() // <--- blocked here
+    ...
+    emergency_restart()  // wasn't invoked, so no reboot.
+
+During panic(), except the panic CPU, all the other CPUs are stopped.
+In schedule_work(), the panic CPU requires the lock of worker_pool to
+queue the work on that pool, while the lock may have been token by some
+other stopped CPU. So schedule_work() is blocked.
+
+Additionally, during a panic(), since there is no opportunity to execute
+any scheduled work, it's safe to fix this issue by skipping schedule_work()
+on 'oops_in_progress' in drm_fb_helper_damage().
+
+[1] Enable the kernel option CONFIG_FRAMEBUFFER_CONSOLE,
+    CONFIG_DRM_FBDEV_EMULATION, and boot with the 'console=tty0'
+    kernel command line parameter.
+
+[2] Set 'panic_timeout' to a non-zero value before calling panic().
+
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: Yudong Wang <yudong.wang@intel.com>
+Tested-by: Yudong Wang <yudong.wang@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240703141737.75378-1-qiuxu.zhuo@intel.com
+Signed-off-by: Maarten Lankhorst,,, <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/drm_fb_helper.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index 117237d3528bd..618b045230336 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -631,6 +631,17 @@ static void drm_fb_helper_add_damage_clip(struct drm_fb_helper *helper, u32 x, u
+ static void drm_fb_helper_damage(struct drm_fb_helper *helper, u32 x, u32 y,
+ 				 u32 width, u32 height)
+ {
++	/*
++	 * This function may be invoked by panic() to flush the frame
++	 * buffer, where all CPUs except the panic CPU are stopped.
++	 * During the following schedule_work(), the panic CPU needs
++	 * the worker_pool lock, which might be held by a stopped CPU,
++	 * causing schedule_work() and panic() to block. Return early on
++	 * oops_in_progress to prevent this blocking.
++	 */
++	if (oops_in_progress)
++		return;
++
+ 	drm_fb_helper_add_damage_clip(helper, x, y, width, height);
+ 
+ 	schedule_work(&helper->damage_work);
+-- 
+2.43.0
+
+
+
 
