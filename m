@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13C296D4ED
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE63A96D474
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 882B0B281F9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F052B22D29
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085BB15574C;
-	Thu,  5 Sep 2024 09:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1DF1990C7;
+	Thu,  5 Sep 2024 09:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf8hbEPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2m7qYKxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB433192D73;
-	Thu,  5 Sep 2024 09:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE90D1990BB;
+	Thu,  5 Sep 2024 09:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530274; cv=none; b=ZfyNr01srcMXHZi7Arv4Vs77MUV5KArr1OjprsvStPSzw1cwtvyOnm74pqYaJcZeCHq1OUsmMzfK9LY6tBEWya2ECfme3ZmreresNL1O7R5934rr0Lz3tQqv1dQs9EmC5WUqauB0bZP314JQwTDZgPf9/Bay3IBCZuZFGRjz3w8=
+	t=1725529917; cv=none; b=fP/alYbQESgCbKAYdT3ck7aswx4JFzw0qcPHi6RgPH9D/D33Bgj4B6ExLoLKr5TsHE2UYY4GS0TEKpPydDLC6A0kg31ttdBBK4E7B5jujTy7eCE30IV+eKdKY4A0xVhS+6TVsFdiiqzcvVhA3ly7bcBX9HJ8cRlJZE5KkBZwNXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530274; c=relaxed/simple;
-	bh=TIB84f8tlK8VT/5xNTuUDO1Q8mPMZaOjFThN8/BqlFg=;
+	s=arc-20240116; t=1725529917; c=relaxed/simple;
+	bh=JwU6KWIBe4RkAWqr7+Kh7v76J6hbpVptOlsGrmA3iDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2AaPmcr3RR39Shcu+wpn/4ttACCNXUzal2R947yZG5PB8ySOyTQ3NVrgwzkE0o5APEVL4ZAjIH3pwHDlO9f8DVEFCtfmHW6IA6o396ytTkwcpxwTSp3UUm3lj86PeZBQGC7WGUQxUSxAipsGV61qwJSjy6MAYe9cAYmY55NMcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf8hbEPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A013C4CEC3;
-	Thu,  5 Sep 2024 09:57:53 +0000 (UTC)
+	 MIME-Version; b=LWG0lKo+LuvV8VygCvvZ/DxOLMkwR5SDLI1UBmCoDkM6AWeIT+XWTde6fmJUJjkOdOxkB+zlR04qldliPSV0dA+1aZZWFp3VsQ0cMOulw2jCNRCdPMMLcsOoSC5SDe2IXIiDBNcVrHGc6PAPJsQ5cqjCkpJPdOo/8oQWoy7o+Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2m7qYKxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA5DC4CEC3;
+	Thu,  5 Sep 2024 09:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530274;
-	bh=TIB84f8tlK8VT/5xNTuUDO1Q8mPMZaOjFThN8/BqlFg=;
+	s=korg; t=1725529917;
+	bh=JwU6KWIBe4RkAWqr7+Kh7v76J6hbpVptOlsGrmA3iDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf8hbEPyY8RciEaGzMfH+cU8BhitDSZO+ZwqtiDNz8ldk0DXQsAHciKpkWAje6B25
-	 DOEuaHI7QAL/bjy2rxW4wayfYu6jqAf+i93d3j+6G09CPzelhJepUgg86b1duzqq2O
-	 2UMOH7NV9MPTjuTODx+yir7iV5xHtQBhdoBuR7yA=
+	b=2m7qYKxvYIG4PUYeb4s9AeOt1gMuQmuYKzylUPoXdmAwxJrU4BBvbzBVM6Q70QPFO
+	 kAmnStLUO5YufYK0fOLe3HPKve80h8Lrco9+2TIaz5nz08A+kEONjAUx1zUqHidjAC
+	 Cc+8ypWNDQCNZZvWDyiV7LMs9wI3CH1WbDnddGJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/132] net/mlx5e: SHAMPO, Fix incorrect page release
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 182/184] drm/amdgpu: remove redundant semicolons in RAS_EVENT_LOG
 Date: Thu,  5 Sep 2024 11:41:35 +0200
-Message-ID: <20240905093726.430496952@linuxfoundation.org>
+Message-ID: <20240905093739.433867849@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 70bd03b89f20b9bbe51a7f73c4950565a17a45f7 ]
+commit 332210c13ac0595c34516caf9a61430b45e16d21 upstream.
 
-Under the following conditions:
-1) No skb created yet
-2) header_size == 0 (no SHAMPO header)
-3) header_index + 1 % MLX5E_SHAMPO_WQ_HEADER_PER_PAGE == 0 (this is the
-   last page fragment of a SHAMPO header page)
+remove redundant semicolons in RAS_EVENT_LOG to avoid
+code format check warning.
 
-a new skb is formed with a page that is NOT a SHAMPO header page (it
-is a regular data page). Further down in the same function
-(mlx5e_handle_rx_cqe_mpwrq_shampo()), a SHAMPO header page from
-header_index is released. This is wrong and it leads to SHAMPO header
-pages being released more than once.
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240603212219.1037656-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b712d7c20133 ("drm/amdgpu: fix compiler 'side-effect' check issue for RAS_EVENT_LOG()")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 79ec6fcc9e25..57b0e26696e3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2369,7 +2369,8 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
- 	if (flush)
- 		mlx5e_shampo_flush_skb(rq, cqe, match);
- free_hd_entry:
--	mlx5e_free_rx_shampo_hd_entry(rq, header_index);
-+	if (likely(head_size))
-+		mlx5e_free_rx_shampo_hd_entry(rq, header_index);
- mpwrq_cqe_out:
- 	if (likely(wi->consumed_strides < rq->mpwqe.num_strides))
- 		return;
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+@@ -68,7 +68,7 @@ struct amdgpu_iv_entry;
+ #define AMDGPU_RAS_GET_FEATURES(val)  ((val) & ~AMDGPU_RAS_FEATURES_SOCKETID_MASK)
+ 
+ #define RAS_EVENT_LOG(adev, id, fmt, ...)	\
+-	amdgpu_ras_event_log_print((adev), (id), (fmt), ##__VA_ARGS__);
++	amdgpu_ras_event_log_print((adev), (id), (fmt), ##__VA_ARGS__)
+ 
+ enum amdgpu_ras_block {
+ 	AMDGPU_RAS_BLOCK__UMC = 0,
 
 
 
