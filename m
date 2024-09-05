@@ -1,100 +1,170 @@
-Return-Path: <stable+bounces-73659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890EC96E2E2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:12:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F296E307
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32C311F21B36
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 19:12:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142AC288A4B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 19:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E010518C342;
-	Thu,  5 Sep 2024 19:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FCC18D64C;
+	Thu,  5 Sep 2024 19:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="As6s0bS4"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EA3158DC8;
-	Thu,  5 Sep 2024 19:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F8154C0D;
+	Thu,  5 Sep 2024 19:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725563555; cv=none; b=d/AtHH+E5kwkqCnwi1C5RJoyfPVnUCWTMf34YCTyhckmgBqO8X1rf/Xr30Bc2MZlhWBGZdZCMKAevCjcq+qzTmJM8awLwudPo3LoahkxsoVQBFLBdVvhh1NBRD+eXXYlZqcJMIg93xpfBo0kDVE2aXKYJgvLDqDkvL1vxgHOB2Q=
+	t=1725564066; cv=none; b=qjogBwyi31fzuWThhvnmfaDD2/XPKU1vFspZFvHNsgYG+d/6ChlBA4d3/davDYxM+YgvC6opDl2PU7PW0PUKYlCeZwiISjzFExWRlVrNLfFUZXDCu7K2+OzJv8LtpWzUd1K1Zsk4YiQ0UY6lXwbTNnhyodKG9aRMgofAEK8iGa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725563555; c=relaxed/simple;
-	bh=RY+285Jvos3Lce3KrWnNw6KwCdu7/GEnZ9+YO6AgHtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kuvCwUqGlthky4d+PDE1fAlwRyT/QTVWaNRQ5U6kVCqHtqHGGll8hB8j2FIfAEDDP4lx0Ik7Kyt8b8hiWGn0prjiz3M9pkMjXGzL9DsfYenCyy99RrIhBVmnMa0YMIbIvmwwJ99cbHwjpY3gLCO4BGXlYQcwpGamYBCysa4vWa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 24AA41C009B; Thu,  5 Sep 2024 21:12:32 +0200 (CEST)
-Date: Thu, 5 Sep 2024 21:12:31 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 000/183] 6.10.9-rc2 review
-Message-ID: <ZtoCnyqAzR4U53nC@duo.ucw.cz>
-References: <20240905163542.314666063@linuxfoundation.org>
+	s=arc-20240116; t=1725564066; c=relaxed/simple;
+	bh=+BzS012R6syDeqd0t9o3KQ0U5UhKeDAJauumJpcn38k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ujqSQb9ERShJM5A1PXZJ9OujWW2JlkY0bAhwVzYzk2l03Q4osW7kf+kHBYLsfh+4qdui7Xkomz3x7gSHl1nFyT2agHWY5TQK+3tpcB3baQnEe1QejhKesNlSO68HxTCcRn+k58lBQtCXQiTF3DDVxWSl9jASsDBDuPUz1ghT1SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=As6s0bS4; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725564065; x=1757100065;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+BzS012R6syDeqd0t9o3KQ0U5UhKeDAJauumJpcn38k=;
+  b=As6s0bS4tUp4wH+XfnQWOCxa1theCyWLQyHtYcnvMYRguivRxkQxl85z
+   365IP4lpBU2zzRWNcizGSFAW936Ug7oOG5mnYWfk6hB8zbBHlqiJCtBF7
+   /1nmrcY3US9RZbk2Oi8hnAmxqK3pebIm+p6HJtWdBqzre6gDNeMvPfi/6
+   z+QDnFqwbI2oWVpWvEE1+Kq3cfsxmLYJwaviPAWYdgMvnLSc7HHb3+DII
+   dwHAyd9HbZRTx7a/D9fKvK2A2LjSvv+TUFWcVc9b68NLott3obWPRAsS2
+   7pzrAWP+XVqqd1dK4bgBDx4nqNYrlFFR5pZp5m0QRqSccGZjbzzW3UYFZ
+   w==;
+X-CSE-ConnectionGUID: sYcTPaQDSeqjYIvWEFow0A==
+X-CSE-MsgGUID: 1BDko2IbT+qzvL7acijf8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="23859638"
+X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
+   d="scan'208";a="23859638"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 12:21:02 -0700
+X-CSE-ConnectionGUID: q7v5jfmbQwi6MqIgTseAQw==
+X-CSE-MsgGUID: 7CRiBUEcRtWVIqEX6j2Dtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
+   d="scan'208";a="88967415"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 12:21:02 -0700
+Received: from [10.212.68.73] (kliang2-mobl1.ccr.corp.intel.com [10.212.68.73])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by linux.intel.com (Postfix) with ESMTPS id 29C1520B5782;
+	Thu,  5 Sep 2024 12:21:01 -0700 (PDT)
+Message-ID: <ddfd906c-83cc-490a-a4bb-4fa43793d882@linux.intel.com>
+Date: Thu, 5 Sep 2024 15:20:59 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wfZdgS/jjDdO1Cjo"
-Content-Disposition: inline
-In-Reply-To: <20240905163542.314666063@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/x86: fix wrong assumption that LBR is only useful
+ for sampling events
+To: Andrii Nakryiko <andrii@kernel.org>, linux-perf-users@vger.kernel.org,
+ peterz@infradead.org
+Cc: x86@kernel.org, mingo@redhat.com, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, acme@kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+References: <20240905180055.1221620-1-andrii@kernel.org>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <20240905180055.1221620-1-andrii@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---wfZdgS/jjDdO1Cjo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On 2024-09-05 2:00 p.m., Andrii Nakryiko wrote:
+> It's incorrect to assume that LBR can/should only be used with sampling
+> events. BPF subsystem provides bpf_get_branch_snapshot() BPF helper,
+> which expects a properly setup and activated perf event which allows
+> kernel to capture LBR data.
+> 
+> For instance, retsnoop tool ([0]) makes an extensive use of this
+> functionality and sets up perf event as follows:
+> 
+> 	struct perf_event_attr attr;
+> 
+> 	memset(&attr, 0, sizeof(attr));
+> 	attr.size = sizeof(attr);
+> 	attr.type = PERF_TYPE_HARDWARE;
+> 	attr.config = PERF_COUNT_HW_CPU_CYCLES;
+> 	attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
+> 	attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
+> 
+> Commit referenced in Fixes tag broke this setup by making invalid assumption
+> that LBR is useful only for sampling events. Remove that assumption.
+> 
+> Note, earlier we removed a similar assumption on AMD side of LBR support,
+> see [1] for details.
+> 
+>   [0] https://github.com/anakryiko/retsnoop
+>   [1] 9794563d4d05 ("perf/x86/amd: Don't reject non-sampling events with configured LBR")
+> 
+> Cc: stable@vger.kernel.org # 6.8+
+> Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> ---
+>  arch/x86/events/intel/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+> index 9e519d8a810a..f82a342b8852 100644
+> --- a/arch/x86/events/intel/core.c
+> +++ b/arch/x86/events/intel/core.c
+> @@ -3972,7 +3972,7 @@ static int intel_pmu_hw_config(struct perf_event *event)
+>  			x86_pmu.pebs_aliases(event);
+>  	}
+>  
+> -	if (needs_branch_stack(event) && is_sampling_event(event))
+> +	if (needs_branch_stack(event))
+>  		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
 
-> This is the start of the stable review cycle for the 6.10.9 release.
-> There are 183 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+To limit the LBR for a sampling event is to avoid unnecessary branch
+stack setup for a counting event in the sample read. The above change
+should break the sample read case.
 
-CIP testing did not find any problems here:
+How about the below patch (not test)? Is it good enough for the BPF usage?
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.10.y
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 0c9c2706d4ec..8d67cbda916b 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3972,8 +3972,12 @@ static int intel_pmu_hw_config(struct perf_event
+*event)
+ 		x86_pmu.pebs_aliases(event);
+ 	}
 
-6.6 passes our testing, too:
+-	if (needs_branch_stack(event) && is_sampling_event(event))
+-		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
++	if (needs_branch_stack(event)) {
++		/* Avoid branch stack setup for counting events in SAMPLE READ */
++		if (is_sampling_event(event) ||
++		    !(event->attr.sample_type & PERF_SAMPLE_READ))
++			event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
++	}
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
+ 	if (branch_sample_counters(event)) {
+ 		struct perf_event *leader, *sibling;
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---wfZdgS/jjDdO1Cjo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZtoCnwAKCRAw5/Bqldv6
-8gd7AJ4snB18i7j0boxsfoFJjnC6etZliQCZAUruRiQBj62GsWYUlIZiDlk8W0M=
-=lhjw
------END PGP SIGNATURE-----
-
---wfZdgS/jjDdO1Cjo--
+Thanks,
+Kan
+>  
+>  	if (branch_sample_counters(event)) {
 
