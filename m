@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB596D424
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8FC96D48C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8C31F210CA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0FE91C23911
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2D6635;
-	Thu,  5 Sep 2024 09:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EEC18D65E;
+	Thu,  5 Sep 2024 09:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRUn04Lv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzJuW3Vt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD561198822;
-	Thu,  5 Sep 2024 09:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70358155730;
+	Thu,  5 Sep 2024 09:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529731; cv=none; b=hB1QcbTee42IeiymQW3AxIXmYUqQuZLHwVW6yijcUVp/UcSb+fRwdfdr1FhLfg78CPwMy+1omol9YSwY+sHe+daWG6fu7cRHTDj9JJHXyTl1mUTe5mUSYJVGM7gLgF7G2G+lbjZ4iTRZjl2bySjcihqIIuOeByMTO9AIpxV+p68=
+	t=1725529997; cv=none; b=kV0l5GXUUPi8W/Uqt07qnTK87bzFU910EIh8/HvruSVSeyT17HKUvxJ8oaV9fmUMD3JR+B5Jph67CetQieuZFxFzLOdSGz6yPdQ8rE5U0dzY8e3ECEPXJrWsKQf9vMG59zlwcKmvqppvkKVOE97yMeSWAGpKCcUw/MdJkuTtXho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529731; c=relaxed/simple;
-	bh=C/Ses7QeOAYV3/O7kuj/lcj9ejEwqCayWzPZX2p4Xds=;
+	s=arc-20240116; t=1725529997; c=relaxed/simple;
+	bh=GcIKeNnu5SPjxoe9uc1HraLIknM2YkpIL4WR7RtmhQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSJvA1pSnzGXzqyhXFV/q3UqpICcEw679Fv4dF27PEeUyyNvCPfIi2SQo9QYz3JeGXOrOLDZjIXAPklC5VuFu6wUv4CvU9jSQ4GAdl7d7qKeXXJ3BiTgAVrRIaHtGaj4JId8bGO814J+8kvwngyY0JF62fqRy40j6rNfMeOy/n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRUn04Lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B00C4CEC6;
-	Thu,  5 Sep 2024 09:48:51 +0000 (UTC)
+	 MIME-Version; b=A4g8S22gIHB7j1psmnTunEm9XWMeQTEENIKfnmCd0sFlVBi+nRG2EzLwF1oMSrwF7mOFlEE+BtpSb+kvkhHFZHc4m/SfqMkEXhw3Fc9eyIAYykHFBDDR3z9T0o+sjIhG4YVFqi+0j5U5pdPC0DIxwUlZbvgN6H/xm9hGGLfstOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzJuW3Vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F0DC4CEC3;
+	Thu,  5 Sep 2024 09:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529731;
-	bh=C/Ses7QeOAYV3/O7kuj/lcj9ejEwqCayWzPZX2p4Xds=;
+	s=korg; t=1725529997;
+	bh=GcIKeNnu5SPjxoe9uc1HraLIknM2YkpIL4WR7RtmhQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRUn04LvJ2mNjMEoUWf9Qdw/ojoTtVdsRLCVqonO1v2qxhgE7Ie6G6+t105VDrm0Z
-	 z8aJnHsxAmPXIq/qaZrJF6t2pawn2g3vzd3XhBDDeWvWiZMgzl79HlDt0Vr7XTxjO1
-	 RoioQzojCr5CJZp0NSBEBVjq/QmaJPU3ETuo4e4E=
+	b=OzJuW3VtirqCjSl59sdXGuR0LvSHrye1ijdgNCMXe5ceXlk/XpUlG4wYLxQX4GETS
+	 +Ik8vW45BffeAz4976ABTItlUl2LhJ7VcT/7HLpoojid9+Wl4TITUUSd7PCp4h0B1w
+	 Jv8O5R/08YH0SgtxNtcjIhUtcdGbSZn2Os5keHOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Riana Tauro <riana.tauro@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 095/184] drm/xe/hwmon: Remove unwanted write permission for currN_label
-Date: Thu,  5 Sep 2024 11:40:08 +0200
-Message-ID: <20240905093735.951849321@linuxfoundation.org>
+Subject: [PATCH 6.6 022/132] mptcp: make pm_remove_addrs_and_subflows static
+Date: Thu,  5 Sep 2024 11:40:09 +0200
+Message-ID: <20240905093723.099513346@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthik Poosa <karthik.poosa@intel.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 515f08972355e160f896f612347121fbb685e740 ]
+[ Upstream commit e38b117d7f3b4a5d810f6d0069ad0f643e503796 ]
 
-Change umode of currN_label from 0644 to 0444 as write permission
-not needed for label.
+mptcp_pm_remove_addrs_and_subflows() is only used in pm_netlink.c, it's
+no longer used in pm_userspace.c any more since the commit 8b1c94da1e48
+("mptcp: only send RM_ADDR in nl_cmd_remove"). So this patch changes it
+to a static function.
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240419125945.4085629-1-karthik.poosa@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87b5896f3f78 ("mptcp: pm: fix RM_ADDR ID for the initial subflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_hwmon.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c | 4 ++--
+ net/mptcp/protocol.h   | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-index bb815dbde63a..daf0d15354fe 100644
---- a/drivers/gpu/drm/xe/xe_hwmon.c
-+++ b/drivers/gpu/drm/xe/xe_hwmon.c
-@@ -551,12 +551,17 @@ xe_hwmon_curr_is_visible(const struct xe_hwmon *hwmon, u32 attr, int channel)
- {
- 	u32 uval;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 7dd10bacc8d28..e40c06a51b167 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1701,8 +1701,8 @@ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
+ 	}
+ }
  
-+	/* hwmon sysfs attribute of current available only for package */
-+	if (channel != CHANNEL_PKG)
-+		return 0;
-+
- 	switch (attr) {
- 	case hwmon_curr_crit:
--	case hwmon_curr_label:
--		if (channel == CHANNEL_PKG)
- 			return (xe_hwmon_pcode_read_i1(hwmon->gt, &uval) ||
- 				(uval & POWER_SETUP_I1_WATTS)) ? 0 : 0644;
-+	case hwmon_curr_label:
-+			return (xe_hwmon_pcode_read_i1(hwmon->gt, &uval) ||
-+				(uval & POWER_SETUP_I1_WATTS)) ? 0 : 0444;
- 		break;
- 	default:
- 		return 0;
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list)
++static void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
++					       struct list_head *rm_list)
+ {
+ 	struct mptcp_rm_list alist = { .nr = 0 }, slist = { .nr = 0 };
+ 	struct mptcp_pm_addr_entry *entry;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 20736f31dc534..940fd94006489 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -948,8 +948,6 @@ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
+ 			   bool echo);
+ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list);
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list);
+ 
+ void mptcp_free_local_addr_list(struct mptcp_sock *msk);
+ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info);
 -- 
 2.43.0
 
