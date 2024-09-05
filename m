@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2268D96D49F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E7696D41A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5553E1C232EF
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA9F1F274C5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8440198A1B;
-	Thu,  5 Sep 2024 09:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0801991CA;
+	Thu,  5 Sep 2024 09:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKCGxvJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqy+iEsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3E114A08E;
-	Thu,  5 Sep 2024 09:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8287D198E77;
+	Thu,  5 Sep 2024 09:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530055; cv=none; b=GA00Xr1sbW6SgZcaQV8JP4Si8TLsmETS/G6PJd9imfIHKQjSHlvsBGAz4zpEPi1+UlaYVTTSeheGI+2DTheBwxwdbvxBp104XzZXSrNCLOqS2m70zcqP8QPc0GdQhSiJxJOvBCKH46Yh2cx5aaf/TSa1NWlwnUzSoPA2Tm3st/U=
+	t=1725529702; cv=none; b=LFb1ygdmpskJ/JQLJ2bIbcjkFsFwaAoJHpxO/yMHo3DJ6xkLDeJ23Q3g5e1W6z1C/W7G8OjbSTKzo9rAJHaG/AcAoz/CafLKKmgUszUrHTRQu6dxUp3MTq5I30bs8OMqcbyl/UMOyo+R8iSFyMyagdSXsHNoQO/a+/IvOqgEJUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530055; c=relaxed/simple;
-	bh=Sc9i6+wkx5SVsO8OCIO9kDzGyJfjiPYeiVivjbXv0T4=;
+	s=arc-20240116; t=1725529702; c=relaxed/simple;
+	bh=sLCq/3ac6z+KZ3urSf4yxXxakRhVNxlUzYxxkr4uTRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRoM1CpdvorDU2vEPQ8H5F43O0Nn8v9A2vzBXP5r5Q1Ve3gsWvTloEeNytv9ANOF48DCnoVEfBOUiQd8cdCb7Tjb5fW+8BkBXWIsssErU+5uFnr/6Sxo2ob5314LKp01MX+KUZ1Q/BcR/idSM6vnZWV+fbeFpu0zgTIhFmpNnbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKCGxvJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B8BC4CEC3;
-	Thu,  5 Sep 2024 09:54:14 +0000 (UTC)
+	 MIME-Version; b=npT72qTtdP+KQi2VTUouKpx3bPSWoU46o9Y8CTlL3bqj4sXI5W6us440Ap1bqLy1TkYRkyAMr5TndQRhvoI2a6j94aBp9ZNgi2FZ/Tj0PFs2aN6YkKQfrAvkEXfhI/u2qK4ZDXyZvKrkTGiLa6E1cs2SMS35ciinIDc6jVqL7QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqy+iEsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACC4C4CEC3;
+	Thu,  5 Sep 2024 09:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530055;
-	bh=Sc9i6+wkx5SVsO8OCIO9kDzGyJfjiPYeiVivjbXv0T4=;
+	s=korg; t=1725529702;
+	bh=sLCq/3ac6z+KZ3urSf4yxXxakRhVNxlUzYxxkr4uTRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKCGxvJ5k8UDhiFIMZ9JHsv0UL7PoiyJlPNc0BilwTivXIqL60wRC8T0o6vnwBJwY
-	 CMtrVuQDt4/THKpJFO6hFL2HnuBePVu3ZDC0DPUQyIY88RNSNCcS7syOIlZT85h49S
-	 Emx9lg+FNEslngOaK3AUS8VxvPIQjREwjYx15jWU=
+	b=Vqy+iEsD91cBhgbzw1W3ouZWKz4jYeSVEjq0TsO7g199I9xV7y3ZHn9FjZdoqDDtz
+	 ly3PRIqhq+sivlr5Yx8lqEu8SAyjK2gRT2xYsp8+5ScOhcUgwoSH+0KmupDOvNRHXf
+	 UT56tCJrVFOpZVhRdMsFYTHhC+pnBQDFg+E37dKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Victor Skvortsov <victor.skvortsov@amd.com>,
+	Zhigang Luo <zhigang.luo@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/132] drm/amd/display: Assign linear_pitch_alignment even for VM
-Date: Thu,  5 Sep 2024 11:40:28 +0200
-Message-ID: <20240905093723.856333348@linuxfoundation.org>
+Subject: [PATCH 6.10 116/184] drm/amdgpu: Queue KFD reset workitem in VF FED
+Date: Thu,  5 Sep 2024 11:40:29 +0200
+Message-ID: <20240905093736.759129867@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
+[ Upstream commit 5434bc03f52de2ec57d6ce684b1853928f508cbc ]
 
-[Description]
-Assign linear_pitch_alignment so we don't cause a divide by 0
-error in VM environments
+The guest recovery sequence is buggy in Fatal Error when both
+FLR & KFD reset workitems are queued at the same time. In addition,
+FLR guest recovery sequence is out of order when PF/VF communication
+breaks due to a GPU fatal error
 
-Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+As a temporary work around, perform a KFD style reset (Initiate reset
+request from the guest) inside the pf2vf thread on FED.
+
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 72db370e2f21..50e643bfdfba 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1298,6 +1298,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
- 		return NULL;
- 
- 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
-+		dc->caps.linear_pitch_alignment = 64;
- 		if (!dc_construct_ctx(dc, init_params))
- 			goto destruct_dc;
- 	} else {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 761fff80ec1f..923d51f16ec8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -602,7 +602,7 @@ static void amdgpu_virt_update_vf2pf_work_item(struct work_struct *work)
+ 		    amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev)) {
+ 			amdgpu_ras_set_fed(adev, true);
+ 			if (amdgpu_reset_domain_schedule(adev->reset_domain,
+-							  &adev->virt.flr_work))
++							  &adev->kfd.reset_work))
+ 				return;
+ 			else
+ 				dev_err(adev->dev, "Failed to queue work! at %s", __func__);
 -- 
 2.43.0
 
