@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-73458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489FE96D4F4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A8596D550
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F302A1F29B3C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 927BF28322F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1B415574C;
-	Thu,  5 Sep 2024 09:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45364195F04;
+	Thu,  5 Sep 2024 10:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yovvXNwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL32pkEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAEF18D65E;
-	Thu,  5 Sep 2024 09:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037EB1494DB;
+	Thu,  5 Sep 2024 10:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530298; cv=none; b=R+s9TelK7BAs2grpyaoaxSKZtMz4+5CZqnt4RDy32rG9ar8YIR4LgPX90PVdESJ/mDcAYkyYoS5vqt5sFG1qKBHnKErwHJJQnIoVHWCuSTbmYFY8jhVQxSrHeIm76pC+eVYh9DV07voBtFdGLDsH1jhHk5iIqxEFpmYSfFr74jo=
+	t=1725530584; cv=none; b=bUvw86lfjnwWbuRgrgXyHrhWLZDbGgbPAzYtwzMWx4QceAmI/lt+CMMJmXHjcOw8HwxIQ018Wiee8LBpU5L5rrWHL+bANg+cWh6FKjaPYABIxwEpmV1H+gkXMDzUqeNmQupJhfEgK3Nde+6gSs4Uv288V8aHkMKO8GKswuahEjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530298; c=relaxed/simple;
-	bh=uDPdmNjJOlOu7LWy/3yV2Q6eKcKnchaomhDLCWE3rOE=;
+	s=arc-20240116; t=1725530584; c=relaxed/simple;
+	bh=XRr39l1cOJbLaFirMUEM9GCfHQavo/jJk4LLSb6iQ14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPZmiCGZZjqrmLR2fA5rsVQ3RZ97v6XbvnADc9jZ8+8FiqUaO2ARmJjoHwWoi2HdmuYytxK82cYUDblJrT7/E5/gTyzi3goGJnHXkYjfYS72rO0gflYAxxurvz6E2dGx9BjJ1UeKRWBEiS09ymoqmLkyZ1ofEq3P0ctnxQeFXko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yovvXNwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F695C4CEC3;
-	Thu,  5 Sep 2024 09:58:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FW1PN9gLfiSpkdHdkiCngX3esgRHYWgGvw5NhH0Uau6bjdGfnB+vLKGaLmf4ZvsdEDvsPo0wSjsOX4H7kd/emZBlyODxnZqXu31lCFGoiywSrMjj+rYmwo6TTGvKUMKAwd+PrXll0QMVT4h3SBLJwVrtFb4oRxDsH9MmyIs7QjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL32pkEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E9BC4CEC3;
+	Thu,  5 Sep 2024 10:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530297;
-	bh=uDPdmNjJOlOu7LWy/3yV2Q6eKcKnchaomhDLCWE3rOE=;
+	s=korg; t=1725530583;
+	bh=XRr39l1cOJbLaFirMUEM9GCfHQavo/jJk4LLSb6iQ14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yovvXNwVIVf18A4irmBRnsPXTGoQeb1e5H4mn1DAA3tKoUGmqSiMPynHWzYhuzsRb
-	 5cusIyYvxTbAOOTnZ+N57CkFJ1b+nyMf/gWPbKEpdb0Xyy7NS3AqRTymBTA76JyLHu
-	 y3tZ2inxDPbzb6s3DRJuF22XWGISFOJTOnG0iVf8=
+	b=VL32pkEkb9s3YaLPXPA0SnnMasNsSbQvmdz7oNyo3eVclE284zJHEjrJpE3SIy+Oi
+	 flsRR21zY1QRaG8wLDjKNIxtvX4mDYnINgnTYCWd/KSVXNVKA7GBC52mbuGzxhmJ9e
+	 Jlhdq2MtBxw0vLfOQzSx7fX7oIud2qxnJInT0b0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Dautricourt <olivierdautricourt@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/132] dmaengine: altera-msgdma: properly free descriptor in msgdma_free_descriptor
-Date: Thu,  5 Sep 2024 11:41:41 +0200
-Message-ID: <20240905093726.659182427@linuxfoundation.org>
+Subject: [PATCH 6.1 070/101] PCI: al: Check IORESOURCE_BUS existence during probe
+Date: Thu,  5 Sep 2024 11:41:42 +0200
+Message-ID: <20240905093718.874861360@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Dautricourt <olivierdautricourt@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 54e4ada1a4206f878e345ae01cf37347d803d1b1 ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-Remove list_del call in msgdma_chan_desc_cleanup, this should be the role
-of msgdma_free_descriptor. In consequence replace list_add_tail with
-list_move_tail in msgdma_free_descriptor.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-This fixes the path:
-   msgdma_free_chan_resources -> msgdma_free_descriptors ->
-   msgdma_free_desc_list -> msgdma_free_descriptor
+But that's hard to verify, so check for NULL anyway.
 
-which does not correctly free the descriptors as first nodes were not
-removed from the list.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
-Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
-Link: https://lore.kernel.org/r/20240608213216.25087-3-olivierdautricourt@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/altera-msgdma.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
-index 8c479a3676fc..711e3756a39a 100644
---- a/drivers/dma/altera-msgdma.c
-+++ b/drivers/dma/altera-msgdma.c
-@@ -233,7 +233,7 @@ static void msgdma_free_descriptor(struct msgdma_device *mdev,
- 	struct msgdma_sw_desc *child, *next;
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index b8cb77c9c4bd..3132b27bc006 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
- 	mdev->desc_free_cnt++;
--	list_add_tail(&desc->node, &mdev->free_list);
-+	list_move_tail(&desc->node, &mdev->free_list);
- 	list_for_each_entry_safe(child, next, &desc->tx_list, node) {
- 		mdev->desc_free_cnt++;
- 		list_move_tail(&child->node, &mdev->free_list);
-@@ -588,8 +588,6 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
- 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
- 		struct dmaengine_desc_callback cb;
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct dw_pcie_rp *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
--		list_del(&desc->node);
--
- 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
- 		if (dmaengine_desc_callback_valid(&cb)) {
- 			spin_unlock_irqrestore(&mdev->lock, irqflags);
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
+ 
+ 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
+@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
+ }
+ 
+ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
