@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C66596D408
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF1B96D4BF
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1A4DB273BD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23C628180A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E349219882B;
-	Thu,  5 Sep 2024 09:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7951957F8;
+	Thu,  5 Sep 2024 09:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd1YeiKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywVLORL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A266E14A08E;
-	Thu,  5 Sep 2024 09:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795B919538A;
+	Thu,  5 Sep 2024 09:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529648; cv=none; b=YPLMe52nYnt6wVaP20nLZksOqVNlzlP4CyRIfaCn6n42+tBt48JA4dUaYbk0LwO5fSP/o3E/9Y3PNshq1Lf8MCIgFGXqqkSrpQsp3UwNTZXIqcQndMJxBAdkouMZpimKU606opVPMonbfF2BddphmGAKats9zwN/XIxD0TSS3s4=
+	t=1725530144; cv=none; b=eneqZRXT3jpg8ax0Tbe9mBclsL+a4uF849DI/nHQOZUA05KKldhhpJbqOBpQLBJlXvQ8SqOBW7vgQGPhwiHUAGaCs0zzvhLornjLH1hjYTm6t2XGWv49s/fFUxpHppEmtVDhD0BAIPG/TKAmrK3x786ZnhtBUg4fyy0r4kQny7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529648; c=relaxed/simple;
-	bh=b/O/VayLELR+U3J5jK7dlrsRrv6Q6Rrp0bnbYT00yyU=;
+	s=arc-20240116; t=1725530144; c=relaxed/simple;
+	bh=3djIWIBkZZsDqF/uaHa2Uy2uqb2ayR3UHWt+N1r6qAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovH2J0tzuvEBZcqpP5xtBdBfaVUeSZykuHqloJ0DHY8Ibx0Usdf71obdS27erma7zrl4u+EVLEtmugagPQX469qxq1KmpRpgxqLYs/L+QEOBFiJ6zZkmfmrfpIGQQS3dWnuYFlf3WNrNnMgsm2XjhmVf3OGPMyrzxPFWfBu9QXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd1YeiKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A67C4CEC3;
-	Thu,  5 Sep 2024 09:47:27 +0000 (UTC)
+	 MIME-Version; b=L/DJLvK7bYsX+9ncvZ/Z+cIMN1rmSefnbfW2/oXQoNGahsQR5pYFAySfkHh/YhMcjfqqX55xPCHgVUjIzRs7JMfnUw67JbHrsHC3vpcaOtkoWDp5aCSiC9WXTQSQp+l/HdsxyR3MGNSAzxqr+aEm95W2RBhi/eV9pFQ5DbjaE/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywVLORL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6F8C4CEC3;
+	Thu,  5 Sep 2024 09:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529648;
-	bh=b/O/VayLELR+U3J5jK7dlrsRrv6Q6Rrp0bnbYT00yyU=;
+	s=korg; t=1725530144;
+	bh=3djIWIBkZZsDqF/uaHa2Uy2uqb2ayR3UHWt+N1r6qAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yd1YeiKRgNf4GBzXzz5rHFOQV2KTaNndXBMmVxeox+AlQirZEXNUyuebtiLGzNjem
-	 OIRcq458o8NXEDDqbb0oWTIEyvmCilGU4wNq7JypuRA3WhNAImZqK2lUbYWb2O3WPM
-	 jNIGOiZLk+L8VbR2s0I7t31ltrqSsKS/aDpKtKUQ=
+	b=ywVLORL5TVwZn0lGVpt68QuRcc8ZpZkxTWpmUlpxb26AqwgAoco+TkkyAcoqARLkk
+	 +6rw3HWUD2absOD3TnP/oXdNpyAu6nbqPy56DhwezBC1RqqGSruEd2gRLwY9LPnliv
+	 Edk7akXhnfDtg+JhPcFI1+mCwc+kev2i4TKMWSz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 100/184] drm/amdgpu/pm: Check input value for CUSTOM profile mode setting on legacy SOCs
+Subject: [PATCH 6.6 026/132] selftests: mptcp: userspace pm get addr tests
 Date: Thu,  5 Sep 2024 11:40:13 +0200
-Message-ID: <20240905093736.142347266@linuxfoundation.org>
+Message-ID: <20240905093723.253866229@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit df0a9bd92fbbd3fcafcb2bce6463c9228a3e6868 ]
+[ Upstream commit 4cc5cc7ca052c816e20ed0cbc160299b454cbb75 ]
 
-Check the input value for CUSTOM profile mode setting on legacy
-SOCs. Otherwise we may use uninitalized value of input[]
+This patch adds a new helper userspace_pm_get_addr() in mptcp_join.sh.
+In it, parse the token value from the output of 'pm_nl_ctl events', then
+pass it to pm_nl_ctl get_addr command. Use this helper in userspace pm
+dump tests.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e93681afcb96 ("selftests: mptcp: join: cannot rm sf if closed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 2 +-
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c | 8 ++++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index f1c369945ac5..bc27a70a1224 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5641,7 +5641,7 @@ static int smu7_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, uint
- 	mode = input[size];
- 	switch (mode) {
- 	case PP_SMC_POWER_PROFILE_CUSTOM:
--		if (size < 8 && size != 0)
-+		if (size != 8 && size != 0)
- 			return -EINVAL;
- 		/* If only CUSTOM is passed in, use the saved values. Check
- 		 * that we actually have a CUSTOM profile by ensuring that
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-index bf1b829f9d68..baf251fe5d82 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-@@ -4102,9 +4102,11 @@ static int vega20_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, ui
- 	if (power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
- 		struct vega20_hwmgr *data =
- 			(struct vega20_hwmgr *)(hwmgr->backend);
--		if (size == 0 && !data->is_custom_profile_set)
-+
-+		if (size != 10 && size != 0)
- 			return -EINVAL;
--		if (size < 10 && size != 0)
-+
-+		if (size == 0 && !data->is_custom_profile_set)
- 			return -EINVAL;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index df071b8c675fb..f03df10947c15 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3454,6 +3454,18 @@ userspace_pm_dump()
+ 	ip netns exec $1 ./pm_nl_ctl dump token $tk
+ }
  
- 		result = vega20_get_activity_monitor_coeff(hwmgr,
-@@ -4166,6 +4168,8 @@ static int vega20_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, ui
- 			activity_monitor.Fclk_PD_Data_error_coeff = input[8];
- 			activity_monitor.Fclk_PD_Data_error_rate_coeff = input[9];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
++# $1: ns ; $2: id
++userspace_pm_get_addr()
++{
++	local evts=$evts_ns1
++	local tk
++
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(mptcp_lib_evts_get_info token "$evts")
++
++	ip netns exec $1 ./pm_nl_ctl get $2 token $tk
++}
++
+ userspace_pm_chk_dump_addr()
+ {
+ 	local ns="${1}"
+@@ -3469,6 +3481,21 @@ userspace_pm_chk_dump_addr()
+ 	fi
+ }
  
- 		result = vega20_set_activity_monitor_coeff(hwmgr,
++userspace_pm_chk_get_addr()
++{
++	local ns="${1}"
++	local id="${2}"
++	local exp="${3}"
++
++	print_check "get id ${id} addr"
++
++	if mptcp_lib_kallsyms_has "mptcp_userspace_pm_get_addr$"; then
++		check_output "userspace_pm_get_addr ${ns} ${id}" "${exp}"
++	else
++		print_skip
++	fi
++}
++
+ userspace_tests()
+ {
+ 	# userspace pm type prevents add_addr
+@@ -3563,6 +3590,8 @@ userspace_tests()
+ 		userspace_pm_chk_dump_addr "${ns1}" \
+ 			$'id 10 flags signal 10.0.2.1\nid 20 flags signal 10.0.3.1' \
+ 			"signal"
++		userspace_pm_chk_get_addr "${ns1}" "10" "id 10 flags signal 10.0.2.1"
++		userspace_pm_chk_get_addr "${ns1}" "20" "id 20 flags signal 10.0.3.1"
+ 		userspace_pm_rm_addr $ns1 10
+ 		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns1}" \
+@@ -3593,6 +3622,7 @@ userspace_tests()
+ 		userspace_pm_chk_dump_addr "${ns2}" \
+ 			"id 20 flags subflow 10.0.3.2" \
+ 			"subflow"
++		userspace_pm_chk_get_addr "${ns2}" "20" "id 20 flags subflow 10.0.3.2"
+ 		userspace_pm_rm_addr $ns2 20
+ 		userspace_pm_rm_sf $ns2 10.0.3.2 $SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns2}" \
 -- 
 2.43.0
 
