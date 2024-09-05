@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C8096D4D5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC71A96D475
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F94A1F2901A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9B53281737
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A46019885E;
-	Thu,  5 Sep 2024 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F83E194AC7;
+	Thu,  5 Sep 2024 09:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn6j9Jiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGKhIBG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7A318D65E;
-	Thu,  5 Sep 2024 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72D192D73;
+	Thu,  5 Sep 2024 09:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530202; cv=none; b=T4yYC3R7DcGRv31CN/oNWuBCGmnPmkyu4dKQ9gSOIgmGtz9FqkM0Xj+joaKdH2/Kli02JVBANL2Ssc1M95Gc+4pudRQFLyp6DTyL1k8UB/R7/lmj48cEIy48j8PbgOI7CCbijDhgJ5FlBGIFxDGvdqlBmOE1cDSAgVy/wg9CHqU=
+	t=1725529927; cv=none; b=nkY90B1oPOd3cgpH8U7LCGM7yU49sng+vXR/sAUOB/zekHrjhQJQA9PYhxVIGu9BsryKpZSokkzfJma0WEFaVI4hVUGS79itmlgR6z/LJzqA9H876miZK4UR13kx4dyXeEBvDXfhpeLIgR08cqhztfI0bb19+r0JS9mXqRXyWEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530202; c=relaxed/simple;
-	bh=Tzg7GCgchOrTiCTMgu1eV/gCn+ukljqAS1ljV3b/ABE=;
+	s=arc-20240116; t=1725529927; c=relaxed/simple;
+	bh=2qYum8MBUdIQqxsdl0EuxZ8fbcY8J+THhvYPuo1d1PM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQGeKE81HMk6xnbZ+LJKVJ1py5DoQBekFXHwSk+as2gu8zK1/X1wA/f8SH4U+NlV1txQdWk6W2KbGopAYkTXSqQP3IW6Jt1yPMW7VoWUuDmPoqRx/OJRr0jI4dWdHD9Wbqrs3b1gBjbUrjzFdmgcJKMKSk7wsWNGriymfI80swQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn6j9Jiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DFFC4CEC7;
-	Thu,  5 Sep 2024 09:56:41 +0000 (UTC)
+	 MIME-Version; b=pSYqow2UGr4XwwUK4Cl0omYJcABvLKe0DELmb0iCLw+VmvME+d3ltlgW7qSlRnPnVQe+PzRggupt7nq5+UCKTbieZz4Ijmr+lHwpvBJg71mm+hCa3N9/x2ftBYVmLeB25VJb8JCMIQCyaqsnIELKgFWMIdry8Y405vbbZ3w7L/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGKhIBG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91EBC4CEC6;
+	Thu,  5 Sep 2024 09:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530201;
-	bh=Tzg7GCgchOrTiCTMgu1eV/gCn+ukljqAS1ljV3b/ABE=;
+	s=korg; t=1725529927;
+	bh=2qYum8MBUdIQqxsdl0EuxZ8fbcY8J+THhvYPuo1d1PM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zn6j9JivPUDnot0k+JXHY9FIkWpimblGQQGs5fVYbfzanNkQNr42EqUeL2DgQc+8U
-	 3imTpE7bAK7hHhSP9QepoAcL41Br/rCu8UqesHC7LjHyTPlSFK13yE8OGY+mcyCYJo
-	 7UoJAMqATMLnks8rJ+sH94jdx8W+PpNZcRyjadG8=
+	b=RGKhIBG5cN0FQB1ylmb8Nu9SVMWo/Zgqxz/N8EX4p4oNkc4VaQ7bGRbWa8YYscg42
+	 ivJPNFWdF4aHpeE2Lp3wWtX707yVMDymLlUSqB7onxReu/rhjFFifq1tBVvT7SyAxy
+	 CWd/3tmaztT1PZkI0haWIvposA1WFNwCCjoRsjcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/132] drm/amd/pm: check negtive return for table entries
+Subject: [PATCH 6.10 159/184] f2fs: fix to do sanity check on blocks for inline_data inode
 Date: Thu,  5 Sep 2024 11:41:12 +0200
-Message-ID: <20240905093725.556020308@linuxfoundation.org>
+Message-ID: <20240905093738.550068365@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
+[ Upstream commit c240c87bcd44a1a2375fc8ef8c645d1f1fe76466 ]
 
-Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
+inode can be fuzzed, so it can has F2FS_INLINE_DATA flag and valid
+i_blocks/i_nid value, this patch supports to do extra sanity check
+to detect such corrupted state.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ fs/f2fs/f2fs.h   |  2 +-
+ fs/f2fs/inline.c | 20 +++++++++++++++++++-
+ fs/f2fs/inode.c  |  2 +-
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-index f4bd8e9357e2..18f00038d844 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 5556ab491368..92fda31c68cd 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -4154,7 +4154,7 @@ extern struct kmem_cache *f2fs_inode_entry_slab;
+  * inline.c
+  */
+ bool f2fs_may_inline_data(struct inode *inode);
+-bool f2fs_sanity_check_inline_data(struct inode *inode);
++bool f2fs_sanity_check_inline_data(struct inode *inode, struct page *ipage);
+ bool f2fs_may_inline_dentry(struct inode *inode);
+ void f2fs_do_read_inline_data(struct folio *folio, struct page *ipage);
+ void f2fs_truncate_inline_inode(struct inode *inode,
+diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
+index 215daa71dc18..cca7d448e55c 100644
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -33,11 +33,29 @@ bool f2fs_may_inline_data(struct inode *inode)
+ 	return !f2fs_post_read_required(inode);
+ }
+ 
+-bool f2fs_sanity_check_inline_data(struct inode *inode)
++static bool inode_has_blocks(struct inode *inode, struct page *ipage)
++{
++	struct f2fs_inode *ri = F2FS_INODE(ipage);
++	int i;
++
++	if (F2FS_HAS_BLOCKS(inode))
++		return true;
++
++	for (i = 0; i < DEF_NIDS_PER_INODE; i++) {
++		if (ri->i_nid[i])
++			return true;
++	}
++	return false;
++}
++
++bool f2fs_sanity_check_inline_data(struct inode *inode, struct page *ipage)
  {
- 	int result;
- 	unsigned int i;
--	unsigned int table_entries;
- 	struct pp_power_state *state;
--	int size;
-+	int size, table_entries;
+ 	if (!f2fs_has_inline_data(inode))
+ 		return false;
  
- 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
- 		return 0;
-@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
- 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
- 		return 0;
++	if (inode_has_blocks(inode, ipage))
++		return false;
++
+ 	if (!support_inline_data(inode))
+ 		return true;
  
--	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
-+	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
- 
--	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
-+	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
- 					  sizeof(struct pp_power_state);
- 
--	if (table_entries == 0 || size == 0) {
-+	if (table_entries <= 0 || size == 0) {
- 		pr_warn("Please check whether power state management is supported on this asic\n");
-+		hwmgr->num_ps = 0;
-+		hwmgr->ps_size = 0;
- 		return 0;
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index ed629dabbfda..57da02bfa823 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -347,7 +347,7 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
+ 		}
  	}
-+	hwmgr->num_ps = table_entries;
-+	hwmgr->ps_size = size;
  
- 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
- 	if (hwmgr->ps == NULL)
+-	if (f2fs_sanity_check_inline_data(inode)) {
++	if (f2fs_sanity_check_inline_data(inode, node_page)) {
+ 		f2fs_warn(sbi, "%s: inode (ino=%lx, mode=%u) should not have inline_data, run fsck to fix",
+ 			  __func__, inode->i_ino, inode->i_mode);
+ 		return false;
 -- 
 2.43.0
 
