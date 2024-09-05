@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D0796D41E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C2096D48A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719021F21CA3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0FB8B24323
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE680198E90;
-	Thu,  5 Sep 2024 09:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3F71991AB;
+	Thu,  5 Sep 2024 09:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpVqP7eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrU6rqqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B43C19884A;
-	Thu,  5 Sep 2024 09:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811C198E85;
+	Thu,  5 Sep 2024 09:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529715; cv=none; b=bELX3HlKn5AXEK4oVjbivSicNV7ppEDtX96nRC0+CNodBtxOCXO6pIOwsTv8NLWw3haEZ8pWinrfqP3cXv9wCKyWJtXfZgRo0WTbSd9u2qfovpL/jVE3T8zmh01wtB773OIUY2N0QOHvAZjotmeKafUenED5hFB1b0na2ojWq0g=
+	t=1725529984; cv=none; b=VPaX2N8bGZ2Xlnn8E8l1fHv1M9fJuTJWpUBTVmicmyTNon16vEDEyYgePN0Y+6GUBuzEPZa7j9iQhiRFyaf1EqBSA7M2mF++7tb0Jy4bb2nOjGwX2uTuRLQKQfjhgnmiIkj7G9Mr8CjEOpiW/eeokPLEdDi0Atuw6bgBb+gT0Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529715; c=relaxed/simple;
-	bh=z6aIbhkez88722s3WPZM5k4/X8bXBH4pv50yZvr4vPA=;
+	s=arc-20240116; t=1725529984; c=relaxed/simple;
+	bh=dL3s2iTxUrc99jcPDZg7LhDu5r1O8JxE1CWDJPqtnc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FO5XkQ5ifdHY5e5XbHAW+2pwjYH+xDzuw5kaQIqQhWYEffmh4+Uki+SXaoM0mO7wWAZZmf31XGz0jTsWY4spkG12jhu0vfnAfZKGyEJViA3nFWVL1sMTIag/8G+hM62AdI1eIirUag3RRP/GBkIkuhN+kj58O+q4WJfbcA+ZcnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpVqP7eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20CAC4CEC3;
-	Thu,  5 Sep 2024 09:48:34 +0000 (UTC)
+	 MIME-Version; b=KxXIeACUldO5inqpnGplgsSI6+cYk56hCKR/1sKyJAfUpVdPpGvg2qaxrhRn0zm4Bb5EJ8ft5NZZ8Fq0q1XS5LrhH0deGD4NyG906kdzLxtWDwScl2IrH1qOJKR4QuSMELo1h5T781zVYdEiBppKYBzw0vX6WVxqA8nHXE6Yv4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrU6rqqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3810C4CEC3;
+	Thu,  5 Sep 2024 09:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529715;
-	bh=z6aIbhkez88722s3WPZM5k4/X8bXBH4pv50yZvr4vPA=;
+	s=korg; t=1725529984;
+	bh=dL3s2iTxUrc99jcPDZg7LhDu5r1O8JxE1CWDJPqtnc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpVqP7ebAzDcb7TfRU3dYU13gKLV4JPQsO7OA2k7ObXLKfAiubGwOm1nAoJJhc/mH
-	 BJkhFAE5lpa4cfRAd8OXnKFrafhZy3jzoCq6VeslDIsNafNsFGifjFXbmiHkph8Wt5
-	 qcDmz/xU0ODF/NL6CLNappJMxjN/zYHNAo0xcVq4=
+	b=OrU6rqqY6EfKFH98hw/cnjmuELm33S7wTVKds/jz6vjnBjGyqKYFqWPIZGm82qoVg
+	 hOZeCQZ/vUkQqgS+xY0uHzxW8DCV191Dcj/H5kxuZJB4vZ7LCBryOCSB18pF7BzuMZ
+	 dxvxz7TRBzNhWTAl2qM9y3+CZ+ji9Rrc86ziMAO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	ZHANG Yuntian <yt@radxa.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 093/184] drm/amdgpu: fix mc_data out-of-bounds read warning
+Subject: [PATCH 6.6 019/132] net: usb: qmi_wwan: add MeiG Smart SRM825L
 Date: Thu,  5 Sep 2024 11:40:06 +0200
-Message-ID: <20240905093735.872299249@linuxfoundation.org>
+Message-ID: <20240905093722.985118453@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: ZHANG Yuntian <yt@radxa.com>
 
-[ Upstream commit 51dfc0a4d609fe700750a62f41447f01b8c9ea50 ]
+[ Upstream commit 1ca645a2f74a4290527ae27130c8611391b07dbf ]
 
-Clear warning that read mc_data[i-1] may out-of-bounds.
+Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=6f345e48
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: ZHANG Yuntian <yt@radxa.com>
+Link: https://patch.msgid.link/D1EB81385E405DFE+20240803074656.567061-1-yt@radxa.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index 52b12c1718eb..7dc102f0bc1d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -1484,6 +1484,8 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
- 										(u32)le32_to_cpu(*((u32 *)reg_data + j));
- 									j++;
- 								} else if ((reg_table->mc_reg_address[i].pre_reg_data & LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
-+									if (i == 0)
-+										continue;
- 									reg_table->mc_reg_table_entry[num_ranges].mc_data[i] =
- 										reg_table->mc_reg_table_entry[num_ranges].mc_data[i - 1];
- 								}
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index b1380cf1b13ab..92c1500fa7c44 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1438,6 +1438,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
+ 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
++	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
+ 
+ 	/* 4. Gobi 1000 devices */
+ 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
 -- 
 2.43.0
 
