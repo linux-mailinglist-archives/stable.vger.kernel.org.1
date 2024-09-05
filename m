@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408FD96D487
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D0796D41E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88901F24205
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719021F21CA3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1A11990B3;
-	Thu,  5 Sep 2024 09:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE680198E90;
+	Thu,  5 Sep 2024 09:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUsyW9ZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpVqP7eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594BA198A29;
-	Thu,  5 Sep 2024 09:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B43C19884A;
+	Thu,  5 Sep 2024 09:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529981; cv=none; b=VJ03JnW6HQOSHnfzyy8q8XVfXOFNpQmul14M+NRrPbpzRjYEzb1YAID4XRLnAfqx6FPg9iNS8Rmkd768a6tRZZ2NEgQkdNycni87gxhjmOID9x66nmC0lvpNavJv7PiaTXDOCVnktS/DDig0JN5OAOMRR32oZsREG1w9/likARw=
+	t=1725529715; cv=none; b=bELX3HlKn5AXEK4oVjbivSicNV7ppEDtX96nRC0+CNodBtxOCXO6pIOwsTv8NLWw3haEZ8pWinrfqP3cXv9wCKyWJtXfZgRo0WTbSd9u2qfovpL/jVE3T8zmh01wtB773OIUY2N0QOHvAZjotmeKafUenED5hFB1b0na2ojWq0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529981; c=relaxed/simple;
-	bh=qray2agbWyWzRUE0tAqv4R6ktGTfj+FNmECvnpdCrfE=;
+	s=arc-20240116; t=1725529715; c=relaxed/simple;
+	bh=z6aIbhkez88722s3WPZM5k4/X8bXBH4pv50yZvr4vPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3RuiH6s65UtBvw43BI/X5ieQZ+Fnx2Dj8ktCRMqzm2JNvTbBYIr37l1JrBI8yA9Up+Ww/MXCBgGgZZiUy4+BVgKoJ7QMYeO5hmg98gQWzHvf0NSsE1VrXawshfsIL354xfVlfr1OJGuB6PBYdfw/t6g3F2f53iYgNMiedWkH4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUsyW9ZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE82C4CEC3;
-	Thu,  5 Sep 2024 09:53:00 +0000 (UTC)
+	 MIME-Version; b=FO5XkQ5ifdHY5e5XbHAW+2pwjYH+xDzuw5kaQIqQhWYEffmh4+Uki+SXaoM0mO7wWAZZmf31XGz0jTsWY4spkG12jhu0vfnAfZKGyEJViA3nFWVL1sMTIag/8G+hM62AdI1eIirUag3RRP/GBkIkuhN+kj58O+q4WJfbcA+ZcnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpVqP7eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20CAC4CEC3;
+	Thu,  5 Sep 2024 09:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529981;
-	bh=qray2agbWyWzRUE0tAqv4R6ktGTfj+FNmECvnpdCrfE=;
+	s=korg; t=1725529715;
+	bh=z6aIbhkez88722s3WPZM5k4/X8bXBH4pv50yZvr4vPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUsyW9ZQJNfodHCSHuVxQD3coTit82lvUzGX1c2h+E0XOLBkVK/NZFMsbSTQN2yO8
-	 1AMnS6pR+UQxEPJtIknO2A1u41V/siM5AID01y4pfaR7CsPqdvsEF7Sl8nWxhi7hMA
-	 0pRSj0bgpmfvH/4cw5xf4eG78DMxz1ZFDtL0GcLI=
+	b=JpVqP7ebAzDcb7TfRU3dYU13gKLV4JPQsO7OA2k7ObXLKfAiubGwOm1nAoJJhc/mH
+	 BJkhFAE5lpa4cfRAd8OXnKFrafhZy3jzoCq6VeslDIsNafNsFGifjFXbmiHkph8Wt5
+	 qcDmz/xU0ODF/NL6CLNappJMxjN/zYHNAo0xcVq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Konstantin Ovsepian <ovs@meta.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/132] dma-debug: avoid deadlock between dma debug vs printk and netconsole
-Date: Thu,  5 Sep 2024 11:40:05 +0200
-Message-ID: <20240905093722.947216572@linuxfoundation.org>
+Subject: [PATCH 6.10 093/184] drm/amdgpu: fix mc_data out-of-bounds read warning
+Date: Thu,  5 Sep 2024 11:40:06 +0200
+Message-ID: <20240905093735.872299249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit bd44ca3de49cc1badcff7a96010fa2c64f04868c ]
+[ Upstream commit 51dfc0a4d609fe700750a62f41447f01b8c9ea50 ]
 
-Currently the dma debugging code can end up indirectly calling printk
-under the radix_lock. This happens when a radix tree node allocation
-fails.
+Clear warning that read mc_data[i-1] may out-of-bounds.
 
-This is a problem because the printk code, when used together with
-netconsole, can end up inside the dma debugging code while trying to
-transmit a message over netcons.
-
-This creates the possibility of either a circular deadlock on the same
-CPU, with that CPU trying to grab the radix_lock twice, or an ABBA
-deadlock between different CPUs, where one CPU grabs the console lock
-first and then waits for the radix_lock, while the other CPU is holding
-the radix_lock and is waiting for the console lock.
-
-The trace captured by lockdep is of the ABBA variant.
-
--> #2 (&dma_entry_hash[i].lock){-.-.}-{2:2}:
-                  _raw_spin_lock_irqsave+0x5a/0x90
-                  debug_dma_map_page+0x79/0x180
-                  dma_map_page_attrs+0x1d2/0x2f0
-                  bnxt_start_xmit+0x8c6/0x1540
-                  netpoll_start_xmit+0x13f/0x180
-                  netpoll_send_skb+0x20d/0x320
-                  netpoll_send_udp+0x453/0x4a0
-                  write_ext_msg+0x1b9/0x460
-                  console_flush_all+0x2ff/0x5a0
-                  console_unlock+0x55/0x180
-                  vprintk_emit+0x2e3/0x3c0
-                  devkmsg_emit+0x5a/0x80
-                  devkmsg_write+0xfd/0x180
-                  do_iter_readv_writev+0x164/0x1b0
-                  vfs_writev+0xf9/0x2b0
-                  do_writev+0x6d/0x110
-                  do_syscall_64+0x80/0x150
-                  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
--> #0 (console_owner){-.-.}-{0:0}:
-                  __lock_acquire+0x15d1/0x31a0
-                  lock_acquire+0xe8/0x290
-                  console_flush_all+0x2ea/0x5a0
-                  console_unlock+0x55/0x180
-                  vprintk_emit+0x2e3/0x3c0
-                  _printk+0x59/0x80
-                  warn_alloc+0x122/0x1b0
-                  __alloc_pages_slowpath+0x1101/0x1120
-                  __alloc_pages+0x1eb/0x2c0
-                  alloc_slab_page+0x5f/0x150
-                  new_slab+0x2dc/0x4e0
-                  ___slab_alloc+0xdcb/0x1390
-                  kmem_cache_alloc+0x23d/0x360
-                  radix_tree_node_alloc+0x3c/0xf0
-                  radix_tree_insert+0xf5/0x230
-                  add_dma_entry+0xe9/0x360
-                  dma_map_page_attrs+0x1d2/0x2f0
-                  __bnxt_alloc_rx_frag+0x147/0x180
-                  bnxt_alloc_rx_data+0x79/0x160
-                  bnxt_rx_skb+0x29/0xc0
-                  bnxt_rx_pkt+0xe22/0x1570
-                  __bnxt_poll_work+0x101/0x390
-                  bnxt_poll+0x7e/0x320
-                  __napi_poll+0x29/0x160
-                  net_rx_action+0x1e0/0x3e0
-                  handle_softirqs+0x190/0x510
-                  run_ksoftirqd+0x4e/0x90
-                  smpboot_thread_fn+0x1a8/0x270
-                  kthread+0x102/0x120
-                  ret_from_fork+0x2f/0x40
-                  ret_from_fork_asm+0x11/0x20
-
-This bug is more likely than it seems, because when one CPU has run out
-of memory, chances are the other has too.
-
-The good news is, this bug is hidden behind the CONFIG_DMA_API_DEBUG, so
-not many users are likely to trigger it.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reported-by: Konstantin Ovsepian <ovs@meta.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 06366acd27b08..e472cc37d7de4 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -415,8 +415,11 @@ static unsigned long long phys_addr(struct dma_debug_entry *entry)
-  * dma_active_cacheline entry to track per event.  dma_map_sg(), on the
-  * other hand, consumes a single dma_debug_entry, but inserts 'nents'
-  * entries into the tree.
-+ *
-+ * Use __GFP_NOWARN because the printk from an OOM, to netconsole, could end
-+ * up right back in the DMA debugging code, leading to a deadlock.
-  */
--static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC);
-+static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC | __GFP_NOWARN);
- static DEFINE_SPINLOCK(radix_lock);
- #define ACTIVE_CACHELINE_MAX_OVERLAP ((1 << RADIX_TREE_MAX_TAGS) - 1)
- #define CACHELINE_PER_PAGE_SHIFT (PAGE_SHIFT - L1_CACHE_SHIFT)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+index 52b12c1718eb..7dc102f0bc1d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+@@ -1484,6 +1484,8 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
+ 										(u32)le32_to_cpu(*((u32 *)reg_data + j));
+ 									j++;
+ 								} else if ((reg_table->mc_reg_address[i].pre_reg_data & LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
++									if (i == 0)
++										continue;
+ 									reg_table->mc_reg_table_entry[num_ranges].mc_data[i] =
+ 										reg_table->mc_reg_table_entry[num_ranges].mc_data[i - 1];
+ 								}
 -- 
 2.43.0
 
