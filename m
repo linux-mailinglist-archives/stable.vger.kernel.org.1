@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA0D96D524
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FCC96D4AF
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC161B26F3E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513A2285815
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6942A194A5A;
-	Thu,  5 Sep 2024 10:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02810194A45;
+	Thu,  5 Sep 2024 09:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiOE4Vcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/qXg1zv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B41494DB;
-	Thu,  5 Sep 2024 10:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A7F154BFF;
+	Thu,  5 Sep 2024 09:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530446; cv=none; b=Ihe/aqIJKs2YmGGEhhIyacWy3OUF3lHEVhFCoJN5h/JRsXqyVpktUNvLY53fwdCtWjS8MeOVU0kVgdlbvehu+rupyLwBASeURXR6ePvdB+Jxg8iqii9UCAdEz0hLBckUh7q8X5NiFxFqkmE8/g06+SsA/yiLPCcTpecSdl/8+/w=
+	t=1725530094; cv=none; b=kg3KT11IBrnSbLUF83pwcpTbb0DBMuLcKyJY/hWUDcsmKGZ3EtCipReX1n7s9Q7bd6mjW1Dha4QgWBnIH4A9y9iyK9xsZMTrIGqvl7/aYelDkGXthV86BEip8IoNto48QC7g3/1qyfoS6vxhdiKyB5zDvFgHiH7n1XZMedg8ikY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530446; c=relaxed/simple;
-	bh=sAN0jvCxy1ZTHsGtDjImIZbq/mwenw/OU5szRMHcis4=;
+	s=arc-20240116; t=1725530094; c=relaxed/simple;
+	bh=+DFEFbVQzSIniQXB98Rio89+sxQDTOqxBnEQLoJyFMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1l7WM7Yi9VVDpefoWovjcGm1i+AcN3mudxTAXkl74tb17mCKlIIP5w1lyzgWHJmnAPPTfV/j/dY1c0PAesacNBYFttIiBt+B6Z8l2I0i7o4OwJ9C2+r7Pm2MFQx6gey0ZRZV7hwe9csykre61oMZUAA7qbuI7POawKEsQM4L2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiOE4Vcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AEBC4CEC3;
-	Thu,  5 Sep 2024 10:00:45 +0000 (UTC)
+	 MIME-Version; b=u2s3dq6nVuBDcvUM6OMRR/6RRGBye/f+7Md+Au1zn2yhtIMxkYmFjoVzakwPWWUtx/myRiSER2WBTuqnuQ0vyxfo+dwxzK8VQNVaRlu3+xc0C3EIhmEUUYJ9ztnLUJQIK9C53m19jJDw/ajTsHANce6Y2ypL/9aoS/aEVjyLfTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/qXg1zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2F1C4CEC3;
+	Thu,  5 Sep 2024 09:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530446;
-	bh=sAN0jvCxy1ZTHsGtDjImIZbq/mwenw/OU5szRMHcis4=;
+	s=korg; t=1725530094;
+	bh=+DFEFbVQzSIniQXB98Rio89+sxQDTOqxBnEQLoJyFMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wiOE4VcbNC0SpTnRmTlOlq32cNv7D8qryl47S6wy2Od4WgpilJJv6QLD4lkgStGj3
-	 S3Hodc3JejcL3H0++Mdv47YiXyO7Iu+/6ikdG79qu5cvpLe0Gcb45bjRUrhD0X7ij0
-	 Q5fTBMLvZBFb43/MgOj1k5B+E3ICd4PB0oUqicjs=
+	b=m/qXg1zvrIXlT9StTY/bK4fJi5MGBKz3vfdZed+sDFnOiO4efXTWU69R5tRn+VqvR
+	 0bgWXlkbHTKbbRSdPQ4Uj89qPiLUHFLyBUgUp2wHd+kLe+x+wTcCBYoMwjcnJGoSgG
+	 v9CFraHSTYEW+p1QPHEKUPfDGXqwLzkpQo6ukNXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZHANG Yuntian <yt@radxa.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/101] net: usb: qmi_wwan: add MeiG Smart SRM825L
+Subject: [PATCH 6.6 052/132] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
 Date: Thu,  5 Sep 2024 11:40:39 +0200
-Message-ID: <20240905093716.368578856@linuxfoundation.org>
+Message-ID: <20240905093724.281685973@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZHANG Yuntian <yt@radxa.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 1ca645a2f74a4290527ae27130c8611391b07dbf ]
+[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
 
-Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
+[Why]
+Coverity reports OVERRUN warning. Should abort amdgpu_dm
+initialize.
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=6f345e48
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+[How]
+Return failure to amdgpu_dm_init.
 
-Signed-off-by: ZHANG Yuntian <yt@radxa.com>
-Link: https://patch.msgid.link/D1EB81385E405DFE+20240803074656.567061-1-yt@radxa.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index ee0ea3d0f50ee..72a2c41b9dbf8 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1436,6 +1436,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
- 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
-+	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 94059aef762b..37f79ae0b6c2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4357,7 +4357,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
  
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+ 	/* There is one primary plane per CRTC */
+ 	primary_planes = dm->dc->caps.max_streams;
+-	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
++	if (primary_planes > AMDGPU_MAX_PLANES) {
++		DRM_ERROR("DM: Plane nums out of 6 planes\n");
++		return -EINVAL;
++	}
+ 
+ 	/*
+ 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
 -- 
 2.43.0
 
