@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-73281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB1F96D422
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65C396D4A6
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB46280D32
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505621F28144
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407DA19754A;
-	Thu,  5 Sep 2024 09:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84AE198822;
+	Thu,  5 Sep 2024 09:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gglP0mOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anmC3p2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55B2154BFF;
-	Thu,  5 Sep 2024 09:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E9D14A08E;
+	Thu,  5 Sep 2024 09:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529722; cv=none; b=nOGpTR5ih9ZqN8a/PhmFEWvrZ2O4kOQPIWOhtQ3FHOGIfalJ8Szf3RhUiy9VDoVcbWYt38vSrkqYuCARui1yCJEskPzfJkxHrkVHtKXRee70uhowA0wqiRjpjlvhKatf7nF9ybR+iXUVzECbQetuvejoLfBpZrNHZe0+1zvJQsU=
+	t=1725530078; cv=none; b=BY40f5eEifNp4dBQZ7Y5abWpy1tOnwycD9jblXOu38G+rgvsaNN88IuxxDpyG/DHEP3X2WzlFSBY8dK/T2+tcnUEi/bzu40ZCrrVerKo9fMtW6PjNbNzBLUlSZ3uUD5eVg0IlYbTFBKH92yHL+GkgtptIn3NeyzyzuVv6ccO2ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529722; c=relaxed/simple;
-	bh=JxNV5WRdFeRwDfYBaK04mMSB++PM6e+t1pzqWj/Mtj8=;
+	s=arc-20240116; t=1725530078; c=relaxed/simple;
+	bh=sIWneJp+1Ow9PWIX8KxRXZW3rBa/iUxJ5k76PNIXVXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qvedn8lp85YCyt+cAse5AT3tPKAZI/eVnFKW0c7i7BMry0bGrcjjGWoBx33CxBfC+4vu6wO2u4RCvdgG01RxQXiJgPNCs1jXBcrQNPggx7kFh1wEaJzgUe/IZ9iQJ7/7i7sbW13tCTNmN+/4gdtoF+nLNGh3Mh8aDivVQiGOLto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gglP0mOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64608C4CEC3;
-	Thu,  5 Sep 2024 09:48:41 +0000 (UTC)
+	 MIME-Version; b=iLdi0rQDUiSi8C+a4PypTp9lSErk8JaN/iA/PSIuDO7VJFVm7e5Q4U3/pf0ExPi9eNisYHuvXtkDpEtP4Zwdj6AQcHwD10KF5BXdT2x6YvjZDxAK1SYRvLXiPb4HKtme9MZVhuENJCazSIQbbVip1O2Y60ZsQXZ12XCuQO2tzjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anmC3p2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B629CC4CEC4;
+	Thu,  5 Sep 2024 09:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529721;
-	bh=JxNV5WRdFeRwDfYBaK04mMSB++PM6e+t1pzqWj/Mtj8=;
+	s=korg; t=1725530078;
+	bh=sIWneJp+1Ow9PWIX8KxRXZW3rBa/iUxJ5k76PNIXVXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gglP0mOLfsr/5GXFayPObTIYDz4w0SWgiHgRYSGuLKbfdlMn2RFtJqzkhLZGBto3H
-	 vbx3uQzDhgGocH9Ij4sCGO3J4qXaSM3jsiyoVxf37Bs+9Ax3xwF6yMXFj08w+fLJ/z
-	 fSEql1klko5EeHYd8wGEoL8eK/s+/xHGeOhV7P9o=
+	b=anmC3p2FIRmbpPcCVjz2R8Rlbdzfug9/cFdUdQFLrOVJ9HCt5rdypjtqcwH3X30kP
+	 cwwPD7Z5tmMZyKGLewbBroxiL77QoDrZFvEfZZgOdXBE6nftp322IoPvJyFkR89mR8
+	 7F8BE2E/bF2EMth8Pw0xh49MFGelsYdHzr8mRwhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 121/184] PCI: al: Check IORESOURCE_BUS existence during probe
+Subject: [PATCH 6.6 047/132] drm/amd/pm: Fix negative array index read
 Date: Thu,  5 Sep 2024 11:40:34 +0200
-Message-ID: <20240905093736.954183405@linuxfoundation.org>
+Message-ID: <20240905093724.088729721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
+[ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
 
-If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
-of_pci_parse_bus_range(), so NULL pointer dereference should not happen
-here.
+Avoid using the negative values
+for clk_idex as an index into an array pptable->DpmDescriptor.
 
-But that's hard to verify, so check for NULL anyway.
+V2: fix clk_index return check (Tim Huang)
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c   | 27 ++++++++++++++-----
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
-index 6dfdda59f328..643115f74092 100644
---- a/drivers/pci/controller/dwc/pcie-al.c
-+++ b/drivers/pci/controller/dwc/pcie-al.c
-@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
- 	.write = pci_generic_config_write,
- };
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index c564f6e191f8..b1b23233635a 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -1222,19 +1222,22 @@ static int navi10_get_current_clk_freq_by_table(struct smu_context *smu,
+ 					   value);
+ }
  
--static void al_pcie_config_prepare(struct al_pcie *pcie)
-+static int al_pcie_config_prepare(struct al_pcie *pcie)
+-static bool navi10_is_support_fine_grained_dpm(struct smu_context *smu, enum smu_clk_type clk_type)
++static int navi10_is_support_fine_grained_dpm(struct smu_context *smu, enum smu_clk_type clk_type)
  {
- 	struct al_pcie_target_bus_cfg *target_bus_cfg;
- 	struct dw_pcie_rp *pp = &pcie->pci->pp;
- 	unsigned int ecam_bus_mask;
-+	struct resource_entry *ft;
- 	u32 cfg_control_offset;
-+	struct resource *bus;
- 	u8 subordinate_bus;
- 	u8 secondary_bus;
- 	u32 cfg_control;
- 	u32 reg;
--	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+ 	DpmDescriptor_t *dpm_desc = NULL;
+-	uint32_t clk_index = 0;
++	int clk_index = 0;
  
-+	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
-+	if (!ft)
-+		return -ENODEV;
+ 	clk_index = smu_cmn_to_asic_specific_index(smu,
+ 						   CMN2ASIC_MAPPING_CLK,
+ 						   clk_type);
++	if (clk_index < 0)
++		return clk_index;
 +
-+	bus = ft->res;
- 	target_bus_cfg = &pcie->target_bus_cfg;
+ 	dpm_desc = &pptable->DpmDescriptor[clk_index];
  
- 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
-@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
- 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
- 
- 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
-+
-+	return 0;
+ 	/* 0 - Fine grained DPM, 1 - Discrete DPM */
+-	return dpm_desc->SnapToDiscrete == 0;
++	return dpm_desc->SnapToDiscrete == 0 ? 1 : 0;
  }
  
- static int al_pcie_host_init(struct dw_pcie_rp *pp)
-@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct dw_pcie_rp *pp)
- 	if (rc)
- 		return rc;
+ static inline bool navi10_od_feature_is_supported(struct smu_11_0_overdrive_table *od_table, enum SMU_11_0_ODFEATURE_CAP cap)
+@@ -1290,7 +1293,11 @@ static int navi10_emit_clk_levels(struct smu_context *smu,
+ 		if (ret)
+ 			return ret;
  
--	al_pcie_config_prepare(pcie);
-+	rc = al_pcie_config_prepare(pcie);
-+	if (rc)
-+		return rc;
+-		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
++		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
++		if (ret < 0)
++			return ret;
++
++		if (!ret) {
+ 			for (i = 0; i < count; i++) {
+ 				ret = smu_v11_0_get_dpm_freq_by_index(smu,
+ 								      clk_type, i, &value);
+@@ -1499,7 +1506,11 @@ static int navi10_print_clk_levels(struct smu_context *smu,
+ 		if (ret)
+ 			return size;
  
- 	return 0;
- }
+-		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
++		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
++		if (ret < 0)
++			return ret;
++
++		if (!ret) {
+ 			for (i = 0; i < count; i++) {
+ 				ret = smu_v11_0_get_dpm_freq_by_index(smu, clk_type, i, &value);
+ 				if (ret)
+@@ -1668,7 +1679,11 @@ static int navi10_force_clk_levels(struct smu_context *smu,
+ 	case SMU_UCLK:
+ 	case SMU_FCLK:
+ 		/* There is only 2 levels for fine grained DPM */
+-		if (navi10_is_support_fine_grained_dpm(smu, clk_type)) {
++		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
++		if (ret < 0)
++			return ret;
++
++		if (ret) {
+ 			soft_max_level = (soft_max_level >= 1 ? 1 : 0);
+ 			soft_min_level = (soft_min_level >= 1 ? 1 : 0);
+ 		}
 -- 
 2.43.0
 
