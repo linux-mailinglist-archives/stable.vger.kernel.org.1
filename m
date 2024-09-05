@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FDFE96D4F2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2CF96D54F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 912131C22E23
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE20A1C216B9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD04A15574C;
-	Thu,  5 Sep 2024 09:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E0619538A;
+	Thu,  5 Sep 2024 10:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK6sPfIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF0i9PCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08618D65E;
-	Thu,  5 Sep 2024 09:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6561494DB;
+	Thu,  5 Sep 2024 10:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530291; cv=none; b=ABPsS8BMJFYmoSn+mnlbafEw2uwEHEUSIfLopUjCDahYcqJgyOji/LH/Xt85Y/Y/uJAi4x9L/jyRAl9JxQgA0OTvA/e3s0qBf3vh2oARcYwPI7tgblNRuKixMxxho2oPatmZ+Z3kj7tkqBeCsYQrb5ZZ4jEVfoBig9yupt4imV0=
+	t=1725530580; cv=none; b=se5YR5ZcVyO48rYWJ/3geJVSe5rWfficnAJfUga6E0h0uSLvMl/1r0TZdCcjF1tAYxieYrTgkeuRO3PUqVJhAaBOsdLWXk+bzLAlQGP6hySdv0T8D4U8grQqMedSEMk8MdA5+8NamG9NRZUfxaJRbqmBFzXF6qI6q0DVSGKGOfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530291; c=relaxed/simple;
-	bh=rIvGh9jznsz6avRk44W3LWkgiKQ4dKTjJhk98AoOrIU=;
+	s=arc-20240116; t=1725530580; c=relaxed/simple;
+	bh=RjCqldgrfdq6/b4GcMc6S/CPcbRzJRcaaeDPJAksICs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJGrm+1kbroYsu8vaKT8Wblhdlncctm4eFazMYux3/igCyMazhXoP/cW3lVHa1T3T59wi0teq+UUqhJ1EFApkVi6xCRXrCrnntvZLbi6ewbmdp6S89W7ttAGUxfW8Hk9XnX++eh7+WAnpuUAgZ/ik2CrYbrO5mLlK/Y0viQX3a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK6sPfIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1132BC4CEC4;
-	Thu,  5 Sep 2024 09:58:10 +0000 (UTC)
+	 MIME-Version; b=PxV5Rrz3lksYC1UEyvZL2PJb3rJk1zCnUr+HCjFDdGnUcBdg1s9BZ2LL8v08uFeAvIp7Vcy/lUw3DTxLhGY2tl4fVWYq/FsrIA+neCLK6pTkVkx4P+oPWIpll/+1czeS5kWVme4ztZuJ5HlbaeCOv3hxyK5+eZnD5Nl7DpPqivk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF0i9PCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA35C4CEC4;
+	Thu,  5 Sep 2024 10:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530291;
-	bh=rIvGh9jznsz6avRk44W3LWkgiKQ4dKTjJhk98AoOrIU=;
+	s=korg; t=1725530580;
+	bh=RjCqldgrfdq6/b4GcMc6S/CPcbRzJRcaaeDPJAksICs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EK6sPfIai11DQns8Rqj4lwBzR0nRfSbyEivyAT8gwdUTXU2qpbtCCYkk1/GymgA32
-	 zI0o1B2FClZ80EORPkEwN68it4BBXjRxyFLObhUOjTVbbwPkiAAPY7XHp+TBqkgK5O
-	 ZtWUISoQ7brivD5XI3h7qd2PHiqobnr/l9QD1bQc=
+	b=SF0i9PCVtflWko/1+5ECcrK4N4deZk83rNydNJ3OzHgR4BLFNQjjHmW2N6qVBMsbQ
+	 kScjRr0Qcgj22hu3qq+b2XPlgUEsLeVqf+XGnDhpGdKYE2RxRoQOF+UnELisl/GTXB
+	 umo6yzVcYo/zS05GDegDF6dGl7y9J5gDxkzRZEqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Dautricourt <olivierdautricourt@gmail.com>,
-	Eric Schwarz <eas@sw-optimization.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jagadeesh Kona <quic_jkona@quicinc.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/132] dmaengine: altera-msgdma: use irq variant of spin_lock/unlock while invoking callbacks
-Date: Thu,  5 Sep 2024 11:41:40 +0200
-Message-ID: <20240905093726.620810608@linuxfoundation.org>
+Subject: [PATCH 6.1 069/101] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Date: Thu,  5 Sep 2024 11:41:41 +0200
+Message-ID: <20240905093718.836380541@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Dautricourt <olivierdautricourt@gmail.com>
+From: Jagadeesh Kona <quic_jkona@quicinc.com>
 
-[ Upstream commit 261d3a85d959841821ca0d69f9d7b0d4087661c4 ]
+[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
 
-As we first take the lock with spin_lock_irqsave in msgdma_tasklet, Lockdep
-might complain about this. Inspired by commit 9558cf4ad07e
-("dmaengine: zynqmp_dma: fix lockdep warning in tasklet")
+Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
+can lead to overflow if the multiplied result is greater than
+UINT_MAX, since type of target_freq is unsigned int. Avoid this
+overflow by assigning target_freq to unsigned long variable for
+converting it to HZ.
 
-Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
-Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
-Suggested-by: Eric Schwarz <eas@sw-optimization.com>
-Link: https://lore.kernel.org/r/20240608213216.25087-1-olivierdautricourt@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/altera-msgdma.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
-index 4153c2edb049..8c479a3676fc 100644
---- a/drivers/dma/altera-msgdma.c
-+++ b/drivers/dma/altera-msgdma.c
-@@ -583,6 +583,7 @@ static void msgdma_issue_pending(struct dma_chan *chan)
- static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 028df8a5f537..079940c69ee0 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -62,9 +62,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 					     unsigned int target_freq)
  {
- 	struct msgdma_sw_desc *desc, *next;
-+	unsigned long irqflags;
+ 	struct scmi_data *priv = policy->driver_data;
++	unsigned long freq = target_freq;
  
- 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
- 		struct dmaengine_desc_callback cb;
-@@ -591,9 +592,9 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+-	if (!perf_ops->freq_set(ph, priv->domain_id,
+-				target_freq * 1000, true))
++	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
+ 		return target_freq;
  
- 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
- 		if (dmaengine_desc_callback_valid(&cb)) {
--			spin_unlock(&mdev->lock);
-+			spin_unlock_irqrestore(&mdev->lock, irqflags);
- 			dmaengine_desc_callback_invoke(&cb, NULL);
--			spin_lock(&mdev->lock);
-+			spin_lock_irqsave(&mdev->lock, irqflags);
- 		}
- 
- 		/* Run any dependencies, then free the descriptor */
+ 	return 0;
 -- 
 2.43.0
 
