@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515DC96D469
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D5996D556
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0A9F1F21435
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A418CB20FDE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD011991D5;
-	Thu,  5 Sep 2024 09:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D3919538A;
+	Thu,  5 Sep 2024 10:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNImGJ3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSxvzLIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8A5199222;
-	Thu,  5 Sep 2024 09:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97A21922CC;
+	Thu,  5 Sep 2024 10:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529901; cv=none; b=Lb7fuRNH26QxZ8lGkVUCEGjQtu6W7rEjyUvrVgNxcOSM5zg1yWjphA2MOPmlxu9W9hCuMSbe8igfWVoRC+8bez1h5B084U8G9G6sgwl+w7ppulkBA/APcnrZ/CFRUUUssKvixKessRf5NZ2qSfHCRsKKbMG0pJVj80F1Vczw8Mw=
+	t=1725530603; cv=none; b=fLBwmx9gUBquM3YlfUjWnKTrLQVBRZCqLj3ANpSQ7ra95EQR9wmqmnBnu0Ure3H4pWgvTU6BVIdx60p7t43iO4hVSUeyfCG+75KoZRfO9nXuKhVXCPkXYhwn71Q5Nda3jVU/D2VJXiIZEJvCVqfa/2kHYAvzhlTJtz/sWDdzl+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529901; c=relaxed/simple;
-	bh=JXG5M4AUdJg0P97ifYxRfbitbfQun0/Jlpsw3Xf5mKU=;
+	s=arc-20240116; t=1725530603; c=relaxed/simple;
+	bh=fLV9+wD5NOJ5JX0X9a8iyHmvruc8ynzDKXoLRb4BvNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2EsFh/iac/UZB7I2RU5/YcUrMhTp4Ijq6M88P+7ezl9WmIgMjAH4aczBs09UVIYhk0KY3mOmUDrCr20ZaOq6J/hK/eT0SfhBVL8+iSja8fRXh4sVi8kfnYBhmhcs0Cmk6GlDXuR6bomRHWwdzQV5C+S+HEI5vFkT9ZHu/mpcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNImGJ3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375D0C4CEC6;
-	Thu,  5 Sep 2024 09:51:40 +0000 (UTC)
+	 MIME-Version; b=d43nZblVrQ7kkt5uuvKfgFxWJsukmbMquYCBmtjJpAO28uKvXBryhBRe+Bf0NxTDVn96Av9DLHnCUn6q1JB5aOgf6uLnQCXc9te0wHKf6nq2rCJ6bqUnw6r4+6vX9FLMraoN+c0CPpEMCZwQB1oXXvPC8yZmxXIE4Pi977cFyyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSxvzLIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F94FC4CEC3;
+	Thu,  5 Sep 2024 10:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529901;
-	bh=JXG5M4AUdJg0P97ifYxRfbitbfQun0/Jlpsw3Xf5mKU=;
+	s=korg; t=1725530602;
+	bh=fLV9+wD5NOJ5JX0X9a8iyHmvruc8ynzDKXoLRb4BvNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNImGJ3xKoXX4ZKlQmMActzpZ0lCOaZFhr7coPFWQUIrfgS0dJeiZnH2+GpWubNBZ
-	 9/cXPegKHGD5alsS/7dwcMxHNw9tszPpXMhgWYcMKWuYn+SWRjQ8mn3zkXso2Z6zrc
-	 Sf3UCAY6SJj4j/6YhV7xCkXEtrQo72UrjdkbsSn0=
+	b=NSxvzLIV0FYNVNE9IrfxDos7tz/VD5ubbGPE5L9Hrkw+pF+jVWwdJ1T0l16ng/ZbB
+	 XGh+EGgvfWaAVbajxpHMz0STzz2XNMBWG0ZgbpGNth8vgiS/yfRTr+KlaMy4I8+niu
+	 4TfAK/Xv4Yyzu/fLVXNGQ0C72VCn73Rnjj2llP9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Leesoo Ahn <lsahn@ooseel.net>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 177/184] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
+Subject: [PATCH 6.1 058/101] apparmor: fix possible NULL pointer dereference
 Date: Thu,  5 Sep 2024 11:41:30 +0200
-Message-ID: <20240905093739.243466964@linuxfoundation.org>
+Message-ID: <20240905093718.407574924@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Leesoo Ahn <lsahn@ooseel.net>
 
-[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
+[ Upstream commit 3dd384108d53834002be5630132ad5c3f32166ad ]
 
-Callers can pass null in filter (i.e. from returned from the function
-wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
-not the case.
+profile->parent->dents[AAFS_PROF_DIR] could be NULL only if its parent is made
+from __create_missing_ancestors(..) and 'ent->old' is NULL in
+aa_replace_profiles(..).
+In that case, it must return an error code and the code, -ENOENT represents
+its state that the path of its parent is not existed yet.
 
-This fixes 4 NULL_RETURNS issues reported by Coverity.
+BUG: kernel NULL pointer dereference, address: 0000000000000030
+PGD 0 P4D 0
+PREEMPT SMP PTI
+CPU: 4 PID: 3362 Comm: apparmor_parser Not tainted 6.8.0-24-generic #24
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? show_regs+0x6d/0x80
+ ? __die+0x24/0x80
+ ? page_fault_oops+0x99/0x1b0
+ ? kernelmode_fixup_or_oops+0xb2/0x140
+ ? __bad_area_nosemaphore+0x1a5/0x2c0
+ ? find_vma+0x34/0x60
+ ? bad_area_nosemaphore+0x16/0x30
+ ? do_user_addr_fault+0x2a2/0x6b0
+ ? exc_page_fault+0x83/0x1b0
+ ? asm_exc_page_fault+0x27/0x30
+ ? aafs_create.constprop.0+0x7f/0x130
+ ? aafs_create.constprop.0+0x51/0x130
+ __aafs_profile_mkdir+0x3d6/0x480
+ aa_replace_profiles+0x83f/0x1270
+ policy_update+0xe3/0x180
+ profile_load+0xbc/0x150
+ ? rw_verify_area+0x47/0x140
+ vfs_write+0x100/0x480
+ ? __x64_sys_openat+0x55/0xa0
+ ? syscall_exit_to_user_mode+0x86/0x260
+ ksys_write+0x73/0x100
+ __x64_sys_write+0x19/0x30
+ x64_sys_call+0x7e/0x25c0
+ do_syscall_64+0x7f/0x180
+ entry_SYSCALL_64_after_hwframe+0x78/0x80
+RIP: 0033:0x7be9f211c574
+Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+RSP: 002b:00007ffd26f2b8c8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00005d504415e200 RCX: 00007be9f211c574
+RDX: 0000000000001fc1 RSI: 00005d504418bc80 RDI: 0000000000000004
+RBP: 0000000000001fc1 R08: 0000000000001fc1 R09: 0000000080000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00005d504418bc80
+R13: 0000000000000004 R14: 00007ffd26f2b9b0 R15: 00007ffd26f2ba30
+ </TASK>
+Modules linked in: snd_seq_dummy snd_hrtimer qrtr snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_seq_midi snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device i2c_i801 snd_timer i2c_smbus qxl snd soundcore drm_ttm_helper lpc_ich ttm joydev input_leds serio_raw mac_hid binfmt_misc msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs qemu_fw_cfg ip_tables x_tables autofs4 hid_generic usbhid hid ahci libahci psmouse virtio_rng xhci_pci xhci_pci_renesas
+CR2: 0000000000000030
+---[ end trace 0000000000000000 ]---
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Leesoo Ahn <lsahn@ooseel.net>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ security/apparmor/apparmorfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-index 994fb732a7cb..a0d437f0ce2b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
- 	int pair;
- 	uint16_t odd_coef, even_coef;
- 
-+	if (!filter)
-+		return;
-+
- 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
- 		for (pair = 0; pair < tap_pairs; pair++) {
- 			even_coef = filter[phase * taps + 2 * pair];
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
+index 7160e7aa58b9..ce7b2f43c319 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -1687,6 +1687,10 @@ int __aafs_profile_mkdir(struct aa_profile *profile, struct dentry *parent)
+ 		struct aa_profile *p;
+ 		p = aa_deref_parent(profile);
+ 		dent = prof_dir(p);
++		if (!dent) {
++			error = -ENOENT;
++			goto fail2;
++		}
+ 		/* adding to parent that previously didn't have children */
+ 		dent = aafs_create_dir("profiles", dent);
+ 		if (IS_ERR(dent))
 -- 
 2.43.0
 
