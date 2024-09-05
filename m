@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2179896D47B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B511F96D4DC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1371F249CA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4F51F29375
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F66198A08;
-	Thu,  5 Sep 2024 09:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF63194A64;
+	Thu,  5 Sep 2024 09:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRGyedrX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3/Odwix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D0E195FCE;
-	Thu,  5 Sep 2024 09:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B543192D73;
+	Thu,  5 Sep 2024 09:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529946; cv=none; b=JbzcMeV8iaLes9/n8DUMPAH6xUF6tTnH3USEWBrghJBbCSVgsNHGKpBPvTwSLCJP/yjJgQu//wszU7MRIoBuox9Jjj3KLP1ZWOHNlLsTi1jxXTLxxXOQ8ZVkx62wEXNgkG+cmi/3wKOGX6BMCvR91bC0L+UuZXM4KMnKTxZxz3U=
+	t=1725530224; cv=none; b=Rp7EOIYTrGX2n9AY1LAoSt6gSAduZN0fqLoH7D77RVm1z0uV9HzgOnR5JcuW3+BVAfRytQw09Ot3rFfL04GLNXcKUvXrhkKtlOe+CXJqV5k6wjB24M0IhEjHsuofLtZAzeb6DlOVJ3OItiR4T2PZbqomF2v9614H5VhZzwoTZEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529946; c=relaxed/simple;
-	bh=zKXY+B/G3Gqj1+YBffMay+NNo9GmkFfMhRcoyKU6kY4=;
+	s=arc-20240116; t=1725530224; c=relaxed/simple;
+	bh=TDuFnde97R6xeX3RPnB9NQDa0fUPjvxX3/pJjGXKbUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhGTi6Xm2Zjy2XoJpRGkm2EGQe+X7Mq555VU8opX3LVZKULxaoy0EKUaezj2GfNpT2IcCuNefB4RAE0PuBB5e6kwugyUKtgBFdUv0V4Ko2GCpdVhgavVLoTjI330Gh9bGlfx5MycQWNcmae5Om73nUAIvoxLrnH8YkR9YV46YKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRGyedrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D12C4CEC3;
-	Thu,  5 Sep 2024 09:52:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hD4PlymD4x4osunyLPXnGZerZYCItSTzJl1Fzf6hvKvCGRw5glJwhT3tkgk6Wr6BeQSYWLLQOgdtzeity1aOSSgvzFg4m+OgEvv+GA9tG1u9Gg8BwsQehPN1wl3GOowYWRuQD9/F/9i3n4qsgm7m2c4r8FGkf3g4dDbTZ6ERgd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3/Odwix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0163C4CEC3;
+	Thu,  5 Sep 2024 09:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529946;
-	bh=zKXY+B/G3Gqj1+YBffMay+NNo9GmkFfMhRcoyKU6kY4=;
+	s=korg; t=1725530224;
+	bh=TDuFnde97R6xeX3RPnB9NQDa0fUPjvxX3/pJjGXKbUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRGyedrXanVm60P/avYMaQq0RUTAiIO235u89I/H2p1eL4zN03DlsLQLc0zDgyp/x
-	 wcriS3v+bqkkbZHlj6QYYnmJN6m0snR4QtN7wER87FUbUvvUr+EnOzoTQHHRzhB2fa
-	 2LKIRvQDW7RuC5Or7Rnm2D2pICVXC3RowkMqGMRQ=
+	b=Z3/OdwixEKtk2Gk45VcmMbpwPlya7BHrJx9RKV8BG/QVb2znY17UXfqEY2WRcbYQL
+	 ypoT0Zs222kFQF16dJhqqWamkdppLUetM48zzdPf0nVETdtj656tZxrMJYQT/aNlJY
+	 Ar3sU2/CaV40Va9V7SXUNZFTUYa1Rl8qBUVkwDkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 165/184] drm/amdgpu: add lock in kfd_process_dequeue_from_device
+Subject: [PATCH 6.6 091/132] PCI: al: Check IORESOURCE_BUS existence during probe
 Date: Thu,  5 Sep 2024 11:41:18 +0200
-Message-ID: <20240905093738.781794931@linuxfoundation.org>
+Message-ID: <20240905093725.784159487@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunxiang Li <Yunxiang.Li@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit d225960c2330e102370815367b877baaf8bb8b5d ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-We need to take the reset domain lock before talking to MES. While in
-this case we can take the lock inside the mes helper. We can't do so for
-most other mes helpers since they are used during reset. So for
-consistency sake we add the lock here.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+But that's hard to verify, so check for NULL anyway.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 4858112f9a53..a5bdc3258ae5 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -28,6 +28,7 @@
- #include "kfd_priv.h"
- #include "kfd_kernel_queue.h"
- #include "amdgpu_amdkfd.h"
-+#include "amdgpu_reset.h"
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index b8cb77c9c4bd..3132b27bc006 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
- static inline struct process_queue_node *get_queue_by_qid(
- 			struct process_queue_manager *pqm, unsigned int qid)
-@@ -87,8 +88,12 @@ void kfd_process_dequeue_from_device(struct kfd_process_device *pdd)
- 		return;
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct dw_pcie_rp *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
- 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
--	if (dev->kfd->shared_resources.enable_mes)
--		amdgpu_mes_flush_shader_debugger(dev->adev, pdd->proc_ctx_gpu_addr);
-+	if (dev->kfd->shared_resources.enable_mes &&
-+	    down_read_trylock(&dev->adev->reset_domain->sem)) {
-+		amdgpu_mes_flush_shader_debugger(dev->adev,
-+						 pdd->proc_ctx_gpu_addr);
-+		up_read(&dev->adev->reset_domain->sem);
-+	}
- 	pdd->already_dequeued = true;
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
+ 
+ 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
+@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
  }
  
+ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
