@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-73371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918C796D491
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63E996D3EA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48BEF1F2724E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DAE282384
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93FF198827;
-	Thu,  5 Sep 2024 09:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73212198A24;
+	Thu,  5 Sep 2024 09:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmnfKuhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysDE+9kt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B5C198822;
-	Thu,  5 Sep 2024 09:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2821018D65E;
+	Thu,  5 Sep 2024 09:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530013; cv=none; b=XwErSjGBhVmufc86HZ7hcswTb3AXI8kfqQ+ulonC4s/D4WB/gUxVK2B+AePjza00SgHfzOkHavwBJGy5RNfDhBTvc990jsQn6WAEQF86rDu6DIZGJnWhJkn31kg4KljUy1KARZ1u3pN7wyMy1f61NUdoFVmJSQ+cBgrHri/m/+c=
+	t=1725529581; cv=none; b=qJw8xM2GlTCQa/Ig6WAmFaXupr81lAOf/T1p4ij9VbnWimpqV6DciQCbHh3IvOdIWHwQldlVtE9VXQxMcXHw6brEw4UWr9dZB+EMA7defDgu3GbnarGRyVOGT4qLirU7bWlI5GZNdbrRRyKJyOJExqXP5J6zwGNSJTq22ZnYOq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530013; c=relaxed/simple;
-	bh=qFB2KDThUZ1XIHJxgeNddAjbaK/vlxOFJDqwJ1txLC8=;
+	s=arc-20240116; t=1725529581; c=relaxed/simple;
+	bh=Dx5hwGxMznzgwSIFSC9VOrQOFdte3PPyaB66t1gXGqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EV8b5/KX+ML2fF21ctO8aSP14YXjwmSU+6SC+VaiHfiwEz4TImIcGd7td7BDfz7VBmnc/NyVI9g5CfJlDWEWDMzD0zAH9piSMIED/tmfvHkGP9UeQNrPSaQrspjC2aWYgH3ipqSfOb2zbBkKfbOIDrw0LNx7Pnccqy6dPn5DIZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmnfKuhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F29FC4CEC3;
-	Thu,  5 Sep 2024 09:53:32 +0000 (UTC)
+	 MIME-Version; b=V5pZs7aJGsEWYQYYT9kTYOakJMOjsbOnYheRJFoZXD32E3wLwgBiOXsB83f01SFjDsS7JsXDHV/Sumciqw/PHPCoidPMH4LtZ6uKWbPNWU9dLYNRPeMFtBRs78OO1e41eSavA/YmwXaAfz299PUGmwoNwChHEj6AnUMb0iRYJtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysDE+9kt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EC9C4CEC3;
+	Thu,  5 Sep 2024 09:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530013;
-	bh=qFB2KDThUZ1XIHJxgeNddAjbaK/vlxOFJDqwJ1txLC8=;
+	s=korg; t=1725529580;
+	bh=Dx5hwGxMznzgwSIFSC9VOrQOFdte3PPyaB66t1gXGqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmnfKuhE5/bNPH1DdpeURHKpFXt3n1OLSJNXcXnlMEwLYlgk5F8PIFT2GvVBBjvQ8
-	 7Vgr0loEXJN/S7Y7i76pO1sYwUrtcTMuAVNPVddlPlXmJUQZ0nMH8yIy+lRx4EtajI
-	 LYuVEvH919BMx/m7Uc/Sp+H1+rzgleX40m29wTBY=
+	b=ysDE+9kt3ahGWCc7od0iS2XAl7Q59eL1MP9gAabr+YMUAvoK5JzbjQWSQeoyHitAG
+	 byV/w6NVAZUB0JMTPZOgDZklwPTChWzQvhqmAAiKMR+061dGCJGilWe0OtlTRlQIHc
+	 bHJtSvGRe8XATqrWygFqZoBMiirZ5+Jd2E0nlTIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/132] scsi: ufs: core: Bypass quick recovery if force reset is needed
+Subject: [PATCH 6.10 078/184] drm/amd/display: Fix index may exceed array range within fpu_update_bw_bounding_box
 Date: Thu,  5 Sep 2024 11:39:51 +0200
-Message-ID: <20240905093722.406169380@linuxfoundation.org>
+Message-ID: <20240905093735.286777457@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 022587d8aec3da1d1698ddae9fb8cfe35f3ad49c ]
+[ Upstream commit 188fd1616ec43033cedbe343b6579e9921e2d898 ]
 
-If force_reset is true, bypass quick recovery.  This will shorten error
-recovery time.
+[Why]
+Coverity reports OVERRUN warning. soc.num_states could
+be 40. But array range of bw_params->clk_table.entries is 8.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240712094506.11284-1-peter.wang@mediatek.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[How]
+Assert if soc.num_states greater than 8.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c   | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c | 10 ++++++++++
+ 4 files changed, 40 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index bfa9f457f24ea..ad0ef5b6b8cf9 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6467,7 +6467,8 @@ static void ufshcd_err_handler(struct work_struct *work)
- 	if (ufshcd_err_handling_should_stop(hba))
- 		goto skip_err_handling;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
+index e2bcd205aa93..8da97a96b1ce 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
+@@ -304,6 +304,16 @@ void dcn302_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
  
--	if (hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) {
-+	if ((hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) &&
-+	    !hba->force_reset) {
- 		bool ret;
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_02_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_02_soc.num_states; i++) {
+ 			dcn3_02_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
+index 3f02bb806d42..e968870a4b81 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
+@@ -310,6 +310,16 @@ void dcn303_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
  
- 		spin_unlock_irqrestore(hba->host->host_lock, flags);
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_03_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_03_soc.num_states; i++) {
+ 			dcn3_03_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index f6fe0a64beac..ebcf5ece209a 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -3232,6 +3232,16 @@ void dcn32_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_pa
+ 				dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 			}
+ 
++			/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++			 * MAX_NUM_DPM_LVL is 8.
++			 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++			 * DC__VOLTAGE_STATES is 40.
++			 */
++			if (num_states > MAX_NUM_DPM_LVL) {
++				ASSERT(0);
++				return;
++			}
++
+ 			dcn3_2_soc.num_states = num_states;
+ 			for (i = 0; i < dcn3_2_soc.num_states; i++) {
+ 				dcn3_2_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+index ff4d795c7966..4297402bdab3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+@@ -803,6 +803,16 @@ void dcn321_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
+ 
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_21_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_21_soc.num_states; i++) {
+ 			dcn3_21_soc.clock_limits[i].state = i;
 -- 
 2.43.0
 
