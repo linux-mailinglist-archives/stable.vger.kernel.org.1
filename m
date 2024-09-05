@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F7696D41C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5B496D4A3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690EA1C2305D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3BF1C225FC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7323A1991D5;
-	Thu,  5 Sep 2024 09:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0417194AD6;
+	Thu,  5 Sep 2024 09:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHc3QK3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLLPZqT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA80198E93;
-	Thu,  5 Sep 2024 09:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF8C156225;
+	Thu,  5 Sep 2024 09:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529712; cv=none; b=aU4Lj0hxpCqCfHJFjGbpK3Y/A6GpkcpQDjMMpEEQ5952WhtfEdv3vgaY/zGZGpvYMXPTcGr6kenw27oHADVWvrYmfj9zs5dvw7O5vYIgFvQmOjx37g6lMz6pM8NWNbCK8ewM6MN3EpV5ADtsd5vVRVTDVSTDHaPl7DU9HgQRL+M=
+	t=1725530068; cv=none; b=V1KrBz2VfEmosvfN5KFubbPQP6VokzSm/wc3oc/WgAPHMVwDCMQTeFbcqhnYQt3+BCVwDbTjoptBjvHNJRA14GttXHm7UrhKyrMVK4UvfxuXhW2QnG1xpUihFnxPa1EMN+M61N2JRmmDovWL5PWttdGuqJ40fUuVV1e17kVERKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529712; c=relaxed/simple;
-	bh=sAvZvj2FyUw9D6tRBizVzvuG6LbAscZ4sKQGDK872Dk=;
+	s=arc-20240116; t=1725530068; c=relaxed/simple;
+	bh=Vx5vPw8pfGsvnNPvnAG/u85r30DLXAuvnvTXt5OOOvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rb1T7uAsX50JK+9Nnd4snw9T0+xLgA1z7m+kOqpfxRYrNbKHR9ix6teFrwPEX0VcAN2driD+Q1+4WQsWMh7/DYyMkRbniJwJhx2Kdz+xRyvnQb2xKuOozFtFfUrbkPOW6PzRkjPQkiVgn9CO6QwO7h4FvAOVUwxoQ6RcgnWhLB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHc3QK3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D936C4CEC3;
-	Thu,  5 Sep 2024 09:48:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m8NCEXxoJ9pK0g/T8zwxz5tOfTn+lByR5R5Uurq1rTlFhBTFNE5kf+nWcDv6V+j8gz+zm7XRbb6xX8e0FfDX6gXhxPYuXF26uBrjRLGc7CYgCXhR9I9RliQ80ZWzDNMyN13uJgkLCjuyDT5knNzPrDrWfcN+uz1hs28teVEvH/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLLPZqT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE16DC4CEC3;
+	Thu,  5 Sep 2024 09:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529712;
-	bh=sAvZvj2FyUw9D6tRBizVzvuG6LbAscZ4sKQGDK872Dk=;
+	s=korg; t=1725530068;
+	bh=Vx5vPw8pfGsvnNPvnAG/u85r30DLXAuvnvTXt5OOOvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHc3QK3MHcbwWIq0xEvDSed6Tp7OHeaxbshSYUTLocjcfMaVtL3jTsRto79B73dR+
-	 pBWVzL6ztiKt0+QOHa/Tzs+Wreq0Iqq1tKb/UcXxisbTMNEBmUjSyJ0Aco/1Iyzk8w
-	 vXDv1X/IoM9ZAjT2lunYgxgYFWLBezTJLMzDUp8w=
+	b=uLLPZqT+uCgWhrxFNVR/B78ibSmJ0cVPA75UaUVKxTC4J2nxujITUuTKlKxSnehvr
+	 cpZCQCnheHHWGMapGjMeKX68mUI7sJUax9u8rUkfcgnWGaWIo0hVX3U6see/EzyNTI
+	 Bh7lro0jpSvaAKUVnLT3pl6q/a3geRQ1vhAzng1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 119/184] wifi: cfg80211: restrict operation during radar detection
+Subject: [PATCH 6.6 045/132] drm/amd/pm: fix uninitialized variable warning for smu8_hwmgr
 Date: Thu,  5 Sep 2024 11:40:32 +0200
-Message-ID: <20240905093736.874777422@linuxfoundation.org>
+Message-ID: <20240905093724.010041363@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 2d33ecf5d0148671c74e68e18755b9411a7ba923 ]
+[ Upstream commit 86df36b934640866eb249a4488abb148b985a0d9 ]
 
-Just like it's not currently possible to start radar
-detection while already operating, it shouldn't be
-possible to start operating while radar detection is
-running. Fix that.
+Clear warnings that using uninitialized value level when fails
+to get the value from SMU.
 
-Also, improve the check whether operating (carrier
-might not be up if e.g. attempting to join IBSS).
-
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240506211158.ae8dca3d0d6c.I7c70a66a5fbdbc63a78fee8a34f31d1995491bc3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/ibss.c    |  5 ++++-
- net/wireless/mesh.c    |  5 ++++-
- net/wireless/nl80211.c | 21 +++++++++++++++------
- 3 files changed, 23 insertions(+), 8 deletions(-)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c   | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
-index 9f02ee5f08be..34e5acff3935 100644
---- a/net/wireless/ibss.c
-+++ b/net/wireless/ibss.c
-@@ -3,7 +3,7 @@
-  * Some IBSS support code for cfg80211.
-  *
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index eb744401e056..7e1197420873 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -584,6 +584,7 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.uvd_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
  
- #include <linux/etherdevice.h>
-@@ -94,6 +94,9 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -591,7 +592,9 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
+ 	data->uvd_dpm.soft_min_clk = 0;
+ 	data->uvd_dpm.hard_min_clk = 0;
  
- 	lockdep_assert_held(&rdev->wiphy.mtx);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
++	if (ret)
++		return ret;
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
-+
- 	if (wdev->u.ibss.ssid_len)
- 		return -EALREADY;
+ 	if (level < table->count)
+ 		clock = table->entries[level].vclk;
+@@ -611,6 +614,7 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.vce_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
  
-diff --git a/net/wireless/mesh.c b/net/wireless/mesh.c
-index 83306979fbe2..aaca65b66af4 100644
---- a/net/wireless/mesh.c
-+++ b/net/wireless/mesh.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Portions
-- * Copyright (C) 2022-2023 Intel Corporation
-+ * Copyright (C) 2022-2024 Intel Corporation
-  */
- #include <linux/ieee80211.h>
- #include <linux/export.h>
-@@ -127,6 +127,9 @@ int __cfg80211_join_mesh(struct cfg80211_registered_device *rdev,
- 	if (!rdev->ops->join_mesh)
- 		return -EOPNOTSUPP;
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -618,7 +622,9 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
+ 	data->vce_dpm.soft_min_clk = 0;
+ 	data->vce_dpm.hard_min_clk = 0;
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
-+
- 	if (!setup->chandef.chan) {
- 		/* if no channel explicitly given, use preset channel */
- 		setup->chandef = wdev->u.mesh.preset_chandef;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c2829d673bc7..967bc4935b4e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -5965,6 +5965,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 	if (!rdev->ops->start_ap)
- 		return -EOPNOTSUPP;
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
++	if (ret)
++		return ret;
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
-+
- 	if (wdev->links[link_id].ap.beacon_interval)
- 		return -EALREADY;
+ 	if (level < table->count)
+ 		clock = table->entries[level].ecclk;
+@@ -638,6 +644,7 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.acp_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
  
-@@ -9957,6 +9960,17 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -645,7 +652,9 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
+ 	data->acp_dpm.soft_min_clk = 0;
+ 	data->acp_dpm.hard_min_clk = 0;
  
- 	flush_delayed_work(&rdev->dfs_update_channels_wk);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
++	if (ret)
++		return ret;
  
-+	switch (wdev->iftype) {
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_P2P_GO:
-+	case NL80211_IFTYPE_MESH_POINT:
-+	case NL80211_IFTYPE_ADHOC:
-+		break;
-+	default:
-+		/* caution - see cfg80211_beaconing_iface_active() below */
-+		return -EINVAL;
-+	}
-+
- 	wiphy_lock(wiphy);
- 
- 	dfs_region = reg_get_dfs_region(wiphy);
-@@ -9987,12 +10001,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 		goto unlock;
- 	}
- 
--	if (netif_carrier_ok(dev)) {
--		err = -EBUSY;
--		goto unlock;
--	}
--
--	if (wdev->cac_started) {
-+	if (cfg80211_beaconing_iface_active(wdev) || wdev->cac_started) {
- 		err = -EBUSY;
- 		goto unlock;
- 	}
+ 	if (level < table->count)
+ 		clock = table->entries[level].acpclk;
 -- 
 2.43.0
 
