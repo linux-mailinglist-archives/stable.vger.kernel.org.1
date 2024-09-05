@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-73427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7179796D4D2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B9996D531
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 026C5B26960
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4C81F2A11B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88569194A5B;
-	Thu,  5 Sep 2024 09:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAF8194A5A;
+	Thu,  5 Sep 2024 10:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1SqGv2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+5zxzrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47797156225;
-	Thu,  5 Sep 2024 09:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2967E1946A2;
+	Thu,  5 Sep 2024 10:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530195; cv=none; b=TgGCY4yLBUvaW3KtZgLWpNm8yQEEAurmuCAPPcjfrl43+FUvl4FVr0dC+WVg/+2tY9Y7HKTjU0RCyeDIJAxp8OH0kyFnNn2NeHnMjgWciKoDVs5yiEgNFtQcm6CU7OTOnZL6gf/NZM9Vro2pDGzFPezJgHv+BpTP0mYALH6VjnE=
+	t=1725530484; cv=none; b=e1w5hprCo8qc3TuDiUwoBjXfQaGlP5HVu1bm3DHMdnIP0K4FXlaokqi5OXydXKNHUZ4DELfvF14jycbKmluP77uET+MUsw/zmgH2r10xyInSmRz3sRvoIee6W9nZ40RGMs08T7HSb9UFcqh33JIqqvkJedz74T6FA3uA2WvJa/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530195; c=relaxed/simple;
-	bh=uLXFQdtXHhwaaAvE9oSqu/sofyZ6FxsyYKVp5CNyQM0=;
+	s=arc-20240116; t=1725530484; c=relaxed/simple;
+	bh=ZVPN6MByTd22jB0HBprcmGP+r3GALgVWzh/U4SCYWtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdftdSFZG/8eDS4poIvuCuSwVaq0o5GRtPsLljtmAIm4iXwW5I/qMO/HOSSKK0uqkL/aUDmjizXEvyH8A7XV79sPxknn9oTGJEbb7V9YKSqpCExIwMDJNQVMzFb5V27+FXmcuPfzAzkHLAlqnkNzpl4vjyz30N3Uz7lBdVT3jXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1SqGv2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1325C4CEC3;
-	Thu,  5 Sep 2024 09:56:34 +0000 (UTC)
+	 MIME-Version; b=s3Ix5JvS0APPml0g4RIe7k8WrjgeXkTWQAj4DEtelyYPaqLArUS4wMcEIjlV7aPybl15nz/Fy2NJ+UcIIksz21De782A4LIcdyJ8CA8mv1tjtMRFX2FAMQ5QBcJCkaHck3/a6Wr6BXEmAK6GDNPMdJ7xUr5I2qXym9VK6AQj1GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+5zxzrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E784C4CEC3;
+	Thu,  5 Sep 2024 10:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530195;
-	bh=uLXFQdtXHhwaaAvE9oSqu/sofyZ6FxsyYKVp5CNyQM0=;
+	s=korg; t=1725530484;
+	bh=ZVPN6MByTd22jB0HBprcmGP+r3GALgVWzh/U4SCYWtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1SqGv2E0UitUT8f/Rg8V47RPIMRfRDhuDJd39wkl5DuS4EalT8uI7to0GAh4vmGp
-	 I3RGx7jEypzc6zM4EmOEC8lTHjOa21j1lMB8J0drfrDLu6ea3QLBHIMHFgpo9iodwD
-	 ZIyi9LIrUMxxN9Y2UnQ/psxt3iFa0C4iB9jZ8RL8=
+	b=e+5zxzrCgWDG06aBqjolohNxzlFepekA0j+uezle2EjQqLi+qYvULK9bBqBXQQBK8
+	 mg6tLrnGN6itSKNE24FSDBkY3XDZcWXNEvGr3I5AovY6URgJXDzrbyvrTSC2/Fd4Op
+	 7mgQ43ItALi9MNLvJmtvtnFiNJ5Nfyi3bc6IpKNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Zhigang Luo <Zhigang.Luo@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/132] drm/amd/pm: check specific index for smu13
-Date: Thu,  5 Sep 2024 11:41:10 +0200
-Message-ID: <20240905093725.478336145@linuxfoundation.org>
+Subject: [PATCH 6.1 039/101] drm/amdgpu: avoid reading vf2pf info size from FB
+Date: Thu,  5 Sep 2024 11:41:11 +0200
+Message-ID: <20240905093717.661483169@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Zhigang Luo <Zhigang.Luo@amd.com>
 
-[ Upstream commit a3ac9d1c9751f00026c2d98b802ec8a98626c3ed ]
+[ Upstream commit 3bcc0ee14768d886cedff65da72d83d375a31a56 ]
 
-Check for specific indexes that may be invalid values.
+VF can't access FB when host is doing mode1 reset. Using sizeof to get
+vf2pf info size, instead of reading it from vf2pf header stored in FB.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-index be4b7b64f878..44c5f8585f1e 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -2058,6 +2058,8 @@ static int smu_v13_0_6_mode2_reset(struct smu_context *smu)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 5ee9211c503c..af50e6ce39e1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -604,7 +604,7 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
+ 	vf2pf_info->dummy_page_addr = (uint64_t)adev->dummy_page_addr;
+ 	vf2pf_info->checksum =
+ 		amd_sriov_msg_checksum(
+-		vf2pf_info, vf2pf_info->header.size, 0, 0);
++		vf2pf_info, sizeof(*vf2pf_info), 0, 0);
  
- 	index = smu_cmn_to_asic_specific_index(smu, CMN2ASIC_MAPPING_MSG,
- 					       SMU_MSG_GfxDeviceDriverReset);
-+	if (index < 0)
-+		return index;
- 
- 	mutex_lock(&smu->message_lock);
- 
+ 	return 0;
+ }
 -- 
 2.43.0
 
