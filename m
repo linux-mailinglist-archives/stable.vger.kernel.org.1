@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-73412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F2A96D4C4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8201B96D42F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 349A8B26567
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 394361F21E7E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE378194ACD;
-	Thu,  5 Sep 2024 09:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F83194C7A;
+	Thu,  5 Sep 2024 09:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgao/LTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvxpR3EV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB79154BFF;
-	Thu,  5 Sep 2024 09:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CC114A08E;
+	Thu,  5 Sep 2024 09:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530147; cv=none; b=EP767b/Nd4OYuRKX9VbL7kiNfZX7wNC6pBKT2aO827FCuguvadJd0a2UvyZwzbHUriE+snO4ne6/iF/ty3uBeOMMkkO1G/DG492ZfKuDIWVB0sjHgm16hHdmMAqXw8Ob6SFVxiLUPAnClKgRsWe7h6UP2jXm9+Wu6yaXLi2kahg=
+	t=1725529761; cv=none; b=SOGnp42VGPhNPBxTvetajFgv46QYAmCayU5q1o//1gbvI4KQ3eHzIKbmCOmLbRvpWrS53OQBAdsEEMEdaPZPBGwo3ysDJyNyy8jnYXanbW0IpaC4olfxhfHk1ZGhQKb67HIiYIMOmjUhimjEyDKa3XRwKFHs5Ykh8KCjJpz0zXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530147; c=relaxed/simple;
-	bh=zsI3ehX0xi2B3kRvYfhhTr3QuCXOPPR+1qnS+0qsjY8=;
+	s=arc-20240116; t=1725529761; c=relaxed/simple;
+	bh=g1/gv6Ag/qm0sKBf4BYfrlZn977GE3r1RCjiN/9gW8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/s5RaE5CvjW+NKQ7dMc/JB7YIbHu4szfNJ2NwqL1dV8Sy4Fstb2cNCKDmW7mQUgvG/EmDYMt0f9rsnky7sVaGEER8tQdiK13lp3ZP1ryDB5/SStw01lOWibp4FpUbzzBwe3bEXLvsA8BfwxBfdIX85UoZniBGr6zC/C4nE+h2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgao/LTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEE3C4CEC3;
-	Thu,  5 Sep 2024 09:55:46 +0000 (UTC)
+	 MIME-Version; b=FZ5zkXVzS9x4EJAB90I1GB5+h1urYmhvVgWbarVEvTujSM+JsI0795cEo1gFPoZx9U/YRzqNty10w/Z0PXA+hgGy/l9iCpSPISJ5+7L9UL0n6vE6UpwuwHjXpI5mHLTcGL45sMfxBOXmX3VN1VDy1Q+x/xz7vgv0pKJoumvyhf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvxpR3EV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B307FC4CEC3;
+	Thu,  5 Sep 2024 09:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530147;
-	bh=zsI3ehX0xi2B3kRvYfhhTr3QuCXOPPR+1qnS+0qsjY8=;
+	s=korg; t=1725529761;
+	bh=g1/gv6Ag/qm0sKBf4BYfrlZn977GE3r1RCjiN/9gW8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgao/LTiuIo0F6om/eZEw5z6ueQXXcdfGUDuD178pWznoFZUnsKwM5HwZK0JAzenn
-	 5GKsTs8k5db7D7mHAa5Kb7vK+sJFyhfXFBlHvRAUtflAXAnjaCoRQRUYMeAnvqvXJd
-	 LB3x/3/TqfRK6/bvWWEC4pceWzmU6LeFg9VxilW4=
+	b=JvxpR3EVeEauvX98+eYuNJjKNK8P1ycc4p+JAeT16DKmqMy0W/wailLxJhOIP+WQH
+	 HvABy7J+X3yEBN8OgyxlmTPiPGdd6I99PizZzse+d7sMGnGdlNy+j8mwFcnk/Yx0tI
+	 1Hw02eIRbeGymDyT9x9dAL1WGnjk/hS+XQafvakE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/132] drm/amd/display: Ensure index calculation will not overflow
+Subject: [PATCH 6.10 135/184] drm/xe: Use missing lock in relay_needs_worker
 Date: Thu,  5 Sep 2024 11:40:48 +0200
-Message-ID: <20240905093724.629605183@linuxfoundation.org>
+Message-ID: <20240905093737.491250306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 8e2734bf444767fed787305ccdcb36a2be5301a2 ]
+[ Upstream commit 8b01f970ee890574b3607c85781354a765c849bd ]
 
-[WHY & HOW]
-Make sure vmid0p72_idx, vnom0p8_idx and vmax0p9_idx calculation will
-never overflow and exceess array size.
+Add missing lock that is protecting relay->incoming_actions.
 
-This fixes 3 OVERRUN and 1 INTEGER_OVERFLOW issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240603081723.18775-1-nirmoy.das@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_relay.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c b/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
-index 50b0434354f8..c08169de3660 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
-@@ -1453,10 +1453,9 @@ void dcn_bw_update_from_pplib_fclks(
- 	ASSERT(fclks->num_levels);
+diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
+index c0a2d8d5d3b3..b49137ea6d84 100644
+--- a/drivers/gpu/drm/xe/xe_guc_relay.c
++++ b/drivers/gpu/drm/xe/xe_guc_relay.c
+@@ -757,7 +757,14 @@ static void relay_process_incoming_action(struct xe_guc_relay *relay)
  
- 	vmin0p65_idx = 0;
--	vmid0p72_idx = fclks->num_levels -
--		(fclks->num_levels > 2 ? 3 : (fclks->num_levels > 1 ? 2 : 1));
--	vnom0p8_idx = fclks->num_levels - (fclks->num_levels > 1 ? 2 : 1);
--	vmax0p9_idx = fclks->num_levels - 1;
-+	vmid0p72_idx = fclks->num_levels > 2 ? fclks->num_levels - 3 : 0;
-+	vnom0p8_idx = fclks->num_levels > 1 ? fclks->num_levels - 2 : 0;
-+	vmax0p9_idx = fclks->num_levels > 0 ? fclks->num_levels - 1 : 0;
+ static bool relay_needs_worker(struct xe_guc_relay *relay)
+ {
+-	return !list_empty(&relay->incoming_actions);
++	bool is_empty;
++
++	spin_lock(&relay->lock);
++	is_empty = list_empty(&relay->incoming_actions);
++	spin_unlock(&relay->lock);
++
++	return !is_empty;
++
+ }
  
- 	dc->dcn_soc->fabric_and_dram_bandwidth_vmin0p65 =
- 		32 * (fclks->data[vmin0p65_idx].clocks_in_khz / 1000.0) / 1000.0;
+ static void relay_kick_worker(struct xe_guc_relay *relay)
 -- 
 2.43.0
 
