@@ -1,142 +1,252 @@
-Return-Path: <stable+bounces-73614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E815496DC5E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:50:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C9F96DCD1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40D428B78F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5137C2849C1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567924C634;
-	Thu,  5 Sep 2024 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD55119E7F5;
+	Thu,  5 Sep 2024 14:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="WfzWC0uI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82C874413;
-	Thu,  5 Sep 2024 14:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAD119E7D3;
+	Thu,  5 Sep 2024 14:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725547845; cv=none; b=RrNwwfJP3xk3s4CpenYybsNvYM6KzkDkFCWykCslW83hMIV3EzadCkpflWuxMAwnLXMjiW2CjJ37mnMhc8BUqb5/JF04jIkzYtlmOdSKAEIykANgYbb9EcL39gyZ+C5vzAspK+SMdGb7b3scdWfKxpU0SKmAI3kopq+RSSrK6Lw=
+	t=1725548233; cv=none; b=XW+UWpeM6gHL2OSQJmXWsZIWCtpxDtosuh7Ay4JVvUEb1MO+9sT+h02OqMelqtiNpl7gcjU83bMZ814I9yfup2dMgdwo2g2uvwBojq7O6YJ71dtT2iqfjmFt7DkzJauu0Tu4kinp/sA+dq4atjOA8iqH8QtZISL/M3S44uaZlfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725547845; c=relaxed/simple;
-	bh=CK2E0vmywcwr2z4DMRWOl+JpYr3SUFEXFQJ+GlpelCs=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=fEEMhL0/3BgV3rV/rOz704TA/dTMBAYUMhxEaLtQPKT9rwLi/XSz0gTQOkO//N/kmW/0+QtCuGECyeD+6jKpfmtnmum0P8JvaPeQnx0XFj/a6X1o2Z8X7sUfKPe5RaJvMspRSkmZ+4tbZMpKU40eqQUkCYztYYd2GkooNMsEtIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [10.185.68.150] (90.154.15.122) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 5 Sep
- 2024 17:50:28 +0300
-Subject: Re: [PATCH] pinctrl: stm32: check devm_kasprintf() returned value
-To: Ma Ke <make24@iscas.ac.cn>, <linus.walleij@linaro.org>,
-	<mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-	<bartosz.golaszewski@linaro.org>, <patrice.chotard@foss.st.com>,
-	<antonio.borneo@foss.st.com>, <peng.fan@nxp.com>,
-	<valentin.caron@foss.st.com>, <akpm@linux-foundation.org>
-CC: <linux-gpio@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20240905020244.355474-1-make24@iscas.ac.cn>
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <03cf48b6-58b4-eeaa-41bf-5dda61ea37ac@omp.ru>
-Date: Thu, 5 Sep 2024 17:50:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+	s=arc-20240116; t=1725548233; c=relaxed/simple;
+	bh=S6nSjvgrgeostwnVEtga16zxIZfik5+Z3rFWT7sLalI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OF3lL/j8LztsJOiTdEUbJzA6JT9uC1Q429AGy7dPppnRfcsbRXQHej2ZfsWrCCAZRM3COAalsripdHwdg4GLFwotMtxtk3by3815MR7EoUnU7pGAOBCME556AbZBm8VYFUluN0VZd5C1SR0dfQhavqz1YANGNTN85OFfz9Fa+dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=WfzWC0uI; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4X02Wk0R7Jz9sjG;
+	Thu,  5 Sep 2024 16:57:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1725548226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=theZEgnObKA5o5sa8iv8/5VUkQlNdUgbzqyzOWK7yC8=;
+	b=WfzWC0uI7P1gv/cBAXBe6DUxyILtnG8Rw6T2tWiDn4ib8iCVuyj58PnigX32Nop0SPlA45
+	8pFU6SieyP7o05N9Ai8qhZNOcKgNUJp5sWhgstNp62xDH+LXpCZ2kC0hHtIH0MqmgFCMw7
+	5JveM5tm0GZ/Wj/4IpM12qCatx0hSv1RpDgA5uijf+EqoJf4pSYW3YwpagRTEAcm2mB+lp
+	vO4ThklXM5uqS7u7/JzGWKuG1Puu4HjVxZEMunWsCZwqfQ/DK1th6pfbpbAwPXBfIb5IF5
+	pbZmom6KJCPrv+bxUV0uwSYePsel5pwumdroQA7NQ1HrRRkRs/YDL6MOVnUxcA==
+From: Aleksa Sarai <cyphar@cyphar.com>
+Subject: [PATCH RFC v2 00/10] extensible syscalls: CHECK_FIELDS to allow
+ for easier feature detection
+Date: Fri, 06 Sep 2024 00:56:32 +1000
+Message-Id: <20240906-extensible-structs-check_fields-v2-0-0f46d2de9bad@cyphar.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240905020244.355474-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/05/2024 14:36:50
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 187573 [Sep 05 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.1.5
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 32 0.3.32
- 766319f57b3d5e49f2c79a76e7d7087b621090df
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 90.154.15.122 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info:
-	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;90.154.15.122:7.1.2;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 90.154.15.122
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/05/2024 14:40:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/5/2024 12:11:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-B4-Tracking: v=1; b=H4sIAKDG2WYC/4XNQQrCMBAF0KvIrI2kaarGlSB4ALdSpKZTM1jbk
+ omlpfTuhlzA5f8f/luA0RMynDYLeByJqe9iUNsNWFd1LxRUxwxKKi2PMhc4BeyYni0KDv5rAwv
+ r0L4fDWFbs6j0AY222OxNBvFl8NjQlIQ73K4XKGPpiEPv56SOWZoSYKT6C4yZkKLQBZoca1SNO
+ tt5cJXf2f4D5bquPw4Wv57UAAAA
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Florian Weimer <fweimer@redhat.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>, 
+ linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7270; i=cyphar@cyphar.com;
+ h=from:subject:message-id; bh=S6nSjvgrgeostwnVEtga16zxIZfik5+Z3rFWT7sLalI=;
+ b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaTdPLb5kvLOxoytZu0mtzlZ7affWXGK4xIL48Kq6twnl
+ S0lTcVqHaUsDGJcDLJiiizb/DxDN81ffCX500o2mDmsTCBDGLg4BWAiBzcw/I+0PXTgd4RChfYU
+ oTVxVTK1wj+D+3a+m++YsK5k6a9bm+8wMtxUeHu7wIapeoO1WgNLfq1FfnKQ9stOhl6DmT92Hd5
+ eygEA
+X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
+ fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
+X-Rspamd-Queue-Id: 4X02Wk0R7Jz9sjG
 
-On 9/5/24 5:02 AM, Ma Ke wrote:
+This is something that I've been thinking about for a while. We had a
+discussion at LPC 2020 about this[1] but the proposals suggested there
+never materialised.
 
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/pinctrl/stm32/pinctrl-stm32.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-> index a8673739871d..53306d939d14 100644
-> --- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-> +++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-> @@ -1374,8 +1374,13 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
->  
->  	for (i = 0; i < npins; i++) {
->  		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
-> -		if (stm32_pin && stm32_pin->pin.name)
-> +		if (stm32_pin && stm32_pin->pin.name) {
->  			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
-> +			if (!name[i]) {
-> +				err = -ENOMEM;
-> +				goto err_clk;
-> +			}
-> +		}
->  		else
->  			names[i] = NULL;
+In short, it is quite difficult for userspace to detect the feature
+capability of syscalls at runtime. This is something a lot of programs
+want to do, but they are forced to create elaborate scenarios to try to
+figure out if a feature is supported without causing damage to the
+system. For the vast majority of cases, each individual feature also
+needs to be tested individually (because syscall results are
+all-or-nothing), so testing even a single syscall's feature set can
+easily inflate the startup time of programs.
 
-   That doesn't comply with the kernel coding style -- it now needs to be:
+This patchset implements the fairly minimal design I proposed in this
+talk[2] and in some old LKML threads (though I can't find the exact
+references ATM). The general flow looks like:
 
- 		} else {
- 			names[i] = NULL;
-		}
-[...]
+ 1. Userspace will indicate to the kernel that a syscall should a be
+    no-op by setting the top bit of the extensible struct size argument.
 
-MBR, Sergey
+    We will almost certainly never support exabyte sized structs, so the
+    top bits are free for us to use as makeshift flag bits. This is
+    preferable to using the per-syscall flag field inside the structure
+    because seccomp can easily detect the bit in the flag and allow the
+    probe or forcefully return -EEXTSYS_NOOP.
+
+ 2. The kernel will then fill the provided structure with every valid
+    bit pattern that the current kernel understands.
+
+    For flags or other bitflag-like fields, this is the set of valid
+    flags or bits. For pointer fields or fields that take an arbitrary
+    value, the field has every bit set (0xFF... to fill the field) to
+    indicate that any value is valid in the field.
+
+ 3. The syscall then returns -EEXTSYS_NOOP which is an errno that will
+    only ever be used for this purpose (so userspace can be sure that
+    the request succeeded).
+
+    On older kernels, the syscall will return a different error (usually
+    -E2BIG or -EFAULT) and userspace can do their old-fashioned checks.
+
+ 4. Userspace can then check which flags and fields are supported by
+    looking at the fields in the returned structure. Flags are checked
+    by doing an AND with the flags field, and field support can checked
+    by comparing to 0. In principle you could just AND the entire
+    structure if you wanted to do this check generically without caring
+    about the structure contents (this is what libraries might consider
+    doing).
+
+    Userspace can even find out the internal kernel structure size by
+    passing a PAGE_SIZE buffer and seeing how many bytes are non-zero.
+
+    As with copy_struct_from_user(), this is designed to be forward- and
+    backwards- compatible.
+
+This allows programas to get a one-shot understanding of what features a
+syscall supports without having to do any elaborate setups or tricks to
+detect support for destructive features. Flags can simply be ANDed to
+check if they are in the supported set, and fields can just be checked
+to see if they are non-zero.
+
+This patchset is IMHO the simplest way we can add the ability to
+introspect the feature set of extensible struct (copy_struct_from_user)
+syscalls. It doesn't preclude the chance of a more generic mechanism
+being added later.
+
+The intended way of using this interface to get feature information
+looks something like the following (imagine that openat2 has gained a
+new field and a new flag in the future):
+
+  static bool openat2_no_automount_supported;
+  static bool openat2_cwd_fd_supported;
+
+  int check_openat2_support(void)
+  {
+      int err;
+      struct open_how how = {};
+
+      err = openat2(AT_FDCWD, ".", &how, CHECK_FIELDS | sizeof(how));
+      assert(err < 0);
+      switch (errno) {
+      case EFAULT: case E2BIG:
+          /* Old kernel... */
+          check_support_the_old_way();
+          break;
+      case EEXTSYS_NOOP:
+          openat2_no_automount_supported = (how.flags & RESOLVE_NO_AUTOMOUNT);
+          openat2_cwd_fd_supported = (how.cwd_fd != 0);
+          break;
+      }
+  }
+
+This series adds CHECK_FIELDS support for the following extensible
+struct syscalls, as they are quite likely to grow flags in the near
+future:
+
+ * openat2
+ * clone3
+ * mount_setattr
+
+[1]: https://lwn.net/Articles/830666/
+[2]: https://youtu.be/ggD-eb3yPVs
+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+Changes in v2:
+- Add CHECK_FIELDS support to mount_setattr(2).
+- Fix build failure on architectures with custom errno values.
+- Rework selftests to use the tools/ uAPI headers rather than custom
+  defining EEXTSYS_NOOP.
+- Make sure we return -EINVAL and -E2BIG for invalid sizes even if
+  CHECK_FIELDS is set, and add some tests for that.
+- v1: <https://lore.kernel.org/r/20240902-extensible-structs-check_fields-v1-0-545e93ede2f2@cyphar.com>
+
+---
+Aleksa Sarai (10):
+      uaccess: add copy_struct_to_user helper
+      sched_getattr: port to copy_struct_to_user
+      openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
+      openat2: add CHECK_FIELDS flag to usize argument
+      selftests: openat2: add 0xFF poisoned data after misaligned struct
+      selftests: openat2: add CHECK_FIELDS selftests
+      clone3: add CHECK_FIELDS flag to usize argument
+      selftests: clone3: add CHECK_FIELDS selftests
+      mount_setattr: add CHECK_FIELDS flag to usize argument
+      selftests: mount_setattr: add CHECK_FIELDS selftest
+
+ arch/alpha/include/uapi/asm/errno.h                |   3 +
+ arch/mips/include/uapi/asm/errno.h                 |   3 +
+ arch/parisc/include/uapi/asm/errno.h               |   3 +
+ arch/sparc/include/uapi/asm/errno.h                |   3 +
+ fs/namespace.c                                     |  17 ++
+ fs/open.c                                          |  18 ++
+ include/linux/uaccess.h                            |  98 ++++++++
+ include/uapi/asm-generic/errno.h                   |   3 +
+ include/uapi/linux/openat2.h                       |   2 +
+ kernel/fork.c                                      |  30 ++-
+ kernel/sched/syscalls.c                            |  42 +---
+ tools/arch/alpha/include/uapi/asm/errno.h          |   3 +
+ tools/arch/mips/include/uapi/asm/errno.h           |   3 +
+ tools/arch/parisc/include/uapi/asm/errno.h         |   3 +
+ tools/arch/sparc/include/uapi/asm/errno.h          |   3 +
+ tools/include/uapi/asm-generic/errno.h             |   3 +
+ tools/include/uapi/asm-generic/posix_types.h       | 101 ++++++++
+ tools/testing/selftests/clone3/.gitignore          |   1 +
+ tools/testing/selftests/clone3/Makefile            |   4 +-
+ .../testing/selftests/clone3/clone3_check_fields.c | 264 +++++++++++++++++++++
+ tools/testing/selftests/mount_setattr/Makefile     |   2 +-
+ .../selftests/mount_setattr/mount_setattr_test.c   |  53 ++++-
+ tools/testing/selftests/openat2/Makefile           |   2 +
+ tools/testing/selftests/openat2/openat2_test.c     | 165 ++++++++++++-
+ 24 files changed, 778 insertions(+), 51 deletions(-)
+---
+base-commit: 431c1646e1f86b949fa3685efc50b660a364c2b6
+change-id: 20240803-extensible-structs-check_fields-a47e94cef691
+
+Best regards,
+-- 
+Aleksa Sarai <cyphar@cyphar.com>
+
 
