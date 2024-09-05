@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2724D96D539
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2179896D47B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4FE0283321
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1371F249CA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556E8194A5A;
-	Thu,  5 Sep 2024 10:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F66198A08;
+	Thu,  5 Sep 2024 09:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3unKomq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRGyedrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F3D1494DB;
-	Thu,  5 Sep 2024 10:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D0E195FCE;
+	Thu,  5 Sep 2024 09:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530510; cv=none; b=WRVHbLwgIbHCMdGbWjN4dbJex0ob5Avu9ytIZ9dr5ZoctwawXzDim47qjtPGL/S42/re8zxrvl6i8SVqlbvwyJOUcDTovkl+rxwVzJplHnS147+o3ssMyVmik3w6bUNJdBWnU+C3nRK//qMxXrJuU2dafEelpYlo3b2SmEONNm0=
+	t=1725529946; cv=none; b=JbzcMeV8iaLes9/n8DUMPAH6xUF6tTnH3USEWBrghJBbCSVgsNHGKpBPvTwSLCJP/yjJgQu//wszU7MRIoBuox9Jjj3KLP1ZWOHNlLsTi1jxXTLxxXOQ8ZVkx62wEXNgkG+cmi/3wKOGX6BMCvR91bC0L+UuZXM4KMnKTxZxz3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530510; c=relaxed/simple;
-	bh=N31LHWg1X4Jt1yLs+i/KXricmNGiDSa8OTESyzvdmSk=;
+	s=arc-20240116; t=1725529946; c=relaxed/simple;
+	bh=zKXY+B/G3Gqj1+YBffMay+NNo9GmkFfMhRcoyKU6kY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzVHCvCRgOgm8gRDbuMi3780YQN/WCvVIvpd9rQSABe6NOMc3m3UMXxxYf9HQyWyKS9qigTBK0dUkpvzioBQ0gDkBCjacQwubf7zGQTbYzREAoVwYZRlECvjKHzcLepVIxNBlmNHMNpT+pQ+VQyMcebsfsLHzEW4mBtCRNUHkdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3unKomq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D6C4CEC3;
-	Thu,  5 Sep 2024 10:01:49 +0000 (UTC)
+	 MIME-Version; b=nhGTi6Xm2Zjy2XoJpRGkm2EGQe+X7Mq555VU8opX3LVZKULxaoy0EKUaezj2GfNpT2IcCuNefB4RAE0PuBB5e6kwugyUKtgBFdUv0V4Ko2GCpdVhgavVLoTjI330Gh9bGlfx5MycQWNcmae5Om73nUAIvoxLrnH8YkR9YV46YKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRGyedrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D12C4CEC3;
+	Thu,  5 Sep 2024 09:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530509;
-	bh=N31LHWg1X4Jt1yLs+i/KXricmNGiDSa8OTESyzvdmSk=;
+	s=korg; t=1725529946;
+	bh=zKXY+B/G3Gqj1+YBffMay+NNo9GmkFfMhRcoyKU6kY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3unKomqaLTh9vumQmKuzG45CbqX1Tpsbgg+Mp+0YvdAE/aWLw09GpF9PUK5XceNj
-	 iFtPEya1rjLrzAyCqq6IB/eXotrK2qeLNXVu4kzyR5SgXzeamA7K4G9SLlfa+NLpyg
-	 /NLa6pjkNqDRqrfszx8Ud+WwuXkr5bcdQ++m3hJA=
+	b=lRGyedrXanVm60P/avYMaQq0RUTAiIO235u89I/H2p1eL4zN03DlsLQLc0zDgyp/x
+	 wcriS3v+bqkkbZHlj6QYYnmJN6m0snR4QtN7wER87FUbUvvUr+EnOzoTQHHRzhB2fa
+	 2LKIRvQDW7RuC5Or7Rnm2D2pICVXC3RowkMqGMRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/101] drm/amd/display: Spinlock before reading event
+Subject: [PATCH 6.10 165/184] drm/amdgpu: add lock in kfd_process_dequeue_from_device
 Date: Thu,  5 Sep 2024 11:41:18 +0200
-Message-ID: <20240905093717.939616053@linuxfoundation.org>
+Message-ID: <20240905093738.781794931@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit ae13c8a5cff92015b9a3eb7cee65ebc75859487f ]
+[ Upstream commit d225960c2330e102370815367b877baaf8bb8b5d ]
 
-[WHY & HOW]
-A read of acrtc_attach->base.state->event was not locked so moving it
-inside the spinlock.
+We need to take the reset domain lock before talking to MES. While in
+this case we can take the lock inside the mes helper. We can't do so for
+most other mes helpers since they are used during reset. So for
+consistency sake we add the lock here.
 
-This fixes a LOCK_EVASION issue reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 1f8f0ce45c2a..0be1a1149a3f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8055,15 +8055,13 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				bundle->stream_update.vrr_infopacket =
- 					&acrtc_state->stream->vrr_infopacket;
- 		}
--	} else if (cursor_update && acrtc_state->active_planes > 0 &&
--		   acrtc_attach->base.state->event) {
--		drm_crtc_vblank_get(pcrtc);
--
-+	} else if (cursor_update && acrtc_state->active_planes > 0) {
- 		spin_lock_irqsave(&pcrtc->dev->event_lock, flags);
--
--		acrtc_attach->event = acrtc_attach->base.state->event;
--		acrtc_attach->base.state->event = NULL;
--
-+		if (acrtc_attach->base.state->event) {
-+			drm_crtc_vblank_get(pcrtc);
-+			acrtc_attach->event = acrtc_attach->base.state->event;
-+			acrtc_attach->base.state->event = NULL;
-+		}
- 		spin_unlock_irqrestore(&pcrtc->dev->event_lock, flags);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 4858112f9a53..a5bdc3258ae5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -28,6 +28,7 @@
+ #include "kfd_priv.h"
+ #include "kfd_kernel_queue.h"
+ #include "amdgpu_amdkfd.h"
++#include "amdgpu_reset.h"
+ 
+ static inline struct process_queue_node *get_queue_by_qid(
+ 			struct process_queue_manager *pqm, unsigned int qid)
+@@ -87,8 +88,12 @@ void kfd_process_dequeue_from_device(struct kfd_process_device *pdd)
+ 		return;
+ 
+ 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
+-	if (dev->kfd->shared_resources.enable_mes)
+-		amdgpu_mes_flush_shader_debugger(dev->adev, pdd->proc_ctx_gpu_addr);
++	if (dev->kfd->shared_resources.enable_mes &&
++	    down_read_trylock(&dev->adev->reset_domain->sem)) {
++		amdgpu_mes_flush_shader_debugger(dev->adev,
++						 pdd->proc_ctx_gpu_addr);
++		up_read(&dev->adev->reset_domain->sem);
++	}
+ 	pdd->already_dequeued = true;
+ }
  
 -- 
 2.43.0
