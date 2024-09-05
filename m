@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC48896D485
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D319196D405
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C71D283F87
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B18B1F22C81
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386FC1990A2;
-	Thu,  5 Sep 2024 09:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14EB197A76;
+	Thu,  5 Sep 2024 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRc2pkg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVkrG5of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F881990D7;
-	Thu,  5 Sep 2024 09:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCE314A08E;
+	Thu,  5 Sep 2024 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529975; cv=none; b=UBrduE006eU6pGhqH5fhHXkrkOKS77VRNbb/e3lEAVte97McLArbsmiI4MyONXumd5TPkUElxbxs4k76KZ8gNqpcfJ+PbXZ1ZINYE5FMI4ALZ3bAaprziI7brqduvIZfyLS9965VChT0M8puKmx0SXYQJImaVNjfntbeY79j6aE=
+	t=1725529645; cv=none; b=g9jlDUHLSUHyK6iQGSbNs8mErEc7CvS49RLFmXpacuYg9zfS1PCn9OWdJHG2XTUKxQ0+mwWsfU2tSSRmBHNYU1kyNoE0O+JEPJXuxnq0Zdrw3zH1h54hJagUlV1+Q1mhvx2oKbdTKBaQxDJvChzw9tUeZrac0MibGsaNFBhddXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529975; c=relaxed/simple;
-	bh=15KYb5dJJpQEMD/Y1apW+itIf7EtzkJA0qx/bpf78O4=;
+	s=arc-20240116; t=1725529645; c=relaxed/simple;
+	bh=zaTbc0o1knnnA0JpQiHbXO/z/5tyaMxa0sJW8EP5UlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrIm0oWPObJmayXdgkJ6JzJnMUAiJxQuo0ynvHCDSauEk6arg/HDTu8gw9raHWTEH84W9OBgROFheaHBwSAWSw1or92TIVxQfn3UGuUck3xXxNvZ+KJRf6JCL8atPqrXXEHclV0GJaVveSbksv8Xuer4jR9lWU+9u0lrySVojkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRc2pkg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7055DC4CEC4;
-	Thu,  5 Sep 2024 09:52:54 +0000 (UTC)
+	 MIME-Version; b=cd9WT53PJZ9GMDDLc635p19E4+UDxB0+z51J/7Tnrmu0yYVJXdT4x9qKlPhHGEgBwgBJtR0B93zuFNfsuNbGkNRAtQf7tZyjKLiidAxZGug3Tfj7839Bl+QZlcNHXMEphLEdCKjD55pgRczC7QGpuIWwcrCCKkPOi6sRQ/pz3l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVkrG5of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68DBC4CEC3;
+	Thu,  5 Sep 2024 09:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529974;
-	bh=15KYb5dJJpQEMD/Y1apW+itIf7EtzkJA0qx/bpf78O4=;
+	s=korg; t=1725529645;
+	bh=zaTbc0o1knnnA0JpQiHbXO/z/5tyaMxa0sJW8EP5UlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRc2pkg1RJ0Tpc0nBnmEqNYoHoGPBEZaUDRkjUxbHKM9F1fq8wz7K+b2HmF1onb7y
-	 MWkm0ao03Yh39OCAQrH/sxP3lqfzfMD/LyjA5mGHzillTYiAYzQQF7K+mYL0ws6OeH
-	 Nm4ajXH1X2+mtUCm79QfLqQP2chZ5W4WwAQY+ebw=
+	b=FVkrG5ofHX39PWPkWT4RkhejyuhiZL49C9yRAJekTCPu30oDsBvlvaezbG0wszdaA
+	 RbhQyXLGC9H1Ja1j/9hiFXHt3BLDcGJlcvj2hM4Q5cWXNclgJCP1/jvityhS+e0Uju
+	 QbEfSReNsC8FTElO52uo0ovxQJW/e7nMlkwSxPEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Jay Fang <f.fangjian@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/132] spi: hisi-kunpeng: Add validation for the minimum value of speed_hz
-Date: Thu,  5 Sep 2024 11:40:03 +0200
-Message-ID: <20240905093722.869290069@linuxfoundation.org>
+Subject: [PATCH 6.10 091/184] drm/amdgpu: Fix uninitialized variable warning in amdgpu_info_ioctl
+Date: Thu,  5 Sep 2024 11:40:04 +0200
+Message-ID: <20240905093735.794531827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit c3c4f22b7c814a6ee485ce294065836f8ede30fa ]
+[ Upstream commit 0991e49d2b73bb4189f83a49eb41cdf16976bbf6 ]
 
-The speed specified by the user is used to calculate the clk_div based
-on the max_speed_hz in hisi_calc_effective_speed.  A very low speed
-value can lead to a clk_div larger than the variable range. Avoid this
-by setting the min_speed_hz so that such a small speed value is
-rejected.  __spi_validate() in spi.c will return -EINVAL for the
-specified speed_hz lower than min_speed_hz.
+Check the return value of amdgpu_xcp_get_inst_details, otherwise we
+may use an uninitialized variable inst_mask
 
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Jay Fang <f.fangjian@huawei.com>
-Link: https://patch.msgid.link/20240730032040.3156393-2-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 77e9738e42f60..6910b4d4c427b 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -495,6 +495,7 @@ static int hisi_spi_probe(struct platform_device *pdev)
- 	host->transfer_one = hisi_spi_transfer_one;
- 	host->handle_err = hisi_spi_handle_err;
- 	host->dev.fwnode = dev->fwnode;
-+	host->min_speed_hz = DIV_ROUND_UP(host->max_speed_hz, CLK_DIV_MAX);
- 
- 	hisi_spi_hw_init(hs);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index a0ea6fe8d060..977cde6d1362 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -623,25 +623,32 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 			switch (type) {
+ 			case AMD_IP_BLOCK_TYPE_GFX:
+ 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_GFX, &inst_mask);
++				if (ret)
++					return ret;
+ 				count = hweight32(inst_mask);
+ 				break;
+ 			case AMD_IP_BLOCK_TYPE_SDMA:
+ 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_SDMA, &inst_mask);
++				if (ret)
++					return ret;
+ 				count = hweight32(inst_mask);
+ 				break;
+ 			case AMD_IP_BLOCK_TYPE_JPEG:
+ 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_VCN, &inst_mask);
++				if (ret)
++					return ret;
+ 				count = hweight32(inst_mask) * adev->jpeg.num_jpeg_rings;
+ 				break;
+ 			case AMD_IP_BLOCK_TYPE_VCN:
+ 				ret = amdgpu_xcp_get_inst_details(xcp, AMDGPU_XCP_VCN, &inst_mask);
++				if (ret)
++					return ret;
+ 				count = hweight32(inst_mask);
+ 				break;
+ 			default:
+ 				return -EINVAL;
+ 			}
+-			if (ret)
+-				return ret;
++
+ 			return copy_to_user(out, &count, min(size, 4u)) ? -EFAULT : 0;
+ 		}
  
 -- 
 2.43.0
