@@ -1,192 +1,118 @@
-Return-Path: <stable+bounces-73619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5823A96DD3B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:06:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134EA96DDA8
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFE91F2255E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:06:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE7D7B279DA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46921A2652;
-	Thu,  5 Sep 2024 15:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B298B1A2842;
+	Thu,  5 Sep 2024 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3c/bQTJ0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HBWAK90u"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u18XTSGx"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18C31A08AB;
-	Thu,  5 Sep 2024 15:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B489D433A7
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 15:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725548612; cv=none; b=On0gZUiHxS39Bw10qznDHYBtKvFz6R9xJ5hs86PiDf00oJhPCqwiTuvSP8A0sQjERrPoNbaT6FBFpPKXH9/4i+c2d0dvBlN1JSVfH8k74lRcNTFS5OO83EXYDXB0/aSSS+hoCwIya2qA06bb4MV+vHZXpx/+AoQ7DSLXY9KF2Gs=
+	t=1725549118; cv=none; b=HTkTOviPnHbvUuKQ+0bD0AgnJ3C+0kHW4/xhJ/h/qAzEDUVD86cKDWz5nrM4nVFqChDrhcToIgfbstnUmx3QPiMf2ptEzGExiU8A5KhDzFyNLrEVXWKCVBXge+SuZP4FY0MYH3ifOTuabI0Gpy7+oQYAob0ydOTb7lfL4+YLxVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725548612; c=relaxed/simple;
-	bh=tPjV7lbvvVcInSyPS1lzpB3ol7zfA3cyieli8MH7OFE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cY2Ks/+LvSc0mI31UPmAql9k3BLeqN5a1lCKbsG3nKQwH71uBV83X/clBTvSwZbugvjvZZewGOSn0GylIsOmOQpX3hAU4VbTkb2JDsYUUIDsPZRlUq0pZRmSaTwpCof20pUvKtGmvs5257lcbjFD/92SUTByrTgLXpFOFPA6mGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3c/bQTJ0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HBWAK90u; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 05 Sep 2024 15:03:28 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725548609;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v1qa/VrX/w5dY9ftTWUinSqACrzuybaSHsCf39+hz7s=;
-	b=3c/bQTJ02Q7df3FLVfTlN+x3VGbxnGHrc3Uh1TFnnYIZbm/RTmoe0Siup2hfFwos7YBDeo
-	FSh9ECrPKurbdXxrDFJq2G9VHitnHWKPH7IOqulCrctYHVDFUhVOozfhSmcKuyojVZ99kv
-	GzoV5SxOyrS4QUq1mCdqgEqT+yMjhD80wfH3PIdHRO7/bRa5UzVz9zoWOlHY/viJXHfP9J
-	8bRchpzUoqaCK+Ji7x629xoAQi9Rc6qp1yv4lPWtgLc/SzqBJiixeQIPnbB4xYI/CjGdas
-	GTsE6ra8ZwqjOrnHyrYGzMUhEvhGDaEoKEUyYIB8aCUExsZxnnjgKPL/DSSjBQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725548609;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v1qa/VrX/w5dY9ftTWUinSqACrzuybaSHsCf39+hz7s=;
-	b=HBWAK90u6xXU6PV88fDeRU1IhmrRgfC+XeorjNem9bMqpikfAz9CWz4vOC0WRK1npeJF/V
-	vwy5TLeLnXdmC7AA==
-From: "tip-bot2 for Luo Gengkun" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Fix small negative period being ignored
-Cc: Luo Gengkun <luogengkun@huaweicloud.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240831074316.2106159-2-luogengkun@huaweicloud.com>
-References: <20240831074316.2106159-2-luogengkun@huaweicloud.com>
+	s=arc-20240116; t=1725549118; c=relaxed/simple;
+	bh=0HVxap2WfUaoSbJ6P5wXUA6AtuQouKc0QdxQVKFfCSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IAsDMl597T/KZzIISDZXjYvC+gVRqYB3oWZn6Sq8Mr9LUkVpZzImD5zJO2OkJOouBavwmJP3iZLWZfNmxFlm+rs/+YIku5r4YLs5G8KBrn8OgRMejJ0IXKKH24W84Nkkxx5XyMa2I5KO97svXzpIQXULuNmOqN/T/owRtIhtcFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u18XTSGx; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42c7b5b2d01so9572025e9.3
+        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 08:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725549115; x=1726153915; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c5ydbHAcLR6S2kZ2UiSe4taaN+JWRdShTwsXukZfYrE=;
+        b=u18XTSGxV5WU0BIezQYLudJIcblmUCm58m3EDhW18mLbLQ569wOl0qAtqRId2v7yM0
+         OmEdMSTFQPTgyUeovfwC3/8woXc/NF+hfInt+t+WCXmFW0ym/XGOqcIImVmTBXSkjyHU
+         xJUR7bpptshFed2S0YK01hjdWwrCAuhoRljD3ugezT0GPUnfvqpeoEIV0+JYFJvtZKEz
+         M51x8/3tBPA/jfxpt019PlbkySMYXudildBwI/MmU0sbmHRryYQqivGdJ6sv+CABKXIq
+         9yHHFcvY3z5dUje3VY69oz+6mq4JAT4Lu7hdcEAClPs24sVJbO6B+WDSm1kMfqIhi/Qu
+         Xkrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725549115; x=1726153915;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c5ydbHAcLR6S2kZ2UiSe4taaN+JWRdShTwsXukZfYrE=;
+        b=p2a2A/O+wNS1Qj7k7PY/SLlV8wTYav4sC6EXwqAijm5kzFJaxq4uXlfBeywcaluilm
+         +gI8mZPyksuwTszK6fi65a7rwhjK7ggBa3pARvuCaaEjJYhv5E7MXJMsh8ESR9tQ1oka
+         1FvCuT7ekJ1DX3Fn7Tx479/iabGmwTbZ/miDb1cq1E4LvO2my5S+4+AKdlDs7g1iYl/8
+         pvbwLOuUNesQyJKyhYxJzbO2tVyvVUZL4rVCGPl5YZCEZB/fuv41rP/dtFjeiQBlysVk
+         hZ4CoPkRer9R/Ondkp1vjAqh2z6aIOjZlTBAKUGYaBnvmFS73KJJyjAAymnkpNQOnsAW
+         wJew==
+X-Forwarded-Encrypted: i=1; AJvYcCVilcHzSD+bL6U+nQe8AOmorMhH+NFIN9UgP5fkUS6sWM2nhZbT3ttMav/AVj7a4Y44qqlwyic=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn7mfSWfCXLtA73wGrAzENmEArye/PgcEFydBWBgyWoKkjCQaE
+	RY+6u9WZYrP+4NEo6bXkDEzyEnxH7v+lcEqUw2VseHpuo82XIHDTW6upMJcpZMU=
+X-Google-Smtp-Source: AGHT+IEb2Gx1tTCmdOI5YjqColZWn/7Fy+QvmuvrxLoHycJJrpvuJNWc5dunZZ9mWjFu1Gzsuu06PQ==
+X-Received: by 2002:a05:600c:154f:b0:428:e820:37b6 with SMTP id 5b1f17b1804b1-42c9a3938b4mr26782045e9.31.1725549114779;
+        Thu, 05 Sep 2024 08:11:54 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df84b9sm235437335e9.24.2024.09.05.08.11.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 08:11:54 -0700 (PDT)
+Date: Thu, 5 Sep 2024 18:11:49 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Hillf Danton <hdanton@sina.com>, alsa-devel@alsa-project.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2 4.19.y] ALSA: usb-audio: Sanity checks for each pipe
+ and EP types
+Message-ID: <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
+References: <76c0ef6b-f4bf-41f7-ad36-55f5b4b3180a@stanley.mountain>
+ <599b79d0-0c0f-425e-b2a2-1af9f81539b8@stanley.mountain>
+ <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
+ <2024090557-hurry-armful-dbe0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172554860849.2215.13532771799874013503.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024090557-hurry-armful-dbe0@gregkh>
 
-The following commit has been merged into the perf/core branch of tip:
+On Thu, Sep 05, 2024 at 03:49:14PM +0200, Greg KH wrote:
+> On Thu, Sep 05, 2024 at 04:34:45PM +0300, Dan Carpenter wrote:
+> > Sorry,
+> > 
+> > I completely messed these emails up.  It has Takashi Iwai and Hillf Danton's
+> > names instead of mine in the From header.  It still has my email address, but
+> > just the names are wrong.
+> > 
+> > Also I should have used a From header in the body of the email.
+> > 
+> > Also the threading is messed up.
+> > 
+> > Will try again tomorrow.
+> 
+> It looks good to me, now queued up.
+> 
 
-Commit-ID:     62c0b1061593d7012292f781f11145b2d46f43ab
-Gitweb:        https://git.kernel.org/tip/62c0b1061593d7012292f781f11145b2d46f43ab
-Author:        Luo Gengkun <luogengkun@huaweicloud.com>
-AuthorDate:    Sat, 31 Aug 2024 07:43:15 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 05 Sep 2024 16:56:13 +02:00
+The code is okay but the Author header is messed up.  It has my email address.
 
-perf/core: Fix small negative period being ignored
+From: Hillf Danton <dan.carpenter@linaro.org>
 
-In perf_adjust_period, we will first calculate period, and then use
-this period to calculate delta. However, when delta is less than 0,
-there will be a deviation compared to when delta is greater than or
-equal to 0. For example, when delta is in the range of [-14,-1], the
-range of delta = delta + 7 is between [-7,6], so the final value of
-delta/8 is 0. Therefore, the impact of -1 and -2 will be ignored.
-This is unacceptable when the target period is very short, because
-we will lose a lot of samples.
+From: Takashi Iwai <dan.carpenter@linaro.org>
 
-Here are some tests and analyzes:
-before:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.022 MB perf.data (518 samples) ]
+regards,
+dan carpenter
 
-  # perf script
-  ...
-  a.out     396   257.956048:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.957891:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.959730:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.961545:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.963355:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.965163:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.966973:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.968785:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.970593:         23 cs:  ffffffff81f4eeec schedul>
-  ...
-
-after:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.058 MB perf.data (1466 samples) ]
-
-  # perf script
-  ...
-  a.out     395    59.338813:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.339707:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.340682:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.341751:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.342799:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.343765:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.344651:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.345539:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.346502:         13 cs:  ffffffff81f4eeec schedul>
-  ...
-
-test.c
-
-int main() {
-        for (int i = 0; i < 20000; i++)
-                usleep(10);
-
-        return 0;
-}
-
-  # time ./a.out
-  real    0m1.583s
-  user    0m0.040s
-  sys     0m0.298s
-
-The above results were tested on x86-64 qemu with KVM enabled using
-test.c as test program. Ideally, we should have around 1500 samples,
-but the previous algorithm had only about 500, whereas the modified
-algorithm now has about 1400. Further more, the new version shows 1
-sample per 0.001s, while the previous one is 1 sample per 0.002s.This
-indicates that the new algorithm is more sensitive to small negative
-values compared to old algorithm.
-
-Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240831074316.2106159-2-luogengkun@huaweicloud.com
----
- kernel/events/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4acec97..67e115d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4183,7 +4183,11 @@ static void perf_adjust_period(struct perf_event *event, u64 nsec, u64 count, bo
- 	period = perf_calculate_period(event, nsec, count);
- 
- 	delta = (s64)(period - hwc->sample_period);
--	delta = (delta + 7) / 8; /* low pass filter */
-+	if (delta >= 0)
-+		delta += 7;
-+	else
-+		delta -= 7;
-+	delta /= 8; /* low pass filter */
- 
- 	sample_period = hwc->sample_period + delta;
- 
 
