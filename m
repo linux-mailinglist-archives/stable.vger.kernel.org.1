@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F099296D53D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF9196D45E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D6B1F2A372
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0261F2272B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D02719538A;
-	Thu,  5 Sep 2024 10:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32741991A1;
+	Thu,  5 Sep 2024 09:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfgIaVtg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj9bg5Zw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E3F1494DB;
-	Thu,  5 Sep 2024 10:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F7A197A92;
+	Thu,  5 Sep 2024 09:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530523; cv=none; b=e2SUOj24re3OaH0euqbsflhyNT0ckMwgSknkEVOxjJdmfcXB4oKavE/nsm04wb4Q0u5XB38ze/FADJ+PuFaYb+UW0jfsadkoWQsNphJ1pFJ0Qz2kxkj+u8CCkgUesj3oyJDKkfNaYilq+JSyKR4zJjBSNIjYRJF4TacbjfxyJ+8=
+	t=1725529876; cv=none; b=AzDKM52BJUuY0AmzQYG2osN21M8mF/SPOJgsDi6n6KTkE1JJ8Za9huXYN1o1NO/sH1J56XyZmbNYjwt6Mq+LIeyV1/fZ8o7ua7L6yrMDR5sh4pUMhWVo9VOmpCWC8fdqRrWh9aQiEr3peewHYoScmuRaqalnZ66NPafSA6crkDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530523; c=relaxed/simple;
-	bh=tNQTO+pgkN8b6DaReBcv+tTNMoB3lZRZ+nNJKa+nqAQ=;
+	s=arc-20240116; t=1725529876; c=relaxed/simple;
+	bh=bhrwMcy3kuvrLPsaIf3IEwoRh8BPQ7Q9DqQDYrZkPME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlr+xYqqxRRbVPGf2/z0+QoirRD48oUrNTJRNQ4C8VWzLbttCEpxMq8Dztvdk6Uzf5o5L0jb6FqntYPabQK5agMRhJjPLs3CLQu2UwPJP5VWz+ynwqlX4M6L0ESl9jO/gxzw8GRn6l5CgUlM1+plBWDFjPX6KHdDaxZ98A+Rqcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfgIaVtg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B51C4CEC3;
-	Thu,  5 Sep 2024 10:02:02 +0000 (UTC)
+	 MIME-Version; b=C76cpA24wBxBNmUtAqvI/IMlrhdSYQoDadBgwQwLY+LMpF+mHk02ZJrOJfsQVroOHu2ifxI8O+CmUtAEVNSumAUhHW3LIhWhBWxqJPRj2CiPNGtJQ/79fW1+3QXSd1//2N25jexeEfeZLWT+wE/0QDFF67HUv6vX/7W31iXLra0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj9bg5Zw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3A8C4CEC3;
+	Thu,  5 Sep 2024 09:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530522;
-	bh=tNQTO+pgkN8b6DaReBcv+tTNMoB3lZRZ+nNJKa+nqAQ=;
+	s=korg; t=1725529876;
+	bh=bhrwMcy3kuvrLPsaIf3IEwoRh8BPQ7Q9DqQDYrZkPME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HfgIaVtgO08C4SbOcKg3IwSEWwyw1z0TEmsIIf1LBJhxSD/yoSZsjgGtvSfrzBO0a
-	 5zp7i5L8r5C8dKuvulSJkuaj6EQZg26IZx2r1vEOS+zmm+0E3dOqO81bWbgH2T8YwS
-	 c/0dg9niEOU2tv59nJCiEOKJHCEpnZNxRJ9AsGPA=
+	b=sj9bg5ZwODCRAOeksonDbQ+jmQMxjMRK9ccb8N1Gj+ZMpAaCxMfbQI3OAqTW0TixU
+	 g24CL5yqqAKdIKITiJ23iMTBih3x1ZcsRNcvf87k6J10f9gHRMno52wVyWAR2/2OI2
+	 Wbe+RATM3vLVje8BwzlMKpZT1kQW4vl8+zMayeFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Duncan Ma <duncan.ma@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/101] drm/amd/pm: fix uninitialized variable warnings for vangogh_ppt
-Date: Thu,  5 Sep 2024 11:41:22 +0200
-Message-ID: <20240905093718.094271644@linuxfoundation.org>
+Subject: [PATCH 6.10 170/184] drm/amd/display: Remove register from DCN35 DMCUB diagnostic collection
+Date: Thu,  5 Sep 2024 11:41:23 +0200
+Message-ID: <20240905093738.975677015@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit b2871de6961d24d421839fbfa4aa3008ec9170d5 ]
+[ Upstream commit 466423c6dd8af23ebb3a69d43434d01aed0db356 ]
 
-1. Fix a issue that using uninitialized mask to get the ultimate frequency.
-2. Check return of smu_cmn_send_smc_msg_with_param to avoid using
-uninitialized variable residency.
+[Why]
+These registers should not be read from driver and triggering the
+security violation when DMCUB work times out and diagnostics are
+collected blocks Z8 entry.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+[How]
+Remove the register read from DCN35.
+
+Reviewed-by: Duncan Ma <duncan.ma@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-index 1b731a9c92d9..c9c0aa6376e3 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -1003,6 +1003,18 @@ static int vangogh_get_dpm_ultimate_freq(struct smu_context *smu,
- 		}
- 	}
- 	if (min) {
-+		ret = vangogh_get_profiling_clk_mask(smu,
-+						     AMD_DPM_FORCED_LEVEL_PROFILE_MIN_MCLK,
-+						     NULL,
-+						     NULL,
-+						     &mclk_mask,
-+						     &fclk_mask,
-+						     &soc_mask);
-+		if (ret)
-+			goto failed;
-+
-+		vclk_mask = dclk_mask = 0;
-+
- 		switch (clk_type) {
- 		case SMU_UCLK:
- 		case SMU_MCLK:
-@@ -2363,6 +2375,8 @@ static u32 vangogh_set_gfxoff_residency(struct smu_context *smu, bool start)
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+index 70e63aeb8f89..a330827f900c 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+@@ -459,7 +459,7 @@ uint32_t dmub_dcn35_get_current_time(struct dmub_srv *dmub)
+ void dmub_dcn35_get_diagnostic_data(struct dmub_srv *dmub, struct dmub_diagnostic_data *diag_data)
+ {
+ 	uint32_t is_dmub_enabled, is_soft_reset, is_sec_reset;
+-	uint32_t is_traceport_enabled, is_cw0_enabled, is_cw6_enabled;
++	uint32_t is_traceport_enabled, is_cw6_enabled;
  
- 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_LogGfxOffResidency,
- 					      start, &residency);
-+	if (ret)
-+		return ret;
+ 	if (!dmub || !diag_data)
+ 		return;
+@@ -510,9 +510,6 @@ void dmub_dcn35_get_diagnostic_data(struct dmub_srv *dmub, struct dmub_diagnosti
+ 	REG_GET(DMCUB_CNTL, DMCUB_TRACEPORT_EN, &is_traceport_enabled);
+ 	diag_data->is_traceport_en  = is_traceport_enabled;
  
- 	if (!start)
- 		adev->gfx.gfx_off_residency = residency;
+-	REG_GET(DMCUB_REGION3_CW0_TOP_ADDRESS, DMCUB_REGION3_CW0_ENABLE, &is_cw0_enabled);
+-	diag_data->is_cw0_enabled = is_cw0_enabled;
+-
+ 	REG_GET(DMCUB_REGION3_CW6_TOP_ADDRESS, DMCUB_REGION3_CW6_ENABLE, &is_cw6_enabled);
+ 	diag_data->is_cw6_enabled = is_cw6_enabled;
+ 
 -- 
 2.43.0
 
