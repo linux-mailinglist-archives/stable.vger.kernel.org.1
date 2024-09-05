@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81E396D431
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F8196D4DB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A151C24036
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB8DB26C2C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECF9198E6D;
-	Thu,  5 Sep 2024 09:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316AF194A45;
+	Thu,  5 Sep 2024 09:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvQ8rqBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKeZF7+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BB8198A3E;
-	Thu,  5 Sep 2024 09:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E291518D65E;
+	Thu,  5 Sep 2024 09:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529768; cv=none; b=cBHcFOzrC/O5cTw6BBANsYz0Cnk7tUXPR/cjcjcBZd0z3HtRnQ5VOEYgpkunc5Djh7g9FcT+sOhnlNIDOdRql/eANn/71nVak296ZQfsgygdiPvTpDxYiUNXQQPRsjaKZ7x3ugKGGEDe/BvkWKsW265nG+2A9TGpqZZZjiK4MDg=
+	t=1725530218; cv=none; b=ixXBjAvRfrdEchDufoL57PGuBfFMwi27cNt/IwibXkj9LRJ0V572W6ZcbVYvm2Gh4OsBAoMmCzp4XNf5YMa8Y1m55Swu6/nP11/WCIAt35AlEIutpcXnRuecxIEvzxMMtS8tW69b5rWfluz4rnFj36/wvPcpVHp5zCa95/E41A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529768; c=relaxed/simple;
-	bh=uiUE36HW3FVJFN0vSbGhLhrMS2u1VmrqPWT07akeWgY=;
+	s=arc-20240116; t=1725530218; c=relaxed/simple;
+	bh=XGZ3ZOcsndmwaZQoGKag5b9LhEs2W+MZHZKmN7GJl2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjDnfy1ClTLpqtQGRfyRazUemeaUeVXVkZ0UuvV0XorXhCdJNTXBoyGpHr9zcWqHY30m7OGtLkD8cv9zKiAPVkEnDy1fu3FrrOCge8Jl5jdzBezLvgTilrsWmZ/urs+PjsVvRwjgA9Q1r1Q5r/zMeESIuJBN99nfL6CQrilOHqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvQ8rqBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16D4C4CECD;
-	Thu,  5 Sep 2024 09:49:27 +0000 (UTC)
+	 MIME-Version; b=IPRvKG0PaJYzuAePKRCTNgzCxHoG60THoUmgMf+skl79GADNf7CfPhZiwtK+zDLZQkkb5k3ARYG9CfFLTPyeJrNXbng2/+Pj2CgOZ8HqBmomZbdUBoo/BaAxAlOYQmhE9minOGplHRSkHcT5n98zJxbD89jMxVLyNSv4zzlR1IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKeZF7+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAEBC4CEC3;
+	Thu,  5 Sep 2024 09:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529768;
-	bh=uiUE36HW3FVJFN0vSbGhLhrMS2u1VmrqPWT07akeWgY=;
+	s=korg; t=1725530217;
+	bh=XGZ3ZOcsndmwaZQoGKag5b9LhEs2W+MZHZKmN7GJl2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvQ8rqBz8mZo01mEYxA7D4nNB2XBiHPp+/UaARGMOaJDk3gcEWbCohK3qyFggEJVc
-	 tLArzbIwwl+3UgOzKoKfymgjGjkAoVcuzw/VVujgMGY8GLGTrDaTj1p23hweQ9ga1W
-	 uIjO5klHRl45pZ0K9OKi3DcgONmaGuLLI7/1YH0c=
+	b=zKeZF7+EHb+rPbXxSpYhIwWymVNqw9T2IU5O3/FT9H4kEHpri3DRdbXihOj9uudwG
+	 vqdXJepllPvR4xeHKPS2L+f0wwnkfXiFBvgjuCxwMXBopQN5tEF4q9D1aq1GF53rxC
+	 k8+h3ox7FxXekkwhxve5uViQb8SFKvzRGUf6ZfrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 137/184] net: remove NULL-pointer net parameter in ip_metrics_convert
+Subject: [PATCH 6.6 063/132] drm/amd/display: Fix index may exceed array range within fpu_update_bw_bounding_box
 Date: Thu,  5 Sep 2024 11:40:50 +0200
-Message-ID: <20240905093737.567765375@linuxfoundation.org>
+Message-ID: <20240905093724.705413628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,185 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 61e2bbafb00e4b9a5de45e6448a7b6b818658576 ]
+[ Upstream commit 188fd1616ec43033cedbe343b6579e9921e2d898 ]
 
-When I was doing some experiments, I found that when using the first
-parameter, namely, struct net, in ip_metrics_convert() always triggers NULL
-pointer crash. Then I digged into this part, realizing that we can remove
-this one due to its uselessness.
+[Why]
+Coverity reports OVERRUN warning. soc.num_states could
+be 40. But array range of bw_params->clk_table.entries is 8.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[How]
+Assert if soc.num_states greater than 8.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h         |  3 +--
- include/net/tcp.h        |  2 +-
- net/ipv4/fib_semantics.c |  5 ++---
- net/ipv4/metrics.c       |  8 ++++----
- net/ipv4/tcp_cong.c      | 11 +++++------
- net/ipv6/route.c         |  2 +-
- 6 files changed, 14 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c   | 10 ++++++++++
+ drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c | 10 ++++++++++
+ 4 files changed, 40 insertions(+)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 6d735e00d3f3..c5606cadb1a5 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -506,8 +506,7 @@ static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
- 	return mtu - lwtunnel_headroom(skb_dst(skb)->lwtstate, mtu);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
+index e2bcd205aa93..8da97a96b1ce 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
+@@ -304,6 +304,16 @@ void dcn302_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
  
--struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
--					int fc_mx_len,
-+struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx, int fc_mx_len,
- 					struct netlink_ext_ack *extack);
- static inline void ip_fib_metrics_put(struct dst_metrics *fib_metrics)
- {
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 32815a40dea1..45bbb54e42e8 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1216,7 +1216,7 @@ extern struct tcp_congestion_ops tcp_reno;
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_02_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_02_soc.num_states; i++) {
+ 			dcn3_02_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
+index 3eb3a021ab7d..c283780ad062 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
+@@ -299,6 +299,16 @@ void dcn303_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
  
- struct tcp_congestion_ops *tcp_ca_find(const char *name);
- struct tcp_congestion_ops *tcp_ca_find_key(u32 key);
--u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca);
-+u32 tcp_ca_get_key_by_name(const char *name, bool *ecn_ca);
- #ifdef CONFIG_INET
- char *tcp_ca_get_name_by_key(u32 key, char *buffer);
- #else
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 8956026bc0a2..2b57cd2b96e2 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1030,7 +1030,7 @@ bool fib_metrics_match(struct fib_config *cfg, struct fib_info *fi)
- 			bool ecn_ca = false;
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_03_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_03_soc.num_states; i++) {
+ 			dcn3_03_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index cf3b400c8619..3d82cbef1274 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -2885,6 +2885,16 @@ void dcn32_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_pa
+ 				dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 			}
  
- 			nla_strscpy(tmp, nla, sizeof(tmp));
--			val = tcp_ca_get_key_by_name(fi->fib_net, tmp, &ecn_ca);
-+			val = tcp_ca_get_key_by_name(tmp, &ecn_ca);
- 		} else {
- 			if (nla_len(nla) != sizeof(u32))
- 				return false;
-@@ -1459,8 +1459,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- 	fi = kzalloc(struct_size(fi, fib_nh, nhs), GFP_KERNEL);
- 	if (!fi)
- 		goto failure;
--	fi->fib_metrics = ip_fib_metrics_init(fi->fib_net, cfg->fc_mx,
--					      cfg->fc_mx_len, extack);
-+	fi->fib_metrics = ip_fib_metrics_init(cfg->fc_mx, cfg->fc_mx_len, extack);
- 	if (IS_ERR(fi->fib_metrics)) {
- 		err = PTR_ERR(fi->fib_metrics);
- 		kfree(fi);
-diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-index 0e3ee1532848..8ddac1f595ed 100644
---- a/net/ipv4/metrics.c
-+++ b/net/ipv4/metrics.c
-@@ -7,7 +7,7 @@
- #include <net/net_namespace.h>
- #include <net/tcp.h>
++			/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++			 * MAX_NUM_DPM_LVL is 8.
++			 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++			 * DC__VOLTAGE_STATES is 40.
++			 */
++			if (num_states > MAX_NUM_DPM_LVL) {
++				ASSERT(0);
++				return;
++			}
++
+ 			dcn3_2_soc.num_states = num_states;
+ 			for (i = 0; i < dcn3_2_soc.num_states; i++) {
+ 				dcn3_2_soc.clock_limits[i].state = i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+index b26fcf86014c..ae2196c36f21 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+@@ -789,6 +789,16 @@ void dcn321_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_p
+ 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
+ 		}
  
--static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
-+static int ip_metrics_convert(struct nlattr *fc_mx,
- 			      int fc_mx_len, u32 *metrics,
- 			      struct netlink_ext_ack *extack)
- {
-@@ -31,7 +31,7 @@ static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
- 			char tmp[TCP_CA_NAME_MAX];
- 
- 			nla_strscpy(tmp, nla, sizeof(tmp));
--			val = tcp_ca_get_key_by_name(net, tmp, &ecn_ca);
-+			val = tcp_ca_get_key_by_name(tmp, &ecn_ca);
- 			if (val == TCP_CA_UNSPEC) {
- 				NL_SET_ERR_MSG(extack, "Unknown tcp congestion algorithm");
- 				return -EINVAL;
-@@ -63,7 +63,7 @@ static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
- 	return 0;
- }
- 
--struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
-+struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx,
- 					int fc_mx_len,
- 					struct netlink_ext_ack *extack)
- {
-@@ -77,7 +77,7 @@ struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
- 	if (unlikely(!fib_metrics))
- 		return ERR_PTR(-ENOMEM);
- 
--	err = ip_metrics_convert(net, fc_mx, fc_mx_len, fib_metrics->metrics,
-+	err = ip_metrics_convert(fc_mx, fc_mx_len, fib_metrics->metrics,
- 				 extack);
- 	if (!err) {
- 		refcount_set(&fib_metrics->refcnt, 1);
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index 28ffcfbeef14..48617d99abb0 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -46,8 +46,7 @@ void tcp_set_ca_state(struct sock *sk, const u8 ca_state)
- }
- 
- /* Must be called with rcu lock held */
--static struct tcp_congestion_ops *tcp_ca_find_autoload(struct net *net,
--						       const char *name)
-+static struct tcp_congestion_ops *tcp_ca_find_autoload(const char *name)
- {
- 	struct tcp_congestion_ops *ca = tcp_ca_find(name);
- 
-@@ -178,7 +177,7 @@ int tcp_update_congestion_control(struct tcp_congestion_ops *ca, struct tcp_cong
- 	return ret;
- }
- 
--u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca)
-+u32 tcp_ca_get_key_by_name(const char *name, bool *ecn_ca)
- {
- 	const struct tcp_congestion_ops *ca;
- 	u32 key = TCP_CA_UNSPEC;
-@@ -186,7 +185,7 @@ u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca)
- 	might_sleep();
- 
- 	rcu_read_lock();
--	ca = tcp_ca_find_autoload(net, name);
-+	ca = tcp_ca_find_autoload(name);
- 	if (ca) {
- 		key = ca->key;
- 		*ecn_ca = ca->flags & TCP_CONG_NEEDS_ECN;
-@@ -283,7 +282,7 @@ int tcp_set_default_congestion_control(struct net *net, const char *name)
- 	int ret;
- 
- 	rcu_read_lock();
--	ca = tcp_ca_find_autoload(net, name);
-+	ca = tcp_ca_find_autoload(name);
- 	if (!ca) {
- 		ret = -ENOENT;
- 	} else if (!bpf_try_module_get(ca, ca->owner)) {
-@@ -421,7 +420,7 @@ int tcp_set_congestion_control(struct sock *sk, const char *name, bool load,
- 	if (!load)
- 		ca = tcp_ca_find(name);
- 	else
--		ca = tcp_ca_find_autoload(sock_net(sk), name);
-+		ca = tcp_ca_find_autoload(name);
- 
- 	/* No change asking for existing value */
- 	if (ca == icsk->icsk_ca_ops) {
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index c9a9506b714d..a9644a8edb96 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3764,7 +3764,7 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
- 	if (!rt)
- 		goto out;
- 
--	rt->fib6_metrics = ip_fib_metrics_init(net, cfg->fc_mx, cfg->fc_mx_len,
-+	rt->fib6_metrics = ip_fib_metrics_init(cfg->fc_mx, cfg->fc_mx_len,
- 					       extack);
- 	if (IS_ERR(rt->fib6_metrics)) {
- 		err = PTR_ERR(rt->fib6_metrics);
++		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
++		 * MAX_NUM_DPM_LVL is 8.
++		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
++		 * DC__VOLTAGE_STATES is 40.
++		 */
++		if (num_states > MAX_NUM_DPM_LVL) {
++			ASSERT(0);
++			return;
++		}
++
+ 		dcn3_21_soc.num_states = num_states;
+ 		for (i = 0; i < dcn3_21_soc.num_states; i++) {
+ 			dcn3_21_soc.clock_limits[i].state = i;
 -- 
 2.43.0
 
