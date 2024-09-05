@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-73495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1CA96D51B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C6896D4E1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770D92831AA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95EE01C2350A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA2F19413B;
-	Thu,  5 Sep 2024 10:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67D7197A76;
+	Thu,  5 Sep 2024 09:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvf6ppjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR9ezvln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A905B83CDB;
-	Thu,  5 Sep 2024 10:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6469B194A64;
+	Thu,  5 Sep 2024 09:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530420; cv=none; b=HounLm2uolEp8KKHCM0ng2CxpCzeiV4sQzRMGffr84nxr23kJD+jM938ahcvjjpidChy/XRSkYzlyMNDhpM3AIbqatp2Z9UkMmnQ0bril1Xd3L5s/X9bq/8dh+IZI1CKBR6QC6bwAFMo7Cgnj2H9hofOmfZROzbPxmi9BTXMPvc=
+	t=1725530234; cv=none; b=HMfWuIoK1tkTofve1pI6miAneRAxtUFSG07MDmJgBuPqAeeFAcUe/eQN/mtSUOmt1/fcB+izQOhlsVdMKPtV8LF1t+hX7pQYnJaBRFK82pB9uNtRqXbA66zvT4e+odWScWmW0Wden0T16NOTzoueSzWeXPH37kfdGyogJv9FS2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530420; c=relaxed/simple;
-	bh=kc6+13sybU3C+H/rtndVv8bJS0x/dLtcqhw4v/a2FFg=;
+	s=arc-20240116; t=1725530234; c=relaxed/simple;
+	bh=MI8m/zf1Ty9AimpUvhNYO/YM98uA5fBMJ6bdfpfYZ9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+Rt48m5HluFGpNCoOQFG9NIjVvSAKKi9UFyU2q25AnXrQsNPNmbMIeVLVOSiqZ014uEaRdt/xTFxuWhRz18RYkZWoZHxWqCy4rrQKejniS4a+tZ7IUHW/aMV3rvULEdyVBn6FO1yiMed5k0n/Tram7T0cA9nSS4EN9z/igP9a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvf6ppjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B903C4CEC3;
-	Thu,  5 Sep 2024 10:00:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K0CKzOTixzvRyRQ5ibK8rXR1htkKYwRPwhFAro4At4Go7J4ZBZAxdFjcjZuqCIn4tUSqN0hLrJbfyDeTIshGgJ9cDbtjGrb+Rd009Me6fLbhczTDbxqV59aWllMAXBkAhd8koDUSJcZ4CXpVsTvthx3xWE+REwkGiEcKK1y4i9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR9ezvln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6040C4CEC3;
+	Thu,  5 Sep 2024 09:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530420;
-	bh=kc6+13sybU3C+H/rtndVv8bJS0x/dLtcqhw4v/a2FFg=;
+	s=korg; t=1725530234;
+	bh=MI8m/zf1Ty9AimpUvhNYO/YM98uA5fBMJ6bdfpfYZ9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvf6ppjJnvCSpXz42RRrFf1bZ8HIYQHjRODUfvv6Ngb6S9dPUn3vVvRqK4JI7gSP8
-	 jP7kQU+RTRzREYQflT5hxttQjvNWGdDDvQoRZkEmMNPRJKEBEflBXxpa5HWnXNz//U
-	 gN8ieY4rxNRQMiBtZQhXXwkVClPARpV6jnQJ9N8w=
+	b=tR9ezvlnubDC0d08sOR6vOeT/CfDfDaabRkL6QjBXBi1I0HmHrjpX5oROiVy+mbYw
+	 K3r8GFNB+qqqbFjv49zkE8ylne1XQlNCNmxG39ksyagqFCvaOlszskDXRAo5sOneiI
+	 i4MWWnYn1DzUP5W6koCVayiLctlkwfPrEQhfvcdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 019/101] selftests: mptcp: add explicit test case for remove/readd
+	Asad Kamal <asad.kamal@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 064/132] drm/amd/amdgpu: Check tbo resource pointer
 Date: Thu,  5 Sep 2024 11:40:51 +0200
-Message-ID: <20240905093716.865082384@linuxfoundation.org>
+Message-ID: <20240905093724.746825609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Asad Kamal <asad.kamal@amd.com>
 
-From: Paolo Abeni <pabeni@redhat.com>
+[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
 
-commit b5e2fb832f48bc01d937a053e0550a1465a2f05d upstream.
+Validate tbo resource pointer, skip if NULL
 
-Delete and re-create a signal endpoint and ensure that the PM
-actually deletes and re-create the subflow.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
-[ No conflicts, but adapt the test to the helpers in this version:
-  - run_tests has been modified a few times to reduce the number of
-    positional parameters
-  - no pm_nl_check_endpoint helper
-  - no chk_mptcp_info helper
-  - chk_subflow_nr taking an extra parameter
-  - kill_tests_wait instead of mptcp_lib_kill_wait ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3239,6 +3239,29 @@ userspace_tests()
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
- 	fi
-+
-+	# remove and re-add
-+	if reset "delete re-add signal" &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 1 1
-+		pm_nl_set_limits $ns2 1 1
-+		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
-+		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
-+		local tests_pid=$!
-+
-+		wait_mpj $ns2
-+		chk_subflow_nr needtitle "before delete" 2
-+
-+		pm_nl_del_endpoint $ns1 1 10.0.2.1
-+		sleep 0.5
-+		chk_subflow_nr "" "after delete" 1
-+
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "" "after re-add" 2
-+		kill_tests_wait
-+	fi
-+
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index eb663eb81156..251627c91f98 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4480,7 +4480,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
+ 		shadow = vmbo->shadow;
  
- endpoint_tests()
+ 		/* No need to recover an evicted BO */
+-		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
++		if (!shadow->tbo.resource ||
++		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
+ 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
+ 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
+ 			continue;
+-- 
+2.43.0
+
 
 
 
