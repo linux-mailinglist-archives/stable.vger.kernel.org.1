@@ -1,130 +1,113 @@
-Return-Path: <stable+bounces-73124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50ABF96CD4F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 05:33:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD8796CD7D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 05:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A768DB228B2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 03:33:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723201F27102
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 03:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6718B149013;
-	Thu,  5 Sep 2024 03:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B616B145B27;
+	Thu,  5 Sep 2024 03:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wFDha7Fy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCHlZUwI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB7413FD83
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 03:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0758143C7E;
+	Thu,  5 Sep 2024 03:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725507223; cv=none; b=cV4RH1PzgFAsVh4HW9jHkJUu+jh9Tsb0Ut0Juwr+ULdK0EffZCBK+TCbowyJEd10YY+lyKBZhvS7QWB/ozCBB+qJQRVK8OyuMbbtckpQtpU8axNzutf9bspObV92/5zNevAK2PWi3fPja4TIkXmXnl6LnMN0dviwZxgqOmEXidY=
+	t=1725508196; cv=none; b=bYxpHF43rIe94Or7HEM3LEkujC460YyXAZ/t0rGHefkWoucs/lCoP1H76S0GWWGu3aNV+x6XYmSW10j1eB1DCXNCxNacGSgHS8E2dawczYmZdE96ua36p/wjcyoXKa6G0M4UQxqbF++yOmlmLVTlkGegIBY35LgRWWBeBM8aLAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725507223; c=relaxed/simple;
-	bh=Zk7CuvNCGglePje0MWpioiCBoDt5MfGEPMscrIFpuTY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LmO4tWJ+4kNO0JfQaMzkOGSk1kSyuXE0hIaC4g6x9U89M9gISYoQVq6gGQd4RPjQ2kWR1tlterG1MHQdMes0aNHDmS/kIzomRtIm6mnYi6TsAfs+oP60uTM2swU3GP57YnFo2OKJ3Nuq+/9A2ZSa8unjnWu595OnTboId4QGNtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wFDha7Fy; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-533488ffaf7so262191e87.0
-        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 20:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725507220; x=1726112020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHqDfVFz4e4ch7Qvu8SgYzoITxtA7TzKSa28k2tmaC0=;
-        b=wFDha7FyDuKPJM+JrWv9DM85Xje5HVQw7oYYTxV3ihWImY6n/yRPeDbhIDbgT0mzm/
-         kFZiZzP8Ut3+YXRiQ5h218CKKPuy9jKcPeyksr8kSNLnC6w0Sc1blx9H5P7qlyZ60ZHu
-         825q5j+1qh40VCy0msXOwAo8RqkFJnRz7YAFWcxOjZCSq2dB9f5QUHGUDoyb6PUSujcG
-         2H764iDGQolxXaKt+y5GiHBP/+tBbK5ybnjWNNishnYVvumiy08gj7gybZ15VQ2628/K
-         LTrh08/LNNMUA/7cpTHHcg2ovvX17qPMmTlD9dnOXua1VBsr6WgqfL+mNkM4pUPdy+Fb
-         VpUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725507220; x=1726112020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gHqDfVFz4e4ch7Qvu8SgYzoITxtA7TzKSa28k2tmaC0=;
-        b=k2lD/x2a+yNjs1YhPlYvrnRv3WRoSV1JY1l8ke1TgR54ZsTAGgpXC0luN7bAqfFTom
-         UKh6pKMmGz7RPnYUbg2t3OnpmGEwBSFXHXt5klQ1hfpTSpYnPzFp7mdnMunXbaZkomoE
-         aSLwKA98nJ1bMNtZKNOjYLTOD6rRLfXjrcI+7IeHjkz/ABjonWQKSjlxxjEF0MRaWON1
-         15ojd6DzJCpf56LGx6m0fs9Fe8W2f5rq5xvJsrU1FY8d2dhicrUwKAHolunI7hCEG2u0
-         BTba3Vue3PlcyMhhjpYYIokSft/lA6H13Q7nn/c8q25ZMgDTFtcp6+3atoLcWgaQspVB
-         s8hw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEggqE6gqSjD1P+OH+iUpKu5lKb9oPe8jmiwfhU3K74tbV8hdoVMb26RJlXW141+8aReG0TBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOsMcDNdSUIa8ffB0t9JhHU62/wlJIp5TAOKGzo52NQ2cmc41V
-	VbLrg4AVurbFRMF3VgaPT1Qr5fo/mJcwT4svRvYp15+n3yctnjTtuaj2v+HenhQ=
-X-Google-Smtp-Source: AGHT+IF8RYrZhm6Rb+d5KJJUucAgU85MelFmmJWy0tHStryL1PjwkJENosRYCfI0WLW1G2JNywVluQ==
-X-Received: by 2002:ac2:4e0d:0:b0:52f:d69e:bb38 with SMTP id 2adb3069b0e04-53546afd7c6mr13901020e87.2.1725507219347;
-        Wed, 04 Sep 2024 20:33:39 -0700 (PDT)
-Received: from umbar.unikie.fi ([192.130.178.90])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53565f6d409sm389165e87.35.2024.09.04.20.33.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 20:33:38 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Jonathan Marek <jonathan@marek.ca>,
-	Robert Foss <rfoss@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Rob Clark <robdclark@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-pm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 00/11] arm64: qcom: set of fixes for SM8350 platform
-Date: Thu,  5 Sep 2024 06:33:33 +0300
-Message-Id: <172550712140.3299484.13498001864474908780.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240804-sm8350-fixes-v1-0-1149dd8399fe@linaro.org>
-References: <20240804-sm8350-fixes-v1-0-1149dd8399fe@linaro.org>
+	s=arc-20240116; t=1725508196; c=relaxed/simple;
+	bh=RAteYIaNnUAZW65hHa+40QC8nCjTx4WeIyD12L3SoJE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=a91zoXAvWI1CFIsLQR2exk+F3er5OIo+YcDBRCx1ACtAldC4XvezjLdg/jxPwn+/GhIIttBOJuFXShR3fUucLek/0RtrXiJbbMLfgRK5jTWr6uMut3MgToD9m7D8/rbEYjVRY8zxIShcKJlcThVKfBS64ejfFAUfruepLcz8gLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCHlZUwI; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725508195; x=1757044195;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RAteYIaNnUAZW65hHa+40QC8nCjTx4WeIyD12L3SoJE=;
+  b=OCHlZUwIolb3ClLVcyxnThY4gQoA1LoStASsXO+Kdw7k9l0XkyZmCiFT
+   ptxdVs+551IcnJGVn31z9wKKQ6n0MZbdiFfwZ/0ifKOoDslILUZ1FKWqF
+   P6Uxcyfb4upyzYUkD7nGqrUtGH1FBlZFiAH0ipn/Ju7iD64EmFHt92l69
+   qitN3N9cMXX+KMYc3F4k2QrziRIhAcD87BEvKeh6P35p9tXUUOgJ7laBz
+   BLVeHjbsgEIjF2+2BXkLpXzy1Sw9G/p1knNVJ8cYhKzTitqEadCQdIo2C
+   qsoDGPomLoQci8QVrDCp8bpiQnxMOIJYyPfLyQHsHputOVDpI5GMlHGn7
+   A==;
+X-CSE-ConnectionGUID: qtvYkXZ5R5qI0Wn/+x+6Vw==
+X-CSE-MsgGUID: fbzqLSHUTyOXpd9XoaWmmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="23761796"
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="23761796"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 20:49:54 -0700
+X-CSE-ConnectionGUID: UXc+KRgWS2u2yWZRevyL/w==
+X-CSE-MsgGUID: k84odTRHTHGLh5cC11PvSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="65722623"
+Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
+  by fmviesa010.fm.intel.com with ESMTP; 04 Sep 2024 20:49:52 -0700
+Message-ID: <97bc177f-49ba-48cc-9dd3-37f79b1432b6@linux.intel.com>
+Date: Thu, 5 Sep 2024 11:45:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, jani.saarinen@intel.com, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices
+ requiring ATS
+To: Mark Pearson <mpearson-lenovo@squebb.ca>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>
+References: <20240904060705.90452-1-baolu.lu@linux.intel.com>
+ <0dc9ac00-1148-4c64-8c12-4d08a2a27429@app.fastmail.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <0dc9ac00-1148-4c64-8c12-4d08a2a27429@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-On Sun, 04 Aug 2024 08:40:04 +0300, Dmitry Baryshkov wrote:
-> A set of fixes that target stability of the SM8350 platform.
+On 9/5/24 2:00 AM, Mark Pearson wrote:
+> Hi Lu,
 > 
+> Tested this on an X1 Carbon G12 with a kernel built form drm-tip and this patch - and was able to boot successfully with pci=noats
 > 
+> Tested-by: Mark Pearson<mpearson-lenovo@squebb.ca>
 
-Applied, thanks!
+Thank you!
 
-[03/11] drm/msm/dsi: correct programming sequence for SM8350 / SM8450
-        https://gitlab.freedesktop.org/lumag/msm/-/commit/1328cb7c34bf
+> 
+> Mark
+> 
+> PS - note on small typo below.
+> 
+> On Wed, Sep 4, 2024, at 2:07 AM, Lu Baolu wrote:
+>> SOC-integrated devices on some platforms require their PCI ATS enabled
+>> for operation when the IOMMU is in scalable mode. Those devices are
+>> reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
+>> field.
+>>
+>> The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
+>> ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
+> pci=noats
 
-Best regards,
--- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixed.
+
+Thanks,
+baolu
 
