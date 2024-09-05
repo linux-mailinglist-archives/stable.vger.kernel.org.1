@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E7696D41A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786BB96D4A1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA9F1F274C5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36E03283C7B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0801991CA;
-	Thu,  5 Sep 2024 09:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295A419538A;
+	Thu,  5 Sep 2024 09:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqy+iEsD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqTTVKZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8287D198E77;
-	Thu,  5 Sep 2024 09:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA946198822;
+	Thu,  5 Sep 2024 09:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529702; cv=none; b=LFb1ygdmpskJ/JQLJ2bIbcjkFsFwaAoJHpxO/yMHo3DJ6xkLDeJ23Q3g5e1W6z1C/W7G8OjbSTKzo9rAJHaG/AcAoz/CafLKKmgUszUrHTRQu6dxUp3MTq5I30bs8OMqcbyl/UMOyo+R8iSFyMyagdSXsHNoQO/a+/IvOqgEJUs=
+	t=1725530058; cv=none; b=eZ8mv4M9oExznnqUHY2Be/5HRkdIbQJsz8OLuEE3aauMEzhraieO+pAP1RlzOHd/gfzk2lsa+K6twBxz92Gx+5MXt9KhNgwVgEbNuGeyOGviIaC1c3Mn7NpSkpcrQBtPp1wUOTJdo07iq/amrCw0jrZmvaAIFw8LZqXgDuhlnSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529702; c=relaxed/simple;
-	bh=sLCq/3ac6z+KZ3urSf4yxXxakRhVNxlUzYxxkr4uTRI=;
+	s=arc-20240116; t=1725530058; c=relaxed/simple;
+	bh=THbkKN1DzS7OCuMLSEeO0du2danEjS6e5OWwA8RbdPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npT72qTtdP+KQi2VTUouKpx3bPSWoU46o9Y8CTlL3bqj4sXI5W6us440Ap1bqLy1TkYRkyAMr5TndQRhvoI2a6j94aBp9ZNgi2FZ/Tj0PFs2aN6YkKQfrAvkEXfhI/u2qK4ZDXyZvKrkTGiLa6E1cs2SMS35ciinIDc6jVqL7QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqy+iEsD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACC4C4CEC3;
-	Thu,  5 Sep 2024 09:48:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DciQFNuRkjRLvS94yQ7eQdUgsYCTshwVwg/ZsQ71qcYkQsP/8TdRBH565L5LimLTZbC4QXHl7RBePNoP5IzTYLGzMDa0hrCXtF40wVPsKAHZVDno2bkNeq21SP4f18aKFF+dreF5pphLtE6iqwWJJLNdZy0OashmbdmQjZ/7MzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqTTVKZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00987C4CEC4;
+	Thu,  5 Sep 2024 09:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529702;
-	bh=sLCq/3ac6z+KZ3urSf4yxXxakRhVNxlUzYxxkr4uTRI=;
+	s=korg; t=1725530058;
+	bh=THbkKN1DzS7OCuMLSEeO0du2danEjS6e5OWwA8RbdPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vqy+iEsD91cBhgbzw1W3ouZWKz4jYeSVEjq0TsO7g199I9xV7y3ZHn9FjZdoqDDtz
-	 ly3PRIqhq+sivlr5Yx8lqEu8SAyjK2gRT2xYsp8+5ScOhcUgwoSH+0KmupDOvNRHXf
-	 UT56tCJrVFOpZVhRdMsFYTHhC+pnBQDFg+E37dKk=
+	b=fqTTVKZUqZ4weNSK1ENe58PsZYmXWBho0UEOqcPTSr68pKd0vk1lE/2ZaV+PfMuHo
+	 pV+uuBLakIb9GpB7CDmh1ksN2UQntWw7bpDZd39E/MxFAxAW53G1TnsjeFllhZIf6/
+	 +Us/+NN2s2wGzIQv6QvT22YL+XowWCUAKbSk9cXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Zhigang Luo <zhigang.luo@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 116/184] drm/amdgpu: Queue KFD reset workitem in VF FED
+Subject: [PATCH 6.6 042/132] drm/amdgpu: fix overflowed array index read warning
 Date: Thu,  5 Sep 2024 11:40:29 +0200
-Message-ID: <20240905093736.759129867@linuxfoundation.org>
+Message-ID: <20240905093723.894946115@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 5434bc03f52de2ec57d6ce684b1853928f508cbc ]
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-The guest recovery sequence is buggy in Fatal Error when both
-FLR & KFD reset workitems are queued at the same time. In addition,
-FLR guest recovery sequence is out of order when PF/VF communication
-breaks due to a GPU fatal error
+Clear overflowed array index read warning by cast operation.
 
-As a temporary work around, perform a KFD style reset (Initiate reset
-request from the guest) inside the pf2vf thread on FED.
-
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 761fff80ec1f..923d51f16ec8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -602,7 +602,7 @@ static void amdgpu_virt_update_vf2pf_work_item(struct work_struct *work)
- 		    amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev)) {
- 			amdgpu_ras_set_fed(adev, true);
- 			if (amdgpu_reset_domain_schedule(adev->reset_domain,
--							  &adev->virt.flr_work))
-+							  &adev->kfd.reset_work))
- 				return;
- 			else
- 				dev_err(adev->dev, "Failed to queue work! at %s", __func__);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index dbde3b41c088..0bedffc4eb43 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -469,8 +469,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
+ {
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
+ 
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
