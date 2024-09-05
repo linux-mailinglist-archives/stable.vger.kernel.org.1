@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-73515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B9996D531
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBC296D4D3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4C81F2A11B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B541F28DD7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAF8194A5A;
-	Thu,  5 Sep 2024 10:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03D4194AD6;
+	Thu,  5 Sep 2024 09:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+5zxzrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xb/B73v3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2967E1946A2;
-	Thu,  5 Sep 2024 10:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6B7194A45;
+	Thu,  5 Sep 2024 09:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530484; cv=none; b=e1w5hprCo8qc3TuDiUwoBjXfQaGlP5HVu1bm3DHMdnIP0K4FXlaokqi5OXydXKNHUZ4DELfvF14jycbKmluP77uET+MUsw/zmgH2r10xyInSmRz3sRvoIee6W9nZ40RGMs08T7HSb9UFcqh33JIqqvkJedz74T6FA3uA2WvJa/A=
+	t=1725530198; cv=none; b=Qhcxge9EIM6S4d735Y81Tc1HfepwiWqr8+7yf4WpxnKhDlN4WX1pmr/t8GPUIIy0qjSBUFlmc6IaSTzxXp5kJCB9PSfuk7zB3lNzuSDXeGZIXX+MQPjws+nELjM0QmQvhEeKQpQZ7lxwXKPeatO7Uki38hpMF3TndN0NLz6Ho0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530484; c=relaxed/simple;
-	bh=ZVPN6MByTd22jB0HBprcmGP+r3GALgVWzh/U4SCYWtA=;
+	s=arc-20240116; t=1725530198; c=relaxed/simple;
+	bh=P2sffgSsWdr5Q7Wmk4GUILjkUrWdzBpKU+iW73uYKmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3Ix5JvS0APPml0g4RIe7k8WrjgeXkTWQAj4DEtelyYPaqLArUS4wMcEIjlV7aPybl15nz/Fy2NJ+UcIIksz21De782A4LIcdyJ8CA8mv1tjtMRFX2FAMQ5QBcJCkaHck3/a6Wr6BXEmAK6GDNPMdJ7xUr5I2qXym9VK6AQj1GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+5zxzrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E784C4CEC3;
-	Thu,  5 Sep 2024 10:01:23 +0000 (UTC)
+	 MIME-Version; b=aHxdTakRX9VjsPFy76JQ1XcUVGPxfaJFwqkqFDPMFgxSnBWWPOpuYSpnWwXa0aCEqKt+t/+XEMd6F6aiTdN+jTbm+5up4OOjQ2F22TUJurPK6QooxL5VYY56n6OmLUzkvSceP5U+uCZCQ2x0A9GfxxDXHjNRyElNIuhRnDu8gNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb/B73v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFE2C4CEC4;
+	Thu,  5 Sep 2024 09:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530484;
-	bh=ZVPN6MByTd22jB0HBprcmGP+r3GALgVWzh/U4SCYWtA=;
+	s=korg; t=1725530198;
+	bh=P2sffgSsWdr5Q7Wmk4GUILjkUrWdzBpKU+iW73uYKmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+5zxzrCgWDG06aBqjolohNxzlFepekA0j+uezle2EjQqLi+qYvULK9bBqBXQQBK8
-	 mg6tLrnGN6itSKNE24FSDBkY3XDZcWXNEvGr3I5AovY6URgJXDzrbyvrTSC2/Fd4Op
-	 7mgQ43ItALi9MNLvJmtvtnFiNJ5Nfyi3bc6IpKNg=
+	b=xb/B73v34t04JWlkBZHHxeKdnqZTn0soHMVE0ckQk2y3cE4Q0XOM41Y6oXNoieqeS
+	 V2y4Pakpn1EZNmlBmOqmXHgQrd3p7dRlbYryzn0tPrcbrlWxM/84yOqhELOin2BOkQ
+	 owEAfoR8o1ddWNySKxwk83f821L1ysXJblxkqRGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhigang Luo <Zhigang.Luo@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/101] drm/amdgpu: avoid reading vf2pf info size from FB
+Subject: [PATCH 6.6 084/132] drm/amdgpu: the warning dereferencing obj for nbio_v7_4
 Date: Thu,  5 Sep 2024 11:41:11 +0200
-Message-ID: <20240905093717.661483169@linuxfoundation.org>
+Message-ID: <20240905093725.516761734@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhigang Luo <Zhigang.Luo@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 3bcc0ee14768d886cedff65da72d83d375a31a56 ]
+[ Upstream commit d190b459b2a4304307c3468ed97477b808381011 ]
 
-VF can't access FB when host is doing mode1 reset. Using sizeof to get
-vf2pf info size, instead of reading it from vf2pf header stored in FB.
+if ras_manager obj null, don't print NBIO err data
 
-Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 5ee9211c503c..af50e6ce39e1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -604,7 +604,7 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
- 	vf2pf_info->dummy_page_addr = (uint64_t)adev->dummy_page_addr;
- 	vf2pf_info->checksum =
- 		amd_sriov_msg_checksum(
--		vf2pf_info, vf2pf_info->header.size, 0, 0);
-+		vf2pf_info, sizeof(*vf2pf_info), 0, 0);
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+index 685abf57ffdd..977b956bf930 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+@@ -384,7 +384,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
+ 		else
+ 			WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, bif_doorbell_intr_cntl);
  
- 	return 0;
- }
+-		if (!ras->disable_ras_err_cnt_harvest) {
++		if (ras && !ras->disable_ras_err_cnt_harvest && obj) {
+ 			/*
+ 			 * clear error status after ras_controller_intr
+ 			 * according to hw team and count ue number
 -- 
 2.43.0
 
