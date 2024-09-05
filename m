@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-73362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C2096D48A
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4097096D489
 	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0FB8B24323
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 735811C232E9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3F71991AB;
-	Thu,  5 Sep 2024 09:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8661990CE;
+	Thu,  5 Sep 2024 09:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrU6rqqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuCW4k5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811C198E85;
-	Thu,  5 Sep 2024 09:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC68C198E85;
+	Thu,  5 Sep 2024 09:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529984; cv=none; b=VPaX2N8bGZ2Xlnn8E8l1fHv1M9fJuTJWpUBTVmicmyTNon16vEDEyYgePN0Y+6GUBuzEPZa7j9iQhiRFyaf1EqBSA7M2mF++7tb0Jy4bb2nOjGwX2uTuRLQKQfjhgnmiIkj7G9Mr8CjEOpiW/eeokPLEdDi0Atuw6bgBb+gT0Mw=
+	t=1725529990; cv=none; b=L5YwufzphF9u7s23jjJ6tLYAAMQ9dsBEbN2t6fRASfXD+b1Kc4sfMbcPQlOkc14WVCD0PFI4ow3cIrSBnNwkgHsnL3kV76zNqscOc+b1MYstsmL7RLvwzJ+j8mU1Agal6dxX13v0nS6MwMMI6OIobBG3Cq7O5RmixO1+T5wRKZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529984; c=relaxed/simple;
-	bh=dL3s2iTxUrc99jcPDZg7LhDu5r1O8JxE1CWDJPqtnc4=;
+	s=arc-20240116; t=1725529990; c=relaxed/simple;
+	bh=vMERJuFLquvcN4pjW/Yi8Kf03EW+PCxsmTK57LfYeMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxXIeACUldO5inqpnGplgsSI6+cYk56hCKR/1sKyJAfUpVdPpGvg2qaxrhRn0zm4Bb5EJ8ft5NZZ8Fq0q1XS5LrhH0deGD4NyG906kdzLxtWDwScl2IrH1qOJKR4QuSMELo1h5T781zVYdEiBppKYBzw0vX6WVxqA8nHXE6Yv4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrU6rqqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3810C4CEC3;
-	Thu,  5 Sep 2024 09:53:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CJDVIFkSM8wF2QuumkClc2r8aw5tipEwssufoIY2DnGT3WKxTguJHSPtPzAPFvlIEEJWv6XVDUmDnqVd5BMRfzZbJJst49EI47JRuUZm+gzS308bjJATkbjoKVSi5XSNbliIANuG8d/x0Cz97p85tU/qJlT1OO51LApL8Xw8ZOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuCW4k5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9EDC4CEC3;
+	Thu,  5 Sep 2024 09:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529984;
-	bh=dL3s2iTxUrc99jcPDZg7LhDu5r1O8JxE1CWDJPqtnc4=;
+	s=korg; t=1725529990;
+	bh=vMERJuFLquvcN4pjW/Yi8Kf03EW+PCxsmTK57LfYeMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrU6rqqY6EfKFH98hw/cnjmuELm33S7wTVKds/jz6vjnBjGyqKYFqWPIZGm82qoVg
-	 hOZeCQZ/vUkQqgS+xY0uHzxW8DCV191Dcj/H5kxuZJB4vZ7LCBryOCSB18pF7BzuMZ
-	 dxvxz7TRBzNhWTAl2qM9y3+CZ+ji9Rrc86ziMAO4=
+	b=DuCW4k5NsdBRH0463ibPgTwWqjHaNunBeOEgKIrD2bwprDqFJNwOdTk4c1GeCbYAA
+	 ATalAMewkgzA44U2mK/ose8B23bIfD+wjKhdJqnvgYC5FHkCZTovj0x/mdC05YGA6f
+	 X/maW4VG0Yg1/rKkykHlOmd7cyPE14QAicNjS0gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZHANG Yuntian <yt@radxa.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Krzysztof=20St=C4=99pniak?= <kfs.szk@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/132] net: usb: qmi_wwan: add MeiG Smart SRM825L
-Date: Thu,  5 Sep 2024 11:40:06 +0200
-Message-ID: <20240905093722.985118453@linuxfoundation.org>
+Subject: [PATCH 6.6 020/132] ASoC: amd: yc: Support mic on Lenovo Thinkpad E14 Gen 6
+Date: Thu,  5 Sep 2024 11:40:07 +0200
+Message-ID: <20240905093723.023239695@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
 References: <20240905093722.230767298@linuxfoundation.org>
@@ -60,68 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZHANG Yuntian <yt@radxa.com>
+From: Krzysztof Stępniak <kfs.szk@gmail.com>
 
-[ Upstream commit 1ca645a2f74a4290527ae27130c8611391b07dbf ]
+[ Upstream commit 23a58b782f864951485d7a0018549729e007cb43 ]
 
-Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
+Lenovo Thinkpad E14 Gen 6 (model type 21M3)
+needs a quirk entry for internal mic to work.
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=6f345e48
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: ZHANG Yuntian <yt@radxa.com>
-Link: https://patch.msgid.link/D1EB81385E405DFE+20240803074656.567061-1-yt@radxa.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Krzysztof Stępniak <kfs.szk@gmail.com>
+Link: https://patch.msgid.link/20240807001219.1147-1-kfs.szk@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index b1380cf1b13ab..92c1500fa7c44 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1438,6 +1438,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
- 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
-+	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
- 
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index e933d07614527..f6c1dbd0ebcf5 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M3"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
