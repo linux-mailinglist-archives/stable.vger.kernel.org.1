@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-73245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E9096D3F5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021DA96D3FD
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D411B288949
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6271F2280A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE85B1991CE;
-	Thu,  5 Sep 2024 09:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D45198E93;
+	Thu,  5 Sep 2024 09:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4jj7Cxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLtmUyV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693421991CB;
-	Thu,  5 Sep 2024 09:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5174919884A;
+	Thu,  5 Sep 2024 09:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529606; cv=none; b=FQOyZyM6XSo2bTh9miz8LGOtNwA03npROxLZnQn2lmWoci9rWu79EYy4LEOIi8ZML1/Vxqd8LKMW7iyIsne4F4SLO7vKOADQr7uszWZ6FtF+xJTawxHI22roWu4VSM2af/71mgVGBW8HvbEu0qD+F6PId/vDsikegTgwTpzFqz0=
+	t=1725529623; cv=none; b=NkNC0yl3b1Zy/FpeXoRCPJahjjOjG3LzCslHd2L6TWqB5Zx+/FtvFBHmKXhDDsO1hASlJseggWS+rt6oi3hCSdNIBF9V6M/hEQOlD0uDdTrSggZyrZnHyUyy5tADzoqiuHaEmfqwqg3+95V53bUjIUwT6p0iJShNLGpI5T5LDHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529606; c=relaxed/simple;
-	bh=WYzE+0Bnm4hJDhguBr5VkaPv6oWY1n1pwWYLkJjaXaU=;
+	s=arc-20240116; t=1725529623; c=relaxed/simple;
+	bh=1Eo4kPsGJ+9PvsnFNnfIUapdg1W7XRdzrW/bChY/WIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epfTlmKIZdFHWoRy/IU3BFa6rfY4TJ53MP9QMXlOzfZOZh5i4dpUW4eirGHWXkkCGboQGXka/9J4eDKRdVkYfbDkUaqx9wkzqD2ElXY8cSlugxfJshbLKiXw7B6KykCTErrxbi9CQzd4sJYUaH1wRL9xI7hMMso2v/ZgUYyPeKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4jj7Cxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82095C4CEC3;
-	Thu,  5 Sep 2024 09:46:45 +0000 (UTC)
+	 MIME-Version; b=RDY9Cd6lJVZPQOZvWGKgmCGxLXSYC21OhYKivY6YfuVLVBHj1PXX70sd3S2jfIR15QpF4Z2OEB17HIUvnoz6XvcLVaDDmgt4BS+gMDXpZwMAY4mhchZ07ohV1hKCoDVQixCs8Fgcz8gX/1LX19j2vKlYFy9z3Us6A7SwPYSxy7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLtmUyV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0A8C4CEC6;
+	Thu,  5 Sep 2024 09:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529606;
-	bh=WYzE+0Bnm4hJDhguBr5VkaPv6oWY1n1pwWYLkJjaXaU=;
+	s=korg; t=1725529622;
+	bh=1Eo4kPsGJ+9PvsnFNnfIUapdg1W7XRdzrW/bChY/WIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4jj7CxdrsP9Rsm5gjxx3Y7iSHJWsGgRBSi/o4TPU1LGMKD21BCpMmv+KTXon7cag
-	 NsTjEzBQWD7qw3L2CxmjTbQ/o/irUfF7RBWMvdSnikOfGYpiWAAsf6y1kx5413joNZ
-	 4zYUlfL/Pis3wSBAzNq8DOPnltYffitoCijeOTVc=
+	b=tLtmUyV9HBVklVaRGJ0OzfiBTy0e0HbnKosGuxRHilbNcdiM1PKKl+h4vNKnwUTiL
+	 bTX7R/ws0PvFbahXadFxhaGZZvPGaqIEI0Q552488M2GIZl760xKDNte2mtBFiYeSf
+	 rbKILF5+SfEzflY9IgKoNS6+q5RKICDvI69rWf18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/184] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
-Date: Thu,  5 Sep 2024 11:39:32 +0200
-Message-ID: <20240905093734.544793095@linuxfoundation.org>
+Subject: [PATCH 6.10 060/184] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
+Date: Thu,  5 Sep 2024 11:39:33 +0200
+Message-ID: <20240905093734.582406919@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -71,14 +71,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
+[ Upstream commit cf8b16857db702ceb8d52f9219a4613363e2b1cf ]
 
 [Why]
-Coverity reports OVERRUN warning. Should abort amdgpu_dm
-initialize.
+Coverity report OVERRUN warning. There are
+only max_links elements within dc->links. link
+count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
 
 [How]
-Return failure to amdgpu_dm_init.
+Make sure link count less than max_links.
 
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
@@ -87,25 +88,38 @@ Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8d4ad15b8e17..b6228847b797 100644
+index b6228847b797..9cf9c8f917a1 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4466,7 +4466,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+@@ -4587,17 +4587,17 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 		}
+ 	}
  
- 	/* There is one primary plane per CRTC */
- 	primary_planes = dm->dc->caps.max_streams;
--	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
-+	if (primary_planes > AMDGPU_MAX_PLANES) {
-+		DRM_ERROR("DM: Plane nums out of 6 planes\n");
-+		return -EINVAL;
++	if (link_cnt > MAX_LINKS) {
++		DRM_ERROR(
++			"KMS: Cannot support more than %d display indexes\n",
++				MAX_LINKS);
++		goto fail;
 +	}
++
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
  
- 	/*
- 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
+-		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
+-			DRM_ERROR(
+-				"KMS: Cannot support more than %d display indexes\n",
+-					AMDGPU_DM_MAX_DISPLAY_INDEX);
+-			continue;
+-		}
+-
+ 		link = dc_get_link_at_index(dm->dc, i);
+ 
+ 		if (link->connector_signal == SIGNAL_TYPE_VIRTUAL) {
 -- 
 2.43.0
 
