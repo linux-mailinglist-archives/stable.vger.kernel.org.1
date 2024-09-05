@@ -1,113 +1,138 @@
-Return-Path: <stable+bounces-73125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD8796CD7D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 05:50:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E9396CDFC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723201F27102
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 03:50:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEFBBB211BA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 04:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B616B145B27;
-	Thu,  5 Sep 2024 03:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24286142E7C;
+	Thu,  5 Sep 2024 04:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCHlZUwI"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="p1gmb6Vy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0758143C7E;
-	Thu,  5 Sep 2024 03:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F852F44
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 04:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725508196; cv=none; b=bYxpHF43rIe94Or7HEM3LEkujC460YyXAZ/t0rGHefkWoucs/lCoP1H76S0GWWGu3aNV+x6XYmSW10j1eB1DCXNCxNacGSgHS8E2dawczYmZdE96ua36p/wjcyoXKa6G0M4UQxqbF++yOmlmLVTlkGegIBY35LgRWWBeBM8aLAs=
+	t=1725510595; cv=none; b=Zgm6Qnshx6bmnh8AnO7Fuke7uEz1lZ4KcaWF4CZlOWwJJb409LrsPR+6WCaFE0B2vm75EBygZnEqYRWFCtMS2lF4PZyKbLm+Qj261huKCOloBqa+15HHFhn2AZ8rVReV4409w9zVFylyYISmMzOEbD2uHs9EI3QQPxw0zIjFOfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725508196; c=relaxed/simple;
-	bh=RAteYIaNnUAZW65hHa+40QC8nCjTx4WeIyD12L3SoJE=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=a91zoXAvWI1CFIsLQR2exk+F3er5OIo+YcDBRCx1ACtAldC4XvezjLdg/jxPwn+/GhIIttBOJuFXShR3fUucLek/0RtrXiJbbMLfgRK5jTWr6uMut3MgToD9m7D8/rbEYjVRY8zxIShcKJlcThVKfBS64ejfFAUfruepLcz8gLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCHlZUwI; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725508195; x=1757044195;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=RAteYIaNnUAZW65hHa+40QC8nCjTx4WeIyD12L3SoJE=;
-  b=OCHlZUwIolb3ClLVcyxnThY4gQoA1LoStASsXO+Kdw7k9l0XkyZmCiFT
-   ptxdVs+551IcnJGVn31z9wKKQ6n0MZbdiFfwZ/0ifKOoDslILUZ1FKWqF
-   P6Uxcyfb4upyzYUkD7nGqrUtGH1FBlZFiAH0ipn/Ju7iD64EmFHt92l69
-   qitN3N9cMXX+KMYc3F4k2QrziRIhAcD87BEvKeh6P35p9tXUUOgJ7laBz
-   BLVeHjbsgEIjF2+2BXkLpXzy1Sw9G/p1knNVJ8cYhKzTitqEadCQdIo2C
-   qsoDGPomLoQci8QVrDCp8bpiQnxMOIJYyPfLyQHsHputOVDpI5GMlHGn7
-   A==;
-X-CSE-ConnectionGUID: qtvYkXZ5R5qI0Wn/+x+6Vw==
-X-CSE-MsgGUID: fbzqLSHUTyOXpd9XoaWmmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="23761796"
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="23761796"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 20:49:54 -0700
-X-CSE-ConnectionGUID: UXc+KRgWS2u2yWZRevyL/w==
-X-CSE-MsgGUID: k84odTRHTHGLh5cC11PvSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="65722623"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by fmviesa010.fm.intel.com with ESMTP; 04 Sep 2024 20:49:52 -0700
-Message-ID: <97bc177f-49ba-48cc-9dd3-37f79b1432b6@linux.intel.com>
-Date: Thu, 5 Sep 2024 11:45:55 +0800
+	s=arc-20240116; t=1725510595; c=relaxed/simple;
+	bh=IqNgGp5LH4F2TBnsMw7LvK32VyAc4U0SAzUDXcPwXyo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=Z2BxkGB4nbHLxxAVWJZ63Pd6+Dy8rJDQqvKXfqA6I5vqYBA+uNhRsP6H2OwxfLJor2IfbgEk9vK3UT+Y+45nM3x0ok6fH7CI8uagBX+1+tmeD6ooNzN4NtftU9cvrtts7PHwpzeGLCgFhI7vXFyfTOFhJRR4FLFEwfysY/t9nyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=p1gmb6Vy; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1725510062;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lmpI6wNpZyEU8UYj2/1lJG1Am1PTaoR/B39Jd4Um0ls=;
+	b=p1gmb6Vypw3RNgxMvO270Sb8WMZnzwjLEE/7ZLgi+BLD4CRnbbaOGq5XQ/AEuvZyqlOwZw
+	hm1IMnXss6wm8QAQ==
+Message-ID: <3f2c3ed8-bbdb-45e0-9463-ffffdad0f37b@hardfalcon.net>
+Date: Thu, 5 Sep 2024 06:21:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, jani.saarinen@intel.com, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices
- requiring ATS
-To: Mark Pearson <mpearson-lenovo@squebb.ca>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>
-References: <20240904060705.90452-1-baolu.lu@linux.intel.com>
- <0dc9ac00-1148-4c64-8c12-4d08a2a27429@app.fastmail.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <0dc9ac00-1148-4c64-8c12-4d08a2a27429@app.fastmail.com>
+Subject: Re: Patch "drm/drm-bridge: Drop conditionals around of_node pointers"
+ has been added to the 6.6-stable t
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+References: <20240904175026.1165330-1-sashal () kernel ! org>
+Content-Language: en-US, de-DE
+Cc: Sui Jingfeng <sui.jingfeng@linux.dev>,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Douglas Anderson <dianders@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <20240904175026.1165330-1-sashal () kernel ! org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/5/24 2:00 AM, Mark Pearson wrote:
-> Hi Lu,
+[2024-09-04 19:50] Sasha Levin:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Tested this on an X1 Carbon G12 with a kernel built form drm-tip and this patch - and was able to boot successfully with pci=noats
+>      drm/drm-bridge: Drop conditionals around of_node pointers
 > 
-> Tested-by: Mark Pearson<mpearson-lenovo@squebb.ca>
+> to the 6.6-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>       drm-drm-bridge-drop-conditionals-around-of_node-poin.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 74f5f42c35daf9aedbc96283321c30fc591c634f
+> Author: Sui Jingfeng <sui.jingfeng@linux.dev>
+> Date:   Wed May 8 02:00:00 2024 +0800
+> 
+>      drm/drm-bridge: Drop conditionals around of_node pointers
+>      
+>      [ Upstream commit ad3323a6ccb7d43bbeeaa46d5311c43d5d361fc7 ]
+>      
+>      Having conditional around the of_node pointer of the drm_bridge structure
+>      is not necessary, since drm_bridge structure always has the of_node as its
+>      member.
+>      
+>      Let's drop the conditional to get a better looks, please also note that
+>      this is following the already accepted commitments. see commit d8dfccde2709
+>      ("drm/bridge: Drop conditionals around of_node pointers") for reference.
+>      
+>      Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+>      Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+>      Signed-off-by: Robert Foss <rfoss@kernel.org>
+>      Link: https://patchwork.freedesktop.org/patch/msgid/20240507180001.1358816-1-sui.jingfeng@linux.dev
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index 62d8a291c49c..70b05582e616 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
+> @@ -353,13 +353,8 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+>   	bridge->encoder = NULL;
+>   	list_del(&bridge->chain_node);
+>   
+> -#ifdef CONFIG_OF
+>   	DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
+>   		  bridge->of_node, encoder->name, ret);
+> -#else
+> -	DRM_ERROR("failed to attach bridge to encoder %s: %d\n",
+> -		  encoder->name, ret);
+> -#endif
+>   
+>   	return ret;
+>   }
 
-Thank you!
 
-> 
-> Mark
-> 
-> PS - note on small typo below.
-> 
-> On Wed, Sep 4, 2024, at 2:07 AM, Lu Baolu wrote:
->> SOC-integrated devices on some platforms require their PCI ATS enabled
->> for operation when the IOMMU is in scalable mode. Those devices are
->> reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
->> field.
->>
->> The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
->> ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
-> pci=noats
+Hi Sasha,
 
-Fixed.
 
-Thanks,
-baolu
+this breaks the x86_64 build for me.
+
+AFAICT this patch cannot work without commit 
+d8dfccde2709de4327c3d62b50e5dc012f08836f "drm/bridge: Drop conditionals 
+around of_node pointers", but that commit is only present in Linux >= 6.7.
+
+This issue affects the 6.6, 6.1 and 5.15 branches.
+
+
+Regards
+Pascal
 
