@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8042996D525
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C6696D4B1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E58B9B26FE6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 252891C233BD
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DDF195F04;
-	Thu,  5 Sep 2024 10:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5856B19413B;
+	Thu,  5 Sep 2024 09:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2s9Y9q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcaAu1u2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F871494DB;
-	Thu,  5 Sep 2024 10:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F2D154BFF;
+	Thu,  5 Sep 2024 09:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530449; cv=none; b=p3loy4Z075+m8WduKAbfQgE05C+Zpis80wl8denFVhh8xJ0XyuMDMIoxK6noE8I5DLMByJkyEy+CzoEU1aZBPkG1i7RsFLXncWbu7Of5KeDinufRLr6J6i5vYsRnEovXdh5x1VFp9wMO3AJqotku+mP7Z6QSR5uDoToNyvo6f+0=
+	t=1725530101; cv=none; b=LEdSBOMW09OvsnOkvnWQ3b0mIn67U2m0FzciQ8P34BSsEiBRnpBudNJlfTNOQPG+2jeIzDjoDAq9pkEVBBNPOnSQA4cprLNEHeG6a99516Zj5bparzIeMWw8oVRA/EYEVN0H0kXPIwcKf9HmH6p+XicXusRt6o9h39agUNTiWCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530449; c=relaxed/simple;
-	bh=lnW1smJhF4zoNkTuVQYgHmlAIKrQ33W52f9I3PnZpR8=;
+	s=arc-20240116; t=1725530101; c=relaxed/simple;
+	bh=/8IpxaC6QsWQLLcgM0y4fMLQ4TlKCaFXTrAyaYGXsGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gu8i7/zmGSrpArg5pG2KtMyZCGJ9h9iVa4THax6Fiy/drNUfAqRLI8mFYDGU4vfhoc8BvjCu205RBHhJINsqmrFGQZJBanXqvrHkKeWNuXFS9ef5fthrvMZAUImD50v0i7kV7wcPJ5uhXFf67ldViewJlLAlmaxE0z0NMcSAPLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2s9Y9q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A095C4CEC3;
-	Thu,  5 Sep 2024 10:00:48 +0000 (UTC)
+	 MIME-Version; b=EjKf2Ny1DaFj9GA7t0IIB6u6fNdGcd/9tHYsRkdWeUYr7tcpfMDZllLin7R6ieCXJs2fBIQdSWQ0s5IKDFvg72ftMQVPjNy+nViDsQR8GddvsDgf8X0CTJLuFqcFCiGX0S/mllSCXDVj+uepIFGr9cfBkJoFFYRspniEL7rqx4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcaAu1u2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A27CC4CEC3;
+	Thu,  5 Sep 2024 09:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530449;
-	bh=lnW1smJhF4zoNkTuVQYgHmlAIKrQ33W52f9I3PnZpR8=;
+	s=korg; t=1725530101;
+	bh=/8IpxaC6QsWQLLcgM0y4fMLQ4TlKCaFXTrAyaYGXsGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2s9Y9q8xbsOr5ACNPLDJH1jmh27MiEx6449/l4t5XTCPRKV/l8sOEWtqM8EcTv9Q
-	 XKBzXcel+dODtk3fARTcCKz8axgqqVleBCg0NiMXS9Qvojw4mctYW8zvrb8hNXxDFE
-	 1sM1KIISjDAOcJ3cQbBl65yG7+uM8hymBXChvP5U=
+	b=VcaAu1u2QOInqkFd4dEJPiNEV+D0oYTcC2pmSev2UycoipKABlfLjv7FwaFcgnzJp
+	 KBwZMl6JIEHuWkhQf2TIHEWQ4upB+d6WN/aP6v4v+omvR0ipZOW7oy9OTcrZwbawQk
+	 gQw4fYUZ3Q79SlF4s7JBm2V6jYYjs5Uh65zfVgc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20St=C4=99pniak?= <kfs.szk@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/101] ASoC: amd: yc: Support mic on Lenovo Thinkpad E14 Gen 6
-Date: Thu,  5 Sep 2024 11:40:40 +0200
-Message-ID: <20240905093716.413883256@linuxfoundation.org>
+Subject: [PATCH 6.6 054/132] drm/amd/display: Add array index check for hdcp ddc access
+Date: Thu,  5 Sep 2024 11:40:41 +0200
+Message-ID: <20240905093724.360192921@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Stępniak <kfs.szk@gmail.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 23a58b782f864951485d7a0018549729e007cb43 ]
+[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
 
-Lenovo Thinkpad E14 Gen 6 (model type 21M3)
-needs a quirk entry for internal mic to work.
+[Why]
+Coverity reports OVERRUN warning. Do not check if array
+index valid.
 
-Signed-off-by: Krzysztof Stępniak <kfs.szk@gmail.com>
-Link: https://patch.msgid.link/20240807001219.1147-1-kfs.szk@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[How]
+Check msg_id valid and valid array index.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index b4a40a880035c..de655f687dd7d 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+index 8e9caae7c955..1b2df97226a3 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
+ 
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
+ 
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
+@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
  		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M3"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		success = hdcp->config.ddc.funcs.read_i2c(
+ 				hdcp->config.ddc.handle,
+ 				HDCP_I2C_ADDR,
+@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
+ 
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
+ 
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.write_dpcd(
+@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
+ 		}
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
+ 		memmove(&hdcp->buf[1], buf, buf_len);
+ 		success = hdcp->config.ddc.funcs.write_i2c(
 -- 
 2.43.0
 
