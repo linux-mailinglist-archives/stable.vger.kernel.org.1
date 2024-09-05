@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-73565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A2396D563
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2D296D50E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01CD11C21F1D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16651C24BC4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670C319538A;
-	Thu,  5 Sep 2024 10:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300CC194A5B;
+	Thu,  5 Sep 2024 09:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUfpdWoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBMibxmo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247ED1922CC;
-	Thu,  5 Sep 2024 10:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A5083CC8;
+	Thu,  5 Sep 2024 09:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530645; cv=none; b=a6XScUk3tiJxsvukHmfKSYeJwXEANGdHV/qZTqbT2shZjwNA0ycT0N60pudxWrT5gFYdGZsLhfRoqkxNLuQ7dpfpV0Pjws0qmo/K5L9of/QJqWseoEvMKZsBIiMtKU4NBZRYS5U3SBu2c0CCP6gbPXNFyIpJYIcKpe97ca3yAs4=
+	t=1725530380; cv=none; b=DkkaNX+x0/veLARRVNJcdzRCPBOm7bR3Ys1sl49Pc86Sxta9JSPz+ZuP0PFML1RlAVcgqm9647lUEpT7Qk9IdlCOKc8+zsJ65SL4i+s/HgqzG7BDXC+1MCC8PH0sFjOXaygKR+Qw7vLFebseuybCppz3Ep8mE0eUWw5mE9RbDPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530645; c=relaxed/simple;
-	bh=0HYlz7Ilx0OEKoO5urKCf4WgArtNzUrmjAvED8ARHy8=;
+	s=arc-20240116; t=1725530380; c=relaxed/simple;
+	bh=YFSxQajHyq6uHEx+B+E4YWhzFzwPBNMvOYgCC1VIPqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3+u/qCSykW6dKGPlGgIkLepRVLQ1PrtYyd4azDC/vKvSYP3FTEYiTbAUng6qK04WinRzjFl88Hod7ESnrdqFfJT+3tfYuPPv73bdrzSJzYE3RnGXakfG7Lnz48LNdVy3dvCCwYS/Z/LKKPmg48kfph9J1YLfmhABs/p3MAb0L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUfpdWoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87112C4CEC3;
-	Thu,  5 Sep 2024 10:04:04 +0000 (UTC)
+	 MIME-Version; b=jPypMjwQALf6aRtVS6vOPZDrYtPIcj+CYkka9VwWMKKYpApIv45OG0K7Bmt1J4qZPoKrukjtHyIe55OBHBeFlXZ7KYYjgfRjow2j1FnFKeIXX3c/ztHMIRTBYDV8psc3X8aCSpHvtrq9jk/g3zwGzoeaN5erqnkEUgBYx1vZ1ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBMibxmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FD1C4CEC3;
+	Thu,  5 Sep 2024 09:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530645;
-	bh=0HYlz7Ilx0OEKoO5urKCf4WgArtNzUrmjAvED8ARHy8=;
+	s=korg; t=1725530379;
+	bh=YFSxQajHyq6uHEx+B+E4YWhzFzwPBNMvOYgCC1VIPqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUfpdWoA5I92z7Dx1giUIX5Qw8KMrCi8EaoIHQd+v/vxH4HKlhQ+B50pU2/bPW8eN
-	 nYuA8knWGEt4rPOsn8aaVl2RENNx+BiscbAJ5et96WaalwKK8O4dsQmnMRV4fWIkNH
-	 r1L+K//7HV7k9I8dxNWdwXwOfwYpiE88MYGGBerU=
+	b=nBMibxmoO1CL6fgk50H2mceoSOJ2SqeK1UiZirlA6nYyp9Y7tPzB4isUQoJrX9Ye3
+	 EHWcyaL5aryIYkFHAalkF0XLAvAiQ4zhiaKjqbH36TSZwu02Na5Xy/8JCSRfPPsy4P
+	 sdoEJ7yn4O4Tn3CMcHxKSxxtUnPiGYbg6J7d9o3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/101] wifi: cfg80211: make hash table duplicates more survivable
+	Amit Pundir <amit.pundir@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 132/132] scsi: ufs: qcom: Add UFSHCD_QUIRK_BROKEN_LSDBS_CAP for SM8550 SoC
 Date: Thu,  5 Sep 2024 11:41:59 +0200
-Message-ID: <20240905093719.530678052@linuxfoundation.org>
+Message-ID: <20240905093727.343543493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
+commit ea593e028a9cc523557b4084a61d87ae69e2f270 upstream.
 
-Jiazi Li reported that they occasionally see hash table duplicates
-as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
-isn't clear how that happens, nor have I been able to reproduce it,
-but if it does happen, the kernel crashes later, when it tries to
-unhash the entry that's now not hashed.
+SM8550 SoC has the UFSHCI 4.0 compliant UFS controller and only supports
+legacy single doorbell mode without MCQ. But due to a hardware bug, it
+reports 1 in the 'Legacy Queue & Single Doorbell Support (LSDBS)' field of
+the Controller Capabilities register. This field is supposed to read as 0
+if legacy single doorbell mode is supported and 1 otherwise.
 
-Try to make this situation more survivable by removing the BSS from
-the list(s) as well, that way it's fully leaked here (as had been
-the intent in the hash insert error path), and no longer reachable
-through the list(s) so it shouldn't be unhashed again later.
+Starting with commit 0c60eb0cc320 ("scsi: ufs: core: Check LSDBS cap when
+!mcq"), ufshcd driver is now relying on the LSDBS field to decide when to
+use the legacy doorbell mode if MCQ is not supported. And this ends up
+breaking UFS on SM8550:
 
-Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ufshcd-qcom 1d84000.ufs: ufshcd_init: failed to initialize (legacy doorbell mode not supported)
+ufshcd-qcom 1d84000.ufs: error -EINVAL: Initialization failed with error -22
+
+So use the UFSHCD_QUIRK_BROKEN_LSDBS_CAP quirk for SM8550 SoC so that the
+ufshcd driver could use legacy doorbell mode correctly.
+
+Fixes: 0c60eb0cc320 ("scsi: ufs: core: Check LSDBS cap when !mcq")
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240816-ufs-bug-fix-v3-2-e6fe0e18e2a3@linaro.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ drivers/ufs/host/ufs-qcom.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 3cd162e53173..d18716e5b2cc 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1534,7 +1534,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(cfg80211_get_bss);
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1038,6 +1038,9 @@ static void ufs_qcom_advertise_quirks(st
  
--static void rb_insert_bss(struct cfg80211_registered_device *rdev,
-+static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *bss)
- {
- 	struct rb_node **p = &rdev->bss_tree.rb_node;
-@@ -1550,7 +1550,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 		if (WARN_ON(!cmp)) {
- 			/* will sort of leak this BSS */
--			return;
-+			return false;
- 		}
- 
- 		if (cmp < 0)
-@@ -1561,6 +1561,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 	rb_link_node(&bss->rbn, parent, p);
- 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
-+	return true;
+ 	if (host->hw_ver.major > 0x3)
+ 		hba->quirks |= UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH;
++
++	if (of_device_is_compatible(hba->dev->of_node, "qcom,sm8550-ufshc"))
++		hba->quirks |= UFSHCD_QUIRK_BROKEN_LSDBS_CAP;
  }
  
- static struct cfg80211_internal_bss *
-@@ -1587,6 +1588,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
- 	return NULL;
+ static void ufs_qcom_set_caps(struct ufs_hba *hba)
+@@ -1931,7 +1934,8 @@ static int ufs_qcom_remove(struct platfo
  }
  
-+static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
-+				struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	if (!rb_insert_bss(rdev, bss))
-+		return;
-+	list_add_tail(&bss->list, &rdev->bss_list);
-+	rdev->bss_entries++;
-+}
-+
-+static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
-+                                struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	rb_erase(&bss->rbn, &rdev->bss_tree);
-+	if (!rb_insert_bss(rdev, bss)) {
-+		list_del(&bss->list);
-+		if (!list_empty(&bss->hidden_list))
-+			list_del_init(&bss->hidden_list);
-+		if (!list_empty(&bss->pub.nontrans_list))
-+			list_del_init(&bss->pub.nontrans_list);
-+		rdev->bss_entries--;
-+	}
-+	rdev->bss_generation++;
-+}
-+
- static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
- 				   struct cfg80211_internal_bss *new)
- {
-@@ -1862,9 +1891,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 			bss_ref_get(rdev, pbss);
- 		}
- 
--		list_add_tail(&new->list, &rdev->bss_list);
--		rdev->bss_entries++;
--		rb_insert_bss(rdev, new);
-+		cfg80211_insert_bss(rdev, new);
- 		found = new;
- 	}
- 
-@@ -2651,10 +2678,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
- 			rdev->bss_generation++;
- 	}
--
--	rb_erase(&cbss->rbn, &rdev->bss_tree);
--	rb_insert_bss(rdev, cbss);
--	rdev->bss_generation++;
-+	cfg80211_rehash_bss(rdev, cbss);
- 
- 	list_for_each_entry_safe(nontrans_bss, tmp,
- 				 &cbss->pub.nontrans_list,
-@@ -2662,9 +2686,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		bss = container_of(nontrans_bss,
- 				   struct cfg80211_internal_bss, pub);
- 		bss->pub.channel = chan;
--		rb_erase(&bss->rbn, &rdev->bss_tree);
--		rb_insert_bss(rdev, bss);
--		rdev->bss_generation++;
-+		cfg80211_rehash_bss(rdev, bss);
- 	}
- 
- done:
--- 
-2.43.0
-
+ static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
+-	{ .compatible = "qcom,ufshc"},
++	{ .compatible = "qcom,ufshc" },
++	{ .compatible = "qcom,sm8550-ufshc" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, ufs_qcom_of_match);
 
 
 
