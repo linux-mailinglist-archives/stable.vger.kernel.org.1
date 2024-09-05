@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8A296D4A9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E7A96D51C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A1EB25DCC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7068282FB5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAEE198841;
-	Thu,  5 Sep 2024 09:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DBB1946A2;
+	Thu,  5 Sep 2024 10:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd85KiYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWWH+tMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD0D18732F;
-	Thu,  5 Sep 2024 09:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61DC13D28F;
+	Thu,  5 Sep 2024 10:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530074; cv=none; b=N1YYhYm/nJKYVnBVx893MqP7PnnhRuk4d4yGVzlDGxdCTq1gXgkcpSfaOFA9NRlQfE5nQa3wlybTtDCHDyKUGZV5039ZaXmFr29k/67nlM5lILhKEiQB2rdmdbxj12gPcNE1x0te10HzUkLtqhL0gBWnUY56ru1Wj8nsALUyH7E=
+	t=1725530423; cv=none; b=ZlLP7uUmwStZ9RcI3u4fCIiTK9Htof/issDHpV7J6EIPui5qMn4NsKIlUlqVDW0tnBEnOS4rWUZPqYhv56sFuyc7e/ksRmoRkZUnEjEcv9G4jhHQmXET9zzJ2DSgSVMP1O2gOzMKK4QZLZslLH8I9P0vtDeAkld8oaWr9iD7RXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530074; c=relaxed/simple;
-	bh=0o9UzkZjmGoTpVn38wlFFdHvi67lmpNjPz7yewxlsyE=;
+	s=arc-20240116; t=1725530423; c=relaxed/simple;
+	bh=Eo/uLFvV4q8axRMrYUcDsI/alShfErg2ct3Da5+Ah+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZK7OMLwz4XoowGkMn0034kQ/uWxdDBj73dph+nCTF0Q+LL7NPUUh94uxYQUW3ra9vGRgg4jlaw/IdKZAtDyues9RJCfaQyrjWjGjfnTmjbjcuBdd6tFX6pIWZL+CwhlgZDFcaJobbIDIugcquo50x5DlHFBn8wjsxWv5QovCyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd85KiYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C367C4CEC3;
-	Thu,  5 Sep 2024 09:54:33 +0000 (UTC)
+	 MIME-Version; b=MODVMdTL7W/IFv93VqFW/hn2C3fK6S1HWzWeeLy58YtCwkuittYzN0grmFJTnI3U7vH6xulmtSPqSBXfCjeXr6P80v7tYjqWBj6S+3RhvNgTrDJ9PqJJU8l1drmtOGnDsYkzBGMFqRSNgj+lppdO+Kxekpy85pViGA9+cOL/9Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWWH+tMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7E0C4CEC3;
+	Thu,  5 Sep 2024 10:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530074;
-	bh=0o9UzkZjmGoTpVn38wlFFdHvi67lmpNjPz7yewxlsyE=;
+	s=korg; t=1725530423;
+	bh=Eo/uLFvV4q8axRMrYUcDsI/alShfErg2ct3Da5+Ah+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zd85KiYQvPNZz0w/sXw8mKUfXAHOJf9wXZXJVGC3IDZXVLMVjbxt+nGFhxdmTU4Fp
-	 +O1mjbDn+Qeg/1EVP8WIVIWGeoTG2blq7ygsB/+JemkzrcxtshbCXvyBs9lwVP4afq
-	 NFoOb5LcvXcQsX8UAMfiyGWav3/Hcp4ijv7TAjeo=
+	b=xWWH+tMdDYxztsePnAmxhdi81g6hSjAJciuwegi1sINVgWeYx3Qa8eNUUewqBqtzN
+	 IejIAa86kJMkeQs7qyndPtkcyT5wB2XbteHwUbmAmQCHzNWLBofhZJ2QG95D+j/Ell
+	 ueh7A2NV7sVP96Z5+TQR4XP1gL0whpz8PNdffYoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/132] drm/amd/pm: fix warning using uninitialized value of max_vid_step
-Date: Thu,  5 Sep 2024 11:40:33 +0200
-Message-ID: <20240905093724.049032139@linuxfoundation.org>
+Subject: [PATCH 6.1 002/101] scsi: ufs: core: Bypass quick recovery if force reset is needed
+Date: Thu,  5 Sep 2024 11:40:34 +0200
+Message-ID: <20240905093716.176378159@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 17e3bea65cdc453695b2fe4ff26d25d17f5339e9 ]
+[ Upstream commit 022587d8aec3da1d1698ddae9fb8cfe35f3ad49c ]
 
-Check the return of pp_atomfwctrl_get_Voltage_table_v4
-as it may fail to initialize max_vid_step
-V2: change the check condition (Tim Huang)
+If force_reset is true, bypass quick recovery.  This will shorten error
+recovery time.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240712094506.11284-1-peter.wang@mediatek.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index d43a530aba0e..d500da8194e2 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -2571,8 +2571,11 @@ static int vega10_init_smc_table(struct pp_hwmgr *hwmgr)
- 		}
- 	}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index bfed5d36fa2e5..d528ee0092bd2 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6307,7 +6307,8 @@ static void ufshcd_err_handler(struct work_struct *work)
+ 	if (ufshcd_err_handling_should_stop(hba))
+ 		goto skip_err_handling;
  
--	pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
-+	result = pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
- 			VOLTAGE_OBJ_SVID2,  &voltage_table);
-+	PP_ASSERT_WITH_CODE(!result,
-+			"Failed to get voltage table!",
-+			return result);
- 	pp_table->MaxVidStep = voltage_table.max_vid_step;
+-	if (hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) {
++	if ((hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) &&
++	    !hba->force_reset) {
+ 		bool ret;
  
- 	pp_table->GfxDpmVoltageMode =
+ 		spin_unlock_irqrestore(hba->host->host_lock, flags);
 -- 
 2.43.0
 
