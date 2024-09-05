@@ -1,71 +1,57 @@
-Return-Path: <stable+bounces-73340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E545E96D470
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8158596D4EC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B6D1F2498D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FC81282704
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108F0199389;
-	Thu,  5 Sep 2024 09:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A1F194AC7;
+	Thu,  5 Sep 2024 09:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJWFPVVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Noi8VO6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95AA1990C2;
-	Thu,  5 Sep 2024 09:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7557815574C;
+	Thu,  5 Sep 2024 09:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529914; cv=none; b=IrfGlG9w6FUji15x9YOFuImanesa+g6XCEgqNhcs9rskpGmhRcjgxmI6j8Bgz76tjeJFS3m/PnHjGNfSDkClxbs0mgetRT+8Xf/ic09oEuLW1ZzC/euNUg5RIvcojWaQ/WXeTlVvxoqoHvhoTu/AWBFs11JcVLyZYi6fsMbAfVA=
+	t=1725530271; cv=none; b=YphgBG8r96deL6RUD5Dt/ZsxkEbjSh21aEaWpcQTL/2cqLVs1kiaulAMiFKuRsdoN/1a0ClCS0+TUpz7emSiWSc2oszmqoydG/WWKFA1+12jl5eQBolkLlWAsPuoePXkVBje1bEx3QIPO4U7nKcBZNVI+n3Ax9bNooNNMU50WBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529914; c=relaxed/simple;
-	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
+	s=arc-20240116; t=1725530271; c=relaxed/simple;
+	bh=m5vTuJmjI9kXkeR+LWaxzBoBaOZopvA3VIR5Uela1+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dz9/HgPWaTZwGJtwGCfRiltZqw+Kth+dtFbZD3z27uMvAgwNKduGxNkZ96/pPCwbq4WNxk5pNpEE1kL9f2xz9LCRDHRB5Yt/SEXn+jkhOEGObRUgwPefgNauZQum2MIhuhFdefuFnbLAp23JfMURvGUTu2qH4GIWLgkJ9hz3L84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJWFPVVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9BC4CEC3;
-	Thu,  5 Sep 2024 09:51:53 +0000 (UTC)
+	 MIME-Version; b=W+VGSEiVz+z5wcLZkRHg3uAKjsRy/jIEq4LX7GQvQMDvFXwpi72KYOebzxR5fB48Nh4gAfXGvvnYiqNr0zTJZsVoWyBDgPsgygCt4LooUhyCY6Pra5Vcf/35pm2MTv+Y9Dp8aAu+OVmkBY0H0YBFZm8S6V8AWQiTKWKLxeptQ+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Noi8VO6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B4BC4CEC3;
+	Thu,  5 Sep 2024 09:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529914;
-	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
+	s=korg; t=1725530271;
+	bh=m5vTuJmjI9kXkeR+LWaxzBoBaOZopvA3VIR5Uela1+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJWFPVVWLcHfpsizWbz8T8Hfn013dySUHGfmkPdRx8TBnDyA11sgF+9RTkLBDt/Ki
-	 v2w/TZjyRfvlwahqn3BqphFd5Z223u+pD0OGvkN9HjH/jR8lXfaICYuHWl5T2UxI00
-	 C8fDdZ479HGvyBsc8jH0SJhs2SZbwEi4CGKHRlcI=
+	b=Noi8VO6KUuhdVYE5QT+TEWtx+gpQUY1gtFhAwp5E7xlhZbzkzFYjqRMwF2d3xTpU2
+	 ChvoV+KFVrPsTfyhjasSzb3kylicLFVZNO1LjWUwaXmeSpu7kRFO0zfagEyAT9j6cX
+	 okZnPArK53VNTXNUb8y21KapSfOlFn3Z50FHMj3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	ceph-devel@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	devel@lists.orangefs.org
-Subject: [PATCH 6.10 181/184] mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
+	"Dustin L. Howett" <dustin@howett.net>,
+	Ben Walsh <ben@jubnut.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 107/132] platform/chrome: cros_ec_lpc: MEC access can use an AML mutex
 Date: Thu,  5 Sep 2024 11:41:34 +0200
-Message-ID: <20240905093739.395261770@linuxfoundation.org>
+Message-ID: <20240905093726.393190437@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,60 +63,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ben Walsh <ben@jubnut.com>
 
-commit c26096ee0278c5e765009c5eee427bbafe6dc090 upstream.
+[ Upstream commit 60c7df66450e3a7821a8d68496c20c95de6a15c5 ]
 
-Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
-rather than truncate_inode_pages_range().  The latter clears the
-invalidated bit of a partial pages rather than discarding it entirely.
-This causes copy_file_range() to fail on cifs because the partial pages at
-either end of the destination range aren't evicted and reread, but rather
-just partly cleared.
+Framework Laptops have ACPI code which accesses the MEC memory. It
+uses an AML mutex to prevent concurrent access. But the cros_ec_lpc
+driver was not aware of this mutex. The ACPI code and LPC driver both
+attempted to talk to the EC at the same time, messing up communication
+with the EC.
 
-This causes generic/075 and generic/112 xfstests to fail.
+Allow the LPC driver MEC code to find and use the AML mutex.
 
-Fixes: 74e797d79cf1 ("mm: Provide a means of invalidation without using launder_folio")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240828210249.1078637-5-dhowells@redhat.com
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Miklos Szeredi <miklos@szeredi.hu>
-cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-cc: Christoph Hellwig <hch@lst.de>
-cc: Andrew Morton <akpm@linux-foundation.org>
-cc: Alexander Viro <viro@zeniv.linux.org.uk>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: ceph-devel@vger.kernel.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-nfs@vger.kernel.org
-cc: devel@lists.orangefs.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Ben Walsh <ben@jubnut.com>
+Link: https://lore.kernel.org/r/20240605063351.14836-3-ben@jubnut.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec_lpc_mec.c | 76 ++++++++++++++++++++++-
+ drivers/platform/chrome/cros_ec_lpc_mec.h | 11 ++++
+ 2 files changed, 85 insertions(+), 2 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4221,7 +4221,7 @@ int filemap_invalidate_inode(struct inod
+diff --git a/drivers/platform/chrome/cros_ec_lpc_mec.c b/drivers/platform/chrome/cros_ec_lpc_mec.c
+index 0d9c79b270ce..63b6b261b8e5 100644
+--- a/drivers/platform/chrome/cros_ec_lpc_mec.c
++++ b/drivers/platform/chrome/cros_ec_lpc_mec.c
+@@ -10,13 +10,65 @@
+ 
+ #include "cros_ec_lpc_mec.h"
+ 
++#define ACPI_LOCK_DELAY_MS 500
++
+ /*
+  * This mutex must be held while accessing the EMI unit. We can't rely on the
+  * EC mutex because memmap data may be accessed without it being held.
+  */
+ static DEFINE_MUTEX(io_mutex);
++/*
++ * An alternative mutex to be used when the ACPI AML code may also
++ * access memmap data.  When set, this mutex is used in preference to
++ * io_mutex.
++ */
++static acpi_handle aml_mutex;
++
+ static u16 mec_emi_base, mec_emi_end;
+ 
++/**
++ * cros_ec_lpc_mec_lock() - Acquire mutex for EMI
++ *
++ * @return: Negative error code, or zero for success
++ */
++static int cros_ec_lpc_mec_lock(void)
++{
++	bool success;
++
++	if (!aml_mutex) {
++		mutex_lock(&io_mutex);
++		return 0;
++	}
++
++	success = ACPI_SUCCESS(acpi_acquire_mutex(aml_mutex,
++						  NULL, ACPI_LOCK_DELAY_MS));
++	if (!success)
++		return -EBUSY;
++
++	return 0;
++}
++
++/**
++ * cros_ec_lpc_mec_unlock() - Release mutex for EMI
++ *
++ * @return: Negative error code, or zero for success
++ */
++static int cros_ec_lpc_mec_unlock(void)
++{
++	bool success;
++
++	if (!aml_mutex) {
++		mutex_unlock(&io_mutex);
++		return 0;
++	}
++
++	success = ACPI_SUCCESS(acpi_release_mutex(aml_mutex, NULL));
++	if (!success)
++		return -EBUSY;
++
++	return 0;
++}
++
+ /**
+  * cros_ec_lpc_mec_emi_write_address() - Initialize EMI at a given address.
+  *
+@@ -77,6 +129,7 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
+ 	int io_addr;
+ 	u8 sum = 0;
+ 	enum cros_ec_lpc_mec_emi_access_mode access, new_access;
++	int ret;
+ 
+ 	/* Return checksum of 0 if window is not initialized */
+ 	WARN_ON(mec_emi_base == 0 || mec_emi_end == 0);
+@@ -92,7 +145,9 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
+ 	else
+ 		access = ACCESS_TYPE_LONG_AUTO_INCREMENT;
+ 
+-	mutex_lock(&io_mutex);
++	ret = cros_ec_lpc_mec_lock();
++	if (ret)
++		return ret;
+ 
+ 	/* Initialize I/O at desired address */
+ 	cros_ec_lpc_mec_emi_write_address(offset, access);
+@@ -134,7 +189,9 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
  	}
  
- 	/* Wait for writeback to complete on all folios and discard. */
--	truncate_inode_pages_range(mapping, start, end);
-+	invalidate_inode_pages2_range(mapping, start / PAGE_SIZE, end / PAGE_SIZE);
+ done:
+-	mutex_unlock(&io_mutex);
++	ret = cros_ec_lpc_mec_unlock();
++	if (ret)
++		return ret;
  
- unlock:
- 	filemap_invalidate_unlock(mapping);
+ 	return sum;
+ }
+@@ -146,3 +203,18 @@ void cros_ec_lpc_mec_init(unsigned int base, unsigned int end)
+ 	mec_emi_end = end;
+ }
+ EXPORT_SYMBOL(cros_ec_lpc_mec_init);
++
++int cros_ec_lpc_mec_acpi_mutex(struct acpi_device *adev, const char *pathname)
++{
++	int status;
++
++	if (!adev)
++		return -ENOENT;
++
++	status = acpi_get_handle(adev->handle, pathname, &aml_mutex);
++	if (ACPI_FAILURE(status))
++		return -ENOENT;
++
++	return 0;
++}
++EXPORT_SYMBOL(cros_ec_lpc_mec_acpi_mutex);
+diff --git a/drivers/platform/chrome/cros_ec_lpc_mec.h b/drivers/platform/chrome/cros_ec_lpc_mec.h
+index 9d0521b23e8a..3f3af37e58a5 100644
+--- a/drivers/platform/chrome/cros_ec_lpc_mec.h
++++ b/drivers/platform/chrome/cros_ec_lpc_mec.h
+@@ -8,6 +8,8 @@
+ #ifndef __CROS_EC_LPC_MEC_H
+ #define __CROS_EC_LPC_MEC_H
+ 
++#include <linux/acpi.h>
++
+ enum cros_ec_lpc_mec_emi_access_mode {
+ 	/* 8-bit access */
+ 	ACCESS_TYPE_BYTE = 0x0,
+@@ -45,6 +47,15 @@ enum cros_ec_lpc_mec_io_type {
+  */
+ void cros_ec_lpc_mec_init(unsigned int base, unsigned int end);
+ 
++/**
++ * cros_ec_lpc_mec_acpi_mutex() - Find and set ACPI mutex for MEC
++ *
++ * @adev:     Parent ACPI device
++ * @pathname: Name of AML mutex
++ * @return:   Negative error code, or zero for success
++ */
++int cros_ec_lpc_mec_acpi_mutex(struct acpi_device *adev, const char *pathname);
++
+ /**
+  * cros_ec_lpc_mec_in_range() - Determine if addresses are in MEC EMI range.
+  *
+-- 
+2.43.0
+
 
 
 
