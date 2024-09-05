@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA1996D094
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:39:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2478E96D09D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E16D1C24706
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 07:39:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85084B24CF5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 07:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56CD193412;
-	Thu,  5 Sep 2024 07:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1C3192D73;
+	Thu,  5 Sep 2024 07:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnbmaUgB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY1BaZq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B4F18A94F;
-	Thu,  5 Sep 2024 07:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A26218A94F;
+	Thu,  5 Sep 2024 07:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725521991; cv=none; b=ou9hTSbGTpHBdcMoF6m9GMC97wJnIYc6nAI/ZEM4Fufa/GWIJdO8U6Yfu8FTL7+tXX0SusPC5HpV2OlpZ5npmRCkLAkY2PKzauxA0dLkJbEiwDGy9QJRmuH2lGgMis3HZRSeSPVnWAppltbwNhskUA4Zi9209E7/pSukwhPDlz0=
+	t=1725522033; cv=none; b=EFyKcsi2Yj1j0d7K1vE1Zh0bdMWji/8Db+QA59pa+agH4/9HH4MGeJUQX4DIBF3D0MV+Fnb5YhIr9z9IXrIgEWiujvRe0pJyBHX4LStLx2j1aFTQ2CO/ezn03tTb3IItsxPt762nWB7ycSVPhi2myHjlQXycyX3E/D/55st/A/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725521991; c=relaxed/simple;
-	bh=vLhiWZWY5LZRLML56ZzTM03yZLxh9KqKyaYHg0U82oQ=;
+	s=arc-20240116; t=1725522033; c=relaxed/simple;
+	bh=PZJmqlHpJ1uU+ASFJIpncqC9uV3uvVokLmZ+DOZ31vY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juz9Gc2bfMseJSsjTgF1Hh5iSid6tlR6Eu7mD+V/OKGBFQ9y+XOv/tXdvNCEjvIJsAjEMnBHusbVwND/sN4uDLC+J4TmxxY/1pOFojYrdvCMzfJwYnfODNzPKppB054U6J6jO/GwKI5sizzegd26ZaA8ZB2sa2Dl2vZ6WjqvmWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnbmaUgB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59782C4CEC4;
-	Thu,  5 Sep 2024 07:39:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=odtJp9TU5gKFXwiK+TIW3lrDxWSGesJpRlJiCDd+uDRqXTScvrwXFpGOpFnQ0tksAnH5XrHjxLyDKAdJIekCOraRKMIyS2qcaOVgBjOyFfJxTkNv28d5sdsv38juHdgDOVzM1utuCH1BX0AuUPJy8U9UBtx2sAzMdVJ/0Zk75Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY1BaZq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C745C4CEC4;
+	Thu,  5 Sep 2024 07:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725521990;
-	bh=vLhiWZWY5LZRLML56ZzTM03yZLxh9KqKyaYHg0U82oQ=;
+	s=korg; t=1725522033;
+	bh=PZJmqlHpJ1uU+ASFJIpncqC9uV3uvVokLmZ+DOZ31vY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VnbmaUgBJqXblFNo5y7gW+hByQBKXIJ58ic0ZNQumj1V11B4oxo5iZFbxEpXqWcbX
-	 ki6wwadtf6pmtG6MVS93iqK2duH5WZoL5uTX+vwHPg9jbmpdpyV5RXYZwuwI4krcir
-	 43/UEYnCaOTKImszv1FH3fy5hKLrRcy51Q9l7NeU=
-Date: Thu, 5 Sep 2024 09:39:47 +0200
+	b=wY1BaZq7EaV2nxp/Ky4u1EjnAofwymLmYwxfNFMzbKe0jbHCKfdS8gsQnzSNvxLBw
+	 PumHeZzyspeIqGIDgjb4BCQ/0o2i9Hx1hQmo8m8P4UXCskEjO3NFFDypxbP6bOCSaO
+	 tx5sTpSbitonzYibe/kA3nVEGUcVkW8snJjYW0Ms=
+Date: Thu, 5 Sep 2024 09:40:30 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Cc: stable@vger.kernel.org, axboe@kernel.dk, martin.petersen@oracle.com,
-	linux-block@vger.kernel.org, ajay.kaher@broadcom.com,
+To: sikkamukul <mukul.sikka@broadcom.com>
+Cc: stable@vger.kernel.org, evan.quan@amd.com, alexander.deucher@amd.com,
+	christian.koenig@amd.com, airlied@linux.ie, daniel@ffwll.ch,
+	Jun.Ma2@amd.com, kevinyang.wang@amd.com, sashal@kernel.org,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com,
 	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	Christoph Hellwig <hch@lst.de>, Kanchan Joshi <joshi.k@samsung.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v4.19-v5.10] block: initialize integrity buffer to zero
- before writing it to media
-Message-ID: <2024090540-afloat-unroll-d9fd@gregkh>
-References: <20240902092459.5147-1-shivani.agarwal@broadcom.com>
+	Bob Zhou <bob.zhou@amd.com>, Tim Huang <Tim.Huang@amd.com>
+Subject: Re: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference
+ for vega10_hwmgr
+Message-ID: <2024090523-collide-colonize-d914@gregkh>
+References: <20240903045809.5025-1-mukul.sikka@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,32 +60,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240902092459.5147-1-shivani.agarwal@broadcom.com>
+In-Reply-To: <20240903045809.5025-1-mukul.sikka@broadcom.com>
 
-On Mon, Sep 02, 2024 at 02:24:59AM -0700, Shivani Agarwal wrote:
-> From: Christoph Hellwig <hch@lst.de>
+On Tue, Sep 03, 2024 at 04:58:09AM +0000, sikkamukul wrote:
+> From: Bob Zhou <bob.zhou@amd.com>
 > 
-> [ Upstream commit 899ee2c3829c5ac14bfc7d3c4a5846c0b709b78f ]
+> [ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
 > 
-> Metadata added by bio_integrity_prep is using plain kmalloc, which leads
-> to random kernel memory being written media.  For PI metadata this is
-> limited to the app tag that isn't used by kernel generated metadata,
-> but for non-PI metadata the entire buffer leaks kernel memory.
+> Check return value and conduct null pointer handling to avoid null pointer dereference.
 > 
-> Fix this by adding the __GFP_ZERO flag to allocations for writes.
-> 
-> Fixes: 7ba1ba12eeef ("block: Block layer data integrity support")
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-> Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-> Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-> Link: https://lore.kernel.org/r/20240613084839.1044015-2-hch@lst.de
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+> Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+> Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
 > ---
->  block/bio-integrity.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+>  .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 30 ++++++++++++++++---
+>  1 file changed, 26 insertions(+), 4 deletions(-)
 
 Now queued up, thanks.
 
