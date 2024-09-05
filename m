@@ -1,138 +1,154 @@
-Return-Path: <stable+bounces-73127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E9396CDFC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F58496CDF3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEFBBB211BA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 04:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABD43B222F7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 04:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24286142E7C;
-	Thu,  5 Sep 2024 04:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA4C14A0B7;
+	Thu,  5 Sep 2024 04:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="p1gmb6Vy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kBaABYRn"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F852F44
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 04:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2048CCC;
+	Thu,  5 Sep 2024 04:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725510595; cv=none; b=Zgm6Qnshx6bmnh8AnO7Fuke7uEz1lZ4KcaWF4CZlOWwJJb409LrsPR+6WCaFE0B2vm75EBygZnEqYRWFCtMS2lF4PZyKbLm+Qj261huKCOloBqa+15HHFhn2AZ8rVReV4409w9zVFylyYISmMzOEbD2uHs9EI3QQPxw0zIjFOfg=
+	t=1725510277; cv=none; b=a7gguKKLOtfnvwr212K80yfQQNBXQMWOKNjU2pdzyQcSFZ/2ZsPw+/sLa/nefoQnCOtm867upy4EelqDoYFBnNKtSDCjf5kdj9Xqkv6bRu4tEtwFDFvMtZmUI0SCDFr8jhrOfDe8D0AKCvhkT1q7SC4fHsngHFJaCulhIU2jZTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725510595; c=relaxed/simple;
-	bh=IqNgGp5LH4F2TBnsMw7LvK32VyAc4U0SAzUDXcPwXyo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=Z2BxkGB4nbHLxxAVWJZ63Pd6+Dy8rJDQqvKXfqA6I5vqYBA+uNhRsP6H2OwxfLJor2IfbgEk9vK3UT+Y+45nM3x0ok6fH7CI8uagBX+1+tmeD6ooNzN4NtftU9cvrtts7PHwpzeGLCgFhI7vXFyfTOFhJRR4FLFEwfysY/t9nyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=p1gmb6Vy; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1725510062;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lmpI6wNpZyEU8UYj2/1lJG1Am1PTaoR/B39Jd4Um0ls=;
-	b=p1gmb6Vypw3RNgxMvO270Sb8WMZnzwjLEE/7ZLgi+BLD4CRnbbaOGq5XQ/AEuvZyqlOwZw
-	hm1IMnXss6wm8QAQ==
-Message-ID: <3f2c3ed8-bbdb-45e0-9463-ffffdad0f37b@hardfalcon.net>
-Date: Thu, 5 Sep 2024 06:21:00 +0200
+	s=arc-20240116; t=1725510277; c=relaxed/simple;
+	bh=6MfL0Y9QFnUqWm2/ZVpAP33O/HYuWfUIjk+V0ytEdks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gWyWeeGQqm3r4mMso5ICfDu8XDgMkv8CezNAnjEku40j7wI+9e14y/WcCunAMRbqjWiR6o8bWGew9jm0X9UNLLDQTt2rCS2CMnFT+HAasav3LIPQGHxPUr0lfVDu97IXAjQJwoC4S6DE3gzdwoSvi7KXYXT1kvY0L9+a5bQD2f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kBaABYRn; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725510276; x=1757046276;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6MfL0Y9QFnUqWm2/ZVpAP33O/HYuWfUIjk+V0ytEdks=;
+  b=kBaABYRnscshrzIVdoImbiWTBNQGYTqQIu54xa1paGLx5TMTEvgenImJ
+   5TJRwUsBPaaX1XQkRn+GfUDeQAKXE3ROIQj2aQ7C594TldJ2GkA/8rEzq
+   LKnULRwkoiyLGr3jTL5StI96WAUYVmHJo1/Klu2ax38tMVOrVvi0uUpQS
+   sLy8JB4x03DfoWitbmZG8jyx5saN8erBN9miPjjrgo2L66LiiX68NP7Yy
+   IdiQUtyntI0ZYF0n9f9CLG1D/N+UxRZNaURjelFavxv++NRk/EPoa3nJi
+   eM4E0u4ciRmClTHhURVRSrIkuF4qsb2nsJVVf86ne9Nfu3yIVoW8nqde+
+   A==;
+X-CSE-ConnectionGUID: 0I32WCAGTFCsUv5KgTRL8Q==
+X-CSE-MsgGUID: uKLlz3CYSgG/lcVXFTpFQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24319998"
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="24319998"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 21:24:35 -0700
+X-CSE-ConnectionGUID: AuTVCwsDS/m+Cgh02KTsmg==
+X-CSE-MsgGUID: AF3U6TvdTyW0jYKR7O4jvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="96284840"
+Received: from shuangy2-mobl.ccr.corp.intel.com (HELO [10.238.129.122]) ([10.238.129.122])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 21:24:33 -0700
+Message-ID: <98de8dbd-1a83-40e1-ad5a-a86b1441bb08@linux.intel.com>
+Date: Thu, 5 Sep 2024 12:24:30 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Patch "drm/drm-bridge: Drop conditionals around of_node pointers"
- has been added to the 6.6-stable t
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-References: <20240904175026.1165330-1-sashal () kernel ! org>
-Content-Language: en-US, de-DE
-Cc: Sui Jingfeng <sui.jingfeng@linux.dev>,
- Biju Das <biju.das.jz@bp.renesas.com>,
- Douglas Anderson <dianders@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20240904175026.1165330-1-sashal () kernel ! org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices
+ requiring ATS
+To: Baolu Lu <baolu.lu@linux.intel.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+Cc: "Saarinen, Jani" <jani.saarinen@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240904060705.90452-1-baolu.lu@linux.intel.com>
+ <BN9PR11MB5276428A5462738F89190A5A8C9C2@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <9e183ce2-060a-4e0b-a956-03d767368ca4@linux.intel.com>
+From: Ethan Zhao <haifeng.zhao@linux.intel.com>
+In-Reply-To: <9e183ce2-060a-4e0b-a956-03d767368ca4@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-[2024-09-04 19:50] Sasha Levin:
-> This is a note to let you know that I've just added the patch titled
-> 
->      drm/drm-bridge: Drop conditionals around of_node pointers
-> 
-> to the 6.6-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->       drm-drm-bridge-drop-conditionals-around-of_node-poin.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 74f5f42c35daf9aedbc96283321c30fc591c634f
-> Author: Sui Jingfeng <sui.jingfeng@linux.dev>
-> Date:   Wed May 8 02:00:00 2024 +0800
-> 
->      drm/drm-bridge: Drop conditionals around of_node pointers
->      
->      [ Upstream commit ad3323a6ccb7d43bbeeaa46d5311c43d5d361fc7 ]
->      
->      Having conditional around the of_node pointer of the drm_bridge structure
->      is not necessary, since drm_bridge structure always has the of_node as its
->      member.
->      
->      Let's drop the conditional to get a better looks, please also note that
->      this is following the already accepted commitments. see commit d8dfccde2709
->      ("drm/bridge: Drop conditionals around of_node pointers") for reference.
->      
->      Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
->      Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
->      Signed-off-by: Robert Foss <rfoss@kernel.org>
->      Link: https://patchwork.freedesktop.org/patch/msgid/20240507180001.1358816-1-sui.jingfeng@linux.dev
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-> index 62d8a291c49c..70b05582e616 100644
-> --- a/drivers/gpu/drm/drm_bridge.c
-> +++ b/drivers/gpu/drm/drm_bridge.c
-> @@ -353,13 +353,8 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
->   	bridge->encoder = NULL;
->   	list_del(&bridge->chain_node);
->   
-> -#ifdef CONFIG_OF
->   	DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
->   		  bridge->of_node, encoder->name, ret);
-> -#else
-> -	DRM_ERROR("failed to attach bridge to encoder %s: %d\n",
-> -		  encoder->name, ret);
-> -#endif
->   
->   	return ret;
->   }
+On 9/4/2024 3:49 PM, Baolu Lu wrote:
+> On 2024/9/4 14:49, Tian, Kevin wrote:
+>>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>>> Sent: Wednesday, September 4, 2024 2:07 PM
+>>>
+>>> SOC-integrated devices on some platforms require their PCI ATS enabled
+>>> for operation when the IOMMU is in scalable mode. Those devices are
+>>> reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
+>>> field.
+>>>
+>>> The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
+>>> ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
+>>> can cause a conflict, leading to boot failure, especially if the device
+>>> is a graphics device.
+>>>
+>>> To prevent this issue, check PCI ATS support before enumerating the 
+>>> IOMMU
+>>> devices. If any device requires PCI ATS, but PCI ATS is disabled by
+>>> 'pci=noats', switch the IOMMU to operate in legacy mode to ensure
+>>> successful booting.
+>>
+>> I guess the reason of switching to legacy mode is because the platform
+>> automatically enables ATS in this mode, as the comment says in
+>> dmar_ats_supported(). This should be explained otherwise it's unclear
+>> why switching the mode can make ATS working for those devices.
+>
+> Not 'automatically enable ATS,' but hardware provides something that is
+> equivalent to PCI ATS. The ATS capability on the device is still
+> disabled. That's the reason why such device must be an SOC-integrated
+> one.
+
+That is confusing, how to know the "hardware provides something that is
+equivalent to PCI ATS" ? any public docs to say that ?
+
+>
+>>
+>> But then doesn't it break the meaning of 'pci=noats' which means
+>> disabling ATS physically? It's described as "do not use PCIe ATS and
+>> IOMMU device IOTLB" in kernel doc, which is not equivalent to
+>> "leave PCIe ATS to be managed by HW".
+>
+> Therefore, the PCI ATS is not used and the syntax of pci=noats is not
+> broken.
+>
+>> and why would one want to use 'pci=noats' on a platform which
+>> requires ats?
+>
+> We don't recommend users to disable ATS on a platform which has devices
+> that rely on it. But nothing can prevent users from doing so. I am not
+> sure why it is needed. One possible reason that I can think of is about
+> security. Sometimes, people don't trust ATS because it allows devices to
+> access the memory with translated requests directly without any
+> permission check on the IOMMU end.
+
+Appears that would happen with CXL link, while PCI link still will do
+some checking (per VT-d spec sec 4.2.4). I have question here, such behaviour
+happens with HW passthrough, also does to software passthrough (removed identity
+mapping) ?
 
 
-Hi Sasha,
+Thanks,
+Ethan
 
-
-this breaks the x86_64 build for me.
-
-AFAICT this patch cannot work without commit 
-d8dfccde2709de4327c3d62b50e5dc012f08836f "drm/bridge: Drop conditionals 
-around of_node pointers", but that commit is only present in Linux >= 6.7.
-
-This issue affects the 6.6, 6.1 and 5.15 branches.
-
-
-Regards
-Pascal
+>
+> Thanks,
+> baolu
+>
 
