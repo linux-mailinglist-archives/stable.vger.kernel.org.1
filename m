@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-73312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0FE96D44F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A3896D452
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAAE8B23BD4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3490D1F235F0
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320F719754A;
-	Thu,  5 Sep 2024 09:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED951198A32;
+	Thu,  5 Sep 2024 09:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQCq05fK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h237sqe2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E339D14A08E;
-	Thu,  5 Sep 2024 09:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21B198A27;
+	Thu,  5 Sep 2024 09:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529825; cv=none; b=e3958n0TGP9IZqwiw0kG3lfvRgjEfCtC8U3yw5UPPi0g21wkF/5ECZ+peUPtYcwylSwwmFDCUr4kFr/QnbDZuM9izaDIT0tO/Ze7ecYBeZTSUkijq3B/ngD4K5t0K3XY2ok8rts5gUyzdrytxIehDGSWM0FyZ8FuLFI+keUdGm0=
+	t=1725529837; cv=none; b=lrT0AUUIZSyjUM49DWudzD9Ia8FlJoO6wTDMEXR7mkQJiErDk/7rIio672AMp//v4XdK2YG+CLHUGV11a5ppdxzSNqayZMp+zltoAw7BsROUFON/naegLIZc0PNcsyKpGTV3j1rLyuBxhVCj/nd+NKYoz6E9p3KNrrDgR/AUzDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529825; c=relaxed/simple;
-	bh=rGh2S2j1J5JbdtU+xyFqRZekCy3OCx86cCO+FrkKptw=;
+	s=arc-20240116; t=1725529837; c=relaxed/simple;
+	bh=fiy8J7gV6Cf1dQqzapP/37i0HhGEGUHP/vAZ3LmaKSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSF95kYpoTcMKbeGp7DAIxZmTaW4nfp/xCuDlqjjpy+jH12jEHWpfsGKP/KwwpiQqjH2JLCXUajcWyGOvFVH+/qD+SKePiA0JDZ1UujXFaQTl5qpu+R5ciQa0ZQRjaY8NQFhWOLGs/wx36mKtqdYHhRunujqvfC2VfOEkfrQ8pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQCq05fK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038DDC4CEC4;
-	Thu,  5 Sep 2024 09:50:23 +0000 (UTC)
+	 MIME-Version; b=I+BV0XEiUND7JtZdPwOKvufATF6BeZh6WV5DD7gRQ04TTRPYqLldN/D+qAMN7Pt3rKf0Lhf4N/EzHLCgROHnjRI0OSs+j3gSIknCuOMocUmO3nFLR7QSpQrM2cfchKYuN4Rbg2r9hwNKKO7SmB3XmFcUo6ZsQ853Z0yOI1Bd+Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h237sqe2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E096C4CEC3;
+	Thu,  5 Sep 2024 09:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529824;
-	bh=rGh2S2j1J5JbdtU+xyFqRZekCy3OCx86cCO+FrkKptw=;
+	s=korg; t=1725529837;
+	bh=fiy8J7gV6Cf1dQqzapP/37i0HhGEGUHP/vAZ3LmaKSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQCq05fKOCeE4GWeYJDhrNxodqCqF+CCDqKMFUalz78ouLyuo6GC/5ASfQwNDLFgy
-	 /etEj2gK/41Go/A3rtVLeSaZQ/1L75AA+VsL71X9YHLMytbtjkOSvzpG6/xe9JcRlF
-	 lydVaL2vSCeaQ6b2xAhTrz7KHHjoIcBX0SUq/JU8=
+	b=h237sqe2f7FgHOmEW9yW3TVBpRuZKN7exdVSAWrvIrwp5piQqtaxYqB/hGODJ4xUE
+	 0ZbsB9mwLLm4jgUVYOg9bLNwP6mFbXap6WSwN7YS+rJu+I2DAXXJqTLTp3GL51W2Dn
+	 7EWi9tETDW2dNfTNv631hNzKymNjDahnzf/Ju8Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Richard Maina <quic_rmaina@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 126/184] soc: qcom: smem: Add qcom_smem_bust_hwspin_lock_by_host()
-Date: Thu,  5 Sep 2024 11:40:39 +0200
-Message-ID: <20240905093737.147288034@linuxfoundation.org>
+Subject: [PATCH 6.10 127/184] remoteproc: qcom_q6v5_pas: Add hwspinlock bust on stop
+Date: Thu,  5 Sep 2024 11:40:40 +0200
+Message-ID: <20240905093737.185898743@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -67,74 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Lew <quic_clew@quicinc.com>
+From: Richard Maina <quic_rmaina@quicinc.com>
 
-[ Upstream commit 2e3f0d693875db698891ffe89a18121bda5b95b8 ]
+[ Upstream commit 568b13b65078e2b557ccf47674a354cecd1db641 ]
 
-Add qcom_smem_bust_hwspin_lock_by_host to enable remoteproc to bust the
-hwspin_lock owned by smem. In the event the remoteproc crashes
-unexpectedly, the remoteproc driver can invoke this API to try and bust
-the hwspin_lock and release the lock if still held by the remoteproc
-device.
+When remoteproc goes down unexpectedly this results in a state where any
+acquired hwspinlocks will remain locked possibly resulting in deadlock.
+In order to ensure all locks are freed we include a call to
+qcom_smem_bust_hwspin_lock_by_host() during remoteproc shutdown.
 
+For qcom_q6v5_pas remoteprocs, each remoteproc has an assigned smem
+host_id. Remoteproc can pass this id to smem to try and bust the lock on
+remoteproc stop.
+
+This edge case only occurs with q6v5_pas watchdog crashes. The error
+fatal case has handling to clear the hwspinlock before the error fatal
+interrupt is triggered.
+
+Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-3-c8b924ffa5a2@quicinc.com
+Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-4-c8b924ffa5a2@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c       | 26 ++++++++++++++++++++++++++
- include/linux/soc/qcom/smem.h |  2 ++
- 2 files changed, 28 insertions(+)
+ drivers/remoteproc/qcom_q6v5_pas.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index 7191fa0c087f..50039e983eba 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -359,6 +359,32 @@ static struct qcom_smem *__smem;
- /* Timeout (ms) for the trylock of remote spinlocks */
- #define HWSPINLOCK_TIMEOUT	1000
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 54d8005d40a3..8458bcfe9e19 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -52,6 +52,7 @@ struct adsp_data {
+ 	const char *ssr_name;
+ 	const char *sysmon_name;
+ 	int ssctl_id;
++	unsigned int smem_host_id;
  
-+/* The qcom hwspinlock id is always plus one from the smem host id */
-+#define SMEM_HOST_ID_TO_HWSPINLOCK_ID(__x) ((__x) + 1)
-+
-+/**
-+ * qcom_smem_bust_hwspin_lock_by_host() - bust the smem hwspinlock for a host
-+ * @host:	remote processor id
-+ *
-+ * Busts the hwspin_lock for the given smem host id. This helper is intended
-+ * for remoteproc drivers that manage remoteprocs with an equivalent smem
-+ * driver instance in the remote firmware. Drivers can force a release of the
-+ * smem hwspin_lock if the rproc unexpectedly goes into a bad state.
-+ *
-+ * Context: Process context.
-+ *
-+ * Returns: 0 on success, otherwise negative errno.
-+ */
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host)
-+{
-+	/* This function is for remote procs, so ignore SMEM_HOST_APPS */
-+	if (host == SMEM_HOST_APPS || host >= SMEM_HOST_COUNT)
-+		return -EINVAL;
-+
-+	return hwspin_lock_bust(__smem->hwlock, SMEM_HOST_ID_TO_HWSPINLOCK_ID(host));
-+}
-+EXPORT_SYMBOL_GPL(qcom_smem_bust_hwspin_lock_by_host);
-+
- /**
-  * qcom_smem_is_available() - Check if SMEM is available
-  *
-diff --git a/include/linux/soc/qcom/smem.h b/include/linux/soc/qcom/smem.h
-index a36a3b9d4929..03187bc95851 100644
---- a/include/linux/soc/qcom/smem.h
-+++ b/include/linux/soc/qcom/smem.h
-@@ -14,4 +14,6 @@ phys_addr_t qcom_smem_virt_to_phys(void *p);
+ 	int region_assign_idx;
+ 	int region_assign_count;
+@@ -81,6 +82,7 @@ struct qcom_adsp {
+ 	int lite_pas_id;
+ 	unsigned int minidump_id;
+ 	int crash_reason_smem;
++	unsigned int smem_host_id;
+ 	bool decrypt_shutdown;
+ 	const char *info_name;
  
- int qcom_smem_get_soc_id(u32 *id);
+@@ -399,6 +401,9 @@ static int adsp_stop(struct rproc *rproc)
+ 	if (handover)
+ 		qcom_pas_handover(&adsp->q6v5);
  
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host);
++	if (adsp->smem_host_id)
++		ret = qcom_smem_bust_hwspin_lock_by_host(adsp->smem_host_id);
 +
- #endif
+ 	return ret;
+ }
+ 
+@@ -727,6 +732,7 @@ static int adsp_probe(struct platform_device *pdev)
+ 	adsp->pas_id = desc->pas_id;
+ 	adsp->lite_pas_id = desc->lite_pas_id;
+ 	adsp->info_name = desc->sysmon_name;
++	adsp->smem_host_id = desc->smem_host_id;
+ 	adsp->decrypt_shutdown = desc->decrypt_shutdown;
+ 	adsp->region_assign_idx = desc->region_assign_idx;
+ 	adsp->region_assign_count = min_t(int, MAX_ASSIGN_COUNT, desc->region_assign_count);
+@@ -1196,6 +1202,7 @@ static const struct adsp_data sm8550_adsp_resource = {
+ 	.ssr_name = "lpass",
+ 	.sysmon_name = "adsp",
+ 	.ssctl_id = 0x14,
++	.smem_host_id = 2,
+ };
+ 
+ static const struct adsp_data sm8550_cdsp_resource = {
+@@ -1216,6 +1223,7 @@ static const struct adsp_data sm8550_cdsp_resource = {
+ 	.ssr_name = "cdsp",
+ 	.sysmon_name = "cdsp",
+ 	.ssctl_id = 0x17,
++	.smem_host_id = 5,
+ };
+ 
+ static const struct adsp_data sm8550_mpss_resource = {
+@@ -1236,6 +1244,7 @@ static const struct adsp_data sm8550_mpss_resource = {
+ 	.ssr_name = "mpss",
+ 	.sysmon_name = "modem",
+ 	.ssctl_id = 0x12,
++	.smem_host_id = 1,
+ 	.region_assign_idx = 2,
+ 	.region_assign_count = 1,
+ 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
+@@ -1275,6 +1284,7 @@ static const struct adsp_data sm8650_cdsp_resource = {
+ 	.ssr_name = "cdsp",
+ 	.sysmon_name = "cdsp",
+ 	.ssctl_id = 0x17,
++	.smem_host_id = 5,
+ 	.region_assign_idx = 2,
+ 	.region_assign_count = 1,
+ 	.region_assign_shared = true,
+@@ -1299,6 +1309,7 @@ static const struct adsp_data sm8650_mpss_resource = {
+ 	.ssr_name = "mpss",
+ 	.sysmon_name = "modem",
+ 	.ssctl_id = 0x12,
++	.smem_host_id = 1,
+ 	.region_assign_idx = 2,
+ 	.region_assign_count = 3,
+ 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
 -- 
 2.43.0
 
