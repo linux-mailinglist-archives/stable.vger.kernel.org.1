@@ -1,125 +1,121 @@
-Return-Path: <stable+bounces-73592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EC996D7B6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 13:55:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706BA96D811
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95658282BC1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163721F250A7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551219A29A;
-	Thu,  5 Sep 2024 11:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAF619B586;
+	Thu,  5 Sep 2024 12:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dxS/x9r4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGU1lkB8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075C41991B0
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 11:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB3E19B3E2;
+	Thu,  5 Sep 2024 12:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725537346; cv=none; b=tzf2KO0g2j+r6EPWnf9kCf1lhv1Ha6z2Z7zpewlFZ+6cS6d+/bLrgGmF+3Yo44ckHAkqZjzRNqyRxhZjM/UN/UfLOzpuqnDuh+fS40+4e9xumX3+PSEzKYlZrNEr6D+0ZrrVkNicjzzXb+fDBz0zjbPexbyg2W+KyhIG0IanAbY=
+	t=1725538409; cv=none; b=uKut0nHkYDtqnGKhQg95q442Li0cDksGMw3WfZmGrTQuExe/xEyxn7+Dvnwn7SaGSsLuW/PPuyul0BmfRbsprDvBKp4WZFlpHoo4Um1jLAbbt/8cFwHDcGKwPe8Jed90hmflm5wEQoyT3QHvr6eVGWMmlMQTA2quQIlYyUyNzSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725537346; c=relaxed/simple;
-	bh=9NJQoo4LMVMggcZzkDEPcmdJE9FtDyLAQZGKEsY1FLE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YimIWWfjFdbFmilpf4MSRfcXFOMg47kaIF95T8tA/zDdQT81Ftc007/b57jjxE35miKmuw8PjiRC37J14R6SsNAXOrSmrHMUshKC3AAKZjfzKmuD38sxP8lfiECWYJqstLbseB89A0qvGr0HVV7giq6Vnz3gXYWsUhybdK4EpKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dxS/x9r4; arc=none smtp.client-ip=209.85.222.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-84305a83b06so206891241.2
-        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 04:55:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725537344; x=1726142144; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qRJcGcRJNx1TW5diCULQtEUQCwcWsO+dA/2EMfBnxLI=;
-        b=dxS/x9r4fnXUO8Sd5c7lzNjpGSYaqpWkZGldn49M6EKrgg9irH6NeVlzockNfDLKdM
-         /PNz599PPijG7w10HNPuKeyXprzt+X7iqyKCjMYW8DZrMSbGrk2QjLJSVu/CWOcgFtgT
-         EuVtC7ObXY+dMuSszgD1w+3P7xZoXCUILWXK+brkyb/FWnM79D7EbuqiuI7U8SW8YhMa
-         iMIngGBBBhUGyhIYjIZbgkTQJwZghczrY4Jc7e5/X3dwHV57YsWjYjH2d2doj+EIcW8C
-         yD5U4pTX0xbOuNztVgrk8IaWCqWfdXsB4E/DNqqEBXgV/60lgWuboSOhlFruEVsf16HA
-         jNkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725537344; x=1726142144;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qRJcGcRJNx1TW5diCULQtEUQCwcWsO+dA/2EMfBnxLI=;
-        b=CnwXzUzOrNPMSqcao50nEPb0454WdOXLjrYIMq7WGMniD92r2e0zewsZDJgytn9eWn
-         ShXoKWYucE2Rz8xXi/+eE3PysUyPrZaWvM+Rlj63nCs/iCVDG7Fvm6FpCX9+ouCXI4pG
-         oV4CZw3hRZ2FpopxLQAQpRfKz43J1lBSR6AY2pRNmj3Zv1XlZ+RjoXd1fqDHY18NwPU9
-         URblY99tX4UD5tjZBn4YfurAmasqa3D1Uc3Smu6MC136o17yajHmcsTxTkiic7sA1U2E
-         outK8iUGjRuvtyyp++tp06h6kPiNwaGME6jz+A4D93sH153U6NALd6pO7Iz+vqSmNZe5
-         twcA==
-X-Gm-Message-State: AOJu0Yy43l0BEoBIbg12Pw1LUwbGMg0NrIhXDpxPzcFhD/xuJdwu1ZrE
-	PElzIbJrkHCLSiWN7X85i1w4kBGR7pjD7UuEMMEjp3bY7uQYKD+RGG8hvmeuGRAwocbiuUAQxJQ
-	iODa4qGiwC3hDo9yrNJt80uVsQQeR2cwSQU4rjg==
-X-Google-Smtp-Source: AGHT+IF81MA398iZ6b4Y3eucXQLIDL+C3dpW3/7905P6ameFiZ7xV/TUXSEnEfZ4bjIqf/xqhw7rYHJecNOySvu0Zrs=
-X-Received: by 2002:a05:6102:26ca:b0:49b:d24a:6860 with SMTP id
- ada2fe7eead31-49bd24a6c82mr1314728137.8.1725537343801; Thu, 05 Sep 2024
- 04:55:43 -0700 (PDT)
+	s=arc-20240116; t=1725538409; c=relaxed/simple;
+	bh=xmP/wJyeYT7M4VQxSWmO3MapekYf8Jd7YMh+Yp8oi9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uStXeU1d1XX2lb1wJV54S9GOpNX522Th+CAQEQPvdCTLwgOBIDL2NERW4gvgMpV8Pvnm+muFP65omAat99eZi8sfSImolc4/+TWdQ8xddOAWBuFHD5fS1wX5hmIxOq98OHORBFrc1XaUX4LabaxihgO66dvh46EnuCNaKdqpND4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGU1lkB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250B5C4CEC3;
+	Thu,  5 Sep 2024 12:13:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725538408;
+	bh=xmP/wJyeYT7M4VQxSWmO3MapekYf8Jd7YMh+Yp8oi9Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HGU1lkB8L/fBqhoxiNHHuN2Yw6FzeKDCo3zUwJynw7j8LRqn+FIjU+TO0L+SgjBcX
+	 +Xk0vPjb3EEQ9WP33thlPq1DNEu99bdIcBzSe44WE6arNQBvRHX1LyUX9QoZ9yBYs6
+	 23Ce7qXQlPiIo0xmf7ls2lVZ8cVYK1GLmLtc0O0wey9GBVgfJmsdwWmjoYAYc01YIC
+	 nStZLcM1N1jaQnXLcMsllBtyJcqyKV1VO8v5CaarS9Vihf2Ccz2rYKI9VDtYj4+24Z
+	 lAxQ+ZLUfa9eYmsSvvVlSt/iXH9A3Q6l7qrpxL4MrZT4qLGrepYwjJPjOd+XtRNkKb
+	 VAoaSytYBwqqw==
+Message-ID: <d23a9447-4bef-476a-9f90-3ac2ba968dbd@kernel.org>
+Date: Thu, 5 Sep 2024 14:13:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240905093732.239411633@linuxfoundation.org>
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 5 Sep 2024 17:25:32 +0530
-Message-ID: <CA+G9fYsppY-GyoCFFbAu1q7PdynMLKn024J3CenbN12eefaDwA@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/184] 6.10.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/10] media: qcom: camss: Fix potential crash if domain
+ attach fails
+To: Vikram Sharma <quic_vikramsa@quicinc.com>, Robert Foss
+ <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kapatrala Syed <akapatra@quicinc.com>,
+ Hariram Purushothaman <hariramp@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ cros-qcom-dts-watchers@chromium.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
+ <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-3-b18ddcd7d9df@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konradybcio@kernel.org>
+In-Reply-To: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-3-b18ddcd7d9df@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 5 Sept 2024 at 15:13, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.10.9 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 07 Sep 2024 09:36:50 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.9-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 4.09.2024 1:10 PM, Vikram Sharma wrote:
+> Fix a potential crash in camss by ensuring detach is skipped if attach
+> is unsuccessful.
+> 
+> Fixes: d89751c61279 ("media: qcom: camss: Add support for named power-domains")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+> ---
+>  drivers/media/platform/qcom/camss/camss.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+> index d64985ca6e88..447b89d07e8a 100644
+> --- a/drivers/media/platform/qcom/camss/camss.c
+> +++ b/drivers/media/platform/qcom/camss/camss.c
+> @@ -2132,7 +2132,7 @@ static int camss_configure_pd(struct camss *camss)
+>  							    camss->res->pd_name);
+>  		if (IS_ERR(camss->genpd)) {
+>  			ret = PTR_ERR(camss->genpd);
+> -			goto fail_pm;
+> +			goto fail_pm_attach;
+>  		}
+>  	}
+>  
+> @@ -2149,7 +2149,7 @@ static int camss_configure_pd(struct camss *camss)
+>  			ret = -ENODEV;
+>  		else
+>  			ret = PTR_ERR(camss->genpd);
+> -		goto fail_pm;
+> +		goto fail_pm_attach;
+>  	}
+>  	camss->genpd_link = device_link_add(camss->dev, camss->genpd,
+>  					    DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
+> @@ -2164,6 +2164,7 @@ static int camss_configure_pd(struct camss *camss)
+>  fail_pm:
+>  	dev_pm_domain_detach(camss->genpd, true);
+>  
+> +fail_pm_attach:
+>  	return ret;
 
-The following build errors noticed on arm64 on
-stable-rc linux.6.6.y and linux.6.10.y
+What's the point, just call return directly where you added the goto
 
-drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_advertise_quirks':
-drivers/ufs/host/ufs-qcom.c:862:32: error:
-'UFSHCD_QUIRK_BROKEN_LSDBS_CAP' undeclared (first use in this
-function); did you mean 'UFSHCD_QUIRK_BROKEN_UIC_CMD'?
-  862 |                 hba->quirks |= UFSHCD_QUIRK_BROKEN_LSDBS_CAP;
-      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                UFSHCD_QUIRK_BROKEN_UIC_CMD
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Konrad
 
