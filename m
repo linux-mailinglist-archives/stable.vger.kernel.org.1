@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C3E96D4EB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952AA96D46D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72CD7B281E3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2003AB21066
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CABF194AC7;
-	Thu,  5 Sep 2024 09:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D560199247;
+	Thu,  5 Sep 2024 09:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epVW0Mrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYnmL5Zo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49988194A5B;
-	Thu,  5 Sep 2024 09:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8AC18732F;
+	Thu,  5 Sep 2024 09:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530268; cv=none; b=bI2kRuK4dug/KSNmD0cCHpR3i1SEUOhoGDA1UVKHq5Myt/feJtAn3TUs+7p1AqbdGhbLrov/ExqUkT2toV6W04uKQQUFtV6Ea0yYF9Z7DTyLXYxQsUEMm/LNDTxgWllBklLdZ7nB80e/ztDSTOXN7m1g8Mtj3ZMZ6p4VfzHd3/k=
+	t=1725529911; cv=none; b=TBtE5pMkedgGdVegfevy3ExUYqsarklR0NgtQxGb+D5ErY5Tww6wxP6ALDgJCfkcZPo1ZFH1dnFhf2DCVaOhjgIB6BwoUG6uKwzO5frVH1BI59wAwQV8/Nvz99rH4bOmURG9UwuBLhuXLCiK3pt91fothQQ4mXhPIlCMI0PeuSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530268; c=relaxed/simple;
-	bh=1t5/8PgfDLN8QWQN8vX1NeVK4KN/L2iyx49VUahGcWQ=;
+	s=arc-20240116; t=1725529911; c=relaxed/simple;
+	bh=V18sXFBVJa8T/CaVmE2SLTZqz898N0d96CkxwUxTTX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hv43eMtOzM82wUau0892AKx5Qb03ekLbkl+eF9ARR10t/g01pGvg/Vb30hT8zK+3zomk30EtUjZxuNAbW0ml3l24D6tkaYBBHPf1jMwoYLt+vJxDoQWRzGuLFrZ8IG39+Qs3a2OSP2oUI9BL7tXCiHDdHKw8E4GjXhOblt3w/QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epVW0Mrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F2FC4CEC3;
-	Thu,  5 Sep 2024 09:57:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W8TrDYFibgMDWPyQ+hjvdfZFizdpTlL0gb0ifDIks6j82TI4ArX2Alk9bQ4Paif/bOtjOpfj6NPtWN7EWOLptU8HiIrm8xBOKza9Fp6Pi/HsjliN2MtBEV7AU+rBSslvMDtgRpIPel69QTkrqeGciKKpmr38ySuSsP89y9mk4uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYnmL5Zo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBF8C4CEC3;
+	Thu,  5 Sep 2024 09:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530268;
-	bh=1t5/8PgfDLN8QWQN8vX1NeVK4KN/L2iyx49VUahGcWQ=;
+	s=korg; t=1725529910;
+	bh=V18sXFBVJa8T/CaVmE2SLTZqz898N0d96CkxwUxTTX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epVW0MrcuT/xCMirpL5hMUJ4imNNUVeEL3opTAT+3XveY1fnLwklWxDIZq7ydsme+
-	 aIbUGB3ue13fiMlkHplhfVMcg3VPEt4oEy1p1AImzZpzZaZjfEm/l/JBZXP0gKmpuZ
-	 GiO+PlFPK7tLiCbWSpXMtvJzqN5QVaQrr6U+QhIA=
+	b=gYnmL5ZoR2msiuVcH6fSI7eeIfdU29HA5YhG6uebyVZmKlUrpj79S/kyjMxW9RyaX
+	 M5DQkP2mCEzMCW1IQXEm1Wyz0YzSvrF8PfcCEhQfHZNIUp/87M45G5jiSyRdSsGpAc
+	 ABF6F8eg3j45OXxSrCYBZLE9+AjlFwfa2UbsaxSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	=?UTF-8?q?L=C3=A9o=20DUBOIN?= <lduboin@freebox.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/132] smack: tcp: ipv4, fix incorrect labeling
+Subject: [PATCH 6.10 180/184] pinctrl: core: reset gpio_device in loop in pinctrl_pins_show()
 Date: Thu,  5 Sep 2024 11:41:33 +0200
-Message-ID: <20240905093726.356116579@linuxfoundation.org>
+Message-ID: <20240905093739.357048701@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Schaufler <casey@schaufler-ca.com>
+From: Léo DUBOIN <lduboin@freebox.fr>
 
-[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
+[ Upstream commit 9dfbcf2fc566c0be2de1c7685f29effd25696b75 ]
 
-Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
-when a label 'foo' connects to a label 'bar' with tcp/ipv4,
-'foo' always gets 'foo' in returned ipv4 packets. So,
-1) returned packets are incorrectly labeled ('foo' instead of 'bar')
-2) 'bar' can write to 'foo' without being authorized to write.
+We were not resetting the pointer to the associated gpio_device once
+we are done displaying a pin's information.
 
-Here is a scenario how to see this:
+This meant that once we reached the end of a gpio-range, if there
+were pins right after it that did not belong to any known range,
+they would be associated with the previous range's gpio device.
 
-* Take two machines, let's call them C and S,
-   with active Smack in the default state
-   (no settings, no rules, no labeled hosts, only builtin labels)
+This resulted in those pins appearing as <4294966783:old_gdev> instead
+of the expected <0:?> (due to gpio_num being -1).
 
-* At S, add Smack rule 'foo bar w'
-   (labels 'foo' and 'bar' are instantiated at S at this moment)
-
-* At S, at label 'bar', launch a program
-   that listens for incoming tcp/ipv4 connections
-
-* From C, at label 'foo', connect to the listener at S.
-   (label 'foo' is instantiated at C at this moment)
-   Connection succeedes and works.
-
-* Send some data in both directions.
-* Collect network traffic of this connection.
-
-All packets in both directions are labeled with the CIPSO
-of the label 'foo'. Hence, label 'bar' writes to 'foo' without
-being authorized, and even without ever being known at C.
-
-If anybody cares: exactly the same happens with DCCP.
-
-This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
-and it looks unintentional. At least, no explanation was provided.
-
-I changed returned packes label into the 'bar',
-to bring it into line with the Smack documentation claims.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Léo DUBOIN <lduboin@freebox.fr>
+Link: https://lore.kernel.org/r/c40d0634abefa19e689ffd450e0f48a8d63c4fc4.1714049455.git.lduboin@freebox.fr
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 6b92e09d3f78..98c2bdbfcaed 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4354,7 +4354,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
- 	rcu_read_unlock();
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 4438f3b4b5ef..60f866f1e6d7 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1670,6 +1670,7 @@ static int pinctrl_pins_show(struct seq_file *s, void *what)
+ 		seq_printf(s, "pin %d (%s) ", pin, desc->name);
  
- 	if (hskp == NULL)
--		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
-+		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
- 	else
- 		netlbl_req_delattr(req);
- 
+ #ifdef CONFIG_GPIOLIB
++		gdev = NULL;
+ 		gpio_num = -1;
+ 		list_for_each_entry(range, &pctldev->gpio_ranges, node) {
+ 			if ((pin >= range->pin_base) &&
 -- 
 2.43.0
 
