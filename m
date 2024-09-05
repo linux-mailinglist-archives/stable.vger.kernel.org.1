@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-73180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F31096D394
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F73B96D3DB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527511C21DC8
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC6A289852
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF84195FCE;
-	Thu,  5 Sep 2024 09:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D8219995A;
+	Thu,  5 Sep 2024 09:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4wYhvaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcIbEr0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3641925AA;
-	Thu,  5 Sep 2024 09:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD6D199943;
+	Thu,  5 Sep 2024 09:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529403; cv=none; b=EJUjUEsXI7t4sAhxXVAUTzBpM8lN9soPu5ouGYd/yKx3AW/wkstforC9n5oANTYB4S7OyXp6hB3MZ3uBu+46g/VqYRmv3XSn2rU8bo8nuwrC6QgVBj5YvSVnZQFxYufaKmIqk+4HG5Pibf1h/hajD83mG3FryMuCKud3pY6IYZk=
+	t=1725529533; cv=none; b=J1XJA/s2obn8Y2T5kzVX7EZvP+6GVHmmdX3LAU3zHVHZjzyfCEhlhZbYSk8lbk+bEjhC3e3VifonWWzOvPBEZLyFrgJA7MtCkxB1NnJZ4GOhC99DrG/3RiyJlnHn/UEXGsY8b/mZPUEBlBkigpx8/0M7rK0iW2TDj1aD2OAq6J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529403; c=relaxed/simple;
-	bh=VIEURbEv73xR+hhmeH5v8+k5BDrqzbI1dJYSy0VcA9I=;
+	s=arc-20240116; t=1725529533; c=relaxed/simple;
+	bh=QjBL4kpiD1N9ocrbZ2uTmu9R36/GxDKwp3x5yxfT9pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=db1tyGJQ1g1R94/KZgmsJ36BT3xqzpuo90CgPlQp235pWQjJUR+8WiJ0KoSkk9fya9q89oxDI02LoAkJGKVP+NBGFKnutmIlBBUv8BCeB09fSX/CNCtk0jes3Je3HShlfY9GgjvPOPPcvMS7rg6HWre9eMBc8DE5+PUT4JByco8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4wYhvaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11DBC4CEC6;
-	Thu,  5 Sep 2024 09:43:22 +0000 (UTC)
+	 MIME-Version; b=u8rPz3f0l0InfKCEdtIwpg77Mgwd7gPhhcOR8QM1JGM6H4loB/mVhEZc0fh068L9yhIhWCurpe69/nj9HXtRphfmgJ8KWXiwXOCqqmhoCzKpSo+iZYwHVg6SZSMbhQtNwrvEBuQyBuxV0CUc/aARSwd1TcWnOMDoxVUj8u1vEpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcIbEr0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA92AC4CECC;
+	Thu,  5 Sep 2024 09:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529403;
-	bh=VIEURbEv73xR+hhmeH5v8+k5BDrqzbI1dJYSy0VcA9I=;
+	s=korg; t=1725529533;
+	bh=QjBL4kpiD1N9ocrbZ2uTmu9R36/GxDKwp3x5yxfT9pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4wYhvaRy08ccfjki89zktSQbSA59vef7hnRfuGBJSXt0wwqrbDS93xAbR0TfUsnw
-	 KAFKWMPR2KmSmgjLYGsGoXkj1OxVYnOXjZ+ZyOWZ3xAjbbUiSRxdIfklyBGWowYT8X
-	 zVz1iS3Bc1YqcV92UJr3k9t7rey9F+VeUi3McjQg=
+	b=GcIbEr0/1scmlr/Aeg+wJXt1FHbZ1rJynH7gNvOLomy21wYZBrXPz0prbXvZRDE2o
+	 GHRqAoGx2DP4DGfwkM5qKYXK4ySz2vDauYlS0HdAGDpECfRfY/TDjxEzn3LVTZXDKu
+	 Ki6A6KeKzrJYKpHtxBLrdXyRJlFD4V63T0k6N2wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michel Palleau <michel.palleau@gmail.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 021/184] btrfs: scrub: update last_physical after scrubbing one stripe
-Date: Thu,  5 Sep 2024 11:38:54 +0200
-Message-ID: <20240905093733.074095654@linuxfoundation.org>
+Subject: [PATCH 6.10 022/184] btrfs: fix qgroup reserve leaks in cow_file_range
+Date: Thu,  5 Sep 2024 11:38:55 +0200
+Message-ID: <20240905093733.113478237@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -68,81 +67,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 63447b7dd40c6a9ae8d3bb70c11f4c46731823e3 ]
+[ Upstream commit 30479f31d44d47ed00ae0c7453d9b253537005b2 ]
 
-Currently sctx->stat.last_physical only got updated in the following
-cases:
+In the buffered write path, the dirty page owns the qgroup reserve until
+it creates an ordered_extent.
 
-- When the last stripe of a non-RAID56 chunk is scrubbed
-  This implies a pitfall, if the last stripe is at the chunk boundary,
-  and we finished the scrub of the whole chunk, we won't update
-  last_physical at all until the next chunk.
+Therefore, any errors that occur before the ordered_extent is created
+must free that reservation, or else the space is leaked. The fstest
+generic/475 exercises various IO error paths, and is able to trigger
+errors in cow_file_range where we fail to get to allocating the ordered
+extent. Note that because we *do* clear delalloc, we are likely to
+remove the inode from the delalloc list, so the inodes/pages to not have
+invalidate/launder called on them in the commit abort path.
 
-- When a P/Q stripe of a RAID56 chunk is scrubbed
+This results in failures at the unmount stage of the test that look like:
 
-This leads the following two problems:
+  BTRFS: error (device dm-8 state EA) in cleanup_transaction:2018: errno=-5 IO failure
+  BTRFS: error (device dm-8 state EA) in btrfs_replace_file_extents:2416: errno=-5 IO failure
+  BTRFS warning (device dm-8 state EA): qgroup 0/5 has unreleased space, type 0 rsv 28672
+  ------------[ cut here ]------------
+  WARNING: CPU: 3 PID: 22588 at fs/btrfs/disk-io.c:4333 close_ctree+0x222/0x4d0 [btrfs]
+  Modules linked in: btrfs blake2b_generic libcrc32c xor zstd_compress raid6_pq
+  CPU: 3 PID: 22588 Comm: umount Kdump: loaded Tainted: G W          6.10.0-rc7-gab56fde445b8 #21
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+  RIP: 0010:close_ctree+0x222/0x4d0 [btrfs]
+  RSP: 0018:ffffb4465283be00 EFLAGS: 00010202
+  RAX: 0000000000000001 RBX: ffffa1a1818e1000 RCX: 0000000000000001
+  RDX: 0000000000000000 RSI: ffffb4465283bbe0 RDI: ffffa1a19374fcb8
+  RBP: ffffa1a1818e13c0 R08: 0000000100028b16 R09: 0000000000000000
+  R10: 0000000000000003 R11: 0000000000000003 R12: ffffa1a18ad7972c
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f9168312b80(0000) GS:ffffa1a4afcc0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f91683c9140 CR3: 000000010acaa000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   ? __warn.cold+0x8e/0xea
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   ? report_bug+0xff/0x140
+   ? handle_bug+0x3b/0x70
+   ? exc_invalid_op+0x17/0x70
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   generic_shutdown_super+0x70/0x160
+   kill_anon_super+0x11/0x40
+   btrfs_kill_super+0x11/0x20 [btrfs]
+   deactivate_locked_super+0x2e/0xa0
+   cleanup_mnt+0xb5/0x150
+   task_work_run+0x57/0x80
+   syscall_exit_to_user_mode+0x121/0x130
+   do_syscall_64+0xab/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f916847a887
+  ---[ end trace 0000000000000000 ]---
+  BTRFS error (device dm-8 state EA): qgroup reserved space leaked
 
-- sctx->stat.last_physical is not updated for a almost full chunk
-  This is especially bad, affecting scrub resume, as the resume would
-  start from last_physical, causing unnecessary re-scrub.
+Cases 2 and 3 in the out_reserve path both pertain to this type of leak
+and must free the reserved qgroup data. Because it is already an error
+path, I opted not to handle the possible errors in
+btrfs_free_qgroup_data.
 
-- "btrfs scrub status" will not report any progress for a long time
-
-Fix the problem by properly updating @last_physical after each stripe is
-scrubbed.
-
-And since we're here, for the sake of consistency, use spin lock to
-protect the update of @last_physical, just like all the remaining
-call sites touching sctx->stat.
-
-Reported-by: Michel Palleau <michel.palleau@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAMFk-+igFTv2E8svg=cQ6o3e6CrR5QwgQ3Ok9EyRaEvvthpqCQ@mail.gmail.com/
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/btrfs/inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 9712169593980..731d7d562db1a 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1875,6 +1875,9 @@ static int flush_scrub_stripes(struct scrub_ctx *sctx)
- 		stripe = &sctx->stripes[i];
- 
- 		wait_scrub_stripe_io(stripe);
-+		spin_lock(&sctx->stat_lock);
-+		sctx->stat.last_physical = stripe->physical + stripe_length(stripe);
-+		spin_unlock(&sctx->stat_lock);
- 		scrub_reset_stripe(stripe);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 39d22693e47b6..c2f48fc159e5a 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1586,6 +1586,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 					     locked_page, &cached,
+ 					     clear_bits,
+ 					     page_ops);
++		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
+ 		start += cur_alloc_size;
  	}
- out:
-@@ -2143,7 +2146,9 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
- 					 cur_physical, &found_logical);
- 		if (ret > 0) {
- 			/* No more extent, just update the accounting */
-+			spin_lock(&sctx->stat_lock);
- 			sctx->stat.last_physical = physical + logical_length;
-+			spin_unlock(&sctx->stat_lock);
- 			ret = 0;
- 			break;
- 		}
-@@ -2340,6 +2345,10 @@ static noinline_for_stack int scrub_stripe(struct scrub_ctx *sctx,
- 			stripe_logical += chunk_logical;
- 			ret = scrub_raid56_parity_stripe(sctx, scrub_dev, bg,
- 							 map, stripe_logical);
-+			spin_lock(&sctx->stat_lock);
-+			sctx->stat.last_physical = min(physical + BTRFS_STRIPE_LEN,
-+						       physical_end);
-+			spin_unlock(&sctx->stat_lock);
- 			if (ret)
- 				goto out;
- 			goto next;
+ 
+@@ -1599,6 +1600,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 		clear_bits |= EXTENT_CLEAR_DATA_RESV;
+ 		extent_clear_unlock_delalloc(inode, start, end, locked_page,
+ 					     &cached, clear_bits, page_ops);
++		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
+ 	}
+ 	return ret;
+ }
+@@ -2269,6 +2271,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
+ 					     PAGE_START_WRITEBACK |
+ 					     PAGE_END_WRITEBACK);
++		btrfs_qgroup_free_data(inode, NULL, cur_offset, end - cur_offset + 1, NULL);
+ 	}
+ 	btrfs_free_path(path);
+ 	return ret;
 -- 
 2.43.0
 
