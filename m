@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFCB96D4C3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FC496D440
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9441C24C62
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78FB283701
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A8E196446;
-	Thu,  5 Sep 2024 09:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276E01991B8;
+	Thu,  5 Sep 2024 09:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUg5ekrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYfHK93f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B709218D65E;
-	Thu,  5 Sep 2024 09:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ABE1991A1;
+	Thu,  5 Sep 2024 09:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530153; cv=none; b=q5D48w1UiB9dKi13OXCY0LZvREmbHA0WXq8uwUz7/gEbDz7b9RFThTthTTG68fz4K9bYr2ZyNDOHZxAoACDzzTe3OfHGOEeSxczvMJjeYXepvEQFl4pNbM3rBpTrgBxvl77P6wbSHsSajPYejVZ2hcAJQLGW311pp6L3RgnJ1L8=
+	t=1725529797; cv=none; b=Tkn8pqqt/RJtMtuljOVTNToyLh4xaNF8m5rp+HHBXx8epYRf4H5eYMj3J+ni2lDDriyTn67Ypw1uAtRz4Fd7AqdLP4OUx/PLipGB5Ry6YwNdUR3dou1j5UVC/B0u8S7vFcZwvo8lL2aYptbhXDxlYKPT4TGwe5RkdeM1YjETO7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530153; c=relaxed/simple;
-	bh=bDiDqh1Brgt1AYs0gqqKg/z9qgi3C6JFKNnZTn6T6K4=;
+	s=arc-20240116; t=1725529797; c=relaxed/simple;
+	bh=GLwO5CGCkRzQmHaDP5SsDzs07Hkmp2Ek3ReJyqq35Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohqivwdTx3RcWte8ZGauDxwQYmyvshQTk7dOCQV3TeAh+bvc6XQaEgAuXbRHRVfvpwmMib1ZaN59xRGz0UMjU9ZT6paVbrsEH5FfezIpYgrYA9IJxvE189os3VFEEzsQvRc+DhQVLfwcI+bwPgQL4LFQjMEPSEPhDedU1F9cI4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUg5ekrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43360C4CEC3;
-	Thu,  5 Sep 2024 09:55:53 +0000 (UTC)
+	 MIME-Version; b=bE+HQFuhozQ+T+jb8RUN+Mp1//vMi5GBRd0k5wp3TFal8c+nSWe9DMz5NDN0SkaFiSNZvBKbtrr5GokoajNb3u7UFJW40zHkgE5aXnqsByMdX18SpWZHdR7td5VubjKasu8dH6ngtZAGMrEq9ui7/24mtpmYMekC0lGz2tZci38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYfHK93f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463DCC4CED0;
+	Thu,  5 Sep 2024 09:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530153;
-	bh=bDiDqh1Brgt1AYs0gqqKg/z9qgi3C6JFKNnZTn6T6K4=;
+	s=korg; t=1725529797;
+	bh=GLwO5CGCkRzQmHaDP5SsDzs07Hkmp2Ek3ReJyqq35Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUg5ekrmSpmeAHoE/pUOgrdv5YLn3bKEr0LB09WM6kP1QfVoeXLmKqKQ6Ew3ojzG8
-	 1jGy43XQbApHw7yngiPvWuJg5/zYCuEvvcSHog65zo/R4CwJtD3hm09/XK/qLWU8UX
-	 s18ziymnRryG3Y8FuPk16srM4NryjYy/2g/GMhT4=
+	b=rYfHK93f3snFjz4ErJ3rJGPK0Og35C6PH0iN4dSc2wMBRUpKfGZvbH+tbSuNv2NOk
+	 Jd6R++3dNonjddYmmzipjH8526zM3nPuDBaQpdICcbOFsnfz7kZ2wrjvO+oev7LGXo
+	 wwrQNNx6GOmOV138rcvF6smwEufmB043Q2iy0dmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Haoran Liu <liuhaoran14@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/132] drm/amdgpu: Fix out-of-bounds read of df_v1_7_channel_number
+Subject: [PATCH 6.10 145/184] drm/meson: plane: Add error handling
 Date: Thu,  5 Sep 2024 11:40:58 +0200
-Message-ID: <20240905093725.018737187@linuxfoundation.org>
+Message-ID: <20240905093737.998824086@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Haoran Liu <liuhaoran14@163.com>
 
-[ Upstream commit d768394fa99467bcf2703bde74ddc96eeb0b71fa ]
+[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
 
-Check the fb_channel_number range to avoid the array out-of-bounds
-read error
+This patch adds robust error handling to the meson_plane_create
+function in drivers/gpu/drm/meson/meson_plane.c. The function
+previously lacked proper handling for potential failure scenarios
+of the drm_universal_plane_init call.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
+[narmstrong: fixe the commit subject]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/df_v1_7.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-index 5dfab80ffff2..cd298556f7a6 100644
---- a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-@@ -70,6 +70,8 @@ static u32 df_v1_7_get_hbm_channel_number(struct amdgpu_device *adev)
- 	int fb_channel_number;
+diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
+index 815dfe30492b..b43ac61201f3 100644
+--- a/drivers/gpu/drm/meson/meson_plane.c
++++ b/drivers/gpu/drm/meson/meson_plane.c
+@@ -534,6 +534,7 @@ int meson_plane_create(struct meson_drm *priv)
+ 	struct meson_plane *meson_plane;
+ 	struct drm_plane *plane;
+ 	const uint64_t *format_modifiers = format_modifiers_default;
++	int ret;
  
- 	fb_channel_number = adev->df.funcs->get_fb_channel_number(adev);
-+	if (fb_channel_number >= ARRAY_SIZE(df_v1_7_channel_number))
-+		fb_channel_number = 0;
+ 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
+ 				   GFP_KERNEL);
+@@ -548,12 +549,16 @@ int meson_plane_create(struct meson_drm *priv)
+ 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
+ 		format_modifiers = format_modifiers_afbc_g12a;
  
- 	return df_v1_7_channel_number[fb_channel_number];
- }
+-	drm_universal_plane_init(priv->drm, plane, 0xFF,
+-				 &meson_plane_funcs,
+-				 supported_drm_formats,
+-				 ARRAY_SIZE(supported_drm_formats),
+-				 format_modifiers,
+-				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
++					&meson_plane_funcs,
++					supported_drm_formats,
++					ARRAY_SIZE(supported_drm_formats),
++					format_modifiers,
++					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	if (ret) {
++		devm_kfree(priv->drm->dev, meson_plane);
++		return ret;
++	}
+ 
+ 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
+ 
 -- 
 2.43.0
 
