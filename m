@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-73320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33C796D455
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1963096D514
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA58281286
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D092819A4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12659198A3E;
-	Thu,  5 Sep 2024 09:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76307194A64;
+	Thu,  5 Sep 2024 09:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfelR9Qt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7ZV+QzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F91194A45;
-	Thu,  5 Sep 2024 09:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3499483CC8;
+	Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529850; cv=none; b=G3XPvEseNRugFvPaAQE9KU3Kq50zEx2wITC5XbWnnVWYlBdOTle8aA3Iy4sDNx5YkOBmWXUayze07xxn7WEckV/oG9Wv7nLASZL4LNyo5fn5T9nXHeOSZ+koDopO2sqB17FJTCB2X8Jku+xI10n37V8kQFtVImnZQlYUkmDeHdQ=
+	t=1725530397; cv=none; b=kjVRR5yyLXqtH8Lp2ehh2NVIwzHlXKJVFYgEHaWLm66f5myweNBrqMtnqsB92psJf6CWoktqvdJgnKZHxv3CJENGdkEsBhiFbTcXyuX1nd6ji5xvetkTURubqGmIG+4PdxELieXJwnO6IPZitSFBpmpmLD2rkdguilJJsplrXEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529850; c=relaxed/simple;
-	bh=rWJCjS358Fh6Xd+8iikAmR8RtgbdmuUKDuyW7A48qVE=;
+	s=arc-20240116; t=1725530397; c=relaxed/simple;
+	bh=g3nelucE2RgS94zaQ8/R9z4wu1hF3gQTb2CxoLLmHhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INwXg5CNCqqb6DFmp9LyP+kFolwiI/557VuGIIn45SCVPAOtVfKB3vwJKkf/JKiMTduGArhuDIydB/jch4ayh/eGFEEyPo4hKiS4barjKxGknTLlwhKIMdD83WOgYEqyn3uLRn7fGdWzPci8UKfNwjvWWhS0XEPxzbbT9MIrgDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfelR9Qt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F1C4CEC3;
-	Thu,  5 Sep 2024 09:50:50 +0000 (UTC)
+	 MIME-Version; b=AfP3nUupYvGOYmbK3A6EP4pNYpT1SybMLpyvx+qEDM50Q/V7j9xYvcvhGDq4a4neJ8TfdgGyd2tnF5cfLbeAzelh7pNgV8CV3N5PxNSx7gJt8b7lLCBdAe8MmdNBW/NEltffrLIGCT3P0cyRK1v5LM+nSn7GVDy5ak8zKitTq1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7ZV+QzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A0BC4CEC3;
+	Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529850;
-	bh=rWJCjS358Fh6Xd+8iikAmR8RtgbdmuUKDuyW7A48qVE=;
+	s=korg; t=1725530396;
+	bh=g3nelucE2RgS94zaQ8/R9z4wu1hF3gQTb2CxoLLmHhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DfelR9QtEGdSDHJwbp+PpYWnjYgKSTioW73QZ/k93vJUcm/RtvOOOIPirKvOmykrB
-	 +8M49D0Pw6GGSIo+PK1TFHL7Uhe46h1lHbdb0BQgqmBlKGHg+Y8wcqsNF6AyFqFCKk
-	 1TI/rx+QvbzK7CbevEBI4G335KSMf9iTJas3AhTI=
+	b=I7ZV+QzZKM8itrWgiTPldCXyXZm0l8Qoau5JdknwUTfhz6mZUPD1JY7rVSO4NhzvP
+	 fqmJ6eJKcGrl3EpMQ3ueC+iKu9HYVgpAGYIKgBDl/nUz8aKUmDCq5/zbEOhMFDHa3X
+	 9RBuyhp9Gzm4cAH+8/ofgZPfc9xrqqU9bpUJKTgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 131/184] rcu/nocb: Remove buggy bypass lock contention mitigation
+	chenyuwen <yuwen.chen@xjmz.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.1 012/101] f2fs: fix to truncate preallocated blocks in f2fs_file_open()
 Date: Thu,  5 Sep 2024 11:40:44 +0200
-Message-ID: <20240905093737.339372050@linuxfoundation.org>
+Message-ID: <20240905093716.573114061@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +64,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e4f78057291608f6968a6789c5ebb3bde7d95504 ]
+commit 298b1e4182d657c3e388adcc29477904e9600ed5 upstream.
 
-The bypass lock contention mitigation assumes there can be at most
-2 contenders on the bypass lock, following this scheme:
+chenyuwen reports a f2fs bug as below:
 
-1) One kthread takes the bypass lock
-2) Another one spins on it and increment the contended counter
-3) A third one (a bypass enqueuer) sees the contended counter on and
-  busy loops waiting on it to decrement.
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000011
+ fscrypt_set_bio_crypt_ctx+0x78/0x1e8
+ f2fs_grab_read_bio+0x78/0x208
+ f2fs_submit_page_read+0x44/0x154
+ f2fs_get_read_data_page+0x288/0x5f4
+ f2fs_get_lock_data_page+0x60/0x190
+ truncate_partial_data_page+0x108/0x4fc
+ f2fs_do_truncate_blocks+0x344/0x5f0
+ f2fs_truncate_blocks+0x6c/0x134
+ f2fs_truncate+0xd8/0x200
+ f2fs_iget+0x20c/0x5ac
+ do_garbage_collect+0x5d0/0xf6c
+ f2fs_gc+0x22c/0x6a4
+ f2fs_disable_checkpoint+0xc8/0x310
+ f2fs_fill_super+0x14bc/0x1764
+ mount_bdev+0x1b4/0x21c
+ f2fs_mount+0x20/0x30
+ legacy_get_tree+0x50/0xbc
+ vfs_get_tree+0x5c/0x1b0
+ do_new_mount+0x298/0x4cc
+ path_mount+0x33c/0x5fc
+ __arm64_sys_mount+0xcc/0x15c
+ invoke_syscall+0x60/0x150
+ el0_svc_common+0xb8/0xf8
+ do_el0_svc+0x28/0xa0
+ el0_svc+0x24/0x84
+ el0t_64_sync_handler+0x88/0xec
 
-However this assumption is wrong. There can be only one CPU to find the
-lock contended because call_rcu() (the bypass enqueuer) is the only
-bypass lock acquire site that may not already hold the NOCB lock
-beforehand, all the other sites must first contend on the NOCB lock.
-Therefore step 2) is impossible.
+It is because inode.i_crypt_info is not initialized during below path:
+- mount
+ - f2fs_fill_super
+  - f2fs_disable_checkpoint
+   - f2fs_gc
+    - f2fs_iget
+     - f2fs_truncate
 
-The other problem is that the mitigation assumes that contenders all
-belong to the same rdp CPU, which is also impossible for a raw spinlock.
-In theory the warning could trigger if the enqueuer holds the bypass
-lock and another CPU flushes the bypass queue concurrently but this is
-prevented from all flush users:
+So, let's relocate truncation of preallocated blocks to f2fs_file_open(),
+after fscrypt_file_open().
 
-1) NOCB kthreads only flush if they successfully _tried_ to lock the
-   bypass lock. So no contention management here.
-
-2) Flush on callbacks migration happen remotely when the CPU is offline.
-   No concurrency against bypass enqueue.
-
-3) Flush on deoffloading happen either locally with IRQs disabled or
-   remotely when the CPU is not yet online. No concurrency against
-   bypass enqueue.
-
-4) Flush on barrier entrain happen either locally with IRQs disabled or
-   remotely when the CPU is offline. No concurrency against
-   bypass enqueue.
-
-For those reasons, the bypass lock contention mitigation isn't needed
-and is even wrong. Remove it but keep the warning reporting a contended
-bypass lock on a remote CPU, to keep unexpected contention awareness.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
+Reported-by: chenyuwen <yuwen.chen@xjmz.com>
+Closes: https://lore.kernel.org/linux-kernel/20240517085327.1188515-1-yuwen.chen@xjmz.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree.h      |  1 -
- kernel/rcu/tree_nocb.h | 32 ++++++--------------------------
- 2 files changed, 6 insertions(+), 27 deletions(-)
+ fs/f2fs/f2fs.h  |    1 +
+ fs/f2fs/file.c  |   42 +++++++++++++++++++++++++++++++++++++++++-
+ fs/f2fs/inode.c |    8 --------
+ 3 files changed, 42 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index bae7925c497f..179f60ca0313 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -223,7 +223,6 @@ struct rcu_data {
- 	struct swait_queue_head nocb_state_wq; /* For offloading state changes */
- 	struct task_struct *nocb_gp_kthread;
- 	raw_spinlock_t nocb_lock;	/* Guard following pair of fields. */
--	atomic_t nocb_lock_contended;	/* Contention experienced. */
- 	int nocb_defer_wakeup;		/* Defer wakeup of nocb_kthread. */
- 	struct timer_list nocb_timer;	/* Enforce finite deferral. */
- 	unsigned long nocb_gp_adv_time;	/* Last call_rcu() CB adv (jiffies). */
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 3f85577bddd4..2d9eed2bf750 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -91,8 +91,7 @@ module_param(nocb_nobypass_lim_per_jiffy, int, 0);
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -788,6 +788,7 @@ enum {
+ 	FI_ALIGNED_WRITE,	/* enable aligned write */
+ 	FI_COW_FILE,		/* indicate COW file */
+ 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
++	FI_OPENED_FILE,         /* indicate file has been opened */
+ 	FI_MAX,			/* max flag, never be used */
+ };
  
- /*
-  * Acquire the specified rcu_data structure's ->nocb_bypass_lock.  If the
-- * lock isn't immediately available, increment ->nocb_lock_contended to
-- * flag the contention.
-+ * lock isn't immediately available, perform minimal sanity check.
-  */
- static void rcu_nocb_bypass_lock(struct rcu_data *rdp)
- 	__acquires(&rdp->nocb_bypass_lock)
-@@ -100,29 +99,12 @@ static void rcu_nocb_bypass_lock(struct rcu_data *rdp)
- 	lockdep_assert_irqs_disabled();
- 	if (raw_spin_trylock(&rdp->nocb_bypass_lock))
- 		return;
--	atomic_inc(&rdp->nocb_lock_contended);
-+	/*
-+	 * Contention expected only when local enqueue collide with
-+	 * remote flush from kthreads.
-+	 */
- 	WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
--	smp_mb__after_atomic(); /* atomic_inc() before lock. */
- 	raw_spin_lock(&rdp->nocb_bypass_lock);
--	smp_mb__before_atomic(); /* atomic_dec() after lock. */
--	atomic_dec(&rdp->nocb_lock_contended);
--}
--
--/*
-- * Spinwait until the specified rcu_data structure's ->nocb_lock is
-- * not contended.  Please note that this is extremely special-purpose,
-- * relying on the fact that at most two kthreads and one CPU contend for
-- * this lock, and also that the two kthreads are guaranteed to have frequent
-- * grace-period-duration time intervals between successive acquisitions
-- * of the lock.  This allows us to use an extremely simple throttling
-- * mechanism, and further to apply it only to the CPU doing floods of
-- * call_rcu() invocations.  Don't try this at home!
-- */
--static void rcu_nocb_wait_contended(struct rcu_data *rdp)
--{
--	WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
--	while (WARN_ON_ONCE(atomic_read(&rdp->nocb_lock_contended)))
--		cpu_relax();
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -538,6 +538,42 @@ static int f2fs_file_mmap(struct file *f
+ 	return 0;
  }
  
- /*
-@@ -510,7 +492,6 @@ static bool rcu_nocb_try_bypass(struct rcu_data *rdp, struct rcu_head *rhp,
++static int finish_preallocate_blocks(struct inode *inode)
++{
++	int ret;
++
++	inode_lock(inode);
++	if (is_inode_flag_set(inode, FI_OPENED_FILE)) {
++		inode_unlock(inode);
++		return 0;
++	}
++
++	if (!file_should_truncate(inode)) {
++		set_inode_flag(inode, FI_OPENED_FILE);
++		inode_unlock(inode);
++		return 0;
++	}
++
++	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++	filemap_invalidate_lock(inode->i_mapping);
++
++	truncate_setsize(inode, i_size_read(inode));
++	ret = f2fs_truncate(inode);
++
++	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++
++	if (!ret)
++		set_inode_flag(inode, FI_OPENED_FILE);
++
++	inode_unlock(inode);
++	if (ret)
++		return ret;
++
++	file_dont_truncate(inode);
++	return 0;
++}
++
+ static int f2fs_file_open(struct inode *inode, struct file *filp)
+ {
+ 	int err = fscrypt_file_open(inode, filp);
+@@ -554,7 +590,11 @@ static int f2fs_file_open(struct inode *
+ 
+ 	filp->f_mode |= FMODE_NOWAIT;
+ 
+-	return dquot_file_open(inode, filp);
++	err = dquot_file_open(inode, filp);
++	if (err)
++		return err;
++
++	return finish_preallocate_blocks(inode);
+ }
+ 
+ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -549,14 +549,6 @@ make_now:
  	}
+ 	f2fs_set_inode_flags(inode);
  
- 	// We need to use the bypass.
--	rcu_nocb_wait_contended(rdp);
- 	rcu_nocb_bypass_lock(rdp);
- 	ncbs = rcu_cblist_n_cbs(&rdp->nocb_bypass);
- 	rcu_segcblist_inc_len(&rdp->cblist); /* Must precede enqueue. */
-@@ -1678,12 +1659,11 @@ static void show_rcu_nocb_state(struct rcu_data *rdp)
- 
- 	sprintf(bufw, "%ld", rsclp->gp_seq[RCU_WAIT_TAIL]);
- 	sprintf(bufr, "%ld", rsclp->gp_seq[RCU_NEXT_READY_TAIL]);
--	pr_info("   CB %d^%d->%d %c%c%c%c%c%c F%ld L%ld C%d %c%c%s%c%s%c%c q%ld %c CPU %d%s\n",
-+	pr_info("   CB %d^%d->%d %c%c%c%c%c F%ld L%ld C%d %c%c%s%c%s%c%c q%ld %c CPU %d%s\n",
- 		rdp->cpu, rdp->nocb_gp_rdp->cpu,
- 		nocb_next_rdp ? nocb_next_rdp->cpu : -1,
- 		"kK"[!!rdp->nocb_cb_kthread],
- 		"bB"[raw_spin_is_locked(&rdp->nocb_bypass_lock)],
--		"cC"[!!atomic_read(&rdp->nocb_lock_contended)],
- 		"lL"[raw_spin_is_locked(&rdp->nocb_lock)],
- 		"sS"[!!rdp->nocb_cb_sleep],
- 		".W"[swait_active(&rdp->nocb_cb_wq)],
--- 
-2.43.0
-
+-	if (file_should_truncate(inode) &&
+-			!is_sbi_flag_set(sbi, SBI_POR_DOING)) {
+-		ret = f2fs_truncate(inode);
+-		if (ret)
+-			goto bad_inode;
+-		file_dont_truncate(inode);
+-	}
+-
+ 	unlock_new_inode(inode);
+ 	trace_f2fs_iget(inode);
+ 	return inode;
 
 
 
