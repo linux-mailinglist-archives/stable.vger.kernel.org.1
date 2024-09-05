@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE9F96D4B4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06A696D512
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11731B26361
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863181F274CD
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85564192D73;
-	Thu,  5 Sep 2024 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28B9194AC7;
+	Thu,  5 Sep 2024 09:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXQJl5py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTzyNd/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441BB154BFF;
-	Thu,  5 Sep 2024 09:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A109C83CC8;
+	Thu,  5 Sep 2024 09:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530111; cv=none; b=gxaRW49uG9K3JQ8Ks4ypVZUwXrKvYBWTAtJwPFxuMoqV27PQjgyxvfOMP5md0NScEpsMGGvuo6WYGaL5xDkWY8zPcqgtBkVSrpP7tDxb6jW9jU2kj1xHd5yPETN09duwyV9goiZv/oUelDf99k16Zu7ObYuFBpYE9+FQbUx76Gw=
+	t=1725530393; cv=none; b=HO726WfOxuMfZjx1HMjyvUGaoNLDWXd5vwFRp+5sbwqV4Tu6Pf2mhM8akMYETCKH/el6JnzQI03sgRhacsq0ceILKWX1N2IFiZhHjpGbtX4gt7ZGJ5JOkJXLfJvSr7CAnciU0xhAumvMfGtHoN7mxO/tPX2opc+rPZLTlG6eFq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530111; c=relaxed/simple;
-	bh=OQN8Q4FDIh7Vu9lGwtG4ujwcW1KOCSrhYrl3frDwje8=;
+	s=arc-20240116; t=1725530393; c=relaxed/simple;
+	bh=BqWWmzcuoQnnNv+WWCu8iUS9trxwwORdTXrNKSe5GBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTFdFkPPPtk6fqgWFDcA0JC7Frny+EyNE0xNzGIQB9Fwa54Tv6ImYmFm6sJZ2UVFq1GEOWzCj4GksVsmiMUtlebs1UooFPN/tTM3amgQppNPcr2nEZLGalUBc8vI32FFz5w0aZuv/2+/PlhJnQ7avky7MfhFKM5jJloNDu4V6QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXQJl5py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4C0C4CEC3;
-	Thu,  5 Sep 2024 09:55:10 +0000 (UTC)
+	 MIME-Version; b=XcTdspQmySZa7gIHBqzzsKJ+SNAMEaNw5hp/rP5SB54QWxG9tMWedcqewbKScg4eRhUrmIjhIcDo7sbHGeEvkaDO8u+CcVFk7XncY6PhdqQfMbzfHUcNgMLVm+j90O1SPablKkHrO1rTpTSbGtM/k5IGm0CzgdAW8fGuxYFCuU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTzyNd/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2BFC4CEC6;
+	Thu,  5 Sep 2024 09:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530110;
-	bh=OQN8Q4FDIh7Vu9lGwtG4ujwcW1KOCSrhYrl3frDwje8=;
+	s=korg; t=1725530393;
+	bh=BqWWmzcuoQnnNv+WWCu8iUS9trxwwORdTXrNKSe5GBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXQJl5pyh/E9quxfsAzMKFniAhk3fwK/godPXLpmbo/OAXka4O7XJN3TrDtzHNvga
-	 vOH08H5h32cC8ov9+HhqZ3cptvmMcpXTrJOLd9Wgg1TUz9yknjaS10WsqXZ8h003iQ
-	 IepzXulDAPWQ56oSy+fY8UbGHi8ZA1misNm7S9DQ=
+	b=yTzyNd/C6yzCL1Vu/uYPaqrvzIjiTmCBAHeCA4RSkvmSB+e5cAI3Jhx7HMHdL/x/B
+	 6Uk+N8CkHuDzUTOltY5lM2fEDSXR7Y7rIhiK92ERlEtjE+V4XPwWzh8oMuNOvdfsOz
+	 dur672vBpXvrutgaUw9gvPeZx28mSRfkHBXF/qbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/132] drm/amd/display: Check msg_id before processing transcation
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mostafa Saleh <smostafa@google.com>,
+	Bjorn Heelgas <bhelgaas@google.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 6.1 011/101] PCI/MSI: Fix UAF in msi_capability_init
 Date: Thu,  5 Sep 2024 11:40:43 +0200
-Message-ID: <20240905093724.436164775@linuxfoundation.org>
+Message-ID: <20240905093716.532619154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
+commit 9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1 upstream.
 
-[WHY & HOW]
-HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
-array index, and it needs checking before used.
+KFENCE reports the following UAF:
 
-This fixes 4 OVERRUN issues reported by Coverity.
+ BUG: KFENCE: use-after-free read in __pci_enable_msi_range+0x2c0/0x488
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Use-after-free read at 0x0000000024629571 (in kfence-#12):
+  __pci_enable_msi_range+0x2c0/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+ kfence-#12: 0x0000000008614900-0x00000000e06c228d, size=104, cache=kmalloc-128
+
+ allocated by task 81 on cpu 7 at 10.808142s:
+  __kmem_cache_alloc_node+0x1f0/0x2bc
+  kmalloc_trace+0x44/0x138
+  msi_alloc_desc+0x3c/0x9c
+  msi_domain_insert_msi_desc+0x30/0x78
+  msi_setup_msi_desc+0x13c/0x184
+  __pci_enable_msi_range+0x258/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+ freed by task 81 on cpu 7 at 10.811436s:
+  msi_domain_free_descs+0xd4/0x10c
+  msi_domain_free_locked.part.0+0xc0/0x1d8
+  msi_domain_alloc_irqs_all_locked+0xb4/0xbc
+  pci_msi_setup_msi_irqs+0x30/0x4c
+  __pci_enable_msi_range+0x2a8/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+Descriptor allocation done in:
+__pci_enable_msi_range
+    msi_capability_init
+        msi_setup_msi_desc
+            msi_insert_msi_desc
+                msi_domain_insert_msi_desc
+                    msi_alloc_desc
+                        ...
+
+Freed in case of failure in __msi_domain_alloc_locked()
+__pci_enable_msi_range
+    msi_capability_init
+        pci_msi_setup_msi_irqs
+            msi_domain_alloc_irqs_all_locked
+                msi_domain_alloc_locked
+                    __msi_domain_alloc_locked => fails
+                    msi_domain_free_locked
+                        ...
+
+That failure propagates back to pci_msi_setup_msi_irqs() in
+msi_capability_init() which accesses the descriptor for unmasking in the
+error exit path.
+
+Cure it by copying the descriptor and using the copy for the error exit path
+unmask operation.
+
+[ tglx: Massaged change log ]
+
+Fixes: bf6e054e0e3f ("genirq/msi: Provide msi_device_populate/destroy_sysfs()")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Bjorn Heelgas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240624203729.1094506-1-smostafa@google.com
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/pci/msi/msi.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-index 25ffc052d53b..df2cb5279ce5 100644
---- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-+++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-@@ -130,13 +130,21 @@ static bool hdmi_14_process_transaction(
- 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
- 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
- 	struct i2c_command i2c_command;
--	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
-+	uint8_t offset;
- 	struct i2c_payload i2c_payloads[] = {
--		{ true, 0, 1, &offset },
-+		{ true, 0, 1, 0 },
- 		/* actual hdcp payload, will be filled later, zeroed for now*/
- 		{ 0 }
- 	};
- 
-+	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
-+		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
-+		return false;
-+	}
-+
-+	offset = hdcp_i2c_offsets[message_info->msg_id];
-+	i2c_payloads[0].data = &offset;
-+
- 	switch (message_info->link) {
- 	case HDCP_LINK_SECONDARY:
- 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
-@@ -310,6 +318,11 @@ static bool dp_11_process_transaction(
- 	struct dc_link *link,
- 	struct hdcp_protection_message *message_info)
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -431,7 +431,7 @@ static int msi_capability_init(struct pc
+ 			       struct irq_affinity *affd)
  {
-+	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
-+		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
-+		return false;
-+	}
-+
- 	return dpcd_access_helper(
- 		link,
- 		message_info->length,
--- 
-2.43.0
-
+ 	struct irq_affinity_desc *masks = NULL;
+-	struct msi_desc *entry;
++	struct msi_desc *entry, desc;
+ 	int ret;
+ 
+ 	/*
+@@ -452,6 +452,12 @@ static int msi_capability_init(struct pc
+ 	/* All MSIs are unmasked by default; mask them all */
+ 	entry = msi_first_desc(&dev->dev, MSI_DESC_ALL);
+ 	pci_msi_mask(entry, msi_multi_mask(entry));
++	/*
++	 * Copy the MSI descriptor for the error path because
++	 * pci_msi_setup_msi_irqs() will free it for the hierarchical
++	 * interrupt domain case.
++	 */
++	memcpy(&desc, entry, sizeof(desc));
+ 
+ 	/* Configure MSI capability structure */
+ 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
+@@ -471,7 +477,7 @@ static int msi_capability_init(struct pc
+ 	goto unlock;
+ 
+ err:
+-	pci_msi_unmask(entry, msi_multi_mask(entry));
++	pci_msi_unmask(&desc, msi_multi_mask(&desc));
+ 	free_msi_irqs(dev);
+ fail:
+ 	dev->msi_enabled = 0;
 
 
 
