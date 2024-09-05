@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A072E96D54E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDFE96D4F2
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F011F23FCE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 912131C22E23
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB87194A5A;
-	Thu,  5 Sep 2024 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD04A15574C;
+	Thu,  5 Sep 2024 09:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdbB8TfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK6sPfIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895061494DB;
-	Thu,  5 Sep 2024 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08618D65E;
+	Thu,  5 Sep 2024 09:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530577; cv=none; b=YO+xqgjY2gKF5vsrcUNodwRNbrb3x/NDxn30jvVrn0Q2qNoEs1B5FFY0k58a7XVzQEpFBlBrQ1mDOMg3H5g08ltc9wLkawmaZW1zB0AHHL9jtNRX1QAXNFUjE/FUI+MrN1TmhozYESW37NUEFaZyTOE1H6MrCId6ZVOZYnWOkew=
+	t=1725530291; cv=none; b=ABPsS8BMJFYmoSn+mnlbafEw2uwEHEUSIfLopUjCDahYcqJgyOji/LH/Xt85Y/Y/uJAi4x9L/jyRAl9JxQgA0OTvA/e3s0qBf3vh2oARcYwPI7tgblNRuKixMxxho2oPatmZ+Z3kj7tkqBeCsYQrb5ZZ4jEVfoBig9yupt4imV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530577; c=relaxed/simple;
-	bh=+vCiMpCfaklSHeCLPezM/vLn9Y4ZkraRZok+akawtx0=;
+	s=arc-20240116; t=1725530291; c=relaxed/simple;
+	bh=rIvGh9jznsz6avRk44W3LWkgiKQ4dKTjJhk98AoOrIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIUWk1IbF4zOlw2p6XihQdP24Ke9FD3MF9t2dFIs+7y5cSBjeRkQk03ZWX3NAzKicLitfes4SoiP/Y6OXeMNeIWZ4lx5naR+gk7fSc3y1ppdws2fu+pDF+pUzAluMIlszdcOPrQopO5+49T8H6Dkbz5zaL+XpKS2Hh+CEtOla74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdbB8TfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B49C4CEC3;
-	Thu,  5 Sep 2024 10:02:56 +0000 (UTC)
+	 MIME-Version; b=BJGrm+1kbroYsu8vaKT8Wblhdlncctm4eFazMYux3/igCyMazhXoP/cW3lVHa1T3T59wi0teq+UUqhJ1EFApkVi6xCRXrCrnntvZLbi6ewbmdp6S89W7ttAGUxfW8Hk9XnX++eh7+WAnpuUAgZ/ik2CrYbrO5mLlK/Y0viQX3a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK6sPfIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1132BC4CEC4;
+	Thu,  5 Sep 2024 09:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530577;
-	bh=+vCiMpCfaklSHeCLPezM/vLn9Y4ZkraRZok+akawtx0=;
+	s=korg; t=1725530291;
+	bh=rIvGh9jznsz6avRk44W3LWkgiKQ4dKTjJhk98AoOrIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdbB8TfUULJiyTI4zfEr8fTnXTgtH6DaZvYCFrEzKgNBe4hIEkQxzn2lba0ntgUVW
-	 XECX8WR+s6MpZ7zltJLVDzIaSyYN48Fp/ggkKwH/Lu/pF6Kwv9j19IhU1g3efaAYRl
-	 US5YxIpi122FO/cZ7FMGnKRKzkWl2NMjRiTX0z2A=
+	b=EK6sPfIai11DQns8Rqj4lwBzR0nRfSbyEivyAT8gwdUTXU2qpbtCCYkk1/GymgA32
+	 zI0o1B2FClZ80EORPkEwN68it4BBXjRxyFLObhUOjTVbbwPkiAAPY7XHp+TBqkgK5O
+	 ZtWUISoQ7brivD5XI3h7qd2PHiqobnr/l9QD1bQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Olivier Dautricourt <olivierdautricourt@gmail.com>,
+	Eric Schwarz <eas@sw-optimization.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/101] wifi: iwlwifi: remove fw_running op
+Subject: [PATCH 6.6 113/132] dmaengine: altera-msgdma: use irq variant of spin_lock/unlock while invoking callbacks
 Date: Thu,  5 Sep 2024 11:41:40 +0200
-Message-ID: <20240905093718.798655127@linuxfoundation.org>
+Message-ID: <20240905093726.620810608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Olivier Dautricourt <olivierdautricourt@gmail.com>
 
-[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
+[ Upstream commit 261d3a85d959841821ca0d69f9d7b0d4087661c4 ]
 
-fw_running assumes that memory can be retrieved only after alive.
-This assumption is no longer true as we support dump before alive.
-To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
-bit in trans status is set before dumping instead of the prior check.
+As we first take the lock with spin_lock_irqsave in msgdma_tasklet, Lockdep
+might complain about this. Inspired by commit 9558cf4ad07e
+("dmaengine: zynqmp_dma: fix lockdep warning in tasklet")
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Suggested-by: Eric Schwarz <eas@sw-optimization.com>
+Link: https://lore.kernel.org/r/20240608213216.25087-1-olivierdautricourt@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/dma/altera-msgdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 7d4340c56628..51bb54485351 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -252,8 +252,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
- 		.data = { NULL, },
- 	};
- 
--	if (fwrt->ops && fwrt->ops->fw_running &&
--	    !fwrt->ops->fw_running(fwrt->ops_ctx))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return -EIO;
- 
- 	if (count < header_size + 1 || count > 1024 * 4)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index d3cb1ae68a96..7b7bf3aecc14 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -18,7 +18,6 @@
- struct iwl_fw_runtime_ops {
- 	void (*dump_start)(void *ctx);
- 	void (*dump_end)(void *ctx);
--	bool (*fw_running)(void *ctx);
- 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
- 	bool (*d3_debug_enable)(void *ctx);
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 864f5fb26040..88b6d4e566c4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -670,11 +670,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
- 	mutex_unlock(&mvm->mutex);
- }
- 
--static bool iwl_mvm_fwrt_fw_running(void *ctx)
--{
--	return iwl_mvm_firmware_running(ctx);
--}
--
- static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
+diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
+index 4153c2edb049..8c479a3676fc 100644
+--- a/drivers/dma/altera-msgdma.c
++++ b/drivers/dma/altera-msgdma.c
+@@ -583,6 +583,7 @@ static void msgdma_issue_pending(struct dma_chan *chan)
+ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
  {
- 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
-@@ -695,7 +690,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
- static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
- 	.dump_start = iwl_mvm_fwrt_dump_start,
- 	.dump_end = iwl_mvm_fwrt_dump_end,
--	.fw_running = iwl_mvm_fwrt_fw_running,
- 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
- 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
- };
+ 	struct msgdma_sw_desc *desc, *next;
++	unsigned long irqflags;
+ 
+ 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
+ 		struct dmaengine_desc_callback cb;
+@@ -591,9 +592,9 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+ 
+ 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
+ 		if (dmaengine_desc_callback_valid(&cb)) {
+-			spin_unlock(&mdev->lock);
++			spin_unlock_irqrestore(&mdev->lock, irqflags);
+ 			dmaengine_desc_callback_invoke(&cb, NULL);
+-			spin_lock(&mdev->lock);
++			spin_lock_irqsave(&mdev->lock, irqflags);
+ 		}
+ 
+ 		/* Run any dependencies, then free the descriptor */
 -- 
 2.43.0
 
