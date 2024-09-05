@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9851696D42A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC48896D485
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4366B1F2268B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C71D283F87
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AB4198A27;
-	Thu,  5 Sep 2024 09:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386FC1990A2;
+	Thu,  5 Sep 2024 09:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh0CBNe4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRc2pkg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80572198822;
-	Thu,  5 Sep 2024 09:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F881990D7;
+	Thu,  5 Sep 2024 09:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529748; cv=none; b=gMCWkiFsVzo/CTCIF/m8OAhDOE8zudfK/EBcPwXfebsGSacoGhqPxYHwAX3PSVKCWoeLdq/O59QB6iNkRqT3sE6optHwQYJfHffpVHcKECFlh5BTcj0FTFVLHrRdVKisUGKPJ6oQwXdErlzjbDQAcIZRbBBnN5saZIHXYxjxiho=
+	t=1725529975; cv=none; b=UBrduE006eU6pGhqH5fhHXkrkOKS77VRNbb/e3lEAVte97McLArbsmiI4MyONXumd5TPkUElxbxs4k76KZ8gNqpcfJ+PbXZ1ZINYE5FMI4ALZ3bAaprziI7brqduvIZfyLS9965VChT0M8puKmx0SXYQJImaVNjfntbeY79j6aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529748; c=relaxed/simple;
-	bh=2VZiO8n9KB+Ck3tDxX5jhxoMwcl0m6Mgq97nzisoCfQ=;
+	s=arc-20240116; t=1725529975; c=relaxed/simple;
+	bh=15KYb5dJJpQEMD/Y1apW+itIf7EtzkJA0qx/bpf78O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGT+DoSIDLJvP7lb2j5KTDtJwjDAGvMdl8PBV8ByhmFGRYAf6zoGNZ2SvpkKzS83wfCF8V9VqL/Zqs1cSxKOIj+iQrQamm+CBC2JxGHR5XImLLSg0wVGQOoojW2OZapNynLbEDd+nw/lGKGZ/6emb6UfhPdSIZAuOAI2tJD2h2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh0CBNe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949FBC4CEC3;
-	Thu,  5 Sep 2024 09:49:07 +0000 (UTC)
+	 MIME-Version; b=QrIm0oWPObJmayXdgkJ6JzJnMUAiJxQuo0ynvHCDSauEk6arg/HDTu8gw9raHWTEH84W9OBgROFheaHBwSAWSw1or92TIVxQfn3UGuUck3xXxNvZ+KJRf6JCL8atPqrXXEHclV0GJaVveSbksv8Xuer4jR9lWU+9u0lrySVojkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRc2pkg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7055DC4CEC4;
+	Thu,  5 Sep 2024 09:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529748;
-	bh=2VZiO8n9KB+Ck3tDxX5jhxoMwcl0m6Mgq97nzisoCfQ=;
+	s=korg; t=1725529974;
+	bh=15KYb5dJJpQEMD/Y1apW+itIf7EtzkJA0qx/bpf78O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oh0CBNe4HpoDeWvV1MZuIG63N+nM8RLvl6CukHWlR1UhSRNF+/0HWZRMK4/Rj8Mq2
-	 vdyWAL+zKN/CWUgiQ6QmV6z3Ij7BKgUtSromuuC4777jH89/V/vnbxTGNBkRQPM85H
-	 0kZtsFZP0iJjeU3VqdkbUvafED+rmrBrovBOCzf4=
+	b=cRc2pkg1RJ0Tpc0nBnmEqNYoHoGPBEZaUDRkjUxbHKM9F1fq8wz7K+b2HmF1onb7y
+	 MWkm0ao03Yh39OCAQrH/sxP3lqfzfMD/LyjA5mGHzillTYiAYzQQF7K+mYL0ws6OeH
+	 Nm4ajXH1X2+mtUCm79QfLqQP2chZ5W4WwAQY+ebw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Devyn Liu <liudingyuan@huawei.com>,
+	Jay Fang <f.fangjian@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 090/184] drm/amdgpu: Fix out-of-bounds read of df_v1_7_channel_number
+Subject: [PATCH 6.6 016/132] spi: hisi-kunpeng: Add validation for the minimum value of speed_hz
 Date: Thu,  5 Sep 2024 11:40:03 +0200
-Message-ID: <20240905093735.756585954@linuxfoundation.org>
+Message-ID: <20240905093722.869290069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Devyn Liu <liudingyuan@huawei.com>
 
-[ Upstream commit d768394fa99467bcf2703bde74ddc96eeb0b71fa ]
+[ Upstream commit c3c4f22b7c814a6ee485ce294065836f8ede30fa ]
 
-Check the fb_channel_number range to avoid the array out-of-bounds
-read error
+The speed specified by the user is used to calculate the clk_div based
+on the max_speed_hz in hisi_calc_effective_speed.  A very low speed
+value can lead to a clk_div larger than the variable range. Avoid this
+by setting the min_speed_hz so that such a small speed value is
+rejected.  __spi_validate() in spi.c will return -EINVAL for the
+specified speed_hz lower than min_speed_hz.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
+Reviewed-by: Jay Fang <f.fangjian@huawei.com>
+Link: https://patch.msgid.link/20240730032040.3156393-2-liudingyuan@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/df_v1_7.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-hisi-kunpeng.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-index 5dfab80ffff2..cd298556f7a6 100644
---- a/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
-@@ -70,6 +70,8 @@ static u32 df_v1_7_get_hbm_channel_number(struct amdgpu_device *adev)
- 	int fb_channel_number;
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 77e9738e42f60..6910b4d4c427b 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -495,6 +495,7 @@ static int hisi_spi_probe(struct platform_device *pdev)
+ 	host->transfer_one = hisi_spi_transfer_one;
+ 	host->handle_err = hisi_spi_handle_err;
+ 	host->dev.fwnode = dev->fwnode;
++	host->min_speed_hz = DIV_ROUND_UP(host->max_speed_hz, CLK_DIV_MAX);
  
- 	fb_channel_number = adev->df.funcs->get_fb_channel_number(adev);
-+	if (fb_channel_number >= ARRAY_SIZE(df_v1_7_channel_number))
-+		fb_channel_number = 0;
+ 	hisi_spi_hw_init(hs);
  
- 	return df_v1_7_channel_number[fb_channel_number];
- }
 -- 
 2.43.0
 
