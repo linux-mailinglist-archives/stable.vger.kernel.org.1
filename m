@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-73434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F8196D4DB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0140F96D51A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB8DB26C2C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 670E6B26EE3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316AF194A45;
-	Thu,  5 Sep 2024 09:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7C683CDB;
+	Thu,  5 Sep 2024 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKeZF7+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H12IDUiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E291518D65E;
-	Thu,  5 Sep 2024 09:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D131494DB;
+	Thu,  5 Sep 2024 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530218; cv=none; b=ixXBjAvRfrdEchDufoL57PGuBfFMwi27cNt/IwibXkj9LRJ0V572W6ZcbVYvm2Gh4OsBAoMmCzp4XNf5YMa8Y1m55Swu6/nP11/WCIAt35AlEIutpcXnRuecxIEvzxMMtS8tW69b5rWfluz4rnFj36/wvPcpVHp5zCa95/E41A0=
+	t=1725530417; cv=none; b=IPQLiFquYw+1RpO+lUKxMWrjNMEW253L2YGntEgTeT2aiKZ6SeW2kH1cSlELBrvnd5Elb238tNGUBwN7uVFICnW3B8t1P0Wh6SnUfQZZwV8hQOuVmSu3feDXbQdAEuYdDUtKJBujhetsJxZC8gXxeleDSqb/249ZrUI6Ox9WPWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530218; c=relaxed/simple;
-	bh=XGZ3ZOcsndmwaZQoGKag5b9LhEs2W+MZHZKmN7GJl2Q=;
+	s=arc-20240116; t=1725530417; c=relaxed/simple;
+	bh=C0PiRwUAmXFBPq4TFl7c2b58dwGjjRIKiMwjP4gfg3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPRvKG0PaJYzuAePKRCTNgzCxHoG60THoUmgMf+skl79GADNf7CfPhZiwtK+zDLZQkkb5k3ARYG9CfFLTPyeJrNXbng2/+Pj2CgOZ8HqBmomZbdUBoo/BaAxAlOYQmhE9minOGplHRSkHcT5n98zJxbD89jMxVLyNSv4zzlR1IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKeZF7+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAEBC4CEC3;
-	Thu,  5 Sep 2024 09:56:57 +0000 (UTC)
+	 MIME-Version; b=S/lqW09Xu2eMIFXnwAocWpiYmijw4CqPF6uAyvyRwyTq8jt3vnU1gKVwzAHkw4gJuS7Bgbx3jYSzjOygnI9vCAW0dYpW/ZqyToSS+16y6GIfZmAez1uuP+yxQZ/q+/4Z299GFxlgPt5YOr17G8ZdFHxLU6lBcJFWUDOQCTGNNJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H12IDUiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D935FC4CEC3;
+	Thu,  5 Sep 2024 10:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530217;
-	bh=XGZ3ZOcsndmwaZQoGKag5b9LhEs2W+MZHZKmN7GJl2Q=;
+	s=korg; t=1725530417;
+	bh=C0PiRwUAmXFBPq4TFl7c2b58dwGjjRIKiMwjP4gfg3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKeZF7+EHb+rPbXxSpYhIwWymVNqw9T2IU5O3/FT9H4kEHpri3DRdbXihOj9uudwG
-	 vqdXJepllPvR4xeHKPS2L+f0wwnkfXiFBvgjuCxwMXBopQN5tEF4q9D1aq1GF53rxC
-	 k8+h3ox7FxXekkwhxve5uViQb8SFKvzRGUf6ZfrM=
+	b=H12IDUiIKsN/AWQ2x7sIk/7t7Yiq6ZZF7sz8XMBvyQHh1IwWBjr16ylVgYFhWA+tM
+	 rT4h1OU4IaxlgKRlIUsE3COQv46F5iNVFP+n5IbifAPTz/AnUqiZZ4ctzuwNx3UHFI
+	 CmzLuTx0sOFVDgiwg4ojF/SlQXHGPi6DFWERG0qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/132] drm/amd/display: Fix index may exceed array range within fpu_update_bw_bounding_box
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 018/101] selftests: mptcp: join: check re-using ID of closed subflow
 Date: Thu,  5 Sep 2024 11:40:50 +0200
-Message-ID: <20240905093724.705413628@linuxfoundation.org>
+Message-ID: <20240905093716.817414738@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 188fd1616ec43033cedbe343b6579e9921e2d898 ]
+commit 65fb58afa341ad68e71e5c4d816b407e6a683a66 upstream.
 
-[Why]
-Coverity reports OVERRUN warning. soc.num_states could
-be 40. But array range of bw_params->clk_table.entries is 8.
+This test extends "delete and re-add" to validate the previous commit. A
+new 'subflow' endpoint is added, but the subflow request will be
+rejected. The result is that no subflow will be established from this
+address.
 
-[How]
-Assert if soc.num_states greater than 8.
+Later, the endpoint is removed and re-added after having cleared the
+firewall rule. Before the previous commit, the client would not have
+been able to create this new subflow.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it, extra checks have been added to validate the expected
+numbers of MPJ and RM_ADDR.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-4-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because this subtest has been modified in
+  newer versions, e.g. commit 9095ce97bf8a ("selftests: mptcp: add
+  mptcp_info tests") added chk_mptcp_info check, commit 03668c65d153
+  ("selftests: mptcp: join: rework detailed report") changed the way
+  the info are displayed, commit 04b57c9e096a ("selftests: mptcp: join:
+  stop transfer when check is done (part 2)") uses the new
+  mptcp_lib_kill_wait helper instead of kill_tests_wait.
+  Conflicts have been resolved by not using the new helpers, the rest
+  was the same. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c   | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c | 10 ++++++++++
- 4 files changed, 40 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   25 +++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-index e2bcd205aa93..8da97a96b1ce 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-@@ -304,6 +304,16 @@ void dcn302_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -402,9 +402,10 @@ reset_with_tcp_filter()
+ 	local ns="${!1}"
+ 	local src="${2}"
+ 	local target="${3}"
++	local chain="${4:-INPUT}"
  
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
-+
- 		dcn3_02_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_02_soc.num_states; i++) {
- 			dcn3_02_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-index 3eb3a021ab7d..c283780ad062 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-@@ -299,6 +299,16 @@ void dcn303_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
+ 	if ! ip netns exec "${ns}" ${iptables} \
+-			-A INPUT \
++			-A "${chain}" \
+ 			-s "${src}" \
+ 			-p tcp \
+ 			-j "${target}"; then
+@@ -3265,10 +3266,10 @@ endpoint_tests()
+ 		kill_tests_wait
+ 	fi
  
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
-+
- 		dcn3_03_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_03_soc.num_states; i++) {
- 			dcn3_03_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index cf3b400c8619..3d82cbef1274 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -2885,6 +2885,16 @@ void dcn32_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_pa
- 				dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 			}
+-	if reset "delete and re-add" &&
++	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 1 1
+-		pm_nl_set_limits $ns2 1 1
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 0 2
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
  
-+			/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+			 * MAX_NUM_DPM_LVL is 8.
-+			 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+			 * DC__VOLTAGE_STATES is 40.
-+			 */
-+			if (num_states > MAX_NUM_DPM_LVL) {
-+				ASSERT(0);
-+				return;
-+			}
-+
- 			dcn3_2_soc.num_states = num_states;
- 			for (i = 0; i < dcn3_2_soc.num_states; i++) {
- 				dcn3_2_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-index b26fcf86014c..ae2196c36f21 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-@@ -789,6 +789,16 @@ void dcn321_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
+@@ -3277,10 +3278,24 @@ endpoint_tests()
+ 		sleep 0.5
+ 		chk_subflow_nr needtitle "after delete" 1
  
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
+-		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "" "after re-add" 2
 +
- 		dcn3_21_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_21_soc.num_states; i++) {
- 			dcn3_21_soc.clock_limits[i].state = i;
--- 
-2.43.0
-
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_attempt_fail $ns2
++		chk_subflow_nr "" "after new reject" 2
++
++		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
++		pm_nl_del_endpoint $ns2 3 10.0.3.2
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_mpj $ns2
++		chk_subflow_nr "" "after no reject" 3
++
+ 		kill_tests_wait
++
++		chk_join_nr 3 3 3
++		chk_rm_nr 1 1
+ 	fi
+ }
+ 
 
 
 
