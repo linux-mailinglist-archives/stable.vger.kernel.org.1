@@ -1,118 +1,127 @@
-Return-Path: <stable+bounces-73620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134EA96DDA8
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:14:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AAFA96DE3C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE7D7B279DA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:14:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB8681F27BA0
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B298B1A2842;
-	Thu,  5 Sep 2024 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63A517ADFF;
+	Thu,  5 Sep 2024 15:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u18XTSGx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8y70zvh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B489D433A7
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 15:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BEC7F7FC;
+	Thu,  5 Sep 2024 15:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725549118; cv=none; b=HTkTOviPnHbvUuKQ+0bD0AgnJ3C+0kHW4/xhJ/h/qAzEDUVD86cKDWz5nrM4nVFqChDrhcToIgfbstnUmx3QPiMf2ptEzGExiU8A5KhDzFyNLrEVXWKCVBXge+SuZP4FY0MYH3ifOTuabI0Gpy7+oQYAob0ydOTb7lfL4+YLxVk=
+	t=1725550277; cv=none; b=b5gHWQNCddItLjff6ZAvb19VelIjuum8h6jPqo4r1SkVLac0paKWNNswIQM5HJsiTDL7POm56T4w2pD4cs4U2x36ExG2xnZEzbYvkyycC9lOP/wCUF1j40B1kQP05zBHrv9VIiBXWQ1kIW5whK9WMbM1DMSqitlwhGLY0ituIWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725549118; c=relaxed/simple;
-	bh=0HVxap2WfUaoSbJ6P5wXUA6AtuQouKc0QdxQVKFfCSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IAsDMl597T/KZzIISDZXjYvC+gVRqYB3oWZn6Sq8Mr9LUkVpZzImD5zJO2OkJOouBavwmJP3iZLWZfNmxFlm+rs/+YIku5r4YLs5G8KBrn8OgRMejJ0IXKKH24W84Nkkxx5XyMa2I5KO97svXzpIQXULuNmOqN/T/owRtIhtcFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u18XTSGx; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42c7b5b2d01so9572025e9.3
-        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 08:11:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725549115; x=1726153915; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c5ydbHAcLR6S2kZ2UiSe4taaN+JWRdShTwsXukZfYrE=;
-        b=u18XTSGxV5WU0BIezQYLudJIcblmUCm58m3EDhW18mLbLQ569wOl0qAtqRId2v7yM0
-         OmEdMSTFQPTgyUeovfwC3/8woXc/NF+hfInt+t+WCXmFW0ym/XGOqcIImVmTBXSkjyHU
-         xJUR7bpptshFed2S0YK01hjdWwrCAuhoRljD3ugezT0GPUnfvqpeoEIV0+JYFJvtZKEz
-         M51x8/3tBPA/jfxpt019PlbkySMYXudildBwI/MmU0sbmHRryYQqivGdJ6sv+CABKXIq
-         9yHHFcvY3z5dUje3VY69oz+6mq4JAT4Lu7hdcEAClPs24sVJbO6B+WDSm1kMfqIhi/Qu
-         Xkrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725549115; x=1726153915;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c5ydbHAcLR6S2kZ2UiSe4taaN+JWRdShTwsXukZfYrE=;
-        b=p2a2A/O+wNS1Qj7k7PY/SLlV8wTYav4sC6EXwqAijm5kzFJaxq4uXlfBeywcaluilm
-         +gI8mZPyksuwTszK6fi65a7rwhjK7ggBa3pARvuCaaEjJYhv5E7MXJMsh8ESR9tQ1oka
-         1FvCuT7ekJ1DX3Fn7Tx479/iabGmwTbZ/miDb1cq1E4LvO2my5S+4+AKdlDs7g1iYl/8
-         pvbwLOuUNesQyJKyhYxJzbO2tVyvVUZL4rVCGPl5YZCEZB/fuv41rP/dtFjeiQBlysVk
-         hZ4CoPkRer9R/Ondkp1vjAqh2z6aIOjZlTBAKUGYaBnvmFS73KJJyjAAymnkpNQOnsAW
-         wJew==
-X-Forwarded-Encrypted: i=1; AJvYcCVilcHzSD+bL6U+nQe8AOmorMhH+NFIN9UgP5fkUS6sWM2nhZbT3ttMav/AVj7a4Y44qqlwyic=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn7mfSWfCXLtA73wGrAzENmEArye/PgcEFydBWBgyWoKkjCQaE
-	RY+6u9WZYrP+4NEo6bXkDEzyEnxH7v+lcEqUw2VseHpuo82XIHDTW6upMJcpZMU=
-X-Google-Smtp-Source: AGHT+IEb2Gx1tTCmdOI5YjqColZWn/7Fy+QvmuvrxLoHycJJrpvuJNWc5dunZZ9mWjFu1Gzsuu06PQ==
-X-Received: by 2002:a05:600c:154f:b0:428:e820:37b6 with SMTP id 5b1f17b1804b1-42c9a3938b4mr26782045e9.31.1725549114779;
-        Thu, 05 Sep 2024 08:11:54 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df84b9sm235437335e9.24.2024.09.05.08.11.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 08:11:54 -0700 (PDT)
-Date: Thu, 5 Sep 2024 18:11:49 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Hillf Danton <hdanton@sina.com>, alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2 4.19.y] ALSA: usb-audio: Sanity checks for each pipe
- and EP types
-Message-ID: <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
-References: <76c0ef6b-f4bf-41f7-ad36-55f5b4b3180a@stanley.mountain>
- <599b79d0-0c0f-425e-b2a2-1af9f81539b8@stanley.mountain>
- <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
- <2024090557-hurry-armful-dbe0@gregkh>
+	s=arc-20240116; t=1725550277; c=relaxed/simple;
+	bh=s06Fd52zaQ6YeE4FvigUbNXvSQgkkN8aStazVLYd8hE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pGr7iroKa89ysKJLy/WW1kCnmlT6Pdvb0HGK+3tj/O1BUG8XwE8ZjYfnqJL7ZVW7QwwGhSm4vryCUxVyvA/XbFy6KgpReLaqFFSPcFcjOKuXWbRq1mwyKFGNqIMmgk7D0Cos3Znm0r+TdiFHti3vxrGG3LYdHD8md3NEhuFtKoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8y70zvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAB7C4CEC3;
+	Thu,  5 Sep 2024 15:31:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725550277;
+	bh=s06Fd52zaQ6YeE4FvigUbNXvSQgkkN8aStazVLYd8hE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U8y70zvhXHCgJ7rn8lb1kbMdLJhu3OoIBTdgbKvncubgPkAu4UDXdiqQ2yP3Gvmqc
+	 wyhc3xibPHrCQiTLzKtM0kpq4xsc6EEodOS+qJK3jOk2mndsLPniMK3NxOJN//T6Eu
+	 byUTmyVeXZZDmPhbppcWhBNhyYpBrqnmRuYax7hR0y/puu7XdquUODNdZjxUrfMuIW
+	 eA4pKbScA70M46TVsYg5R1NMsFiJaGPBofGSR1apJ3TI9Aelw26Ls5WUB9PYB6/jHu
+	 sYpusIdj++gjBM1ZS+pVGbjuioU1zm5gVUxLCjsZIH60JdCfwDFs3/wENK80fcKAaP
+	 6iV4G9503zwCw==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Petr Vorel <pvorel@suse.cz>,
+	sherry.yang@oracle.com,
+	calum.mackay@oracle.com,
+	kernel-team@fb.com,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10.y 00/19] Backport "make svc_stat per-net instead of global"
+Date: Thu,  5 Sep 2024 11:30:42 -0400
+Message-ID: <20240905153101.59927-1-cel@kernel.org>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024090557-hurry-armful-dbe0@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 05, 2024 at 03:49:14PM +0200, Greg KH wrote:
-> On Thu, Sep 05, 2024 at 04:34:45PM +0300, Dan Carpenter wrote:
-> > Sorry,
-> > 
-> > I completely messed these emails up.  It has Takashi Iwai and Hillf Danton's
-> > names instead of mine in the From header.  It still has my email address, but
-> > just the names are wrong.
-> > 
-> > Also I should have used a From header in the body of the email.
-> > 
-> > Also the threading is messed up.
-> > 
-> > Will try again tomorrow.
-> 
-> It looks good to me, now queued up.
-> 
+From: Chuck Lever <chuck.lever@oracle.com>
 
-The code is okay but the Author header is messed up.  It has my email address.
+Following up on
 
-From: Hillf Danton <dan.carpenter@linaro.org>
+https://lore.kernel.org/linux-nfs/d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com/
 
-From: Takashi Iwai <dan.carpenter@linaro.org>
+Here is a backport series targeting origin/linux-5.10.y that closes
+the information leak described in the above thread.
 
-regards,
-dan carpenter
+Review comments welcome.
+
+
+Chuck Lever (6):
+  NFSD: Refactor nfsd_reply_cache_free_locked()
+  NFSD: Rename nfsd_reply_cache_alloc()
+  NFSD: Replace nfsd_prune_bucket()
+  NFSD: Refactor the duplicate reply cache shrinker
+  NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
+  NFSD: Fix frame size warning in svc_export_parse()
+
+Jeff Layton (2):
+  nfsd: move reply cache initialization into nfsd startup
+  nfsd: move init of percpu reply_cache_stats counters back to
+    nfsd_init_net
+
+Josef Bacik (10):
+  sunrpc: don't change ->sv_stats if it doesn't exist
+  nfsd: stop setting ->pg_stats for unused stats
+  sunrpc: pass in the sv_stats struct through svc_create_pooled
+  sunrpc: remove ->pg_stats from svc_program
+  sunrpc: use the struct net as the svc proc private
+  nfsd: rename NFSD_NET_* to NFSD_STATS_*
+  nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
+  nfsd: make all of the nfsd stats per-network namespace
+  nfsd: remove nfsd_stats, make th_cnt a global counter
+  nfsd: make svc_stat per-network namespace instead of global
+
+NeilBrown (1):
+  NFSD: simplify error paths in nfsd_svc()
+
+ fs/lockd/svc.c             |   3 -
+ fs/nfs/callback.c          |   3 -
+ fs/nfsd/export.c           |  32 ++++--
+ fs/nfsd/export.h           |   4 +-
+ fs/nfsd/netns.h            |  25 ++++-
+ fs/nfsd/nfs4proc.c         |   6 +-
+ fs/nfsd/nfscache.c         | 202 ++++++++++++++++++++++---------------
+ fs/nfsd/nfsctl.c           |  24 ++---
+ fs/nfsd/nfsd.h             |   1 +
+ fs/nfsd/nfsfh.c            |   3 +-
+ fs/nfsd/nfssvc.c           |  38 ++++---
+ fs/nfsd/stats.c            |  52 ++++------
+ fs/nfsd/stats.h            |  83 ++++++---------
+ fs/nfsd/trace.h            |  22 ++++
+ fs/nfsd/vfs.c              |   6 +-
+ include/linux/sunrpc/svc.h |   5 +-
+ net/sunrpc/stats.c         |   2 +-
+ net/sunrpc/svc.c           |  36 ++++---
+ 18 files changed, 306 insertions(+), 241 deletions(-)
+
+-- 
+2.45.1
 
 
