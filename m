@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA5096D4CB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD25996D52B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D881F28C58
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00B31C24E54
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00684156225;
-	Thu,  5 Sep 2024 09:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD8C19538A;
+	Thu,  5 Sep 2024 10:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhZj9NM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="surTXQHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317718D65E;
-	Thu,  5 Sep 2024 09:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070E81946A2;
+	Thu,  5 Sep 2024 10:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530176; cv=none; b=ZvG1QAV7NzYApZ2ibeQNMzfLD7F0y7gd8h/hHfwDyzVpbf991cNAt4knSS2hkArdNA7o0tqLpd2UNuuQtwgbynCPh8qZlc19HMokp/G+75jVINmwGLfNeORmQt0cnGlnIQmFqcbK//FJR96wi3CmHGmmNpoLY+CRVU+qDZpN7A8=
+	t=1725530465; cv=none; b=cvExi64iiQFFQvARqstPmakaejh0vRoYOY1qEp/lG8KybbUyz7te5Lg1tWaVhy+p00npd2roTLZQEaReLSKY+o46lPoj2ot6yQOhzGN0FyBZ37nx0/tc+W6P5MkZmKBskLGIIDr7E70rcAN8ZWtsonlNFk+Ia1BNk5m1G5M0Tqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530176; c=relaxed/simple;
-	bh=lUNVN6EhO0pVYIIcTgJzDk1BgjQ1c5DWCNPhcv8FeZg=;
+	s=arc-20240116; t=1725530465; c=relaxed/simple;
+	bh=0iN7/YzYH0WiMmG2L57OATQWjOauphaDoJUg36vGdR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGhlB7ubP5AyquTPVj5U/GlgqPCtf5t2InqQXTNjmShdztzyM1btcchAf/p9m+5TBuFbZSEWZYKUWOZ5Z7hH6jK4wIxbnsKrRbstM+54DJqjZjaxjb/fA8APGggsG7NMgEROSRB2UdwKB6ddA4+SlMptid22N0S7omu46+IrPRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhZj9NM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAD9C4CEC3;
-	Thu,  5 Sep 2024 09:56:15 +0000 (UTC)
+	 MIME-Version; b=sfUNRVS3rvI0WWiMWNzsUe3T8ZtT3mmLRzxL91M9twsxKiLp/AkGq5uYagRZBCadBHow+pcqGTVf/yHEmaHFTsfdDoR8PAeIRFJYwRz3qjIBZbXJlMdg8pqgXNBu7jXErSlpaiuDtD7MoYf1PocXwVJYdh/fDbZoNl7H2My+9qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=surTXQHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D59C4CEC3;
+	Thu,  5 Sep 2024 10:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530176;
-	bh=lUNVN6EhO0pVYIIcTgJzDk1BgjQ1c5DWCNPhcv8FeZg=;
+	s=korg; t=1725530464;
+	bh=0iN7/YzYH0WiMmG2L57OATQWjOauphaDoJUg36vGdR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhZj9NM+oQorJFjd8yVK8p01HgQ7PyZIzo1gulvtq7e2z4Ata8bSGxU7lMic27/2y
-	 yQU/Kj0N4ekHn8drCcd8JSaHGnA7ZJCfX3p5SfrGcaDvBD2wRQNNCxXh1yVbyI7Bf8
-	 j0m7qwkQH9tjTTjHxfPmONVb+x4KJbTQ5shqFRl4=
+	b=surTXQHpvecBM6E6GoDzxLWOuj/1GMQnTwxsRIqsra8XBD1hj4WaVHDPqb2bkmS6f
+	 y9L23G49xPA173E1Ds/Mra+EaXGK+yVOKIxRpDTNNYMdJI1zfJOL3Jyz7r7eea/LAp
+	 ktD87oNM5eJEV2cK5vHqnDIEVDYWQNo5fj2gR8+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Yang Wang <kevinyang.wang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/132] drm/amdgpu/pm: Check input value for CUSTOM profile mode setting on legacy SOCs
+Subject: [PATCH 6.1 033/101] drm/amd/pm: fix uninitialized variable warning
 Date: Thu,  5 Sep 2024 11:41:05 +0200
-Message-ID: <20240905093725.284331820@linuxfoundation.org>
+Message-ID: <20240905093717.424918749@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit df0a9bd92fbbd3fcafcb2bce6463c9228a3e6868 ]
+[ Upstream commit 7c836905520703dbc8b938993b6d4d718bc739f3 ]
 
-Check the input value for CUSTOM profile mode setting on legacy
-SOCs. Otherwise we may use uninitalized value of input[]
+Check the return of function smum_send_msg_to_smc
+as it may fail to initialize the variable.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 2 +-
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c | 8 ++++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 163864bd51c3..53849fd3615f 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5641,7 +5641,7 @@ static int smu7_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, uint
- 	mode = input[size];
- 	switch (mode) {
- 	case PP_SMC_POWER_PROFILE_CUSTOM:
--		if (size < 8 && size != 0)
-+		if (size != 8 && size != 0)
- 			return -EINVAL;
- 		/* If only CUSTOM is passed in, use the saved values. Check
- 		 * that we actually have a CUSTOM profile by ensuring that
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-index f97ac4b79d8b..9fdb9990d188 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-@@ -4102,9 +4102,11 @@ static int vega20_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, ui
- 	if (power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
- 		struct vega20_hwmgr *data =
- 			(struct vega20_hwmgr *)(hwmgr->backend);
--		if (size == 0 && !data->is_custom_profile_set)
-+
-+		if (size != 10 && size != 0)
- 			return -EINVAL;
--		if (size < 10 && size != 0)
-+
-+		if (size == 0 && !data->is_custom_profile_set)
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index f3668911a88f..eae4b4826f04 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -99,7 +99,7 @@ static void pp_swctf_delayed_work_handler(struct work_struct *work)
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct amdgpu_dpm_thermal *range =
+ 				&adev->pm.dpm.thermal;
+-	uint32_t gpu_temperature, size;
++	uint32_t gpu_temperature, size = sizeof(gpu_temperature);
+ 	int ret;
  
- 		result = vega20_get_activity_monitor_coeff(hwmgr,
-@@ -4166,6 +4168,8 @@ static int vega20_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, ui
- 			activity_monitor.Fclk_PD_Data_error_coeff = input[8];
- 			activity_monitor.Fclk_PD_Data_error_rate_coeff = input[9];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		result = vega20_set_activity_monitor_coeff(hwmgr,
+ 	/*
 -- 
 2.43.0
 
