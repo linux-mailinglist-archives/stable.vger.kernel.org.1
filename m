@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADDB96D554
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FC196D4F9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B431F2A351
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F7C284541
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFE519538A;
-	Thu,  5 Sep 2024 10:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879A7198856;
+	Thu,  5 Sep 2024 09:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FV6eVjFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPzsLNIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCBC1494DB;
-	Thu,  5 Sep 2024 10:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4701F15574C;
+	Thu,  5 Sep 2024 09:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530596; cv=none; b=KDmFItjp98lqd4pGNUx517oJlA/RDWMkgYDrmMTs5cQzBzDow2YlBjENsUo+fCllyLCy+u0BalCX+z/0tPtJPDx68e0qaOd10eA9WX+GLaInG69U75QoBXRQLGhgwxNvNEw3Z8Zn5HQh3Gy2XWla/rS45BvlBMtiOL34dlpLwV4=
+	t=1725530314; cv=none; b=o8Famjst84mydixRhFrn67PIU7gWyNj0g2n0RfHjj9FRyCG8Abvni4joH7WTet5YACu9YFo0fTuysJKTGkAzwYeqePo9n1zr13Bn0BRc8T15iJtnUCFZsMB53WytInD1TtkLMXPIlRn/J7xBiheNuHp1i16bmBudHhbwCimvSrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530596; c=relaxed/simple;
-	bh=TTW8Y7GOcMkg20RXwovJhN6v0CqKlDOYYVTSan7hxyA=;
+	s=arc-20240116; t=1725530314; c=relaxed/simple;
+	bh=cbzyQ8d69isIHtAU3JHD8SUTMLHjgiul7+DrN2gx8c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=be5FOJXwI2AUtBsXL/nZpuVSN9cPOO1Ycbs1Z8tk1GPxmpMpLrn86mWp4xuvJ4B4Vi3T75VSLHLemrlEy3mm2DgtqGhM5dneefoaEh5T8ckooQTh6oi3L3K8bp+ZQHW/vcMkpSmnJN8MmyfHeHKgYQAgqfzMfnkS8Iul2UGoz+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FV6eVjFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C70C4CEC3;
-	Thu,  5 Sep 2024 10:03:15 +0000 (UTC)
+	 MIME-Version; b=L9ht0xPvqQM+uCDhrrBoBP0erMVPmMolda7abm7RfQMCYUwEGXPufgMpOsikr/QWfHYclEuSK/QV8DFOKFSC+gtWVk6on71vrB8jLtn9EDM95VjGBdQm4fl2uHIuMZrudwvr4VN2Zp1317+lG0P3KaRaHs/3gFsh/LzF96W7Gyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPzsLNIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DF8C4CEC6;
+	Thu,  5 Sep 2024 09:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530596;
-	bh=TTW8Y7GOcMkg20RXwovJhN6v0CqKlDOYYVTSan7hxyA=;
+	s=korg; t=1725530314;
+	bh=cbzyQ8d69isIHtAU3JHD8SUTMLHjgiul7+DrN2gx8c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FV6eVjFT6TuOxUFC5kwK1y7cPzcUIyG0HATOOjjl1N9wUCoPNB8uc+DiZH/3ic/7y
-	 SHH26fFk+ZbOTUvg+RbON8PNULJ4qIFVX/nApI6FMHniPZcoFH4LiEhYQvUFGmPmxJ
-	 j3LfWbfIX059DTaHJ64bLvV+rThru9BySpChdFl8=
+	b=SPzsLNIT+P8ufd4L3hapvNAbdonD1/EOZuk/0CTAZfF+lnm0Z2Z7P5qpS3Tad4rMn
+	 crdgpBcKSIrtP1jpcEnVpDAwtEJd0/L5T08gLffGWnK52GxFBN32hCQOiXFF3KyWDY
+	 XGbYWvge4lAMY17Ck/UwaohMAfCk9a1y/IOM6AH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Sloat <ksloat@designlinxhs.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Sean Anderson <sean.anderson@seco.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/101] pwm: xilinx: Fix u32 overflow issue in 32-bit width PWM mode.
+Subject: [PATCH 6.6 119/132] block: remove the blk_flush_integrity call in blk_integrity_unregister
 Date: Thu,  5 Sep 2024 11:41:46 +0200
-Message-ID: <20240905093719.027782921@linuxfoundation.org>
+Message-ID: <20240905093726.848723868@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ken Sloat <ksloat@designlinxhs.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 56f45266df67aa0f5b2a6881c8c4d16dbfff6b7d ]
+[ Upstream commit e8bc14d116aeac8f0f133ec8d249acf4e0658da7 ]
 
-This timer HW supports 8, 16 and 32-bit timer widths. This
-driver currently uses a u32 to store the max possible value
-of the timer. However, statements perform addition of 2 in
-xilinx_pwm_apply() when calculating the period_cycles and
-duty_cycles values. Since priv->max is a u32, this will
-result in an overflow to 1 which will not only be incorrect
-but fail on range comparison. This results in making it
-impossible to set the PWM in this timer mode.
+Now that there are no indirect calls for PI processing there is no
+way to dereference a NULL pointer here.  Additionally drivers now always
+freeze the queue (or in case of stacking drivers use their internal
+equivalent) around changing the integrity profile.
 
-There are two obvious solutions to the current problem:
-1. Cast each instance where overflow occurs to u64.
-2. Change priv->max from a u32 to a u64.
+This is effectively a revert of commit 3df49967f6f1 ("block: flush the
+integrity workqueue in blk_integrity_unregister").
 
-Solution #1 requires more code modifications, and leaves
-opportunity to introduce similar overflows if other math
-statements are added in the future. These may also go
-undetected if running in non 32-bit timer modes.
-
-Solution #2 is the much smaller and cleaner approach and
-thus the chosen method in this patch.
-
-This was tested on a Zynq UltraScale+ with multiple
-instances of the PWM IP.
-
-Signed-off-by: Ken Sloat <ksloat@designlinxhs.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/SJ0P222MB0107490C5371B848EF04351CA1E19@SJ0P222MB0107.NAMP222.PROD.OUTLOOK.COM
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20240613084839.1044015-7-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/clocksource/timer-xilinx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-integrity.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/clocksource/timer-xilinx.h b/include/clocksource/timer-xilinx.h
-index c0f56fe6d22a..d116f18de899 100644
---- a/include/clocksource/timer-xilinx.h
-+++ b/include/clocksource/timer-xilinx.h
-@@ -41,7 +41,7 @@ struct regmap;
- struct xilinx_timer_priv {
- 	struct regmap *map;
- 	struct clk *clk;
--	u32 max;
-+	u64 max;
- };
+diff --git a/block/blk-integrity.c b/block/blk-integrity.c
+index d4e9b4556d14..5276c556a9df 100644
+--- a/block/blk-integrity.c
++++ b/block/blk-integrity.c
+@@ -396,8 +396,6 @@ void blk_integrity_unregister(struct gendisk *disk)
+ 	if (!bi->profile)
+ 		return;
  
- /**
+-	/* ensure all bios are off the integrity workqueue */
+-	blk_flush_integrity();
+ 	blk_queue_flag_clear(QUEUE_FLAG_STABLE_WRITES, disk->queue);
+ 	memset(bi, 0, sizeof(*bi));
+ }
 -- 
 2.43.0
 
