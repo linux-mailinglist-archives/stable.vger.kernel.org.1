@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-73680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD6B96E552
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 23:53:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B54F96E616
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 01:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C4E71C230B5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:53:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F5A1F24463
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 23:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88671A724A;
-	Thu,  5 Sep 2024 21:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC001B4C31;
+	Thu,  5 Sep 2024 23:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lXSMGYYb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Dl0znFf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83596189514;
-	Thu,  5 Sep 2024 21:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F011B3F0A;
+	Thu,  5 Sep 2024 23:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725573174; cv=none; b=CaeRCZzQEakpvkHomnwK06e/jIHlchwOcoEhW1MtPQwSCWfEohSzvnPRJD1OATjiO1k8ChPpZ7nNK/tSkOvoTjAoLXcuUzl6Jk6k2AYH1M+XhTGZLhD/bkzL3sd6MaN/ZDVtzSfmHmVCDOGlxYjulsH20DgskEDiPK6kmFlxcLQ=
+	t=1725577632; cv=none; b=aSi5FqrrzFdpo2X1f8VRV2+3d012M5wCRGhSbdU7laXUeFgAxdJAWQDnXgxGMNuuisqAph46xG9rxhFyKvK+OZgKbz9eYHplgqWhjV2ezA6isTkTCpcDrIZvW7N0hl5IKhLJxrIPeEB3kDOYC1cDqIuX7Ld30TsOnN+CqpJd3vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725573174; c=relaxed/simple;
-	bh=nx/iJgxxx0/pA0d+J8S09Hv5j2xaCkOx69nmjGjcuck=;
-	h=Date:To:From:Subject:Message-Id; b=a4qjx/RtpudBFPvVjKwcp4LW2z1YQZuZ1WUTB8afe2s4vuzDOct/kI8GHbYew5So/jYv0RTOl9E9F26/B5zpN2S/8mFtsHSlRcQDqvn39ka7F3Hfkc1XnCra5E8TnlirSdypHLfiHwDS7TqTd/6WEFCUDaKNDUBeg4Pcw2gzIeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lXSMGYYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF582C4CEC3;
-	Thu,  5 Sep 2024 21:52:53 +0000 (UTC)
+	s=arc-20240116; t=1725577632; c=relaxed/simple;
+	bh=MUYznFoEGA9TE00TjZc+evRqwQoXMQXTcZNqWIgeH4k=;
+	h=Date:To:From:Subject:Message-Id; b=FNrD8U/7+HqyD0wKxrateLuonrnkepOnvny7REavhLdUKE3TnOsjahpyhHlG5frERAl3D+PMKPBmxbS5YDnpcf0m7SDXg/6fLUjIpBXEjgx6141ejxo1pWrbwWjIDLtx0s8oqqVjnqNRKlicQRdGrJa4kGe53qi9plgxiD/JYhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Dl0znFf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF35C4CEC3;
+	Thu,  5 Sep 2024 23:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725573174;
-	bh=nx/iJgxxx0/pA0d+J8S09Hv5j2xaCkOx69nmjGjcuck=;
+	s=korg; t=1725577631;
+	bh=MUYznFoEGA9TE00TjZc+evRqwQoXMQXTcZNqWIgeH4k=;
 	h=Date:To:From:Subject:From;
-	b=lXSMGYYb71wJJSTok2dmpLiFKRHVvSZpFj9sdJap5YX9fBUH4xMTdcKOfPFlAeG0G
-	 YSgorX74ujZFxyVpXuZFxT8xqzv8Cly3irpz/ZuTmv2x9sKHcWF3wDoxGjxfumi0GQ
-	 S/o6tZrgWa4nxsV0cB6uQbDwsHWxPm9+UNds8mTY=
-Date: Thu, 05 Sep 2024 14:52:53 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,minchan@kernel.org,senozhatsky@chromium.org,akpm@linux-foundation.org
+	b=Dl0znFf2ZYNo3azgyJOfOCldYAJwibWv7eObFXqjTVIJfqLDMosf060tITBtmpv1e
+	 vmcVFB5KGj4ZT/YKNP+6A7FuM6DeNJjfGmK2pnNNoFDYWJDg8ERZ/e3qrkUAzX0lH1
+	 VIJrIZeut7BBJ3GKNzPqNmUn80aMroLTiFaciYfE=
+Date: Thu, 05 Sep 2024 16:07:11 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,sj@kernel.org,linux@roeck-us.net,david@redhat.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-use-unique-zsmalloc-caches-names.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240905215253.DF582C4CEC3@smtp.kernel.org>
+Subject: + mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240905230711.DAF35C4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: use unique zsmalloc caches names
+     Subject: mm/damon/vaddr: protect vma traversal in __damon_va_thre_regions() with rcu read lock
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-use-unique-zsmalloc-caches-names.patch
+     mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-use-unique-zsmalloc-caches-names.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,113 +73,52 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: mm: use unique zsmalloc caches names
-Date: Thu, 5 Sep 2024 15:47:23 +0900
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: mm/damon/vaddr: protect vma traversal in __damon_va_thre_regions() with rcu read lock
+Date: Wed, 4 Sep 2024 17:12:04 -0700
 
-Each zsmalloc pool maintains several named kmem-caches for zs_handle-s and
-zspage-s.  On a system with multiple zsmalloc pools and CONFIG_DEBUG_VM
-this triggers kmem_cache_sanity_check():
+Traversing VMAs of a given maple tree should be protected by rcu read
+lock.  However, __damon_va_three_regions() is not doing the protection. 
+Hold the lock.
 
-  kmem_cache of name 'zspage' already exists
-  WARNING: at mm/slab_common.c:108 do_kmem_cache_create_usercopy+0xb5/0x310
-  ...
-
-  kmem_cache of name 'zs_handle' already exists
-  WARNING: at mm/slab_common.c:108 do_kmem_cache_create_usercopy+0xb5/0x310
-  ...
-
-We provide zram device name when init its zsmalloc pool, so we can
-use that same name for zsmalloc caches and, hence, create unique
-names that can easily be linked to zram device that has created
-them.
-
-So instead of having this
-
-cat /proc/slabinfo
-slabinfo - version: 2.1
-zspage                46     46    ...
-zs_handle            128    128    ...
-zspage             34270  34270    ...
-zs_handle          34816  34816    ...
-zspage                 0      0    ...
-zs_handle              0      0    ...
-
-We now have this
-
-cat /proc/slabinfo
-slabinfo - version: 2.1
-zspage-zram2          46     46    ...
-zs_handle-zram2      128    128    ...
-zspage-zram0       34270  34270    ...
-zs_handle-zram0    34816  34816    ...
-zspage-zram1           0      0    ...
-zs_handle-zram1        0      0    ...
-
-Link: https://lkml.kernel.org/r/20240905064736.2250735-1-senozhatsky@chromium.org
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Minchan Kim <minchan@kernel.org>
+Link: https://lkml.kernel.org/r/20240905001204.1481-1-sj@kernel.org
+Fixes: d0cf3dd47f0d ("damon: convert __damon_va_three_regions to use the VMA iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/b83651a0-5b24-4206-b860-cb54ffdf209b@roeck-us.net
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/zsmalloc.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/damon/vaddr.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/zsmalloc.c~mm-use-unique-zsmalloc-caches-names
-+++ a/mm/zsmalloc.c
-@@ -293,13 +293,17 @@ static void SetZsPageMovable(struct zs_p
+--- a/mm/damon/vaddr.c~mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock
++++ a/mm/damon/vaddr.c
+@@ -126,6 +126,7 @@ static int __damon_va_three_regions(stru
+ 	 * If this is too slow, it can be optimised to examine the maple
+ 	 * tree gaps.
+ 	 */
++	rcu_read_lock();
+ 	for_each_vma(vmi, vma) {
+ 		unsigned long gap;
  
- static int create_cache(struct zs_pool *pool)
- {
--	pool->handle_cachep = kmem_cache_create("zs_handle", ZS_HANDLE_SIZE,
--					0, 0, NULL);
-+	char name[32];
-+
-+	snprintf(name, sizeof(name), "zs_handle-%s", pool->name);
-+	pool->handle_cachep = kmem_cache_create(name, ZS_HANDLE_SIZE,
-+						0, 0, NULL);
- 	if (!pool->handle_cachep)
- 		return 1;
+@@ -146,6 +147,7 @@ static int __damon_va_three_regions(stru
+ next:
+ 		prev = vma;
+ 	}
++	rcu_read_unlock();
  
--	pool->zspage_cachep = kmem_cache_create("zspage", sizeof(struct zspage),
--					0, 0, NULL);
-+	snprintf(name, sizeof(name), "zspage-%s", pool->name);
-+	pool->zspage_cachep = kmem_cache_create(name, sizeof(struct zspage),
-+						0, 0, NULL);
- 	if (!pool->zspage_cachep) {
- 		kmem_cache_destroy(pool->handle_cachep);
- 		pool->handle_cachep = NULL;
+ 	if (!sz_range(&second_gap) || !sz_range(&first_gap))
+ 		return -EINVAL;
 _
 
-Patches currently in -mm which might be from senozhatsky@chromium.org are
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
 
-mm-use-unique-zsmalloc-caches-names.patch
-lib-zstd-export-api-needed-for-dictionary-support.patch
-lib-lz4hc-export-lz4_resetstreamhc-symbol.patch
-lib-zstd-fix-null-deref-in-zstd_createcdict_advanced2.patch
-zram-introduce-custom-comp-backends-api.patch
-zram-add-lzo-and-lzorle-compression-backends-support.patch
-zram-add-lz4-compression-backend-support.patch
-zram-add-lz4hc-compression-backend-support.patch
-zram-add-zstd-compression-backend-support.patch
-zram-pass-estimated-src-size-hint-to-zstd.patch
-zram-add-zlib-compression-backend-support.patch
-zram-add-842-compression-backend-support.patch
-zram-check-that-backends-array-has-at-least-one-backend.patch
-zram-introduce-zcomp_params-structure.patch
-zram-recalculate-zstd-compression-params-once.patch
-zram-introduce-algorithm_params-device-attribute.patch
-zram-add-support-for-dict-comp-config.patch
-zram-introduce-zcomp_req-structure.patch
-zram-introduce-zcomp_ctx-structure.patch
-zram-move-immutable-comp-params-away-from-per-cpu-context.patch
-zram-add-dictionary-support-to-lz4.patch
-zram-add-dictionary-support-to-lz4hc.patch
-zram-add-dictionary-support-to-zstd-backend.patch
-documentation-zram-add-documentation-for-algorithm-parameters.patch
-documentation-zram-add-documentation-for-algorithm-parameters-fix.patch
-zram-support-priority-parameter-in-recompression.patch
-mm-kconfig-fixup-zsmalloc-configuration.patch
+mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch
 
 
