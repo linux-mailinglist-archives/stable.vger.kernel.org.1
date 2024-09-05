@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E0B96D454
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B050896D526
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EFD3B28127
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC491F2A312
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2391C19885E;
-	Thu,  5 Sep 2024 09:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD31194A5A;
+	Thu,  5 Sep 2024 10:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghuF4I3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="162sBK2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B6719884A;
-	Thu,  5 Sep 2024 09:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F1F1494DB;
+	Thu,  5 Sep 2024 10:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529840; cv=none; b=oghGfe64b+TbV3PQIZxidFXCnNaeUWpHTExQ2WquALUhI6qgvAK5HE1iQmRnU53EHqbVsop15MsN/yF2wcfq2QBMgZKxcpSZHpZdE2GlmXh7BPbJwiKuFx4kD1e2CtwFdMJ4LgBuxsd7cOXKr/WZablevlbx2fwNE9GmarvKPnw=
+	t=1725530452; cv=none; b=maj4JBHo60atpHRFR4bogZyuETyZc3xtYPtVaFlt48TNwITq/MwetUy6cksU+QcDqUZ5K+Ljp8CQiqN6qUvrAYwrhL79lu1E0PwMKBpQDOQDGqKhQXvr7DMV9wgMy1A6cyomJKqBW1b6KhsGi22WbwClG9a9FOQdD22UOJkIQVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529840; c=relaxed/simple;
-	bh=l1OerHW4bW1ru+zy+jzu0S2ItJ1GroIwN4jCSFEVBDw=;
+	s=arc-20240116; t=1725530452; c=relaxed/simple;
+	bh=kpbNxOl9DJcVJW8U01gFEFcIsmzD84QRydvd7Uxv+r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNrM/0LOyaqxCxCVtCWaaRC+OJmuaE6n815daCn60cvyaHCoJNgTv6pwyNHRh98r35ioE2e6rhDP53c7fqxLVu+pNDCUCURsrwA2rM9IAblniIJMclDOGr8y5GjXEliLiChH1x/kNZeOWYyIRYEL9IhiNhWz+9fRG47jB9PtT7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghuF4I3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306C0C4CEC3;
-	Thu,  5 Sep 2024 09:50:39 +0000 (UTC)
+	 MIME-Version; b=oq8kaeAYPo+R2sZ1UGMSRbHIFP49kJ6KCDmOENgzXDhPv2qutQVokYyhdH3vpVPP1uHbACdSSpoqoTaLw1NTDj+iz4cHoWDuLlDoZUn86kY4XRJ+j5EHlml9/37Sf9Ir68U2s6WQGX0g6rjgV7GG9k07YBzdJf5YVBb1xX/8Fos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=162sBK2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9794AC4CEC3;
+	Thu,  5 Sep 2024 10:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529840;
-	bh=l1OerHW4bW1ru+zy+jzu0S2ItJ1GroIwN4jCSFEVBDw=;
+	s=korg; t=1725530452;
+	bh=kpbNxOl9DJcVJW8U01gFEFcIsmzD84QRydvd7Uxv+r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghuF4I3x1mmOKuLz+cqR6wsqPN3lSTiGv5KEqpT1s9AfBrQj2Su7ckvgKDeGhrGw8
-	 RMCA8cnd9meAgKR5E37Da07KTRIDgApbFBTNIP/j+s/PsZ+zRsUKfu+KoNQh2JTz1Q
-	 4xBvOT52F7dLeBJ7j1b1/pXq/HB17d3u8LobSkdk=
+	b=162sBK2VDu4FqFSIXc7NIAS3ghKeu+aTVRujGAmQgCF/QZBN8HiiTgDmhTgtvnvxf
+	 hUozi67BXaCE3z3i5GkgBlZziqPHsKSXJQZi5KXXA6kz9bc9ButlqG+O40My9S0mwr
+	 bPAUvPVsAxcaMhssFcQwvkgeUvMoXbRLd6eCRnbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Firas Jahjah <firasj@amazon.com>,
-	Yehuda Yitschak <yehuday@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 128/184] RDMA/efa: Properly handle unexpected AQ completions
+Subject: [PATCH 6.1 009/101] mptcp: make pm_remove_addrs_and_subflows static
 Date: Thu,  5 Sep 2024 11:40:41 +0200
-Message-ID: <20240905093737.224164202@linuxfoundation.org>
+Message-ID: <20240905093716.453528048@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 2d0e7ba468eae365f3c4bc9266679e1f8dd405f0 ]
+[ Upstream commit e38b117d7f3b4a5d810f6d0069ad0f643e503796 ]
 
-Do not try to handle admin command completion if it has an unexpected
-command id and print a relevant error message.
+mptcp_pm_remove_addrs_and_subflows() is only used in pm_netlink.c, it's
+no longer used in pm_userspace.c any more since the commit 8b1c94da1e48
+("mptcp: only send RM_ADDR in nl_cmd_remove"). So this patch changes it
+to a static function.
 
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yehuda Yitschak <yehuday@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://lore.kernel.org/r/20240513064630.6247-1-mrgolin@amazon.com
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87b5896f3f78 ("mptcp: pm: fix RM_ADDR ID for the initial subflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 30 ++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ net/mptcp/pm_netlink.c | 4 ++--
+ net/mptcp/protocol.h   | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 16a24a05fc2a..bafd210dd43e 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
- /*
-- * Copyright 2018-2021 Amazon.com, Inc. or its affiliates. All rights reserved.
-+ * Copyright 2018-2024 Amazon.com, Inc. or its affiliates. All rights reserved.
-  */
- 
- #include "efa_com.h"
-@@ -406,8 +406,8 @@ static struct efa_comp_ctx *efa_com_submit_admin_cmd(struct efa_com_admin_queue
- 	return comp_ctx;
- }
- 
--static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
--						   struct efa_admin_acq_entry *cqe)
-+static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
-+						  struct efa_admin_acq_entry *cqe)
- {
- 	struct efa_comp_ctx *comp_ctx;
- 	u16 cmd_id;
-@@ -416,11 +416,11 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
- 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
--	if (!comp_ctx) {
-+	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
- 		ibdev_err(aq->efa_dev,
--			  "comp_ctx is NULL. Changing the admin queue running state\n");
--		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
--		return;
-+			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
-+			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
-+		return -EINVAL;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 9e16ae1b23fc7..fa0579c2a6ee2 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1667,8 +1667,8 @@ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
  	}
- 
- 	comp_ctx->status = EFA_CMD_COMPLETED;
-@@ -428,14 +428,17 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
- 
- 	if (!test_bit(EFA_AQ_STATE_POLLING_BIT, &aq->state))
- 		complete(&comp_ctx->wait_event);
-+
-+	return 0;
  }
  
- static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list)
++static void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
++					       struct list_head *rm_list)
  {
- 	struct efa_admin_acq_entry *cqe;
- 	u16 queue_size_mask;
--	u16 comp_num = 0;
-+	u16 comp_cmds = 0;
- 	u8 phase;
-+	int err;
- 	u16 ci;
+ 	struct mptcp_rm_list alist = { .nr = 0 }, slist = { .nr = 0 };
+ 	struct mptcp_pm_addr_entry *entry;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index c3cd68edab779..ee973d25f5eb5 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -837,8 +837,6 @@ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
+ 			   bool echo);
+ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list);
+-void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+-					struct list_head *rm_list);
  
- 	queue_size_mask = aq->depth - 1;
-@@ -453,10 +456,12 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		 * phase bit was validated
- 		 */
- 		dma_rmb();
--		efa_com_handle_single_admin_completion(aq, cqe);
-+		err = efa_com_handle_single_admin_completion(aq, cqe);
-+		if (!err)
-+			comp_cmds++;
- 
-+		aq->cq.cc++;
- 		ci++;
--		comp_num++;
- 		if (ci == aq->depth) {
- 			ci = 0;
- 			phase = !phase;
-@@ -465,10 +470,9 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		cqe = &aq->cq.entries[ci];
- 	}
- 
--	aq->cq.cc += comp_num;
- 	aq->cq.phase = phase;
--	aq->sq.cc += comp_num;
--	atomic64_add(comp_num, &aq->stats.completed_cmd);
-+	aq->sq.cc += comp_cmds;
-+	atomic64_add(comp_cmds, &aq->stats.completed_cmd);
- }
- 
- static int efa_com_comp_status_to_errno(u8 comp_status)
+ void mptcp_free_local_addr_list(struct mptcp_sock *msk);
+ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info);
 -- 
 2.43.0
 
