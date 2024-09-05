@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505B596D476
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3B996D535
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE411F2446D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8190D1F2A307
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDCD19538A;
-	Thu,  5 Sep 2024 09:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1054919882C;
+	Thu,  5 Sep 2024 10:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImMbU+fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKSYaCfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E20F156225;
-	Thu,  5 Sep 2024 09:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA41494DB;
+	Thu,  5 Sep 2024 10:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529930; cv=none; b=CV9X8rs/3QPHqQgrEfOi5qwjc8dn1fs/gqMG9mlgbPD2o0JfTldtLUJePcHk6th4iIZmstch6dt5yBpNtPTw1PvM3wlXmvFBDTh0EA91q4okomW1zVujFvhBxjbLuKGb5vbdxtANmx4NKIWK4k+Ned1mXe6XKhIVxYdBlwL0NYc=
+	t=1725530497; cv=none; b=OkS0Ml8aTt6pXgBv8X47YemDU0koPJwg+9gq4w8JUCJm+Ru84ywp9pof/9LwP98+MWHg5zAnb5kPL8VCm0SX5XBs56rfdFYqIWy3Vg2htQdlVkV56NG4+cLvezEBekZT1/NB8CkeH2l7Sk5XSPj1oqTsFDhuZLC7V+yKdaSIM90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529930; c=relaxed/simple;
-	bh=2e6RMNYv+yGWPo5Kagnq+GsjCFjNG1ioloCT8QbxGYc=;
+	s=arc-20240116; t=1725530497; c=relaxed/simple;
+	bh=KmWaVmQs/LveOAyci6W3poFerARCBpHSxLlA8cW3F/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws4bLCKcqKBOr8ZrBc1iYBUS9PRcN3Jh2KsV1yjRf7RiuZt/fLBPn4YUi3R8gqNENNhygHi/DUtREHDD/kG6/KhDRn/HmQcY/CW+yeqrT+R5aaisyduimV4fIy9HqbadS836D3VE8NKCqsQqwAOnQyXnZSzGDVJpftC7WZRWHto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImMbU+fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CA7C4CEC3;
-	Thu,  5 Sep 2024 09:52:09 +0000 (UTC)
+	 MIME-Version; b=becqxLXmmGAHnO2Sro0g498l9KikcueLLlL2XS8L4wPmwSAieRDGjq8pgU6Oluvyy/FCJl0IBJyQE0PDfGYPqCTN4IoWG+d7fDvqlx0FJPs+yg6dB0EqKpxI2b3gt8UCBNUI/FYMFZo+o7kwOVU0ZFCoURodkHXuFTQLkLAOoBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKSYaCfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30763C4CEC3;
+	Thu,  5 Sep 2024 10:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529930;
-	bh=2e6RMNYv+yGWPo5Kagnq+GsjCFjNG1ioloCT8QbxGYc=;
+	s=korg; t=1725530497;
+	bh=KmWaVmQs/LveOAyci6W3poFerARCBpHSxLlA8cW3F/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImMbU+fiaQQ0Q4S0E7pozeHZlof+36WlVQ8nFFQawDVto3rjjW+vWD+pmqDKDHmrM
-	 UWmRub4FXQT+FdippOwNLIBTNu7JXsXmTgYfV5gmM9/cLRFRzAc0cmGbsJIru2A6Mr
-	 7RgCp4LCVRDrDfT/8e44oa/MbXRfZRLOhiDTa1qU=
+	b=YKSYaCfzqkLJts9AaJkZr2PrskzOCl5DN+3gy749eJzzGhXlf+D/RNNRjQAQiI1xV
+	 k/pBB/WBEE5g6eDdQyYzF/9bY2PZmClDAhA3+M19renHR7yQxEzfqV6KRWyZjH32tm
+	 06voweiC30LG5nLqPSAeUF2od7Occ3RZ6KqPVpHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 160/184] drm/xe: Add GuC state asserts to deregister_exec_queue
-Date: Thu,  5 Sep 2024 11:41:13 +0200
-Message-ID: <20240905093738.589573126@linuxfoundation.org>
+Subject: [PATCH 6.1 042/101] drm/amd/display: Add array index check for hdcp ddc access
+Date: Thu,  5 Sep 2024 11:41:14 +0200
+Message-ID: <20240905093717.781588300@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 716ce587a81e6165a4133ea32f63f3d69f80e1e7 ]
+[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
 
-Will help catch bugs in GuC state machine.
+[Why]
+Coverity reports OVERRUN warning. Do not check if array
+index valid.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240611144053.2805091-9-matthew.brost@intel.com
+[How]
+Check msg_id valid and valid array index.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index e48285c81bf5..0a496612c810 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1551,6 +1551,11 @@ static void deregister_exec_queue(struct xe_guc *guc, struct xe_exec_queue *q)
- 		q->guc->id,
- 	};
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+index 8e9caae7c955..1b2df97226a3 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
  
-+	xe_gt_assert(guc_to_gt(guc), exec_queue_destroyed(q));
-+	xe_gt_assert(guc_to_gt(guc), exec_queue_registered(q));
-+	xe_gt_assert(guc_to_gt(guc), !exec_queue_pending_disable(q));
-+	xe_gt_assert(guc_to_gt(guc), !exec_queue_pending_enable(q));
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
+ 
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
 +
- 	trace_xe_exec_queue_deregister(q);
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
+@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
+ 		}
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		success = hdcp->config.ddc.funcs.read_i2c(
+ 				hdcp->config.ddc.handle,
+ 				HDCP_I2C_ADDR,
+@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
  
- 	xe_guc_ct_send_g2h_handler(&guc->ct, action, ARRAY_SIZE(action));
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
+ 
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.write_dpcd(
+@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
+ 		}
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
+ 		memmove(&hdcp->buf[1], buf, buf_len);
+ 		success = hdcp->config.ddc.funcs.write_i2c(
 -- 
 2.43.0
 
