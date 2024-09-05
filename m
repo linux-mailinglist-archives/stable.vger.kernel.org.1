@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DD696D50D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE1B96D562
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 969CB1C24BCA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78FD72824EE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A4C1957FC;
-	Thu,  5 Sep 2024 09:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E455197A76;
+	Thu,  5 Sep 2024 10:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A72uBwuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK/Het9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08A818D65E;
-	Thu,  5 Sep 2024 09:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16C11494DB;
+	Thu,  5 Sep 2024 10:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530376; cv=none; b=egTNDC3gNgO3LtJEFcdOu1Kl4OPOAUGBcyVMJhrahA8aQ6IoYhBZbzkcnZEBWIBTPFb8k1SHBif5tdhlw2qO6q8dJbXmVmuDq+KBZfolQKk9xnOJu8NICoZQAJMabq446FixuPRJIc5FvOw2IjunFOAtiES8StrOsstpin3QOPU=
+	t=1725530642; cv=none; b=KQyADtQu+LGzO8UQFgBXxH3UYmUFupPswl3kj3keZpQbXLrfCZM0Pe7QTikgqKjYU7/AFfnqoGNSR3bvw8KVjILyzdKYNk0yOHnY8GlgKO28A/rYbuF7cs+606IZK+MQKZQCdqY40sF7cMyYAEQbQ1uIZ4MhtmBhbcB/5yodqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530376; c=relaxed/simple;
-	bh=y/ukjBLutSAs48Fl/R4+JvQJVj7rubB+Q0eyY2Osu9I=;
+	s=arc-20240116; t=1725530642; c=relaxed/simple;
+	bh=2qNcSUdqJF+9VUxCmVKGjHOJOoi0RKK/xpd877NOPY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWaJTeTnszaBJQ6dxmENONSwvD8gR2MxtwkbuCv2LgX7CzjvpaQ5s13Rqwg5jdxujEEgwLtlME8ItEXiR8ywiIrqNuQ0IAGLd2GGZY4kuZeCY8bHl8Vxqwk/70ZUIrWiKSbmMFYgVPPhiJigUObtGrVV+OSWBTRpfHWL0slwiho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A72uBwuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E67DC4CEC3;
-	Thu,  5 Sep 2024 09:59:35 +0000 (UTC)
+	 MIME-Version; b=on9/NBWvRsBaMzECZgUlqsXFTjHC1yf58XVhSd9lz5mOTtJfL7rxLQPFDYLreyfnjxGhEJUjCjP7VOVgPt3xhsAGCYHfHtybuNq59AE+nZkEubXud3qclUxOtMQuTsm66KeUen2xyrsuKtauD5aQ7z1mWdsugChLWJSqoY1lfZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK/Het9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA12C4CEC4;
+	Thu,  5 Sep 2024 10:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530376;
-	bh=y/ukjBLutSAs48Fl/R4+JvQJVj7rubB+Q0eyY2Osu9I=;
+	s=korg; t=1725530641;
+	bh=2qNcSUdqJF+9VUxCmVKGjHOJOoi0RKK/xpd877NOPY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A72uBwuuTb6U3EqynxX3Z15j63Xi6NZRCCV2W2Gfsrd8ojqDyT40ov0RWRtBz9pt9
-	 +6ulL6h5q54aIWMO6HwGgKQkdCk71W34twknmCNHiqOF9ujWXplcgqRWjfDThdbAlO
-	 FqqrENKfy4srO8Op/XCfD0PCaIo4dinITFGcfLH8=
+	b=oK/Het9M/hcZqxymzPShLslvoujj29hIt4xbfE3S4B4StYBFGz8tX+934+Ia7sCWT
+	 zcxplTSJiczcbh2lRphZFJwNmAxvcNYtPsOb8LrewHqNdJGb/sTWQmnrz6pZ9LpTux
+	 noDDCghYggKKRmwBJVm/EKSrr/eDUAd7rPueXgII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.6 131/132] i2c: Use IS_REACHABLE() for substituting empty ACPI functions
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/101] hwmon: (k10temp) Check return value of amd_smn_read()
 Date: Thu,  5 Sep 2024 11:41:58 +0200
-Message-ID: <20240905093727.305243214@linuxfoundation.org>
+Message-ID: <20240905093719.492203353@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit 71833e79a42178d8a50b5081c98c78ace9325628 upstream.
+[ Upstream commit c2d79cc5455c891de6c93e1e0c73d806e299c54f ]
 
-Replace IS_ENABLED() with IS_REACHABLE() to substitute empty stubs for:
-    i2c_acpi_get_i2c_resource()
-    i2c_acpi_client_count()
-    i2c_acpi_find_bus_speed()
-    i2c_acpi_new_device_by_fwnode()
-    i2c_adapter *i2c_acpi_find_adapter_by_handle()
-    i2c_acpi_waive_d0_probe()
+Check the return value of amd_smn_read() before saving a value. This
+ensures invalid values aren't saved or used.
 
-commit f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI
-functions") partially fixed this conditional to depend on CONFIG_I2C,
-but used IS_ENABLED(), which is wrong since CONFIG_I2C is tristate.
+There are three cases here with slightly different behavior:
 
-CONFIG_ACPI is boolean but let's also change it to use IS_REACHABLE()
-to future-proof it against becoming tristate.
+1) read_tempreg_nb_zen():
+	This is a function pointer which does not include a return code.
+	In this case, set the register value to 0 on failure. This
+	enforces Read-as-Zero behavior.
 
-Somehow despite testing various combinations of CONFIG_I2C and CONFIG_ACPI
-we missed the combination CONFIG_I2C=m, CONFIG_ACPI=y.
+2) k10temp_read_temp():
+	This function does have return codes, so return the error code
+	from the failed register read. Continued operation is not
+	necessary, since there is no valid data from the register.
+	Furthermore, if the register value was set to 0, then the
+	following operation would underflow.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI functions")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408141333.gYnaitcV-lkp@intel.com/
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+3) k10temp_get_ccd_support():
+	This function reads the same register from multiple CCD
+	instances in a loop. And a bitmask is formed if a specific bit
+	is set in each register instance. The loop should continue on a
+	failed register read, skipping the bit check.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240606-fix-smn-bad-read-v4-3-ffde21931c3f@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i2c.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/k10temp.c | 36 +++++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
 
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -1033,7 +1033,7 @@ static inline int of_i2c_get_board_info(
- struct acpi_resource;
- struct acpi_resource_i2c_serialbus;
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index 43aa955ec120..74a490164034 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -153,8 +153,9 @@ static void read_tempreg_nb_f15(struct pci_dev *pdev, u32 *regval)
  
--#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
-+#if IS_REACHABLE(CONFIG_ACPI) && IS_REACHABLE(CONFIG_I2C)
- bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
- 			       struct acpi_resource_i2c_serialbus **i2c);
- int i2c_acpi_client_count(struct acpi_device *adev);
+ static void read_tempreg_nb_zen(struct pci_dev *pdev, u32 *regval)
+ {
+-	amd_smn_read(amd_pci_dev_to_node_id(pdev),
+-		     ZEN_REPORTED_TEMP_CTRL_BASE, regval);
++	if (amd_smn_read(amd_pci_dev_to_node_id(pdev),
++			 ZEN_REPORTED_TEMP_CTRL_BASE, regval))
++		*regval = 0;
+ }
+ 
+ static long get_raw_temp(struct k10temp_data *data)
+@@ -205,6 +206,7 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
+ 			     long *val)
+ {
+ 	struct k10temp_data *data = dev_get_drvdata(dev);
++	int ret = -EOPNOTSUPP;
+ 	u32 regval;
+ 
+ 	switch (attr) {
+@@ -221,13 +223,17 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
+ 				*val = 0;
+ 			break;
+ 		case 2 ... 13:		/* Tccd{1-12} */
+-			amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
+-				     ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
+-						  &regval);
++			ret = amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
++					   ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
++					   &regval);
++
++			if (ret)
++				return ret;
++
+ 			*val = (regval & ZEN_CCD_TEMP_MASK) * 125 - 49000;
+ 			break;
+ 		default:
+-			return -EOPNOTSUPP;
++			return ret;
+ 		}
+ 		break;
+ 	case hwmon_temp_max:
+@@ -243,7 +249,7 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
+ 			- ((regval >> 24) & 0xf)) * 500 + 52000;
+ 		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		return ret;
+ 	}
+ 	return 0;
+ }
+@@ -381,8 +387,20 @@ static void k10temp_get_ccd_support(struct pci_dev *pdev,
+ 	int i;
+ 
+ 	for (i = 0; i < limit; i++) {
+-		amd_smn_read(amd_pci_dev_to_node_id(pdev),
+-			     ZEN_CCD_TEMP(data->ccd_offset, i), &regval);
++		/*
++		 * Ignore inaccessible CCDs.
++		 *
++		 * Some systems will return a register value of 0, and the TEMP_VALID
++		 * bit check below will naturally fail.
++		 *
++		 * Other systems will return a PCI_ERROR_RESPONSE (0xFFFFFFFF) for
++		 * the register value. And this will incorrectly pass the TEMP_VALID
++		 * bit check.
++		 */
++		if (amd_smn_read(amd_pci_dev_to_node_id(pdev),
++				 ZEN_CCD_TEMP(data->ccd_offset, i), &regval))
++			continue;
++
+ 		if (regval & ZEN_CCD_TEMP_VALID)
+ 			data->show_temp |= BIT(TCCD_BIT(i));
+ 	}
+-- 
+2.43.0
+
 
 
 
