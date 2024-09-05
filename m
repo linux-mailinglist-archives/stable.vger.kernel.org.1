@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB7996D543
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B7E96D465
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7A5A1F2A2C2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BD4B20D4C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494C5194A5A;
-	Thu,  5 Sep 2024 10:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5A519755E;
+	Thu,  5 Sep 2024 09:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNlGlpEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3QOn/hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A2F1494DB;
-	Thu,  5 Sep 2024 10:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D955194A45;
+	Thu,  5 Sep 2024 09:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530542; cv=none; b=KAgcx2PxMK2vOJCVJrHraVWl6QR1Z2Ttq6qXzPha4o4z77hE3lTnrpD35kswxBq0OyCdQXDl/1PAp6iyhKhZLb+su9bqHN3AwV921wbhFk05audJ5m9z0bhp0fbqWfkhSdtRPepn5olaQUsy2INGxUd94lrqNWT/Z4c0b7nFd0s=
+	t=1725529889; cv=none; b=g7zvIQIX1lMQNkcx8NqmrEx56rd0F4cBetkhcj8ZbG43ljStyG3i4C4WrZ0D9vMikQFpi3xAEA7+MCCkNXgqSHAqqAOUV8NNoBiyPCPs1vdF9INOxkuui0HY6ePcP+yA5R3V5bejLJsEvncVe+NZXbxH1w/8XDH8suRjIjUPF8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530542; c=relaxed/simple;
-	bh=F37Xf0Q2VPC8QyzRB8Ys3AVqpruJOZzToYl/wtLybkI=;
+	s=arc-20240116; t=1725529889; c=relaxed/simple;
+	bh=IyROwFsI6KPFb2hG+YKz/p3FTv0+mAHldZTbZRHDhGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFQns/CQFgNL2+oQHHni5iMQ6KgGvGOjTf3993sNSjOgs7b2GnbuOX4eRsV9y6aWDnD47/CTYA8JtJiAZlwViJRYR+GZUgeibS76Eutm2KR/+9VJP3XlVFVYK8tUgjaVgXDCbQE8JPtix1/T36BSZXj5xvlJu/B5lEb8XDjpqv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNlGlpEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B065C4CEC3;
-	Thu,  5 Sep 2024 10:02:21 +0000 (UTC)
+	 MIME-Version; b=MTO4Ld/BGpNQ7uVyhp9c8rEjuUVkCkRYJCwOq7T2muSehHKswSq1bLS3nhp0WtnAQVuxa5PU5ZcqYh8XwWYoPgW/qqSaM2pmEJ+OJghNUCZhwpB3Q5WIfvu658LGqh9+slZewCvjXZCcgMzMhqnvk8V4v9BvTDkobBfEe/1bt9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3QOn/hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F838C4CEC6;
+	Thu,  5 Sep 2024 09:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530541;
-	bh=F37Xf0Q2VPC8QyzRB8Ys3AVqpruJOZzToYl/wtLybkI=;
+	s=korg; t=1725529889;
+	bh=IyROwFsI6KPFb2hG+YKz/p3FTv0+mAHldZTbZRHDhGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNlGlpEfWWe9KbOg2vYvTSwczH/5cmJQIWuAYnvsuSTRx/j7Tu3lpU4ISiqwhCvQN
-	 VD8LV/jz+DpJaC9i8OgvpTLLTUR9sRXSIzy7Tbdj2nzKXLJZasGjuUjuFPXxnG3OEt
-	 EbHCyi2Xr5mEYuaSWbiWaD1+xUmXqBvwoguUrDX4=
+	b=k3QOn/hX5+xLKJ/EeoFB3L49mBhBPhnsTq+7s1T5YgiqyRq9ivUAhBfBAxt2l7/Vc
+	 uX3DtwhKe1WpfF+YsHb0cVvY50zCjQD/ZLJgCoYKsHfLW759poFBA1ZG1MiUVKu6H6
+	 yFQ93VAatLKfuRhj6fV/aBOC4hXzmKmH6UU53hyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/101] drm/amdgpu: fix ucode out-of-bounds read warning
+Subject: [PATCH 6.10 174/184] drm/amdgpu: set RAS fed status for more cases
 Date: Thu,  5 Sep 2024 11:41:27 +0200
-Message-ID: <20240905093718.289772991@linuxfoundation.org>
+Message-ID: <20240905093739.128857304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Tao Zhou <tao.zhou1@amd.com>
 
-[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
+[ Upstream commit 09a3d8202df1e9fa1eb5f5f63524c8948275ff4c ]
 
-Clear warning that read ucode[] may out-of-bounds.
+Indicate fatal error for each RAS block and NBIO.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c  | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-index f1a050379190..682de88cf91f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
- 		struct amdgpu_firmware_info *ucode;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 57fdc4ab9c54..7ba90c5974ed 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -2112,6 +2112,7 @@ static void amdgpu_ras_interrupt_umc_handler(struct ras_manager *obj,
+ 	/* Let IP handle its data, maybe we need get the output
+ 	 * from the callback to update the error type/count, etc
+ 	 */
++	amdgpu_ras_set_fed(obj->adev, true);
+ 	ret = data->cb(obj->adev, &err_data, entry);
+ 	/* ue will trigger an interrupt, and in that case
+ 	 * we need do a reset to recovery the whole system.
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+index 750ce281b97b..e326d6f06ca9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+@@ -418,6 +418,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
+ 		/* ras_controller_int is dedicated for nbif ras error,
+ 		 * not the global interrupt for sync flood
+ 		 */
++		amdgpu_ras_set_fed(adev, true);
+ 		amdgpu_ras_reset_gpu(adev);
+ 	}
  
- 		id = fw_type_convert(cgs_device, type);
-+		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
-+			return -EINVAL;
-+
- 		ucode = &adev->firmware.ucode[id];
- 		if (ucode->fw == NULL)
- 			return -EINVAL;
 -- 
 2.43.0
 
