@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-73538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC6296D548
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E1496D4C7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A98E1F27041
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D74A228154C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E518194A5A;
-	Thu,  5 Sep 2024 10:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BD3194AC7;
+	Thu,  5 Sep 2024 09:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHVZ/xVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgENpzmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A9719413B;
-	Thu,  5 Sep 2024 10:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0A8192D73;
+	Thu,  5 Sep 2024 09:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530558; cv=none; b=ZYach0A8A/iroO5K1jjH6gKev7cTnHwbG6PYxPc5kMYZmeBveF7Nt7D2RYllJ7dmrRm53zUrE4yZklS/7eu5Gn91MO779Wqr4aBWM7Rd7YDOBau8Yc5hxJPnTZSQ+sok4pDuH4ivDteVLrIRltsggcu4nXxukH1j03RIikGe59E=
+	t=1725530167; cv=none; b=PNFFeHoSeuJCHIrvIAfcmu9x2e0WtQwUsxGWtOXF2Z+i21wz/kRhQyRuOrYNZdUPyRKp1O+NJ0OgaGCilqQgIOswfmBX2jFI372scFZgZqHwpOA8USfA7FqmXKTMB/pFEiql+v9FzXQyG3YDCBENrcKdfNatCeQ1gC+lcRJ3n2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530558; c=relaxed/simple;
-	bh=Abext7Esebq3PJhNzwCHdfmIpYXMpWTlBxNW/t9bIRQ=;
+	s=arc-20240116; t=1725530167; c=relaxed/simple;
+	bh=CLL7t5wdWYRtV9XBjdGAcPRWORIHNUnSCjOtbM0t/DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsYTX2LYLvQzpX1QoXLhauRCtV5fwtKvwMTMFCTDCnc7OCEdELL73Yunk4waLuSYqjE+NNiu7qv+rF6150EQvVA/wQpnb+QaB/PB8C8U5cpqvPww0yzV/2HfDqVnjnCxPCqXs8h+JZJ5n3dy5QjxSbBQ2PmVSNcSkEpJI6Qc9o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHVZ/xVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F45C4CEC3;
-	Thu,  5 Sep 2024 10:02:37 +0000 (UTC)
+	 MIME-Version; b=KoF6EqobXecmq7xthrJDkusaiL3t23zqT01QfsVnkiWbsnjH5E5GdJweSuNe/Oy/Bl8Fn2W5Yb63yR0Ax/r8sxNJpX5Pa5fUnD8aEC0+IE/Dx485ThZCK0hlXIoltp5RYHpvAvmZCj6uAeSIzGBcey2YzCabXL2Qw9qV2T6u7Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgENpzmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D54C4CEC3;
+	Thu,  5 Sep 2024 09:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530557;
-	bh=Abext7Esebq3PJhNzwCHdfmIpYXMpWTlBxNW/t9bIRQ=;
+	s=korg; t=1725530166;
+	bh=CLL7t5wdWYRtV9XBjdGAcPRWORIHNUnSCjOtbM0t/DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHVZ/xVMr3Su+rHFMywf78hIalqUpM0fwzFm8yybMFGYEt8DU1o4P8uXqNd2ZP6CW
-	 e4fpnTigBswndYPcdKM46MigV2WuYuJFVrq5Nuf2J49MqDUdPfp872f63htwODuMpS
-	 R7Pqa9zZ5GQnkvLbKJDcmRxGI7tet74joEHSGeM4=
+	b=RgENpzmPl2bQlYfPKnGMDWFGahofXACHy9LcvmwbZXuuH7Wc5/eUtNnDHFrr/bpy0
+	 A2TXDq6M9EGcnWM9FfrbpZh8T2OCYF7NeVUxahhpnNtU1IZydpnUbdPXovLK5iwB/6
+	 ezJO443HKAvk1l//vN1k4qdiiJ5CZvuXPyDoSrBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Leesoo Ahn <lsahn@ooseel.net>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/101] drm/amd/display: Assign linear_pitch_alignment even for VM
+Subject: [PATCH 6.6 075/132] apparmor: fix possible NULL pointer dereference
 Date: Thu,  5 Sep 2024 11:41:02 +0200
-Message-ID: <20240905093717.307329574@linuxfoundation.org>
+Message-ID: <20240905093725.170671243@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Leesoo Ahn <lsahn@ooseel.net>
 
-[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
+[ Upstream commit 3dd384108d53834002be5630132ad5c3f32166ad ]
 
-[Description]
-Assign linear_pitch_alignment so we don't cause a divide by 0
-error in VM environments
+profile->parent->dents[AAFS_PROF_DIR] could be NULL only if its parent is made
+from __create_missing_ancestors(..) and 'ent->old' is NULL in
+aa_replace_profiles(..).
+In that case, it must return an error code and the code, -ENOENT represents
+its state that the path of its parent is not existed yet.
 
-Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+BUG: kernel NULL pointer dereference, address: 0000000000000030
+PGD 0 P4D 0
+PREEMPT SMP PTI
+CPU: 4 PID: 3362 Comm: apparmor_parser Not tainted 6.8.0-24-generic #24
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? show_regs+0x6d/0x80
+ ? __die+0x24/0x80
+ ? page_fault_oops+0x99/0x1b0
+ ? kernelmode_fixup_or_oops+0xb2/0x140
+ ? __bad_area_nosemaphore+0x1a5/0x2c0
+ ? find_vma+0x34/0x60
+ ? bad_area_nosemaphore+0x16/0x30
+ ? do_user_addr_fault+0x2a2/0x6b0
+ ? exc_page_fault+0x83/0x1b0
+ ? asm_exc_page_fault+0x27/0x30
+ ? aafs_create.constprop.0+0x7f/0x130
+ ? aafs_create.constprop.0+0x51/0x130
+ __aafs_profile_mkdir+0x3d6/0x480
+ aa_replace_profiles+0x83f/0x1270
+ policy_update+0xe3/0x180
+ profile_load+0xbc/0x150
+ ? rw_verify_area+0x47/0x140
+ vfs_write+0x100/0x480
+ ? __x64_sys_openat+0x55/0xa0
+ ? syscall_exit_to_user_mode+0x86/0x260
+ ksys_write+0x73/0x100
+ __x64_sys_write+0x19/0x30
+ x64_sys_call+0x7e/0x25c0
+ do_syscall_64+0x7f/0x180
+ entry_SYSCALL_64_after_hwframe+0x78/0x80
+RIP: 0033:0x7be9f211c574
+Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+RSP: 002b:00007ffd26f2b8c8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00005d504415e200 RCX: 00007be9f211c574
+RDX: 0000000000001fc1 RSI: 00005d504418bc80 RDI: 0000000000000004
+RBP: 0000000000001fc1 R08: 0000000000001fc1 R09: 0000000080000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00005d504418bc80
+R13: 0000000000000004 R14: 00007ffd26f2b9b0 R15: 00007ffd26f2ba30
+ </TASK>
+Modules linked in: snd_seq_dummy snd_hrtimer qrtr snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_seq_midi snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device i2c_i801 snd_timer i2c_smbus qxl snd soundcore drm_ttm_helper lpc_ich ttm joydev input_leds serio_raw mac_hid binfmt_misc msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs qemu_fw_cfg ip_tables x_tables autofs4 hid_generic usbhid hid ahci libahci psmouse virtio_rng xhci_pci xhci_pci_renesas
+CR2: 0000000000000030
+---[ end trace 0000000000000000 ]---
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
+
+Signed-off-by: Leesoo Ahn <lsahn@ooseel.net>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/apparmor/apparmorfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index f415733f1a97..d7bca680805d 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1265,6 +1265,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
- 		return NULL;
- 
- 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
-+		dc->caps.linear_pitch_alignment = 64;
- 		if (!dc_construct_ctx(dc, init_params))
- 			goto destruct_dc;
- 	} else {
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
+index 63ddefb6ddd1..23b2853ce3c4 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -1698,6 +1698,10 @@ int __aafs_profile_mkdir(struct aa_profile *profile, struct dentry *parent)
+ 		struct aa_profile *p;
+ 		p = aa_deref_parent(profile);
+ 		dent = prof_dir(p);
++		if (!dent) {
++			error = -ENOENT;
++			goto fail2;
++		}
+ 		/* adding to parent that previously didn't have children */
+ 		dent = aafs_create_dir("profiles", dent);
+ 		if (IS_ERR(dent))
 -- 
 2.43.0
 
