@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-73374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E5F96D495
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0E296D3ED
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0436B28811A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F54284BEB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74277198E92;
-	Thu,  5 Sep 2024 09:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EADC19882C;
+	Thu,  5 Sep 2024 09:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1gbbrn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eH/H58l2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2168D198E85;
-	Thu,  5 Sep 2024 09:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFED155730;
+	Thu,  5 Sep 2024 09:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530023; cv=none; b=stsUKba/RZqsprgm3yxiGwv98haruVtlIz+j3tqpZeyRa1MOA/zqREseZ/opuG4R+1wac4FoxnMTDALxk9/O5C2OMQ+fKWSpr91QKPOwRwMWgaXM9g9M8LPsZWkoWJn2IyCjergDoIf1hOdeFbl9kQCCP4FJbWe3ji+dLznCW2c=
+	t=1725529590; cv=none; b=euFijqEk4sUN+ry+K+0kMkn+P1yESo/9ME3+PyN3jJngQRVhM4CTHjiwBQS67EyF7O2ovVFXUUG3Irx+EZK0WaAHZXPCKCE7MD8kOYjo2H/MUio0yjUN2tnl9mnFlFXow25+R5QSDITCYqAQG2dubdzYtiiYRBXX7jBh5nlLyls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530023; c=relaxed/simple;
-	bh=JmFSEtOxgJRveV7nnVEkXlqb3wajV9HfHQ63VQNnAQI=;
+	s=arc-20240116; t=1725529590; c=relaxed/simple;
+	bh=6oyG2xG7vme2ucmIrbDfvrNumJ4YdhKegTGx7xoUQrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fei62SaOY5bYuISvgKZuJK5q45JX1GUgTyj214W/ahcRM+gfzEw2NGPWU7qydZ/Lkw3XPdECKfQmDysBwyGtu+ZA+G3L90NKve2CiasThkiAPdp0SxO115N0sVXIEFRNjwyKvnXGSJYCc9eiu1qtwkf5HKgx+1uYSYl7UY5x55g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1gbbrn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9934EC4CEC7;
-	Thu,  5 Sep 2024 09:53:42 +0000 (UTC)
+	 MIME-Version; b=R4CTmaCcM16ZF93McOKTKW+o29r1rHAlliXJaDwrljah2a0xH/g0KwIf/l4/LsF6W64FFysEXQo6OWG7PRLJruD1MKvJIKhYbpmI1zSslyvu5MYVBpA6lk0s4lGsgjt2R+T2r9GYdHJpF8XShwuSAnv24AWt9yjRSu0aOSSzKro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eH/H58l2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C256AC4CEC3;
+	Thu,  5 Sep 2024 09:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530023;
-	bh=JmFSEtOxgJRveV7nnVEkXlqb3wajV9HfHQ63VQNnAQI=;
+	s=korg; t=1725529590;
+	bh=6oyG2xG7vme2ucmIrbDfvrNumJ4YdhKegTGx7xoUQrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1gbbrn75dICKc154GN4UKzQWUGoIa4MLVaDnyDTIaKrTSdbT6/eBmMNF7POEvVzj
-	 jqcbE9BHCj6bMK3Y6TzMVzWDS5qRmwVDKwFvYRIZ0qS962OnWQP5YvsJTkkhe1VtTv
-	 rE0IU2mOep6JXjlVUjp7JNbhJzX/OjIzEjj0CHbM=
+	b=eH/H58l29Wtrm6lqe4IqpmhXwJmBHaG6JRSEzUD5U6YFJhm+PlguBBmShgqoWIad5
+	 rBfuPSXnC6CcatG8I9156UCNl6RpafHLDUWu+YVZyCWwffkoZ5FuWj0yDnv+8n0vxR
+	 vIqP07oaeQ4dwRYum5rtIhbqL07to38t5fk/XjuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/132] ALSA: hda/conexant: Mute speakers at suspend / shutdown
+Subject: [PATCH 6.10 081/184] drm/drm-bridge: Drop conditionals around of_node pointers
 Date: Thu,  5 Sep 2024 11:39:54 +0200
-Message-ID: <20240905093722.521332458@linuxfoundation.org>
+Message-ID: <20240905093735.405735823@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
 
-[ Upstream commit 4f61c8fe35202702426cfc0003e15116a01ba885 ]
+[ Upstream commit ad3323a6ccb7d43bbeeaa46d5311c43d5d361fc7 ]
 
-Use the new helper to mute speakers at suspend / shutdown for avoiding
-click noises.
+Having conditional around the of_node pointer of the drm_bridge structure
+is not necessary, since drm_bridge structure always has the of_node as its
+member.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1228269
-Link: https://patch.msgid.link/20240726142625.2460-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Let's drop the conditional to get a better looks, please also note that
+this is following the already accepted commitments. see commit d8dfccde2709
+("drm/bridge: Drop conditionals around of_node pointers") for reference.
+
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240507180001.1358816-1-sui.jingfeng@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_bridge.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index af921364195e4..8396d1d93668c 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -205,6 +205,8 @@ static void cx_auto_shutdown(struct hda_codec *codec)
- {
- 	struct conexant_spec *spec = codec->spec;
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 28abe9aa99ca..584d109330ab 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -353,13 +353,8 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+ 	bridge->encoder = NULL;
+ 	list_del(&bridge->chain_node);
  
-+	snd_hda_gen_shutup_speakers(codec);
-+
- 	/* Turn the problematic codec into D3 to avoid spurious noises
- 	   from the internal speaker during (and after) reboot */
- 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
+-#ifdef CONFIG_OF
+ 	DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
+ 		  bridge->of_node, encoder->name, ret);
+-#else
+-	DRM_ERROR("failed to attach bridge to encoder %s: %d\n",
+-		  encoder->name, ret);
+-#endif
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
