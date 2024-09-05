@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA7E96D4B9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D27E96D40D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A2C4282D13
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8045F1C22C55
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B65A19413B;
-	Thu,  5 Sep 2024 09:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3D1198A32;
+	Thu,  5 Sep 2024 09:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMdPbOO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5/5fN0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC383154BFF;
-	Thu,  5 Sep 2024 09:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED722198A25;
+	Thu,  5 Sep 2024 09:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530127; cv=none; b=qwLv728D6cu/cPT+7gmZt/QJ3lpKea6DTw//HetIXduccnnneE5BzzJQHaqVCL2atbAZt4rg+jQtqblMV4M4DFRsYZz6DDwN0VqNfh34XBChO4hEiDeqYJdHDVM+u1nKNmtQj0L8qOcZEzFnECfqFAuuVH6KBmAVfNX/w4cP+BM=
+	t=1725529664; cv=none; b=gb92gp8EshEM2OSW//dKjVO3sOi8OD/a7TOaq4mSknornLb5YEKkqt/nSG8Zv3dqp5qbsjyBl1piQritc5NadGnamfURIzFgDheGAxh9Ty3n3ICr7/bFTw++YNZojB7lNWKYrGE4HIlVxQkieqcQjQzJhRjzCcvEyExhJvENv0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530127; c=relaxed/simple;
-	bh=M3AOghXr3wmUFi3EZG7zXOdDKSzG9OQFvuE4WtftPto=;
+	s=arc-20240116; t=1725529664; c=relaxed/simple;
+	bh=kv17AbBdBBz0ab//oyXeEJXjFbkV6eiNpDxa+qgV1hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0FzY8AW17WT0p8T84wxP3ypgN20qPY9vWs7fM9/ivVZcE1nO1hGYmmSPIXBJcFIj+u8evk1uP1vn44gpsGUlTxj0xWwRIDHrcoIoV2mIuuOOhCCz9fJ17jFdjJlpG/zIwanBkwNbELJxKwEG6PGneMRRUEdlbK9XDY2DYc19kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMdPbOO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D01C4CEC4;
-	Thu,  5 Sep 2024 09:55:25 +0000 (UTC)
+	 MIME-Version; b=SuMVEtg5OLVgT4tbEYMTE5Z22jROTJ9324PnWuLgBIkvRwLOnYz8SL1OXrS0fAk/wG/xp+x3TMFBctc8Fn9ilxMRg4dv7pz8AQdkMAJQPb36B3VE1hQfEmToE9zNwjl6onz8RIlCjvILmlZSPvz2tvlZfmqWwbJd/9tk4GzZxg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5/5fN0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5422EC4CEC4;
+	Thu,  5 Sep 2024 09:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530126;
-	bh=M3AOghXr3wmUFi3EZG7zXOdDKSzG9OQFvuE4WtftPto=;
+	s=korg; t=1725529663;
+	bh=kv17AbBdBBz0ab//oyXeEJXjFbkV6eiNpDxa+qgV1hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMdPbOO8B//JZewLC+E32sNKazmqiAspGO5j8EVZ6oakO7loYuZL1U/0DOTT5CnmG
-	 I+yFwArMf8A/SNbvcPuu4Yfd+6SMO6w4MA9WrZNRF4BKfC/z5NkvFkQXo5wRM222t6
-	 QeB2cYO5LqIWZmE9KZUyMbjrJIaYgiadMQq8rkmU=
+	b=J5/5fN0eCHHdm+8zzNoZei5DadRw9orKPAKIYFrQiR9fd6sE5Qc3Z1F463trVXT4M
+	 j762ulskeRvmNhDO7p4c4KOQaoEjN9ozofiNGx+5mTBbeA3hqK3J9bRAttirs4YXH0
+	 Ihb3aleGcFkPx+YK5Z9BlWMOFVWSSjqaghy/2Ph8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/132] selftests: mptcp: join: check re-adding init endp with != id
+Subject: [PATCH 6.10 105/184] drm/amdgpu: fix the waring dereferencing hive
 Date: Thu,  5 Sep 2024 11:40:18 +0200
-Message-ID: <20240905093723.447299888@linuxfoundation.org>
+Message-ID: <20240905093736.333744375@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 1c2326fcae4f0c5de8ad0d734ced43a8e5f17dac ]
+[ Upstream commit 1940708ccf5aff76de4e0b399f99267c93a89193 ]
 
-The initial subflow has a special local ID: 0. It is specific per
-connection.
+Check the amdgpu_hive_info *hive that maybe is NULL.
 
-When a global endpoint is deleted and re-added later, it can have a
-different ID, but the kernel should still use the ID 0 if it corresponds
-to the initial address.
-
-This test validates this behaviour: the endpoint linked to the initial
-subflow is removed, and re-added with a different ID.
-
-Note that removing the initial subflow will not decrement the 'subflows'
-counters, which corresponds to the *additional* subflows. On the other
-hand, when the same endpoint is re-added, it will increment this
-counter, as it will be seen as an additional subflow this time.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/mptcp/mptcp_join.sh | 21 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 67675ce3b9a38..0ff60b3744c06 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3738,11 +3738,12 @@ endpoint_tests()
- 	# remove and re-add
- 	if reset "delete re-add signal" &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 2
--		pm_nl_set_limits $ns2 2 2
-+		pm_nl_set_limits $ns1 0 3
-+		pm_nl_set_limits $ns2 3 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
- 		test_linkfail=4 speed=20 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
-@@ -3764,11 +3765,21 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 3
- 		chk_mptcp_info subflows 2 subflows 2
-+
-+		pm_nl_del_endpoint $ns1 42 10.0.1.1
-+		sleep 0.5
-+		chk_subflow_nr "after delete ID 0" 2
-+		chk_mptcp_info subflows 2 subflows 2
-+
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-add" 3
-+		chk_mptcp_info subflows 3 subflows 3
- 		mptcp_lib_kill_wait $tests_pid
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index cef9dd0a012b..b3df27ce7663 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -1375,6 +1375,9 @@ static void psp_xgmi_reflect_topology_info(struct psp_context *psp,
+ 	uint8_t dst_num_links = node_info.num_links;
  
--		chk_join_nr 3 3 3
--		chk_add_nr 4 4
--		chk_rm_nr 2 1 invert
-+		chk_join_nr 4 4 4
-+		chk_add_nr 5 5
-+		chk_rm_nr 3 2 invert
- 	fi
- 
- }
+ 	hive = amdgpu_get_xgmi_hive(psp->adev);
++	if (WARN_ON(!hive))
++		return;
++
+ 	list_for_each_entry(mirror_adev, &hive->device_list, gmc.xgmi.head) {
+ 		struct psp_xgmi_topology_info *mirror_top_info;
+ 		int j;
 -- 
 2.43.0
 
