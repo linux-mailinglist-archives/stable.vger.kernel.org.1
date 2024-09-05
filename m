@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-73355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB8196D481
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2666096D3FB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA8B9B23783
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582381C2342D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154B914A08E;
-	Thu,  5 Sep 2024 09:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A96199EA3;
+	Thu,  5 Sep 2024 09:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqoWS1tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxpCl+EH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A67194A45;
-	Thu,  5 Sep 2024 09:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BBF199395;
+	Thu,  5 Sep 2024 09:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529962; cv=none; b=ODImIIZlAI2iphlFPOqn4D8lniP4CVHdP5QNVpEMxm9yEdogpvMP66OmNjFV+Tz+raouKjACcPlzUtpoQFca/iGTzsMICD1pao0Z9OXceYKFsHpSAAiFEuRH+xWwR4gkMZBb2hz1lzpTpC7Eo4b697wEe1id2EivhdyKggh4VJQ=
+	t=1725529613; cv=none; b=CokjG3LXchrgY90qaXZjrMKtMFKx2f8DJQ+6+hyXi823akPtTh17kH5m89AtZzFlaYMTGxbS7rQc3tIFCXAZo657A/N+exG8ijYCFhNnSP5Gm7+jvRgL8igLm4XYOS4Sgl21e7xf8qgoCSUb9QnYmpMmunzun+orRysk64UulL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529962; c=relaxed/simple;
-	bh=M+3glSluoSjRiG59hriN9jbOhSr9Lhjby+IchGev4Rk=;
+	s=arc-20240116; t=1725529613; c=relaxed/simple;
+	bh=spAmDzx50BeYbg5pw8YI9XhEHXw5bobUNum7Nx6hj7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5TylIAf9TTvDGaNwy3vh637WCyrBvyEMUoUnYbI8JNBN4tn7gOA6LXrF5fqDdEpO94+KRrHmVlr7CJdWTeLA9ulN0lrVZClScd6kpUGkhVjXvU0MNN6F29Fgk77jwCMuJUlAnyRsfWnu+K7hQ6TKN767dCsm0xr95RxahY9QpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqoWS1tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C96EC4CEC3;
-	Thu,  5 Sep 2024 09:52:41 +0000 (UTC)
+	 MIME-Version; b=I7pfFv66kepE8nskDGZAhDdsCAmCAEGJ3pUufc+VcGuoqpcZoD5/r1wTrbr6M9irbj7dtiDlbGSjfjJpfhfv0sbDsLuLOvmAUf+fS8ZzTmCft9/v3ixilWYEOxbTVP9OQgPZollOuKEe6Vf9K7MksCy13wHq7Pi3F6rp16X6/SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxpCl+EH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23601C4CEC3;
+	Thu,  5 Sep 2024 09:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529962;
-	bh=M+3glSluoSjRiG59hriN9jbOhSr9Lhjby+IchGev4Rk=;
+	s=korg; t=1725529612;
+	bh=spAmDzx50BeYbg5pw8YI9XhEHXw5bobUNum7Nx6hj7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqoWS1tjvjWjplalsxNiE0fIO7Ums7lZ702sufe/UBb3OQSiofVu6vECP8m+3mTmY
-	 xGczh9dx0mll3WZ0uLWT0Xo5lpBNdlWH1JuThI2piusa3SxcKREEu6TnWiDA1AO7gg
-	 4gIxmPdjLpvFdpZEHwsL/PO2WBIpTvLZ7MKMUTgc=
+	b=sxpCl+EHVhJ0pZkvljyAkXfTQF0FYsjWyNGfdlYE1mvckXrPFlu47u9V75osBnV4E
+	 hQC9pmENP05wE0mBfhCQRQ9xJCirc26dLcAtZeMiJcuQrNN+HsAsNdhvzmExXZihlU
+	 bmkNUBP/48eYm8O62RIhB7sGGmmlliZ/B0ZWIUi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	"Lin.Cao" <lincao12@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/132] ALSA: seq: ump: Explicitly reset RPN with Null RPN
-Date: Thu,  5 Sep 2024 11:39:59 +0200
-Message-ID: <20240905093722.712836448@linuxfoundation.org>
+Subject: [PATCH 6.10 087/184] drm/amdkfd: Check debug trap enable before write dbg_ev_file
+Date: Thu,  5 Sep 2024 11:40:00 +0200
+Message-ID: <20240905093735.635512291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit 98ea612dd1150adb61cd2a0e93875e1cc77e6b87 ]
+[ Upstream commit 547033b593063eb85bfdf9b25a5f1b8fd1911be2 ]
 
-RPN with 127:127 is treated as a Null RPN, just to reset the
-parameters, and it's not translated to MIDI2.  Although the current
-code can work as is in most cases, better to implement the RPN reset
-explicitly for Null message.
+In interrupt context, write dbg_ev_file will be run by work queue. It
+will cause write dbg_ev_file execution after debug_trap_disable, which
+will cause NULL pointer access.
+v2: cancel work "debug_event_workarea" before set dbg_ev_file as NULL.
 
-Link: https://patch.msgid.link/20240731130528.12600-6-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_debug.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index 7ca62667f28d3..4dd540cbb1cbb 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -789,6 +789,15 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
- 	return 1;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
+index d889e3545120..6c2f6a26c479 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
+@@ -103,7 +103,8 @@ void debug_event_write_work_handler(struct work_struct *work)
+ 			struct kfd_process,
+ 			debug_event_workarea);
+ 
+-	kernel_write(process->dbg_ev_file, &write_data, 1, &pos);
++	if (process->debug_trap_enabled && process->dbg_ev_file)
++		kernel_write(process->dbg_ev_file, &write_data, 1, &pos);
  }
  
-+static void reset_rpn(struct ump_cvt_to_ump_bank *cc)
-+{
-+	cc->rpn_set = 0;
-+	cc->nrpn_set = 0;
-+	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
-+	cc->cc_data_msb = cc->cc_data_lsb = 0;
-+	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+}
-+
- /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
- static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 		    union snd_ump_midi2_msg *data,
-@@ -817,11 +826,7 @@ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 					     cc->cc_data_lsb);
- 	data->rpn.channel = channel;
+ /* update process/device/queue exception status, write to descriptor
+@@ -645,6 +646,7 @@ int kfd_dbg_trap_disable(struct kfd_process *target)
+ 	else if (target->runtime_info.runtime_state != DEBUG_RUNTIME_STATE_DISABLED)
+ 		target->runtime_info.runtime_state = DEBUG_RUNTIME_STATE_ENABLED;
  
--	cc->rpn_set = 0;
--	cc->nrpn_set = 0;
--	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
--	cc->cc_data_msb = cc->cc_data_lsb = 0;
--	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+	reset_rpn(cc);
- 	return 1;
- }
++	cancel_work_sync(&target->debug_event_workarea);
+ 	fput(target->dbg_ev_file);
+ 	target->dbg_ev_file = NULL;
  
-@@ -843,11 +848,15 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		ret = fill_rpn(cc, data, channel, true);
- 		cc->rpn_set = 1;
- 		cc->cc_rpn_msb = val;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_RPN_LSB:
- 		ret = fill_rpn(cc, data, channel, true);
- 		cc->rpn_set = 1;
- 		cc->cc_rpn_lsb = val;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_NRPN_MSB:
- 		ret = fill_rpn(cc, data, channel, true);
-@@ -961,6 +970,8 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		cc->cc_rpn_msb = msb;
- 		cc->cc_rpn_lsb = lsb;
- 		cc->rpn_set = 1;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_NRPN_MSB:
- 	case UMP_CC_NRPN_LSB:
 -- 
 2.43.0
 
