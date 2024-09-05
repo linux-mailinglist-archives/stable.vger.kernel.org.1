@@ -1,154 +1,111 @@
-Return-Path: <stable+bounces-73126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F58496CDF3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:24:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F379B96CE45
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 07:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABD43B222F7
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 04:24:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328FC1C2271B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 05:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA4C14A0B7;
-	Thu,  5 Sep 2024 04:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36817158D9C;
+	Thu,  5 Sep 2024 05:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kBaABYRn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rXmgNl9f"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2048CCC;
-	Thu,  5 Sep 2024 04:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB6A158853
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 05:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725510277; cv=none; b=a7gguKKLOtfnvwr212K80yfQQNBXQMWOKNjU2pdzyQcSFZ/2ZsPw+/sLa/nefoQnCOtm867upy4EelqDoYFBnNKtSDCjf5kdj9Xqkv6bRu4tEtwFDFvMtZmUI0SCDFr8jhrOfDe8D0AKCvhkT1q7SC4fHsngHFJaCulhIU2jZTA=
+	t=1725512458; cv=none; b=BUWF6d4/N8AU7En/vylt+30BY2JfwoXqcpr5rpTIRIHEkMdKQxZmkZA3kWZafR4Q+Cn51Y16VHv/MAp80/ZNiHR+ce87I17XsaHVI8qTHps3LnOkjHGwKNBom6jqFooHMTDGrmUXPlWEhrCHwvAo7Qod82kZ5NwBvwCI00kqJaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725510277; c=relaxed/simple;
-	bh=6MfL0Y9QFnUqWm2/ZVpAP33O/HYuWfUIjk+V0ytEdks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gWyWeeGQqm3r4mMso5ICfDu8XDgMkv8CezNAnjEku40j7wI+9e14y/WcCunAMRbqjWiR6o8bWGew9jm0X9UNLLDQTt2rCS2CMnFT+HAasav3LIPQGHxPUr0lfVDu97IXAjQJwoC4S6DE3gzdwoSvi7KXYXT1kvY0L9+a5bQD2f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kBaABYRn; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725510276; x=1757046276;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6MfL0Y9QFnUqWm2/ZVpAP33O/HYuWfUIjk+V0ytEdks=;
-  b=kBaABYRnscshrzIVdoImbiWTBNQGYTqQIu54xa1paGLx5TMTEvgenImJ
-   5TJRwUsBPaaX1XQkRn+GfUDeQAKXE3ROIQj2aQ7C594TldJ2GkA/8rEzq
-   LKnULRwkoiyLGr3jTL5StI96WAUYVmHJo1/Klu2ax38tMVOrVvi0uUpQS
-   sLy8JB4x03DfoWitbmZG8jyx5saN8erBN9miPjjrgo2L66LiiX68NP7Yy
-   IdiQUtyntI0ZYF0n9f9CLG1D/N+UxRZNaURjelFavxv++NRk/EPoa3nJi
-   eM4E0u4ciRmClTHhURVRSrIkuF4qsb2nsJVVf86ne9Nfu3yIVoW8nqde+
-   A==;
-X-CSE-ConnectionGUID: 0I32WCAGTFCsUv5KgTRL8Q==
-X-CSE-MsgGUID: uKLlz3CYSgG/lcVXFTpFQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24319998"
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="24319998"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 21:24:35 -0700
-X-CSE-ConnectionGUID: AuTVCwsDS/m+Cgh02KTsmg==
-X-CSE-MsgGUID: AF3U6TvdTyW0jYKR7O4jvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="96284840"
-Received: from shuangy2-mobl.ccr.corp.intel.com (HELO [10.238.129.122]) ([10.238.129.122])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 21:24:33 -0700
-Message-ID: <98de8dbd-1a83-40e1-ad5a-a86b1441bb08@linux.intel.com>
-Date: Thu, 5 Sep 2024 12:24:30 +0800
+	s=arc-20240116; t=1725512458; c=relaxed/simple;
+	bh=Wv5Kk0LeNTuRHeczRYjQUdmtIoAX70LujmlvEI/jIF0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u8fXra8Omxn06BeJ0S3htu6shxTqdyMWl2syqy8VHZgNMM02Oann9CIdxBE1dsRrGqgZkknSZN97u3mbsZJe1M88Lz17WQqMCgMXN2fF+n/syqLIJ7G0s5QSjW1V8qFjr2MFy3S3seqPBX8Khv55R65q+GZHsss5GIDxeIFYEjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rXmgNl9f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846F0C4CEC4
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 05:00:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725512457;
+	bh=Wv5Kk0LeNTuRHeczRYjQUdmtIoAX70LujmlvEI/jIF0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rXmgNl9f6iJjZ+SOPkuMIMhsquSfq2OblwnsdEKhAoUQ8/n/quJ4I38tVwcHKZb9P
+	 M/ETZzwT+/YB6Q7vWOQGCUHRGbstEElhz81Dl2brSNrLhYqculnLDSWgo6lBVW8DVs
+	 PTofTgicUnWa4KFQQvpjgnVr2tVZiKbNcRZ5TnUpqX+hJLopImNYtZzs0/A3Ur3ylB
+	 urqapjvczCAfpn+QXBlCZKG/Mq+h6bqanPi2ujDqqq6+I008W262jga/cDRKFO4MRp
+	 aSkYeSl4nXe1fxg1NO/n8zALdm3hDajMTseuWnFVRdFh684/RsB54SXQRTKf+bNPdh
+	 Njjmmg/1wGiMA==
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3a045f08fd6so108615ab.0
+        for <stable@vger.kernel.org>; Wed, 04 Sep 2024 22:00:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUT+IoDHy03fVMA/WG6/PdrgWA9NdbLYHJGP7oqC/Gyx7bn8WnG7gZevlppfDZMHSYPpIlMafc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBO1+wGa3lTlTB4+g9alITEAs093MkJLR/G4eELuMDZlLge1IU
+	zfkh89/LrbhYbppOFBnyj0r8EbuvAwbBpAyBQT0ApTQUmRzY6HKoBdaT1rjWjOHhW6XogNWAffz
+	xempGWSNCjrALLTLj4xK28NTR+TaCYrjcJK8S
+X-Google-Smtp-Source: AGHT+IFDBoIur5pix1vcCpgWhNewDPqGPR9thFq+HmC1zuxlXLSxQ4sUpDhQbT3jHAsSOYV9mgX/x3Y0D1FcdjsyApY=
+X-Received: by 2002:a05:6e02:1605:b0:381:aa0b:3ccf with SMTP id
+ e9e14a558f8ab-3a0475c88e0mr2417985ab.26.1725512456844; Wed, 04 Sep 2024
+ 22:00:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] iommu/vt-d: Prevent boot failure with devices
- requiring ATS
-To: Baolu Lu <baolu.lu@linux.intel.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-Cc: "Saarinen, Jani" <jani.saarinen@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240904060705.90452-1-baolu.lu@linux.intel.com>
- <BN9PR11MB5276428A5462738F89190A5A8C9C2@BN9PR11MB5276.namprd11.prod.outlook.com>
- <9e183ce2-060a-4e0b-a956-03d767368ca4@linux.intel.com>
-From: Ethan Zhao <haifeng.zhao@linux.intel.com>
-In-Reply-To: <9e183ce2-060a-4e0b-a956-03d767368ca4@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+ <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
+ <0f9f7a2e-23c3-43fe-b5c1-dab3a7b31c2d@126.com> <CACePvbXU8K4wxECroEPr5T3iAsG6cCDLa12WmrvEBMskcNmOuQ@mail.gmail.com>
+ <b5f5b215-fdf2-4287-96a9-230a87662194@126.com> <CACePvbV4L-gRN9UKKuUnksfVJjOTq_5Sti2-e=pb_w51kucLKQ@mail.gmail.com>
+ <00a27e2b-0fc2-4980-bc4e-b383f15d3ad9@126.com> <CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com>
+ <CAMgjq7CLObfnEcPgrPSHtRw0RtTXLjiS=wjGnOT+xv1BhdCRHg@mail.gmail.com>
+ <CAMgjq7DLGczt=_yWNe-CY=U8rW+RBrx+9VVi4AJU3HYr-BdLnQ@mail.gmail.com>
+ <CACePvbXJKskfo-bd5jr2GfagaFDoYz__dbQTKmq2=rqOpJzqYQ@mail.gmail.com>
+ <CACePvbWTALuB7-jH5ZxCDAy_Dxeh70Y4=eYE5Mixr2qW+Z9sVA@mail.gmail.com> <56651be8-1466-475f-b1c5-4087995cc5ae@leemhuis.info>
+In-Reply-To: <56651be8-1466-475f-b1c5-4087995cc5ae@leemhuis.info>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 4 Sep 2024 22:00:44 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMBMJCdmjwwPxWn44CDMSngB+uqNYERDU=xPAQYNPrbNQ@mail.gmail.com>
+Message-ID: <CAF8kJuMBMJCdmjwwPxWn44CDMSngB+uqNYERDU=xPAQYNPrbNQ@mail.gmail.com>
+Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Kairui Song <ryncsn@gmail.com>, Ge Yang <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, 
+	Barry Song <21cnbao@gmail.com>, David Hildenbrand <david@redhat.com>, baolin.wang@linux.alibaba.com, 
+	liuzixing@hygon.cn, Hugh Dickins <hughd@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/4/2024 3:49 PM, Baolu Lu wrote:
-> On 2024/9/4 14:49, Tian, Kevin wrote:
->>> From: Lu Baolu <baolu.lu@linux.intel.com>
->>> Sent: Wednesday, September 4, 2024 2:07 PM
->>>
->>> SOC-integrated devices on some platforms require their PCI ATS enabled
->>> for operation when the IOMMU is in scalable mode. Those devices are
->>> reported via ACPI/SATC table with the ATC_REQUIRED bit set in the Flags
->>> field.
->>>
->>> The PCI subsystem offers the 'pci=noats' kernel command to disable PCI
->>> ATS on all devices. Using 'pci=noat' with devices that require PCI ATS
->>> can cause a conflict, leading to boot failure, especially if the device
->>> is a graphics device.
->>>
->>> To prevent this issue, check PCI ATS support before enumerating the 
->>> IOMMU
->>> devices. If any device requires PCI ATS, but PCI ATS is disabled by
->>> 'pci=noats', switch the IOMMU to operate in legacy mode to ensure
->>> successful booting.
->>
->> I guess the reason of switching to legacy mode is because the platform
->> automatically enables ATS in this mode, as the comment says in
->> dmar_ats_supported(). This should be explained otherwise it's unclear
->> why switching the mode can make ATS working for those devices.
->
-> Not 'automatically enable ATS,' but hardware provides something that is
-> equivalent to PCI ATS. The ATS capability on the device is still
-> disabled. That's the reason why such device must be an SOC-integrated
-> one.
+Hi Thorsten,
 
-That is confusing, how to know the "hardware provides something that is
-equivalent to PCI ATS" ? any public docs to say that ?
+On Mon, Sep 2, 2024 at 5:54=E2=80=AFAM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
+>
+> Chris et. al., was that fix from Yu ever submitted? From here it looks
 
->
->>
->> But then doesn't it break the meaning of 'pci=noats' which means
->> disabling ATS physically? It's described as "do not use PCIe ATS and
->> IOMMU device IOTLB" in kernel doc, which is not equivalent to
->> "leave PCIe ATS to be managed by HW".
->
-> Therefore, the PCI ATS is not used and the syntax of pci=noats is not
-> broken.
->
->> and why would one want to use 'pci=noats' on a platform which
->> requires ats?
->
-> We don't recommend users to disable ATS on a platform which has devices
-> that rely on it. But nothing can prevent users from doing so. I am not
-> sure why it is needed. One possible reason that I can think of is about
-> security. Sometimes, people don't trust ATS because it allows devices to
-> access the memory with translated requests directly without any
-> permission check on the IOMMU end.
+Not yet. Let me make a proper patch and add "suggested-by" Yu.
 
-Appears that would happen with CXL link, while PCI link still will do
-some checking (per VT-d spec sec 4.2.4). I have question here, such behaviour
-happens with HW passthrough, also does to software passthrough (removed identity
-mapping) ?
+It is one patch I have to apply to the mm-unstable before stress
+testing the swapping code. I even have a script performing the bisect
+after applying this one line fix, so that I can hunt down the other
+swap unstable patch.
 
+> like fixing this regression fell through the cracks; but at the same
+> time I have this strange feeling that I'm missing something obvious here
+> and will look stupid by writing this mail... If that's the case: sorry
+> for the noise.
 
-Thanks,
-Ethan
+Not at all. You did the right thing. Thanks for the reminder. I also
+want to get rid of my one off private patch fix as well.
 
->
-> Thanks,
-> baolu
->
+Chris
 
