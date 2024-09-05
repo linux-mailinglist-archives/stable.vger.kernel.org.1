@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A393C96D4E5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1038D96D436
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1580AB24806
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 190831C22EE1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BFD194A5B;
-	Thu,  5 Sep 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D671C192D73;
+	Thu,  5 Sep 2024 09:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3ZAe03f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPxr+EDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE382194A64;
-	Thu,  5 Sep 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938AA155730;
+	Thu,  5 Sep 2024 09:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530244; cv=none; b=kDX6O6Ynp4DqDQwkn4jv/JmWsdSXswELLCBpglmcmLicUdvqHMONTZ+s9N2MDnXlQqzUeth/ItB0YtpRyn5cg/TrUgGRVDeVS7gzZmDwJJDUDQ/SUOKM5bsF7pUw4rcPm03LshYexylCprITcF9PgvbkxlBf9y/IylOSjxc0CDA=
+	t=1725529781; cv=none; b=Nv/JXFl9+IpTJimPK6EZWJ9IbMkuZ5keKshVD/vxuUmK7znaokEbomqkINaBIvWCGf6/es5J3r/EljKfVEkKcCpmU7RM3gjVdD1TsGGKw8Uuygj8qsKdTM4jqi4Qbp5p+iDNDgCeGNJXk2LRyyNygNoqUdWMPd3N7SfOyOcwOiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530244; c=relaxed/simple;
-	bh=j9QR+EjwnubOYq5sQsbkVts9HusfHERmzfu8viATeTA=;
+	s=arc-20240116; t=1725529781; c=relaxed/simple;
+	bh=zwnbHnKVCgMIeuwdSgkXdjeIE9F15vCVUnVZn/bwLj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmiTWZKMNLGZeEPVggw6Wb9I+V8aKNjqoxnklmB53R5AxBBEFHTDZfjnAB2zt+0+vKEC2QnZLF+i6XzM7SMNJ5FWvgXe8XRk4oQ+jOen2THHaVWBX72OBlKorQH5yDeDTVTn5HWDQqK7IlE+5D9wGEYKSNhrh7UR+ze5R/9gjA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3ZAe03f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB238C4CEC3;
-	Thu,  5 Sep 2024 09:57:23 +0000 (UTC)
+	 MIME-Version; b=UQjbHIxLx87y+QBZdLsfrxUVEZXMafGMvstRE7KOojb2I16QCI1PSVQ7d6mXeGm5lcdqM12Hg/vqFynD8BMdLWkBQZSc3tTRveSftY3qOul2tTiJ0uQH08t31wftnk+IdY6reJWyL+80nlLyjqa4FsewZzTZvtUp3tfX+F49rvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPxr+EDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABD9C4CEC3;
+	Thu,  5 Sep 2024 09:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530244;
-	bh=j9QR+EjwnubOYq5sQsbkVts9HusfHERmzfu8viATeTA=;
+	s=korg; t=1725529781;
+	bh=zwnbHnKVCgMIeuwdSgkXdjeIE9F15vCVUnVZn/bwLj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3ZAe03fUcyRNXO2CcvIAXblr9MbjSdCRqkazCLTBAJ9pMSPcJMJwEDaQXEWtS83D
-	 ypA2U2XAOYqUjjYgJ8lkApZmEtUh5vTqGLwPV2wB5v6Fw4kjB5yUAnkmEXF1pnowB6
-	 WQ6wyRa1WwSJ99IOMIubAx5HRHUxB9n1XO+T4BxU=
+	b=CPxr+EDy3Kmshl7RyIoRgk4arPDKoKyHwy+EQ8HiL7/+mazVgFi7IB6dsZf9+5b9U
+	 DZSt2UrmoQApQFZym/VGoi0YcUKLRoSrkMJZ5UTLc5gwxgeMHCdzrgViFYJjtztZXI
+	 sQQi/KfbgdOaXsEkUKhozkrokBPq7mFKplEd3dwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/132] drm/amdgpu/pm: Fix uninitialized variable agc_btc_response
+Subject: [PATCH 6.10 141/184] regmap: spi: Fix potential off-by-one when calculating reserved size
 Date: Thu,  5 Sep 2024 11:40:54 +0200
-Message-ID: <20240905093724.863003182@linuxfoundation.org>
+Message-ID: <20240905093737.837312965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[ Upstream commit df4409d8a04dd39d7f2aa0c5f528a56b99eaaa13 ]
+[ Upstream commit d4ea1d504d2701ba04412f98dc00d45a104c52ab ]
 
-Assign an default value to agc_btc_response in failed case
+If we ever meet a hardware that uses weird register bits and padding,
+we may end up in off-by-one error since x/8 + y/8 might not be equal
+to (x + y)/8 in some cases.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+bits    pad   x/8+y/8 (x+y)/8
+4..7    0..3    0       0 // x + y from 4 up to 7
+4..7    4..7    0       1 // x + y from 8 up to 11
+4..7    8..11   1       1 // x + y from 12 up to 15
+8..15   0..7    1       1 // x + y from 8 up to 15
+8..15   8..15   2       2 // x + y from 16 up to 23
+
+Fix this by using (x+y)/8.
+
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://msgid.link/r/20240605205315.19132-1-andy.shevchenko@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap-spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index a97e393067e4..6c87b3d4ab36 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -2361,15 +2361,20 @@ static int vega10_acg_enable(struct pp_hwmgr *hwmgr)
- {
- 	struct vega10_hwmgr *data = hwmgr->backend;
- 	uint32_t agc_btc_response;
-+	int ret;
+diff --git a/drivers/base/regmap/regmap-spi.c b/drivers/base/regmap/regmap-spi.c
+index 094cf2a2ca3c..14b1d88997cb 100644
+--- a/drivers/base/regmap/regmap-spi.c
++++ b/drivers/base/regmap/regmap-spi.c
+@@ -122,8 +122,7 @@ static const struct regmap_bus *regmap_get_spi_bus(struct spi_device *spi,
+ 			return ERR_PTR(-ENOMEM);
  
- 	if (data->smu_features[GNLD_ACG].supported) {
- 		if (0 == vega10_enable_smc_features(hwmgr, true,
- 					data->smu_features[GNLD_DPM_PREFETCHER].smu_feature_bitmap))
- 			data->smu_features[GNLD_DPM_PREFETCHER].enabled = true;
+ 		max_msg_size = spi_max_message_size(spi);
+-		reg_reserve_size = config->reg_bits / BITS_PER_BYTE
+-				 + config->pad_bits / BITS_PER_BYTE;
++		reg_reserve_size = (config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
+ 		if (max_size + reg_reserve_size > max_msg_size)
+ 			max_size -= reg_reserve_size;
  
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
-+		if (ret)
-+			return ret;
- 
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
-+		if (ret)
-+			agc_btc_response = 0;
- 
- 		if (1 == agc_btc_response) {
- 			if (1 == data->acg_loop_state)
 -- 
 2.43.0
 
