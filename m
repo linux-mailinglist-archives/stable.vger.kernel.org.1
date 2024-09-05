@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C0396D549
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A0196D4C8
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21421C22783
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CDEC1C212A9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D6C195F04;
-	Thu,  5 Sep 2024 10:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87632194ACD;
+	Thu,  5 Sep 2024 09:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvCVn1rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0szsettg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FB21494DB;
-	Thu,  5 Sep 2024 10:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C84192D73;
+	Thu,  5 Sep 2024 09:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530561; cv=none; b=dgh/VOAcO+4W6fYvvr4yrSER/6yBGXyMKa4xXLMFmGb6pxB02nQfqcQkpT9XDS5hLK0dADnNJmF/6AW6xEitxEbjO5TfAcfIxf3Z57jMmIuaLczSe0dhmd2fzREBRPcrskejT2XE/JofoHoW2H8X/06R3dZpmlpszMvFQ/SRiJI=
+	t=1725530170; cv=none; b=sN/cExBj1V7jKubxfA068imzr8duyCI4ECunw9B+Lfd1nw01RIMjngb1wsC9am3J587UaN5eCU9YTpr2yuUREwGyiiqLvYkkVChsuMYAplTG4dp6rVtlaMo10lK9J/QT5pWHn9baMzSpExv/5wka1750X49fIJ9nmSG9iFTilo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530561; c=relaxed/simple;
-	bh=PCc09MS4k40n2R3dirE6k5gCGH7dfICoyws8mVBBEVw=;
+	s=arc-20240116; t=1725530170; c=relaxed/simple;
+	bh=sIPPMlh/xcte5P4/AfW6OPpXo2pNbvEDomxNuRZv5uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJfQmJuvl9gF7jARmpsc7KRF5vXljlZvIgfeuGQ0TTQiY2ZB5j26ALViOB2KA+L1cfM/XKJAu+UE8W1ttH1LhWH9R57NcmNHh62k+5X1BhfUenXc5L9qe/N9TDpwwagAVO72outTrNDYeUUqGRpEfdwPtb6HLZW4ghT7g4hh/Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvCVn1rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E24C4CEC3;
-	Thu,  5 Sep 2024 10:02:40 +0000 (UTC)
+	 MIME-Version; b=V+LpK3MfNR1Ipu1RJEhJ3Lv39tiMeGbV7qZUcAVZgnsFIfaDAh6uzt572/8i82Cl8SUcBdQmmLnVxdGq/3kq2+p4wdCl9R2OILSmyj1EIiVIG5dvg+es+bxY7njQqWyNzSlXhMU/Qe+pHfj1hFGNsDTsUK8k7mj0kDunBB54W+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0szsettg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE3DC4CEC3;
+	Thu,  5 Sep 2024 09:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530561;
-	bh=PCc09MS4k40n2R3dirE6k5gCGH7dfICoyws8mVBBEVw=;
+	s=korg; t=1725530170;
+	bh=sIPPMlh/xcte5P4/AfW6OPpXo2pNbvEDomxNuRZv5uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvCVn1rljCNpfKYnJ40U2AFoXVB68KhDHHDG6JI3A1mwAtBbU4OnZHeVM++TpuXxG
-	 7UB67BJUj63IdxXpxJfDn9hKYswppqmiFn6dtIy1ERCk6hH/cNkKviFqm+wMiYYkGm
-	 P1GtrhFN4ViakuSSwCaietqtfYzgZLqi7tU2Dhlo=
+	b=0szsettg/cj7oSg0Cx5EDum2PAqxeF0nLilNPwgJddKKIBAIAsUudE4sJcIRQ2N8u
+	 rQ6uQETB1/T0aQYvU8NMwZbQj0eA8k0UqtHCVR7zc2Zl3DA6v4socISbiRLXasVmMM
+	 OwPEK5UBhZW70BgKCJps/LJos1oBVgwcEwx1XPcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/101] drm/amdgpu: fix overflowed array index read warning
+Subject: [PATCH 6.6 076/132] wifi: ath12k: initialize ret in ath12k_qmi_load_file_target_mem()
 Date: Thu,  5 Sep 2024 11:41:03 +0200
-Message-ID: <20240905093717.346877057@linuxfoundation.org>
+Message-ID: <20240905093725.207518582@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
+[ Upstream commit bb0b0a6b96e6de854cb1e349e17bd0e8bf421a59 ]
 
-Clear overflowed array index read warning by cast operation.
+smatch flagged the following issue:
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+drivers/net/wireless/ath/ath12k/qmi.c:2619 ath12k_qmi_load_file_target_mem() error: uninitialized symbol 'ret'.
+
+The reality is that 'ret' is initialized in every path through
+ath12k_qmi_load_file_target_mem() except one, the case where the input
+'len' is 0, and hence the "while (remaining)" loop is never entered.
+But to make sure this case is also handled, add an initializer to the
+declaration of 'ret'.
+
+No functional changes, compile tested only.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240504-qmi_load_file_target_mem-v1-1-069fc44c45eb@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index 296b2d5976af..2001c7d27a53 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -434,8 +434,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
- 					size_t size, loff_t *pos)
- {
- 	struct amdgpu_ring *ring = file_inode(f)->i_private;
--	int r, i;
- 	uint32_t value, result, early[3];
-+	loff_t i;
-+	int r;
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index f1379a5e60cd..c49f585cc396 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -2312,7 +2312,7 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
+ 	struct qmi_wlanfw_bdf_download_resp_msg_v01 resp;
+ 	struct qmi_txn txn = {};
+ 	const u8 *temp = data;
+-	int ret;
++	int ret = 0;
+ 	u32 remaining = len;
  
- 	if (*pos & 3 || size & 3)
- 		return -EINVAL;
+ 	req = kzalloc(sizeof(*req), GFP_KERNEL);
 -- 
 2.43.0
 
