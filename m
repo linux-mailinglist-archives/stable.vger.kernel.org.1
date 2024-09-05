@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-73177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD8C96D391
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:43:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD4D96D393
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D8C928AFC7
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283EE1C21D71
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200AB195FCE;
-	Thu,  5 Sep 2024 09:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EC3196446;
+	Thu,  5 Sep 2024 09:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guPo7Taq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUVfFnL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D151F1925AA;
-	Thu,  5 Sep 2024 09:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322AD1925AA;
+	Thu,  5 Sep 2024 09:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529393; cv=none; b=NCR2AJToiu66LVHqEjPkj9cRxkX7obyRfcxYDHntaLTNbjX3FP9M/l9kO4iPR9A94PkrUOW87H9VHu3B52bn5elcpEOHbsc475XLJ+RYpDyayVN6eWbyMNkYmcECgG2vGIzk3U2G1MXKnRw3SYelMzK8XfS+mXg9HrfZ7VoXWSQ=
+	t=1725529400; cv=none; b=AASrhwR7q+cfh2gspby/zhI2kXQErcJPBXNQwwyPWYCZhR5ffCPBCaJHjwwGrnlE45IvsvWMUj296/rFfhaX+c28bicNH160Ky9oqc7AwfcX233U9w3dPITCDRxegbgT20JWybx6V5NJ/GFqMPfFdcCssYv3aTgpCFskreD+t2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529393; c=relaxed/simple;
-	bh=tOJhoHS4X2jZduOmu6YBgjDRaebecoGCNbi1CeyoGDs=;
+	s=arc-20240116; t=1725529400; c=relaxed/simple;
+	bh=odAYq1r0/4b49snAdubZk8TU/7AuuAJw3tM+qH6K0+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PAXu5aHhtmin8J1orgBNl8FeQksLUJ+mR4yABMvQ1U8j5Effko9l6EKb3mSF0jEJk/D2V3UeuaZ+aVJsDFA9Kg0Qu0IgySXqOwbbXK6cU9juagBg0es5H96eFWoT+/KuU2BB05q34cmKKIjfIu0PZow+RxPG3JdD+jHS7mbZPR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guPo7Taq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E26EC4CEC3;
-	Thu,  5 Sep 2024 09:43:13 +0000 (UTC)
+	 MIME-Version; b=AeLD7jO5rjkPtlSHrG63O/lLKvLOoQzK9iHJyCGmGjyCyAsNMsPGbDuRKSZlTvePWbOyvVueNlwOCN+HrXcFENmrnHVW2nHGscR5oaWUMQ5CQByj7C6vYT+RauG5XE2G2BSe0ecIQioNKKfN4slAyL3Sed6Z1f/LDfrGXUAKITk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUVfFnL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B901C4CEC3;
+	Thu,  5 Sep 2024 09:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529393;
-	bh=tOJhoHS4X2jZduOmu6YBgjDRaebecoGCNbi1CeyoGDs=;
+	s=korg; t=1725529399;
+	bh=odAYq1r0/4b49snAdubZk8TU/7AuuAJw3tM+qH6K0+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guPo7TaqFcKhHNvBIBoo6eMu7wvp/7pk5cONVPznCWVZvba0n/HDtwL8QmKM+2pk+
-	 a2NrJOxsb+GG6lwiFK0J6sCszEEpqYXH9Z+QwlrpoHx6B70haS6seQEUU+Mu1i/XN2
-	 bAeIxTGHs2aF7vlJeyN1xJ7dU3Z9S/3t8plb0M5M=
+	b=TUVfFnL11pD7D7LvLuM3/QROvpG1yPfPc9ab+eGsYkrXU/B6m60sEXcqiyAxTVeVn
+	 54/Np1oIODrolee5apEumFRXb760/+6j/bOYAL4V3IlfDYwdfdVjfIjn5bGlOUpa4b
+	 knzbljqo12I3TvWvAjL+99J02XSVtZ04nsKWcb6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 019/184] platform/x86/amd/pmf: Add new ACPI ID AMDI0107
-Date: Thu,  5 Sep 2024 11:38:52 +0200
-Message-ID: <20240905093732.997133207@linuxfoundation.org>
+Subject: [PATCH 6.10 020/184] btrfs: factor out stripe length calculation into a helper
+Date: Thu,  5 Sep 2024 11:38:53 +0200
+Message-ID: <20240905093733.035433476@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -60,57 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 942810c0e89277d738b7f1b6f379d0a5877999f6 ]
+[ Upstream commit 33eb1e5db351e2c0e652d878b66b8a6d4d013135 ]
 
-Add new ACPI ID AMDI0107 used by upcoming AMD platform to the PMF
-supported list of devices.
+Currently there are two locations which need to calculate the real
+length of a stripe (which can be at the end of a chunk, and the chunk
+size may not always be 64K aligned).
 
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20240723132451.3488326-1-Shyam-sundar.S-k@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Factor them into a helper as we're going to have a third user soon.
+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/scrub.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index 2d6e2558863c5..8f1f719befa3e 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -41,6 +41,7 @@
- #define AMD_CPU_ID_RMB			0x14b5
- #define AMD_CPU_ID_PS			0x14e8
- #define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT	0x1507
-+#define PCI_DEVICE_ID_AMD_1AH_M60H_ROOT	0x1122
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index d7caa3732f074..9712169593980 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1648,14 +1648,20 @@ static void scrub_reset_stripe(struct scrub_stripe *stripe)
+ 	}
+ }
  
- #define PMF_MSG_DELAY_MIN_US		50
- #define RESPONSE_REGISTER_LOOP_MAX	20000
-@@ -249,6 +250,7 @@ static const struct pci_device_id pmf_pci_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_RMB) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_PS) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_ROOT) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_ROOT) },
- 	{ }
- };
++static u32 stripe_length(const struct scrub_stripe *stripe)
++{
++	ASSERT(stripe->bg);
++
++	return min(BTRFS_STRIPE_LEN,
++		   stripe->bg->start + stripe->bg->length - stripe->logical);
++}
++
+ static void scrub_submit_extent_sector_read(struct scrub_ctx *sctx,
+ 					    struct scrub_stripe *stripe)
+ {
+ 	struct btrfs_fs_info *fs_info = stripe->bg->fs_info;
+ 	struct btrfs_bio *bbio = NULL;
+-	unsigned int nr_sectors = min(BTRFS_STRIPE_LEN, stripe->bg->start +
+-				      stripe->bg->length - stripe->logical) >>
+-				  fs_info->sectorsize_bits;
++	unsigned int nr_sectors = stripe_length(stripe) >> fs_info->sectorsize_bits;
+ 	u64 stripe_len = BTRFS_STRIPE_LEN;
+ 	int mirror = stripe->mirror_num;
+ 	int i;
+@@ -1729,9 +1735,7 @@ static void scrub_submit_initial_read(struct scrub_ctx *sctx,
+ {
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+ 	struct btrfs_bio *bbio;
+-	unsigned int nr_sectors = min(BTRFS_STRIPE_LEN, stripe->bg->start +
+-				      stripe->bg->length - stripe->logical) >>
+-				  fs_info->sectorsize_bits;
++	unsigned int nr_sectors = stripe_length(stripe) >> fs_info->sectorsize_bits;
+ 	int mirror = stripe->mirror_num;
  
-@@ -382,6 +384,7 @@ static const struct acpi_device_id amd_pmf_acpi_ids[] = {
- 	{"AMDI0102", 0},
- 	{"AMDI0103", 0},
- 	{"AMDI0105", 0},
-+	{"AMDI0107", 0},
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, amd_pmf_acpi_ids);
+ 	ASSERT(stripe->bg);
 -- 
 2.43.0
 
