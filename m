@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-73670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459ED96E490
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 23:03:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B17C96E48F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 23:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6BE1C23F8C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:03:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF731F2473B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03CB1A7275;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7231A38DC;
 	Thu,  5 Sep 2024 21:03:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3716194A61;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D958165F0E;
 	Thu,  5 Sep 2024 21:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725570209; cv=none; b=c2CEH70GQM0l7h/uAeGGLQrouvbPkzYMmAsS+5XwvkT4aTcV1IbOqMNWcKxP5dffrVAVPOAa2ebT7PP3ZepIkMAX+Mz0UQVQm96OAZuwJkCcDwNPC9Xfp6htMpCDO5Zyi94ZEbaTLeU5fpUSKVoQ9Gzl1BPB48Ys+whXSLV8LZ4=
+	t=1725570209; cv=none; b=kSlbyksr8gcRTGCTCl5OE1UmV3kixHthUNtZ6gfYD/9QLUGLgEul1PO1AMS8Ut/nQXhvfqUo80TBRtT6wgk1WAaj5o3seW+x3MKDEYga8gAOgABu9Poq9hGWoW6rj2oZpzIw3KVUSJWeneI1NMU4eSj0TvCjsCOmmsDbbBpy9GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725570209; c=relaxed/simple;
-	bh=WbwLLtJfGq2EYPNSV9MEgL72DfQxSzfN+Yw4YZNYeU0=;
+	bh=Y42E3MV/iaZOC/fZ+DHnliL/0n2bPZwko8Rr7rWfCkQ=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=pnyGU+tkdv2XnaOaVz4bEcbgG9FeAsp8KrMpi2Rf01U5KypboDablGkt/V+YT21rsrDwfe0HCiQW1MlM748Hiur/un7aXE7k4LxjgjL5jRsBVPP8kStLh81O9S1ElCdKKxCxqYjEEc7iOeWJ56XdyNRz1CYR19vKEt6gcJAOvKQ=
+	 Content-Type; b=GaadTnxoxqjdC7PoBrIbAYr1rEDXa1SjPwZw7wO4N0m16GcQBbl+6pKS7Se5Smmmw07aJ9xmHS4A2eoYde/Ho8/r+ic5LEF+/OE6YBtN3gn2cPazjHmo44wE87Qi6TZvGMPUk1scy0b72uaclhLRoEzkktr3bf9nG2MJdnaam+U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5DAC4CEC9;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495BDC4CEC4;
 	Thu,  5 Sep 2024 21:03:29 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1smJea-00000005Kp2-2LfC;
+	id 1smJea-00000005KpW-30XW;
 	Thu, 05 Sep 2024 17:04:32 -0400
-Message-ID: <20240905210432.422856873@goodmis.org>
+Message-ID: <20240905210432.578892618@goodmis.org>
 User-Agent: quilt/0.68
-Date: Thu, 05 Sep 2024 17:04:13 -0400
+Date: Thu, 05 Sep 2024 17:04:14 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,9 +43,11 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
- Tomas Glozar <tglozar@redhat.com>
-Subject: [for-linus][PATCH 1/2] tracing/timerlat: Only clear timer if a kthread exists
+ Tomas Glozar <tglozar@redhat.com>,
+ John Kacur <jkacur@redhat.com>,
+ "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+Subject: [for-linus][PATCH 2/2] tracing/timerlat: Add interface_lock around clearing of kthread in
+ stop_kthread()
 References: <20240905210412.128465542@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,94 +59,86 @@ Content-Type: text/plain; charset=UTF-8
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-The timerlat tracer can use user space threads to check for osnoise and
-timer latency. If the program using this is killed via a SIGTERM, the
-threads are shutdown one at a time and another tracing instance can start
-up resetting the threads before they are fully closed. That causes the
-hrtimer assigned to the kthread to be shutdown and freed twice when the
-dying thread finally closes the file descriptors, causing a use-after-free
-bug.
+The timerlat interface will get and put the task that is part of the
+"kthread" field of the osn_var to keep it around until all references are
+released. But here's a race in the "stop_kthread()" code that will call
+put_task_struct() on the kthread if it is not a kernel thread. This can
+race with the releasing of the references to that task struct and the
+put_task_struct() can be called twice when it should have been called just
+once.
 
-Only cancel the hrtimer if the associated thread is still around. Also add
-the interface_lock around the resetting of the tlat_var->kthread.
+Take the interface_lock() in stop_kthread() to synchronize this change.
+But to do so, the function stop_per_cpu_kthreads() needs to change the
+loop from for_each_online_cpu() to for_each_possible_cpu() and remove the
+cpu_read_lock(), as the interface_lock can not be taken while the cpu
+locks are held. The only side effect of this change is that it may do some
+extra work, as the per_cpu variables of the offline CPUs would not be set
+anyway, and would simply be skipped in the loop.
 
-Note, this is just a quick fix that can be backported to stable. A real
-fix is to have a better synchronization between the shutdown of old
-threads and the starting of new ones.
-
-Link: https://lore.kernel.org/all/20240820130001.124768-1-tglozar@redhat.com/
+Remove unneeded "return;" in stop_kthread().
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tomas Glozar <tglozar@redhat.com>
+Cc: John Kacur <jkacur@redhat.com>
 Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/20240905085330.45985730@gandalf.local.home
+Link: https://lore.kernel.org/20240905113359.2b934242@gandalf.local.home
 Fixes: e88ed227f639e ("tracing/timerlat: Add user-space interface")
-Reported-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace_osnoise.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ kernel/trace/trace_osnoise.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index d770927efcd9..48e5014dd4ab 100644
+index 48e5014dd4ab..bbe47781617e 100644
 --- a/kernel/trace/trace_osnoise.c
 +++ b/kernel/trace/trace_osnoise.c
-@@ -252,6 +252,11 @@ static inline struct timerlat_variables *this_cpu_tmr_var(void)
- 	return this_cpu_ptr(&per_cpu_timerlat_var);
- }
- 
-+/*
-+ * Protect the interface.
-+ */
-+static struct mutex interface_lock;
-+
- /*
-  * tlat_var_reset - Reset the values of the given timerlat_variables
-  */
-@@ -259,14 +264,20 @@ static inline void tlat_var_reset(void)
+@@ -1953,8 +1953,12 @@ static void stop_kthread(unsigned int cpu)
  {
- 	struct timerlat_variables *tlat_var;
- 	int cpu;
-+
-+	/* Synchronize with the timerlat interfaces */
+ 	struct task_struct *kthread;
+ 
 +	mutex_lock(&interface_lock);
- 	/*
- 	 * So far, all the values are initialized as 0, so
- 	 * zeroing the structure is perfect.
- 	 */
- 	for_each_cpu(cpu, cpu_online_mask) {
- 		tlat_var = per_cpu_ptr(&per_cpu_timerlat_var, cpu);
-+		if (tlat_var->kthread)
-+			hrtimer_cancel(&tlat_var->timer);
- 		memset(tlat_var, 0, sizeof(*tlat_var));
+ 	kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
+ 	if (kthread) {
++		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
++		mutex_unlock(&interface_lock);
++
+ 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask) &&
+ 		    !WARN_ON(!test_bit(OSN_WORKLOAD, &osnoise_options))) {
+ 			kthread_stop(kthread);
+@@ -1967,8 +1971,8 @@ static void stop_kthread(unsigned int cpu)
+ 			kill_pid(kthread->thread_pid, SIGKILL, 1);
+ 			put_task_struct(kthread);
+ 		}
+-		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
+ 	} else {
++		mutex_unlock(&interface_lock);
+ 		/* if no workload, just return */
+ 		if (!test_bit(OSN_WORKLOAD, &osnoise_options)) {
+ 			/*
+@@ -1976,7 +1980,6 @@ static void stop_kthread(unsigned int cpu)
+ 			 */
+ 			per_cpu(per_cpu_osnoise_var, cpu).sampling = false;
+ 			barrier();
+-			return;
+ 		}
  	}
-+	mutex_unlock(&interface_lock);
  }
- #else /* CONFIG_TIMERLAT_TRACER */
- #define tlat_var_reset()	do {} while (0)
-@@ -331,11 +342,6 @@ struct timerlat_sample {
- };
- #endif
+@@ -1991,12 +1994,8 @@ static void stop_per_cpu_kthreads(void)
+ {
+ 	int cpu;
  
--/*
-- * Protect the interface.
-- */
--static struct mutex interface_lock;
+-	cpus_read_lock();
 -
+-	for_each_online_cpu(cpu)
++	for_each_possible_cpu(cpu)
+ 		stop_kthread(cpu);
+-
+-	cpus_read_unlock();
+ }
+ 
  /*
-  * Tracer data.
-  */
-@@ -2591,7 +2597,8 @@ static int timerlat_fd_release(struct inode *inode, struct file *file)
- 	osn_var = per_cpu_ptr(&per_cpu_osnoise_var, cpu);
- 	tlat_var = per_cpu_ptr(&per_cpu_timerlat_var, cpu);
- 
--	hrtimer_cancel(&tlat_var->timer);
-+	if (tlat_var->kthread)
-+		hrtimer_cancel(&tlat_var->timer);
- 	memset(tlat_var, 0, sizeof(*tlat_var));
- 
- 	osn_var->sampling = 0;
 -- 
 2.43.0
 
