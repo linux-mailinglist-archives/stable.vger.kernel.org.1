@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E2996D42B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D248396D522
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A6528293E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 880AD1F2A11B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0282198822;
-	Thu,  5 Sep 2024 09:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5971946A2;
+	Thu,  5 Sep 2024 10:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0NeauvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8EjnIuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5E114A08E;
-	Thu,  5 Sep 2024 09:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD49783CDB;
+	Thu,  5 Sep 2024 10:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529751; cv=none; b=l2BeCBnTchKbGW/uAbemiJPK7lDzk4NJ7fFnHNGawgvKpIEtZJxbuxgUneGOPfbRNKf8So+pbCAuoZ3P9MBxVEF/MF0qR+Q/mqB1UMRXpZikxP/WlLuAY8BQ+z35em9GkVxUt2DLKCty5RUDe3aBU+tWs04CDFQLEFjDFYmkrIM=
+	t=1725530439; cv=none; b=IkYjphe8381weoJwBKqq8UxNZimTXwoBipxMI4QG1i8316qAkloGLUKfAagF109ZuvNPuQmjMEYGsQvOzTujnR4te0pQaHx0wz+3mD4Eg48BQ6f6fBnZSJjhIwHb5udbM4qlNYNOhHqdLSa9b0aafFpJbFqwVaB2M20B/KURy94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529751; c=relaxed/simple;
-	bh=hFYSbozBNqQzIhcAxWnrNfE/9b7eX30okN1KCw+2n+Y=;
+	s=arc-20240116; t=1725530439; c=relaxed/simple;
+	bh=GmrKFRedzNR1X3Lj0QcSWSmtXzklBfIAGio4HMkSKzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nc93W5LVvt87Bv8S3v5LX+DWpk1JhD1ioPlFPISKy0VEC/vhryuMUDpeSW4+0VBeYFpO+rjc5w5Ajg//YAg6fi4QFFp9nL/VOraH2+LCseNJi0JUa+fTWYOamWSRptlj2mjNYIRmDFJPAbe+6knWfuuxWj6iMroDYHC5kW8GgqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0NeauvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3302C4CEC3;
-	Thu,  5 Sep 2024 09:49:10 +0000 (UTC)
+	 MIME-Version; b=Bcbk9N4FMi9vs9ZfpfdV4q/tgjBNST9bu411dk+tLYmxZmcQJs2OycMqNHsmTEno4w2UbC0xs0nMGxWCEALOXTbLRpMDZV2swYdtj5oCe7wf94HsYYd+Nb0sKpSJ9WhL0esX7bv67UbYZ2zsMiZkFyMGTq7zweCW1zQjYp/sRKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8EjnIuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560F4C4CEC4;
+	Thu,  5 Sep 2024 10:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529751;
-	bh=hFYSbozBNqQzIhcAxWnrNfE/9b7eX30okN1KCw+2n+Y=;
+	s=korg; t=1725530439;
+	bh=GmrKFRedzNR1X3Lj0QcSWSmtXzklBfIAGio4HMkSKzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0NeauvL/Lg7Kx+c/3zW9Bh0LMCKPmqWch3j4wpXkpBzYgnS9vKBjEAQZQ7XgMXlt
-	 MBbXM5RQRjAfk9dbXeSO1Ksbv3dPlZHf8JY1cUZUqnHAyHMov4V50evDFyfqebt/BO
-	 QYmiRWWDZNMVxlycAtWT3/ROqxbqgjhfvzILe5pY=
+	b=G8EjnIuDCQTUhh8ok40nrZzZjSWPNk4d/vji3ByEIpqXJLfyvZq78gCnA//ZwByej
+	 gavpXo2W9editNpWBSWKfocapbwoV+DGVkuOmwZkS/gTrBODrr8P11bJsCxegtByqQ
+	 PGQRPlbH0AEjlxhwBpKcxnx5lS6pE80I4zb0byZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 124/184] wifi: mac80211: check ieee80211_bss_info_change_notify() against MLD
+Subject: [PATCH 6.1 005/101] i2c: Fix conditional for substituting empty ACPI functions
 Date: Thu,  5 Sep 2024 11:40:37 +0200
-Message-ID: <20240905093737.068884196@linuxfoundation.org>
+Message-ID: <20240905093716.292854381@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit a0ca76e5b7d550fcd74753d5fdaaf23f1a9bfdb4 ]
+[ Upstream commit f17c06c6608ad4ecd2ccf321753fb511812d821b ]
 
-It's not valid to call ieee80211_bss_info_change_notify() with
-an sdata that's an MLD, remove the FIXME comment (it's not true)
-and add a warning.
+Add IS_ENABLED(CONFIG_I2C) to the conditional around a bunch of ACPI
+functions.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240523121140.97a589b13d24.I61988788d81fb3cf97a490dfd3167f67a141d1fd@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The conditional around these functions depended only on CONFIG_ACPI.
+But the functions are implemented in I2C core, so are only present if
+CONFIG_I2C is enabled.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/i2c.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 7ba329ebdda9..e44b2a26354b 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -337,6 +337,8 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index cfc59c3371cb2..aeb94241db52e 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -1035,7 +1035,7 @@ static inline int of_i2c_get_board_info(struct device *dev,
+ struct acpi_resource;
+ struct acpi_resource_i2c_serialbus;
  
- 	might_sleep();
- 
-+	WARN_ON_ONCE(ieee80211_vif_is_mld(&sdata->vif));
-+
- 	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		return;
- 
-@@ -369,7 +371,6 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 	if (changed & ~BSS_CHANGED_VIF_CFG_FLAGS) {
- 		u64 ch = changed & ~BSS_CHANGED_VIF_CFG_FLAGS;
- 
--		/* FIXME: should be for each link */
- 		trace_drv_link_info_changed(local, sdata, &sdata->vif.bss_conf,
- 					    changed);
- 		if (local->ops->link_info_changed)
+-#if IS_ENABLED(CONFIG_ACPI)
++#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
+ bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
+ 			       struct acpi_resource_i2c_serialbus **i2c);
+ int i2c_acpi_client_count(struct acpi_device *adev);
 -- 
 2.43.0
 
