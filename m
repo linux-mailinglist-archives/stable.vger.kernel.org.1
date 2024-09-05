@@ -1,98 +1,61 @@
-Return-Path: <stable+bounces-73145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F6696D0A1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:43:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E696D0A8
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97B41C2297F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 07:43:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEC4EB2285C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 07:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D2D192D70;
-	Thu,  5 Sep 2024 07:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46B8193411;
+	Thu,  5 Sep 2024 07:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="uZnEFek/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OsfJvOO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDFw401i"
 X-Original-To: stable@vger.kernel.org
-Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1841418A94F
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 07:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEDE192D70;
+	Thu,  5 Sep 2024 07:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725522180; cv=none; b=OFrKhOt6BbmAJpl+Fh2vMCnqmIYCpUMIniJHGs0sOvwiggSyIlngN9ZzcVHzfOLvKEWB43jY6LFuYyRtyV+UpMPSTly1TQOS2jo4xBeb1xktcmqUnoLp33/DRY3et4cRmxb6oTGrClOuGGht5PlkHgCvUEWDAG+TUHhwLhKSI90=
+	t=1725522239; cv=none; b=QY8YcvBrca1Ho5/vaaqh2TvqY9gAn3CUx9uo/uGk2MWIw7cUFnlGyUvTbMmxsD7OJmgAkIpKstSXwICVZ+UHz8LDc2/qSJaNRWRq0as1gREb9AbxDgp5eqR7CJGcMk9Gtc9VEJwN0ZGWTd59h9PUSpowwR5idS87gZA7wc8AC+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725522180; c=relaxed/simple;
-	bh=HjjpO9x1KUs+ThqiUUDYmN3P85k7f+wyhAyo4y6Bl64=;
+	s=arc-20240116; t=1725522239; c=relaxed/simple;
+	bh=S8/TtXkZj7uHoxHpMVYmtyHnnkcgrFhlb9iCKy4r99Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PePStiy/87ZEou2rVtsCWAiEET9JZfcu8aHWcF9sQkfoUaUXvWffuC7fY3OH1CidPNTBWLyjSWdUX/dMXPGeGrKW0h7dJ7/hHCNFJmqOgnbt/QNXp6o9YqS/Nh/i2/Ju14FrBjekSkiUSC7Sa+GNiP+JjX8SQA8OPIukSekdhlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=uZnEFek/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OsfJvOO1; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1C519138024D;
-	Thu,  5 Sep 2024 03:42:57 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Thu, 05 Sep 2024 03:42:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1725522177; x=1725608577; bh=ES8uA5Rr32
-	B8jUkZn7huDrjuPTnGe3bgR531Tgyj7ww=; b=uZnEFek//42onG6g53da98j4sO
-	afR1dbm2QERuXl0VqamgiGCLMOgzDAu3D6gLdvEPLhls/z+A39PzOfDVqq1EceKU
-	kAS+mtbEzAwV6353XV+ObQfGFkjBKUadFdstG1wo8JmQYxwZrY+ttm17f2wYTUgR
-	XgCpOS7/TBbP6xoNo/ahwL6eub2GhsCpr9n2mGGeZb2Z6+7+/1HHJyDt/df4Di6O
-	J9xeyUM/V5YHz93cFdCaOEcdq+uuSe4S2z3M7+d5OMv1/b7lDdlA+L/a4zowRrZg
-	ZwJmMuQ0krgPJnINQOtYIdYacWQT/h580ZcAFgap4zUPZGJ+W6wUbrPqTFkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1725522177; x=1725608577; bh=ES8uA5Rr32B8jUkZn7huDrjuPTnG
-	e3bgR531Tgyj7ww=; b=OsfJvOO1/kp0grGtQuAFP3cCqE/4/XIuyX6kD2ncBvaH
-	7/GCesxeAelgjTAzsfQOGfXp5WBO+Egm4DXY4WD7xtbcVB8lLWAK4c2cjS9gEY/2
-	pJLpsw1ZJzAP3P6lsXUj0wL3PzJr+tDx1AX0FadKPRJrdM+09esTaRfCqtI91xpk
-	kZbIHy/ougyXxX5bNJ/WqIfzr7/j0S4d4sDc9vrwGswts+TtlBlesHGZhTn/c8k7
-	2QiG2yxfJla+hz+ppdfx2Rl0zMM8YEGvuo/re7LAdG9kWVOPtKomTI888ZOw7IRe
-	4Zev6m8ukxjEgTw/RIYeeotaaS+qRzDigWhMNef1/A==
-X-ME-Sender: <xms:AGHZZn8pML5yoFgxtJ6B1lJWNwYBC7lglIY4JjQcOFic61xiw1nw9w>
-    <xme:AGHZZjvh0-oKBz7mrg0yDa52EJf5wNv0UlVgBvDlDRvQdcaWYHAwbCKa3ZMzfrQz3
-    RjsJeK63dPMxg>
-X-ME-Received: <xmr:AGHZZlBAVhwwL3Mzsni0ZaTNBor_bztjBxQ1Bx6qRYJGf0C_tZ4Dbzq7oPxgXRXOqJxUe9CQLvfXZj-ZvUXSX4RLjE7GSVpA6ZxxsQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehkedguddvhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
-    frrghtthgvrhhnpedtteekteevveeiveeviedtgeehfedthfelfedvkeelgeehfeekkeff
-    veekheejieenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkkehsrdhiohdpkhgvrh
-    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvg
-    epshhmthhpohhuthdprhgtphhtthhopegtohhnnhhorhdrohgsrhhivghnsegtrhhofigu
-    shhtrhhikhgvrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepmhgrrhhtihhnrdhkvghllhihsegtrhhofigushhtrhhi
-    khgvrdgtohhmpdhrtghpthhtohepuggrnhhivghlsehiohhgvggrrhgsohigrdhnvght
-X-ME-Proxy: <xmx:AGHZZjeuJH2Sv-kDfAgKaCMUc0_ndkkPB6NFeCsyxaFRXoqUdeRRhQ>
-    <xmx:AGHZZsNbG8bk3S2hzs-SopXxkTNZVjsx5HolvZ98gpir93SccLOexg>
-    <xmx:AGHZZlngwSDRLcipV-8KY_Z8VQyMbA0gwBN2zcu3v3EnAuyUf2ashQ>
-    <xmx:AGHZZmsNxpRT0fHmS04qj9wRw5oL8oU-TGQYPsfIEdu0EspzTm4lFg>
-    <xmx:AWHZZtjcVTrnk8cnVWCZAwlfkTDGwMSLFXDWyDhaxbyHtyVM0SAueSUZ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Sep 2024 03:42:56 -0400 (EDT)
-Date: Thu, 5 Sep 2024 09:42:54 +0200
-From: Greg KH <greg@kroah.com>
-To: Connor O'Brien <connor.obrien@crowdstrike.com>
-Cc: stable@vger.kernel.org, martin.kelly@crowdstrike.com,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: Re: [PATCH 1/2] bpf, cgroups: Fix cgroup v2 fallback on v1/v2 mixed
- mode
-Message-ID: <2024090546-surcharge-eternal-45fe@gregkh>
-References: <20240904012851.58167-1-connor.obrien@crowdstrike.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uKvWnzlqjFndcb1Xez0/wteLciCGKAmAERI+TSS7AACB4BO+ug46E8mZQ60/W79o//GYcsthGrZ5mPPPRqJvmqFfhOfkximJpL21XINFkZurmkpSOFVjPhf5W2B9q3MMfC9E46xs8W8F77Wjll2AjrLoAy92vgzw+4q3t94/8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDFw401i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97229C4CEC4;
+	Thu,  5 Sep 2024 07:43:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725522239;
+	bh=S8/TtXkZj7uHoxHpMVYmtyHnnkcgrFhlb9iCKy4r99Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tDFw401iokMtFH2bA5JxkYOmfH1nCuTNu1/4QFFmaScBfbMGEiNimT5yp2hNNzmmx
+	 0UolQCF/sZ+mBWHcafzAKthmfhQ2HCfmQSzoZGWIX+tgj3TakdiWr0ocp1pgRClPCY
+	 nfZHoB8AIgJhG7HLUA1OMbIghKa8aOtwFFH42I2w=
+Date: Thu, 5 Sep 2024 09:43:55 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 5.10, 5.4] net: set SOCK_RCU_FREE before inserting socket
+ into hashtable
+Message-ID: <2024090543-itinerary-marina-3814@gregkh>
+References: <2024072924-CVE-2024-41041-ae0c@gregkh>
+ <0ab22253fec2b0e65a95a22ceff799f39a2eaa0a.camel@oracle.com>
+ <2024090305-starfish-hardship-dadc@gregkh>
+ <CANn89iK5UMzkVaw2ed_WrOFZ4c=kSpGkKens2B-_cLhqk41yCg@mail.gmail.com>
+ <2024090344-repave-clench-3d61@gregkh>
+ <64688590d5cf73d0fd7b536723e399457d23aa8e.camel@oracle.com>
+ <2024090401-underuse-resale-3eef@gregkh>
+ <004b3dec44fe2fe6433043c509d52e72d8a8ca9d.camel@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,76 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240904012851.58167-1-connor.obrien@crowdstrike.com>
+In-Reply-To: <004b3dec44fe2fe6433043c509d52e72d8a8ca9d.camel@oracle.com>
 
-On Tue, Sep 03, 2024 at 06:28:50PM -0700, Connor O'Brien wrote:
-> From: Daniel Borkmann <daniel@iogearbox.net>
+On Wed, Sep 04, 2024 at 01:06:45PM +0000, Siddh Raman Pant wrote:
+> [ Upstream commit 871019b22d1bcc9fab2d1feba1b9a564acbb6e99 ]
 > 
-> commit 8520e224f547cd070c7c8f97b1fc6d58cff7ccaa upstream.
+> We've started to see the following kernel traces:
 > 
-> Fix cgroup v1 interference when non-root cgroup v2 BPF programs are used.
-> Back in the days, commit bd1060a1d671 ("sock, cgroup: add sock->sk_cgroup")
-> embedded per-socket cgroup information into sock->sk_cgrp_data and in order
-> to save 8 bytes in struct sock made both mutually exclusive, that is, when
-> cgroup v1 socket tagging (e.g. net_cls/net_prio) is used, then cgroup v2
-> falls back to the root cgroup in sock_cgroup_ptr() (&cgrp_dfl_root.cgrp).
+>  WARNING: CPU: 83 PID: 0 at net/core/filter.c:6641 sk_lookup+0x1bd/0x1d0
 > 
-> The assumption made was "there is no reason to mix the two and this is in line
-> with how legacy and v2 compatibility is handled" as stated in bd1060a1d671.
-> However, with Kubernetes more widely supporting cgroups v2 as well nowadays,
-> this assumption no longer holds, and the possibility of the v1/v2 mixed mode
-> with the v2 root fallback being hit becomes a real security issue.
+>  Call Trace:
+>   <IRQ>
+>   __bpf_skc_lookup+0x10d/0x120
+>   bpf_sk_lookup+0x48/0xd0
+>   bpf_sk_lookup_tcp+0x19/0x20
+>   bpf_prog_<redacted>+0x37c/0x16a3
+>   cls_bpf_classify+0x205/0x2e0
+>   tcf_classify+0x92/0x160
+>   __netif_receive_skb_core+0xe52/0xf10
+>   __netif_receive_skb_list_core+0x96/0x2b0
+>   napi_complete_done+0x7b5/0xb70
+>   <redacted>_poll+0x94/0xb0
+>   net_rx_action+0x163/0x1d70
+>   __do_softirq+0xdc/0x32e
+>   asm_call_irq_on_stack+0x12/0x20
+>   </IRQ>
+>   do_softirq_own_stack+0x36/0x50
+>   do_softirq+0x44/0x70
 > 
-> Many of the cgroup v2 BPF programs are also used for policy enforcement, just
-> to pick _one_ example, that is, to programmatically deny socket related system
-> calls like connect(2) or bind(2). A v2 root fallback would implicitly cause
-> a policy bypass for the affected Pods.
+> __inet_hash can race with lockless (rcu) readers on the other cpus:
 > 
-> In production environments, we have recently seen this case due to various
-> circumstances: i) a different 3rd party agent and/or ii) a container runtime
-> such as [0] in the user's environment configuring legacy cgroup v1 net_cls
-> tags, which triggered implicitly mentioned root fallback. Another case is
-> Kubernetes projects like kind [1] which create Kubernetes nodes in a container
-> and also add cgroup namespaces to the mix, meaning programs which are attached
-> to the cgroup v2 root of the cgroup namespace get attached to a non-root
-> cgroup v2 path from init namespace point of view. And the latter's root is
-> out of reach for agents on a kind Kubernetes node to configure. Meaning, any
-> entity on the node setting cgroup v1 net_cls tag will trigger the bypass
-> despite cgroup v2 BPF programs attached to the namespace root.
+>   __inet_hash
+>     __sk_nulls_add_node_rcu
+>     <- (bpf triggers here)
+>     sock_set_flag(SOCK_RCU_FREE)
 > 
-> Generally, this mutual exclusiveness does not hold anymore in today's user
-> environments and makes cgroup v2 usage from BPF side fragile and unreliable.
-> This fix adds proper struct cgroup pointer for the cgroup v2 case to struct
-> sock_cgroup_data in order to address these issues; this implicitly also fixes
-> the tradeoffs being made back then with regards to races and refcount leaks
-> as stated in bd1060a1d671, and removes the fallback, so that cgroup v2 BPF
-> programs always operate as expected.
+> Let's move the SOCK_RCU_FREE part up a bit, before we are inserting
+> the socket into hashtables. Note, that the race is really harmless;
+> the bpf callers are handling this situation (where listener socket
+> doesn't have SOCK_RCU_FREE set) correctly, so the only
+> annoyance is a WARN_ONCE.
 > 
->   [0] https://github.com/nestybox/sysbox/
->   [1] https://kind.sigs.k8s.io/
+> More details from Eric regarding SOCK_RCU_FREE timeline:
 > 
-> Fixes: bd1060a1d671 ("sock, cgroup: add sock->sk_cgroup")
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> Acked-by: Stanislav Fomichev <sdf@google.com>
-> Acked-by: Tejun Heo <tj@kernel.org>
-> Link: https://lore.kernel.org/bpf/20210913230759.2313-1-daniel@iogearbox.net
-> [resolve trivial conflicts]
-> Signed-off-by: Connor O'Brien <connor.obrien@crowdstrike.com>
+> Commit 3b24d854cb35 ("tcp/dccp: do not touch listener sk_refcnt under
+> synflood") added SOCK_RCU_FREE. At that time, the precise location of
+> sock_set_flag(sk, SOCK_RCU_FREE) did not matter, because the thread calling
+> __inet_hash() owns a reference on sk. SOCK_RCU_FREE was only tested
+> at dismantle time.
+> 
+> Commit 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+> started checking SOCK_RCU_FREE _after_ the lookup to infer whether
+> the refcount has been taken care of.
+> 
+> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Stanislav Fomichev <sdf@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> [Resolved conflict for 5.10 and below.]
+> Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 > ---
-> 
-> Hello,
-> 
-> Requesting that these patches be applied to 5.10-stable. Tested to confirm that
-> the cgroup_v1v2 bpf selftest for this issue passes on 5.10 with the first patch
-> applied and fails without it. The syzkaller crash referenced in the second patch
-> reproduces on 5.10 after applying just the first patch, but not with both
-> patches applied.
-> 
-> Conflicts were due to unrelated changes to the surrounding context; the actual
-> code change remains the same as in the upstream patch.
+>  net/ipv4/inet_hashtables.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Both now queued up, thanks.
+Now  queued up, thanks.
 
 greg k-h
 
