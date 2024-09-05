@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14AD96D40E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8D496D4BA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E45631C233C0
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFCD282C87
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27371990C1;
-	Thu,  5 Sep 2024 09:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F41194A45;
+	Thu,  5 Sep 2024 09:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvivXn+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9X86VY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6591990C2;
-	Thu,  5 Sep 2024 09:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E06154BFF;
+	Thu,  5 Sep 2024 09:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529667; cv=none; b=eV5XByCivzcOzlKrzwv8arKA5DQP8jA4oD+zcWeiwuELr+kirxX7lKXR7PtoS1yDFU56NuhlBRG/vMYJe+KIgTj44hL2ovJgcrKpYqgyzSonk3oGVyMLP/sLORAXXO863SGLX7eHfidmtGJUI0WBq47sGyc+iEU1bfkU0Uwzy/A=
+	t=1725530130; cv=none; b=McABw7pGukyzsPWOUJNXy+Cp7PiBjYz/s1gEtdPDsW4bcnvlc65E7VZ0uvTo3Ju5HWGGTDtUdPJ3yZe7/EDOFvYlHj6a5IqXfW8t1+3JHFQSQszhMsD5AbKQaz9dVQXM3aYx3Fzs6Lq4aYcQELa1jyJinb2DhHZJdFmrqHC4JPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529667; c=relaxed/simple;
-	bh=AksDRwEnjWzrErp1/CkeRbyHidsdiIKWgCS0/guosik=;
+	s=arc-20240116; t=1725530130; c=relaxed/simple;
+	bh=uS5SgDEJx9ECSU1GKTvm5S0deECWNfjYgGTYx3RrZiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHcd0DaVMzPFB4ixad+x4TdALG7GbohlDYSfqCErI2yxt8zF/xSp5Ef2Rt1Sk709zde+lKnNz7DUouIo0tGkHdgSkSdxJ1k22pL6+5Fqex8WnMs2QA/jfmhwLH5cGYpxyITIBACN9pMXT5Vx50GYDFJZDqAXuFPYEOYD5xF4hTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvivXn+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1BCC4CEC3;
-	Thu,  5 Sep 2024 09:47:46 +0000 (UTC)
+	 MIME-Version; b=WZ0+sQAw7nP50k4WGpRgYvzQGN8IMlZP1atVIARVhxCYBjqxBx7karyJDN9Ru4KXObcjIP34m4fkri8Ri+iNK8Rj9nEJxfvqbZAv1aKXLsl8h6d5eKUKKj4TBMxiI7Ndu8DCx65YnuWB+c6OQg/F3vNgUJXg3cc8Hh4Vk0H0v5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9X86VY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75776C4CEC3;
+	Thu,  5 Sep 2024 09:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529667;
-	bh=AksDRwEnjWzrErp1/CkeRbyHidsdiIKWgCS0/guosik=;
+	s=korg; t=1725530129;
+	bh=uS5SgDEJx9ECSU1GKTvm5S0deECWNfjYgGTYx3RrZiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvivXn+oOQKA83Zq3W0tZo4vNnmn12Fi0eagIlfrNOB/xYAhCZ+deZxqebh2ACC9q
-	 Gk1RBsEXSLrrnHZMT6N5ayp2OPxmMM2dHl9P1ogwYpAMl5zjKYWsh8TcnQSysTOULa
-	 UWnqFvQrnW7zj3yX8edzKagx/oKYMdt/DY0X4ymY=
+	b=N9X86VY5aG/wHpGqbOTU76FsPnD/6tj3/Dz2rD03/NCTEJ0jkCUbExHsu0kSxmePo
+	 qWPDRKUF+VnkTMBCZ2KuGF5gciQRQYg6CjFgsWummyjRJRe/aYWxVsjNqVDNU2nw+v
+	 iKE9c8Zu8Tk9Zh1KJXTym6G2WzSySLN8hSeMGiGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 106/184] drm/amd/pm: check specific index for aldebaran
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 032/132] selftests: mptcp: add mptcp_lib_events helper
 Date: Thu,  5 Sep 2024 11:40:19 +0200
-Message-ID: <20240905093736.371965874@linuxfoundation.org>
+Message-ID: <20240905093723.488566801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 0ce8ef2639c112ae203c985b758389e378630aac ]
+commit 35bc143a8514ee72b2e9d6b8b385468608b93a53 upstream.
 
-Check for specific indexes that may be invalid values.
+To avoid duplicated code in different MPTCP selftests, we can add and
+use helpers defined in mptcp_lib.sh.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch unifies "pm_nl_ctl events" related code in userspace_pm.sh
+and mptcp_join.sh into a helper mptcp_lib_events(). Define it in
+mptcp_lib.sh and use it in both scripts.
+
+Note that mptcp_lib_kill_wait is now call before starting 'events' for
+mptcp_join.sh as well, but that's fine: each test is started from a new
+netns, so there will not be any existing pid there, and nothing is done
+when mptcp_lib_kill_wait is called with 0.
+
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240306-upstream-net-next-20240304-selftests-mptcp-shared-code-shellcheck-v2-6-bc79e6e5e6a0@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 20ccc7c5f7a3 ("selftests: mptcp: join: validate event numbers")
+[ Conflicts in mptcp_lib.sh, because the context is different at the end
+  of the file, where the new helper is supposed to go. The new helper
+  has simply be added at the end. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh   |   10 ++++------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh    |   12 ++++++++++++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh |   14 ++------------
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-index ce941fbb9cfb..a22eb6bbb05e 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1886,7 +1886,8 @@ static int aldebaran_mode2_reset(struct smu_context *smu)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -468,12 +468,8 @@ reset_with_events()
+ {
+ 	reset "${1}" || return 1
  
- 	index = smu_cmn_to_asic_specific_index(smu, CMN2ASIC_MAPPING_MSG,
- 						SMU_MSG_GfxDeviceDriverReset);
--
-+	if (index < 0 )
-+		return -EINVAL;
- 	mutex_lock(&smu->message_lock);
- 	if (smu->smc_fw_version >= 0x00441400) {
- 		ret = smu_cmn_send_msg_without_waiting(smu, (uint16_t)index, SMU_RESET_MODE_2);
--- 
-2.43.0
-
+-	:> "$evts_ns1"
+-	:> "$evts_ns2"
+-	ip netns exec $ns1 ./pm_nl_ctl events >> "$evts_ns1" 2>&1 &
+-	evts_ns1_pid=$!
+-	ip netns exec $ns2 ./pm_nl_ctl events >> "$evts_ns2" 2>&1 &
+-	evts_ns2_pid=$!
++	mptcp_lib_events "${ns1}" "${evts_ns1}" evts_ns1_pid
++	mptcp_lib_events "${ns2}" "${evts_ns2}" evts_ns2_pid
+ }
+ 
+ reset_with_tcp_filter()
+@@ -672,7 +668,9 @@ wait_mpj()
+ kill_events_pids()
+ {
+ 	mptcp_lib_kill_wait $evts_ns1_pid
++	evts_ns1_pid=0
+ 	mptcp_lib_kill_wait $evts_ns2_pid
++	evts_ns2_pid=0
+ }
+ 
+ pm_nl_set_limits()
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -258,3 +258,15 @@ mptcp_lib_get_counter() {
+ 
+ 	echo "${count}"
+ }
++
++mptcp_lib_events() {
++	local ns="${1}"
++	local evts="${2}"
++	declare -n pid="${3}"
++
++	:>"${evts}"
++
++	mptcp_lib_kill_wait "${pid:-0}"
++	ip netns exec "${ns}" ./pm_nl_ctl events >> "${evts}" 2>&1 &
++	pid=$!
++}
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -201,21 +201,11 @@ make_connection()
+ 	if [ -z "$client_evts" ]; then
+ 		client_evts=$(mktemp)
+ 	fi
+-	:>"$client_evts"
+-	if [ $client_evts_pid -ne 0 ]; then
+-		mptcp_lib_kill_wait $client_evts_pid
+-	fi
+-	ip netns exec "$ns2" ./pm_nl_ctl events >> "$client_evts" 2>&1 &
+-	client_evts_pid=$!
++	mptcp_lib_events "${ns2}" "${client_evts}" client_evts_pid
+ 	if [ -z "$server_evts" ]; then
+ 		server_evts=$(mktemp)
+ 	fi
+-	:>"$server_evts"
+-	if [ $server_evts_pid -ne 0 ]; then
+-		mptcp_lib_kill_wait $server_evts_pid
+-	fi
+-	ip netns exec "$ns1" ./pm_nl_ctl events >> "$server_evts" 2>&1 &
+-	server_evts_pid=$!
++	mptcp_lib_events "${ns1}" "${server_evts}" server_evts_pid
+ 	sleep 0.5
+ 
+ 	# Run the server
 
 
 
