@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-73573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B7396D56B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:04:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDC296D564
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FF1BB20F93
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11C66B21446
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F1019538A;
-	Thu,  5 Sep 2024 10:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71271197A76;
+	Thu,  5 Sep 2024 10:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuc20BCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4RQAjhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73B81494DB;
-	Thu,  5 Sep 2024 10:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF8B1922CC;
+	Thu,  5 Sep 2024 10:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530670; cv=none; b=ZRIt5bu3Hx5x4w0gJQepD5ksv1EODRbZiVW/N8TCCpveFZgx7/eCcS8jGNSjodkHOGqDPwMdVOQzlz9XrFPjEPvgTzIT7HgevGolp5UN8x4i4THRC9VpLB1MBoo+WFOC0vt2r5Ta/C0QIZ/tr4nGw7pjoqAwcBpZ6kbKR0eB/lk=
+	t=1725530648; cv=none; b=NbvxUU8MQH6zez6uDD7zV3QQpU4prwalXJRgYQ4wwRtw7beDDmrhidxQSF57NkEq7mdSXcZYEVisz+5zHRHQYXOmdAeqaFZBfrJEfWfGun1V+HziVsALYzSXSn0kiO1Luil7j4VbeAZ2IZRMghqb7BGmrDxmePdWmeNby9+Ha2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530670; c=relaxed/simple;
-	bh=JMTdBK3/NpLP/yRp/+7eQqbrkuyD8K2rwPIWR4XBKbA=;
+	s=arc-20240116; t=1725530648; c=relaxed/simple;
+	bh=gXTbJA/E8Oi6ifX33BlToKKGrd8JsAnbQGNutu4kDTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAwsmMLveSW06vuDFS+rEe31naoCxTbPhLKiliXi3ycL/uVKt+CSyb4ZKDdUwcZJ+XnH4vexwUdeXyFig5W71gJCFjsLB1dsibDfExHb3wDzHromvlQ1TBJKiYWEo1WXbZ7zg8w4ZgHmBb6cAo2xakJe7GCS0ZZeIW13dxruLSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuc20BCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D5FC4CEC3;
-	Thu,  5 Sep 2024 10:04:30 +0000 (UTC)
+	 MIME-Version; b=mwAtDONECcUOfwEypvlAv7VFf/7tKnrx5xj2f9o7eh6mOHSD1uLjC/s1TdYOCu7HAkJy3/T6rFlgBzFtFG4g0yDc482fYA1YSUd0q7mpQY7RZB4ObWNA/MypLjEhOlC277jSttEPjTcbVUYoNBGJZYFbm+suVY/dHrHoKWWdn2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4RQAjhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84A5C4CEC3;
+	Thu,  5 Sep 2024 10:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530670;
-	bh=JMTdBK3/NpLP/yRp/+7eQqbrkuyD8K2rwPIWR4XBKbA=;
+	s=korg; t=1725530648;
+	bh=gXTbJA/E8Oi6ifX33BlToKKGrd8JsAnbQGNutu4kDTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuc20BCxtWqw0Vp+qy36Shs10nsbvoyzzCyU2kGVncCRtJb98iiIwLS9eISq0Ijvd
-	 fYIPtDi52EXvj0lRcrGuO62l3IaP2wWrJpVdWJIVryYYlR9f2win3+FJnks24tEqnY
-	 Ee/AGYk0mo3W31ynAL+exIlR0Aw3nmu2d+HO8tuM=
+	b=N4RQAjhN4xvRB18S4wkFUfbje9FIKZkHo48GuhHXEQ70c4WCJLdL87qfOm6D9FWw6
+	 E2phNW0d4tIm9Ik55Uzsmm+F1LA8YIpLs2UFgyr0fzfDTYjtKz+0z0XpLrucaXx5GW
+	 pxYKrQqDCBUEhiaoYjlFBMdUZmKjjxYGEjM50cqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Julien Stephan <jstephan@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/101] drm/amd/pm: check negtive return for table entries
-Date: Thu,  5 Sep 2024 11:41:37 +0200
-Message-ID: <20240905093718.683751118@linuxfoundation.org>
+Subject: [PATCH 6.1 088/101] driver: iio: add missing checks on iio_infos callback access
+Date: Thu,  5 Sep 2024 11:42:00 +0200
+Message-ID: <20240905093719.570021867@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
 References: <20240905093716.075835938@linuxfoundation.org>
@@ -67,59 +67,172 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Julien Stephan <jstephan@baylibre.com>
 
-[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
+[ Upstream commit c4ec8dedca961db056ec85cb7ca8c9f7e2e92252 ]
 
-Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
+Some callbacks from iio_info structure are accessed without any check, so
+if a driver doesn't implement them trying to access the corresponding
+sysfs entries produce a kernel oops such as:
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ 2203.527791] Unable to handle kernel NULL pointer dereference at virtual address 00000000 when execute
+[...]
+[ 2203.783416] Call trace:
+[ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x48
+[ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
+[ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
+[ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
+[ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
+[ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
+[ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
+[ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab000 00020000 00000000
+[ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000000 00020000 00000000
+[ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
+[ 2203.830363] Code: bad PC value
+[ 2203.832695] ---[ end trace 0000000000000000 ]---
+
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://lore.kernel.org/r/20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/iio/industrialio-core.c  |  7 ++++++-
+ drivers/iio/industrialio-event.c |  9 +++++++++
+ drivers/iio/inkern.c             | 32 ++++++++++++++++++++++----------
+ 3 files changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-index f4bd8e9357e2..18f00038d844 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 135a86fc9453..162845543efe 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -767,9 +767,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
+ 							INDIO_MAX_RAW_ELEMENTS,
+ 							vals, &val_len,
+ 							this_attr->address);
+-	else
++	else if (indio_dev->info->read_raw)
+ 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
+ 				    &vals[0], &vals[1], this_attr->address);
++	else
++		return -EINVAL;
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -851,6 +853,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
+ 	int length;
+ 	int type;
+ 
++	if (!indio_dev->info->read_avail)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_avail(indio_dev, this_attr->c,
+ 					  &vals, &type, &length,
+ 					  this_attr->address);
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 727e2ef66aa4..14658b41c9bc 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -283,6 +283,9 @@ static ssize_t iio_ev_state_store(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (!indio_dev->info->write_event_config)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->write_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), val);
+@@ -298,6 +301,9 @@ static ssize_t iio_ev_state_show(struct device *dev,
+ 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+ 	int val;
+ 
++	if (!indio_dev->info->read_event_config)
++		return -EINVAL;
++
+ 	val = indio_dev->info->read_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr));
+@@ -316,6 +322,9 @@ static ssize_t iio_ev_value_show(struct device *dev,
+ 	int val, val2, val_arr[2];
+ 	int ret;
+ 
++	if (!indio_dev->info->read_event_value)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_event_value(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 872fd5c24147..bd854e92c6f8 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -561,6 +561,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
+ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+ 			    enum iio_chan_info_enum info)
  {
- 	int result;
- 	unsigned int i;
--	unsigned int table_entries;
- 	struct pp_power_state *state;
--	int size;
-+	int size, table_entries;
++	const struct iio_info *iio_info = chan->indio_dev->info;
+ 	int unused;
+ 	int vals[INDIO_MAX_RAW_ELEMENTS];
+ 	int ret;
+@@ -572,15 +573,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+ 	if (!iio_channel_has_info(chan->channel, info))
+ 		return -EINVAL;
  
- 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
- 		return 0;
-@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
- 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
- 		return 0;
- 
--	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
-+	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
- 
--	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
-+	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
- 					  sizeof(struct pp_power_state);
- 
--	if (table_entries == 0 || size == 0) {
-+	if (table_entries <= 0 || size == 0) {
- 		pr_warn("Please check whether power state management is supported on this asic\n");
-+		hwmgr->num_ps = 0;
-+		hwmgr->ps_size = 0;
- 		return 0;
+-	if (chan->indio_dev->info->read_raw_multi) {
+-		ret = chan->indio_dev->info->read_raw_multi(chan->indio_dev,
+-					chan->channel, INDIO_MAX_RAW_ELEMENTS,
+-					vals, &val_len, info);
++	if (iio_info->read_raw_multi) {
++		ret = iio_info->read_raw_multi(chan->indio_dev,
++					       chan->channel,
++					       INDIO_MAX_RAW_ELEMENTS,
++					       vals, &val_len, info);
+ 		*val = vals[0];
+ 		*val2 = vals[1];
++	} else if (iio_info->read_raw) {
++		ret = iio_info->read_raw(chan->indio_dev,
++					 chan->channel, val, val2, info);
+ 	} else {
+-		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
+-					chan->channel, val, val2, info);
++		return -EINVAL;
  	}
-+	hwmgr->num_ps = table_entries;
-+	hwmgr->ps_size = size;
  
- 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
- 	if (hwmgr->ps == NULL)
+ 	return ret;
+@@ -800,11 +804,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
+ 				  const int **vals, int *type, int *length,
+ 				  enum iio_chan_info_enum info)
+ {
++	const struct iio_info *iio_info = chan->indio_dev->info;
++
+ 	if (!iio_channel_has_available(chan->channel, info))
+ 		return -EINVAL;
+ 
+-	return chan->indio_dev->info->read_avail(chan->indio_dev, chan->channel,
+-						 vals, type, length, info);
++	if (iio_info->read_avail)
++		return iio_info->read_avail(chan->indio_dev, chan->channel,
++					    vals, type, length, info);
++	return -EINVAL;
+ }
+ 
+ int iio_read_avail_channel_attribute(struct iio_channel *chan,
+@@ -935,8 +943,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
+ static int iio_channel_write(struct iio_channel *chan, int val, int val2,
+ 			     enum iio_chan_info_enum info)
+ {
+-	return chan->indio_dev->info->write_raw(chan->indio_dev,
+-						chan->channel, val, val2, info);
++	const struct iio_info *iio_info = chan->indio_dev->info;
++
++	if (iio_info->write_raw)
++		return iio_info->write_raw(chan->indio_dev,
++					   chan->channel, val, val2, info);
++	return -EINVAL;
+ }
+ 
+ int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
 -- 
 2.43.0
 
