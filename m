@@ -1,81 +1,96 @@
-Return-Path: <stable+bounces-73605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A79696DAC6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:49:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760B896DAD7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 300751F21421
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 13:49:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C061C20B6C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 13:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DC119DF43;
-	Thu,  5 Sep 2024 13:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAQBkSHI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C235D19D8A3;
+	Thu,  5 Sep 2024 13:51:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8611119D891
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 13:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12201EA85;
+	Thu,  5 Sep 2024 13:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725544157; cv=none; b=YNoxV9f9oU6g03uuDJd7yOQ4WvDUNuDJL3pJOIqEWLAoYTv/TFMn3v3LijzQuuPoVQr8aoTxifqXNFovaImVtwg2UP6oQNaNtCigkTgX+9v8JlR0bmje41+Iiodi+KJQkRx/XqGkecKxWqsgi7+ZlbCnhXrYQ9dD/4pTDTYg5y4=
+	t=1725544306; cv=none; b=Li5UpZMxZXISdGeCYVPMJFCOi4aOVAbM2aUugmeYa5Vu8v4damvoaKAsV643ewjpuLiJnFIBQEQQQ6VGVGtG2jB3feCd8DqjxoGlCqXyZjQJOmvdNK7pVMKFgC89XW87AI8Ndqmng2CD7jD/0IYwnkcfq0WZjaUv6tKYstVBdls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725544157; c=relaxed/simple;
-	bh=LL6kx6gnwTS9GRQRN5p194tBfC1yDnR4bRNil7zEfR8=;
+	s=arc-20240116; t=1725544306; c=relaxed/simple;
+	bh=6RY5hefA3MRNHNn3jbgZBDzDkG9OUuZ/6SvoUBITUSA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZLIQmIfFSKmAJTWyQ4QDEHKPD+rd/4N8vyYvkmJoRdyj2JzydJnMG8ZtFpC+LjuYPvj1sxZ02+qC57BNzR0tr/U69YYdzttQ4KAO76fmGWOPdiTKDD1FYVNj6Y9olNmq0nRdSqxcFe2srJGGygeGf+RIbZlBNbzFkmqBqYoV+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAQBkSHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCD6C4CEC3;
-	Thu,  5 Sep 2024 13:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725544157;
-	bh=LL6kx6gnwTS9GRQRN5p194tBfC1yDnR4bRNil7zEfR8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gAQBkSHIF8Cp+SydugIUMDOfiGwhDofiVXbry+VlYI0p3L9OPftNczBBZz/kGXBPG
-	 mNHAoq3d6uF1ukdVjJC+016WHtyT5t06ZftOEc5d7tjNRg1G9zhXxqvPT1C6lkJ5Ib
-	 KGPDhvVVvXzwOul8xV7NwOqF/c+sJS2JS2Lum3mU=
-Date: Thu, 5 Sep 2024 15:49:14 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Hillf Danton <hdanton@sina.com>, alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2 4.19.y] ALSA: usb-audio: Sanity checks for each pipe
- and EP types
-Message-ID: <2024090557-hurry-armful-dbe0@gregkh>
-References: <76c0ef6b-f4bf-41f7-ad36-55f5b4b3180a@stanley.mountain>
- <599b79d0-0c0f-425e-b2a2-1af9f81539b8@stanley.mountain>
- <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aq/sLC1G3JsjkR84SVs3hzybJ1L70GBvTySDZO5hzUQihODpu/os78uZagT2/e8/DF5WyfOC5bMO1U1+vCZaauocD1KpXPNFiAOmvyo5d8yWe43tqwCNHY1k//KJgZO9Vgtxn3po7BU5NKdDYxcLcaSmzSApmsAr7xOCNPt86Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 117451C009D; Thu,  5 Sep 2024 15:51:43 +0200 (CEST)
+Date: Thu, 5 Sep 2024 15:51:42 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/101] 6.1.109-rc1 review
+Message-ID: <Ztm3bvcqag+Mf8ID@duo.ucw.cz>
+References: <20240905093716.075835938@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rW670pfDm1CkCj6w"
+Content-Disposition: inline
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+
+
+--rW670pfDm1CkCj6w
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 05, 2024 at 04:34:45PM +0300, Dan Carpenter wrote:
-> Sorry,
-> 
-> I completely messed these emails up.  It has Takashi Iwai and Hillf Danton's
-> names instead of mine in the From header.  It still has my email address, but
-> just the names are wrong.
-> 
-> Also I should have used a From header in the body of the email.
-> 
-> Also the threading is messed up.
-> 
-> Will try again tomorrow.
+Hi!
 
-It looks good to me, now queued up.
+> This is the start of the stable review cycle for the 6.1.109 release.
+> There are 101 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-thanks,
+CIP testing did not find any problems here:
 
-greg k-h
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--rW670pfDm1CkCj6w
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZtm3bgAKCRAw5/Bqldv6
+8rfKAKCX96R70U9okhXPsOUOIIwq9/hP9QCgo3A8pqKqwlvxxOjkqfpvxr3CSnk=
+=iZMd
+-----END PGP SIGNATURE-----
+
+--rW670pfDm1CkCj6w--
 
