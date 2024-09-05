@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B6596D503
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A24D596D55D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D371C22D86
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B0D1C21361
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D33194AC7;
-	Thu,  5 Sep 2024 09:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D8C19538A;
+	Thu,  5 Sep 2024 10:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5vE5msW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEGZMcVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D9183CC8;
-	Thu,  5 Sep 2024 09:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C231494DB;
+	Thu,  5 Sep 2024 10:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530344; cv=none; b=FqcmcN2ve126ny/dCWoSqL86wfMQBpqjgURhM+WzFnl44cv1bjnd2g6LWrkzeLlVynR0DafK6GWktQCOmcnqCQyFR/cLfcwciqsjXO8zzUZfzOoQp0xqpuEZ6J4dAh8eaYjFJSDftiOmyAXcpUQLDH+3ZA/bXq/VVwHKhuKyRKM=
+	t=1725530626; cv=none; b=OwUOOznm4GGrgZfNJSHU9FBdkfn33CAXUv/ZWggx/aARTzXgnTI0dtx9lafLLTirzjTVJo+92rTwR6858bKM2cYK934qH8bRyMmumH1sdfFEFFNMelphAoNFxBcSam64oX4szBQ4fAwkxkROlNjpuFpszDKOAY1AAMLrXSzDWOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530344; c=relaxed/simple;
-	bh=vg1ME29IRyun6Buz6+mknhlBoCMDqx1+krR4+Pvoz8w=;
+	s=arc-20240116; t=1725530626; c=relaxed/simple;
+	bh=o1x1PvcrPH9zushxbeufDEXriHFD1FiYmTTIyM5g4Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VElh7vnOMtN8wM171WzB45TCtrlhkumunPzJLTX0SizJ1v5OHUKbzZ/6/2fxm3QIZdKvf2glHGzqBjc0cz0G/YLar1L7RHYLAKjyQszxHgSYjSGjlRhEG0EACNvfdKpzlZklxwVmJXSPmm2VzpHVQCIHcOPSpQ4JgsO5NwcBv78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5vE5msW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AE8C4CEC3;
-	Thu,  5 Sep 2024 09:59:02 +0000 (UTC)
+	 MIME-Version; b=oicyaCOXDz+HVlFbZE5oVd9cxQtKn7GelQUQzi82CikbCanNrn2ULdxKobGV1ObCTg9TuJPxIfVo+tRDSD2h6owZ2YF82lnUeL2CI1qH8FYaTVbWdij6ZYPqqNGQ878pE1aHTfs9BbyMKZL7lwsrKkGackG5Pgfv5+hJucBRCqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEGZMcVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459AC4CEC3;
+	Thu,  5 Sep 2024 10:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530343;
-	bh=vg1ME29IRyun6Buz6+mknhlBoCMDqx1+krR4+Pvoz8w=;
+	s=korg; t=1725530625;
+	bh=o1x1PvcrPH9zushxbeufDEXriHFD1FiYmTTIyM5g4Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5vE5msWywNOGytQToYdUwyI5r+A0z+UkfvrqCPGuHmGU523iQHVrOq9CJlezicqX
-	 c5WA3QLtmA+puawgMinb1YaN1X1oYBl7HDY0vjYJ8vrBgdFuXdOHhZuwXTVpLdlxjg
-	 OdnyBbZ9Uli/Dxj6py/WPk22Ri2smhQBR7dFI5JI=
+	b=LEGZMcVacQxX0R0SEvay/c/kcyXlxU7kgn+0M0v4yUlE8hQxTJo0/2guEp0rjE/UR
+	 cN137YZN2lbnaIXBXDfV/eSX1QA5qV8C7woxhr8RrdqZxRWgRCQW8KRMYUo26tBJ3c
+	 7XYLtBGu/N9GSsvKPeVu2U5a8zg5yncQErD7ZVU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Haoran Liu <liuhaoran14@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/132] drm/amd/display: Check BIOS images before it is used
+Subject: [PATCH 6.1 082/101] drm/meson: plane: Add error handling
 Date: Thu,  5 Sep 2024 11:41:54 +0200
-Message-ID: <20240905093727.152467411@linuxfoundation.org>
+Message-ID: <20240905093719.337222184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Haoran Liu <liuhaoran14@163.com>
 
-[ Upstream commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c ]
+[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
 
-BIOS images may fail to load and null checks are added before they are
-used.
+This patch adds robust error handling to the meson_plane_create
+function in drivers/gpu/drm/meson/meson_plane.c. The function
+previously lacked proper handling for potential failure scenarios
+of the drm_universal_plane_init call.
 
-This fixes 6 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
+[narmstrong: fixe the commit subject]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 19cd1bd844df..684b005f564c 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -667,6 +667,9 @@ static enum bp_result get_ss_info_v3_1(
- 	ss_table_header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(ss_table_header_include, asSpreadSpectrum, 1)));
-+	if (!ss_table_header_include)
-+		return BP_RESULT_UNSUPPORTED;
-+
- 	table_size =
- 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
- 				- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1036,6 +1039,8 @@ static enum bp_result get_ss_info_from_internal_ss_info_tbl_V2_1(
- 				&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header, asSpreadSpectrum, 1)));
-+	if (!header)
-+		return result;
+diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
+index 815dfe30492b..b43ac61201f3 100644
+--- a/drivers/gpu/drm/meson/meson_plane.c
++++ b/drivers/gpu/drm/meson/meson_plane.c
+@@ -534,6 +534,7 @@ int meson_plane_create(struct meson_drm *priv)
+ 	struct meson_plane *meson_plane;
+ 	struct drm_plane *plane;
+ 	const uint64_t *format_modifiers = format_modifiers_default;
++	int ret;
  
- 	memset(info, 0, sizeof(struct spread_spectrum_info));
+ 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
+ 				   GFP_KERNEL);
+@@ -548,12 +549,16 @@ int meson_plane_create(struct meson_drm *priv)
+ 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
+ 		format_modifiers = format_modifiers_afbc_g12a;
  
-@@ -1109,6 +1114,8 @@ static enum bp_result get_ss_info_from_ss_info_table(
- 	get_atom_data_table_revision(header, &revision);
+-	drm_universal_plane_init(priv->drm, plane, 0xFF,
+-				 &meson_plane_funcs,
+-				 supported_drm_formats,
+-				 ARRAY_SIZE(supported_drm_formats),
+-				 format_modifiers,
+-				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
++					&meson_plane_funcs,
++					supported_drm_formats,
++					ARRAY_SIZE(supported_drm_formats),
++					format_modifiers,
++					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	if (ret) {
++		devm_kfree(priv->drm->dev, meson_plane);
++		return ret;
++	}
  
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return result;
+ 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
  
- 	if (1 != revision.major || 2 > revision.minor)
- 		return result;
-@@ -1636,6 +1643,8 @@ static uint32_t get_ss_entry_number_from_ss_info_tbl(
- 
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
- 			DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return number;
- 
- 	if (1 != revision.major || 2 > revision.minor)
- 		return number;
-@@ -1718,6 +1727,8 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_v2_1(
- 				&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header_include, asSpreadSpectrum, 1)));
-+	if (!header_include)
-+		return 0;
- 
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
- 			- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1756,6 +1767,9 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_V3_1(
- 	header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header_include, asSpreadSpectrum, 1)));
-+	if (!header_include)
-+		return number;
-+
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
- 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
- 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
 -- 
 2.43.0
 
