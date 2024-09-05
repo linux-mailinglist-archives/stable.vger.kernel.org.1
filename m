@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EE196D45A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AE796D4E0
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DB45280DA4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69461F2987F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E5E1990D8;
-	Thu,  5 Sep 2024 09:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A62198E7E;
+	Thu,  5 Sep 2024 09:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5B7zs5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B99Fqz9u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31280194A45;
-	Thu,  5 Sep 2024 09:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210E2198E61;
+	Thu,  5 Sep 2024 09:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529863; cv=none; b=uYKVxgr6nGNS6PianXYqOqyZ6l3mYVlmR3LXbhWrQPUfjb9uGHW5ynWrVAo6+Xl/8tsX17Q97rCDRBURicnvz6mGl0Qft8d1Pv7Z7XJr/jESmGyNqUb8c44kmZYLZHp6Lao/apVyd/KsW9AXHRPAS+uIIZW7pYaEf/lzuWryk4w=
+	t=1725530231; cv=none; b=Rn3LzcgpM+pRc0UViKU43SWwndwtzcug7VsBf7bv+0N0B3y3LplSuL1IB3lCk9zVqcf761vPiNGLKrdlx+BPZ3Aj6HrHZiEaiWI0pMacVv+78dr24xQ9GNMjZczUomaKQCYOyxwdIXWU4xhSNvCF5PUp8ztoApUgIdFKJfluCQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529863; c=relaxed/simple;
-	bh=8pbL2o1RADaQQx+35Me4kMZBy6EHb0nUQuqDSq3h2b4=;
+	s=arc-20240116; t=1725530231; c=relaxed/simple;
+	bh=L6qKPJlYCDIrv4iDD/BfCPS0O6x0XJ6bBxuZX7lH0NI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eVr57tTe9AcS73eFbgAV9/Cd+xy7DuXR1W/eJLX5HbxcmpgS0lEOCIDw9zdaVpyYyrcO/WGwQ/ZzdhWdvRi0IV5yTXKEvbN+uCXJfRTDPfxIUkmHW2/jJl3/vGBZbkjijriy9YNDUXbbOOPlwztmhZoclIHPX+9i2Iml7d5NNwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5B7zs5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65886C4CEC3;
-	Thu,  5 Sep 2024 09:51:02 +0000 (UTC)
+	 MIME-Version; b=WhgbgSB5PcCfyQ50j+hrqbN+C0SqGkR5K8K3KK6HwT3/SgVM8JnXe4I+oFY598qd6FSMyKKkvfjFb3xfsiaBpKYf3lnTktlNtNMqSyK7skmfCb0j4KNRRjcQQzBikvWGCXSMSnHFBR69Mku7ovUunTgIUldZpAT3M8JUwPLkMCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B99Fqz9u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977E9C4CEC6;
+	Thu,  5 Sep 2024 09:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529862;
-	bh=8pbL2o1RADaQQx+35Me4kMZBy6EHb0nUQuqDSq3h2b4=;
+	s=korg; t=1725530231;
+	bh=L6qKPJlYCDIrv4iDD/BfCPS0O6x0XJ6bBxuZX7lH0NI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5B7zs5Oef4RU5svOtKM7h07eCursZjxqNAwQpe3LcRWm6E+jDCy23XCxMgiLYgSk
-	 dtF3BXs8SyrwftqJxqaKhFB9T4THLyPh+9DQLWYinZKf/R9/Yt/zEhaAt3YagrTuVR
-	 WENYLAIAOGqpqZ+RZRCzdLWrhY/5pJhP7+jijuXM=
+	b=B99Fqz9u7xpglRcPMl89ekvwxrIelocHytazepgPTVkWz+jkooFXX3K5LNGm62yY5
+	 aK0t7bDIzQg+f51VbmXddfJi68RW4HFX+Yk7DdnF3ywqqFHcCdPfaz0wRFGXusstDx
+	 ItSgyyqHibPiAxa/3oZl8sx4vhwrxvtJisR29Wlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Richard Maina <quic_rmaina@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 166/184] drm/amdgpu: fix overflowed constant warning in mmhub_set_clockgating()
-Date: Thu,  5 Sep 2024 11:41:19 +0200
-Message-ID: <20240905093738.819827631@linuxfoundation.org>
+Subject: [PATCH 6.6 093/132] hwspinlock: Introduce hwspin_lock_bust()
+Date: Thu,  5 Sep 2024 11:41:20 +0200
+Message-ID: <20240905093725.860032140@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: Richard Maina <quic_rmaina@quicinc.com>
 
-[ Upstream commit be6a69b21a3517122ba6cf7ab8f62f4803637dbe ]
+[ Upstream commit 7c327d56597d8de1680cf24e956b704270d3d84a ]
 
-To fix potential overflowed constant warning, modify the variables to u32
-for getting the return value of RREG32_SOC15().
+When a remoteproc crashes or goes down unexpectedly this can result in
+a state where locks held by the remoteproc will remain locked possibly
+resulting in deadlock. This new API hwspin_lock_bust() allows
+hwspinlock implementers to define a bust operation for freeing previously
+acquired hwspinlocks after verifying ownership of the acquired lock.
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-1-c8b924ffa5a2@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v1_7.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/mmhub_v9_4.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ Documentation/locking/hwspinlock.rst     | 11 ++++++++++
+ drivers/hwspinlock/hwspinlock_core.c     | 28 ++++++++++++++++++++++++
+ drivers/hwspinlock/hwspinlock_internal.h |  3 +++
+ include/linux/hwspinlock.h               |  6 +++++
+ 4 files changed, 48 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_7.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_7.c
-index 92432cd2c0c7..9689e2b5d4e5 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_7.c
-@@ -544,7 +544,7 @@ static int mmhub_v1_7_set_clockgating(struct amdgpu_device *adev,
+diff --git a/Documentation/locking/hwspinlock.rst b/Documentation/locking/hwspinlock.rst
+index 6f03713b7003..2ffaa3cbd63f 100644
+--- a/Documentation/locking/hwspinlock.rst
++++ b/Documentation/locking/hwspinlock.rst
+@@ -85,6 +85,17 @@ is already free).
  
- static void mmhub_v1_7_get_clockgating(struct amdgpu_device *adev, u64 *flags)
+ Should be called from a process context (might sleep).
+ 
++::
++
++  int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
++
++After verifying the owner of the hwspinlock, release a previously acquired
++hwspinlock; returns 0 on success, or an appropriate error code on failure
++(e.g. -EOPNOTSUPP if the bust operation is not defined for the specific
++hwspinlock).
++
++Should be called from a process context (might sleep).
++
+ ::
+ 
+   int hwspin_lock_timeout(struct hwspinlock *hwlock, unsigned int timeout);
+diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
+index ada694ba9f95..f279dd010b73 100644
+--- a/drivers/hwspinlock/hwspinlock_core.c
++++ b/drivers/hwspinlock/hwspinlock_core.c
+@@ -302,6 +302,34 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
+ }
+ EXPORT_SYMBOL_GPL(__hwspin_unlock);
+ 
++/**
++ * hwspin_lock_bust() - bust a specific hwspinlock
++ * @hwlock: a previously-acquired hwspinlock which we want to bust
++ * @id: identifier of the remote lock holder, if applicable
++ *
++ * This function will bust a hwspinlock that was previously acquired as
++ * long as the current owner of the lock matches the id given by the caller.
++ *
++ * Context: Process context.
++ *
++ * Returns: 0 on success, or -EINVAL if the hwspinlock does not exist, or
++ * the bust operation fails, and -EOPNOTSUPP if the bust operation is not
++ * defined for the hwspinlock.
++ */
++int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
++{
++	if (WARN_ON(!hwlock))
++		return -EINVAL;
++
++	if (!hwlock->bank->ops->bust) {
++		pr_err("bust operation not defined\n");
++		return -EOPNOTSUPP;
++	}
++
++	return hwlock->bank->ops->bust(hwlock, id);
++}
++EXPORT_SYMBOL_GPL(hwspin_lock_bust);
++
+ /**
+  * of_hwspin_lock_simple_xlate - translate hwlock_spec to return a lock id
+  * @bank: the hwspinlock device bank
+diff --git a/drivers/hwspinlock/hwspinlock_internal.h b/drivers/hwspinlock/hwspinlock_internal.h
+index 29892767bb7a..f298fc0ee5ad 100644
+--- a/drivers/hwspinlock/hwspinlock_internal.h
++++ b/drivers/hwspinlock/hwspinlock_internal.h
+@@ -21,6 +21,8 @@ struct hwspinlock_device;
+  * @trylock: make a single attempt to take the lock. returns 0 on
+  *	     failure and true on success. may _not_ sleep.
+  * @unlock:  release the lock. always succeed. may _not_ sleep.
++ * @bust:    optional, platform-specific bust handler, called by hwspinlock
++ *	     core to bust a specific lock.
+  * @relax:   optional, platform-specific relax handler, called by hwspinlock
+  *	     core while spinning on a lock, between two successive
+  *	     invocations of @trylock. may _not_ sleep.
+@@ -28,6 +30,7 @@ struct hwspinlock_device;
+ struct hwspinlock_ops {
+ 	int (*trylock)(struct hwspinlock *lock);
+ 	void (*unlock)(struct hwspinlock *lock);
++	int (*bust)(struct hwspinlock *lock, unsigned int id);
+ 	void (*relax)(struct hwspinlock *lock);
+ };
+ 
+diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
+index bfe7c1f1ac6d..f0231dbc4777 100644
+--- a/include/linux/hwspinlock.h
++++ b/include/linux/hwspinlock.h
+@@ -68,6 +68,7 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
+ int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
+ void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
+ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
++int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
+ int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
+ struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
+ struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
+@@ -127,6 +128,11 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
  {
--	int data, data1;
-+	u32 data, data1;
+ }
  
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-index 02fd45261399..a0cc8e218ca1 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-@@ -671,7 +671,7 @@ static int mmhub_v2_0_set_clockgating(struct amdgpu_device *adev,
- 
- static void mmhub_v2_0_get_clockgating(struct amdgpu_device *adev, u64 *flags)
++static inline int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
++{
++	return 0;
++}
++
+ static inline int of_hwspin_lock_get_id(struct device_node *np, int index)
  {
--	int data, data1;
-+	u32 data, data1;
- 
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
-index 238ea40c2450..d7c317825497 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
-@@ -560,7 +560,7 @@ static int mmhub_v3_3_set_clockgating(struct amdgpu_device *adev,
- 
- static void mmhub_v3_3_get_clockgating(struct amdgpu_device *adev, u64 *flags)
- {
--	int data;
-+	u32 data;
- 
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v9_4.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v9_4.c
-index 1b7da4aff2b8..ff1b58e44689 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v9_4.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v9_4.c
-@@ -657,7 +657,7 @@ static int mmhub_v9_4_set_clockgating(struct amdgpu_device *adev,
- 
- static void mmhub_v9_4_get_clockgating(struct amdgpu_device *adev, u64 *flags)
- {
--	int data, data1;
-+	u32 data, data1;
- 
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
+ 	return 0;
 -- 
 2.43.0
 
