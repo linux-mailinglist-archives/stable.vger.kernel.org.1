@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCE796D4A2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6582196D41D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E1171C23A07
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02E7BB27864
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46248194AC7;
-	Thu,  5 Sep 2024 09:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8AA198E80;
+	Thu,  5 Sep 2024 09:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM0gIlzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeGK4HA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CAC156225;
-	Thu,  5 Sep 2024 09:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023A1990BB;
+	Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530062; cv=none; b=fubrDPsSSoXsuDVgClC74zzHXgNY80jykYapv1PLBrt0SZ17mMcoSISq9rEE5C8LbVFkV656YEwuoskYKd9xUVxm3QMqtgGC4D+tNC40dqYcyVTDJBSZ7gxsxXiz1s94B4DQkApgVYa3dLen7kmshMNKUZIpZqMDkCd4P2BTJdI=
+	t=1725529709; cv=none; b=rz4SE7iPvzTrsFWcukYBLC0qddYUR2mK4qaJJtDmyghf9fFgj99zLiQkCksNCKDkfcqkdO9w7qqlMnzpYy3VqstC+Ynj7O2ZK+e1Qf08cmiKrC4P6Wo31u5+1P34QEeRpx+5OZq9vTcJhqcHJ2Bc+pK34+jbvw7LGBfvYNgTcaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530062; c=relaxed/simple;
-	bh=XR60+lv7BWNf9dkgGoIZIdCu5ZND67LQfOoQX2ONQYA=;
+	s=arc-20240116; t=1725529709; c=relaxed/simple;
+	bh=TLe+JWk71o+OXpHFxeLEj+nrhqU2hpbT/wIdkzMr3J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVscsW9pbzdNxsRkOlrY57ca5xMGy4mPufSbkNadeAIIbm9aLofpAdjmGb7DjsCU72k0ZJ3Ek7GzRGqXoI2GR61ekBJ+0R5JZtJ2JSBlX4eNGi+a3ZWVWXBNOkCow4QG/aJnUfxw28oWr1YYPZMTPcfjXz5a0yhlYKxlpoC9RMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM0gIlzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1268CC4CEC3;
-	Thu,  5 Sep 2024 09:54:20 +0000 (UTC)
+	 MIME-Version; b=aaK3awAJLmYj6jAsMj+fVeq1h9Y3SvCvMjpmtfZYccVY294qxMi/vVOFoLottq/xs24rGp63tOHW+xCvPxFgPBrwwjxSEBBpcxlf5bkv5H3uO/tKcbMt+9fLeFxi+fD8KeOCmOKb160jUp5ot5y2GEVXXuDI2tRj3FSk8s4YOIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeGK4HA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA1EC4CEC3;
+	Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530061;
-	bh=XR60+lv7BWNf9dkgGoIZIdCu5ZND67LQfOoQX2ONQYA=;
+	s=korg; t=1725529708;
+	bh=TLe+JWk71o+OXpHFxeLEj+nrhqU2hpbT/wIdkzMr3J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pM0gIlzAV5BiXRaWNqvuW6E/uM5seo/Jrk1Hj4jWy5LeDxiewOoHvfXNw4gHmkcM9
-	 UOe75BQizdAWOigURGAAGTJy3aFPzxNNzWqkIN3RvwX3e6eVWyVrAz0i1Tvya1nChd
-	 cfiZhjCFu/fRrBoLQIPf9oDDyYTGwokChfMZUAj0=
+	b=oeGK4HA9Ud9rbvgGzSxtIXjKN2oonxk3pY9Jd7NdfHCajUDUrrq00KBRebZDEC/Fs
+	 j9BX1bzUG8KL82EJJVNpybqhDft1sHkxN3w10NNjqW4FJAjbmBU1HpSkFdIR+qiWcX
+	 XXpEXt8OKzm7vkE8/rwvLLkrGHaYAesB0kWXNRrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/132] drm/amdgpu/pm: Check the return value of smum_send_msg_to_smc
-Date: Thu,  5 Sep 2024 11:40:30 +0200
-Message-ID: <20240905093723.933213235@linuxfoundation.org>
+Subject: [PATCH 6.10 118/184] wifi: iwlwifi: remove fw_running op
+Date: Thu,  5 Sep 2024 11:40:31 +0200
+Message-ID: <20240905093736.837608396@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-[ Upstream commit 579f0c21baec9e7506b6bb3f60f0a9b6d07693b4 ]
+[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
 
-Check the return value of smum_send_msg_to_smc, otherwise
-we might use an uninitialized variable "now"
+fw_running assumes that memory can be retrieved only after alive.
+This assumption is no longer true as we support dump before alive.
+To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
+bit in trans status is set before dumping instead of the prior check.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
+ 3 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-index 02ba68d7c654..0b181bc8931c 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-@@ -1036,7 +1036,9 @@ static int smu10_print_clock_levels(struct pp_hwmgr *hwmgr,
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 751a125a1566..893b21fcaf87 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -230,8 +230,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
+ 		.data = { NULL, },
+ 	};
  
- 	switch (type) {
- 	case PP_SCLK:
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetGfxclkFrequency, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetGfxclkFrequency, &now);
-+		if (ret)
-+			return ret;
+-	if (fwrt->ops && fwrt->ops->fw_running &&
+-	    !fwrt->ops->fw_running(fwrt->ops_ctx))
++	if (!iwl_trans_fw_running(fwrt->trans))
+ 		return -EIO;
  
- 	/* driver only know min/max gfx_clk, Add level 1 for all other gfx clks */
- 		if (now == data->gfx_max_freq_limit/100)
-@@ -1057,7 +1059,9 @@ static int smu10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 					i == 2 ? "*" : "");
- 		break;
- 	case PP_MCLK:
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetFclkFrequency, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetFclkFrequency, &now);
-+		if (ret)
-+			return ret;
+ 	if (count < header_size + 1 || count > 1024 * 4)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+index 9122f9a1260a..d201440066ea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+@@ -19,7 +19,6 @@
+ struct iwl_fw_runtime_ops {
+ 	void (*dump_start)(void *ctx);
+ 	void (*dump_end)(void *ctx);
+-	bool (*fw_running)(void *ctx);
+ 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
+ 	bool (*d3_debug_enable)(void *ctx);
+ };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 1380ae5155f3..498afbe4ee6b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -770,11 +770,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
+ 	mutex_unlock(&mvm->mutex);
+ }
  
- 		for (i = 0; i < mclk_table->count; i++)
- 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+-static bool iwl_mvm_fwrt_fw_running(void *ctx)
+-{
+-	return iwl_mvm_firmware_running(ctx);
+-}
+-
+ static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
+ {
+ 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
+@@ -795,7 +790,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
+ static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
+ 	.dump_start = iwl_mvm_fwrt_dump_start,
+ 	.dump_end = iwl_mvm_fwrt_dump_end,
+-	.fw_running = iwl_mvm_fwrt_fw_running,
+ 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
+ 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
+ };
 -- 
 2.43.0
 
