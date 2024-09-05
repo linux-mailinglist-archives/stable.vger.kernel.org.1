@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A2496D4CA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFC796D44B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5FC51F28BDB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5417A281736
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE34D194A45;
-	Thu,  5 Sep 2024 09:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5E5194ACD;
+	Thu,  5 Sep 2024 09:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGHACqvI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0Xzhuv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E073156225;
-	Thu,  5 Sep 2024 09:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F651922CC;
+	Thu,  5 Sep 2024 09:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530173; cv=none; b=YyVjpmmVuWIpaz3X7vt0gXYJAA2lZ5RcIsNsdQIKxAeiSsGzSpp6VYCOnrJIFfVHnR28adxiXPRZOJli8p6Y+boGUEORg3FTjpkObQmNQyd87k3sxe0/MBHiyW1NNcG6erwRsqr5hjOyiKl4bDI1JOZ97zMouL/ff5tdsfHQsy0=
+	t=1725529818; cv=none; b=iVSqV9NzfcBTNx1P6+5t7VnWjjwC2u2B4C54loEL2yLanJ1ma+4n0a7wMv+wycYsmjlKsp00JaXiWMFsL5yBykEDFjWG7zreBhHL56zBMNEEQiQI7kIcBzP3YsioZ8AdcHarh2Px4WrROfXmv7q63v0javTX2IF0J7Ei5wBuGl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530173; c=relaxed/simple;
-	bh=tCx6qtPh3fzR/Cc3oIBXp4tnU3efceZubXnxPj5GuuU=;
+	s=arc-20240116; t=1725529818; c=relaxed/simple;
+	bh=8WXIPWFF5ulscHN7+kLfuSj6HWbsykgdBwCuIWDqCng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgKCmuVW1ODb6fzCKa59aEysf+OmArqTsxvAORJY73ShAnsNL8wI13dr/wIqRemnr7EI+X/XMesKu9DQrbKFmxrDZxg2bk/X8LxP536PocroVNMhbqjjWzngCZQCmfr6QCTn8RsKZ0j3m3pCiQKC5+tVbia7THvM8lHPqgNZLTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGHACqvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB87AC4CEC3;
-	Thu,  5 Sep 2024 09:56:12 +0000 (UTC)
+	 MIME-Version; b=gN1a6M8VCFlEBZd/fW9NLDoHR3lP1qHVMfUEnGwWK4AOBjwYSlB5l3xj1CrY7Ha5VdwXg9mBONthsUANt7WZowkdYl/jv0aeAG9n0KeDypvn4qomNf3LJTm/5rMx7BgstalpGolH528kAVbBCF9MklM0wv8hH4qwDsUvDS/K8R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0Xzhuv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C805C4CEC4;
+	Thu,  5 Sep 2024 09:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530173;
-	bh=tCx6qtPh3fzR/Cc3oIBXp4tnU3efceZubXnxPj5GuuU=;
+	s=korg; t=1725529817;
+	bh=8WXIPWFF5ulscHN7+kLfuSj6HWbsykgdBwCuIWDqCng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGHACqvIwG/S21fbjjNa9A8SXlL8yXl6A5Omcn1NDt0TgyMRmHQKm61OijdkDrnNQ
-	 RZGWT8FIdCJuTICshrenmSMkX0C5qbKnia7jnHXID95KGDitJYlFl+GtTbREwSHnRf
-	 2tV1Ai9b/DgsTgfrSH1T+cBHCjVMNTJefwI0XHrs=
+	b=Z0Xzhuv28HpSN5HUSEPA+G+XYo0ZF3Vg74tx1FuOqpC3ltOG/ZTchI66VSNRVcjJu
+	 +sRRpQM/4PodLin6BF5Za3eQGmbg2bno1ge5iHZDb59BvBvDqEOMeaRFenCMXaWG3X
+	 R4FQ77SoqIN91IOe4ElFoyY/90N460Z/rMXOxa10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/132] wifi: ath11k: initialize ret in ath11k_qmi_load_file_target_mem()
+Subject: [PATCH 6.10 151/184] drm/xe: Ensure caller uses sole domain for xe_force_wake_assert_held
 Date: Thu,  5 Sep 2024 11:41:04 +0200
-Message-ID: <20240905093725.246647337@linuxfoundation.org>
+Message-ID: <20240905093738.234353950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-[ Upstream commit 199f149e97dc7be80e5eed4b232529c1d1aa8055 ]
+[ Upstream commit 3541e19d0d3b30ad099c0c26ba87561aedfbd652 ]
 
-smatch flagged the following issue:
+xe_force_wake_assert_held() is designed to confirm a particular
+forcewake domain's wakefulness; it doesn't verify the wakefulness of
+multiple domains. Make sure the caller doesn't input multiple
+domains(XE_FORCEWAKE_ALL) as a parameter.
 
-drivers/net/wireless/ath/ath11k/qmi.c:2401 ath11k_qmi_load_file_target_mem() error: uninitialized symbol 'ret'.
+v2
+- use domain != XE_FORCEWAKE_ALL (Michal)
 
-The reality is that 'ret' is initialized in every path through
-ath11k_qmi_load_file_target_mem() except one, the case where the input
-'len' is 0, and hence the "while (remaining)" loop is never entered.
-But to make sure this case is also handled, add an initializer to the
-declaration of 'ret'.
+v3
+- Add kernel-doc
 
-No functional changes, compile tested only.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240504-qmi_load_file_target_mem-v1-2-069fc44c45eb@quicinc.com
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240607125741.1407331-1-himal.prasad.ghimiray@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_force_wake.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index a831d9474e9e..83dc284392de 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
- 	struct qmi_txn txn;
- 	const u8 *temp = data;
- 	void __iomem *bdf_addr = NULL;
--	int ret;
-+	int ret = 0;
- 	u32 remaining = len;
+diff --git a/drivers/gpu/drm/xe/xe_force_wake.h b/drivers/gpu/drm/xe/xe_force_wake.h
+index 83cb157da7cc..8cbb04fe0ed9 100644
+--- a/drivers/gpu/drm/xe/xe_force_wake.h
++++ b/drivers/gpu/drm/xe/xe_force_wake.h
+@@ -28,10 +28,21 @@ xe_force_wake_ref(struct xe_force_wake *fw,
+ 	return fw->domains[ffs(domain) - 1].ref;
+ }
  
- 	req = kzalloc(sizeof(*req), GFP_KERNEL);
++/**
++ * xe_force_wake_assert_held - asserts domain is awake
++ * @fw : xe_force_wake structure
++ * @domain: xe_force_wake_domains apart from XE_FORCEWAKE_ALL
++ *
++ * xe_force_wake_assert_held() is designed to confirm a particular
++ * forcewake domain's wakefulness; it doesn't verify the wakefulness of
++ * multiple domains. Make sure the caller doesn't input multiple
++ * domains(XE_FORCEWAKE_ALL) as a parameter.
++ */
+ static inline void
+ xe_force_wake_assert_held(struct xe_force_wake *fw,
+ 			  enum xe_force_wake_domains domain)
+ {
++	xe_gt_assert(fw->gt, domain != XE_FORCEWAKE_ALL);
+ 	xe_gt_assert(fw->gt, fw->awake_domains & domain);
+ }
+ 
 -- 
 2.43.0
 
