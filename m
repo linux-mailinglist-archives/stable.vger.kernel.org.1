@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3255696DFA4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:30:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B93796DFE3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E40A1C2364E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 498021F2291F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3051A01B7;
-	Thu,  5 Sep 2024 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140B31A0AF4;
+	Thu,  5 Sep 2024 16:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpoWgOQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bILZybfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5F719FA7B
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1C21A08A4;
+	Thu,  5 Sep 2024 16:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725553802; cv=none; b=azpRDnGYvaMD67LZvbn/jLc107MZhOEl46bV4YPdKrckHN4GJ35BXcFA+TIX/BmDEr5MgiBV8tNxOK83Qcm4UviNY7s+HuMFpUFV6YK5r4NDcEQwalDjGdy+UM74HJuNXay8RzSkqcn1H6ChyM3CbXsn2CJkosmtHKhGmLhVVvs=
+	t=1725554028; cv=none; b=RfL9XtryKKduhpFdw+IVbVj1Z+4rVKIhMDU1hLTG+DZpNSMYzoEP2CY7FquhtD408tpo1FxOiCV9pcV/0M8hCKV2wGb8sz7aF3vU+GbYvq6hCNV69A+8rMT8ZqYmmAZTIAbNPVuySXBbpLxyduvHFc6Nt/vtKiARSAUr2rNkJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725553802; c=relaxed/simple;
-	bh=xWDZEJKCAOe9ljWrApkLr4zWbHZ3imYeYtkkE7/qmow=;
+	s=arc-20240116; t=1725554028; c=relaxed/simple;
+	bh=fV+XkGhCCUlQVvIusu+HetPVTTQeYZyNkRFe9370jes=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PCNsQwahb9Jb4uCLSnW/iI47hxPM9xmuyRRcCkzimlPYXn2o13HYDyYWHpkwks+oE6o3ZlSs8ArmrlUBYt7Bd145vwrv4nTTYCGWxzPid6PsZ2p9ikEoh9Lcf31VvC0+NaZy3HC7n/Izvi4HgY+IRmCa0ARO+9NjBTSK8uJHBRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpoWgOQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C97BC4CEC9;
-	Thu,  5 Sep 2024 16:30:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=SXJ+vWKGJ+l/JHvFZlFUvmu1F2awYuePjpql8f3D3Jub/QBmo6AH4IqUHho2C4CrA5oO9K2jW9EH+wDxGB2qMBFB0QDHJ/xfMPgq02z9vl9lyL4Kv6H7RxUPpI9cAOBbp5H/H8xAjSwJU94kL2gbDq6xH/nPX7aB9YQeZy3GDIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bILZybfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C39FC4CEC3;
+	Thu,  5 Sep 2024 16:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725553802;
-	bh=xWDZEJKCAOe9ljWrApkLr4zWbHZ3imYeYtkkE7/qmow=;
+	s=korg; t=1725554028;
+	bh=fV+XkGhCCUlQVvIusu+HetPVTTQeYZyNkRFe9370jes=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OpoWgOQCa16Xdi7mKlJQjlw0p5ax0qvKQkA2p9M4w+Xyy7nUPXp8i4UDzSzRwCK1d
-	 PpPJg3Qc7zy4cNm5ZNLhXCUeLj1L12OhTItLO3nvPJHrAj9yZyp2EG6a+K9d/itTC8
-	 q1tFL1PkzWvjQoy+1XaqGra3OQYWOlZ1FygIPfPI=
-Date: Thu, 5 Sep 2024 18:29:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Hillf Danton <hdanton@sina.com>, alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2 4.19.y] ALSA: usb-audio: Sanity checks for each pipe
- and EP types
-Message-ID: <2024090535-drinking-unsocial-6170@gregkh>
-References: <76c0ef6b-f4bf-41f7-ad36-55f5b4b3180a@stanley.mountain>
- <599b79d0-0c0f-425e-b2a2-1af9f81539b8@stanley.mountain>
- <2adfa671-cb11-4463-8840-a175caf0d210@stanley.mountain>
- <2024090557-hurry-armful-dbe0@gregkh>
- <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
+	b=bILZybfJNK3SlkLtyn6P+IKhAjQumL0HgemfaaN1Ithi0DiKFVzC3y0VydBt70Rqn
+	 B8ePubdErEY6JnxScWYOWVX8Ja7kj/cTwKPA/1ZxBbRIlNiS+ShHJXahHQNKvgeogY
+	 VjT7Pi++rW9BRQuygr4fA+uTJrZK9Y2zje6sNSi4=
+Date: Thu, 5 Sep 2024 18:33:45 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 000/184] 6.10.9-rc1 review
+Message-ID: <2024090527-scouts-cohesive-bced@gregkh>
+References: <20240905093732.239411633@linuxfoundation.org>
+ <CA+G9fYsppY-GyoCFFbAu1q7PdynMLKn024J3CenbN12eefaDwA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,35 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <747a6089-b63d-4d14-b524-55a76f58d724@stanley.mountain>
+In-Reply-To: <CA+G9fYsppY-GyoCFFbAu1q7PdynMLKn024J3CenbN12eefaDwA@mail.gmail.com>
 
-On Thu, Sep 05, 2024 at 06:11:49PM +0300, Dan Carpenter wrote:
-> On Thu, Sep 05, 2024 at 03:49:14PM +0200, Greg KH wrote:
-> > On Thu, Sep 05, 2024 at 04:34:45PM +0300, Dan Carpenter wrote:
-> > > Sorry,
-> > > 
-> > > I completely messed these emails up.  It has Takashi Iwai and Hillf Danton's
-> > > names instead of mine in the From header.  It still has my email address, but
-> > > just the names are wrong.
-> > > 
-> > > Also I should have used a From header in the body of the email.
-> > > 
-> > > Also the threading is messed up.
-> > > 
-> > > Will try again tomorrow.
-> > 
-> > It looks good to me, now queued up.
-> > 
+On Thu, Sep 05, 2024 at 05:25:32PM +0530, Naresh Kamboju wrote:
+> On Thu, 5 Sept 2024 at 15:13, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.10.9 release.
+> > There are 184 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 07 Sep 2024 09:36:50 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.9-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
 > 
-> The code is okay but the Author header is messed up.  It has my email address.
+> The following build errors noticed on arm64 on
+> stable-rc linux.6.6.y and linux.6.10.y
 > 
-> From: Hillf Danton <dan.carpenter@linaro.org>
+> drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_advertise_quirks':
+> drivers/ufs/host/ufs-qcom.c:862:32: error:
+> 'UFSHCD_QUIRK_BROKEN_LSDBS_CAP' undeclared (first use in this
+> function); did you mean 'UFSHCD_QUIRK_BROKEN_UIC_CMD'?
+>   862 |                 hba->quirks |= UFSHCD_QUIRK_BROKEN_LSDBS_CAP;
+>       |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>       |                                UFSHCD_QUIRK_BROKEN_UIC_CMD
 > 
-> From: Takashi Iwai <dan.carpenter@linaro.org>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Ah that's really odd, how did you do that?  :)
+Sasha has dropped these now, let me go push out some -rc2 with that
+removed.
 
-Now fixed up in the patches, don't worry about it.
+thanks,
 
 greg k-h
 
