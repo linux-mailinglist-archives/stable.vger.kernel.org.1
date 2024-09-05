@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-73437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E4C96D4DD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7BB96D53A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 676CC1C248B6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF00028349C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E9D198841;
-	Thu,  5 Sep 2024 09:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9357C19538A;
+	Thu,  5 Sep 2024 10:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bIRCF+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ+Hc0dR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D4519755E;
-	Thu,  5 Sep 2024 09:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534AA1494DB;
+	Thu,  5 Sep 2024 10:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530227; cv=none; b=jXOD1viPj1+okUJM9DQ8Blt2DXmj8OKZV11pIELZcAW3/8UQOAbJnamjFOq9jlcBXgPobZ5Rtwii4bVyAtkYqChEjTk/58cAHc0k/jUiRyE+HWP0oitLJmTx6qMpa8048EN9pb5Can11WlWGBKUOvyCW0q2WV81EW2A54CabY60=
+	t=1725530513; cv=none; b=aEsgWeWKZIjBSGf3ABTrCcTfoiJqxyYCy8EYqHJ8kUwys2bV1mLhJYINC/6O5PB/kCLFx9yvZocarCUWJgjFvsipPU8bmw1/NL78MJPteUWxZe4oeloDk4ycpBB0ndAgnR8pZxURdHxASkmFCLy/gsyipD0wimmatjMeFvjBlSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530227; c=relaxed/simple;
-	bh=N5Ws0LrBrAaysssaZTfSqwrAa1LLYX4u0YL/W7jkj2I=;
+	s=arc-20240116; t=1725530513; c=relaxed/simple;
+	bh=xPBotwMgeHZqvUgP1RdKIrFLEbpO5oeiIiP/CUtin54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjq5DU6SN7AD5bOKZCjqsA5WVkbcd8ZuhxBFszOkiYPPUk6ayceD1orGm9FF6/e9eR/BrfKWeVFsiPGmrn7FRkTEobPiMy99CxjV5ia7OK3YQg2LJEZDRmVdLP7IVeLsEr9WK92z2HAa85er0IEJE5zYYXkksyr0uvMB7oNqw1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bIRCF+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDB7C4CEC3;
-	Thu,  5 Sep 2024 09:57:07 +0000 (UTC)
+	 MIME-Version; b=th6tmzED9D5JPA0crtYWbYlRg/OxyXaQ/ET2++ciCAEWeKcbUtSqg9Ad0G+TRckiPosr30wq/87R8Vlu9Yj56Ti1zDWQmrpMCDgUhV0yHKzgoLigzYHC+0J0jNwafrkMiaERIid4yN6J9iXkK0WOkUefLseSLfHmU2bCXWWaXHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ+Hc0dR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D30C4CEC3;
+	Thu,  5 Sep 2024 10:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530227;
-	bh=N5Ws0LrBrAaysssaZTfSqwrAa1LLYX4u0YL/W7jkj2I=;
+	s=korg; t=1725530513;
+	bh=xPBotwMgeHZqvUgP1RdKIrFLEbpO5oeiIiP/CUtin54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bIRCF+WpUdktqvzGRQuKLj43YkJnm4X8eyX2UGGBam41iSCU41FoBs2EwKmyj1rT
-	 TD65ZeuDfNBmMA8GHb3mcDXOfUP/Ien0wlnhxKdlze6PwC7L05KT0GlyBCGtrpENmN
-	 m/l3hdY6s3ukHmm9nySufmn6z6cW1Uw0OAFg+9cc=
+	b=LZ+Hc0dRCfv1A9ukAsh6fLWNBwLBbHTHaIsSaPZIiYbLYWxJ42N3Svhg9mqSRtVAj
+	 A464afSXa88KUW7qBlDPEO9dihrxcG5tgFpIAbF5I6a7wgYDjgjjf+qYMVBM1E0Dk+
+	 AVzFStEr+7ljxAId+FBA9oLjFOWaccRzRYm0Ke+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/132] wifi: mac80211: check ieee80211_bss_info_change_notify() against MLD
+Subject: [PATCH 6.1 047/101] drm/amd/display: Ensure index calculation will not overflow
 Date: Thu,  5 Sep 2024 11:41:19 +0200
-Message-ID: <20240905093725.821837481@linuxfoundation.org>
+Message-ID: <20240905093717.979143404@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit a0ca76e5b7d550fcd74753d5fdaaf23f1a9bfdb4 ]
+[ Upstream commit 8e2734bf444767fed787305ccdcb36a2be5301a2 ]
 
-It's not valid to call ieee80211_bss_info_change_notify() with
-an sdata that's an MLD, remove the FIXME comment (it's not true)
-and add a warning.
+[WHY & HOW]
+Make sure vmid0p72_idx, vnom0p8_idx and vmax0p9_idx calculation will
+never overflow and exceess array size.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240523121140.97a589b13d24.I61988788d81fb3cf97a490dfd3167f67a141d1fd@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This fixes 3 OVERRUN and 1 INTEGER_OVERFLOW issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 066424e62ff0..71d60f57a886 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -215,6 +215,8 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c b/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
+index e73f089c84bb..ebd7ed1b9a3c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/calcs/dcn_calcs.c
+@@ -1453,10 +1453,9 @@ void dcn_bw_update_from_pplib_fclks(
+ 	ASSERT(fclks->num_levels);
  
- 	might_sleep();
+ 	vmin0p65_idx = 0;
+-	vmid0p72_idx = fclks->num_levels -
+-		(fclks->num_levels > 2 ? 3 : (fclks->num_levels > 1 ? 2 : 1));
+-	vnom0p8_idx = fclks->num_levels - (fclks->num_levels > 1 ? 2 : 1);
+-	vmax0p9_idx = fclks->num_levels - 1;
++	vmid0p72_idx = fclks->num_levels > 2 ? fclks->num_levels - 3 : 0;
++	vnom0p8_idx = fclks->num_levels > 1 ? fclks->num_levels - 2 : 0;
++	vmax0p9_idx = fclks->num_levels > 0 ? fclks->num_levels - 1 : 0;
  
-+	WARN_ON_ONCE(ieee80211_vif_is_mld(&sdata->vif));
-+
- 	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		return;
- 
-@@ -247,7 +249,6 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 	if (changed & ~BSS_CHANGED_VIF_CFG_FLAGS) {
- 		u64 ch = changed & ~BSS_CHANGED_VIF_CFG_FLAGS;
- 
--		/* FIXME: should be for each link */
- 		trace_drv_link_info_changed(local, sdata, &sdata->vif.bss_conf,
- 					    changed);
- 		if (local->ops->link_info_changed)
+ 	dc->dcn_soc->fabric_and_dram_bandwidth_vmin0p65 =
+ 		32 * (fclks->data[vmin0p65_idx].clocks_in_khz / 1000.0) / 1000.0;
 -- 
 2.43.0
 
