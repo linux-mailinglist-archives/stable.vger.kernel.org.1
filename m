@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A2C96D4DA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4B996D47A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF321F292B5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7D32282263
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7490C194AD6;
-	Thu,  5 Sep 2024 09:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EFA198841;
+	Thu,  5 Sep 2024 09:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQNrnJli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pqZO9vO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339F518D65E;
-	Thu,  5 Sep 2024 09:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342314A08E;
+	Thu,  5 Sep 2024 09:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530221; cv=none; b=jwPPPns9iV5gS7J5sxvtSFSPQOS7yyTM2NbzhYSOtceSstsW/YO6M+P7rDiSWoqN9tmmD2qHKN4iLUpOq05gY0MUev022VZwdz0RwfDNV1FtXATZSkblgswov3a+xcZkfE3VhRsAMrh3TilQhGH68bCeB+eLenhJAIxxe78Bk6o=
+	t=1725529943; cv=none; b=IBTmQSHWhCilsYg8V9An3ZeB+Xls9fIp+JQRrEwmnzKQOK2xAJrJGORYELSQR8sqBLQBL95qFWvYNsTBOIUoqouRaeurClz15D1A6yWx3zBRxc7abcxL8TtK339KvWeZcWYCd5rTnEyUUwD99tCN+6kK5xvQApRuM/D0bmYK13U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530221; c=relaxed/simple;
-	bh=1r3pJLDtZycLcjrScchixL7XbsXbMfljhPopm6VhJVE=;
+	s=arc-20240116; t=1725529943; c=relaxed/simple;
+	bh=mJhmp/6A0q+bHszcci7QJSHBjPbBqF2N9kaK5RDAnio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzFCldUb2OygDZNK02erMLKEAfyiF5lfq2evSyQhjDpGeGu63USk4YeIRYu+tFhZCCNlPdL5iDHbl8ipFhS2tBxqZQcj0Ewz2f2O3PhpXko1byWxxVtatg/CUhuqqw0Gjr+crN2EmEgdLGls1NLnN94BVJEmTdCRXWR5B0hxsw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQNrnJli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971DBC4CEC3;
-	Thu,  5 Sep 2024 09:57:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JdNsOvs03Ow+9urArxZ62n9a8y/PofJzaq309PB9ZQaEAHqS3RuC/zoqAVvw9uB+F5fHoHadxz0FGC7BQ/wDXElxM1EiLi7Mbn3hldwmBf5Q6MC5p6XP6GCz+tefWcVAQbNF64HPGFtDBhZ4VeT4Bv4eePXPEOvGo1Ha3jkdU/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pqZO9vO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDCFC4CEC4;
+	Thu,  5 Sep 2024 09:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530221;
-	bh=1r3pJLDtZycLcjrScchixL7XbsXbMfljhPopm6VhJVE=;
+	s=korg; t=1725529943;
+	bh=mJhmp/6A0q+bHszcci7QJSHBjPbBqF2N9kaK5RDAnio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQNrnJliPd0E4A0LR1hz9FrvPgEcmXCAKIox2dm+42w+eTuxrhKYzK0zwboeAFImq
-	 htyhYfPoFELtRHPLBWC1Zo2Gw6wda7B2PSIQwc/5vuroNmvOBpPLoRycQJDyQv5Iq9
-	 TYRY7zXIWHKz8WLH4dJG8BRLw+3yraKUGuIL2ng8=
+	b=1pqZO9vOEhaicIfJu5SUg/It2ba4hsSk4IPN39Kfn9zUdDTBRvw0wK6tij9CLg0Wg
+	 I1K3zkdhZn4Z+7+H16vBqgA94Mu5hH1tfWUyHhx6DD1d27F3TVvvmnPb3XZCIPGjOZ
+	 0t9niAxGU84CLPW3J/d1PTJzQtiN1u9g35tHExo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jagadeesh Kona <quic_jkona@quicinc.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/132] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Subject: [PATCH 6.10 164/184] drm/amdgpu: add lock in amdgpu_gart_invalidate_tlb
 Date: Thu,  5 Sep 2024 11:41:17 +0200
-Message-ID: <20240905093725.745353541@linuxfoundation.org>
+Message-ID: <20240905093738.742341837@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <quic_jkona@quicinc.com>
+From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
+[ Upstream commit 18f2525d31401e5142db95ff3a6ec0f4147be818 ]
 
-Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
-can lead to overflow if the multiplied result is greater than
-UINT_MAX, since type of target_freq is unsigned int. Avoid this
-overflow by assigning target_freq to unsigned long variable for
-converting it to HZ.
+We need to take the reset domain lock before flush hdp. We can't put the
+lock inside amdgpu_device_flush_hdp itself because it is used during
+reset where we already take the write side lock.
 
-Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 028df8a5f537..079940c69ee0 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -62,9 +62,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 					     unsigned int target_freq)
- {
- 	struct scmi_data *priv = policy->driver_data;
-+	unsigned long freq = target_freq;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
+index c623e23049d1..a6ddffbf8b4d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
+@@ -34,6 +34,7 @@
+ #include <asm/set_memory.h>
+ #endif
+ #include "amdgpu.h"
++#include "amdgpu_reset.h"
+ #include <drm/drm_drv.h>
+ #include <drm/ttm/ttm_tt.h>
  
--	if (!perf_ops->freq_set(ph, priv->domain_id,
--				target_freq * 1000, true))
-+	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
- 		return target_freq;
+@@ -408,7 +409,10 @@ void amdgpu_gart_invalidate_tlb(struct amdgpu_device *adev)
+ 		return;
  
- 	return 0;
+ 	mb();
+-	amdgpu_device_flush_hdp(adev, NULL);
++	if (down_read_trylock(&adev->reset_domain->sem)) {
++		amdgpu_device_flush_hdp(adev, NULL);
++		up_read(&adev->reset_domain->sem);
++	}
+ 	for_each_set_bit(i, adev->vmhubs_mask, AMDGPU_MAX_VMHUBS)
+ 		amdgpu_gmc_flush_gpu_tlb(adev, 0, i, 0);
+ }
 -- 
 2.43.0
 
