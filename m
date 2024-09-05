@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-73488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1963096D514
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24B896D4B5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D092819A4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30932B25A4B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76307194A64;
-	Thu,  5 Sep 2024 09:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FB1194A45;
+	Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7ZV+QzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw04xpFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3499483CC8;
-	Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2E7154BFF;
+	Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530397; cv=none; b=kjVRR5yyLXqtH8Lp2ehh2NVIwzHlXKJVFYgEHaWLm66f5myweNBrqMtnqsB92psJf6CWoktqvdJgnKZHxv3CJENGdkEsBhiFbTcXyuX1nd6ji5xvetkTURubqGmIG+4PdxELieXJwnO6IPZitSFBpmpmLD2rkdguilJJsplrXEQ=
+	t=1725530114; cv=none; b=qP4IH1i89UhfqoZomLGoLje5INXqqsE9uwtvnNKqsYJ2S81QSz9RWd7j28tyOsAMsfbJE7NXhPgH/vBCILqrJ7mYIY9LEEO4OVRtTQ7gM5wx+6j9wZVj3HM560XYv2PgDX4DDmQlPoe3f9VhmEXGMBwH+aGv5hQs9ld0pp5/+Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530397; c=relaxed/simple;
-	bh=g3nelucE2RgS94zaQ8/R9z4wu1hF3gQTb2CxoLLmHhA=;
+	s=arc-20240116; t=1725530114; c=relaxed/simple;
+	bh=ak6Jd1PvZiUCrMrntJyelJEB4KuD17NQsZ7DqjmSkCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfP3nUupYvGOYmbK3A6EP4pNYpT1SybMLpyvx+qEDM50Q/V7j9xYvcvhGDq4a4neJ8TfdgGyd2tnF5cfLbeAzelh7pNgV8CV3N5PxNSx7gJt8b7lLCBdAe8MmdNBW/NEltffrLIGCT3P0cyRK1v5LM+nSn7GVDy5ak8zKitTq1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7ZV+QzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A0BC4CEC3;
-	Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
+	 MIME-Version; b=Incwv0WmAEoCzVcJuJlBRvEGpA6/Far5ZiwSdXcS/l824QAUwm6KDV8OhUUSuk9lLbeazl9ntEzfCHkemw3iEmS/kqVLOqbEu8Mb1v6i8DCiaqNNMhKzY8NefUvG+WIHSWJ5TIPc4aTX0p3+g+f3/ELS1/Rc7aOLNa45kSiBKuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw04xpFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCB9C4CEC4;
+	Thu,  5 Sep 2024 09:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530396;
-	bh=g3nelucE2RgS94zaQ8/R9z4wu1hF3gQTb2CxoLLmHhA=;
+	s=korg; t=1725530114;
+	bh=ak6Jd1PvZiUCrMrntJyelJEB4KuD17NQsZ7DqjmSkCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I7ZV+QzZKM8itrWgiTPldCXyXZm0l8Qoau5JdknwUTfhz6mZUPD1JY7rVSO4NhzvP
-	 fqmJ6eJKcGrl3EpMQ3ueC+iKu9HYVgpAGYIKgBDl/nUz8aKUmDCq5/zbEOhMFDHa3X
-	 9RBuyhp9Gzm4cAH+8/ofgZPfc9xrqqU9bpUJKTgw=
+	b=Aw04xpFtfU8Ps/3Fnn70fXK8f8NO7tcc9V/g8arNPBOdP2zdXXAYCQnVjTrVPFVNr
+	 aEvTtH6Y06O3btPLDPk9yd/0hOh8AUF3FbBU84BZZgUxQhnBbN6MJgtoZmDdyBuljj
+	 ouFNdOl8x9Qf7CMKrzFb2lZZFrcBctb1PXH5xzfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenyuwen <yuwen.chen@xjmz.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.1 012/101] f2fs: fix to truncate preallocated blocks in f2fs_file_open()
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 057/132] drm/amd/display: Fix Coverity INTERGER_OVERFLOW within construct_integrated_info
 Date: Thu,  5 Sep 2024 11:40:44 +0200
-Message-ID: <20240905093716.573114061@linuxfoundation.org>
+Message-ID: <20240905093724.475765647@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,154 +66,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit 298b1e4182d657c3e388adcc29477904e9600ed5 upstream.
+[ Upstream commit 176abbcc71952e23009a6ed194fd203b99646884 ]
 
-chenyuwen reports a f2fs bug as below:
+[Why]
+For substrcation, coverity reports integer overflow
+warning message when variable type is uint32_t.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000011
- fscrypt_set_bio_crypt_ctx+0x78/0x1e8
- f2fs_grab_read_bio+0x78/0x208
- f2fs_submit_page_read+0x44/0x154
- f2fs_get_read_data_page+0x288/0x5f4
- f2fs_get_lock_data_page+0x60/0x190
- truncate_partial_data_page+0x108/0x4fc
- f2fs_do_truncate_blocks+0x344/0x5f0
- f2fs_truncate_blocks+0x6c/0x134
- f2fs_truncate+0xd8/0x200
- f2fs_iget+0x20c/0x5ac
- do_garbage_collect+0x5d0/0xf6c
- f2fs_gc+0x22c/0x6a4
- f2fs_disable_checkpoint+0xc8/0x310
- f2fs_fill_super+0x14bc/0x1764
- mount_bdev+0x1b4/0x21c
- f2fs_mount+0x20/0x30
- legacy_get_tree+0x50/0xbc
- vfs_get_tree+0x5c/0x1b0
- do_new_mount+0x298/0x4cc
- path_mount+0x33c/0x5fc
- __arm64_sys_mount+0xcc/0x15c
- invoke_syscall+0x60/0x150
- el0_svc_common+0xb8/0xf8
- do_el0_svc+0x28/0xa0
- el0_svc+0x24/0x84
- el0t_64_sync_handler+0x88/0xec
+[How]
+Change varaible type to int32_t.
 
-It is because inode.i_crypt_info is not initialized during below path:
-- mount
- - f2fs_fill_super
-  - f2fs_disable_checkpoint
-   - f2fs_gc
-    - f2fs_iget
-     - f2fs_truncate
-
-So, let's relocate truncation of preallocated blocks to f2fs_file_open(),
-after fscrypt_file_open().
-
-Fixes: d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
-Reported-by: chenyuwen <yuwen.chen@xjmz.com>
-Closes: https://lore.kernel.org/linux-kernel/20240517085327.1188515-1-yuwen.chen@xjmz.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    1 +
- fs/f2fs/file.c  |   42 +++++++++++++++++++++++++++++++++++++++++-
- fs/f2fs/inode.c |    8 --------
- 3 files changed, 42 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c  | 4 ++--
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -788,6 +788,7 @@ enum {
- 	FI_ALIGNED_WRITE,	/* enable aligned write */
- 	FI_COW_FILE,		/* indicate COW file */
- 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
-+	FI_OPENED_FILE,         /* indicate file has been opened */
- 	FI_MAX,			/* max flag, never be used */
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 6b3190447581..19cd1bd844df 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -2552,8 +2552,8 @@ static enum bp_result construct_integrated_info(
  
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -538,6 +538,42 @@ static int f2fs_file_mmap(struct file *f
- 	return 0;
- }
+ 	/* Sort voltage table from low to high*/
+ 	if (result == BP_RESULT_OK) {
+-		uint32_t i;
+-		uint32_t j;
++		int32_t i;
++		int32_t j;
  
-+static int finish_preallocate_blocks(struct inode *inode)
-+{
-+	int ret;
-+
-+	inode_lock(inode);
-+	if (is_inode_flag_set(inode, FI_OPENED_FILE)) {
-+		inode_unlock(inode);
-+		return 0;
-+	}
-+
-+	if (!file_should_truncate(inode)) {
-+		set_inode_flag(inode, FI_OPENED_FILE);
-+		inode_unlock(inode);
-+		return 0;
-+	}
-+
-+	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
-+	filemap_invalidate_lock(inode->i_mapping);
-+
-+	truncate_setsize(inode, i_size_read(inode));
-+	ret = f2fs_truncate(inode);
-+
-+	filemap_invalidate_unlock(inode->i_mapping);
-+	f2fs_up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
-+
-+	if (!ret)
-+		set_inode_flag(inode, FI_OPENED_FILE);
-+
-+	inode_unlock(inode);
-+	if (ret)
-+		return ret;
-+
-+	file_dont_truncate(inode);
-+	return 0;
-+}
-+
- static int f2fs_file_open(struct inode *inode, struct file *filp)
- {
- 	int err = fscrypt_file_open(inode, filp);
-@@ -554,7 +590,11 @@ static int f2fs_file_open(struct inode *
+ 		for (i = 1; i < NUMBER_OF_DISP_CLK_VOLTAGE; ++i) {
+ 			for (j = i; j > 0; --j) {
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 93720cf069d7..384ddb28e6f6 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -2935,8 +2935,11 @@ static enum bp_result construct_integrated_info(
+ 	struct atom_common_table_header *header;
+ 	struct atom_data_revision revision;
  
- 	filp->f_mode |= FMODE_NOWAIT;
- 
--	return dquot_file_open(inode, filp);
-+	err = dquot_file_open(inode, filp);
-+	if (err)
-+		return err;
+-	uint32_t i;
+-	uint32_t j;
++	int32_t i;
++	int32_t j;
 +
-+	return finish_preallocate_blocks(inode);
- }
++	if (!info)
++		return result;
  
- void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -549,14 +549,6 @@ make_now:
- 	}
- 	f2fs_set_inode_flags(inode);
- 
--	if (file_should_truncate(inode) &&
--			!is_sbi_flag_set(sbi, SBI_POR_DOING)) {
--		ret = f2fs_truncate(inode);
--		if (ret)
--			goto bad_inode;
--		file_dont_truncate(inode);
--	}
--
- 	unlock_new_inode(inode);
- 	trace_f2fs_iget(inode);
- 	return inode;
+ 	if (info && DATA_TABLES(integratedsysteminfo)) {
+ 		header = GET_IMAGE(struct atom_common_table_header,
+-- 
+2.43.0
+
 
 
 
