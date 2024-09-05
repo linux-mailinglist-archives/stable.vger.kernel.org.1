@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E138E96D4AD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E2996D42B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3061C23A07
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A6528293E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC67194A5B;
-	Thu,  5 Sep 2024 09:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0282198822;
+	Thu,  5 Sep 2024 09:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ze1HsKG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0NeauvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A944A154BFF;
-	Thu,  5 Sep 2024 09:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5E114A08E;
+	Thu,  5 Sep 2024 09:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530088; cv=none; b=JaBrbTQlBFfmn2P8D45xPN5tSbFYi4pbsk/Y0qbQ5K1aNETaFqJK5cbChXLZaBeRcvXjC5eivJLF+7imMnbiUqBanSyJz1xHclx6BVMRpF+HfDDVI/vOEUI5B5k/154ohNk8LHWuzAde2PxgOVwhPfzr+9YI8dw0nkf1ZQwZmps=
+	t=1725529751; cv=none; b=l2BeCBnTchKbGW/uAbemiJPK7lDzk4NJ7fFnHNGawgvKpIEtZJxbuxgUneGOPfbRNKf8So+pbCAuoZ3P9MBxVEF/MF0qR+Q/mqB1UMRXpZikxP/WlLuAY8BQ+z35em9GkVxUt2DLKCty5RUDe3aBU+tWs04CDFQLEFjDFYmkrIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530088; c=relaxed/simple;
-	bh=gXgSJZvymUGswu72My0Cfft8XN895K2+0EwznoZozCk=;
+	s=arc-20240116; t=1725529751; c=relaxed/simple;
+	bh=hFYSbozBNqQzIhcAxWnrNfE/9b7eX30okN1KCw+2n+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo0irP8cV2pRpS6gBvrrfb7rKuMPfy3kQNUrpHcGpWlcjHIEiV9WyuRi/mSvAUNYzcB7GQWIkazC5IGBCSm4LQaSLPuJ/S0rgGFA/9qa62vkuT3apXl3KKosAX77RiNdVwDzebpc/vLOzLv0PNq5obSljDjm8SfZ5Y+/+cL5RWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ze1HsKG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC77C4CEC3;
-	Thu,  5 Sep 2024 09:54:47 +0000 (UTC)
+	 MIME-Version; b=Nc93W5LVvt87Bv8S3v5LX+DWpk1JhD1ioPlFPISKy0VEC/vhryuMUDpeSW4+0VBeYFpO+rjc5w5Ajg//YAg6fi4QFFp9nL/VOraH2+LCseNJi0JUa+fTWYOamWSRptlj2mjNYIRmDFJPAbe+6knWfuuxWj6iMroDYHC5kW8GgqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0NeauvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3302C4CEC3;
+	Thu,  5 Sep 2024 09:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530088;
-	bh=gXgSJZvymUGswu72My0Cfft8XN895K2+0EwznoZozCk=;
+	s=korg; t=1725529751;
+	bh=hFYSbozBNqQzIhcAxWnrNfE/9b7eX30okN1KCw+2n+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ze1HsKG1H/uxzPWicXk6vJdJ78wLeuxDhmmXEhpgrpv8iyTyfivKsNQ8KwywoXefy
-	 80dAkVLg+ctg6bLwAvRAIzTE5JCIbvDg6fyjbki6pNxuOFhqe0NfYchM8xlcz4+KbI
-	 vKIRvOVJBWupHmLor9085QeQtNY+tRCyXG33Xie4=
+	b=z0NeauvL/Lg7Kx+c/3zW9Bh0LMCKPmqWch3j4wpXkpBzYgnS9vKBjEAQZQ7XgMXlt
+	 MBbXM5RQRjAfk9dbXeSO1Ksbv3dPlZHf8JY1cUZUqnHAyHMov4V50evDFyfqebt/BO
+	 QYmiRWWDZNMVxlycAtWT3/ROqxbqgjhfvzILe5pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhigang Luo <Zhigang.Luo@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/132] drm/amdgpu: avoid reading vf2pf info size from FB
+Subject: [PATCH 6.10 124/184] wifi: mac80211: check ieee80211_bss_info_change_notify() against MLD
 Date: Thu,  5 Sep 2024 11:40:37 +0200
-Message-ID: <20240905093724.205110892@linuxfoundation.org>
+Message-ID: <20240905093737.068884196@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhigang Luo <Zhigang.Luo@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3bcc0ee14768d886cedff65da72d83d375a31a56 ]
+[ Upstream commit a0ca76e5b7d550fcd74753d5fdaaf23f1a9bfdb4 ]
 
-VF can't access FB when host is doing mode1 reset. Using sizeof to get
-vf2pf info size, instead of reading it from vf2pf header stored in FB.
+It's not valid to call ieee80211_bss_info_change_notify() with
+an sdata that's an MLD, remove the FIXME comment (it's not true)
+and add a warning.
 
-Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240523121140.97a589b13d24.I61988788d81fb3cf97a490dfd3167f67a141d1fd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index ff4f52e07cc0..7768c756fe88 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -615,7 +615,7 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
- 	vf2pf_info->dummy_page_addr = (uint64_t)adev->dummy_page_addr;
- 	vf2pf_info->checksum =
- 		amd_sriov_msg_checksum(
--		vf2pf_info, vf2pf_info->header.size, 0, 0);
-+		vf2pf_info, sizeof(*vf2pf_info), 0, 0);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 7ba329ebdda9..e44b2a26354b 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -337,6 +337,8 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
  
- 	return 0;
- }
+ 	might_sleep();
+ 
++	WARN_ON_ONCE(ieee80211_vif_is_mld(&sdata->vif));
++
+ 	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		return;
+ 
+@@ -369,7 +371,6 @@ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	if (changed & ~BSS_CHANGED_VIF_CFG_FLAGS) {
+ 		u64 ch = changed & ~BSS_CHANGED_VIF_CFG_FLAGS;
+ 
+-		/* FIXME: should be for each link */
+ 		trace_drv_link_info_changed(local, sdata, &sdata->vif.bss_conf,
+ 					    changed);
+ 		if (local->ops->link_info_changed)
 -- 
 2.43.0
 
