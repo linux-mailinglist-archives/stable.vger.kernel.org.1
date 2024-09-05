@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-73335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA08196D466
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D84296D54B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917721F21435
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03EB7283C7B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7421990A7;
-	Thu,  5 Sep 2024 09:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC76A195F04;
+	Thu,  5 Sep 2024 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQviBXTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5qEEMUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC43718732F;
-	Thu,  5 Sep 2024 09:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAF71494DB;
+	Thu,  5 Sep 2024 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529898; cv=none; b=XH429bd7gY0POjSISua8VJBOaXsyfUXv86B9rsiguBhTRBGU1a47MPDijCxuCrF/mJQQ18fV2H8u7hm2MQ1PqYk2dvRrtJdZVaChtvDRo+vpalgrugqiutUr/YUsLM6Ku1+69QFVce/sGjk4lmYiBnD3Gm1JdWizWjKgYOo8kGk=
+	t=1725530567; cv=none; b=nXZ2WSK0QSWD60JiQQDcuQGHYtTVL4VZTvw3RzIUbie2WDLFm4uHQkvLfZQTyRr7sE4VuX04va1lKhAE+9TqMLzQXf8l1OcHqmfC6KFe2pDT4LI4Z0nc6o+w4yrPHIdbsqfklRxD7T+rmjSwtjMXEPGnRWo91bF4z/lTkbVNDG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529898; c=relaxed/simple;
-	bh=4XXjbyQJieJrE/VLBdR9GilwTDffCfVw7gBt++7ltas=;
+	s=arc-20240116; t=1725530567; c=relaxed/simple;
+	bh=DGkqld5soaWy4Z7sikjmbzdwFQZwFZmRjbaEKWdFe8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=er8RsW4IiX0QBtlBXVJW5VsPfZgXx8AORP3GdzgVjzVPlcxM4QqUiHyhkgkp5k8zwuolVba6BKqKhi7ejArbopeZu+qldrZCy+2Mrn0QUMBFg4e731IN7zIywuI6ExY+ACbq4eVojZ3c3+0i8BOMHtohyMlyqjl+5uWHxD+yZBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQviBXTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E443BC4CEC3;
-	Thu,  5 Sep 2024 09:51:37 +0000 (UTC)
+	 MIME-Version; b=Ok3dj0svXX+fzvHXfqDfT9G2eoD0fJQ+hbHjtEPk7WeCqq15PYSxcGc6GHmYugAQUJRSjKfIQwHzXk/cHF7SPXd1EqRke4T71xr5Ysj/8uMJDtuxipO3CjFZcg3csZRB4JOVPGPKAdrgspkje12oNf3PrWCiJsaX+2BVW83zdrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5qEEMUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B95FC4CEC4;
+	Thu,  5 Sep 2024 10:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529898;
-	bh=4XXjbyQJieJrE/VLBdR9GilwTDffCfVw7gBt++7ltas=;
+	s=korg; t=1725530567;
+	bh=DGkqld5soaWy4Z7sikjmbzdwFQZwFZmRjbaEKWdFe8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQviBXTsMSxyCgaV6dlYIZlCbVEwY0oFTVCJddy0vv9qulAQagRdV2knXZnykOvXL
-	 kmySg/g1rPXR+xhIXZw+6U8wfLqmM9i1+h46N6awarqFpZ6PLU6J1w81YJnoLvq/OA
-	 K4R+HKYMS5w7jeb7BvkduFUJcXgvCQJ4scmWNpgk=
+	b=H5qEEMUPwJZiM34Zm5EiSfSjneq9vSzGXVipJeO6NlLe51/AwTEtzu9CRXyiEYGNi
+	 LOFA+xWtEXs0Hk8MKZtKOcJ6HGSn/mjommi2+Cc5bSMK55KkbO9sUR1PN3vfRWhpl4
+	 KDgiNaTvGl1FnLfS+MQA6fxIBUraONwh+nXe+/Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Michael Chen <michael.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 176/184] drm/amd/display: Check BIOS images before it is used
+Subject: [PATCH 6.1 057/101] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
 Date: Thu,  5 Sep 2024 11:41:29 +0200
-Message-ID: <20240905093739.205575872@linuxfoundation.org>
+Message-ID: <20240905093718.368565148@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Michael Chen <michael.chen@amd.com>
 
-[ Upstream commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c ]
+[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
 
-BIOS images may fail to load and null checks are added before they are
-used.
+Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
+in some use case. This would lead code scanner to complain about
+access beyond. Re-define it in union to enforce 8-byte size and
+alignment to avoid potential issue.
 
-This fixes 6 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 25fe1a124029..3bacf470f7c5 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -665,6 +665,9 @@ static enum bp_result get_ss_info_v3_1(
- 	ss_table_header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(ss_table_header_include, asSpreadSpectrum, 1)));
-+	if (!ss_table_header_include)
-+		return BP_RESULT_UNSUPPORTED;
-+
- 	table_size =
- 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
- 				- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1034,6 +1037,8 @@ static enum bp_result get_ss_info_from_internal_ss_info_tbl_V2_1(
- 				&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header, asSpreadSpectrum, 1)));
-+	if (!header)
-+		return result;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index a8671061a175..bf90a6479867 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -43,8 +43,6 @@
+ #define CRAT_OEMTABLEID_LENGTH	8
+ #define CRAT_RESERVED_LENGTH	6
  
- 	memset(info, 0, sizeof(struct spread_spectrum_info));
- 
-@@ -1107,6 +1112,8 @@ static enum bp_result get_ss_info_from_ss_info_table(
- 	get_atom_data_table_revision(header, &revision);
- 
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return result;
- 
- 	if (1 != revision.major || 2 > revision.minor)
- 		return result;
-@@ -1634,6 +1641,8 @@ static uint32_t get_ss_entry_number_from_ss_info_tbl(
- 
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
- 			DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return number;
- 
- 	if (1 != revision.major || 2 > revision.minor)
- 		return number;
-@@ -1716,6 +1725,8 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_v2_1(
- 				&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header_include, asSpreadSpectrum, 1)));
-+	if (!header_include)
-+		return 0;
- 
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
- 			- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1755,6 +1766,9 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_V3_1(
- 	header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
- 				DATA_TABLES(ASIC_InternalSS_Info),
- 				struct_size(header_include, asSpreadSpectrum, 1)));
-+	if (!header_include)
-+		return number;
-+
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
- 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
- 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
+-#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
+-
+ /* Compute Unit flags */
+ #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
+ #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 029916971bf6..d841200a405b 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -972,8 +972,7 @@ static void kfd_update_system_properties(void)
+ 	dev = list_last_entry(&topology_device_list,
+ 			struct kfd_topology_device, list);
+ 	if (dev) {
+-		sys_props.platform_id =
+-			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
++		sys_props.platform_id = dev->oem_id64;
+ 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
+ 		sys_props.platform_rev = dev->oem_revision;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index 19283b8b1688..00a78c2ce686 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -146,7 +146,10 @@ struct kfd_topology_device {
+ 	struct attribute		attr_gpuid;
+ 	struct attribute		attr_name;
+ 	struct attribute		attr_props;
+-	uint8_t				oem_id[CRAT_OEMID_LENGTH];
++	union {
++		uint8_t				oem_id[CRAT_OEMID_LENGTH];
++		uint64_t			oem_id64;
++	};
+ 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
+ 	uint32_t			oem_revision;
+ };
 -- 
 2.43.0
 
