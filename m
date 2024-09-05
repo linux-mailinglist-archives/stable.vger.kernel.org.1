@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-73330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4BF96D461
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D6696D505
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7A42816E7
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217C3287263
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0286F1991BE;
-	Thu,  5 Sep 2024 09:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BFC194AC7;
+	Thu,  5 Sep 2024 09:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBLLO6J9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDH4WyPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5619755E;
-	Thu,  5 Sep 2024 09:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B1983CC8;
+	Thu,  5 Sep 2024 09:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529882; cv=none; b=JBKvfb6CXk+PciDeX9EHzLGavuaqQmmY7PKI++wUnAaFWpyk4BqBxbxmpjreRVI6jYBPHpNclpkTfEXY3gaTErdjJ0yZTsEzLBZSDRZixs7HxJuY2fZFbmzHiRtcC/llxLyzI6w4zYeFI9Di/qUpL62EbHHq9fK2Jtb/6AB+DUU=
+	t=1725530350; cv=none; b=SDoRuCGbZb2/nRA6+c7H4jufqijaYYinsQF1dCDwYp7rW8KyGb28gSJEvEeK4RjPdtH68Np6pD4D1yBCBOJaSp6smvGQlzkju0THAuvaoDaEIc0iLJWAh+OzYFHPzST+d36kwo9jqTegAtNgLo4FTRP0SDz97BEllFyUsoQ8y3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529882; c=relaxed/simple;
-	bh=F2jqXMTyEphzrx0diXfzsLTxfws4PcTUBxQ8ycjyKck=;
+	s=arc-20240116; t=1725530350; c=relaxed/simple;
+	bh=y82+R9/W6lPZBKuV9N0Ef96GLCFtciRnMWbLLKdtKF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R68fxP84NRT0Uj3SCJNf0fk6apWPjI/D7ZyO+eiUsfezCqqaWfvywuF9rDLUdzQ/niMDfJGcCSHy7t8GM+wzzYJm1lbvNsoxLfUAcrE0h401lEzKZULBUAuZkpMStaW23Y/tTL2WZyTMpsYD+8I06wbbVhis7FAJOcj+BIEJflo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBLLO6J9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0348AC4CEC3;
-	Thu,  5 Sep 2024 09:51:21 +0000 (UTC)
+	 MIME-Version; b=a4KvdEKFVzsXUTZVfqWMBlgacpmYqnn4VFSTAgcxHG6NGYqjmLHI68oioLSf0YGoYGM+8K8wSdwUS0H3VB/p4KPPAxxZghN9X7bpA84yJo1vw0ACj67bXuz6P6rckOz1CT9XgDuodSfDSXFpr6IzYNdoq/BUJ6+3qsf+bZhSAFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDH4WyPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC25C4CEC3;
+	Thu,  5 Sep 2024 09:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529882;
-	bh=F2jqXMTyEphzrx0diXfzsLTxfws4PcTUBxQ8ycjyKck=;
+	s=korg; t=1725530350;
+	bh=y82+R9/W6lPZBKuV9N0Ef96GLCFtciRnMWbLLKdtKF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBLLO6J9ore+tZo/RyD8FHgEPcjh/Mf5OJlXi5uAZWjsUIwjZ1GA6Ls5ZqK7ooHu5
-	 5Inu3cZOyPlvOZ2tSu1BEr5qH4N3VtBQTej7wY5ietLHzZKqJt9BlZ26+wu1Xpd7x5
-	 jEQgQl0lQOAbBU2on+y49VZlwWIpB5Q4JK/4N/RY=
+	b=RDH4WyPKKsWNexts3pLDzr4qUR9pGeIX75MP3CrirfYr0D+m39FLOJF94opzQDU0+
+	 t1INFDOYgMxRMSVdWc6JHwxUzknLjATgayDVlkV1m00qKA1hTRoGPzwocct3S8YW6W
+	 2nQORS67oMHuc1nlN4nbmmk5qMfU3DEo/H1Zjkkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 172/184] drm/amd/display: Disable DMCUB timeout for DCN35
-Date: Thu,  5 Sep 2024 11:41:25 +0200
-Message-ID: <20240905093739.053077760@linuxfoundation.org>
+Subject: [PATCH 6.6 099/132] media: v4l2-cci: Always assign *val
+Date: Thu,  5 Sep 2024 11:41:26 +0200
+Message-ID: <20240905093726.091275382@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 7c70e60fbf4bff1123f0e8d5cb1ae71df6164d7f ]
+[ Upstream commit 7417b1b1f36cc214dc458e717278a27a912d3b51 ]
 
-[Why]
-DMCUB can intermittently take longer than expected to process commands.
+Always assign *val to 0 in cci_read(). This has the benefit of not
+requiring initialisation of the variables data is read to using
+cci_read(). Once smatch is fixed, it could catch the use of uninitialised
+reads.
 
-Old ASIC policy was to continue while logging a diagnostic error - which
-works fine for ASIC without IPS, but with IPS this could lead to a race
-condition where we attempt to access DCN state while it's inaccessible,
-leading to a system hang when the NIU port is not disabled or register
-accesses that timeout and the display configuration in an undefined
-state.
-
-[How]
-We need to investigate why these accesses take longer than expected, but
-for now we should disable the timeout on DCN35 to avoid this race
-condition. Since the waits happen only at lower interrupt levels the
-risk of taking too long at higher IRQ and causing a system watchdog
-timeout are minimal.
-
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-cci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index 28c459907698..915d68cc04e9 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -785,6 +785,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.ips2_entry_delay_us = 800,
- 	.disable_dmub_reallow_idle = false,
- 	.static_screen_wait_frames = 2,
-+	.disable_timeout = true,
- };
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index ee3475bed37f..1ff94affbaf3 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -23,6 +23,15 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	u8 buf[8];
+ 	int ret;
  
- static const struct dc_panel_config panel_config_defaults = {
++	/*
++	 * TODO: Fix smatch. Assign *val to 0 here in order to avoid
++	 * failing a smatch check on caller when the caller proceeds to
++	 * read *val without initialising it on caller's side. *val is set
++	 * to a valid value whenever this function returns 0 but smatch
++	 * can't figure that out currently.
++	 */
++	*val = 0;
++
+ 	if (err && *err)
+ 		return *err;
+ 
 -- 
 2.43.0
 
