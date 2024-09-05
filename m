@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A3896D452
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FB196D4B0
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3490D1F235F0
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D168D1F28330
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED951198A32;
-	Thu,  5 Sep 2024 09:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2BA194A5B;
+	Thu,  5 Sep 2024 09:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h237sqe2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRNbj8R0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21B198A27;
-	Thu,  5 Sep 2024 09:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAB5154BFF;
+	Thu,  5 Sep 2024 09:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529837; cv=none; b=lrT0AUUIZSyjUM49DWudzD9Ia8FlJoO6wTDMEXR7mkQJiErDk/7rIio672AMp//v4XdK2YG+CLHUGV11a5ppdxzSNqayZMp+zltoAw7BsROUFON/naegLIZc0PNcsyKpGTV3j1rLyuBxhVCj/nd+NKYoz6E9p3KNrrDgR/AUzDE=
+	t=1725530098; cv=none; b=EfYcQQLf1+sDT+1+fox8fovJ/NknKLoC1L6BXORpCmi9M5ES9huZHijeQi6Qb2UH8t9jWROeUKG4SWWBcktXIhXNB1TNWRQZzKxLf70g8XJBeVL1OsvRh/yqdTpRA+aEzIaF2LfEv7P1XqKt1edUVJVHSPVW925kEyA8ocBjl0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529837; c=relaxed/simple;
-	bh=fiy8J7gV6Cf1dQqzapP/37i0HhGEGUHP/vAZ3LmaKSY=;
+	s=arc-20240116; t=1725530098; c=relaxed/simple;
+	bh=pUFGV5yh1LUWW1GsDLy+aEcDmAyTtvzwed2r13tqNIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+BV0XEiUND7JtZdPwOKvufATF6BeZh6WV5DD7gRQ04TTRPYqLldN/D+qAMN7Pt3rKf0Lhf4N/EzHLCgROHnjRI0OSs+j3gSIknCuOMocUmO3nFLR7QSpQrM2cfchKYuN4Rbg2r9hwNKKO7SmB3XmFcUo6ZsQ853Z0yOI1Bd+Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h237sqe2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E096C4CEC3;
-	Thu,  5 Sep 2024 09:50:36 +0000 (UTC)
+	 MIME-Version; b=ZgUeohOXs2Eh6FQmka5S0MIAC7QSRADU17olpzGgvdA27yZqBQrTGua0YHhpy3s6n1KkvvqoF5nIZ2FJXEYcGNpLZjGU1G7Scc8SGVBNchPNuCO0F4o31fh0hku1vmaRHYWwkf7hftEXdtfLv8KjJSdgwqaHe3oZ03NERJcSBTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRNbj8R0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59069C4CEC3;
+	Thu,  5 Sep 2024 09:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529837;
-	bh=fiy8J7gV6Cf1dQqzapP/37i0HhGEGUHP/vAZ3LmaKSY=;
+	s=korg; t=1725530097;
+	bh=pUFGV5yh1LUWW1GsDLy+aEcDmAyTtvzwed2r13tqNIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h237sqe2f7FgHOmEW9yW3TVBpRuZKN7exdVSAWrvIrwp5piQqtaxYqB/hGODJ4xUE
-	 0ZbsB9mwLLm4jgUVYOg9bLNwP6mFbXap6WSwN7YS+rJu+I2DAXXJqTLTp3GL51W2Dn
-	 7EWi9tETDW2dNfTNv631hNzKymNjDahnzf/Ju8Jo=
+	b=gRNbj8R0vRhdd9YwL/ItRJ9vaZx9a9VuHPG/IuzCYjxA2elUH69OdNjoaDSlp2MQn
+	 kE7a9qqmBWE+JvUlLzaBkCU6DfSM5r/JdF3YxYXkREBnhQ9QpKlg7WcFVd8Gii5Kv7
+	 rdLZHvJ/sSHiFTyzj/lwtt2UiaOAPmyYni6hy2xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Maina <quic_rmaina@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 127/184] remoteproc: qcom_q6v5_pas: Add hwspinlock bust on stop
+Subject: [PATCH 6.6 053/132] drm/amd/display: Check index for aux_rd_interval before using
 Date: Thu,  5 Sep 2024 11:40:40 +0200
-Message-ID: <20240905093737.185898743@linuxfoundation.org>
+Message-ID: <20240905093724.320814748@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Maina <quic_rmaina@quicinc.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 568b13b65078e2b557ccf47674a354cecd1db641 ]
+[ Upstream commit 9ba2ea6337b4f159aecb177555a6a81da92d302e ]
 
-When remoteproc goes down unexpectedly this results in a state where any
-acquired hwspinlocks will remain locked possibly resulting in deadlock.
-In order to ensure all locks are freed we include a call to
-qcom_smem_bust_hwspin_lock_by_host() during remoteproc shutdown.
+aux_rd_interval has size of 7 and should be checked.
 
-For qcom_q6v5_pas remoteprocs, each remoteproc has an assigned smem
-host_id. Remoteproc can pass this id to smem to try and bust the lock on
-remoteproc stop.
+This fixes 3 OVERRUN and 1 INTEGER_OVERFLOW issues reported by Coverity.
 
-This edge case only occurs with q6v5_pas watchdog crashes. The error
-fatal case has handling to clear the hwspinlock before the error fatal
-interrupt is triggered.
-
-Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-4-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 54d8005d40a3..8458bcfe9e19 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -52,6 +52,7 @@ struct adsp_data {
- 	const char *ssr_name;
- 	const char *sysmon_name;
- 	int ssctl_id;
-+	unsigned int smem_host_id;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+index 16a62e018712..9d1adfc09fb2 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+@@ -914,10 +914,10 @@ static enum dc_status configure_lttpr_mode_non_transparent(
+ 			/* Driver does not need to train the first hop. Skip DPCD read and clear
+ 			 * AUX_RD_INTERVAL for DPTX-to-DPIA hop.
+ 			 */
+-			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA)
++			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA && repeater_cnt > 0 && repeater_cnt < MAX_REPEATER_CNT)
+ 				link->dpcd_caps.lttpr_caps.aux_rd_interval[--repeater_cnt] = 0;
  
- 	int region_assign_idx;
- 	int region_assign_count;
-@@ -81,6 +82,7 @@ struct qcom_adsp {
- 	int lite_pas_id;
- 	unsigned int minidump_id;
- 	int crash_reason_smem;
-+	unsigned int smem_host_id;
- 	bool decrypt_shutdown;
- 	const char *info_name;
- 
-@@ -399,6 +401,9 @@ static int adsp_stop(struct rproc *rproc)
- 	if (handover)
- 		qcom_pas_handover(&adsp->q6v5);
- 
-+	if (adsp->smem_host_id)
-+		ret = qcom_smem_bust_hwspin_lock_by_host(adsp->smem_host_id);
-+
- 	return ret;
- }
- 
-@@ -727,6 +732,7 @@ static int adsp_probe(struct platform_device *pdev)
- 	adsp->pas_id = desc->pas_id;
- 	adsp->lite_pas_id = desc->lite_pas_id;
- 	adsp->info_name = desc->sysmon_name;
-+	adsp->smem_host_id = desc->smem_host_id;
- 	adsp->decrypt_shutdown = desc->decrypt_shutdown;
- 	adsp->region_assign_idx = desc->region_assign_idx;
- 	adsp->region_assign_count = min_t(int, MAX_ASSIGN_COUNT, desc->region_assign_count);
-@@ -1196,6 +1202,7 @@ static const struct adsp_data sm8550_adsp_resource = {
- 	.ssr_name = "lpass",
- 	.sysmon_name = "adsp",
- 	.ssctl_id = 0x14,
-+	.smem_host_id = 2,
- };
- 
- static const struct adsp_data sm8550_cdsp_resource = {
-@@ -1216,6 +1223,7 @@ static const struct adsp_data sm8550_cdsp_resource = {
- 	.ssr_name = "cdsp",
- 	.sysmon_name = "cdsp",
- 	.ssctl_id = 0x17,
-+	.smem_host_id = 5,
- };
- 
- static const struct adsp_data sm8550_mpss_resource = {
-@@ -1236,6 +1244,7 @@ static const struct adsp_data sm8550_mpss_resource = {
- 	.ssr_name = "mpss",
- 	.sysmon_name = "modem",
- 	.ssctl_id = 0x12,
-+	.smem_host_id = 1,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 1,
- 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
-@@ -1275,6 +1284,7 @@ static const struct adsp_data sm8650_cdsp_resource = {
- 	.ssr_name = "cdsp",
- 	.sysmon_name = "cdsp",
- 	.ssctl_id = 0x17,
-+	.smem_host_id = 5,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 1,
- 	.region_assign_shared = true,
-@@ -1299,6 +1309,7 @@ static const struct adsp_data sm8650_mpss_resource = {
- 	.ssr_name = "mpss",
- 	.sysmon_name = "modem",
- 	.ssctl_id = 0x12,
-+	.smem_host_id = 1,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 3,
- 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
+-			for (repeater_id = repeater_cnt; repeater_id > 0; repeater_id--) {
++			for (repeater_id = repeater_cnt; repeater_id > 0 && repeater_id < MAX_REPEATER_CNT; repeater_id--) {
+ 				aux_interval_address = DP_TRAINING_AUX_RD_INTERVAL_PHY_REPEATER1 +
+ 						((DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE) * (repeater_id - 1));
+ 				core_link_read_dpcd(
 -- 
 2.43.0
 
