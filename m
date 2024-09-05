@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003CA96D547
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F0996D4C9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67C6CB20A8B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BEAAB2676A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78A3194A5A;
-	Thu,  5 Sep 2024 10:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20D156225;
+	Thu,  5 Sep 2024 09:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkA3NTY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1Daagpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AAD1494DB;
-	Thu,  5 Sep 2024 10:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B618D65E;
+	Thu,  5 Sep 2024 09:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530554; cv=none; b=K+EAMey8JECv4xgm7Iwi82LU4rqzOYEhP5cZQvhfpviTT3losAlZsVUXNx2LGaUEoZS8KpviBvhcfVxtip7XUBZHnNEuvV1PUanz1eEjf1lhub1XRjvH242RO3sWp4ERSLYRjV3ozxyx1S0YZH6veeVX2YN0zUVZhH/tG0rz8YQ=
+	t=1725530164; cv=none; b=BTjuXVwT3kPbqfEPnUmEU+JQsjSCEWITqkokE/ut4e1pQg7BTl8bNkJb8mVb9Nkr5L6A02iGlWcXdOALmn4GmTfSParUhawQ4Oh8a6YRoF67bWRdtnez/aMoWcoJTzoOSIDTYVecm/wMuX9FpW21XejV8CuNHt+2BdHhzGMLuRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530554; c=relaxed/simple;
-	bh=PGwy5XMLbb/3UoJm/VtT4QTZggNZ+Enk1gncIRlOrHo=;
+	s=arc-20240116; t=1725530164; c=relaxed/simple;
+	bh=wpNoiFHEWXvuJ1i1zqveqnOHUS/eBoPDUOnW2rBQbiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkSJjzRcewkAhnG3Ab9DE6XXp6BfAw7CmPdr1eo2/afzG+Yaar66uomr0AL62GNzR4vK/Hr0nD70BOPrH2RtraVIK/DSQ/lqsMu/THzwQhLcGbZ9liJD8kDnLDEvXAOGfqxFRiPJnqu+aOL4gW39/kDzlkUQMzxXm1QLRRf2Ebw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkA3NTY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CCFC4CEC3;
-	Thu,  5 Sep 2024 10:02:33 +0000 (UTC)
+	 MIME-Version; b=ds3uiAm3iPEI7GS+/Jq2KaXkqT47t9K1WFhYjRITQ4XTkADuYnM3tL2CYcqko3FhehcgqdIkgK6lX1Si534fzOalbD9ZJgZSZW9qpULxW7jSf3XsRTywWRO/I4iO584dThDerW77uoM5Q7ARNDkgsHOb3f6rTvIBOPvS4jd6Sn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1Daagpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38163C4CEC4;
+	Thu,  5 Sep 2024 09:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530554;
-	bh=PGwy5XMLbb/3UoJm/VtT4QTZggNZ+Enk1gncIRlOrHo=;
+	s=korg; t=1725530163;
+	bh=wpNoiFHEWXvuJ1i1zqveqnOHUS/eBoPDUOnW2rBQbiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkA3NTY6LVCvSps/aOBoTkkz5qyB/tO81YvIxUCxZyerjtAr0y/TvWKYEuUCX6zME
-	 3wcnc7L1M3mtWU8Yw5QjB6q0E3EYG829mRlq/EGfPQjx3p7fY7SkE2BTN0aM7FOtlK
-	 BwP4wGwa0eadC7M91pd3InDlr/pk+kuMDM1lYX/k=
+	b=H1Daagpr+CQLm8Hi5WF3jLcj4WooaQXOg5Q1WaVR+SUAjFpsheRfdzRTXNLHTZsUa
+	 WgHtSQ78w0vbb8VVD7fP+66Jchk3hlsPgAFOfNAba+wT2848+o3lcwmzV44pyIa0En
+	 NsWkwVVvjl8fzK4mFKiO5zV0MDGN3Wz073tXcTCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
+	Michael Chen <michael.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/101] drm/amdgpu: Fix uninitialized variable warning in amdgpu_afmt_acr
+Subject: [PATCH 6.6 074/132] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
 Date: Thu,  5 Sep 2024 11:41:01 +0200
-Message-ID: <20240905093717.269052753@linuxfoundation.org>
+Message-ID: <20240905093725.133411248@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Michael Chen <michael.chen@amd.com>
 
-[ Upstream commit c0d6bd3cd209419cc46ac49562bef1db65d90e70 ]
+[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
 
-Assign value to clock to fix the warning below:
-"Using uninitialized value res. Field res.clock is uninitialized"
+Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
+in some use case. This would lead code scanner to complain about
+access beyond. Re-define it in union to enforce 8-byte size and
+alignment to avoid potential issue.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-index a4d65973bf7c..80771b1480ff 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-@@ -100,6 +100,7 @@ struct amdgpu_afmt_acr amdgpu_afmt_acr(uint32_t clock)
- 	amdgpu_afmt_calc_cts(clock, &res.cts_32khz, &res.n_32khz, 32000);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_44_1khz, &res.n_44_1khz, 44100);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_48khz, &res.n_48khz, 48000);
-+	res.clock = clock;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index 74c2d7a0d628..2f54ee08f269 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -42,8 +42,6 @@
+ #define CRAT_OEMTABLEID_LENGTH	8
+ #define CRAT_RESERVED_LENGTH	6
  
- 	return res;
- }
+-#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
+-
+ /* Compute Unit flags */
+ #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
+ #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 61157fddc15c..8362a71ab707 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -958,8 +958,7 @@ static void kfd_update_system_properties(void)
+ 	dev = list_last_entry(&topology_device_list,
+ 			struct kfd_topology_device, list);
+ 	if (dev) {
+-		sys_props.platform_id =
+-			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
++		sys_props.platform_id = dev->oem_id64;
+ 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
+ 		sys_props.platform_rev = dev->oem_revision;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index 27386ce9a021..2d1c9d771bef 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -154,7 +154,10 @@ struct kfd_topology_device {
+ 	struct attribute		attr_gpuid;
+ 	struct attribute		attr_name;
+ 	struct attribute		attr_props;
+-	uint8_t				oem_id[CRAT_OEMID_LENGTH];
++	union {
++		uint8_t				oem_id[CRAT_OEMID_LENGTH];
++		uint64_t			oem_id64;
++	};
+ 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
+ 	uint32_t			oem_revision;
+ };
 -- 
 2.43.0
 
