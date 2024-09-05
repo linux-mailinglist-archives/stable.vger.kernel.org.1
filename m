@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAEA96D406
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3011396D4A5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7748284095
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F471F280D3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E087318D65E;
-	Thu,  5 Sep 2024 09:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C093619755E;
+	Thu,  5 Sep 2024 09:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7qr6h+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vz3gBOno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F64714A08E;
-	Thu,  5 Sep 2024 09:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC79194A5B;
+	Thu,  5 Sep 2024 09:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529651; cv=none; b=EL0H6eDGi/tPR5YZhJGZkejhWDx9wpsfhffxCnoAGhS4Y/X8Qth/GXPVOIJTk0rbr1+RzLIOFhv2mGTWFRBsNUaTdi/lILNlrbOB1Yz09Cc3De9Jj89xpgYzcXg8OrtGcoZ10OpQIr4GWB7sO1MM5OAFIjCCVXXe0xZeiSZWmRg=
+	t=1725530071; cv=none; b=MJJ9pUKmgDlbFJj+T774r+15PnzmGoKHbtxcdhqt+4keKzkOtYAclNvsqMAdRjttRdC6CRNU34VjfQ19kMa76ZcpZ/pmiQfb+dNfJfGdMuftXR0oqiu/r0pk9E4PIXpN1bTCBG7FYfBv+MEqm0VLEuHMyp2WEWryVc4+VhyfeAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529651; c=relaxed/simple;
-	bh=3g6SSVifSrTM/TpZnnsrLZ4UVBAILyUTGj1Xm9YAJHY=;
+	s=arc-20240116; t=1725530071; c=relaxed/simple;
+	bh=jtcxc0NaywvRTPojtL1dj7gTGFHzqca+/t1ApOIVVns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffd+ASywR2b6iqSDXie1vIRKrOG+HhXHoRelW1Hr3q7y2Vkw2PL1uH1tpFzmx1Py9XWNV2VkM5Tj2OWTVbuAZFlzeq1K4mze7iKY/DD8acajwR1YqibRzr6h/0F1OsNKApUxaxo+sqXw13EP9A+EXP5i7ERH06FMsTifGlM4w24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7qr6h+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED35C4CEC3;
-	Thu,  5 Sep 2024 09:47:30 +0000 (UTC)
+	 MIME-Version; b=qIZsNQ/FHXiajwy2sBDE43G8UDvGvSVIfQw/NAUmB/ZV6X5ly1e9vM242Fzl3VHgOA/X+rvkHrqIkF+1edV/RIn7/fQwmsvzL57Yw0Ng3b+40keGMMUnZPc1Csq4eaucLf3IwIb53BHSerjUpBVuvMqbCrUEYVWjk0csjEPj6sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vz3gBOno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8DDC4CEC3;
+	Thu,  5 Sep 2024 09:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529651;
-	bh=3g6SSVifSrTM/TpZnnsrLZ4UVBAILyUTGj1Xm9YAJHY=;
+	s=korg; t=1725530071;
+	bh=jtcxc0NaywvRTPojtL1dj7gTGFHzqca+/t1ApOIVVns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7qr6h+epI6zV/BIgSYBPUn7Ylzb99Hzpf1oxT9PZnH5YuPlwzmldYHN4UYPMN4DK
-	 IXdFsSOgXcwM/qt95nLmY9+sBoRhDzMhNpMTPKAG2JYfis0hcuFzVvA6ka9lNMmCFP
-	 4NsryAUH8WMhxtl/JUPTmTwtHD97yOcWfCWHFi/0=
+	b=vz3gBOnoIBtT1cisJLCRhI9P6qd9MX36T1GsPLci5zcopGm7fhiMWkpcHbhPyGViY
+	 j6ULKLWHRn9G48qvGtDv1fpwI8sOBELohkEr8fM+Gz82XaA5o5RKntPyeDxzq1IWDl
+	 tkAbh6oXxxSXyC6EP0Vnwnju4LbAw7qTiRJjcb9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 101/184] drm/amdgpu/pm: Check input value for power profile setting on smu11, smu13 and smu14
-Date: Thu,  5 Sep 2024 11:40:14 +0200
-Message-ID: <20240905093736.180594335@linuxfoundation.org>
+Subject: [PATCH 6.6 028/132] selftests: mptcp: join: cannot rm sf if closed
+Date: Thu,  5 Sep 2024 11:40:15 +0200
+Message-ID: <20240905093723.331985681@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit adb9de4dd207fb1264ea70b9eacab9f70ee4707a ]
+[ Upstream commit e93681afcb96864ec26c3b2ce94008ce93577373 ]
 
-Check the input value for CUSTOM profile mode setting on smu 11,
-smu13 and smu14. Otherwise we use uninitialized value of input[]
+Thanks to the previous commit, the MPTCP subflows are now closed on both
+directions even when only the MPTCP path-manager of one peer asks for
+their closure.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+In the two tests modified here -- "userspace pm add & remove address"
+and "userspace pm create destroy subflow" -- one peer is controlled by
+the userspace PM, and the other one by the in-kernel PM. When the
+userspace PM sends a RM_ADDR notification, the in-kernel PM will
+automatically react by closing all subflows using this address. Now,
+thanks to the previous commit, the subflows are properly closed on both
+directions, the userspace PM can then no longer closes the same
+subflows if they are already closed. Before, it was OK to do that,
+because the subflows were still half-opened, still OK to send a RM_ADDR.
+
+In other words, thanks to the previous commit closing the subflows, an
+error will be returned to the userspace if it tries to close a subflow
+that has already been closed. So no need to run this command, which mean
+that the linked counters will then not be incremented.
+
+These tests are then no longer sending both a RM_ADDR, then closing the
+linked subflow just after. The test with the userspace PM on the server
+side is now removing one subflow linked to one address, then sending
+a RM_ADDR for another address. The test with the userspace PM on the
+client side is now only removing the subflow that was previously
+created.
+
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-2-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c       | 5 +++++
- drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         | 4 ++++
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 4 ++++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c    | 5 +++++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c    | 4 ++++
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c    | 5 +++++
- 6 files changed, 27 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-index 6d334a2aff67..623f6052f97e 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -1416,6 +1416,9 @@ static int arcturus_set_power_profile_mode(struct smu_context *smu,
- 
- 	if ((profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) &&
- 	     (smu->smc_fw_version >= 0x360d00)) {
-+		if (size != 10)
-+			return -EINVAL;
-+
- 		ret = smu_cmn_update_table(smu,
- 				       SMU_TABLE_ACTIVITY_MONITOR_COEFF,
- 				       WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -1449,6 +1452,8 @@ static int arcturus_set_power_profile_mode(struct smu_context *smu,
- 			activity_monitor.Mem_PD_Data_error_coeff = input[8];
- 			activity_monitor.Mem_PD_Data_error_rate_coeff = input[9];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-index c06e0d6e3017..01039cdd456b 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-@@ -2021,6 +2021,8 @@ static int navi10_set_power_profile_mode(struct smu_context *smu, long *input, u
- 	}
- 
- 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
-+		if (size != 10)
-+			return -EINVAL;
- 
- 		ret = smu_cmn_update_table(smu,
- 				       SMU_TABLE_ACTIVITY_MONITOR_COEFF, WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -2064,6 +2066,8 @@ static int navi10_set_power_profile_mode(struct smu_context *smu, long *input, u
- 			activity_monitor.Mem_PD_Data_error_coeff = input[8];
- 			activity_monitor.Mem_PD_Data_error_rate_coeff = input[9];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-index e426f457a017..d5a21d7836cc 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -1722,6 +1722,8 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
- 	}
- 
- 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
-+		if (size != 10)
-+			return -EINVAL;
- 
- 		ret = smu_cmn_update_table(smu,
- 				       SMU_TABLE_ACTIVITY_MONITOR_COEFF, WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -1765,6 +1767,8 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
- 			activity_monitor->Mem_PD_Data_error_coeff = input[8];
- 			activity_monitor->Mem_PD_Data_error_rate_coeff = input[9];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index 1e09d5f2d82f..f7e756ca36dc 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2495,6 +2495,9 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
- 	}
- 
- 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
-+		if (size != 9)
-+			return -EINVAL;
-+
- 		ret = smu_cmn_update_table(smu,
- 					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
- 					   WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -2526,6 +2529,8 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
- 			activity_monitor->Fclk_PD_Data_error_coeff = input[7];
- 			activity_monitor->Fclk_PD_Data_error_rate_coeff = input[8];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index e996a0a4d33e..4f98869e0284 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -2450,6 +2450,8 @@ static int smu_v13_0_7_set_power_profile_mode(struct smu_context *smu, long *inp
- 	}
- 
- 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
-+		if (size != 8)
-+			return -EINVAL;
- 
- 		ret = smu_cmn_update_table(smu,
- 				       SMU_TABLE_ACTIVITY_MONITOR_COEFF, WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -2478,6 +2480,8 @@ static int smu_v13_0_7_set_power_profile_mode(struct smu_context *smu, long *inp
- 			activity_monitor->Fclk_MinActiveFreq = input[6];
- 			activity_monitor->Fclk_BoosterFreq = input[7];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-index 90703f4542ab..06b65159f7b4 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -1364,6 +1364,9 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
- 	}
- 
- 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) {
-+		if (size != 9)
-+			return -EINVAL;
-+
- 		ret = smu_cmn_update_table(smu,
- 					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
- 					   WORKLOAD_PPLIB_CUSTOM_BIT,
-@@ -1395,6 +1398,8 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
- 			activity_monitor->Fclk_PD_Data_error_coeff = input[7];
- 			activity_monitor->Fclk_PD_Data_error_rate_coeff = input[8];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 
- 		ret = smu_cmn_update_table(smu,
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 71404a4241f4a..59fdf308c8f14 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3587,14 +3587,12 @@ userspace_tests()
+ 			"signal"
+ 		userspace_pm_chk_get_addr "${ns1}" "10" "id 10 flags signal 10.0.2.1"
+ 		userspace_pm_chk_get_addr "${ns1}" "20" "id 20 flags signal 10.0.3.1"
+-		userspace_pm_rm_addr $ns1 10
+ 		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns1}" \
+-			"id 20 flags signal 10.0.3.1" "after rm_addr 10"
++			"id 20 flags signal 10.0.3.1" "after rm_sf 10"
+ 		userspace_pm_rm_addr $ns1 20
+-		userspace_pm_rm_sf $ns1 10.0.3.1 $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns1}" "" "after rm_addr 20"
+-		chk_rm_nr 2 2 invert
++		chk_rm_nr 1 1 invert
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
+@@ -3618,12 +3616,11 @@ userspace_tests()
+ 			"id 20 flags subflow 10.0.3.2" \
+ 			"subflow"
+ 		userspace_pm_chk_get_addr "${ns2}" "20" "id 20 flags subflow 10.0.3.2"
+-		userspace_pm_rm_addr $ns2 20
+ 		userspace_pm_rm_sf $ns2 10.0.3.2 $MPTCP_LIB_EVENT_SUB_ESTABLISHED
+ 		userspace_pm_chk_dump_addr "${ns2}" \
+ 			"" \
+-			"after rm_addr 20"
+-		chk_rm_nr 1 1
++			"after rm_sf 20"
++		chk_rm_nr 0 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
 -- 
 2.43.0
 
