@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-73277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6582196D41D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD396D4A4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02E7BB27864
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86030B25B01
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8AA198E80;
-	Thu,  5 Sep 2024 09:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337B71957FC;
+	Thu,  5 Sep 2024 09:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeGK4HA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0L4WXca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023A1990BB;
-	Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F93156225;
+	Thu,  5 Sep 2024 09:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529709; cv=none; b=rz4SE7iPvzTrsFWcukYBLC0qddYUR2mK4qaJJtDmyghf9fFgj99zLiQkCksNCKDkfcqkdO9w7qqlMnzpYy3VqstC+Ynj7O2ZK+e1Qf08cmiKrC4P6Wo31u5+1P34QEeRpx+5OZq9vTcJhqcHJ2Bc+pK34+jbvw7LGBfvYNgTcaw=
+	t=1725530065; cv=none; b=vDSC2yVwPekwl0yx8b0ryAuqfoT3bgf7uBFS6ib+Hl3lG1he/XjD1wi5USpuQ1veJ3ZiGcqjU80noPieUsof5BXtNtTlcNNGlgElTdtHxc8leZMvnXsZXl8wINV9iDmXpJQGzsWXWcw2PSC5U5ghQEn/icZ6F0x4uxageVCC0i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529709; c=relaxed/simple;
-	bh=TLe+JWk71o+OXpHFxeLEj+nrhqU2hpbT/wIdkzMr3J0=;
+	s=arc-20240116; t=1725530065; c=relaxed/simple;
+	bh=giKp1DvygEKg2H+FU87zpjCPX6jJmTuPBP76bau/2Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaK3awAJLmYj6jAsMj+fVeq1h9Y3SvCvMjpmtfZYccVY294qxMi/vVOFoLottq/xs24rGp63tOHW+xCvPxFgPBrwwjxSEBBpcxlf5bkv5H3uO/tKcbMt+9fLeFxi+fD8KeOCmOKb160jUp5ot5y2GEVXXuDI2tRj3FSk8s4YOIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeGK4HA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA1EC4CEC3;
-	Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
+	 MIME-Version; b=PqrJIbmThWJBQi7LqlwlKfyqi4OtHcFzLxslgWNYE0FaaLlBtLZZlO54cW1prglIGB0AernajIvZp4IQ/iFLrXTvKaIOPkV2k5x/2C+QKlR0PK4K9YA2ZF7ryT47LH28dBq2gu+y5XrmSm55UIaf4zBT6UOU3dNEbYG4qijUulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0L4WXca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56211C4CEC3;
+	Thu,  5 Sep 2024 09:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529708;
-	bh=TLe+JWk71o+OXpHFxeLEj+nrhqU2hpbT/wIdkzMr3J0=;
+	s=korg; t=1725530064;
+	bh=giKp1DvygEKg2H+FU87zpjCPX6jJmTuPBP76bau/2Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeGK4HA9Ud9rbvgGzSxtIXjKN2oonxk3pY9Jd7NdfHCajUDUrrq00KBRebZDEC/Fs
-	 j9BX1bzUG8KL82EJJVNpybqhDft1sHkxN3w10NNjqW4FJAjbmBU1HpSkFdIR+qiWcX
-	 XXpEXt8OKzm7vkE8/rwvLLkrGHaYAesB0kWXNRrQ=
+	b=l0L4WXcaas0kgJ+ubIBdB7HUCKH4amr9LpmzvjPsD4Pko2WH4wttkGIuY9E6m/HZ4
+	 a7q/R679iNvwtn1EkNnjeSPNcURfo/KnSsb+Z3EYIrE7Az5DyidejnU05ZegiGlBeR
+	 anz340s6Ynfkx4i0yG2C60seRfceqygW8NkcDvjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 118/184] wifi: iwlwifi: remove fw_running op
+Subject: [PATCH 6.6 044/132] drm/amd/pm: fix uninitialized variable warning
 Date: Thu,  5 Sep 2024 11:40:31 +0200
-Message-ID: <20240905093736.837608396@linuxfoundation.org>
+Message-ID: <20240905093723.970862489@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
+[ Upstream commit 7c836905520703dbc8b938993b6d4d718bc739f3 ]
 
-fw_running assumes that memory can be retrieved only after alive.
-This assumption is no longer true as we support dump before alive.
-To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
-bit in trans status is set before dumping instead of the prior check.
+Check the return of function smum_send_msg_to_smc
+as it may fail to initialize the variable.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 751a125a1566..893b21fcaf87 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -230,8 +230,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
- 		.data = { NULL, },
- 	};
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 7bf46e4974f8..86f95a291d65 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -99,7 +99,7 @@ static void pp_swctf_delayed_work_handler(struct work_struct *work)
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct amdgpu_dpm_thermal *range =
+ 				&adev->pm.dpm.thermal;
+-	uint32_t gpu_temperature, size;
++	uint32_t gpu_temperature, size = sizeof(gpu_temperature);
+ 	int ret;
  
--	if (fwrt->ops && fwrt->ops->fw_running &&
--	    !fwrt->ops->fw_running(fwrt->ops_ctx))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return -EIO;
- 
- 	if (count < header_size + 1 || count > 1024 * 4)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 9122f9a1260a..d201440066ea 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -19,7 +19,6 @@
- struct iwl_fw_runtime_ops {
- 	void (*dump_start)(void *ctx);
- 	void (*dump_end)(void *ctx);
--	bool (*fw_running)(void *ctx);
- 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
- 	bool (*d3_debug_enable)(void *ctx);
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 1380ae5155f3..498afbe4ee6b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -770,11 +770,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
- 	mutex_unlock(&mvm->mutex);
- }
- 
--static bool iwl_mvm_fwrt_fw_running(void *ctx)
--{
--	return iwl_mvm_firmware_running(ctx);
--}
--
- static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
- {
- 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
-@@ -795,7 +790,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
- static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
- 	.dump_start = iwl_mvm_fwrt_dump_start,
- 	.dump_end = iwl_mvm_fwrt_dump_end,
--	.fw_running = iwl_mvm_fwrt_fw_running,
- 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
- 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
- };
+ 	/*
 -- 
 2.43.0
 
