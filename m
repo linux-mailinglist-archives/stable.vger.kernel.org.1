@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-73445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57F996D4E6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BE096D42D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6456A281F96
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435D91C239E3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0702198A08;
-	Thu,  5 Sep 2024 09:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E939198A32;
+	Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpquiuMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKOvZLvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E788192D73;
-	Thu,  5 Sep 2024 09:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA00156225;
+	Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530254; cv=none; b=EM1giUmDQ7hUfeaI7ZAGksRIDtM6CRQWevS6ukZ/nzU3sGiIHgGW1bhQUDv019VwRdX/X/S0in7vPm6ERuG5lD/Xa4O9I97PcI3mhZ8rj+J16EJ87jOhEcF4B4xMxt7LFHebqeMDv15/XE8a3S1Jq5z04PDfJuQuyg9R69PArGc=
+	t=1725529758; cv=none; b=eNdqhpf1Ykr71QAMSHzkQWadg+7XM9hyI59owQS1OHzEEoQZZwHlR/Nk85tbaa3Co20AFzacasvNClclsos+uCAutS79m0rJXBi1HK8I0ievD5k11s6tyhb9nZSF7zF/E97cXyZnV8B+Y1KmLkKxrXT2Id+7s7Nlz//6ICRzDgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530254; c=relaxed/simple;
-	bh=AvvpfeMIoGkm5Sn+/34q+yoeN5S0INUZjUkaEDKxdY0=;
+	s=arc-20240116; t=1725529758; c=relaxed/simple;
+	bh=KltYsM6kwx29Kp+SDC0qJzD1h2tY7OA+qz5HfONFPkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVcstacgRACNVPBTB5nRdF/dYg5kQlCI5ZXGqBfUi2RGsuZ2VxsFrfZQTHRC1IMU2+AgT1sgOr5uSaXi12DcBMxyYBwu291gUwt+HSwOP8lhXomBF33iPO8R4GqYwXDcRuUoO5u1Ko6DB4YHJIDNQArIYlW5+B0ApHpteCO/Xgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpquiuMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000D5C4CEC3;
-	Thu,  5 Sep 2024 09:57:33 +0000 (UTC)
+	 MIME-Version; b=PhMgBaoC0f43kGCKNYDFvpHJiYbboNZSHA29mOXkgd9i5zAiknHoaOgaNnWiLZJKfxuBXJ0a0wOY9YaRPmmnD7S/X5tS8JyXyx1XO+0Uh2W9/N4MB9+Zn0iI+HLFg1obqkE0NKBJy4rYt5Fk4mzdGwXwC0Et2eJ3oAIQmAix9hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKOvZLvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78864C4CEC3;
+	Thu,  5 Sep 2024 09:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530254;
-	bh=AvvpfeMIoGkm5Sn+/34q+yoeN5S0INUZjUkaEDKxdY0=;
+	s=korg; t=1725529757;
+	bh=KltYsM6kwx29Kp+SDC0qJzD1h2tY7OA+qz5HfONFPkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpquiuMCWLKBzW7Fo2mShSnaycz0M74ioV/l7ojH8Zlm0/ahczVm+p8IPyCYHpwfv
-	 PGPTSeTeNJaQamf7V/BGULIN/2eRlStKWSdPiz8wcCu94ocpPqldgxoBC26Q9qXABV
-	 8o+GXi7a9nFeIeAZDnL8MHQhhVkfnY4pett9IMZQ=
+	b=tKOvZLvEEja4OKsPAueju6CA8vFlfbphUsu4lAMPoBcwjGNjG0zdUdaHNK6OD2rUx
+	 j/BiELMoYXfXki7PLwhlnyQOprSDbkRdNzA7sgwoS4XB3AqIvW0ZM63kCfmIrDgYL0
+	 qc2YWLSfoRnVBiRLFl1lDxvWurZrLnW28Btw4MsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/132] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within decide_fallback_link_setting_max_bw_policy
+Subject: [PATCH 6.10 134/184] usb: typec: ucsi: Fix null pointer dereference in trace
 Date: Thu,  5 Sep 2024 11:40:47 +0200
-Message-ID: <20240905093724.590934135@linuxfoundation.org>
+Message-ID: <20240905093737.453590832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
 
-[ Upstream commit 83c0c8361347cf43937348e8ca0a487679c003ae ]
+[ Upstream commit 99516f76db48e1a9d54cdfed63c1babcee4e71a5 ]
 
-[Why]
-For addtion (uint8_t) variable + constant 1,
-coverity generates message below:
-Truncation due to cast operation on "cur_idx + 1" from
-32 to 8 bits.
+ucsi_register_altmode checks IS_ERR for the alt pointer and treats
+NULL as valid. When CONFIG_TYPEC_DP_ALTMODE is not enabled,
+ucsi_register_displayport returns NULL which causes a NULL pointer
+dereference in trace. Rather than return NULL, call
+typec_port_register_altmode to register DisplayPort alternate mode
+as a non-controllable mode when CONFIG_TYPEC_DP_ALTMODE is not enabled.
 
-Then Coverity assume result is 32 bits value be saved into
-8 bits variable. When result is used as index to access
-array, Coverity suspects index invalid.
-
-[How]
-Change varaible type to uint32_t.
-
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240510201244.2968152-2-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c  | 2 +-
+ drivers/usb/typec/ucsi/ucsi.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 9a0beaf601f8..16f4865e4246 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -528,7 +528,7 @@ static bool decide_fallback_link_setting_max_bw_policy(
- 		struct dc_link_settings *cur,
- 		enum link_training_result training_result)
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index c4d103db9d0f..f66224a270bc 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -496,7 +496,7 @@ ucsi_register_displayport(struct ucsi_connector *con,
+ 			  bool override, int offset,
+ 			  struct typec_altmode_desc *desc)
  {
--	uint8_t cur_idx = 0, next_idx;
-+	uint32_t cur_idx = 0, next_idx;
- 	bool found = false;
+-	return NULL;
++	return typec_port_register_altmode(con->port, desc);
+ }
  
- 	if (training_result == LINK_TRAINING_ABORT)
+ static inline void
 -- 
 2.43.0
 
