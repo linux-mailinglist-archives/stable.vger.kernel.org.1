@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-73585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67C096D577
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:05:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD6996D56E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057EA1C22007
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925041F27484
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682AD194A5A;
-	Thu,  5 Sep 2024 10:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD421946A2;
+	Thu,  5 Sep 2024 10:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf9kH9x8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIIW5G4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276F31494DB;
-	Thu,  5 Sep 2024 10:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB0E1494DB;
+	Thu,  5 Sep 2024 10:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530709; cv=none; b=fFtrCBgxJUxE56MqaFivfe9a25gF1KthnsXIXjyCAMQLDXXHyMAcwC+ZGufMLCdRDM0cqUd1W4IigwYxxeBgPROQ3l4c+gtNDrCqtiEm4WZHnNjgHYHZwxm5hQx9V78598UP5GiRTZuFD/uB3iib1QwUA7t73F6A7sIfehbnvLo=
+	t=1725530680; cv=none; b=noWqbLuce/Tr4pOxw+HhlNTKNEKZyL9YHaIabSgTdcrP/h49GwPwjxjC0bCKV9Mc+Bhx3KVHdOQfqzzcL9wY19ZZhMXFpdQpBIzjPRnIHzWp9eAWIg+/a+QOsTt2hFcYiz2OP4pVVy0vx1aiAGb4zrTKn9oSnZNaoJ8oV21MqTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530709; c=relaxed/simple;
-	bh=hJvDfGCYCTBecKWuXRqKcQtoK50gYHBOL2QQGHh1TFs=;
+	s=arc-20240116; t=1725530680; c=relaxed/simple;
+	bh=AaE03rHbFxD9cZQTj3arJjz6kJMGUBKG2FjAYFReUzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzJFNymgkxN/v1pZyd/EyJfQ36lT9S5eUJLI6Yp5am+vjSMZrZpN5pMbQEN+d6RLZfHsRtnd2WbwLLzfRZEoZYft5LYQ//FihlzHVrSnSSM+7+U1n62sjPPZKbg+PKVFMw9HQFd5ycMOmIeFVyMkUPuylji5ConpcKRW+cAHu3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf9kH9x8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844E3C4CEC3;
-	Thu,  5 Sep 2024 10:05:08 +0000 (UTC)
+	 MIME-Version; b=rBMZXNAwXJ8Uv7bfLmh7IsbkmsUIxkxrbOP3yhT/DRn5u2Q3MtIDPQQUEUzoWgTQrCbi4zY1WNiKHiEW9X1obh1gl1rIk/NRGAgLqV4UMgeRwYCMaZs2heNfuYia7NfsSHd/kY+q2VroUI+X99jYY7YC6ayOvg4x282SfKn9asA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIIW5G4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0C9C4CEC3;
+	Thu,  5 Sep 2024 10:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530709;
-	bh=hJvDfGCYCTBecKWuXRqKcQtoK50gYHBOL2QQGHh1TFs=;
+	s=korg; t=1725530680;
+	bh=AaE03rHbFxD9cZQTj3arJjz6kJMGUBKG2FjAYFReUzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zf9kH9x8Fx74d/2vZA3uaO9Zubn1H8R/p6epAbGwtRGazOpT0ey786E9bmpNEKP4k
-	 UMgeRKBxwbGM07TjjkUW+ZXRLPmlSniNuUmZdPw0H+9J5ejZvsLvLA234lEwoCMfNc
-	 UE1ttnfgq5IJHysqWRNh7P64UQA3PsRs/zGOaGaU=
+	b=EIIW5G4+JP8266cMl8rFfSRLiteQPGB+ZSKfNzod24aUahq/EUrzt4kaW2XmL8BSu
+	 fP/1bEw9uG+0nP65clb0e0RSczRYzrnK1HuxzcM7x0gXSdkNwBFuMrA37+HtHTJRdy
+	 bxCkNorstLVc+MCTVmsP7LHNjlWbPTF6+CtH9SDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 099/101] ext4: reject casefold inode flag without casefold feature
-Date: Thu,  5 Sep 2024 11:42:11 +0200
-Message-ID: <20240905093719.993616292@linuxfoundation.org>
+Subject: [PATCH 6.1 100/101] ext4: handle redirtying in ext4_bio_write_page()
+Date: Thu,  5 Sep 2024 11:42:12 +0200
+Message-ID: <20240905093720.031536225@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
 References: <20240905093716.075835938@linuxfoundation.org>
@@ -65,52 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 upstream.
+commit 04e568a3b31cfbd545c04c8bfc35c20e5ccfce0f upstream.
 
-It is invalid for the casefold inode flag to be set without the casefold
-superblock feature flag also being set.  e2fsck already considers this
-case to be invalid and handles it by offering to clear the casefold flag
-on the inode.  __ext4_iget() also already considered this to be invalid,
-sort of, but it only got so far as logging an error message; it didn't
-actually reject the inode.  Make it reject the inode so that other code
-doesn't have to handle this case.  This matches what f2fs does.
+Since we want to transition transaction commits to use ext4_writepages()
+for writing back ordered, add handling of page redirtying into
+ext4_bio_write_page(). Also move buffer dirty bit clearing into the same
+place other buffer state handling.
 
-Note: we could check 's_encoding != NULL' instead of
-ext4_has_feature_casefold().  This would make the check robust against
-the casefold feature being enabled by userspace writing to the page
-cache of the mounted block device.  However, it's unsolvable in general
-for filesystems to be robust against concurrent writes to the page cache
-of the mounted block device.  Though this very particular scenario
-involving the casefold feature is solvable, we should not pretend that
-we can support this model, so let's just check the casefold feature.
-tune2fs already forbids enabling casefold on a mounted filesystem.
-
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230814182903.37267-2-ebiggers@kernel.org
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20221207112722.22220-1-jack@suse.cz
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ext4/page-io.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5101,9 +5101,12 @@ struct inode *__ext4_iget(struct super_b
- 				 "iget: bogus i_mode (%o)", inode->i_mode);
- 		goto bad_inode;
- 	}
--	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb))
-+	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "casefold flag without casefold feature");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
- 		ext4_error_inode(inode, function, line, 0, err_str);
- 		ret = -EFSCORRUPTED;
+--- a/fs/ext4/page-io.c
++++ b/fs/ext4/page-io.c
+@@ -484,6 +484,13 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			/* A hole? We can safely clear the dirty bit */
+ 			if (!buffer_mapped(bh))
+ 				clear_buffer_dirty(bh);
++			/*
++			 * Keeping dirty some buffer we cannot write? Make
++			 * sure to redirty the page. This happens e.g. when
++			 * doing writeout for transaction commit.
++			 */
++			if (buffer_dirty(bh) && !PageDirty(page))
++				redirty_page_for_writepage(wbc, page);
+ 			if (io->io_bio)
+ 				ext4_io_submit(io);
+ 			continue;
+@@ -491,6 +498,7 @@ int ext4_bio_write_page(struct ext4_io_s
+ 		if (buffer_new(bh))
+ 			clear_buffer_new(bh);
+ 		set_buffer_async_write(bh);
++		clear_buffer_dirty(bh);
+ 		nr_to_submit++;
+ 	} while ((bh = bh->b_this_page) != head);
+ 
+@@ -534,7 +542,10 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			printk_ratelimited(KERN_ERR "%s: ret = %d\n", __func__, ret);
+ 			redirty_page_for_writepage(wbc, page);
+ 			do {
+-				clear_buffer_async_write(bh);
++				if (buffer_async_write(bh)) {
++					clear_buffer_async_write(bh);
++					set_buffer_dirty(bh);
++				}
+ 				bh = bh->b_this_page;
+ 			} while (bh != head);
+ 			goto unlock;
+@@ -547,7 +558,6 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			continue;
+ 		io_submit_add_bh(io, inode, page, bounce_page, bh);
+ 		nr_submitted++;
+-		clear_buffer_dirty(bh);
+ 	} while ((bh = bh->b_this_page) != head);
+ 
+ unlock:
 
 
 
