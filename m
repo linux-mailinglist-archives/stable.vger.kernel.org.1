@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96EE96D430
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E1596D518
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C6B1F21ADE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAE001F2A302
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D398319884A;
-	Thu,  5 Sep 2024 09:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D30F1946A2;
+	Thu,  5 Sep 2024 10:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVkUmKp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kjz3Vw8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF4914A08E;
-	Thu,  5 Sep 2024 09:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C6313D28F;
+	Thu,  5 Sep 2024 10:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529764; cv=none; b=phTkX/YMJD3u9P5524QsM782vrvRIh9RyP2ff46dSzxt2h6rCka/VDzfyLq55lVqZF+7pMtW8tPTC6BzUae+vtNCly7ETZZGsUjK51NYnTVGRBvUr7HxutQrS4yt00EMgK9XlE8ZGg+F+e9WUZAus0MFa/GM3o/SMtxapCpS/pI=
+	t=1725530414; cv=none; b=jemV/AznMWB0D17dlbhifByfImvOPXy2Rjv0pm8/MRv2ypj7e3AtmFtm3VBGINmVPMIKFWerXZq8mODBrvVAzBBSl94icoz/jXEuhrXQFLshxxFrUG2T2lqCFT0UHsHkNpSdcfYRIScXT6S3DhAUq8ewyyfnM0H5JKB46oIm7UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529764; c=relaxed/simple;
-	bh=puLLS8VqHBNYAisw5Plz/y7rjdwYXoq2bS3OJBJV1yA=;
+	s=arc-20240116; t=1725530414; c=relaxed/simple;
+	bh=SwhGjGjtNWxXjzoBWi2lpcgguM773MLJJm+ma2IG+uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8mMLQBCWpJCPbKhrc6mz6117fP8xkZgo9WoCfKL3vjO7mavo5Txr++dRc7jj89Mme3Qi8oJWyPB7agD40+b0Dra33dM42mbQpdzxQVINne3/eMnECWErxrwtRvsaVxA8bK7lmO5+HuYutG07kWM9QAH6zBYQhDutYDeDO3aMWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVkUmKp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13260C4CEC3;
-	Thu,  5 Sep 2024 09:49:23 +0000 (UTC)
+	 MIME-Version; b=UxTxmG5etJ1jorMo0WVj246QKPcWtMiYMavwV/WBQUTLKnlB5+AnJskbeIQaRyOgY8l7fdBKusrdLmp9hV/79TvnNYT4Wmwai6cs525Oj55x//Y1nEwUogOp0cIQvYMriOeUbvAS9D1c1AR9ojSBh+mh82nbHwzXRIjQ+NT/4/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kjz3Vw8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D43AC4CEC3;
+	Thu,  5 Sep 2024 10:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529764;
-	bh=puLLS8VqHBNYAisw5Plz/y7rjdwYXoq2bS3OJBJV1yA=;
+	s=korg; t=1725530414;
+	bh=SwhGjGjtNWxXjzoBWi2lpcgguM773MLJJm+ma2IG+uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVkUmKp3yAM8Y6btpV7y4zj7nyVieCme9RHBfIDPuGi1SbUNikQnlk7ferpJuFzAX
-	 dHdBLT8F6WuVuXEkMQAVsTcNGijMmOSOEWCgnEJH8O+mDGPRLeeLSeXKIU8si+dx6M
-	 UQzNAPFnPRyVwQvZewqs2B44quFNpXtN1DXwpYLQ=
+	b=Kjz3Vw8hkd6HnTaJlEhomi/leU0PC48X8RxAjv14mNJa+TRQFONT82dNijnociEzw
+	 ZtF0HkrZHJ830fxX64wCDPgJxJhxobq3+gUWpfn2mop6wQqs34fssq/VknPC6i+tGf
+	 OoZluPlRC3iqhQtqKXT+lK8Tqpx5vIjP7jM5nkWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 136/184] fsnotify: clear PARENT_WATCHED flags lazily
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 017/101] selftests: mptcp: join: validate fullmesh endp on 1st sf
 Date: Thu,  5 Sep 2024 11:40:49 +0200
-Message-ID: <20240905093737.529330966@linuxfoundation.org>
+Message-ID: <20240905093716.776062646@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,213 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 172e422ffea20a89bfdc672741c1aad6fbb5044e ]
+commit 4878f9f8421f4587bee7b232c1c8a9d3a7d4d782 upstream.
 
-In some setups directories can have many (usually negative) dentries.
-Hence __fsnotify_update_child_dentry_flags() function can take a
-significant amount of time. Since the bulk of this function happens
-under inode->i_lock this causes a significant contention on the lock
-when we remove the watch from the directory as the
-__fsnotify_update_child_dentry_flags() call from fsnotify_recalc_mask()
-races with __fsnotify_update_child_dentry_flags() calls from
-__fsnotify_parent() happening on children. This can lead upto softlockup
-reports reported by users.
+This case was not covered, and the wrong ID was set before the previous
+commit.
 
-Fix the problem by calling fsnotify_update_children_dentry_flags() to
-set PARENT_WATCHED flags only when parent starts watching children.
+The rest is not modified, it is just that it will increase the code
+coverage.
 
-When parent stops watching children, clear false positive PARENT_WATCHED
-flags lazily in __fsnotify_parent() for each accessed child.
+The right address ID can be verified by looking at the packet traces. We
+could automate that using Netfilter with some cBPF code for example, but
+that's always a bit cryptic. Packetdrill seems better fitted for that.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f49d63352da ("selftests: mptcp: add fullmesh testcases")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-13-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because the 'run_tests' helper has been
+  modified in multiple commits that are not in this version, e.g. commit
+  e571fb09c893 ("selftests: mptcp: add speed env var"). The conflict was
+  in the context, the new line can still be added at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/fsnotify.c             | 31 +++++++++++++++++++++----------
- fs/notify/fsnotify.h             |  2 +-
- fs/notify/mark.c                 | 32 +++++++++++++++++++++++++++++---
- include/linux/fsnotify_backend.h |  8 +++++---
- 4 files changed, 56 insertions(+), 17 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index ff69ae24c4e8..272c8a1dab3c 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -117,17 +117,13 @@ void fsnotify_sb_free(struct super_block *sb)
-  * parent cares.  Thus when an event happens on a child it can quickly tell
-  * if there is a need to find a parent and send the event to the parent.
-  */
--void __fsnotify_update_child_dentry_flags(struct inode *inode)
-+void fsnotify_set_children_dentry_flags(struct inode *inode)
- {
- 	struct dentry *alias;
--	int watched;
- 
- 	if (!S_ISDIR(inode->i_mode))
- 		return;
- 
--	/* determine if the children should tell inode about their events */
--	watched = fsnotify_inode_watches_children(inode);
--
- 	spin_lock(&inode->i_lock);
- 	/* run all of the dentries associated with this inode.  Since this is a
- 	 * directory, there damn well better only be one item on this list */
-@@ -143,10 +139,7 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
- 				continue;
- 
- 			spin_lock_nested(&child->d_lock, DENTRY_D_LOCK_NESTED);
--			if (watched)
--				child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
--			else
--				child->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
-+			child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
- 			spin_unlock(&child->d_lock);
- 		}
- 		spin_unlock(&alias->d_lock);
-@@ -154,6 +147,24 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
- 	spin_unlock(&inode->i_lock);
- }
- 
-+/*
-+ * Lazily clear false positive PARENT_WATCHED flag for child whose parent had
-+ * stopped watching children.
-+ */
-+static void fsnotify_clear_child_dentry_flag(struct inode *pinode,
-+					     struct dentry *dentry)
-+{
-+	spin_lock(&dentry->d_lock);
-+	/*
-+	 * d_lock is a sufficient barrier to prevent observing a non-watched
-+	 * parent state from before the fsnotify_set_children_dentry_flags()
-+	 * or fsnotify_update_flags() call that had set PARENT_WATCHED.
-+	 */
-+	if (!fsnotify_inode_watches_children(pinode))
-+		dentry->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
-+	spin_unlock(&dentry->d_lock);
-+}
-+
- /* Are inode/sb/mount interested in parent and name info with this event? */
- static bool fsnotify_event_needs_parent(struct inode *inode, __u32 mnt_mask,
- 					__u32 mask)
-@@ -228,7 +239,7 @@ int __fsnotify_parent(struct dentry *dentry, __u32 mask, const void *data,
- 	p_inode = parent->d_inode;
- 	p_mask = fsnotify_inode_watches_children(p_inode);
- 	if (unlikely(parent_watched && !p_mask))
--		__fsnotify_update_child_dentry_flags(p_inode);
-+		fsnotify_clear_child_dentry_flag(p_inode, dentry);
- 
- 	/*
- 	 * Include parent/name in notification either if some notification
-diff --git a/fs/notify/fsnotify.h b/fs/notify/fsnotify.h
-index 2d059f789ee3..663759ed6fbc 100644
---- a/fs/notify/fsnotify.h
-+++ b/fs/notify/fsnotify.h
-@@ -93,7 +93,7 @@ static inline void fsnotify_clear_marks_by_sb(struct super_block *sb)
-  * update the dentry->d_flags of all of inode's children to indicate if inode cares
-  * about events that happen to its children.
-  */
--extern void __fsnotify_update_child_dentry_flags(struct inode *inode);
-+extern void fsnotify_set_children_dentry_flags(struct inode *inode);
- 
- extern struct kmem_cache *fsnotify_mark_connector_cachep;
- 
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index c3eefa70633c..5e170e713088 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -250,6 +250,24 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 	return fsnotify_update_iref(conn, want_iref);
- }
- 
-+static bool fsnotify_conn_watches_children(
-+					struct fsnotify_mark_connector *conn)
-+{
-+	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
-+		return false;
-+
-+	return fsnotify_inode_watches_children(fsnotify_conn_inode(conn));
-+}
-+
-+static void fsnotify_conn_set_children_dentry_flags(
-+					struct fsnotify_mark_connector *conn)
-+{
-+	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
-+		return;
-+
-+	fsnotify_set_children_dentry_flags(fsnotify_conn_inode(conn));
-+}
-+
- /*
-  * Calculate mask of events for a list of marks. The caller must make sure
-  * connector and connector->obj cannot disappear under us.  Callers achieve
-@@ -258,15 +276,23 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
-  */
- void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- {
-+	bool update_children;
-+
- 	if (!conn)
- 		return;
- 
- 	spin_lock(&conn->lock);
-+	update_children = !fsnotify_conn_watches_children(conn);
- 	__fsnotify_recalc_mask(conn);
-+	update_children &= fsnotify_conn_watches_children(conn);
- 	spin_unlock(&conn->lock);
--	if (conn->type == FSNOTIFY_OBJ_TYPE_INODE)
--		__fsnotify_update_child_dentry_flags(
--					fsnotify_conn_inode(conn));
-+	/*
-+	 * Set children's PARENT_WATCHED flags only if parent started watching.
-+	 * When parent stops watching, we clear false positive PARENT_WATCHED
-+	 * flags lazily in __fsnotify_parent().
-+	 */
-+	if (update_children)
-+		fsnotify_conn_set_children_dentry_flags(conn);
- }
- 
- /* Free all connectors queued for freeing once SRCU period ends */
-diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
-index 4dd6143db271..8be029bc50b1 100644
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -594,12 +594,14 @@ static inline __u32 fsnotify_parent_needed_mask(__u32 mask)
- 
- static inline int fsnotify_inode_watches_children(struct inode *inode)
- {
-+	__u32 parent_mask = READ_ONCE(inode->i_fsnotify_mask);
-+
- 	/* FS_EVENT_ON_CHILD is set if the inode may care */
--	if (!(inode->i_fsnotify_mask & FS_EVENT_ON_CHILD))
-+	if (!(parent_mask & FS_EVENT_ON_CHILD))
- 		return 0;
- 	/* this inode might care about child events, does it care about the
- 	 * specific set of events that can happen on a child? */
--	return inode->i_fsnotify_mask & FS_EVENTS_POSS_ON_CHILD;
-+	return parent_mask & FS_EVENTS_POSS_ON_CHILD;
- }
- 
- /*
-@@ -613,7 +615,7 @@ static inline void fsnotify_update_flags(struct dentry *dentry)
- 	/*
- 	 * Serialisation of setting PARENT_WATCHED on the dentries is provided
- 	 * by d_lock. If inotify_inode_watched changes after we have taken
--	 * d_lock, the following __fsnotify_update_child_dentry_flags call will
-+	 * d_lock, the following fsnotify_set_children_dentry_flags call will
- 	 * find our entry, so it will spin until we complete here, and update
- 	 * us with the new state.
- 	 */
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3023,6 +3023,7 @@ fullmesh_tests()
+ 		pm_nl_set_limits $ns1 1 3
+ 		pm_nl_set_limits $ns2 1 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 fullmesh_1 slow
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 1 1
 
 
 
