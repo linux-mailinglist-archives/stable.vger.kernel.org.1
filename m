@@ -1,251 +1,131 @@
-Return-Path: <stable+bounces-73130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B530E96CF7B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:38:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D11596CFC5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AF1EB22F1E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:38:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBA0281676
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 06:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E9318BC02;
-	Thu,  5 Sep 2024 06:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2F518BC24;
+	Thu,  5 Sep 2024 06:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpXB4yMw"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7D318950D;
-	Thu,  5 Sep 2024 06:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1EB42C0B
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 06:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725518300; cv=none; b=H4CV3WvY0XZVrNczhn2YQePfO5NV+UVzs3c77bUCcBgYnS0P3Vn7sfnTPAzF4SMZrxx8JZomDf3SxxIwgqDY7BoWHKyfLfiAlmXNHDzm17tcoKAfZTEhMqpg9SCfarc9TbcAXV3VcYdU+RHj6QLb+V0M5Ye2h/dFuWCh26pjpHA=
+	t=1725519067; cv=none; b=HPdfzqC4b03B4Y1Zc1fMFXnsHc0Ke7sJF9c2W/bJZQd+cUnI598ru+4vRTtXUBL0wK5EgT4hzj968rKab/fKvQeK3BrmqEDS3QQGcyhvHZN33WFG12Iu482j0qgvI3WOpnZBrwRCUXBLLQlJ+8d9dAUXZkHLy4sf/vdyYHG2Ww4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725518300; c=relaxed/simple;
-	bh=7zB2IUb6fIamtfkCm1HDrghKHlQBMF4TBsQrkt4ArLQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PEi6yGDDBk1JpTvEkbyY8rhd//VzjhipNR0ADY/OxfsWeM5PkaVtWED39VlDCFztuQHlCIzpBjiOGxzE0glsxQ1oi2cRdOgP3eFzIhAtQ2AzMbOd60OrnYuxgUoRZFTDET59nt7mQqAMCu9RN93YSN3vXLlVOdSsnEepl5NP7sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WzqRn0kDYz4f3jYJ;
-	Thu,  5 Sep 2024 14:37:57 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 2706B1A018D;
-	Thu,  5 Sep 2024 14:38:12 +0800 (CST)
-Received: from [10.67.108.244] (unknown [10.67.108.244])
-	by APP4 (Coremail) with SMTP id gCh0CgD3KsfSUdlmfivGAQ--.6895S3;
-	Thu, 05 Sep 2024 14:38:11 +0800 (CST)
-Message-ID: <38ceaabe-0a2c-43f2-8f04-b93215f1f94c@huaweicloud.com>
-Date: Thu, 5 Sep 2024 14:38:10 +0800
+	s=arc-20240116; t=1725519067; c=relaxed/simple;
+	bh=FnOdCo/floJbxGzv9I7wv+kq44slSbckJT8DSvrE5Fo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YWSKd8J9R4zWNcakYE3PZ2QRetp6d7epl1snn5layeNs0xM3cOITgu3SRBx3PZQKLOr6KgG7TaVTHvctb4CJdHmydIVxv6OPe/xzrkWQTg3dylMRywMlyLV2iByYulrjmnT5lERfIHjhTYEtxa2g12f1K9IojaVOEa5ixECTf+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpXB4yMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C937C4CEC4;
+	Thu,  5 Sep 2024 06:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725519066;
+	bh=FnOdCo/floJbxGzv9I7wv+kq44slSbckJT8DSvrE5Fo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SpXB4yMw6HPNCP9SrFONF0wbGy1g9UMM/Xb4+ebEIztEOAYtaYeL4AXljhfZcSNbp
+	 pMsnpIMtxb8DqgU9R8oVJX7tiS8mYln8SYDCvP8p0FwnoMiuCFzk1WzxhQFxpd1IXc
+	 zaylluyNZjLJlJOZHJY5afT9CYBwx15wmrAiXvIE=
+Date: Thu, 5 Sep 2024 08:51:03 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pascal Ernster <git@hardfalcon.net>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: Re: Patch "drm/drm-bridge: Drop conditionals around of_node
+ pointers" has been added to the 6.6-stable t
+Message-ID: <2024090557-darkness-crayfish-ebc6@gregkh>
+References: <20240904175026.1165330-1-sashalkernel!org>
+ <3f2c3ed8-bbdb-45e0-9463-ffffdad0f37b@hardfalcon.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] perf/core: Fix incorrect time diff in tick adjust
- period
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
- mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@kernel.org,
- irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
- <20240831074316.2106159-3-luogengkun@huaweicloud.com>
- <20240902095054.GD4723@noisy.programming.kicks-ass.net>
-From: Luo Gengkun <luogengkun@huaweicloud.com>
-In-Reply-To: <20240902095054.GD4723@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3KsfSUdlmfivGAQ--.6895S3
-X-Coremail-Antispam: 1UD129KBjvJXoW3Xr1Dur4DCw1kCF4DCr4UJwb_yoWxAw4Upr
-	4kAFnxtrW8Jr1kXw15J3WDJ34UGw1kJw4DWF1UGF18Aw1UXrZFqF1UXryjgr15Jrs7JFy7
-	Jw1jqr1UZ3yUtFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: 5oxrwvpqjn3046kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3f2c3ed8-bbdb-45e0-9463-ffffdad0f37b@hardfalcon.net>
 
+On Thu, Sep 05, 2024 at 06:21:00AM +0200, Pascal Ernster wrote:
+> [2024-09-04 19:50] Sasha Levin:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      drm/drm-bridge: Drop conditionals around of_node pointers
+> > 
+> > to the 6.6-stable tree which can be found at:
+> >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >       drm-drm-bridge-drop-conditionals-around-of_node-poin.patch
+> > and it can be found in the queue-6.6 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > 
+> > commit 74f5f42c35daf9aedbc96283321c30fc591c634f
+> > Author: Sui Jingfeng <sui.jingfeng@linux.dev>
+> > Date:   Wed May 8 02:00:00 2024 +0800
+> > 
+> >      drm/drm-bridge: Drop conditionals around of_node pointers
+> >      [ Upstream commit ad3323a6ccb7d43bbeeaa46d5311c43d5d361fc7 ]
+> >      Having conditional around the of_node pointer of the drm_bridge structure
+> >      is not necessary, since drm_bridge structure always has the of_node as its
+> >      member.
+> >      Let's drop the conditional to get a better looks, please also note that
+> >      this is following the already accepted commitments. see commit d8dfccde2709
+> >      ("drm/bridge: Drop conditionals around of_node pointers") for reference.
+> >      Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+> >      Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> >      Signed-off-by: Robert Foss <rfoss@kernel.org>
+> >      Link: https://patchwork.freedesktop.org/patch/msgid/20240507180001.1358816-1-sui.jingfeng@linux.dev
+> >      Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > 
+> > diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> > index 62d8a291c49c..70b05582e616 100644
+> > --- a/drivers/gpu/drm/drm_bridge.c
+> > +++ b/drivers/gpu/drm/drm_bridge.c
+> > @@ -353,13 +353,8 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+> >   	bridge->encoder = NULL;
+> >   	list_del(&bridge->chain_node);
+> > -#ifdef CONFIG_OF
+> >   	DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
+> >   		  bridge->of_node, encoder->name, ret);
+> > -#else
+> > -	DRM_ERROR("failed to attach bridge to encoder %s: %d\n",
+> > -		  encoder->name, ret);
+> > -#endif
+> >   	return ret;
+> >   }
+> 
+> 
+> Hi Sasha,
+> 
+> 
+> this breaks the x86_64 build for me.
+> 
+> AFAICT this patch cannot work without commit
+> d8dfccde2709de4327c3d62b50e5dc012f08836f "drm/bridge: Drop conditionals
+> around of_node pointers", but that commit is only present in Linux >= 6.7.
+> 
+> This issue affects the 6.6, 6.1 and 5.15 branches.
 
-On 2024/9/2 17:50, Peter Zijlstra wrote:
-> On Sat, Aug 31, 2024 at 07:43:16AM +0000, Luo Gengkun wrote:
->> Perf events has the notion of sampling frequency which is implemented in
->> software by dynamically adjusting the counter period so that samples occur
->> at approximately the target frequency.  Period adjustment is done in 2
->> places:
->>   - when the counter overflows (and a sample is recorded)
->>   - each timer tick, when the event is active
->> The later case is slightly flawed because it assumes that the time since
->> the last timer-tick period adjustment is 1 tick, whereas the event may not
->> have been active (e.g. for a task that is sleeping).
->>
->> Fix by using jiffies to determine the elapsed time in that case.
->>
->> Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
->> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
->> ---
->>   include/linux/perf_event.h |  1 +
->>   kernel/events/core.c       | 12 +++++++++---
->>   2 files changed, 10 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
->> index 1a8942277dda..d29b7cf971a1 100644
->> --- a/include/linux/perf_event.h
->> +++ b/include/linux/perf_event.h
->> @@ -265,6 +265,7 @@ struct hw_perf_event {
->>   	 * State for freq target events, see __perf_event_overflow() and
->>   	 * perf_adjust_freq_unthr_context().
->>   	 */
->> +	u64				freq_tick_stamp;
->>   	u64				freq_time_stamp;
->>   	u64				freq_count_stamp;
->>   #endif
->> diff --git a/kernel/events/core.c b/kernel/events/core.c
->> index a9395bbfd4aa..183291e0d070 100644
->> --- a/kernel/events/core.c
->> +++ b/kernel/events/core.c
->> @@ -55,6 +55,7 @@
->>   #include <linux/pgtable.h>
->>   #include <linux/buildid.h>
->>   #include <linux/task_work.h>
->> +#include <linux/jiffies.h>
->>   
->>   #include "internal.h"
->>   
->> @@ -4120,9 +4121,11 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->>   {
->>   	struct perf_event *event;
->>   	struct hw_perf_event *hwc;
->> -	u64 now, period = TICK_NSEC;
->> +	u64 now, period, tick_stamp;
->>   	s64 delta;
->>   
->> +	tick_stamp = jiffies64_to_nsecs(get_jiffies_64());
->> +
->>   	list_for_each_entry(event, event_list, active_list) {
->>   		if (event->state != PERF_EVENT_STATE_ACTIVE)
->>   			continue;
->> @@ -4148,6 +4151,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->>   		 */
->>   		event->pmu->stop(event, PERF_EF_UPDATE);
->>   
->> +		period = tick_stamp - hwc->freq_tick_stamp;
->> +		hwc->freq_tick_stamp = tick_stamp;
->> +
->>   		now = local64_read(&event->count);
->>   		delta = now - hwc->freq_count_stamp;
->>   		hwc->freq_count_stamp = now;
->> @@ -4157,9 +4163,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
->>   		 * reload only if value has changed
->>   		 * we have stopped the event so tell that
->>   		 * to perf_adjust_period() to avoid stopping it
->> -		 * twice.
->> +		 * twice. And skip if it is the first tick adjust period.
->>   		 */
->> -		if (delta > 0)
->> +		if (delta > 0 && likely(period != tick_stamp))
->>   			perf_adjust_period(event, period, delta, false);
->>   
->>   		event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
-> This one I'm less happy with.. that condition 'period != tick_stamp'
-> doesn't make sense to me. That's only false if hwc->freq_tick_stamp ==
-> 0, which it will only be once after event creation. Even through the
-> Changelog babbles about event scheduling.
->
-> Also, that all should then be written something like:
->
-> 	if (delta > 0 && ...) {
-> 		perf_adjust_period(...);
-> 		adjusted = true;
-> 	}
->
-> 	event->pmu->start(event, adjusted ? PERF_EF_RELOAD : 0);
+Now dropped, thanks!
 
-Thank for your review! That is a good point.
-
-If freq_tick_stamp is initialized when an event is created
-
-or enabled, the additional condition can be removed as follows:
-
-+static bool is_freq_event(struct perf_event *event)
-+{
-+       return event->attr.freq && event->attr.sample_freq;
-+}
-+
-  static void
-  perf_event_set_state(struct perf_event *event, enum perf_event_state 
-state)
-  {
-@@ -665,6 +670,12 @@ perf_event_set_state(struct perf_event *event, enum 
-perf_event_state state)
-          */
-         if ((event->state < 0) ^ (state < 0))
-                 perf_event_update_sibling_time(event);
-+       /*
-+        * Update freq_tick_stamp for freq event just enabled
-+        */
-+       if (is_freq_event(event) && state == PERF_EVENT_STATE_INACTIVE &&
-+                                   event->state < 
-PERF_EVENT_STATE_INACTIVE)
-+               event->hw.freq_tick_stamp = 
-jiffies64_to_nsecs(get_jiffies_64());
-
-         WRITE_ONCE(event->state, state);
-  }
-@@ -4165,7 +4176,7 @@ static void perf_adjust_freq_unthr_events(struct 
-list_head *event_list)
-                  * to perf_adjust_period() to avoid stopping it
-                  * twice. And skip if it is the first tick adjust period.
-                  */
--               if (delta > 0 && likely(period != tick_stamp))
-+               if (delta > 0)
-                         perf_adjust_period(event, period, delta, false);
-
-                 event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
-@@ -12061,8 +12072,11 @@ perf_event_alloc(struct perf_event_attr *attr, 
-int cpu,
-
-         hwc = &event->hw;
-         hwc->sample_period = attr->sample_period;
--       if (attr->freq && attr->sample_freq)
-+       if (is_freq_event(event)) {
-                 hwc->sample_period = 1;
-+               if (event->state == PERF_EVENT_STATE_INACTIVE)
-+                       event->hw.freq_tick_stamp = 
-jiffies64_to_nsecs(get_jiffies_64());
-+       }
-
-
-And  I'm wondering if we also need to update freq_count_stamp when
-
-the freq event is enabled for the reason to keep they on the same "period".
-
-+       if (is_freq_event(event) && state == PERF_EVENT_STATE_INACTIVE &&
-+                                   event->state < 
-PERF_EVENT_STATE_INACTIVE) {
-+               event->hw.freq_tick_stamp = 
-jiffies64_to_nsecs(get_jiffies_64());
-+               event->hw.freq_count_stamp = local64_read(&event->count);
-+       }
-
-Looking for your reply!
-
-Thanks.
-
+greg k-h
 
