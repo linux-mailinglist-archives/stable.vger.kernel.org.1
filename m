@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61ED696D439
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F37196D4AE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872721C231BD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7661F282DB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1C318D65E;
-	Thu,  5 Sep 2024 09:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5809C194A45;
+	Thu,  5 Sep 2024 09:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFqXjirV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgl5cFgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27380635;
-	Thu,  5 Sep 2024 09:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167F8154BFF;
+	Thu,  5 Sep 2024 09:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529788; cv=none; b=tziKCZcV8P/TEXGvzKF99JHRP6yedE3jCEscLjovwbygxKb854ls/cBhvJTadW2yXmdsbyIhGu9DOPDWFlTAK/oIqMkuchRGsgiNDxueuBIFhfX3fwex0dYV1daIvUm0Yj8skCoqrwFgfIvlMQf6s7ZbZt2KdYvk9qCnaTJpbwM=
+	t=1725530092; cv=none; b=TFlT0985DxGYPtR8HJaYnyXbMl7M/atsZ7IFDfha4bIvsTAELEuO283bUU+W0+tPyXcMZy2vU4g/ZYTqJbLA7ZRG/zUuqg/ldJAvxwQvUpnF62QvCGgOr6jDW17v7bwg26y2Z3z12zos+PPCssh1i7VA74n6oDiioLbcuXS11XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529788; c=relaxed/simple;
-	bh=LSUrCYBnbUD+va0v5j+4JC9Touqq8G8AC0zGGjgWU5Y=;
+	s=arc-20240116; t=1725530092; c=relaxed/simple;
+	bh=vtD14hS9nHOL/45ekZhMWZ3b77fzwsKDIbb+OmzxbZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUFs0AnetR0kDBYEQ2DGYfbe/wbAGoFMGXEs5SeumSUxCNDScxHg7G7Vtm/WWnhe0K6KJzhIUobKLTThzQ5wIbv3wm5KvJSmZwF1bLABW81wRkdKsMgLvByE/0YTQZ65hK5kUlyaefnxYurPv/egbiQ83bfRXCZnIvDU3KaXIcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFqXjirV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E0DC4CEC3;
-	Thu,  5 Sep 2024 09:49:47 +0000 (UTC)
+	 MIME-Version; b=rOJwVoXxVU65FqaibyAx0eKUK17jhz1pjAhTR0/17DWCe2vNZU0qidWgs75xV4dychsvKKN4XBdjIFaRbFLFEjdQcuiX+UmHjepZV6tCTlEKv/FJcPWB84NQBEu0i9Uv/Sm1P3bbjGo79JjJwjGtYnsLAKGUiqeTFc90o82RPQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgl5cFgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEFFC4CEC3;
+	Thu,  5 Sep 2024 09:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529788;
-	bh=LSUrCYBnbUD+va0v5j+4JC9Touqq8G8AC0zGGjgWU5Y=;
+	s=korg; t=1725530091;
+	bh=vtD14hS9nHOL/45ekZhMWZ3b77fzwsKDIbb+OmzxbZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFqXjirVbRuuT1GJg/hQjvQDhW2xKhbX00V8PImFZ3x4ea9bRxzReeCsh1OMeOsN9
-	 xNJsyDFESa7mHinjoxq7bAerqXqBUvz9fsS9vJWO6p1a+DNyfz8R7wgVgdC+kXe/c+
-	 1G2Vf6nAwxh+cYdRI9pnojllTqVhbe0EYV8MOFV4=
+	b=Pgl5cFgtRj9r48TA69q9jHGGAbfXKMr/cEWGY4AVHjI/DocX4fpMMr0am+MbMqGW4
+	 LqClAB1fUz2Y+BwU5p232K3Rq9pO3RDo2Hw6v7y9MsifGvfqRTXztWqOAOUkfZD6ih
+	 qXol0vjZR+a280+6VlsaEI+IuTpdqnswcIkxnxSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Maina <quic_rmaina@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 125/184] hwspinlock: Introduce hwspin_lock_bust()
+Subject: [PATCH 6.6 051/132] drm/amd/display: Check gpio_id before used as array index
 Date: Thu,  5 Sep 2024 11:40:38 +0200
-Message-ID: <20240905093737.107835101@linuxfoundation.org>
+Message-ID: <20240905093724.243023835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Maina <quic_rmaina@quicinc.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 7c327d56597d8de1680cf24e956b704270d3d84a ]
+[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
 
-When a remoteproc crashes or goes down unexpectedly this can result in
-a state where locks held by the remoteproc will remain locked possibly
-resulting in deadlock. This new API hwspin_lock_bust() allows
-hwspinlock implementers to define a bust operation for freeing previously
-acquired hwspinlocks after verifying ownership of the acquired lock.
+[WHY & HOW]
+GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
+should be checked in advance.
 
-Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-1-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This fixes 5 OVERRUN issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/locking/hwspinlock.rst     | 11 ++++++++++
- drivers/hwspinlock/hwspinlock_core.c     | 28 ++++++++++++++++++++++++
- drivers/hwspinlock/hwspinlock_internal.h |  3 +++
- include/linux/hwspinlock.h               |  6 +++++
- 4 files changed, 48 insertions(+)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/locking/hwspinlock.rst b/Documentation/locking/hwspinlock.rst
-index 6f03713b7003..2ffaa3cbd63f 100644
---- a/Documentation/locking/hwspinlock.rst
-+++ b/Documentation/locking/hwspinlock.rst
-@@ -85,6 +85,17 @@ is already free).
- 
- Should be called from a process context (might sleep).
- 
-+::
-+
-+  int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
-+
-+After verifying the owner of the hwspinlock, release a previously acquired
-+hwspinlock; returns 0 on success, or an appropriate error code on failure
-+(e.g. -EOPNOTSUPP if the bust operation is not defined for the specific
-+hwspinlock).
-+
-+Should be called from a process context (might sleep).
-+
- ::
- 
-   int hwspin_lock_timeout(struct hwspinlock *hwlock, unsigned int timeout);
-diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
-index 0c0a932c00f3..6505261e6068 100644
---- a/drivers/hwspinlock/hwspinlock_core.c
-+++ b/drivers/hwspinlock/hwspinlock_core.c
-@@ -305,6 +305,34 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
- }
- EXPORT_SYMBOL_GPL(__hwspin_unlock);
- 
-+/**
-+ * hwspin_lock_bust() - bust a specific hwspinlock
-+ * @hwlock: a previously-acquired hwspinlock which we want to bust
-+ * @id: identifier of the remote lock holder, if applicable
-+ *
-+ * This function will bust a hwspinlock that was previously acquired as
-+ * long as the current owner of the lock matches the id given by the caller.
-+ *
-+ * Context: Process context.
-+ *
-+ * Returns: 0 on success, or -EINVAL if the hwspinlock does not exist, or
-+ * the bust operation fails, and -EOPNOTSUPP if the bust operation is not
-+ * defined for the hwspinlock.
-+ */
-+int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
-+{
-+	if (WARN_ON(!hwlock))
-+		return -EINVAL;
-+
-+	if (!hwlock->bank->ops->bust) {
-+		pr_err("bust operation not defined\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return hwlock->bank->ops->bust(hwlock, id);
-+}
-+EXPORT_SYMBOL_GPL(hwspin_lock_bust);
-+
- /**
-  * of_hwspin_lock_simple_xlate - translate hwlock_spec to return a lock id
-  * @hwlock_spec: hwlock specifier as found in the device tree
-diff --git a/drivers/hwspinlock/hwspinlock_internal.h b/drivers/hwspinlock/hwspinlock_internal.h
-index 29892767bb7a..f298fc0ee5ad 100644
---- a/drivers/hwspinlock/hwspinlock_internal.h
-+++ b/drivers/hwspinlock/hwspinlock_internal.h
-@@ -21,6 +21,8 @@ struct hwspinlock_device;
-  * @trylock: make a single attempt to take the lock. returns 0 on
-  *	     failure and true on success. may _not_ sleep.
-  * @unlock:  release the lock. always succeed. may _not_ sleep.
-+ * @bust:    optional, platform-specific bust handler, called by hwspinlock
-+ *	     core to bust a specific lock.
-  * @relax:   optional, platform-specific relax handler, called by hwspinlock
-  *	     core while spinning on a lock, between two successive
-  *	     invocations of @trylock. may _not_ sleep.
-@@ -28,6 +30,7 @@ struct hwspinlock_device;
- struct hwspinlock_ops {
- 	int (*trylock)(struct hwspinlock *lock);
- 	void (*unlock)(struct hwspinlock *lock);
-+	int (*bust)(struct hwspinlock *lock, unsigned int id);
- 	void (*relax)(struct hwspinlock *lock);
- };
- 
-diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
-index bfe7c1f1ac6d..f0231dbc4777 100644
---- a/include/linux/hwspinlock.h
-+++ b/include/linux/hwspinlock.h
-@@ -68,6 +68,7 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
- int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
- void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
- int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
-+int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
- int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
- struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
- struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
-@@ -127,6 +128,11 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index 3ede6e02c3a7..2f8ca831afa2 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -239,6 +239,9 @@ static bool is_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
  {
++	if (id == GPIO_ID_UNKNOWN)
++		return false;
++
+ 	return service->busyness[id][en];
  }
  
-+static inline int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
-+{
-+	return 0;
-+}
-+
- static inline int of_hwspin_lock_get_id(struct device_node *np, int index)
+@@ -247,6 +250,9 @@ static void set_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
  {
- 	return 0;
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = true;
+ }
+ 
+@@ -255,6 +261,9 @@ static void set_pin_free(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = false;
+ }
+ 
+@@ -263,7 +272,7 @@ enum gpio_result dal_gpio_service_lock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
+@@ -277,7 +286,7 @@ enum gpio_result dal_gpio_service_unlock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
 -- 
 2.43.0
 
