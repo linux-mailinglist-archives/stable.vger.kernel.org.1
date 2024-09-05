@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BD396D4A4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F7696D41C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86030B25B01
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690EA1C2305D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337B71957FC;
-	Thu,  5 Sep 2024 09:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7323A1991D5;
+	Thu,  5 Sep 2024 09:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0L4WXca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHc3QK3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F93156225;
-	Thu,  5 Sep 2024 09:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA80198E93;
+	Thu,  5 Sep 2024 09:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530065; cv=none; b=vDSC2yVwPekwl0yx8b0ryAuqfoT3bgf7uBFS6ib+Hl3lG1he/XjD1wi5USpuQ1veJ3ZiGcqjU80noPieUsof5BXtNtTlcNNGlgElTdtHxc8leZMvnXsZXl8wINV9iDmXpJQGzsWXWcw2PSC5U5ghQEn/icZ6F0x4uxageVCC0i8=
+	t=1725529712; cv=none; b=aU4Lj0hxpCqCfHJFjGbpK3Y/A6GpkcpQDjMMpEEQ5952WhtfEdv3vgaY/zGZGpvYMXPTcGr6kenw27oHADVWvrYmfj9zs5dvw7O5vYIgFvQmOjx37g6lMz6pM8NWNbCK8ewM6MN3EpV5ADtsd5vVRVTDVSTDHaPl7DU9HgQRL+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530065; c=relaxed/simple;
-	bh=giKp1DvygEKg2H+FU87zpjCPX6jJmTuPBP76bau/2Hs=;
+	s=arc-20240116; t=1725529712; c=relaxed/simple;
+	bh=sAvZvj2FyUw9D6tRBizVzvuG6LbAscZ4sKQGDK872Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqrJIbmThWJBQi7LqlwlKfyqi4OtHcFzLxslgWNYE0FaaLlBtLZZlO54cW1prglIGB0AernajIvZp4IQ/iFLrXTvKaIOPkV2k5x/2C+QKlR0PK4K9YA2ZF7ryT47LH28dBq2gu+y5XrmSm55UIaf4zBT6UOU3dNEbYG4qijUulg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0L4WXca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56211C4CEC3;
-	Thu,  5 Sep 2024 09:54:24 +0000 (UTC)
+	 MIME-Version; b=rb1T7uAsX50JK+9Nnd4snw9T0+xLgA1z7m+kOqpfxRYrNbKHR9ix6teFrwPEX0VcAN2driD+Q1+4WQsWMh7/DYyMkRbniJwJhx2Kdz+xRyvnQb2xKuOozFtFfUrbkPOW6PzRkjPQkiVgn9CO6QwO7h4FvAOVUwxoQ6RcgnWhLB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHc3QK3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D936C4CEC3;
+	Thu,  5 Sep 2024 09:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530064;
-	bh=giKp1DvygEKg2H+FU87zpjCPX6jJmTuPBP76bau/2Hs=;
+	s=korg; t=1725529712;
+	bh=sAvZvj2FyUw9D6tRBizVzvuG6LbAscZ4sKQGDK872Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0L4WXcaas0kgJ+ubIBdB7HUCKH4amr9LpmzvjPsD4Pko2WH4wttkGIuY9E6m/HZ4
-	 a7q/R679iNvwtn1EkNnjeSPNcURfo/KnSsb+Z3EYIrE7Az5DyidejnU05ZegiGlBeR
-	 anz340s6Ynfkx4i0yG2C60seRfceqygW8NkcDvjM=
+	b=mHc3QK3MHcbwWIq0xEvDSed6Tp7OHeaxbshSYUTLocjcfMaVtL3jTsRto79B73dR+
+	 pBWVzL6ztiKt0+QOHa/Tzs+Wreq0Iqq1tKb/UcXxisbTMNEBmUjSyJ0Aco/1Iyzk8w
+	 vXDv1X/IoM9ZAjT2lunYgxgYFWLBezTJLMzDUp8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/132] drm/amd/pm: fix uninitialized variable warning
-Date: Thu,  5 Sep 2024 11:40:31 +0200
-Message-ID: <20240905093723.970862489@linuxfoundation.org>
+Subject: [PATCH 6.10 119/184] wifi: cfg80211: restrict operation during radar detection
+Date: Thu,  5 Sep 2024 11:40:32 +0200
+Message-ID: <20240905093736.874777422@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7c836905520703dbc8b938993b6d4d718bc739f3 ]
+[ Upstream commit 2d33ecf5d0148671c74e68e18755b9411a7ba923 ]
 
-Check the return of function smum_send_msg_to_smc
-as it may fail to initialize the variable.
+Just like it's not currently possible to start radar
+detection while already operating, it shouldn't be
+possible to start operating while radar detection is
+running. Fix that.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Also, improve the check whether operating (carrier
+might not be up if e.g. attempting to join IBSS).
+
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240506211158.ae8dca3d0d6c.I7c70a66a5fbdbc63a78fee8a34f31d1995491bc3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/ibss.c    |  5 ++++-
+ net/wireless/mesh.c    |  5 ++++-
+ net/wireless/nl80211.c | 21 +++++++++++++++------
+ 3 files changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-index 7bf46e4974f8..86f95a291d65 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -99,7 +99,7 @@ static void pp_swctf_delayed_work_handler(struct work_struct *work)
- 	struct amdgpu_device *adev = hwmgr->adev;
- 	struct amdgpu_dpm_thermal *range =
- 				&adev->pm.dpm.thermal;
--	uint32_t gpu_temperature, size;
-+	uint32_t gpu_temperature, size = sizeof(gpu_temperature);
- 	int ret;
+diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
+index 9f02ee5f08be..34e5acff3935 100644
+--- a/net/wireless/ibss.c
++++ b/net/wireless/ibss.c
+@@ -3,7 +3,7 @@
+  * Some IBSS support code for cfg80211.
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2020-2023 Intel Corporation
++ * Copyright (C) 2020-2024 Intel Corporation
+  */
  
- 	/*
+ #include <linux/etherdevice.h>
+@@ -94,6 +94,9 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
+ 
+ 	lockdep_assert_held(&rdev->wiphy.mtx);
+ 
++	if (wdev->cac_started)
++		return -EBUSY;
++
+ 	if (wdev->u.ibss.ssid_len)
+ 		return -EALREADY;
+ 
+diff --git a/net/wireless/mesh.c b/net/wireless/mesh.c
+index 83306979fbe2..aaca65b66af4 100644
+--- a/net/wireless/mesh.c
++++ b/net/wireless/mesh.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Portions
+- * Copyright (C) 2022-2023 Intel Corporation
++ * Copyright (C) 2022-2024 Intel Corporation
+  */
+ #include <linux/ieee80211.h>
+ #include <linux/export.h>
+@@ -127,6 +127,9 @@ int __cfg80211_join_mesh(struct cfg80211_registered_device *rdev,
+ 	if (!rdev->ops->join_mesh)
+ 		return -EOPNOTSUPP;
+ 
++	if (wdev->cac_started)
++		return -EBUSY;
++
+ 	if (!setup->chandef.chan) {
+ 		/* if no channel explicitly given, use preset channel */
+ 		setup->chandef = wdev->u.mesh.preset_chandef;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index c2829d673bc7..967bc4935b4e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5965,6 +5965,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (!rdev->ops->start_ap)
+ 		return -EOPNOTSUPP;
+ 
++	if (wdev->cac_started)
++		return -EBUSY;
++
+ 	if (wdev->links[link_id].ap.beacon_interval)
+ 		return -EALREADY;
+ 
+@@ -9957,6 +9960,17 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 
+ 	flush_delayed_work(&rdev->dfs_update_channels_wk);
+ 
++	switch (wdev->iftype) {
++	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_P2P_GO:
++	case NL80211_IFTYPE_MESH_POINT:
++	case NL80211_IFTYPE_ADHOC:
++		break;
++	default:
++		/* caution - see cfg80211_beaconing_iface_active() below */
++		return -EINVAL;
++	}
++
+ 	wiphy_lock(wiphy);
+ 
+ 	dfs_region = reg_get_dfs_region(wiphy);
+@@ -9987,12 +10001,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 		goto unlock;
+ 	}
+ 
+-	if (netif_carrier_ok(dev)) {
+-		err = -EBUSY;
+-		goto unlock;
+-	}
+-
+-	if (wdev->cac_started) {
++	if (cfg80211_beaconing_iface_active(wdev) || wdev->cac_started) {
+ 		err = -EBUSY;
+ 		goto unlock;
+ 	}
 -- 
 2.43.0
 
