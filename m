@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-73402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24B896D4B5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F2096D457
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30932B25A4B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:55:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 024EB28126E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FB1194A45;
-	Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289E61990D0;
+	Thu,  5 Sep 2024 09:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw04xpFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ar5KQDaE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2E7154BFF;
-	Thu,  5 Sep 2024 09:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEA0198E90;
+	Thu,  5 Sep 2024 09:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530114; cv=none; b=qP4IH1i89UhfqoZomLGoLje5INXqqsE9uwtvnNKqsYJ2S81QSz9RWd7j28tyOsAMsfbJE7NXhPgH/vBCILqrJ7mYIY9LEEO4OVRtTQ7gM5wx+6j9wZVj3HM560XYv2PgDX4DDmQlPoe3f9VhmEXGMBwH+aGv5hQs9ld0pp5/+Vw=
+	t=1725529853; cv=none; b=srpkJ5VW+GiHo6dKb2GB+iZF0thaKIkCVX8ihrfj4ASDHSZAlvsr4f/hZSz8dXFG3igleYo9ar4Pa/aKX1Hk2tTXET6sKhPGxgrDMSF4HAi3gvAbRuCNNiBoFtNLpPrwpEb+4chIfJKcW82gaWoBilnQe/1jUGnUCQg92gZjLoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530114; c=relaxed/simple;
-	bh=ak6Jd1PvZiUCrMrntJyelJEB4KuD17NQsZ7DqjmSkCc=;
+	s=arc-20240116; t=1725529853; c=relaxed/simple;
+	bh=CK0IKi90cC4Q4Q1LTQOhoXTcQtWZ53jmj3C9NjWgcK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Incwv0WmAEoCzVcJuJlBRvEGpA6/Far5ZiwSdXcS/l824QAUwm6KDV8OhUUSuk9lLbeazl9ntEzfCHkemw3iEmS/kqVLOqbEu8Mb1v6i8DCiaqNNMhKzY8NefUvG+WIHSWJ5TIPc4aTX0p3+g+f3/ELS1/Rc7aOLNa45kSiBKuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw04xpFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCB9C4CEC4;
-	Thu,  5 Sep 2024 09:55:13 +0000 (UTC)
+	 MIME-Version; b=E4bVCSBAQOmqN22CL468sz90ma6osjs3aMlgqHuUpoaOc0pnpgHA70CyBrXhhBrW0NWevmL1LqOUI6n7oEP8wi0+p53iuG186u7ZYUCRsxzcuZfCk51n5j1Z1VcUo3M2rtryf1mWdiMY/cFXDVNFKi7jKAKeSbzXMtJ2cYKdEk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ar5KQDaE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DA0C4CEC3;
+	Thu,  5 Sep 2024 09:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530114;
-	bh=ak6Jd1PvZiUCrMrntJyelJEB4KuD17NQsZ7DqjmSkCc=;
+	s=korg; t=1725529853;
+	bh=CK0IKi90cC4Q4Q1LTQOhoXTcQtWZ53jmj3C9NjWgcK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aw04xpFtfU8Ps/3Fnn70fXK8f8NO7tcc9V/g8arNPBOdP2zdXXAYCQnVjTrVPFVNr
-	 aEvTtH6Y06O3btPLDPk9yd/0hOh8AUF3FbBU84BZZgUxQhnBbN6MJgtoZmDdyBuljj
-	 ouFNdOl8x9Qf7CMKrzFb2lZZFrcBctb1PXH5xzfU=
+	b=ar5KQDaE4oOz35dL0rg5esl/Iwv8TNQUw7Zkqs8H6ol4tH0Wc3N9sYfkRQzVHccgA
+	 wX57R4CVnqe9Q25CNdIRilw3owb0eUXu/6hwLHQ9CltajSvD2iTH8zEi5/tGVMtKFW
+	 jd5ASgFmYAKkd79Wj+7mIxSCxWM+pUY8gx1JAAvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/132] drm/amd/display: Fix Coverity INTERGER_OVERFLOW within construct_integrated_info
-Date: Thu,  5 Sep 2024 11:40:44 +0200
-Message-ID: <20240905093724.475765647@linuxfoundation.org>
+Subject: [PATCH 6.10 132/184] media: v4l2-cci: Always assign *val
+Date: Thu,  5 Sep 2024 11:40:45 +0200
+Message-ID: <20240905093737.377375171@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 176abbcc71952e23009a6ed194fd203b99646884 ]
+[ Upstream commit 7417b1b1f36cc214dc458e717278a27a912d3b51 ]
 
-[Why]
-For substrcation, coverity reports integer overflow
-warning message when variable type is uint32_t.
+Always assign *val to 0 in cci_read(). This has the benefit of not
+requiring initialisation of the variables data is read to using
+cci_read(). Once smatch is fixed, it could catch the use of uninitialised
+reads.
 
-[How]
-Change varaible type to int32_t.
-
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c  | 4 ++--
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 7 +++++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/v4l2-core/v4l2-cci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 6b3190447581..19cd1bd844df 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -2552,8 +2552,8 @@ static enum bp_result construct_integrated_info(
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index ee3475bed37f..1ff94affbaf3 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -23,6 +23,15 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	u8 buf[8];
+ 	int ret;
  
- 	/* Sort voltage table from low to high*/
- 	if (result == BP_RESULT_OK) {
--		uint32_t i;
--		uint32_t j;
-+		int32_t i;
-+		int32_t j;
- 
- 		for (i = 1; i < NUMBER_OF_DISP_CLK_VOLTAGE; ++i) {
- 			for (j = i; j > 0; --j) {
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 93720cf069d7..384ddb28e6f6 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -2935,8 +2935,11 @@ static enum bp_result construct_integrated_info(
- 	struct atom_common_table_header *header;
- 	struct atom_data_revision revision;
- 
--	uint32_t i;
--	uint32_t j;
-+	int32_t i;
-+	int32_t j;
++	/*
++	 * TODO: Fix smatch. Assign *val to 0 here in order to avoid
++	 * failing a smatch check on caller when the caller proceeds to
++	 * read *val without initialising it on caller's side. *val is set
++	 * to a valid value whenever this function returns 0 but smatch
++	 * can't figure that out currently.
++	 */
++	*val = 0;
 +
-+	if (!info)
-+		return result;
+ 	if (err && *err)
+ 		return *err;
  
- 	if (info && DATA_TABLES(integratedsysteminfo)) {
- 		header = GET_IMAGE(struct atom_common_table_header,
 -- 
 2.43.0
 
