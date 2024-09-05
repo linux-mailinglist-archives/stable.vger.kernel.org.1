@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F0996D4C9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3C296D448
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BEAAB2676A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DCA21C222FC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20D156225;
-	Thu,  5 Sep 2024 09:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BCC198E96;
+	Thu,  5 Sep 2024 09:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1Daagpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKNITeAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B618D65E;
-	Thu,  5 Sep 2024 09:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B92198E85;
+	Thu,  5 Sep 2024 09:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530164; cv=none; b=BTjuXVwT3kPbqfEPnUmEU+JQsjSCEWITqkokE/ut4e1pQg7BTl8bNkJb8mVb9Nkr5L6A02iGlWcXdOALmn4GmTfSParUhawQ4Oh8a6YRoF67bWRdtnez/aMoWcoJTzoOSIDTYVecm/wMuX9FpW21XejV8CuNHt+2BdHhzGMLuRU=
+	t=1725529808; cv=none; b=oy/aFedosZCLU9/bSgumDWIncUgYg/Xr1UFr8kQmA8hXyXdPrNKcG3MWPTNvxWXf3eZ8DP90ap+t2FbMTVBpw7oG5nQyl2FMPv9P2biD7MWn6KmbOsatUXfrLnp6GhcQY6WHNME+SKmpo4IYN4BE0IGZrHd8WF4Mm1cnZ5cJOao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530164; c=relaxed/simple;
-	bh=wpNoiFHEWXvuJ1i1zqveqnOHUS/eBoPDUOnW2rBQbiU=;
+	s=arc-20240116; t=1725529808; c=relaxed/simple;
+	bh=OLpbNGw35A6aIGGNI84Y8LIcdiyM02aXK4gvEnMtKx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ds3uiAm3iPEI7GS+/Jq2KaXkqT47t9K1WFhYjRITQ4XTkADuYnM3tL2CYcqko3FhehcgqdIkgK6lX1Si534fzOalbD9ZJgZSZW9qpULxW7jSf3XsRTywWRO/I4iO584dThDerW77uoM5Q7ARNDkgsHOb3f6rTvIBOPvS4jd6Sn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1Daagpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38163C4CEC4;
-	Thu,  5 Sep 2024 09:56:03 +0000 (UTC)
+	 MIME-Version; b=TqREyHjPzS/Sg5axZc9HDAC5jq+AsgpfBTfjIucQdvFk2/6uv5ZAko2fu6hb2zeRrYzwOtGOUIznecPFd/ArsJwGWh55drEF/lhPbLnXNu/CXkC2VYMGhIEBnfGSZNygSqZoydQR8sbAOkcEQWyLpF2cAIKvj9Qu/l5bcG4jeJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKNITeAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61639C4CEC3;
+	Thu,  5 Sep 2024 09:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530163;
-	bh=wpNoiFHEWXvuJ1i1zqveqnOHUS/eBoPDUOnW2rBQbiU=;
+	s=korg; t=1725529807;
+	bh=OLpbNGw35A6aIGGNI84Y8LIcdiyM02aXK4gvEnMtKx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1Daagpr+CQLm8Hi5WF3jLcj4WooaQXOg5Q1WaVR+SUAjFpsheRfdzRTXNLHTZsUa
-	 WgHtSQ78w0vbb8VVD7fP+66Jchk3hlsPgAFOfNAba+wT2848+o3lcwmzV44pyIa0En
-	 NsWkwVVvjl8fzK4mFKiO5zV0MDGN3Wz073tXcTCM=
+	b=HKNITeAipgKp1BCroEnVTscBvwz/u95UajI+vf4NLG305vUhMHarNcDP9S6f4lfiS
+	 eOlrLB8OR/e4s1wrjOEZxFfhFF2j38avuMVrMQ5OvLuYk+0cg9rcFWJsL/Ehf78DrQ
+	 LudVco99b3her8/nsM4rEB2clt6zTFOLIYMQKuEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chen <michael.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	John Allen <john.allen@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/132] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
+Subject: [PATCH 6.10 148/184] RAS/AMD/ATL: Validate address map when information is gathered
 Date: Thu,  5 Sep 2024 11:41:01 +0200
-Message-ID: <20240905093725.133411248@linuxfoundation.org>
+Message-ID: <20240905093738.114235161@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chen <michael.chen@amd.com>
+From: John Allen <john.allen@amd.com>
 
-[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
+[ Upstream commit d5811a165caf63a69cd8ae11156b8587cc57d1d1 ]
 
-Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
-in some use case. This would lead code scanner to complain about
-access beyond. Re-define it in union to enforce 8-byte size and
-alignment to avoid potential issue.
+Validate address maps at the time the information is gathered as the
+address map will not change during translation.
 
-Signed-off-by: Michael Chen <michael.chen@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: John Allen <john.allen@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://lore.kernel.org/r/20240606203313.51197-5-john.allen@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
- drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/ras/amd/atl/dehash.c | 43 --------------------
+ drivers/ras/amd/atl/map.c    | 77 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-index 74c2d7a0d628..2f54ee08f269 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-@@ -42,8 +42,6 @@
- #define CRAT_OEMTABLEID_LENGTH	8
- #define CRAT_RESERVED_LENGTH	6
+diff --git a/drivers/ras/amd/atl/dehash.c b/drivers/ras/amd/atl/dehash.c
+index 4ea46262c4f5..d4ee7ecabaee 100644
+--- a/drivers/ras/amd/atl/dehash.c
++++ b/drivers/ras/amd/atl/dehash.c
+@@ -12,41 +12,10 @@
  
--#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
+ #include "internal.h"
+ 
+-/*
+- * Verify the interleave bits are correct in the different interleaving
+- * settings.
+- *
+- * If @num_intlv_dies and/or @num_intlv_sockets are 1, it means the
+- * respective interleaving is disabled.
+- */
+-static inline bool map_bits_valid(struct addr_ctx *ctx, u8 bit1, u8 bit2,
+-				  u8 num_intlv_dies, u8 num_intlv_sockets)
+-{
+-	if (!(ctx->map.intlv_bit_pos == bit1 || ctx->map.intlv_bit_pos == bit2)) {
+-		pr_debug("Invalid interleave bit: %u", ctx->map.intlv_bit_pos);
+-		return false;
+-	}
 -
- /* Compute Unit flags */
- #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
- #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 61157fddc15c..8362a71ab707 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -958,8 +958,7 @@ static void kfd_update_system_properties(void)
- 	dev = list_last_entry(&topology_device_list,
- 			struct kfd_topology_device, list);
- 	if (dev) {
--		sys_props.platform_id =
--			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
-+		sys_props.platform_id = dev->oem_id64;
- 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
- 		sys_props.platform_rev = dev->oem_revision;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-index 27386ce9a021..2d1c9d771bef 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-@@ -154,7 +154,10 @@ struct kfd_topology_device {
- 	struct attribute		attr_gpuid;
- 	struct attribute		attr_name;
- 	struct attribute		attr_props;
--	uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+	union {
-+		uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+		uint64_t			oem_id64;
-+	};
- 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
- 	uint32_t			oem_revision;
- };
+-	if (ctx->map.num_intlv_dies > num_intlv_dies) {
+-		pr_debug("Invalid number of interleave dies: %u", ctx->map.num_intlv_dies);
+-		return false;
+-	}
+-
+-	if (ctx->map.num_intlv_sockets > num_intlv_sockets) {
+-		pr_debug("Invalid number of interleave sockets: %u", ctx->map.num_intlv_sockets);
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ static int df2_dehash_addr(struct addr_ctx *ctx)
+ {
+ 	u8 hashed_bit, intlv_bit, intlv_bit_pos;
+ 
+-	if (!map_bits_valid(ctx, 8, 9, 1, 1))
+-		return -EINVAL;
+-
+ 	intlv_bit_pos = ctx->map.intlv_bit_pos;
+ 	intlv_bit = !!(BIT_ULL(intlv_bit_pos) & ctx->ret_addr);
+ 
+@@ -67,9 +36,6 @@ static int df3_dehash_addr(struct addr_ctx *ctx)
+ 	bool hash_ctl_64k, hash_ctl_2M, hash_ctl_1G;
+ 	u8 hashed_bit, intlv_bit, intlv_bit_pos;
+ 
+-	if (!map_bits_valid(ctx, 8, 9, 1, 1))
+-		return -EINVAL;
+-
+ 	hash_ctl_64k = FIELD_GET(DF3_HASH_CTL_64K, ctx->map.ctl);
+ 	hash_ctl_2M  = FIELD_GET(DF3_HASH_CTL_2M, ctx->map.ctl);
+ 	hash_ctl_1G  = FIELD_GET(DF3_HASH_CTL_1G, ctx->map.ctl);
+@@ -171,9 +137,6 @@ static int df4_dehash_addr(struct addr_ctx *ctx)
+ 	bool hash_ctl_64k, hash_ctl_2M, hash_ctl_1G;
+ 	u8 hashed_bit, intlv_bit;
+ 
+-	if (!map_bits_valid(ctx, 8, 8, 1, 2))
+-		return -EINVAL;
+-
+ 	hash_ctl_64k = FIELD_GET(DF4_HASH_CTL_64K, ctx->map.ctl);
+ 	hash_ctl_2M  = FIELD_GET(DF4_HASH_CTL_2M, ctx->map.ctl);
+ 	hash_ctl_1G  = FIELD_GET(DF4_HASH_CTL_1G, ctx->map.ctl);
+@@ -247,9 +210,6 @@ static int df4p5_dehash_addr(struct addr_ctx *ctx)
+ 	u8 hashed_bit, intlv_bit;
+ 	u64 rehash_vector;
+ 
+-	if (!map_bits_valid(ctx, 8, 8, 1, 2))
+-		return -EINVAL;
+-
+ 	hash_ctl_64k = FIELD_GET(DF4_HASH_CTL_64K, ctx->map.ctl);
+ 	hash_ctl_2M  = FIELD_GET(DF4_HASH_CTL_2M, ctx->map.ctl);
+ 	hash_ctl_1G  = FIELD_GET(DF4_HASH_CTL_1G, ctx->map.ctl);
+@@ -360,9 +320,6 @@ static int mi300_dehash_addr(struct addr_ctx *ctx)
+ 	bool hashed_bit, intlv_bit, test_bit;
+ 	u8 num_intlv_bits, base_bit, i;
+ 
+-	if (!map_bits_valid(ctx, 8, 8, 4, 1))
+-		return -EINVAL;
+-
+ 	hash_ctl_4k  = FIELD_GET(DF4p5_HASH_CTL_4K, ctx->map.ctl);
+ 	hash_ctl_64k = FIELD_GET(DF4_HASH_CTL_64K,  ctx->map.ctl);
+ 	hash_ctl_2M  = FIELD_GET(DF4_HASH_CTL_2M,   ctx->map.ctl);
+diff --git a/drivers/ras/amd/atl/map.c b/drivers/ras/amd/atl/map.c
+index 8b908e8d7495..04419923f088 100644
+--- a/drivers/ras/amd/atl/map.c
++++ b/drivers/ras/amd/atl/map.c
+@@ -642,6 +642,79 @@ static int get_global_map_data(struct addr_ctx *ctx)
+ 	return 0;
+ }
+ 
++/*
++ * Verify the interleave bits are correct in the different interleaving
++ * settings.
++ *
++ * If @num_intlv_dies and/or @num_intlv_sockets are 1, it means the
++ * respective interleaving is disabled.
++ */
++static inline bool map_bits_valid(struct addr_ctx *ctx, u8 bit1, u8 bit2,
++				  u8 num_intlv_dies, u8 num_intlv_sockets)
++{
++	if (!(ctx->map.intlv_bit_pos == bit1 || ctx->map.intlv_bit_pos == bit2)) {
++		pr_debug("Invalid interleave bit: %u", ctx->map.intlv_bit_pos);
++		return false;
++	}
++
++	if (ctx->map.num_intlv_dies > num_intlv_dies) {
++		pr_debug("Invalid number of interleave dies: %u", ctx->map.num_intlv_dies);
++		return false;
++	}
++
++	if (ctx->map.num_intlv_sockets > num_intlv_sockets) {
++		pr_debug("Invalid number of interleave sockets: %u", ctx->map.num_intlv_sockets);
++		return false;
++	}
++
++	return true;
++}
++
++static int validate_address_map(struct addr_ctx *ctx)
++{
++	switch (ctx->map.intlv_mode) {
++	case DF2_2CHAN_HASH:
++	case DF3_COD4_2CHAN_HASH:
++	case DF3_COD2_4CHAN_HASH:
++	case DF3_COD1_8CHAN_HASH:
++		if (!map_bits_valid(ctx, 8, 9, 1, 1))
++			goto err;
++		break;
++
++	case DF4_NPS4_2CHAN_HASH:
++	case DF4_NPS2_4CHAN_HASH:
++	case DF4_NPS1_8CHAN_HASH:
++	case DF4p5_NPS4_2CHAN_1K_HASH:
++	case DF4p5_NPS4_2CHAN_2K_HASH:
++	case DF4p5_NPS2_4CHAN_1K_HASH:
++	case DF4p5_NPS2_4CHAN_2K_HASH:
++	case DF4p5_NPS1_8CHAN_1K_HASH:
++	case DF4p5_NPS1_8CHAN_2K_HASH:
++	case DF4p5_NPS1_16CHAN_1K_HASH:
++	case DF4p5_NPS1_16CHAN_2K_HASH:
++		if (!map_bits_valid(ctx, 8, 8, 1, 2))
++			goto err;
++		break;
++
++	case MI3_HASH_8CHAN:
++	case MI3_HASH_16CHAN:
++	case MI3_HASH_32CHAN:
++		if (!map_bits_valid(ctx, 8, 8, 4, 1))
++			goto err;
++		break;
++
++	/* Nothing to do for modes that don't need special validation checks. */
++	default:
++		break;
++	}
++
++	return 0;
++
++err:
++	atl_debug(ctx, "Inconsistent address map");
++	return -EINVAL;
++}
++
+ static void dump_address_map(struct dram_addr_map *map)
+ {
+ 	u8 i;
+@@ -678,5 +751,9 @@ int get_address_map(struct addr_ctx *ctx)
+ 
+ 	dump_address_map(&ctx->map);
+ 
++	ret = validate_address_map(ctx);
++	if (ret)
++		return ret;
++
+ 	return ret;
+ }
 -- 
 2.43.0
 
