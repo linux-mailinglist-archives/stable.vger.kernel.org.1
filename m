@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C49196D51D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC1596D4E3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328F71F2A2DE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974432815D0
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F9919413B;
-	Thu,  5 Sep 2024 10:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D122198822;
+	Thu,  5 Sep 2024 09:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQ0pCNBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNhINvV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EA513D28F;
-	Thu,  5 Sep 2024 10:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAF5194A64;
+	Thu,  5 Sep 2024 09:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530427; cv=none; b=Z+SITSBmPCyZ9F1sQFafJChGDkNcuD5zmAmTjQz1ZtrFblOSeoq+rOf+ObvhuRhXg2Tt9DAL4My8ooCGU0p7IazGwZp0BXwlUamqzusMA21Nj3D2iB9jZN06TsyBjDVSzYNyhVDghwBgCNwNfVWSnFBMc2cLTL1MkvQYTBD5w54=
+	t=1725530241; cv=none; b=NzXLcLZ/+rAAnRdhHj++PAXy1vBpDYmhlstxeT8TcjeVSY1uFnzc+2eESsDZIlmCkzl68yXtAoXfLO5SfAtDMab4swM7JhKQHU+mkFv4crmj9LMfauvgXn+ziV3L8s010ubLfBBG+eC5pTgN3q0sggRVr0+6Xxk5RmuB81Qg0fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530427; c=relaxed/simple;
-	bh=1nuiIj0mevOe3y74RopIrmQ2tiDXvinm7XX2GbuHVmU=;
+	s=arc-20240116; t=1725530241; c=relaxed/simple;
+	bh=DT62n2vF4ls6dweU4S5/feCC1L9XeQ9jq7si2fCiJwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3TmsDmPSNCxhZe43uTgHVRww6GFMVTD4zpG3W7492bpMy1vrfbN3KsFDeb6xkPVUeQhWSbkpYel4Mvo+cwSUft4OIw0NJcN5BW+upZQD1UWnFvcus5XymmvX+gSften/Z5ffYwMT+A9Z6364oHrAkEv+FmJeBX43pOx0YBYy7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQ0pCNBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E47CC4CEC3;
-	Thu,  5 Sep 2024 10:00:26 +0000 (UTC)
+	 MIME-Version; b=dgf42ZZTnEv4+xK6GrYozcR2i/v/1nZkjXHWXbLlr55E8IO1Y+zZVpK3XSD8EQxs0Fm3u4Y1QNf6R83FbCx4TcM3ecS2ZxXg8cZxj9kN2jshLmXNmgdez+32Ap533ysGGs7+724/ROEnSeVRT9hGQMiSNLsre3+zVubnTYFgcS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNhINvV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E71BC4CEC3;
+	Thu,  5 Sep 2024 09:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530427;
-	bh=1nuiIj0mevOe3y74RopIrmQ2tiDXvinm7XX2GbuHVmU=;
+	s=korg; t=1725530241;
+	bh=DT62n2vF4ls6dweU4S5/feCC1L9XeQ9jq7si2fCiJwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQ0pCNBHnQ/ouV2xMvKtSx9kY9aRUL+INCzMH6QpK0ZrRkQ0x0+5o96U6mBB6q9xl
-	 31L0vDgkZH1R522QOWD4cBSPJo6rPlxQJneMIM+tbK+X/Ig7zYrj8hZGNiVyTQDI1Y
-	 eNmK4Psy8Xj91JWI0I/QVjPWcYfVGu/bT5202YkQ=
+	b=gNhINvV5h9Tu695S8Ip2SxNLv/J5R5KSQX5mdk+vkE+rO82kezhk9hip07hGBCN1i
+	 JG35/Zd33xRrX1uzEAvE6EGihk5cR9CK1aZWtxUyn1crwOU3aWJxe7PnnW/hqko8hl
+	 Z4GmtliIbVW5PcqpprS67SnNzEPHRHDGz9Rqh60s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 020/101] selftests: mptcp: join: test for flush/re-add endpoints
-Date: Thu,  5 Sep 2024 11:40:52 +0200
-Message-ID: <20240905093716.904198679@linuxfoundation.org>
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/132] drm/amdgpu/pm: Fix uninitialized variable warning for smu10
+Date: Thu,  5 Sep 2024 11:40:53 +0200
+Message-ID: <20240905093724.824332654@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit e06959e9eebdfea4654390f53b65cff57691872e upstream.
+[ Upstream commit 336c8f558d596699d3d9814a45600139b2f23f27 ]
 
-After having flushed endpoints that didn't cause the creation of new
-subflows, it is important to check endpoints can be re-created, re-using
-previously used IDs.
+Check return value of smum_send_msg_to_smc to fix
+uninitialized variable varning
 
-Before the previous commit, the client would not have been able to
-re-create the subflow that was previously rejected.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-6-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ No conflicts, but adapt the test to the helpers in this version:
-  - run_tests has been modified a few times to reduce the number of
-    positional parameters
-  - no chk_mptcp_info helper
-  - chk_subflow_nr taking an extra parameter
-  - kill_tests_wait instead of mptcp_lib_kill_wait ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   29 ++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ .../drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c  | 21 +++++++++++++----
+ .../drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c | 20 ++++++++++++----
+ .../drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c | 23 ++++++++++++++-----
+ 3 files changed, 48 insertions(+), 16 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3262,6 +3262,35 @@ userspace_tests()
- 		kill_tests_wait
- 	fi
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
+index 0b181bc8931c..f62381b189ad 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
+@@ -1554,7 +1554,10 @@ static int smu10_set_fine_grain_clk_vol(struct pp_hwmgr *hwmgr,
+ 		}
  
-+	# flush and re-add
-+	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 1 2
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
-+		local tests_pid=$!
+ 		if (input[0] == 0) {
+-			smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMinGfxclkFrequency, &min_freq);
++			ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMinGfxclkFrequency, &min_freq);
++			if (ret)
++				return ret;
 +
-+		wait_attempt_fail $ns2
-+		chk_subflow_nr needtitle "before flush" 1
+ 			if (input[1] < min_freq) {
+ 				pr_err("Fine grain setting minimum sclk (%ld) MHz is less than the minimum allowed (%d) MHz\n",
+ 					input[1], min_freq);
+@@ -1562,7 +1565,10 @@ static int smu10_set_fine_grain_clk_vol(struct pp_hwmgr *hwmgr,
+ 			}
+ 			smu10_data->gfx_actual_soft_min_freq = input[1];
+ 		} else if (input[0] == 1) {
+-			smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxGfxclkFrequency, &max_freq);
++			ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxGfxclkFrequency, &max_freq);
++			if (ret)
++				return ret;
 +
-+		pm_nl_flush_endpoint $ns2
-+		pm_nl_flush_endpoint $ns1
-+		wait_rm_addr $ns2 0
-+		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		wait_mpj $ns2
-+		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
-+		wait_mpj $ns2
-+		kill_wait "${tests_pid}"
-+		kill_tests_wait
+ 			if (input[1] > max_freq) {
+ 				pr_err("Fine grain setting maximum sclk (%ld) MHz is greater than the maximum allowed (%d) MHz\n",
+ 					input[1], max_freq);
+@@ -1577,10 +1583,15 @@ static int smu10_set_fine_grain_clk_vol(struct pp_hwmgr *hwmgr,
+ 			pr_err("Input parameter number not correct\n");
+ 			return -EINVAL;
+ 		}
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMinGfxclkFrequency, &min_freq);
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxGfxclkFrequency, &max_freq);
+-
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMinGfxclkFrequency, &min_freq);
++		if (ret)
++			return ret;
+ 		smu10_data->gfx_actual_soft_min_freq = min_freq;
 +
-+		chk_join_nr 2 2 2
-+		chk_add_nr 2 2
-+		chk_rm_nr 1 0 invert
-+	fi
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxGfxclkFrequency, &max_freq);
++		if (ret)
++			return ret;
++
+ 		smu10_data->gfx_actual_soft_max_freq = max_freq;
+ 	} else if (type == PP_OD_COMMIT_DPM_TABLE) {
+ 		if (size != 0) {
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
+index 460067933de2..069c0f5205e0 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
+@@ -293,12 +293,12 @@ static int vega12_set_features_platform_caps(struct pp_hwmgr *hwmgr)
+ 	return 0;
  }
  
- endpoint_tests()
+-static void vega12_init_dpm_defaults(struct pp_hwmgr *hwmgr)
++static int vega12_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega12_hwmgr *data = (struct vega12_hwmgr *)(hwmgr->backend);
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 	uint32_t top32, bottom32;
+-	int i;
++	int i, ret;
+ 
+ 	data->smu_features[GNLD_DPM_PREFETCHER].smu_feature_id =
+ 			FEATURE_DPM_PREFETCHER_BIT;
+@@ -364,10 +364,16 @@ static void vega12_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 	}
+ 
+ 	/* Get the SN to turn into a Unique ID */
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
++	if (ret)
++		return ret;
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	if (ret)
++		return ret;
+ 
+ 	adev->unique_id = ((uint64_t)bottom32 << 32) | top32;
++
++	return 0;
+ }
+ 
+ static int vega12_set_private_data_based_on_pptable(struct pp_hwmgr *hwmgr)
+@@ -410,7 +416,11 @@ static int vega12_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 
+ 	vega12_set_features_platform_caps(hwmgr);
+ 
+-	vega12_init_dpm_defaults(hwmgr);
++	result = vega12_init_dpm_defaults(hwmgr);
++	if (result) {
++		pr_err("%s failed\n", __func__);
++		return result;
++	}
+ 
+ 	/* Parse pptable data read from VBIOS */
+ 	vega12_set_private_data_based_on_pptable(hwmgr);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
+index 3b33af30eb0f..f97ac4b79d8b 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
+@@ -328,12 +328,12 @@ static int vega20_set_features_platform_caps(struct pp_hwmgr *hwmgr)
+ 	return 0;
+ }
+ 
+-static void vega20_init_dpm_defaults(struct pp_hwmgr *hwmgr)
++static int vega20_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega20_hwmgr *data = (struct vega20_hwmgr *)(hwmgr->backend);
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 	uint32_t top32, bottom32;
+-	int i;
++	int i, ret;
+ 
+ 	data->smu_features[GNLD_DPM_PREFETCHER].smu_feature_id =
+ 			FEATURE_DPM_PREFETCHER_BIT;
+@@ -404,10 +404,17 @@ static void vega20_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 	}
+ 
+ 	/* Get the SN to turn into a Unique ID */
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
++	if (ret)
++		return ret;
++
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	if (ret)
++		return ret;
+ 
+ 	adev->unique_id = ((uint64_t)bottom32 << 32) | top32;
++
++	return 0;
+ }
+ 
+ static int vega20_set_private_data_based_on_pptable(struct pp_hwmgr *hwmgr)
+@@ -427,6 +434,7 @@ static int vega20_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega20_hwmgr *data;
+ 	struct amdgpu_device *adev = hwmgr->adev;
++	int result;
+ 
+ 	data = kzalloc(sizeof(struct vega20_hwmgr), GFP_KERNEL);
+ 	if (data == NULL)
+@@ -452,8 +460,11 @@ static int vega20_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 
+ 	vega20_set_features_platform_caps(hwmgr);
+ 
+-	vega20_init_dpm_defaults(hwmgr);
+-
++	result = vega20_init_dpm_defaults(hwmgr);
++	if (result) {
++		pr_err("%s failed\n", __func__);
++		return result;
++	}
+ 	/* Parse pptable data read from VBIOS */
+ 	vega20_set_private_data_based_on_pptable(hwmgr);
+ 
+-- 
+2.43.0
+
 
 
 
