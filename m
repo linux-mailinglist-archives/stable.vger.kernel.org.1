@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-73379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34C596D49B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C2496D414
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD6D1C22E5A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F67E1F25BF5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5980B1990CE;
-	Thu,  5 Sep 2024 09:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B171198E7A;
+	Thu,  5 Sep 2024 09:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjormtvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+05PBhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187DB1990B3;
-	Thu,  5 Sep 2024 09:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399AB194AC7;
+	Thu,  5 Sep 2024 09:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530039; cv=none; b=FYmYyxG7CAohx92gA7KCSlr+IpBUxE3E6MashwxzpX8R8WJpzn8Dk7Fl0BpNGTmT4qTGaAE5z7dHUT3T68UGNzOW7rpCY+r3pvdDAEmdy/40MnXzmghwSo6DiFRt2xuB0Kngzqxp2vYGw2ZVe/Ql+fxqft3k2WbsWfVdqBR5B2c=
+	t=1725529683; cv=none; b=dLrRrUI89d9Bbv3PupKfhEc99OzSlcfWUBMpwfQevm5Ms4BoNUsXBjpWE09WgaPGYt+IItaDnVZMzfeoRKfcYkPYG/UOZle7XHNGMS1gqyY8+QMYZUiResTjlDyTzcRdNZuptnOBTDGL8sHJedPlkRQhd3pPWwjsipcOQSYdSbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530039; c=relaxed/simple;
-	bh=LSUDRNvOclBYcRWNZURKvxpkdGS68O2gQekntXN/LV8=;
+	s=arc-20240116; t=1725529683; c=relaxed/simple;
+	bh=u3obIxHeD+R/f9cIYEUeYhuSCmapBDoGcCbq0y+WKRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD+j5Rpe71uzOgiwHB3y9cLcf+xW/nrm/2r412weYMPlbvfaSlthk+ScRVCXSloSz6TfYVFfy2Q52CdsvTi8+cCu3tNmnuXYHMnXqznESFxHvR9Gy2ni/75pawq8RTzqVO+QrKYe+wTB3unfa6FIuNlCskvoQ0n3sS9rza6c+dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjormtvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E2FC4CEC6;
-	Thu,  5 Sep 2024 09:53:58 +0000 (UTC)
+	 MIME-Version; b=WeasiRuf0t613Md2/WPYsV9HaXAKS55z6d6Mm9RGYr09yMmJ/veOLeIJFn8CjqeKcMa1Vtyiwm5yIL2mSV06xJ/v2enh1KiObwHkr7DOVVVF+lg1WpEGHTziGSOzHQj8/uzT2jY/BitRWU3QARN5RaTXuDInq/VckAmwncbm7oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+05PBhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290BC4CEC3;
+	Thu,  5 Sep 2024 09:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530038;
-	bh=LSUDRNvOclBYcRWNZURKvxpkdGS68O2gQekntXN/LV8=;
+	s=korg; t=1725529683;
+	bh=u3obIxHeD+R/f9cIYEUeYhuSCmapBDoGcCbq0y+WKRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjormtvp71wxZzY/5bLAi0fy6D+O/dioAl1lzXGFRpWNjK6/sG0fwk4FsPGWBm2+4
-	 xlAtPlqlKnWZsW7FuMeL5lQsOLt4HLrRds9nuY/7+km8/QO0UGGjcio6RgM0gmIKUL
-	 zh4NHpE5tpE/f7fRSST4lNX7GUjd6b1fs3znnV1g=
+	b=M+05PBhezQrlbaCDmsr7HKXgjCtur5qUQA8cf7toW8xf1sCnRjcqnicggQluOuPlX
+	 ak45exjH57ehCEBdjoH0B19bKpBbIb9KEOS3zf+gHTEosLd/09SHWqAVDopETWtT/T
+	 aIWZVfgJhsLAWdO3gGb0F55qHhQWSMSED6uq8qcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6 036/132] selftests: mptcp: join: disable get and dump addr checks
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 110/184] drm/amd/pm: check negtive return for table entries
 Date: Thu,  5 Sep 2024 11:40:23 +0200
-Message-ID: <20240905093723.646972220@linuxfoundation.org>
+Message-ID: <20240905093736.527952318@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-These new checks have been recently queued to v6.6 [1] with the backport
-of commit 38f027fca1b7 ("selftests: mptcp: dump userspace addrs list"),
-and commit 4cc5cc7ca052 ("selftests: mptcp: userspace pm get addr
-tests").
+[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
 
-On v6.6, these checks will simply print 'skip', because the associated
-features are not available in this version. That's fine, except that the
-MPTCP CI sets the SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES=1 env var,
-which will force these subtests to fail when using the selftests from
-v6.6 on a v6.6 kernel, because the feature is not available.
+Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
 
-To ease the backports (and possible future ones), I suggest to keep the
-recent backports, but skip calling mptcp_lib_kallsyms_has() not to have
-the CIs setting this env var complaining about the associated features
-not being available.
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=bd2122541bd8 [1]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3472,7 +3472,7 @@ userspace_pm_chk_dump_addr()
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+index f4bd8e9357e2..18f00038d844 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+ {
+ 	int result;
+ 	unsigned int i;
+-	unsigned int table_entries;
+ 	struct pp_power_state *state;
+-	int size;
++	int size, table_entries;
  
- 	print_check "dump addrs ${check}"
+ 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
+ 		return 0;
+@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+ 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
+ 		return 0;
  
--	if mptcp_lib_kallsyms_has "mptcp_userspace_pm_dump_addr$"; then
-+	if false && mptcp_lib_kallsyms_has "mptcp_userspace_pm_dump_addr$"; then
- 		check_output "userspace_pm_dump ${ns}" "${exp}"
- 	else
- 		print_skip
-@@ -3487,7 +3487,7 @@ userspace_pm_chk_get_addr()
+-	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
++	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
  
- 	print_check "get id ${id} addr"
+-	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
++	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
+ 					  sizeof(struct pp_power_state);
  
--	if mptcp_lib_kallsyms_has "mptcp_userspace_pm_get_addr$"; then
-+	if false && mptcp_lib_kallsyms_has "mptcp_userspace_pm_get_addr$"; then
- 		check_output "userspace_pm_get_addr ${ns} ${id}" "${exp}"
- 	else
- 		print_skip
+-	if (table_entries == 0 || size == 0) {
++	if (table_entries <= 0 || size == 0) {
+ 		pr_warn("Please check whether power state management is supported on this asic\n");
++		hwmgr->num_ps = 0;
++		hwmgr->ps_size = 0;
+ 		return 0;
+ 	}
++	hwmgr->num_ps = table_entries;
++	hwmgr->ps_size = size;
+ 
+ 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
+ 	if (hwmgr->ps == NULL)
+-- 
+2.43.0
+
 
 
 
