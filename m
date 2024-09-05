@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A4796D508
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA08196D466
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CEA41F27041
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917721F21435
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A04C194A64;
-	Thu,  5 Sep 2024 09:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7421990A7;
+	Thu,  5 Sep 2024 09:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIQ+j9u0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQviBXTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48883CC8;
-	Thu,  5 Sep 2024 09:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC43718732F;
+	Thu,  5 Sep 2024 09:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530360; cv=none; b=O6uG7TKTLKFlLpv/bcBiaey04jJrZCEGWb4kuIblzVOkikG5LoEkoYhG330FBSfOlK6e6IFHECO59ZffLzLDKxvTONj361qLZOWmSzmyOYisqQoG4we/SXyIUmglstzLWyYSxj6MgjoJqjRWeLv7anexZ0qt5sOmIptvEwpyqjo=
+	t=1725529898; cv=none; b=XH429bd7gY0POjSISua8VJBOaXsyfUXv86B9rsiguBhTRBGU1a47MPDijCxuCrF/mJQQ18fV2H8u7hm2MQ1PqYk2dvRrtJdZVaChtvDRo+vpalgrugqiutUr/YUsLM6Ku1+69QFVce/sGjk4lmYiBnD3Gm1JdWizWjKgYOo8kGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530360; c=relaxed/simple;
-	bh=3gfdK4njnMrclSIky/nFLWb0FYGj7ntwhz6S+GFt9R4=;
+	s=arc-20240116; t=1725529898; c=relaxed/simple;
+	bh=4XXjbyQJieJrE/VLBdR9GilwTDffCfVw7gBt++7ltas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMTOolQ1NmiOADZniWqOFGMWDgjMY//T3GmjrKHlkf6NwFFfovI2R2XuICmX7jlv27f8n3kegxCbh2uQAUcsUBh5UP+eVexM5rcBGD1ghqCBXAZetH26M2UTr8w+mb3ziOpr2ePs2BU1nPiQJRKxeEUO5PPvbs0Iiq0O55Knx5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIQ+j9u0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59417C4CEC3;
-	Thu,  5 Sep 2024 09:59:19 +0000 (UTC)
+	 MIME-Version; b=er8RsW4IiX0QBtlBXVJW5VsPfZgXx8AORP3GdzgVjzVPlcxM4QqUiHyhkgkp5k8zwuolVba6BKqKhi7ejArbopeZu+qldrZCy+2Mrn0QUMBFg4e731IN7zIywuI6ExY+ACbq4eVojZ3c3+0i8BOMHtohyMlyqjl+5uWHxD+yZBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQviBXTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E443BC4CEC3;
+	Thu,  5 Sep 2024 09:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530359;
-	bh=3gfdK4njnMrclSIky/nFLWb0FYGj7ntwhz6S+GFt9R4=;
+	s=korg; t=1725529898;
+	bh=4XXjbyQJieJrE/VLBdR9GilwTDffCfVw7gBt++7ltas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIQ+j9u0XBLxJ+7llVy4/nD5fXIn0h6M9hUOG9ArydDNn9UPb972ID78vXqPtGhPA
-	 5jvQWjJhSmycF0mf4AKlsLj1Jh7i5Mf1HTfQmnUVjHitblnMraXqN78nUm69w5uXEq
-	 79FOO/5SS0dBrXjhO6ZzDLS1HJZaDLzf5wk92Jqk=
+	b=UQviBXTsMSxyCgaV6dlYIZlCbVEwY0oFTVCJddy0vv9qulAQagRdV2knXZnykOvXL
+	 kmySg/g1rPXR+xhIXZw+6U8wfLqmM9i1+h46N6awarqFpZ6PLU6J1w81YJnoLvq/OA
+	 K4R+HKYMS5w7jeb7BvkduFUJcXgvCQJ4scmWNpgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/132] fsnotify: clear PARENT_WATCHED flags lazily
+Subject: [PATCH 6.10 176/184] drm/amd/display: Check BIOS images before it is used
 Date: Thu,  5 Sep 2024 11:41:29 +0200
-Message-ID: <20240905093726.204932209@linuxfoundation.org>
+Message-ID: <20240905093739.205575872@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,210 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 172e422ffea20a89bfdc672741c1aad6fbb5044e ]
+[ Upstream commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c ]
 
-In some setups directories can have many (usually negative) dentries.
-Hence __fsnotify_update_child_dentry_flags() function can take a
-significant amount of time. Since the bulk of this function happens
-under inode->i_lock this causes a significant contention on the lock
-when we remove the watch from the directory as the
-__fsnotify_update_child_dentry_flags() call from fsnotify_recalc_mask()
-races with __fsnotify_update_child_dentry_flags() calls from
-__fsnotify_parent() happening on children. This can lead upto softlockup
-reports reported by users.
+BIOS images may fail to load and null checks are added before they are
+used.
 
-Fix the problem by calling fsnotify_update_children_dentry_flags() to
-set PARENT_WATCHED flags only when parent starts watching children.
+This fixes 6 NULL_RETURNS issues reported by Coverity.
 
-When parent stops watching children, clear false positive PARENT_WATCHED
-flags lazily in __fsnotify_parent() for each accessed child.
-
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c             | 31 +++++++++++++++++++++----------
- fs/notify/fsnotify.h             |  2 +-
- fs/notify/mark.c                 | 32 +++++++++++++++++++++++++++++---
- include/linux/fsnotify_backend.h |  8 +++++---
- 4 files changed, 56 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 7974e91ffe13..b5d8f238fce4 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -103,17 +103,13 @@ void fsnotify_sb_delete(struct super_block *sb)
-  * parent cares.  Thus when an event happens on a child it can quickly tell
-  * if there is a need to find a parent and send the event to the parent.
-  */
--void __fsnotify_update_child_dentry_flags(struct inode *inode)
-+void fsnotify_set_children_dentry_flags(struct inode *inode)
- {
- 	struct dentry *alias;
--	int watched;
- 
- 	if (!S_ISDIR(inode->i_mode))
- 		return;
- 
--	/* determine if the children should tell inode about their events */
--	watched = fsnotify_inode_watches_children(inode);
--
- 	spin_lock(&inode->i_lock);
- 	/* run all of the dentries associated with this inode.  Since this is a
- 	 * directory, there damn well better only be one item on this list */
-@@ -129,10 +125,7 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
- 				continue;
- 
- 			spin_lock_nested(&child->d_lock, DENTRY_D_LOCK_NESTED);
--			if (watched)
--				child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
--			else
--				child->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
-+			child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
- 			spin_unlock(&child->d_lock);
- 		}
- 		spin_unlock(&alias->d_lock);
-@@ -140,6 +133,24 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
- 	spin_unlock(&inode->i_lock);
- }
- 
-+/*
-+ * Lazily clear false positive PARENT_WATCHED flag for child whose parent had
-+ * stopped watching children.
-+ */
-+static void fsnotify_clear_child_dentry_flag(struct inode *pinode,
-+					     struct dentry *dentry)
-+{
-+	spin_lock(&dentry->d_lock);
-+	/*
-+	 * d_lock is a sufficient barrier to prevent observing a non-watched
-+	 * parent state from before the fsnotify_set_children_dentry_flags()
-+	 * or fsnotify_update_flags() call that had set PARENT_WATCHED.
-+	 */
-+	if (!fsnotify_inode_watches_children(pinode))
-+		dentry->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
-+	spin_unlock(&dentry->d_lock);
-+}
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 25fe1a124029..3bacf470f7c5 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -665,6 +665,9 @@ static enum bp_result get_ss_info_v3_1(
+ 	ss_table_header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
+ 				DATA_TABLES(ASIC_InternalSS_Info),
+ 				struct_size(ss_table_header_include, asSpreadSpectrum, 1)));
++	if (!ss_table_header_include)
++		return BP_RESULT_UNSUPPORTED;
 +
- /* Are inode/sb/mount interested in parent and name info with this event? */
- static bool fsnotify_event_needs_parent(struct inode *inode, struct mount *mnt,
- 					__u32 mask)
-@@ -208,7 +219,7 @@ int __fsnotify_parent(struct dentry *dentry, __u32 mask, const void *data,
- 	p_inode = parent->d_inode;
- 	p_mask = fsnotify_inode_watches_children(p_inode);
- 	if (unlikely(parent_watched && !p_mask))
--		__fsnotify_update_child_dentry_flags(p_inode);
-+		fsnotify_clear_child_dentry_flag(p_inode, dentry);
+ 	table_size =
+ 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
+ 				- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1034,6 +1037,8 @@ static enum bp_result get_ss_info_from_internal_ss_info_tbl_V2_1(
+ 				&bp->base,
+ 				DATA_TABLES(ASIC_InternalSS_Info),
+ 				struct_size(header, asSpreadSpectrum, 1)));
++	if (!header)
++		return result;
  
- 	/*
- 	 * Include parent/name in notification either if some notification
-diff --git a/fs/notify/fsnotify.h b/fs/notify/fsnotify.h
-index fde74eb333cc..2b4267de86e6 100644
---- a/fs/notify/fsnotify.h
-+++ b/fs/notify/fsnotify.h
-@@ -74,7 +74,7 @@ static inline void fsnotify_clear_marks_by_sb(struct super_block *sb)
-  * update the dentry->d_flags of all of inode's children to indicate if inode cares
-  * about events that happen to its children.
-  */
--extern void __fsnotify_update_child_dentry_flags(struct inode *inode);
-+extern void fsnotify_set_children_dentry_flags(struct inode *inode);
+ 	memset(info, 0, sizeof(struct spread_spectrum_info));
  
- extern struct kmem_cache *fsnotify_mark_connector_cachep;
+@@ -1107,6 +1112,8 @@ static enum bp_result get_ss_info_from_ss_info_table(
+ 	get_atom_data_table_revision(header, &revision);
  
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index c74ef947447d..4be6e883d492 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -176,6 +176,24 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 	return fsnotify_update_iref(conn, want_iref);
- }
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
++	if (!tbl)
++		return result;
  
-+static bool fsnotify_conn_watches_children(
-+					struct fsnotify_mark_connector *conn)
-+{
-+	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
-+		return false;
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return result;
+@@ -1634,6 +1641,8 @@ static uint32_t get_ss_entry_number_from_ss_info_tbl(
+ 
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
+ 			DATA_TABLES(SS_Info));
++	if (!tbl)
++		return number;
+ 
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return number;
+@@ -1716,6 +1725,8 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_v2_1(
+ 				&bp->base,
+ 				DATA_TABLES(ASIC_InternalSS_Info),
+ 				struct_size(header_include, asSpreadSpectrum, 1)));
++	if (!header_include)
++		return 0;
+ 
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
+ 			- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1755,6 +1766,9 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_V3_1(
+ 	header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
+ 				DATA_TABLES(ASIC_InternalSS_Info),
+ 				struct_size(header_include, asSpreadSpectrum, 1)));
++	if (!header_include)
++		return number;
 +
-+	return fsnotify_inode_watches_children(fsnotify_conn_inode(conn));
-+}
-+
-+static void fsnotify_conn_set_children_dentry_flags(
-+					struct fsnotify_mark_connector *conn)
-+{
-+	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
-+		return;
-+
-+	fsnotify_set_children_dentry_flags(fsnotify_conn_inode(conn));
-+}
-+
- /*
-  * Calculate mask of events for a list of marks. The caller must make sure
-  * connector and connector->obj cannot disappear under us.  Callers achieve
-@@ -184,15 +202,23 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
-  */
- void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- {
-+	bool update_children;
-+
- 	if (!conn)
- 		return;
- 
- 	spin_lock(&conn->lock);
-+	update_children = !fsnotify_conn_watches_children(conn);
- 	__fsnotify_recalc_mask(conn);
-+	update_children &= fsnotify_conn_watches_children(conn);
- 	spin_unlock(&conn->lock);
--	if (conn->type == FSNOTIFY_OBJ_TYPE_INODE)
--		__fsnotify_update_child_dentry_flags(
--					fsnotify_conn_inode(conn));
-+	/*
-+	 * Set children's PARENT_WATCHED flags only if parent started watching.
-+	 * When parent stops watching, we clear false positive PARENT_WATCHED
-+	 * flags lazily in __fsnotify_parent().
-+	 */
-+	if (update_children)
-+		fsnotify_conn_set_children_dentry_flags(conn);
- }
- 
- /* Free all connectors queued for freeing once SRCU period ends */
-diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
-index c0892d75ce33..575415b51349 100644
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -563,12 +563,14 @@ static inline __u32 fsnotify_parent_needed_mask(__u32 mask)
- 
- static inline int fsnotify_inode_watches_children(struct inode *inode)
- {
-+	__u32 parent_mask = READ_ONCE(inode->i_fsnotify_mask);
-+
- 	/* FS_EVENT_ON_CHILD is set if the inode may care */
--	if (!(inode->i_fsnotify_mask & FS_EVENT_ON_CHILD))
-+	if (!(parent_mask & FS_EVENT_ON_CHILD))
- 		return 0;
- 	/* this inode might care about child events, does it care about the
- 	 * specific set of events that can happen on a child? */
--	return inode->i_fsnotify_mask & FS_EVENTS_POSS_ON_CHILD;
-+	return parent_mask & FS_EVENTS_POSS_ON_CHILD;
- }
- 
- /*
-@@ -582,7 +584,7 @@ static inline void fsnotify_update_flags(struct dentry *dentry)
- 	/*
- 	 * Serialisation of setting PARENT_WATCHED on the dentries is provided
- 	 * by d_lock. If inotify_inode_watched changes after we have taken
--	 * d_lock, the following __fsnotify_update_child_dentry_flags call will
-+	 * d_lock, the following fsnotify_set_children_dentry_flags call will
- 	 * find our entry, so it will spin until we complete here, and update
- 	 * us with the new state.
- 	 */
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
+ 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
+ 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
 -- 
 2.43.0
 
