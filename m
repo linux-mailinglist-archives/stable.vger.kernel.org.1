@@ -1,103 +1,125 @@
-Return-Path: <stable+bounces-73591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF07996D708
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 13:25:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EC996D7B6
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 13:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6681C24DA5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:25:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95658282BC1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B5819924A;
-	Thu,  5 Sep 2024 11:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551219A29A;
+	Thu,  5 Sep 2024 11:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKqWKhXn"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dxS/x9r4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79CF1991AC
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 11:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075C41991B0
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 11:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725535535; cv=none; b=XVXPSEHPBCcpIPJUpo3n6WVQ2Xsqs1UAk2dSrYx6KRMxqo5vKemtiV9aMmsT5ayyBRbPMJz9k8bWuULaqH+uSdxNVMgxX238KvI0CQZxfogBRPfsKrQEeZFAw/z570f7jgRiipDj7VrYWq6pXzbyw6pnJYKSfTqlXx8QYfgekRU=
+	t=1725537346; cv=none; b=tzf2KO0g2j+r6EPWnf9kCf1lhv1Ha6z2Z7zpewlFZ+6cS6d+/bLrgGmF+3Yo44ckHAkqZjzRNqyRxhZjM/UN/UfLOzpuqnDuh+fS40+4e9xumX3+PSEzKYlZrNEr6D+0ZrrVkNicjzzXb+fDBz0zjbPexbyg2W+KyhIG0IanAbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725535535; c=relaxed/simple;
-	bh=j8Ldpm8iCkYgj2my+479dHGIPt74KD7gfUIog73lHic=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bASS8EJkCOZEnJSOEDJZSXE65JMehHb3vAp4HVp++mxgMfvirQ9lBPIvosz4jM5Yhwgj0Ssyd6dp56LAf3DEp+AX0yD8lKQE4lJf0aZWRXyVjADy0EdIdLIoRWRKFqJofLgjCkgnnIxSqwkhZ6qddisQWYANrV7EMwOEClP/UM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKqWKhXn; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725535534; x=1757071534;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=j8Ldpm8iCkYgj2my+479dHGIPt74KD7gfUIog73lHic=;
-  b=hKqWKhXna0OykRw8Za/IOW+XMBY4ZyCmCD+YOr3AqVp/r/vg+ybnF4Ew
-   mZYG5n7KuCCF1BkRaLZZ4VUgRihu/uy+f+9oq4H7ScsuXoHooyVsbVh5c
-   4iVGiiHXm2SKJzW5Tw/VBu7Zqvwe9hjc25Os0ADM2bzmZ5PW3tTAJMKTY
-   orHC7xb6YMKs37m3sdCpdKkaU4HCpBQ4TYTrM9nqg7cAkcLV5LAPbXx0F
-   q3UkkGip1Bvnutdz6d6Si7Aq2xwPet+j1hcFMghCjvX1gLty0p6Pzohie
-   Yh/XvSFcsFen0ZRJqMeaKtUcj3obqnurlO5phihLiWLJLHD2Ei7kQN06n
-   A==;
-X-CSE-ConnectionGUID: ROIZqA0GReSa5JeNpihx8A==
-X-CSE-MsgGUID: kKO7LSlqTV29qa/c9rdYRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="34816328"
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; 
-   d="scan'208";a="34816328"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 04:25:34 -0700
-X-CSE-ConnectionGUID: izNM5Pu4RAm1sqLYHcUJGw==
-X-CSE-MsgGUID: VkgNiS/ES+2++lPfirgvHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; 
-   d="scan'208";a="70389059"
-Received: from unknown (HELO localhost) ([10.237.66.160])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 04:25:32 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/bios: fix printk format width
-Date: Thu,  5 Sep 2024 14:25:19 +0300
-Message-Id: <20240905112519.4186408-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1725537346; c=relaxed/simple;
+	bh=9NJQoo4LMVMggcZzkDEPcmdJE9FtDyLAQZGKEsY1FLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YimIWWfjFdbFmilpf4MSRfcXFOMg47kaIF95T8tA/zDdQT81Ftc007/b57jjxE35miKmuw8PjiRC37J14R6SsNAXOrSmrHMUshKC3AAKZjfzKmuD38sxP8lfiECWYJqstLbseB89A0qvGr0HVV7giq6Vnz3gXYWsUhybdK4EpKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dxS/x9r4; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-84305a83b06so206891241.2
+        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 04:55:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725537344; x=1726142144; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qRJcGcRJNx1TW5diCULQtEUQCwcWsO+dA/2EMfBnxLI=;
+        b=dxS/x9r4fnXUO8Sd5c7lzNjpGSYaqpWkZGldn49M6EKrgg9irH6NeVlzockNfDLKdM
+         /PNz599PPijG7w10HNPuKeyXprzt+X7iqyKCjMYW8DZrMSbGrk2QjLJSVu/CWOcgFtgT
+         EuVtC7ObXY+dMuSszgD1w+3P7xZoXCUILWXK+brkyb/FWnM79D7EbuqiuI7U8SW8YhMa
+         iMIngGBBBhUGyhIYjIZbgkTQJwZghczrY4Jc7e5/X3dwHV57YsWjYjH2d2doj+EIcW8C
+         yD5U4pTX0xbOuNztVgrk8IaWCqWfdXsB4E/DNqqEBXgV/60lgWuboSOhlFruEVsf16HA
+         jNkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725537344; x=1726142144;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qRJcGcRJNx1TW5diCULQtEUQCwcWsO+dA/2EMfBnxLI=;
+        b=CnwXzUzOrNPMSqcao50nEPb0454WdOXLjrYIMq7WGMniD92r2e0zewsZDJgytn9eWn
+         ShXoKWYucE2Rz8xXi/+eE3PysUyPrZaWvM+Rlj63nCs/iCVDG7Fvm6FpCX9+ouCXI4pG
+         oV4CZw3hRZ2FpopxLQAQpRfKz43J1lBSR6AY2pRNmj3Zv1XlZ+RjoXd1fqDHY18NwPU9
+         URblY99tX4UD5tjZBn4YfurAmasqa3D1Uc3Smu6MC136o17yajHmcsTxTkiic7sA1U2E
+         outK8iUGjRuvtyyp++tp06h6kPiNwaGME6jz+A4D93sH153U6NALd6pO7Iz+vqSmNZe5
+         twcA==
+X-Gm-Message-State: AOJu0Yy43l0BEoBIbg12Pw1LUwbGMg0NrIhXDpxPzcFhD/xuJdwu1ZrE
+	PElzIbJrkHCLSiWN7X85i1w4kBGR7pjD7UuEMMEjp3bY7uQYKD+RGG8hvmeuGRAwocbiuUAQxJQ
+	iODa4qGiwC3hDo9yrNJt80uVsQQeR2cwSQU4rjg==
+X-Google-Smtp-Source: AGHT+IF81MA398iZ6b4Y3eucXQLIDL+C3dpW3/7905P6ameFiZ7xV/TUXSEnEfZ4bjIqf/xqhw7rYHJecNOySvu0Zrs=
+X-Received: by 2002:a05:6102:26ca:b0:49b:d24a:6860 with SMTP id
+ ada2fe7eead31-49bd24a6c82mr1314728137.8.1725537343801; Thu, 05 Sep 2024
+ 04:55:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 5 Sep 2024 17:25:32 +0530
+Message-ID: <CA+G9fYsppY-GyoCFFbAu1q7PdynMLKn024J3CenbN12eefaDwA@mail.gmail.com>
+Subject: Re: [PATCH 6.10 000/184] 6.10.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-s/0x04%x/0x%04x/ to use 0 prefixed width 4 instead of printing 04
-verbatim.
+On Thu, 5 Sept 2024 at 15:13, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.10.9 release.
+> There are 184 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 07 Sep 2024 09:36:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.9-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: 51f5748179d4 ("drm/i915/bios: create fake child devices on missing VBT")
-Cc: <stable@vger.kernel.org> # v5.13+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/i915/display/intel_bios.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The following build errors noticed on arm64 on
+stable-rc linux.6.6.y and linux.6.10.y
 
-diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
-index cd32c9cd38a9..daa4b9535123 100644
---- a/drivers/gpu/drm/i915/display/intel_bios.c
-+++ b/drivers/gpu/drm/i915/display/intel_bios.c
-@@ -2949,7 +2949,7 @@ init_vbt_missing_defaults(struct intel_display *display)
- 		list_add_tail(&devdata->node, &display->vbt.display_devices);
- 
- 		drm_dbg_kms(display->drm,
--			    "Generating default VBT child device with type 0x04%x on port %c\n",
-+			    "Generating default VBT child device with type 0x%04x on port %c\n",
- 			    child->device_type, port_name(port));
- 	}
- 
--- 
-2.39.2
+drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_advertise_quirks':
+drivers/ufs/host/ufs-qcom.c:862:32: error:
+'UFSHCD_QUIRK_BROKEN_LSDBS_CAP' undeclared (first use in this
+function); did you mean 'UFSHCD_QUIRK_BROKEN_UIC_CMD'?
+  862 |                 hba->quirks |= UFSHCD_QUIRK_BROKEN_LSDBS_CAP;
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                UFSHCD_QUIRK_BROKEN_UIC_CMD
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
