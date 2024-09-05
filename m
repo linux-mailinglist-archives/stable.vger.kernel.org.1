@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4D396D534
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB29196D43A
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 618AD1C2296D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 197201C23513
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E71197A92;
-	Thu,  5 Sep 2024 10:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D397D19882B;
+	Thu,  5 Sep 2024 09:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwify6vB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lkTZm2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5B3194A5A;
-	Thu,  5 Sep 2024 10:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9111A154BFF;
+	Thu,  5 Sep 2024 09:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530494; cv=none; b=axre3d45+A3IAvp3KIA/dd3kmQQ8i3xAdbVpl/S+ICZ+VDD6ao2BCuMh+yeFSwfcAkvTofEo72y+aMq6AN/8VA3absZ9S8Xb5ICE7dx5fj5MUASng1JbGZl065BnEbNJ9lzyXNiWeBkzKL/OBypLuB1J/87V138XNi0D8HSA3eE=
+	t=1725529794; cv=none; b=TBTEpTLIzuz4DL9KnLJtFMuLlO6FYtiYYD8neVhwFX5HYgKDusBL7HzmkP63E8+AE6l5oewZ15siO/A1KxbFVV+fjjVQDseidmW3VAljN8zm7FNhJ/x+Ms9DBEHw6/5AJ38W0sj7g21NudV+MNyegnscrPB5lgWTWFTt6jWtv3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530494; c=relaxed/simple;
-	bh=Yr8ItgKyHfpVe8cZthFxPBprmKPr+PnvepD1LLy385o=;
+	s=arc-20240116; t=1725529794; c=relaxed/simple;
+	bh=MfaoUPMCva0m4LfjGdU+DXj77VRcMnh4CbAsTmHR19s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D9KoYQ85/nQlBJRMahTb/El29ZuYFa8CPmceIcdM22/TZA5UIGkB/3UMs2PYwMtkdRzl4ZPzg5ntdC9rM1/oO29Y29By73CgzwXkj2405GSoq0ORWoZffWlf5m47CZkA9dIb6dzcvFKTmjiN92mgxqOPixnzQVx/abEl4/cQano=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwify6vB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A8CC4CEC3;
-	Thu,  5 Sep 2024 10:01:33 +0000 (UTC)
+	 MIME-Version; b=spRwL2hHnjqJSsXKGWrD15UOJ9DXKxlOHP7Jv/ZBw19wijlvWNjqW9Pb7r/z/wyeDCkpUULl7f+D1Z+gIy0eje7fP0u3jIzrureDIpqxTSBVtXiOIYPRYiys9oqpHCJcaqKRM6pLGufknC5XiEJY7dE5oYuna6VjTdCAXLEyga8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lkTZm2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE364C4CECB;
+	Thu,  5 Sep 2024 09:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530494;
-	bh=Yr8ItgKyHfpVe8cZthFxPBprmKPr+PnvepD1LLy385o=;
+	s=korg; t=1725529794;
+	bh=MfaoUPMCva0m4LfjGdU+DXj77VRcMnh4CbAsTmHR19s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwify6vBabNrM6rTmMbOomFC4PgN6Narq5PkqF0Wo4FRPNju56BRWFuyg7eSV33O+
-	 YAkM9RgfORvolbGppmCeTlIGR4N4p5CsbWnTqad4WoXITrvriw3hRS+WbEbTcEOBLf
-	 1hBua0XWqOqgE8n3O++U2seefyj2ipbzx0pKEQ5o=
+	b=2lkTZm2JqYKfNk+Yi1xRdpBCUDqJaXtrZXHE40lhREM3u03bdSufk0YRcLMluDxi9
+	 APUF+ZpdakUBtejv8JQ5mqlYaBcLccvIkKHH0rzCmmXwrmRPmVThyK7+/CMgIwVTau
+	 I91NGyAS+WrtIu1TXs85YVBdY1p4JOO7yCGUTXFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 024/101] mptcp: avoid duplicated SUB_CLOSED events
-Date: Thu,  5 Sep 2024 11:40:56 +0200
-Message-ID: <20240905093717.065265494@linuxfoundation.org>
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 144/184] net/mlx5e: SHAMPO, Fix incorrect page release
+Date: Thu,  5 Sep 2024 11:40:57 +0200
+Message-ID: <20240905093737.960107228@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 upstream.
+[ Upstream commit 70bd03b89f20b9bbe51a7f73c4950565a17a45f7 ]
 
-The initial subflow might have already been closed, but still in the
-connection list. When the worker is instructed to close the subflows
-that have been marked as closed, it might then try to close the initial
-subflow again.
+Under the following conditions:
+1) No skb created yet
+2) header_size == 0 (no SHAMPO header)
+3) header_index + 1 % MLX5E_SHAMPO_WQ_HEADER_PER_PAGE == 0 (this is the
+   last page fragment of a SHAMPO header page)
 
- A consequence of that is that the SUB_CLOSED event can be seen twice:
+a new skb is formed with a page that is NOT a SHAMPO header page (it
+is a regular data page). Further down in the same function
+(mlx5e_handle_rx_cqe_mpwrq_shampo()), a SHAMPO header page from
+header_index is released. This is wrong and it leads to SHAMPO header
+pages being released more than once.
 
-  # ip mptcp endpoint
-  1.1.1.1 id 1 subflow dev eth0
-  2.2.2.2 id 2 subflow dev eth1
-
-  # ip mptcp monitor &
-  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
-
-  # ip mptcp endpoint delete id 1
-  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
-
-The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
-second one from __mptcp_close_subflow().
-
-To avoid doing the post-closed processing twice, the subflow is now
-marked as closed the first time.
-
-Note that it is not enough to check if we are dealing with the first
-subflow and check its sk_state: the subflow might have been reset or
-closed before calling mptcp_close_ssk().
-
-Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
-Cc: stable@vger.kernel.org
-Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflict in protocol.h due to commit f1f26512a9bf ("mptcp: use plain
-  bool instead of custom binary enum"), commit dfc8d0603033 ("mptcp:
-  implement delayed seq generation for passive fastopen") and more that
-  are not in this version, because they modify the context and the size
-  of __unused. The conflict is easy to resolve, by not only adding the
-  new field (close_event_done), and __unused. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240603212219.1037656-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    6 ++++++
- net/mptcp/protocol.h |    4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2503,6 +2503,12 @@ out:
- void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 		     struct mptcp_subflow_context *subflow)
- {
-+	/* The first subflow can already be closed and still in the list */
-+	if (subflow->close_event_done)
-+		return;
-+
-+	subflow->close_event_done = true;
-+
- 	if (sk->sk_state == TCP_ESTABLISHED)
- 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -479,7 +479,9 @@ struct mptcp_subflow_context {
- 		can_ack : 1,        /* only after processing the remote a key */
- 		disposable : 1,	    /* ctx can be free at ulp release time */
- 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
--		valid_csum_seen : 1;        /* at least one csum validated */
-+		valid_csum_seen : 1,        /* at least one csum validated */
-+		close_event_done : 1,       /* has done the post-closed part */
-+		__unused : 9;
- 	enum mptcp_data_avail data_avail;
- 	u32	remote_nonce;
- 	u64	thmac;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index cdc84a27a04e..0138f77eaeed 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2369,7 +2369,8 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
+ 	if (flush)
+ 		mlx5e_shampo_flush_skb(rq, cqe, match);
+ free_hd_entry:
+-	mlx5e_free_rx_shampo_hd_entry(rq, header_index);
++	if (likely(head_size))
++		mlx5e_free_rx_shampo_hd_entry(rq, header_index);
+ mpwrq_cqe_out:
+ 	if (likely(wi->consumed_strides < rq->mpwqe.num_strides))
+ 		return;
+-- 
+2.43.0
+
 
 
 
