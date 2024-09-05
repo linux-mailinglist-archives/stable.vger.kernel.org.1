@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE6696D43B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4D396D534
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A39FCB27D40
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 618AD1C2296D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956CC194AD6;
-	Thu,  5 Sep 2024 09:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E71197A92;
+	Thu,  5 Sep 2024 10:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKq7VuMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwify6vB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51405635;
-	Thu,  5 Sep 2024 09:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5B3194A5A;
+	Thu,  5 Sep 2024 10:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529791; cv=none; b=pv8jx6ENOQZZHWw2jceUGh7qc2+ftCaR08K/g+4KJS3DeJUcYZtI7yi/nxEdBmGCGmnlVAU7asEPANQJ/A92VD3ok2aofz1xmmm1iTQHGKUf2f7c39dKVCdmXBKe+3z5b5NZyQx8vFRIhXq2L1QO+TgCLqyZFDND4MGBzPO4Nk0=
+	t=1725530494; cv=none; b=axre3d45+A3IAvp3KIA/dd3kmQQ8i3xAdbVpl/S+ICZ+VDD6ao2BCuMh+yeFSwfcAkvTofEo72y+aMq6AN/8VA3absZ9S8Xb5ICE7dx5fj5MUASng1JbGZl065BnEbNJ9lzyXNiWeBkzKL/OBypLuB1J/87V138XNi0D8HSA3eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529791; c=relaxed/simple;
-	bh=lI62fiuUvY3QSp1V7v/zAWdS2uFIs3XulJAKrz7uI7k=;
+	s=arc-20240116; t=1725530494; c=relaxed/simple;
+	bh=Yr8ItgKyHfpVe8cZthFxPBprmKPr+PnvepD1LLy385o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uf4heWTg6LijoDBkpEIPpvIMgUehKy1PSBxK4BY874vA3eOc9NOR14A+kA5DZBkLnIZMl8FSYnISQaNX8vd2iG7xak7JDqV26EX3eo5jCk8+rEmSscHsgEDMp2doEBQGv3EJcBfHzrxOwnEsSW/e0g07bjDGRykZFOCeEUaubQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKq7VuMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C171CC4CEC7;
-	Thu,  5 Sep 2024 09:49:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D9KoYQ85/nQlBJRMahTb/El29ZuYFa8CPmceIcdM22/TZA5UIGkB/3UMs2PYwMtkdRzl4ZPzg5ntdC9rM1/oO29Y29By73CgzwXkj2405GSoq0ORWoZffWlf5m47CZkA9dIb6dzcvFKTmjiN92mgxqOPixnzQVx/abEl4/cQano=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwify6vB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A8CC4CEC3;
+	Thu,  5 Sep 2024 10:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529791;
-	bh=lI62fiuUvY3QSp1V7v/zAWdS2uFIs3XulJAKrz7uI7k=;
+	s=korg; t=1725530494;
+	bh=Yr8ItgKyHfpVe8cZthFxPBprmKPr+PnvepD1LLy385o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKq7VuMBnqyOJ1aO0iRu43/aak6gOGnabud25+lq/A8iqq4IprJ8LY+3R1aPpMcxL
-	 9WqBnkv9ymTCj3d2vUsXdeOXox7ICaWeU+cnKRTO3e/hU+IEzcoZWssr1sQghQGmOV
-	 Eg+Azkaw8EyZ1jJm0bAfxadqv7/pFz9qdAgfcguQ=
+	b=hwify6vBabNrM6rTmMbOomFC4PgN6Narq5PkqF0Wo4FRPNju56BRWFuyg7eSV33O+
+	 YAkM9RgfORvolbGppmCeTlIGR4N4p5CsbWnTqad4WoXITrvriw3hRS+WbEbTcEOBLf
+	 1hBua0XWqOqgE8n3O++U2seefyj2ipbzx0pKEQ5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Ben Walsh <ben@jubnut.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 143/184] platform/chrome: cros_ec_lpc: MEC access can use an AML mutex
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 024/101] mptcp: avoid duplicated SUB_CLOSED events
 Date: Thu,  5 Sep 2024 11:40:56 +0200
-Message-ID: <20240905093737.921335491@linuxfoundation.org>
+Message-ID: <20240905093717.065265494@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,185 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Walsh <ben@jubnut.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 60c7df66450e3a7821a8d68496c20c95de6a15c5 ]
+commit d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 upstream.
 
-Framework Laptops have ACPI code which accesses the MEC memory. It
-uses an AML mutex to prevent concurrent access. But the cros_ec_lpc
-driver was not aware of this mutex. The ACPI code and LPC driver both
-attempted to talk to the EC at the same time, messing up communication
-with the EC.
+The initial subflow might have already been closed, but still in the
+connection list. When the worker is instructed to close the subflows
+that have been marked as closed, it might then try to close the initial
+subflow again.
 
-Allow the LPC driver MEC code to find and use the AML mutex.
+ A consequence of that is that the SUB_CLOSED event can be seen twice:
 
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Ben Walsh <ben@jubnut.com>
-Link: https://lore.kernel.org/r/20240605063351.14836-3-ben@jubnut.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # ip mptcp endpoint
+  1.1.1.1 id 1 subflow dev eth0
+  2.2.2.2 id 2 subflow dev eth1
+
+  # ip mptcp monitor &
+  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
+
+  # ip mptcp endpoint delete id 1
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+
+The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
+second one from __mptcp_close_subflow().
+
+To avoid doing the post-closed processing twice, the subflow is now
+marked as closed the first time.
+
+Note that it is not enough to check if we are dealing with the first
+subflow and check its sk_state: the subflow might have been reset or
+closed before calling mptcp_close_ssk().
+
+Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
+Cc: stable@vger.kernel.org
+Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflict in protocol.h due to commit f1f26512a9bf ("mptcp: use plain
+  bool instead of custom binary enum"), commit dfc8d0603033 ("mptcp:
+  implement delayed seq generation for passive fastopen") and more that
+  are not in this version, because they modify the context and the size
+  of __unused. The conflict is easy to resolve, by not only adding the
+  new field (close_event_done), and __unused. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec_lpc_mec.c | 76 ++++++++++++++++++++++-
- drivers/platform/chrome/cros_ec_lpc_mec.h | 11 ++++
- 2 files changed, 85 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    6 ++++++
+ net/mptcp/protocol.h |    4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_lpc_mec.c b/drivers/platform/chrome/cros_ec_lpc_mec.c
-index 0d9c79b270ce..63b6b261b8e5 100644
---- a/drivers/platform/chrome/cros_ec_lpc_mec.c
-+++ b/drivers/platform/chrome/cros_ec_lpc_mec.c
-@@ -10,13 +10,65 @@
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2503,6 +2503,12 @@ out:
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
+ {
++	/* The first subflow can already be closed and still in the list */
++	if (subflow->close_event_done)
++		return;
++
++	subflow->close_event_done = true;
++
+ 	if (sk->sk_state == TCP_ESTABLISHED)
+ 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
  
- #include "cros_ec_lpc_mec.h"
- 
-+#define ACPI_LOCK_DELAY_MS 500
-+
- /*
-  * This mutex must be held while accessing the EMI unit. We can't rely on the
-  * EC mutex because memmap data may be accessed without it being held.
-  */
- static DEFINE_MUTEX(io_mutex);
-+/*
-+ * An alternative mutex to be used when the ACPI AML code may also
-+ * access memmap data.  When set, this mutex is used in preference to
-+ * io_mutex.
-+ */
-+static acpi_handle aml_mutex;
-+
- static u16 mec_emi_base, mec_emi_end;
- 
-+/**
-+ * cros_ec_lpc_mec_lock() - Acquire mutex for EMI
-+ *
-+ * @return: Negative error code, or zero for success
-+ */
-+static int cros_ec_lpc_mec_lock(void)
-+{
-+	bool success;
-+
-+	if (!aml_mutex) {
-+		mutex_lock(&io_mutex);
-+		return 0;
-+	}
-+
-+	success = ACPI_SUCCESS(acpi_acquire_mutex(aml_mutex,
-+						  NULL, ACPI_LOCK_DELAY_MS));
-+	if (!success)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+/**
-+ * cros_ec_lpc_mec_unlock() - Release mutex for EMI
-+ *
-+ * @return: Negative error code, or zero for success
-+ */
-+static int cros_ec_lpc_mec_unlock(void)
-+{
-+	bool success;
-+
-+	if (!aml_mutex) {
-+		mutex_unlock(&io_mutex);
-+		return 0;
-+	}
-+
-+	success = ACPI_SUCCESS(acpi_release_mutex(aml_mutex, NULL));
-+	if (!success)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
- /**
-  * cros_ec_lpc_mec_emi_write_address() - Initialize EMI at a given address.
-  *
-@@ -77,6 +129,7 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
- 	int io_addr;
- 	u8 sum = 0;
- 	enum cros_ec_lpc_mec_emi_access_mode access, new_access;
-+	int ret;
- 
- 	/* Return checksum of 0 if window is not initialized */
- 	WARN_ON(mec_emi_base == 0 || mec_emi_end == 0);
-@@ -92,7 +145,9 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
- 	else
- 		access = ACCESS_TYPE_LONG_AUTO_INCREMENT;
- 
--	mutex_lock(&io_mutex);
-+	ret = cros_ec_lpc_mec_lock();
-+	if (ret)
-+		return ret;
- 
- 	/* Initialize I/O at desired address */
- 	cros_ec_lpc_mec_emi_write_address(offset, access);
-@@ -134,7 +189,9 @@ u8 cros_ec_lpc_io_bytes_mec(enum cros_ec_lpc_mec_io_type io_type,
- 	}
- 
- done:
--	mutex_unlock(&io_mutex);
-+	ret = cros_ec_lpc_mec_unlock();
-+	if (ret)
-+		return ret;
- 
- 	return sum;
- }
-@@ -146,3 +203,18 @@ void cros_ec_lpc_mec_init(unsigned int base, unsigned int end)
- 	mec_emi_end = end;
- }
- EXPORT_SYMBOL(cros_ec_lpc_mec_init);
-+
-+int cros_ec_lpc_mec_acpi_mutex(struct acpi_device *adev, const char *pathname)
-+{
-+	int status;
-+
-+	if (!adev)
-+		return -ENOENT;
-+
-+	status = acpi_get_handle(adev->handle, pathname, &aml_mutex);
-+	if (ACPI_FAILURE(status))
-+		return -ENOENT;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(cros_ec_lpc_mec_acpi_mutex);
-diff --git a/drivers/platform/chrome/cros_ec_lpc_mec.h b/drivers/platform/chrome/cros_ec_lpc_mec.h
-index 9d0521b23e8a..3f3af37e58a5 100644
---- a/drivers/platform/chrome/cros_ec_lpc_mec.h
-+++ b/drivers/platform/chrome/cros_ec_lpc_mec.h
-@@ -8,6 +8,8 @@
- #ifndef __CROS_EC_LPC_MEC_H
- #define __CROS_EC_LPC_MEC_H
- 
-+#include <linux/acpi.h>
-+
- enum cros_ec_lpc_mec_emi_access_mode {
- 	/* 8-bit access */
- 	ACCESS_TYPE_BYTE = 0x0,
-@@ -45,6 +47,15 @@ enum cros_ec_lpc_mec_io_type {
-  */
- void cros_ec_lpc_mec_init(unsigned int base, unsigned int end);
- 
-+/**
-+ * cros_ec_lpc_mec_acpi_mutex() - Find and set ACPI mutex for MEC
-+ *
-+ * @adev:     Parent ACPI device
-+ * @pathname: Name of AML mutex
-+ * @return:   Negative error code, or zero for success
-+ */
-+int cros_ec_lpc_mec_acpi_mutex(struct acpi_device *adev, const char *pathname);
-+
- /**
-  * cros_ec_lpc_mec_in_range() - Determine if addresses are in MEC EMI range.
-  *
--- 
-2.43.0
-
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -479,7 +479,9 @@ struct mptcp_subflow_context {
+ 		can_ack : 1,        /* only after processing the remote a key */
+ 		disposable : 1,	    /* ctx can be free at ulp release time */
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+-		valid_csum_seen : 1;        /* at least one csum validated */
++		valid_csum_seen : 1,        /* at least one csum validated */
++		close_event_done : 1,       /* has done the post-closed part */
++		__unused : 9;
+ 	enum mptcp_data_avail data_avail;
+ 	u32	remote_nonce;
+ 	u64	thmac;
 
 
 
