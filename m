@@ -1,71 +1,74 @@
-Return-Path: <stable+bounces-73660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F296E307
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:21:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C6F96E312
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 21:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142AC288A4B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 19:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3EA0281CFB
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 19:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FCC18D64C;
-	Thu,  5 Sep 2024 19:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2493718D650;
+	Thu,  5 Sep 2024 19:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="As6s0bS4"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6HlLGAu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F8154C0D;
-	Thu,  5 Sep 2024 19:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B8E18BC15
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 19:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725564066; cv=none; b=qjogBwyi31fzuWThhvnmfaDD2/XPKU1vFspZFvHNsgYG+d/6ChlBA4d3/davDYxM+YgvC6opDl2PU7PW0PUKYlCeZwiISjzFExWRlVrNLfFUZXDCu7K2+OzJv8LtpWzUd1K1Zsk4YiQ0UY6lXwbTNnhyodKG9aRMgofAEK8iGa4=
+	t=1725564199; cv=none; b=lVdjXAMBw8u3MIaDQvgYQEmmTPNQIBqf0kVxjS49z1qQIMvgs7tT4S1ZF0/NxMygbyqExoRIUbxeNI/Fz2BhAFqu9FyKgHrvDKyT/rl+hP/d/uhGyCeOv/2rKuheskYWr7bh5KctJuYkioHlpgXOC0UmYYa0BtuDc96t3ut8fBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725564066; c=relaxed/simple;
-	bh=+BzS012R6syDeqd0t9o3KQ0U5UhKeDAJauumJpcn38k=;
+	s=arc-20240116; t=1725564199; c=relaxed/simple;
+	bh=+zZPMUtY3Tl+cL59e5mBWSHG/ACJuB6OBQYodjEDwZw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujqSQb9ERShJM5A1PXZJ9OujWW2JlkY0bAhwVzYzk2l03Q4osW7kf+kHBYLsfh+4qdui7Xkomz3x7gSHl1nFyT2agHWY5TQK+3tpcB3baQnEe1QejhKesNlSO68HxTCcRn+k58lBQtCXQiTF3DDVxWSl9jASsDBDuPUz1ghT1SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=As6s0bS4; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725564065; x=1757100065;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+BzS012R6syDeqd0t9o3KQ0U5UhKeDAJauumJpcn38k=;
-  b=As6s0bS4tUp4wH+XfnQWOCxa1theCyWLQyHtYcnvMYRguivRxkQxl85z
-   365IP4lpBU2zzRWNcizGSFAW936Ug7oOG5mnYWfk6hB8zbBHlqiJCtBF7
-   /1nmrcY3US9RZbk2Oi8hnAmxqK3pebIm+p6HJtWdBqzre6gDNeMvPfi/6
-   z+QDnFqwbI2oWVpWvEE1+Kq3cfsxmLYJwaviPAWYdgMvnLSc7HHb3+DII
-   dwHAyd9HbZRTx7a/D9fKvK2A2LjSvv+TUFWcVc9b68NLott3obWPRAsS2
-   7pzrAWP+XVqqd1dK4bgBDx4nqNYrlFFR5pZp5m0QRqSccGZjbzzW3UYFZ
-   w==;
-X-CSE-ConnectionGUID: sYcTPaQDSeqjYIvWEFow0A==
-X-CSE-MsgGUID: 1BDko2IbT+qzvL7acijf8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="23859638"
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="23859638"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 12:21:02 -0700
-X-CSE-ConnectionGUID: q7v5jfmbQwi6MqIgTseAQw==
-X-CSE-MsgGUID: 7CRiBUEcRtWVIqEX6j2Dtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="88967415"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 12:21:02 -0700
-Received: from [10.212.68.73] (kliang2-mobl1.ccr.corp.intel.com [10.212.68.73])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id 29C1520B5782;
-	Thu,  5 Sep 2024 12:21:01 -0700 (PDT)
-Message-ID: <ddfd906c-83cc-490a-a4bb-4fa43793d882@linux.intel.com>
-Date: Thu, 5 Sep 2024 15:20:59 -0400
+	 In-Reply-To:Content-Type; b=Fqqlp9EiYXK08WnoYonZBQhi9niMEPYDN/LO9n7IDQasaAaZuUzlVCIwhQZ6iBA3vy4OjGO+TEkZgfqvX6EL3DmbaJNCBA7HAvIzL/IXYpoa5zgj6FqBLH8EMlanQ2SYS8yHXqLG7bXSmUgCk/C2LOawSmtX4eBuI/itwbEiW/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6HlLGAu; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7178df70f28so1021036b3a.2
+        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 12:23:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725564198; x=1726168998; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vLevAQWbxyXgS/fGA92mwwhHAvu89geE60IJhFyppX0=;
+        b=R6HlLGAuG7PmaFn9Anmxj7YMsIn29UogkYJZDejMfRa8eUAfd09/8Rz5tHKIYsdVk9
+         WS6nun8y4AaX/UCsfMJ/QURHJubOGHixBbvGpbOvTahvCF0rym29OV+8hJEPNeoNCY7+
+         Xn80Ow6pdcQ1F6VtR/Fd+zAJjKYLaPCxE+X3cOWPxOJA9gYls/+TyuwSCFfMe7rMRHf5
+         kuRgYGtsy8DcpI5qNTVkYxAsn7NoRA4kllzEfAXtkU3iXOuZpjU7FhpwNm2mT4/+yDD9
+         PBz+rT1w7EUjldlLyZ23ybWMVUc3R+s/oagUdvvWUBPxfjZY8aVuR3qElmswwgKiuqnT
+         jQJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725564198; x=1726168998;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vLevAQWbxyXgS/fGA92mwwhHAvu89geE60IJhFyppX0=;
+        b=Us+SpgiYZIt1LlXVpeCA2G7+wBu24LfyeayURZaGYl4CPoLmZQHDxjC1gm+W/TYFz0
+         mWW67nGq2wzi+UxEBRarlGsGJOj6BsaMu4Gn+DeQA44XjRifqQDJH0x7cyFEur5kzS6R
+         W6NNidasAZwlgX0M/F4UZCvlzB5mpP5utqUXAXics+QstK3Mv6850qRswoEagvNbnLVt
+         OYWUORkG/OAMz/YiDDthoOb0GIeDT/SlOXnQ5sOEh2+ALeDNl4n5hGpccw7sdRNJPvNj
+         nVOQ+FAVuE/n2+uNYXpakmuiJX1YUL32MFXf2atQk/9jpFdr+HwvgvmNxmctznzAglvy
+         3uYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWG0MbUaNHARG++oY0gBP3iNbCdfjQrI5Owu1PdcngT9QC4qSQQqJzi7u/SLxn9ioEh1wJjPv8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAJuK9BJVDluY5V2cg1fB3b5QJGWE6K6RPBwkC1QWoev1JnG71
+	GaujQ0bO5RW5eC/xdHdR+d+skJkBPXck3U8Cr9uhry20aFdk1O1ECUvl9sEZ4Q==
+X-Google-Smtp-Source: AGHT+IFOUkFuXl3mvYSURdQQpnrk4qh5zKI0mUYPb3hun8UXmkY9fvB1QYG3r897c7MlBg+rFha62A==
+X-Received: by 2002:a05:6a00:6f41:b0:714:2014:d783 with SMTP id d2e1a72fcca58-718d5df1dc6mr243684b3a.2.1725564197439;
+        Thu, 05 Sep 2024 12:23:17 -0700 (PDT)
+Received: from ?IPV6:2a00:79e0:2e14:7:e8de:a18a:1040:ca3b? ([2a00:79e0:2e14:7:e8de:a18a:1040:ca3b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71778520e4asm3561394b3a.39.2024.09.05.12.23.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Sep 2024 12:23:17 -0700 (PDT)
+Message-ID: <78b53425-6ab2-4c53-bbc6-dfc6453cbe83@google.com>
+Date: Thu, 5 Sep 2024 12:23:15 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,98 +76,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf/x86: fix wrong assumption that LBR is only useful
- for sampling events
-To: Andrii Nakryiko <andrii@kernel.org>, linux-perf-users@vger.kernel.org,
- peterz@infradead.org
-Cc: x86@kernel.org, mingo@redhat.com, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, acme@kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org
-References: <20240905180055.1221620-1-andrii@kernel.org>
+Subject: Re: [PATCH] usb: roles: Fix a false positive recursive locking
+ complaint
+To: Bart Van Assche <bvanassche@acm.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Badhri Jagan Sridharan <badhri@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Hans de Goede <hdegoede@redhat.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, stable@vger.kernel.org
+References: <20240904201839.2901330-1-bvanassche@acm.org>
+ <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
+ <8feac105-fa35-4c35-bbac-5d0265761c2d@acm.org>
+ <d50e3406-1379-4eff-a8c1-9cae89659e3b@google.com>
+ <bcfc0db2-d183-4e7b-b9fd-50d370cc0e9b@acm.org>
+ <CAHp75VeA6N_jmkz0-asjogYx4ig8Q=zxnNM7C4m5FV94pH-nCg@mail.gmail.com>
+ <CAHp75Ve4qfvBDgDHnjDbRW5buXnhGSp1aOQ6avOLGYnBY8UggQ@mail.gmail.com>
+ <b439473b-a312-436a-9a3c-05d3eab3e1e3@acm.org>
 Content-Language: en-US
-From: "Liang, Kan" <kan.liang@linux.intel.com>
-In-Reply-To: <20240905180055.1221620-1-andrii@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Amit Sunil Dhamne <amitsd@google.com>
+In-Reply-To: <b439473b-a312-436a-9a3c-05d3eab3e1e3@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
+On 9/5/24 11:22 AM, Bart Van Assche wrote:
+> On 9/5/24 11:14 AM, Andy Shevchenko wrote:
+>> To be clear, something like
+>>
+>> #define mutex_init_with_lockdep(...)
+>> do {
+>>    ...
+>>    __mutex_init();
+>> } while (0)
+>>
+>> in the mutex.h.
+>
+> How about using the name "mutex_init_with_key()" since the name
+> "lockdep" refers to the lock dependency infrastructure and the
+> additional argument will have type struct lock_class_key *?
+>
+> Amit, do you want me to add your Signed-off-by to my patch since
+> your patch was posted first on the linux-usb mailing list?
+>
+Yes, thank you :) .
 
-On 2024-09-05 2:00 p.m., Andrii Nakryiko wrote:
-> It's incorrect to assume that LBR can/should only be used with sampling
-> events. BPF subsystem provides bpf_get_branch_snapshot() BPF helper,
-> which expects a properly setup and activated perf event which allows
-> kernel to capture LBR data.
-> 
-> For instance, retsnoop tool ([0]) makes an extensive use of this
-> functionality and sets up perf event as follows:
-> 
-> 	struct perf_event_attr attr;
-> 
-> 	memset(&attr, 0, sizeof(attr));
-> 	attr.size = sizeof(attr);
-> 	attr.type = PERF_TYPE_HARDWARE;
-> 	attr.config = PERF_COUNT_HW_CPU_CYCLES;
-> 	attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
-> 	attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
-> 
-> Commit referenced in Fixes tag broke this setup by making invalid assumption
-> that LBR is useful only for sampling events. Remove that assumption.
-> 
-> Note, earlier we removed a similar assumption on AMD side of LBR support,
-> see [1] for details.
-> 
->   [0] https://github.com/anakryiko/retsnoop
->   [1] 9794563d4d05 ("perf/x86/amd: Don't reject non-sampling events with configured LBR")
-> 
-> Cc: stable@vger.kernel.org # 6.8+
-> Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> ---
->  arch/x86/events/intel/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 9e519d8a810a..f82a342b8852 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -3972,7 +3972,7 @@ static int intel_pmu_hw_config(struct perf_event *event)
->  			x86_pmu.pebs_aliases(event);
->  	}
->  
-> -	if (needs_branch_stack(event) && is_sampling_event(event))
-> +	if (needs_branch_stack(event))
->  		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
+Also, thanks for the clarification on my previous questions Bart and for 
+your suggestions Andy!
 
-To limit the LBR for a sampling event is to avoid unnecessary branch
-stack setup for a counting event in the sample read. The above change
-should break the sample read case.
+-
 
-How about the below patch (not test)? Is it good enough for the BPF usage?
+Amit
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 0c9c2706d4ec..8d67cbda916b 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3972,8 +3972,12 @@ static int intel_pmu_hw_config(struct perf_event
-*event)
- 		x86_pmu.pebs_aliases(event);
- 	}
-
--	if (needs_branch_stack(event) && is_sampling_event(event))
--		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+	if (needs_branch_stack(event)) {
-+		/* Avoid branch stack setup for counting events in SAMPLE READ */
-+		if (is_sampling_event(event) ||
-+		    !(event->attr.sample_type & PERF_SAMPLE_READ))
-+			event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+	}
-
- 	if (branch_sample_counters(event)) {
- 		struct perf_event *leader, *sibling;
-
-
-Thanks,
-Kan
->  
->  	if (branch_sample_counters(event)) {
+> Thanks,
+>
+> Bart.
+>
 
