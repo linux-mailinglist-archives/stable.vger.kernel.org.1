@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5658F96D48F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D123D96D42C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D4E41F218D3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0481CB27AA9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E75194A45;
-	Thu,  5 Sep 2024 09:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268A547796;
+	Thu,  5 Sep 2024 09:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lffRQ2DY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nOQBAPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327AC14A08E;
-	Thu,  5 Sep 2024 09:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47C2198A01;
+	Thu,  5 Sep 2024 09:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530007; cv=none; b=uZ/kqLOnG5UYhepVBouNE4OXfAVKRr4LSTQc2qMlFvLuJGoLue+XBdXuGVPLThVbw21OnBv0OOq88vApgRwXHI6sypsAGxOE0b2rqJIxk0vrm1PlDE5lYnhHsZo+kg4+v+FRh4zvZ8oLZvPivh4lyR+whcMxyya4wsQ+azW9ekE=
+	t=1725529744; cv=none; b=XTqjXtz3jP+Omf+J8VOszuOAoWJBp4qepBDxutBtmaOC8Oe7IvCNbwV9VRXb6sZXdvwLd7JxNoNf+ORYcLr6rT6mlm27yfWbU9IthjpiD+2n201SDIA3VduWD9EnarQyNfEPSw8LDg9Okmtronhjjnw5e/y3L+G6glbu6XRwLSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530007; c=relaxed/simple;
-	bh=qH+t1RXfGg1D7/b3igWvgGTkfzAP6mrIDiLpCsZ2WLM=;
+	s=arc-20240116; t=1725529744; c=relaxed/simple;
+	bh=P00HO1a5fA5HXZIOqfdALydF2Cr9/ND/sw+yG7AcEDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmMdy3nAD2M9Q7xKYxHAH1fJlPO3tYTLhdwVfhIeT8bJuxj9yC8Da7QQxFSgH+cAu9o6z9hDxSQDKT+0tz8oDx6djJAJ+OUEa3QKXfEgMYKdkp7CM9zcilrvZX99ebwYhKxUlvmKjqblo4RfC4uDMvrod6gZ/WU+T2rme02ZmME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lffRQ2DY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90309C4CEC3;
-	Thu,  5 Sep 2024 09:53:26 +0000 (UTC)
+	 MIME-Version; b=gjr7f2E2iQAEYvekurg9iJFtU6ZVqb//jfAtDEhocQFf8UsfEQjjb0XeeNF0+Ga4SNe9kPhB+5Xc6Ij/qPy7Frwdla1kbwLrpgrW/hHHzX67sCHGpSfwOMsef8wemc3tbH14SJ+IugzMHzVK1aYjh5VwMySyuoGyS0Tq5FAMIYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nOQBAPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369E7C4CEC3;
+	Thu,  5 Sep 2024 09:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530007;
-	bh=qH+t1RXfGg1D7/b3igWvgGTkfzAP6mrIDiLpCsZ2WLM=;
+	s=korg; t=1725529744;
+	bh=P00HO1a5fA5HXZIOqfdALydF2Cr9/ND/sw+yG7AcEDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lffRQ2DYMAOPgmBK3f/aa/BdyCKUHxPsY02Ndg2bI5TQch/RqRRmOQA0Jp3rgQ5zg
-	 1EZ+cXo80Ptc40l0IDyxlx7v+Vst8Af//i3CHInVlZDE/jK4o9tF1EbVwqU68213uH
-	 FEENVVQ9C2MI2v7xdQ2TlMFUV0yGstjKtJ4sTL64=
+	b=1nOQBAPDijVg3nUAxwL5E2dYoMpu6OShValDAY0V3zxONssHoWXnqDGb01XkYIVNx
+	 rrty5E6XKpKqsMYk9N7mJ2j/piVeVzS5IBa8JyLAZxKVmmDxz/3GwTr36+ia34paAc
+	 R5GqNJ9mHjdKyJI8EjGfcjvW1tNxZ+QtCDRImhbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/132] selftests: mptcp: dump userspace addrs list
+Subject: [PATCH 6.10 099/184] wifi: ath12k: initialize ret in ath12k_dp_rxdma_ring_sel_config_wcn7850()
 Date: Thu,  5 Sep 2024 11:40:12 +0200
-Message-ID: <20240905093723.215114082@linuxfoundation.org>
+Message-ID: <20240905093736.104643553@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 38f027fca1b724c6814fff4b8ad16b59c14a3e2a ]
+[ Upstream commit 3b9344740843d965e9e37fba30620b3b1c0afa4f ]
 
-This patch adds a new helper userspace_pm_dump() to dump addresses
-for the userspace PM. Use this helper to check whether an ID 0 subflow
-is listed in the output of dump command after creating an ID 0 subflow
-in "userspace pm create id 0 subflow" test. Dump userspace PM addresses
-list in "userspace pm add & remove address" test and in "userspace pm
-create destroy subflow" test.
+smatch flagged the following issue:
 
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e93681afcb96 ("selftests: mptcp: join: cannot rm sf if closed")
+drivers/net/wireless/ath/ath12k/dp_rx.c:4065 ath12k_dp_rxdma_ring_sel_config_wcn7850() error: uninitialized symbol 'ret'.
+
+In ath12k_dp_rxdma_ring_sel_config_wcn7850() if it were ever the case
+that ab->hw_params->num_rxdma_per_pdev was 0 then 'ret' would be
+uninitialized when it is returned. This should never be the case, but
+to be safe and to quiet smatch, add an initializer to the declaration
+of 'ret'.
+
+No functional changes, compile tested only.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240504-ath12k_dp_rxdma_ring_sel_config_wcn7850-ret-v1-2-44d2843a2857@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/mptcp/mptcp_join.sh | 61 +++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index d378f23bb31a6..df071b8c675fb 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -21,6 +21,7 @@ cinfail=""
- cinsent=""
- tmpfile=""
- cout=""
-+err=""
- capout=""
- ns1=""
- ns2=""
-@@ -187,6 +188,7 @@ init() {
- 	cin=$(mktemp)
- 	cinsent=$(mktemp)
- 	cout=$(mktemp)
-+	err=$(mktemp)
- 	evts_ns1=$(mktemp)
- 	evts_ns2=$(mktemp)
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 1d287ed25a94..3cdc4c51d6df 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -4058,7 +4058,7 @@ int ath12k_dp_rxdma_ring_sel_config_wcn7850(struct ath12k_base *ab)
+ 	struct ath12k_dp *dp = &ab->dp;
+ 	struct htt_rx_ring_tlv_filter tlv_filter = {0};
+ 	u32 ring_id;
+-	int ret;
++	int ret = 0;
+ 	u32 hal_rx_desc_sz = ab->hal.hal_desc_sz;
+ 	int i;
  
-@@ -202,6 +204,7 @@ cleanup()
- 	rm -f "$sin" "$sout" "$cinsent" "$cinfail"
- 	rm -f "$tmpfile"
- 	rm -rf $evts_ns1 $evts_ns2
-+	rm -f "$err"
- 	cleanup_partial
- }
- 
-@@ -3422,6 +3425,50 @@ userspace_pm_rm_sf()
- 	wait_rm_sf $1 "${cnt}"
- }
- 
-+check_output()
-+{
-+	local cmd="$1"
-+	local expected="$2"
-+	local msg="$3"
-+	local rc=0
-+
-+	mptcp_lib_check_output "${err}" "${cmd}" "${expected}" || rc=${?}
-+	if [ ${rc} -eq 2 ]; then
-+		fail_test "fail to check output # error ${rc}"
-+	elif [ ${rc} -eq 0 ]; then
-+		print_ok
-+	elif [ ${rc} -eq 1 ]; then
-+		fail_test "fail to check output # different output"
-+	fi
-+}
-+
-+# $1: ns
-+userspace_pm_dump()
-+{
-+	local evts=$evts_ns1
-+	local tk
-+
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+
-+	ip netns exec $1 ./pm_nl_ctl dump token $tk
-+}
-+
-+userspace_pm_chk_dump_addr()
-+{
-+	local ns="${1}"
-+	local exp="${2}"
-+	local check="${3}"
-+
-+	print_check "dump addrs ${check}"
-+
-+	if mptcp_lib_kallsyms_has "mptcp_userspace_pm_dump_addr$"; then
-+		check_output "userspace_pm_dump ${ns}" "${exp}"
-+	else
-+		print_skip
-+	fi
-+}
-+
- userspace_tests()
- {
- 	# userspace pm type prevents add_addr
-@@ -3513,10 +3560,16 @@ userspace_tests()
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_subflows_total 3 3
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
-+		userspace_pm_chk_dump_addr "${ns1}" \
-+			$'id 10 flags signal 10.0.2.1\nid 20 flags signal 10.0.3.1' \
-+			"signal"
- 		userspace_pm_rm_addr $ns1 10
- 		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
-+		userspace_pm_chk_dump_addr "${ns1}" \
-+			"id 20 flags signal 10.0.3.1" "after rm_addr 10"
- 		userspace_pm_rm_addr $ns1 20
- 		userspace_pm_rm_sf $ns1 10.0.3.1 $SUB_ESTABLISHED
-+		userspace_pm_chk_dump_addr "${ns1}" "" "after rm_addr 20"
- 		chk_rm_nr 2 2 invert
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-@@ -3537,8 +3590,14 @@ userspace_tests()
- 		chk_join_nr 1 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
-+		userspace_pm_chk_dump_addr "${ns2}" \
-+			"id 20 flags subflow 10.0.3.2" \
-+			"subflow"
- 		userspace_pm_rm_addr $ns2 20
- 		userspace_pm_rm_sf $ns2 10.0.3.2 $SUB_ESTABLISHED
-+		userspace_pm_chk_dump_addr "${ns2}" \
-+			"" \
-+			"after rm_addr 20"
- 		chk_rm_nr 1 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-@@ -3558,6 +3617,8 @@ userspace_tests()
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
- 		userspace_pm_add_sf $ns2 10.0.3.2 0
-+		userspace_pm_chk_dump_addr "${ns2}" \
-+			"id 0 flags subflow 10.0.3.2" "id 0 subflow"
- 		chk_join_nr 1 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
 -- 
 2.43.0
 
