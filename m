@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C6C96D536
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D230B96D479
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DD71F2A31C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88DB01F23B37
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD85194A5A;
-	Thu,  5 Sep 2024 10:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AF219882B;
+	Thu,  5 Sep 2024 09:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJjRudDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxGMUBPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF0519413B;
-	Thu,  5 Sep 2024 10:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B03195FCE;
+	Thu,  5 Sep 2024 09:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530501; cv=none; b=iYKzITSL/VcS6OGd+2cujXMJAqM9KDGWGh5Lp+rKJjdakD4wLU5MR8mATmxftGq5nG+vVRbG8eZQRqBc+Yr+omCGjctrEGJmVfBsBJ63ma/gVqHIOqghM7TRrT8Qf09gsXhj0Dtf96yvAuyrIYvSf6t4U1r0ETPz4w1uMPAS32c=
+	t=1725529940; cv=none; b=fpipdqIN+DMqeBCV8gsyzgPyUPmEZMgOe2xFX/OqhkQL8xDrlo5Q88Uo2qFtaPX4erK6BUXDfG5u9lk+LHJE5SUyBO7L1Z+im09lvymRAYj4Nit1K2m/IxCuxdvG3OPzUhldIBYxN4GRNPhiIhOIlMLsSrF2qHawpzRHDJdVGpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530501; c=relaxed/simple;
-	bh=+dxYXN4K4y9V4V0y/xV30lKKFdLhrs3onvyHs2whnvI=;
+	s=arc-20240116; t=1725529940; c=relaxed/simple;
+	bh=UExJEgV3amwCAlHikPUbABjkkgVJEyqwk4+pzXNE084=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kovVpXxWfZ7/Pi9rKFikyUb6gDqjwENp4YChpHj2R+maOOoLMXG/vHtyUZE3rb4fEFS2QkTiVRq77lDvrt2JHHhRS5SYS6aT3oXdvh/SV+RgS6d03p1t4Sn7aytcXX4KbmHRNKDZ5emNZZNsiKkfyMCKts4aYCZOOw6BflhmuYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJjRudDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7558DC4CEC3;
-	Thu,  5 Sep 2024 10:01:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lor1oZ+DbweZ6JrcBWblprTxvtmrPxKMfpd1r6DGhH6YtkRH88CAY7F1q8UoxDJp2NcxTTUBpmIczQqEPWbLPkmK1sq4+eiL1rcFUmmLo9Q6XJhR0BEa5TxtCxdN03BEgWyP0ur0ZLj+wKyFYzs49dhUCL8nVN3E4NjdGl4jDSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxGMUBPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D22C4CEC4;
+	Thu,  5 Sep 2024 09:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530500;
-	bh=+dxYXN4K4y9V4V0y/xV30lKKFdLhrs3onvyHs2whnvI=;
+	s=korg; t=1725529940;
+	bh=UExJEgV3amwCAlHikPUbABjkkgVJEyqwk4+pzXNE084=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJjRudDxrwXvCv2XoOP/YuvLR6U2JZ/Vaws4POyt+wojMqLC9N10mk0ODmDDyPuOb
-	 CVf19e0vvm3o5KKu4j0MRvm+H9riMhm5wh+5aYUaW6uSEtXods3HqM7gFkajAj+zWu
-	 17JWacf4Z1rMZiHIH0BoBTp18dqzEXK0dg17HXkY=
+	b=QxGMUBPglGArN5OQfFlDb1YOJqHIO1NS3hzjnjTQv/HbNGdQpKMsSss9ovhdbtjtz
+	 H5uRvEmGuAWU9RmVd3EKOHYZ90o7T0GkPNiirseMz8L5Xp3PrlyKqqHRuthZ+hjYk/
+	 48Ph8eIYR7T7Xs99yVpAgW+v6//AtZIaRrSSuYeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/101] drm/amd/display: Check num_valid_sets before accessing reader_wm_sets[]
-Date: Thu,  5 Sep 2024 11:41:15 +0200
-Message-ID: <20240905093717.821834249@linuxfoundation.org>
+Subject: [PATCH 6.10 163/184] drm/amdgpu: add skip_hw_access checks for sriov
+Date: Thu,  5 Sep 2024 11:41:16 +0200
+Message-ID: <20240905093738.704423526@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit b38a4815f79b87efb196cd5121579fc51e29a7fb ]
+[ Upstream commit b3948ad1ac582f560e1f3aeaecf384619921c48d ]
 
-[WHY & HOW]
-num_valid_sets needs to be checked to avoid a negative index when
-accessing reader_wm_sets[num_valid_sets - 1].
+Accessing registers via host is missing the check for skip_hw_access and
+the lockdep check that comes with it.
 
-This fixes an OVERRUN issue reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-index ca6dfd2d7561..35386011c56c 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-@@ -484,7 +484,8 @@ static void build_watermark_ranges(struct clk_bw_params *bw_params, struct pp_sm
- 			ranges->reader_wm_sets[num_valid_sets].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
- 
- 			/* Modify previous watermark range to cover up to max */
--			ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
-+			if (num_valid_sets > 0)
-+				ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
- 		}
- 		num_valid_sets++;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 923d51f16ec8..2359d1d60275 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -977,6 +977,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
+ 		return 0;
  	}
+ 
++	if (amdgpu_device_skip_hw_access(adev))
++		return 0;
++
+ 	reg_access_ctrl = &adev->gfx.rlc.reg_access_ctrl[xcc_id];
+ 	scratch_reg0 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg0;
+ 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
+@@ -1053,6 +1056,9 @@ void amdgpu_sriov_wreg(struct amdgpu_device *adev,
+ {
+ 	u32 rlcg_flag;
+ 
++	if (amdgpu_device_skip_hw_access(adev))
++		return;
++
+ 	if (!amdgpu_sriov_runtime(adev) &&
+ 		amdgpu_virt_get_rlcg_reg_access_flag(adev, acc_flags, hwip, true, &rlcg_flag)) {
+ 		amdgpu_virt_rlcg_reg_rw(adev, offset, value, rlcg_flag, xcc_id);
+@@ -1070,6 +1076,9 @@ u32 amdgpu_sriov_rreg(struct amdgpu_device *adev,
+ {
+ 	u32 rlcg_flag;
+ 
++	if (amdgpu_device_skip_hw_access(adev))
++		return 0;
++
+ 	if (!amdgpu_sriov_runtime(adev) &&
+ 		amdgpu_virt_get_rlcg_reg_access_flag(adev, acc_flags, hwip, false, &rlcg_flag))
+ 		return amdgpu_virt_rlcg_reg_rw(adev, offset, 0, rlcg_flag, xcc_id);
 -- 
 2.43.0
 
