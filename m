@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-73491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8AE96D517
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57F996D4E6
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471931F22410
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6456A281F96
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DEB1946A2;
-	Thu,  5 Sep 2024 10:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0702198A08;
+	Thu,  5 Sep 2024 09:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMtneEwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpquiuMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D87813D28F;
-	Thu,  5 Sep 2024 10:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E788192D73;
+	Thu,  5 Sep 2024 09:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530407; cv=none; b=B2HV7mwEcqLtEe8Fnl8/6X443yXonNs59lMpYFB5u50CdJE5VPvZitoY86X/rQfW0Q4d62PcFquMnZX/tVxJ748xp/6OcYoVrT6VFeSMXzc/Gdq9LLaO91ojaweMTxWLMd7KntC5bsnl51N3Eg5Q8WPRmMe643md5tRNneVOPXE=
+	t=1725530254; cv=none; b=EM1giUmDQ7hUfeaI7ZAGksRIDtM6CRQWevS6ukZ/nzU3sGiIHgGW1bhQUDv019VwRdX/X/S0in7vPm6ERuG5lD/Xa4O9I97PcI3mhZ8rj+J16EJ87jOhEcF4B4xMxt7LFHebqeMDv15/XE8a3S1Jq5z04PDfJuQuyg9R69PArGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530407; c=relaxed/simple;
-	bh=Y0L8DoOll6yYiw67GWVc8APDuN9XHpbTdOVU5AVVYP0=;
+	s=arc-20240116; t=1725530254; c=relaxed/simple;
+	bh=AvvpfeMIoGkm5Sn+/34q+yoeN5S0INUZjUkaEDKxdY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEkZ0YQ1KKaR5SxHcLJ6cQg+Yf36+C2xHXHfAz//HFK4K59r7aocEe4afe/7dqpz66kPdnivu7Ov+kQGpt42MsDQQXqW/duJDljMD83NbJQXDhN0kxmLv1x44d5nrvm4NjjAHVqgaQFjhOEdFsa5F2Q0MfS/Jww1Foh41mUd+u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMtneEwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE822C4CEC3;
-	Thu,  5 Sep 2024 10:00:06 +0000 (UTC)
+	 MIME-Version; b=MVcstacgRACNVPBTB5nRdF/dYg5kQlCI5ZXGqBfUi2RGsuZ2VxsFrfZQTHRC1IMU2+AgT1sgOr5uSaXi12DcBMxyYBwu291gUwt+HSwOP8lhXomBF33iPO8R4GqYwXDcRuUoO5u1Ko6DB4YHJIDNQArIYlW5+B0ApHpteCO/Xgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpquiuMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000D5C4CEC3;
+	Thu,  5 Sep 2024 09:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530407;
-	bh=Y0L8DoOll6yYiw67GWVc8APDuN9XHpbTdOVU5AVVYP0=;
+	s=korg; t=1725530254;
+	bh=AvvpfeMIoGkm5Sn+/34q+yoeN5S0INUZjUkaEDKxdY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMtneEwYSM2ErJEQbWr5Jcy+ZJaqyfUz+rgGUsEsyPLtIZJlviRkgJPzQ7CDavgtv
-	 FCIODQ3OJqRA7IVYQwiFcPFCzalT1kTbFUaXhI+bu49z+LvjS2k0+S1MHLaKBKRpoc
-	 UImaQqI7WhC/WuQrXF5SAHAcL0BEdnvKPBkbSFBw=
+	b=EpquiuMCWLKBzW7Fo2mShSnaycz0M74ioV/l7ojH8Zlm0/ahczVm+p8IPyCYHpwfv
+	 PGPTSeTeNJaQamf7V/BGULIN/2eRlStKWSdPiz8wcCu94ocpPqldgxoBC26Q9qXABV
+	 8o+GXi7a9nFeIeAZDnL8MHQhhVkfnY4pett9IMZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 015/101] mptcp: pm: reuse ID 0 after delete and re-add
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/132] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within decide_fallback_link_setting_max_bw_policy
 Date: Thu,  5 Sep 2024 11:40:47 +0200
-Message-ID: <20240905093716.692635725@linuxfoundation.org>
+Message-ID: <20240905093724.590934135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit 8b8ed1b429f8fa7ebd5632555e7b047bc0620075 upstream.
+[ Upstream commit 83c0c8361347cf43937348e8ca0a487679c003ae ]
 
-When the endpoint used by the initial subflow is removed and re-added
-later, the PM has to force the ID 0, it is a special case imposed by the
-MPTCP specs.
+[Why]
+For addtion (uint8_t) variable + constant 1,
+coverity generates message below:
+Truncation due to cast operation on "cur_idx + 1" from
+32 to 8 bits.
 
-Note that the endpoint should then need to be re-added reusing the same
-ID.
+Then Coverity assume result is 32 bits value be saved into
+8 bits variable. When result is used as index to access
+array, Coverity suspects index invalid.
 
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+Change varaible type to uint32_t.
+
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -600,6 +600,11 @@ static void mptcp_pm_create_subflow_or_s
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 9a0beaf601f8..16f4865e4246 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -528,7 +528,7 @@ static bool decide_fallback_link_setting_max_bw_policy(
+ 		struct dc_link_settings *cur,
+ 		enum link_training_result training_result)
+ {
+-	uint8_t cur_idx = 0, next_idx;
++	uint32_t cur_idx = 0, next_idx;
+ 	bool found = false;
  
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
-+
-+		/* Special case for ID0: set the correct ID */
-+		if (local.addr.id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
- 
-@@ -624,6 +629,11 @@ subflow:
- 
- 		msk->pm.local_addr_used++;
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+
-+		/* Special case for ID0: set the correct ID */
-+		if (local.addr.id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
- 		if (nr == 0)
- 			continue;
+ 	if (training_result == LINK_TRAINING_ABORT)
+-- 
+2.43.0
+
 
 
 
