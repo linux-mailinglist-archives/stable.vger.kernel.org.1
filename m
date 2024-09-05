@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-73323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE9B96D459
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2375E96D530
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FF51C20306
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0311F2A322
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA8F198E9B;
-	Thu,  5 Sep 2024 09:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290D419538A;
+	Thu,  5 Sep 2024 10:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmMDLwhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tFYToDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53BA198E89;
-	Thu,  5 Sep 2024 09:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF651494DB;
+	Thu,  5 Sep 2024 10:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529860; cv=none; b=ZZUYHVVzwmndmJMTSYzfv4zICYJR9ZkNR/P9IukaELqJ5nxsqjaDDI2nIsN6veR+fuv5iwCXZM5h43+p978d771Cvj4eQ/WkALYdAnAchE+dx5Hp4unZvI8DeBpsnVOwDBaXLoSxmapMZdkroIBkydG3MWbja2Nh6sm8jjjQVRg=
+	t=1725530480; cv=none; b=O588g9tJ3HnVe5nrkgQzVrh7nmbRXcaLGHXAWTX/lTwkUOPVt2SK3ifV13rTwCHEUTCR1lQHIaKhbxO3O7e/vIRpnMorL0/BRH3JaCSZ4mdMP+zw2gaSjgHUWs968dpN3tpQauKi++bUjdhlcAFSTZjoHW5UDzHeXSlVKoqQRB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529860; c=relaxed/simple;
-	bh=QtbXbzpApyLggfDm34oQ9L85KtN6ARgHle8x5KqX1p4=;
+	s=arc-20240116; t=1725530480; c=relaxed/simple;
+	bh=RYP6J+nJrUQ0+IO8dG9n0Y7Vo8MmU1+CClbqB9nQTtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiCRel/e8FS2jJ7nDATBtVyvLNhVk26hxMIBhSYVw/BKqxW5LpdN4pigh0JCoIWEbHWTCpilfqtEKMkiN1s5Z1UlFcwJCLoCBWwdW79QGpL1Hvdu+eZGBnFI61mymmv2RvQH5M3NJO+0MDSsyoiR0elZ3zE6caM4/4MTSSZ3VJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmMDLwhe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5518CC4CEC6;
-	Thu,  5 Sep 2024 09:50:59 +0000 (UTC)
+	 MIME-Version; b=mQ1/fMr9+coIhdVStnTm1Fx2JYHxJAu5KUELFQayCCv920hYs9JDwYzSb9Vcv6XheXaMpCodWlD7VYYJbG8eujj7pG9dcvWgcnCdhs3xbKeQQE4z1WdPqIoAztr1mBNkEiRmK3dZowl5gicGp/tryxbai/gz5sgKSnqMFNrdos4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tFYToDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B84AC4CEC3;
+	Thu,  5 Sep 2024 10:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529859;
-	bh=QtbXbzpApyLggfDm34oQ9L85KtN6ARgHle8x5KqX1p4=;
+	s=korg; t=1725530480;
+	bh=RYP6J+nJrUQ0+IO8dG9n0Y7Vo8MmU1+CClbqB9nQTtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmMDLwheTQVCR+XUwReaND6kllriAWbjWpImJYvYmQBwklhgYCu9Y/MgsoHNF7rKC
-	 dryt9szFlfDE8kgRKdaizl9dACaXKvU825E1tLWS0G+RGwMXbC4oS9z6LgqPPddy49
-	 Ke/yKFx7Pec79mLjZKb3In7s015SulEdflNJLMmU=
+	b=1tFYToDB9nCopa+EpzmwzuC6n2UMH4HCWuDu2N/lT+22DulT35eP72E5MKwarWzqi
+	 HjyivdLebIf3tte3E+bwBlRZ+88oH7shkSkxEDhQ5MzTfk1ohLWu9A0ORI4mFkNuE7
+	 gY5ogbJBUFwfY9tV6TXGFAnzHmCWBgLM6Jv2C2Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 157/184] hwmon: (k10temp) Check return value of amd_smn_read()
+Subject: [PATCH 6.1 038/101] drm/amd/pm: fix uninitialized variable warnings for vega10_hwmgr
 Date: Thu,  5 Sep 2024 11:41:10 +0200
-Message-ID: <20240905093738.474175990@linuxfoundation.org>
+Message-ID: <20240905093717.620704984@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +63,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit c2d79cc5455c891de6c93e1e0c73d806e299c54f ]
+[ Upstream commit 5fa7d540d95d97ddc021a74583f6b3da4df9c93a ]
 
-Check the return value of amd_smn_read() before saving a value. This
-ensures invalid values aren't saved or used.
+Clear warnings that using uninitialized variable when fails
+to get the valid value from SMU.
 
-There are three cases here with slightly different behavior:
-
-1) read_tempreg_nb_zen():
-	This is a function pointer which does not include a return code.
-	In this case, set the register value to 0 on failure. This
-	enforces Read-as-Zero behavior.
-
-2) k10temp_read_temp():
-	This function does have return codes, so return the error code
-	from the failed register read. Continued operation is not
-	necessary, since there is no valid data from the register.
-	Furthermore, if the register value was set to 0, then the
-	following operation would underflow.
-
-3) k10temp_get_ccd_support():
-	This function reads the same register from multiple CCD
-	instances in a loop. And a bitmask is formed if a specific bit
-	is set in each register instance. The loop should continue on a
-	failed register read, skipping the bit check.
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240606-fix-smn-bad-read-v4-3-ffde21931c3f@amd.com
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/k10temp.c | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 46 ++++++++++++++-----
+ .../amd/pm/powerplay/smumgr/vega10_smumgr.c   |  6 ++-
+ 2 files changed, 39 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-index 8092312c0a87..6cad35e7f182 100644
---- a/drivers/hwmon/k10temp.c
-+++ b/drivers/hwmon/k10temp.c
-@@ -153,8 +153,9 @@ static void read_tempreg_nb_f15(struct pci_dev *pdev, u32 *regval)
- 
- static void read_tempreg_nb_zen(struct pci_dev *pdev, u32 *regval)
- {
--	amd_smn_read(amd_pci_dev_to_node_id(pdev),
--		     ZEN_REPORTED_TEMP_CTRL_BASE, regval);
-+	if (amd_smn_read(amd_pci_dev_to_node_id(pdev),
-+			 ZEN_REPORTED_TEMP_CTRL_BASE, regval))
-+		*regval = 0;
- }
- 
- static long get_raw_temp(struct k10temp_data *data)
-@@ -205,6 +206,7 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
- 			     long *val)
- {
- 	struct k10temp_data *data = dev_get_drvdata(dev);
-+	int ret = -EOPNOTSUPP;
- 	u32 regval;
- 
- 	switch (attr) {
-@@ -221,13 +223,17 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
- 				*val = 0;
- 			break;
- 		case 2 ... 13:		/* Tccd{1-12} */
--			amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
--				     ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
--						  &regval);
-+			ret = amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
-+					   ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
-+					   &regval);
-+
-+			if (ret)
-+				return ret;
-+
- 			*val = (regval & ZEN_CCD_TEMP_MASK) * 125 - 49000;
- 			break;
- 		default:
--			return -EOPNOTSUPP;
-+			return ret;
- 		}
- 		break;
- 	case hwmon_temp_max:
-@@ -243,7 +249,7 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
- 			- ((regval >> 24) & 0xf)) * 500 + 52000;
- 		break;
- 	default:
--		return -EOPNOTSUPP;
-+		return ret;
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index d2ecf0244fa5..40592cab7810 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -355,13 +355,13 @@ static int vega10_odn_initial_default_setting(struct pp_hwmgr *hwmgr)
  	return 0;
  }
-@@ -381,8 +387,20 @@ static void k10temp_get_ccd_support(struct pci_dev *pdev,
- 	int i;
  
- 	for (i = 0; i < limit; i++) {
--		amd_smn_read(amd_pci_dev_to_node_id(pdev),
--			     ZEN_CCD_TEMP(data->ccd_offset, i), &regval);
-+		/*
-+		 * Ignore inaccessible CCDs.
-+		 *
-+		 * Some systems will return a register value of 0, and the TEMP_VALID
-+		 * bit check below will naturally fail.
-+		 *
-+		 * Other systems will return a PCI_ERROR_RESPONSE (0xFFFFFFFF) for
-+		 * the register value. And this will incorrectly pass the TEMP_VALID
-+		 * bit check.
-+		 */
-+		if (amd_smn_read(amd_pci_dev_to_node_id(pdev),
-+				 ZEN_CCD_TEMP(data->ccd_offset, i), &regval))
-+			continue;
+-static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
++static int vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega10_hwmgr *data = hwmgr->backend;
+-	int i;
+ 	uint32_t sub_vendor_id, hw_revision;
+ 	uint32_t top32, bottom32;
+ 	struct amdgpu_device *adev = hwmgr->adev;
++	int ret, i;
+ 
+ 	vega10_initialize_power_tune_defaults(hwmgr);
+ 
+@@ -486,9 +486,12 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 	if (data->registry_data.vr0hot_enabled)
+ 		data->smu_features[GNLD_VR0HOT].supported = true;
+ 
+-	smum_send_msg_to_smc(hwmgr,
++	ret = smum_send_msg_to_smc(hwmgr,
+ 			PPSMC_MSG_GetSmuVersion,
+ 			&hwmgr->smu_version);
++	if (ret)
++		return ret;
 +
- 		if (regval & ZEN_CCD_TEMP_VALID)
- 			data->show_temp |= BIT(TCCD_BIT(i));
- 	}
+ 		/* ACG firmware has major version 5 */
+ 	if ((hwmgr->smu_version & 0xff000000) == 0x5000000)
+ 		data->smu_features[GNLD_ACG].supported = true;
+@@ -506,10 +509,16 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 		data->smu_features[GNLD_PCC_LIMIT].supported = true;
+ 
+ 	/* Get the SN to turn into a Unique ID */
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
++	if (ret)
++		return ret;
++
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	if (ret)
++		return ret;
+ 
+ 	adev->unique_id = ((uint64_t)bottom32 << 32) | top32;
++	return 0;
+ }
+ 
+ #ifdef PPLIB_VEGA10_EVV_SUPPORT
+@@ -883,7 +892,9 @@ static int vega10_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 
+ 	vega10_set_features_platform_caps(hwmgr);
+ 
+-	vega10_init_dpm_defaults(hwmgr);
++	result = vega10_init_dpm_defaults(hwmgr);
++	if (result)
++		return result;
+ 
+ #ifdef PPLIB_VEGA10_EVV_SUPPORT
+ 	/* Get leakage voltage based on leakage ID. */
+@@ -3917,11 +3928,14 @@ static int vega10_get_gpu_power(struct pp_hwmgr *hwmgr,
+ 		uint32_t *query)
+ {
+ 	uint32_t value;
++	int ret;
+ 
+ 	if (!query)
+ 		return -EINVAL;
+ 
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
++	if (ret)
++		return ret;
+ 
+ 	/* SMC returning actual watts, keep consistent with legacy asics, low 8 bit as 8 fractional bits */
+ 	*query = value << 8;
+@@ -4817,14 +4831,16 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 	uint32_t gen_speed, lane_width, current_gen_speed, current_lane_width;
+ 	PPTable_t *pptable = &(data->smc_state_table.pp_table);
+ 
+-	int i, now, size = 0, count = 0;
++	int i, ret, now,  size = 0, count = 0;
+ 
+ 	switch (type) {
+ 	case PP_SCLK:
+ 		if (data->registry_data.sclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		if (hwmgr->pp_one_vf &&
+ 		    (hwmgr->dpm_level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK))
+@@ -4840,7 +4856,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.mclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < mclk_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+@@ -4851,7 +4869,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.socclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < soc_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+@@ -4862,8 +4882,10 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.dcefclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc_with_parameter(hwmgr,
++		ret = smum_send_msg_to_smc_with_parameter(hwmgr,
+ 				PPSMC_MSG_GetClockFreqMHz, CLK_DCEFCLK, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < dcef_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
+index a70d73896649..f9c0f117725d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
+@@ -130,13 +130,17 @@ int vega10_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
+ 			    uint64_t *features_enabled)
+ {
+ 	uint32_t enabled_features;
++	int ret;
+ 
+ 	if (features_enabled == NULL)
+ 		return -EINVAL;
+ 
+-	smum_send_msg_to_smc(hwmgr,
++	ret = smum_send_msg_to_smc(hwmgr,
+ 			PPSMC_MSG_GetEnabledSmuFeatures,
+ 			&enabled_features);
++	if (ret)
++		return ret;
++
+ 	*features_enabled = enabled_features;
+ 
+ 	return 0;
 -- 
 2.43.0
 
