@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-73222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F73B96D3DB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C40D96D39E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC6A289852
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 466931F22AEC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D8219995A;
-	Thu,  5 Sep 2024 09:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D429198836;
+	Thu,  5 Sep 2024 09:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcIbEr0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOFIIf9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD6D199943;
-	Thu,  5 Sep 2024 09:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF097198827;
+	Thu,  5 Sep 2024 09:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529533; cv=none; b=J1XJA/s2obn8Y2T5kzVX7EZvP+6GVHmmdX3LAU3zHVHZjzyfCEhlhZbYSk8lbk+bEjhC3e3VifonWWzOvPBEZLyFrgJA7MtCkxB1NnJZ4GOhC99DrG/3RiyJlnHn/UEXGsY8b/mZPUEBlBkigpx8/0M7rK0iW2TDj1aD2OAq6J0=
+	t=1725529430; cv=none; b=WYKBSLmt1eMckrhodhshQT2CL63VNqyHb/jRDi8d+iiSjqBUn7kVj7CwVzAAAFy5OsesBRQNXR6CkGEj/U4HrdzflSnBVcy7TwQPu7NxF0/aMoxfS1dNTV9ZLfjU+EVisZjx+/PjPAXA2646V8AW8A7gS2eSflJty7EV3Cc/6xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529533; c=relaxed/simple;
-	bh=QjBL4kpiD1N9ocrbZ2uTmu9R36/GxDKwp3x5yxfT9pQ=;
+	s=arc-20240116; t=1725529430; c=relaxed/simple;
+	bh=7+bUxbNL2c1H+PaK6UihyyAoQKC0UCviOo9WI/Jlv/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8rPz3f0l0InfKCEdtIwpg77Mgwd7gPhhcOR8QM1JGM6H4loB/mVhEZc0fh068L9yhIhWCurpe69/nj9HXtRphfmgJ8KWXiwXOCqqmhoCzKpSo+iZYwHVg6SZSMbhQtNwrvEBuQyBuxV0CUc/aARSwd1TcWnOMDoxVUj8u1vEpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcIbEr0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA92AC4CECC;
-	Thu,  5 Sep 2024 09:45:32 +0000 (UTC)
+	 MIME-Version; b=JT7zOwbaaKvh2PdbhuoQ8P9+DXmobHA6K+ifvCC23JIwoSkTUS84lLdqS4dzn2J4+2/JqQLGXBiVjmDYyJ2KPu9l4CHp6OACdKr7X62uLw/4TIrQv67x7uwCrX6YES5zezyuGzM/sURYY5ej0fdnUlo5KWMrr5HXF/wXUGKTfR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOFIIf9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5519C4CEC3;
+	Thu,  5 Sep 2024 09:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529533;
-	bh=QjBL4kpiD1N9ocrbZ2uTmu9R36/GxDKwp3x5yxfT9pQ=;
+	s=korg; t=1725529430;
+	bh=7+bUxbNL2c1H+PaK6UihyyAoQKC0UCviOo9WI/Jlv/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcIbEr0/1scmlr/Aeg+wJXt1FHbZ1rJynH7gNvOLomy21wYZBrXPz0prbXvZRDE2o
-	 GHRqAoGx2DP4DGfwkM5qKYXK4ySz2vDauYlS0HdAGDpECfRfY/TDjxEzn3LVTZXDKu
-	 Ki6A6KeKzrJYKpHtxBLrdXyRJlFD4V63T0k6N2wA=
+	b=XOFIIf9/5LMzMS/rpHmtVKohAzEKIA6c50OC8oGFZ6XhU+JWsNfMZv5EfHO8B1dJ4
+	 N1hCySMujsxOdjhqJUb+s6JZkzmYGw0DHmTLpoor7cVwm2znpZ6siyziQ4CKEDDiDr
+	 CzBu/bSKmABiBvVGrU0VKMySy6V2qopl/4iUMXBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 022/184] btrfs: fix qgroup reserve leaks in cow_file_range
-Date: Thu,  5 Sep 2024 11:38:55 +0200
-Message-ID: <20240905093733.113478237@linuxfoundation.org>
+Subject: [PATCH 6.10 023/184] i2c: Fix conditional for substituting empty ACPI functions
+Date: Thu,  5 Sep 2024 11:38:56 +0200
+Message-ID: <20240905093733.153332918@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -67,105 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 30479f31d44d47ed00ae0c7453d9b253537005b2 ]
+[ Upstream commit f17c06c6608ad4ecd2ccf321753fb511812d821b ]
 
-In the buffered write path, the dirty page owns the qgroup reserve until
-it creates an ordered_extent.
+Add IS_ENABLED(CONFIG_I2C) to the conditional around a bunch of ACPI
+functions.
 
-Therefore, any errors that occur before the ordered_extent is created
-must free that reservation, or else the space is leaked. The fstest
-generic/475 exercises various IO error paths, and is able to trigger
-errors in cow_file_range where we fail to get to allocating the ordered
-extent. Note that because we *do* clear delalloc, we are likely to
-remove the inode from the delalloc list, so the inodes/pages to not have
-invalidate/launder called on them in the commit abort path.
+The conditional around these functions depended only on CONFIG_ACPI.
+But the functions are implemented in I2C core, so are only present if
+CONFIG_I2C is enabled.
 
-This results in failures at the unmount stage of the test that look like:
-
-  BTRFS: error (device dm-8 state EA) in cleanup_transaction:2018: errno=-5 IO failure
-  BTRFS: error (device dm-8 state EA) in btrfs_replace_file_extents:2416: errno=-5 IO failure
-  BTRFS warning (device dm-8 state EA): qgroup 0/5 has unreleased space, type 0 rsv 28672
-  ------------[ cut here ]------------
-  WARNING: CPU: 3 PID: 22588 at fs/btrfs/disk-io.c:4333 close_ctree+0x222/0x4d0 [btrfs]
-  Modules linked in: btrfs blake2b_generic libcrc32c xor zstd_compress raid6_pq
-  CPU: 3 PID: 22588 Comm: umount Kdump: loaded Tainted: G W          6.10.0-rc7-gab56fde445b8 #21
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-  RIP: 0010:close_ctree+0x222/0x4d0 [btrfs]
-  RSP: 0018:ffffb4465283be00 EFLAGS: 00010202
-  RAX: 0000000000000001 RBX: ffffa1a1818e1000 RCX: 0000000000000001
-  RDX: 0000000000000000 RSI: ffffb4465283bbe0 RDI: ffffa1a19374fcb8
-  RBP: ffffa1a1818e13c0 R08: 0000000100028b16 R09: 0000000000000000
-  R10: 0000000000000003 R11: 0000000000000003 R12: ffffa1a18ad7972c
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f9168312b80(0000) GS:ffffa1a4afcc0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f91683c9140 CR3: 000000010acaa000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   ? close_ctree+0x222/0x4d0 [btrfs]
-   ? __warn.cold+0x8e/0xea
-   ? close_ctree+0x222/0x4d0 [btrfs]
-   ? report_bug+0xff/0x140
-   ? handle_bug+0x3b/0x70
-   ? exc_invalid_op+0x17/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? close_ctree+0x222/0x4d0 [btrfs]
-   generic_shutdown_super+0x70/0x160
-   kill_anon_super+0x11/0x40
-   btrfs_kill_super+0x11/0x20 [btrfs]
-   deactivate_locked_super+0x2e/0xa0
-   cleanup_mnt+0xb5/0x150
-   task_work_run+0x57/0x80
-   syscall_exit_to_user_mode+0x121/0x130
-   do_syscall_64+0xab/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f916847a887
-  ---[ end trace 0000000000000000 ]---
-  BTRFS error (device dm-8 state EA): qgroup reserved space leaked
-
-Cases 2 and 3 in the out_reserve path both pertain to this type of leak
-and must free the reserved qgroup data. Because it is already an error
-path, I opted not to handle the possible errors in
-btrfs_free_qgroup_data.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/i2c.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 39d22693e47b6..c2f48fc159e5a 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1586,6 +1586,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
- 					     locked_page, &cached,
- 					     clear_bits,
- 					     page_ops);
-+		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
- 		start += cur_alloc_size;
- 	}
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 424acb98c7c26..97b18dff3a4fc 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -1053,7 +1053,7 @@ static inline int of_i2c_get_board_info(struct device *dev,
+ struct acpi_resource;
+ struct acpi_resource_i2c_serialbus;
  
-@@ -1599,6 +1600,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
- 		clear_bits |= EXTENT_CLEAR_DATA_RESV;
- 		extent_clear_unlock_delalloc(inode, start, end, locked_page,
- 					     &cached, clear_bits, page_ops);
-+		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
- 	}
- 	return ret;
- }
-@@ -2269,6 +2271,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
- 					     PAGE_START_WRITEBACK |
- 					     PAGE_END_WRITEBACK);
-+		btrfs_qgroup_free_data(inode, NULL, cur_offset, end - cur_offset + 1, NULL);
- 	}
- 	btrfs_free_path(path);
- 	return ret;
+-#if IS_ENABLED(CONFIG_ACPI)
++#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
+ bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
+ 			       struct acpi_resource_i2c_serialbus **i2c);
+ int i2c_acpi_client_count(struct acpi_device *adev);
 -- 
 2.43.0
 
