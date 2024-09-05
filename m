@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C49A96D545
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF11F96D4C5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED828283503
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CC93B266EC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B0D194A5A;
-	Thu,  5 Sep 2024 10:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4505E19754A;
+	Thu,  5 Sep 2024 09:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1HVNQU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUqi4i4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F78C1494DB;
-	Thu,  5 Sep 2024 10:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0393A19538A;
+	Thu,  5 Sep 2024 09:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530548; cv=none; b=lw/PnUI/y4QIf6AggKnFlRw6sXhDgFy39yuKEIAFGafD1U6Gq9qdtaHCqb1h+k/6O+Ag5Vsf6/nG2Rt5A5NIGM73eKF/zDpytrDGgoeFia6NYDQ5hjGOYq0sG6iT5dYabRJ5m6TAzCJUeIl8E9UjC0Ho2pLPVrArFxdbabEAAeE=
+	t=1725530157; cv=none; b=cztsQ+kukhRbK/yKZVf4qRLbeOdYWhIlARc2LMx3RLFrbpK4xtexx59lgVppdGelQBYZ64BERwk5zibLqcxBgICuyD3i6gQTkqztEKy6XdiYYtE3/8MQ5DAKOf17BwbTUiuBanfEZSLArXCahJMBDnnT/ExchZwFkaWJIdNF7u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530548; c=relaxed/simple;
-	bh=fAaxR+XfTB/OAc3jU045XVdYIS1knnDTxeSKDJrQ1+s=;
+	s=arc-20240116; t=1725530157; c=relaxed/simple;
+	bh=FHgMs0NQB/fY0+ndG8nlbXHrGlLqudLOjexM82iFa9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFgnYNZGPLsXdWJzhoQ1wqIhtmnSuaDG3FtHx8ZpOWxMn1IepdcRhSTya2ubwBiLJH/SmaqLf6V64kdFE+/lHhEYbTF+WrQKugvSQJ4JZsnbdxgkln/qJ22mt7OxGJIA9fM5rEHUZXAhqDmjBMdY7FKWuWxoEaznb8UBSG116Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1HVNQU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0258C4CEC3;
-	Thu,  5 Sep 2024 10:02:27 +0000 (UTC)
+	 MIME-Version; b=fB2TD0n3ooiHlDCnDNsDKiWJ5srUpcsFdc+Wy01W3WOowD414I2co8bNK/YmOplWSYgKtrOS1y31xz7Nv5COhwasRzeRndtDmQIsRmtsYWnE/dym/5pitT/U3dx662TaD+cRq2xHShgyUIuiS0bfTGjlmT+wop2/yzEa39K78Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUqi4i4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7240DC4CEC3;
+	Thu,  5 Sep 2024 09:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530548;
-	bh=fAaxR+XfTB/OAc3jU045XVdYIS1knnDTxeSKDJrQ1+s=;
+	s=korg; t=1725530156;
+	bh=FHgMs0NQB/fY0+ndG8nlbXHrGlLqudLOjexM82iFa9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1HVNQU4XlLgdbHyr3S7mYJ52Lm3Cf/3THo06NwXIVx4oXVi04YYuc19EgSWdzLU0
-	 BV+6lvwLSnd06MdJqs44+QcgW/aZIjxeH3MZcbKvQWKq6L4Fgd1nyyny7WGAYUB/FC
-	 S7VPeakkGO9rI7TMBlWAhiTpvXIgZwV8viSKAQE8=
+	b=iUqi4i4p2RH1T4kIe3ve9x1siMilDLYyA/enNtr6lUE+28bmEj7NE2po8S5V449aM
+	 s/xHR7nYtGyPZYCaPDgk9By7qinXxCxFOAoNiBF1+kY7YDVh1RqjyM+nqUoUdLqueM
+	 rYC3Lfj5OLskGjc933GIeYsgmF6vwNzXwvbmkuLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 027/101] selftests: mptcp: join: check re-re-adding ID 0 endp
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 072/132] drm/amdgpu: fix ucode out-of-bounds read warning
 Date: Thu,  5 Sep 2024 11:40:59 +0200
-Message-ID: <20240905093717.187848280@linuxfoundation.org>
+Message-ID: <20240905093725.057065516@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit d397d7246c11ca36c33c932bc36d38e3a79e9aa0 upstream.
+[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
 
-This test extends "delete and re-add" to validate the previous commit:
-when the endpoint linked to the initial subflow (ID 0) is re-added
-multiple times, it was no longer being used, because the internal linked
-counters are not decremented for this special endpoint: it is not an
-additional endpoint.
+Clear warning that read ucode[] may out-of-bounds.
 
-Here, the "del/add id 0" steps are done 3 times to unsure this case is
-validated.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in mptcp_join.sh, because the helpers are different in this
-  version:
-  - run_tests has been modified a few times to reduce the number of
-    positional parameters
-  - no chk_mptcp_info helper
-  - chk_subflow_nr taking an extra parameter
-  - kill_tests_wait instead of mptcp_lib_kill_wait ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3341,7 +3341,7 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 0 3
- 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
--		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
-+		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_5 2>/dev/null &
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+index b8280be6225d..c3d89088123d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
+ 		struct amdgpu_firmware_info *ucode;
  
- 		wait_mpj $ns2
- 		pm_nl_del_endpoint $ns2 2 10.0.2.2
-@@ -3362,18 +3362,21 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "" "after no reject" 3
- 
--		pm_nl_del_endpoint $ns2 1 10.0.1.2
--		sleep 0.5
--		chk_subflow_nr "" "after delete id 0" 2
--
--		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
--		wait_mpj $ns2
--		chk_subflow_nr "" "after re-add id 0" 3
-+		local i
-+		for i in $(seq 3); do
-+			pm_nl_del_endpoint $ns2 1 10.0.1.2
-+			sleep 0.5
-+			chk_subflow_nr "" "after delete id 0 ($i)" 2
+ 		id = fw_type_convert(cgs_device, type);
++		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
++			return -EINVAL;
 +
-+			pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-+			wait_mpj $ns2
-+			chk_subflow_nr "" "after re-add id 0 ($i)" 3
-+		done
- 
- 		kill_tests_wait
- 
--		chk_join_nr 4 4 4
--		chk_rm_nr 2 2
-+		chk_join_nr 6 6 6
-+		chk_rm_nr 4 4
- 	fi
- }
- 
+ 		ucode = &adev->firmware.ucode[id];
+ 		if (ucode->fw == NULL)
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
