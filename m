@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-73416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067DF96D4C6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012AB96D546
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4230B26738
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A8E1C2110C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A43195F3A;
-	Thu,  5 Sep 2024 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9670519538A;
+	Thu,  5 Sep 2024 10:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hL/KSwvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVCgqTmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5C2194A5B;
-	Thu,  5 Sep 2024 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551171494DB;
+	Thu,  5 Sep 2024 10:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530160; cv=none; b=PoiRNwNpgkNThdI7o/8t8ppjnIMXZa9Le5RYzlpyDK8HgJvI37aTl8NC/2md9GVPGUXqLd16TsTydEHY7NHEW3ZlyWQ/sV8mn3knRiD8qTOCzkW15ZxtMKJe+CuAekq5ve829UkAddMjR8ZGg8Brz1cQWrItb4PYXo+jN3UVfao=
+	t=1725530551; cv=none; b=H2fWRm4UJI+OriWYxtsTYUGZL+GWh67HYAj4rhEyM1t7w5+18DPTe05cb3gLqDZdqoXgw1Ir8CDbJeW9kS++Ts17+CKw9ksbDnvXwYthcknsR2EUPronltzDVgwOxPRQ6OjyeXBpxwGAEnSmaWgzgWMKoy3XW0GGbBKkO9qGzYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530160; c=relaxed/simple;
-	bh=pVrxgxMGjPhNXuAtiM2kegyWp/XYQVY8cudm2jIrgXI=;
+	s=arc-20240116; t=1725530551; c=relaxed/simple;
+	bh=3iQ6U2hOclO3mvu+/n2STBmfK7Eo6bSxMmKj9skeg+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgD34Ijz94B+V7Hn+aIIjES4dqv6SdmWR5wXOkzLccHrHc9N5lGTtYdyX4vBMnEcRa+orcH+FJ+0ZajQmItKhYdrqD8ORTq6VWKzQCd0T9wcxTAbugxoD72CfUVXht5aBw5gpSbX4g8CTsqozR6CoCjEAyor4Yg/NxbuVKc+rpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hL/KSwvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D607EC4CEC3;
-	Thu,  5 Sep 2024 09:55:59 +0000 (UTC)
+	 MIME-Version; b=ajtVxcm3VXXYBdBmXVl7w+qIYMGHGJais5/Lz6GGl3WrXAgJkrdoNNJwA5jTMCdVcvXkj3RXGKjm9mM2q9TMtkYkdg1qltNMjlFa/8DZ8t/RCUZwOis45Q1Lg4OouaLrm/tFnrXmCbzpFqulaFB7d6oUSuQmSAe7uEV3GW7gUH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVCgqTmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D408BC4CEC3;
+	Thu,  5 Sep 2024 10:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530160;
-	bh=pVrxgxMGjPhNXuAtiM2kegyWp/XYQVY8cudm2jIrgXI=;
+	s=korg; t=1725530551;
+	bh=3iQ6U2hOclO3mvu+/n2STBmfK7Eo6bSxMmKj9skeg+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hL/KSwvNrgYykPP7rIXDp8gb70tEY7jUzj1ZaAvI5MGzigTKCapZT3ECKU9OkV3JF
-	 1ijhjYgqfpSYQNErEHYJXo+Pp8VWUflxx2RPlWdeuDKu4QN2AeRWIYdBoFfcUOIsTL
-	 5hqUzh8dTibn2Spd1wUvka2OAcYr4smWfSxtC0FA=
+	b=sVCgqTmGds0OBIsh6hjUcyO7IEbsFzwoZyXqTOadAlzU75Unryl68fc1FK4m5cXtf
+	 ZoG/Th8Zv+0Bop98Aj5JxK0IcWLSlnb0YpbNx9L8PutNQw+eNctOBF/UqBoNFawaHb
+	 3Gl4UworNo8/ZNPIxv8XftzBfmbRvopI9VMVZStM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/132] drm/amdgpu: fix mc_data out-of-bounds read warning
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 028/101] selftests: mptcp: join: cannot rm sf if closed
 Date: Thu,  5 Sep 2024 11:41:00 +0200
-Message-ID: <20240905093725.094532921@linuxfoundation.org>
+Message-ID: <20240905093717.228325628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 51dfc0a4d609fe700750a62f41447f01b8c9ea50 ]
+commit e93681afcb96864ec26c3b2ce94008ce93577373 upstream.
 
-Clear warning that read mc_data[i-1] may out-of-bounds.
+Thanks to the previous commit, the MPTCP subflows are now closed on both
+directions even when only the MPTCP path-manager of one peer asks for
+their closure.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the two tests modified here -- "userspace pm add & remove address"
+and "userspace pm create destroy subflow" -- one peer is controlled by
+the userspace PM, and the other one by the in-kernel PM. When the
+userspace PM sends a RM_ADDR notification, the in-kernel PM will
+automatically react by closing all subflows using this address. Now,
+thanks to the previous commit, the subflows are properly closed on both
+directions, the userspace PM can then no longer closes the same
+subflows if they are already closed. Before, it was OK to do that,
+because the subflows were still half-opened, still OK to send a RM_ADDR.
+
+In other words, thanks to the previous commit closing the subflows, an
+error will be returned to the userspace if it tries to close a subflow
+that has already been closed. So no need to run this command, which mean
+that the linked counters will then not be incremented.
+
+These tests are then no longer sending both a RM_ADDR, then closing the
+linked subflow just after. The test with the userspace PM on the server
+side is now removing one subflow linked to one address, then sending
+a RM_ADDR for another address. The test with the userspace PM on the
+client side is now only removing the subflow that was previously
+created.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-2-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 97040cf9806e ("selftests: mptcp: userspace pm address tests")
+Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
+[ It looks like this patch is needed for the same reasons as mentioned
+  above, but the resolution is different: the subflows and addresses are
+  removed elsewhere. The same type of adaptations have been applied
+  here. The Fixes tag has been replaced by better appropriated ones. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index dce9e7d5e4ec..a14a54a734c1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -1476,6 +1476,8 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
- 										(u32)le32_to_cpu(*((u32 *)reg_data + j));
- 									j++;
- 								} else if ((reg_table->mc_reg_address[i].pre_reg_data & LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
-+									if (i == 0)
-+										continue;
- 									reg_table->mc_reg_table_entry[num_ranges].mc_data[i] =
- 										reg_table->mc_reg_table_entry[num_ranges].mc_data[i - 1];
- 								}
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -957,8 +957,6 @@ do_transfer()
+ 				dp=$(grep "type:10" "$evts_ns1" |
+ 				     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
+ 				ip netns exec ${listener_ns} ./pm_nl_ctl rem token $tk id $id
+-				ip netns exec ${listener_ns} ./pm_nl_ctl dsf lip "$addr" \
+-							lport $sp rip $da rport $dp token $tk
+ 			fi
+ 
+ 			counter=$((counter + 1))
+@@ -1024,7 +1022,6 @@ do_transfer()
+ 				sleep 1
+ 				sp=$(grep "type:10" "$evts_ns2" |
+ 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
+-				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
+ 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
+ 									rip $da rport $dp token $tk
+ 			fi
+@@ -3227,7 +3224,7 @@ userspace_tests()
+ 		run_tests $ns1 $ns2 10.0.1.1 0 userspace_1 0 slow
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+-		chk_rm_nr 1 1 invert
++		chk_rm_nr 1 0 invert
+ 	fi
+ 
+ 	# userspace pm create destroy subflow
+@@ -3237,7 +3234,7 @@ userspace_tests()
+ 		pm_nl_set_limits $ns1 0 1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
+ 		chk_join_nr 1 1 1
+-		chk_rm_nr 1 1
++		chk_rm_nr 0 1
+ 	fi
+ 
+ 	# remove and re-add
 
 
 
