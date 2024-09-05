@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5540496D49E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E0D96D418
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135E92828D4
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE451F250AD
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196FA198A16;
-	Thu,  5 Sep 2024 09:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806A01991C1;
+	Thu,  5 Sep 2024 09:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbCLQ24I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYmDKPYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3F21957FC;
-	Thu,  5 Sep 2024 09:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3D61991B0;
+	Thu,  5 Sep 2024 09:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530051; cv=none; b=ZYbjJgAHqG++AaJO+WODy7RKaVMo1Sy4OzYW8GcdQD+SbfU1sIrkyUQhXTRaQr+HUsu5P2J7QZl+0ESZSXY5opr6yMUqAYvPi6XHZs+VJHkjFOm1SsGe2DnB90GwlJCa4mOGXRXOT0dgLou4FLFjOFlg8RgDCmjafOVdGaF/H0w=
+	t=1725529696; cv=none; b=iFW5W/Ey18t7Gbc7fqdTzUG5N3XCVBhMfn9YLEHXP1kT3+gcpEcr2+eYmmCTREEDWO7IThpY0Tc2+VwzdYszzkDi//fq7GMbMDBEskCyeZjiHOV978CNUV0wUNE9TmtDcVfKWxz1w8Awxymd4INuz+6ywTSQAtMHWQrCact0sus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530051; c=relaxed/simple;
-	bh=WHqYPXT269RcQ7Bnya/IsQTtpHUDHONDfLpzv2D7Na4=;
+	s=arc-20240116; t=1725529696; c=relaxed/simple;
+	bh=TsHYj67o7kieH+UxqQqRIpRn/633xcyAZ+cQkaAABiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6LSwJi1964Z4q1xFIMxDFECgwyvUnUyFR5zsSfBSUoC1NKX7iYjp3WIMpVMI8wBssI1/nb+NDUZJV3OAZx9qrEC0NM3RKvRf2Yz8FeMxWiT+tfy7sAuABRK9WzIrT5EH53rwoIcCSgUc82dQUL+uYnNLwgUZlp2lodBI4zs2jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbCLQ24I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD17C4CEC3;
-	Thu,  5 Sep 2024 09:54:11 +0000 (UTC)
+	 MIME-Version; b=Ozjq9WzWPJmrV9Ekm4C36JOBEwlIFKAGLRbky15Agu3MOBhMhwz3qW1zftjlUWCtXtm8iVaKzc++yM9Uj5oDxVPYdIPhHfi+hKQJPBPXr/fsKYceThsDd/meWZvT7EZE7OD4uRZfVm3X8htVUJ2h3CfgJFImw08LvmyYsl5BTsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYmDKPYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19C3C4CEC3;
+	Thu,  5 Sep 2024 09:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530051;
-	bh=WHqYPXT269RcQ7Bnya/IsQTtpHUDHONDfLpzv2D7Na4=;
+	s=korg; t=1725529696;
+	bh=TsHYj67o7kieH+UxqQqRIpRn/633xcyAZ+cQkaAABiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbCLQ24I5mEwT+7ALxZSjER0EkHzEoJQXpXZYI6ofc1dZHiJlDXZkRZ8Zax2TjONa
-	 fQhlRJ6N6qB04PJjwTybGhmHIi5gnoZ4y8aYFmQPOxB4nzCUQBIEYf3bbaM2NNDXGB
-	 o3/H1ArbYyyxTrZUN9uZFuXX7nn9XT/T0s67bTek=
+	b=mYmDKPYENa0sd5852cICn27Q5ek7RMyXww12JRbyq9nsR0t+EXfpuLU61ZBST9+RK
+	 Nzo9EcTDee7lpxVvpn2E4X5R/qTZyuBxeRyMELe04oIu0Z8XkLKGJ+akMea5GCdSIj
+	 s6FD8wZElFQnkkJYA53pY5j5L5Ds4QZ2vEVqFIgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/132] drm/amdgpu: Fix uninitialized variable warning in amdgpu_afmt_acr
+Subject: [PATCH 6.10 114/184] drm/amdgpu: fix compiler side-effect check issue for RAS_EVENT_LOG()
 Date: Thu,  5 Sep 2024 11:40:27 +0200
-Message-ID: <20240905093723.817465991@linuxfoundation.org>
+Message-ID: <20240905093736.682789017@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit c0d6bd3cd209419cc46ac49562bef1db65d90e70 ]
+[ Upstream commit b712d7c20133b67f13aa134e7534369f19e1214f ]
 
-Assign value to clock to fix the warning below:
-"Using uninitialized value res. Field res.clock is uninitialized"
+create a new helper function to avoid compiler 'side-effect'
+check about RAS_EVENT_LOG() macro.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 18 ++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h | 13 ++++++-------
+ 2 files changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-index a4d65973bf7c..80771b1480ff 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-@@ -100,6 +100,7 @@ struct amdgpu_afmt_acr amdgpu_afmt_acr(uint32_t clock)
- 	amdgpu_afmt_calc_cts(clock, &res.cts_32khz, &res.n_32khz, 32000);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_44_1khz, &res.n_44_1khz, 44100);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_48khz, &res.n_48khz, 48000);
-+	res.clock = clock;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 0c4ee06451e9..57fdc4ab9c54 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -4504,3 +4504,21 @@ int amdgpu_ras_reserve_page(struct amdgpu_device *adev, uint64_t pfn)
  
- 	return res;
+ 	return ret;
  }
++
++void amdgpu_ras_event_log_print(struct amdgpu_device *adev, u64 event_id,
++				const char *fmt, ...)
++{
++	struct va_format vaf;
++	va_list args;
++
++	va_start(args, fmt);
++	vaf.fmt = fmt;
++	vaf.va = &args;
++
++	if (amdgpu_ras_event_id_is_valid(adev, event_id))
++		dev_printk(KERN_INFO, adev->dev, "{%llu}%pV", event_id, &vaf);
++	else
++		dev_printk(KERN_INFO, adev->dev, "%pV", &vaf);
++
++	va_end(args);
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+index 7021c4a66fb5..d06c01b978cd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+@@ -67,13 +67,8 @@ struct amdgpu_iv_entry;
+ /* The high three bits indicates socketid */
+ #define AMDGPU_RAS_GET_FEATURES(val)  ((val) & ~AMDGPU_RAS_FEATURES_SOCKETID_MASK)
+ 
+-#define RAS_EVENT_LOG(_adev, _id, _fmt, ...)				\
+-do {									\
+-	if (amdgpu_ras_event_id_is_valid((_adev), (_id)))			\
+-	    dev_info((_adev)->dev, "{%llu}" _fmt, (_id), ##__VA_ARGS__);	\
+-	else								\
+-	    dev_info((_adev)->dev, _fmt, ##__VA_ARGS__);			\
+-} while (0)
++#define RAS_EVENT_LOG(adev, id, fmt, ...)	\
++	amdgpu_ras_event_log_print((adev), (id), (fmt), ##__VA_ARGS__);
+ 
+ enum amdgpu_ras_block {
+ 	AMDGPU_RAS_BLOCK__UMC = 0,
+@@ -956,4 +951,8 @@ int amdgpu_ras_put_poison_req(struct amdgpu_device *adev,
+ 		enum amdgpu_ras_block block, uint16_t pasid,
+ 		pasid_notify pasid_fn, void *data, uint32_t reset);
+ 
++__printf(3, 4)
++void amdgpu_ras_event_log_print(struct amdgpu_device *adev, u64 event_id,
++				const char *fmt, ...);
++
+ #endif
 -- 
 2.43.0
 
