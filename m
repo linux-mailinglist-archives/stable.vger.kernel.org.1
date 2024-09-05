@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-73439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C6896D4E1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B1796D434
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95EE01C2350A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 630D3B27BD2
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67D7197A76;
-	Thu,  5 Sep 2024 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B1319755E;
+	Thu,  5 Sep 2024 09:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR9ezvln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azyR+9iO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6469B194A64;
-	Thu,  5 Sep 2024 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4818198E93;
+	Thu,  5 Sep 2024 09:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530234; cv=none; b=HMfWuIoK1tkTofve1pI6miAneRAxtUFSG07MDmJgBuPqAeeFAcUe/eQN/mtSUOmt1/fcB+izQOhlsVdMKPtV8LF1t+hX7pQYnJaBRFK82pB9uNtRqXbA66zvT4e+odWScWmW0Wden0T16NOTzoueSzWeXPH37kfdGyogJv9FS2A=
+	t=1725529771; cv=none; b=iVwFLMFETEKirq8p+3hxWNpEaUqENmh7sAD0RmETauxsawBDeQfGRvbKG23ZQeHLF15tjYfsqdLdEmlLwRXzgEMVuE3v5sSIxHPc5EbFqBoDzIf5tZsqADUo2CHmtBrDuJ3wgbkVZFF70HaXhBH9YbCHVmEr5XcU+vf1gjkVqlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530234; c=relaxed/simple;
-	bh=MI8m/zf1Ty9AimpUvhNYO/YM98uA5fBMJ6bdfpfYZ9k=;
+	s=arc-20240116; t=1725529771; c=relaxed/simple;
+	bh=TndsJC4PT8zMre6jyufq6CJXp38xh0n8+egDbpXQ+YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0CKzOTixzvRyRQ5ibK8rXR1htkKYwRPwhFAro4At4Go7J4ZBZAxdFjcjZuqCIn4tUSqN0hLrJbfyDeTIshGgJ9cDbtjGrb+Rd009Me6fLbhczTDbxqV59aWllMAXBkAhd8koDUSJcZ4CXpVsTvthx3xWE+REwkGiEcKK1y4i9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR9ezvln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6040C4CEC3;
-	Thu,  5 Sep 2024 09:57:13 +0000 (UTC)
+	 MIME-Version; b=AkP3Fnv85FzskYzRP7CPSlOVqj14SXF0j/8QJZfA76eRU0FhhBZi5CYOfSk5tZxGDVEpSQ8zXKgWhM+16zxGQlr5NRcrAqb6b4MhVygalFdfejW/Bpg/b1cvBU/rGVhl/DAWbikJqVd71q0J7olcQBxXJJ/o9Q2LUNCU0f8kGZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azyR+9iO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236F2C4CEC6;
+	Thu,  5 Sep 2024 09:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530234;
-	bh=MI8m/zf1Ty9AimpUvhNYO/YM98uA5fBMJ6bdfpfYZ9k=;
+	s=korg; t=1725529771;
+	bh=TndsJC4PT8zMre6jyufq6CJXp38xh0n8+egDbpXQ+YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tR9ezvlnubDC0d08sOR6vOeT/CfDfDaabRkL6QjBXBi1I0HmHrjpX5oROiVy+mbYw
-	 K3r8GFNB+qqqbFjv49zkE8ylne1XQlNCNmxG39ksyagqFCvaOlszskDXRAo5sOneiI
-	 i4MWWnYn1DzUP5W6koCVayiLctlkwfPrEQhfvcdk=
+	b=azyR+9iOmEPN7ffI5+oxOaeQIo6Fh24vTU/6pmBTEJ8/Omt/i2jGAx012vXj9b8uz
+	 bLwIWsRGRxBdiufXq9uX3pohM2iCMdBZS7wzf5RlF/cc1OxlqDmOTLVP6mfZCW+cSb
+	 5GmbXZQAM28o+4fDK6hLuTnenHBwM0J73MnD+ibw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/132] drm/amd/amdgpu: Check tbo resource pointer
+Subject: [PATCH 6.10 138/184] tcp: annotate data-races around tw->tw_ts_recent and tw->tw_ts_recent_stamp
 Date: Thu,  5 Sep 2024 11:40:51 +0200
-Message-ID: <20240905093724.746825609@linuxfoundation.org>
+Message-ID: <20240905093737.605616768@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
+[ Upstream commit 69e0b33a7fce4d96649b9fa32e56b696921aa48e ]
 
-Validate tbo resource pointer, skip if NULL
+These fields can be read and written locklessly, add annotations
+around these minor races.
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_ipv4.c      | 12 +++++++-----
+ net/ipv4/tcp_minisocks.c | 22 ++++++++++++++--------
+ net/ipv6/tcp_ipv6.c      |  6 +++---
+ 3 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index eb663eb81156..251627c91f98 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4480,7 +4480,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
- 		shadow = vmbo->shadow;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 8f8f93716ff8..3b7430201397 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -116,6 +116,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	const struct inet_timewait_sock *tw = inet_twsk(sktw);
+ 	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
+ 	struct tcp_sock *tp = tcp_sk(sk);
++	int ts_recent_stamp;
  
- 		/* No need to recover an evicted BO */
--		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
-+		if (!shadow->tbo.resource ||
-+		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
- 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
- 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
- 			continue;
+ 	if (reuse == 2) {
+ 		/* Still does not detect *everything* that goes through
+@@ -154,9 +155,10 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	   If TW bucket has been already destroyed we fall back to VJ's scheme
+ 	   and use initial timestamp retrieved from peer table.
+ 	 */
+-	if (tcptw->tw_ts_recent_stamp &&
++	ts_recent_stamp = READ_ONCE(tcptw->tw_ts_recent_stamp);
++	if (ts_recent_stamp &&
+ 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
+-					    tcptw->tw_ts_recent_stamp)))) {
++					    ts_recent_stamp)))) {
+ 		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
+ 		 * and releasing the bucket lock.
+ 		 */
+@@ -180,8 +182,8 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 			if (!seq)
+ 				seq = 1;
+ 			WRITE_ONCE(tp->write_seq, seq);
+-			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
+-			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
++			tp->rx_opt.ts_recent	   = READ_ONCE(tcptw->tw_ts_recent);
++			tp->rx_opt.ts_recent_stamp = ts_recent_stamp;
+ 		}
+ 
+ 		return 1;
+@@ -1066,7 +1068,7 @@ static void tcp_v4_timewait_ack(struct sock *sk, struct sk_buff *skb)
+ 			tcptw->tw_snd_nxt, tcptw->tw_rcv_nxt,
+ 			tcptw->tw_rcv_wnd >> tw->tw_rcv_wscale,
+ 			tcp_tw_tsval(tcptw),
+-			tcptw->tw_ts_recent,
++			READ_ONCE(tcptw->tw_ts_recent),
+ 			tw->tw_bound_dev_if, &key,
+ 			tw->tw_transparent ? IP_REPLY_ARG_NOSRCCHECK : 0,
+ 			tw->tw_tos,
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 0fbebf6266e9..5e4a12d01622 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -101,16 +101,18 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
+ 	struct tcp_options_received tmp_opt;
+ 	struct tcp_timewait_sock *tcptw = tcp_twsk((struct sock *)tw);
+ 	bool paws_reject = false;
++	int ts_recent_stamp;
+ 
+ 	tmp_opt.saw_tstamp = 0;
+-	if (th->doff > (sizeof(*th) >> 2) && tcptw->tw_ts_recent_stamp) {
++	ts_recent_stamp = READ_ONCE(tcptw->tw_ts_recent_stamp);
++	if (th->doff > (sizeof(*th) >> 2) && ts_recent_stamp) {
+ 		tcp_parse_options(twsk_net(tw), skb, &tmp_opt, 0, NULL);
+ 
+ 		if (tmp_opt.saw_tstamp) {
+ 			if (tmp_opt.rcv_tsecr)
+ 				tmp_opt.rcv_tsecr -= tcptw->tw_ts_offset;
+-			tmp_opt.ts_recent	= tcptw->tw_ts_recent;
+-			tmp_opt.ts_recent_stamp	= tcptw->tw_ts_recent_stamp;
++			tmp_opt.ts_recent	= READ_ONCE(tcptw->tw_ts_recent);
++			tmp_opt.ts_recent_stamp	= ts_recent_stamp;
+ 			paws_reject = tcp_paws_reject(&tmp_opt, th->rst);
+ 		}
+ 	}
+@@ -152,8 +154,10 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
+ 		twsk_rcv_nxt_update(tcptw, TCP_SKB_CB(skb)->end_seq);
+ 
+ 		if (tmp_opt.saw_tstamp) {
+-			tcptw->tw_ts_recent_stamp = ktime_get_seconds();
+-			tcptw->tw_ts_recent	  = tmp_opt.rcv_tsval;
++			WRITE_ONCE(tcptw->tw_ts_recent_stamp,
++				  ktime_get_seconds());
++			WRITE_ONCE(tcptw->tw_ts_recent,
++				   tmp_opt.rcv_tsval);
+ 		}
+ 
+ 		inet_twsk_reschedule(tw, TCP_TIMEWAIT_LEN);
+@@ -197,8 +201,10 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
+ 		}
+ 
+ 		if (tmp_opt.saw_tstamp) {
+-			tcptw->tw_ts_recent	  = tmp_opt.rcv_tsval;
+-			tcptw->tw_ts_recent_stamp = ktime_get_seconds();
++			WRITE_ONCE(tcptw->tw_ts_recent,
++				   tmp_opt.rcv_tsval);
++			WRITE_ONCE(tcptw->tw_ts_recent_stamp,
++				   ktime_get_seconds());
+ 		}
+ 
+ 		inet_twsk_put(tw);
+@@ -225,7 +231,7 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
+ 	if (th->syn && !th->rst && !th->ack && !paws_reject &&
+ 	    (after(TCP_SKB_CB(skb)->seq, tcptw->tw_rcv_nxt) ||
+ 	     (tmp_opt.saw_tstamp &&
+-	      (s32)(tcptw->tw_ts_recent - tmp_opt.rcv_tsval) < 0))) {
++	      (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_tsval) < 0))) {
+ 		u32 isn = tcptw->tw_snd_nxt + 65535 + 2;
+ 		if (isn == 0)
+ 			isn++;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 3385faf1d5dc..66f6fe5afb03 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1196,9 +1196,9 @@ static void tcp_v6_timewait_ack(struct sock *sk, struct sk_buff *skb)
+ 	tcp_v6_send_ack(sk, skb, tcptw->tw_snd_nxt, tcptw->tw_rcv_nxt,
+ 			tcptw->tw_rcv_wnd >> tw->tw_rcv_wscale,
+ 			tcp_tw_tsval(tcptw),
+-			tcptw->tw_ts_recent, tw->tw_bound_dev_if, &key,
+-			tw->tw_tclass, cpu_to_be32(tw->tw_flowlabel), tw->tw_priority,
+-			tw->tw_txhash);
++			READ_ONCE(tcptw->tw_ts_recent), tw->tw_bound_dev_if,
++			&key, tw->tw_tclass, cpu_to_be32(tw->tw_flowlabel),
++			tw->tw_priority, tw->tw_txhash);
+ 
+ #ifdef CONFIG_TCP_AO
+ out:
 -- 
 2.43.0
 
