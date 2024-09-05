@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-73199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4934E96D3A9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:44:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7DD96D3AE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 085BC289C39
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:44:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED544B2427E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C221619883C;
-	Thu,  5 Sep 2024 09:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1ED198A1B;
+	Thu,  5 Sep 2024 09:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4bHjU72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyqQ2a98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE8319755A;
-	Thu,  5 Sep 2024 09:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A02196446;
+	Thu,  5 Sep 2024 09:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529462; cv=none; b=u5BqvIPy/RbJJIWkCKbFM9DNDuD4virAE67U7gcZeqSgv70WiG2oiSVZVmHL1H3QTSwGsyK9CqMvHGviQBKtPn9cyelxAAEhbOMrgUt9euTbVE5kmDT5wijgDJyfW5h/TcOIh4QnNQBl5R0Q+NQPnsnUowbk8/sQItTj6n3WdDk=
+	t=1725529468; cv=none; b=nZXSPi2AvvT5myfwzB3lBMZKTghsYW6G0oMvd1UsjYPqXD+DHqEP8jA+j9iH/N8+IKel2eaPS1IXcZn2iZ7qNe3jL/fNLIRVPj+76l+0jlS96jXBvlcCkg6QN72coOzzPAZu7It2mqRbOrjyamTTZJZRop7ZYcQJqfQt39U+p9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529462; c=relaxed/simple;
-	bh=mMbTd0OcAwab627mubx6kp3OQYKp01oyj4jIYCvojRg=;
+	s=arc-20240116; t=1725529468; c=relaxed/simple;
+	bh=jN/heiw4hOnjrq5sEe004Vt7RGRlPAaxeG5Oz+5yyZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mS627FiZ9EBlrby66kWRtw7g/HLtsYToeEp+WbICJhmmEp4lwCaJMtuRtmN6oFLAG221jcwpTZF2Zb63gqfwOEHuhhFomKCxlWu+azcJvX+uFqGCgTxE9K8P1pDUHWt3jCxIVwbLPWWF1WpI6wbS/xhwoKCKbAJdaUYbLlHrYO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4bHjU72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D8BC4CECD;
-	Thu,  5 Sep 2024 09:44:21 +0000 (UTC)
+	 MIME-Version; b=MpoPGGsCCqjIBdRLRETwQ3SZ97z4xYB337cXS0o7RbWBnoWCX5XvPy106ef8Cth+THWNwPaxBJn/+wFt9scBxLAIH/UCPY+Pn3I1EsTO/f63L3DlVisEgS6wAnmkDjm7GY6b+e2XwVqIxRS8ggVwDzsaTFQgBclHPnzh9zAYHO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyqQ2a98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25D6C4CEC3;
+	Thu,  5 Sep 2024 09:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529462;
-	bh=mMbTd0OcAwab627mubx6kp3OQYKp01oyj4jIYCvojRg=;
+	s=korg; t=1725529468;
+	bh=jN/heiw4hOnjrq5sEe004Vt7RGRlPAaxeG5Oz+5yyZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4bHjU72fODF/e04sL4VkLnZuxCUJzQ6ZAp23/RBoeXEv63KiBOA9mwv7T68j6AXo
-	 jU26ZhmyhAUqDgJ8NIn/gRy98LNemPNrbJ4P045ki29BORTX/4602No/HtGAhUlriP
-	 G5HP3pUHWxrncqBiczlt9eQvjqOr9RkeZv4cxm+k=
+	b=EyqQ2a98IRVSUYExEyMIU/S/MuoQ8DRfgdKmGlLm7bvNAji8B6y5vNNJ91Qmw0npk
+	 GXvfeLb7+B7f0D6/6tygNJqTpZU049cEKtjmgzK/nehLW/kzbtEWCesxnRDDIEstHi
+	 RLR7ooooOt69XehGcEXibkEX7fBAXvZ7JVMNb7ME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Joshua Aberback <joshua.aberback@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 041/184] Revert "drm/amd/display: Fix incorrect pointer assignment"
-Date: Thu,  5 Sep 2024 11:39:14 +0200
-Message-ID: <20240905093733.852246789@linuxfoundation.org>
+Subject: [PATCH 6.10 042/184] drm/amd/display: Handle the case which quad_part is equal 0
+Date: Thu,  5 Sep 2024 11:39:15 +0200
+Message-ID: <20240905093733.891330443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -69,57 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joshua Aberback <joshua.aberback@amd.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 0c9c0674f81add3edb2bb992b3e89be8a44f03db ]
+[ Upstream commit 02fb803db110dbdac9f0d446180f0f7b545e15ff ]
 
-This reverts commit 0a571e8657c40047e6602466abfcb6514a391041.
+Add code to handle case when quad_part is 0 in gpu_addr_to_uma().
 
-[Why]
-The change being reverted incorrectly assumes that a pointer type was
-intended, however copying to a new structure is correct. As well, there
-is no compiler error, it was instead an error in the testing framework
-being used.
-
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Joshua Aberback <joshua.aberback@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_state.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn201/dcn201_hwseq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-index 52a1cfc5feed..502740f6fb2c 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-@@ -191,7 +191,7 @@ static void init_state(struct dc *dc, struct dc_state *state)
- struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *params)
- {
- #ifdef CONFIG_DRM_AMD_DC_FP
--	struct dml2_configuration_options *dml2_opt = &dc->dml2_options;
-+	struct dml2_configuration_options dml2_opt = dc->dml2_options;
- #endif
- 	struct dc_state *state = kvzalloc(sizeof(struct dc_state),
- 			GFP_KERNEL);
-@@ -205,11 +205,11 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
- 
- #ifdef CONFIG_DRM_AMD_DC_FP
- 	if (dc->debug.using_dml2) {
--		dml2_opt->use_clock_dc_limits = false;
--		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2);
-+		dml2_opt.use_clock_dc_limits = false;
-+		dml2_create(dc, &dml2_opt, &state->bw_ctx.dml2);
- 
--		dml2_opt->use_clock_dc_limits = true;
--		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source);
-+		dml2_opt.use_clock_dc_limits = true;
-+		dml2_create(dc, &dml2_opt, &state->bw_ctx.dml2_dc_power_source);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn201/dcn201_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn201/dcn201_hwseq.c
+index 6be846635a79..59f46df01551 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn201/dcn201_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn201/dcn201_hwseq.c
+@@ -95,8 +95,11 @@ static bool gpu_addr_to_uma(struct dce_hwseq *hwseq,
+ 	} else if (hwseq->fb_offset.quad_part <= addr->quad_part &&
+ 			addr->quad_part <= hwseq->uma_top.quad_part) {
+ 		is_in_uma = true;
++	} else if (addr->quad_part == 0) {
++		is_in_uma = false;
+ 	} else {
+ 		is_in_uma = false;
++		BREAK_TO_DEBUGGER();
  	}
- #endif
- 
+ 	return is_in_uma;
+ }
 -- 
 2.43.0
 
