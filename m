@@ -1,132 +1,128 @@
-Return-Path: <stable+bounces-73160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9479196D282
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F4196D294
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1AB2876D3
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB94628870C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF321194C6C;
-	Thu,  5 Sep 2024 08:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB27194C9E;
+	Thu,  5 Sep 2024 08:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="w3IN+vsm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4fGYAAk"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B46145B10;
-	Thu,  5 Sep 2024 08:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FB61527B4;
+	Thu,  5 Sep 2024 08:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725526533; cv=none; b=oPppr4fGFNrGWqnY8Rq1HyZdRbXZSF8HSbFnJ1hrAZSO//XUT88qKNlxNi6vCjoYCAhpemI1kZZoFCL+4RqU2K4cilORZRRpRP/8QKBKlu9as00VOfT5sbi+36NZxNeUerRgkCK7ereZ7y9fIIli3u8jcB53lHzA9LS1srlHKcs=
+	t=1725526645; cv=none; b=X3xl41KrnXVR69R5WnPn36uKy7QJl+WkEzT1j5LsxvyxV9FO7SRk6NdUerKoJURtLYQFkD+KXxEupLmLt/zKhw5AtibsFH27id0RPRnWzjnEQWqRRSxUbKgxLg6jAWY3YZ2zdvvZ4HTRaCmURpP+9WL7fbe4pvuXV1FkXZ1FszM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725526533; c=relaxed/simple;
-	bh=f1MPAD4O/d2BtmRLp4/BYgjptMhBAm5TS4m5Ii3NVJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DHIS/58hm4nxXTu6/kcWm6Bj8zDo26MjL2D/3yvudJlStZc++uG5eVzXvU9rbj/D/ki/FmGxfZi/rV5+Vhpx3xwsSiGwfCaJ9LCoFdC2kU44QjEFFWKrHmpYSj0LQFOGiv5ZJvkAScJviwQ+UGxGbxr52t3qhUdzHsXBlZFOz5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=w3IN+vsm; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 69D5220114;
-	Thu,  5 Sep 2024 08:55:24 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 96F293E970;
-	Thu,  5 Sep 2024 10:55:16 +0200 (CEST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 91B81400B3;
-	Thu,  5 Sep 2024 08:55:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1725526514; bh=f1MPAD4O/d2BtmRLp4/BYgjptMhBAm5TS4m5Ii3NVJY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=w3IN+vsmPVD4TLlGAVgh4wAY9Bqv2QZbp8Oj/VVoDmNq6/9tyh4jXwVK6JAzQ/LVF
-	 8uQeyoQK7+wn1+qwvO6gy5cOT2U1uHPL1qEAP22SWNT8bbwYFwhtipACq8SzjrU2E8
-	 GQ/nP3k13J5pz/FrVkhMNSb55MnWeqkqwxHWitsw=
-Received: from localhost.localdomain (unknown [58.32.40.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id ECFFF42639;
-	Thu,  5 Sep 2024 08:55:07 +0000 (UTC)
-From: Kexy Biscuit <kexybiscuit@aosc.io>
-To: stefanb@linux.ibm.com,
-	jarkko@kernel.org,
-	linux-integrity@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	naveen.n.rao@linux.ibm.com,
-	zohar@linux.ibm.com,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Mingcong Bai <jeffbai@aosc.io>
-Subject: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix ibmvtpm building
-Date: Thu,  5 Sep 2024 16:52:20 +0800
-Message-ID: <20240905085219.77240-2-kexybiscuit@aosc.io>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725526645; c=relaxed/simple;
+	bh=D0mFP2caq38JlwbGu1PkcHf6qzffPArFGJdhnoX/Jtk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zlc6445BfiZe7RiOHen+DV0wabPp3xRaq5QUQBWEummIY5MgZmVhNUMsuEfGyx7dv56YMJXgAn01gWeRMscfilHqo3YL4FL2V6NSV5f62uc0A0P6dWTHj2coFVLGK+MK+6+zWc9ZIcZiyCfSd+WNYPJUW5l2AAfBHeWxqCqbiyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4fGYAAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69854C4CEC7;
+	Thu,  5 Sep 2024 08:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725526644;
+	bh=D0mFP2caq38JlwbGu1PkcHf6qzffPArFGJdhnoX/Jtk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T4fGYAAkdUytSCRkxP8cpYoD4qbG+QlMXmcLspTf1aEc0tzJfF8Zb04oEAE+mxgQd
+	 Wp0jBpUjikiMHHkCTewtg/4gSuYL72S5Lnt5A6fRxZRzuOKeltFYrwyFXzIf0Qpj9R
+	 /KvUTXP3a/mYhLghKOAyI8Wlytjp1o6d2e+07uhpwq3OzaemTaouIYwVIaZh1otX1M
+	 b7gsyfl3DTcDS6/ppH34EQtUs0hCoOOQ35s2MYxAkZ9tyzneh8Bb41Qg0wgvE0kBEh
+	 VEijbvOya+9SFTuMnxNy852DvOUoJt4yTnJaGZE+IiilKWEbts/+euY6yGmnFcrT+1
+	 9Ilfi7tRplqgQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sm8JB-0000000033S-3VT1;
+	Thu, 05 Sep 2024 10:57:42 +0200
+Date: Thu, 5 Sep 2024 10:57:41 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	=?utf-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4=?= Prado <nfraprado@collabora.com>,
+	linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6/8] serial: qcom-geni: fix console corruption
+Message-ID: <ZtlyhQ2HNk8unxNI@hovoldconsulting.com>
+References: <20240902152451.862-1-johan+linaro@kernel.org>
+ <20240902152451.862-7-johan+linaro@kernel.org>
+ <CAD=FV=XnpPnSToWV3f2Z-DWm2-1rdgYmDZeicGGRQD-_YjS2Bw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 91B81400B3
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
+In-Reply-To: <CAD=FV=XnpPnSToWV3f2Z-DWm2-1rdgYmDZeicGGRQD-_YjS2Bw@mail.gmail.com>
 
-Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
-initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
-which could be built as a module. However, tpm2_sessions_init() wasn't
-exported, causing libmvtpm to fail to build as a module:
+On Wed, Sep 04, 2024 at 02:51:15PM -0700, Doug Anderson wrote:
+> On Mon, Sep 2, 2024 at 8:26 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+> >
+> > +static void qcom_geni_serial_drain_fifo(struct uart_port *uport)
+> > +{
+> > +       struct qcom_geni_serial_port *port = to_dev_port(uport);
+> > +
+> > +       if (!qcom_geni_serial_main_active(uport))
+> > +               return;
+> 
+> It seems like all callers already do the check and only ever call you
+> if the port is active. Do you really need to re-check?
 
-ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
+I wanted to make the helper self-contained and work in both cases. But
+since I ended up only using this helper only in the console code and
+will need to move it anyway (under the console ifdef), perhaps I can
+consider dropping it. But then again, it's just one register read.
 
-Export tpm2_sessions_init() to resolve the issue.
+> > @@ -308,6 +311,17 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
+> >         return qcom_geni_serial_poll_bitfield(uport, offset, field, set ? field : 0);
+> >  }
+> >
+> > +static void qcom_geni_serial_drain_fifo(struct uart_port *uport)
+> > +{
+> > +       struct qcom_geni_serial_port *port = to_dev_port(uport);
+> > +
+> > +       if (!qcom_geni_serial_main_active(uport))
+> > +               return;
+> > +
+> > +       qcom_geni_serial_poll_bitfield(uport, SE_GENI_M_GP_LENGTH, GP_LENGTH,
+> > +                       port->tx_queued);
+> 
+> nit: indent "port->tx_queued" to match open parenthesis?
 
-Cc: stable@vger.kernel.org # v6.10+
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
-Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
-Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
----
-V1 -> V2: Added Fixes tag and fixed email format
-RESEND: The previous email was sent directly to stable-rc review
-
- drivers/char/tpm/tpm2-sessions.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index d3521aadd43e..44f60730cff4 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+No, I don't use open-parenthesis alignment unless that's the
+(consistent) style of the code I'm changing (e.g. to avoid unnecessary
+realignments when symbol names change and to make a point about
+checkpatch --pedantic warnings not being part of the coding style).
  
- 	return rc;
- }
-+EXPORT_SYMBOL(tpm2_sessions_init);
- #endif /* CONFIG_TCG_TPM2_HMAC */
--- 
-2.46.0
+> ...also: as the kernel test robot reported, w/ certain CONFIGs this is
+> defined / not used.
 
+Yes, I need to move the helper under the console ifdef. I was just
+waiting to see if there was any further feedback before respinning.
+
+> Aside from the nit / robot issue, this solution looks reasonable to
+> me. It's been long enough that I've already paged out much of the past
+> digging I did into this driver, but this seems like it should work.
+> Feel free to add my Reviewed-by when the robot issue is fixed.
+
+Thanks for reviewing.
+
+Johan
 
