@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786BB96D4A1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D5296D41B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36E03283C7B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A60AD288816
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295A419538A;
-	Thu,  5 Sep 2024 09:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C481991CB;
+	Thu,  5 Sep 2024 09:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqTTVKZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guSS2Re4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA946198822;
-	Thu,  5 Sep 2024 09:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A6F198E99;
+	Thu,  5 Sep 2024 09:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530058; cv=none; b=eZ8mv4M9oExznnqUHY2Be/5HRkdIbQJsz8OLuEE3aauMEzhraieO+pAP1RlzOHd/gfzk2lsa+K6twBxz92Gx+5MXt9KhNgwVgEbNuGeyOGviIaC1c3Mn7NpSkpcrQBtPp1wUOTJdo07iq/amrCw0jrZmvaAIFw8LZqXgDuhlnSo=
+	t=1725529705; cv=none; b=fR8wtel3Cqdc1OrEPxyV/G/05t0HmIWJ+zrly7t1kpWvkJyWYVIDHv+akk5a36JLhCR9t+P4FpnBbFAte5fqytHIJJDnBtFpTTbLbUwhLkjLEhnKieNFQZDr3BNAdmITtsTODdx1vC4ip+0WCGjsY6iAB1AQD/UE2vhd7Q6SkQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530058; c=relaxed/simple;
-	bh=THbkKN1DzS7OCuMLSEeO0du2danEjS6e5OWwA8RbdPg=;
+	s=arc-20240116; t=1725529705; c=relaxed/simple;
+	bh=+n2NrJHzzKSb019gf2v+qJH6tDUnhYYMtzqmPJfT55k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DciQFNuRkjRLvS94yQ7eQdUgsYCTshwVwg/ZsQ71qcYkQsP/8TdRBH565L5LimLTZbC4QXHl7RBePNoP5IzTYLGzMDa0hrCXtF40wVPsKAHZVDno2bkNeq21SP4f18aKFF+dreF5pphLtE6iqwWJJLNdZy0OashmbdmQjZ/7MzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqTTVKZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00987C4CEC4;
-	Thu,  5 Sep 2024 09:54:17 +0000 (UTC)
+	 MIME-Version; b=D6Vv6+5riu12Q4S0bqG5D8dDvSzdLeZ26Yi1h+QefArjE2X86FPmqfb4ZcRZHZuuz1tnnfPbGDYvu/TkPgNc2lsm/h2fMZbi5x86vwViucpaSzch0uDsbd+Ws14umoTY8xVgjR3aY9wCgHFXi7e1TxJSx4XXziP7wRdK8w/f4y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guSS2Re4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4478AC4CEC3;
+	Thu,  5 Sep 2024 09:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530058;
-	bh=THbkKN1DzS7OCuMLSEeO0du2danEjS6e5OWwA8RbdPg=;
+	s=korg; t=1725529705;
+	bh=+n2NrJHzzKSb019gf2v+qJH6tDUnhYYMtzqmPJfT55k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqTTVKZUqZ4weNSK1ENe58PsZYmXWBho0UEOqcPTSr68pKd0vk1lE/2ZaV+PfMuHo
-	 pV+uuBLakIb9GpB7CDmh1ksN2UQntWw7bpDZd39E/MxFAxAW53G1TnsjeFllhZIf6/
-	 +Us/+NN2s2wGzIQv6QvT22YL+XowWCUAKbSk9cXA=
+	b=guSS2Re4Y7XPXsLdjU9K/c+cZEbQCISlOe3hngarPkNe1PElu1yOWLqnGPXr4r31H
+	 tXgPLs48CdX8QGSIUecqYHrWZJb+NKcoSVtqkcr28N0sanqynMxpMRyY9SFv+xe6N0
+	 wpmYC+UurFI2L1wVN0/RT03OkGIlnFkZ5MbMXSyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/132] drm/amdgpu: fix overflowed array index read warning
-Date: Thu,  5 Sep 2024 11:40:29 +0200
-Message-ID: <20240905093723.894946115@linuxfoundation.org>
+Subject: [PATCH 6.10 117/184] drm/amdgpu: update type of buf size to u32 for eeprom functions
+Date: Thu,  5 Sep 2024 11:40:30 +0200
+Message-ID: <20240905093736.797196169@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Tao Zhou <tao.zhou1@amd.com>
 
-[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
+[ Upstream commit 2aadb520bfacec12527effce3566f8df55e5d08e ]
 
-Clear overflowed array index read warning by cast operation.
+Avoid overflow issue.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c | 6 +++---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index dbde3b41c088..0bedffc4eb43 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -469,8 +469,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
- 					size_t size, loff_t *pos)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
+index e71768661ca8..09a34c7258e2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
+@@ -179,7 +179,7 @@ static int __amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
+  * Returns the number of bytes read/written; -errno on error.
+  */
+ static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
+-			      u8 *eeprom_buf, u16 buf_size, bool read)
++			      u8 *eeprom_buf, u32 buf_size, bool read)
  {
- 	struct amdgpu_ring *ring = file_inode(f)->i_private;
--	int r, i;
- 	uint32_t value, result, early[3];
-+	loff_t i;
-+	int r;
+ 	const struct i2c_adapter_quirks *quirks = i2c_adap->quirks;
+ 	u16 limit;
+@@ -225,7 +225,7 @@ static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
  
- 	if (*pos & 3 || size & 3)
- 		return -EINVAL;
+ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
+ 		       u32 eeprom_addr, u8 *eeprom_buf,
+-		       u16 bytes)
++		       u32 bytes)
+ {
+ 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
+ 				  true);
+@@ -233,7 +233,7 @@ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
+ 
+ int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
+ 			u32 eeprom_addr, u8 *eeprom_buf,
+-			u16 bytes)
++			u32 bytes)
+ {
+ 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
+ 				  false);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
+index 6935adb2be1f..8083b8253ef4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
+@@ -28,10 +28,10 @@
+ 
+ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
+ 		       u32 eeprom_addr, u8 *eeprom_buf,
+-		       u16 bytes);
++		       u32 bytes);
+ 
+ int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
+ 			u32 eeprom_addr, u8 *eeprom_buf,
+-			u16 bytes);
++			u32 bytes);
+ 
+ #endif
 -- 
 2.43.0
 
