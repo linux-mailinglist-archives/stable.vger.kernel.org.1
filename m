@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA2896D463
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B8896D507
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C437281D8E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43F92877E1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3601991BF;
-	Thu,  5 Sep 2024 09:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55771194AC7;
+	Thu,  5 Sep 2024 09:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuS/Gqr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zb7fM/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2B0194A45;
-	Thu,  5 Sep 2024 09:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E5583CC8;
+	Thu,  5 Sep 2024 09:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529892; cv=none; b=nBTDPUfAJpTiTJx0UWSxwOYjfgdptusxLjb3YDmKldpFDsqv19t/ELXvV+7OPvNCsYkGTp45eV8bstw8etzj2uszBJh8k2kg9JZD4RfRpernpsm+qBjsZhCOeX+NvZ739Hvy+bQPOa3djJVe8IBvnt7JbAWSE8O+b9WeZE/rnb4=
+	t=1725530357; cv=none; b=hAjLqdlXQglUkzqLzwvVSzvH3qdB8UMqz7lIp/J/INaJqplxl8/DQEKutnzLZaNT1snwN6pmq9q6BSBFrdOzgA2oDTHMvv3fdC7r1Kwo3cTcdh0vSoNHvQaMnhhpbPBWYgFRpoI09JUsUaE6uCIfxP7rzkufZnMU5wfm4YU+lD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529892; c=relaxed/simple;
-	bh=pRUJu7dErdJ3NMFq2wnMek5Ipxfph1U6RBY/1HuLhZ0=;
+	s=arc-20240116; t=1725530357; c=relaxed/simple;
+	bh=pwvFOyoajXwqqO8xFB8KX27MfxEGWSrEFVXDfBJnqLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X04tFU/jcJLRr9wY4l9sPZgWUhM2qutSF4HxbEvhUdXGSzqp5ZQ8HNf82t/W1ZYVvdE+Xwt+0+9aUUKeJJ6PFQGGcGreooP6UOTDJhzZjGSnufcKYIvzvmz6diu81vyn3B/fnpVv5NjuqCu1tDii0out2w6AOndkURSJR5dQZlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuS/Gqr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9777FC4CEC3;
-	Thu,  5 Sep 2024 09:51:31 +0000 (UTC)
+	 MIME-Version; b=ZEbBCreyHBlC5ye3u7/mYNQJlcDi7bCtTRN5HHPMnwF/6cqdXyPTfZtBhjLE8pdV6P4xweKsd9h1UuR8CZPDK3S8JsU/BkiaAj+7leayKdE0t6jdpcUHAxZ961Jr9cuhP/3dCUwyGajjP8D4Sh/+qKmDhyPV2X//3VgvGJZKhuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zb7fM/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFA0C4CEC3;
+	Thu,  5 Sep 2024 09:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529892;
-	bh=pRUJu7dErdJ3NMFq2wnMek5Ipxfph1U6RBY/1HuLhZ0=;
+	s=korg; t=1725530356;
+	bh=pwvFOyoajXwqqO8xFB8KX27MfxEGWSrEFVXDfBJnqLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuS/Gqr2UG/qD8jx/mDVgoA4VEViCvFTb52v+4U5Lf3HqRTjfCt9wTsX6y654W9uM
-	 8qbqpv6S0EAb7AMM70B99XWhR7oxqA1zGjiUyPkskNQDiNLCEaHwedm7CZqcSXg+BZ
-	 kNAx2iDJmkcHOTvr5TqGbegNfvtqxPQTgT4/R/Jw=
+	b=1zb7fM/17DBOKJJwz2ZBxRb758TdLcs3rR6fUQTkuPIJeOl2cCgzAVPkesfXmAjKI
+	 h8V4t8+IzfVjEm9sGTBHvftCb48Q6Qkg6DVX7BrbSnYjyVHmRnIRrfzZE3/8MMnzUO
+	 /jv3tPC0brmaYAqVAa62M4n6ZwD4IQda3LMs2W94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 175/184] drm/amdkfd: use mode1 reset for RAS poison consumption
+Subject: [PATCH 6.6 101/132] usb: typec: ucsi: Fix null pointer dereference in trace
 Date: Thu,  5 Sep 2024 11:41:28 +0200
-Message-ID: <20240905093739.166975534@linuxfoundation.org>
+Message-ID: <20240905093726.167312435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Zhou <tao.zhou1@amd.com>
+From: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
 
-[ Upstream commit 4280f60e8e7caa5160135223e486545893bc9013 ]
+[ Upstream commit 99516f76db48e1a9d54cdfed63c1babcee4e71a5 ]
 
-Per firmware's requirement, replace mode2 with mode1.
+ucsi_register_altmode checks IS_ERR for the alt pointer and treats
+NULL as valid. When CONFIG_TYPEC_DP_ALTMODE is not enabled,
+ucsi_register_displayport returns NULL which causes a NULL pointer
+dereference in trace. Rather than return NULL, call
+typec_port_register_altmode to register DisplayPort alternate mode
+as a non-controllable mode when CONFIG_TYPEC_DP_ALTMODE is not enabled.
 
-Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240510201244.2968152-2-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-index e1c21d250611..78dde62fb04a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-@@ -164,7 +164,7 @@ static void event_interrupt_poison_consumption_v9(struct kfd_node *dev,
- 	case SOC15_IH_CLIENTID_SE3SH:
- 	case SOC15_IH_CLIENTID_UTCL2:
- 		block = AMDGPU_RAS_BLOCK__GFX;
--		reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
-+		reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
- 		break;
- 	case SOC15_IH_CLIENTID_VMC:
- 	case SOC15_IH_CLIENTID_VMC1:
-@@ -177,7 +177,7 @@ static void event_interrupt_poison_consumption_v9(struct kfd_node *dev,
- 	case SOC15_IH_CLIENTID_SDMA3:
- 	case SOC15_IH_CLIENTID_SDMA4:
- 		block = AMDGPU_RAS_BLOCK__SDMA;
--		reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
-+		reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
- 		break;
- 	default:
- 		dev_warn(dev->adev->dev,
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 2a886e58cd63..42c60eba5fb6 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -404,7 +404,7 @@ ucsi_register_displayport(struct ucsi_connector *con,
+ 			  bool override, int offset,
+ 			  struct typec_altmode_desc *desc)
+ {
+-	return NULL;
++	return typec_port_register_altmode(con->port, desc);
+ }
+ 
+ static inline void
 -- 
 2.43.0
 
