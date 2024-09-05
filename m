@@ -1,254 +1,179 @@
-Return-Path: <stable+bounces-73158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418A996D26A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FDE96D274
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664501C231F6
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC5C51C20643
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E565D194C69;
-	Thu,  5 Sep 2024 08:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86D1953BA;
+	Thu,  5 Sep 2024 08:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="YN4vjaWJ";
-	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="SdT/lLqT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5F9kJBH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0014ca01.pphosted.com (mx0b-0014ca01.pphosted.com [208.86.201.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64759193409;
-	Thu,  5 Sep 2024 08:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.86.201.193
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725525970; cv=fail; b=uBw58bHUx10wc850aRHpR5W/MqVYc28tfNE82CKHeepHAuQPT2pl/Jrb/W5CpHMNKXLvX2gO5CNO6LUgZKw+MRbrT5afGCnu7RLvpmMk4jO98APDAVJEOcTrePjnju+216+3VD8hlIv3j1Q/yk3X3+LJ1wfLjqnjuRq1sdi0SRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725525970; c=relaxed/simple;
-	bh=5a2glb/NXmNhGN8WdaSbtsBhOLTgCncJVJ+ZsF4UWmI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jmrswco7oz2psWgYq/xHe9kQocrjvXAuwggSFRIgItYXqXHhvcRZUo2llc1rlitBvxQdlA7C+/yIu1mAJZcxmtucgcMTUn3zG0t3n0zLwUbbbY+uzIVtvWV9m6UFne5J2jnIyGqUjRIqwCgtRqanb8qjfH56lMjH54twTPdev6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=YN4vjaWJ; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=SdT/lLqT; arc=fail smtp.client-ip=208.86.201.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
-Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
-	by mx0b-0014ca01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 484M0YTr023969;
-	Thu, 5 Sep 2024 01:46:02 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=proofpoint;
-	 bh=RE2eRKRI8IxD/ow9stc3xruOSx65H1KV6KtNgYvx8zY=; b=YN4vjaWJCuAr
-	oa6VwvAoZwQhTEe6U65LJ2sUcqmXbFuCkWRS0efWfj7ijnewD7nLGowErWeqnLcT
-	2k8bqKkKFfkHCVoiR8iOu8hJL4ZJnhdR3ZpP1/e5n+ZAzyDuakuTcC0XbX2Davbr
-	3y+w8OmrXk4oaDZIjXmBhrq6+puIFzgfa2LwqPC2pR8Y58IlwZmuviFq4prf+Sn/
-	PwufFn1u6smv2RoOqQQ2iw1xCRzfSkm5VTPo+QFFq6FoyI3S0SbjgRV0Nl9E93dK
-	fPfUSReIQVUrnHSiwyL8fS28Exyqv6itUyPSt8JejlQXsacQ7EWqTa7dGvnCWyBW
-	Ydjb+/KGLQ==
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azlp17010002.outbound.protection.outlook.com [40.93.12.2])
-	by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 41bxrvh9n2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 01:46:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L3Kpnv/YROVUrNcdObcWyT9TniG3z9UgIMkm2quD5jQFtMyuchmUHFuHJ3G0z2gkVKo1CK0FXkaKr3VGWZy8GeL+FQLIbPk7F0DeEhWqsk4YCi11lLuV+pufMre1VZcQMyFxRHjrH1NYPX6hpCoki2mKucRv4WYU5YyMqDkihzQtuSfZyWwWd7NzEWX6M0Mi6LAvuvl18TikYI8PTExHS0oddoZiUT3ie+jDUecS6INPBVzbn7R5WKqVMYsGCbx25sFWUii/6mKSMKPN/HiZF53+9B1Io4IgLJ12XWrs6h3jLBHY8jqq9ZsuRwKXwF6qR0ACi+8rnEf8FD88e+HBxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RE2eRKRI8IxD/ow9stc3xruOSx65H1KV6KtNgYvx8zY=;
- b=rWL2n8g1eiX/2viu8j6NtQ7VZlaBwRR9bef6+1fsrV0nFbSkUyemHdxNKwZH3c6Qj6zpx88oLjWZd+QpHX4inK9u9rvh/HedfedO1pTlEG9dxrDho/D2RNQMop1nkMBGGt0Bs1BAVzm+eeXuwwINb6EY4fgjD2rJ7ShcK0oxVU2gMyICdyZCcsFJPnLxPWpt6lSN9f5+w+0oGnjGUY9D0JJ63O6pyJbMGWmLNV13duBsyYcxIKLaeV/jSvgfrGlaKlFNqaUOF+Uz7bHx48W0HU9WFjeeGrSx316grMXrfE6FuGIyNWLyWuDSOaqebotE4Y42r2V0F2BNe0BnLXxVzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
- dkim=pass header.d=cadence.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RE2eRKRI8IxD/ow9stc3xruOSx65H1KV6KtNgYvx8zY=;
- b=SdT/lLqTgjIbFLjdfMsc91/f5pOpZx5PnR2VHVCKHkcaWb8QAyDqNhPSOU+p9CZjnELxNnDCy8ujanFXAJFTt4/2orI0GYAF3Tv/NWoxNx0poZjziPEpsQ5q78U5tz+K5rnlAFqlYhITDN2Vm5dQrkdUhHvvcM8tB6D9fsEv0hI=
-Received: from PH7PR07MB9538.namprd07.prod.outlook.com (2603:10b6:510:203::19)
- by CY8PR07MB9593.namprd07.prod.outlook.com (2603:10b6:930:57::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Thu, 5 Sep
- 2024 08:45:59 +0000
-Received: from PH7PR07MB9538.namprd07.prod.outlook.com
- ([fe80::5dbd:49e3:4dc:ccc7]) by PH7PR07MB9538.namprd07.prod.outlook.com
- ([fe80::5dbd:49e3:4dc:ccc7%4]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
- 08:45:59 +0000
-From: Pawel Laszczak <pawell@cadence.com>
-To: Peter Chen <peter.chen@kernel.org>
-CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] usb: cdnsp: Fix incorrect usb_request status
-Thread-Topic: [PATCH] usb: cdnsp: Fix incorrect usb_request status
-Thread-Index: AQHa/2Tn03ME/LN6AkWudh1fxcnHPLJIy8/AgAAKNoCAAAX1oA==
-Date: Thu, 5 Sep 2024 08:45:59 +0000
-Message-ID:
- <PH7PR07MB95383CF665431DBDACD73B65DD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
-References: <20240905072541.332095-1-pawell@cadence.com>
- <PH7PR07MB95382F640BC61712E986895BDD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
- <20240905080543.GC325295@nchen-desktop>
-In-Reply-To: <20240905080543.GC325295@nchen-desktop>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-dg-ref:
- PG1ldGE+PGF0IGFpPSIwIiBubT0iYm9keS50eHQiIHA9ImM6XHVzZXJzXHBhd2VsbFxhcHBkYXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUtNmI4NGJhMjllMzViXG1zZ3NcbXNnLTQ0Y2VjMmQwLTZiNjMtMTFlZi1hOGI1LTYwYTVlMjViOTZhM1xhbWUtdGVzdFw0NGNlYzJkMi02YjYzLTExZWYtYThiNS02MGE1ZTI1Yjk2YTNib2R5LnR4dCIgc3o9IjQ2NjAiIHQ9IjEzMzY5OTk5NTU4MjI3MjQ2MiIgaD0idmZZYjhIMzRMdTBhVzh3ajRVbEpnejFHN3E0PSIgaWQ9IiIgYmw9IjAiIGJvPSIxIi8+PC9tZXRhPg==
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR07MB9538:EE_|CY8PR07MB9593:EE_
-x-ms-office365-filtering-correlation-id: 03f4a145-41f4-41de-8f07-08dccd872a89
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?gd4HVGWluzzAbOk5w2DzJxaK5Yt6sl7k9b+rkoivekbhlr1T3eLpBQeGSQyN?=
- =?us-ascii?Q?GbZ7oZs0m+5wxRyaijBdSrUEEAPyeGuLL6V10Txbre+VDVjutBgqV9HkCK9b?=
- =?us-ascii?Q?+ondyZZcCioCczs8l9BH+jX0qS2AOWqUDpwNHoaCTovK495fkOz/+oX6metu?=
- =?us-ascii?Q?DgTaOHVUsqhXn5Fgz6LIWvtZTNYJ2BUEexIkUXqh65HjPOkcJNXY1xTcH9t0?=
- =?us-ascii?Q?wevL6NrusfnBLAvUXTM0ymUKKKTyQh0Gd5V1WGIOHrs39bb71zaAXr/+e+IG?=
- =?us-ascii?Q?PecRS7rAZzg19Ckr7eNCUlSisbkE6LNpBhwBCfdl701pmx5hSSvh2Gnn1Y+A?=
- =?us-ascii?Q?XRdDNmsyRQsM5A1sLMV+CF+zgBdKthlFQEmZf/L8kuuIXaz0d/P07MF497Hk?=
- =?us-ascii?Q?ZnW4NCjuxUFgds7LiyvPl4EMSoRMRj6YUPH9RftouQL/VutOU2k1ln+uQ+v1?=
- =?us-ascii?Q?SCyiGoNtqYBcFESqkRvTBS43H1HZ3kKOi05xOysUjIk6lBtWabe2eMOVM/kh?=
- =?us-ascii?Q?z5WacFeMjdB8bi/WVij1eE7VVriaJxAuax1fXw11lj4ME3/4r+tO6hp38yVz?=
- =?us-ascii?Q?MYoiHC5AUtmGwb/RTPllM1ZLdVFiS1xv0HAeiDXcqgZdqaw95zCt0L+Hhxp7?=
- =?us-ascii?Q?8j7r0FzFT9xg6kRH5nLg4xIcgVFV+b48dEom9fL3c4SusLcV1SCFX7DjLmvv?=
- =?us-ascii?Q?h7FbzyY9md/SKC43mHvmeT6ewxF0euri7T4uF8BM45v66xg4OYJiPEF0gBRO?=
- =?us-ascii?Q?14hTRmkQ/2rfbVsDTjGd04MfTfG0XjJhI6dSQpOtG/G9WMYxs6F88uldOCDJ?=
- =?us-ascii?Q?RixpbSK6r4gVh2caoNf07VEjIKu23IYxfb+nICtULgdVyouByaWRGf6e7TiP?=
- =?us-ascii?Q?jTD1RcilwGtn0auzEjei1bAeSy3sMJ4MoMIn9obgaekyEX+XOUU9h/9H2am9?=
- =?us-ascii?Q?CuopDizjNa266CdfwF7QsH4z7dwM/GK+1vG33Hm048xudYhm01FQHmTsrRqx?=
- =?us-ascii?Q?6zYX6vm4ReUnga9CdT/Y4shmy9LR4UwMQ18896jjz2wpdDvp/Z+qZPOipzVR?=
- =?us-ascii?Q?+4Qh3mzEUQHRx0aUjFVKTPBK9VIcCdc7/V4p0m/+sgkR4+RlUuLBmzu96am2?=
- =?us-ascii?Q?XVDl/vcrWuJsgHXTHrp7Ng1oaNPilbfybyjviXKSW9daNxoGz/iHFhV7W8CA?=
- =?us-ascii?Q?rp8bXkM5AMvP1wE6ByRDRUBKhQbCwFZzaEx8vvPLnJrWrV3/hTvHWfzN7dDt?=
- =?us-ascii?Q?eBg1LU+m85y9wCJmIIstkKDYZMoSEYbZPIKglIf2TsOZxYsg9iuVEKU0NUIc?=
- =?us-ascii?Q?nKPhGgPDy8tsAgKFpkueBDNRyvecL36Fvnf2/vWLNCMVATxwEcljC9oapRT/?=
- =?us-ascii?Q?6n1Rie7MWdE6ycweCv+1H94yFOcQkrZMFKLRdfNruDR7E5fkTA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR07MB9538.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?2Ltka+XPrNl5LUqw1ippaYQNGZxS32tghj4saEjurNM+TiTXN90Xm/RlHT0i?=
- =?us-ascii?Q?dMU35O7ofpuaCBXGIGPK5y9p34rCS7nscF9lnG8kbbarl9LPBWp6uOvvMoCo?=
- =?us-ascii?Q?cbdd42mid5hvjWPQqvQ4e5+KBaiGtyUg1ubaaBB9pvU0Pxu/fZ3Keb/PUwZx?=
- =?us-ascii?Q?Z66TiwjodVVBdORk5d01k43YCdVbJxJi/P9v0YyErSYSvHaH/mBju9L7Q2er?=
- =?us-ascii?Q?nRIWAKQAoaGqdrCpvG8KXtrWDYTy8R21/EhGd+2zCJFbnFg4gkoA79nMc1nl?=
- =?us-ascii?Q?jImaj9xyHvsmRvXwGcqiyJsMWXpxmWaeFmr4bu5Put99BoZOI0lPz9DZVZi3?=
- =?us-ascii?Q?cgiaPeI1vwl2ubUtCDeP+H540HqbZZr0bu1edlkgwK9DTPSIZVsOWX1Q7Imu?=
- =?us-ascii?Q?okY5NRFKTy9wEE/KC87RwcWGMyO+ZOryXu/boL1VpnHQkwsrNloZpeje6PSD?=
- =?us-ascii?Q?bvq1J+stU4Xn/yqffb0HiBsVJ/1DwJoffzqnUBkY1Vbjfif9YzNtWhYJDi1Y?=
- =?us-ascii?Q?U+Ovz82khF8Pbqo90DIYDtoaOGg1bNkoo1hO9uor/HipZr35jTvB4KaD2zr1?=
- =?us-ascii?Q?0/zehS+Tum2iEvHUukj+Im7NIx4vnRPSqAwssM1Sh4fnrcjpy4YnVCQ0jnCx?=
- =?us-ascii?Q?o5dP9rrsGtOmgRtbNb8CZvwcgd4Sp9Ezbc6Dtb7WVLAFt9HyKrwGkNntxAlm?=
- =?us-ascii?Q?+LHrJmR/9LwPsENPXLzxEpPRIxzOdQ5Lzlt0EDcUQ9TaN5WSnRyP+JBzfM0K?=
- =?us-ascii?Q?sWTPFNYJwMDQzf3kMfbm0Na6jtwQRnzWn2TTA6cF98DToLMVTPAa/yXK/ODp?=
- =?us-ascii?Q?u0fDWIJA00wbOui0X8K6R60pRmb4T4pYjma1wwuhFAG14MxNtCPbSCMka2R8?=
- =?us-ascii?Q?saAvS4mFuOCRYguGF7Ymprwhi6yvfAhhhLgeZrW/Ac2OkNTAE1MG7TWxX7wE?=
- =?us-ascii?Q?LPdMssTLAKcoJR0E1eIxTea5jxNVF7VWyD9gqvhvkYlp7NTXLwBhFE3DTxTX?=
- =?us-ascii?Q?Xivf23/UNJanFIatmH9P6T5t1aEoNKprFKDVDAznT2KXeAMvjkGAHFBKzJLT?=
- =?us-ascii?Q?dAsDlwGknFLgb3gasSXNqhKa0gXT2LhJaEy112kmVRriWtroqmSDvmguVVj9?=
- =?us-ascii?Q?akt4ldYPMvY0tFYvBvlMf7HCHAtX4Z1cz+GI2IlnY7ORf3shEZJj6BtJ3lG1?=
- =?us-ascii?Q?mzSID2mPqowXBDGEYSzyc3PX8bM7BCyUHyo8OK3WGcR+Iezat0i18SNuBryz?=
- =?us-ascii?Q?HZ2F+fcM2CFPLjyoAp8tCB0oWt0qgeFL8jzwo/GaJA1A3AQadl4VFnnP9IxS?=
- =?us-ascii?Q?p5k9VjnYK+CIjuZblCNUGL9qi3Qkf+IIBzNq+o7ZHFruxpFpSFsChbsB+Tdz?=
- =?us-ascii?Q?1Jpkko0fvwlWhtZ2/GssyNfo6cOgUyqIxSruK2W6YFO2KwQy5Krmsku75LzF?=
- =?us-ascii?Q?x7Likz4m0Rm88jfZVFIwQtKmz1gXKHKLWTePWTLUitNgGjZgNvw4HVMNJvV1?=
- =?us-ascii?Q?L7148TuLAey268gq1Tpuu7gaETh6LlUuq9mdLJW8HirYkVt/6/YwHvHZJop2?=
- =?us-ascii?Q?m7p3+u8qM34XzjHXOocGDCWBazym5S17bYOOOzi7?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013E819538A;
+	Thu,  5 Sep 2024 08:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725526076; cv=none; b=ipabeDNPkuBdoOV4VbRQCBAsQwhaSz/oa2OY/iAE6Ej7Du/RnPG8i1PlzjwwZBFTxw+c4tQpi/hIf4JyVXWXLrL7SW0LOb7mefiJL/h/lFa1tNIZXAnFYk8BalGH7woQCPpfrAujEGot9H9fZhXkcoAK1KEBUgNKXcAbc3/iPl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725526076; c=relaxed/simple;
+	bh=DnSuif62uCCVhEeRI162fm17cbXet/3kgwd0VQ3vzW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KAizto+xVmXFxmF0lYq2FipCxvDcZfqr1fKcOo5UOl+opzndpNr29lc9TjOswfrg7v+QppNcLK2SvqrjcAzks0n1EcnmydEqOAqiOcfvykIjVvPmYUhAyfmHQQH89tVNV+aCOYafI2LeW5tzqrzTcPr1WnmyZmx90NAqI9PCvJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5F9kJBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C041CC4AF09;
+	Thu,  5 Sep 2024 08:47:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725526075;
+	bh=DnSuif62uCCVhEeRI162fm17cbXet/3kgwd0VQ3vzW0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a5F9kJBHbKVu5NS4eqt9wfG8qyufkBzZopWKazo+jGncJNZ8epN/xCNBaC0hnkoUe
+	 MZLHoAXLXgZoFU9fLTl0ee81NBvd7cQJ+UufyCmpXruMRo57IQTkN/pL2LDrQsB7Rp
+	 XrtL8oh+Hpw8YGr5oDL3iP5MBfyuq5EYRwYl34f9C+qpc2WQxCoAhQaV/QU5SWP5Hh
+	 wwYuXOSRwrT6xh++S/aJjLb0wRjDNlujly5qE0GnVdKEaZBBUrKex3YLdZWgtWDyPQ
+	 YWi4fYo4ZaOu26/3+TAlA3EbW2rxlD4Td6S9R4psU4PawVkACOUXFov+zcNEwqAQfM
+	 MlsN2bs06o+nA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sm8A1-000000002xD-3oNJ;
+	Thu, 05 Sep 2024 10:48:13 +0200
+Date: Thu, 5 Sep 2024 10:48:13 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	=?utf-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4=?= Prado <nfraprado@collabora.com>,
+	linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/8] serial: qcom-geni: fix fifo polling timeout
+Message-ID: <ZtlwTQNZTdyzBChw@hovoldconsulting.com>
+References: <20240902152451.862-1-johan+linaro@kernel.org>
+ <20240902152451.862-2-johan+linaro@kernel.org>
+ <CAD=FV=WDx69BqK2MmhOMfKdEUtExo1wWFMY_n3edQhSF7RoWzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: cadence.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR07MB9538.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03f4a145-41f4-41de-8f07-08dccd872a89
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2024 08:45:59.7489
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vcf6T9PJQnpIExi4cWiCWBoffHcZ75BeChQwWkmEqNXSFcPO+yJy8NvrFgXw0r6+k2g/RmIU/Fxlnf1n+jtrGBo0RrJy3Zgb5lWEhBQmaXw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR07MB9593
-X-Proofpoint-ORIG-GUID: yXB_UKK0AxFuDKTI-VAGCxRSORcBPOcw
-X-Proofpoint-GUID: yXB_UKK0AxFuDKTI-VAGCxRSORcBPOcw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-05_04,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 spamscore=0
- adultscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
- suspectscore=0 phishscore=0 bulkscore=0 mlxlogscore=669 mlxscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2409050064
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=WDx69BqK2MmhOMfKdEUtExo1wWFMY_n3edQhSF7RoWzg@mail.gmail.com>
 
->
->On 24-09-05 07:31:10, Pawel Laszczak wrote:
->> Fix changes incorrect usb_request->status returned during disabling
->> endpoints. Before fix the status returned during dequeuing requests
->> while disabling endpoint was ECONNRESET.
->> Patch changes it to ESHUTDOWN.
->
->Would you please explain why we need this change?
+On Wed, Sep 04, 2024 at 02:50:57PM -0700, Doug Anderson wrote:
+> On Mon, Sep 2, 2024 at 8:26 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+> >
+> > The qcom_geni_serial_poll_bit() can be used to wait for events like
+> > command completion and is supposed to wait for the time it takes to
+> > clear a full fifo before timing out.
+> >
+> > As noted by Doug, the current implementation does not account for start,
+> > stop and parity bits when determining the timeout. The helper also does
+> > not currently account for the shift register and the two-word
+> > intermediate transfer register.
+> >
+> > Instead of determining the fifo timeout on every call, store the timeout
+> > when updating it in set_termios() and wait for up to 19/16 the time it
+> > takes to clear the 16 word fifo to account for the shift and
+> > intermediate registers. Note that serial core has already added a 20 ms
+> > margin to the fifo timeout.
+> >
+> > Also note that the current uart_fifo_timeout() interface does
+> > unnecessary calculations on every call and also did not exists in
+> > earlier kernels so only store its result once. This also facilitates
+> > backports as earlier kernels can derive the timeout from uport->timeout,
+> > which has since been removed.
 
-This patch is needed for UVC gadget.=20
-During stopping streaming the class starts dequeuing usb requests and
-controller driver returns the -ECONNRESET status. After completion
-requests the class or application "uvc-gadget" try to queue this
-request again. Changing this status to ESHUTDOWN cause that UVC
-assume that endpoint is disabled, or device is disconnected and
-stop re-queuing usb requests.
+> > @@ -270,22 +270,21 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
+> >  {
+> >         u32 reg;
+> >         struct qcom_geni_serial_port *port;
+> > -       unsigned int baud;
+> > -       unsigned int fifo_bits;
+> >         unsigned long timeout_us = 20000;
+> >         struct qcom_geni_private_data *private_data = uport->private_data;
+> >
+> >         if (private_data->drv) {
+> >                 port = to_dev_port(uport);
+> > -               baud = port->baud;
+> > -               if (!baud)
+> > -                       baud = 115200;
+> > -               fifo_bits = port->tx_fifo_depth * port->tx_fifo_width;
+> > +
+> >                 /*
+> > -                * Total polling iterations based on FIFO worth of bytes to be
+> > -                * sent at current baud. Add a little fluff to the wait.
+> > +                * Wait up to 19/16 the time it would take to clear a full
+> > +                * FIFO, which accounts for the three words in the shift and
+> > +                * intermediate registers.
+> > +                *
+> > +                * Note that fifo_timeout_us already has a 20 ms margin.
+> >                  */
+> > -               timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
+> > +               if (port->fifo_timeout_us)
+> > +                       timeout_us = 19 * port->fifo_timeout_us / 16;
+> 
+> It made me giggle a bit that part of the justification for caching
+> "fifo_timeout_us" was to avoid calculations each time through the
+> function. ...but then the code does the "19/16" math here instead of
+> just including it in the cache. ;-) ;-) ;-)
 
-Thanks,
-Pawel
+Heh, yeah, but I was really talking about uart_fifo_timeout() doing
+unnecessary calculations on each call (and that value used to be
+calculated once and stored for later use).
 
->
->Peter
->
->>
->> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
->> USBSSP DRD Driver")
->> cc: stable@vger.kernel.org
->> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
->> ---
->>  drivers/usb/cdns3/cdnsp-ring.c | 6 ++++--
->>  1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/usb/cdns3/cdnsp-ring.c
->> b/drivers/usb/cdns3/cdnsp-ring.c index 1e011560e3ae..bccc8fc143d0
->> 100644
->> --- a/drivers/usb/cdns3/cdnsp-ring.c
->> +++ b/drivers/usb/cdns3/cdnsp-ring.c
->> @@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_device
->*pdev,
->>  	seg =3D cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
->>  			      cur_td->last_trb, hw_deq);
->>
->> -	if (seg && (pep->ep_state & EP_ENABLED))
->> +	if (seg && (pep->ep_state & EP_ENABLED) &&
->> +	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
->>  		cdnsp_find_new_dequeue_state(pdev, pep, preq-
->>request.stream_id,
->>  					     cur_td, &deq_state);
->>  	else
->> @@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_device
->*pdev,
->>  	 * During disconnecting all endpoint will be disabled so we don't
->>  	 * have to worry about updating dequeue pointer.
->>  	 */
->> -	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
->> +	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
->> +	    pep->ep_state & EP_DIS_IN_RROGRESS) {
->>  		status =3D -ESHUTDOWN;
->>  		ret =3D cdnsp_cmd_set_deq(pdev, pep, &deq_state);
->>  	}
->> --
->> 2.43.0
->>
+I also realised that we need to account for the intermediate register
+after I wrote the initial commit message, and before that this was just
+a shift and add.
+
+> That being said, I'm not really a fan of the "19 / 16" anyway. The 16
+> value is calculated elsewhere in the code as:
+> 
+> port->tx_fifo_depth = geni_se_get_tx_fifo_depth(&port->se);
+> port->tx_fifo_width = geni_se_get_tx_fifo_width(&port->se);
+> port->rx_fifo_depth = geni_se_get_rx_fifo_depth(&port->se);
+> uport->fifosize =
+>   (port->tx_fifo_depth * port->tx_fifo_width) / BITS_PER_BYTE;
+> 
+> ...and here you're just hardcoding it to 16. Then there's also the
+> fact that the "19 / 16" will also multiply the 20 ms "slop" added by
+> uart_fifo_timeout() which doesn't seem ideal.
+
+Indeed, and the early console code also hardcodes this to 16.
+
+I don't care about the slop being 20 ms or 23.5, this is just a timeout
+for the error case.
+
+This will over count a bit if there is uart hw with 256 B fifos, but
+could potentially undercount if there is hw with less than 16 words. I'm
+not sure if such hw exists, but I'll see what I can find out.
+
+> How about this: we just change "uport->fifosize" to account for the 3
+> extra words? So it can be:
+> 
+> ((port->tx_fifo_depth + 3) * port->tx_fifo_width) / BITS_PER_BYTE;
+> 
+> ...then the cache will be correct and everything will work out. What
+> do you think?
+
+I don't think uart_fifo_timeout traditionally accounts for the shift
+register and we wait up to *twice* the time it takes to clear to fifo
+anyway (in wait_until_sent). The intermediate register I found here
+could perhaps be considered part of the fifo however.
+
+I'll give this some more thought.
+
+Johan
 
