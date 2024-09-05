@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7099F96D472
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A78F96D4EE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36111C22C66
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC782828BE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AAB1993B6;
-	Thu,  5 Sep 2024 09:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7D6194A45;
+	Thu,  5 Sep 2024 09:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmQrIrLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsAV5Nv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A341319924F;
-	Thu,  5 Sep 2024 09:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A42518D65E;
+	Thu,  5 Sep 2024 09:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529920; cv=none; b=YYzQtQY1vx4UEgTzgShaIFEUJqhfsXEHkTI1K+GHPSU+xElJz+GB+XpLT+wBQxeLP0GPv12uXi23dw6M94NM0EttUY4+KUC8aTGyTt8aUONS9hmHn4BeAfkTdDVj7rHJivZ7ybstWItNLNY0Y3CRIMGk+7BiLWbtF6+kDEkwqts=
+	t=1725530278; cv=none; b=tCQVgRCmsv++BZEScCG17Loyj2rjPRcWg+s4QvCOA2X32lwpEb4Mi/PntnPimSWSJcTYYIbnimBkkdwswyUCdXCT0tdctHTaRJlq+IC9okYc0P/CDz8ctFOOe/ZbSqY5MzYgs0z131d+NtAYovVXETIlfyBSZFEEYpSLnWSWxYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529920; c=relaxed/simple;
-	bh=9mp4/VhyGcRTE023V6BU7HIcahVgsLbubyd56seoOuo=;
+	s=arc-20240116; t=1725530278; c=relaxed/simple;
+	bh=F7WqWebCNdzFgXb/j0Eufd7l+ZIG4e4v3R0EKXbZYf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCOhCeYwWPQ+Su0uEx1XrPF1i+GxIq221Ba8j74rctOoH1X1Bg9vprnYTSQoAzaypgkTGUt60RArbr8JYnLH8ryqOFmuQeGKuKz1W1AYfd6ppxdr0lYqqnRPHqlg+BLpNV+JkwetYX35KselBJPli8L/zpCA7OwzhBygbLBAx4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmQrIrLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2998BC4CEC6;
-	Thu,  5 Sep 2024 09:51:59 +0000 (UTC)
+	 MIME-Version; b=dIa5lv9u9jBtRU6PaXC9M1SAMwJIRn83I3axcC19BBuHBjINRvgPNFg3cXgLVO90yy3mxOhqH+vnDR+v70UOb8VxjVIdrB5hjCoBxeaEVglnyU8q95SDdDGSimpggNOx+AfkCqkjFvziOjiLhizuzOfKTmH6dY/Wog1Czsmcvg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsAV5Nv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCE5C4CEC3;
+	Thu,  5 Sep 2024 09:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529920;
-	bh=9mp4/VhyGcRTE023V6BU7HIcahVgsLbubyd56seoOuo=;
+	s=korg; t=1725530277;
+	bh=F7WqWebCNdzFgXb/j0Eufd7l+ZIG4e4v3R0EKXbZYf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmQrIrLrTjt6vuGElgLlTClLIyg3rN2IwO7NSew1cbf8ox8MgleQO4LuYrAnTWIrV
-	 fgJSbqu+uJuFZ2zYOaKyhldkUUJUA81gwQY/48SEJ+IT5gTKJ9N7qjqGi5mA/RtUfd
-	 Of1hVmGx+ovc+kK6oMvFH5NCsOVRGotRBlOVg2+Y=
+	b=zsAV5Nv4HcVWQzVBp0ZSdZ3H7LEGO2L+1iLjQV4Jk7rW59444bwUqYbcmnu6e+3X4
+	 CHfsF2jIwhtr1J/jjFJj/l4uDpo022P4eNjtj8kEHu/rj5OAdWRrTuL7e0Cs3QcS+p
+	 YsbEfTpMBLXRV9r2H8gHw0L6OQZntdZLniQ2B1UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.10 183/184] i2c: Use IS_REACHABLE() for substituting empty ACPI functions
+	Haoran Liu <liuhaoran14@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 109/132] drm/meson: plane: Add error handling
 Date: Thu,  5 Sep 2024 11:41:36 +0200
-Message-ID: <20240905093739.472243237@linuxfoundation.org>
+Message-ID: <20240905093726.467711338@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Haoran Liu <liuhaoran14@163.com>
 
-commit 71833e79a42178d8a50b5081c98c78ace9325628 upstream.
+[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
 
-Replace IS_ENABLED() with IS_REACHABLE() to substitute empty stubs for:
-    i2c_acpi_get_i2c_resource()
-    i2c_acpi_client_count()
-    i2c_acpi_find_bus_speed()
-    i2c_acpi_new_device_by_fwnode()
-    i2c_adapter *i2c_acpi_find_adapter_by_handle()
-    i2c_acpi_waive_d0_probe()
+This patch adds robust error handling to the meson_plane_create
+function in drivers/gpu/drm/meson/meson_plane.c. The function
+previously lacked proper handling for potential failure scenarios
+of the drm_universal_plane_init call.
 
-commit f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI
-functions") partially fixed this conditional to depend on CONFIG_I2C,
-but used IS_ENABLED(), which is wrong since CONFIG_I2C is tristate.
-
-CONFIG_ACPI is boolean but let's also change it to use IS_REACHABLE()
-to future-proof it against becoming tristate.
-
-Somehow despite testing various combinations of CONFIG_I2C and CONFIG_ACPI
-we missed the combination CONFIG_I2C=m, CONFIG_ACPI=y.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI functions")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408141333.gYnaitcV-lkp@intel.com/
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
+[narmstrong: fixe the commit subject]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i2c.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -1053,7 +1053,7 @@ static inline int of_i2c_get_board_info(
- struct acpi_resource;
- struct acpi_resource_i2c_serialbus;
+diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
+index 815dfe30492b..b43ac61201f3 100644
+--- a/drivers/gpu/drm/meson/meson_plane.c
++++ b/drivers/gpu/drm/meson/meson_plane.c
+@@ -534,6 +534,7 @@ int meson_plane_create(struct meson_drm *priv)
+ 	struct meson_plane *meson_plane;
+ 	struct drm_plane *plane;
+ 	const uint64_t *format_modifiers = format_modifiers_default;
++	int ret;
  
--#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
-+#if IS_REACHABLE(CONFIG_ACPI) && IS_REACHABLE(CONFIG_I2C)
- bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
- 			       struct acpi_resource_i2c_serialbus **i2c);
- int i2c_acpi_client_count(struct acpi_device *adev);
+ 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
+ 				   GFP_KERNEL);
+@@ -548,12 +549,16 @@ int meson_plane_create(struct meson_drm *priv)
+ 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
+ 		format_modifiers = format_modifiers_afbc_g12a;
+ 
+-	drm_universal_plane_init(priv->drm, plane, 0xFF,
+-				 &meson_plane_funcs,
+-				 supported_drm_formats,
+-				 ARRAY_SIZE(supported_drm_formats),
+-				 format_modifiers,
+-				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
++					&meson_plane_funcs,
++					supported_drm_formats,
++					ARRAY_SIZE(supported_drm_formats),
++					format_modifiers,
++					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	if (ret) {
++		devm_kfree(priv->drm->dev, meson_plane);
++		return ret;
++	}
+ 
+ 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
+ 
+-- 
+2.43.0
+
 
 
 
