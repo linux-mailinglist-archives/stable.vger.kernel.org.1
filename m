@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-73479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9694496D50A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2246A96D45C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9F181C2116C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16302811ED
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D69D194A64;
-	Thu,  5 Sep 2024 09:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FB0198A37;
+	Thu,  5 Sep 2024 09:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtaewKJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuWyoY/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96EC19413B;
-	Thu,  5 Sep 2024 09:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17271991A1;
+	Thu,  5 Sep 2024 09:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530367; cv=none; b=AYaRProeufcXZgWm1NdcGEWHufHp5EqTdEfEFiUmjt4VnA4WXfTsmv43hRtENF4uNfBU8yBn7+mS0C+lxmnwsruU6xCYq17R01hU61t3hwulEc/cQxbBieO/o3Mtiv/f2mxfnNeD4N4oxUPV091IXdyj1mnbSCADWjJtPq5dw+I=
+	t=1725529869; cv=none; b=qDzgq4PQ20iQ6To2NQktNrvaX3zwycygbXy7XIUqfVXZOUiSYAdaqVKhlYEl6pVforweKssNRNNS/7wt9cg4IGenzegc+80bTbCV3jfkYag5o+944WYJUljKRIO8BRs5rK1NazueNFl3qdDENLCnVGdsrdopN1bRqjlaKP+Fbdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530367; c=relaxed/simple;
-	bh=Z/ZIRusNI8gGMBdD1SbcA7UKTBqq4Hoy3KN0OxaSOJQ=;
+	s=arc-20240116; t=1725529869; c=relaxed/simple;
+	bh=1pEk82SfYXv5AfQQIatIlXyRs2jjMLM0t+++QA/Y0KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jU01DwvAmqXWJCq78lBIPzFo+rXsokSRKc4ZFMClbt6VRohRtiw6kyVrrM5p29E7yITBm+5mMX4/uHgru39sl7yJ9V1D5+Ar3MZHrSOVrgYWz25h3LJzjimPHpTn3oKwb6bXlYEkGFhfeFlKdIUAyGY9JxCCTmUa2cLwbyLU74w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtaewKJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207BBC4CEC3;
-	Thu,  5 Sep 2024 09:59:25 +0000 (UTC)
+	 MIME-Version; b=t4aaIlKUELE1d88NlUY8+8cKZXbztqttlRtP/UL5c3RhOirhu/aza0/jAyG2VMAWgOzEGh/Yl114ogfDjUZhq/6eWAQ3K1j/c8hwMc2CCe5+l4Qqg9nAj8AQHJy30+UFSjy0hNwC7p3JCZIsm4vcD5Ohk+pvfkyS469l+84i96k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuWyoY/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DFDC4CEC3;
+	Thu,  5 Sep 2024 09:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530366;
-	bh=Z/ZIRusNI8gGMBdD1SbcA7UKTBqq4Hoy3KN0OxaSOJQ=;
+	s=korg; t=1725529869;
+	bh=1pEk82SfYXv5AfQQIatIlXyRs2jjMLM0t+++QA/Y0KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtaewKJuREg4HRpZuXAbNlUXEPndJgIGJYHr4Q1ePwymxOgfQ5QT3sUrohi0IvfRr
-	 IggW/yWby9g6AAujPit0r8CSER9DvNY6TIONAPcG3o5ey3aftPInuHVk57aGghybB+
-	 1+1x3b5Vpq1VUBc8O61h6RQ1UJJjUvqvitCzA+mo=
+	b=uuWyoY/CBw7L6Oy8IRxMw9y5QPJ0lVVUnlzuOSW9HMNURAHCHEUSwZ+2MCdg33sXj
+	 05i6tESTPkV5Dad8MnpgRdw1VE3tkQ5MOHlRY5tvL9nV/7ujkjQnsvpzq8lppPw37A
+	 07ALduhh3fKzu3ybNMYKPOrovbzw37AdJRVy8ups=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	winstang <winstang@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/132] soc: qcom: smem: Add qcom_smem_bust_hwspin_lock_by_host()
+Subject: [PATCH 6.10 168/184] drm/amd/display: added NULL check at start of dc_validate_stream
 Date: Thu,  5 Sep 2024 11:41:21 +0200
-Message-ID: <20240905093725.900546578@linuxfoundation.org>
+Message-ID: <20240905093738.897657004@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lew <quic_clew@quicinc.com>
+From: winstang <winstang@amd.com>
 
-[ Upstream commit 2e3f0d693875db698891ffe89a18121bda5b95b8 ]
+[ Upstream commit 26c56049cc4f1705b498df013949427692a4b0d5 ]
 
-Add qcom_smem_bust_hwspin_lock_by_host to enable remoteproc to bust the
-hwspin_lock owned by smem. In the event the remoteproc crashes
-unexpectedly, the remoteproc driver can invoke this API to try and bust
-the hwspin_lock and release the lock if still held by the remoteproc
-device.
+[Why]
+prevent invalid memory access
 
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-3-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[How]
+check if dc and stream are NULL
+
+Co-authored-by: winstang <winstang@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: winstang <winstang@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c       | 26 ++++++++++++++++++++++++++
- include/linux/soc/qcom/smem.h |  2 ++
- 2 files changed, 28 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index d4a89d2bb43b..2e8568d6cde9 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -359,6 +359,32 @@ static struct qcom_smem *__smem;
- /* Timeout (ms) for the trylock of remote spinlocks */
- #define HWSPINLOCK_TIMEOUT	1000
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index b43e489e8d61..786b56e96a81 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4672,6 +4672,9 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
  
-+/* The qcom hwspinlock id is always plus one from the smem host id */
-+#define SMEM_HOST_ID_TO_HWSPINLOCK_ID(__x) ((__x) + 1)
+ enum dc_status dc_validate_stream(struct dc *dc, struct dc_stream_state *stream)
+ {
++	if (dc == NULL || stream == NULL)
++		return DC_ERROR_UNEXPECTED;
 +
-+/**
-+ * qcom_smem_bust_hwspin_lock_by_host() - bust the smem hwspinlock for a host
-+ * @host:	remote processor id
-+ *
-+ * Busts the hwspin_lock for the given smem host id. This helper is intended
-+ * for remoteproc drivers that manage remoteprocs with an equivalent smem
-+ * driver instance in the remote firmware. Drivers can force a release of the
-+ * smem hwspin_lock if the rproc unexpectedly goes into a bad state.
-+ *
-+ * Context: Process context.
-+ *
-+ * Returns: 0 on success, otherwise negative errno.
-+ */
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host)
-+{
-+	/* This function is for remote procs, so ignore SMEM_HOST_APPS */
-+	if (host == SMEM_HOST_APPS || host >= SMEM_HOST_COUNT)
-+		return -EINVAL;
-+
-+	return hwspin_lock_bust(__smem->hwlock, SMEM_HOST_ID_TO_HWSPINLOCK_ID(host));
-+}
-+EXPORT_SYMBOL_GPL(qcom_smem_bust_hwspin_lock_by_host);
-+
- /**
-  * qcom_smem_is_available() - Check if SMEM is available
-  *
-diff --git a/include/linux/soc/qcom/smem.h b/include/linux/soc/qcom/smem.h
-index a36a3b9d4929..03187bc95851 100644
---- a/include/linux/soc/qcom/smem.h
-+++ b/include/linux/soc/qcom/smem.h
-@@ -14,4 +14,6 @@ phys_addr_t qcom_smem_virt_to_phys(void *p);
- 
- int qcom_smem_get_soc_id(u32 *id);
- 
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host);
-+
- #endif
+ 	struct dc_link *link = stream->link;
+ 	struct timing_generator *tg = dc->res_pool->timing_generators[0];
+ 	enum dc_status res = DC_OK;
 -- 
 2.43.0
 
