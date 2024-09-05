@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2425296D4CF
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B4596D451
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4A8D281587
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7054BB23AE5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A0F194ACD;
-	Thu,  5 Sep 2024 09:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0965C198856;
+	Thu,  5 Sep 2024 09:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFAQuZfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT980o6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4012D194A64;
-	Thu,  5 Sep 2024 09:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EAF18D65E;
+	Thu,  5 Sep 2024 09:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530189; cv=none; b=f87HHZGQQw/VawVabvHT2IdX1DUTzS7G4t8c/jz3fX2+t0PFdJwger4LEeHkJtxrKbOp30Vf0rTtB2S5CyKQRm+EXAewpTJYGA9nKVa9Fu3coWam6Xsz3YXHO+UMDq5Gi5FH+Pm/sZqwKL1ELBywP+v4UFG/10F2TxRlb5zXD6g=
+	t=1725529834; cv=none; b=u+RtiPzULhTy8rvjRzRhQ/rxiqQR+iaGRSMWTJSMT/d+mp4mUnvXmUjIuIF+GXfV8kNzonI6LapONkOCEjoUTyBv5OH0siTQS+jTkUIHYEnjoD+w0AvfSxK7xaukn/d0RI0qaeHk8pWmCg2yv4AYxCBUhotfy2RvmErMG6Na1lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530189; c=relaxed/simple;
-	bh=424TuQucpXk/x3goSt8fFRVVWFc+hIquZfkpDXxTaHw=;
+	s=arc-20240116; t=1725529834; c=relaxed/simple;
+	bh=Ue3IeO+uoZyorlOLlP7Gbrp2Vntr4kA5dfwB5hhTC48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eafL2cYz/b5UmQZ56fmeoW3BmJsu3Ao0+vsIbslSgKxvjPd3wKabQqK6BHr4ISCwAWgPuE0s1cfMClVbl0AW1woZfKPNHyMvXKVdpcVV1BtMhg3hcMyrCTO3ePBEP27pl4vrYFqi+fAcFpROp3COR8cEapRFY6AYN/TwIS6gkts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFAQuZfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48B2C4CEC3;
-	Thu,  5 Sep 2024 09:56:28 +0000 (UTC)
+	 MIME-Version; b=tyFQoFLRAcRmgp7K7+SZcQtEurS3+Kdc/op+S3/tQqj8UqMwp8N+JhJgf7kv8YRSvP3jQmaibtXcE439o3M2kQMyyS2DZazQHyUfD4lM3a+kUlXVxyugWinRVsLvO7OHlDF3NcDDov2R6r5S3SXr0dKYoMkJvFdKZQ7Rb9hcRZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lT980o6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDDAC4CEC3;
+	Thu,  5 Sep 2024 09:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530189;
-	bh=424TuQucpXk/x3goSt8fFRVVWFc+hIquZfkpDXxTaHw=;
+	s=korg; t=1725529834;
+	bh=Ue3IeO+uoZyorlOLlP7Gbrp2Vntr4kA5dfwB5hhTC48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFAQuZfPYkebouWywq7ZkWb7oxOv3XZzZl/EP/dKXMqOAPIOW719LFrSGiJ6GakVb
-	 39Hy4sop/7GlC0pzy9JoZEeNPzdGg/ZraCrNkqxy6Tn9KCrCVrZ1cAjgdLrCZuKO0h
-	 ohX8B79d1b0tJSox307w+9m7hZ1lSCymp62ORyCM=
+	b=lT980o6MwsE3uTKtLrrAS5KW4paZ62B6PCSZxhbdVDJkJPQqdGxqnsq+Exv1rvv12
+	 CaYZIObnJwOaEDg7jS/EqwDUcTwftc6oiij1hdt/7KlXitHrN9zeGbTPGSzmIy5PYM
+	 NAkoUQ4BRCh/9cZ5SEppieT6sxDOTE+8QRd4RlO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Olivier Dautricourt <olivierdautricourt@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/132] drm/amdgpu: fix the waring dereferencing hive
+Subject: [PATCH 6.10 155/184] dmaengine: altera-msgdma: properly free descriptor in msgdma_free_descriptor
 Date: Thu,  5 Sep 2024 11:41:08 +0200
-Message-ID: <20240905093725.400789861@linuxfoundation.org>
+Message-ID: <20240905093738.398091158@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Olivier Dautricourt <olivierdautricourt@gmail.com>
 
-[ Upstream commit 1940708ccf5aff76de4e0b399f99267c93a89193 ]
+[ Upstream commit 54e4ada1a4206f878e345ae01cf37347d803d1b1 ]
 
-Check the amdgpu_hive_info *hive that maybe is NULL.
+Remove list_del call in msgdma_chan_desc_cleanup, this should be the role
+of msgdma_free_descriptor. In consequence replace list_add_tail with
+list_move_tail in msgdma_free_descriptor.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This fixes the path:
+   msgdma_free_chan_resources -> msgdma_free_descriptors ->
+   msgdma_free_desc_list -> msgdma_free_descriptor
+
+which does not correctly free the descriptors as first nodes were not
+removed from the list.
+
+Signed-off-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Tested-by: Olivier Dautricourt <olivierdautricourt@gmail.com>
+Link: https://lore.kernel.org/r/20240608213216.25087-3-olivierdautricourt@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/dma/altera-msgdma.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index 429ef212c1f2..a4f9015345cc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1336,6 +1336,9 @@ static void psp_xgmi_reflect_topology_info(struct psp_context *psp,
- 	uint8_t dst_num_links = node_info.num_links;
+diff --git a/drivers/dma/altera-msgdma.c b/drivers/dma/altera-msgdma.c
+index 160a465b06dd..041f549c8c99 100644
+--- a/drivers/dma/altera-msgdma.c
++++ b/drivers/dma/altera-msgdma.c
+@@ -233,7 +233,7 @@ static void msgdma_free_descriptor(struct msgdma_device *mdev,
+ 	struct msgdma_sw_desc *child, *next;
  
- 	hive = amdgpu_get_xgmi_hive(psp->adev);
-+	if (WARN_ON(!hive))
-+		return;
-+
- 	list_for_each_entry(mirror_adev, &hive->device_list, gmc.xgmi.head) {
- 		struct psp_xgmi_topology_info *mirror_top_info;
- 		int j;
+ 	mdev->desc_free_cnt++;
+-	list_add_tail(&desc->node, &mdev->free_list);
++	list_move_tail(&desc->node, &mdev->free_list);
+ 	list_for_each_entry_safe(child, next, &desc->tx_list, node) {
+ 		mdev->desc_free_cnt++;
+ 		list_move_tail(&child->node, &mdev->free_list);
+@@ -588,8 +588,6 @@ static void msgdma_chan_desc_cleanup(struct msgdma_device *mdev)
+ 	list_for_each_entry_safe(desc, next, &mdev->done_list, node) {
+ 		struct dmaengine_desc_callback cb;
+ 
+-		list_del(&desc->node);
+-
+ 		dmaengine_desc_get_callback(&desc->async_tx, &cb);
+ 		if (dmaengine_desc_callback_valid(&cb)) {
+ 			spin_unlock_irqrestore(&mdev->lock, irqflags);
 -- 
 2.43.0
 
