@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED87296D4E8
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F099296D53D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34731F29B74
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D6B1F2A372
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D76E194AC7;
-	Thu,  5 Sep 2024 09:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D02719538A;
+	Thu,  5 Sep 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHiXq9Vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfgIaVtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BE81957FC;
-	Thu,  5 Sep 2024 09:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E3F1494DB;
+	Thu,  5 Sep 2024 10:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530258; cv=none; b=gwzFbck7OrsnHBfoixLEsJGHCjEhQdDddvpaFZg6LtIUaLgvUco2I1wfmeDTHSCPJyJW6lx0eDELcAMi6Q5X6X2O0BxxNdcZlc/2FgO01PjbZwP/thcRE+lTbLsPhrr0Jf2o8RivfYu2UwZDPe07Cllpo0gI5qtlW4x/SBU7arM=
+	t=1725530523; cv=none; b=e2SUOj24re3OaH0euqbsflhyNT0ckMwgSknkEVOxjJdmfcXB4oKavE/nsm04wb4Q0u5XB38ze/FADJ+PuFaYb+UW0jfsadkoWQsNphJ1pFJ0Qz2kxkj+u8CCkgUesj3oyJDKkfNaYilq+JSyKR4zJjBSNIjYRJF4TacbjfxyJ+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530258; c=relaxed/simple;
-	bh=BSESEP5zo3IuGGeFU7wkiwtJg249I3JaSltJkJnrg90=;
+	s=arc-20240116; t=1725530523; c=relaxed/simple;
+	bh=tNQTO+pgkN8b6DaReBcv+tTNMoB3lZRZ+nNJKa+nqAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTbeBikQY/uO/B1nNLbwRJs4TysSEzsDAoajYEettHLtPPkce4xQnGcfvXg3uviDKS6qe+P++g0DAHu3vQKc2KsJqEkwEEhXVRoMcK6tGlpJVCqMDT6pXujfZ25B8G0ITU0/XWIXF7isrtDVvt0RoAw9HD5RJG0udJ/i7XKNzD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHiXq9Vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEE6C4CEC3;
-	Thu,  5 Sep 2024 09:57:37 +0000 (UTC)
+	 MIME-Version; b=hlr+xYqqxRRbVPGf2/z0+QoirRD48oUrNTJRNQ4C8VWzLbttCEpxMq8Dztvdk6Uzf5o5L0jb6FqntYPabQK5agMRhJjPLs3CLQu2UwPJP5VWz+ynwqlX4M6L0ESl9jO/gxzw8GRn6l5CgUlM1+plBWDFjPX6KHdDaxZ98A+Rqcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfgIaVtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B51C4CEC3;
+	Thu,  5 Sep 2024 10:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530258;
-	bh=BSESEP5zo3IuGGeFU7wkiwtJg249I3JaSltJkJnrg90=;
+	s=korg; t=1725530522;
+	bh=tNQTO+pgkN8b6DaReBcv+tTNMoB3lZRZ+nNJKa+nqAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHiXq9Vw1GAW7Z9MC78m9usr3BSPi4pn/g/VOi4sCa8T/pa/b2gamwmF+pXPoY2fT
-	 vDLA/OK7E6BgP8O4ivNIXciFfrw0tz6HmxS/1Gi8sAjHhjhWFO2m4/DqurlJQ5biFs
-	 eabuHHl3IshbPzDAdaTY8X2iqy0ZyPZw3YvUI6as=
+	b=HfgIaVtgO08C4SbOcKg3IwSEWwyw1z0TEmsIIf1LBJhxSD/yoSZsjgGtvSfrzBO0a
+	 5zp7i5L8r5C8dKuvulSJkuaj6EQZg26IZx2r1vEOS+zmm+0E3dOqO81bWbgH2T8YwS
+	 c/0dg9niEOU2tv59nJCiEOKJHCEpnZNxRJ9AsGPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Firas Jahjah <firasj@amazon.com>,
-	Yehuda Yitschak <yehuday@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/132] RDMA/efa: Properly handle unexpected AQ completions
+Subject: [PATCH 6.1 050/101] drm/amd/pm: fix uninitialized variable warnings for vangogh_ppt
 Date: Thu,  5 Sep 2024 11:41:22 +0200
-Message-ID: <20240905093725.938876588@linuxfoundation.org>
+Message-ID: <20240905093718.094271644@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 2d0e7ba468eae365f3c4bc9266679e1f8dd405f0 ]
+[ Upstream commit b2871de6961d24d421839fbfa4aa3008ec9170d5 ]
 
-Do not try to handle admin command completion if it has an unexpected
-command id and print a relevant error message.
+1. Fix a issue that using uninitialized mask to get the ultimate frequency.
+2. Check return of smu_cmn_send_smc_msg_with_param to avoid using
+uninitialized variable residency.
 
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yehuda Yitschak <yehuday@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://lore.kernel.org/r/20240513064630.6247-1-mrgolin@amazon.com
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 30 ++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 16a24a05fc2a..bafd210dd43e 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
- /*
-- * Copyright 2018-2021 Amazon.com, Inc. or its affiliates. All rights reserved.
-+ * Copyright 2018-2024 Amazon.com, Inc. or its affiliates. All rights reserved.
-  */
- 
- #include "efa_com.h"
-@@ -406,8 +406,8 @@ static struct efa_comp_ctx *efa_com_submit_admin_cmd(struct efa_com_admin_queue
- 	return comp_ctx;
- }
- 
--static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
--						   struct efa_admin_acq_entry *cqe)
-+static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
-+						  struct efa_admin_acq_entry *cqe)
- {
- 	struct efa_comp_ctx *comp_ctx;
- 	u16 cmd_id;
-@@ -416,11 +416,11 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
- 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
--	if (!comp_ctx) {
-+	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
- 		ibdev_err(aq->efa_dev,
--			  "comp_ctx is NULL. Changing the admin queue running state\n");
--		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
--		return;
-+			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
-+			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
-+		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index 1b731a9c92d9..c9c0aa6376e3 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -1003,6 +1003,18 @@ static int vangogh_get_dpm_ultimate_freq(struct smu_context *smu,
+ 		}
  	}
- 
- 	comp_ctx->status = EFA_CMD_COMPLETED;
-@@ -428,14 +428,17 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
- 
- 	if (!test_bit(EFA_AQ_STATE_POLLING_BIT, &aq->state))
- 		complete(&comp_ctx->wait_event);
+ 	if (min) {
++		ret = vangogh_get_profiling_clk_mask(smu,
++						     AMD_DPM_FORCED_LEVEL_PROFILE_MIN_MCLK,
++						     NULL,
++						     NULL,
++						     &mclk_mask,
++						     &fclk_mask,
++						     &soc_mask);
++		if (ret)
++			goto failed;
 +
-+	return 0;
- }
++		vclk_mask = dclk_mask = 0;
++
+ 		switch (clk_type) {
+ 		case SMU_UCLK:
+ 		case SMU_MCLK:
+@@ -2363,6 +2375,8 @@ static u32 vangogh_set_gfxoff_residency(struct smu_context *smu, bool start)
  
- static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- {
- 	struct efa_admin_acq_entry *cqe;
- 	u16 queue_size_mask;
--	u16 comp_num = 0;
-+	u16 comp_cmds = 0;
- 	u8 phase;
-+	int err;
- 	u16 ci;
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_LogGfxOffResidency,
+ 					      start, &residency);
++	if (ret)
++		return ret;
  
- 	queue_size_mask = aq->depth - 1;
-@@ -453,10 +456,12 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		 * phase bit was validated
- 		 */
- 		dma_rmb();
--		efa_com_handle_single_admin_completion(aq, cqe);
-+		err = efa_com_handle_single_admin_completion(aq, cqe);
-+		if (!err)
-+			comp_cmds++;
- 
-+		aq->cq.cc++;
- 		ci++;
--		comp_num++;
- 		if (ci == aq->depth) {
- 			ci = 0;
- 			phase = !phase;
-@@ -465,10 +470,9 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		cqe = &aq->cq.entries[ci];
- 	}
- 
--	aq->cq.cc += comp_num;
- 	aq->cq.phase = phase;
--	aq->sq.cc += comp_num;
--	atomic64_add(comp_num, &aq->stats.completed_cmd);
-+	aq->sq.cc += comp_cmds;
-+	atomic64_add(comp_cmds, &aq->stats.completed_cmd);
- }
- 
- static int efa_com_comp_status_to_errno(u8 comp_status)
+ 	if (!start)
+ 		adev->gfx.gfx_off_residency = residency;
 -- 
 2.43.0
 
