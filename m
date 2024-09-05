@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E1596D518
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81E396D431
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAE001F2A302
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A151C24036
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D30F1946A2;
-	Thu,  5 Sep 2024 10:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECF9198E6D;
+	Thu,  5 Sep 2024 09:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kjz3Vw8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvQ8rqBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C6313D28F;
-	Thu,  5 Sep 2024 10:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BB8198A3E;
+	Thu,  5 Sep 2024 09:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530414; cv=none; b=jemV/AznMWB0D17dlbhifByfImvOPXy2Rjv0pm8/MRv2ypj7e3AtmFtm3VBGINmVPMIKFWerXZq8mODBrvVAzBBSl94icoz/jXEuhrXQFLshxxFrUG2T2lqCFT0UHsHkNpSdcfYRIScXT6S3DhAUq8ewyyfnM0H5JKB46oIm7UU=
+	t=1725529768; cv=none; b=cBHcFOzrC/O5cTw6BBANsYz0Cnk7tUXPR/cjcjcBZd0z3HtRnQ5VOEYgpkunc5Djh7g9FcT+sOhnlNIDOdRql/eANn/71nVak296ZQfsgygdiPvTpDxYiUNXQQPRsjaKZ7x3ugKGGEDe/BvkWKsW265nG+2A9TGpqZZZjiK4MDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530414; c=relaxed/simple;
-	bh=SwhGjGjtNWxXjzoBWi2lpcgguM773MLJJm+ma2IG+uo=;
+	s=arc-20240116; t=1725529768; c=relaxed/simple;
+	bh=uiUE36HW3FVJFN0vSbGhLhrMS2u1VmrqPWT07akeWgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxTxmG5etJ1jorMo0WVj246QKPcWtMiYMavwV/WBQUTLKnlB5+AnJskbeIQaRyOgY8l7fdBKusrdLmp9hV/79TvnNYT4Wmwai6cs525Oj55x//Y1nEwUogOp0cIQvYMriOeUbvAS9D1c1AR9ojSBh+mh82nbHwzXRIjQ+NT/4/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kjz3Vw8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D43AC4CEC3;
-	Thu,  5 Sep 2024 10:00:13 +0000 (UTC)
+	 MIME-Version; b=tjDnfy1ClTLpqtQGRfyRazUemeaUeVXVkZ0UuvV0XorXhCdJNTXBoyGpHr9zcWqHY30m7OGtLkD8cv9zKiAPVkEnDy1fu3FrrOCge8Jl5jdzBezLvgTilrsWmZ/urs+PjsVvRwjgA9Q1r1Q5r/zMeESIuJBN99nfL6CQrilOHqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvQ8rqBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16D4C4CECD;
+	Thu,  5 Sep 2024 09:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530414;
-	bh=SwhGjGjtNWxXjzoBWi2lpcgguM773MLJJm+ma2IG+uo=;
+	s=korg; t=1725529768;
+	bh=uiUE36HW3FVJFN0vSbGhLhrMS2u1VmrqPWT07akeWgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kjz3Vw8hkd6HnTaJlEhomi/leU0PC48X8RxAjv14mNJa+TRQFONT82dNijnociEzw
-	 ZtF0HkrZHJ830fxX64wCDPgJxJhxobq3+gUWpfn2mop6wQqs34fssq/VknPC6i+tGf
-	 OoZluPlRC3iqhQtqKXT+lK8Tqpx5vIjP7jM5nkWU=
+	b=VvQ8rqBz8mZo01mEYxA7D4nNB2XBiHPp+/UaARGMOaJDk3gcEWbCohK3qyFggEJVc
+	 tLArzbIwwl+3UgOzKoKfymgjGjkAoVcuzw/VVujgMGY8GLGTrDaTj1p23hweQ9ga1W
+	 uIjO5klHRl45pZ0K9OKi3DcgONmaGuLLI7/1YH0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 017/101] selftests: mptcp: join: validate fullmesh endp on 1st sf
-Date: Thu,  5 Sep 2024 11:40:49 +0200
-Message-ID: <20240905093716.776062646@linuxfoundation.org>
+	Jason Xing <kernelxing@tencent.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 137/184] net: remove NULL-pointer net parameter in ip_metrics_convert
+Date: Thu,  5 Sep 2024 11:40:50 +0200
+Message-ID: <20240905093737.567765375@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit 4878f9f8421f4587bee7b232c1c8a9d3a7d4d782 upstream.
+[ Upstream commit 61e2bbafb00e4b9a5de45e6448a7b6b818658576 ]
 
-This case was not covered, and the wrong ID was set before the previous
-commit.
+When I was doing some experiments, I found that when using the first
+parameter, namely, struct net, in ip_metrics_convert() always triggers NULL
+pointer crash. Then I digged into this part, realizing that we can remove
+this one due to its uselessness.
 
-The rest is not modified, it is just that it will increase the code
-coverage.
-
-The right address ID can be verified by looking at the packet traces. We
-could automate that using Netfilter with some cBPF code for example, but
-that's always a bit cryptic. Packetdrill seems better fitted for that.
-
-Fixes: 4f49d63352da ("selftests: mptcp: add fullmesh testcases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-13-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_join.sh, because the 'run_tests' helper has been
-  modified in multiple commits that are not in this version, e.g. commit
-  e571fb09c893 ("selftests: mptcp: add speed env var"). The conflict was
-  in the context, the new line can still be added at the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/ip.h         |  3 +--
+ include/net/tcp.h        |  2 +-
+ net/ipv4/fib_semantics.c |  5 ++---
+ net/ipv4/metrics.c       |  8 ++++----
+ net/ipv4/tcp_cong.c      | 11 +++++------
+ net/ipv6/route.c         |  2 +-
+ 6 files changed, 14 insertions(+), 17 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3023,6 +3023,7 @@ fullmesh_tests()
- 		pm_nl_set_limits $ns1 1 3
- 		pm_nl_set_limits $ns2 1 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 fullmesh_1 slow
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 6d735e00d3f3..c5606cadb1a5 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -506,8 +506,7 @@ static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
+ 	return mtu - lwtunnel_headroom(skb_dst(skb)->lwtstate, mtu);
+ }
+ 
+-struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
+-					int fc_mx_len,
++struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx, int fc_mx_len,
+ 					struct netlink_ext_ack *extack);
+ static inline void ip_fib_metrics_put(struct dst_metrics *fib_metrics)
+ {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 32815a40dea1..45bbb54e42e8 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1216,7 +1216,7 @@ extern struct tcp_congestion_ops tcp_reno;
+ 
+ struct tcp_congestion_ops *tcp_ca_find(const char *name);
+ struct tcp_congestion_ops *tcp_ca_find_key(u32 key);
+-u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca);
++u32 tcp_ca_get_key_by_name(const char *name, bool *ecn_ca);
+ #ifdef CONFIG_INET
+ char *tcp_ca_get_name_by_key(u32 key, char *buffer);
+ #else
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 8956026bc0a2..2b57cd2b96e2 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -1030,7 +1030,7 @@ bool fib_metrics_match(struct fib_config *cfg, struct fib_info *fi)
+ 			bool ecn_ca = false;
+ 
+ 			nla_strscpy(tmp, nla, sizeof(tmp));
+-			val = tcp_ca_get_key_by_name(fi->fib_net, tmp, &ecn_ca);
++			val = tcp_ca_get_key_by_name(tmp, &ecn_ca);
+ 		} else {
+ 			if (nla_len(nla) != sizeof(u32))
+ 				return false;
+@@ -1459,8 +1459,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ 	fi = kzalloc(struct_size(fi, fib_nh, nhs), GFP_KERNEL);
+ 	if (!fi)
+ 		goto failure;
+-	fi->fib_metrics = ip_fib_metrics_init(fi->fib_net, cfg->fc_mx,
+-					      cfg->fc_mx_len, extack);
++	fi->fib_metrics = ip_fib_metrics_init(cfg->fc_mx, cfg->fc_mx_len, extack);
+ 	if (IS_ERR(fi->fib_metrics)) {
+ 		err = PTR_ERR(fi->fib_metrics);
+ 		kfree(fi);
+diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+index 0e3ee1532848..8ddac1f595ed 100644
+--- a/net/ipv4/metrics.c
++++ b/net/ipv4/metrics.c
+@@ -7,7 +7,7 @@
+ #include <net/net_namespace.h>
+ #include <net/tcp.h>
+ 
+-static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
++static int ip_metrics_convert(struct nlattr *fc_mx,
+ 			      int fc_mx_len, u32 *metrics,
+ 			      struct netlink_ext_ack *extack)
+ {
+@@ -31,7 +31,7 @@ static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
+ 			char tmp[TCP_CA_NAME_MAX];
+ 
+ 			nla_strscpy(tmp, nla, sizeof(tmp));
+-			val = tcp_ca_get_key_by_name(net, tmp, &ecn_ca);
++			val = tcp_ca_get_key_by_name(tmp, &ecn_ca);
+ 			if (val == TCP_CA_UNSPEC) {
+ 				NL_SET_ERR_MSG(extack, "Unknown tcp congestion algorithm");
+ 				return -EINVAL;
+@@ -63,7 +63,7 @@ static int ip_metrics_convert(struct net *net, struct nlattr *fc_mx,
+ 	return 0;
+ }
+ 
+-struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
++struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx,
+ 					int fc_mx_len,
+ 					struct netlink_ext_ack *extack)
+ {
+@@ -77,7 +77,7 @@ struct dst_metrics *ip_fib_metrics_init(struct net *net, struct nlattr *fc_mx,
+ 	if (unlikely(!fib_metrics))
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	err = ip_metrics_convert(net, fc_mx, fc_mx_len, fib_metrics->metrics,
++	err = ip_metrics_convert(fc_mx, fc_mx_len, fib_metrics->metrics,
+ 				 extack);
+ 	if (!err) {
+ 		refcount_set(&fib_metrics->refcnt, 1);
+diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
+index 28ffcfbeef14..48617d99abb0 100644
+--- a/net/ipv4/tcp_cong.c
++++ b/net/ipv4/tcp_cong.c
+@@ -46,8 +46,7 @@ void tcp_set_ca_state(struct sock *sk, const u8 ca_state)
+ }
+ 
+ /* Must be called with rcu lock held */
+-static struct tcp_congestion_ops *tcp_ca_find_autoload(struct net *net,
+-						       const char *name)
++static struct tcp_congestion_ops *tcp_ca_find_autoload(const char *name)
+ {
+ 	struct tcp_congestion_ops *ca = tcp_ca_find(name);
+ 
+@@ -178,7 +177,7 @@ int tcp_update_congestion_control(struct tcp_congestion_ops *ca, struct tcp_cong
+ 	return ret;
+ }
+ 
+-u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca)
++u32 tcp_ca_get_key_by_name(const char *name, bool *ecn_ca)
+ {
+ 	const struct tcp_congestion_ops *ca;
+ 	u32 key = TCP_CA_UNSPEC;
+@@ -186,7 +185,7 @@ u32 tcp_ca_get_key_by_name(struct net *net, const char *name, bool *ecn_ca)
+ 	might_sleep();
+ 
+ 	rcu_read_lock();
+-	ca = tcp_ca_find_autoload(net, name);
++	ca = tcp_ca_find_autoload(name);
+ 	if (ca) {
+ 		key = ca->key;
+ 		*ecn_ca = ca->flags & TCP_CONG_NEEDS_ECN;
+@@ -283,7 +282,7 @@ int tcp_set_default_congestion_control(struct net *net, const char *name)
+ 	int ret;
+ 
+ 	rcu_read_lock();
+-	ca = tcp_ca_find_autoload(net, name);
++	ca = tcp_ca_find_autoload(name);
+ 	if (!ca) {
+ 		ret = -ENOENT;
+ 	} else if (!bpf_try_module_get(ca, ca->owner)) {
+@@ -421,7 +420,7 @@ int tcp_set_congestion_control(struct sock *sk, const char *name, bool load,
+ 	if (!load)
+ 		ca = tcp_ca_find(name);
+ 	else
+-		ca = tcp_ca_find_autoload(sock_net(sk), name);
++		ca = tcp_ca_find_autoload(name);
+ 
+ 	/* No change asking for existing value */
+ 	if (ca == icsk->icsk_ca_ops) {
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index c9a9506b714d..a9644a8edb96 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3764,7 +3764,7 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
+ 	if (!rt)
+ 		goto out;
+ 
+-	rt->fib6_metrics = ip_fib_metrics_init(net, cfg->fc_mx, cfg->fc_mx_len,
++	rt->fib6_metrics = ip_fib_metrics_init(cfg->fc_mx, cfg->fc_mx_len,
+ 					       extack);
+ 	if (IS_ERR(rt->fib6_metrics)) {
+ 		err = PTR_ERR(rt->fib6_metrics);
+-- 
+2.43.0
+
 
 
 
