@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-73559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24D596D55D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:03:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD7C96D50F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B0D1C21361
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:03:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFF928380D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D8C19538A;
-	Thu,  5 Sep 2024 10:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB71194AD6;
+	Thu,  5 Sep 2024 09:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEGZMcVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmozLa+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C231494DB;
-	Thu,  5 Sep 2024 10:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6D883CC8;
+	Thu,  5 Sep 2024 09:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530626; cv=none; b=OwUOOznm4GGrgZfNJSHU9FBdkfn33CAXUv/ZWggx/aARTzXgnTI0dtx9lafLLTirzjTVJo+92rTwR6858bKM2cYK934qH8bRyMmumH1sdfFEFFNMelphAoNFxBcSam64oX4szBQ4fAwkxkROlNjpuFpszDKOAY1AAMLrXSzDWOo=
+	t=1725530383; cv=none; b=WN5lqNLE3spOWRZaQkLAJ4tWmL0HdKAZOybLn0qC8JXhROQrUlpRaLwCtGYxGqmfxB5y16i0B6hZSBxioboHm1cctTJW/7fRJRJS9UPnyXrEDTmDYqFIeIOnpelKSQR8X2xmjL841E2zLvR4cuR+V//caLB65H0K8NzyOUkg18s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530626; c=relaxed/simple;
-	bh=o1x1PvcrPH9zushxbeufDEXriHFD1FiYmTTIyM5g4Dc=;
+	s=arc-20240116; t=1725530383; c=relaxed/simple;
+	bh=zmEsjU/Dlw1vicDrusbUhvgXK9zeDP533lv0GPsMEag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oicyaCOXDz+HVlFbZE5oVd9cxQtKn7GelQUQzi82CikbCanNrn2ULdxKobGV1ObCTg9TuJPxIfVo+tRDSD2h6owZ2YF82lnUeL2CI1qH8FYaTVbWdij6ZYPqqNGQ878pE1aHTfs9BbyMKZL7lwsrKkGackG5Pgfv5+hJucBRCqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEGZMcVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459AC4CEC3;
-	Thu,  5 Sep 2024 10:03:45 +0000 (UTC)
+	 MIME-Version; b=HXziyQyrua+E8YBZ7OXf2IE9i4ZZXectBVZnoy+H5R8VGePVAjSnPL8BDGrr7bMQ6Jo9ZfQx8vx0PVhKWztxXm/hEKlBOHqIXXAsFeVHSiNBHv5hkfBYXsF5fMo7RjipaOklVscrSEgwCrjOYGsQohRif5wxpD6ynjh1KLbM20Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmozLa+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96051C4CEC3;
+	Thu,  5 Sep 2024 09:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530625;
-	bh=o1x1PvcrPH9zushxbeufDEXriHFD1FiYmTTIyM5g4Dc=;
+	s=korg; t=1725530383;
+	bh=zmEsjU/Dlw1vicDrusbUhvgXK9zeDP533lv0GPsMEag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEGZMcVacQxX0R0SEvay/c/kcyXlxU7kgn+0M0v4yUlE8hQxTJo0/2guEp0rjE/UR
-	 cN137YZN2lbnaIXBXDfV/eSX1QA5qV8C7woxhr8RrdqZxRWgRCQW8KRMYUo26tBJ3c
-	 7XYLtBGu/N9GSsvKPeVu2U5a8zg5yncQErD7ZVU4=
+	b=LmozLa+LumoJ9JN/qbkRsAWAHta0KAd18BTOtfLUSJ7w3pzwned8l7tgMpplludWs
+	 lLWk/F3SqCocf8TA/BHteAnSh9yNx2IppxAmdPtaIxF2rmrWSKNwp6/W1+dcMs7Rff
+	 FV+GVvA24Ib9vq0YBfytW8lARFhSNEJZ/gFMhKQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Liu <liuhaoran14@163.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/101] drm/meson: plane: Add error handling
-Date: Thu,  5 Sep 2024 11:41:54 +0200
-Message-ID: <20240905093719.337222184@linuxfoundation.org>
+Subject: [PATCH 6.6 128/132] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
+Date: Thu,  5 Sep 2024 11:41:55 +0200
+Message-ID: <20240905093727.191050410@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Liu <liuhaoran14@163.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
+[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
 
-This patch adds robust error handling to the meson_plane_create
-function in drivers/gpu/drm/meson/meson_plane.c. The function
-previously lacked proper handling for potential failure scenarios
-of the drm_universal_plane_init call.
+Callers can pass null in filter (i.e. from returned from the function
+wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
+not the case.
 
-Signed-off-by: Haoran Liu <liuhaoran14@163.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
-[narmstrong: fixe the commit subject]
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
+This fixes 4 NULL_RETURNS issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
-index 815dfe30492b..b43ac61201f3 100644
---- a/drivers/gpu/drm/meson/meson_plane.c
-+++ b/drivers/gpu/drm/meson/meson_plane.c
-@@ -534,6 +534,7 @@ int meson_plane_create(struct meson_drm *priv)
- 	struct meson_plane *meson_plane;
- 	struct drm_plane *plane;
- 	const uint64_t *format_modifiers = format_modifiers_default;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
+index 994fb732a7cb..a0d437f0ce2b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
+@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
+ 	int pair;
+ 	uint16_t odd_coef, even_coef;
  
- 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
- 				   GFP_KERNEL);
-@@ -548,12 +549,16 @@ int meson_plane_create(struct meson_drm *priv)
- 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
- 		format_modifiers = format_modifiers_afbc_g12a;
- 
--	drm_universal_plane_init(priv->drm, plane, 0xFF,
--				 &meson_plane_funcs,
--				 supported_drm_formats,
--				 ARRAY_SIZE(supported_drm_formats),
--				 format_modifiers,
--				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
-+	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
-+					&meson_plane_funcs,
-+					supported_drm_formats,
-+					ARRAY_SIZE(supported_drm_formats),
-+					format_modifiers,
-+					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
-+	if (ret) {
-+		devm_kfree(priv->drm->dev, meson_plane);
-+		return ret;
-+	}
- 
- 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
- 
++	if (!filter)
++		return;
++
+ 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
+ 		for (pair = 0; pair < tap_pairs; pair++) {
+ 			even_coef = filter[phase * taps + 2 * pair];
 -- 
 2.43.0
 
