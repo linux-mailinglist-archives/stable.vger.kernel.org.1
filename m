@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-73357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E3996D483
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3C996D3FC
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27D13B22784
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F5E2817FE
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB80198A37;
-	Thu,  5 Sep 2024 09:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D921991DB;
+	Thu,  5 Sep 2024 09:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXtpci5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyFz7RR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4D1198A29;
-	Thu,  5 Sep 2024 09:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DCE198E81;
+	Thu,  5 Sep 2024 09:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529969; cv=none; b=o+yijGwvYLkwMup+oSEKNSeoRti47Oy2nQMGKzbEJvP2/qL2HBOUjiOPB9ugKTXN4y3MQFsVYI17ErJiHT1ahZkx2hj0bqLbWdL2YtFpiU6MBPxsw4JHNq7UaFfLsQOh/LwuImF/fkFPQgyHOBRyMyaqX8eD7HGsBlNu7BwEXas=
+	t=1725529616; cv=none; b=Yn8txm9Ttqd9P5M6h+wW6lT5kgVISwGhmR9MIkZFV+OK6QdiuZax2769rEb0pMU8D0dLju1IgRTcDQRaRSt6bv7uvHLiFRP64RxfH1PGPc3Qc7J+ZypZGIYeiH+8KTC5Qhl6Elxa8rXy3/N7wNLkx1wnZTFWEb+7Wwjl4CX+gfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529969; c=relaxed/simple;
-	bh=iUC1i9eEaNO1GEoDF1qCRfa3niskAXAQnIALxVxUFR8=;
+	s=arc-20240116; t=1725529616; c=relaxed/simple;
+	bh=qbcDWiKUysSLf98S3DSv+YEpSYCH0SRJbUL9Rp07M/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiLr5KSItAH8t0H850e2Kk2+/ux7dq6F7hcwMQS6uGjWC0W10LxzaGWRqyBm6LrLoHbqpjBzWruxsea3+RiBrx8tbkhZUrxti/XHkeOXL/pZ/F0qX35MT+TKormpuDCRE7V0UfingEtbxVr+mXmIH5eZLlVInlGdvh/yOw7TJgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXtpci5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4492EC4CEC3;
-	Thu,  5 Sep 2024 09:52:48 +0000 (UTC)
+	 MIME-Version; b=DWpK+HmbPhdlXr0xm2JsWx0Lg1ULmAj+bo05SP3vJDwMQAJLGt/5CP5dtQ1Eq5ugNdFNFyKPoXpCe+53A/Ivxp25IKI0GohWa5R972Qdd7NE+wY2rw3i6Kn9YLEtJRJk7u5uW3AYsVc0rL3aPuQroYbFf2EGib7xHXCg/3iFzz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyFz7RR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8084CC4CEC3;
+	Thu,  5 Sep 2024 09:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529968;
-	bh=iUC1i9eEaNO1GEoDF1qCRfa3niskAXAQnIALxVxUFR8=;
+	s=korg; t=1725529616;
+	bh=qbcDWiKUysSLf98S3DSv+YEpSYCH0SRJbUL9Rp07M/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rXtpci5Hq6RsjeIEf/5Z3yhAh8jSe7XNLo+xN97z5qXZmBWynY8s6wTrj2X1QbMcY
-	 Mk1I3PhdHdJFiIFvJvqJO3BNsPPHxJKbbJ/7MfxDrQfTjk7vwE0p/nu3FlBZJ0Gprm
-	 ADG9sXqv0ulrAYMuuwkFSCzuISsLPVCw2IP0ynfU=
+	b=nyFz7RR9gP1ZPRsQ7aI0l0yZ0txDhET7TitEy1rkqrc+fQ/bszuHuUeiwzl8Jwebm
+	 iWgjRrGO47nNMk2GkiHnhjYJLYKkguJMaxdnHJzMO2qhvoQ+S0vzaVEOFK7USa6ANt
+	 sSEnm32s74Ay3kUoIyzwdZGhdOSpEbCwBA5d0reg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Steinbeisser <Sebastian.Steinbeisser@lrz.de>,
-	Tom Talpey <tom@talpey.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/132] smb: client: fix FSCTL_GET_REPARSE_POINT against NetApp
+Subject: [PATCH 6.10 088/184] drm/amdgpu: fix uninitialized variable warning for amdgpu_xgmi
 Date: Thu,  5 Sep 2024 11:40:01 +0200
-Message-ID: <20240905093722.792036383@linuxfoundation.org>
+Message-ID: <20240905093735.677195732@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit ddecea00f87f0c46e9c8339a7c89fb2ff891521a ]
+[ Upstream commit 8f184f8e7a07fddc33ee4e6a38b717c770c3aedd ]
 
-NetApp server requires the file to be open with FILE_READ_EA access in
-order to support FSCTL_GET_REPARSE_POINT, otherwise it will return
-STATUS_INVALID_DEVICE_REQUEST.  It doesn't make any sense because
-there's no requirement for FILE_READ_EA bit to be set nor
-STATUS_INVALID_DEVICE_REQUEST being used for something other than
-"unsupported reparse points" in MS-FSA.
+Clear warning that using uninitialized variable current_node.
 
-To fix it and improve compatibility, set FILE_READ_EA & SYNCHRONIZE
-bits to match what Windows client currently does.
-
-Tested-by: Sebastian Steinbeisser <Sebastian.Steinbeisser@lrz.de>
-Acked-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 28031c7ba6b19..15cbfec4c28c7 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -950,7 +950,8 @@ int smb2_query_path_info(const unsigned int xid,
- 			cmds[num_cmds++] = SMB2_OP_GET_REPARSE;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
+index dd2ec48cf5c2..4a14f9c1bfe8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
+@@ -434,6 +434,9 @@ static ssize_t amdgpu_xgmi_show_connected_port_num(struct device *dev,
+ 		}
+ 	}
  
- 		oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
--				     FILE_READ_ATTRIBUTES | FILE_READ_EA,
-+				     FILE_READ_ATTRIBUTES |
-+				     FILE_READ_EA | SYNCHRONIZE,
- 				     FILE_OPEN, create_options |
- 				     OPEN_REPARSE_POINT, ACL_NO_MODE);
- 		cifs_get_readable_path(tcon, full_path, &cfile);
-@@ -1258,7 +1259,8 @@ int smb2_query_reparse_point(const unsigned int xid,
- 	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
- 
- 	cifs_get_readable_path(tcon, full_path, &cfile);
--	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path, FILE_READ_ATTRIBUTES,
-+	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
-+			     FILE_READ_ATTRIBUTES | FILE_READ_EA | SYNCHRONIZE,
- 			     FILE_OPEN, OPEN_REPARSE_POINT, ACL_NO_MODE);
- 	rc = smb2_compound_op(xid, tcon, cifs_sb,
- 			      full_path, &oparms, &in_iov,
++	if (i == top->num_nodes)
++		return -EINVAL;
++
+ 	for (i = 0; i < top->num_nodes; i++) {
+ 		for (j = 0; j < top->nodes[i].num_links; j++)
+ 			/* node id in sysfs starts from 1 rather than 0 so +1 here */
 -- 
 2.43.0
 
