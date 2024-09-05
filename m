@@ -1,121 +1,114 @@
-Return-Path: <stable+bounces-73616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4085196DCE2
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 16:59:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B7B96DD19
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 17:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9652B25982
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 14:59:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A416F1C22D2F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 15:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC171A01AE;
-	Thu,  5 Sep 2024 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161931A01C4;
+	Thu,  5 Sep 2024 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="1APLUSii"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="bJZQH+tZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C23819FA9F;
-	Thu,  5 Sep 2024 14:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A15F9FE;
+	Thu,  5 Sep 2024 15:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725548259; cv=none; b=lbfhIb3iFLCj3ymXjBTMavgyWszW9FhFjstGIRLTNV9VNrMRdvZ81JulcybIp/KANGmlw3o6tnuxF5R3m/u3//YzNgF3NDMOf8Ml2id8qrN/SvvXpxKxPuKn5f+MZBIoM8M0dw/OMsiB3p4o6fVtNDH/5khmY38waYHWSrvEx8s=
+	t=1725548498; cv=none; b=gpZL/1atCSIb/xZXtlxwdFDNYYDNPIJ/NyncyRIbapxrAern4i3T7AX7bYO6mhHsIy+l1drmZfixZCe/27S1KiNyXmfo/bekwYjFYCH2CSUnqwPAFpISgh22Z/A/CygAdZD8zfJA9rLfxdAOhHeoSJpddwDWrzei6Wdy2ztUzD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725548259; c=relaxed/simple;
-	bh=c4dE2X3D8jNW7VIHknDX4GKLOebCJIX98K1SweWgq9g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PT70VYE4QltR/VtpP6CSQzJokjYSHbEm3gZ5tUZasj8og4YE414R8uD0cgDhWCCZ5ja6UC7GPq+KnyoydLXuwrxJteE0bKS0QeLjhkRG/54mvMXguQpMjTYpWzkNR+SEVK2BiLW/RX1A5S/dbildSO2h+21BXgmdfYvulgJ3efc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=1APLUSii; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	s=arc-20240116; t=1725548498; c=relaxed/simple;
+	bh=QNX9k0EhkSftlSw+ytM9MDQn1V6rNjj0MEIlRIe6jfc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kukXRy0BvPnHeUQ7Hj919W+qqjYEk7zWKTIIN2+jBk4UhzDRrnUwbmib6Grq8XO7kM5cjw6KCD3oOAw9wpnA0z5PnpmqwJaxhgxrTF6Hr5OaxOk79bIv7BYt86UXYmWCv597Ix3kpQx+rnD4oD8lfzujur8/vZ3FFq1n10nL36I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=bJZQH+tZ; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X02cw45lSz6ClY8r;
+	Thu,  5 Sep 2024 15:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1725548493; x=1728140494; bh=QNX9k0EhkSftlSw+ytM9MDQn
+	1V6rNjj0MEIlRIe6jfc=; b=bJZQH+tZu/QqGnFFgMzTAdDDl3J9cKWM9NqnX94B
+	wKXOqrKa+8Wv7lgLJj+WckzNa85pDdLdmMIbdubfsjJF7A5UCGKDoW1KhhKoEZeN
+	Fzt9QLpKwY2VN/IaWZj3G/d8wa/uDdkhfgg8867tmfU0TVeQRblBYwdfUX9Jy/Fz
+	ql6EW8FECYessWftUJ+6zQjSNAIAvVhVpEKdlyJt5BQBNIRIUsuJBzDBpq32oI+p
+	FeqFDQdbgEt24MkwsKjdDAHIzPozReaKKWayYm/Z16HSQmZyVM9j8tdr9C4r4eDC
+	5WuKq842FV9pLOPWnUqzsXFAtjDUrm6ARZLyWskMovAikQ==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id kuwDBuB_07RQ; Thu,  5 Sep 2024 15:01:33 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4X02XG3Mk0z9sFb;
-	Thu,  5 Sep 2024 16:57:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-	t=1725548254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YeczAUMJPFpgcChSC2NOpYh4duarO6U/B6665/OuVEY=;
-	b=1APLUSiiNnoQ4talzWKkqnujLD2aR3XzevHzztypI+OPLTuF0cwE8pAsyi2lDnhIRrUTbd
-	mo+yDzMwyCzX5T7EccrmDVs0o9QIr1mYRuzL8A7ShQLU+g6v2F+V7wI33oKYlMpnoUxJyG
-	9V0b1Xd96NGpeCBxI8qNF4uPO6wLAB6WjXRP0QIY7KglbLQHc5jMkkNQOGb6csRLgo4XRc
-	YkY3PahRRodtLKgGSfKoW6d56jkqft9zJ9pi+5Q6yx/AoVSmOLONkVbeVHH4K4poAU592n
-	6AKHxSkBcsiLyiuSeybuXYqncGaXCV+6JaAv/wAY2iaPEB1TGSC3aIeLtPi4hw==
-From: Aleksa Sarai <cyphar@cyphar.com>
-Date: Fri, 06 Sep 2024 00:56:35 +1000
-Subject: [PATCH RFC v2 03/10] openat2: explicitly return -E2BIG for (usize
- > PAGE_SIZE)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X02cq4PYrz6ClbFV;
+	Thu,  5 Sep 2024 15:01:31 +0000 (UTC)
+Message-ID: <bcfc0db2-d183-4e7b-b9fd-50d370cc0e9b@acm.org>
+Date: Thu, 5 Sep 2024 08:01:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240906-extensible-structs-check_fields-v2-3-0f46d2de9bad@cyphar.com>
-References: <20240906-extensible-structs-check_fields-v2-0-0f46d2de9bad@cyphar.com>
-In-Reply-To: <20240906-extensible-structs-check_fields-v2-0-0f46d2de9bad@cyphar.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Florian Weimer <fweimer@redhat.com>, 
- Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>, 
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>, 
- stable@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=891; i=cyphar@cyphar.com;
- h=from:subject:message-id; bh=c4dE2X3D8jNW7VIHknDX4GKLOebCJIX98K1SweWgq9g=;
- b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaTdPLb5Uuwxl4NWleL9dttyrX9V5eVd5W+es+HB79mS5
- nOKbRhXd5SyMIhxMciKKbJs8/MM3TR/8ZXkTyvZYOawMoEMYeDiFICJ1Hsw/OG53fk+QyqnT7Tu
- mPm/idOOum2fcPPBconnNv4pTOrlS1MYGT7zst2W+fxVZMaRry9y5Xcs7r9X8VNRs2SSy87GtHU
- cyewA
-X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
- fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
-X-Rspamd-Queue-Id: 4X02XG3Mk0z9sFb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: roles: Fix a false positive recursive locking
+ complaint
+To: Amit Sunil Dhamne <amitsd@google.com>,
+ Badhri Jagan Sridharan <badhri@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, stable@vger.kernel.org
+References: <20240904201839.2901330-1-bvanassche@acm.org>
+ <CAPTae5+gX8TW2xtN2-7yDt3C-2AmMB=jSwKsRtqPxftOf-A9hQ@mail.gmail.com>
+ <8feac105-fa35-4c35-bbac-5d0265761c2d@acm.org>
+ <d50e3406-1379-4eff-a8c1-9cae89659e3b@google.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <d50e3406-1379-4eff-a8c1-9cae89659e3b@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-While we do currently return -EFAULT in this case, it seems prudent to
-follow the behaviour of other syscalls like clone3. It seems quite
-unlikely that anyone depends on this error code being EFAULT, but we can
-always revert this if it turns out to be an issue.
+On 9/4/24 3:34 PM, Amit Sunil Dhamne wrote:
+> However, I have seen almost 30+ instances of the prior
+> method=20
+> (https://lore.kernel.org/all/20240822223717.253433-1-amitsd@google.com/=
+)
+> of registering lockdep key, which is what I followed.
 
-Cc: <stable@vger.kernel.org> # v5.6+
-Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
----
- fs/open.c | 2 ++
- 1 file changed, 2 insertions(+)
+Many of these examples are for spinlocks. It would be good to have a
+variant of spin_lock_init() that does not instantiate a struct
+lock_class_key and instead accepts a lock_class_key pointer as argument.
 
-diff --git a/fs/open.c b/fs/open.c
-index 22adbef7ecc2..30bfcddd505d 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -1458,6 +1458,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const char __user *, filename,
- 
- 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
- 		return -EINVAL;
-+	if (unlikely(usize > PAGE_SIZE))
-+		return -E2BIG;
- 
- 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
- 	if (err)
+> However, if that's is not the right way, it brings into question the=20
+> purpose
+> of lockdep_set_class() considering I would always and unconditionally u=
+se
+> __mutex_init()=C2=A0 if I want to manage the lockdep class keys myself =
+or
+> mutex_init() if I didn't.
+What I'm proposing is not a new pattern. There are multiple examples
+in the kernel tree of lockdep_register_key() calls followed by a
+__mutex_init() call:
 
--- 
-2.46.0
+$ git grep -wB3 __mutex_init | grep lockdep_register_key | wc -l
+5
 
+Thanks,
+
+Bart.
 
