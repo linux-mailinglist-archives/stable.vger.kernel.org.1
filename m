@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-73498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FA896D51F
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A393C96D4E5
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4BB1F2A2D7
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1580AB24806
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DC7198A30;
-	Thu,  5 Sep 2024 10:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BFD194A5B;
+	Thu,  5 Sep 2024 09:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b13YNn9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3ZAe03f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFD9198A08;
-	Thu,  5 Sep 2024 10:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE382194A64;
+	Thu,  5 Sep 2024 09:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530430; cv=none; b=diQywLeujn3pe9cS+zFIEsYKwTzwkcIf+4EeBW3N7N5NpCUFSpk0YB3aBre8K8wpyXPWBrWE8bIKAFVfQ5UXxEbefMkfGXrNy77T24BZxTIqfANCFziuMs0ZjfgXHkHr9b+o9fb06WZGrBP6R+bZ8bL4GW+P1rqybYTzjmqV+60=
+	t=1725530244; cv=none; b=kDX6O6Ynp4DqDQwkn4jv/JmWsdSXswELLCBpglmcmLicUdvqHMONTZ+s9N2MDnXlQqzUeth/ItB0YtpRyn5cg/TrUgGRVDeVS7gzZmDwJJDUDQ/SUOKM5bsF7pUw4rcPm03LshYexylCprITcF9PgvbkxlBf9y/IylOSjxc0CDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530430; c=relaxed/simple;
-	bh=lv4VCMnCNOIexmGx39/jtYsQI0hCaWWwiy0bTNz27nk=;
+	s=arc-20240116; t=1725530244; c=relaxed/simple;
+	bh=j9QR+EjwnubOYq5sQsbkVts9HusfHERmzfu8viATeTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0nVGFgEZvOF+mVVlRWat3EuimfvAFkNLPpU6YdmDIRP+vGO2SlPwSDIuZYDqmmQiuGwTif/ox29BIgsiZrrAZBOQHGrk2F+P+pybPq8Zs5cxBi4ecHMIJO5uiqGxOAx60k1bycski7UnxNseqHZ0KJCd2+RxXFUKF+bO+T7czA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b13YNn9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6F4C4CEC6;
-	Thu,  5 Sep 2024 10:00:29 +0000 (UTC)
+	 MIME-Version; b=CmiTWZKMNLGZeEPVggw6Wb9I+V8aKNjqoxnklmB53R5AxBBEFHTDZfjnAB2zt+0+vKEC2QnZLF+i6XzM7SMNJ5FWvgXe8XRk4oQ+jOen2THHaVWBX72OBlKorQH5yDeDTVTn5HWDQqK7IlE+5D9wGEYKSNhrh7UR+ze5R/9gjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3ZAe03f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB238C4CEC3;
+	Thu,  5 Sep 2024 09:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530430;
-	bh=lv4VCMnCNOIexmGx39/jtYsQI0hCaWWwiy0bTNz27nk=;
+	s=korg; t=1725530244;
+	bh=j9QR+EjwnubOYq5sQsbkVts9HusfHERmzfu8viATeTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b13YNn9jRO7yMlpkFkER3JYJQVZItdxGVlU5NjS/7gWndzme02QmWWpG05NoiuTw7
-	 KDyVkSY01cIfSmoCnNsS8KMXRRDHtS1GBJoWvkSY0zYAYyt49mzExnTCjTs24Zd4SV
-	 ly97snIeKidGSbQ+V30s3qEqZ4faVkteCS/31biI=
+	b=V3ZAe03fUcyRNXO2CcvIAXblr9MbjSdCRqkazCLTBAJ9pMSPcJMJwEDaQXEWtS83D
+	 ypA2U2XAOYqUjjYgJ8lkApZmEtUh5vTqGLwPV2wB5v6Fw4kjB5yUAnkmEXF1pnowB6
+	 WQ6wyRa1WwSJ99IOMIubAx5HRHUxB9n1XO+T4BxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 021/101] selftests: mptcp: join: check re-using ID of unused ADD_ADDR
-Date: Thu,  5 Sep 2024 11:40:53 +0200
-Message-ID: <20240905093716.944614047@linuxfoundation.org>
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/132] drm/amdgpu/pm: Fix uninitialized variable agc_btc_response
+Date: Thu,  5 Sep 2024 11:40:54 +0200
+Message-ID: <20240905093724.863003182@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit a13d5aad4dd9a309eecdc33cfd75045bd5f376a3 upstream.
+[ Upstream commit df4409d8a04dd39d7f2aa0c5f528a56b99eaaa13 ]
 
-This test extends "delete re-add signal" to validate the previous
-commit. An extra address is announced by the server, but this address
-cannot be used by the client. The result is that no subflow will be
-established to this address.
+Assign an default value to agc_btc_response in failed case
 
-Later, the server will delete this extra endpoint, and set a new one,
-with a valid address, but re-using the same ID. Before the previous
-commit, the server would not have been able to announce this new
-address.
-
-While at it, extra checks have been added to validate the expected
-numbers of MPJ, ADD_ADDR and RM_ADDR.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-2-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_join.sh, because the helpers are different in this
-  version:
-  - run_tests has been modified a few times to reduce the number of
-    positional parameters
-  - no chk_mptcp_info helper
-  - chk_subflow_nr taking an extra parameter
-  - kill_tests_wait instead of mptcp_lib_kill_wait ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3243,9 +3243,11 @@ userspace_tests()
- 	# remove and re-add
- 	if reset "delete re-add signal" &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 1 1
--		pm_nl_set_limits $ns2 1 1
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
- 		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
- 		local tests_pid=$!
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index a97e393067e4..6c87b3d4ab36 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -2361,15 +2361,20 @@ static int vega10_acg_enable(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega10_hwmgr *data = hwmgr->backend;
+ 	uint32_t agc_btc_response;
++	int ret;
  
-@@ -3253,13 +3255,19 @@ userspace_tests()
- 		chk_subflow_nr needtitle "before delete" 2
+ 	if (data->smu_features[GNLD_ACG].supported) {
+ 		if (0 == vega10_enable_smc_features(hwmgr, true,
+ 					data->smu_features[GNLD_DPM_PREFETCHER].smu_feature_bitmap))
+ 			data->smu_features[GNLD_DPM_PREFETCHER].enabled = true;
  
- 		pm_nl_del_endpoint $ns1 1 10.0.2.1
-+		pm_nl_del_endpoint $ns1 2 224.0.0.1
- 		sleep 0.5
- 		chk_subflow_nr "" "after delete" 1
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
++		if (ret)
++			return ret;
  
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
- 		wait_mpj $ns2
--		chk_subflow_nr "" "after re-add" 2
-+		chk_subflow_nr "" "after re-add" 3
- 		kill_tests_wait
-+
-+		chk_join_nr 3 3 3
-+		chk_add_nr 4 4
-+		chk_rm_nr 2 1 invert
- 	fi
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
++		if (ret)
++			agc_btc_response = 0;
  
- 	# flush and re-add
+ 		if (1 == agc_btc_response) {
+ 			if (1 == data->acg_loop_state)
+-- 
+2.43.0
+
 
 
 
