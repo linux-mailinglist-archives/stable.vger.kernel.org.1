@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-73271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E51E96D417
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D4096D49D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B69E5B27795
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB15282E9D
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7951991BD;
-	Thu,  5 Sep 2024 09:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F76198A27;
+	Thu,  5 Sep 2024 09:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRyEp3j6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjE0pHLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313CF1991AE;
-	Thu,  5 Sep 2024 09:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631D198856;
+	Thu,  5 Sep 2024 09:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529690; cv=none; b=BmwpGGaPj0iW75NLp4gI61co5KxxlSqm4hfomfQi01NWnGVBciWmRggTtUOUhnfwWeL7QXd6sEWGZPJFSS4G+S6calz8yRhft6+T+5gwDSKoJsslPde2s5Fk8bBKaz4S98wO5QbzJWuN8QTAyzXAI0WX+K1aVpzouiCgp6DK/OM=
+	t=1725530045; cv=none; b=Df+25vxLIFzRVP9S5O6IaxB6xJ5YFUrtSA4c/pdxniTX1URPiUlIkJHbwJmdp3hoAG3SqLUso7BymYkoI5pE62sa+mn0AMnTgO/dePaNteSxv0Hy6a5pCJ2cOutLKiKmGC5xtP7l2Pcep0AkTNThzEFaWhRQDZ5ybkMn/BEKGns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529690; c=relaxed/simple;
-	bh=PrlTEB3YnzyGujGhSSQUJjH3+CAvBum45iPTiPrMsmg=;
+	s=arc-20240116; t=1725530045; c=relaxed/simple;
+	bh=WcwEpxiLcSWl/aCrTGKHYg0xfSTBx2ke6wOyiNYMflw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiyTV1AwDL4DubOOpctx+vkJJxu8LyH3FOm+8sCGXePq2+UETdEPkIJJsZSLv8hDCubBb7IIT2gCOZGYpPITxB44UrRgTecgN91zPkakfOlmyL2nVPHqsPQIT+odQ2MtjmHwRzOU3/PD+sAUQwx8zslPCiBIjihiSPj+D4Dh0ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRyEp3j6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3CDC4CEC4;
-	Thu,  5 Sep 2024 09:48:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bsGM08R1QZwNcs8Hn9730cUWIyDg4CX5u9Mj3JQl/pHBaXFR+56Qh1UBhaLEh/RdhDQsGTI37OYBuCZX9nluykyHt85DmkHTG4qGVQd+WvFe246hSpKoZGG++VNXUxkj++gdpPHamP6dBT12UZoZKgSftEHPe+/CfFmlZxZ/Thc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjE0pHLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3023C4CEC3;
+	Thu,  5 Sep 2024 09:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529689;
-	bh=PrlTEB3YnzyGujGhSSQUJjH3+CAvBum45iPTiPrMsmg=;
+	s=korg; t=1725530045;
+	bh=WcwEpxiLcSWl/aCrTGKHYg0xfSTBx2ke6wOyiNYMflw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRyEp3j67unctk8PHh/EAsyMWQbw6Y1HuRRY/DX1N6hAhQMtw9aYf1wqS4lOPrbFe
-	 t/zUsb5SYDJsgjUfZAfdgV1sW70+YUCsvTrqpX4sFi/0nzX9224S1m6CAOqM9Qb9VG
-	 edU3LrEtPLb417h4N8EVxlxkA2BJLixhlhWoNj5c=
+	b=CjE0pHLDZUIzfAc+T8hsyw8v1dzy61LYlA0GOQ4JrvYHZ/OwMjJC04yqHzBDPVW8Y
+	 19bUNVDIIRf41+MFK8V3oN2KJ6mmvtwEHOiNNRV4iX1o5FM52cMNvkwIzRUNtP3D8n
+	 qK5Ok9TxyZbk7E+YMtXIrt6Fis0tfRAhjsjKfiCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 112/184] drm/xe: Fix the warning conditions
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 038/132] mptcp: avoid duplicated SUB_CLOSED events
 Date: Thu,  5 Sep 2024 11:40:25 +0200
-Message-ID: <20240905093736.604609477@linuxfoundation.org>
+Message-ID: <20240905093723.725681458@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 4c0be90e6874b8af30541c37689780fc7c8276c9 ]
+commit d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 upstream.
 
-The maximum timeout display uses in xe_pcode_request is 3 msec, add the
-warning in cases the function is misused with higher timeouts.
+The initial subflow might have already been closed, but still in the
+connection list. When the worker is instructed to close the subflows
+that have been marked as closed, it might then try to close the initial
+subflow again.
 
-Add a warning if pcode_try_request is not passed the timeout parameter
-greater than 0.
+ A consequence of that is that the SUB_CLOSED event can be seen twice:
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240508152216.3263109-3-himal.prasad.ghimiray@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # ip mptcp endpoint
+  1.1.1.1 id 1 subflow dev eth0
+  2.2.2.2 id 2 subflow dev eth1
+
+  # ip mptcp monitor &
+  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
+
+  # ip mptcp endpoint delete id 1
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+
+The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
+second one from __mptcp_close_subflow().
+
+To avoid doing the post-closed processing twice, the subflow is now
+marked as closed the first time.
+
+Note that it is not enough to check if we are dealing with the first
+subflow and check its sk_state: the subflow might have been reset or
+closed before calling mptcp_close_ssk().
+
+Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
+Cc: stable@vger.kernel.org
+Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflict in protocol.h due to commit f1f26512a9bf ("mptcp: use plain
+  bool instead of custom binary enum") and more that are not in this
+  version, because they modify the context and the size of __unused. The
+  conflict is easy to resolve, by not modifying data_avail type. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_pcode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    6 ++++++
+ net/mptcp/protocol.h |    3 ++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pcode.c b/drivers/gpu/drm/xe/xe_pcode.c
-index a5e7da8cf944..9c4eefdf6642 100644
---- a/drivers/gpu/drm/xe/xe_pcode.c
-+++ b/drivers/gpu/drm/xe/xe_pcode.c
-@@ -10,6 +10,7 @@
- 
- #include <drm/drm_managed.h>
- 
-+#include "xe_assert.h"
- #include "xe_device.h"
- #include "xe_gt.h"
- #include "xe_mmio.h"
-@@ -124,6 +125,8 @@ static int pcode_try_request(struct xe_gt *gt, u32 mbox,
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2471,6 +2471,12 @@ out:
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
  {
- 	int slept, wait = 10;
- 
-+	xe_gt_assert(gt, timeout_us > 0);
++	/* The first subflow can already be closed and still in the list */
++	if (subflow->close_event_done)
++		return;
 +
- 	for (slept = 0; slept < timeout_us; slept += wait) {
- 		if (locked)
- 			*status = pcode_mailbox_rw(gt, mbox, &request, NULL, 1, true,
-@@ -169,6 +172,8 @@ int xe_pcode_request(struct xe_gt *gt, u32 mbox, u32 request,
- 	u32 status;
- 	int ret;
- 
-+	xe_gt_assert(gt, timeout_base_ms <= 3);
++	subflow->close_event_done = true;
 +
- 	mutex_lock(&gt->pcode.lock);
+ 	if (sk->sk_state == TCP_ESTABLISHED)
+ 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
  
- 	ret = pcode_try_request(gt, mbox, request, reply_mask, reply, &status,
-@@ -188,7 +193,6 @@ int xe_pcode_request(struct xe_gt *gt, u32 mbox, u32 request,
- 	 */
- 	drm_err(&gt_to_xe(gt)->drm,
- 		"PCODE timeout, retrying with preemption disabled\n");
--	drm_WARN_ON_ONCE(&gt_to_xe(gt)->drm, timeout_base_ms > 1);
- 	preempt_disable();
- 	ret = pcode_try_request(gt, mbox, request, reply_mask, reply, &status,
- 				true, 50 * 1000, true);
--- 
-2.43.0
-
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -500,7 +500,8 @@ struct mptcp_subflow_context {
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+ 		valid_csum_seen : 1,        /* at least one csum validated */
+ 		is_mptfo : 1,	    /* subflow is doing TFO */
+-		__unused : 10;
++		close_event_done : 1,       /* has done the post-closed part */
++		__unused : 9;
+ 	enum mptcp_data_avail data_avail;
+ 	bool	scheduled;
+ 	u32	remote_nonce;
 
 
 
