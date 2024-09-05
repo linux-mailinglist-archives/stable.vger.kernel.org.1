@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-73223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D2796D3DC
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE0296D3E8
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41391C22B29
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EED1B26E56
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31196198845;
-	Thu,  5 Sep 2024 09:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA9619885E;
+	Thu,  5 Sep 2024 09:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vxhdP5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNH55Cdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34281990C1;
-	Thu,  5 Sep 2024 09:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAD5635;
+	Thu,  5 Sep 2024 09:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529537; cv=none; b=Nia5mXb/oGN2cZOIP5ndMKC1jn78uxbSQn0YXGGqWoN9sY/IlpbMdkCDNBRckSWZ6O5gxc7GVY3DwCcyCFmTDd/s5NxY1hUV+gB5AP5Gl8++Ny4DAtPtSHpj7vU2f33mPBwVwqdTYiOBcuPHxf+ULRQSYiHVkDf0ZJczIbf01qI=
+	t=1725529571; cv=none; b=f8deNlB99KCSNOI7Bv9H4vaf6AAhL1KJVgpc8I7DRTn0sBG0wCSlKdMbtk32hQvOPXem+cY7iJKSKsf1CcgvXxvrMCCUJzSF/Z0sTs9XTQAH40rPycXyOnSD1XvkCcVvdsF+WxXGAeiObs+gCpER0kErZS3BzK6MJmEgY7T764Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529537; c=relaxed/simple;
-	bh=NwYKLjyFEZVZbAmuXxtBmVJoXqOVMlLoR9JVwvnjHBc=;
+	s=arc-20240116; t=1725529571; c=relaxed/simple;
+	bh=i3a4Ng97QY60Yg9CKcJLZCtArcyZ2JfXnNovNFwUGCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkafFhjBLWl4U3NGrr5ZnlujDJF4piD4JoZwP6Y9U9gW/b1Tozgwve0ZL7qK9dt1fcgrKp1qcH6RV7UEsdwXwwOeIOfj6OhtHDfvP+VwCYAQSfNz0xTbr1KD7BbLT4wyU46POvEnECfCPtsl39ZvshUVTgsEMq5mzPlIiThKDK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vxhdP5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0806EC4CEC3;
-	Thu,  5 Sep 2024 09:45:35 +0000 (UTC)
+	 MIME-Version; b=M+fxIXfuMuxL8cnhMhkpcDdgbn9gL5mTW9ZQfBMtWibhymzcs+J/PhtMKE5AetMa/VPkqwTEti4wFCiczCSbhtM5dmS6NM2thkN1mTf390X0ogODazVtH/XhdzsttlWdwlaTRuKTiq3zqc+sOI0sQDQn9Jjl+28sDI3SLelWwng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNH55Cdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF14C4CEC3;
+	Thu,  5 Sep 2024 09:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529536;
-	bh=NwYKLjyFEZVZbAmuXxtBmVJoXqOVMlLoR9JVwvnjHBc=;
+	s=korg; t=1725529571;
+	bh=i3a4Ng97QY60Yg9CKcJLZCtArcyZ2JfXnNovNFwUGCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vxhdP5/ahBtPwClHwUOvIpVUkH204qjoZ2iIrOtq+xX9Tn1ThdpxLin5wxxmNjjM
-	 kjN4xLhJPBWnVWx1uUZWocMG8QSt1sN599FekR2LJ2RU3s+tySwWC5ES+QTlseEqfd
-	 Cr2HEKicE4jZLn+MUsT+3edDBI+cgeRij5Tq9/2w=
+	b=BNH55CdjRp11/dw1chT9ICkPaEJG2EZiCJPRNaKSEMbzk5wAp3KCBnUgPgC7QMLE4
+	 wYU/lXBbLn/VnKrJpNcytrEPyTKXrDJKBlGXoGpa+0oG+WnpcRbj6cvAIRunEAgrNK
+	 g32R5ILJ5BMFPIhuVeGFlHHRWFTR6KiLr6qlvHRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 057/184] drm/amd/display: Ensure array index tg_inst wont be -1
-Date: Thu,  5 Sep 2024 11:39:30 +0200
-Message-ID: <20240905093734.468343704@linuxfoundation.org>
+Subject: [PATCH 6.10 058/184] drm/amd/display: Check gpio_id before used as array index
+Date: Thu,  5 Sep 2024 11:39:31 +0200
+Message-ID: <20240905093734.507035632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -71,13 +71,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 687fe329f18ab0ab0496b20ed2cb003d4879d931 ]
+[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
 
 [WHY & HOW]
-tg_inst will be a negative if timing_generator_count equals 0, which
-should be checked before used.
+GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
+should be checked in advance.
 
-This fixes 2 OVERRUN issues reported by Coverity.
+This fixes 5 OVERRUN issues reported by Coverity.
 
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
@@ -86,22 +86,61 @@ Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 8ed599324693..ce5adb8bc377 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -3508,7 +3508,7 @@ static bool acquire_otg_master_pipe_for_stream(
- 		if (pool->dpps[pipe_idx])
- 			pipe_ctx->plane_res.mpcc_inst = pool->dpps[pipe_idx]->inst;
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index 663c17f52779..d19d5c177022 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -239,6 +239,9 @@ static bool is_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return false;
++
+ 	return service->busyness[id][en];
+ }
  
--		if (pipe_idx >= pool->timing_generator_count) {
-+		if (pipe_idx >= pool->timing_generator_count && pool->timing_generator_count != 0) {
- 			int tg_inst = pool->timing_generator_count - 1;
+@@ -247,6 +250,9 @@ static void set_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = true;
+ }
  
- 			pipe_ctx->stream_res.tg = pool->timing_generators[tg_inst];
+@@ -255,6 +261,9 @@ static void set_pin_free(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = false;
+ }
+ 
+@@ -263,7 +272,7 @@ enum gpio_result dal_gpio_service_lock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
+@@ -277,7 +286,7 @@ enum gpio_result dal_gpio_service_unlock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
 -- 
 2.43.0
 
