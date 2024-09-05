@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3728996D425
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1F596D48B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AADA5B278F8
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5F71F2118E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EBA1922CC;
-	Thu,  5 Sep 2024 09:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5468C194AC7;
+	Thu,  5 Sep 2024 09:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyrpF+d4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhROg3hx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BF614A08E;
-	Thu,  5 Sep 2024 09:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8A318732F;
+	Thu,  5 Sep 2024 09:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529728; cv=none; b=K+e1sqUTwKqQ+A7SBEIksQ2ssmTQZvEre1Mq56SwCbop+8Ji2hWjkjO98pZ8MdO4tI290NeZHShJkWZkguO2BUZ7GZ2g8AtZlAdZyB0qXJjpRJVqV2nJZOFo33ko1yeegMrGDMO2acoO2PoHQO143B6J70mBA8SZAx1M9vyqzuw=
+	t=1725529994; cv=none; b=eqzHcuH3OlUuKIuyzpsnL+oXMgNDpBkZefA6BUZNSGiJs8pQQjUyUf8Ej3WLwqqKxb8jaKVj+YoapQPqttfNZ8GsaHytC5pTqulMMOWodd0eBJL4rQZ+JDZ/Bc8pvK8FeSmL6EOWMNbJfO1Qghc7y4sqFDUJcj+GMKL7shQSjNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529728; c=relaxed/simple;
-	bh=5+6Q5skF/cdpy0pQSZ3P1dBYBhYW4HEer697tLc7eco=;
+	s=arc-20240116; t=1725529994; c=relaxed/simple;
+	bh=oJnd94uyNeeQ6+ww0yNg1pzEJhOVsh7In5ZPqLJNcN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHWq63Ku8TAbhNpKq1U4OgUo1PLrXHGt3vypcpbUWWVkE/TQHhoPfsCijMuoXrkKyGRcUXF1PM73u/HiIak0D5mm02OrH4wiUU9SsQ2b3+SWGTpJn5eFCmLmHEVOyZdp+d0FrSJe4bMVnm6PEwa3KVCVAic1TtBMZ1znMxO8MjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyrpF+d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFF5C4CEC3;
-	Thu,  5 Sep 2024 09:48:47 +0000 (UTC)
+	 MIME-Version; b=P+FdqbFtOj4YLLs51jW92HpdsZ/haruB1reqL5zvwfPBPlfVrWFh5nCmIeSu/HPdsSS/nJbQFMW+Iriea8wMnAgAIowrRnNr/noxxDrZ2H5Co2Y67WCI/psbGnsgentDY2qFXGu7z+EPnkh166A1ge1z7mk9pRjlU704dVSmNG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhROg3hx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45726C4CEC3;
+	Thu,  5 Sep 2024 09:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529728;
-	bh=5+6Q5skF/cdpy0pQSZ3P1dBYBhYW4HEer697tLc7eco=;
+	s=korg; t=1725529993;
+	bh=oJnd94uyNeeQ6+ww0yNg1pzEJhOVsh7In5ZPqLJNcN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyrpF+d4rmmNAezPxXhmRq/nkiXe9H/HyeuqgMCvyfS8P0bU/oIYAsCsUgh6Er25x
-	 c/rTd5SP/DoKGkUqX659XsLBcaAKV0dgx6l9NDDPo/5SqxuqZXR6uxSnyvdi5MkCtd
-	 jF4Vnqmx/yA1xYsYqn0Sgi9ZUWym7feTYSbR5bsY=
+	b=XhROg3hxPBQ3/rzagMrtUzGhOZInOkd8NoTmRBJ5YpwSUmfoGv8RQjvVTWz3eQ6ZF
+	 vYO0uAKRRHqoen3An1wk5rqS1e2wprVe9RkVHtSciNBMcnSL7j2phj7+QnLms8tfRd
+	 Gba+w8eRXRtAQm//luQCeEqJ1ELHy3uao7EuZuGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chen <michael.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhang Yi <zhangyi@everest-semi.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 094/184] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
-Date: Thu,  5 Sep 2024 11:40:07 +0200
-Message-ID: <20240905093735.912152940@linuxfoundation.org>
+Subject: [PATCH 6.6 021/132] ASoC: codecs: ES8326: button detect issue
+Date: Thu,  5 Sep 2024 11:40:08 +0200
+Message-ID: <20240905093723.062060642@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chen <michael.chen@amd.com>
+From: Zhang Yi <zhangyi@everest-semi.com>
 
-[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
+[ Upstream commit 4684a2df9c5b3fc914377127faf2515aa9049093 ]
 
-Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
-in some use case. This would lead code scanner to complain about
-access beyond. Re-define it in union to enforce 8-byte size and
-alignment to avoid potential issue.
+We find that we need to set snd_jack_types to 0. If not,
+there will be a probability of button detection errors
 
-Signed-off-by: Michael Chen <michael.chen@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhang Yi <zhangyi@everest-semi.com>
+Link: https://patch.msgid.link/20240807025356.24904-2-zhangyi@everest-semi.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
- drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/es8326.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-index 300634b9f668..a8ca7ecb6d27 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-@@ -42,8 +42,6 @@
- #define CRAT_OEMTABLEID_LENGTH	8
- #define CRAT_RESERVED_LENGTH	6
- 
--#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
--
- /* Compute Unit flags */
- #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
- #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index bc9eb847ecfe..1d271ecc386f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -958,8 +958,7 @@ static void kfd_update_system_properties(void)
- 	dev = list_last_entry(&topology_device_list,
- 			struct kfd_topology_device, list);
- 	if (dev) {
--		sys_props.platform_id =
--			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
-+		sys_props.platform_id = dev->oem_id64;
- 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
- 		sys_props.platform_rev = dev->oem_revision;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-index 27386ce9a021..2d1c9d771bef 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-@@ -154,7 +154,10 @@ struct kfd_topology_device {
- 	struct attribute		attr_gpuid;
- 	struct attribute		attr_name;
- 	struct attribute		attr_props;
--	uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+	union {
-+		uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+		uint64_t			oem_id64;
-+	};
- 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
- 	uint32_t			oem_revision;
- };
+diff --git a/sound/soc/codecs/es8326.c b/sound/soc/codecs/es8326.c
+index 6c263086c44d2..32a9b26ee2c89 100644
+--- a/sound/soc/codecs/es8326.c
++++ b/sound/soc/codecs/es8326.c
+@@ -617,6 +617,8 @@ static void es8326_jack_detect_handler(struct work_struct *work)
+ 		es8326_disable_micbias(es8326->component);
+ 		if (es8326->jack->status & SND_JACK_HEADPHONE) {
+ 			dev_dbg(comp->dev, "Report hp remove event\n");
++			snd_soc_jack_report(es8326->jack, 0,
++				    SND_JACK_BTN_0 | SND_JACK_BTN_1 | SND_JACK_BTN_2);
+ 			snd_soc_jack_report(es8326->jack, 0, SND_JACK_HEADSET);
+ 			/* mute adc when mic path switch */
+ 			regmap_write(es8326->regmap, ES8326_ADC_SCALE, 0x33);
 -- 
 2.43.0
 
