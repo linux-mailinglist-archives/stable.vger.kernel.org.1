@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-73210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D857C96D3B9
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:45:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAEA96D3C1
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088921C2259B
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E641F227E4
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C31B198845;
-	Thu,  5 Sep 2024 09:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9367F198845;
+	Thu,  5 Sep 2024 09:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0xIZPC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxmAQIv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE6019882B;
-	Thu,  5 Sep 2024 09:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F11198E83;
+	Thu,  5 Sep 2024 09:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529496; cv=none; b=czYYaxAJ5y4P6Rs2j35WwjrmHVbu4qOt+BhExS4d6iClem5LIzZEe62X7uU5cH9kFbIoMMRfKNuCeW/+PgPgFrOI+nOg1vscRtjN7+8Q/DPvBa/Xb3x57r+aMJdJTjglxkaMxgwt73vdfqe8GH9lkuZwxeecAgzEy71rtvV4wV8=
+	t=1725529502; cv=none; b=ojzic8k4rWjLoLBqLMSFrKEqJS8nACgzZ6WST5EZmRFoE3gfr5OUMGKfVDdLhShqXIt6dmTTCrC6KZcZr+DtKD0xd2r1DcvIbdrfdhsbP6/v8vUAr1/6ubU1b3a1QtnCxMrXlQqvRH8K6NTRf/bbAPsKKnjTxe3yP5Fji/MrFqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529496; c=relaxed/simple;
-	bh=oLdyvYI/a8dsINqO3RVlcre8L8dWpqSxpPuQ/jqpqbA=;
+	s=arc-20240116; t=1725529502; c=relaxed/simple;
+	bh=ymopELaqQAcvAOslyGNd/k9OtpoXvY1zgtqKBFTgFtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FERxDwYwbAQ6f+Ub0OjBTuQIVOdmjZ6B8q4jLbpqmoQlEYRukD42R9atxOtkU/mPnv+XzrcPf9LtFhqvYmw1ghcfdhysER8eTcHfmC8GobduCxglSxQUIKkI0AFm2KwQRjMOYQofVQv0/Pa2SEC0TA/lQfvgmsIESmLjShYTTWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0xIZPC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E99C4CEC4;
-	Thu,  5 Sep 2024 09:44:55 +0000 (UTC)
+	 MIME-Version; b=OSDxOrIJtEZM9s123ncTJFJungTrTgMsP/nDoJyhWlsJRfVFFY8f8mqPR4thDq/EkQDs829DYIAM0ptrvX5EXZLWuP4lHMvoKAteiFagiIFvO+tmbJSGObba9TCeF4J/xmyegRE+J4nbSeEFUUu5OTsewELjn6SWLoNpsI8yxeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxmAQIv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB388C4CEC7;
+	Thu,  5 Sep 2024 09:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529496;
-	bh=oLdyvYI/a8dsINqO3RVlcre8L8dWpqSxpPuQ/jqpqbA=;
+	s=korg; t=1725529502;
+	bh=ymopELaqQAcvAOslyGNd/k9OtpoXvY1zgtqKBFTgFtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0xIZPC9MyqUaH46uX6xVVny4IoF4QJ5pp3YBYlaNtcPGC+96UsAlDG+TgZdpSNg5
-	 PtyBerQwC0EFdSgtBHxRgHzFAwUYzB/IrdAGixJVIyw4kP6CLdQXYTGHVSNmfySS73
-	 iEanOh8Hhy7tERrOYv/EydP+zhpU6L2vTU960Bw8=
+	b=SxmAQIv9zKjUMrhOv2CD5BsnJQLRZsxijcKWbdFa31O62r1ZnwkGUAoskvHEu7iUx
+	 EWJXZ5hn3M+syZBc+cnNMn/ZDlLJ8myJE7HrL5BgLPIyy/ptajsbvsDjI3qEAegGya
+	 4cV1vpr6sIh0OmIVlrZP4+5eTsJwdtIpX8f36kSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 051/184] drm/amd/pm: fix uninitialized variable warning for smu_v13
-Date: Thu,  5 Sep 2024 11:39:24 +0200
-Message-ID: <20240905093734.236275080@linuxfoundation.org>
+Subject: [PATCH 6.10 052/184] drm/amd/pm: fix the Out-of-bounds read warning
+Date: Thu,  5 Sep 2024 11:39:25 +0200
+Message-ID: <20240905093734.275163706@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -66,236 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 6e46b89f40e39e2054f2e179e8e8c3132e7a9d57 ]
+[ Upstream commit 12c6967428a099bbba9dfd247bb4322a984fcc0b ]
 
-Clear warning that using uninitialized variable when the dpm is
-not enabled and reuse the code for SMU13 to get the boot frequency.
+using index i - 1U may beyond element index
+for mc_data[] when i = 0.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |  4 ++
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    | 55 +++++++++++++------
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c  | 28 +---------
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c  | 28 +---------
- .../drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c  | 28 +---------
- 5 files changed, 51 insertions(+), 92 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-index d9700a3f28d2..e58220a7ee2f 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-+++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-@@ -298,5 +298,9 @@ int smu_v13_0_enable_uclk_shadow(struct smu_context *smu, bool enable);
- 
- int smu_v13_0_set_wbrf_exclusion_ranges(struct smu_context *smu,
- 						 struct freq_band_range *exclusion_ranges);
-+
-+int smu_v13_0_get_boot_freq_by_index(struct smu_context *smu,
-+				     enum smu_clk_type clk_type,
-+				     uint32_t *value);
- #endif
- #endif
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index b63ad9cb24bf..933fe93c8d1e 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1559,22 +1559,9 @@ int smu_v13_0_get_dpm_ultimate_freq(struct smu_context *smu, enum smu_clk_type c
- 	uint32_t clock_limit;
- 
- 	if (!smu_cmn_clk_dpm_is_enabled(smu, clk_type)) {
--		switch (clk_type) {
--		case SMU_MCLK:
--		case SMU_UCLK:
--			clock_limit = smu->smu_table.boot_values.uclk;
--			break;
--		case SMU_GFXCLK:
--		case SMU_SCLK:
--			clock_limit = smu->smu_table.boot_values.gfxclk;
--			break;
--		case SMU_SOCCLK:
--			clock_limit = smu->smu_table.boot_values.socclk;
--			break;
--		default:
--			clock_limit = 0;
--			break;
--		}
-+		ret = smu_v13_0_get_boot_freq_by_index(smu, clk_type, &clock_limit);
-+		if (ret)
-+			return ret;
- 
- 		/* clock in Mhz unit */
- 		if (min)
-@@ -1894,6 +1881,40 @@ int smu_v13_0_set_power_source(struct smu_context *smu,
- 					       NULL);
- }
- 
-+int smu_v13_0_get_boot_freq_by_index(struct smu_context *smu,
-+				     enum smu_clk_type clk_type,
-+				     uint32_t *value)
-+{
-+	int ret = 0;
-+
-+	switch (clk_type) {
-+	case SMU_MCLK:
-+	case SMU_UCLK:
-+		*value = smu->smu_table.boot_values.uclk;
-+		break;
-+	case SMU_FCLK:
-+		*value = smu->smu_table.boot_values.fclk;
-+		break;
-+	case SMU_GFXCLK:
-+	case SMU_SCLK:
-+		*value = smu->smu_table.boot_values.gfxclk;
-+		break;
-+	case SMU_SOCCLK:
-+		*value = smu->smu_table.boot_values.socclk;
-+		break;
-+	case SMU_VCLK:
-+		*value = smu->smu_table.boot_values.vclk;
-+		break;
-+	case SMU_DCLK:
-+		*value = smu->smu_table.boot_values.dclk;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	return ret;
-+}
-+
- int smu_v13_0_get_dpm_freq_by_index(struct smu_context *smu,
- 				    enum smu_clk_type clk_type, uint16_t level,
- 				    uint32_t *value)
-@@ -1905,7 +1926,7 @@ int smu_v13_0_get_dpm_freq_by_index(struct smu_context *smu,
- 		return -EINVAL;
- 
- 	if (!smu_cmn_clk_dpm_is_enabled(smu, clk_type))
--		return 0;
-+		return smu_v13_0_get_boot_freq_by_index(smu, clk_type, value);
- 
- 	clk_id = smu_cmn_to_asic_specific_index(smu,
- 						CMN2ASIC_MAPPING_CLK,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-index b6257f34a7c6..b081ae3e8f43 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-@@ -758,31 +758,9 @@ static int smu_v13_0_4_get_dpm_ultimate_freq(struct smu_context *smu,
- 	int ret = 0;
- 
- 	if (!smu_v13_0_4_clk_dpm_is_enabled(smu, clk_type)) {
--		switch (clk_type) {
--		case SMU_MCLK:
--		case SMU_UCLK:
--			clock_limit = smu->smu_table.boot_values.uclk;
--			break;
--		case SMU_FCLK:
--			clock_limit = smu->smu_table.boot_values.fclk;
--			break;
--		case SMU_GFXCLK:
--		case SMU_SCLK:
--			clock_limit = smu->smu_table.boot_values.gfxclk;
--			break;
--		case SMU_SOCCLK:
--			clock_limit = smu->smu_table.boot_values.socclk;
--			break;
--		case SMU_VCLK:
--			clock_limit = smu->smu_table.boot_values.vclk;
--			break;
--		case SMU_DCLK:
--			clock_limit = smu->smu_table.boot_values.dclk;
--			break;
--		default:
--			clock_limit = 0;
--			break;
--		}
-+		ret = smu_v13_0_get_boot_freq_by_index(smu, clk_type, &clock_limit);
-+		if (ret)
-+			return ret;
- 
- 		/* clock in Mhz unit */
- 		if (min)
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
-index 218f209c3775..59854465d711 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
-@@ -733,31 +733,9 @@ static int smu_v13_0_5_get_dpm_ultimate_freq(struct smu_context *smu,
- 	int ret = 0;
- 
- 	if (!smu_v13_0_5_clk_dpm_is_enabled(smu, clk_type)) {
--		switch (clk_type) {
--		case SMU_MCLK:
--		case SMU_UCLK:
--			clock_limit = smu->smu_table.boot_values.uclk;
--			break;
--		case SMU_FCLK:
--			clock_limit = smu->smu_table.boot_values.fclk;
--			break;
--		case SMU_GFXCLK:
--		case SMU_SCLK:
--			clock_limit = smu->smu_table.boot_values.gfxclk;
--			break;
--		case SMU_SOCCLK:
--			clock_limit = smu->smu_table.boot_values.socclk;
--			break;
--		case SMU_VCLK:
--			clock_limit = smu->smu_table.boot_values.vclk;
--			break;
--		case SMU_DCLK:
--			clock_limit = smu->smu_table.boot_values.dclk;
--			break;
--		default:
--			clock_limit = 0;
--			break;
--		}
-+		ret = smu_v13_0_get_boot_freq_by_index(smu, clk_type, &clock_limit);
-+		if (ret)
-+			return ret;
- 
- 		/* clock in Mhz unit */
- 		if (min)
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
-index d8bcf765a803..5917c88cc87d 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
-@@ -867,31 +867,9 @@ static int yellow_carp_get_dpm_ultimate_freq(struct smu_context *smu,
- 	int ret = 0;
- 
- 	if (!yellow_carp_clk_dpm_is_enabled(smu, clk_type)) {
--		switch (clk_type) {
--		case SMU_MCLK:
--		case SMU_UCLK:
--			clock_limit = smu->smu_table.boot_values.uclk;
--			break;
--		case SMU_FCLK:
--			clock_limit = smu->smu_table.boot_values.fclk;
--			break;
--		case SMU_GFXCLK:
--		case SMU_SCLK:
--			clock_limit = smu->smu_table.boot_values.gfxclk;
--			break;
--		case SMU_SOCCLK:
--			clock_limit = smu->smu_table.boot_values.socclk;
--			break;
--		case SMU_VCLK:
--			clock_limit = smu->smu_table.boot_values.vclk;
--			break;
--		case SMU_DCLK:
--			clock_limit = smu->smu_table.boot_values.dclk;
--			break;
--		default:
--			clock_limit = 0;
--			break;
--		}
-+		ret = smu_v13_0_get_boot_freq_by_index(smu, clk_type, &clock_limit);
-+		if (ret)
-+			return ret;
- 
- 		/* clock in Mhz unit */
- 		if (min)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index b1b4c09c3467..b56298d9da98 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -73,8 +73,9 @@ static int atomctrl_retrieve_ac_timing(
+ 					j++;
+ 				} else if ((table->mc_reg_address[i].uc_pre_reg_data &
+ 							LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
+-					table->mc_reg_table_entry[num_ranges].mc_data[i] =
+-						table->mc_reg_table_entry[num_ranges].mc_data[i-1];
++					if (i)
++						table->mc_reg_table_entry[num_ranges].mc_data[i] =
++							table->mc_reg_table_entry[num_ranges].mc_data[i-1];
+ 				}
+ 			}
+ 			num_ranges++;
 -- 
 2.43.0
 
