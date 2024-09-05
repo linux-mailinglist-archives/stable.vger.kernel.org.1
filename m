@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-73287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1560296D429
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3921E96D48E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B3D1F222A1
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49E71F22187
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0806198856;
-	Thu,  5 Sep 2024 09:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F51196446;
+	Thu,  5 Sep 2024 09:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGS0ON8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCqdozVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB507198822;
-	Thu,  5 Sep 2024 09:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006C0154BFF;
+	Thu,  5 Sep 2024 09:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529741; cv=none; b=Xn9LPHm+Hgli5Nsor0uRHUKsEFl1bdHLV0qHZ4xIUDqqDyI1sTmz96++cNxkUHDmJditybYSybVYTh0AxPEdDuJMJZl1ns9lNei2WHjr6UHVoEFZT1N+y/V7NaeaH8Q0AYEQA1jCj9qxVuf+MCbdDuOYLRiWb0niRwCFlD58xc4=
+	t=1725530004; cv=none; b=EF0xf8xBqvx1afhfMPMZq+D92WPdrlFXcryfUpZaPgzazkYN3u0VB1niYRXiKjb6CzJwN/NFOZ978USdiP+1+Ce7Uyqz0ZmFQv8CQLdzwWCR8EiN9p7mpL4Y1afGlMczjSB9EAYUl1Ei/iVHkPN/w2U3b+o7UWBdahLtXcXnb2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529741; c=relaxed/simple;
-	bh=IH1CJm1HNVQ5Rz6dc7+DuRyEgqjNqMO1+AT+7T6NUY4=;
+	s=arc-20240116; t=1725530004; c=relaxed/simple;
+	bh=IPN5TZrNjJctU/PGb30fKR2SmjkYuFU4dxQC2c/AKn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mxg0R/nRit9nTh4WunvQCK2GbNKwj8aqmUYJdPJE579ye75zKxa6BCLSfu+en0P5UUVEzR9gHoxlIjrlfHNAIRbQ6D2y2knjyciRfBBModmUN9oYNIotHKDRLzIWqeL/db/aPcL7dUDPhoVCNjx4ZGh1hwJMrf78vg98yEk5tqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGS0ON8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11106C4CEC3;
-	Thu,  5 Sep 2024 09:49:00 +0000 (UTC)
+	 MIME-Version; b=CPjEXw+CehUKa8p/I+lnk9HrGLfk9yeHYV064KZ1sAW7I/vXUReH4mPRrR18ao6rZKzsa5HRAmgzyy93HH4YHF6Bc6aKCZyadaBpLrfiZhcDVGD4AYR1jBM18ZT3VWK7PuuJCVavWzfsLXdY4EVKSBszj+MJTZZ2Si8RfqSPXNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCqdozVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B064C4CEC3;
+	Thu,  5 Sep 2024 09:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529741;
-	bh=IH1CJm1HNVQ5Rz6dc7+DuRyEgqjNqMO1+AT+7T6NUY4=;
+	s=korg; t=1725530003;
+	bh=IPN5TZrNjJctU/PGb30fKR2SmjkYuFU4dxQC2c/AKn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGS0ON8VOxpTGFWAhvZLRVtFMJDf8u5b0OV8JQXixa+s5alQHNimgSIWzUR/3OWw+
-	 GNAvjXD8VXQsU0CiaUBI71Fu9wXkEbng87Q1O7jkpO34Gq9peArL9t1NHm089AlXnz
-	 BnAvDhF49KH8qrkwVAWDyhmNwMYGh1I3Et1XE+2w=
+	b=gCqdozViaeKKp7QNVABapPMGgL47RjZTzTgT80w86c7ug+PjdL+xaYLOb+f41tUQ1
+	 svJtjEoGzDz031prwJIGhgRYG+9Jym1hKFeU6+dv/m16dYoRWpS/vGJ+h/t3MrUk7S
+	 +trPukGAde97lQtPLx0IKFMnS7fMj3Luoe5mha7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 098/184] wifi: ath11k: initialize ret in ath11k_qmi_load_file_target_mem()
+Subject: [PATCH 6.6 024/132] selftests: mptcp: userspace pm create id 0 subflow
 Date: Thu,  5 Sep 2024 11:40:11 +0200
-Message-ID: <20240905093736.066695831@linuxfoundation.org>
+Message-ID: <20240905093723.176572434@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 199f149e97dc7be80e5eed4b232529c1d1aa8055 ]
+[ Upstream commit b2e2248f365a7ef0687fe048c335fe1a32f98b36 ]
 
-smatch flagged the following issue:
+This patch adds a selftest to create id 0 subflow. Pass id 0 to the
+helper userspace_pm_add_sf() to create id 0 subflow. chk_mptcp_info
+shows one subflow but chk_subflows_total shows two subflows in each
+namespace.
 
-drivers/net/wireless/ath/ath11k/qmi.c:2401 ath11k_qmi_load_file_target_mem() error: uninitialized symbol 'ret'.
-
-The reality is that 'ret' is initialized in every path through
-ath11k_qmi_load_file_target_mem() except one, the case where the input
-'len' is 0, and hence the "while (remaining)" loop is never entered.
-But to make sure this case is also handled, add an initializer to the
-declaration of 'ret'.
-
-No functional changes, compile tested only.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240504-qmi_load_file_target_mem-v1-2-069fc44c45eb@quicinc.com
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-5-8d6b94150f6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e93681afcb96 ("selftests: mptcp: join: cannot rm sf if closed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index d4a243b64f6c..aa160e6fe24f 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
- 	struct qmi_txn txn;
- 	const u8 *temp = data;
- 	void __iomem *bdf_addr = NULL;
--	int ret;
-+	int ret = 0;
- 	u32 remaining = len;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 2be13dd19ddd2..d378f23bb31a6 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3545,6 +3545,25 @@ userspace_tests()
+ 		kill_events_pids
+ 		mptcp_lib_kill_wait $tests_pid
+ 	fi
++
++	# userspace pm create id 0 subflow
++	if reset_with_events "userspace pm create id 0 subflow" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
++		set_userspace_pm $ns2
++		pm_nl_set_limits $ns1 0 1
++		speed=5 \
++			run_tests $ns1 $ns2 10.0.1.1 &
++		local tests_pid=$!
++		wait_mpj $ns2
++		chk_mptcp_info subflows 0 subflows 0
++		chk_subflows_total 1 1
++		userspace_pm_add_sf $ns2 10.0.3.2 0
++		chk_join_nr 1 1 1
++		chk_mptcp_info subflows 1 subflows 1
++		chk_subflows_total 2 2
++		kill_events_pids
++		wait $tests_pid
++	fi
+ }
  
- 	req = kzalloc(sizeof(*req), GFP_KERNEL);
+ endpoint_tests()
 -- 
 2.43.0
 
