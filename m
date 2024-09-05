@@ -1,177 +1,104 @@
-Return-Path: <stable+bounces-73154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B490096D182
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:12:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214F296D1B3
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BE622848AE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:12:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4171C219C7
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A64D197A83;
-	Thu,  5 Sep 2024 08:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF565194C86;
+	Thu,  5 Sep 2024 08:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+0tzwoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSPyjanc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF356195383
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 08:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2E0194AEE
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 08:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725523713; cv=none; b=nGyB7/HdZIFbwAlo1uRi7D91XL7Y4SJVyvXJEdatQw1qOl2HrJhEgk4pjCSY46AeBS9lQi7QLqVX9Rhga3w2hPtBYaXQIWtqnHlh/BdtHvT4OcFyKkfLc1exll8f+NMiqWH70ACl21jGA0dVTxx4DCFPBA2/OBYViQu//owYOB4=
+	t=1725523932; cv=none; b=as5tvE7Cq4DLYYdxaZrW6+C2RWdyyVhykUxkWiNnFiSrIm5tJmTooVATVepFclIObZWJghwPvx3r1z42YIb3G91sI+PfdxDoiF89yxMCbKx8TtPkSEQsEgxLMSx+QOVAeFxpjMkOq50AAoICQcEbK+AQpnBkAD7ZgFJ8CcXGG9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725523713; c=relaxed/simple;
-	bh=To/aDxeYztB39vkMxp8jPtU18jsGRR1D1kv/dHNzZCs=;
+	s=arc-20240116; t=1725523932; c=relaxed/simple;
+	bh=yqTMfqhSKEQck3azA3eDAi40mgMOdLU4EXA40IcwahA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GgqQEYeN+d8gbGbEFoNegNtuU6IIYswTxGKkeQYWpa9DWEj7SJHbl3Pp3Onyb9K09T7ikU7DkDy+jXIJ48e4FaYWiZW54HSXekt00BhObu9vCkTpZmP/eRp3EAXwPPfZsPPrBrH3CLxTI2uAZCjYujax7dODtvXZI6yIACxC7Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+0tzwoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF166C4CEC4;
-	Thu,  5 Sep 2024 08:08:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=e20mQVh82Ix95xLUsVugyzZ3g60AhEeMZhThzpFILFrMbr78mHX9ED+3c8Hau5m9b9cjMehJVhfumPD5jAgDEEwGPzVq/ysfA60Zy745OnSLnt6tGbGd8Py8O7I0mzmX2UDvc++pqhlz04KPvatIh24rcXGP2XDRd57IxJ8LP8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSPyjanc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3E4C4CEC4;
+	Thu,  5 Sep 2024 08:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725523713;
-	bh=To/aDxeYztB39vkMxp8jPtU18jsGRR1D1kv/dHNzZCs=;
+	s=korg; t=1725523932;
+	bh=yqTMfqhSKEQck3azA3eDAi40mgMOdLU4EXA40IcwahA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q+0tzwoONOHf8lGd4nA8PwwBjvDcFxba3eGu32cQVUasH+fKeZoxNH0cI+U8BhsHd
-	 IMVBdHulygYiD2V9n8KcTmInHhYuiVRxbRL88uUDgmDHG19dn+1x2SWANToqVinfvK
-	 kewJ7j7vmGJsMbABSzqUyT7QPBJllCkqwVBNLLFo=
-Date: Thu, 5 Sep 2024 10:08:30 +0200
+	b=BSPyjancUgHUcjpgIMmT3O8OjhLRF7ssaO3p992h7rw1e9hS5qSgiHi4y5iivYsVS
+	 K2U85KeKY3KGem2kzioAG0r7f1wXnXVGii4Cd4N2VTybIbWXzlfBWYzOVo0mcKgV3h
+	 Pf6+R906PUQsOSh9bErX+uuKN1q7N0F1lV3DXhJg=
+Date: Thu, 5 Sep 2024 10:12:09 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: mathieu.tortuyaux@gmail.com
-Cc: stable@vger.kernel.org, Mathieu Tortuyaux <mtortuyaux@microsoft.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
-Message-ID: <2024090532-earthworm-sincere-005e@gregkh>
-References: <20240903084307.20562-2-mathieu.tortuyaux@gmail.com>
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: sashal@kernel.org, dvyukov@google.com, stable@vger.kernel.org,
+	syzkaller@googlegroups.com
+Subject: Re: Missing fix backports detected by syzbot
+Message-ID: <2024090546-decorator-sublet-8a26@gregkh>
+References: <20240904102455.911642-1-nogikh@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240903084307.20562-2-mathieu.tortuyaux@gmail.com>
+In-Reply-To: <20240904102455.911642-1-nogikh@google.com>
 
-On Tue, Sep 03, 2024 at 10:42:26AM +0200, mathieu.tortuyaux@gmail.com wrote:
-> From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+On Wed, Sep 04, 2024 at 12:24:55PM +0200, Aleksandr Nogikh wrote:
+> Hi Greg, Sasha,
 > 
-> [ Upstream commit 89add40066f9ed9abe5f7f886fe5789ff7e0c50e ]
+> A number of commits were identified[1] by syzbot as non-backported
+> fixes for the fuzzer-detected findings in various Linux LTS trees.
 > 
-> Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
-> for GSO packets.
+> [1] https://syzkaller.appspot.com/upstream/backports
 > 
-> The function already checks that a checksum requested with
-> VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
-> this might not hold for segs after segmentation.
+> Please consider backporting the following commits to LTS v6.1:
+> 9a8ec9e8ebb5a7c0cfbce2d6b4a6b67b2b78e8f3 "Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm"
+> (fixes 9a8ec9e) 3dcaa192ac2159193bc6ab57bc5369dcb84edd8e "Bluetooth: SCO: fix sco_conn related locking and validity issues"
+> 3f5424790d4377839093b68c12b130077a4e4510 "ext4: fix inode tree inconsistency caused by ENOMEM"
+> 7b0151caf73a656b75b550e361648430233455a0 "KVM: x86: Remove WARN sanity check on hypervisor timer vs. UNINITIALIZED vCPU"
+> c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 "udf: Limit file size to 4TB"
+> 4b827b3f305d1fcf837265f1e12acc22ee84327c "xfs: remove WARN when dquot cache insertion fails"
 > 
-> Syzkaller demonstrated to reach this warning in skb_checksum_help
+> These were verified to apply cleanly on top of v6.1.107 and to
+> build/boot.
 > 
-> 	offset = skb_checksum_start_offset(skb);
-> 	ret = -EINVAL;
-> 	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
-> 
-> By injecting a TSO packet:
-> 
-> WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
->  ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
->  ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
->  __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
->  iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
->  ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
->  __gre_xmit net/ipv4/ip_gre.c:469 [inline]
->  ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
->  __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
->  netdev_start_xmit include/linux/netdevice.h:4864 [inline]
->  xmit_one net/core/dev.c:3595 [inline]
->  dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
->  __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
->  packet_snd net/packet/af_packet.c:3073 [inline]
-> 
-> The geometry of the bad input packet at tcp_gso_segment:
-> 
-> [   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
-> [   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
-> [   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
-> [   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
-> ip_summed=3 complete_sw=0 valid=0 level=0)
-> 
-> Mitigate with stricter input validation.
-> 
-> csum_offset: for GSO packets, deduce the correct value from gso_type.
-> This is already done for USO. Extend it to TSO. Let UFO be:
-> udp[46]_ufo_fragment ignores these fields and always computes the
-> checksum in software.
-> 
-> csum_start: finding the real offset requires parsing to the transport
-> header. Do not add a parser, use existing segmentation parsing. Thanks
-> to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
-> Again test both TSO and USO. Do not test UFO for the above reason, and
-> do not test UDP tunnel offload.
-> 
-> GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
-> CHECKSUM_NONE since commit 10154db ("udp: Allow GSO transmit
-> from devices with no checksum offload"), but then still these fields
-> are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
-> need to test for ip_summed == CHECKSUM_PARTIAL first.
-> 
-> This revises an existing fix mentioned in the Fixes tag, which broke
-> small packets with GSO offload, as detected by kselftests.
-> 
-> Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
-> Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
-> Fixes: e269d79 ("net: missing check virtio")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-> ---
-> Hi,
-> 
-> This patch fixes network failures on OpenStack VMs running with Kernel
-> 5.15.165.
-> 
-> In 5.15.165, the commit "net: missing check virtio" is breaking networks
-> on VMs that uses virtio in some conditions.
-> 
-> I slightly adapted the patch to have it fitting this branch (5.15.y).
-> 
-> Once patched and compiled it has been successfully tested on Flatcar CI
-> with Kernel 5.15.165.
-> 
-> NOTE: This patch has already been backported on other stable branches
-> (like 6.6.y) 
-> 
-> Thanks,
-> 
-> Mathieu - @tormath1
+> The following commits to LTS v5.15:
+> 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 "ext4: reject casefold inode flag without casefold feature"
 
-How did you test this, it breaks the build for me:
+Wait, what about 6.1 for this?  We can't move to a new kernel and have a
+regression.
 
-net/ipv4/tcp_offload.c: In function ‘tcp_gso_segment’:
-net/ipv4/tcp_offload.c:74:5: error: this ‘if’ clause does not guard... [-Werror=misleading-indentation]
-   74 |     if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
-      |     ^~
-net/ipv4/tcp_offload.c:77:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
-   77 |         if (!pskb_may_pull(skb, thlen))
-      |         ^~
-net/ipv4/udp_offload.c: In function ‘__udp_gso_segment’:
-net/ipv4/udp_offload.c:282:5: error: this ‘if’ clause does not guard... [-Werror=misleading-indentation]
-  282 |     if (unlikely(skb_checksum_start(gso_skb) !=
-      |     ^~
-net/ipv4/udp_offload.c:286:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
-  286 |         skb_pull(gso_skb, sizeof(*uh));
-      |         ^~~~~~~~
-cc1: all warnings being treated as errors
+> c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 "udf: Limit file size to 4TB"
+> 
+> These were verified to apply cleanly on top of v5.15.165 and to
+> build/boot.
+> 
+> The following commits to LTS v5.10:
+> 04e568a3b31cfbd545c04c8bfc35c20e5ccfce0f "ext4: handle redirtying in ext4_bio_write_page()"
 
-Now dropped, please test your patches before sending them as it throws a big
-wrench in our process when things break...
+Same here, what about 5.15.y?
+
+> 2a1fc7dc36260fbe74b6ca29dc6d9088194a2115 "KVM: x86: Suppress MMIO that is triggered during task switch emulation"
+> 2454ad83b90afbc6ed2c22ec1310b624c40bf0d3 "fs: Restrict lock_two_nondirectories() to non-directory inodes"
+> (fixes 2454ad) 33ab231f83cc12d0157711bbf84e180c3be7d7bc "fs: don't assume arguments are non-NULL"
+
+Why are these last two needed?
+
+Can you provide full lists of what needs to go to what tree, and better
+yet, tested patch series for this type of thing in the future?
 
 thanks,
 
