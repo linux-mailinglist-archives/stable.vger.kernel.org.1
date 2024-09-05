@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06A696D512
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:59:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33C796D455
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863181F274CD
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA58281286
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28B9194AC7;
-	Thu,  5 Sep 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12659198A3E;
+	Thu,  5 Sep 2024 09:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTzyNd/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfelR9Qt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A109C83CC8;
-	Thu,  5 Sep 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F91194A45;
+	Thu,  5 Sep 2024 09:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530393; cv=none; b=HO726WfOxuMfZjx1HMjyvUGaoNLDWXd5vwFRp+5sbwqV4Tu6Pf2mhM8akMYETCKH/el6JnzQI03sgRhacsq0ceILKWX1N2IFiZhHjpGbtX4gt7ZGJ5JOkJXLfJvSr7CAnciU0xhAumvMfGtHoN7mxO/tPX2opc+rPZLTlG6eFq0=
+	t=1725529850; cv=none; b=G3XPvEseNRugFvPaAQE9KU3Kq50zEx2wITC5XbWnnVWYlBdOTle8aA3Iy4sDNx5YkOBmWXUayze07xxn7WEckV/oG9Wv7nLASZL4LNyo5fn5T9nXHeOSZ+koDopO2sqB17FJTCB2X8Jku+xI10n37V8kQFtVImnZQlYUkmDeHdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530393; c=relaxed/simple;
-	bh=BqWWmzcuoQnnNv+WWCu8iUS9trxwwORdTXrNKSe5GBw=;
+	s=arc-20240116; t=1725529850; c=relaxed/simple;
+	bh=rWJCjS358Fh6Xd+8iikAmR8RtgbdmuUKDuyW7A48qVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcTdspQmySZa7gIHBqzzsKJ+SNAMEaNw5hp/rP5SB54QWxG9tMWedcqewbKScg4eRhUrmIjhIcDo7sbHGeEvkaDO8u+CcVFk7XncY6PhdqQfMbzfHUcNgMLVm+j90O1SPablKkHrO1rTpTSbGtM/k5IGm0CzgdAW8fGuxYFCuU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTzyNd/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2BFC4CEC6;
-	Thu,  5 Sep 2024 09:59:52 +0000 (UTC)
+	 MIME-Version; b=INwXg5CNCqqb6DFmp9LyP+kFolwiI/557VuGIIn45SCVPAOtVfKB3vwJKkf/JKiMTduGArhuDIydB/jch4ayh/eGFEEyPo4hKiS4barjKxGknTLlwhKIMdD83WOgYEqyn3uLRn7fGdWzPci8UKfNwjvWWhS0XEPxzbbT9MIrgDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfelR9Qt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F1C4CEC3;
+	Thu,  5 Sep 2024 09:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530393;
-	bh=BqWWmzcuoQnnNv+WWCu8iUS9trxwwORdTXrNKSe5GBw=;
+	s=korg; t=1725529850;
+	bh=rWJCjS358Fh6Xd+8iikAmR8RtgbdmuUKDuyW7A48qVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTzyNd/C6yzCL1Vu/uYPaqrvzIjiTmCBAHeCA4RSkvmSB+e5cAI3Jhx7HMHdL/x/B
-	 6Uk+N8CkHuDzUTOltY5lM2fEDSXR7Y7rIhiK92ERlEtjE+V4XPwWzh8oMuNOvdfsOz
-	 dur672vBpXvrutgaUw9gvPeZx28mSRfkHBXF/qbg=
+	b=DfelR9QtEGdSDHJwbp+PpYWnjYgKSTioW73QZ/k93vJUcm/RtvOOOIPirKvOmykrB
+	 +8M49D0Pw6GGSIo+PK1TFHL7Uhe46h1lHbdb0BQgqmBlKGHg+Y8wcqsNF6AyFqFCKk
+	 1TI/rx+QvbzK7CbevEBI4G335KSMf9iTJas3AhTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mostafa Saleh <smostafa@google.com>,
-	Bjorn Heelgas <bhelgaas@google.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 6.1 011/101] PCI/MSI: Fix UAF in msi_capability_init
-Date: Thu,  5 Sep 2024 11:40:43 +0200
-Message-ID: <20240905093716.532619154@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 131/184] rcu/nocb: Remove buggy bypass lock contention mitigation
+Date: Thu,  5 Sep 2024 11:40:44 +0200
+Message-ID: <20240905093737.339372050@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1 upstream.
+[ Upstream commit e4f78057291608f6968a6789c5ebb3bde7d95504 ]
 
-KFENCE reports the following UAF:
+The bypass lock contention mitigation assumes there can be at most
+2 contenders on the bypass lock, following this scheme:
 
- BUG: KFENCE: use-after-free read in __pci_enable_msi_range+0x2c0/0x488
+1) One kthread takes the bypass lock
+2) Another one spins on it and increment the contended counter
+3) A third one (a bypass enqueuer) sees the contended counter on and
+  busy loops waiting on it to decrement.
 
- Use-after-free read at 0x0000000024629571 (in kfence-#12):
-  __pci_enable_msi_range+0x2c0/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
+However this assumption is wrong. There can be only one CPU to find the
+lock contended because call_rcu() (the bypass enqueuer) is the only
+bypass lock acquire site that may not already hold the NOCB lock
+beforehand, all the other sites must first contend on the NOCB lock.
+Therefore step 2) is impossible.
 
- kfence-#12: 0x0000000008614900-0x00000000e06c228d, size=104, cache=kmalloc-128
+The other problem is that the mitigation assumes that contenders all
+belong to the same rdp CPU, which is also impossible for a raw spinlock.
+In theory the warning could trigger if the enqueuer holds the bypass
+lock and another CPU flushes the bypass queue concurrently but this is
+prevented from all flush users:
 
- allocated by task 81 on cpu 7 at 10.808142s:
-  __kmem_cache_alloc_node+0x1f0/0x2bc
-  kmalloc_trace+0x44/0x138
-  msi_alloc_desc+0x3c/0x9c
-  msi_domain_insert_msi_desc+0x30/0x78
-  msi_setup_msi_desc+0x13c/0x184
-  __pci_enable_msi_range+0x258/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
+1) NOCB kthreads only flush if they successfully _tried_ to lock the
+   bypass lock. So no contention management here.
 
- freed by task 81 on cpu 7 at 10.811436s:
-  msi_domain_free_descs+0xd4/0x10c
-  msi_domain_free_locked.part.0+0xc0/0x1d8
-  msi_domain_alloc_irqs_all_locked+0xb4/0xbc
-  pci_msi_setup_msi_irqs+0x30/0x4c
-  __pci_enable_msi_range+0x2a8/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
+2) Flush on callbacks migration happen remotely when the CPU is offline.
+   No concurrency against bypass enqueue.
 
-Descriptor allocation done in:
-__pci_enable_msi_range
-    msi_capability_init
-        msi_setup_msi_desc
-            msi_insert_msi_desc
-                msi_domain_insert_msi_desc
-                    msi_alloc_desc
-                        ...
+3) Flush on deoffloading happen either locally with IRQs disabled or
+   remotely when the CPU is not yet online. No concurrency against
+   bypass enqueue.
 
-Freed in case of failure in __msi_domain_alloc_locked()
-__pci_enable_msi_range
-    msi_capability_init
-        pci_msi_setup_msi_irqs
-            msi_domain_alloc_irqs_all_locked
-                msi_domain_alloc_locked
-                    __msi_domain_alloc_locked => fails
-                    msi_domain_free_locked
-                        ...
+4) Flush on barrier entrain happen either locally with IRQs disabled or
+   remotely when the CPU is offline. No concurrency against
+   bypass enqueue.
 
-That failure propagates back to pci_msi_setup_msi_irqs() in
-msi_capability_init() which accesses the descriptor for unmasking in the
-error exit path.
+For those reasons, the bypass lock contention mitigation isn't needed
+and is even wrong. Remove it but keep the warning reporting a contended
+bypass lock on a remote CPU, to keep unexpected contention awareness.
 
-Cure it by copying the descriptor and using the copy for the error exit path
-unmask operation.
-
-[ tglx: Massaged change log ]
-
-Fixes: bf6e054e0e3f ("genirq/msi: Provide msi_device_populate/destroy_sysfs()")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Bjorn Heelgas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240624203729.1094506-1-smostafa@google.com
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/msi/msi.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.h      |  1 -
+ kernel/rcu/tree_nocb.h | 32 ++++++--------------------------
+ 2 files changed, 6 insertions(+), 27 deletions(-)
 
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -431,7 +431,7 @@ static int msi_capability_init(struct pc
- 			       struct irq_affinity *affd)
- {
- 	struct irq_affinity_desc *masks = NULL;
--	struct msi_desc *entry;
-+	struct msi_desc *entry, desc;
- 	int ret;
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index bae7925c497f..179f60ca0313 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -223,7 +223,6 @@ struct rcu_data {
+ 	struct swait_queue_head nocb_state_wq; /* For offloading state changes */
+ 	struct task_struct *nocb_gp_kthread;
+ 	raw_spinlock_t nocb_lock;	/* Guard following pair of fields. */
+-	atomic_t nocb_lock_contended;	/* Contention experienced. */
+ 	int nocb_defer_wakeup;		/* Defer wakeup of nocb_kthread. */
+ 	struct timer_list nocb_timer;	/* Enforce finite deferral. */
+ 	unsigned long nocb_gp_adv_time;	/* Last call_rcu() CB adv (jiffies). */
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 3f85577bddd4..2d9eed2bf750 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -91,8 +91,7 @@ module_param(nocb_nobypass_lim_per_jiffy, int, 0);
  
- 	/*
-@@ -452,6 +452,12 @@ static int msi_capability_init(struct pc
- 	/* All MSIs are unmasked by default; mask them all */
- 	entry = msi_first_desc(&dev->dev, MSI_DESC_ALL);
- 	pci_msi_mask(entry, msi_multi_mask(entry));
+ /*
+  * Acquire the specified rcu_data structure's ->nocb_bypass_lock.  If the
+- * lock isn't immediately available, increment ->nocb_lock_contended to
+- * flag the contention.
++ * lock isn't immediately available, perform minimal sanity check.
+  */
+ static void rcu_nocb_bypass_lock(struct rcu_data *rdp)
+ 	__acquires(&rdp->nocb_bypass_lock)
+@@ -100,29 +99,12 @@ static void rcu_nocb_bypass_lock(struct rcu_data *rdp)
+ 	lockdep_assert_irqs_disabled();
+ 	if (raw_spin_trylock(&rdp->nocb_bypass_lock))
+ 		return;
+-	atomic_inc(&rdp->nocb_lock_contended);
 +	/*
-+	 * Copy the MSI descriptor for the error path because
-+	 * pci_msi_setup_msi_irqs() will free it for the hierarchical
-+	 * interrupt domain case.
++	 * Contention expected only when local enqueue collide with
++	 * remote flush from kthreads.
 +	 */
-+	memcpy(&desc, entry, sizeof(desc));
+ 	WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
+-	smp_mb__after_atomic(); /* atomic_inc() before lock. */
+ 	raw_spin_lock(&rdp->nocb_bypass_lock);
+-	smp_mb__before_atomic(); /* atomic_dec() after lock. */
+-	atomic_dec(&rdp->nocb_lock_contended);
+-}
+-
+-/*
+- * Spinwait until the specified rcu_data structure's ->nocb_lock is
+- * not contended.  Please note that this is extremely special-purpose,
+- * relying on the fact that at most two kthreads and one CPU contend for
+- * this lock, and also that the two kthreads are guaranteed to have frequent
+- * grace-period-duration time intervals between successive acquisitions
+- * of the lock.  This allows us to use an extremely simple throttling
+- * mechanism, and further to apply it only to the CPU doing floods of
+- * call_rcu() invocations.  Don't try this at home!
+- */
+-static void rcu_nocb_wait_contended(struct rcu_data *rdp)
+-{
+-	WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
+-	while (WARN_ON_ONCE(atomic_read(&rdp->nocb_lock_contended)))
+-		cpu_relax();
+ }
  
- 	/* Configure MSI capability structure */
- 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
-@@ -471,7 +477,7 @@ static int msi_capability_init(struct pc
- 	goto unlock;
+ /*
+@@ -510,7 +492,6 @@ static bool rcu_nocb_try_bypass(struct rcu_data *rdp, struct rcu_head *rhp,
+ 	}
  
- err:
--	pci_msi_unmask(entry, msi_multi_mask(entry));
-+	pci_msi_unmask(&desc, msi_multi_mask(&desc));
- 	free_msi_irqs(dev);
- fail:
- 	dev->msi_enabled = 0;
+ 	// We need to use the bypass.
+-	rcu_nocb_wait_contended(rdp);
+ 	rcu_nocb_bypass_lock(rdp);
+ 	ncbs = rcu_cblist_n_cbs(&rdp->nocb_bypass);
+ 	rcu_segcblist_inc_len(&rdp->cblist); /* Must precede enqueue. */
+@@ -1678,12 +1659,11 @@ static void show_rcu_nocb_state(struct rcu_data *rdp)
+ 
+ 	sprintf(bufw, "%ld", rsclp->gp_seq[RCU_WAIT_TAIL]);
+ 	sprintf(bufr, "%ld", rsclp->gp_seq[RCU_NEXT_READY_TAIL]);
+-	pr_info("   CB %d^%d->%d %c%c%c%c%c%c F%ld L%ld C%d %c%c%s%c%s%c%c q%ld %c CPU %d%s\n",
++	pr_info("   CB %d^%d->%d %c%c%c%c%c F%ld L%ld C%d %c%c%s%c%s%c%c q%ld %c CPU %d%s\n",
+ 		rdp->cpu, rdp->nocb_gp_rdp->cpu,
+ 		nocb_next_rdp ? nocb_next_rdp->cpu : -1,
+ 		"kK"[!!rdp->nocb_cb_kthread],
+ 		"bB"[raw_spin_is_locked(&rdp->nocb_bypass_lock)],
+-		"cC"[!!atomic_read(&rdp->nocb_lock_contended)],
+ 		"lL"[raw_spin_is_locked(&rdp->nocb_lock)],
+ 		"sS"[!!rdp->nocb_cb_sleep],
+ 		".W"[swait_active(&rdp->nocb_cb_wq)],
+-- 
+2.43.0
+
 
 
 
