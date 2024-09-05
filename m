@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-73496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E7A96D51C
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB1F96D422
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7068282FB5
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB46280D32
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DBB1946A2;
-	Thu,  5 Sep 2024 10:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407DA19754A;
+	Thu,  5 Sep 2024 09:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWWH+tMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gglP0mOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61DC13D28F;
-	Thu,  5 Sep 2024 10:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55B2154BFF;
+	Thu,  5 Sep 2024 09:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530423; cv=none; b=ZlLP7uUmwStZ9RcI3u4fCIiTK9Htof/issDHpV7J6EIPui5qMn4NsKIlUlqVDW0tnBEnOS4rWUZPqYhv56sFuyc7e/ksRmoRkZUnEjEcv9G4jhHQmXET9zzJ2DSgSVMP1O2gOzMKK4QZLZslLH8I9P0vtDeAkld8oaWr9iD7RXA=
+	t=1725529722; cv=none; b=nOGpTR5ih9ZqN8a/PhmFEWvrZ2O4kOQPIWOhtQ3FHOGIfalJ8Szf3RhUiy9VDoVcbWYt38vSrkqYuCARui1yCJEskPzfJkxHrkVHtKXRee70uhowA0wqiRjpjlvhKatf7nF9ybR+iXUVzECbQetuvejoLfBpZrNHZe0+1zvJQsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530423; c=relaxed/simple;
-	bh=Eo/uLFvV4q8axRMrYUcDsI/alShfErg2ct3Da5+Ah+M=;
+	s=arc-20240116; t=1725529722; c=relaxed/simple;
+	bh=JxNV5WRdFeRwDfYBaK04mMSB++PM6e+t1pzqWj/Mtj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MODVMdTL7W/IFv93VqFW/hn2C3fK6S1HWzWeeLy58YtCwkuittYzN0grmFJTnI3U7vH6xulmtSPqSBXfCjeXr6P80v7tYjqWBj6S+3RhvNgTrDJ9PqJJU8l1drmtOGnDsYkzBGMFqRSNgj+lppdO+Kxekpy85pViGA9+cOL/9Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWWH+tMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7E0C4CEC3;
-	Thu,  5 Sep 2024 10:00:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qvedn8lp85YCyt+cAse5AT3tPKAZI/eVnFKW0c7i7BMry0bGrcjjGWoBx33CxBfC+4vu6wO2u4RCvdgG01RxQXiJgPNCs1jXBcrQNPggx7kFh1wEaJzgUe/IZ9iQJ7/7i7sbW13tCTNmN+/4gdtoF+nLNGh3Mh8aDivVQiGOLto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gglP0mOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64608C4CEC3;
+	Thu,  5 Sep 2024 09:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530423;
-	bh=Eo/uLFvV4q8axRMrYUcDsI/alShfErg2ct3Da5+Ah+M=;
+	s=korg; t=1725529721;
+	bh=JxNV5WRdFeRwDfYBaK04mMSB++PM6e+t1pzqWj/Mtj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWWH+tMdDYxztsePnAmxhdi81g6hSjAJciuwegi1sINVgWeYx3Qa8eNUUewqBqtzN
-	 IejIAa86kJMkeQs7qyndPtkcyT5wB2XbteHwUbmAmQCHzNWLBofhZJ2QG95D+j/Ell
-	 ueh7A2NV7sVP96Z5+TQR4XP1gL0whpz8PNdffYoc=
+	b=gglP0mOLfsr/5GXFayPObTIYDz4w0SWgiHgRYSGuLKbfdlMn2RFtJqzkhLZGBto3H
+	 vbx3uQzDhgGocH9Ij4sCGO3J4qXaSM3jsiyoVxf37Bs+9Ax3xwF6yMXFj08w+fLJ/z
+	 fSEql1klko5EeHYd8wGEoL8eK/s+/xHGeOhV7P9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/101] scsi: ufs: core: Bypass quick recovery if force reset is needed
+Subject: [PATCH 6.10 121/184] PCI: al: Check IORESOURCE_BUS existence during probe
 Date: Thu,  5 Sep 2024 11:40:34 +0200
-Message-ID: <20240905093716.176378159@linuxfoundation.org>
+Message-ID: <20240905093736.954183405@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 022587d8aec3da1d1698ddae9fb8cfe35f3ad49c ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-If force_reset is true, bypass quick recovery.  This will shorten error
-recovery time.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240712094506.11284-1-peter.wang@mediatek.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+But that's hard to verify, so check for NULL anyway.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index bfed5d36fa2e5..d528ee0092bd2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6307,7 +6307,8 @@ static void ufshcd_err_handler(struct work_struct *work)
- 	if (ufshcd_err_handling_should_stop(hba))
- 		goto skip_err_handling;
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index 6dfdda59f328..643115f74092 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
--	if (hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) {
-+	if ((hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) &&
-+	    !hba->force_reset) {
- 		bool ret;
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct dw_pcie_rp *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
- 		spin_unlock_irqrestore(hba->host->host_lock, flags);
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
+ 
+ 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
+@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
+ }
+ 
+ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct dw_pcie_rp *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
