@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-73311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43A896D44D
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6110896D44E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A16A8281095
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A031F22FDA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913211922CC;
-	Thu,  5 Sep 2024 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299A8198824;
+	Thu,  5 Sep 2024 09:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/pHGpqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQeBFfIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B1155730;
-	Thu,  5 Sep 2024 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7F3155730;
+	Thu,  5 Sep 2024 09:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529821; cv=none; b=usuBogUInMs33U043UouwN1PYmvnK6ptdxZIsTfhRQ1MC8QmVCRxfL0OlTRlVos4yYT2t1y97WFBs9j3yqX0o9pZnOwug4+Bs5sJ+ofNMsUoemRo0E7XcKVspbAVBvt5GW785xR2eBsDIYMrZ0bWqUmNb/WK9+Unf6hRKU96nM0=
+	t=1725529827; cv=none; b=sTpjdHUM+NEyLnJl51eNmuis3thaseY5l4oQZ1s3kl2hyaFktqHL3a2P1+nNSAwQkglkZZft2Gqp2J6oTodG5hhDkmpprEC7BKVYZikR+2QK7m3Ly28AzY8kDXFBXcekmTGFbja4A4Dq3qjbBOcRJSZsKcpY+QERSxwXwyu88+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529821; c=relaxed/simple;
-	bh=rGkPr+Aql9NiJovt83Jq6Wg/apu45CKCUJ95Pf3drWU=;
+	s=arc-20240116; t=1725529827; c=relaxed/simple;
+	bh=kolo9BdF1iEstNfE3dRPXqcs2tfLa75YXv+vVtDp+Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fy26by/BBgfpbQDzhwO0sEBnLoalzEuAEsozM9FC0B46s0AbrcgkLEKszWftAE2gbSWG41JRadffPURcR6C/2FEykQ23IdCzQjpU8TxbzXO4lr51eq6Vj/78ym5Y6sZIuO/8Xa5cpp5KvZu607P3FilBsyG5KFrjeGYUZX6U2kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/pHGpqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DF0C4CEC7;
-	Thu,  5 Sep 2024 09:50:20 +0000 (UTC)
+	 MIME-Version; b=NUJBUA2Rru8jjbOTkfQwMBLTjwOA4KVkQXcBqV1xLJGIa5XIRqbv8FXPQAGZByr0/eLdPCFuM7cOuGePkx/1c5iWhnAumqfqGEWXm0J7cTJR4ILC/gua3VfDlP89epMbhKG9PSWWHv4YNNTAXnJ+RItzh3rcj6pDTUtUJCW+DZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQeBFfIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429ABC4CEC3;
+	Thu,  5 Sep 2024 09:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529821;
-	bh=rGkPr+Aql9NiJovt83Jq6Wg/apu45CKCUJ95Pf3drWU=;
+	s=korg; t=1725529827;
+	bh=kolo9BdF1iEstNfE3dRPXqcs2tfLa75YXv+vVtDp+Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/pHGpqVrMErrR7OcTgkeZI3vJOiZ92ta8WBjONE1c2lZOl3tvMNTcEkMLXK1Ab7G
-	 zRPSOwwtR8LJlvbKU+3Q4qmh1/qCnaFk79hCby/QVyzqrDSAJBCTF14Ipsb1yiS4R+
-	 tQjZfBI1TaRpc7vXzaJNkS2yVhiN9/MbvFiBTSqU=
+	b=OQeBFfIe+vo8MI73FAlYe25Z0DJz7Awwy7cWQs2NZfsRfTsM4iyM4ut4VIwufZkeW
+	 ddM9K7hkYQc+q8Jv0jdaLXInFJFtKZGB+qDs8RknmWRqXY71PrMRx8clXWBuR1VaO7
+	 iHdmaIyqf59rL7f8Qv/OUPbyTnK7W7Q7IqJ3VnOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 152/184] drm/xe: Check valid domain is passed in xe_force_wake_ref
-Date: Thu,  5 Sep 2024 11:41:05 +0200
-Message-ID: <20240905093738.273201027@linuxfoundation.org>
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.10 153/184] pinctrl: renesas: rzg2l: Validate power registers for SD and ETH
+Date: Thu,  5 Sep 2024 11:41:06 +0200
+Message-ID: <20240905093738.311845805@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
 References: <20240905093732.239411633@linuxfoundation.org>
@@ -69,44 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 35feb8dbbca627d118ccc1f2111841788c142703 ]
+[ Upstream commit a3a632ed87f0913779092c30bd0ea7dfd81601f3 ]
 
-Assert domain is not XE_FORCEWAKE_ALL.
+On RZ/V2H(P) SoC, the power registers for SD and ETH do not exist,
+resulting in invalid register offsets.  Ensure that the register offsets
+are valid before any read/write operations are performed.  If the power
+registers are not available, both SD and ETH will be set to '0'.
 
-v2
-- use domain != XE_FORCEWAKE_ALL (Michal)
-
-v3
-- Fix commit description.
-
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240607125741.1407331-2-himal.prasad.ghimiray@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com> # on RZ/G3S
+Link: https://lore.kernel.org/r/20240530173857.164073-7-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_force_wake.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_force_wake.h b/drivers/gpu/drm/xe/xe_force_wake.h
-index 8cbb04fe0ed9..a2577672f4e3 100644
---- a/drivers/gpu/drm/xe/xe_force_wake.h
-+++ b/drivers/gpu/drm/xe/xe_force_wake.h
-@@ -24,7 +24,7 @@ static inline int
- xe_force_wake_ref(struct xe_force_wake *fw,
- 		  enum xe_force_wake_domains domain)
- {
--	xe_gt_assert(fw->gt, domain);
-+	xe_gt_assert(fw->gt, domain != XE_FORCEWAKE_ALL);
- 	return fw->domains[ffs(domain) - 1].ref;
- }
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 60be78da9f52..389602e4d7ab 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -2583,8 +2583,10 @@ static int rzg2l_pinctrl_suspend_noirq(struct device *dev)
+ 	rzg2l_pinctrl_pm_setup_dedicated_regs(pctrl, true);
  
+ 	for (u8 i = 0; i < 2; i++) {
+-		cache->sd_ch[i] = readb(pctrl->base + SD_CH(regs->sd_ch, i));
+-		cache->eth_poc[i] = readb(pctrl->base + ETH_POC(regs->eth_poc, i));
++		if (regs->sd_ch)
++			cache->sd_ch[i] = readb(pctrl->base + SD_CH(regs->sd_ch, i));
++		if (regs->eth_poc)
++			cache->eth_poc[i] = readb(pctrl->base + ETH_POC(regs->eth_poc, i));
+ 	}
+ 
+ 	cache->qspi = readb(pctrl->base + QSPI);
+@@ -2615,8 +2617,10 @@ static int rzg2l_pinctrl_resume_noirq(struct device *dev)
+ 	writeb(cache->qspi, pctrl->base + QSPI);
+ 	writeb(cache->eth_mode, pctrl->base + ETH_MODE);
+ 	for (u8 i = 0; i < 2; i++) {
+-		writeb(cache->sd_ch[i], pctrl->base + SD_CH(regs->sd_ch, i));
+-		writeb(cache->eth_poc[i], pctrl->base + ETH_POC(regs->eth_poc, i));
++		if (regs->sd_ch)
++			writeb(cache->sd_ch[i], pctrl->base + SD_CH(regs->sd_ch, i));
++		if (regs->eth_poc)
++			writeb(cache->eth_poc[i], pctrl->base + ETH_POC(regs->eth_poc, i));
+ 	}
+ 
+ 	rzg2l_pinctrl_pm_setup_pfc(pctrl);
 -- 
 2.43.0
 
