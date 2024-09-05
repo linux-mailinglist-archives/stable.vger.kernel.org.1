@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-73392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E9096D4AA
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C86696D423
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A9F2850CF
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533CA1F2313B
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCCF192D73;
-	Thu,  5 Sep 2024 09:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F27F194AD6;
+	Thu,  5 Sep 2024 09:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snLEXuHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YejNPT30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C597154BFF;
-	Thu,  5 Sep 2024 09:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B631154BFF;
+	Thu,  5 Sep 2024 09:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530081; cv=none; b=UG6SXXn5fXwTHvZZefx3bBADYzAA+D1VOaDeKxkt1NFB7v56xh9p3QwJYkF32QPBJBZFJtJbd0TLwdfEa3lZzjANytm2XT7vzWIyOtrP9wA4yb0WlbCvyATIoU7PjBX+Vogo00iIV1Un2wR7LFe+CZqjef1DdIFOvI2mhdmjiH8=
+	t=1725529725; cv=none; b=dQhFg85jPhNv2Xwk5F0Xqlvlnv0wCwpyT5A+wnaDm22tsirWJCE96VJjfwOZ3c0CURVhBveJuSQkKDNIiPOhpY7qqJbz0QyeoLGzMgAKzfuouR8hE4SwUxvu9ujySei4EmjnSX0C0UeOdFxtvZn2Oqwqs/wyxslxBrvTHweTJh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530081; c=relaxed/simple;
-	bh=CtEUU8y9Ny4sPSHNaHlMLcw8JWw4JCFIq4jC6uZLCZM=;
+	s=arc-20240116; t=1725529725; c=relaxed/simple;
+	bh=aZVBlDKHRerPZQ1WQFn5k8bAa2MxhH28Nuv85gvwzDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxtmcx8xrVYnIUOaTeB/yybeZyEOE3sdvgg+sn6hjnnCZce5mS/jbcC0UDqEMyEx08/FA/0WH3oPPdL7Ow6mEGzlpWFsVBSlOCj3TsB6n+1Qdv9peGHYxcKc/xurFtHAmb2yI4cqkXHTxVrJT9DUGlpgo8fYD5J+vtlZcfhjo/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snLEXuHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F56C4CEC3;
-	Thu,  5 Sep 2024 09:54:40 +0000 (UTC)
+	 MIME-Version; b=ZaQ3tiEowAG7uEpQD32pdCF+dt1MUpZq4k0TCaRScIyXzSLw9Nb/eYOj53xzaTtGNu1/V2hjzCsC8odfp4EFRJ8nWVFWMVjrw9jtY7b5ybFU++dhDcJqTg+NNoiPEHG2p4PiJOa7FQnl11b3WjJQN3GB7v+F9mARl21OzG12Veo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YejNPT30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B15DC4CEC3;
+	Thu,  5 Sep 2024 09:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530081;
-	bh=CtEUU8y9Ny4sPSHNaHlMLcw8JWw4JCFIq4jC6uZLCZM=;
+	s=korg; t=1725529725;
+	bh=aZVBlDKHRerPZQ1WQFn5k8bAa2MxhH28Nuv85gvwzDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snLEXuHQ/UtVXIAQWA0dxcIngI5jFje8T5bpof1ObXioB7a2t2yFjoYmKjSu0zRPA
-	 Z8c/GhMrlxKo6yIQy33fr4qWGihfsso9fJDWNsbJtRlXQxJQ2ECbpjPP9y/XFvXt1+
-	 g/l30laDPAJiVTU2AWXypPaMVg6CEag2PR5q+Vzk=
+	b=YejNPT30MW36OaGbNv3xoNhaFjmiqaYRoXoGIGKYX8L1p1qX+W1WbnQURkzFpYKGi
+	 IkK74549AV/Fsn/0rAFr4KFijSJ3CR/F4IxeccjUbS54eVHb64H6W60AP7fUsu+kQI
+	 BLz6QZDg0VDmp8nzw/hVF6o4BQLNiZFZLDldq9bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/132] drm/amd/pm: fix the Out-of-bounds read warning
+Subject: [PATCH 6.10 122/184] remoteproc: mediatek: Zero out only remaining bytes of IPI buffer
 Date: Thu,  5 Sep 2024 11:40:35 +0200
-Message-ID: <20240905093724.129375488@linuxfoundation.org>
+Message-ID: <20240905093736.991960928@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 12c6967428a099bbba9dfd247bb4322a984fcc0b ]
+[ Upstream commit 9dbd9962cfe56d210be5232349851420b5f9c8f6 ]
 
-using index i - 1U may beyond element index
-for mc_data[] when i = 0.
+In scp_ipi_handler(), instead of zeroing out the entire shared
+buffer, which may be as large as 600 bytes, overwrite it with the
+received data, then zero out only the remaining bytes.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240520112724.139945-1-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/remoteproc/mtk_scp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index f503e61faa60..cc3b62f73394 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -73,8 +73,9 @@ static int atomctrl_retrieve_ac_timing(
- 					j++;
- 				} else if ((table->mc_reg_address[i].uc_pre_reg_data &
- 							LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
--					table->mc_reg_table_entry[num_ranges].mc_data[i] =
--						table->mc_reg_table_entry[num_ranges].mc_data[i-1];
-+					if (i)
-+						table->mc_reg_table_entry[num_ranges].mc_data[i] =
-+							table->mc_reg_table_entry[num_ranges].mc_data[i-1];
- 				}
- 			}
- 			num_ranges++;
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index abf7b371b860..e744c07507ee 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -117,8 +117,8 @@ static void scp_ipi_handler(struct mtk_scp *scp)
+ 		return;
+ 	}
+ 
+-	memset(scp->share_buf, 0, scp_sizes->ipi_share_buffer_size);
+ 	memcpy_fromio(scp->share_buf, &rcv_obj->share_buf, len);
++	memset(&scp->share_buf[len], 0, scp_sizes->ipi_share_buffer_size - len);
+ 	handler(scp->share_buf, len, ipi_desc[id].priv);
+ 	scp_ipi_unlock(scp, id);
+ 
 -- 
 2.43.0
 
