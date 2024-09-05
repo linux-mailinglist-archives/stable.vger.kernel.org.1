@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-73514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2375E96D530
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:01:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7179796D4D2
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0311F2A322
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 026C5B26960
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290D419538A;
-	Thu,  5 Sep 2024 10:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88569194A5B;
+	Thu,  5 Sep 2024 09:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tFYToDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1SqGv2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF651494DB;
-	Thu,  5 Sep 2024 10:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47797156225;
+	Thu,  5 Sep 2024 09:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530480; cv=none; b=O588g9tJ3HnVe5nrkgQzVrh7nmbRXcaLGHXAWTX/lTwkUOPVt2SK3ifV13rTwCHEUTCR1lQHIaKhbxO3O7e/vIRpnMorL0/BRH3JaCSZ4mdMP+zw2gaSjgHUWs968dpN3tpQauKi++bUjdhlcAFSTZjoHW5UDzHeXSlVKoqQRB8=
+	t=1725530195; cv=none; b=TgGCY4yLBUvaW3KtZgLWpNm8yQEEAurmuCAPPcjfrl43+FUvl4FVr0dC+WVg/+2tY9Y7HKTjU0RCyeDIJAxp8OH0kyFnNn2NeHnMjgWciKoDVs5yiEgNFtQcm6CU7OTOnZL6gf/NZM9Vro2pDGzFPezJgHv+BpTP0mYALH6VjnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530480; c=relaxed/simple;
-	bh=RYP6J+nJrUQ0+IO8dG9n0Y7Vo8MmU1+CClbqB9nQTtI=;
+	s=arc-20240116; t=1725530195; c=relaxed/simple;
+	bh=uLXFQdtXHhwaaAvE9oSqu/sofyZ6FxsyYKVp5CNyQM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQ1/fMr9+coIhdVStnTm1Fx2JYHxJAu5KUELFQayCCv920hYs9JDwYzSb9Vcv6XheXaMpCodWlD7VYYJbG8eujj7pG9dcvWgcnCdhs3xbKeQQE4z1WdPqIoAztr1mBNkEiRmK3dZowl5gicGp/tryxbai/gz5sgKSnqMFNrdos4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tFYToDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B84AC4CEC3;
-	Thu,  5 Sep 2024 10:01:20 +0000 (UTC)
+	 MIME-Version; b=jdftdSFZG/8eDS4poIvuCuSwVaq0o5GRtPsLljtmAIm4iXwW5I/qMO/HOSSKK0uqkL/aUDmjizXEvyH8A7XV79sPxknn9oTGJEbb7V9YKSqpCExIwMDJNQVMzFb5V27+FXmcuPfzAzkHLAlqnkNzpl4vjyz30N3Uz7lBdVT3jXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1SqGv2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1325C4CEC3;
+	Thu,  5 Sep 2024 09:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530480;
-	bh=RYP6J+nJrUQ0+IO8dG9n0Y7Vo8MmU1+CClbqB9nQTtI=;
+	s=korg; t=1725530195;
+	bh=uLXFQdtXHhwaaAvE9oSqu/sofyZ6FxsyYKVp5CNyQM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tFYToDB9nCopa+EpzmwzuC6n2UMH4HCWuDu2N/lT+22DulT35eP72E5MKwarWzqi
-	 HjyivdLebIf3tte3E+bwBlRZ+88oH7shkSkxEDhQ5MzTfk1ohLWu9A0ORI4mFkNuE7
-	 gY5ogbJBUFwfY9tV6TXGFAnzHmCWBgLM6Jv2C2Ug=
+	b=q1SqGv2E0UitUT8f/Rg8V47RPIMRfRDhuDJd39wkl5DuS4EalT8uI7to0GAh4vmGp
+	 I3RGx7jEypzc6zM4EmOEC8lTHjOa21j1lMB8J0drfrDLu6ea3QLBHIMHFgpo9iodwD
+	 ZIyi9LIrUMxxN9Y2UnQ/psxt3iFa0C4iB9jZ8RL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Tim Huang <Tim.Huang@amd.com>,
 	Yang Wang <kevinyang.wang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/101] drm/amd/pm: fix uninitialized variable warnings for vega10_hwmgr
+Subject: [PATCH 6.6 083/132] drm/amd/pm: check specific index for smu13
 Date: Thu,  5 Sep 2024 11:41:10 +0200
-Message-ID: <20240905093717.620704984@linuxfoundation.org>
+Message-ID: <20240905093725.478336145@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-References: <20240905093716.075835938@linuxfoundation.org>
+In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
+References: <20240905093722.230767298@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,182 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 5fa7d540d95d97ddc021a74583f6b3da4df9c93a ]
+[ Upstream commit a3ac9d1c9751f00026c2d98b802ec8a98626c3ed ]
 
-Clear warnings that using uninitialized variable when fails
-to get the valid value from SMU.
+Check for specific indexes that may be invalid values.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 46 ++++++++++++++-----
- .../amd/pm/powerplay/smumgr/vega10_smumgr.c   |  6 ++-
- 2 files changed, 39 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index d2ecf0244fa5..40592cab7810 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -355,13 +355,13 @@ static int vega10_odn_initial_default_setting(struct pp_hwmgr *hwmgr)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+index be4b7b64f878..44c5f8585f1e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+@@ -2058,6 +2058,8 @@ static int smu_v13_0_6_mode2_reset(struct smu_context *smu)
  
--static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
-+static int vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
- {
- 	struct vega10_hwmgr *data = hwmgr->backend;
--	int i;
- 	uint32_t sub_vendor_id, hw_revision;
- 	uint32_t top32, bottom32;
- 	struct amdgpu_device *adev = hwmgr->adev;
-+	int ret, i;
+ 	index = smu_cmn_to_asic_specific_index(smu, CMN2ASIC_MAPPING_MSG,
+ 					       SMU_MSG_GfxDeviceDriverReset);
++	if (index < 0)
++		return index;
  
- 	vega10_initialize_power_tune_defaults(hwmgr);
+ 	mutex_lock(&smu->message_lock);
  
-@@ -486,9 +486,12 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
- 	if (data->registry_data.vr0hot_enabled)
- 		data->smu_features[GNLD_VR0HOT].supported = true;
- 
--	smum_send_msg_to_smc(hwmgr,
-+	ret = smum_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetSmuVersion,
- 			&hwmgr->smu_version);
-+	if (ret)
-+		return ret;
-+
- 		/* ACG firmware has major version 5 */
- 	if ((hwmgr->smu_version & 0xff000000) == 0x5000000)
- 		data->smu_features[GNLD_ACG].supported = true;
-@@ -506,10 +509,16 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
- 		data->smu_features[GNLD_PCC_LIMIT].supported = true;
- 
- 	/* Get the SN to turn into a Unique ID */
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
-+	if (ret)
-+		return ret;
-+
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
-+	if (ret)
-+		return ret;
- 
- 	adev->unique_id = ((uint64_t)bottom32 << 32) | top32;
-+	return 0;
- }
- 
- #ifdef PPLIB_VEGA10_EVV_SUPPORT
-@@ -883,7 +892,9 @@ static int vega10_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 
- 	vega10_set_features_platform_caps(hwmgr);
- 
--	vega10_init_dpm_defaults(hwmgr);
-+	result = vega10_init_dpm_defaults(hwmgr);
-+	if (result)
-+		return result;
- 
- #ifdef PPLIB_VEGA10_EVV_SUPPORT
- 	/* Get leakage voltage based on leakage ID. */
-@@ -3917,11 +3928,14 @@ static int vega10_get_gpu_power(struct pp_hwmgr *hwmgr,
- 		uint32_t *query)
- {
- 	uint32_t value;
-+	int ret;
- 
- 	if (!query)
- 		return -EINVAL;
- 
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
-+	if (ret)
-+		return ret;
- 
- 	/* SMC returning actual watts, keep consistent with legacy asics, low 8 bit as 8 fractional bits */
- 	*query = value << 8;
-@@ -4817,14 +4831,16 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 	uint32_t gen_speed, lane_width, current_gen_speed, current_lane_width;
- 	PPTable_t *pptable = &(data->smc_state_table.pp_table);
- 
--	int i, now, size = 0, count = 0;
-+	int i, ret, now,  size = 0, count = 0;
- 
- 	switch (type) {
- 	case PP_SCLK:
- 		if (data->registry_data.sclk_dpm_key_disabled)
- 			break;
- 
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
-+		if (ret)
-+			break;
- 
- 		if (hwmgr->pp_one_vf &&
- 		    (hwmgr->dpm_level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK))
-@@ -4840,7 +4856,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 		if (data->registry_data.mclk_dpm_key_disabled)
- 			break;
- 
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
-+		if (ret)
-+			break;
- 
- 		for (i = 0; i < mclk_table->count; i++)
- 			size += sprintf(buf + size, "%d: %uMhz %s\n",
-@@ -4851,7 +4869,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 		if (data->registry_data.socclk_dpm_key_disabled)
- 			break;
- 
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
-+		if (ret)
-+			break;
- 
- 		for (i = 0; i < soc_table->count; i++)
- 			size += sprintf(buf + size, "%d: %uMhz %s\n",
-@@ -4862,8 +4882,10 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 		if (data->registry_data.dcefclk_dpm_key_disabled)
- 			break;
- 
--		smum_send_msg_to_smc_with_parameter(hwmgr,
-+		ret = smum_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_GetClockFreqMHz, CLK_DCEFCLK, &now);
-+		if (ret)
-+			break;
- 
- 		for (i = 0; i < dcef_table->count; i++)
- 			size += sprintf(buf + size, "%d: %uMhz %s\n",
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
-index a70d73896649..f9c0f117725d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
-@@ -130,13 +130,17 @@ int vega10_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
- 			    uint64_t *features_enabled)
- {
- 	uint32_t enabled_features;
-+	int ret;
- 
- 	if (features_enabled == NULL)
- 		return -EINVAL;
- 
--	smum_send_msg_to_smc(hwmgr,
-+	ret = smum_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeatures,
- 			&enabled_features);
-+	if (ret)
-+		return ret;
-+
- 	*features_enabled = enabled_features;
- 
- 	return 0;
 -- 
 2.43.0
 
