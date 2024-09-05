@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-73395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F37196D4AE
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 11:54:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B2896D523
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 12:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7661F282DB
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 09:54:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F679B26F83
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5809C194A45;
-	Thu,  5 Sep 2024 09:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FA5195F04;
+	Thu,  5 Sep 2024 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgl5cFgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyGVef/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167F8154BFF;
-	Thu,  5 Sep 2024 09:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153711494DB;
+	Thu,  5 Sep 2024 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530092; cv=none; b=TFlT0985DxGYPtR8HJaYnyXbMl7M/atsZ7IFDfha4bIvsTAELEuO283bUU+W0+tPyXcMZy2vU4g/ZYTqJbLA7ZRG/zUuqg/ldJAvxwQvUpnF62QvCGgOr6jDW17v7bwg26y2Z3z12zos+PPCssh1i7VA74n6oDiioLbcuXS11XI=
+	t=1725530443; cv=none; b=klmVAFwiUHw0MpWAfpD8FTR9FgfbHS8cVKvCOlxkfqR4Z57OESBZo+LtXnt7pNc3fbZ+HulbdNetsz6ya3cqlqHuCJ3LKrdre275EbmIJu1dyqqRbvvrRI5+3M191dOaE8pqobu6ui0+JH1RdV8DIyxvfrIW5+R8y/JGSPSgE0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530092; c=relaxed/simple;
-	bh=vtD14hS9nHOL/45ekZhMWZ3b77fzwsKDIbb+OmzxbZo=;
+	s=arc-20240116; t=1725530443; c=relaxed/simple;
+	bh=TdvgiQIOpoxDJX4Hck57cv8efjZMSu6Pbgy8td4JFkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOJwVoXxVU65FqaibyAx0eKUK17jhz1pjAhTR0/17DWCe2vNZU0qidWgs75xV4dychsvKKN4XBdjIFaRbFLFEjdQcuiX+UmHjepZV6tCTlEKv/FJcPWB84NQBEu0i9Uv/Sm1P3bbjGo79JjJwjGtYnsLAKGUiqeTFc90o82RPQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgl5cFgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEFFC4CEC3;
-	Thu,  5 Sep 2024 09:54:50 +0000 (UTC)
+	 MIME-Version; b=YUDYogJoEt7AvJcynu/Iy/SmdJH5VIG+K+N8zTlvzTSJ0x9M8W4kdnZq8skxLSKyd45lidSCBDSy2WnQB5MTetljCyhFWD6vqxhGuwLPUnMvWYnJlFTz8mvClK1C/PBYxsJ+Tj9nh74z5bOQamtjEjEkDrQwVu3NykfoQ9TgcUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyGVef/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6482BC4CEC3;
+	Thu,  5 Sep 2024 10:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725530091;
-	bh=vtD14hS9nHOL/45ekZhMWZ3b77fzwsKDIbb+OmzxbZo=;
+	s=korg; t=1725530443;
+	bh=TdvgiQIOpoxDJX4Hck57cv8efjZMSu6Pbgy8td4JFkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pgl5cFgtRj9r48TA69q9jHGGAbfXKMr/cEWGY4AVHjI/DocX4fpMMr0am+MbMqGW4
-	 LqClAB1fUz2Y+BwU5p232K3Rq9pO3RDo2Hw6v7y9MsifGvfqRTXztWqOAOUkfZD6ih
-	 qXol0vjZR+a280+6VlsaEI+IuTpdqnswcIkxnxSI=
+	b=kyGVef/UaPv6RNjwEMbHjkj0MCnYv3CpITsyxRruXXI+0f6oKAW2luBJ4G72jAUwN
+	 g4oxA8tv5x4/75aiMNMb+dr1mYqM6Xq6Zc1Atm7Bn61dgZ1koeZCD3fUGQEXFo3gDM
+	 CBALSwOs72WT9o/rn8CBgMbM6tNMy1gO0CwQkw3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Rik van Riel <riel@surriel.com>,
+	Konstantin Ovsepian <ovs@meta.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/132] drm/amd/display: Check gpio_id before used as array index
+Subject: [PATCH 6.1 006/101] dma-debug: avoid deadlock between dma debug vs printk and netconsole
 Date: Thu,  5 Sep 2024 11:40:38 +0200
-Message-ID: <20240905093724.243023835@linuxfoundation.org>
+Message-ID: <20240905093716.330629304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093722.230767298@linuxfoundation.org>
-References: <20240905093722.230767298@linuxfoundation.org>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+References: <20240905093716.075835938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
+[ Upstream commit bd44ca3de49cc1badcff7a96010fa2c64f04868c ]
 
-[WHY & HOW]
-GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
-should be checked in advance.
+Currently the dma debugging code can end up indirectly calling printk
+under the radix_lock. This happens when a radix tree node allocation
+fails.
 
-This fixes 5 OVERRUN issues reported by Coverity.
+This is a problem because the printk code, when used together with
+netconsole, can end up inside the dma debugging code while trying to
+transmit a message over netcons.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This creates the possibility of either a circular deadlock on the same
+CPU, with that CPU trying to grab the radix_lock twice, or an ABBA
+deadlock between different CPUs, where one CPU grabs the console lock
+first and then waits for the radix_lock, while the other CPU is holding
+the radix_lock and is waiting for the console lock.
+
+The trace captured by lockdep is of the ABBA variant.
+
+-> #2 (&dma_entry_hash[i].lock){-.-.}-{2:2}:
+                  _raw_spin_lock_irqsave+0x5a/0x90
+                  debug_dma_map_page+0x79/0x180
+                  dma_map_page_attrs+0x1d2/0x2f0
+                  bnxt_start_xmit+0x8c6/0x1540
+                  netpoll_start_xmit+0x13f/0x180
+                  netpoll_send_skb+0x20d/0x320
+                  netpoll_send_udp+0x453/0x4a0
+                  write_ext_msg+0x1b9/0x460
+                  console_flush_all+0x2ff/0x5a0
+                  console_unlock+0x55/0x180
+                  vprintk_emit+0x2e3/0x3c0
+                  devkmsg_emit+0x5a/0x80
+                  devkmsg_write+0xfd/0x180
+                  do_iter_readv_writev+0x164/0x1b0
+                  vfs_writev+0xf9/0x2b0
+                  do_writev+0x6d/0x110
+                  do_syscall_64+0x80/0x150
+                  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+-> #0 (console_owner){-.-.}-{0:0}:
+                  __lock_acquire+0x15d1/0x31a0
+                  lock_acquire+0xe8/0x290
+                  console_flush_all+0x2ea/0x5a0
+                  console_unlock+0x55/0x180
+                  vprintk_emit+0x2e3/0x3c0
+                  _printk+0x59/0x80
+                  warn_alloc+0x122/0x1b0
+                  __alloc_pages_slowpath+0x1101/0x1120
+                  __alloc_pages+0x1eb/0x2c0
+                  alloc_slab_page+0x5f/0x150
+                  new_slab+0x2dc/0x4e0
+                  ___slab_alloc+0xdcb/0x1390
+                  kmem_cache_alloc+0x23d/0x360
+                  radix_tree_node_alloc+0x3c/0xf0
+                  radix_tree_insert+0xf5/0x230
+                  add_dma_entry+0xe9/0x360
+                  dma_map_page_attrs+0x1d2/0x2f0
+                  __bnxt_alloc_rx_frag+0x147/0x180
+                  bnxt_alloc_rx_data+0x79/0x160
+                  bnxt_rx_skb+0x29/0xc0
+                  bnxt_rx_pkt+0xe22/0x1570
+                  __bnxt_poll_work+0x101/0x390
+                  bnxt_poll+0x7e/0x320
+                  __napi_poll+0x29/0x160
+                  net_rx_action+0x1e0/0x3e0
+                  handle_softirqs+0x190/0x510
+                  run_ksoftirqd+0x4e/0x90
+                  smpboot_thread_fn+0x1a8/0x270
+                  kthread+0x102/0x120
+                  ret_from_fork+0x2f/0x40
+                  ret_from_fork_asm+0x11/0x20
+
+This bug is more likely than it seems, because when one CPU has run out
+of memory, chances are the other has too.
+
+The good news is, this bug is hidden behind the CONFIG_DMA_API_DEBUG, so
+not many users are likely to trigger it.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reported-by: Konstantin Ovsepian <ovs@meta.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ kernel/dma/debug.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index 3ede6e02c3a7..2f8ca831afa2 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -239,6 +239,9 @@ static bool is_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return false;
-+
- 	return service->busyness[id][en];
- }
- 
-@@ -247,6 +250,9 @@ static void set_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = true;
- }
- 
-@@ -255,6 +261,9 @@ static void set_pin_free(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = false;
- }
- 
-@@ -263,7 +272,7 @@ enum gpio_result dal_gpio_service_lock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
-@@ -277,7 +286,7 @@ enum gpio_result dal_gpio_service_unlock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 3ff7089d11a92..de02c0808fb83 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -445,8 +445,11 @@ void debug_dma_dump_mappings(struct device *dev)
+  * dma_active_cacheline entry to track per event.  dma_map_sg(), on the
+  * other hand, consumes a single dma_debug_entry, but inserts 'nents'
+  * entries into the tree.
++ *
++ * Use __GFP_NOWARN because the printk from an OOM, to netconsole, could end
++ * up right back in the DMA debugging code, leading to a deadlock.
+  */
+-static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC);
++static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC | __GFP_NOWARN);
+ static DEFINE_SPINLOCK(radix_lock);
+ #define ACTIVE_CACHELINE_MAX_OVERLAP ((1 << RADIX_TREE_MAX_TAGS) - 1)
+ #define CACHELINE_PER_PAGE_SHIFT (PAGE_SHIFT - L1_CACHE_SHIFT)
 -- 
 2.43.0
 
