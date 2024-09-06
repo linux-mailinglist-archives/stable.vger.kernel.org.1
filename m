@@ -1,118 +1,123 @@
-Return-Path: <stable+bounces-73789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A486B96F5AD
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 15:45:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9C496F5BF
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 15:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D3F28365B
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 13:45:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF639B21D5B
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 13:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23A71CE6F1;
-	Fri,  6 Sep 2024 13:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2541CEAD3;
+	Fri,  6 Sep 2024 13:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SBBleonV"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="aZdMBloW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3F51CE707;
-	Fri,  6 Sep 2024 13:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E301CEADD
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 13:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725630322; cv=none; b=issGW0LeEkwavIqpzcUcR9JDTHhMLhHUXUaV4mb/hzGH/q+DArWQwAg5bO4jVUz7pD3iUnbVTZyMv4Dc97qvM5bT8hdKEKfQkqlm+iOX3NuT3w7ZG+WU6OtQ/zG19PvJAYdtIH0lffMEbuRVECz438aG3iOMJnnWCqd1wK8Bpsk=
+	t=1725630449; cv=none; b=usR18adzHHG0SPSopsYTZfU1LIOZkqv6sPTO9WGuZRS2qIG7/hKM8LMHJZMkDEYUhpSCX1c8ZtrU2wziu8nL1FCzaABMG4LOi6SFysL9mrlCGjCWgA1T8a0KdYV2hBSzuxTb6XlURjrMgZDpIY6yv3ArtKiyZOsYm0awdZOkkH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725630322; c=relaxed/simple;
-	bh=LzRu9zx/RUvzGJLN1xZh1Ep1FK6fI45Qs5Gss1BDzLY=;
+	s=arc-20240116; t=1725630449; c=relaxed/simple;
+	bh=pIgf+7SsOpHo9YgmHRtwComDBR+t56JNvOlWZHxXxrI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U6oDhnEdlj6yMujGW4a4CZS0MKMLXntSvJT32HBaKFWT+q++9m2Xw41n1W1y3RBkCEEXQn0x2ehnQXZ/kz2nMaSN60FZoIbmrOEKZiNmJhn6GjfFbx2Or6xvEJ7jZORsM8NvrMhQ7Q7G5mRzgPBHfkZuKftlezlzJX8/84n66DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SBBleonV; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a86e9db75b9so255789666b.1;
-        Fri, 06 Sep 2024 06:45:20 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=EEJ1BdiioJ0KmseDSb3p1ZMUctwa6Iuip5kzcOCMI5bRURtw9zwcc5K02wgeBJYkgAoyOzCAA1mWd0kTNhR427kIeMV7wZQDZUU2bGavDqLDEEYpaf+Rd1LcQb/0IjhFP/HfYCV0POqyPosIRrnqqtVUTWMIVBrDUa8gKjYHdLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=aZdMBloW; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71790ed8c2dso1569282b3a.3
+        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 06:47:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1725630319; x=1726235119; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1725630447; x=1726235247; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=t7QnaMeuAhRWgF7/G1QpvRene3BE387G8iUVU/cYI6I=;
-        b=SBBleonVUtaT7+605LDExoaYQ+t1BUYKr8RMt5EugGPPXjG4MSiUho8lJ5SWY0vuse
-         wK+V3zJFJskT9kYHAdNF2XGkY4UeUrdC3BpJW2vE8MkE2gqk9f3jnenXnImRtmWS8hnf
-         3b7hnqcIOWxbPba/yOS4Hm9DEtLWnqRBckQInas69dJin4kZ9VbKkvKKXjIYXl4ru53+
-         rt922OPkBEagkNcXfJKsV0y4K4+vdQ+nRd/P165V/hoCIjcwS6CP9FqPulNXErZbIFX8
-         ZUtGnEbLI6IezmECCSpExVzgvj0r56ZKowIqCwjY+pEs6GJrF7NzLWjCK5Ir5Y5E3V8U
-         WbdA==
+        bh=MAKWGI3sm1Oxm3Ppx/VjAwW9wnluKyU080i1F7eUq9Q=;
+        b=aZdMBloWeznHIM0HdBMmmf4UEX9ohprYJhTnM38zYldGeJJiumR85Sz0Bzk2mO+QMl
+         UydGJssjPgir/FdI8rMcCDrslMjlgxtEuZpm8ZbcsH4N7/3yn60zxDRMJl4LTnKh1PT/
+         jojncpTmxcXvK/wFgJMoxf6J6rCIrdfSdGG9EyMZOjyOZ05XP8U1UqWGEB/p0DQlUOSQ
+         3pA0HnVVVn9pOXKK1LDQd95Tn7omz3ZjoNqcU4kwvy3le3hy9FHr4WTXrGiN54KneTyz
+         EO1IgKn0kyf2DmH2FGF20WMglcLMFp0cGKjKJqCc+gLDcHnzsd+papsrIFj48lEzqJaP
+         f2xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725630319; x=1726235119;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1725630447; x=1726235247;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t7QnaMeuAhRWgF7/G1QpvRene3BE387G8iUVU/cYI6I=;
-        b=RQ3vAbgZUrLBpheXjKldlTwYwtFy2gDDEKjkEc7tl5w3JtsVFeeLBwH4NG5/ESodPR
-         Oh/rGx6ZYE+7mPd/rHc//6M5H0f8J9wlPGJh5qDj8TC4h29zjQcn+fO/5ycS3Gjyc7zN
-         fwJIDjIb/a2nt6zNqogiOIR+ARLWXw4Z6T1Rq8h4hofGVyyhj5dhgbXpl0dQDp8DhJVR
-         lens4/3s73jDCJV+aZpasN46AZNQNbxqSU/bvbHLEKo8Qlk4fIa1XRaWoGAXhkt5kfZq
-         g6zdAVnEMYoGnqe4DsWC0a3S6MW5iqS/xmSraaxNT8FV5aOQZUIvGjzgVjP8KkCCDbzx
-         r94w==
-X-Forwarded-Encrypted: i=1; AJvYcCUFr47xmh9Wis6KCocC3imZ0vYYRYLoU5LigxuUM6azWmjZlRwhKG6eHVFqvlbV1hgXEZWNnMtXvpaOSoY=@vger.kernel.org, AJvYcCVWmnL874bBgOFL3G9LKOnPKGiYoo065T50NZ5TiEwidMr+7jg+vVXUJd5A58b7Zf1PUghhZSnJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJte8NN58/5DsUit2hpUmXCL4/r8NrKj6mCKlALAg2FxDuKCMH
-	UvudE4d5ftBB7Q7ea8KY6wAMW+IGgXRrWvdKj2UvDgkUuh+EMYY=
-X-Google-Smtp-Source: AGHT+IEv8YGmNOmoxLrIE4zsDNN/4eYRy5OvNPIBzaSoVTJV/vA5tWTyX1TUK/eEESiUddviQvTMwQ==
-X-Received: by 2002:a17:906:4796:b0:a8a:7898:1420 with SMTP id a640c23a62f3a-a8a88667910mr200813066b.31.1725630319134;
-        Fri, 06 Sep 2024 06:45:19 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b40f2.dip0.t-ipconnect.de. [91.43.64.242])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a77140b3dsm206649166b.213.2024.09.06.06.45.17
+        bh=MAKWGI3sm1Oxm3Ppx/VjAwW9wnluKyU080i1F7eUq9Q=;
+        b=E5Q/0V09YIu/5pGbvtkvetFFQYocSnXijQKsesZu7zTJkbmDVNmYY93k5EwG74zTwR
+         HcyH33w01ccW1KN7eEpjQjTFogNtx5d23t6MrJDC5CM7QBuye9VXEeX4X7j/4UtgySqo
+         rKJgCGeNqtpZBuhx3zsmL4uqb7C3InKBKdb4FsirZt/EqzCbOnlW3PEOgse0V5L5/Blt
+         94zOHKTinAd/jkGVGZ7sEMrZ691OzgigHt/RvUWKTW8BhdpP1pKzQcNXtBB3QW8yhkDY
+         7vatvqliupAVI3ywvzf4h2Tm0OwbXi7c7LwPmIvPwlhcNy2jzveUnxJoIbfJOLJwQPtO
+         0AhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzHuO65Uk5F2BVc8uW8HeF3tNaFKcSMwnf+5fbv+38D9H3VtS9DA/eIS7unboqNpEEJi5ctUY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmFdDfliNlU+31H1XxOYgnpMGUhkbjvfB2OMvQnyIcmobJRULV
+	hKhFFqy5Ytb2QmOumHDLr6oPn+eLcmI8dgUbevOib3fnG4aZ3rPtqzV0Ab7J0Uw=
+X-Google-Smtp-Source: AGHT+IFD4gaiCGNzSKi4CCQRh2XEyeaqBw4cxt3VsxUJUalI/hpnCOD/4KuNqnTydRpX3hVW6teqzQ==
+X-Received: by 2002:a05:6a21:3994:b0:1cf:126c:3f6a with SMTP id adf61e73a8af0-1cf1d1c0a4fmr3303021637.27.1725630446742;
+        Fri, 06 Sep 2024 06:47:26 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dadbfe829asm1572850a91.3.2024.09.06.06.47.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2024 06:45:18 -0700 (PDT)
-Message-ID: <63922fdb-6aa0-483c-ad57-1c310df160b0@googlemail.com>
-Date: Fri, 6 Sep 2024 15:45:17 +0200
+        Fri, 06 Sep 2024 06:47:26 -0700 (PDT)
+Message-ID: <8633f306-f5e0-42f8-a4c6-f6f34b85844d@kernel.dk>
+Date: Fri, 6 Sep 2024 07:47:24 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.10 000/183] 6.10.9-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240905163542.314666063@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240905163542.314666063@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] io_uring/sqpoll: inherit cpumask of creating process
+To: Felix Moessbauer <felix.moessbauer@siemens.com>, asml.silence@gmail.com
+Cc: linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+ cgroups@vger.kernel.org, dqminh@cloudflare.com, longman@redhat.com,
+ adriaan.schmidt@siemens.com, florian.bezdeka@siemens.com,
+ stable@vger.kernel.org
+References: <20240906134433.433083-1-felix.moessbauer@siemens.com>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20240906134433.433083-1-felix.moessbauer@siemens.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Am 05.09.2024 um 18:36 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.10.9 release.
-> There are 183 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 9/6/24 7:44 AM, Felix Moessbauer wrote:
+> The submit queue polling threads are "kernel" threads that are started
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+It's not a kernel thread, it's a normal userland thread that just never
+exits to userspace.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+> from the userland. In case the userland task is part of a cgroup with
+> the cpuset controller enabled, the poller should also stay within that
+> cpuset. This also holds, as the poller belongs to the same cgroup as
+> the task that started it.
+> 
+> With the current implementation, a process can "break out" of the
+> defined cpuset by creating sq pollers consuming CPU time on other CPUs,
+> which is especially problematic for realtime applications.
+> 
+> Part of this problem was fixed in a5fc1441 by dropping the
+> PF_NO_SETAFFINITY flag, but this only becomes effective after the first
+> modification of the cpuset (i.e. the pollers cpuset is correct after the
+> first update of the enclosing cgroups cpuset).
+> 
+> By inheriting the cpuset of the creating tasks, we ensure that the
+> poller is created with a cpumask that is a subset of the cgroups mask.
+> Inheriting the creators cpumask is reasonable, as other userland tasks
+> also inherit the mask.
 
-
-Beste Grüße,
-Peter Schneider
+Looks fine to me.
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Jens Axboe
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+
 
