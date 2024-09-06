@@ -1,155 +1,190 @@
-Return-Path: <stable+bounces-73768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A88196F110
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 12:10:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825F896F138
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 12:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C577A1C235A7
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:10:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBA59B21516
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF3D1C9DD1;
-	Fri,  6 Sep 2024 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D411C8FD9;
+	Fri,  6 Sep 2024 10:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr3fMeFJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5P/tgNP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745841C8FBE;
-	Fri,  6 Sep 2024 10:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A5F1C871F
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 10:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725617427; cv=none; b=Fpbc/BoafYp4eU5TAmBnUK47lv/Zk6Uu/8DXNVOUVZsNCH0/zBf42LEckTCwoKjDhXDX+fS07T3mDIY3wTZ2mRNAV5o8hP8/L8bbOsDCMRXsa86cp2ZAjh3EwgPIIYxZpnzNTZdle7vVNCHkGjmHgu+KakbhbpCXZAZC2T5fTaU=
+	t=1725618062; cv=none; b=AnVUkyIhl5ryOyo6pcpJUcj1N2BJsRGVa98FsC/1FfVuM9dUL3d+wN+GTLNafrcOBIZNfJ06igIPV3v1/j24OhFFKNL8Mr/9URlXRxz3Rbq/ToF7HX20ZqFQTxMRFXf4jn1tJsWgldf2aux9KHjH6cHSWXTJByN92KIIEqhzgNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725617427; c=relaxed/simple;
-	bh=aHlWIs2y7UxXRyPHG97BeELexgtOF0bS+sKBfH9ulbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g2hDK40N6/VCc5ZGJLWgy3MEU571LUbaI2h6n2ReutkbMRcBvYpbvQizqwG8XXcJOitFM9Yp9YU8jN+15yZe7qPLVy+OPJyu2+jN/Ac6aWHIo4nV2ABx0CdRnFtfNr4x7rfo6fpM1oYNcx70i0mFkLGpHoh3sYKj8Mui/VLo4W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr3fMeFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A9FC4CEC4;
-	Fri,  6 Sep 2024 10:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725617426;
-	bh=aHlWIs2y7UxXRyPHG97BeELexgtOF0bS+sKBfH9ulbk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gr3fMeFJxfyVvL3v3Hjr5XjzIOXzdQRVM7Kj8VR9xTI0eFEmncMpux6Z4GU7BCJU/
-	 4srO1HTXsZTOWD8ZnbUKNOl/IaZdz6jShQ2tju8mG7xWlhAvPAUL1alMpXFWxYotUN
-	 HjlG9TzIaEV9W857GMOjZbUqr8Pd23VRVq1FYFyb54iEkQ0HwUcb4h/bqnoXYJRVv+
-	 jQK6WWwcESv+4GhOC7yCoGtu1am5FExnnPvXZmd3WxDdYaeMNn0ErDnk1U9BsMUTWx
-	 /d5KKbk1fPCjbvAjnfa+Ak/j0Qp19Ps3NyAxmGWe7Da0EEc7gaMtREDu8ROpFjzrAm
-	 NlFFHrkc67BJQ==
-Message-ID: <be29b0d9-83be-4947-912e-8d9f5b8f5f9c@kernel.org>
-Date: Fri, 6 Sep 2024 12:10:22 +0200
+	s=arc-20240116; t=1725618062; c=relaxed/simple;
+	bh=ViXUmpQDszYlkQlzX071qyK4hcQQ/D6TR+RQVOMzaV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TS3RDtql9hMvgvz1PQl5jtOTK+EwEH86gooiuX8u6P+05bri2MVLP94+MlCKWJvlM1aoW8XMjFUSX/prNRvog8AKur9AYd5mIdc+AgwhzZQz7fUzlScL6F8MWRTuz69Jfwb7ALb2+RW9VPoRSYuIx5sHjki9xL3mC2xSLjywYus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5P/tgNP; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7093ba310b0so984150a34.2
+        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 03:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725618059; x=1726222859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cifs:mime-version:message-id:date:subject
+         :cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rJsv/z5yQu7mIgQJ1nCtV0vzTbPyXVJOauc542Rh/Qc=;
+        b=G5P/tgNPaGP3BLLJA+SIrPAnSWwEYdtu4cUhnoLyUlJHY02WIedwuMjH8fJ/s5AsFp
+         x3aBj57FMgQH4qBtHm3VSP6VTjE0A1xc3Yf0en8JeRK/qWMSDyejRTUPE24k6wxev7KM
+         /WrBHQfuYbWt4BokKXU/7A1DHEwHt01Bt9huV1qVrhQUiFDF4O4k1XoKyOZ0ElHWGi1j
+         FIhaNABrVKHPrIU11jlUumJ5eJffauAueQwp2fEMbnWwDcqYLQhXu86kdZZQgHza0Eg6
+         RsfKOvsa8kiUR8une2gQ5WcDvPuCcshU5k+eYW2E89OcWgNmQPZYL1tHmG3IT0d2gLNI
+         zgCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725618059; x=1726222859;
+        h=content-transfer-encoding:cifs:mime-version:message-id:date:subject
+         :cc:to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rJsv/z5yQu7mIgQJ1nCtV0vzTbPyXVJOauc542Rh/Qc=;
+        b=rZAkn/EhMNDwUrH//3syMGh1Fzxbp1+zDhaiLwpMHqN/BFheklpkFGTswwDk2bwaY3
+         SVWKPdcZW4Kwg/qvZAZI050M/1pi9kRYSY72/Oi+lYTq0VTO0GkXdUIK/TGjQJbp8W5G
+         r6Xe/OAwjNnpybYguYy8HRtO+smeMyKdQPNi7mN5BnxOzIpJQKYb+l2yQhl3tZZggSfo
+         ZJ49Rp193l1l32d6MdpijKkYM7PI2s/HJTfFqnrj1o3ESrbl1E1bdeHb0ul0YYIWPb+d
+         3jsQi2u4DT4MXSqn3dgGiZormd6I9Vqinb8P/qqqz4vjFAbDU8m5XKjls4nNoFlprfBH
+         bKSg==
+X-Gm-Message-State: AOJu0YwLAsO9VK8FiueRqx4rzKCk+NDpPEo4REXv8UhGWJPPAOrNf9LT
+	hQMrAAVM+6DLg45Q5EGuafhdww5LgcDs8b/IB6jVF8xMpaJ+oa7ZNNWY1to0
+X-Google-Smtp-Source: AGHT+IFKQeMo392jBS7ov0eaoTFCPti6zFlS7xwF43NX+Byjt4Pg9K5eoYJSPhGEFEWpMevm/BG0+g==
+X-Received: by 2002:a05:6358:299:b0:1aa:a19e:f195 with SMTP id e5c5f4694b2df-1b8385bc294mr246059355d.4.1725618059082;
+        Fri, 06 Sep 2024 03:20:59 -0700 (PDT)
+Received: from met-Virtual-Machine.. ([131.107.147.169])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d4fbda7811sm4603548a12.60.2024.09.06.03.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Sep 2024 03:20:58 -0700 (PDT)
+From: meetakshisetiyaoss@gmail.com
+To: stable@vger.kernel.org
+Cc: smfrench@gmail.com,
+	nspmangalore@gmail.com,
+	bharathsm.hsk@gmail.com,
+	lsahlber@redhat.com,
+	Bharath SM <bharathsm@microsoft.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Meetakshi Setiya <msetiya@microsoft.com>
+Subject: [5.15 Backport] cifs: Check the lease context if we actually got a lease
+Date: Fri,  6 Sep 2024 06:20:18 -0400
+Message-ID: <20240906102040.28993-1-meetakshisetiyaoss@gmail.com>
+X-Mailer: git-send-email 2.46.0.46.g406f326d27
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: MPTCP stable backports: is the workflow OK?
-Content-Language: en-GB
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <32148274-08bb-4031-a55b-6b16b48a5497@kernel.org>
- <2024090642-viewing-happier-23b8@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2024090642-viewing-happier-23b8@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+cifs: Check the lease context if we actually got a lease
+Content-Transfer-Encoding: 8bit
 
-Hi Greg, Sasha,
+This patch fixes a directory lease bug on the smb client and
+prevents it from incorrectly caching the directories if the
+server returns an invalid lease state. The patch is in
+6.3 kernel, requesting backport to stable 5.15.
+I have cherry-picked the patch for 5.15 kernel below
 
-Thank you for your reply!
+From 2bb51b129ceb884145c3527f8c04817cc00d0e6e Mon Sep 17 00:00:00 2001
+From: Ronnie Sahlberg <lsahlber@redhat.com>
+Date: Fri, 17 Feb 2023 13:35:00 +1000
+Subject: [PATCH] cifs: Check the lease context if we actually got a lease
 
-On 06/09/2024 11:56, Greg KH wrote:
-> On Fri, Sep 06, 2024 at 11:36:25AM +0200, Matthieu Baerts wrote:
->> Hi Greg,
->>
->> Thank you again for your support when we send patches for stable
->> versions for MPTCP!
->>
->> Recently, I sent many patches for the stable versions, and I just wanted
->> to check if what I did was OK for you?
->>
->> I tried to reply to all the 'FAILED: patch' emails you sent, either with
->> patches, or with reasons explaining why it is fine not to backport them.
->> Are you OK with that?
->>
->> Or do you prefer only receiving the patches, and not the emails with the
->> reasons not to backport some of them?
->>
->> About the patches, do you prefer to receive one big series per version
->> or individual patches sent in reply to the different 'FAILED: patch'
->> emails like I did?
-> 
-> One big series, per kernel tree, would be ideal as that way I don't have
-> to pick them out and guess as to the order.
+Some servers may return that we got a lease in rsp->OplockLevel
+but then in the lease context contradict this and say we got no lease
+at all.  Thus we need to check the context if we have a lease.
+Additionally, If we do not get a lease we need to make sure we close
+the handle before we return an error to the caller.
 
-Sure, I will do that next time, it is even easier for me.
+Signed-off-by: Ronnie Sahlberg <lsahlber@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+---
+ fs/cifs/smb2ops.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-I sent the patches in the same order as they are in my working branch,
-but I understand they could be received in a different order.
-
-> Also, if you don't respond to the FAILED emails, that's fine with me, I
-> don't keep track, but maybe Sasha does as I know he does backports based
-> on them at times.  So I'll let him answer that.
-
-Thanks! I will wait for Sasha's reply.
-
-> But in the end, whatever is easier for you is good for us, thanks!
-
-Thanks!
-
-Matt
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index b725bd3144fb..6c30fff8a029 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -886,8 +886,6 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 		goto oshr_exit;
+ 	}
+ 
+-	atomic_inc(&tcon->num_remote_opens);
+-
+ 	o_rsp = (struct smb2_create_rsp *)rsp_iov[0].iov_base;
+ 	oparms.fid->persistent_fid = o_rsp->PersistentFileId;
+ 	oparms.fid->volatile_fid = o_rsp->VolatileFileId;
+@@ -897,8 +895,6 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 
+ 	tcon->crfid.tcon = tcon;
+ 	tcon->crfid.is_valid = true;
+-	tcon->crfid.dentry = dentry;
+-	dget(dentry);
+ 	kref_init(&tcon->crfid.refcount);
+ 
+ 	/* BB TBD check to see if oplock level check can be removed below */
+@@ -907,14 +903,16 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 		 * See commit 2f94a3125b87. Increment the refcount when we
+ 		 * get a lease for root, release it if lease break occurs
+ 		 */
+-		kref_get(&tcon->crfid.refcount);
+-		tcon->crfid.has_lease = true;
+ 		rc = smb2_parse_contexts(server, rsp_iov,
+ 				&oparms.fid->epoch,
+ 				    oparms.fid->lease_key, &oplock,
+ 				    NULL, NULL);
+ 		if (rc)
+ 			goto oshr_exit;
++
++		if (!(oplock & SMB2_LEASE_READ_CACHING_HE))
++			goto oshr_exit;
++
+ 	} else
+ 		goto oshr_exit;
+ 
+@@ -928,7 +926,10 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 				(char *)&tcon->crfid.file_all_info))
+ 		tcon->crfid.file_all_info_is_valid = true;
+ 	tcon->crfid.time = jiffies;
+-
++	tcon->crfid.dentry = dentry;
++	dget(dentry);
++	kref_get(&tcon->crfid.refcount);
++	tcon->crfid.has_lease = true;
+ 
+ oshr_exit:
+ 	mutex_unlock(&tcon->crfid.fid_mutex);
+@@ -937,8 +938,15 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 	SMB2_query_info_free(&rqst[1]);
+ 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
+ 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
+-	if (rc == 0)
++	if (rc) {
++		if (tcon->crfid.is_valid)
++			SMB2_close(0, tcon, oparms.fid->persistent_fid,
++				   oparms.fid->volatile_fid);
++	}
++	if (rc == 0) {
+ 		*cfid = &tcon->crfid;
++		atomic_inc(&tcon->num_remote_opens);
++	}
+ 	return rc;
+ }
+ 
 -- 
-Sponsored by the NGI0 Core fund.
+2.46.0.46.g406f326d27
 
 
