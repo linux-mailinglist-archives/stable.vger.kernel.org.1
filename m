@@ -1,252 +1,202 @@
-Return-Path: <stable+bounces-73798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDCE96F7A2
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 17:02:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA2296F87B
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 17:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2847A2843D1
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 15:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEECA2813CF
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 15:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF53D1D27B7;
-	Fri,  6 Sep 2024 15:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C20B1D2F56;
+	Fri,  6 Sep 2024 15:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/5avGSw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4ocLcdH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BF31D1F73;
-	Fri,  6 Sep 2024 15:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EB01D174A
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 15:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725634966; cv=none; b=jCePzC2UAZBjKq7d3OpQWAqaTUu/1k2hoUWqf9kL9t+I+8q09FEJd+Wcf6FBm2ZcLlE5GvjmoyfxlLBDmJkDjD6WPcf6e5dk82pXYaYDYdBwWPL+ev/EHbi5zHv2UX+A6ZUNlXE88Sn9hjCnICzfJ7Tlr38cm//S5Pnwcp8ZJuE=
+	t=1725637346; cv=none; b=JlzaqAJh2ClGoMFoa7OJ74fWGPSx7CABOhRzbG/BKwCghdQS2zfkPaLCP19ioUqoEJeaCXGQzg6h7X7f8J6WUnUIhnFg6DLrkhebluC729mjhZa6MsvMwzbjcPgjLQ621HEVVJmXG8HHVUlVy8QUThtNfSC2hDQ78pL+jIUnOhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725634966; c=relaxed/simple;
-	bh=/jyOlJRohx+VGTSbr4Y6Q1/ZaLB+Z6DoeNxKscVVJiA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=suN/DL5Eh3lvBrhnL3u0qXNZP3IizZEQZLeFcDebVbe+hCtyxMdGZPXX0vIJ5ubruwXFX0mdcdCYqtMwcIoqmLVTphjjbgaT5NP2jfX/Fh8GvZX3GpZrWTSxm1YGeovGHQl6HzRRReBiecv63Hs9CCAG5XAnGaHGZz7J3XHKgTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/5avGSw; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1725637346; c=relaxed/simple;
+	bh=yK8fvleaqVf+smE6kyG913K5mT9tivt0ZRdUeDZhHIE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sKDX55bYBUJVwd6gMJY5L4Vq3vhN6DJ8oUf/rtSLS9AwTc57wBSqHXNTjuotX55OMwI2aZplp4XtnvcOhLymNQBltLdhJQ8qrzcKHPH+uNMWuFb6ws/9IYf/Gng7D7dpvnFtEtiQzZRzqEzdiCAGeddKTsBj7M/8aLag12eAGtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4ocLcdH; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-78f86e56b4cso214362a12.3;
-        Fri, 06 Sep 2024 08:02:44 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8682bb5e79so301198466b.2
+        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 08:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725634964; x=1726239764; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1725637343; x=1726242143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CF/y2A4EOD7AN3/RYLZIn961CP/eFEWOruxjVecjTmw=;
-        b=N/5avGSwPKnreZEQS+Ju8vmc599HYSUKhI6RCCVQG09fmkzsSlCuzZwhx60cW1Stl+
-         MrrFDSUlsiyAU5AKfWdyjh25PUE+uzVeUVd94ICMspHHekrdwamm0Tokzb7DlQit8AN6
-         gbWQViQOhdaWBDX0awB+tvCS8D22BmeMuulemJHnI98nyNbcXjOshF7ZxU+eoCHOZmPg
-         uw7m2GXqV8ZlpOnrrjx/0B0ePbJ5YFOlF+HB/nZPf19EKdpmN4mXgfi9s5VUygWXjxAG
-         n9ufUhsFNoum2QuTKV8XIH7Arshq0KordRZtqXVcswL8DZfAUxQtzqGHur+BBw/EZp38
-         Q2OQ==
+        bh=sWq2Z5Y2NB/LPQoEsjsZIqIHLDav1GOZXqUkwsg8EvM=;
+        b=C4ocLcdHXZ0cEtfUo0auV7iMU7b0dEFWYZxXCArVJXbHdm/p0gPPuw/x2DeBNugAwi
+         QbcVXecyPgQBmWOkADIoHvcTyK8omFPppcs6f0iayUkaf15fPCLC4G4yrxf3RVlVd/xX
+         vVoyEjwsQeP7zeaZninl/ET9RwvkvK6O/BuRBZBtkNtf7P4kAXUz1uSbphIRvtIsurLU
+         HvXPnZB1pQB26ONLgAXCxUUOc8FSzWsdex4GKiKA5TaUEzDeGIBloskZ2b5mAPCeRecp
+         NfHOMU3ZxahmSwPRtpg0LLTPjR2m/ughNXnH/pSdoG02ATzv3Q/Ph4Z8IQzkTragxWoj
+         fBpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725634964; x=1726239764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725637343; x=1726242143;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CF/y2A4EOD7AN3/RYLZIn961CP/eFEWOruxjVecjTmw=;
-        b=ap73Pj3B19fjfuyBeTqw49wTSkcNLCAdPFXanwLZOIWRx2YGvt59pKbjohYoNhdh0X
-         gJuyoa9ajRUsUeHirBVls65LEh3hXEjddcjL7sINgayMLLNeaBFvO1aXpHhfqgyPv4oY
-         XtEvy2iAjAU/MtgCg3Evv4Uc3Vb8oamPWi5p9ht6GxFE6xTySQF5z/JRc2VXzImzL8Wa
-         2j2jg9CzEH8Wd9RB2BGnza66KGisBtTUYOx4rJNG3dVce5igjjJCW/kRKaCpyoAXfCAd
-         wvEjFHZRgFbxzltDRqR6RlDZKP35bYI+E2n4gsru1gAUsbfxL2gTassD+rvNlehPS+rk
-         DKaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWwrVz0HpulLty/Imxf9umgRyINhLojGYFOuSIybWUtjHngFzGTw/pAvHhCBwKOcnZKssE5Um6Wkw7jiBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1j4Gro9pAivYij9BE93ZfuV3pAeRpnf91g+DwkhM+5zYk4fyI
-	+gK+QDZgzEYrZKV0sk3yABUhah3ESSo8W1SG2LmWbha7ZPgQRDLiYqJeAeLjPNOtqept757Aiwe
-	MP1BS/3QrI3JwDQA6m7lFOUVhNU6wcA==
-X-Google-Smtp-Source: AGHT+IFUyTc2msw9pBuDinPebsrgH2WgTVb3aopL/b6zxirXk5TlrlJwgcDG34rx6p5wEwYoay4kl+oDdVtZtxl+tQk=
-X-Received: by 2002:a17:902:f0cb:b0:205:60f5:4c0 with SMTP id
- d9443c01a7336-206f0669d0emr15345825ad.9.1725634964083; Fri, 06 Sep 2024
- 08:02:44 -0700 (PDT)
+        bh=sWq2Z5Y2NB/LPQoEsjsZIqIHLDav1GOZXqUkwsg8EvM=;
+        b=cw294iUbwFUbvapD7vahXK8Ao4YMNxgHl1hyRE99rS7RV3g8ozfJv15DepXAG861CS
+         crFTGoOE513eTpT7MPz6Uy+0BiHiCo+x+kxOsz/fQyllDaxyVPEIK+1U/UPJ5SNvqxi/
+         mq/c5gFd/3L9guKUI6wsxIi2dVjEb34y1qxPIC+y4z0R5Vmiu0wnv+MIJzU0M6xk2gQv
+         rv7lCgkGNwYGV36MDEST7TezFcJ74gwUVFTCQwJphR2O0lc6DrWrYtwxAaa7CaTzOkq0
+         qwq63zaRh/De7NmFTcDKiAje6n2xIrpMDUvf2JsOGUKog8TVmKDEw4BQlVB9J1TyYb79
+         NowA==
+X-Gm-Message-State: AOJu0YxN7H4Eb2aqpnsOLlISnprqpkPhqMcD0O9CimdmyyYbtZVGV8yG
+	gp/yMRKUR68youFk2ws0hLZrXR9JQZpicuPBRq4fyODLQ4CjzkNB0uthIGKi4cf67A==
+X-Google-Smtp-Source: AGHT+IHfuSr8X9HPQvA+sdf6dSGEBsOg0/OGqvUen2B2BHzwb7br93wqnd26KBObwC3TldptA62qUQ==
+X-Received: by 2002:a17:907:3f0a:b0:a77:eb34:3b4e with SMTP id a640c23a62f3a-a8a885c34e0mr271540366b.7.1725637341558;
+        Fri, 06 Sep 2024 08:42:21 -0700 (PDT)
+Received: from dev-dsk-krckatom-1b-7b393aa4.eu-west-1.amazon.com (54-240-197-231.amazon.com. [54.240.197.231])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8aeacb588bsm72787466b.78.2024.09.06.08.42.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 06 Sep 2024 08:42:21 -0700 (PDT)
+From: Tomas Krcka <tomas.krcka@gmail.com>
+X-Google-Original-From: Tomas Krcka <krckatom@amazon.de>
+To: stable@vger.kernel.org
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tomas Krcka <krckatom@amazon.de>
+Subject: [PATCH 5.10.y] memcg: protect concurrent access to mem_cgroup_idr
+Date: Fri,  6 Sep 2024 15:41:40 +0000
+Message-Id: <20240906154140.70821-1-krckatom@amazon.de>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2024081218-demote-shakily-f31c@gregkh>
+References: <2024081218-demote-shakily-f31c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903045809.5025-1-mukul.sikka@broadcom.com>
- <CADnq5_OVSD1DXgi_9f_H-uT7KSjMwz-FfhP=vRQvposSxv=BMw@mail.gmail.com> <CAG99D9Jss=h5aVLDq0tkDjfZgGUbrNV1gqwcw631RbwCiPVqNg@mail.gmail.com>
-In-Reply-To: <CAG99D9Jss=h5aVLDq0tkDjfZgGUbrNV1gqwcw631RbwCiPVqNg@mail.gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Fri, 6 Sep 2024 11:02:32 -0400
-Message-ID: <CADnq5_NWX7u=S+jrC8YA6fJxN7GXpSN+kqsQieqphdOz2HT6EA@mail.gmail.com>
-Subject: Re: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference
- for vega10_hwmgr
-To: Mukul Sikka <mukul.sikka@broadcom.com>
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, evan.quan@amd.com, 
-	alexander.deucher@amd.com, christian.koenig@amd.com, airlied@linux.ie, 
-	daniel@ffwll.ch, Jun.Ma2@amd.com, kevinyang.wang@amd.com, sashal@kernel.org, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, 
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com, 
-	Bob Zhou <bob.zhou@amd.com>, Tim Huang <Tim.Huang@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 6, 2024 at 4:50=E2=80=AFAM Mukul Sikka <mukul.sikka@broadcom.co=
-m> wrote:
->
-> On Fri, Sep 6, 2024 at 12:05=E2=80=AFAM Alex Deucher <alexdeucher@gmail.c=
-om> wrote:
-> >
-> > On Tue, Sep 3, 2024 at 5:53=E2=80=AFAM sikkamukul <mukul.sikka@broadcom=
-.com> wrote:
-> > >
-> > > From: Bob Zhou <bob.zhou@amd.com>
-> > >
-> > > [ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
-> > >
-> > > Check return value and conduct null pointer handling to avoid null po=
-inter dereference.
-> > >
-> > > Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-> > > Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
-> >
-> > Just out of curiosity, are you actually seeing an issue?  This and a
-> > lot of the other recent NULL check patches are just static checker
-> > fixes.  They don't actually fix a known issue.
-> >
-> No, according to the description of this patch and CVE-2024-43905.
-> It seems to be applicable to LTS.
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-I don't know that this is really CVE material, but oh well.  I'm not
-sure if it's actually possible to hit this in practice.
+commit 9972605a238339b85bd16b084eed5f18414d22db upstream.
 
-Alex
+Commit 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after
+many small jobs") decoupled the memcg IDs from the CSS ID space to fix the
+cgroup creation failures.  It introduced IDR to maintain the memcg ID
+space.  The IDR depends on external synchronization mechanisms for
+modifications.  For the mem_cgroup_idr, the idr_alloc() and idr_replace()
+happen within css callback and thus are protected through cgroup_mutex
+from concurrent modifications.  However idr_remove() for mem_cgroup_idr
+was not protected against concurrency and can be run concurrently for
+different memcgs when they hit their refcnt to zero.  Fix that.
 
->
-> - Mukul
->
-> > > ---
-> > >  .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 30 ++++++++++++++++-=
---
-> > >  1 file changed, 26 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/=
-drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-> > > index 10678b519..304874cba 100644
-> > > --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-> > > +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-> > > @@ -3391,13 +3391,17 @@ static int vega10_find_dpm_states_clocks_in_d=
-pm_table(struct pp_hwmgr *hwmgr, co
-> > >         const struct vega10_power_state *vega10_ps =3D
-> > >                         cast_const_phw_vega10_power_state(states->pne=
-w_state);
-> > >         struct vega10_single_dpm_table *sclk_table =3D &(data->dpm_ta=
-ble.gfx_table);
-> > > -       uint32_t sclk =3D vega10_ps->performance_levels
-> > > -                       [vega10_ps->performance_level_count - 1].gfx_=
-clock;
-> > >         struct vega10_single_dpm_table *mclk_table =3D &(data->dpm_ta=
-ble.mem_table);
-> > > -       uint32_t mclk =3D vega10_ps->performance_levels
-> > > -                       [vega10_ps->performance_level_count - 1].mem_=
-clock;
-> > > +       uint32_t sclk, mclk;
-> > >         uint32_t i;
-> > >
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return -EINVAL;
-> > > +       sclk =3D vega10_ps->performance_levels
-> > > +                       [vega10_ps->performance_level_count - 1].gfx_=
-clock;
-> > > +       mclk =3D vega10_ps->performance_levels
-> > > +                       [vega10_ps->performance_level_count - 1].mem_=
-clock;
-> > > +
-> > >         for (i =3D 0; i < sclk_table->count; i++) {
-> > >                 if (sclk =3D=3D sclk_table->dpm_levels[i].value)
-> > >                         break;
-> > > @@ -3704,6 +3708,9 @@ static int vega10_generate_dpm_level_enable_mas=
-k(
-> > >                         cast_const_phw_vega10_power_state(states->pne=
-w_state);
-> > >         int i;
-> > >
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return -EINVAL;
-> > > +
-> > >         PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps)=
-,
-> > >                         "Attempt to Trim DPM States Failed!",
-> > >                         return -1);
-> > > @@ -4828,6 +4835,9 @@ static int vega10_check_states_equal(struct pp_=
-hwmgr *hwmgr,
-> > >
-> > >         psa =3D cast_const_phw_vega10_power_state(pstate1);
-> > >         psb =3D cast_const_phw_vega10_power_state(pstate2);
-> > > +       if (psa =3D=3D NULL || psb =3D=3D NULL)
-> > > +               return -EINVAL;
-> > > +
-> > >         /* If the two states don't even have the same number of perfo=
-rmance levels they cannot be the same state. */
-> > >         if (psa->performance_level_count !=3D psb->performance_level_=
-count) {
-> > >                 *equal =3D false;
-> > > @@ -4953,6 +4963,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *=
-hwmgr, uint32_t value)
-> > >                 return -EINVAL;
-> > >
-> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return -EINVAL;
-> > >
-> > >         vega10_ps->performance_levels
-> > >         [vega10_ps->performance_level_count - 1].gfx_clock =3D
-> > > @@ -5004,6 +5016,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *=
-hwmgr, uint32_t value)
-> > >                 return -EINVAL;
-> > >
-> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return -EINVAL;
-> > >
-> > >         vega10_ps->performance_levels
-> > >         [vega10_ps->performance_level_count - 1].mem_clock =3D
-> > > @@ -5239,6 +5253,9 @@ static void vega10_odn_update_power_state(struc=
-t pp_hwmgr *hwmgr)
-> > >                 return;
-> > >
-> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return;
-> > > +
-> > >         max_level =3D vega10_ps->performance_level_count - 1;
-> > >
-> > >         if (vega10_ps->performance_levels[max_level].gfx_clock !=3D
-> > > @@ -5261,6 +5278,9 @@ static void vega10_odn_update_power_state(struc=
-t pp_hwmgr *hwmgr)
-> > >
-> > >         ps =3D (struct pp_power_state *)((unsigned long)(hwmgr->ps) +=
- hwmgr->ps_size * (hwmgr->num_ps - 1));
-> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
-> > > +       if (vega10_ps =3D=3D NULL)
-> > > +               return;
-> > > +
-> > >         max_level =3D vega10_ps->performance_level_count - 1;
-> > >
-> > >         if (vega10_ps->performance_levels[max_level].gfx_clock !=3D
-> > > @@ -5451,6 +5471,8 @@ static int vega10_get_performance_level(struct =
-pp_hwmgr *hwmgr, const struct pp_
-> > >                 return -EINVAL;
-> > >
-> > >         ps =3D cast_const_phw_vega10_power_state(state);
-> > > +       if (ps =3D=3D NULL)
-> > > +               return -EINVAL;
-> > >
-> > >         i =3D index > ps->performance_level_count - 1 ?
-> > >                         ps->performance_level_count - 1 : index;
-> > > --
-> > > 2.39.4
-> > >
+We have been seeing list_lru based kernel crashes at a low frequency in
+our fleet for a long time.  These crashes were in different part of
+list_lru code including list_lru_add(), list_lru_del() and reparenting
+code.  Upon further inspection, it looked like for a given object (dentry
+and inode), the super_block's list_lru didn't have list_lru_one for the
+memcg of that object.  The initial suspicions were either the object is
+not allocated through kmem_cache_alloc_lru() or somehow
+memcg_list_lru_alloc() failed to allocate list_lru_one() for a memcg but
+returned success.  No evidence were found for these cases.
+
+Looking more deeply, we started seeing situations where valid memcg's id
+is not present in mem_cgroup_idr and in some cases multiple valid memcgs
+have same id and mem_cgroup_idr is pointing to one of them.  So, the most
+reasonable explanation is that these situations can happen due to race
+between multiple idr_remove() calls or race between
+idr_alloc()/idr_replace() and idr_remove().  These races are causing
+multiple memcgs to acquire the same ID and then offlining of one of them
+would cleanup list_lrus on the system for all of them.  Later access from
+other memcgs to the list_lru cause crashes due to missing list_lru_one.
+
+Link: https://lkml.kernel.org/r/20240802235822.1830976-1-shakeel.butt@linux.dev
+Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after many small jobs")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[Conflict due to
+be740503ed03 ("mm: memcontrol: fix cannot alloc the maximum memcg ID")
+6f0df8e16eb5 ("memcontrol: ensure memcg acquired by id is properly set up")
+both are not in the tree]
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+---
+ mm/memcontrol.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 874f91715296..8de7c72ae025 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5160,11 +5160,28 @@ static struct cftype mem_cgroup_legacy_files[] = {
+  */
+ 
+ static DEFINE_IDR(mem_cgroup_idr);
++static DEFINE_SPINLOCK(memcg_idr_lock);
++
++static int mem_cgroup_alloc_id(void)
++{
++	int ret;
++
++	idr_preload(GFP_KERNEL);
++	spin_lock(&memcg_idr_lock);
++	ret = idr_alloc(&mem_cgroup_idr, NULL, 1, MEM_CGROUP_ID_MAX + 1,
++			GFP_NOWAIT);
++	spin_unlock(&memcg_idr_lock);
++	idr_preload_end();
++	return ret;
++}
+ 
+ static void mem_cgroup_id_remove(struct mem_cgroup *memcg)
+ {
+ 	if (memcg->id.id > 0) {
++		spin_lock(&memcg_idr_lock);
+ 		idr_remove(&mem_cgroup_idr, memcg->id.id);
++		spin_unlock(&memcg_idr_lock);
++
+ 		memcg->id.id = 0;
+ 	}
+ }
+@@ -5294,9 +5311,7 @@ static struct mem_cgroup *mem_cgroup_alloc(void)
+ 	if (!memcg)
+ 		return ERR_PTR(error);
+ 
+-	memcg->id.id = idr_alloc(&mem_cgroup_idr, NULL,
+-				 1, MEM_CGROUP_ID_MAX,
+-				 GFP_KERNEL);
++	memcg->id.id = mem_cgroup_alloc_id();
+ 	if (memcg->id.id < 0) {
+ 		error = memcg->id.id;
+ 		goto fail;
+@@ -5342,7 +5357,9 @@ static struct mem_cgroup *mem_cgroup_alloc(void)
+ 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
+ 	memcg->deferred_split_queue.split_queue_len = 0;
+ #endif
++	spin_lock(&memcg_idr_lock);
+ 	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
++	spin_unlock(&memcg_idr_lock);
+ 	return memcg;
+ fail:
+ 	mem_cgroup_id_remove(memcg);
+-- 
+2.40.1
+
 
