@@ -1,80 +1,74 @@
-Return-Path: <stable+bounces-73692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD94396E710
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 03:02:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 234DE96E717
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 03:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89FCE286EEB
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 01:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925951F243D8
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 01:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6D014286;
-	Fri,  6 Sep 2024 01:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A53C1BC59;
+	Fri,  6 Sep 2024 01:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BZu0u1pJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sQOs/dco"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F43186A
-	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 01:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE9412E7E
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 01:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725584517; cv=none; b=oRaIfMxwKOLUoV9HYVzf6cCyd7jh+FdI6Xffj8Vdm8dkz3TUBe1o0AxL7pZGMk9+pNDuFk8kZTZtVhZIMmk953/tjA0yFbzorVP1M/ZABsBEp+pQ1dlfhjOmGYTrFg6RnYe4f5h/yPr4L3x8+E3B1SJnxoxLo6mb5sV7iWEng5M=
+	t=1725584738; cv=none; b=BCcuGjwIlfsISIfWpdGs2cu1nxioZqPTCC/QZSm0joUplt+H3YqANiUPuskx/Rbyd5BRDU/KYaVKiBGVMvPE+PxN3oWWiOLAYLvMccufHETBfuTJmzH5hLD82ysUnGgDu2d8ayLa+h9Y2aEV8zMZiOsptnQWXe39Lxy5/9D47Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725584517; c=relaxed/simple;
-	bh=UwRlrUHpdjEnWaOSXEbV/JptmuI+VM5iPjRYoBnr4SA=;
+	s=arc-20240116; t=1725584738; c=relaxed/simple;
+	bh=J02rQJFIdENo8s9OyaLrzvWWAhINGwRko9kbgLPFte4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W1AXqsZRHw/QRKJhZOHe70EqtIBQ3iUJENY73I2ev/HNzWop1FnVQBca/mdeqOcvrz1c9erFApCchNSrbZWiu8PV+5XLaQTLCjQO22XG1aI4VJKkt9S2lamHfdzJM2Zv8AitMcRZBwCzkPr5KaICDMluO3uekTJ10LZ4VqCETHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BZu0u1pJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725584514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rlPGS1sqdlq54vfzS+MIwPHUFlRFFlVkoRPHvKLRxbs=;
-	b=BZu0u1pJI/EKf8DE4fdtzt/DTPB15GR0tHLsWW5zILfKcHpzKGvL3Jwj4OXfa3HcZp8oTG
-	/w4YyhY7DbjWVEh99irTmsVA3wsAsSFOXwTjbj99p9S02sJCcx+XzSVm7TLXZM7fiPDb1Q
-	QaGKixRU62Ns77F9CZXi3TMzWW9RI8s=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-R7cl3s8RODaaZZIC9kLOdw-1; Thu, 05 Sep 2024 21:01:52 -0400
-X-MC-Unique: R7cl3s8RODaaZZIC9kLOdw-1
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-70f76425958so2253676a34.0
-        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 18:01:52 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=fXNHoYl0LQlS0v5+LWfFh6cDcULaAzUVmCV3pBL8KMubgFWp7bNiSjQC8M0x1VyyyXRRjA7YgvDNdoBK24r+QTEQsIGTdFeecEjSIDd1MJj6gyQv1ecsGPHEbYLLCOyctzlTWqXPoTxKEphUti4WO4ZuYVeK5rkTj8/ElsZZW1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sQOs/dco; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53652d19553so192541e87.0
+        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 18:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725584734; x=1726189534; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pEISOZKVymIo9I1PGSjsszu4GcOoy0f94hhNiVuBx/I=;
+        b=sQOs/dco09di2xawsEvjQ9W2MTen6rXKTqRy+7Ls3WFyi1HQ8+fbxIgbtZ3VnUEYrJ
+         FAHjC9A7eb3VtSdWPghQzjChzeBRIOZ+RL4vSZONbjWIS7Ly1n7cZWwb5YyG0KS/qDvE
+         L3q8ncY2TwsZRi/ewbXS7KEwtouGpHoyLhn9bIzDSAaKbUG9apMBmC5tOlxjbHXhfr6g
+         3oglPy+g3KGMF8rgsWPw74LB6OOBgvvRbOtOj3ep2HqGb2V2jberNhIjPG0esMRpSaYs
+         YSZ1GbL5MCdD1QxX4iJbXHnkWOHpHjuNn46WLwMS3qwEFX51DNz/GN93J6nTmsuTgNCe
+         yGuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725584512; x=1726189312;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1725584734; x=1726189534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rlPGS1sqdlq54vfzS+MIwPHUFlRFFlVkoRPHvKLRxbs=;
-        b=qXA7FklcOOp3nr5hf0E2YfVKMwqY2bxpPHJhM+7tD0VY1+ELq/0hl5Ei86Lauvd14M
-         w2XqykHIQR6XAtMeSK3uzEbjDEwSQX4Hx6hGUphDq8bKrWCc4JyixvZ9i72fmbtZiNaN
-         zSvgZ++AqzgV2zx0b6tZ5vfN8moT1TdMAf/XTSP/BTfy8AyRAvEwBqZqVLvNX5mjaYWs
-         XL23VMhJo+4Xc3uLFuq01BZggQWNO+5w4oaXKxa4NeNQ1gEeF2Fo+DVye76ZY2daaWAt
-         qRtMkAa9U4j/kajsBfusv8b/R2FOKbUoHqbdagDz8cKnxBQNbTXAZiRbWkLCjYcfaIko
-         E6uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6GNDRJu1cIQsBN4W3LnqzJKK7z0xngACBodBMXw7rpRihP6k+zmyulRmgj88MMeQERiLUEDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeJkDb2ooSjJ2HGy/jw3fAzdOLIi6ENSCZPXX8rIT/fwk5LIy3
-	7bI05gfsVipHu8yu3Zft+qe6Fz5T6rb9UJq51lqhHYEG9l9GD8MX1w11VKAYgsXB+7n9yhYgzOJ
-	FwkXAuvigjI8SX0LnKWKD1iX2+ItLoh8RGuhQCGlfXczX8ZbdHd92wA==
-X-Received: by 2002:a05:6359:4ca2:b0:1b3:9413:fa6f with SMTP id e5c5f4694b2df-1b83859d0f3mr129981255d.3.1725584511946;
-        Thu, 05 Sep 2024 18:01:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuJ1X1hccViLHgON/IOx1N5KG1rIdnNOKi5STkspuBw4Ij2Ig/0vCgO6yL/sDB4dZjoU8Wqw==
-X-Received: by 2002:a05:6359:4ca2:b0:1b3:9413:fa6f with SMTP id e5c5f4694b2df-1b83859d0f3mr129977655d.3.1725584511443;
-        Thu, 05 Sep 2024 18:01:51 -0700 (PDT)
-Received: from [10.72.116.51] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-717785307cesm3798314b3a.55.2024.09.05.18.01.48
+        bh=pEISOZKVymIo9I1PGSjsszu4GcOoy0f94hhNiVuBx/I=;
+        b=tMT6o82LIA/JO28LQZybLX31gSRs24+4l5GMPTTXWOQQ21En8kRtkZJPdGRQ2w8559
+         hmNeQMcJ++pWSysqypakFT5XdvysQaKzEDWXCS2qOhdukOYJDS0VHaR/W6OXhTP9si6N
+         /9GM2KiZWLLDcfaMmGlYTXm4lvGlDn/YwbqY44xZLOGPu/HDRMgXbHZv/5kf4WX1fR5g
+         YqJWscq6wdWIE9FzLBhhkL1TsKbSWHfE+pF3Tu0G1SCzSW6rub+KWyFBPVPVQfpkjAdn
+         ns0dbvaKb1vPqpw3V78u9EU5oPmt9iCXNrZ8Mayn4ACx0P3pF+2Zhg8/QC++fPmCFbX4
+         7hgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYbZkDeHbYi94BT7Rgz63oLGSVEFI097AsHFnBJ33Cz06M9ojKPNoVAcbhNGhLTp34v4bKu7c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc1WMI1mvfaOCZD1TJQzJimuG1WeDweKwb0oQfq4nyR9Un1RiQ
+	AMJDv7ISiJZfMxgb6Eid/ck4rlDeHShkCeaf9MElceAo20KLnZHF2Qo+sivIQPk=
+X-Google-Smtp-Source: AGHT+IHqTecyMCXjxz/h97PL0XeJTktBMk1kLCkDh232vEf9xzuW6gKiZrusAkzTTBBC6DSTu79Mgg==
+X-Received: by 2002:a05:6512:b9d:b0:52f:76:c258 with SMTP id 2adb3069b0e04-5365880faefmr194848e87.8.1725584733590;
+        Thu, 05 Sep 2024 18:05:33 -0700 (PDT)
+Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53655171444sm183909e87.213.2024.09.05.18.05.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 18:01:51 -0700 (PDT)
-Message-ID: <0e60c3b8-f9af-489a-ba6f-968cb12b55dd@redhat.com>
-Date: Fri, 6 Sep 2024 09:01:46 +0800
+        Thu, 05 Sep 2024 18:05:33 -0700 (PDT)
+Message-ID: <b9b1e8e9-5fd2-4880-abc5-300d9d28211c@linaro.org>
+Date: Fri, 6 Sep 2024 04:05:31 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,101 +76,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via
- in-kernel ceph client
-To: Christian Ebner <c.ebner@proxmox.com>, David Howells
- <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>,
- Ilya Dryomov <idryomov@gmail.com>
-Cc: regressions@lists.linux.dev, ceph-devel@vger.kernel.org,
- stable@vger.kernel.org
-References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
+Subject: Re: [PATCH v3 1/2] media: qcom: camss: Remove use_count guard in
+ stop_streaming
 Content-Language: en-US
-From: Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
+ <hansverk@cisco.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ Milen Mitkov <quic_mmitkov@quicinc.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+References: <20240729-linux-next-24-07-13-camss-fixes-v3-0-38235dc782c7@linaro.org>
+ <20240729-linux-next-24-07-13-camss-fixes-v3-1-38235dc782c7@linaro.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20240729-linux-next-24-07-13-camss-fixes-v3-1-38235dc782c7@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Christian,
+On 7/29/24 15:42, Bryan O'Donoghue wrote:
+> The use_count check was introduced so that multiple concurrent Raw Data
+> Interfaces RDIs could be driven by different virtual channels VCs on the
+> CSIPHY input driving the video pipeline.
+> 
+> This is an invalid use of use_count though as use_count pertains to the
+> number of times a video entity has been opened by user-space not the number
+> of active streams.
+> 
+> If use_count and stream-on count don't agree then stop_streaming() will
+> break as is currently the case and has become apparent when using CAMSS
+> with libcamera's released softisp 0.3.
+> 
+> The use of use_count like this is a bit hacky and right now breaks regular
+> usage of CAMSS for a single stream case. Stopping qcam results in the splat
+> below, and then it cannot be started again and any attempts to do so fails
+> with -EBUSY.
+> 
+> [ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+> ...
+> [ 1265.510630] Call trace:
+> [ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+> [ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
+> [ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
+> [ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
+> [ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
+> [ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
+> [ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
+> [ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
+> ...
+> [ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
+> [ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
+> [ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
+> 
+> One CAMSS specific way to handle multiple VCs on the same RDI might be:
+> 
+> - Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
+> - The video buffers are already associated with msm_vfeN_rdiX so
+>    release video buffers when told to do so by stop_streaming.
+> - Only release the power-domains for the CSIPHY, CSID and VFE when
+>    their internal refcounts drop.
+> 
+> Either way refusing to release video buffers based on use_count is
+> erroneous and should be reverted. The silicon enabling code for selecting
+> VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
+> won't work with CAMSS right now.
+> 
+> Initial testing with this code didn't show an error but, SoftISP and "real"
+> usage with Google Hangouts breaks the upstream code pretty quickly, we need
+> to do a partial revert and take another pass at VCs.
+> 
+> This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
+> Pipeline starting and stopping for multiple virtual channels")
+> 
+> Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
+> Reported-by: Johan Hovold <johan+linaro@kernel.org>
+> Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+>   drivers/media/platform/qcom/camss/camss-video.c | 6 ------
+>   1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
+> index cd72feca618c..3b8fc31d957c 100644
+> --- a/drivers/media/platform/qcom/camss/camss-video.c
+> +++ b/drivers/media/platform/qcom/camss/camss-video.c
+> @@ -297,12 +297,6 @@ static void video_stop_streaming(struct vb2_queue *q)
+>   
+>   		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+>   
+> -		if (entity->use_count > 1) {
+> -			/* Don't stop if other instances of the pipeline are still running */
+> -			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
+> -			return;
+> -		}
+> -
+>   		if (ret) {
+>   			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
+>   			return;
+> 
 
-Thanks for reporting this.
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-Let me have a look and how to fix this.
-
-- Xiubo
-
-On 9/4/24 23:49, Christian Ebner wrote:
-> Hi,
->
-> some of our customers (Proxmox VE) are seeing issues with file 
-> corruptions when accessing contents located on CephFS via the 
-> in-kernel Ceph client [0,1], we managed to reproduce this regression 
-> on kernels up to the latest 6.11-rc6.
-> Accessing the same content on the CephFS using the FUSE client or the 
-> in-kernel ceph client with older kernels (Ubuntu kernel on v6.5) does 
-> not show file corruptions.
-> Unfortunately the corruption is hard to reproduce, seemingly only a 
-> small subset of files is affected. However, once a file is affected, 
-> the issue is persistent and can easily be reproduced.
->
-> Bisection with the reproducer points to this commit:
->
-> "92b6cc5d: netfs: Add iov_iters to (sub)requests to describe various 
-> buffers"
->
-> Description of the issue:
->
-> A file was copied from local filesystem to cephfs via:
-> ```
-> cp /tmp/proxmox-backup-server_3.2-1.iso 
-> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso
-> ```
-> * sha256sum on local 
-> filesystem:`1d19698e8f7e769cf0a0dcc7ba0018ef5416c5ec495d5e61313f9c84a4237607 
-> /tmp/proxmox-backup-server_3.2-1.iso`
-> * sha256sum on cephfs with kernel up to above commit: 
-> `1d19698e8f7e769cf0a0dcc7ba0018ef5416c5ec495d5e61313f9c84a4237607 
-> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso`
-> * sha256sum on cephfs with kernel after above commit: 
-> `89ad3620bf7b1e0913b534516cfbe48580efbaec944b79951e2c14e5e551f736 
-> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso`
-> * removing and/or recopying the file does not change the issue, the 
-> corrupt checksum remains the same.
-> * accessing the same file from different clients results in the same 
-> output: the one with above patch applied do show the incorrect 
-> checksum, ones without the patch show the correct checksum.
-> * the issue persists even across reboot of the ceph cluster and/or 
-> clients.
-> * the file is indeed corrupt after reading, as verified by a `cmp -b`. 
-> Interestingly, the first 4M contain the correct data, the following 4M 
-> are read as all zeros, which differs from the original data.
-> * the issue is related to the readahead size: mounting the cephfs with 
-> a `rasize=0` makes the issue disappear, same is true for sizes up to 
-> 128k (please note that the ranges as initially reported on the mailing 
-> list [3] are not correct for rasize [0..128k] the file is not corrupted).
->
-> In the bugtracker issue [4] I attached a  ftrace with "*ceph*" as 
-> filter while performing a read on the latest kernel 6.11-rc6 while 
-> performing
-> ```
-> dd if=/mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso of=/tmp/test.out 
-> bs=8M count=1
-> ```
-> the relevant part shown by task `dd-26192`.
->
-> Please let me know if I can provide further information or debug 
-> outputs in order to narrow down the issue.
->
-> [0] https://forum.proxmox.com/threads/78340/post-676129
-> [1] https://forum.proxmox.com/threads/149249/
-> [2] https://forum.proxmox.com/threads/151291/
-> [3] 
-> https://lore.kernel.org/lkml/db686d0c-2f27-47c8-8c14-26969433b13b@proxmox.com/
-> [4] https://bugzilla.kernel.org/show_bug.cgi?id=219237
->
-> #regzbot introduced: 92b6cc5d
->
-> Regards,
-> Christian Ebner
->
-
+--
+Best wishes,
+Vladimir
 
