@@ -1,109 +1,105 @@
-Return-Path: <stable+bounces-73731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C50E96EE19
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0F696EE1B
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7450B21398
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:30:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563AF1C23DD6
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890A214B945;
-	Fri,  6 Sep 2024 08:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C1114B945;
+	Fri,  6 Sep 2024 08:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWv0+dmp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IscO0Gnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4215B45BE3;
-	Fri,  6 Sep 2024 08:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD39345BE3;
+	Fri,  6 Sep 2024 08:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611443; cv=none; b=DCmxxZlA3C8kO5+qEOY2yPLJQwNI52T+xN3O6vHI+Y70MKxWt7+P0WjCWoarlp0XZz7QtgwXfXOBWK0JsRblEsBOZUOSQbksgVNGtCg/oOmx0zY1m1UUG0+gQX1aeT4rv+nHgRwNxE9mLCL+MbBLNAG7CSdnl7zX+gnqx9dWF3k=
+	t=1725611462; cv=none; b=H0YQonmTaz8Kk5MtqpBok9Sw8C3loAH0DJUSc8jWgAHgnELTz5kVFTtsWi0RBb/gwb6v+HVGmttnERIHByCRTWIWac+iJv3mZMfRSsDWDzGfq5KAwSBTE+pcOgGOMInyc5CvNul4ZW9+6zLGcBMp4uPDiAmbLBqGQPCJvEEgEw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611443; c=relaxed/simple;
-	bh=A5dq9VXSOyYLnbKAephiLb4/q2ZPRZWcqiBaCOExek4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FVSXLKdkEmvibqVl4I/k2lI10WW5jlrpuioRs5TzIT0Bi1RI4v7jZcmkPi8D/TQ5iR3kC52ZtY/OE+9RTS6W4td4RmZDwLv6tN/q1nj4JP5wRtqiWdrKNnowyu6nVH73kuftEMYBROa6g82AVuzex9y2TSrJ+K1aBMtY9CEjzZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWv0+dmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619BBC4CEC4;
-	Fri,  6 Sep 2024 08:30:40 +0000 (UTC)
+	s=arc-20240116; t=1725611462; c=relaxed/simple;
+	bh=vXIUxzRMJ9Z7boIYDh+xivmH8nAWtFpVm/ABHyMYblA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jgNMBKsGXO8dM7Q2o5U9gb49Nr1N4YGvTTiPn7nj9gwfKHbZjUuIgH9dnNBN0+vjblZ7ptsZLStPwX/eZYjVb2WTkDqWmDkmeHju611A2gvBHxdk1fTPr1oz9tM2VfeUVwjVAQnh6M5nytJhH2/slQY4glymTE/MhZM+EO8ahXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IscO0Gnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10F6C4CEC4;
+	Fri,  6 Sep 2024 08:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611442;
-	bh=A5dq9VXSOyYLnbKAephiLb4/q2ZPRZWcqiBaCOExek4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SWv0+dmp0VjjpwgOjn/rgchbdug4Cxd8CeXi17mh1b0caKbFg21RCbpO1xdkdEA3+
-	 UymzcCa7gSnv4pDx4yzQTEuwr2Jz/z58ImXpGaDYfed7FPRb4CaAt1b/4gFuZP9Y8c
-	 9EZf8pTXk6Ycd3KP+Vi4IDTRUNB2QcuS8RU6dy8JBVho43tpxE0T3sRwSn67l1Actk
-	 6lIZoXB/cJJrtaigyAABRHFX9913ntCZJR2iHERmKaCl7C+mPy8r8izFNlYviDJpAZ
-	 q8aXYWL6HPNNRKB9ZtzJhIhYM3DmAfDbVAioCltQU9AwdksKpsW7nMfewX8PLvb+dH
-	 LZG4fbO9qdUzw==
-Date: Fri, 6 Sep 2024 09:30:38 +0100
-From: Simon Horman <horms@kernel.org>
-To: Gui-Dong Han <hanguidong02@outlook.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ice: Fix improper handling of refcount in
- ice_sriov_set_msix_vec_count()
-Message-ID: <20240906083038.GC2097826@kernel.org>
-References: <SY8P300MB0460D0263B2105307C444520C0932@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
+	s=k20201202; t=1725611462;
+	bh=vXIUxzRMJ9Z7boIYDh+xivmH8nAWtFpVm/ABHyMYblA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IscO0GnvGDCmcdOa460/Zyn4vfYNfQMDS1QMokzKLbs35YXis5UlpHrPD1QG3NUnG
+	 6gvJZOC7SDDlQDuWXJOjB7kw/hjt0YQ8qxS7bpi2OmCN9VVJBRxEFt1jSNm+GWEq7G
+	 nlPrOpNgLONGIp9ObzRhUeuKUz1DMmxZ2YUhabIKfY8gT6SO8nwb5UIxqU0m8jQ5KZ
+	 3KTZNayokzYVtxQrESrREPM+ABNb3NaG/sDBepn9vabwdBkRGxLYYlz+I47PF6UBYq
+	 9ikIbd5e/yKN2v1qF/inn4C9KeOYNRrTzmFT2+aAhRSPu6b5sPj/RR1nTWjMWpNL9F
+	 8+2m53iFhMXOA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: pm: check add_addr_accept_max before accepting new ADD_ADDR
+Date: Fri,  6 Sep 2024 10:30:44 +0200
+Message-ID: <20240906083043.1767111-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024082608-cornmeal-stoop-7021@gregkh>
+References: <2024082608-cornmeal-stoop-7021@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SY8P300MB0460D0263B2105307C444520C0932@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1600; i=matttbe@kernel.org; h=from:subject; bh=vXIUxzRMJ9Z7boIYDh+xivmH8nAWtFpVm/ABHyMYblA=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2r2zwT19Zhfj0uYv3FEsrINhtm50d6ubka6sr 5o+PhSwgEWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtq9swAKCRD2t4JPQmmg c0DWD/9h/SHTdA4sPymXvnwANe1JjgqUt8Olw4XvUYdK6uOJ0asemR84U7IJl1Fm0VY2LjaYAS9 pUE7oHv3k3OOOzAXIsGiB+zLOpHYobDE9UzejPpachXDSloE5Jxo5qhksbKWm86CQwhH9ZrHaPm a7qQoDdwWiGt/z+Vt5uIT2l5r8FK/X6dkV0jqedQOaYUH2Kg0eaqNotTcGHSqHwZbn62v7mI9Cn UOihdZnzLG4Cb08Dk6UwW3jFSu7O0WGNpE43I0paiPHPnqXbf8pUsexjo4iQ+GhvJyc4Lm3V2F8 KycFEdwHhJNfaKM+kMwjzkq17lVp2Ic40QM/z8xOONq4koM/DOrLT1RZ7Cj6cu97W4T+HWM4XTa LsqO06jZeQxCY3xUSMJOnoMEEK7E/XPmpWsQ4WqgMRsnYk2PniVHf9qslkC6eRRjKIYVITf+4sX FwotXM+EIMyOtcZtJDLtdl1CKXH9j5Vpkz7TZcSfahmCNsxWTtI/pbeez+aC7HdL+n2M88MfEpA khG1mUGSVS3sS1ct8zt2GIsP8QDweqqbx80YkYqqipyhwj7F5P0kzlYA/MwPdUa4mFhwKkWUSxw vNHMAcVHWg2XwLgdmZf65w98o2h0JmPvwexwW1DFNaicl5AFOAHR7wUETBxFTwKsJF0MyfpDEnT hiZi73uqo55fWrw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 03, 2024 at 11:59:43AM +0000, Gui-Dong Han wrote:
-> This patch addresses an issue with improper reference count handling in the
-> ice_sriov_set_msix_vec_count() function.
-> 
-> First, the function calls ice_get_vf_by_id(), which increments the
-> reference count of the vf pointer. If the subsequent call to
-> ice_get_vf_vsi() fails, the function currently returns an error without
-> decrementing the reference count of the vf pointer, leading to a reference
-> count leak. The correct behavior, as implemented in this patch, is to
-> decrement the reference count using ice_put_vf(vf) before returning an
-> error when vsi is NULL.
-> 
-> Second, the function calls ice_sriov_get_irqs(), which sets
-> vf->first_vector_idx. If this call returns a negative value, indicating an
-> error, the function returns an error without decrementing the reference
-> count of the vf pointer, resulting in another reference count leak. The
-> patch addresses this by adding a call to ice_put_vf(vf) before returning
-> an error when vf->first_vector_idx < 0. 
-> 
-> This bug was identified by an experimental static analysis tool developed
-> by our team. The tool specializes in analyzing reference count operations
-> and identifying potential mismanagement of reference counts. In this case,
-> the tool flagged the missing decrement operation as a potential issue,
-> leading to this patch.
-> 
-> Fixes: 4035c72dc1ba ("ice: reconfig host after changing MSI-X on VF")
-> Fixes: 4d38cb44bd32 ("ice: manage VFs MSI-X using resource tracking")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
-> ---
-> v2:
-> * In this patch v2, an additional resource leak was addressed when
-> vf->first_vector_idx < 0. The issue is now fixed by adding ice_put_vf(vf)
-> before returning an error.
->   Thanks to Simon Horman for identifying this additional leak scenario.
+commit 0137a3c7c2ea3f9df8ebfc65d78b4ba712a187bb upstream.
 
-Thanks for the update,
+The limits might have changed in between, it is best to check them
+before accepting new ADD_ADDR.
 
-I agree with the analysis and that the two instances of
-this problem were introduced by each of the cited commits.
+Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-10-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.c, because the context is different, but the
+  same lines can still be modified to fix the issue. This is due to
+  commit 322ea3778965 ("mptcp: pm: only mark 'subflow' endp as
+  available") not being backported to this version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index eeda20ec161c..ceeb5fbe8d35 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -772,8 +772,8 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+ 			/* Note: if the subflow has been closed before, this
+ 			 * add_addr_accepted counter will not be decremented.
+ 			 */
+-			msk->pm.add_addr_accepted--;
+-			WRITE_ONCE(msk->pm.accept_addr, true);
++			if (--msk->pm.add_addr_accepted < mptcp_pm_get_add_addr_accept_max(msk))
++				WRITE_ONCE(msk->pm.accept_addr, true);
+ 		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
+ 			msk->pm.local_addr_used--;
+ 		}
+-- 
+2.45.2
 
 
