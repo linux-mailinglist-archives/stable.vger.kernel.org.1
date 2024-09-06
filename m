@@ -1,107 +1,118 @@
-Return-Path: <stable+bounces-73774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE3996F307
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 13:26:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA496F363
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 13:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 873EA1C223C3
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:26:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D7FC2881E0
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF551CB319;
-	Fri,  6 Sep 2024 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A6E1CB154;
+	Fri,  6 Sep 2024 11:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fCyj2f4n"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="PEDV3qIW"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04931A2C39;
-	Fri,  6 Sep 2024 11:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4521C1CB525;
+	Fri,  6 Sep 2024 11:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725621951; cv=none; b=D6lJNCoFhETyFnTFZbdgnJ6XcIROp8ZAJwb+DAwOuPM7SCyQAsFRA4rovpgf28UDjpY0iD/V5FiI5Dz1LWbHO/nong+AMf+FHthFiEF1Z4VyNIB3hbwByfC7cNXhQzwyq3o9+0AFxvmBNUOtwc1iOekGbSueaFBLqsUsCLedrt4=
+	t=1725623042; cv=none; b=Ivz+s0pwVTOQj5VTrVCjywfrczN7/adF257kuIHH+XPlBKZdJeHdMWUpv89cpui5vQZ+X8PV+1q48mjP1bdaHvBOr3X2wDgs//cOJUMY3oLNPrDu3i5dKEtOxY+ACsL1tPzTm+w8raOX2/5qtX0k+afcTSF5FZrNyn+e2SO01/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725621951; c=relaxed/simple;
-	bh=DmaEKJ8/NLpkXcaL6Xw0J9LfpkVpr/GixbnI3HWELqw=;
+	s=arc-20240116; t=1725623042; c=relaxed/simple;
+	bh=l8aLiUfVudm/vd/SUVGzTAzBmw1eCXX8xhWSjKpyNoQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hTYYiF6yPi8vobbc8bI2vIh718R/2TBybY04fxJbeGlQgF426I75Q5w/d+RW8d1RhsBNxaIJCXU5SRI0o4cLoWy9roNAw28KJzC82ISZvnMtJ5Z6HT+Eh+wUvd07iXB+ZzzSijUSWsDKMXeigwsayyFazcJtO1lxaVyr5LexHTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fCyj2f4n; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=TaGZSCH2FvEl+U3DsaRvbmj+4eIMbIhuHXZKV7y/t4c=;
-	t=1725621949; x=1726053949; b=fCyj2f4nltQV+bRiY5m4WG/adQrs59mV7Wgc2bBi2lgkGNo
-	QYSJt5gmQ3mQnOeNFTHNSUnbpib0hrSKf3mk8Sf76qCPUpK3LiA+QMZ9L45EiSVOxkyY7eYm2vwyc
-	SxGhV9fu2qOtECcaN/31nileItTKcnvdNnaCGMmPJ/3ROcXBIJuDyR/tkpOAFbJH18J9VR61MbA8/
-	wt/NY3r/UbnrUlImnShZpBey6w99or083DEYbHn8++rGcaONqNF9+XNJlxP2tFAweyybSwG+jEjaC
-	ual9wI+XMprcSagUdabZv/EA6vtma053Mb3Z7VxZj7V8y8GQ+gt3IM/fJtxT/INg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1smX5y-0006it-UN; Fri, 06 Sep 2024 13:25:42 +0200
-Message-ID: <8bce309d-f7ef-4929-bfad-6f0b5c55cfff@leemhuis.info>
-Date: Fri, 6 Sep 2024 13:25:42 +0200
+	 In-Reply-To:Content-Type; b=XnTPXru2Nr2t03p6HXTg0G8qDnQNXHehCyS3vgxbt7aTjF7RO59DGFQaRIlgKy9czxz3uwa+hbji3d4AwnB0zhZTENcl0e6a31fVIqYXfIz7LpQ0ERIfttWyV2FNiVtqwaknzlasBznxdIes3e/Pl0K4+fpf+Fh5gL7VQ3N6nQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=PEDV3qIW; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a86883231b4so278962266b.3;
+        Fri, 06 Sep 2024 04:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1725623039; x=1726227839; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oZFH4n8uj7LbYUyljomrXbAE8uZuiKQjDhK2lQm2YzI=;
+        b=PEDV3qIWxI96C7JiOmKglZb96jMQSMe3uwTIdUYA5crXghX3o80kMvre2H99n2CLEE
+         k13An/FYy9+KXu+XQcI3ClF3ouCYFy/aBOcu60Z2o0229q3Am9FSbto3By59ihEyFEcb
+         7BKoQhEqp44PLKXIiRQyOCPNjrq8NL+P0fr1MBc7h6j/OYbbr0zRhixNwCLRLbyLBgbS
+         u3JeBSryQFIycTb4AHg9jRShk5LXaj6TjPbb0CVa7DTOzCUxaVAXMS1nlJrAxmi8Z2B+
+         rZUc29ARJuXsXtLuBQrblr7uzKR3eEAILP++qNOAB0wdzrM2/TCh6bA2a4wy68wE4+pA
+         byRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725623039; x=1726227839;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oZFH4n8uj7LbYUyljomrXbAE8uZuiKQjDhK2lQm2YzI=;
+        b=pEXsEAYfdy5yqBnLLjb/FzWObwZYV6bpY32l+3q5mcIkB+/YML4pwOtiVEJfYplOjY
+         VSYQZhdOR0+WIvQycqy6TDZ3mh4+EbZsOP6Hhl6MFZxnjRx9XmKccLq+oLoV/y/VJhZK
+         A8bgFX8g1DNFlrYzWBzJDlUvlcW9vtC64ttq5nYneMf/XCSYMbKISRuL6D40DwOapSR0
+         munDDGQ2Vx349yC6biLdGG8HWmRmTgEO1fiGG3IxXVJjN74ClKF6U1M3X9Mhh/ttoXl3
+         3GHmx/l9F4wX2qpB5nUWPfjV1x7I+BXCV8o8h89fNWFlPx/RBq6WlwTzHnCuzloPf6G/
+         qGgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUODFAFboY0W2NJiNbKgiWdosmiGeaQzQEVfv8qylivGGVOjRZvDgy7Nc5e8PANVv2O7IeW6o5/igh4rK0=@vger.kernel.org, AJvYcCXW5CdZey4SBcSp2AnYCTpy+UIJJXo2RamYmpZJXXdtNQhHZ86oLwxelj5GMGml58kzavr4j69+@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb0YCWPka+OqZFNensF5ohbYRR4+cVN6jJFfNFBCVzIRHnnQLK
+	yYD8tRqrT0gmTy3vdfUQWQozwV0/c3pVfWE3VmEo2GQObm3zp7k=
+X-Google-Smtp-Source: AGHT+IFCw8zYSN000juj26FedmQuKiZajxfLCf0UF8fTvienYRXLIOxkWkuV3DS6cW+Fy2eAX6MWKg==
+X-Received: by 2002:a17:907:501d:b0:a8a:8d81:97ac with SMTP id a640c23a62f3a-a8a8d81a95fmr101434566b.4.1725623039218;
+        Fri, 06 Sep 2024 04:43:59 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b40f2.dip0.t-ipconnect.de. [91.43.64.242])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a7af8e46dsm174836966b.16.2024.09.06.04.43.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Sep 2024 04:43:58 -0700 (PDT)
+Message-ID: <6cdc4ef9-8eee-4691-89e7-4d9fc5d27564@googlemail.com>
+Date: Fri, 6 Sep 2024 13:43:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via
- in-kernel ceph client
-To: Xiubo Li <xiubli@redhat.com>, Christian Ebner <c.ebner@proxmox.com>,
- David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>,
- Ilya Dryomov <idryomov@gmail.com>
-Cc: regressions@lists.linux.dev, ceph-devel@vger.kernel.org,
- stable@vger.kernel.org
-References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
- <0e60c3b8-f9af-489a-ba6f-968cb12b55dd@redhat.com>
- <1679397305.24654.1725606946541@webmail.proxmox.com>
- <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1725621949;8f53e1ec;
-X-HE-SMSGID: 1smX5y-0006it-UN
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/101] 6.1.109-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240905093716.075835938@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 06.09.24 13:09, Xiubo Li wrote:
-> On 9/6/24 15:15, Christian Ebner wrote:
->>> On 06.09.2024 03:01 CEST Xiubo Li <xiubli@redhat.com> wrote:
->>>
->>> Thanks for reporting this.
->>>
->>> Let me have a look and how to fix this.
->>>
->> Thanks for looking into it, please do not hesitate to contact me if I
->> can be of help regarding debugging or testing a possible fix.
-> 
-> Sure, thanks in advance.
-> 
-> I will work on this next week or later because I am occupied by some
-> other stuff recently.
+Am 05.09.2024 um 11:40 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.109 release.
+> There are 101 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thx. FWIW, there were some other corruption bugs related to netfs, one
-of them [1] was recently solved by c26096ee0278c5 ("mm: Fix
-filemap_invalidate_inode() to use invalidate_inode_pages2_range()");
-this is a v6.11-rc6-post commit. Makes me wonder if retesting with
-latest mainline might be wise; OTOH I assume David might have mentioned
-this if he suspects it might be related, so maybe I'm just confusing
-everything with this message. Sending it nevertheless, but if that's
-turns out to be the case: sorry!
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Ciao, Thorsten
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-[1] like this
-https://lore.kernel.org/all/pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net/
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
