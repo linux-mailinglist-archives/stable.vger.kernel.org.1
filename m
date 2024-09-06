@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-73754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBC396EF09
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:24:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78ED96EF60
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7501C23103
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ADE28B6FD
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECC01C7B7E;
-	Fri,  6 Sep 2024 09:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916591C86F0;
+	Fri,  6 Sep 2024 09:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sbx4VWkc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJBdbmvo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20311459FD;
-	Fri,  6 Sep 2024 09:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F691C7B7E;
+	Fri,  6 Sep 2024 09:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725614644; cv=none; b=unfqTc7WTjSFSW2DY1NooW3FvFF29v3vaYi3pXpXWaFWuTcUaduoO06ixzDRG7UUMhVLxbpf1OdvIsI2jirY09NYLrenHzfRLQ3hWfHgBdOnc5lvmGuKITyFZ1EFWL+eXLoEe4b+SHAwwWMc2u8MH/FjXHkT0+WoJrnsovikN8E=
+	t=1725615388; cv=none; b=E3xCBOQAO4XP52W9GJHTja/mma8xYtAASiBQK1F9sVbmuxJ41qnjEaiEt481ZVBODC396Xrny61whP3WKw7mYd6c6tb/PMYXxQfxVwZ8foQouE1gEXDuX0AbxMDmNiP7S9b1MXUZwfvrF+i38agvdxMHDpLdVXc+xEIhVh1U2BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725614644; c=relaxed/simple;
-	bh=xk/N2lj2szx7esjdvxIR0dfupCeyF3+HanFJzHFF/mI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q9Y/LLy7Uv31XcUIy3RXl0s+kKf8d27Kj42/BVDVxQUOltbzgsut2jiTjXi6HZf34QwAZUn810qJHhq0I92mLo0EKeezwVepQpA5yRJE07p77SelPcliDp//FsMqHChujDPWfChn+0AG/FOtgDn/VIHgy94TItsv2sak0U6dElk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sbx4VWkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37B4C4CEC4;
-	Fri,  6 Sep 2024 09:24:02 +0000 (UTC)
+	s=arc-20240116; t=1725615388; c=relaxed/simple;
+	bh=6DXT5SI1AME6jdqnUV9UWrcHiXS9hqjCh1trCIgbzXQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=EuZttYi4q5h9nigUIova0fGF2N1H8f4IEH3i7ukARorHEwWqULAwN3t9a5yymuhMTZk6PmiOLD3pfz+gKZlhlOoXiEqGRTpK8Ae2b5POyVrtf13IxGf9IbDcjv7RRzm5oRfrfNi2T0a5B8ODr9g6+zBCzQVHl5+3z2FkJ2TmMfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJBdbmvo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161ADC4CEC4;
+	Fri,  6 Sep 2024 09:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725614644;
-	bh=xk/N2lj2szx7esjdvxIR0dfupCeyF3+HanFJzHFF/mI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Sbx4VWkcn0xcf7PjnKS5Toh1eWF4MSUCukkRvkN14GJBKN1p9ghyTKt3uHCVLeb8h
-	 /KHoiC8gz+UKVFXsRMfG3eFp7nk/EkbFZTK591LBIDuBoU8uif2i34wpqqw4kbwwJh
-	 GD/qVBQi66RJMno5I67kAm/lbwlQwNmWcEDuiu0Bef+Z0KaOIFk8R2l8bSiPUos8OP
-	 ncE0EFfblOmgmoEy0zPY2g2e/Vsw/rf/qcJx4uOtKriSc/BzXyG4hwdnJLQJGIblzR
-	 PHJhH+KKYWjRYQdfL3/8V1V0QgTYxyZZPfdnSip2i9aUlShGoXtILS5ZA9JavBxO9O
-	 amaH5jFHqi2tA==
-Message-ID: <7e1e2f18-2d30-4c14-bf4a-61bdd150bb38@kernel.org>
-Date: Fri, 6 Sep 2024 11:24:01 +0200
+	s=k20201202; t=1725615387;
+	bh=6DXT5SI1AME6jdqnUV9UWrcHiXS9hqjCh1trCIgbzXQ=;
+	h=Date:To:Cc:From:Subject:From;
+	b=rJBdbmvobf2NazGsrcpLRLUwcy89EalU6NUw0s+viVbC977OCmS83uRokReXxxAfg
+	 fM5KBC/zFC0wHfBYJx7iO7jUmpx98ITza+q9fBT2neiET51f17jclzIZqduuiUUNqi
+	 qlPfDYPj+eUehtuyX0p38kq81mH+r32zv25zMZ5t+4XIXFb1v3txWZDrD6SEKUgeb4
+	 86oYLD7Mp+z5qXNKZNYjsr0jiGMPIG3bG52OYVkwI3/7M192u8g0LnzqD4r2gNAQPH
+	 btyTnTlMqxYegMt813XfnG6insIPNEFJJpO/6wT4BFgfoR4WvTNUuN+Kw9XjZbSVc9
+	 GUudiGJRZfhDQ==
+Message-ID: <32148274-08bb-4031-a55b-6b16b48a5497@kernel.org>
+Date: Fri, 6 Sep 2024 11:36:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +49,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.15.y] mptcp: pm: avoid possible UaF when selecting endp
 Content-Language: en-GB
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>, Paolo Abeni <pabeni@redhat.com>,
- Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2024082658-pectin-freeness-1354@gregkh>
- <20240906092155.1930090-2-matttbe@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
 From: Matthieu Baerts <matttbe@kernel.org>
+Subject: MPTCP stable backports: is the workflow OK?
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
  YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
@@ -102,14 +98,29 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20240906092155.1930090-2-matttbe@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 06/09/2024 11:21, Matthieu Baerts (NGI0) wrote:
-> commit 48e50dcbcbaaf713d82bf2da5c16aeced94ad07d upstream.
-Arf, sorry, wrong prefix: that's for v5.10, not v5.15. I just resent the
-patch with the correct prefix.
+Hi Greg,
+
+Thank you again for your support when we send patches for stable
+versions for MPTCP!
+
+Recently, I sent many patches for the stable versions, and I just wanted
+to check if what I did was OK for you?
+
+I tried to reply to all the 'FAILED: patch' emails you sent, either with
+patches, or with reasons explaining why it is fine not to backport them.
+Are you OK with that?
+
+Or do you prefer only receiving the patches, and not the emails with the
+reasons not to backport some of them?
+
+About the patches, do you prefer to receive one big series per version
+or individual patches sent in reply to the different 'FAILED: patch'
+emails like I did?
+
+Do not hesitate if there are things we can improve!
 
 Cheers,
 Matt
