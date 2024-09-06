@@ -1,116 +1,95 @@
-Return-Path: <stable+bounces-73801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BC296F8F2
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:01:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2D496F92D
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8AF81C222CF
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 16:01:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78B9EB21277
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 16:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCFB1D363A;
-	Fri,  6 Sep 2024 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68D11D048E;
+	Fri,  6 Sep 2024 16:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="qfAUdljz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tdygw95e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5291CBEA6
-	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 16:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3A31CCB45
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 16:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725638453; cv=none; b=C6/55RwcDt4KHVZ6tZhF+HqyEGUhCNMPjv5RmRBvdTeCVtX8lL7amuK6V/fXc8WN/pzP28woyPubWa48VWb1Uv5rsviiWXzS8aYlosOk/vMnyuRpzQlFsmOPSqGFCvebzVMW80+Q7xHzbSrZp+d3FsKuHP4/e86domhpPghaMHY=
+	t=1725639731; cv=none; b=u9l7jW0i8g/aVecUjjn6pzjLy6mBitnmju6HIr4fYIqkDVeK9tAk1k/8Po4C1zh+o3+sw5W9M06HBlpEm2T7722XCcrYFmd/kBDMpwnsIV2pXrM//AZiunv+wht3LOBHgtm2JvGC9WrXQRD1xZ6BZkvoQkhvSGLwg3VkusGezwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725638453; c=relaxed/simple;
-	bh=FI2hw+6HcjnnxY6LjbMOiMJt2XjJYF5zS+t74ASRsiY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BZRdxs/TFdFcwlgBRpR2tAUDuHMKagVdsK3zyjBZZSvqYuQdGrLDc4yNIDaK/AvakjIKsaOXpCkejN5UIFtLBmmaCcKeAUfBoL99jIQ8QiDkbMz3TTytiW/c/aYwLWIg2GOJBQqqBDjj2kSHXBRJVWsIURfVZGC1GVnH+gsUubg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=qfAUdljz; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2054e22ce3fso21547915ad.2
-        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 09:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1725638449; x=1726243249; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fumQXNe9T3zSTl+3b1d/T/4RSkPo08KSVg60ocgmDKI=;
-        b=qfAUdljz0/RCMEcDqzNMXvS1ErKF3gDt3yzErd+nO1JRQP7Dlk6fT+4DXjL42O/7AT
-         hq9sujJy1AlTX9pi1Vo+mE0rFaF6RTuLN2QKo2qwFMQp8OWmYmxR9A+xhw2Y96pGV9dK
-         SkFbkpnIbXj7bxc/uMRzYl5uFEoZ6Zk5Tt5nW5HDxVEUqt90S74FkcB9YNyPXuuW5/+l
-         TR6eAFtm1RFqYZfKv5sVhnPMfSR21BZlF4nyTpXxngbwOkeB966GqqOlkHzb4CCHv8Ms
-         dfHg0hrkYm0NEuBaUMSWqW/tbeQ8TWs45rKQytuTSlPBaL0Vl3hVoywV0v/csSlT1kv6
-         6pdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725638449; x=1726243249;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fumQXNe9T3zSTl+3b1d/T/4RSkPo08KSVg60ocgmDKI=;
-        b=p4yC5ea73NKuoU3jehLfvXRvNC4BFL76ibSaItLZW2N4LvZIWQGlKxgTVmPlAHpBnI
-         d8+GaDK5gC2YFR40PEQMfFv6QkPCJ1C0Lt4K8/JTL61Hdb8W2Yom5L6chOpzsTFJzPNi
-         etqEc8Ibq6CMf2qjTwMQvwnptiEufhkvHsuceMI+u/etNr/4vS4zxR1vd9/hJqllmWyS
-         ER7mlVb9a1j1cVbZYQmKF353CaxK/fiU0pBC0ZlYKvQezwEyog0SfzmlRNhdyJD948Wh
-         xmHXNaAnqPtq4pimFVdFzk80ymrVZzIRMPSqCbDkdRO81FVOvC4pjBboGtRe07D1R7pa
-         AB7g==
-X-Forwarded-Encrypted: i=1; AJvYcCU9w5hmZ7i4p8L5nvSkXr6D2n/bITPqQpQAlXv2nHczziUZ8BHxxernnuJBYHa4HS/M2fxVdo8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytsWGMScMdYC3cSiMUVuxXCjjhayw9u5y/iMiADsxL+daipf3e
-	ruspAIIxV70xFL/4Y0ukwycMEiPOgJN5Zj6bnZfv9ogd60xLDXE+8gmdY/yPvxQ=
-X-Google-Smtp-Source: AGHT+IHGMgYDK+TViSs2t8VPMBLmgxXoD0EfCk0s/Nd4Z9vDo3MMdA1btm26NnNNOtl5JTDhdKT3lg==
-X-Received: by 2002:a17:902:e74a:b0:205:7b04:ddf2 with SMTP id d9443c01a7336-206f053b49bmr28195355ad.29.1725638449415;
-        Fri, 06 Sep 2024 09:00:49 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae9558cfsm44683805ad.101.2024.09.06.09.00.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2024 09:00:48 -0700 (PDT)
-Message-ID: <ed995e2d-23b7-44c5-b064-2927dc20420f@kernel.dk>
-Date: Fri, 6 Sep 2024 10:00:46 -0600
+	s=arc-20240116; t=1725639731; c=relaxed/simple;
+	bh=TXuC/+F2XUyGn87egojk0ApoIHlgcbPmITN9HdFNYTc=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ZWjwbeuKAWuACOIIy23M+fofe+/Pm5kCkDcJymmIZARJOsx1wVSS9hO1NjUPCDccVetW+X2OAvlpZB31Wdsfa7k5ps0acFOMAwLrcApgLs6aa0xr5nKIeV3omt7gash9lEpbIeg1uoAhnEEnAEwX2PXOM4Wq1rPtnpWcNU7UeGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tdygw95e; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725639729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TXuC/+F2XUyGn87egojk0ApoIHlgcbPmITN9HdFNYTc=;
+	b=Tdygw95et035s9APEoWo8XrKC1rtCXfFeb4kWQ3tsZen1uZIg52CUEk58cn6zK+p+v/K36
+	nHtsKLrroKf/Y9gmdqQaA7Le2RN/VVAd7lIDzOcUP/C3pnHDvlos1PUddEEbQ5TSTGDvOM
+	E8ylqnxkQB50CsC7a8wgrBzGV550aiU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-kX2c_BokMaq0uFlzS0_0fg-1; Fri,
+ 06 Sep 2024 12:22:06 -0400
+X-MC-Unique: kX2c_BokMaq0uFlzS0_0fg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7AC4D19560B0;
+	Fri,  6 Sep 2024 16:22:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 05F4F19560AA;
+	Fri,  6 Sep 2024 16:22:01 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <8bce309d-f7ef-4929-bfad-6f0b5c55cfff@leemhuis.info>
+References: <8bce309d-f7ef-4929-bfad-6f0b5c55cfff@leemhuis.info> <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com> <0e60c3b8-f9af-489a-ba6f-968cb12b55dd@redhat.com> <1679397305.24654.1725606946541@webmail.proxmox.com> <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: dhowells@redhat.com, Xiubo Li <xiubli@redhat.com>,
+    Christian Ebner <c.ebner@proxmox.com>,
+    Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+    ceph-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via in-kernel ceph client
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] io_uring/sqpoll: inherit cpumask of creating process
-To: Felix Moessbauer <felix.moessbauer@siemens.com>, asml.silence@gmail.com
-Cc: linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
- cgroups@vger.kernel.org, dqminh@cloudflare.com, longman@redhat.com,
- adriaan.schmidt@siemens.com, florian.bezdeka@siemens.com,
- stable@vger.kernel.org
-References: <20240906134433.433083-1-felix.moessbauer@siemens.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20240906134433.433083-1-felix.moessbauer@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <127683.1725639720.1@warthog.procyon.org.uk>
+Date: Fri, 06 Sep 2024 17:22:00 +0100
+Message-ID: <127684.1725639720@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On 9/6/24 7:44 AM, Felix Moessbauer wrote:
-> diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-> index 3b50dc9586d1..4681b2c41a96 100644
-> --- a/io_uring/sqpoll.c
-> +++ b/io_uring/sqpoll.c
-> @@ -289,7 +289,7 @@ static int io_sq_thread(void *data)
->  	if (sqd->sq_cpu != -1) {
->  		set_cpus_allowed_ptr(current, cpumask_of(sqd->sq_cpu));
->  	} else {
-> -		set_cpus_allowed_ptr(current, cpu_online_mask);
-> +		set_cpus_allowed_ptr(current, sqd->thread->cpus_ptr);
->  		sqd->sq_cpu = raw_smp_processor_id();
->  	}
+"Linux regression tracking (Thorsten Leemhuis)" wrote:
 
-On second thought, why are we even setting this in the first place?
-sqd->thread == current here, it should be a no-op to do:
+> Thx. FWIW, there were some other corruption bugs related to netfs, one
+> of them [1] was recently solved by c26096ee0278c5 ("mm: Fix
+> filemap_invalidate_inode() to use invalidate_inode_pages2_range()");
+> this is a v6.11-rc6-post commit.
 
-	set_cpus_allowed_ptr(current, current->cpus_ptr);
+filemap_invalidate_inode() is not used directly by ceph yet, and ceph doesn't
+yet use the netfs DIO that would also use that.
 
-IOW, the line should just get deleted. Can you send out a v2?
-
--- 
-Jens Axboe
+David
 
 
