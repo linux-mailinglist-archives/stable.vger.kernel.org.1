@@ -1,201 +1,252 @@
-Return-Path: <stable+bounces-73797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EFF96F781
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 16:55:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDCE96F7A2
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 17:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8FF51F247B1
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 14:55:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2847A2843D1
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 15:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCFE1D1F4E;
-	Fri,  6 Sep 2024 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF53D1D27B7;
+	Fri,  6 Sep 2024 15:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fMc5WDVw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/5avGSw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3091B1E4BE
-	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BF31D1F73;
+	Fri,  6 Sep 2024 15:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725634521; cv=none; b=sTNs8LzfxKUN+IfoTAvLJ6nRP3o5Lm0tMISeXFBLry36d4HT1nR7vfyHElh6LwKS+5HpFwId250j1kMKaUhLu7Y3q9hBzS1c0Qz5LDlFZHspA8jwlTZ29WkBA+hO8XDHLK70zIp7t70fuSzaU4QYUblW1VOOgbNNaBGi1YVuSBo=
+	t=1725634966; cv=none; b=jCePzC2UAZBjKq7d3OpQWAqaTUu/1k2hoUWqf9kL9t+I+8q09FEJd+Wcf6FBm2ZcLlE5GvjmoyfxlLBDmJkDjD6WPcf6e5dk82pXYaYDYdBwWPL+ev/EHbi5zHv2UX+A6ZUNlXE88Sn9hjCnICzfJ7Tlr38cm//S5Pnwcp8ZJuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725634521; c=relaxed/simple;
-	bh=+26xIV2WluTblsS7CAP5s9zVhv5uK8aK+XWtEjUNnrs=;
+	s=arc-20240116; t=1725634966; c=relaxed/simple;
+	bh=/jyOlJRohx+VGTSbr4Y6Q1/ZaLB+Z6DoeNxKscVVJiA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TqM4I8Snm/9zDPqIW/wDOfMq8bCJtJWOIMcd20V+C9RqIdr65MtfXeHcpHkz0wIp2rN13CR0t8sE9yG6FVLXbO2I5+giSkQcCm/Nd6I8NVAN/x3YBN+5x6dtrHrk7nLsGzRMgbCU/zIV+Z5JVTfbA9HvWQG/1jZHZKncPrUFa50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fMc5WDVw; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-205722ba00cso19642995ad.0
-        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 07:55:19 -0700 (PDT)
+	 To:Cc:Content-Type; b=suN/DL5Eh3lvBrhnL3u0qXNZP3IizZEQZLeFcDebVbe+hCtyxMdGZPXX0vIJ5ubruwXFX0mdcdCYqtMwcIoqmLVTphjjbgaT5NP2jfX/Fh8GvZX3GpZrWTSxm1YGeovGHQl6HzRRReBiecv63Hs9CCAG5XAnGaHGZz7J3XHKgTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/5avGSw; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-78f86e56b4cso214362a12.3;
+        Fri, 06 Sep 2024 08:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725634519; x=1726239319; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725634964; x=1726239764; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=REdO8OfWu16SCOaIAz6gs7NfqYweprALAE3omfjztt4=;
-        b=fMc5WDVwRHQvlL5b6iU0IKODo9uNWitJP/o8UyyuSmDYN3t9I++AGbrGWmSo6IYkfe
-         8+rj7bmahUdtOWsHZsHYaes2kX6/pIP4Lkrsc5E+FEJiCV+pTbedhTCQGcsObUjQJHSp
-         4BudgYMZb4KnPusVMDKAvLnWmC5tl0UcLKV6OjPA8nG4Pe6Q15sBeR5+o77KPD5kZ8c3
-         EYtU0n8Vv/9d9xPt1vxVg197y4limm62y0UbYpPwwjP22ZUGsHChkpJ8WfQadTwLdOT+
-         mNoHQwKCmr60aLZVINQiCJxECUD6tGzK/l+8hFUFvH3r0gLS81fnY3a4IxWECOmf+Cuq
-         Selg==
+        bh=CF/y2A4EOD7AN3/RYLZIn961CP/eFEWOruxjVecjTmw=;
+        b=N/5avGSwPKnreZEQS+Ju8vmc599HYSUKhI6RCCVQG09fmkzsSlCuzZwhx60cW1Stl+
+         MrrFDSUlsiyAU5AKfWdyjh25PUE+uzVeUVd94ICMspHHekrdwamm0Tokzb7DlQit8AN6
+         gbWQViQOhdaWBDX0awB+tvCS8D22BmeMuulemJHnI98nyNbcXjOshF7ZxU+eoCHOZmPg
+         uw7m2GXqV8ZlpOnrrjx/0B0ePbJ5YFOlF+HB/nZPf19EKdpmN4mXgfi9s5VUygWXjxAG
+         n9ufUhsFNoum2QuTKV8XIH7Arshq0KordRZtqXVcswL8DZfAUxQtzqGHur+BBw/EZp38
+         Q2OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725634519; x=1726239319;
+        d=1e100.net; s=20230601; t=1725634964; x=1726239764;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=REdO8OfWu16SCOaIAz6gs7NfqYweprALAE3omfjztt4=;
-        b=oh8rYusrOqkSKkS3hAaFOH0FRl+4vr22zyfKDh/EKnhsx0vlpcLEv6a1ZUHE3wGk0f
-         ogf9GtcfAX2Gqa/WfPP2Ao6GFZqpOZSIxMRWFjBMbD9CzQtMhBC7x1OdMwKmth+Qk5S4
-         5CE8q1zS6F/hCk8lyWWG0HehhCE095hhV63fIO9G1Im2xFtW/bpPjCMr33Lj186eDYsJ
-         ecluBi4NHy8NL1fVTb1QISPb7EYzoWBlV1siHQ971ldRvliz1qL9OP6rzcDw7PFKr9RJ
-         A0uaehmHoWZIseovlG6Y2h/naiIJlj5oZHFcZ0sU74if/fPO+InG3nqZiEXe2QIJI48x
-         UZtg==
-X-Forwarded-Encrypted: i=1; AJvYcCXV/TxGmzbNq9JducwiiX182L5F/TV9vgBSS/Dfng/ARL76QX1gxTFeJ3hTv7w/CkKApIJxdoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyqx4iyBAJKgOeGD6wkkLkgxCiDXmKyOs5t6DR+mZ9HIJuCTUTn
-	mmn1cqbgUik5RmRqe285aZi6z2MUj3ZlhokV231nUcV5MvNNCxNAcgnFLrI4KKb2g6e/65+CEfN
-	JR+xprMmBfCn9CziKIHz27DwQ9Ih/NF3UVexE
-X-Google-Smtp-Source: AGHT+IFcZBVBqhlyg+liux563XH0Zu6u9+L3JlzXrFrKOuRyZHvlOrUxPxPBvpme4+uyqZWwQ1p1hC29CvEYdQuoNP4=
-X-Received: by 2002:a17:902:ea03:b0:205:3450:cdb4 with SMTP id
- d9443c01a7336-206f04c22c6mr30271455ad.4.1725634518974; Fri, 06 Sep 2024
- 07:55:18 -0700 (PDT)
+        bh=CF/y2A4EOD7AN3/RYLZIn961CP/eFEWOruxjVecjTmw=;
+        b=ap73Pj3B19fjfuyBeTqw49wTSkcNLCAdPFXanwLZOIWRx2YGvt59pKbjohYoNhdh0X
+         gJuyoa9ajRUsUeHirBVls65LEh3hXEjddcjL7sINgayMLLNeaBFvO1aXpHhfqgyPv4oY
+         XtEvy2iAjAU/MtgCg3Evv4Uc3Vb8oamPWi5p9ht6GxFE6xTySQF5z/JRc2VXzImzL8Wa
+         2j2jg9CzEH8Wd9RB2BGnza66KGisBtTUYOx4rJNG3dVce5igjjJCW/kRKaCpyoAXfCAd
+         wvEjFHZRgFbxzltDRqR6RlDZKP35bYI+E2n4gsru1gAUsbfxL2gTassD+rvNlehPS+rk
+         DKaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwrVz0HpulLty/Imxf9umgRyINhLojGYFOuSIybWUtjHngFzGTw/pAvHhCBwKOcnZKssE5Um6Wkw7jiBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1j4Gro9pAivYij9BE93ZfuV3pAeRpnf91g+DwkhM+5zYk4fyI
+	+gK+QDZgzEYrZKV0sk3yABUhah3ESSo8W1SG2LmWbha7ZPgQRDLiYqJeAeLjPNOtqept757Aiwe
+	MP1BS/3QrI3JwDQA6m7lFOUVhNU6wcA==
+X-Google-Smtp-Source: AGHT+IFUyTc2msw9pBuDinPebsrgH2WgTVb3aopL/b6zxirXk5TlrlJwgcDG34rx6p5wEwYoay4kl+oDdVtZtxl+tQk=
+X-Received: by 2002:a17:902:f0cb:b0:205:60f5:4c0 with SMTP id
+ d9443c01a7336-206f0669d0emr15345825ad.9.1725634964083; Fri, 06 Sep 2024
+ 08:02:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904102455.911642-1-nogikh@google.com> <2024090546-decorator-sublet-8a26@gregkh>
-In-Reply-To: <2024090546-decorator-sublet-8a26@gregkh>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Fri, 6 Sep 2024 16:55:07 +0200
-Message-ID: <CANp29Y6oy=cHWKpnM1+EBfZV24i3ZFUDWLzxvrD6HSyhnw_8JA@mail.gmail.com>
-Subject: Re: Missing fix backports detected by syzbot
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: sashal@kernel.org, dvyukov@google.com, stable@vger.kernel.org, 
-	syzkaller@googlegroups.com
+References: <20240903045809.5025-1-mukul.sikka@broadcom.com>
+ <CADnq5_OVSD1DXgi_9f_H-uT7KSjMwz-FfhP=vRQvposSxv=BMw@mail.gmail.com> <CAG99D9Jss=h5aVLDq0tkDjfZgGUbrNV1gqwcw631RbwCiPVqNg@mail.gmail.com>
+In-Reply-To: <CAG99D9Jss=h5aVLDq0tkDjfZgGUbrNV1gqwcw631RbwCiPVqNg@mail.gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Fri, 6 Sep 2024 11:02:32 -0400
+Message-ID: <CADnq5_NWX7u=S+jrC8YA6fJxN7GXpSN+kqsQieqphdOz2HT6EA@mail.gmail.com>
+Subject: Re: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference
+ for vega10_hwmgr
+To: Mukul Sikka <mukul.sikka@broadcom.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, evan.quan@amd.com, 
+	alexander.deucher@amd.com, christian.koenig@amd.com, airlied@linux.ie, 
+	daniel@ffwll.ch, Jun.Ma2@amd.com, kevinyang.wang@amd.com, sashal@kernel.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, 
+	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com, 
+	Bob Zhou <bob.zhou@amd.com>, Tim Huang <Tim.Huang@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
-
-Thank you very much for your comments!
-
-On Thu, Sep 5, 2024 at 10:04=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On Fri, Sep 6, 2024 at 4:50=E2=80=AFAM Mukul Sikka <mukul.sikka@broadcom.co=
+m> wrote:
 >
-> Note, for kvm, and for:
->
-> > 4b827b3f305d1fcf837265f1e12acc22ee84327c "xfs: remove WARN when dquot c=
-ache insertion fails"
->
-> xfs patches, we need explicit approval from the subsystem maintainers to
-> take them into stable as they were not marked for such.
-
-Is it specific only to some subsystems (like kvm and xfs), or is it
-due to some general rule like "if the commit was not initially marked
-as a stable backport candidate, you need an approval from the
-subsystem maintainer"?
-
-On Thu, Sep 5, 2024 at 10:12=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Sep 04, 2024 at 12:24:55PM +0200, Aleksandr Nogikh wrote:
-> > Hi Greg, Sasha,
+> On Fri, Sep 6, 2024 at 12:05=E2=80=AFAM Alex Deucher <alexdeucher@gmail.c=
+om> wrote:
 > >
-> > A number of commits were identified[1] by syzbot as non-backported
-> > fixes for the fuzzer-detected findings in various Linux LTS trees.
+> > On Tue, Sep 3, 2024 at 5:53=E2=80=AFAM sikkamukul <mukul.sikka@broadcom=
+.com> wrote:
+> > >
+> > > From: Bob Zhou <bob.zhou@amd.com>
+> > >
+> > > [ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
+> > >
+> > > Check return value and conduct null pointer handling to avoid null po=
+inter dereference.
+> > >
+> > > Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+> > > Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
 > >
-> > [1] https://syzkaller.appspot.com/upstream/backports
+> > Just out of curiosity, are you actually seeing an issue?  This and a
+> > lot of the other recent NULL check patches are just static checker
+> > fixes.  They don't actually fix a known issue.
 > >
-> > Please consider backporting the following commits to LTS v6.1:
-> > 9a8ec9e8ebb5a7c0cfbce2d6b4a6b67b2b78e8f3 "Bluetooth: SCO: Fix possible =
-circular locking dependency on sco_connect_cfm"
-> > (fixes 9a8ec9e) 3dcaa192ac2159193bc6ab57bc5369dcb84edd8e "Bluetooth: SC=
-O: fix sco_conn related locking and validity issues"
-> > 3f5424790d4377839093b68c12b130077a4e4510 "ext4: fix inode tree inconsis=
-tency caused by ENOMEM"
-> > 7b0151caf73a656b75b550e361648430233455a0 "KVM: x86: Remove WARN sanity =
-check on hypervisor timer vs. UNINITIALIZED vCPU"
-> > c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 "udf: Limit file size to 4TB"
-> > 4b827b3f305d1fcf837265f1e12acc22ee84327c "xfs: remove WARN when dquot c=
-ache insertion fails"
-> >
-> > These were verified to apply cleanly on top of v6.1.107 and to
-> > build/boot.
-> >
-> > The following commits to LTS v5.15:
-> > 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 "ext4: reject casefold inode f=
-lag without casefold feature"
->
-> Wait, what about 6.1 for this?  We can't move to a new kernel and have a
-> regression.
+> No, according to the description of this patch and CVE-2024-43905.
+> It seems to be applicable to LTS.
 
-Indeed!
-Syzbot currently constructs missing backports lists independently for
-each fuzzed LTS, so the page [1] does have some holes. But in any
-case, it's totally reasonable that if we backport a commit to an older
-kernel, newer ones should also get it.
+I don't know that this is really CVE material, but oh well.  I'm not
+sure if it's actually possible to hit this in practice.
+
+Alex
 
 >
-> > c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 "udf: Limit file size to 4TB"
-> >
-> > These were verified to apply cleanly on top of v5.15.165 and to
-> > build/boot.
-> >
-> > The following commits to LTS v5.10:
-> > 04e568a3b31cfbd545c04c8bfc35c20e5ccfce0f "ext4: handle redirtying in ex=
-t4_bio_write_page()"
+> - Mukul
 >
-> Same here, what about 5.15.y?
->
-> > 2a1fc7dc36260fbe74b6ca29dc6d9088194a2115 "KVM: x86: Suppress MMIO that =
-is triggered during task switch emulation"
-> > 2454ad83b90afbc6ed2c22ec1310b624c40bf0d3 "fs: Restrict lock_two_nondire=
-ctories() to non-directory inodes"
-> > (fixes 2454ad) 33ab231f83cc12d0157711bbf84e180c3be7d7bc "fs: don't assu=
-me arguments are non-NULL"
->
-> Why are these last two needed?
-
-The last two address the "WARNING: bad unlock balance in
-unlock_two_nondirectories" bug on a Linux 5.10-based kernel.
-The crash report is very similar to
-https://syzkaller.appspot.com/bug?id=3D32c54626e170a6b327ca2c8ae4c1aea666a8=
-c20b
-
->
-> Can you provide full lists of what needs to go to what tree, and better
-> yet, tested patch series for this type of thing in the future?
-
-Sure!
-Could you please clarify a bit what should be the criteria for the
-full lists and what exact kinds of tests you mean?
-
-If the list only contains the patches that apply cleanly, it is
-unfortunately not very big anyway since the vast majority of the
-detected missing backports just cannot be cherry-picked automatically.
-I guess, otherwise most of them would have already been backported :)
-I plan to try to manually adjust and resend some of them to better
-understand how much manual effort it actually requires.
-
-For the commits I listed so far, I checked that they apply without
-problems, whether there are fix commits for them and whether the
-kernel builds and boots fine. It should be easy to also verify whether
-syzbot is able to reproduce the bug after the fix is cherry-picked.
-What are some other tests that would be great to have run?
-
---=20
-Aleksandr
-
->
-> thanks,
->
-> greg k-h
+> > > ---
+> > >  .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 30 ++++++++++++++++-=
+--
+> > >  1 file changed, 26 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/=
+drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+> > > index 10678b519..304874cba 100644
+> > > --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+> > > +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+> > > @@ -3391,13 +3391,17 @@ static int vega10_find_dpm_states_clocks_in_d=
+pm_table(struct pp_hwmgr *hwmgr, co
+> > >         const struct vega10_power_state *vega10_ps =3D
+> > >                         cast_const_phw_vega10_power_state(states->pne=
+w_state);
+> > >         struct vega10_single_dpm_table *sclk_table =3D &(data->dpm_ta=
+ble.gfx_table);
+> > > -       uint32_t sclk =3D vega10_ps->performance_levels
+> > > -                       [vega10_ps->performance_level_count - 1].gfx_=
+clock;
+> > >         struct vega10_single_dpm_table *mclk_table =3D &(data->dpm_ta=
+ble.mem_table);
+> > > -       uint32_t mclk =3D vega10_ps->performance_levels
+> > > -                       [vega10_ps->performance_level_count - 1].mem_=
+clock;
+> > > +       uint32_t sclk, mclk;
+> > >         uint32_t i;
+> > >
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return -EINVAL;
+> > > +       sclk =3D vega10_ps->performance_levels
+> > > +                       [vega10_ps->performance_level_count - 1].gfx_=
+clock;
+> > > +       mclk =3D vega10_ps->performance_levels
+> > > +                       [vega10_ps->performance_level_count - 1].mem_=
+clock;
+> > > +
+> > >         for (i =3D 0; i < sclk_table->count; i++) {
+> > >                 if (sclk =3D=3D sclk_table->dpm_levels[i].value)
+> > >                         break;
+> > > @@ -3704,6 +3708,9 @@ static int vega10_generate_dpm_level_enable_mas=
+k(
+> > >                         cast_const_phw_vega10_power_state(states->pne=
+w_state);
+> > >         int i;
+> > >
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return -EINVAL;
+> > > +
+> > >         PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps)=
+,
+> > >                         "Attempt to Trim DPM States Failed!",
+> > >                         return -1);
+> > > @@ -4828,6 +4835,9 @@ static int vega10_check_states_equal(struct pp_=
+hwmgr *hwmgr,
+> > >
+> > >         psa =3D cast_const_phw_vega10_power_state(pstate1);
+> > >         psb =3D cast_const_phw_vega10_power_state(pstate2);
+> > > +       if (psa =3D=3D NULL || psb =3D=3D NULL)
+> > > +               return -EINVAL;
+> > > +
+> > >         /* If the two states don't even have the same number of perfo=
+rmance levels they cannot be the same state. */
+> > >         if (psa->performance_level_count !=3D psb->performance_level_=
+count) {
+> > >                 *equal =3D false;
+> > > @@ -4953,6 +4963,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *=
+hwmgr, uint32_t value)
+> > >                 return -EINVAL;
+> > >
+> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return -EINVAL;
+> > >
+> > >         vega10_ps->performance_levels
+> > >         [vega10_ps->performance_level_count - 1].gfx_clock =3D
+> > > @@ -5004,6 +5016,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *=
+hwmgr, uint32_t value)
+> > >                 return -EINVAL;
+> > >
+> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return -EINVAL;
+> > >
+> > >         vega10_ps->performance_levels
+> > >         [vega10_ps->performance_level_count - 1].mem_clock =3D
+> > > @@ -5239,6 +5253,9 @@ static void vega10_odn_update_power_state(struc=
+t pp_hwmgr *hwmgr)
+> > >                 return;
+> > >
+> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return;
+> > > +
+> > >         max_level =3D vega10_ps->performance_level_count - 1;
+> > >
+> > >         if (vega10_ps->performance_levels[max_level].gfx_clock !=3D
+> > > @@ -5261,6 +5278,9 @@ static void vega10_odn_update_power_state(struc=
+t pp_hwmgr *hwmgr)
+> > >
+> > >         ps =3D (struct pp_power_state *)((unsigned long)(hwmgr->ps) +=
+ hwmgr->ps_size * (hwmgr->num_ps - 1));
+> > >         vega10_ps =3D cast_phw_vega10_power_state(&ps->hardware);
+> > > +       if (vega10_ps =3D=3D NULL)
+> > > +               return;
+> > > +
+> > >         max_level =3D vega10_ps->performance_level_count - 1;
+> > >
+> > >         if (vega10_ps->performance_levels[max_level].gfx_clock !=3D
+> > > @@ -5451,6 +5471,8 @@ static int vega10_get_performance_level(struct =
+pp_hwmgr *hwmgr, const struct pp_
+> > >                 return -EINVAL;
+> > >
+> > >         ps =3D cast_const_phw_vega10_power_state(state);
+> > > +       if (ps =3D=3D NULL)
+> > > +               return -EINVAL;
+> > >
+> > >         i =3D index > ps->performance_level_count - 1 ?
+> > >                         ps->performance_level_count - 1 : index;
+> > > --
+> > > 2.39.4
+> > >
 
