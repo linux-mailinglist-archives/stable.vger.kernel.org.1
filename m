@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E3896EEAD
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFA096EEAE
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336941C23CCF
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05A9283AA7
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D632217ADEE;
-	Fri,  6 Sep 2024 09:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D982175548;
+	Fri,  6 Sep 2024 09:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZtfA8d5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryV4GFHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F55916630F;
-	Fri,  6 Sep 2024 09:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DE516630F;
+	Fri,  6 Sep 2024 09:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725613206; cv=none; b=HLojPX35EaFW3gZN9nfOVBZZq8+UJCbK5sQTIgozA5akziWaBX+gkxYRWciJ+vEBuu8ayp08D8LcOpLE/fxdv64Z1q7UiTMYwCx/81GOay4R5z14oW9yQfwV46qTEZMRq8Pw9mQ7Kdg/x2U5fQZDTsQ++tw6pLlmMt3k1jxf69Y=
+	t=1725613212; cv=none; b=uUnLOn1dKyMb1l/Tiqmw6UXiM/H3g7V4OKACdP6DbTGK17ZhCtqzkIOsMNGob3inDFbUCkoWMCuo9wwxlbRZgm3wYpl8QTOsLdpe+vk9EeC1KS54RnWCQ4MEpJ3uEieFdLGDmjv96Om0c2nJASe4I+zGBsHzsMApNks2R7KiKLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725613206; c=relaxed/simple;
-	bh=ekC4m3cZK9fMlyQmVMcZlupXr9dwmHK363NsD4Xshlg=;
+	s=arc-20240116; t=1725613212; c=relaxed/simple;
+	bh=xIapME3Iu0BwviobiH8HWGYjNthFfbFAyDu4Nnjt6tM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JSD1I5QQtSJ02X8XIsBb2Fjvm+ygw5VMYxvZmq4tIa1jHRSeo6ReyufR88nidiVznMTFynYjuSwiQOBk1m57hb/dwoWEMY33Q1iysF8ZCCbCNz+YNsvmW9pb993p7rTa46ZPMzlQJQdlVcDsFLxvLzfQUwmDZeskhsEBvCfxcCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZtfA8d5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC21C4CEC4;
-	Fri,  6 Sep 2024 09:00:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=TxHx4w6EqGYSgk2c29Rbq1dyT3G0YkzU3mi6Deu1d1SbxVA6xY1VhMycKmQqu5Zohl0wuxi/GP/mEdQvxJA7lErqzhrqaOztL5g3+D7N/6lg4V9qhnWDV9yyuZKQSb0NBiIIhsq/yEYOJFnPuqI0Ux7EqGUHav4jzbB18u7kJEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryV4GFHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489A7C4CEC8;
+	Fri,  6 Sep 2024 09:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725613206;
-	bh=ekC4m3cZK9fMlyQmVMcZlupXr9dwmHK363NsD4Xshlg=;
+	s=k20201202; t=1725613211;
+	bh=xIapME3Iu0BwviobiH8HWGYjNthFfbFAyDu4Nnjt6tM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QZtfA8d5uHpGUjev/CgSF8gFgWkBAxggjR7sFVf/7VWl63ttfhQdIUoIgTk7STWD8
-	 9NzBa9IOTSnMWxbQl06DJ1jR+jdSB0WtnTiAs/yy4F53hN3q6+RLyq5w61+uagdPce
-	 g8V3Xg4Kxn0Zk2tTwR7b/UymP+aHITO1qNFujHOUrh41KztLRJvS0q6RJBneW0nQYR
-	 Ln7mAw2qBhrlbnyNW2YJKhnhIaDIhnigQthpNfVileYFbp9+vg6A1REiPT26A0okp7
-	 f9gADopRhv/QW+eWLpxC0Or90iDLvQwzZJIkDSl2xzskLZOw5M+jbu72jbnmWEc2Hr
-	 tu9G41RW/TSlA==
-Message-ID: <9f5e4ef8-2c51-4d83-98e8-bd1a7cb936ce@kernel.org>
-Date: Fri, 6 Sep 2024 11:00:02 +0200
+	b=ryV4GFHi9KeNYeFlOchIks33ndY3iwm4AOnDMG9KTnWmekxdU70zvtEFc6IKANsBY
+	 J3wrrZaQQk7i9oQ//LequLoUhI7fHD5Q3re9sv6QnFuAppJYbKTR9P9MdhF78ndc45
+	 8mqxHgyf6pVxHBeXp9sEaWe9Kgums54Y2d45TfuvxirgyUdBo2shp789k75h1KgX1Y
+	 aXPrHQevQ+CvoQusV4gR5Fmv/EKVWRdfmjAnkyFjsFdHESFz2D9JJcD/w7pbUBblXB
+	 X+yU3asvgFtrchopoESHKzyzYwAKXCqZzBd7uDM+wrVA0ZvXjtw2ZjXMQ22eTyR8ke
+	 gzQ7AyDlvAtXg==
+Message-ID: <fb200630-a52e-4096-91f9-ec62acb7742f@kernel.org>
+Date: Fri, 6 Sep 2024 11:00:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] mptcp: pm: re-using ID of unused flushed
- subflows" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: only decrement
+ add_addr_accepted for MPJ req" failed to apply to 5.10-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
 Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082631-emerald-impotence-a278@gregkh>
+References: <2024082653-scenic-deprive-65e4@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -101,13 +101,13 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082631-emerald-impotence-a278@gregkh>
+In-Reply-To: <2024082653-scenic-deprive-65e4@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 26/08/2024 14:04, gregkh@linuxfoundation.org wrote:
+On 26/08/2024 14:06, gregkh@linuxfoundation.org wrote:
 > 
 > The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
@@ -120,23 +120,30 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 Mon Sep 17 00:00:00 2001
+> From 1c1f721375989579e46741f59523e39ec9b2a9bd Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Mon, 19 Aug 2024 21:45:23 +0200
-> Subject: [PATCH] mptcp: pm: re-using ID of unused flushed subflows
+> Date: Mon, 19 Aug 2024 21:45:27 +0200
+> Subject: [PATCH] mptcp: pm: only decrement add_addr_accepted for MPJ req
 > 
-> If no subflows are attached to the 'subflow' endpoints that are being
-> flushed, the corresponding addr IDs will not be marked as available
-> again.
+> Adding the following warning ...
 > 
-> Mark all ID as being available when flushing all the 'subflow'
-> endpoints, and reset local_addr_used counter to cover these cases.
+>   WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)
 > 
-> Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
-> flushing operations, not to remove a specific set of addresses and
-> subflows.
+> ... before decrementing the add_addr_accepted counter helped to find a
+> bug when running the "remove single subflow" subtest from the
+> mptcp_join.sh selftest.
 > 
-> Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+> Removing a 'subflow' endpoint will first trigger a RM_ADDR, then the
+> subflow closure. Before this patch, and upon the reception of the
+> RM_ADDR, the other peer will then try to decrement this
+> add_addr_accepted. That's not correct because the attached subflows have
+> not been created upon the reception of an ADD_ADDR.
+> 
+> A way to solve that is to decrement the counter only if the attached
+> subflow was an MP_JOIN to a remote id that was not 0, and initiated by
+> the host receiving the RM_ADDR.
+> 
+> Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 
 The code is too different in v5.10, and I don't think it is worth it to
 have this small fix in v5.10.
