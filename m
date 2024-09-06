@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1F296EDEA
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9555196EDEC
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 905D31F24279
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:27:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B9AB27BC1
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0381415852E;
-	Fri,  6 Sep 2024 08:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6333C157476;
+	Fri,  6 Sep 2024 08:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr2tDRRY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp4guLCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B561F158210;
-	Fri,  6 Sep 2024 08:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEF3158534;
+	Fri,  6 Sep 2024 08:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611165; cv=none; b=Z2aiTxlVyovVm4m1/4EeXZNYs4qsWNqanmN0idz3BMQeh7D1/8lpAibfMFXJd7wewU3xVqH+3GzJ+tiwssYaJJ4l9evEnfiGNK7CrEp8RJZ56+FWOUg2hXklrFRXlnCNOkAdRVQD4pcTTuCLHTSYbWNK9T7G4g5q6wgCs/tqwbA=
+	t=1725611172; cv=none; b=pAab5iBW5WTFjTLfZls2eSYopvc+q2235S5hTYagTkKrEVFnAAU1jJ6YBtTgDI9nNrYumIuQudNtTQmP8TK8i7sXRRunFikTKC19svIU1mdqJAIKjIQiCIGwUSnESpvUfUO+yg6EnOokG7oHB27nYROtL0M5A6lxE7bI5r7yi74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611165; c=relaxed/simple;
-	bh=k23MACuTYKP9xS1/PM3tkDtRVh746v6kfDpk+mVt1ho=;
+	s=arc-20240116; t=1725611172; c=relaxed/simple;
+	bh=dxjQaKASyWXrf//LxMxGtvVnYfihYgcYkcZ2JjeECJs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lQY20cieBhNy2WCFfcnBsiyxUeHYEa+SwppAzH1Xqz/DvghUmQYrnpGIyfxSevuDF8igrHs04JLjERqMXrQUPzHQXLprXr5TjNpngxnnPRgyqM0GoPK/6uYtbUHEVO7BB9DNo8EfqI3xBNmjiaVk3df6q9+lJrmO1nurhdMMN3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr2tDRRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E6CC4CEC5;
-	Fri,  6 Sep 2024 08:26:03 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=gfnpuy8JLagsyUI1h5yvHF6P7bNnxW2Ozs02JGHytbUZ+/fkf4hC+8xrOoBV1eLSFHXPDH45Hc/+IfrJcTi9BrUmcfo9Q/8rZC787kZDRs2ozVA/A8/gpCgFDx+PQFsqhXlSwN7KSsw/IXvrRcUQAxPNrgMnvDI8RvdxAboTD5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp4guLCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBEAC4CEC4;
+	Fri,  6 Sep 2024 08:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611165;
-	bh=k23MACuTYKP9xS1/PM3tkDtRVh746v6kfDpk+mVt1ho=;
+	s=k20201202; t=1725611171;
+	bh=dxjQaKASyWXrf//LxMxGtvVnYfihYgcYkcZ2JjeECJs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gr2tDRRY4daB9AF1xbND2d6fiEMz6HEiKj3L4FNB+jnioHtITuJT7lOgptKRLn0iD
-	 pJCZgl+mBxBxXr3dqRiVw4JIo8fipQgjxyR5KnxqJ9rXG5SRrSmCl0xKYuTWcdgH5e
-	 +yayF+aBRLJbsUy58TTtfY+1Q6LCt5f8d7toXenDAWyNCQ5oNSdrA4OU+pOJxJDq01
-	 kK74qyzGrNOAVbmUz+N09k/AHRohAYG+NNEgvCF8yJyXN080OB4pLI6zy7RS0ZqiGs
-	 JOX7BBvkYNz+qSFohT8+0c/nQ5UQVQE/LMSAYCygmq+FFoG2OkhSTTK84+buUXkqEw
-	 6UeZXsElqUsVQ==
-Message-ID: <60f683e5-7c3d-4dc9-a433-be948c3d954c@kernel.org>
-Date: Fri, 6 Sep 2024 10:26:03 +0200
+	b=Tp4guLCh6ySHj33oYeY+s9PxUL2I7gDR2FlSLqatBCL5vG5M0bkAnqyNy11AS5teF
+	 30XVpdrLkIjtclWXAXD5ZfIwqUnH0qkAJkGdH8Rh70vP7HfxJxOkVnXIpdmuOYt4f4
+	 W3m0HiNZinFBRRu6g5stF+ex+rptvoM1R9mXiW3YrPun2OUAqmnXTNOtKgBOlAKcFJ
+	 +6pTGWqve8/Af/IglDpIuPi67ITXgXJ55CydolxNpXeSKf1SaYxEjr+8xhv6IyyPHN
+	 PcA0BjPaXJP0NKjG60aR0k3KChpxpz4NJL6XGJiGdyAtyuaD6bx8rA444hQ+ld7Bfa
+	 xrQJn+v0mwZtg==
+Message-ID: <ad315fc3-a33a-4f1b-8619-4da4d177ac7f@kernel.org>
+Date: Fri, 6 Sep 2024 10:26:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: test for
- flush/re-add endpoints" failed to apply to 5.15-stable tree
+Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: check re-using ID
+ of unused ADD_ADDR" failed to apply to 5.15-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
 Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082619-chair-irritable-03aa@gregkh>
+References: <2024082628-stapling-dad-555c@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -101,7 +101,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082619-chair-irritable-03aa@gregkh>
+In-Reply-To: <2024082628-stapling-dad-555c@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -120,24 +120,30 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From e06959e9eebdfea4654390f53b65cff57691872e Mon Sep 17 00:00:00 2001
+> From a13d5aad4dd9a309eecdc33cfd75045bd5f376a3 Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Mon, 19 Aug 2024 21:45:24 +0200
-> Subject: [PATCH] selftests: mptcp: join: test for flush/re-add endpoints
+> Date: Mon, 19 Aug 2024 21:45:20 +0200
+> Subject: [PATCH] selftests: mptcp: join: check re-using ID of unused ADD_ADDR
 > 
-> After having flushed endpoints that didn't cause the creation of new
-> subflows, it is important to check endpoints can be re-created, re-using
-> previously used IDs.
+> This test extends "delete re-add signal" to validate the previous
+> commit. An extra address is announced by the server, but this address
+> cannot be used by the client. The result is that no subflow will be
+> established to this address.
 > 
-> Before the previous commit, the client would not have been able to
-> re-create the subflow that was previously rejected.
+> Later, the server will delete this extra endpoint, and set a new one,
+> with a valid address, but re-using the same ID. Before the previous
+> commit, the server would not have been able to announce this new
+> address.
+> 
+> While at it, extra checks have been added to validate the expected
+> numbers of MPJ, ADD_ADDR and RM_ADDR.
 > 
 > The 'Fixes' tag here below is the same as the one from the previous
 > commit: this patch here is not fixing anything wrong in the selftests,
 > but it validates the previous fix for an issue introduced by this commit
 > ID.
 > 
-> Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+> Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
 
 Similar to my previous message mentioning that the 'Fixes' tag here is
 pointing at the issue in the code, but the test file cannot easily be
