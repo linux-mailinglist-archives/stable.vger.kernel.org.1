@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0505896EDE7
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11E096EDE6
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52E67B251FC
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810D7287438
 	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E51F15B55D;
-	Fri,  6 Sep 2024 08:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEE415748F;
+	Fri,  6 Sep 2024 08:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XV2POdtj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dD7+4aEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FDD1581E1;
-	Fri,  6 Sep 2024 08:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361CD15749A;
+	Fri,  6 Sep 2024 08:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611131; cv=none; b=k7n85/W9ZwO1xrDQlE+T7tXF3ELAX6Ne/tc8eKQqjIBvULWfChl841GRHr3lyovJIxTJL0r1NiMeVINOvQO9mWqKsz6ATjV2zFSQwFPmNlFt4G3WbGdnhommdedV99NnWE6j0JizU/0AcnhgE7RjuI3/TQgnzpsw7USgrLN2dmU=
+	t=1725611145; cv=none; b=sALmRlFceOB88xRzEgdXouLO9+kZN76hhZdoVIAJUfWk8CWxLLRZ2qXqPX1+j4tetGeOZX0tUIUnfRECEdhYoD6xFCeB6rl200sPraQ9+c3O0FIsJ2SKOCyu+Irxm61oqZWsbYQ1TUmuC/lrezvtjSS1zdcWwaDhreS6YKpjNi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611131; c=relaxed/simple;
-	bh=EzBepT4gKEZ9zZjwcAnUOUPCkNG4CeYkzer9upb1/oE=;
+	s=arc-20240116; t=1725611145; c=relaxed/simple;
+	bh=ZmPaVjLELtnhxpW3wpz5AsZ4Xd6hRA8J3SFowNgRP8Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ipPAZI5BM7NTUN/iX/Xi3jnK9i8NJmNqeXHh1cNt8G7fMBlHzR5/iR8f3yEv/JNx10CD3MH+A2J4puIcc22kYxqHKZyD9bgNv7ZGmmO2NxeFG3oG3TKM8xvK/idrNUcwRDFipFr+/SF1FTJOaRFxkUeKz0HF8aSlnREORa3XyOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XV2POdtj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B61FC4CEC5;
-	Fri,  6 Sep 2024 08:25:29 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=toDoTM7UbvatUOuwr1EJrp1ATKdX5ltfu8H006nkzCb1QIhTT8zpx1u6e9htxMmXBhRy+qDuEo/SjW2yRJO1ti24IfsXN94neH6s6arjFpHC+QcE2tnqL29M83GEkJWdjYN96i9/eM/oYhc5ERQ5kIhJY7wrdpiAR0SHstSm2fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dD7+4aEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B340CC4CEC4;
+	Fri,  6 Sep 2024 08:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611130;
-	bh=EzBepT4gKEZ9zZjwcAnUOUPCkNG4CeYkzer9upb1/oE=;
+	s=k20201202; t=1725611144;
+	bh=ZmPaVjLELtnhxpW3wpz5AsZ4Xd6hRA8J3SFowNgRP8Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XV2POdtj0ghZ9hA+pR97JQvAYReS1Gnt7EihxPmYyUGbOeG9Yjay6UPvzpbsyna+h
-	 fAPuvFpXeQW2jJVErBZSkgVKgQK42sPOxY0+nSw01Tn9VqnjBNA+V60pPyXQWINkLG
-	 XmaWrrqYY4x9WmdZFt4d2J5AC4d1iLZ3B0CgJpix8GjPghDgxs0NF8SAe4vsVvgSkl
-	 4k+WYh0qAzyBdHyemGwjZG1PbxDtpGE2GkmVvdzmKcBvc/eIQqM4dbikw1SauAl225
-	 qDttHV743/h2BT7nxvDVtSlMxm+OmmJtIelJLcGZTUZk5BFV2AWDEQ0F6y2YElyp+r
-	 rKe7vKzdy2roQ==
-Message-ID: <fc83c1c9-e7eb-4340-8baa-887a817bc269@kernel.org>
-Date: Fri, 6 Sep 2024 10:25:29 +0200
+	b=dD7+4aEbjXcXXVxWOWuAx73xlT5aSFf5oYRYZrH2ACdK8tkUEBxdFymSlVGp5YPO/
+	 DE80MHdrX95dyTE6Auy3Y0ZPmhHSxGblIzZ0fBl+BfgQuVsESXUnTVhFhG8+s5+WAR
+	 iyBeUMkX/sX8+eaRDZO/9slfEiN3kJrKNNLT0O2IbBuEfyek3xyPxfxhm481u/C8Ok
+	 0D4tQwxcABpVDR2jSOZ2A3CPWsQIGqCfOD1ebfpjKweHcDz1S2kP2/aPjARmrlWAn7
+	 zLHs0HndEyit/RoKMbUVKNvp67S3Y5Cwz3DjUQY7lOu2rJqiiZTGYkFa0DQjOFlPND
+	 RNovUamNXAoAQ==
+Message-ID: <60b65618-e025-444b-bb72-67db4592b60a@kernel.org>
+Date: Fri, 6 Sep 2024 10:25:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] mptcp: pm: re-using ID of unused removed
- subflows" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: only mark 'subflow' endp as
+ available" failed to apply to 5.15-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, kuba@kernel.org, martineau@kernel.org,
  MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082613-gerbil-channel-c3e1@gregkh>
+References: <2024082627-devotion-chewer-87af@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,15 +102,15 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082613-gerbil-channel-c3e1@gregkh>
+In-Reply-To: <2024082627-devotion-chewer-87af@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 26/08/2024 14:04, gregkh@linuxfoundation.org wrote:
+On 26/08/2024 14:06, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.10-stable tree.
+> The patch below does not apply to the 5.15-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
@@ -121,25 +121,39 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From edd8b5d868a4d459f3065493001e293901af758d Mon Sep 17 00:00:00 2001
+> From 322ea3778965da72862cca2a0c50253aacf65fe6 Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Mon, 19 Aug 2024 21:45:21 +0200
-> Subject: [PATCH] mptcp: pm: re-using ID of unused removed subflows
+> Date: Mon, 19 Aug 2024 21:45:26 +0200
+> Subject: [PATCH] mptcp: pm: only mark 'subflow' endp as available
 > 
-> If no subflow is attached to the 'subflow' endpoint that is being
-> removed, the addr ID will not be marked as available again.
+> Adding the following warning ...
 > 
-> Mark the linked ID as available when removing the 'subflow' endpoint if
-> no subflow is attached to it.
+>   WARN_ON_ONCE(msk->pm.local_addr_used == 0)
 > 
-> While at it, the local_addr_used counter is decremented if the ID was
-> marked as being used to reflect the reality, but also to allow adding
-> new endpoints after that.
+> ... before decrementing the local_addr_used counter helped to find a bug
+> when running the "remove single address" subtest from the mptcp_join.sh
+> selftests.
 > 
-> Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+> Removing a 'signal' endpoint will trigger the removal of all subflows
+> linked to this endpoint via mptcp_pm_nl_rm_addr_or_subflow() with
+> rm_type == MPTCP_MIB_RMSUBFLOW. This will decrement the local_addr_used
+> counter, which is wrong in this case because this counter is linked to
+> 'subflow' endpoints, and here it is a 'signal' endpoint that is being
+> removed.
+> 
+> Now, the counter is decremented, only if the ID is being used outside
+> of mptcp_pm_nl_rm_addr_or_subflow(), only for 'subflow' endpoints, and
+> if the ID is not 0 -- local_addr_used is not taking into account these
+> ones. This marking of the ID as being available, and the decrement is
+> done no matter if a subflow using this ID is currently available,
+> because the subflow could have been closed before.
+> 
+> Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
 
-For the same reasons as the ones invoked for v5.15, I don't think we
-need to backport this patch to v5.10.
+Similar to my previous message linked to the backport of "mptcp: pm:
+re-using ID of unused removed ADD_ADDR" where this patch depends on
+86e39e04482b ("mptcp: keep track of local endpoint still available for
+each msk"), I don't think we need to backport this patch to v5.15.
 
 Cheers,
 Matt
