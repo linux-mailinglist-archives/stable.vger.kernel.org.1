@@ -1,102 +1,153 @@
-Return-Path: <stable+bounces-73803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0F996F931
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:23:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860B596F9B5
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 19:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C3E1C2301C
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 16:23:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9801F23DC1
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 17:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772FF1D3637;
-	Fri,  6 Sep 2024 16:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BA01D4607;
+	Fri,  6 Sep 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MYPNrhhg"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AXbZrfsn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88DD1D1F6F
-	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 16:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAD71D3656;
+	Fri,  6 Sep 2024 17:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725639788; cv=none; b=RYh0BF1K3LtxJGkFA48wkugxHEcOYXqkPpvxSd8sj7tS0s8n1DSOHbQndPTNlyUNwglEWYtoabtUoxPtm8EC4q1uuETQek7wy12Ru6uXkv9LEfhgutwkXp9E9NTHuAM+g2eWNjbaa/g69eMqhbJpG6uzDQmaNC/L6guNQyrUA+A=
+	t=1725642193; cv=none; b=dQLR6Wj9Fy1t7ZSMk2fuzVka1tZ5VNFqEe5rbzioKUTk/hXRUc/So03lltqrKXrjCPtJN/yt/0FFtQnlskpjBuX3TPPy8uWApkyEsW4opAtJFy35M+o/LI23YPomLbTWmkgVgA46lTOS0O2ZiALe9Kua9eUloYgyBjGqmoxcGys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725639788; c=relaxed/simple;
-	bh=fS/zCZRcdqBRpXPYngRBghtR8qMeqNGYgofN4G8HWzs=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=o3X5g31w81hvWc0VYhpkAdq9QgRKfGY3CpIZPLzCM7CxS6YdZInlB4oXtYmULmEO1nt211JGVhivwCiFR6RR/2XZgswihktWrMm6asdDI+r8fhqNMwkmckTF9ca+CoZf17gb8qgH2XjP++VCEZUF14ZmFMEWk4gbzIBvDjFdg/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MYPNrhhg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725639785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fS/zCZRcdqBRpXPYngRBghtR8qMeqNGYgofN4G8HWzs=;
-	b=MYPNrhhgfiDcKJmS0nyCiHjGLw3t9pParDP+cigxL8EltjPtYIbRjoOJB78IUAxGIjYSJ7
-	90q11rJDQBSW5mPyuLLC5B6dylO34Rc3s/OPYnRKR13WI+Q+UG91GWa9ZDnBsprPC+CNxD
-	smCenU/2//pCOIIgScaf8cDnjJMMlZ4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-ka47LoxQP1qgVe7ZYMxK4g-1; Fri,
- 06 Sep 2024 12:23:02 -0400
-X-MC-Unique: ka47LoxQP1qgVe7ZYMxK4g-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DF6481955F43;
-	Fri,  6 Sep 2024 16:23:00 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AA7EB1956048;
-	Fri,  6 Sep 2024 16:22:58 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
-References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
-To: Christian Ebner <c.ebner@proxmox.com>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
-    regressions@lists.linux.dev, ceph-devel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via in-kernel ceph client
+	s=arc-20240116; t=1725642193; c=relaxed/simple;
+	bh=yWbLFIl/asMYOkEMtL1VrdhvAG4/uLy2td1Rn6/TbzA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rT4R8LvSwA69QBg/SeQDrECtGv/QAhk6peDb7D22SXnCZa/0qEZPYFWFDgeFM8Cgc6guw6GfsPgSUHanFsqqQnnyk63QsY2ZSaRIZLtw5Yrwz3LA/nijHgp259iy/towiwmgK5xOVnPS0XiucJLJTofBQBdAguV5MJLnn4fGLn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AXbZrfsn; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 486Dt68d026367;
+	Fri, 6 Sep 2024 17:02:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	8YYOBneB917QBCdakNuvYI37onUQ5PmLSY+eVM2JoYA=; b=AXbZrfsnlN7G6+6P
+	xag44Eo7Ti/JzR943oC4grZXK5CvazRF/qqtm4uc1Uw8bpeurcjSS1r7SXi9J99Z
+	DPqjhbI66Adaoq/NAQFHfovZRAKAHfdIsSUsHMWVCCPNokZAoNmqGMk9L9BU2oOF
+	KT/HQlLgZUNv+gXHUu7UaNYr2pvH2o2Bw0fkJdEw8voR9LTUHymcMSlmrApGu8VC
+	kWqva39KVzJS11Q1iPhwpoggnhz0fD0lfZvym6zhsomlAJ9fwloChK62fz1ciUsZ
+	Cr2UUHtpqWDSxusMrkanwJRA6Jf0RIniuQOS4Xa83qYVCIkt2gtF1aBOTced9dIF
+	rY0adQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41fj1m58s8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Sep 2024 17:02:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 486FjK4u019891;
+	Fri, 6 Sep 2024 17:02:41 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41fj3xvp9n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Sep 2024 17:02:41 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 486H2evq52953428
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Sep 2024 17:02:40 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16B1858058;
+	Fri,  6 Sep 2024 17:02:40 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB9795805B;
+	Fri,  6 Sep 2024 17:02:38 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Sep 2024 17:02:38 +0000 (GMT)
+Message-ID: <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
+Date: Fri, 6 Sep 2024 13:02:37 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix ibmvtpm
+ building
+To: Jarkko Sakkinen <jarkko@kernel.org>, Kexy Biscuit <kexybiscuit@aosc.io>,
+        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, mpe@ellerman.id.au,
+        naveen.n.rao@linux.ibm.com, zohar@linux.ibm.com,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Mingcong Bai <jeffbai@aosc.io>
+References: <20240905085219.77240-2-kexybiscuit@aosc.io>
+ <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cFcTW404zW7yxxo24IlSG3T7nXofLOZk
+X-Proofpoint-ORIG-GUID: cFcTW404zW7yxxo24IlSG3T7nXofLOZk
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <127720.1725639777.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Sep 2024 17:22:57 +0100
-Message-ID: <127721.1725639777@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_03,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
+ adultscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2408220000 definitions=main-2409060125
 
-Christian Ebner <c.ebner@proxmox.com> wrote:
 
-> some of our customers (Proxmox VE) are seeing issues with file corruptio=
-ns
-> when accessing contents located on CephFS via the in-kernel Ceph client =
-[0,1],
-> we managed to reproduce this regression on kernels up to the latest 6.11=
--rc6.
-> Accessing the same content on the CephFS using the FUSE client or the
-> in-kernel ceph client with older kernels (Ubuntu kernel on v6.5) does no=
-t show
-> file corruptions.
 
-Are they using local caching with cachefiles?
+On 9/5/24 10:26 AM, Jarkko Sakkinen wrote:
+> On Thu Sep 5, 2024 at 11:52 AM EEST, Kexy Biscuit wrote:
+>> Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+>> initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
+>> which could be built as a module. However, tpm2_sessions_init() wasn't
+>> exported, causing libmvtpm to fail to build as a module:
+>>
+>> ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
+>>
+>> Export tpm2_sessions_init() to resolve the issue.
+>>
+>> Cc: stable@vger.kernel.org # v6.10+
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
+>> Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
+>> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+>> ---
+>> V1 -> V2: Added Fixes tag and fixed email format
+>> RESEND: The previous email was sent directly to stable-rc review
+>>
+>>   drivers/char/tpm/tpm2-sessions.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+>> index d3521aadd43e..44f60730cff4 100644
+>> --- a/drivers/char/tpm/tpm2-sessions.c
+>> +++ b/drivers/char/tpm/tpm2-sessions.c
+>> @@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+>>   
+>>   	return rc;
+>>   }
+>> +EXPORT_SYMBOL(tpm2_sessions_init);
+>>   #endif /* CONFIG_TCG_TPM2_HMAC */
+> 
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> 
+Would have tested it but machine is down..
 
-David
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
+> BR, Jarkko
+> 
 
