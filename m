@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A7796EEB2
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:00:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F05D496EEFF
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 459212887C8
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:00:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83E71F2308A
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7291ABEA0;
-	Fri,  6 Sep 2024 09:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBB9158DC1;
+	Fri,  6 Sep 2024 09:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrdKLCrO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQVmw7iE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981DA1AB536;
-	Fri,  6 Sep 2024 09:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE4948CFC
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 09:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725613228; cv=none; b=J5sa1y9SGSBVGhEG/O0/qcGmusFXgsmXPwUoga5MzC22xgVyj80949HDuU6GtirL7qUiSwk4Z8WGGtxaCZvYCUJPkpl/K+0EuWEk0ccjD7iRoOeZmfEZHVv1eXLaUHDVV/caMbrb9bsZRx/uBkxDmxlUZb75jQxrIoiLsxjCanA=
+	t=1725614434; cv=none; b=MG5x799U7HekVD/1emQVr3YXaKhh+n48aQvHUOKiVzqZYX9w17av4Ea+Sks81GwFXE2KV/i3N5sW3Xyich4ZSykj1rqTmx/YgAPX5VdKyFqsuL4jSj1YOFfiRaxDVNkXcut0ijKI8QFplZp0a5fRNg61zFL/VOFHdxH3kckBVLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725613228; c=relaxed/simple;
-	bh=Q027B1JEOfu8pLI/u/IsvYZjX1fkrbkNO/csdnCL5lI=;
+	s=arc-20240116; t=1725614434; c=relaxed/simple;
+	bh=YiPemEPoL4+6Qk4xuXYc2c/Sub/+rbQODdjWRXr0O+U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=incSc+4O3fDf2DMnEob1i3fubg97vBLRNVT5feK2JZRQDheOzrCuDDKbpoB/W/OQj5y8DIyIX6qHreAkYJOjkpOclD9hiyLV4gcdF5qXNW2p70cvbEKr0Iqc2pdP+ju4JkoeHbeOJ9s8pmq3LCbhRjkXA4te/PT+Eqjkb0h1NEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrdKLCrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5619C4CEC4;
-	Fri,  6 Sep 2024 09:00:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=KTgJTSQ76KMBGmbuZOlHA4XPOAo5sM1b0HBofOKMNLijqwiLlM0looDFd6cqZRXNsnUrYHo9xp2Y++HailfBaH63HUlE+h6NJhL0eoKdwxDcNnofMk57ZMl2PDgCBv/TrGmW/QSiPXIJrCxUZkkdjDkL/Y46CruyLxD2eYm+vS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQVmw7iE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE44C4CEC5;
+	Fri,  6 Sep 2024 09:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725613228;
-	bh=Q027B1JEOfu8pLI/u/IsvYZjX1fkrbkNO/csdnCL5lI=;
+	s=k20201202; t=1725614433;
+	bh=YiPemEPoL4+6Qk4xuXYc2c/Sub/+rbQODdjWRXr0O+U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GrdKLCrOhqJT928aaFsth9hVJuLA1Lz8axtQCapI+IsWUxgJcTIiKV79hxIKemfHE
-	 SPFwN9ALbofHhayhFpo91dDNkdjl4BaubcFBocu2uGD1FYoaAhSwwM4zr/GUnQ9OfQ
-	 GMUmdNCzCGEp9HJktLuvDLKi7ZCuVj3vgIAdQs367yVuUAo23oPLLn+SqW+9gyASns
-	 bF0fqzqnR2VsdYuOCYqRSzD6WHzwUFtAIcZ+DtB3tBIJ/noVNLd4z8+03wnnr2YJTa
-	 T2d91thpzVitgP5sMHD0usElkeh/mfa7oQgYNJ+tpJYEM/dYwg7mrhMFpPBazUNrKM
-	 xZHO106DxPS8A==
-Message-ID: <1dfb02d8-f4ba-4ec8-a0c3-59d304454702@kernel.org>
-Date: Fri, 6 Sep 2024 11:00:26 +0200
+	b=RQVmw7iEEVc27hDkYx4XuO9jFCN3bZ+bwIf63HVN3Tb6RVSayBefZgS0A11LRn4Pp
+	 HEFXOpHum0/KUoKxTVMm0QooVE7ciLx/rACCwlIKx5Z4noXCEHBrHrMCWgIUnzIPou
+	 Yq3IMWTeU4bQFLFVYCJGqi2723i4yahGQCxFoG2iRPAsVH19FlSKtxmYu25LiY13f4
+	 bqgvA81AtXzWrnqLNo1HBECITTeBZF5d/qZcYxPPP8KMC6DvZpTPuRtYPJ4RTRj2cz
+	 5jXXfXlqjm49niCLBWxhnXAZWqFu8RWOEXp0ftKTJYPfcvzfxMhbRpm9P08iAzDHUl
+	 bBBxnxH2oDtmA==
+Message-ID: <775029c6-ddeb-4a87-bd2c-69bb45a1e1c0@kernel.org>
+Date: Fri, 6 Sep 2024 11:20:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] mptcp: pm: ADD_ADDR 0 is not a new
- address" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: reuse ID 0 after delete and
+ re-add" failed to apply to 6.12-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org, martineau@kernel.org, pabeni@redhat.com
-Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024083025-evoke-catering-3aab@gregkh>
+Cc: stable@vger.kernel.org
+References: <2024083041-irate-headless-590c@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -101,51 +101,17 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024083025-evoke-catering-3aab@gregkh>
+In-Reply-To: <2024083041-irate-headless-590c@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 30/08/2024 12:26, gregkh@linuxfoundation.org wrote:
+On 30/08/2024 12:21, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> The patch below does not apply to the 6.12-stable tree.
 
-Thank you for the notification!
-
-(...)
-
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 57f86203b41c98b322119dfdbb1ec54ce5e3369b Mon Sep 17 00:00:00 2001
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Wed, 28 Aug 2024 08:14:37 +0200
-> Subject: [PATCH] mptcp: pm: ADD_ADDR 0 is not a new address
-> 
-> The ADD_ADDR 0 with the address from the initial subflow should not be
-> considered as a new address: this is not something new. If the host
-> receives it, it simply means that the address is available again.
-> 
-> When receiving an ADD_ADDR for the ID 0, the PM already doesn't consider
-> it as new by not incrementing the 'add_addr_accepted' counter. But the
-> 'accept_addr' might not be set if the limit has already been reached:
-> this can be bypassed in this case. But before, it is important to check
-> that this ADD_ADDR for the ID 0 is for the same address as the initial
-> subflow. If not, it is not something that should happen, and the
-> ADD_ADDR can be ignored.
-> 
-> Note that if an ADD_ADDR is received while there is already a subflow
-> opened using the same address, this ADD_ADDR is ignored as well. It
-> means that if multiple ADD_ADDR for ID 0 are received, there will not be
-> any duplicated subflows created by the client.
-> 
-> Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-
-The code is too different in v5.10, and I don't think it is worth it to
-have this small fix in v5.10.
+v6.12? Are you back from the future? :)
 
 Cheers,
 Matt
