@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484B696EDE5
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:26:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0505896EDE7
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E95288086
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:26:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52E67B251FC
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA82115B12A;
-	Fri,  6 Sep 2024 08:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E51F15B55D;
+	Fri,  6 Sep 2024 08:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFnxcOLI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XV2POdtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671C115B111;
-	Fri,  6 Sep 2024 08:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FDD1581E1;
+	Fri,  6 Sep 2024 08:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611127; cv=none; b=gNEkGBqKKfB3rT+swIRTV00NZhqk7MAu0e4/zj9FWQcRZRNyveRmyeNz9qgY3FdCvTgMMlTo/EXN1txeXQEH8VRcQ6Ir1UQNSvt2eJXn/IhRyC5syEdlsEu3w41BWD2FXsD3oBnUSlF483reELbdGyjY+bWmQZzFkHU3rF6AeNQ=
+	t=1725611131; cv=none; b=k7n85/W9ZwO1xrDQlE+T7tXF3ELAX6Ne/tc8eKQqjIBvULWfChl841GRHr3lyovJIxTJL0r1NiMeVINOvQO9mWqKsz6ATjV2zFSQwFPmNlFt4G3WbGdnhommdedV99NnWE6j0JizU/0AcnhgE7RjuI3/TQgnzpsw7USgrLN2dmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611127; c=relaxed/simple;
-	bh=pLSAvXMBggHpO65VcXRH+xwOtOrcK0BnPMmF07j9Udg=;
+	s=arc-20240116; t=1725611131; c=relaxed/simple;
+	bh=EzBepT4gKEZ9zZjwcAnUOUPCkNG4CeYkzer9upb1/oE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rw86svMoOHglP6VV0u8bW8xq4CttZUbWpAOvxiDLsA7Qbi9RZbeBQoy2q9+b+IIEMCLwQRdrzEuEvXckrmumxrY21wBwL78hyquaK43cMLTJPPslcW0UTZe3CaTkFogRHO23Q+TRIQA4z0fA/ljl+eaExYj14Cjakm8GG606jzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFnxcOLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9634C4CECD;
-	Fri,  6 Sep 2024 08:25:25 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ipPAZI5BM7NTUN/iX/Xi3jnK9i8NJmNqeXHh1cNt8G7fMBlHzR5/iR8f3yEv/JNx10CD3MH+A2J4puIcc22kYxqHKZyD9bgNv7ZGmmO2NxeFG3oG3TKM8xvK/idrNUcwRDFipFr+/SF1FTJOaRFxkUeKz0HF8aSlnREORa3XyOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XV2POdtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B61FC4CEC5;
+	Fri,  6 Sep 2024 08:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611126;
-	bh=pLSAvXMBggHpO65VcXRH+xwOtOrcK0BnPMmF07j9Udg=;
+	s=k20201202; t=1725611130;
+	bh=EzBepT4gKEZ9zZjwcAnUOUPCkNG4CeYkzer9upb1/oE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BFnxcOLIk1LFIL/RbWfOYDFzy1j0BUbTpMFHd/RlQbqaxZ++OSyexV+JXaIDjatFo
-	 PHZIVD7lKe6kd58Q+p5dkYV7URgReGmwSk4NoDfzSTQZjlgcTlqAnVsk2xxrD6yNd3
-	 X+8rhF5Ns/RMQrLSeUOcZNq0PS1ngyzjdh2aOs69TW77wJ+Cu9UNSsCdkVhdaBcAUj
-	 cmUJz86tKSbWTjXLzB04QtYyQjKzuwtAb/1uyqj5s93Yi8rwBbSKPuDgeI2iDPDpS4
-	 pPpmGRaUAZ3BGGE/Ekdn/yiHHRGJ3p+ISbITGFtooWiUwXogB3mtKgb3FJHjJUKf8D
-	 XhUGg7Y1mmrYA==
-Message-ID: <0e2b59eb-12bf-4220-b9e8-97ae37d654ce@kernel.org>
-Date: Fri, 6 Sep 2024 10:25:24 +0200
+	b=XV2POdtj0ghZ9hA+pR97JQvAYReS1Gnt7EihxPmYyUGbOeG9Yjay6UPvzpbsyna+h
+	 fAPuvFpXeQW2jJVErBZSkgVKgQK42sPOxY0+nSw01Tn9VqnjBNA+V60pPyXQWINkLG
+	 XmaWrrqYY4x9WmdZFt4d2J5AC4d1iLZ3B0CgJpix8GjPghDgxs0NF8SAe4vsVvgSkl
+	 4k+WYh0qAzyBdHyemGwjZG1PbxDtpGE2GkmVvdzmKcBvc/eIQqM4dbikw1SauAl225
+	 qDttHV743/h2BT7nxvDVtSlMxm+OmmJtIelJLcGZTUZk5BFV2AWDEQ0F6y2YElyp+r
+	 rKe7vKzdy2roQ==
+Message-ID: <fc83c1c9-e7eb-4340-8baa-887a817bc269@kernel.org>
+Date: Fri, 6 Sep 2024 10:25:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,12 +51,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: FAILED: patch "[PATCH] mptcp: pm: re-using ID of unused removed
- subflows" failed to apply to 5.15-stable tree
+ subflows" failed to apply to 5.10-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, kuba@kernel.org, martineau@kernel.org,
  MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082612-hydrated-overdress-ea6a@gregkh>
+References: <2024082613-gerbil-channel-c3e1@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,7 +102,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082612-hydrated-overdress-ea6a@gregkh>
+In-Reply-To: <2024082613-gerbil-channel-c3e1@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -110,7 +110,7 @@ Hi Greg,
 
 On 26/08/2024 14:04, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.15-stable tree.
+> The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
@@ -138,10 +138,8 @@ Thank you for the notification!
 > 
 > Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
 
-Similar to my previous message linked to the backport of "mptcp: pm:
-re-using ID of unused removed ADD_ADDR" where this patch depends on
-86e39e04482b ("mptcp: keep track of local endpoint still available for
-each msk"), I don't think we need to backport this patch to v5.15.
+For the same reasons as the ones invoked for v5.15, I don't think we
+need to backport this patch to v5.10.
 
 Cheers,
 Matt
