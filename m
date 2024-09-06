@@ -1,132 +1,123 @@
-Return-Path: <stable+bounces-73694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0F096E722
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 03:12:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9682996E77E
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 04:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121B51F24667
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 01:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C50F1F2378F
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 02:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5AE17BA3;
-	Fri,  6 Sep 2024 01:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NhLx8kpE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A021DA53;
+	Fri,  6 Sep 2024 02:04:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671181DFCF;
-	Fri,  6 Sep 2024 01:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DB51FDD;
+	Fri,  6 Sep 2024 02:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725585153; cv=none; b=Fp6DVspP4wjvy7Q1vTPer3IIcDL/dv3fjQj5LYxaLnSv2H3yU39k1IRkee2t7D1wqurSFZizUbOWBjhDnF9hiz8ELQhX6TsqWrNylpycYUu2Y51EkplIhuYSBT/qk+1TgVIBZGYQt6YHYFzq5b8+T5k6IrgOt0ldrABPv0xt2Gk=
+	t=1725588244; cv=none; b=qrDZI1lfl6BtL4y3t3vzi/l2+CkL8DPJrq4qFtQalrZ2qK8JsvR5WdgDTnxfsKjzTIRF+Np//ASDJZ93edtnKP+uNlhx8mhtR/C8G8kohs7T5CZt12i9JJwJV3rPE8mRCMmFNtZLXlwQE2kkeyiBHeK4OIidC8e/j6nVZSbNbxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725585153; c=relaxed/simple;
-	bh=tajvxvjnOiEA5fsVw+UnLHqK+urb541csY0X9cR0iU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U97eDd7VeREYbjlf3QsNzWxu853O+yr6S3xMDY1k0ulqdEkDRl+vrYTXqNMklPLSdCgDSsqD5Hpmsry+h7DB19FIise9vTvjRLNg0oFjFn+Yo9oYWTNrK063F82OKwA0W7KpELWQBNqi6UH28DK16CERVduQ3FJia4ERWl2aYQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NhLx8kpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C353CC4CEC3;
-	Fri,  6 Sep 2024 01:12:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725585153;
-	bh=tajvxvjnOiEA5fsVw+UnLHqK+urb541csY0X9cR0iU4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NhLx8kpEp0nenjDFHDZlrvUdZU6o6yg/H7umqYZhpaoC+4iMaksv4tCI4vuArh2Ud
-	 78J8Dt70gIbURuImyRfVnurlEcz1gOz2XpPIGMpxmpIrfxKe24R+mo+BUQr3y0XZhB
-	 Hc4AsqZpmS8g8KdYqTuRhimz7GPcOoKzxarmTBfUChG9MTFQ7ezbZrh8oDGFF/USMx
-	 S1OmKWYuigqBtRvoHQoYob1c3rvxnyeK67A8c55YYmcmKdU+UxCCtqxQeFe/Jmsevr
-	 YYMUfT/UdVDQ4cPx/POof04qctPRl8DIoJz0XLxYI5p01HcG3BhAPc3i2R9Oray+eB
-	 EsvIDfQvUnVQQ==
-Date: Fri, 6 Sep 2024 09:12:24 +0800
-From: Peter Chen <peter.chen@kernel.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: cdnsp: Fix incorrect usb_request status
-Message-ID: <20240906011224.GA357232@nchen-desktop>
-References: <20240905072541.332095-1-pawell@cadence.com>
- <PH7PR07MB95382F640BC61712E986895BDD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
- <20240905080543.GC325295@nchen-desktop>
- <PH7PR07MB95383CF665431DBDACD73B65DD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	s=arc-20240116; t=1725588244; c=relaxed/simple;
+	bh=QeYUXtY5JpyYrDpPKMOW6fHt73XzdsW3AkeAkEzbuYc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rC/XDjIZQjX3PZpiraggko1b0ssvW+ajgTVv1fHV4P0wiT18man/TUJY0KcXEsuTEdjRFhPdDCxCkiCTePpDXmsspBv2iNgHNnxg53sJwIhJYtZMNSb/jBq+21qSHaXh6Slzjumu5t7pHCkC0zNFNrBvAdAx6Zasyo+LNn8xNOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAAHDx_sYtpmJrR9AQ--.29972S2;
+	Fri, 06 Sep 2024 10:03:32 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: linus.walleij@linaro.org,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	bartosz.golaszewski@linaro.org,
+	antonio.borneo@foss.st.com,
+	s.shtylyov@omp.ru,
+	valentin.caron@foss.st.com,
+	peng.fan@nxp.com,
+	make24@iscas.ac.cn,
+	akpm@linux-foundation.org
+Cc: linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] pinctrl: stm32: check devm_kasprintf() returned value
+Date: Fri,  6 Sep 2024 10:03:23 +0800
+Message-Id: <20240906020323.556593-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB95383CF665431DBDACD73B65DD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAHDx_sYtpmJrR9AQ--.29972S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1kWF4xZrykCr1DAw4xWFg_yoW8Jw48pF
+	s3Gr1Ykr47J3y3CF1UJ34Y9F9agayktFyDGa1I934xZF4Yvayjqr4rKrWUZr4kKF4rXwn8
+	ZF43Jay5Zr1rCFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On 24-09-05 08:45:59, Pawel Laszczak wrote:
-> >
-> >On 24-09-05 07:31:10, Pawel Laszczak wrote:
-> >> Fix changes incorrect usb_request->status returned during disabling
-> >> endpoints. Before fix the status returned during dequeuing requests
-> >> while disabling endpoint was ECONNRESET.
-> >> Patch changes it to ESHUTDOWN.
-> >
-> >Would you please explain why we need this change?
-> 
-> This patch is needed for UVC gadget. 
-> During stopping streaming the class starts dequeuing usb requests and
-> controller driver returns the -ECONNRESET status. After completion
-> requests the class or application "uvc-gadget" try to queue this
-> request again. Changing this status to ESHUTDOWN cause that UVC
-> assume that endpoint is disabled, or device is disconnected and
-> stop re-queuing usb requests.
-> 
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-Get it. Would you please update commit message with your above
-explanation?
+Found by code review.
 
-Peter
+Cc: stable@vger.kernel.org
+Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the patch according to suggestions, added braces;
+- modified the typo.
+---
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-> >
-> >>
-> >> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
-> >> USBSSP DRD Driver")
-> >> cc: stable@vger.kernel.org
-> >> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-> >> ---
-> >>  drivers/usb/cdns3/cdnsp-ring.c | 6 ++++--
-> >>  1 file changed, 4 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/usb/cdns3/cdnsp-ring.c
-> >> b/drivers/usb/cdns3/cdnsp-ring.c index 1e011560e3ae..bccc8fc143d0
-> >> 100644
-> >> --- a/drivers/usb/cdns3/cdnsp-ring.c
-> >> +++ b/drivers/usb/cdns3/cdnsp-ring.c
-> >> @@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_device
-> >*pdev,
-> >>  	seg = cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
-> >>  			      cur_td->last_trb, hw_deq);
-> >>
-> >> -	if (seg && (pep->ep_state & EP_ENABLED))
-> >> +	if (seg && (pep->ep_state & EP_ENABLED) &&
-> >> +	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
-> >>  		cdnsp_find_new_dequeue_state(pdev, pep, preq-
-> >>request.stream_id,
-> >>  					     cur_td, &deq_state);
-> >>  	else
-> >> @@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_device
-> >*pdev,
-> >>  	 * During disconnecting all endpoint will be disabled so we don't
-> >>  	 * have to worry about updating dequeue pointer.
-> >>  	 */
-> >> -	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
-> >> +	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
-> >> +	    pep->ep_state & EP_DIS_IN_RROGRESS) {
-> >>  		status = -ESHUTDOWN;
-> >>  		ret = cdnsp_cmd_set_deq(pdev, pep, &deq_state);
-> >>  	}
-> >> --
-> >> 2.43.0
-> >>
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index a8673739871d..f23b081f31b3 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1374,10 +1374,16 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
+ 
+ 	for (i = 0; i < npins; i++) {
+ 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
+-		if (stm32_pin && stm32_pin->pin.name)
++		if (stm32_pin && stm32_pin->pin.name) {
+ 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
+-		else
++			if (!names[i]) {
++				err = -ENOMEM;
++				goto err_clk;
++			}
++		}
++
++		else {
+ 			names[i] = NULL;
++		}
+ 	}
+ 
+ 	bank->gpio_chip.names = (const char * const *)names;
+-- 
+2.25.1
+
 
