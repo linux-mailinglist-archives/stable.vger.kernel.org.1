@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-73751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DF196EF02
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:22:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE02196EF03
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 922E91C21EA2
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:22:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16DFAB208EB
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED459158DC1;
-	Fri,  6 Sep 2024 09:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF4218892A;
+	Fri,  6 Sep 2024 09:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFjl3WNE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RiHHA9+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FCC48CFC;
-	Fri,  6 Sep 2024 09:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE09A1459FD;
+	Fri,  6 Sep 2024 09:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725614533; cv=none; b=mUSJQ1nsSG3eifOtUAn08nsezXLexOD2ArkHXu4FH7fHPfD/mf8ZLcZ9bs7WszytHYYFEAOVNLVKlJGDO11Y2Gja87+1iE+AkBBiBd12tq1/lpaHesQAer1oHPma8d2p0f+AOM4Pz2TPO20ydNlsO98QBDZ0suzo1a8DSOL1rVc=
+	t=1725614549; cv=none; b=nIVwblUNYDB7dJRdxlYRdG9UdWIXd5FwK+N0VSKIXik7ABycjbB4ao8Y6Pq8OdbiRK+5aIo1rYH1EEkNMcVvx/MQBkgsnSZBEJUdF/BYnX+nxEO1B4mVHqePuPCzjFtWfQxIqX0gCdPK+P28QZKGT3YOSvtQgdOfaccvKSXaXf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725614533; c=relaxed/simple;
+	s=arc-20240116; t=1725614549; c=relaxed/simple;
 	bh=RFEywIVAJoTTG/a7ADoSCEliwGRzNjiGhHJjoveXyz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdGka6Y1JzRGXaVp30z9OCFYoQjxOfXXtFB75Eg+Q4SdcU0jKA72A16lO3EFWlr5J4Ktur0/mN+6XYnyKR/EdtS8nlOY10VKKLnedlUgZVD27GoXrAYAO+IxgUzbh4FMTkxyzYgMyxzUFr+d+1zOYBGX7jpaVmxJBgtd2oyT8QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFjl3WNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3ACC4CEC4;
-	Fri,  6 Sep 2024 09:22:11 +0000 (UTC)
+	 MIME-Version; b=dIpR9OnYpVlzUGCI7mDyQ+xLzGmI2Btm73B2c2DxSNpQRIqbu5IpoE6IhEOa6oXzHrhPULqkgFATXkaR7QGK0JSOiHoHjK2orxj+hxxWTqjE4yEDMmm7QViyVSJeoFeOUOJdTRJIuYPo5pCKuWHd/G0PKhe1Z8odtLAmM9YImRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RiHHA9+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C3AC4CEC4;
+	Fri,  6 Sep 2024 09:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725614533;
+	s=k20201202; t=1725614548;
 	bh=RFEywIVAJoTTG/a7ADoSCEliwGRzNjiGhHJjoveXyz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFjl3WNEj4FsiUL9dYBq4Wv4j+tWT18eBM0XH0gWN7OjKclRzjDv4gssNVKUNH89T
-	 3Pq2hkk+9AtCJg+1omeFgBD0k0N3hj8VV0JusYRZBF0pKivxeJvG/pIbU0C47XQigW
-	 NX/yirqiDifdB/qQ+4CvSq9WI3kJhE2i9s2H78i/kRURmTZuEuGNyVOtt+y/74WmFy
-	 x6fXB4+rtkTVWD/0j7MsaCLhLI+OQlDtvVWeMdMuhpzoLX4HNZ/m8G36AzIAGq+53l
-	 LG5AE1Q1ZtdHURDDekhpMNjdOHP15fSDuU1NdsISlwPWkptVIV4eUmoTobT27IOywQ
-	 fwppKjXJoRbcw==
+	b=RiHHA9+48GKNAM966SUgKbu34JdXCyiQfGS0D1cKNeSfNDg5N5eitVm6ZTXxbbfJp
+	 XGmcJ7HgR3hNyBFx/VLzMV4Wo/wVv+qO2gWgzwPZacBbO8tfET2gnE0iAAjbgFF/wg
+	 EM5BRmW8l6rP8qKYjNF6cwZU4BM/2rCZK9MWpQB8S3IFXVdJOrY0+3atTkGiaGpUpu
+	 AOtKx2aInwBsRVqQKECxnbCTWS3sxO+wsCTu3DzOS2bDR0btf5jP+i66mMzn2La7cQ
+	 8bUPk1klADgDR+uKdk9F8oLiPRkSqTn0fV+4xUk58RcLO/SEUEefx5Fz3ssx3yFk/2
+	 9BfhiQTyipTrA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -49,9 +49,9 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: pm: avoid possible UaF when selecting endp
-Date: Fri,  6 Sep 2024 11:21:56 +0200
-Message-ID: <20240906092155.1930090-2-matttbe@kernel.org>
+Subject: [PATCH 5.10.y] mptcp: pm: avoid possible UaF when selecting endp
+Date: Fri,  6 Sep 2024 11:22:23 +0200
+Message-ID: <20240906092222.1930688-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <2024082658-pectin-freeness-1354@gregkh>
 References: <2024082658-pectin-freeness-1354@gregkh>
@@ -61,7 +61,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5433; i=matttbe@kernel.org; h=from:subject; bh=RFEywIVAJoTTG/a7ADoSCEliwGRzNjiGhHJjoveXyz8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2smzYUu/8pNi+Q8otzaTZ189X4rO8xd/Po9ae Z4Rr76OXhWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtrJswAKCRD2t4JPQmmg c5rjEADc21bqvXBHtf+RQdNei1ek0pS+nP94b8Yzkokf5sxI+DpgD3S7dUk+53FDKVoblMT1y7r tw7mF+aL9P+ns8ZDZO2xmrycSRCAcTMzqU41JrqLJzgrY6fXWWDDiIeDYHxbUhJDILVRnKHKi+V lIY2AEoSePUvuAExzi2haVnyw9MNMuf4R9uK1OtMJstDxA0M2E7m9T+yldMrqWYn9flY2oEbN8B ICUpT+xC7Vf6M2y0/iNk3hUswCeNm8hyFp30bf2XN1sEE9awm9pPaJvZfSjg0a6wkkMWGTLnrOV gVNxcQBl9VGsqnF+tjtiYoyPx7kJI6teYq2AHG6p3C4hldmsYnK9vce7KtLyyc4cLXorJpP3/Zr g306h/SpegrN4myEFDLO0xXnjvNPr7whjGiTA8gWcwaca0/qf7lRNe7MQSqBxvzmOxIYwZZqLpx dFvhmiggUwtnsyBXg1vTRQhBRleM5bqZN+oLM7/CgyIeuZdRzOA47if7qDISMd0gAb5+S9c58zi LgcEKK8xjr8GQx3Jpx+UJQI2NjyUO4Y6amKmXom9KfZoCOo9jqI/vYjR1eGhtU5aBHJStGjAutX AE8IWCc3Z/MhtBYxN3djAJIPMjl6rzhWNYIO6jZnlXj2FdS0fDcHIKlgVxZOOj/8Rm/+FofjDv0 /ZCTE+36/Ijnwjg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5433; i=matttbe@kernel.org; h=from:subject; bh=RFEywIVAJoTTG/a7ADoSCEliwGRzNjiGhHJjoveXyz8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2snOYUu/8pNi+Q8otzaTZ189X4rO8xd/Po9ae Z4Rr76OXhWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtrJzgAKCRD2t4JPQmmg c3FpEACAHfJptqDBEeUK1Y7v3bmCF9v498fETVDW7PAbZpfpLB3YL0NglyUTivP1XpF97hxDxcE NQPBjsQQZh05d7xtGT1jW0n/hlawD/p7+GuIxz5VzY5GpnaxqaNZNiTsmiJv1Zh84pHrdoii7ck +S4OF/4axztDToOr1YBwApgW5Zq3ftHztRJTIZsHokm+kQGiRElt/6yXFWOIDzp8YrZFIV5IDag tU3amN5ND9L7lWi0mcTfX/iWsHJkh4p+nKMhKsqE8XgX4bLJ/IS2jOkIvdOeQKjxEOrlwtkWPdO G5DuWeEAC24Zs9g3lWpyQuxGm6JleCX1HQ5dUhq+V5DI8E3FBU7ppNop0oKyXOuhTt/Oxw7Lv54 79IsQZaGsiD9vJqtMq6bvugLAW+0vGTPBDTM1P4SHAROlgGslaX/tS06nJhVJDZqq1KkC5undF7 ZhfJ5vh9QPYr0jb6TVYYxs0YPC4/7UyqKMvXj8FTynqArDocLz2A+n680O7YPfcThWP+p9pEGhk TtMGrML3SiKcDE2fU57KN7eicpapMtfZe9KTM1UJ3GGwwpd16nR2fau4VzgFTOVr+FxXKhDVBq0 lBEVvd9g87UHlWB9OmMnZOOCbi/4WlEU1Nn7sevQIBMB8zwYcIvJlWahPDuneGPEhl7nGQnK4kP K2PfGudAQyHRg4Q==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
