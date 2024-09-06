@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7215696EDEF
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F1096EDF1
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F24428868A
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49481C23F05
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330D815748A;
-	Fri,  6 Sep 2024 08:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1701586C8;
+	Fri,  6 Sep 2024 08:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7h3KoEy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PjGazEXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26FE15530C;
-	Fri,  6 Sep 2024 08:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA88156F27;
+	Fri,  6 Sep 2024 08:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611200; cv=none; b=E+4VdZLk1mUNRg0E/X2AALDEg1mv3f6pyXBQbAOhC/rfRZuWn50128ncQ4Wi2VKGwjq+ZDkcKBAhQ6ay63J/4gUTXVReo19dRVuGQ4afUN7Q5Oax3erj0H7A4rzyc6W+5pO0W3G/pHZD/akKIcDbOy6UOXpcwa6rOxfP1DtAH8o=
+	t=1725611204; cv=none; b=rEL2c5Fgvv9QNnL4XXmNi9VtJcmnrD7PxZuSRtckONdvHk9jzxhNEEvzzflONERgvwX/iUT0ceyoDdDd9NKZILDhwjNdkeu24eW7UtOzPAyDUGpufLwO2zoJejUXZ/4E2PswsgIQHdy+6FidhOOymMYadl5akkQ7Jhv0EvXwTGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611200; c=relaxed/simple;
-	bh=edLepYGf6I3xgv9LYrr+w3OrdZxXIzmFlI1q9OUnZog=;
+	s=arc-20240116; t=1725611204; c=relaxed/simple;
+	bh=G2ZcOyQlvrdvjt2VBHnCrA4fahLxUNeogQ8UuJlmU8A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+JAQwibZHOlTX4wDGUymaiZbGasXlkLOUEb/FR75GAR2hJdRNhFOJpirnqX6ko2AC2RUm0a9anGWYUkybrzW7llYWorU9h4n1a9EaK9Hb2ECQNSUlD7ffau/Hi7H9n21MxH2L81DEU5UMsReey0VSVzapOOsQDRo3i71xEn/S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7h3KoEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B351CC4CEC4;
-	Fri,  6 Sep 2024 08:26:38 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=KxAHp2QhwLO8o2txnxHNdDJrqK4dw5MPJVym+VofWJMTGIcoyMcTYcWyhvX1ljbBBxyTAThwr0tuSeZqrfWG0cZGvi7wEJzP589PInLvtyX4kR+cnuVvQcbkavy9VGuZVTVsbQDPOccRKxmKC46lSsbk0oavMTIazmP8JuYV9Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PjGazEXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81946C4CEC4;
+	Fri,  6 Sep 2024 08:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611199;
-	bh=edLepYGf6I3xgv9LYrr+w3OrdZxXIzmFlI1q9OUnZog=;
+	s=k20201202; t=1725611203;
+	bh=G2ZcOyQlvrdvjt2VBHnCrA4fahLxUNeogQ8UuJlmU8A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J7h3KoEyrsw+vPO7v7eoCNXuph4tpWUPTY74+AX7cSQi8f/ZjDSR/DaFTZnPk6gbw
-	 oGCIyYThSSxlW6h++9SrMBscfBlc9XbSWAKdhJ0YtIy0q7B2zQxINzf02aKNlc7cm6
-	 UO1LhnI9mbXgeGfLbX0IceK+oyoG+LxkynXwDXIaqNFQ4mXclqIPOQcfmml/NFIpEc
-	 +BFNBgzKvHTTL6/SF0zCLBWnIkf5cFMKjCmOHR5obboYOl1zYkk2uSW8RiXiGnhciD
-	 ejrtKfphdEdvV+Oc9ioryhWjHO5xaZJoTRwsTpBdQTwo66ZpLxi6UhGwhFm23+v2Ja
-	 CZ3/UagLGmVNw==
-Message-ID: <48550a57-3f26-4747-8421-9bb618ab9a07@kernel.org>
-Date: Fri, 6 Sep 2024 10:26:36 +0200
+	b=PjGazEXXqawTBj0lNxFK3tm8qQVgaAQEvyg0WY+6p0sDdZaxCp6WhLGQP55YKRrOa
+	 NprLQhSJ1yqWEZOMc+moM+koJ8dRnhQDdAZ5Ey4zC85wfoUWx32uOxyS44KeHj764f
+	 YN0z4vyrPV4JTirh2iGxMg0VOOMM+JGxQs4nqOWrfDa0ZPxW1Vl78Y65R93rKzf7Jn
+	 QnEdUSMBRv7de7wog5yEkePUn8hcqBLiDCZyheZ5/AuYvRQ2twTi+T3FzC9cMeKMEf
+	 TNKHc43QXuM3XIXG91cz95lDwXHRFWhEJIgvzaXLJhWr2a2lNiTitc17Ja89S8NU89
+	 CCM4u7YTzG1aQ==
+Message-ID: <09d86c98-19b5-4e17-9038-317f6f255840@kernel.org>
+Date: Fri, 6 Sep 2024 10:26:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,11 +51,11 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: check re-re-adding
- ID 0 signal" failed to apply to 5.15-stable tree
+ ID 0 signal" failed to apply to 5.10-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org, martineau@kernel.org, pabeni@redhat.com
 Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024083033-figure-spelling-0a00@gregkh>
+References: <2024083034-parched-driller-96e5@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -101,7 +101,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024083033-figure-spelling-0a00@gregkh>
+In-Reply-To: <2024083034-parched-driller-96e5@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -109,7 +109,7 @@ Hi Greg,
 
 On 30/08/2024 12:28, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.15-stable tree.
+> The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
@@ -138,9 +138,8 @@ Thank you for the notification!
 > ID.
 > 
 > Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-Similar to my previous message mentioning that the 'Fixes' tag here is
-pointing at the issue in the code, but the test file cannot easily be
-patched to validate the issue: no need to worry about that one for v5.15.
+For the same reasons as the ones invoked for v5.15, no need to backport
+this patch to v5.10.
 
 Cheers,
 Matt
