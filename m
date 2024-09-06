@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9706896EDD2
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:25:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 484B696EDE5
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53831287217
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E95288086
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611BB15853C;
-	Fri,  6 Sep 2024 08:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA82115B12A;
+	Fri,  6 Sep 2024 08:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAMgsXZx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFnxcOLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A67215821E;
-	Fri,  6 Sep 2024 08:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671C115B111;
+	Fri,  6 Sep 2024 08:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611115; cv=none; b=b8yy0P9Z5f2MwZmSjID//VQwOFDcZFnljThuCfjuu/txrxJtHK4+HYXooMCenp1ZWOpmzTOSERSlIR8s+R3mcm9WcazI6KTJVrOnc4LrdXieaKe1q4v0/dUfML5gDmLjb4AWajGfp7M5lNzENJybT5/pYQB0AkwWDMt5pAxOERg=
+	t=1725611127; cv=none; b=gNEkGBqKKfB3rT+swIRTV00NZhqk7MAu0e4/zj9FWQcRZRNyveRmyeNz9qgY3FdCvTgMMlTo/EXN1txeXQEH8VRcQ6Ir1UQNSvt2eJXn/IhRyC5syEdlsEu3w41BWD2FXsD3oBnUSlF483reELbdGyjY+bWmQZzFkHU3rF6AeNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611115; c=relaxed/simple;
-	bh=6qGY5nHcVlVujcQwHp8u5NFS6KJ7X438d/EOEkM6fcY=;
+	s=arc-20240116; t=1725611127; c=relaxed/simple;
+	bh=pLSAvXMBggHpO65VcXRH+xwOtOrcK0BnPMmF07j9Udg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=knrYUW1vF2+5lNNiwt4ZmMEyjMltU0uosBV7E0T0r3v78vw9ZdqfWuFeQoDZmGCC9OKaDMFdZxSvLaTaSRLDY/JOWV3Upte7Q0ZhYm4kHgx7a9JmJzNc8CuF+ueyoUv70vBbA24IkJ1dZ8OHV9ofJpPd8ljrQhE0Drp4GpHKtsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAMgsXZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C39C4CEC4;
-	Fri,  6 Sep 2024 08:25:13 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Rw86svMoOHglP6VV0u8bW8xq4CttZUbWpAOvxiDLsA7Qbi9RZbeBQoy2q9+b+IIEMCLwQRdrzEuEvXckrmumxrY21wBwL78hyquaK43cMLTJPPslcW0UTZe3CaTkFogRHO23Q+TRIQA4z0fA/ljl+eaExYj14Cjakm8GG606jzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFnxcOLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9634C4CECD;
+	Fri,  6 Sep 2024 08:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611114;
-	bh=6qGY5nHcVlVujcQwHp8u5NFS6KJ7X438d/EOEkM6fcY=;
+	s=k20201202; t=1725611126;
+	bh=pLSAvXMBggHpO65VcXRH+xwOtOrcK0BnPMmF07j9Udg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cAMgsXZxPf9lR/aL9ApCjyvIWu3dO4xeLTrARprZTxB7+E1siCoZm4jqXbfU23zZt
-	 /DnZQdWThwSgeqkUuzdRbII/syc2Ps3dS+Xxh2rON3+/sKKbX890UJB5N+uoP6jdG3
-	 BTkvjTuKA8vWHvd7am7kOKzkWMnydygAAaghqDrkxsaApFHcdHuT6wmCyU/xdfBL3d
-	 oWG0BTB9Kos1yLDm8pJd1pi0d4cJJVkSCDZE5n+lyKX3BqGECzwCSSGgB6tTQqFIvQ
-	 vLChAs1DiJ/igcwb7v/vy0ykf59m8wAJTOWAj3sZDmeogc4UjAvxlBTx7YXDLnDJhx
-	 dNGpxA8U33CKA==
-Message-ID: <b51ac733-88f8-4090-bd7a-fc6084f7a982@kernel.org>
-Date: Fri, 6 Sep 2024 10:25:13 +0200
+	b=BFnxcOLIk1LFIL/RbWfOYDFzy1j0BUbTpMFHd/RlQbqaxZ++OSyexV+JXaIDjatFo
+	 PHZIVD7lKe6kd58Q+p5dkYV7URgReGmwSk4NoDfzSTQZjlgcTlqAnVsk2xxrD6yNd3
+	 X+8rhF5Ns/RMQrLSeUOcZNq0PS1ngyzjdh2aOs69TW77wJ+Cu9UNSsCdkVhdaBcAUj
+	 cmUJz86tKSbWTjXLzB04QtYyQjKzuwtAb/1uyqj5s93Yi8rwBbSKPuDgeI2iDPDpS4
+	 pPpmGRaUAZ3BGGE/Ekdn/yiHHRGJ3p+ISbITGFtooWiUwXogB3mtKgb3FJHjJUKf8D
+	 XhUGg7Y1mmrYA==
+Message-ID: <0e2b59eb-12bf-4220-b9e8-97ae37d654ce@kernel.org>
+Date: Fri, 6 Sep 2024 10:25:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,12 +51,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: FAILED: patch "[PATCH] mptcp: pm: re-using ID of unused removed
- ADD_ADDR" failed to apply to 5.10-stable tree
+ subflows" failed to apply to 5.15-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, kuba@kernel.org, martineau@kernel.org,
  MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082646-gondola-dainty-6096@gregkh>
+References: <2024082612-hydrated-overdress-ea6a@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,15 +102,15 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082646-gondola-dainty-6096@gregkh>
+In-Reply-To: <2024082612-hydrated-overdress-ea6a@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 26/08/2024 14:02, gregkh@linuxfoundation.org wrote:
+On 26/08/2024 14:04, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.10-stable tree.
+> The patch below does not apply to the 5.15-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
@@ -121,21 +121,27 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From e255683c06df572ead96db5efb5d21be30c0efaa Mon Sep 17 00:00:00 2001
+> From edd8b5d868a4d459f3065493001e293901af758d Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Mon, 19 Aug 2024 21:45:19 +0200
-> Subject: [PATCH] mptcp: pm: re-using ID of unused removed ADD_ADDR
+> Date: Mon, 19 Aug 2024 21:45:21 +0200
+> Subject: [PATCH] mptcp: pm: re-using ID of unused removed subflows
 > 
-> If no subflow is attached to the 'signal' endpoint that is being
+> If no subflow is attached to the 'subflow' endpoint that is being
 > removed, the addr ID will not be marked as available again.
 > 
-> Mark the linked ID as available when removing the address entry from the
-> list to cover this case.
+> Mark the linked ID as available when removing the 'subflow' endpoint if
+> no subflow is attached to it.
+> 
+> While at it, the local_addr_used counter is decremented if the ID was
+> marked as being used to reflect the reality, but also to allow adding
+> new endpoints after that.
 > 
 > Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
 
-For the same reasons as the ones invoked for v5.15, I don't think we
-need to backport this patch to v5.10.
+Similar to my previous message linked to the backport of "mptcp: pm:
+re-using ID of unused removed ADD_ADDR" where this patch depends on
+86e39e04482b ("mptcp: keep track of local endpoint still available for
+each msk"), I don't think we need to backport this patch to v5.15.
 
 Cheers,
 Matt
