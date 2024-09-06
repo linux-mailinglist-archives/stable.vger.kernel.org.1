@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-73809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC8C96FA61
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 20:06:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8818A96FA5F
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 20:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B9BB1C2147C
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:06:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A79285CCC
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089111D61B7;
-	Fri,  6 Sep 2024 18:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870341D799F;
+	Fri,  6 Sep 2024 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="GEVHNJJY"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TGmBBQMU"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D161D61A9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D621D61B7
 	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 18:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725645997; cv=none; b=bdhCDOI9PQ8p9VexP5gW/anJAjGBlObEDqYWsTfoZDmUg2qsZcNScN724mJNwf2RKJM74+nivLUVa/lQVo5saKA+8dvrnw3AgSBqRXIdu8hnz5G44iFKabMdROr99X44SHZGThrId6lDQP4iaX/GJijg1J81eJ/N2Tq10TLXq58=
+	t=1725645997; cv=none; b=WxkqojyC5j++ZiGe9fypK/JzNraRtLZmkU7EcG8RzwhqtSt9OAFhMSxDQQ04fixdPw/V9ROh/zvoXwFkb6uspMxLCMXe7b+RGtbNg/oqba2kh/6WXx4Fk8rU2s3X1m97gsfkQWpESn2W1GxkMMeSIX9vJZSCl2kD9oKFxSQMBzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725645997; c=relaxed/simple;
-	bh=HUqW5Ib0VXCMvjCX9l1ln3rHLdafg6dkHBJKh8pnIpU=;
+	bh=c4OVuj7p//FOUSokdqRBXZCq4Kef38GprbkDsYHE0Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h51llC8qG0M6t0zw882MetwKz40eJUU4VCP45+aFCngAV1nwJYEjr8rzCRvf4IKWHlvN+YXR+44UBuUY27UN940xTmYQSRd/YH3cqi4hjDqvj57Fcp0nyDaUuD693bJ00sV5Ql1rN764j+twHjwnKAIRIDXx/QilZUMYxOux7MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=GEVHNJJY; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version:Content-Type; b=mCZTG/gZyuxX7cyYCQCpI6TNxzu7O2OxeCAqkO8l1QKD5kSf5xxw7En1wAWg7fMQRptg7t9rqa5n84jBeU/8yk40ra+a+cWHdl/68YakyF1xM3M0h+xP1idCQ8aLRNPALGw/7yPY8HC5hg2PlqiChSbbBs8OY/rQCUHdVXVemZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TGmBBQMU; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,16 +37,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=LbRKQC2natDUa9uyMFRK4EkFcMdJKzCTr7qA14B0ZsM=; b=GEVHNJJY0gMk64Jjm2g93r+ABL
-	xQW0QLOZUhxkSsVtr7zqVOLz+gUZGJG5K78vSFiC4oFCuXXxST1xDpv5sAtRmekoSHmDPP6PoKyza
-	0N8xfv2B/6G+UtgVdWgFt6W7hJL3HMu5FOb+j87l3FWv3rQd/z8leHjd3NWVOXJKb2mAm64LFORjp
-	UlAVRoDuiPL63SgXcHoTz75nyNHmkE/OAWfbPAeYlQ8/BP0e467f3KiToYJSI7PnEjSKNwkB9JawR
-	i/kgZYoVWUMrGv8/ero7/NIDV3+ski88WrffR6tvCECmZeUoeZYp7+LJ5pydArdVb3JKtVf+daSz1
-	dS9kJaPw==;
+	bh=tF0Gxqih49lLW5OGzTjkp8Z2rb+rue64ejmqssXO1rk=; b=TGmBBQMU2mtq1tT+wPpD7P/+DM
+	K4gHKHBX0ltP3L6hmGRV7L+haMl/7d8K1DYzGMf+UCz6ZziCVJeoh2Qrr3OdjCfg/mhP+rBgScJNP
+	Fg8JYqPDQcF4c07MLmK8dMvvvqpLiGFwN97kliSgvC4ejYSZYHz7cHemtZyC5hFev5MMV1UmckGEq
+	AqulMr5Y60mzi4rRhAwK++L/Leh5xMXscbs8oYRGBJunnGKh9L7PcPvjcE9HZqKzH3kKcP8y8/ZNL
+	eCfQRmVlw1hNF/BfuGV3rYzi/QwZ1qVuSPfDxKKcjWgzBWduDirx0hg+DCZl7s4R1T++/v1CNYrht
+	WfwCN3pg==;
 Received: from [90.241.98.187] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1smdLl-00AW6J-2R; Fri, 06 Sep 2024 20:06:24 +0200
+	id 1smdLl-00AW6L-Qa; Fri, 06 Sep 2024 20:06:25 +0200
 From: Tvrtko Ursulin <tursulin@igalia.com>
 To: amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
@@ -58,9 +58,9 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
 	David Airlie <airlied@gmail.com>,
 	Daniel Vetter <daniel@ffwll.ch>,
 	stable@vger.kernel.org
-Subject: [RFC 1/4] drm/sched: Add locking to drm_sched_entity_modify_sched
-Date: Fri,  6 Sep 2024 19:06:15 +0100
-Message-ID: <20240906180618.12180-2-tursulin@igalia.com>
+Subject: [RFC 2/4] drm/sched: Always wake up correct scheduler in drm_sched_entity_push_job
+Date: Fri,  6 Sep 2024 19:06:16 +0100
+Message-ID: <20240906180618.12180-3-tursulin@igalia.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240906180618.12180-1-tursulin@igalia.com>
 References: <20240906180618.12180-1-tursulin@igalia.com>
@@ -75,21 +75,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Without the locking amdgpu currently can race
-amdgpu_ctx_set_entity_priority() and drm_sched_job_arm(), leading to the
-latter accesing potentially inconsitent entity->sched_list and
-entity->num_sched_list pair.
-
-The comment on drm_sched_entity_modify_sched() however says:
-
-"""
- * Note that this must be called under the same common lock for @entity as
- * drm_sched_job_arm() and drm_sched_entity_push_job(), or the driver needs to
- * guarantee through some other means that this is never called while new jobs
- * can be pushed to @entity.
-"""
-
-It is unclear if that is referring to this race or something else.
+Since drm_sched_entity_modify_sched() can modify the entities run queue
+lets make sure to only derefernce the pointer once so both adding and
+waking up are guaranteed to be consistent.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
@@ -102,24 +90,40 @@ Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org
 Cc: <stable@vger.kernel.org> # v5.7+
 ---
- drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/scheduler/sched_entity.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
-index 58c8161289fe..ae8be30472cd 100644
+index ae8be30472cd..62b07ef7630a 100644
 --- a/drivers/gpu/drm/scheduler/sched_entity.c
 +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
- {
- 	WARN_ON(!num_sched_list || !sched_list);
+@@ -599,6 +599,8 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
  
-+	spin_lock(&entity->rq_lock);
- 	entity->sched_list = sched_list;
- 	entity->num_sched_list = num_sched_list;
-+	spin_unlock(&entity->rq_lock);
+ 	/* first job wakes up scheduler */
+ 	if (first) {
++		struct drm_sched_rq *rq;
++
+ 		/* Add the entity to the run queue */
+ 		spin_lock(&entity->rq_lock);
+ 		if (entity->stopped) {
+@@ -608,13 +610,15 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+ 			return;
+ 		}
+ 
+-		drm_sched_rq_add_entity(entity->rq, entity);
++		rq = entity->rq;
++
++		drm_sched_rq_add_entity(rq, entity);
+ 		spin_unlock(&entity->rq_lock);
+ 
+ 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
+ 			drm_sched_rq_update_fifo(entity, submit_ts);
+ 
+-		drm_sched_wakeup(entity->rq->sched, entity);
++		drm_sched_wakeup(rq->sched, entity);
+ 	}
  }
- EXPORT_SYMBOL(drm_sched_entity_modify_sched);
- 
+ EXPORT_SYMBOL(drm_sched_entity_push_job);
 -- 
 2.46.0
 
