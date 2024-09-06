@@ -1,231 +1,245 @@
-Return-Path: <stable+bounces-73701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE2896EAD9
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:44:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EFC96EAF6
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE151F25058
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 06:44:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFB11C228F3
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 06:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318013D62B;
-	Fri,  6 Sep 2024 06:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70EB13D537;
+	Fri,  6 Sep 2024 06:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q/NpNEbn"
+	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="VvuTpJIm";
+	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="BbadjgjV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79813D537
-	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 06:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725605077; cv=none; b=GM4hJtvWRhH+kZXjLVzODrztMUq0ot4f5T5dAzkSuw3kgDPey7AkfQLar8n8TXoI8gDqTWpspv5eoAsKQ7TaFe992AITfihyQvSTbN1BhwaqSN5l21dyTel0JKDYThRKPVqLRCEIm9wVtm3iA57QXEcIZ826i8N5sX4kJXTkm5s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725605077; c=relaxed/simple;
-	bh=oa3H9YCpx5VYGA2KbkYcPMgZzeKNVh/PFUtLWy3sJ/s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RbboWEeSmD4uLW/Hxcoy08Z1E+vUR83sgOF+IUo0Jk0MCGj0VECZkYU/jnCSXumSR+dv6Hw98tXGU4oADro9YfU6ICsrG82wnaPJwlO8FPkpO/YQIyIiB+uo/XjXrKsZ+FDAPNgWucz6oWwp6tzS3QXzaYT7RWX8BXlpiY5J4l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q/NpNEbn; arc=none smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-49bd40d77e5so429089137.0
-        for <stable@vger.kernel.org>; Thu, 05 Sep 2024 23:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725605072; x=1726209872; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+gP4o7JbisYVim+/wPjL+HDCs0/A0dQBHIFGkvw0INA=;
-        b=q/NpNEbnM88Iy4LVeCO+y6wBPn/oRbBwowPadxJ9OVTj9NQH9/lqaZxsWxDpExVmcX
-         PZQO6a0uR1R5ZqAm2vjWXTCQsaNTIHX+IwIo9lIUn1W8sFcFV/MrRpzwAINCcIAl6J+b
-         Pc+/A/VY/6YzEJvf9M1mF5oiNPqpkmkN4beIrxUStUi1JwLuMOffa+VBkGoyewiuJ83o
-         GG2Kp57AdBIj920eNZdg8UehQ6ZTFOaLcleXPyoRwoqOJ51S+WIIzeWODb7RfsJ0uNmU
-         Koc5HpoTOnqvooCPQPxjEiF5Awj6XAPOEG38mJQ5A0eJtzzRl/72PVxJlCtJg2Pc2mlx
-         JNMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725605072; x=1726209872;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+gP4o7JbisYVim+/wPjL+HDCs0/A0dQBHIFGkvw0INA=;
-        b=GP9HleWNcMKaKAPYBN94xyyC7uzZ6BKQXW4oiKhWBjDR6Ys8DhE382UX1rKOkwgZj5
-         XuFF0nFd+njfhcS1G8pF/b693kyDtaU8Qdc3eOzFK+7sYCPKNiywrTpJxY6Jxjb92olV
-         l2gVDZd6DB03qVUQo5c7e8kYTi7I117U/IcJxGjI6ekIZwmWaIcl0r1R1zwhQW8dCz6R
-         ZHnRn7nrNKrcBHsRvDHgMDcntVly0t7BWBljbDvCZxlEISzUTCcI1VPvLiWrxKMUp2BA
-         t/putL1Pym4DJVuPEDBjzsm2bSLtj5qrVlKSplDpFlMjQuWDKBpQMi4dLF+T7CoHrAVe
-         qn8Q==
-X-Gm-Message-State: AOJu0Yzg1mObJjcMRMGzKUlEpt4x6lNudJqeEkhiV7JKUVYguQSlTXRA
-	lyfKbFkivz2HdFWiDj2voK+yVFN9ABZL91/1/mtuG3wP9IpxgVaeTGR9yXsg1HTsdxNeto4J23v
-	ur1t0AzHQxXc+xQW/FUbm+nDJLArQyesTY5Q0qw==
-X-Google-Smtp-Source: AGHT+IHuUmzECAJSrwF2r14ymHpo71IMGLjs7axdWUb+JN+ClsSfKWQfo8MjNbsnf5TglvLkxKmzZ17gWcctxFVA+yk=
-X-Received: by 2002:a05:6102:b02:b0:492:a93d:7cab with SMTP id
- ada2fe7eead31-49bde165666mr2127128137.1.1725605072208; Thu, 05 Sep 2024
- 23:44:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CEF3EA71;
+	Fri,  6 Sep 2024 06:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.84.65.235
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725605342; cv=fail; b=fSuD9XkuRR6uK/AjsZKaeQVHbfZsYaqOgV/E4LuEmITEe7tPRUxygiWJgpNdlpo98t5EA8/YGI9igScmCKuq/YQfHx5bP60nnVB3EUT2aDpN4zCuBnzyo67H7+Xpn6mMowS6nxlwaoAyXcJhx0khBT3PuD7LdiAl1O3ae9nvvuM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725605342; c=relaxed/simple;
+	bh=PDQK5aTRBdKtKAAcuJeTJr3vAI6/uOmtmMl062CqMJo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LKykPFlFdKug4LfxY79KM0AIAOfymMtjjjZDokxI/IaeZoETRVfSIKC5AIvsnVYbwfLSX+eALDemok+50d02uVA5nA4h2QBypHh2nKLpPpKuSiIuQ4s3EPh795hkHcfNceBYXJQyOEi2h3wIDF7zXferwPsEdgq+be+EXcSK/HM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=VvuTpJIm; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=BbadjgjV; arc=fail smtp.client-ip=208.84.65.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
+Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
+	by mx0a-0014ca01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4865viKb026067;
+	Thu, 5 Sep 2024 23:48:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=proofpoint;
+	 bh=xUSEcN1vQ32dgKEKzSAw+Zx5KFGPYOf8FX75iUsvEe4=; b=VvuTpJImQ+8Q
+	PhkKkUXkNErqk35PTHVG6Ur2G/WttxRdlgRwDi3CaYrvQflcp8sVAhaDalp+kSJi
+	yahDof9/r61tM+84alyctKGAwaUdJymcXcArmu3bjcJrpgRoZlyodEixuJyV7eJe
+	qngX6hIlgcKyzFdQdnwhtpvM02JuLaxtu36nTpgcOkrQycm4fFSvXS8MhVQqrY4O
+	1imbfI+xeaPBkbbjv+mggdMa7C1Oz8lkyT71mPpx9UYlsY5HRP0F4I25HEkrWLYa
+	0xA0wPFfE/1ERBI/MAb75r6YaMYxiLImrgZ7SFcEIor/yDoN/ApVQP9Rm8xiTbPV
+	hESLMTps1g==
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazlp17010002.outbound.protection.outlook.com [40.93.1.2])
+	by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 41fhx5t38c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Sep 2024 23:48:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jqEOYlEcgLbROhqHPvakgEfTM4yiJ/JaLnLRRsZAjAM2LiF7ANCHpL9+2tXCp09Tjq9vEWZW8zzL9dd3QoIVCTj8Fw4HKbdj9Yu5PVlmMM8BsGYujyJ3E2D3ECxNcxHBXLP7iGyiBVG9mCl/kpuz8ixvwXgquef2KdU2oELr3gR4ZTLATeMurq5lcjO4j2UVSNSCACPhBqSaAMoYNRjWOFGQIjzJiRXmFLNt3XP4gC28rElvACnLCUBFPWOqiNm2G5ShN82hsphuio+fyeeaYQzO5VUBxm60m9Wyc6/AmjKcyakJ4EbrAU3PBhwXJ8L6xOq0sWxA4/MTef6B5Hat4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xUSEcN1vQ32dgKEKzSAw+Zx5KFGPYOf8FX75iUsvEe4=;
+ b=Jnx1fAmVGoqmR2WH+j4TcGfjLCtHQGVdsejiN7+1xoyXPkEOB6mPVaG7h/e0i8jxRFpKmYE94YERtQGG5aKZkMX5O0B65GD/3J03Pk6KEUtLDkDne8/u6gUv667ZKfQgSthDq/qz0S4PTwivxk1u4zofctQijeqeiCDzgqJojUNnfdiz4z6k7ojY4W3hoeBDH9B25XTB3xXtJ2e7ThfYf5LYknNlYGPMcO/fcXiwH3UBSEnEz2fVWntjQNGMimVRS5ZRyxzQdSo3MOJpK5pP4RKoYIYLsCBVUMVCui2ZA8W7q7fUDiYkz6m4dThdgwQTi5OP5tbD6wMOq0UG8ywXgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
+ dkim=pass header.d=cadence.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xUSEcN1vQ32dgKEKzSAw+Zx5KFGPYOf8FX75iUsvEe4=;
+ b=BbadjgjVLNyM8ZAMe91b4VOrDAbulWsOvDjHhc2f/s29ckGqMQ1RAc9+ggNtS39+zA8lwupMamJK+trN9LjV1Bq30oaxV9QkcDxHJdeqyNlvWgtG5Mtj7T+H6wCumrOaRDzcW/ZyQ3EQODMJaS0hCb0ZYZruWCGnhkXLOKMZQ1E=
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com (2603:10b6:510:203::19)
+ by CO1PR07MB9052.namprd07.prod.outlook.com (2603:10b6:303:153::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Fri, 6 Sep
+ 2024 06:48:55 +0000
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7]) by PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7%4]) with mapi id 15.20.7918.024; Fri, 6 Sep 2024
+ 06:48:54 +0000
+From: Pawel Laszczak <pawell@cadence.com>
+To: "peter.chen@kernel.org" <peter.chen@kernel.org>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Pawel Laszczak
+	<pawell@cadence.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH v2] usb: cdnsp: Fix incorrect usb_request status
+Thread-Topic: [PATCH v2] usb: cdnsp: Fix incorrect usb_request status
+Thread-Index: AQHbACh/YWJ76qtKVEGX/ynC8VwZfLJKUNRg
+Date: Fri, 6 Sep 2024 06:48:54 +0000
+Message-ID:
+ <PH7PR07MB9538E8CA7A2096AAF6A3718FDD9E2@PH7PR07MB9538.namprd07.prod.outlook.com>
+References: <20240906064547.265943-1-pawell@cadence.com>
+In-Reply-To: <20240906064547.265943-1-pawell@cadence.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-ref:
+ PG1ldGE+PGF0IGFpPSIwIiBubT0iYm9keS50eHQiIHA9ImM6XHVzZXJzXHBhd2VsbFxhcHBkYXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUtNmI4NGJhMjllMzViXG1zZ3NcbXNnLTEzODJlMTJhLTZjMWMtMTFlZi1hOGI1LTYwYTVlMjViOTZhM1xhbWUtdGVzdFwxMzgyZTEyYy02YzFjLTExZWYtYThiNS02MGE1ZTI1Yjk2YTNib2R5LnR4dCIgc3o9IjQyNjYiIHQ9IjEzMzcwMDc4OTMyNDA4MzI5MyIgaD0idnBBVmJ2ZzBzSHFlMWUvZDBSZUVDVmlQMGkwPSIgaWQ9IiIgYmw9IjAiIGJvPSIxIi8+PC9tZXRhPg==
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR07MB9538:EE_|CO1PR07MB9052:EE_
+x-ms-office365-filtering-correlation-id: 99966141-cdcc-4ce4-f78e-08dcce3ff9b4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?57Lr6hoKtb1IlFhTuSC5TQh6Xyo3ij7xqRbVyzAQ0PpDscJMbD1MT1uFjN84?=
+ =?us-ascii?Q?33YabM07uTX0XCzCR/1x4gJUV7XWVHaJlhLPdlahg9E8Ez2o9VIc6AS/bLNo?=
+ =?us-ascii?Q?vSXsj1xP0Q+YBvvRIBl69F65m/pB1l41qCqqX59TZX4xFPwigOBMyqENr3hP?=
+ =?us-ascii?Q?FSqFJeQCH8QAdokCDGnzHh0EKOn5rVvmZei6JLBNLN1rqxdLuEt/Q6Z7pyVH?=
+ =?us-ascii?Q?++8Tvb57AaUPsX7e499hWpU4FaqZgtYNCKleLtmaFex3ogkADsPo9lwGluG4?=
+ =?us-ascii?Q?DgDapil6sG59h+VLx6r3YGoQ6v3ZQ5SAgKfIO9QoBHuS3vzW5AMJKMuiuR8t?=
+ =?us-ascii?Q?D2GgS2wNiLfvvr/askWCECJ7aSLxCxwmS4s8TZ/ShlhyVKxlJ2ISUpfNngib?=
+ =?us-ascii?Q?HeRlxIcMJq8XBK5Jv5veWYEho9SGMWjN8h2ZeYhNkYCP69lj2uDm9czEg1xU?=
+ =?us-ascii?Q?p6NOkq1IcXTceihvJ45m11ZUlTZ95Csn1yg8R8inil89SOinwuSr92LIFIUL?=
+ =?us-ascii?Q?D2U7VLGAh8sBr14TK/67HxY0gMJ4EKLXAzSVVDQOcmYcXHfSVGjpXygBEHds?=
+ =?us-ascii?Q?QnQrGGWBd/CID7Oy0caL+pk86NLiV1eSfZku5WWa/PFkPoHgNAtn8z4vh4E1?=
+ =?us-ascii?Q?ILdJYNWLz/q+30jCFIxLIZ+WMUZ2hcnaGDNGEAHr+qpK24J/iTk/TGV9Ie0v?=
+ =?us-ascii?Q?kHit037//fho7OA9GWcFDy8i5I+webCPg5O7FcHaImj4F9gm1zT4jsiGlXT7?=
+ =?us-ascii?Q?ng1T7vQozSek5m0omhyjJ93bkNtAHcpXAAhH1HxEBogG/AAiKBorCKjRrvgb?=
+ =?us-ascii?Q?0PfqZt07Ywvu5DhA1B6UGmo5htz6w5KbPliywoD7s+NBZuatH2a6byU6SnfU?=
+ =?us-ascii?Q?0NIWFtDRIILYMxkdHkzJi60GuOhA8g8oJhZzU3V+PMqi0/WjSwHT6hSb3koJ?=
+ =?us-ascii?Q?NJG4uCzEMvpyGy57ed/Kd/nXDltKR5+aLP2FSh9gVnb5+CYkXpmgt5BTuC9R?=
+ =?us-ascii?Q?E1u5yl3HVwy2SAFsT7L7i3shgiyuCjXev4A1Zqiph1g4QOSfrl0hDyJlsSZQ?=
+ =?us-ascii?Q?o8qEHyW/lF5dT7Zo+JklFzPGwc8E78Zr24FpIIUrxuHV3wuUapNNOasavYwH?=
+ =?us-ascii?Q?pgfzLZUx8CQWH9Np/e4ZsGyG72SazFxvE/fivbU2QHDo+/F+4ua4GqDuD9Uk?=
+ =?us-ascii?Q?iOsft2X+sN3oFtPHNpNvKzrbI1kNiAwVPZ8T1+BXfs6zOk4Ia6Ya/Q9rdNh9?=
+ =?us-ascii?Q?apt1wrv9TVePmrqLZ54uywsrAYPqiaDAyoj64Ecz57pBo3j5I7FpejWmn8bu?=
+ =?us-ascii?Q?Vhkg+yW7Zu3yTJe2qGuT4mixRifvG3s9X5fHxkTTd6L/IO8rVZpDcenljN8v?=
+ =?us-ascii?Q?z7MlYo6j+JBACCiauUiGpLDJEaCv1m2fb368QxAw4mxQxepIzQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR07MB9538.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?x5GWpLOVX17HUFX8WMwmQEGJVQV1ykfLe0Q1hr2F9OHgwCgnf7qWmazIi0kw?=
+ =?us-ascii?Q?7S2Yb6V/2TbZSSZaCS+lL/C0rUJCGbP6lz4lYffpnMI4pnaDq/nLTbXrL4NU?=
+ =?us-ascii?Q?xBO0MYin1d/8gf9E00vai9Ip1N0FG3mGJVZhyi1UJYw/FuC4Z5nekOud4g3s?=
+ =?us-ascii?Q?+Kg4N/vHjwALUxZlrJIOmw4IFeIsi8Y5JC6Edv/GJdM3we/L27ErxLWFd0bB?=
+ =?us-ascii?Q?nSb9ktEf2RpQaiGMhWCR1W9lZa3BcudZF7dayeOdLvlDcHFFnlA5bRqEpa6X?=
+ =?us-ascii?Q?OPeUV3n3ZX5b9JvknMOTd5BbD/CmoOkI2SnmbKGldxL+ecDsIu3sv9J5lq8l?=
+ =?us-ascii?Q?9AYTUJYvFEFw2yTfCj61i/x1En709/9DDi9Md3O8Wm60PoITZYdW7h69nyKb?=
+ =?us-ascii?Q?mQJx2IkX7pzGIfV5gW82vcUE0qGgwLgrDNUVwSuwmn2Pq3FhYLNvq+mKwzWy?=
+ =?us-ascii?Q?7dmnoHI8ku9oGuF3F9uAj8kY9nIevlmr08jXQqsoA5FvQ0kulmzZelBJf8cR?=
+ =?us-ascii?Q?80eDsS498PIAN/YjzG6SZ5v3FLS08uP5iYDgnKSPwUejcnq3sMHku7AoZscR?=
+ =?us-ascii?Q?0Tc26Az/Q19orJUqrawF6+GdAzgtPmIl2lWthaqw5J535TqObx6dGCyMh9/B?=
+ =?us-ascii?Q?c1HwjcpnPUDnNeX+bT5xHcOqpKGcjBIusQmRI3UUFlUxV0dkWPilgBl6lQXg?=
+ =?us-ascii?Q?fNqXbw7tR4QBLCEREsFUwGsDOMQmc91S1drOz0H/0FqsN2Q4nvzerlTa2DQD?=
+ =?us-ascii?Q?bk5HDB7aEKVleaItkPDYkohlCU0fFUU/2jsOy4ct/Jup2ctRlF/l3FK80uhU?=
+ =?us-ascii?Q?bf4/aYyNz8FXJGwWx/9wCsEQKHNTwp2z2OaLnKxuRW/zuTC3t6etE8yswqYN?=
+ =?us-ascii?Q?mxMv/fsCBENv1xfLRGshC22DyIjF8iksr8mz1lm2Gf7IJxkjPLYsSqosF5F7?=
+ =?us-ascii?Q?9WcjpSDa0TFjAODWT+rrfL/uTshinz1Ow1v7Red7WjsTn+Zdlpbezz7Lm6/+?=
+ =?us-ascii?Q?HMtN3IgSwH8vxeD9/ZvndLajaqq7+7vu/iKPxKyEMhpsckm4PpH68XoOYOs2?=
+ =?us-ascii?Q?73wy2OvJvsqM4RchcOJTKqoS8jeyqfLfW8gD3tbQ+J+uVTrWAQ+kzdLc0jl6?=
+ =?us-ascii?Q?BZciPFMFbdhMzMfxEOUWYc16OwX/pfR4/LvAAfAYL1nnyOg2sKwpg7/4QXnm?=
+ =?us-ascii?Q?Ec0BKg5dCfeDhRapc5Gixo8yXkCV/PxBR1GMirZHwYaA/gPccf6sIGi+iKmZ?=
+ =?us-ascii?Q?CgSrgQC09AlAwUbWw622tiEQiqceJAHJI/kH0wzOt4tZY3W4C5ZGq/nXTwj8?=
+ =?us-ascii?Q?Tx17OT+OmzsaCKH4flB1xaFSY0FcOHNoFubOzovDpAj4YM9sApZFugeMpjNU?=
+ =?us-ascii?Q?ecGUDMccK++bUv6RVBLApaQ2kP5UHGnmqoSp5u3UPbV8ZZgWGjnSJ5YkfneF?=
+ =?us-ascii?Q?KvfdH5BLnwffr2K0nCcVtjA9UjWrzO4tz1af+oVAoaPlMrV5ym9usaBeEjTS?=
+ =?us-ascii?Q?RJ1oJwP0bBOMwY/Ie80icA0XFXDZD6DTg+3mgBqlWz2a+xLfVeVHCEEOXAHv?=
+ =?us-ascii?Q?JLSgi/D+Ikj2SZmjQeJqHJ5j5XH47TssgU9b8jds?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240905093716.075835938@linuxfoundation.org>
-In-Reply-To: <20240905093716.075835938@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 6 Sep 2024 12:14:20 +0530
-Message-ID: <CA+G9fYtr3bs6RbBgLc10QJ2c2Uh4EHiif7bFOD0J+p4rEoCukw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/101] 6.1.109-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR07MB9538.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99966141-cdcc-4ce4-f78e-08dcce3ff9b4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Sep 2024 06:48:54.7062
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: luukdh4Odi2tEGOmmEPgH+u1g4WSf6PF/zJ+Gq+TlhNZWqCxCT29hkRxabW5Yu0XauG+f0HEY74pqpPOXuX4bmDMaCMZ6LmYtjcCm7/P5sw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR07MB9052
+X-Proofpoint-GUID: KEFlIki5fFnTI0TM3p1p7k4IiM2NlShv
+X-Proofpoint-ORIG-GUID: KEFlIki5fFnTI0TM3p1p7k4IiM2NlShv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-05_17,2024-09-05_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 impostorscore=0
+ adultscore=0 mlxlogscore=731 suspectscore=0 mlxscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409060048
 
-On Thu, 5 Sept 2024 at 15:31, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.109 release.
-> There are 101 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 07 Sep 2024 09:36:50 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.109-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Fix changes incorrect usb_request->status returned during disabling
+endpoints. Before fix the status returned during dequeuing requests
+while disabling endpoint was ECONNRESET.
+Patch change it to ESHUTDOWN.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Patch fixes issue detected during testing UVC gadget.
+During stopping streaming the class starts dequeuing usb requests and
+controller driver returns the -ECONNRESET status. After completion
+requests the class or application "uvc-gadget" try to queue this
+request again. Changing this status to ESHUTDOWN cause that UVC assumes
+that endpoint is disabled, or device is disconnected and stops
+re-queuing usb requests.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD=
+ Driver")
+cc: stable@vger.kernel.org
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
 
-## Build
-* kernel: 6.1.109-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: be9ed790219a433e9d1aa5ca79fb51e3e52bdb81
-* git describe: v6.1.108-102-gbe9ed790219a
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
-08-102-gbe9ed790219a
+---
+Changelog:
+v2:
+- added explanation of issue
 
-## Test Regressions (compared to v6.1.107-72-gde2d512f4921)
+ drivers/usb/cdns3/cdnsp-ring.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-## Metric Regressions (compared to v6.1.107-72-gde2d512f4921)
+diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.=
+c
+index 1e011560e3ae..bccc8fc143d0 100644
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_device *pdev,
+ 	seg =3D cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
+ 			      cur_td->last_trb, hw_deq);
+=20
+-	if (seg && (pep->ep_state & EP_ENABLED))
++	if (seg && (pep->ep_state & EP_ENABLED) &&
++	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
+ 		cdnsp_find_new_dequeue_state(pdev, pep, preq->request.stream_id,
+ 					     cur_td, &deq_state);
+ 	else
+@@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_device *pdev,
+ 	 * During disconnecting all endpoint will be disabled so we don't
+ 	 * have to worry about updating dequeue pointer.
+ 	 */
+-	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
++	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
++	    pep->ep_state & EP_DIS_IN_RROGRESS) {
+ 		status =3D -ESHUTDOWN;
+ 		ret =3D cdnsp_cmd_set_deq(pdev, pep, &deq_state);
+ 	}
+--=20
+2.43.0
 
-## Test Fixes (compared to v6.1.107-72-gde2d512f4921)
-
-## Metric Fixes (compared to v6.1.107-72-gde2d512f4921)
-
-## Test result summary
-total: 190787, pass: 165221, fail: 2316, skip: 22988, xfail: 262
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 135 total, 135 passed, 0 failed
-* arm64: 41 total, 41 passed, 0 failed
-* i386: 28 total, 26 passed, 2 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 35 passed, 1 failed
-* riscv: 7 total, 7 passed, 0 failed
-* s390: 14 total, 14 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
