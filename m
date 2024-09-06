@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFA096EEAE
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:00:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCCF96EEB1
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 11:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05A9283AA7
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:00:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7DA1F25792
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 09:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D982175548;
-	Fri,  6 Sep 2024 09:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CC71AB502;
+	Fri,  6 Sep 2024 09:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryV4GFHi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cG0QMDbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DE516630F;
-	Fri,  6 Sep 2024 09:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0819B1AAE2E;
+	Fri,  6 Sep 2024 09:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725613212; cv=none; b=uUnLOn1dKyMb1l/Tiqmw6UXiM/H3g7V4OKACdP6DbTGK17ZhCtqzkIOsMNGob3inDFbUCkoWMCuo9wwxlbRZgm3wYpl8QTOsLdpe+vk9EeC1KS54RnWCQ4MEpJ3uEieFdLGDmjv96Om0c2nJASe4I+zGBsHzsMApNks2R7KiKLc=
+	t=1725613223; cv=none; b=YLQtY38KHghbnfOkiXtEPd1iunRyr0RTzXC7ItP+SenTALOC4amHTaZQ1TP5+mlTyGKopjfK0I6JPxDq/AlGG4Lrotjqtt71O69w05JEEZ5bTODLZPdYCedCs7Q7sxERCYJbjqPeo9cqVtu1DF8WUBttmL6hILL1KiPSjfLYlCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725613212; c=relaxed/simple;
-	bh=xIapME3Iu0BwviobiH8HWGYjNthFfbFAyDu4Nnjt6tM=;
+	s=arc-20240116; t=1725613223; c=relaxed/simple;
+	bh=kr9xeHvxwI0+cweutNEyrPl+JHT1A7IMeHrLkeHJ9Ds=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TxHx4w6EqGYSgk2c29Rbq1dyT3G0YkzU3mi6Deu1d1SbxVA6xY1VhMycKmQqu5Zohl0wuxi/GP/mEdQvxJA7lErqzhrqaOztL5g3+D7N/6lg4V9qhnWDV9yyuZKQSb0NBiIIhsq/yEYOJFnPuqI0Ux7EqGUHav4jzbB18u7kJEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryV4GFHi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489A7C4CEC8;
-	Fri,  6 Sep 2024 09:00:10 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=htmpyyyPel78pRyCap1j2MgYVt8zb5tdMcg7us9HcbH1VbvH+wg3cCDO6n/FbOQBSr/salll4pfqqiw5McoCEWtyPWw//8uRbl5XNt6xVbhBqTcrne/7JIXBrv4ltvPT00EX/YGBFy1mch3zM37mopr+nZf//k/7KwAwrSH76bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cG0QMDbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615EEC4CEC5;
+	Fri,  6 Sep 2024 09:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725613211;
-	bh=xIapME3Iu0BwviobiH8HWGYjNthFfbFAyDu4Nnjt6tM=;
+	s=k20201202; t=1725613222;
+	bh=kr9xeHvxwI0+cweutNEyrPl+JHT1A7IMeHrLkeHJ9Ds=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ryV4GFHi9KeNYeFlOchIks33ndY3iwm4AOnDMG9KTnWmekxdU70zvtEFc6IKANsBY
-	 J3wrrZaQQk7i9oQ//LequLoUhI7fHD5Q3re9sv6QnFuAppJYbKTR9P9MdhF78ndc45
-	 8mqxHgyf6pVxHBeXp9sEaWe9Kgums54Y2d45TfuvxirgyUdBo2shp789k75h1KgX1Y
-	 aXPrHQevQ+CvoQusV4gR5Fmv/EKVWRdfmjAnkyFjsFdHESFz2D9JJcD/w7pbUBblXB
-	 X+yU3asvgFtrchopoESHKzyzYwAKXCqZzBd7uDM+wrVA0ZvXjtw2ZjXMQ22eTyR8ke
-	 gzQ7AyDlvAtXg==
-Message-ID: <fb200630-a52e-4096-91f9-ec62acb7742f@kernel.org>
-Date: Fri, 6 Sep 2024 11:00:09 +0200
+	b=cG0QMDbXVcB6TEV9xQ3XJzRHI78Ugcm3HYRvbHP8FBl35j0oP418ljcE+b4ua3cCe
+	 F+h5keKlKA0H0UmfAdjFJbbGKwYBdTDWf1AHEn/wziRf/fYbBbyveOviqvQwC0ux2R
+	 89o+ZZGPR2R/sv7SkLiE0fxBmDouG25/aREIsYL9hRf4fy9oo9IUuY3oogtagN1MbK
+	 LjLDUOHbO0MrMVlRc75JyNiRAEXaltZlJ1Dmy4WZjz6s3a6ynqe/zaK/OIjhq7KS/M
+	 R/m0fDcG9T2Yq9GycutU+LXb9+oBGaaVNVnV2IbuKfPlrPp/hlZYmeEK25aXtqI1lK
+	 RUNwddPobq3JA==
+Message-ID: <b99dd592-6b84-40dc-aae6-24e70afbc001@kernel.org>
+Date: Fri, 6 Sep 2024 11:00:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] mptcp: pm: only decrement
- add_addr_accepted for MPJ req" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: check add_addr_accept_max
+ before accepting new" failed to apply to 5.10-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
 Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024082653-scenic-deprive-65e4@gregkh>
+References: <2024082609-vivacious-jaywalker-cfac@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -101,13 +101,13 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024082653-scenic-deprive-65e4@gregkh>
+In-Reply-To: <2024082609-vivacious-jaywalker-cfac@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 26/08/2024 14:06, gregkh@linuxfoundation.org wrote:
+On 26/08/2024 14:07, gregkh@linuxfoundation.org wrote:
 > 
 > The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
@@ -120,28 +120,14 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From 1c1f721375989579e46741f59523e39ec9b2a9bd Mon Sep 17 00:00:00 2001
+> From 0137a3c7c2ea3f9df8ebfc65d78b4ba712a187bb Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Mon, 19 Aug 2024 21:45:27 +0200
-> Subject: [PATCH] mptcp: pm: only decrement add_addr_accepted for MPJ req
+> Date: Mon, 19 Aug 2024 21:45:28 +0200
+> Subject: [PATCH] mptcp: pm: check add_addr_accept_max before accepting new
+>  ADD_ADDR
 > 
-> Adding the following warning ...
-> 
->   WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)
-> 
-> ... before decrementing the add_addr_accepted counter helped to find a
-> bug when running the "remove single subflow" subtest from the
-> mptcp_join.sh selftest.
-> 
-> Removing a 'subflow' endpoint will first trigger a RM_ADDR, then the
-> subflow closure. Before this patch, and upon the reception of the
-> RM_ADDR, the other peer will then try to decrement this
-> add_addr_accepted. That's not correct because the attached subflows have
-> not been created upon the reception of an ADD_ADDR.
-> 
-> A way to solve that is to decrement the counter only if the attached
-> subflow was an MP_JOIN to a remote id that was not 0, and initiated by
-> the host receiving the RM_ADDR.
+> The limits might have changed in between, it is best to check them
+> before accepting new ADD_ADDR.
 > 
 > Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 
