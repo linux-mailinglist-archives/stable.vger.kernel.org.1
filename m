@@ -1,122 +1,126 @@
-Return-Path: <stable+bounces-73806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AD996F9F8
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 19:36:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC8C96FA61
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 20:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF58D2861D8
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 17:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B9BB1C2147C
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 18:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2B01D45F9;
-	Fri,  6 Sep 2024 17:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089111D61B7;
+	Fri,  6 Sep 2024 18:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiYAylp8"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="GEVHNJJY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86D0200DE;
-	Fri,  6 Sep 2024 17:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D161D61A9
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 18:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725644185; cv=none; b=ZgLq+elWhlqpWBxCWNTcckrPFg3xIIR/aFnXGT7iTaLtEIESt56f8T186I4ITkfgoy/gtZ9qQ0zH5wH37yABDxvFMx39WVzr5dDeezLBegK9KyAOlXACcoutO/ZNopKhzm1MOlc60fRIZiuRpTosTYcBmJsTrcgACnI9wuAhTTc=
+	t=1725645997; cv=none; b=bdhCDOI9PQ8p9VexP5gW/anJAjGBlObEDqYWsTfoZDmUg2qsZcNScN724mJNwf2RKJM74+nivLUVa/lQVo5saKA+8dvrnw3AgSBqRXIdu8hnz5G44iFKabMdROr99X44SHZGThrId6lDQP4iaX/GJijg1J81eJ/N2Tq10TLXq58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725644185; c=relaxed/simple;
-	bh=aRfeEhcEuH0P68oO5jth9G8d0DHMgdo2eFNaf8ND4CU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JumENf3Ju2AA7uF8t1cNux+H+YbA4J9XRXjdVBPBHpppyPTlyGfEn90GHHlpzo8/7GqoEEbi/3b0TLJQpCRsK3xUdZUUKumzATWq0/0dFI2IAgo/d4jOwfgFnDlc0a1D/MEI78Z+k7QFWQeR4UZkNedBYZcpYVcqJfWZwTsbQ+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiYAylp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99CEC4CEC4;
-	Fri,  6 Sep 2024 17:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725644183;
-	bh=aRfeEhcEuH0P68oO5jth9G8d0DHMgdo2eFNaf8ND4CU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=IiYAylp8CKShIMa2CwTo5hOFj5Ou5ORqkhXh4ALP/uL5r2RmE3NQD4ikpySJ7yIe0
-	 OV9Sa8tfznO4aV+9PBk99hAJWxcLYPqrlFaO1ANw8rDjXPdMudJqGceq7lMmYcERyz
-	 cPNMd5b//NKZ6k089LXuwysoq3KdzVXUFnmIApsNI58w+2yzhfolz9bOzXEfX87X5x
-	 cw09R36oznw9eF8jyrnRqk9MD8U33KcFILVqPBKCfFjGkhp23Vo9NUXpeIzqrDpV8x
-	 pb/mhpnNdwCMy1MOI7jp2hn6JkjaqNlO3Vwt+1we3DH/LDpQvVrqIt4TYOCFwbu/4G
-	 gXU/fb+3DM71A==
+	s=arc-20240116; t=1725645997; c=relaxed/simple;
+	bh=HUqW5Ib0VXCMvjCX9l1ln3rHLdafg6dkHBJKh8pnIpU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h51llC8qG0M6t0zw882MetwKz40eJUU4VCP45+aFCngAV1nwJYEjr8rzCRvf4IKWHlvN+YXR+44UBuUY27UN940xTmYQSRd/YH3cqi4hjDqvj57Fcp0nyDaUuD693bJ00sV5Ql1rN764j+twHjwnKAIRIDXx/QilZUMYxOux7MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=GEVHNJJY; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=LbRKQC2natDUa9uyMFRK4EkFcMdJKzCTr7qA14B0ZsM=; b=GEVHNJJY0gMk64Jjm2g93r+ABL
+	xQW0QLOZUhxkSsVtr7zqVOLz+gUZGJG5K78vSFiC4oFCuXXxST1xDpv5sAtRmekoSHmDPP6PoKyza
+	0N8xfv2B/6G+UtgVdWgFt6W7hJL3HMu5FOb+j87l3FWv3rQd/z8leHjd3NWVOXJKb2mAm64LFORjp
+	UlAVRoDuiPL63SgXcHoTz75nyNHmkE/OAWfbPAeYlQ8/BP0e467f3KiToYJSI7PnEjSKNwkB9JawR
+	i/kgZYoVWUMrGv8/ero7/NIDV3+ski88WrffR6tvCECmZeUoeZYp7+LJ5pydArdVb3JKtVf+daSz1
+	dS9kJaPw==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1smdLl-00AW6J-2R; Fri, 06 Sep 2024 20:06:24 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	stable@vger.kernel.org
+Subject: [RFC 1/4] drm/sched: Add locking to drm_sched_entity_modify_sched
+Date: Fri,  6 Sep 2024 19:06:15 +0100
+Message-ID: <20240906180618.12180-2-tursulin@igalia.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240906180618.12180-1-tursulin@igalia.com>
+References: <20240906180618.12180-1-tursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Sep 2024 20:36:19 +0300
-Message-Id: <D3ZDT3Z8MZ40.1ZT3K2C7JPYMF@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <mpe@ellerman.id.au>,
- <naveen.n.rao@linux.ibm.com>, <zohar@linux.ibm.com>,
- <stable@vger.kernel.org>, "kernel test robot" <lkp@intel.com>, "Mingcong
- Bai" <jeffbai@aosc.io>
-Subject: Re: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix
- ibmvtpm building
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Kexy Biscuit"
- <kexybiscuit@aosc.io>, <linux-integrity@vger.kernel.org>,
- <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.18.2
-References: <20240905085219.77240-2-kexybiscuit@aosc.io>
- <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
- <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
-In-Reply-To: <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri Sep 6, 2024 at 8:02 PM EEST, Stefan Berger wrote:
->
->
-> On 9/5/24 10:26 AM, Jarkko Sakkinen wrote:
-> > On Thu Sep 5, 2024 at 11:52 AM EEST, Kexy Biscuit wrote:
-> >> Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
-> >> initialize session support") adds call to tpm2_sessions_init() in ibmv=
-tpm,
-> >> which could be built as a module. However, tpm2_sessions_init() wasn't
-> >> exported, causing libmvtpm to fail to build as a module:
-> >>
-> >> ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko]=
- undefined!
-> >>
-> >> Export tpm2_sessions_init() to resolve the issue.
-> >>
-> >> Cc: stable@vger.kernel.org # v6.10+
-> >> Reported-by: kernel test robot <lkp@intel.com>
-> >> Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lk=
-p@intel.com/
-> >> Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initi=
-alize session support")
-> >> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-> >> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-> >> ---
-> >> V1 -> V2: Added Fixes tag and fixed email format
-> >> RESEND: The previous email was sent directly to stable-rc review
-> >>
-> >>   drivers/char/tpm/tpm2-sessions.c | 1 +
-> >>   1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-=
-sessions.c
-> >> index d3521aadd43e..44f60730cff4 100644
-> >> --- a/drivers/char/tpm/tpm2-sessions.c
-> >> +++ b/drivers/char/tpm/tpm2-sessions.c
-> >> @@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
-> >>  =20
-> >>   	return rc;
-> >>   }
-> >> +EXPORT_SYMBOL(tpm2_sessions_init);
-> >>   #endif /* CONFIG_TCG_TPM2_HMAC */
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> Would have tested it but machine is down..
->
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-I'll add this before the PR, thank you.
+Without the locking amdgpu currently can race
+amdgpu_ctx_set_entity_priority() and drm_sched_job_arm(), leading to the
+latter accesing potentially inconsitent entity->sched_list and
+entity->num_sched_list pair.
 
-BR, Jarkko
+The comment on drm_sched_entity_modify_sched() however says:
+
+"""
+ * Note that this must be called under the same common lock for @entity as
+ * drm_sched_job_arm() and drm_sched_entity_push_job(), or the driver needs to
+ * guarantee through some other means that this is never called while new jobs
+ * can be pushed to @entity.
+"""
+
+It is unclear if that is referring to this race or something else.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.7+
+---
+ drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 58c8161289fe..ae8be30472cd 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
+ {
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
++	spin_lock(&entity->rq_lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
++	spin_unlock(&entity->rq_lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
+ 
+-- 
+2.46.0
+
 
