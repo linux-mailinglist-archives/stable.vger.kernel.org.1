@@ -1,113 +1,131 @@
-Return-Path: <stable+bounces-73812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC14296FCD5
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 22:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EF696FDE8
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 00:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A8F3B229C3
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 20:39:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E959B27266
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 22:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A282B14C5B3;
-	Fri,  6 Sep 2024 20:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655C315B0E5;
+	Fri,  6 Sep 2024 22:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="S7rHxfJI"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DXqNCius"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CE5208A4;
-	Fri,  6 Sep 2024 20:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3AC15AD83
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 22:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725655185; cv=none; b=kZRKLDeJSB3Bt1GEZnfpCUiu79bOqD87WEl2TE/ktSKGWg5d1Xszj9suWEQhre+AA50xjhyijZ5m1Zi5WdWW5fxZtzeaWbptlHldjpPjzBcVNu2/iDEgcaYfwSBU8VE4KKSoUEC1GZQKFJnOZ3kNZ0YpsA66vyZ0OGBZDElL78o=
+	t=1725661147; cv=none; b=PuF47MojSSApGVHiC4ukSdyMF4mODjmv4om2SDDI7Q/fyaVt8aEY8Hq5q8qODjdZqzYBYaaEvx42yjjHH9CuYM02C+hppz1jVJGZ3KnmL4lvFZGt+YvNG4FDCnLD+wVyr4/G5oMrcyBH1QKWnxkKGQ6126mKBHrJwFP5cdtqbm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725655185; c=relaxed/simple;
-	bh=ZMX7bu6YbtfKFwPg2r9WyLHy1Rjrb8wzrsHnqudUfOE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PC7jmwfTsb6hIrvTVj/Ox54iDBDkP1LfY75iVURHi/5oGMJEDpoo7ca4sGkFm7zPqb6DYI9QB4DBsyTa8T8oMMmKh9ZIlIVH1NNfkf7f6DH/zdJZCvQ9FBmeAo4A6iqzsUN8jxkjLJ8HRJfnOdFo1NMlXEfpXUhSc07hE6HgrwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=S7rHxfJI; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4868cfTe009882;
-	Fri, 6 Sep 2024 20:39:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+yEoVE9ezRV0k1GaCT9ts1NI1+qQ8GsKIXa5rBQHMqQ=; b=S7rHxfJI+5bK9ckN
-	M7P7xlZOtzanGqUXY+IhJBUwwdbxSbK17ZAylpnMCawJxKQcnpUOo6MwsdJPNRsT
-	iY9X5/dCx4rtj/FfhYHz29OT65oOFjJe6qhR44HMtbQsihtCZBXsW487+JsW/wDI
-	Eh/9amAT48WkdkQ3c7yTw2XnAAX4vbqcX6bK0DAg6Nipx472NyQzhqeRf1u6qLgA
-	TvSgPpKAjBWrlU58FcGCfsxwIoEfmV7T06kgf/juv+tIv10dFmV8axj8VqWmVEnX
-	c77PKa0oGA7TR5BUjh8qzhTa+mlmEnFdfD72ijQu+cG9BjDb9pZq9kSFR9qhyv+l
-	XA0oJg==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41fhwruc6d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Sep 2024 20:39:20 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 486KdJ5E000469
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 6 Sep 2024 20:39:19 GMT
-Received: from [192.168.143.77] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 6 Sep 2024
- 13:39:18 -0700
-Message-ID: <4d28f099-137f-b9b8-463f-40ec2a745694@quicinc.com>
-Date: Fri, 6 Sep 2024 13:39:18 -0700
+	s=arc-20240116; t=1725661147; c=relaxed/simple;
+	bh=wdO9ZZw+a3Svlepwm2sOo0Qrl/SinTrjpnoUCOM0w6w=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=JZiF3IldUhI1AyIgrnHbMbNUf8trdSaHuWtKvaRaE5V8PktKIim/YKOvnAgpnzcST2bWfgA0Z00V5Ym05pqwA1hKObh+7mU1BQzyAhCMcNSEXYwzkJkF3TjHhxp1nsIRVh1RjerGDpWf16rDDavt8bWtlZO8ze99n1c5zwCvOoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DXqNCius; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+	by cmsmtp with ESMTPS
+	id mdY7sZTT7iA19mhIAsnUEy; Fri, 06 Sep 2024 22:18:58 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id mhI9sCGhjO7CrmhI9s1o4u; Fri, 06 Sep 2024 22:18:57 +0000
+X-Authority-Analysis: v=2.4 cv=Pco0hThd c=1 sm=1 tr=0 ts=66db7fd1
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=9s_CLuLT88mpKrREZRYA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=W7RrPQYON4XjwYXcMB7R510ENbtkdUVss5oOseomJ1M=; b=DXqNCiusri8bPB1KdMMFb+IJQs
+	x317kprRjrCqD6PUpwWPKAwwEsVr23Q1+dMYeaxDisC/H5OZnMzlqL3B0AlYCVcVFJZhqMcEivdTC
+	UfbvkOuW+cb+0DB4qaUdWk1JHuQJhfXjM8hOtvSZ3RKnwqD14L0mi40rgGkJ+92uFFMcUBkz2kYfe
+	aM9hv6OICm7qz5i39GJA8rXiP39A1+4NFwiMA/SRZCpAh6E3XaWZ/HcEfo+MTaC4bcrgkfYDQwplW
+	18L+6OrV8zT1nIzRbeyq9ZTJdU0QGhZ4RmcLOHgsLmiyQvuTHcevxWQZv4Irn4dyOHdI7LpyrThdq
+	CdPNr55A==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:38790 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1smhI6-000VpV-2B;
+	Fri, 06 Sep 2024 16:18:54 -0600
+Subject: Re: [PATCH 6.10 000/183] 6.10.9-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240905163542.314666063@linuxfoundation.org>
+In-Reply-To: <20240905163542.314666063@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <bfeaf2a7-1bc5-69ed-2004-388d3c9f4130@w6rz.net>
+Date: Fri, 6 Sep 2024 15:18:52 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 1/2] ufs: core: fix the issue of ICU failure
-Content-Language: en-US
-To: <peter.wang@mediatek.com>, <linux-scsi@vger.kernel.org>,
-        <martin.petersen@oracle.com>, <avri.altman@wdc.com>,
-        <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-        <chun-hung.wu@mediatek.com>, <alice.chao@mediatek.com>,
-        <cc.chou@mediatek.com>, <chaotian.jing@mediatek.com>,
-        <jiajie.hao@mediatek.com>, <powen.kao@mediatek.com>,
-        <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-        <tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-        <naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-        <stable@vger.kernel.org>
-References: <20240902021805.1125-1-peter.wang@mediatek.com>
- <20240902021805.1125-2-peter.wang@mediatek.com>
-From: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
-In-Reply-To: <20240902021805.1125-2-peter.wang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0FqclmJWzZByE9vdHfYZGWJeAXKgRavN
-X-Proofpoint-GUID: 0FqclmJWzZByE9vdHfYZGWJeAXKgRavN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_05,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 adultscore=0 spamscore=0
- impostorscore=0 mlxlogscore=936 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2408220000 definitions=main-2409060153
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1smhI6-000VpV-2B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:38790
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOiMp3hL4QSoedrbWlcSGX891jPKiagSHQEwBYjeBa2mmy9exT5x71aFtX0n3mbQYoPVKWAuVVxjFqxS8wHHfZItDFb74Oz3SuoxaQGmy4K5G1DU4Rao
+ +UfryxK0KjMH0mohuFnSwWhEpAYexcI44ZVfE8p6DvnOcsqdai8h6Zombln2LE2wl4MG2qy7o0w53w==
 
-On 9/1/2024 7:18 PM, peter.wang@mediatek.com wrote:
+On 9/5/24 9:36 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.9 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 07 Sep 2024 16:35:01 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.9-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
->   	/* SQRTCy.ICU = 1 */
-> -	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
-> +	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
-> +		opr_sqd_base + REG_SQRTC);
-Hi Peter,
-Instead of readl() here, how about write (SQ_STOP | SQ_ICU) to SQRTC?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Thanks, Bao
+Tested-by: Ron Economos <re@w6rz.net>
+
 
