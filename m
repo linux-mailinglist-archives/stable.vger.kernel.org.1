@@ -1,153 +1,151 @@
-Return-Path: <stable+bounces-73742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AF996EE3E
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:35:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05F896EE4D
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 10:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D474C2838C7
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:35:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FDAA1F2132D
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 08:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E98C14B945;
-	Fri,  6 Sep 2024 08:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A779156C40;
+	Fri,  6 Sep 2024 08:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8S7Xq3/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHJFM9Ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D097745BE3;
-	Fri,  6 Sep 2024 08:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2588814A604;
+	Fri,  6 Sep 2024 08:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725611728; cv=none; b=t/OjnX+U3JRuqcBN1Q0DULK3/3XYHVYdvkB53Hv3BWMBxxuFfcDCHUR3R7Q9atipOzU/6lVcrP6y+jDw2NmRpHRLeeb0b51i0YzWReE1uUV3BUBKpO8pNemcZJ6t2NcC7DXAaJfxcVZ01UvR48nz5FCFPxES7D3N+NcOMsFiLXU=
+	t=1725611859; cv=none; b=fmjtdaVBuhPEqsIRPoUqtFeytslgzjuE1QqRVoRbT1EFCoPFCCs17jfvRXDdyl9WGPV1K6VWEHS7hfKgo1EOW/t18riNQBfCJCP1yB1dM0dtGob+QVCllFV3QfP6P8rcoW0C6BERyIpSAu0ZeMSHTk5J4vtZz6rB7RSCuvvRkyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725611728; c=relaxed/simple;
-	bh=hqr6tVMKvQxKRSgnMypbCzTdhSYMmHFovaXU4oB8Iy8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucHwDI/yNRidy3hmrq4ScHMPxaF3gCn4bXYR/6vPgjvpD3K6ZkF+7M/TxpZwJyVAxcVOdhtY0lSTVa1F1cycRxl5X1djFT9IBWZ+6ZmZs/NUTvCYojS6MrZUie9TsHtz3Gkhzcjx1nSJoYezVBFBhNL1fCHE0cZpIQv08fzLfDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8S7Xq3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26583C4CEC4;
-	Fri,  6 Sep 2024 08:35:26 +0000 (UTC)
+	s=arc-20240116; t=1725611859; c=relaxed/simple;
+	bh=a78+YWXEw4/kpZZwVcN0AsmJyaKOfsLy1cxETfmdiRw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R0EfFId7WN/aDcNQeoRI6S2Tuqiq2i1K4zBZLGf0uII1DkSCwbigi8xeyv91vc68wCDFQYJ4DVEAq+3g022xTe9qw15laTjPhsaShK8Ic+vYHJwyZg0rVltXQVRxnryiZ1WXM6OQC9CRcGa6DEJn/3HwqSgyH9bBTdJj2+MX5mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHJFM9Ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634A2C4CEC5;
+	Fri,  6 Sep 2024 08:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725611728;
-	bh=hqr6tVMKvQxKRSgnMypbCzTdhSYMmHFovaXU4oB8Iy8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8S7Xq3/zbkEGXxekcYfqEocTY0sxoupapqWyhTDQIX7fasODJkuT7MeX+ja3b9pZ
-	 XiSqATK+JO3fAIzOc8KKOmuglcqql6iZyGG8qH5sdOybogM4x8jFtWgVen1TuNSq5u
-	 XLHheASRNWizrdNJw0OHY7wm9IEGgfHHN9yGj70+XVJwF7xNNK7L7ltIPOtRcovR30
-	 NtlKVM93ZdSKGvZzziK0YpYGXbP92Ukv5bOzVBRTRTWNqTHknhdJdH+8c/RGv3YYLv
-	 WDuQn4KftPVB8FXkcIhltIGibrm4Lw18e6q7Z8SZ9gxEbwbi1YwB/bhtKWYq0fLHtS
-	 +kb4Zji54F2Dg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: close subflow when receiving TCP+FIN
-Date: Fri,  6 Sep 2024 10:35:21 +0200
-Message-ID: <20240906083520.1773331-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024083037-germproof-omnivore-ecf0@gregkh>
-References: <2024083037-germproof-omnivore-ecf0@gregkh>
+	s=k20201202; t=1725611858;
+	bh=a78+YWXEw4/kpZZwVcN0AsmJyaKOfsLy1cxETfmdiRw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nHJFM9UlLhV/OW/+WWxBGvleXK+zBE1BzldJiRyPbNOcO0cVZejbcgUvpcwfP3cSA
+	 jGVV0EGLHavGVw5tSsUIwI7iX9O8s7RZAnPwwfWKKELuULdbb850Ej1szBJZoo8B1K
+	 SKZPn7/DNJ3pwyZbHGB4lhjzZ+0MZcbj1OEiP8/rfpx94DFv9PKS8Bi+xeROQAw39R
+	 LDFrv7d352saSBgBAlk3T4ES925n76LxL+Kk8iA5KR658BV2qzHZ3jtFlLZxRuMiyJ
+	 28iz+yi5AbwFMaAoZ7yoSTajvCKjE/qcjmx+3QTA0LCEf4aPGdt3RJiBnkOCpM6Ex6
+	 RsZAVmW/Y5jeA==
+Message-ID: <f29576d9-a4b3-47da-a13c-7f2f784c512f@kernel.org>
+Date: Fri, 6 Sep 2024 10:37:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3841; i=matttbe@kernel.org; h=from:subject; bh=hqr6tVMKvQxKRSgnMypbCzTdhSYMmHFovaXU4oB8Iy8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm2r7Ibf9/Vu0rVWYt+oHL90pFGXJdtVUqs9VGm SUbOerAe4aJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZtq+yAAKCRD2t4JPQmmg cxbcD/9yqTxADf51jCQ3tylf/8E8Fa0ya47AypTAxGNAwsTvkzdUjr4TtqxrvwjU9qHlW3KUerA 7X0w7NfhpGs71ANHBFdpB2YYywju9L6N83U24CgF0EKwam8vs2HdrwR3gkmH090ER+QBgV0YpKL 0gIpgZLa57rryIF0b7V7zlj01JM3veN5zh91XSctUj+jOEf2Yz1vNQydJ63tzaJ1phXb4Zpq5E1 KaXGpuO+5zt26SRTAOq1nBNAN3visJ/YpcaUYqkvp1kSQW+moKcrw3jXzXT2Tr+xl2V7bmvfNMP 4av4uEwQPiSps8sNJhHcg8qnRWfYS+tii5Ugo+M+IPAa4bvM32DO4zxqfEa9wjZnFEsqwnUJcnR Q6TBW3uSohzyi3GtC/ucgOc9rg5fzIo6GVV+6IqrbX35TVxDfNAFpBmeCNuYOyuprPokGdIZlYN RzpyBloluWCIooPu14kutedasWgZmMtxgjjMv0JLjsaai62cuZa0HYAsZPjk3tHPY7SzngzmGLL wVCcfny+qBYgGa8WAoCsUbxB9FdfGXiTkWdp9bHvdQMgwezA9UlxlPl8EdXqZJ9+1IBUy5dXIWB JsHHVfujroAO58lVGNQ8h9vbTKiiHj4/62y7niViojQ+lrJ/1Q6zoIIFQBv6slzCm92h7xCv2P6 +C+5bLZZh7EpyAw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: remove
+ mptcp_pm_remove_subflow()" failed to apply to 5.15-stable tree
+To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
+Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
+References: <2024082656-shield-daily-d746@gregkh>
+Content-Language: en-GB
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <2024082656-shield-daily-d746@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-commit f09b0ad55a1196f5891663f8888463c0541059cb upstream.
+Hi Greg,
 
-When a peer decides to close one subflow in the middle of a connection
-having multiple subflows, the receiver of the first FIN should accept
-that, and close the subflow on its side as well. If not, the subflow
-will stay half closed, and would even continue to be used until the end
-of the MPTCP connection or a reset from the network.
+On 26/08/2024 14:05, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-The issue has not been seen before, probably because the in-kernel
-path-manager always sends a RM_ADDR before closing the subflow. Upon the
-reception of this RM_ADDR, the other peer will initiate the closure on
-its side as well. On the other hand, if the RM_ADDR is lost, or if the
-path-manager of the other peer only closes the subflow without sending a
-RM_ADDR, the subflow would switch to TCP_CLOSE_WAIT, but that's it,
-leaving the subflow half-closed.
+Thank you for the notification!
 
-So now, when the subflow switches to the TCP_CLOSE_WAIT state, and if
-the MPTCP connection has not been closed before with a DATA_FIN, the
-kernel owning the subflow schedules its worker to initiate the closure
-on its side as well.
+(...)
 
-This issue can be easily reproduced with packetdrill, as visible in [1],
-by creating an additional subflow, injecting a FIN+ACK before sending
-the DATA_FIN, and expecting a FIN+ACK in return.
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From f448451aa62d54be16acb0034223c17e0d12bc69 Mon Sep 17 00:00:00 2001
+> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+> Date: Mon, 19 Aug 2024 21:45:25 +0200
+> Subject: [PATCH] mptcp: pm: remove mptcp_pm_remove_subflow()
+> 
+> This helper is confusing. It is in pm.c, but it is specific to the
+> in-kernel PM and it cannot be used by the userspace one. Also, it simply
+> calls one in-kernel specific function with the PM lock, while the
+> similar mptcp_pm_remove_addr() helper requires the PM lock.
+> 
+> What's left is the pr_debug(), which is not that useful, because a
+> similar one is present in the only function called by this helper:
+> 
+>   mptcp_pm_nl_rm_subflow_received()
+> 
+> After these modifications, this helper can be marked as 'static', and
+> the lock can be taken only once in mptcp_pm_flush_addrs_and_subflows().
+> 
+> Note that it is not a bug fix, but it will help backporting the
+> following commits.
+It was helping with newer versions, but not here in v5.15, because other
+fixes have not been taken. We don't need this patch then.
 
-Fixes: 40947e13997a ("mptcp: schedule worker when subflow is closed")
-Cc: stable@vger.kernel.org
-Link: https://github.com/multipath-tcp/packetdrill/pull/154 [1]
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-1-905199fe1172@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ No conflicts but 'sk' is not available in __mptcp_close_subflow in
-  this version. It would require b6985b9b8295 ("mptcp: use the workqueue
-  to destroy unaccepted sockets") which has not been backported to this
-  version. It is easier to get 'sk' by casting 'msk' into a 'struct
-  sock'. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 5 ++++-
- net/mptcp/subflow.c  | 8 ++++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 5afd49bf4750..da2a1a150bc6 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2361,8 +2361,11 @@ static void __mptcp_close_subflow(struct mptcp_sock *msk)
- 
- 	list_for_each_entry_safe(subflow, tmp, &msk->conn_list, node) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		int ssk_state = inet_sk_state_load(ssk);
- 
--		if (inet_sk_state_load(ssk) != TCP_CLOSE)
-+		if (ssk_state != TCP_CLOSE &&
-+		    (ssk_state != TCP_CLOSE_WAIT ||
-+		     inet_sk_state_load((struct sock *)ssk) != TCP_ESTABLISHED))
- 			continue;
- 
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 5f514943721f..e71082dd6484 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1131,12 +1131,16 @@ static void mptcp_subflow_discard_data(struct sock *ssk, struct sk_buff *skb,
- /* sched mptcp worker to remove the subflow if no more data is pending */
- static void subflow_sched_work_if_closed(struct mptcp_sock *msk, struct sock *ssk)
- {
--	if (likely(ssk->sk_state != TCP_CLOSE))
-+	struct sock *sk = (struct sock *)msk;
-+
-+	if (likely(ssk->sk_state != TCP_CLOSE &&
-+		   (ssk->sk_state != TCP_CLOSE_WAIT ||
-+		    inet_sk_state_load(sk) != TCP_ESTABLISHED)))
- 		return;
- 
- 	if (skb_queue_empty(&ssk->sk_receive_queue) &&
- 	    !test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
--		mptcp_schedule_work((struct sock *)msk);
-+		mptcp_schedule_work(sk);
- }
- 
- static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
+Cheers,
+Matt
 -- 
-2.45.2
+Sponsored by the NGI0 Core fund.
 
 
