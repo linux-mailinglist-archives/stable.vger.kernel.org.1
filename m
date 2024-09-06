@@ -1,118 +1,99 @@
-Return-Path: <stable+bounces-73778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CE296F4A5
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 14:52:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E768496F4DC
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 14:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F0121F28159
-	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 12:52:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F0D61C247A7
+	for <lists+stable@lfdr.de>; Fri,  6 Sep 2024 12:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0FD266AB;
-	Fri,  6 Sep 2024 12:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F2F1CCB34;
+	Fri,  6 Sep 2024 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="L6CEiLCq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VMvRo4Wn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD976C13C;
-	Fri,  6 Sep 2024 12:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9D41CB338
+	for <stable@vger.kernel.org>; Fri,  6 Sep 2024 12:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725627154; cv=none; b=bbDV4y95MQMeFZK+YIAS51rdWMbu0/yfEsDlCqiWiMLKZXHsLALvoP35aK3AFGeL/JgSUtIz5T+JVFmxdP1D4mByRinp97b9a/de8r7rK+PXXT6C378lCtbHA6UK7PDNKp4RfgreYEHh8o21l0oySRVLxyQCxGejRr1gLBc6kq0=
+	t=1725627491; cv=none; b=nnqKi26mUwFe5UtSIdbBgzCNJ7OdPOhMSQ8eIyznKpjL/Ko/8xtVNVcOnr/QZQLLato1HvPEq3nF7hSVfz9oVBy92SOb6puAM549Xe5iyTVJAaTNu4PC+REmoJ9SA5FRELFAqmol8tQZnqvlr/Hr3ejVnKv+0Gg9tznnlakBLPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725627154; c=relaxed/simple;
-	bh=LAe+SVFODFHG3JO85HxVC4wTLxHPy0xG1UGWXRGSfSQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aeo6r09yqar6sK5acIaDsNng7lPWQ40WSne4UKgp/oop5/xCGiwK2aGOM/3hkOOabMB6LHf6pA4iWJVi8snrQrhvuhDTMWvcNFkjRJzlOQPnAXoTFMBcH4J5yE4KuoV5QjvbDTDQ4t5OmqtJ4D20gU+0UMpoGVvFutpZM2HuBE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=L6CEiLCq; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53345dcd377so2537035e87.2;
-        Fri, 06 Sep 2024 05:52:30 -0700 (PDT)
+	s=arc-20240116; t=1725627491; c=relaxed/simple;
+	bh=i1Nwn0XSmK5ZTnfmP7suaQ37ZP54sYTUR7IvU2Fuqow=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=VbOIfZ7VO9QENe46zXUUfFOSPRtEALd97j0Az4V8E3S4TsSufzplLgs73Q9umYb4THybiuYVrt6N8GSuLqWV9MoZMrgoEerCwYpx7oEHN3r8fqoQoVhzOB/wqHF21kVoNLaa6rKZz2Hpq+GURTgK96zvDLTqEhm2l5o0QWgiP5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VMvRo4Wn; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e1d0e74f484so2431816276.2
+        for <stable@vger.kernel.org>; Fri, 06 Sep 2024 05:58:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1725627149; x=1726231949; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a7xpYl6U/W2CVmGwpeWmwDvxtZgNF6LNCUTyVT4QRdE=;
-        b=L6CEiLCqdpj3ga5ePoS+WAQM4u6uqbItQPEqCpx57Rvo5OAaBgKREPrekpDYXq81uA
-         FkB/223QYosmRmJBBupLNC3GT7yAXTOYQMoLHb48Xm/+gCKmckcLQIA5KWb4mJwfFCBk
-         0+bWC6Izs4ppKK1Pa3HAgd5yL6rnxDGPb7pOgL1Hzs21d5PSHnzzu/ku+ozQyixRlbAL
-         BAft8TMcTr9Vb0nNIQ2uvWUVHororXa43jH85t3rtTEHbET+4rFqyaaYkR7v9Vfp9KuJ
-         7KNxtudHP2huXx7+EW+85GTmKVhMNe63fcMCj6P2X8TXBlnTRCyMJkaZF0nyofvaLx9K
-         kDdQ==
+        d=linaro.org; s=google; t=1725627488; x=1726232288; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pZ4UXvk6Hc39FSBqf7SdNKy5PEKmHYp1NAIB/Pp/XHY=;
+        b=VMvRo4Wn5OZkE3959QI9JstFBVcsHVLi3lcQk8TnI8xWb1/cQ4re9sLbl7kCsnzBSW
+         VSMUMvZcCQJSm8Ep1d3JE+DrYrA3c7GITKC4VoxbDlxTkjRqXzHwvBwB8gbXsw+UhlGS
+         Wyt936RgbMaxZjt+W37El496xbBm64Yb1dyyFY9NlDDpqMl0xC8VnOkA6bhjDC2Zqahd
+         YN5uqJVoOQRowu7JjfW84dtSzfQtHhqHREbWnyCq5OcmsKGLYd6QKti93NPi3MEco0xG
+         nnGgCsS7gpM7flxG+HyecDvzICxB9YD0LP7ld8eMIPgkTrsGCzIVT7tMJ9ZJbrTMbZaR
+         D5mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725627149; x=1726231949;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a7xpYl6U/W2CVmGwpeWmwDvxtZgNF6LNCUTyVT4QRdE=;
-        b=ALY4d0PlL19d/SyLeETOqGlYZ6obtHvHDvouFlWaacjer+m5NddZmoMFR7a5GFHUnQ
-         dS+2+ZLHoOuMfSp3TzndeBgh2CnlLSRk7kGBevnZOiNP8KlpGpTv+QgJceP88H7cFhEy
-         aH1b+gVkZwN/jSIM4KcO0Yg1fTeKJ9boo8SWliM8fKAucWFjemT9dq1H6ghLQuttCZOZ
-         5yGudLfeTZH+G4GD5DgNpLUHp0dK8fQOb/OI7b1x9dlK/1Bhw+ujz8a50LfW+Pzf0xVB
-         8dpywzw9k14eB82ybKsJoI0s0KYlVvXYdMMumiTBuHARtDew7qefi75S5Z0Rdssd46ZU
-         GUHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLve939gW+7fT9mKX1jlIds5r/+Yyo5ubs3e49JHoYUAwcsazXkbRqaNd+ZQ22envokMxAS2CwA5Bwd6E=@vger.kernel.org, AJvYcCVR6PsxVKmEEdWoGQMwKhwGqIiZl3vh6uBqV+at5aeINFRRW++Lvuk3XedKY3/VLAbvn/AUwgFJ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt9XxLoYPdOLwM5uUR5sA74zMlohzz7J9ex8nPInHaPhcTz/ra
-	hqahjQlmC4FlHgszCGDIzB2OCfX27mWd6emHVla6EHGU4cJd5jY=
-X-Google-Smtp-Source: AGHT+IHWVUg6w0qXEXxCORO+fGAi77k1sUCAjc1o4hBTuyAu256CvscZNFz2PRcuSJLEh35/EphQNA==
-X-Received: by 2002:a05:6512:3d89:b0:533:4676:c21c with SMTP id 2adb3069b0e04-536587fcdecmr1661821e87.44.1725627148397;
-        Fri, 06 Sep 2024 05:52:28 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b40f2.dip0.t-ipconnect.de. [91.43.64.242])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a623a45b0sm279211566b.143.2024.09.06.05.52.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2024 05:52:27 -0700 (PDT)
-Message-ID: <7e973e08-456f-44bc-b769-fb600b49274d@googlemail.com>
-Date: Fri, 6 Sep 2024 14:52:26 +0200
+        d=1e100.net; s=20230601; t=1725627488; x=1726232288;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pZ4UXvk6Hc39FSBqf7SdNKy5PEKmHYp1NAIB/Pp/XHY=;
+        b=SB2eCwPRpJ2DqYglpFlVrS63IJpEGSLaxN9WfN6mCr24Yf2BnUeZWUUBxGfJFz31sT
+         hoB+rZd5QnXBUGJecMNajuVn8nHEhIwUef+Sqevlnj2Ga3w4AU23AV7k2DEGtbPsrz9e
+         6sOBg+KvtniOpJ9DMvSfop8CPuKv3/A7ek56JiszyvjeIlUVTmmX6EJ78xWm5QWXfl4t
+         FsLWxnd3rUlf587V1eLXrTR0YXz4NPZnkNS8QCsBi81hCwMOhYXQPnKYNxPWwtvTyC+k
+         RTzuQZnFv3ksa56MngIrM/c21ockcn/dV0tST1jFganzdXRvy/z9Zcdq0v02TDT19fmr
+         sp3w==
+X-Gm-Message-State: AOJu0Yzdjh9oRbO9yT45ZRugE3ry1OxLbmrGqmTmVIofg862FWjbiMxQ
+	UsJKPhJ5HoMkp/MwxXPJFY1KmzeCQ53doQRNR8CQIaa/Y6j4/dyTbq4ci6SVf+8yjUd02gKBqir
+	AasoQLwp8bWqqoFmClOsjgO7lH8yMWG+lrkH/UKTrf8rPVJ5viaU2ehV5
+X-Google-Smtp-Source: AGHT+IEfPq+1SJTZN/kT/ogG50d/lurOKFue49//AbbEiwtDqcYrHS7wEFlOlmvzaiwpBHdDVphmTOmvHGU0aBmrA1g=
+X-Received: by 2002:a05:6902:2405:b0:e06:df51:fda0 with SMTP id
+ 3f1490d57ef6-e1d349ef8ebmr3092635276.42.1725627488122; Fri, 06 Sep 2024
+ 05:58:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/131] 6.6.50-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240905163540.863769972@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240905163540.863769972@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Fri, 6 Sep 2024 20:57:57 +0800
+Message-ID: <CAMSo37Udb-DwXYdGp+RdvKS87-0nTXjR1Dj0W46CALspeW2O2A@mail.gmail.com>
+Subject: [Backport request for 5.4.y] clk: hi6220: use CLK_OF_DECLARE_DRIVER
+To: stable@vger.kernel.org
+Cc: GregKH <gregkh@linuxfoundation.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	John Stultz <jstultz@google.com>, Michael Turquette <mturquette@baylibre.com>, sboyd@kernel.org, 
+	Allison Randal <allison@lohutok.net>, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Am 05.09.2024 um 18:36 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.50 release.
-> There are 131 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi, Greg
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Could you please help to cherry-pick the following commit to the 5.4.y branch?
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+     f1edb498bd9f ("clk: hi6220: use CLK_OF_DECLARE_DRIVER")
 
-
-Beste Grüße,
-Peter Schneider
+It's been there since the 5.10 kernel, and  this along with the reset
+controller patch
+are needed for Hikey devices to work with 5.4.y kernels, otherwise it
+will get stuck
+during the boot.
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
 
