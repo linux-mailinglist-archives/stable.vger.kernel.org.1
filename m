@@ -1,134 +1,107 @@
-Return-Path: <stable+bounces-73827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831A897027F
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 15:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2B4970287
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 15:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ABA1282F61
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 13:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112981C21644
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 13:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B1015B98F;
-	Sat,  7 Sep 2024 13:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C8C15C151;
+	Sat,  7 Sep 2024 13:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8rHX6Y2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRshFzzi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127EDA93D
-	for <stable@vger.kernel.org>; Sat,  7 Sep 2024 13:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A35615C13C;
+	Sat,  7 Sep 2024 13:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725716917; cv=none; b=ScXWTiXBJPvq7nBy5LljScDIwdP91jhiCNWqjDF7Pw1NVfXxGRBl4B4x6JSjY0D7K8mx4KoUMdqNM+Z3Xc4VvFICXMJ+dQyBKSIyvGo8lW91WprbMsyzA6iuFVrgwNB52ZJipFQ24CMe6H8BiYomLMbcXZ03kXX9nsNluYhOu4U=
+	t=1725717128; cv=none; b=dWanJJJgOVmYtTcq2PAP/6gcsWx4suM5q/nPBUU2WU5DWTu1036MZv5dr2AIc7psSmzqAfdpfZu5k1ScYhIV1LIp3UuYf05UhfzWP3MZY3G1SSdPOZmSjppsWDmmEt31XCp7shBAf+oMC3Dirpq6V2NNitHEpM6dY11P1uKZDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725716917; c=relaxed/simple;
-	bh=aFp9KLbrETCUa3lkD2i+hUni3MVQRH66/4924UNX8fg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsOLKyidVvw8/nuHRoxftWqdbmWrEceeD5ceTJnv0OJY3jr3ZJJLybty1YR51cauJMtihGR9H56QE1jm1K09L1hn4ORXwjPRBh45thLpHRi9jN2i8w5dXj6iqkq0UZrH4OsB8yeg5ws2FtuTbHWWE0a9Cf/QABjttnlOZWrIpwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8rHX6Y2; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-45815723c87so10764821cf.0
-        for <stable@vger.kernel.org>; Sat, 07 Sep 2024 06:48:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725716914; x=1726321714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fS/OA3BsrI6pzbMDPFKPV5GdDCe3zSgljORI2lN/SEo=;
-        b=T8rHX6Y2J/Mvyh/qFuMCh2lmB4JxdXAitvCwHS8NYz1Ah7lOQh8ht9oB42zKTxt2jr
-         uTCEyyY5a+UcpSAIRXzd+yrDsRJ6tw0cy2xz3jZc9aSKzhpUUhQZkkAyp02qvflUgMWJ
-         Wj3PHTcLMIMC2MIG/mTszGNG+3Zx/+8lFZLsbAfIsnJHLm5Rh/O+tKosCgusGZOb3wOX
-         gFkMxIAqHCCWEbOITYaLWhytX0cmyHUNGAWHz7LhYjhbhYSx+qt7d38ZOs1DJPbAWj9N
-         ZL93qpr1uQVQAE2Q4Hq/LzcOE7pX2xYj7epc8mbBZNGpTg58+rqw/v0FCJ2jejyP/u73
-         io3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725716914; x=1726321714;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fS/OA3BsrI6pzbMDPFKPV5GdDCe3zSgljORI2lN/SEo=;
-        b=ggtQdhrhK375aeVMSnUsIZN33cETj3IgkvwAPGqTp60gigTqJr4r7SuYDa0BpP8rX2
-         lSM9GwE861/FGjibOBNUDdXx6g4Cp9TtIoTI39pD602o2WhBFixtO0zr1KoMuHAV5YS9
-         CJK/6HWXX2HPsOd1zf4nsYC8N/MicvvP4hYg9DguIZ5k1NUhdSnQT5llZK3cC5xSbyGb
-         VRRRviiuhzK/eH3i0zMwz7qzTojoep9M6A259Oa3zPFihXjpqlPL/MaEUXqle1YVQi/f
-         8FO2eP8UloXVdGqY5AWKHF72qfEaWERvBgBBjfqH2lqG15ry4YqcgiDbHiPpLyWK86sN
-         QC4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV7jZbpLcCVIc+o+czodPZWcBKkjEmPJ5V+HJkUAuW0z77d3rJnwWMmUU571l09okSQI0olsz8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg4ZkDkibjZteQ6Q0zb4VDmf9UZAuDRAkdqz2y52enpPY+NCAk
-	sDw06Ho9r0Zg+cGgXJrsdj6VHP5jQaAWvUZFFj3KwgNBsjjm1jFC
-X-Google-Smtp-Source: AGHT+IFYAVjViso5yashKI1cy82Ue9rUvQKnhsWtdD2mCfjcDosLzieTwdV0ePLT0+92kcf05IErmg==
-X-Received: by 2002:a05:622a:54a:b0:447:e003:ed8f with SMTP id d75a77b69052e-457f8c639b4mr197237141cf.19.1725716913773;
-        Sat, 07 Sep 2024 06:48:33 -0700 (PDT)
-Received: from shine.lan (216-15-0-36.s8994.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [216.15.0.36])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e655e1sm4447541cf.16.2024.09.07.06.48.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Sep 2024 06:48:32 -0700 (PDT)
-From: Jason Andryuk <jandryuk@gmail.com>
-To: arthurborsboom@gmail.com
-Cc: oleksandr_andrushchenko@epam.com,
-	xen-devel@lists.xenproject.org,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	stable@vger.kernel.org
-Subject: [xen_fbfront] - Xen PVH VM: kernel upgrade 6.9.10 > 6.10.7 results in crash
-Date: Sat,  7 Sep 2024 09:47:56 -0400
-Message-ID: <20240907134756.46949-1-jandryuk@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com>
-References: <CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com>
+	s=arc-20240116; t=1725717128; c=relaxed/simple;
+	bh=MYrO/3eKljHyoKJjSw8BBububPsJc6vLPebzXA5ILLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FfqT7rxb6xnsLZBYDVgyatDk/etsZHpegKy186HWYn/SRMJDq+iIMSyBB/k8iyZPZw8c6D5HcuXdkkuXNNBr1x1saU1RfCgyT8U4ACdxCktFNDi/j5dicz+dtRcg5mEAAU4k8UkkOHQh3aRiHiQnCAALTSg6QAPaYa6usF3T0so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRshFzzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9089AC4CEC2;
+	Sat,  7 Sep 2024 13:52:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725717128;
+	bh=MYrO/3eKljHyoKJjSw8BBububPsJc6vLPebzXA5ILLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bRshFzzihKz7KcoG149wshja98LfJ2ZGlpiI96+3s2DvdHyw6EeJiCLWqjhfJo8oq
+	 wjtkprMaMTouRtQTTTIMBSH3qnJeSK+PnANQat9T3C0FKPuAmLfX0snkJ+OcWwDYJa
+	 dxuV3baL39uwwsocxhbDXzN4z87U+h2KF6U8vCddICIx8CbZrzsT5Y9vC7mU5N+EeJ
+	 uYYeQZe4oMj1N976JWokknF7Rm0ilKPneEjWo8Y/4js0rqutlpFgHDPZ/Z11QnvTKr
+	 fpNgN43LC/H6Hn0hSDUxLX/IoSSCbev6FmrEnqXXlqwfVXJ4/Rv0nkUqJCfzr+fiy3
+	 RvVXgZSjMHN2Q==
+Date: Sat, 7 Sep 2024 14:52:03 +0100
+From: Simon Horman <horms@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Gui-Dong Han <hanguidong02@outlook.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: Re: [PATCH v2] ice: Fix improper handling of refcount in
+ ice_sriov_set_msix_vec_count()
+Message-ID: <20240907135203.GQ2097826@kernel.org>
+References: <SY8P300MB0460D0263B2105307C444520C0932@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
+ <99a2d643-9004-41c8-8585-6c5c86fab599@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <99a2d643-9004-41c8-8585-6c5c86fab599@web.de>
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+On Sat, Sep 07, 2024 at 02:40:10PM +0200, Markus Elfring wrote:
+> …
+> > +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> > @@ -1096,8 +1096,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+> >  		return -ENOENT;
+> >
+> >  	vsi = ice_get_vf_vsi(vf);
+> > -	if (!vsi)
+> > +	if (!vsi) {
+> > +		ice_put_vf(vf);
+> >  		return -ENOENT;
+> > +	}
+> >
+> >  	prev_msix = vf->num_msix;
+> >  	prev_queues = vf->num_vf_qs;
+> > @@ -1142,8 +1144,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+> >  	vf->num_msix = prev_msix;
+> >  	vf->num_vf_qs = prev_queues;
+> >  	vf->first_vector_idx = ice_sriov_get_irqs(pf, vf->num_msix);
+> > -	if (vf->first_vector_idx < 0)
+> > +	if (vf->first_vector_idx < 0) {
+> > +		ice_put_vf(vf);
+> >  		return -EINVAL;
+> > +	}
+> >
+> >  	if (needs_rebuild) {
+> >  		ice_vf_reconfig_vsi(vf);
+> 
+> Would you like to collaborate with any goto chains according to
+> the desired completion of exception handling?
 
-Hi Arthur,
-
-Can you give the patch below a try?  If it works, please respond with a
-Tested-by.  I'll then submit it with your Reported-by and Tested-by.
-
-Thanks,
-Jason
-
-[PATCH] fbdev/xen-fbfront: Assign fb_info->device
-
-Probing xen-fbfront faults in video_is_primary_device().  The passed-in
-struct device is NULL since xen-fbfront doesn't assign it and the
-memory is kzalloc()-ed.  Assign fb_info->device to avoid this.
-
-This was exposed by the conversion of fb_is_primary_device() to
-video_is_primary_device() which dropped a NULL check for struct device.
-
-Fixes: f178e96de7f0 ("arch: Remove struct fb_info from video helpers")
-CC: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
----
-The other option would be to re-instate the NULL check in
-video_is_primary_device()
----
- drivers/video/fbdev/xen-fbfront.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
-index 66d4628a96ae..c90f48ebb15e 100644
---- a/drivers/video/fbdev/xen-fbfront.c
-+++ b/drivers/video/fbdev/xen-fbfront.c
-@@ -407,6 +407,7 @@ static int xenfb_probe(struct xenbus_device *dev,
- 	/* complete the abuse: */
- 	fb_info->pseudo_palette = fb_info->par;
- 	fb_info->par = info;
-+	fb_info->device = &dev->dev;
- 
- 	fb_info->screen_buffer = info->fb;
- 
--- 
-2.43.0
-
+Yes, I agree that might be nice. But the changes made by this patch are
+consistent with the exiting error handling in this function. And as a fix,
+this minimal approach seems appropriate to me. IOW, I believe clean-up
+should be separated from fixes in this case.
 
