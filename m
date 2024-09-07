@@ -1,91 +1,130 @@
-Return-Path: <stable+bounces-73833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A12970348
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 19:05:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CF8970374
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 19:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BED75B21851
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 17:05:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 634461C214E3
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 17:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B521F15F40B;
-	Sat,  7 Sep 2024 17:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF40A165EE4;
+	Sat,  7 Sep 2024 17:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RfHmMwa/"
-X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="c5vdIAt2"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7128371
-	for <stable@vger.kernel.org>; Sat,  7 Sep 2024 17:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E911517571
+	for <Stable@vger.kernel.org>; Sat,  7 Sep 2024 17:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725728698; cv=none; b=T8zZa/6sL26RTkO9JQTvaqJHYimDFpnFzVtPacxwzJxd11mSggsUITgCE0eIFQEXE2xkplENpBmtyaOgDJAVK4rIyuC9mP2gFHhDmi9pcoNJdw1q1aX1GS5E2bpLYwv0m3V6YEzNGWGwxuNoikoSzIFlEfn/TAqpv+wpZfn0A68=
+	t=1725731932; cv=none; b=bWi9TGi5pyFXwmABL1Jwurc/wexcPy2ga15Qgw7rFOpqY48AqN/N9Mdo06L8AFVITH62JiHzQtWKWjKub6VY2ehyyR/h7YXFPM8/wVDdRPlhXDcwiMWKIc2p0oxHANB4ucbTvg0Y0RN8QFtPR4DOaBj553CmdD9zMxAS4goFLCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725728698; c=relaxed/simple;
-	bh=ORKqNRQEJbh3hYA6p46yVoiiV3Civhz86GC8gnQlZEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IAR4LWrvIdQl4jW8lS3SOWGruSn75ZZQwW4d3C3p3xZrUf/rcuXTHdkHM6s2OinmAr2X1Quz4vX0+DCfODJympxdZKGBsSF1AUuqVb72u6k5u8gVqnYWUygJcECj0Gk+lXa90fLG3WqdOtVHjOfvQaHePPKdBwnLWRsJgh1sPAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RfHmMwa/; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sat, 7 Sep 2024 13:04:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725728694;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ofjB7t1Kdp6/mJ2/+OPdnvQvYH/QmfkD8+jlSOcEQnw=;
-	b=RfHmMwa/myMuODAxcjjJbZqlT7e/QhGFfMdkmpI1wdf64pM7QF2DEjhdwfhZxs2WBMEqvi
-	frdi6QKVNlbTNWK7ovJwuvjZZnyFsRqWw2y4UCmX4zPCw14UxpoWnItuUwi5d0sZ6zJznv
-	Agw7RF4ug8AvbgghMT75aNs7QaTwP7Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Alyssa Ross <hi@alyssa.is>
-Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Erin Shepherd <erin.shepherd@e43.eu>, 
-	Ryan Lahfa <ryan@lahfa.xyz>
-Subject: Re: [PATCH] bcachefs: Fix negative timespecs
-Message-ID: <n7mhniclwckv7jxu6zwbk5xs5ig7w3eka3j54ioxi4uaha2k2q@tammak7sbrgk>
-References: <20240907160024.605850-3-hi@alyssa.is>
+	s=arc-20240116; t=1725731932; c=relaxed/simple;
+	bh=izSGh+6sy5PNRnbFdyM+VIV0EKPdNFOSdmi1QXPxe6k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BqcVTIpFq7aUkmahrBXn6DH7WwOesJO/vR6YuRgxdiOYOYsmRejlh9MYUr8dDSxILCNjxaj03G+T+sKfk+fc1muEYOtQp93UkoWW7NWlIMna6n9sHT2nt8Z59V7Aq1n4t3QeIH9vns5+0jw5RxMfh5ulVWr0VUR1c4liWCgY/wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=c5vdIAt2; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-501274e2c29so755993e0c.3
+        for <Stable@vger.kernel.org>; Sat, 07 Sep 2024 10:58:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725731930; x=1726336730; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UMtEkjEA6+MsIvWkID1mCodPN+qU9ekogIWwGSM8gSI=;
+        b=c5vdIAt2LumkPNi44WHHEEhYJXcQDbKqENnTEk8fJJyhV7Dr7TDIVqsKfR22XwT0xK
+         tcazANCEbHAKfI23anhA/nLVprLGcQ6Q3VTMqmRScgUQatSWhEYGyGKNmqhjJg8+Q4xY
+         LYPTtHP9oLmUPUm5stPic38WIKnPKGAfmS6CX6eu03LLtTdHGIz6424ApNGlL4B4XkJm
+         6Z8wh0hz9gdbHMYZjIHEN26bjQe5D11sGMNcYxrsCbHPDoSbxAoh8jn2Gi2xXqYyuGoz
+         LJbLwVrjzKfWnyHPE7Z+TTXi7N7oQwWGJk7fX6JdFN6dTiPTHpEFZL+mizAFr9+Zoxxs
+         N4eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725731930; x=1726336730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UMtEkjEA6+MsIvWkID1mCodPN+qU9ekogIWwGSM8gSI=;
+        b=QrjDnZ7Vsj6965oM0KMeLLH3ya4poOQW020gNRYBCszTl35Yb9jduuNMb8ccKcLxyX
+         IVazYkVo7kzq90IPhC7I+vsk8T6wx9LJycaiigv4aFM9DaMmBcrci2GgyGMyt2OcQ8w9
+         1wCHTVVGkfhXl3rCj9teh6daOQFo4bC80JYRqF3jQ7ocM5id3OWxG1zet4VtyVpLsSSc
+         SuzLZow/Vx3L3YMIhLh6AMZY4IywFHOlCXpdpUYCBYxF7Iy/2tm3Px+cY71A5Xq8YzTf
+         FQxT1dWWAD752QWD6c7SSY+HISp+UP0bA7agFJs1gFtPRAhVOqJc1lk/KLT6SoDq3KLi
+         HroQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0nQgPzrTYevJMthkHzuVgOPr8db71MpXibgRA7FFkQuYrgpMwNaHXqSNry6IQ0fhdIol21xc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXCtFsqGVTu0X32otgez5s+wZVxzN9wjKlmQwUkF/4QzsrFWu6
+	edR7z6+Ei85adWRRUztQC0gZp8r7T/yqyeLJ+40DVRV45LD+Z26NpFKh5GAOyS6h0PRgapZ3Xyl
+	bPAx5+pvb7CzKkObGC/RU1cE5oK5JwDZoRUWKuA==
+X-Google-Smtp-Source: AGHT+IEOaT0BYQW8cw+NkaLwFk65fiVHI1VHeKBwUhksWakjY7xaH3BIajcAn4R4yGhCGt4ZxNyadnMqwQwOoyxhIYA=
+X-Received: by 2002:a05:6122:2021:b0:4fc:da8f:c8c4 with SMTP id
+ 71dfb90a1353d-5022146e600mr7614978e0c.12.1725731929903; Sat, 07 Sep 2024
+ 10:58:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240907160024.605850-3-hi@alyssa.is>
-X-Migadu-Flow: FLOW_OUT
+References: <20240907065043.771364-1-aardelean@baylibre.com>
+ <20240907065043.771364-2-aardelean@baylibre.com> <20240907155139.67a296c7@jic23-huawei>
+In-Reply-To: <20240907155139.67a296c7@jic23-huawei>
+From: Alexandru Ardelean <aardelean@baylibre.com>
+Date: Sat, 7 Sep 2024 20:58:38 +0300
+Message-ID: <CA+GgBR8URUmcru0Q=ut8gVdEO=KeVOQgzwWPr7bz1ceiSJXdEA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/9] iio: adc: ad7606: remove frstdata check for serial mode
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org, 
+	lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com, 
+	Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 07, 2024 at 06:00:26PM GMT, Alyssa Ross wrote:
-> This fixes two problems in the handling of negative times:
-> 
->  • rem is signed, but the rem * c->sb.nsec_per_time_unit operation
->    produced a bogus unsigned result, because s32 * u32 = u32.
-> 
->  • The timespec was not normalized (it could contain more than a
->    billion nanoseconds).
-> 
-> For example, { .tv_sec = -14245441, .tv_nsec = 750000000 }, after
-> being round tripped through timespec_to_bch2_time and then
-> bch2_time_to_timespec would come back as
-> { .tv_sec = -14245440, .tv_nsec = 4044967296 } (more than 4 billion
-> nanoseconds).
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 595c1e9bab7f ("bcachefs: Fix time handling")
-> Closes: https://github.com/koverstreet/bcachefs/issues/743
-> Co-developed-by: Erin Shepherd <erin.shepherd@e43.eu>
-> Signed-off-by: Erin Shepherd <erin.shepherd@e43.eu>
-> Co-developed-by: Ryan Lahfa <ryan@lahfa.xyz>
-> Signed-off-by: Ryan Lahfa <ryan@lahfa.xyz>
-> Signed-off-by: Alyssa Ross <hi@alyssa.is>
+On Sat, Sep 7, 2024 at 5:51=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Sat,  7 Sep 2024 09:50:34 +0300
+> Alexandru Ardelean <aardelean@baylibre.com> wrote:
+>
+> > From: Guillaume Stols <gstols@baylibre.com>
+> >
+> > The current implementation attempts to recover from an eventual glitch
+> > in the clock by checking frstdata state after reading the first
+> > channel's sample: If frstdata is low, it will reset the chip and
+> > return -EIO.
+> >
+> > This will only work in parallel mode, where frstdata pin is set low
+> > after the 2nd sample read starts.
+> >
+> > For the serial mode, according to the datasheet, "The FRSTDATA output
+> > returns to a logic low following the 16th SCLK falling edge.", thus
+> > after the Xth pulse, X being the number of bits in a sample, the check
+> > will always be true, and the driver will not work at all in serial
+> > mode if frstdata(optional) is defined in the devicetree as it will
+> > reset the chip, and return -EIO every time read_sample is called.
+> >
+> > Hence, this check must be removed for serial mode.
+> >
+> > Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6=
+/AD7606-4")
+> > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > Link: https://patch.msgid.link/20240702-cleanup-ad7606-v3-1-18d5ea18770=
+e@baylibre.com
+> > Cc: <Stable@vger.kernel.org>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reference the fix patch in your cover letter, but don't include it in the=
+ series.
+>
+> I'll just get confused when I pick this up.
 
-Thanks! Applied
+ack
+will do
 
