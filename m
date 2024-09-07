@@ -1,109 +1,126 @@
-Return-Path: <stable+bounces-73820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439C497014D
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 11:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41EA970174
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 11:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B1B1C21E1C
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 09:15:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB521C2191F
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 09:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409351537A5;
-	Sat,  7 Sep 2024 09:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBFB158208;
+	Sat,  7 Sep 2024 09:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="Hb3kfPTP"
 X-Original-To: stable@vger.kernel.org
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADA42B9B1;
-	Sat,  7 Sep 2024 09:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBA5156879
+	for <stable@vger.kernel.org>; Sat,  7 Sep 2024 09:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725700501; cv=none; b=IpNUR0D87erAw6aWmUjM9jSZaDY5vX9+ldD78f4CYziZojhyZkemUkN23QMTLlrM9mZTMaxm3czj4leCh7ZkueD4F+SfKzfvIFPKEZbzNobWyhZbiC1aVEVzOc9HSJsUyUC7AE2cblGOvZ29+nm8iHxcyHAIIeQ+CrIVH4klIhY=
+	t=1725703080; cv=none; b=mTWqhaoCpoOlSfFmaxkm6zauZBFxzsYjW4niEka3S8WgNFOjE/4XFhtyBiEIQ55q+Rpw7nTX1kmunK5dPRS0r0YMk+4CewwbNYtaCZ0y6q5tEGPrWUbo7vK4KjZpbknM6H0o0aaBRCNHtSkrlQnDSruVfr8WndJgvWKjCyVEaFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725700501; c=relaxed/simple;
-	bh=pcMYQV4zeU5q8ZXdvmN8ApU3rDQlqpYKuFiuKp67fxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V7+UgfzPoSivfYBqKx0dvvfQONoCG98wHLiMF9lBAh9pQl9p4PQsObczhayfNZ9UQjuryqN7LI97oqizv5YLgcoFO+eDKYJg2Gk6nPDghc1XtHVA/yKcV8vTIG4ZZH07GyQ0Q/1nT779coz2h7kPTdBhMitpc3fbOfR5VbJWVP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 414FA455DF;
-	Sat,  7 Sep 2024 11:14:51 +0200 (CEST)
-Message-ID: <5e1785ec-157a-4e7c-953f-3d33f0f2a037@proxmox.com>
-Date: Sat, 7 Sep 2024 11:14:49 +0200
+	s=arc-20240116; t=1725703080; c=relaxed/simple;
+	bh=tiPTbHnY+2nOrmCHuGoFGkPY9sR170hFjDbw1sNgnGE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=drvUHHJVz/QwFpVw2NjPaHVkoHx8cuY0ttkGULtgagj+QJM+goliKHJbVAIDW+0hZp+gMtCTMmeA6E1axXn1G6IYcaTsc3bI3APLs4gMJeASqA562WGfhVA0GJ4jzKJRGCDvQsi6INE2jJ1qjKKIRbozypII0FDlFmfTSxcxB+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=Hb3kfPTP; arc=none smtp.client-ip=185.136.65.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20240907095747de1f41f5d4d42bfe1b
+        for <stable@vger.kernel.org>;
+        Sat, 07 Sep 2024 11:57:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=felix.moessbauer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=rWjk7kQaptgNGEKIjhDPXFTjIGNRskNMMtFtkoA3rk0=;
+ b=Hb3kfPTP3gg6SFxXzyHjNq7h9IhGQd9/ycyaJ8T1A6sJrk8m+zi1/U4PBiUgmSmrhKRzYH
+ 9/IG4RBNor/QZ3ARzT1gXkjVt9yi84gho5Z8B/Z8vAxrujko2/HOV6sCRxB7Sybx2Jv2ddrc
+ oBfyyxlRx15kInJrjswjJPTCfj6CAWjU+MIn5fFWNgUZMwB3nSjNkofR4ZjaCQfB1wdFK2XH
+ zt0FtXRK/6YikULZp5mzWKSKpsoV0isztlBKVof32P/a81NFNM6ZxDevKDJKMqdgbq9965XH
+ hlxM0hTxpEsxgtLn+CSkfblqTBHURrgiGIsOBNN3sTuVnK30kLuDQseQ==;
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+To: axboe@kernel.dk
+Cc: asml.silence@gmail.com,
+	linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	dqminh@cloudflare.com,
+	longman@redhat.com,
+	adriaan.schmidt@siemens.com,
+	florian.bezdeka@siemens.com,
+	stable@vger.kernel.org,
+	Felix Moessbauer <felix.moessbauer@siemens.com>
+Subject: [PATCH v2 1/1] io_uring/sqpoll: inherit cpumask of creating process
+Date: Sat,  7 Sep 2024 11:57:29 +0200
+Message-Id: <20240907095729.27037-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via
- in-kernel ceph client
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
- Xiubo Li <xiubli@redhat.com>, regressions@lists.linux.dev,
- ceph-devel@vger.kernel.org, stable@vger.kernel.org
-References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
- <127721.1725639777@warthog.procyon.org.uk>
-Content-Language: en-US, de-DE
-From: Christian Ebner <c.ebner@proxmox.com>
-In-Reply-To: <127721.1725639777@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-On 9/6/24 18:22, David Howells wrote:
-> 
-> Are they using local caching with cachefiles?
-> 
-> David
+The submit queue polling threads are userland threads that just never
+exit to the userland. In case the creating task is part of a cgroup
+with the cpuset controller enabled, the poller should also stay within
+that cpuset. This also holds, as the poller belongs to the same cgroup
+as the task that started it.
 
-Hi David,
+With the current implementation, a process can "break out" of the
+defined cpuset by creating sq pollers consuming CPU time on other CPUs,
+which is especially problematic for realtime applications.
 
-if you are referring to [0] than no, there is no such caching layer active.
+Part of this problem was fixed in a5fc1441 by dropping the
+PF_NO_SETAFFINITY flag, but this only becomes effective after the first
+modification of the cpuset (i.e. the pollers cpuset is correct after the
+first update of the enclosing cgroups cpuset).
 
-Output of
-```
-$ cat /proc/fs/fscache/{caches,cookies,requests,stats,volumes}
-CACHE    REF   VOLS  OBJS  ACCES S NAME
-======== ===== ===== ===== ===== = ===============
-COOKIE   VOLUME   REF ACT ACC S FL DEF
-======== ======== === === === = == ================
-REQUEST  OR REF FL ERR  OPS COVERAGE
-======== == === == ==== === =========
-Netfs  : DR=0 RA=140 RF=0 WB=0 WBZ=0
-Netfs  : BW=0 WT=0 DW=0 WP=0
-Netfs  : ZR=0 sh=0 sk=0
-Netfs  : DL=548 ds=548 df=0 di=0
-Netfs  : RD=0 rs=0 rf=0
-Netfs  : UL=0 us=0 uf=0
-Netfs  : WR=0 ws=0 wf=0
-Netfs  : rr=0 sr=0 wsc=0
--- FS-Cache statistics --
-Cookies: n=0 v=0 vcol=0 voom=0
-Acquire: n=0 ok=0 oom=0
-LRU    : n=0 exp=0 rmv=0 drp=0 at=0
-Invals : n=0
-Updates: n=0 rsz=0 rsn=0
-Relinqs: n=0 rtr=0 drop=0
-NoSpace: nwr=0 ncr=0 cull=0
-IO     : rd=0 wr=0 mis=0
-VOLUME   REF   nCOOK ACC FL CACHE           KEY
-======== ===== ===== === == =============== ================
-```
+By inheriting the cpuset of the creating tasks, we ensure that the
+poller is created with a cpumask that is a subset of the cgroups mask.
+Inheriting the creators cpumask is reasonable, as other userland tasks
+also inherit the mask.
 
-Also, disabling caching by stetting `client_cache_size` to 0 and 
-`client_oc` to false as found in [1] did not change the corrupted read 
-behavior.
+Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+---
+Changes since v1:
 
-[0] https://www.kernel.org/doc/html/latest/filesystems/caching/fscache.html
-[1] 
-https://docs.ceph.com/en/latest/cephfs/client-config-ref/#client-config-reference
+- do not set poller thread cpuset in non-pinning case, as the default is already
+  correct (the mask is inherited from the parent).
+- Remove incorrect term "kernel thread" from the commit message
 
-Regards,
-Chris
+I tested this without pinning, explicit pinning of the parent task and
+non-all cgroup cpusets (and all combinations).
+
+Best regards,
+Felix Moessbauer
+Siemens AG
+
+ io_uring/sqpoll.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 6ea21b503113..5a002fa1d953 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -231,8 +231,6 @@ static int io_sq_thread(void *data)
+ 
+ 	if (sqd->sq_cpu != -1)
+ 		set_cpus_allowed_ptr(current, cpumask_of(sqd->sq_cpu));
+-	else
+-		set_cpus_allowed_ptr(current, cpu_online_mask);
+ 
+ 	/*
+ 	 * Force audit context to get setup, in case we do prep side async
+-- 
+2.39.2
 
 
