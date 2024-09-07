@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-73828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2B4970287
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 15:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E259702A4
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 16:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112981C21644
-	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 13:52:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B691C21C60
+	for <lists+stable@lfdr.de>; Sat,  7 Sep 2024 14:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C8C15C151;
-	Sat,  7 Sep 2024 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A4515D5DE;
+	Sat,  7 Sep 2024 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRshFzzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep1ZulgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A35615C13C;
-	Sat,  7 Sep 2024 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1475514EC5D;
+	Sat,  7 Sep 2024 14:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725717128; cv=none; b=dWanJJJgOVmYtTcq2PAP/6gcsWx4suM5q/nPBUU2WU5DWTu1036MZv5dr2AIc7psSmzqAfdpfZu5k1ScYhIV1LIp3UuYf05UhfzWP3MZY3G1SSdPOZmSjppsWDmmEt31XCp7shBAf+oMC3Dirpq6V2NNitHEpM6dY11P1uKZDvY=
+	t=1725718417; cv=none; b=ZKr6RV7sdrJNF3qKWd7LxlzQ6TEeMDUaJYIBuaflIwr7CSyA7vSn3fnr5sbLipge8aveOoTnFE2h4k8d2wM8HkxR50WrQ/nNzA9iz/Dk+ULhPzNrBd1yW1nMCn6OFb0BGESJJTofEGiDU0ojDwX1eqBtntwarHJasvwdiKUPfxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725717128; c=relaxed/simple;
-	bh=MYrO/3eKljHyoKJjSw8BBububPsJc6vLPebzXA5ILLM=;
+	s=arc-20240116; t=1725718417; c=relaxed/simple;
+	bh=qko2OkevnRrLYu4Aceoty+wFI+V0BJzREcrgVKbYvzA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FfqT7rxb6xnsLZBYDVgyatDk/etsZHpegKy186HWYn/SRMJDq+iIMSyBB/k8iyZPZw8c6D5HcuXdkkuXNNBr1x1saU1RfCgyT8U4ACdxCktFNDi/j5dicz+dtRcg5mEAAU4k8UkkOHQh3aRiHiQnCAALTSg6QAPaYa6usF3T0so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRshFzzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9089AC4CEC2;
-	Sat,  7 Sep 2024 13:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725717128;
-	bh=MYrO/3eKljHyoKJjSw8BBububPsJc6vLPebzXA5ILLM=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=JOcgyZXr1LwVpuLldkpkxjw6UKhjUXab12jDWhhDoNmYa9C7HAeuM930JO4np0NMC4S0wyOKeuI1a6Le4WzvSPZ+lnmjAlE1XVD99LNKQ7ZG3qrVNYrIAtIbT/mfDfu0pENWN9AZuBRgAwWDxcaasT+72FxJm/6b1xvOm4a8+hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep1ZulgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D202DC4CEC2;
+	Sat,  7 Sep 2024 14:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725718416;
+	bh=qko2OkevnRrLYu4Aceoty+wFI+V0BJzREcrgVKbYvzA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bRshFzzihKz7KcoG149wshja98LfJ2ZGlpiI96+3s2DvdHyw6EeJiCLWqjhfJo8oq
-	 wjtkprMaMTouRtQTTTIMBSH3qnJeSK+PnANQat9T3C0FKPuAmLfX0snkJ+OcWwDYJa
-	 dxuV3baL39uwwsocxhbDXzN4z87U+h2KF6U8vCddICIx8CbZrzsT5Y9vC7mU5N+EeJ
-	 uYYeQZe4oMj1N976JWokknF7Rm0ilKPneEjWo8Y/4js0rqutlpFgHDPZ/Z11QnvTKr
-	 fpNgN43LC/H6Hn0hSDUxLX/IoSSCbev6FmrEnqXXlqwfVXJ4/Rv0nkUqJCfzr+fiy3
-	 RvVXgZSjMHN2Q==
-Date: Sat, 7 Sep 2024 14:52:03 +0100
-From: Simon Horman <horms@kernel.org>
+	b=ep1ZulgPBOi90upuj78yyY44kQrOiGBIvQGRExVuiIpavifk9h4CW4VN6a+VXbG5D
+	 XFlIaz9pafb+t1TlK2U8d0SDtd8NPm8XjZfHkMd0odL3HgDObmFSJzuBwZyibhCvJy
+	 vUe0ZeEynzzgAOETq8XSy6JYkwI2xaWpje83NRl0=
+Date: Sat, 7 Sep 2024 16:13:28 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Markus Elfring <Markus.Elfring@web.de>
 Cc: Gui-Dong Han <hanguidong02@outlook.com>, netdev@vger.kernel.org,
 	intel-wired-lan@lists.osuosl.org,
@@ -50,12 +47,13 @@ Cc: Gui-Dong Han <hanguidong02@outlook.com>, netdev@vger.kernel.org,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>, stable@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	Jia-Ju Bai <baijiaju1990@gmail.com>
 Subject: Re: [PATCH v2] ice: Fix improper handling of refcount in
  ice_sriov_set_msix_vec_count()
-Message-ID: <20240907135203.GQ2097826@kernel.org>
+Message-ID: <2024090715-grief-uneasily-4aa6@gregkh>
 References: <SY8P300MB0460D0263B2105307C444520C0932@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
  <99a2d643-9004-41c8-8585-6c5c86fab599@web.de>
 Precedence: bulk
@@ -99,9 +97,30 @@ On Sat, Sep 07, 2024 at 02:40:10PM +0200, Markus Elfring wrote:
 > 
 > Would you like to collaborate with any goto chains according to
 > the desired completion of exception handling?
+> 
+> Regards,
+> Markus
+> 
 
-Yes, I agree that might be nice. But the changes made by this patch are
-consistent with the exiting error handling in this function. And as a fix,
-this minimal approach seems appropriate to me. IOW, I believe clean-up
-should be separated from fixes in this case.
+
+Hi,
+
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
+
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
+
+thanks,
+
+greg k-h's patch email bot
 
