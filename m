@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DC5970699
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:30:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE9F97069D
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210D31F21B04
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 10:30:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C29E281854
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 10:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7980A14D6FC;
-	Sun,  8 Sep 2024 10:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB014EC41;
+	Sun,  8 Sep 2024 10:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiylaqzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6wYoodw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FCA14D2B5
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 10:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87E414E2EF
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 10:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725791439; cv=none; b=QCncmBXv+fzvZYaue75m1aI3S6OAEsZzJqQnA4o47brJ93N1iFrgKKi8CKqEnMQJVyaD/2JT+hkevMFqed0COW/xBAu0busWvFrfkB9XeIpAM0Z14+QykLTCbjb8iPX/CiKG5l7FolMQpi60Hmjf3mlBZSrzQzObEfBvneeHgX8=
+	t=1725791451; cv=none; b=GuWjaJAdWg1cwwhSARoGR8qSQAlTLsx2hBGZJMsl2IrdiKG0QPjKoq2NuApLV2j4ry0cKgkaq4Eic1IyHKy8EmpoZtrb5aCwrm8y1YRT5mL3PGa0CDZUOXpaoBXkxKTg00E9oeJsfiQh4J69IOeJStgbyh5uPas1SoxWK3X4JFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725791439; c=relaxed/simple;
-	bh=8OS9xVMuHgsJBqdAVkL7dJ+JPq0IWN/kJePugyCM8J4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oA6vloTbpaD1K6DUIZsdajuYtUGWfgMBgxWihAdK8fqRKxRWT3woKYSUWUFjnC05ByAtVhqn2P+wGddSPwgLbN7GpTAOQ0EJeLVlH2RIBXs21vAUPyg6yCKrs5DO6mAchbMXtVr92sc2XIiSEd7HlLaQdfDy1flD1Pz7jIr1E4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiylaqzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568DDC4CEC3;
-	Sun,  8 Sep 2024 10:30:38 +0000 (UTC)
+	s=arc-20240116; t=1725791451; c=relaxed/simple;
+	bh=UMh8A2fJdpPSoIi2/SPOJ6kI+f1wUImUvQqpDDf8eRA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iAzzf9lwdoU+QMaUZhYMuguU/AbaDBD53rR2dsdeQn/U64Fw3PinAEzPNCPk+Yfa/gMCcc1P24BKqLyfMRCx75vw+XEvTKq7p1wnHhSqTe1los8HB3It1Ix61NilEogGK510O2hZap5qaSrqStmsIEGNRJVs83l910Oh2epnWo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6wYoodw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5263CC4CEC3;
+	Sun,  8 Sep 2024 10:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725791438;
-	bh=8OS9xVMuHgsJBqdAVkL7dJ+JPq0IWN/kJePugyCM8J4=;
+	s=korg; t=1725791451;
+	bh=UMh8A2fJdpPSoIi2/SPOJ6kI+f1wUImUvQqpDDf8eRA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tiylaqzba9nV+1Vpv26Jdf6zTFBo+BkjCNOtSD205Y/tJNno98iMlgMCBFBy7xA/Z
-	 iyDBavBCEA8+EUEUTWbnYFZ4lGnADQmra+pR29V2+Snl3LHNyfasB5vS+nJQ6LRJrh
-	 8BA43gDUAsALwb06Qyw77f65dC1kvbpBwBsw7/l4=
-Subject: FAILED: patch "[PATCH] x86/kaslr: Expose and use the end of the physical memory" failed to apply to 4.19-stable tree
-To: tglx@linutronix.de,apopple@nvidia.com,dan.j.williams@intel.com,kees@kernel.org,max8rr8@gmail.com
+	b=K6wYoodw+HKIjE6d/iQnIiVerFWzdeAW2UYUdGYcl/Rdn3P/r2JCJ6wtjCgVhTe5s
+	 tt7Q1+6oTOC5azhFaOKi7ARPJPUmBDh+7hmq9vwPKN92Eitw2vvD7f/rqb2E9U1juy
+	 HRXPcB0Wkt5+fdFPRxOoT0HRtpYHD1dVmZG8NmIM=
+Subject: FAILED: patch "[PATCH] rtmutex: Drop rt_mutex::wait_lock before scheduling" failed to apply to 5.10-stable tree
+To: mu001999@outlook.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 12:30:30 +0200
-Message-ID: <2024090830-cough-rewrite-bcc9@gregkh>
+Date: Sun, 08 Sep 2024 12:30:48 +0200
+Message-ID: <2024090848-dragster-ahoy-c47e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,38 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea72ce5da22806d5713f3ffb39a6d5ae73841f93
+git cherry-pick -x d33d26036a0274b472299d7dcdaa5fb34329f91b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090830-cough-rewrite-bcc9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090848-dragster-ahoy-c47e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-ea72ce5da228 ("x86/kaslr: Expose and use the end of the physical memory address space")
-1a167ddd3c56 ("x86: kmsan: pgtable: reduce vmalloc space")
-14b80582c43e ("resource: Introduce alloc_free_mem_region()")
-27674ef6c73f ("mm: remove the extra ZONE_DEVICE struct page refcount")
-dc90f0846df4 ("mm: don't include <linux/memremap.h> in <linux/mm.h>")
-895749455f60 ("mm: simplify freeing of devmap managed pages")
-75e55d8a107e ("mm: move free_devmap_managed_page to memremap.c")
-730ff52194cd ("mm: remove pointless includes from <linux/hmm.h>")
-f56caedaf94f ("Merge branch 'akpm' (patches from Andrew)")
+d33d26036a02 ("rtmutex: Drop rt_mutex::wait_lock before scheduling")
+add461325ec5 ("locking/rtmutex: Extend the rtmutex core to support ww_mutex")
+1c143c4b65da ("locking/rtmutex: Provide the spin/rwlock core lock function")
+e17ba59b7e8e ("locking/rtmutex: Guard regular sleeping locks specific functions")
+7980aa397cc0 ("locking/rtmutex: Use rt_mutex_wake_q_head")
+c014ef69b3ac ("locking/rtmutex: Add wake_state to rt_mutex_waiter")
+42254105dfe8 ("locking/rwsem: Add rtmutex based R/W semaphore implementation")
+ebbdc41e90ff ("locking/rtmutex: Provide rt_mutex_slowlock_locked()")
+830e6acc8a1c ("locking/rtmutex: Split out the inner parts of 'struct rtmutex'")
+531ae4b06a73 ("locking/rtmutex: Split API from implementation")
+785159301bed ("locking/rtmutex: Convert macros to inlines")
+b41cda037655 ("locking/rtmutex: Set proper wait context for lockdep")
+2f064a59a11f ("sched: Change task_struct::state")
+d6c23bb3a2ad ("sched: Add get_current_state()")
+b03fbd4ff24c ("sched: Introduce task_is_running()")
+a9e906b71f96 ("Merge branch 'sched/urgent' into sched/core, to pick up fixes")
 
 thanks,
 
@@ -85,234 +92,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea72ce5da22806d5713f3ffb39a6d5ae73841f93 Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 14 Aug 2024 00:29:36 +0200
-Subject: [PATCH] x86/kaslr: Expose and use the end of the physical memory
- address space
+From d33d26036a0274b472299d7dcdaa5fb34329f91b Mon Sep 17 00:00:00 2001
+From: Roland Xu <mu001999@outlook.com>
+Date: Thu, 15 Aug 2024 10:58:13 +0800
+Subject: [PATCH] rtmutex: Drop rt_mutex::wait_lock before scheduling
 
-iounmap() on x86 occasionally fails to unmap because the provided valid
-ioremap address is not below high_memory. It turned out that this
-happens due to KASLR.
+rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
+good case it returns with the lock held and in the deadlock case it emits a
+warning and goes into an endless scheduling loop with the lock held, which
+triggers the 'scheduling in atomic' warning.
 
-KASLR uses the full address space between PAGE_OFFSET and vaddr_end to
-randomize the starting points of the direct map, vmalloc and vmemmap
-regions.  It thereby limits the size of the direct map by using the
-installed memory size plus an extra configurable margin for hot-plug
-memory.  This limitation is done to gain more randomization space
-because otherwise only the holes between the direct map, vmalloc,
-vmemmap and vaddr_end would be usable for randomizing.
+Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
+and dropping into the schedule for ever loop.
 
-The limited direct map size is not exposed to the rest of the kernel, so
-the memory hot-plug and resource management related code paths still
-operate under the assumption that the available address space can be
-determined with MAX_PHYSMEM_BITS.
+[ tglx: Moved unlock before the WARN(), removed the pointless comment,
+  	massaged changelog, added Fixes tag ]
 
-request_free_mem_region() allocates from (1 << MAX_PHYSMEM_BITS) - 1
-downwards.  That means the first allocation happens past the end of the
-direct map and if unlucky this address is in the vmalloc space, which
-causes high_memory to become greater than VMALLOC_START and consequently
-causes iounmap() to fail for valid ioremap addresses.
-
-MAX_PHYSMEM_BITS cannot be changed for that because the randomization
-does not align with address bit boundaries and there are other places
-which actually require to know the maximum number of address bits.  All
-remaining usage sites of MAX_PHYSMEM_BITS have been analyzed and found
-to be correct.
-
-Cure this by exposing the end of the direct map via PHYSMEM_END and use
-that for the memory hot-plug and resource management related places
-instead of relying on MAX_PHYSMEM_BITS. In the KASLR case PHYSMEM_END
-maps to a variable which is initialized by the KASLR initialization and
-otherwise it is based on MAX_PHYSMEM_BITS as before.
-
-To prevent future hickups add a check into add_pages() to catch callers
-trying to add memory above PHYSMEM_END.
-
-Fixes: 0483e1fa6e09 ("x86/mm: Implement ASLR for kernel memory regions")
-Reported-by: Max Ramanouski <max8rr8@gmail.com>
-Reported-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
+Signed-off-by: Roland Xu <mu001999@outlook.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-By: Max Ramanouski <max8rr8@gmail.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ed6soy3z.ffs@tglx
+Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
 
-diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_64.h
-index af4302d79b59..f3d257c45225 100644
---- a/arch/x86/include/asm/page_64.h
-+++ b/arch/x86/include/asm/page_64.h
-@@ -17,6 +17,7 @@ extern unsigned long phys_base;
- extern unsigned long page_offset_base;
- extern unsigned long vmalloc_base;
- extern unsigned long vmemmap_base;
-+extern unsigned long physmem_end;
- 
- static __always_inline unsigned long __phys_addr_nodebug(unsigned long x)
- {
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 9053dfe9fa03..a98e53491a4e 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -140,6 +140,10 @@ extern unsigned int ptrs_per_p4d;
- # define VMEMMAP_START		__VMEMMAP_BASE_L4
- #endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
- 
-+#ifdef CONFIG_RANDOMIZE_MEMORY
-+# define PHYSMEM_END		physmem_end
-+#endif
-+
- /*
-  * End of the region for which vmalloc page tables are pre-allocated.
-  * For non-KMSAN builds, this is the same as VMALLOC_END.
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index d8dbeac8b206..ff253648706f 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -958,8 +958,12 @@ static void update_end_of_memory_vars(u64 start, u64 size)
- int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 	      struct mhp_params *params)
- {
-+	unsigned long end = ((start_pfn + nr_pages) << PAGE_SHIFT) - 1;
- 	int ret;
- 
-+	if (WARN_ON_ONCE(end > PHYSMEM_END))
-+		return -ERANGE;
-+
- 	ret = __add_pages(nid, start_pfn, nr_pages, params);
- 	WARN_ON_ONCE(ret);
- 
-diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-index 37db264866b6..230f1dee4f09 100644
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -47,13 +47,24 @@ static const unsigned long vaddr_end = CPU_ENTRY_AREA_BASE;
-  */
- static __initdata struct kaslr_memory_region {
- 	unsigned long *base;
-+	unsigned long *end;
- 	unsigned long size_tb;
- } kaslr_regions[] = {
--	{ &page_offset_base, 0 },
--	{ &vmalloc_base, 0 },
--	{ &vmemmap_base, 0 },
-+	{
-+		.base	= &page_offset_base,
-+		.end	= &physmem_end,
-+	},
-+	{
-+		.base	= &vmalloc_base,
-+	},
-+	{
-+		.base	= &vmemmap_base,
-+	},
- };
- 
-+/* The end of the possible address space for physical memory */
-+unsigned long physmem_end __ro_after_init;
-+
- /* Get size in bytes used by the memory region */
- static inline unsigned long get_padding(struct kaslr_memory_region *region)
- {
-@@ -82,6 +93,8 @@ void __init kernel_randomize_memory(void)
- 	BUILD_BUG_ON(vaddr_end != CPU_ENTRY_AREA_BASE);
- 	BUILD_BUG_ON(vaddr_end > __START_KERNEL_map);
- 
-+	/* Preset the end of the possible address space for physical memory */
-+	physmem_end = ((1ULL << MAX_PHYSMEM_BITS) - 1);
- 	if (!kaslr_memory_enabled())
- 		return;
- 
-@@ -128,11 +141,18 @@ void __init kernel_randomize_memory(void)
- 		vaddr += entropy;
- 		*kaslr_regions[i].base = vaddr;
- 
--		/*
--		 * Jump the region and add a minimum padding based on
--		 * randomization alignment.
--		 */
-+		/* Calculate the end of the region */
- 		vaddr += get_padding(&kaslr_regions[i]);
-+		/*
-+		 * KASLR trims the maximum possible size of the
-+		 * direct-map. Update the physmem_end boundary.
-+		 * No rounding required as the region starts
-+		 * PUD aligned and size is in units of TB.
-+		 */
-+		if (kaslr_regions[i].end)
-+			*kaslr_regions[i].end = __pa_nodebug(vaddr - 1);
-+
-+		/* Add a minimum padding based on randomization alignment. */
- 		vaddr = round_up(vaddr + 1, PUD_SIZE);
- 		remain_entropy -= entropy;
- 	}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c4b238a20b76..b3864156eaa4 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -97,6 +97,10 @@ extern const int mmap_rnd_compat_bits_max;
- extern int mmap_rnd_compat_bits __read_mostly;
- #endif
- 
-+#ifndef PHYSMEM_END
-+# define PHYSMEM_END	((1ULL << MAX_PHYSMEM_BITS) - 1)
-+#endif
-+
- #include <asm/page.h>
- #include <asm/processor.h>
- 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 14777afb0a99..a83040fde236 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1826,8 +1826,7 @@ static resource_size_t gfr_start(struct resource *base, resource_size_t size,
- 	if (flags & GFR_DESCENDING) {
- 		resource_size_t end;
- 
--		end = min_t(resource_size_t, base->end,
--			    (1ULL << MAX_PHYSMEM_BITS) - 1);
-+		end = min_t(resource_size_t, base->end, PHYSMEM_END);
- 		return end - size + 1;
- 	}
- 
-@@ -1844,8 +1843,7 @@ static bool gfr_continue(struct resource *base, resource_size_t addr,
- 	 * @size did not wrap 0.
- 	 */
- 	return addr > addr - size &&
--	       addr <= min_t(resource_size_t, base->end,
--			     (1ULL << MAX_PHYSMEM_BITS) - 1);
-+	       addr <= min_t(resource_size_t, base->end, PHYSMEM_END);
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 88d08eeb8bc0..fba1229f1de6 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1644,6 +1644,7 @@ static int __sched rt_mutex_slowlock_block(struct rt_mutex_base *lock,
  }
  
- static resource_size_t gfr_next(resource_size_t addr, resource_size_t size,
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 66267c26ca1b..951878ab627a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1681,7 +1681,7 @@ struct range __weak arch_get_mappable_range(void)
- 
- struct range mhp_get_pluggable_range(bool need_mapping)
+ static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
++					     struct rt_mutex_base *lock,
+ 					     struct rt_mutex_waiter *w)
  {
--	const u64 max_phys = (1ULL << MAX_PHYSMEM_BITS) - 1;
-+	const u64 max_phys = PHYSMEM_END;
- 	struct range mhp_range;
+ 	/*
+@@ -1656,10 +1657,10 @@ static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
+ 	if (build_ww_mutex() && w->ww_ctx)
+ 		return;
  
- 	if (need_mapping) {
-diff --git a/mm/sparse.c b/mm/sparse.c
-index e4b830091d13..0c3bff882033 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -129,7 +129,7 @@ static inline int sparse_early_nid(struct mem_section *section)
- static void __meminit mminit_validate_memmodel_limits(unsigned long *start_pfn,
- 						unsigned long *end_pfn)
- {
--	unsigned long max_sparsemem_pfn = 1UL << (MAX_PHYSMEM_BITS-PAGE_SHIFT);
-+	unsigned long max_sparsemem_pfn = (PHYSMEM_END + 1) >> PAGE_SHIFT;
+-	/*
+-	 * Yell loudly and stop the task right here.
+-	 */
++	raw_spin_unlock_irq(&lock->wait_lock);
++
+ 	WARN(1, "rtmutex deadlock detected\n");
++
+ 	while (1) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 		rt_mutex_schedule();
+@@ -1713,7 +1714,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	} else {
+ 		__set_current_state(TASK_RUNNING);
+ 		remove_waiter(lock, waiter);
+-		rt_mutex_handle_deadlock(ret, chwalk, waiter);
++		rt_mutex_handle_deadlock(ret, chwalk, lock, waiter);
+ 	}
  
  	/*
- 	 * Sanity checks - do not allow an architecture to pass
 
 
