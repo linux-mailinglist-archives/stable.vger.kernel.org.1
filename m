@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B462F97074D
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:15:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A03C97074E
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18A21C21032
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:15:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8867B21475
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6567A52F6F;
-	Sun,  8 Sep 2024 12:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F8C1531F3;
+	Sun,  8 Sep 2024 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdcGuXST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrti2kFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264651531C2
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D966D52F6F
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725797725; cv=none; b=QPJYGZ9kgErg6nBxIMcP8mi5AIE17G/+z4BC44dGDVz6YfsdseY/F0bRz43/bZNmmOlgb0L5kARIw6PXRe4ZT01cwijMkvIgDTexvuhquODDkcfwg8MnfQz58le7ignVIrj41w63VkGW48Cy1EX7C2W5GF8YV2ofR3ZVnslaBzk=
+	t=1725797733; cv=none; b=Zny+HsZEavGqhIaLLT4TNz8WPKT62utyKUYQIo+Qd5qHU8nFnEIOG/L3pxzkR4ojgkn6i4uNI/PysraKkR1ajOQy7IdrnMPuBuxbNG0fQvsL7tTRc4N8CX+CBZfNpa8QNykWSQUJOg8HOaPD9p8w8UY7+rLe83elRIpHLeFSMRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725797725; c=relaxed/simple;
-	bh=ndZGWWCeemtB+Hu4EIkXxXhr4w45B/Hf2gigW+XlS4o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GRMzzEZea6pfcfitW35Uu/Wk/MkrjzoBweFEcPM4EczJUndXFIYtEJYn5ST4PjcNUKLeQGpv+zRgGGdNgzQvEaTT/kwvzOj2vtQ9BGwemHwzAZGTWJmqgnH0wRr1I2utNk8L2+QYdasjMtkVatWc6wWls1tfPHdo5odEE/WUpqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdcGuXST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEC6C4CEC3;
-	Sun,  8 Sep 2024 12:15:24 +0000 (UTC)
+	s=arc-20240116; t=1725797733; c=relaxed/simple;
+	bh=xvBf+/Tjx3p/jbbv/6+YwFJh+3K2D8zCVvBH36u3bFE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Q5zhN9I8EQWgmzm0sOKa/gcgeW7Idun2dLVROdnB/DpMAHSEkYA8DOuQ63pkfNNlt4BXiQ95AUzTgdEjO8VyIbfN29a8ibhjzFsi5mvTXEANe2luvLZ7UhlvFy/bYnV56f/r3g90R9ak/2WHq4V9rTQuolTZUoZWQ+g6TRZHeF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrti2kFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFE8C4CEC3;
+	Sun,  8 Sep 2024 12:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725797724;
-	bh=ndZGWWCeemtB+Hu4EIkXxXhr4w45B/Hf2gigW+XlS4o=;
+	s=korg; t=1725797733;
+	bh=xvBf+/Tjx3p/jbbv/6+YwFJh+3K2D8zCVvBH36u3bFE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QdcGuXST5CGzHf+VerXBVgPlI+kl3FzRAYP5HYNjQ7ArJygOCv1RuiS26wSYV0d+V
-	 z5DS0p6nehICG2N3A4v8YUfb+d91AjB/IVxOveFpjVmUIvIe+kU0Q3dj6l74RgnDmo
-	 k3zH4hYXTFH0oO/eIi7yhGMOQB5gzUgqNjnJcEQE=
-Subject: FAILED: patch "[PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI" failed to apply to 6.1-stable tree
+	b=vrti2kFjDTyF3nHukmDlzUPbkGdnyayUvuO4hP9hZNx9UDWIGsHzvq177MoGuDDQ+
+	 NhQFOvF5uRctsCYBkrvEApSzlJM0stHtW0Ai6Dkc8+SVrXTZK4ZhHQkKrnVPhoN3an
+	 uB+WAgxpDa95kXvRL1Mtp/uNEbXTsiax2JHOsLCc=
+Subject: FAILED: patch "[PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI" failed to apply to 5.15-stable tree
 To: schakrabarti@linux.microsoft.com,davem@davemloft.net,haiyangz@microsoft.com,shradhagupta@linux.microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:15:21 +0200
-Message-ID: <2024090821-winking-crib-3418@gregkh>
+Date: Sun, 08 Sep 2024 14:15:22 +0200
+Message-ID: <2024090822-freeload-remission-9952@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x b6ecc662037694488bfff7c9fd21c405df8411f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090821-winking-crib-3418@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090822-freeload-remission-9952@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 b6ecc6620376 ("net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup")
+f90f84201edd ("net: mana: Add counter for packet dropped by XDP")
+ed5356b53f07 ("net: mana: Add XDP support")
 
 thanks,
 
