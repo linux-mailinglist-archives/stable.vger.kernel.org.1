@@ -1,76 +1,155 @@
-Return-Path: <stable+bounces-73924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38CE970834
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 16:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE27970869
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 17:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7CA281F74
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86404281B7F
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 15:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE04171099;
-	Sun,  8 Sep 2024 14:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A553F172BDE;
+	Sun,  8 Sep 2024 15:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ejHhZXTY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyoS4/yU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A756167296
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 14:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B51172773;
+	Sun,  8 Sep 2024 15:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725806645; cv=none; b=X92dQRUgabRzjKWPP0levo6xL9IhdyL+mi1L1Gi1udFIZgGloB/DABzo+ivkt4uUwYFA8eaZsq9ILDrDn81DXijPvYqvo2jq2fBArbRwv1YgU87GG5ybE6RnEczHvjNvhg5nAIb4/zRPpm1Jaz5aR0Ks57dcbAPBz00AdmN3RqU=
+	t=1725809233; cv=none; b=PHz0B0SspjCOwLPcxBwthvVPuIqqFbCvElwji3rcdKdSjh9YK4Ye7+TGm/rI5Wv+KyvUC8GMBIZ1/vTLtuEiObbE//Hq8k7ke8K1QWlxJant3pgdZVLQoE4pNtSJ1ObW8SPQsqzUtk4b2pcFkj6ZpA8NBKOKBYVCnR9UD3jOuk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725806645; c=relaxed/simple;
-	bh=N1Hro8V3wXSWs2p1oR8dw+lq2prsli+Y6hwGbLra7U4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J7nCW9jla04C8sFm00PyR/6otriovGqZeg5iLeJ/kBczxIxOLdN4liZcyGfyG1yNGifxF5ROHy9PNLoIwEASOrwNpBshWojIdZwo8M38MUIBxTbqC4ijbyQnmE9f9T6F0dMkc6rl3Z+ApmcYveOdpLVvcq6QQjQMMW+J0vCVN8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ejHhZXTY; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sun, 8 Sep 2024 10:43:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725806638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jvUKlw8Sv/Jt+tRqefd+arkePbOLnyN0Bb7XEA14Tr4=;
-	b=ejHhZXTY+IRQIb48B2mriAwhKnka4R4gFmELgUArQv7AeYRGPDKewuwC+qIPOii/4IuRTp
-	h/uo2H5hZQIqd/+R454nxcOk7LvdgHCn734tZvnaN6wZdgnJ7vdGUdA7wWTrKwPKLE1yRn
-	yE01XvRkPjOBZi5Tvd1oQvglwVFiVS4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
+	s=arc-20240116; t=1725809233; c=relaxed/simple;
+	bh=4moyDWWrRj2MAptHVCn4b48wcbz3IcwZ2VY0WVKUV1Q=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VZDte1gcQfGC3OA9yo+Oe8PIvCNBMMJVjGqXsjq9TJIIrxeqDvrVDCbAxgs7+UHn4uBV6xw0Oh1YfTpzI/jqcx0mif/fa90w56sK5+NdYbN5FMPBRJfJkUokZTn7zpsTs5xwq3vF1goupiFpS3+hnYDuRSUglvh3ZgvrJnMQh+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyoS4/yU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D42C4CEC3;
+	Sun,  8 Sep 2024 15:27:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725809232;
+	bh=4moyDWWrRj2MAptHVCn4b48wcbz3IcwZ2VY0WVKUV1Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iyoS4/yUnJnS1G15/qLt2QjzGCBwMELRKMY5GnGu2QescsS+3riXEZFwkqx7O0yNn
+	 /5kLdJJlVD8TXuJ87Pw2YontsjYPhZDHG4poccHhuIQZ5PClIiIo05pOnzPyftexDn
+	 50iGa1kFLsisI/secbKlWMXQK3RZiLLCeb0r6iR6p8jBaUFlVkCDM7AT/LeL/kNZao
+	 kE2SoUrQnHv45Sd4RYKK3/HX/v5KbKF7U4AxUsvSgCyJ3uBSkWEMfbq2AOHwAkGcUx
+	 snPeNuEvvb4GxMWLAFjGLWyqs8kFT8cpWDC6qoIdb29AB45HCNYr/ixKJXrGA3xob5
+	 r8Lkdk2LStYKw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1snJok-00Ah95-J3;
+	Sun, 08 Sep 2024 16:27:10 +0100
+Date: Sun, 08 Sep 2024 16:27:10 +0100
+Message-ID: <86bk0yupwx.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, tahbertschinger@gmail.com
-Subject: Re: Patch "bcachefs: Add error code to defer option parsing" has
- been added to the 6.10-stable tree
-Message-ID: <nhhb74exmbeut37exka6s3sfajnn544x2lnz6xzbspntdchgmq@hxfe3b76e4p6>
-References: <20240908132559.1643581-1-sashal@kernel.org>
+Cc: stable-commits@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jason Cooper <jason@lakedaemon.net>,
+	Marc Zyngier <marc.zyngier@arm.com>
+Subject: Re: Patch "irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued" has been added to the 6.6-stable tree
+In-Reply-To: <20240908133637.1651482-1-sashal@kernel.org>
+References: <20240908133637.1651482-1-sashal@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240908132559.1643581-1-sashal@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, tglx@linutronix.de, jason@lakedaemon.net, marc.zyngier@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sun, Sep 08, 2024 at 09:25:58AM GMT, Sasha Levin wrote:
+On Sun, 08 Sep 2024 14:36:37 +0100,
+Sasha Levin <sashal@kernel.org> wrote:
+> 
 > This is a note to let you know that I've just added the patch titled
 > 
->     bcachefs: Add error code to defer option parsing
+>     irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued
+> 
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      irqchip-gic-v4-make-sure-a-vpe-is-locked-when-vmapp-.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 1a232324773145ff7ce59b6a1b52b3247223f9d4
+> Author: Marc Zyngier <maz@kernel.org>
+> Date:   Fri Jul 5 10:31:55 2024 +0100
+> 
+>     irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued
+>     
+>     [ Upstream commit a84a07fa3100d7ad46a3d6882af25a3df9c9e7e3 ]
+>     
+>     In order to make sure that vpe->col_idx is correctly sampled when a VMAPP
+>     command is issued, the vpe_lock must be held for the VPE. This is now
+>     possible since the introduction of the per-VM vmapp_lock, which can be
+>     taken before vpe_lock in the correct locking order.
+>     
+>     Signed-off-by: Marc Zyngier <maz@kernel.org>
+>     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+>     Tested-by: Nianyao Tang <tangnianyao@huawei.com>
+>     Link: https://lore.kernel.org/r/20240705093155.871070-4-maz@kernel.org
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+> index e25dea0e50c7..1e0f0e1bf481 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
+> @@ -1804,7 +1804,9 @@ static void its_map_vm(struct its_node *its, struct its_vm *vm)
+>  		for (i = 0; i < vm->nr_vpes; i++) {
+>  			struct its_vpe *vpe = vm->vpes[i];
+>  
+> -			its_send_vmapp(its, vpe, true);
+> +			scoped_guard(raw_spinlock, &vpe->vpe_lock)
+> +				its_send_vmapp(its, vpe, true);
+> +
+>  			its_send_vinvall(its, vpe);
+>  		}
+>  	}
+> @@ -1825,8 +1827,10 @@ static void its_unmap_vm(struct its_node *its, struct its_vm *vm)
+>  	if (!--vm->vlpi_count[its->list_nr]) {
+>  		int i;
+>  
+> -		for (i = 0; i < vm->nr_vpes; i++)
+> +		for (i = 0; i < vm->nr_vpes; i++) {
+> +			guard(raw_spinlock)(&vm->vpes[i]->vpe_lock);
+>  			its_send_vmapp(its, vm->vpes[i], false);
+> +		}
+>  	}
+>  
+>  	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
+>
 
-???
+No please.
 
-Sasha, this and the other patch aren't bugfixes at all, they're prep
-work for the new mount API, i.e. feature work.
+Not only you are missing the essential part of the series (the patch
+introducing the per-VM lock that this change relies on), you are also
+missing the fixes that followed.
 
-Please just drop the bcachefs patches from stable entirely; the lockless
-IO patch revert is a fix but I'll be sending that with a couple other
-fixes in a day or so.
+So please drop this patch from the 6.6 and 6.1 queues.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
