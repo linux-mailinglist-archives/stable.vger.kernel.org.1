@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A65970750
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:16:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C0D970751
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF5BB1F21103
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:16:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 919C71C20C14
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7012F157485;
-	Sun,  8 Sep 2024 12:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02BC15ADBC;
+	Sun,  8 Sep 2024 12:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgfsrjf3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7qsnYDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E1252F6F
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16E152F6F
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725797781; cv=none; b=sn+t80aZrPPuJsXb8ggTXyPlwJpRP9NU3Cj1gqX6TI7fcdmLGCuPvFfk4D2LpWreuDtUxzCWDTYiC0uOxmM8Jf5Zcxsa336qMj7iG206vLTHY0XRnxgaU+ynYIBD7oODhgvkIAqRAaoEgP71dq9GdTHVNRRw7XCa+oqUVZFzhUQ=
+	t=1725797790; cv=none; b=cAf3n3zdxAvfQdCZU4jLPrafl9Bp12RAXJUyU+WusxejgjhnnCwnGyApkGnuLp7JkUb2NYIDmrXKfU5NT3i3ak7mJJJK/oF0CRyBbQDX1lAVZR9WirPWtw9QkfiuAjeEMRlNnnDFHPpoSprr5bLIId/o1HtfkDNIzwhxhEscyj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725797781; c=relaxed/simple;
-	bh=Bj0tP6693hQIE5GIIgFTzlsmeKM+pi4pYuax3Sib6i0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bwE8Fkzj4XslSoaizsInrCm8ZpkNoV9xF2Z/JPf/m7XZmB0/2O9LRfd7j9gmxoGFFlXvXs93QgMNHze1+o7RubLgx8eI75iKePrve0IxRpti+XV43vWWQ3OcJA+xA4QR55pdSk5QACQjCXgiZY1lyfJEztBMJhQxYQyNMlBt/8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgfsrjf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42A4C4CEC8;
-	Sun,  8 Sep 2024 12:16:20 +0000 (UTC)
+	s=arc-20240116; t=1725797790; c=relaxed/simple;
+	bh=EOt5NqvP0KKnndJpr/k3IHnfPb+iBm79WRm6iS39GIo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wi2BX78zhJ0sdgApu6NqoccpEZOxkzyFH8Xrh9bEk8xWd9WVXITAaPINilv8jZKOskkgjEb84NDUv82uaYILi9mlYdtFBYx2Ji45zC4p9AXgYAuH17+I1+6Vi/qihy6V/aa/isBEHQTXgSjCel/BThsli3WXPqtsBzg4UqUf0cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7qsnYDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2244DC4CEC8;
+	Sun,  8 Sep 2024 12:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725797781;
-	bh=Bj0tP6693hQIE5GIIgFTzlsmeKM+pi4pYuax3Sib6i0=;
+	s=korg; t=1725797790;
+	bh=EOt5NqvP0KKnndJpr/k3IHnfPb+iBm79WRm6iS39GIo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tgfsrjf3fvGH8kCYM345icSsw1+6tOrjFXTsGD0/amqSHzkFg4QAyOW3o0zv1qs/4
-	 K42WcLpuQKTT1WLcUQ9jSk2AirB3QxGwpOA60A1GwKJY5+7yV/DVFzmDs8jJAu+Q4W
-	 dXVfKvLBQ2QUJacWK9qY88g8QMGJWA6rIOaVhVwU=
-Subject: FAILED: patch "[PATCH] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported" failed to apply to 5.10-stable tree
-To: levymitchell0@gmail.com,tglx@linutronix.de
+	b=j7qsnYDgbKehLlV/qA6FphxuR6OUc3oQ2jfkSPPFyw0sgBX5L6W8e48eNfbPZVAxC
+	 PJfiaVYsNGnTMVZTERT/8qMP1ZxEH8UC0Tha5F/jZ1LmdIADqWxufFGUrFV0w9Dxkt
+	 Yxvyuhy6/SGm8rmzyfVM7fCuQHAzbLmdjsEMtejw=
+Subject: FAILED: patch "[PATCH] x86/apic: Make x2apic_disable() work correctly" failed to apply to 6.1-stable tree
+To: yuntao.wang@linux.dev,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:16:10 +0200
-Message-ID: <2024090810-amply-schedule-a7d0@gregkh>
+Date: Sun, 08 Sep 2024 14:16:27 +0200
+Message-ID: <2024090827-recount-humbly-e075@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b
+git cherry-pick -x 0ecc5be200c84e67114f3640064ba2bae3ba2f5a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090810-amply-schedule-a7d0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090827-recount-humbly-e075@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-2848ff28d180 ("x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported")
-c33f0a81a2cf ("x86/fpu: Add fpu_state_config::legacy_features")
-d72c87018d00 ("x86/fpu/xstate: Move remaining xfeature helpers to core")
-eda32f4f93b4 ("x86/fpu: Rework restore_regs_from_fpstate()")
-daddee247319 ("x86/fpu: Mop up xfeatures_mask_uabi()")
-1c253ff2287f ("x86/fpu: Move xstate feature masks to fpu_*_cfg")
-2bd264bce238 ("x86/fpu: Move xstate size to fpu_*_cfg")
-cd9ae7617449 ("x86/fpu/xstate: Cleanup size calculations")
-617473acdfe4 ("x86/fpu: Cleanup fpu__init_system_xstate_size_legacy()")
-578971f4e228 ("x86/fpu: Provide struct fpu_config")
-5509cc78080d ("x86/fpu/signal: Use fpstate for size and features")
-ad6ede407aae ("x86/fpu: Use fpstate in fpu_copy_kvm_uabi_to_fpstate()")
-be31dfdfd75b ("x86/fpu: Use fpstate::size")
-248452ce21ae ("x86/fpu: Add size and mask information to fpstate")
-2dd8eedc80b1 ("x86/process: Move arch_thread_struct_whitelist() out of line")
-c20942ce5128 ("x86/fpu/core: Convert to fpstate")
-7e049e8b7459 ("x86/fpu/signal: Convert to fpstate")
-087df48c298c ("x86/fpu: Replace KVMs xstate component clearing")
-18b3fa1ad15f ("x86/fpu: Convert restore_fpregs_from_fpstate() to struct fpstate")
-f83ac56acdad ("x86/fpu: Convert fpstate_init() to struct fpstate")
+0ecc5be200c8 ("x86/apic: Make x2apic_disable() work correctly")
+720a22fd6c1c ("x86/apic: Don't access the APIC when disabling x2APIC")
+5a88f354dcd8 ("x86/apic: Split register_apic_address()")
+d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
+49062454a3eb ("x86/apic: Rename disable_apic")
+bea629d57d00 ("x86/apic: Save the APIC virtual base address")
+3adee777ad0d ("x86/smpboot: Remove initial_stack on 64-bit")
+94a855111ed9 ("Merge tag 'x86_core_for_v6.2' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
@@ -96,92 +84,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b Mon Sep 17 00:00:00 2001
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Mon, 12 Aug 2024 13:44:12 -0700
-Subject: [PATCH] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported
+From 0ecc5be200c84e67114f3640064ba2bae3ba2f5a Mon Sep 17 00:00:00 2001
+From: Yuntao Wang <yuntao.wang@linux.dev>
+Date: Tue, 13 Aug 2024 09:48:27 +0800
+Subject: [PATCH] x86/apic: Make x2apic_disable() work correctly
 
-There are two distinct CPU features related to the use of XSAVES and LBR:
-whether LBR is itself supported and whether XSAVES supports LBR. The LBR
-subsystem correctly checks both in intel_pmu_arch_lbr_init(), but the
-XSTATE subsystem does not.
+x2apic_disable() clears x2apic_state and x2apic_mode unconditionally, even
+when the state is X2APIC_ON_LOCKED, which prevents the kernel to disable
+it thereby creating inconsistent state.
 
-The LBR bit is only removed from xfeatures_mask_independent when LBR is not
-supported by the CPU, but there is no validation of XSTATE support.
+Due to the early state check for X2APIC_ON, the code path which warns about
+a locked X2APIC cannot be reached.
 
-If XSAVES does not support LBR the write to IA32_XSS causes a #GP fault,
-leaving the state of IA32_XSS unchanged, i.e. zero. The fault is handled
-with a warning and the boot continues.
+Test for state < X2APIC_ON instead and move the clearing of the state and
+mode variables to the place which actually disables X2APIC.
 
-Consequently the next XRSTORS which tries to restore supervisor state fails
-with #GP because the RFBM has zero for all supervisor features, which does
-not match the XCOMP_BV field.
+[ tglx: Massaged change log. Added Fixes tag. Moved clearing so it's at the
+  	right place for back ports ]
 
-As XFEATURE_MASK_FPSTATE includes supervisor features setting up the FPU
-causes a #GP, which ends up in fpu_reset_from_exception_fixup(). That fails
-due to the same problem resulting in recursive #GPs until the kernel runs
-out of stack space and double faults.
-
-Prevent this by storing the supported independent features in
-fpu_kernel_cfg during XSTATE initialization and use that cached value for
-retrieving the independent feature bits to be written into IA32_XSS.
-
-[ tglx: Massaged change log ]
-
-Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Fixes: a57e456a7b28 ("x86/apic: Fix fallout from x2apic cleanup")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com
+Link: https://lore.kernel.org/all/20240813014827.895381-1-yuntao.wang@linux.dev
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index eb17f31b06d2..de16862bf230 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -591,6 +591,13 @@ struct fpu_state_config {
- 	 * even without XSAVE support, i.e. legacy features FP + SSE
- 	 */
- 	u64 legacy_features;
-+	/*
-+	 * @independent_features:
-+	 *
-+	 * Features that are supported by XSAVES, but not managed as part of
-+	 * the FPU core, such as LBR
-+	 */
-+	u64 independent_features;
- };
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 66fd4b2a37a3..373638691cd4 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1775,12 +1775,9 @@ static __init void apic_set_fixmap(bool read_apic);
  
- /* FPU state configuration information */
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index c5a026fee5e0..1339f8328db5 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -788,6 +788,9 @@ void __init fpu__init_system_xstate(unsigned int legacy_size)
- 		goto out_disable;
+ static __init void x2apic_disable(void)
+ {
+-	u32 x2apic_id, state = x2apic_state;
++	u32 x2apic_id;
+ 
+-	x2apic_mode = 0;
+-	x2apic_state = X2APIC_DISABLED;
+-
+-	if (state != X2APIC_ON)
++	if (x2apic_state < X2APIC_ON)
+ 		return;
+ 
+ 	x2apic_id = read_apic_id();
+@@ -1793,6 +1790,10 @@ static __init void x2apic_disable(void)
  	}
  
-+	fpu_kernel_cfg.independent_features = fpu_kernel_cfg.max_features &
-+					      XFEATURE_MASK_INDEPENDENT;
+ 	__x2apic_disable();
++
++	x2apic_mode = 0;
++	x2apic_state = X2APIC_DISABLED;
 +
  	/*
- 	 * Clear XSAVE features that are disabled in the normal CPUID.
- 	 */
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 2ee0b9c53dcc..afb404cd2059 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -62,9 +62,9 @@ static inline u64 xfeatures_mask_supervisor(void)
- static inline u64 xfeatures_mask_independent(void)
- {
- 	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR))
--		return XFEATURE_MASK_INDEPENDENT & ~XFEATURE_MASK_LBR;
-+		return fpu_kernel_cfg.independent_features & ~XFEATURE_MASK_LBR;
- 
--	return XFEATURE_MASK_INDEPENDENT;
-+	return fpu_kernel_cfg.independent_features;
- }
- 
- /* XSAVE/XRSTOR wrapper functions */
+ 	 * Don't reread the APIC ID as it was already done from
+ 	 * check_x2apic() and the APIC driver still is a x2APIC variant,
 
 
