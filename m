@@ -1,102 +1,82 @@
-Return-Path: <stable+bounces-73911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC9D9707A4
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:59:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9B29707A9
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 15:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B3E1C21397
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:59:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189071C20EFE
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF76F165F04;
-	Sun,  8 Sep 2024 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C72158207;
+	Sun,  8 Sep 2024 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZtBrN4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mY0NpVb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC3E165EE4;
-	Sun,  8 Sep 2024 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F263224
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725800391; cv=none; b=Thz7dtbw4FKjqtqxCKaEm96ldLiTlnHnKiPpxivwXK4B1FpzHzW6yfMrWqM1WCuMotTEoCsLw56SmMDXeJguDAgn0NYOaaaA6lMzvMZgPJo/RyLcuoo40/YC3CgbTjb5cbBWm13CAY52/F3xkHcPGI6P3YLj1kdS1GvqnlUsqM4=
+	t=1725800533; cv=none; b=XOPTOu+4HFHK/JSIzgOE2EAWTFWCXVZrDrbUG6qhy3yxaHDZwIDf+N2Zcj9JvCdlVUr+rwGOwGcmVLqEP2wBUVjDJivPX6ImjFeaPC8krPSbrBTc5s8wUa8Ra4migeCN9tqTrw8n9JE7DAOoaHrfFealQJAbJWn1J6S7tPvqWss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725800391; c=relaxed/simple;
-	bh=YhbRXnQ7EvIla3z4/eYbiKI7JBI6Gs+gMj9L+GFh4sg=;
+	s=arc-20240116; t=1725800533; c=relaxed/simple;
+	bh=JZ5PZgPuGXaPBgQ+pv06o6vsBzu8ON34vWtFO8FD/QQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NjKuNAnfZQkLK72VwKqTyYNChkt4RnPUbcktey3tZuTklKo2YXY3/hGLfi+xyZ5mJIDrfIiM3a01I4twc47bdJTk+YPcuK5h2OQxmIfQYXmeNsOYSMVdK9NIq35ql1mn0AtxtOdcgsTjNHSDEZEN0NmNWnSxd5vBIUX7rhNwD54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZtBrN4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AEEC4CEC3;
-	Sun,  8 Sep 2024 12:59:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OKmOjiWMVdHky71krYk/kj32Gg3Vi0H8LR/dFIpuyE1+I0/tftRHMoD+3Kfs9rDMYQ636IYMvQi2e4euvwaIS464WIFwaHntzZN3sPu/V3Qf9evcr5oaMi2L+lW9TFQYgSAkeM/RYrK7GrPqOU7vYAXflCcN344vtGUjcMsEMWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mY0NpVb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C36C4CEC3;
+	Sun,  8 Sep 2024 13:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725800391;
-	bh=YhbRXnQ7EvIla3z4/eYbiKI7JBI6Gs+gMj9L+GFh4sg=;
+	s=korg; t=1725800533;
+	bh=JZ5PZgPuGXaPBgQ+pv06o6vsBzu8ON34vWtFO8FD/QQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HZtBrN4ZrhaOMUqXBEWM6rYfy6dMhWXi5azbVVRiVwlh1Zbw43h9BiJOw72ZRrakL
-	 772lKjiq+5QmvD52Xb/VaXt8yg07ykkGHgUXT0sSy1AcCntIIgRUHZVgMucm8CcYL8
-	 Gqby4C6UQTM9gKycY8/qiwJumLsxImwofGL5+RCk=
-Date: Sun, 8 Sep 2024 14:59:48 +0200
+	b=mY0NpVb4w5GLxz/XRFA8cq8Iet0CJhOaRV8KLode7K+8l9tYJfN83YCRu/uqj9Pvg
+	 Cdumq/XrJSXzDU7tJ22/NzF5TlO/A0X+AvpIUcS95p8FTDG2bgrf1vOn4uhcwzY1tB
+	 xz781+RjQOaLMKlkTlB1hWKLuCTDMLfI9H1rCoMQ=
+Date: Sun, 8 Sep 2024 15:02:10 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: Mukul Sikka <mukul.sikka@broadcom.com>, stable@vger.kernel.org,
-	evan.quan@amd.com, alexander.deucher@amd.com,
-	christian.koenig@amd.com, airlied@linux.ie, daniel@ffwll.ch,
-	Jun.Ma2@amd.com, kevinyang.wang@amd.com, sashal@kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	Bob Zhou <bob.zhou@amd.com>, Tim Huang <Tim.Huang@amd.com>
-Subject: Re: [PATCH v5.15-v5.10] drm/amd/pm: Fix the null pointer dereference
- for vega10_hwmgr
-Message-ID: <2024090829-mutt-remold-6d2c@gregkh>
-References: <20240903045809.5025-1-mukul.sikka@broadcom.com>
- <CADnq5_OVSD1DXgi_9f_H-uT7KSjMwz-FfhP=vRQvposSxv=BMw@mail.gmail.com>
- <CAG99D9Jss=h5aVLDq0tkDjfZgGUbrNV1gqwcw631RbwCiPVqNg@mail.gmail.com>
- <CADnq5_NWX7u=S+jrC8YA6fJxN7GXpSN+kqsQieqphdOz2HT6EA@mail.gmail.com>
+To: Tomas Krcka <tomas.krcka@gmail.com>
+Cc: stable@vger.kernel.org, Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tomas Krcka <krckatom@amazon.de>
+Subject: Re: [PATCH 5.10.y] memcg: protect concurrent access to mem_cgroup_idr
+Message-ID: <2024090810-jailer-overeater-9253@gregkh>
+References: <2024081218-demote-shakily-f31c@gregkh>
+ <20240906154140.70821-1-krckatom@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_NWX7u=S+jrC8YA6fJxN7GXpSN+kqsQieqphdOz2HT6EA@mail.gmail.com>
+In-Reply-To: <20240906154140.70821-1-krckatom@amazon.de>
 
-On Fri, Sep 06, 2024 at 11:02:32AM -0400, Alex Deucher wrote:
-> On Fri, Sep 6, 2024 at 4:50 AM Mukul Sikka <mukul.sikka@broadcom.com> wrote:
-> >
-> > On Fri, Sep 6, 2024 at 12:05 AM Alex Deucher <alexdeucher@gmail.com> wrote:
-> > >
-> > > On Tue, Sep 3, 2024 at 5:53 AM sikkamukul <mukul.sikka@broadcom.com> wrote:
-> > > >
-> > > > From: Bob Zhou <bob.zhou@amd.com>
-> > > >
-> > > > [ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
-> > > >
-> > > > Check return value and conduct null pointer handling to avoid null pointer dereference.
-> > > >
-> > > > Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-> > > > Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-> > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
-> > >
-> > > Just out of curiosity, are you actually seeing an issue?  This and a
-> > > lot of the other recent NULL check patches are just static checker
-> > > fixes.  They don't actually fix a known issue.
-> > >
-> > No, according to the description of this patch and CVE-2024-43905.
-> > It seems to be applicable to LTS.
+On Fri, Sep 06, 2024 at 03:41:40PM +0000, Tomas Krcka wrote:
+> From: Shakeel Butt <shakeel.butt@linux.dev>
 > 
-> I don't know that this is really CVE material, but oh well.  I'm not
-> sure if it's actually possible to hit this in practice.
+> commit 9972605a238339b85bd16b084eed5f18414d22db upstream.
 
-If it's not possible, there's no need to add the check.
+To quote the documentation:
+
+	When using option 2 or 3 you can ask for your change to be included in specific
+	stable series. When doing so, ensure the fix or an equivalent is applicable,
+	submitted, or already present in all newer stable trees still supported. This is
+	meant to prevent regressions that users might later encounter on updating, if
+	e.g. a fix merged for 5.19-rc1 would be backported to 5.10.y, but not to 5.15.y.
+
+I've dropped this from the review queue and will wait for all of the
+needed versions to be submitted.
 
 thanks,
 
