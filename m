@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-73872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52CC97071C
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:52:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB40C97071D
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE22281C7A
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC78281BEC
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04054156F46;
-	Sun,  8 Sep 2024 11:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C661531FB;
+	Sun,  8 Sep 2024 11:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3l1blZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyU9ldEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86B414EC50
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 11:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2932D18C22
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 11:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725796353; cv=none; b=rAHXkxgaBQdFNhZguslADg2V2Lb3t9fiNp4AY33zSceGxdcd0/URNFANDqkkolWEigrCNxOx3fv60CZ+hy0p3LYz/ayh3l+kOGoTIavtKZEiMCiDdHKb71zDwvsiVvQ5JYjg8OCb69lSSPtmOfvr7N2bAU5iX4Ztl0Wl9UMaxeo=
+	t=1725796363; cv=none; b=M+KFizsteZPGQu79pWzp1Lho7bubXRLzLg76E/9b8KjVZltHjAuPNm3Zkx0BvkslkXrVo4ibl/OlxFD6PIzRpZHUATOJiEQaqefxVmyyqzENqtoW2t+7qs2bG+mqqNP6pFDD7YL0+whz+gSMiRHhXTw3vi4bH+82JqSkUqZCbEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725796353; c=relaxed/simple;
-	bh=El1+fpT6m0iptTRY8n9sgm1JQQ47tksF6cZ4HCR4H8M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ErrGWMSbiCEqyVPx2XJqeysGhVh7tXrG0QHIWgMCnMcQwUNoCXzjmfIGRmaAE7yGK3/gDypx2/Qcsi83tHG3bfai/XfCiwspxkNJljiFFlMqNLJq2PHf37qLxDuOPw0eFvmf5bp5wrv+UdG3XGnLubQN3NlF85a+WJRhUASrxRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3l1blZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10EEC4CEC3;
-	Sun,  8 Sep 2024 11:52:32 +0000 (UTC)
+	s=arc-20240116; t=1725796363; c=relaxed/simple;
+	bh=zb/Teyddd+8ZD29igzRVYYRx28T7vPqVY1QTtM5fd0U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gcXIZiGXdu2TK8lFOLKABQPozxgIvKhFi6xdlY9hnijdmgDKje8KHhWzeBMOQLx2ZAIxMyuG2Smw1qCborkzqEBiGe5CFP55UXXaotNjZzzS7//B2G1TYo35+Tl+jFRbMkiQAq435liZQOWTcB1yjcZDl0mUFi5v/khZt/WIWHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyU9ldEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBA4C4CEC3;
+	Sun,  8 Sep 2024 11:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725796353;
-	bh=El1+fpT6m0iptTRY8n9sgm1JQQ47tksF6cZ4HCR4H8M=;
+	s=korg; t=1725796362;
+	bh=zb/Teyddd+8ZD29igzRVYYRx28T7vPqVY1QTtM5fd0U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=h3l1blZvBNnHNbIJ4RjpVSHVeT2qy1umPzes3ZeUPg72h2YS+Y30kMPrVh6WXx8pF
-	 LyAFHvRM6kfDIXgNTL8GosBLiQCTKl0QNgP3UXqG3J14Oya7JmhQL3ENmbc9YE5Gt6
-	 K2bfWXYQ3BdlWCaxiuPGsldFCEGZFU8iVTrKoj3M=
-Subject: FAILED: patch "[PATCH] Revert "mm: skip CMA pages when they are not available"" failed to apply to 6.6-stable tree
-To: usamaarif642@gmail.com,akpm@linux-foundation.org,bharata@amd.com,david@redhat.com,hannes@cmpxchg.org,huangzhaoyang@gmail.com,leitao@debian.org,riel@surriel.com,stable@vger.kernel.org,vbabka@suse.cz,willy@infradead.org,yuzhao@google.com,zhaoyang.huang@unisoc.com
+	b=GyU9ldEPLo/hOuh2VJx8U+eAnsGT6KfaQMEHLVrqiihdiQ2RqIIEmrHQ45lnI1PWE
+	 omI1AKO5zdFHmCd1+e234cAUlMyFnxqxJRllqeveqEfJWofnqPeBkelaAdP9jmsYv1
+	 uc4xf4x23r30rC5vz/A3PLfmJWxrQkEzCPpSX4EE=
+Subject: FAILED: patch "[PATCH] mm/memcontrol: respect zswap.writeback setting from parent cg" failed to apply to 6.10-stable tree
+To: me@yhndnzj.com,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@kernel.org,mkoutny@suse.com,muchun.song@linux.dev,nphamcs@gmail.com,roman.gushchin@linux.dev,shakeel.butt@linux.dev,stable@vger.kernel.org,yosryahmed@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 13:52:30 +0200
-Message-ID: <2024090830-imaging-symphonic-8783@gregkh>
+Date: Sun, 08 Sep 2024 13:52:39 +0200
+Message-ID: <2024090839-crimp-posted-6a31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x bfe0857c20c663fcc1592fa4e3a61ca12b07dac9
+git cherry-pick -x e399257349098bf7c84343f99efb2bc9c22eb9fd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090830-imaging-symphonic-8783@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090839-crimp-posted-6a31@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-bfe0857c20c6 ("Revert "mm: skip CMA pages when they are not available"")
-97144ce008f9 ("mm/vmscan: use folio_migratetype() instead of get_pageblock_migratetype()")
+e39925734909 ("mm/memcontrol: respect zswap.writeback setting from parent cg too")
+2b33a97c94bc ("mm: zswap: rename is_zswap_enabled() to zswap_is_enabled()")
 
 thanks,
 
@@ -78,96 +78,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bfe0857c20c663fcc1592fa4e3a61ca12b07dac9 Mon Sep 17 00:00:00 2001
-From: Usama Arif <usamaarif642@gmail.com>
-Date: Wed, 21 Aug 2024 20:26:07 +0100
-Subject: [PATCH] Revert "mm: skip CMA pages when they are not available"
+From e399257349098bf7c84343f99efb2bc9c22eb9fd Mon Sep 17 00:00:00 2001
+From: Mike Yuan <me@yhndnzj.com>
+Date: Fri, 23 Aug 2024 16:27:06 +0000
+Subject: [PATCH] mm/memcontrol: respect zswap.writeback setting from parent cg
+ too
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-This reverts commit 5da226dbfce3 ("mm: skip CMA pages when they are not
-available") and b7108d66318a ("Multi-gen LRU: skip CMA pages when they are
-not eligible").
+Currently, the behavior of zswap.writeback wrt.  the cgroup hierarchy
+seems a bit odd.  Unlike zswap.max, it doesn't honor the value from parent
+cgroups.  This surfaced when people tried to globally disable zswap
+writeback, i.e.  reserve physical swap space only for hibernation [1] -
+disabling zswap.writeback only for the root cgroup results in subcgroups
+with zswap.writeback=1 still performing writeback.
 
-lruvec->lru_lock is highly contended and is held when calling
-isolate_lru_folios.  If the lru has a large number of CMA folios
-consecutively, while the allocation type requested is not MIGRATE_MOVABLE,
-isolate_lru_folios can hold the lock for a very long time while it skips
-those.  For FIO workload, ~150million order=0 folios were skipped to
-isolate a few ZONE_DMA folios [1].  This can cause lockups [1] and high
-memory pressure for extended periods of time [2].
+The inconsistency became more noticeable after I introduced the
+MemoryZSwapWriteback= systemd unit setting [2] for controlling the knob.
+The patch assumed that the kernel would enforce the value of parent
+cgroups.  It could probably be workarounded from systemd's side, by going
+up the slice unit tree and inheriting the value.  Yet I think it's more
+sensible to make it behave consistently with zswap.max and friends.
 
-Remove skipping CMA for MGLRU as well, as it was introduced in sort_folio
-for the same resaon as 5da226dbfce3a2f44978c2c7cf88166e69a6788b.
+[1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
+[2] https://github.com/systemd/systemd/pull/31734
 
-[1] https://lore.kernel.org/all/CAOUHufbkhMZYz20aM_3rHZ3OcK4m2puji2FGpUpn_-DevGk3Kg@mail.gmail.com/
-[2] https://lore.kernel.org/all/ZrssOrcJIDy8hacI@gmail.com/
-
-[usamaarif642@gmail.com: also revert b7108d66318a, per Johannes]
-  Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
-  Link: https://lkml.kernel.org/r/357ac325-4c61-497a-92a3-bdbd230d5ec9@gmail.com
-Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
-Fixes: 5da226dbfce3 ("mm: skip CMA pages when they are not available")
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Bharata B Rao <bharata@amd.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
+Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback disabling")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosryahmed@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index cfa839284b92..bd489c1af228 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1604,25 +1604,6 @@ static __always_inline void update_lru_sizes(struct lruvec *lruvec,
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 86311c2907cd..95c18bc17083 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1717,9 +1717,10 @@ The following nested keys are defined.
+ 	entries fault back in or are written out to disk.
  
+   memory.zswap.writeback
+-	A read-write single value file. The default value is "1". The
+-	initial value of the root cgroup is 1, and when a new cgroup is
+-	created, it inherits the current value of its parent.
++	A read-write single value file. The default value is "1".
++	Note that this setting is hierarchical, i.e. the writeback would be
++	implicitly disabled for child cgroups if the upper hierarchy
++	does so.
+ 
+ 	When this is set to 0, all swapping attempts to swapping devices
+ 	are disabled. This included both zswap writebacks, and swapping due
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index f29157288b7d..d563fb515766 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3613,8 +3613,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ 	memcg1_soft_limit_reset(memcg);
+ #ifdef CONFIG_ZSWAP
+ 	memcg->zswap_max = PAGE_COUNTER_MAX;
+-	WRITE_ONCE(memcg->zswap_writeback,
+-		!parent || READ_ONCE(parent->zswap_writeback));
++	WRITE_ONCE(memcg->zswap_writeback, true);
+ #endif
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ 	if (parent) {
+@@ -5320,7 +5319,14 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ 	/* if zswap is disabled, do not block pages going to the swapping device */
+-	return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
++	if (!zswap_is_enabled())
++		return true;
++
++	for (; memcg; memcg = parent_mem_cgroup(memcg))
++		if (!READ_ONCE(memcg->zswap_writeback))
++			return false;
++
++	return true;
  }
  
--#ifdef CONFIG_CMA
--/*
-- * It is waste of effort to scan and reclaim CMA pages if it is not available
-- * for current allocation context. Kswapd can not be enrolled as it can not
-- * distinguish this scenario by using sc->gfp_mask = GFP_KERNEL
-- */
--static bool skip_cma(struct folio *folio, struct scan_control *sc)
--{
--	return !current_is_kswapd() &&
--			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
--			folio_migratetype(folio) == MIGRATE_CMA;
--}
--#else
--static bool skip_cma(struct folio *folio, struct scan_control *sc)
--{
--	return false;
--}
--#endif
--
- /*
-  * Isolating page from the lruvec to fill in @dst list by nr_to_scan times.
-  *
-@@ -1669,8 +1650,7 @@ static unsigned long isolate_lru_folios(unsigned long nr_to_scan,
- 		nr_pages = folio_nr_pages(folio);
- 		total_scan += nr_pages;
- 
--		if (folio_zonenum(folio) > sc->reclaim_idx ||
--				skip_cma(folio, sc)) {
-+		if (folio_zonenum(folio) > sc->reclaim_idx) {
- 			nr_skipped[folio_zonenum(folio)] += nr_pages;
- 			move_to = &folios_skipped;
- 			goto move;
-@@ -4320,7 +4300,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 	}
- 
- 	/* ineligible */
--	if (zone > sc->reclaim_idx || skip_cma(folio, sc)) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
+ static u64 zswap_current_read(struct cgroup_subsys_state *css,
 
 
