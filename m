@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A03C97074E
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B7997074F
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8867B21475
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:15:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94182B20CF2
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F8C1531F3;
-	Sun,  8 Sep 2024 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7B6158541;
+	Sun,  8 Sep 2024 12:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrti2kFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/G+Q8RO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D966D52F6F
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8B1531F3
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725797733; cv=none; b=Zny+HsZEavGqhIaLLT4TNz8WPKT62utyKUYQIo+Qd5qHU8nFnEIOG/L3pxzkR4ojgkn6i4uNI/PysraKkR1ajOQy7IdrnMPuBuxbNG0fQvsL7tTRc4N8CX+CBZfNpa8QNykWSQUJOg8HOaPD9p8w8UY7+rLe83elRIpHLeFSMRk=
+	t=1725797772; cv=none; b=smMXFxYBr1aS15jpYRJFWWs3LFRTS56b4kEDwaLktE3AkwUnvUMnhaAvSKpmaNxA0m5rgDRWsdVhVZ3c19XcvQQ2IEtPkhbMZqEv52R6wMMjuxt/vQsfrpnYMQmgLvxp0W/EgekPXk3iTtt/ayGlsuafwOWuy6pJPi0d4MC/AuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725797733; c=relaxed/simple;
-	bh=xvBf+/Tjx3p/jbbv/6+YwFJh+3K2D8zCVvBH36u3bFE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Q5zhN9I8EQWgmzm0sOKa/gcgeW7Idun2dLVROdnB/DpMAHSEkYA8DOuQ63pkfNNlt4BXiQ95AUzTgdEjO8VyIbfN29a8ibhjzFsi5mvTXEANe2luvLZ7UhlvFy/bYnV56f/r3g90R9ak/2WHq4V9rTQuolTZUoZWQ+g6TRZHeF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrti2kFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFE8C4CEC3;
-	Sun,  8 Sep 2024 12:15:32 +0000 (UTC)
+	s=arc-20240116; t=1725797772; c=relaxed/simple;
+	bh=V/uYeUuhGGLwSWliacqi+sRc+gtemW+KfUteFNZln/0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mzzJ4lkDU7Zdu3qbFiwoYy3cpyFfsh20GrXPt1ryqE+6UCOCAOapVWBqYVYjf1tnVLs03hXKbwir0MVMIjjq71NpNkn4Ij2RhVeuCb1nF5RxFiZ2TlRFGB9jfy7zq620MohUSLcjDDTl18RYFpMJNFAGqIisEga2ysV/V2w6EJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/G+Q8RO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952A0C4CEC3;
+	Sun,  8 Sep 2024 12:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725797733;
-	bh=xvBf+/Tjx3p/jbbv/6+YwFJh+3K2D8zCVvBH36u3bFE=;
+	s=korg; t=1725797772;
+	bh=V/uYeUuhGGLwSWliacqi+sRc+gtemW+KfUteFNZln/0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vrti2kFjDTyF3nHukmDlzUPbkGdnyayUvuO4hP9hZNx9UDWIGsHzvq177MoGuDDQ+
-	 NhQFOvF5uRctsCYBkrvEApSzlJM0stHtW0Ai6Dkc8+SVrXTZK4ZhHQkKrnVPhoN3an
-	 uB+WAgxpDa95kXvRL1Mtp/uNEbXTsiax2JHOsLCc=
-Subject: FAILED: patch "[PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI" failed to apply to 5.15-stable tree
-To: schakrabarti@linux.microsoft.com,davem@davemloft.net,haiyangz@microsoft.com,shradhagupta@linux.microsoft.com
+	b=m/G+Q8RORBCXdQ3dv84dxKCqdGA0eocK4wQ3bvoaII2h3qjx/MCkRKZpIz8anbypp
+	 +bziwgiNwzNCeh6znO8zHzN+SgpwJkKqB7wf2d61tiOpu9dZpxrm/Xn1HidzTaElf4
+	 B+qaetTbjRXvknYpggLC+gP96XpzILNunYDQY7/k=
+Subject: FAILED: patch "[PATCH] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported" failed to apply to 5.15-stable tree
+To: levymitchell0@gmail.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:15:22 +0200
-Message-ID: <2024090822-freeload-remission-9952@gregkh>
+Date: Sun, 08 Sep 2024 14:16:09 +0200
+Message-ID: <2024090809-plaything-sash-1d57@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,33 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b6ecc662037694488bfff7c9fd21c405df8411f2
+git cherry-pick -x 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090822-freeload-remission-9952@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090809-plaything-sash-1d57@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-b6ecc6620376 ("net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup")
-f90f84201edd ("net: mana: Add counter for packet dropped by XDP")
-ed5356b53f07 ("net: mana: Add XDP support")
+2848ff28d180 ("x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported")
+c33f0a81a2cf ("x86/fpu: Add fpu_state_config::legacy_features")
+d72c87018d00 ("x86/fpu/xstate: Move remaining xfeature helpers to core")
+eda32f4f93b4 ("x86/fpu: Rework restore_regs_from_fpstate()")
+daddee247319 ("x86/fpu: Mop up xfeatures_mask_uabi()")
+1c253ff2287f ("x86/fpu: Move xstate feature masks to fpu_*_cfg")
+2bd264bce238 ("x86/fpu: Move xstate size to fpu_*_cfg")
+cd9ae7617449 ("x86/fpu/xstate: Cleanup size calculations")
+617473acdfe4 ("x86/fpu: Cleanup fpu__init_system_xstate_size_legacy()")
+578971f4e228 ("x86/fpu: Provide struct fpu_config")
+5509cc78080d ("x86/fpu/signal: Use fpstate for size and features")
+ad6ede407aae ("x86/fpu: Use fpstate in fpu_copy_kvm_uabi_to_fpstate()")
+be31dfdfd75b ("x86/fpu: Use fpstate::size")
+248452ce21ae ("x86/fpu: Add size and mask information to fpstate")
+2dd8eedc80b1 ("x86/process: Move arch_thread_struct_whitelist() out of line")
+c20942ce5128 ("x86/fpu/core: Convert to fpstate")
+7e049e8b7459 ("x86/fpu/signal: Convert to fpstate")
+087df48c298c ("x86/fpu: Replace KVMs xstate component clearing")
+18b3fa1ad15f ("x86/fpu: Convert restore_fpregs_from_fpstate() to struct fpstate")
+f83ac56acdad ("x86/fpu: Convert fpstate_init() to struct fpstate")
 
 thanks,
 
@@ -79,119 +96,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b6ecc662037694488bfff7c9fd21c405df8411f2 Mon Sep 17 00:00:00 2001
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Date: Mon, 2 Sep 2024 05:43:47 -0700
-Subject: [PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI
- cleanup
+From 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b Mon Sep 17 00:00:00 2001
+From: Mitchell Levy <levymitchell0@gmail.com>
+Date: Mon, 12 Aug 2024 13:44:12 -0700
+Subject: [PATCH] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported
 
-Currently napi_disable() gets called during rxq and txq cleanup,
-even before napi is enabled and hrtimer is initialized. It causes
-kernel panic.
+There are two distinct CPU features related to the use of XSAVES and LBR:
+whether LBR is itself supported and whether XSAVES supports LBR. The LBR
+subsystem correctly checks both in intel_pmu_arch_lbr_init(), but the
+XSTATE subsystem does not.
 
-? page_fault_oops+0x136/0x2b0
-  ? page_counter_cancel+0x2e/0x80
-  ? do_user_addr_fault+0x2f2/0x640
-  ? refill_obj_stock+0xc4/0x110
-  ? exc_page_fault+0x71/0x160
-  ? asm_exc_page_fault+0x27/0x30
-  ? __mmdrop+0x10/0x180
-  ? __mmdrop+0xec/0x180
-  ? hrtimer_active+0xd/0x50
-  hrtimer_try_to_cancel+0x2c/0xf0
-  hrtimer_cancel+0x15/0x30
-  napi_disable+0x65/0x90
-  mana_destroy_rxq+0x4c/0x2f0
-  mana_create_rxq.isra.0+0x56c/0x6d0
-  ? mana_uncfg_vport+0x50/0x50
-  mana_alloc_queues+0x21b/0x320
-  ? skb_dequeue+0x5f/0x80
+The LBR bit is only removed from xfeatures_mask_independent when LBR is not
+supported by the CPU, but there is no validation of XSTATE support.
 
+If XSAVES does not support LBR the write to IA32_XSS causes a #GP fault,
+leaving the state of IA32_XSS unchanged, i.e. zero. The fault is handled
+with a warning and the boot continues.
+
+Consequently the next XRSTORS which tries to restore supervisor state fails
+with #GP because the RFBM has zero for all supervisor features, which does
+not match the XCOMP_BV field.
+
+As XFEATURE_MASK_FPSTATE includes supervisor features setting up the FPU
+causes a #GP, which ends up in fpu_reset_from_exception_fixup(). That fails
+due to the same problem resulting in recursive #GPs until the kernel runs
+out of stack space and double faults.
+
+Prevent this by storing the supported independent features in
+fpu_kernel_cfg during XSTATE initialization and use that cached value for
+retrieving the independent feature bits to be written into IA32_XSS.
+
+[ tglx: Massaged change log ]
+
+Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/all/20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 39f56973746d..3d151700f658 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 
- 	for (i = 0; i < apc->num_queues; i++) {
- 		napi = &apc->tx_qp[i].tx_cq.napi;
--		napi_synchronize(napi);
--		napi_disable(napi);
--		netif_napi_del(napi);
--
-+		if (apc->tx_qp[i].txq.napi_initialized) {
-+			napi_synchronize(napi);
-+			napi_disable(napi);
-+			netif_napi_del(napi);
-+			apc->tx_qp[i].txq.napi_initialized = false;
-+		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
- 
- 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
-@@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 		txq->ndev = net;
- 		txq->net_txq = netdev_get_tx_queue(net, i);
- 		txq->vp_offset = apc->tx_vp_offset;
-+		txq->napi_initialized = false;
- 		skb_queue_head_init(&txq->pending_skbs);
- 
- 		memset(&spec, 0, sizeof(spec));
-@@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 
- 		netif_napi_add_tx(net, &cq->napi, mana_poll);
- 		napi_enable(&cq->napi);
-+		txq->napi_initialized = true;
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- 	}
-@@ -2008,7 +2012,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- }
- 
- static void mana_destroy_rxq(struct mana_port_context *apc,
--			     struct mana_rxq *rxq, bool validate_state)
-+			     struct mana_rxq *rxq, bool napi_initialized)
- 
- {
- 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
-@@ -2023,15 +2027,15 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 
- 	napi = &rxq->rx_cq.napi;
- 
--	if (validate_state)
-+	if (napi_initialized) {
- 		napi_synchronize(napi);
- 
--	napi_disable(napi);
-+		napi_disable(napi);
- 
-+		netif_napi_del(napi);
-+	}
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
--	netif_napi_del(napi);
--
- 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
- 
- 	mana_deinit_cq(apc, &rxq->rx_cq);
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 7caa334f4888..b8a6c7504ee1 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -98,6 +98,8 @@ struct mana_txq {
- 
- 	atomic_t pending_sends;
- 
-+	bool napi_initialized;
-+
- 	struct mana_stats_tx stats;
+diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
+index eb17f31b06d2..de16862bf230 100644
+--- a/arch/x86/include/asm/fpu/types.h
++++ b/arch/x86/include/asm/fpu/types.h
+@@ -591,6 +591,13 @@ struct fpu_state_config {
+ 	 * even without XSAVE support, i.e. legacy features FP + SSE
+ 	 */
+ 	u64 legacy_features;
++	/*
++	 * @independent_features:
++	 *
++	 * Features that are supported by XSAVES, but not managed as part of
++	 * the FPU core, such as LBR
++	 */
++	u64 independent_features;
  };
  
+ /* FPU state configuration information */
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index c5a026fee5e0..1339f8328db5 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -788,6 +788,9 @@ void __init fpu__init_system_xstate(unsigned int legacy_size)
+ 		goto out_disable;
+ 	}
+ 
++	fpu_kernel_cfg.independent_features = fpu_kernel_cfg.max_features &
++					      XFEATURE_MASK_INDEPENDENT;
++
+ 	/*
+ 	 * Clear XSAVE features that are disabled in the normal CPUID.
+ 	 */
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 2ee0b9c53dcc..afb404cd2059 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -62,9 +62,9 @@ static inline u64 xfeatures_mask_supervisor(void)
+ static inline u64 xfeatures_mask_independent(void)
+ {
+ 	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR))
+-		return XFEATURE_MASK_INDEPENDENT & ~XFEATURE_MASK_LBR;
++		return fpu_kernel_cfg.independent_features & ~XFEATURE_MASK_LBR;
+ 
+-	return XFEATURE_MASK_INDEPENDENT;
++	return fpu_kernel_cfg.independent_features;
+ }
+ 
+ /* XSAVE/XRSTOR wrapper functions */
 
 
