@@ -1,151 +1,133 @@
-Return-Path: <stable+bounces-73861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE869706D4
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0659706E0
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 067A01C20D58
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:26:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D021C20CD5
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207661531C9;
-	Sun,  8 Sep 2024 11:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0176B1531C9;
+	Sun,  8 Sep 2024 11:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ol0zSEw"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXEhzxBH"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C670436B0D
-	for <Stable@vger.kernel.org>; Sun,  8 Sep 2024 11:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520F14C5AE
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 11:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725794779; cv=none; b=HeBwH8Tjl2N+j7uDjG3o762eP4usNa8NokflMH8MZMKTvRR9TtKvlSNMbWDTmY1T83k7wXQDVEsMYR+zoqfH9skVVjS6FDrWecfc+7KLvM/hqWqKtwoTzq7a6zOxe3rZQ2iCh8KflAz6g6SOeqhwj2IYnp1swDKdIK09LvkPGXw=
+	t=1725794850; cv=none; b=uzxmPB+AuGqlgqcfjpNqK9zSMDdVvVU3p8WbqM0v2K4/EohRRUCjJ0u4u9sm2Za2i0QVqIDtI3CjcOJhwMPy92QUqrdPZhz/eOq241IJNZTSF+Adc4I4eQ7eyTrqpqBFR3IxxkmKrJ3nuWe8CBlHSlptOXBLhM3vRolxP5rc2uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725794779; c=relaxed/simple;
-	bh=1EatnJsqas1CQmg5U90xb77ZF7kMnT4VY9bwununheo=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=KTBHbG1uXzNUrKmf5LIb2gp8CKry1Hb7HStZpq0Mq30xCE2ao0VRkfs48fsbMHKUhgJfQ5lHdtxGJ7IeLNHrBProiMxzAKvimqs46N+uxHLFZeJCGCTbhliOAnlRoAA6wbVgn2WZmTHTWNmTvgOYMAFIJzQLGW0lFqvwnd0BTWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ol0zSEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01388C4CEC3;
-	Sun,  8 Sep 2024 11:26:18 +0000 (UTC)
+	s=arc-20240116; t=1725794850; c=relaxed/simple;
+	bh=saX9VfZh6eEEMnL29K/KJXrFPT543LGCwe81I+f9aDo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R5c7Yr5PityiVNfQ13fECjgKkTvuNTZZTeoxZyWDGFOxiAgPAGAsSkfad5ddWm0pYSNYYC5OxPp3eBxyegB1GaPsFelH6kgfBVvE9ukZhekwveNIXzruozCAEYzeRB3SdVWqpvH3wFDhtwTtHhGufh280+L2I1L4e3Eo4S+x3lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXEhzxBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2993FC4CEC3;
+	Sun,  8 Sep 2024 11:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725794779;
-	bh=1EatnJsqas1CQmg5U90xb77ZF7kMnT4VY9bwununheo=;
-	h=Subject:To:From:Date:From;
-	b=2Ol0zSEwDm48bj8L38BL6J1XRSMgZ0UAzdxSh8E0uhw/TkD8pFVQIJEkpO60MZLb+
-	 U4Of7pmy7yH2LXTXJ2NbUSAFxWrvvDbo4u537D7lpXZw0TYLkWCGIRVRinW8IAxQRm
-	 OOiUts7yiSIlD07z+SC8p+vzAZNHxsVF8Wq9+k5g=
-Subject: patch "iio: magnetometer: ak8975: Fix reading for ak099xx sensors" added to char-misc-next
-To: barnabas.czeman@mainlining.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	s=korg; t=1725794850;
+	bh=saX9VfZh6eEEMnL29K/KJXrFPT543LGCwe81I+f9aDo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LXEhzxBHqBI6rZBgqzCkG5H7H2qhcnmVWmrZrZbzTSf4kVxufDfBkN+mfy7r90pk4
+	 B2uWv3Gq8PIWiKRcg8gJ9eQJdNj+gihk/tapS8FYLSq4U0g0mKkf5p/rFAPb361Gkh
+	 0k5QMWlhOSOzQkIkZLG3xdSGQH3DHMrSQsnVdMGM=
+Subject: FAILED: patch "[PATCH] rust: macros: provide correct provenance when constructing" failed to apply to 6.1-stable tree
+To: boqun.feng@gmail.com,aliceryhl@google.com,benno.lossin@proton.me,gary@garyguo.net,ojeda@kernel.org,tmgross@umich.edu
+Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 13:25:14 +0200
-Message-ID: <2024090814-hurray-superhero-3cdd@gregkh>
+Date: Sun, 08 Sep 2024 13:26:32 +0200
+Message-ID: <2024090831-camera-backlands-a643@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-This is a note to let you know that I've just added the patch titled
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-    iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+To reproduce the conflict and resubmit, you may use the following commands:
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-next branch.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a5a3c952e82c1ada12bf8c55b73af26f1a454bd2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090831-camera-backlands-a643@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+Possible dependencies:
 
-The patch will also be merged in the next major kernel release
-during the merge window.
+a5a3c952e82c ("rust: macros: provide correct provenance when constructing THIS_MODULE")
 
-If you have any questions about this process, please let me know.
+thanks,
 
+greg k-h
 
-From 129464e86c7445a858b790ac2d28d35f58256bbe Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?=
- <barnabas.czeman@mainlining.org>
-Date: Mon, 19 Aug 2024 00:29:40 +0200
-Subject: iio: magnetometer: ak8975: Fix reading for ak099xx sensors
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+------------------ original commit in Linus's tree ------------------
 
-Move ST2 reading with overflow handling after measurement data
-reading.
-ST2 register read have to be read after read measurment data,
-because it means end of the reading and realease the lock on the data.
-Remove ST2 read skip on interrupt based waiting because ST2 required to
-be read out at and of the axis read.
+From a5a3c952e82c1ada12bf8c55b73af26f1a454bd2 Mon Sep 17 00:00:00 2001
+From: Boqun Feng <boqun.feng@gmail.com>
+Date: Wed, 28 Aug 2024 11:01:29 -0700
+Subject: [PATCH] rust: macros: provide correct provenance when constructing
+ THIS_MODULE
 
-Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/magnetometer/ak8975.c | 32 +++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+Currently while defining `THIS_MODULE` symbol in `module!()`, the
+pointer used to construct `ThisModule` is derived from an immutable
+reference of `__this_module`, which means the pointer doesn't have
+the provenance for writing, and that means any write to that pointer
+is UB regardless of data races or not. However, the usage of
+`THIS_MODULE` includes passing this pointer to functions that may write
+to it (probably in unsafe code), and this will create soundness issues.
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 67d5d1f2402f..1d5f79b7005b 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -696,22 +696,8 @@ static int ak8975_start_read_axis(struct ak8975_data *data,
- 	if (ret < 0)
- 		return ret;
- 
--	/* This will be executed only for non-interrupt based waiting case */
--	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
--		ret = i2c_smbus_read_byte_data(client,
--					       data->def->ctrl_regs[ST2]);
--		if (ret < 0) {
--			dev_err(&client->dev, "Error in reading ST2\n");
--			return ret;
--		}
--		if (ret & (data->def->ctrl_masks[ST2_DERR] |
--			   data->def->ctrl_masks[ST2_HOFL])) {
--			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
--			return -EINVAL;
--		}
--	}
--
--	return 0;
-+	/* Return with zero if the data is ready. */
-+	return !data->def->ctrl_regs[ST1_DRDY];
- }
- 
- /* Retrieve raw flux value for one of the x, y, or z axis.  */
-@@ -738,6 +724,20 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
- 	if (ret < 0)
- 		goto exit;
- 
-+	/* Read out ST2 for release lock on measurment data. */
-+	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Error in reading ST2\n");
-+		goto exit;
-+	}
+One way to fix this is using `addr_of_mut!()` but that requires the
+unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
+an extern static `Opaque` is used here: since `Opaque<T>` is transparent
+to `T`, an extern static `Opaque` will just wrap the C symbol (defined
+in a C compile unit) in an `Opaque`, which provides a pointer with
+writable provenance via `Opaque::get()`. This fix the potential UBs
+because of pointer provenance unmatched.
+
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/465412664
+Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make Opaque::get const")
+Link: https://lore.kernel.org/r/20240828180129.4046355-1-boqun.feng@gmail.com
+[ Fixed two typos, reworded title. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 411dc103d82e..7a5b899e47b7 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -217,7 +217,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             // freed until the module is unloaded.
+             #[cfg(MODULE)]
+             static THIS_MODULE: kernel::ThisModule = unsafe {{
+-                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
++                extern \"C\" {{
++                    static __this_module: kernel::types::Opaque<kernel::bindings::module>;
++                }}
 +
-+	if (ret & (data->def->ctrl_masks[ST2_DERR] |
-+		   data->def->ctrl_masks[ST2_HOFL])) {
-+		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
- 	mutex_unlock(&data->lock);
- 
- 	pm_runtime_mark_last_busy(&data->client->dev);
--- 
-2.46.0
-
++                kernel::ThisModule::from_ptr(__this_module.get())
+             }};
+             #[cfg(not(MODULE))]
+             static THIS_MODULE: kernel::ThisModule = unsafe {{
 
 
