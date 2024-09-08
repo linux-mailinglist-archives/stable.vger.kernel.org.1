@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847D5970736
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:11:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B462F97074D
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B7FB214E6
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:11:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18A21C21032
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612215C13D;
-	Sun,  8 Sep 2024 12:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6567A52F6F;
+	Sun,  8 Sep 2024 12:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZr7vN3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdcGuXST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BF915B0E0
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264651531C2
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725797467; cv=none; b=TDkhMW8nV0Ai6lyFS3ifmoA9tZfvTOrADh0PEZF5gQvP/W+zNwLEm+Sdf5TkChMLuKh4nKnSioa8EygoxKdY6vqvI2mAqgJyqSqRHaplm8kpOvmCI4HyoaHX99mVp5vxz6U6dT0juGTe2Tcsp/1qAduVQvbSRVsounzlBTsJ2h8=
+	t=1725797725; cv=none; b=QPJYGZ9kgErg6nBxIMcP8mi5AIE17G/+z4BC44dGDVz6YfsdseY/F0bRz43/bZNmmOlgb0L5kARIw6PXRe4ZT01cwijMkvIgDTexvuhquODDkcfwg8MnfQz58le7ignVIrj41w63VkGW48Cy1EX7C2W5GF8YV2ofR3ZVnslaBzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725797467; c=relaxed/simple;
-	bh=LYM8bKKyKNMug23YTvVvMG+ndOgMv+mdQ4cWY+1qbP8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H7eBmgiaPaUE+L59hEX7BhJGTq5WbKX0K3o+u8Mgsr/jF4GNUcTD2eYznMZ5YznQjd/cgGwhyIk140HUut2AVax/Qf9UWFRBig3YAjEttbEEbb5M2MXGZLO1nd9ml0T1TaGs3k7/td3wqkFwbtZV4iTdZWj/0/wEAMJ7rpa5TMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZr7vN3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B70C4CEC3;
-	Sun,  8 Sep 2024 12:11:06 +0000 (UTC)
+	s=arc-20240116; t=1725797725; c=relaxed/simple;
+	bh=ndZGWWCeemtB+Hu4EIkXxXhr4w45B/Hf2gigW+XlS4o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GRMzzEZea6pfcfitW35Uu/Wk/MkrjzoBweFEcPM4EczJUndXFIYtEJYn5ST4PjcNUKLeQGpv+zRgGGdNgzQvEaTT/kwvzOj2vtQ9BGwemHwzAZGTWJmqgnH0wRr1I2utNk8L2+QYdasjMtkVatWc6wWls1tfPHdo5odEE/WUpqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdcGuXST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEC6C4CEC3;
+	Sun,  8 Sep 2024 12:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725797467;
-	bh=LYM8bKKyKNMug23YTvVvMG+ndOgMv+mdQ4cWY+1qbP8=;
+	s=korg; t=1725797724;
+	bh=ndZGWWCeemtB+Hu4EIkXxXhr4w45B/Hf2gigW+XlS4o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TZr7vN3NyQRQxDslR6eIDG7Phgng/ysyhgTCwG2sVdC5kUFtDyjeMXNKteHefNE8J
-	 R3Tt4Ce0Y1TiLRkwwIQoaIeHo38t6o6t7/bLp39BxXYEp94FQ6IlavOnZQpwTOmgAM
-	 h38rduU33QLqCYtO+j6CRSWno/GZk5tacOowS5ns=
-Subject: FAILED: patch "[PATCH] userfaultfd: fix checks for huge PMDs" failed to apply to 4.19-stable tree
-To: jannh@google.com,aarcange@redhat.com,akpm@linux-foundation.org,david@redhat.com,hughd@google.com,stable@vger.kernel.org,xemul@virtuozzo.com,zhengqi.arch@bytedance.com
+	b=QdcGuXST5CGzHf+VerXBVgPlI+kl3FzRAYP5HYNjQ7ArJygOCv1RuiS26wSYV0d+V
+	 z5DS0p6nehICG2N3A4v8YUfb+d91AjB/IVxOveFpjVmUIvIe+kU0Q3dj6l74RgnDmo
+	 k3zH4hYXTFH0oO/eIi7yhGMOQB5gzUgqNjnJcEQE=
+Subject: FAILED: patch "[PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI" failed to apply to 6.1-stable tree
+To: schakrabarti@linux.microsoft.com,davem@davemloft.net,haiyangz@microsoft.com,shradhagupta@linux.microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:10:59 +0200
-Message-ID: <2024090859-delicious-serpent-3635@gregkh>
+Date: Sun, 08 Sep 2024 14:15:21 +0200
+Message-ID: <2024090821-winking-crib-3418@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,35 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 71c186efc1b2cf1aeabfeff3b9bd5ac4c5ac14d8
+git cherry-pick -x b6ecc662037694488bfff7c9fd21c405df8411f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090859-delicious-serpent-3635@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090821-winking-crib-3418@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-71c186efc1b2 ("userfaultfd: fix checks for huge PMDs")
-dab6e717429e ("mm: Rename pmd_read_atomic()")
-024d232ae4fc ("mm: Fix pmd_read_atomic()")
-fbfdec9989e6 ("x86/mm/pae: Make pmd_t similar to pte_t")
-bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-ec1c86b25f4b ("mm: multi-gen LRU: groundwork")
-f1e1a7be4718 ("mm/vmscan.c: refactor shrink_node()")
-d3629af59f41 ("mm/vmscan: make the annotations of refaults code at the right place")
-e9c2dbc8bf71 ("mm/vmscan: define macros for refaults in struct lruvec")
-507228044236 ("mm/khugepaged: record SCAN_PMD_MAPPED when scan_pmd() finds hugepage")
-6614a3c3164a ("Merge tag 'mm-stable-2022-08-03' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+b6ecc6620376 ("net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup")
 
 thanks,
 
@@ -89,141 +77,119 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 71c186efc1b2cf1aeabfeff3b9bd5ac4c5ac14d8 Mon Sep 17 00:00:00 2001
-From: Jann Horn <jannh@google.com>
-Date: Tue, 13 Aug 2024 22:25:21 +0200
-Subject: [PATCH] userfaultfd: fix checks for huge PMDs
+From b6ecc662037694488bfff7c9fd21c405df8411f2 Mon Sep 17 00:00:00 2001
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Date: Mon, 2 Sep 2024 05:43:47 -0700
+Subject: [PATCH] net: mana: Fix error handling in mana_create_txq/rxq's NAPI
+ cleanup
 
-Patch series "userfaultfd: fix races around pmd_trans_huge() check", v2.
+Currently napi_disable() gets called during rxq and txq cleanup,
+even before napi is enabled and hrtimer is initialized. It causes
+kernel panic.
 
-The pmd_trans_huge() code in mfill_atomic() is wrong in three different
-ways depending on kernel version:
+? page_fault_oops+0x136/0x2b0
+  ? page_counter_cancel+0x2e/0x80
+  ? do_user_addr_fault+0x2f2/0x640
+  ? refill_obj_stock+0xc4/0x110
+  ? exc_page_fault+0x71/0x160
+  ? asm_exc_page_fault+0x27/0x30
+  ? __mmdrop+0x10/0x180
+  ? __mmdrop+0xec/0x180
+  ? hrtimer_active+0xd/0x50
+  hrtimer_try_to_cancel+0x2c/0xf0
+  hrtimer_cancel+0x15/0x30
+  napi_disable+0x65/0x90
+  mana_destroy_rxq+0x4c/0x2f0
+  mana_create_rxq.isra.0+0x56c/0x6d0
+  ? mana_uncfg_vport+0x50/0x50
+  mana_alloc_queues+0x21b/0x320
+  ? skb_dequeue+0x5f/0x80
 
-1. The pmd_trans_huge() check is racy and can lead to a BUG_ON() (if you hit
-   the right two race windows) - I've tested this in a kernel build with
-   some extra mdelay() calls. See the commit message for a description
-   of the race scenario.
-   On older kernels (before 6.5), I think the same bug can even
-   theoretically lead to accessing transhuge page contents as a page table
-   if you hit the right 5 narrow race windows (I haven't tested this case).
-2. As pointed out by Qi Zheng, pmd_trans_huge() is not sufficient for
-   detecting PMDs that don't point to page tables.
-   On older kernels (before 6.5), you'd just have to win a single fairly
-   wide race to hit this.
-   I've tested this on 6.1 stable by racing migration (with a mdelay()
-   patched into try_to_migrate()) against UFFDIO_ZEROPAGE - on my x86
-   VM, that causes a kernel oops in ptlock_ptr().
-3. On newer kernels (>=6.5), for shmem mappings, khugepaged is allowed
-   to yank page tables out from under us (though I haven't tested that),
-   so I think the BUG_ON() checks in mfill_atomic() are just wrong.
+Cc: stable@vger.kernel.org
+Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-I decided to write two separate fixes for these (one fix for bugs 1+2, one
-fix for bug 3), so that the first fix can be backported to kernels
-affected by bugs 1+2.
-
-
-This patch (of 2):
-
-This fixes two issues.
-
-I discovered that the following race can occur:
-
-  mfill_atomic                other thread
-  ============                ============
-                              <zap PMD>
-  pmdp_get_lockless() [reads none pmd]
-  <bail if trans_huge>
-  <if none:>
-                              <pagefault creates transhuge zeropage>
-    __pte_alloc [no-op]
-                              <zap PMD>
-  <bail if pmd_trans_huge(*dst_pmd)>
-  BUG_ON(pmd_none(*dst_pmd))
-
-I have experimentally verified this in a kernel with extra mdelay() calls;
-the BUG_ON(pmd_none(*dst_pmd)) triggers.
-
-On kernels newer than commit 0d940a9b270b ("mm/pgtable: allow
-pte_offset_map[_lock]() to fail"), this can't lead to anything worse than
-a BUG_ON(), since the page table access helpers are actually designed to
-deal with page tables concurrently disappearing; but on older kernels
-(<=6.4), I think we could probably theoretically race past the two
-BUG_ON() checks and end up treating a hugepage as a page table.
-
-The second issue is that, as Qi Zheng pointed out, there are other types
-of huge PMDs that pmd_trans_huge() can't catch: devmap PMDs and swap PMDs
-(in particular, migration PMDs).
-
-On <=6.4, this is worse than the first issue: If mfill_atomic() runs on a
-PMD that contains a migration entry (which just requires winning a single,
-fairly wide race), it will pass the PMD to pte_offset_map_lock(), which
-assumes that the PMD points to a page table.
-
-Breakage follows: First, the kernel tries to take the PTE lock (which will
-crash or maybe worse if there is no "struct page" for the address bits in
-the migration entry PMD - I think at least on X86 there usually is no
-corresponding "struct page" thanks to the PTE inversion mitigation, amd64
-looks different).
-
-If that didn't crash, the kernel would next try to write a PTE into what
-it wrongly thinks is a page table.
-
-As part of fixing these issues, get rid of the check for pmd_trans_huge()
-before __pte_alloc() - that's redundant, we're going to have to check for
-that after the __pte_alloc() anyway.
-
-Backport note: pmdp_get_lockless() is pmd_read_atomic() in older kernels.
-
-Link: https://lkml.kernel.org/r/20240813-uffd-thp-flip-fix-v2-0-5efa61078a41@google.com
-Link: https://lkml.kernel.org/r/20240813-uffd-thp-flip-fix-v2-1-5efa61078a41@google.com
-Fixes: c1a4de99fada ("userfaultfd: mcopy_atomic|mfill_zeropage: UFFDIO_COPY|UFFDIO_ZEROPAGE preparation")
-Signed-off-by: Jann Horn <jannh@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pavel Emelyanov <xemul@virtuozzo.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e54e5c8907fa..290b2a0d84ac 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -787,21 +787,23 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 		}
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 39f56973746d..3d151700f658 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
  
- 		dst_pmdval = pmdp_get_lockless(dst_pmd);
--		/*
--		 * If the dst_pmd is mapped as THP don't
--		 * override it and just be strict.
--		 */
--		if (unlikely(pmd_trans_huge(dst_pmdval))) {
--			err = -EEXIST;
--			break;
--		}
- 		if (unlikely(pmd_none(dst_pmdval)) &&
- 		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
- 			err = -ENOMEM;
- 			break;
- 		}
--		/* If an huge pmd materialized from under us fail */
--		if (unlikely(pmd_trans_huge(*dst_pmd))) {
-+		dst_pmdval = pmdp_get_lockless(dst_pmd);
-+		/*
-+		 * If the dst_pmd is THP don't override it and just be strict.
-+		 * (This includes the case where the PMD used to be THP and
-+		 * changed back to none after __pte_alloc().)
-+		 */
-+		if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval) ||
-+			     pmd_devmap(dst_pmdval))) {
-+			err = -EEXIST;
-+			break;
+ 	for (i = 0; i < apc->num_queues; i++) {
+ 		napi = &apc->tx_qp[i].tx_cq.napi;
+-		napi_synchronize(napi);
+-		napi_disable(napi);
+-		netif_napi_del(napi);
+-
++		if (apc->tx_qp[i].txq.napi_initialized) {
++			napi_synchronize(napi);
++			napi_disable(napi);
++			netif_napi_del(napi);
++			apc->tx_qp[i].txq.napi_initialized = false;
 +		}
-+		if (unlikely(pmd_bad(dst_pmdval))) {
- 			err = -EFAULT;
- 			break;
- 		}
+ 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
+ 
+ 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
+@@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+ 		txq->ndev = net;
+ 		txq->net_txq = netdev_get_tx_queue(net, i);
+ 		txq->vp_offset = apc->tx_vp_offset;
++		txq->napi_initialized = false;
+ 		skb_queue_head_init(&txq->pending_skbs);
+ 
+ 		memset(&spec, 0, sizeof(spec));
+@@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+ 
+ 		netif_napi_add_tx(net, &cq->napi, mana_poll);
+ 		napi_enable(&cq->napi);
++		txq->napi_initialized = true;
+ 
+ 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ 	}
+@@ -2008,7 +2012,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+ }
+ 
+ static void mana_destroy_rxq(struct mana_port_context *apc,
+-			     struct mana_rxq *rxq, bool validate_state)
++			     struct mana_rxq *rxq, bool napi_initialized)
+ 
+ {
+ 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
+@@ -2023,15 +2027,15 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 
+ 	napi = &rxq->rx_cq.napi;
+ 
+-	if (validate_state)
++	if (napi_initialized) {
+ 		napi_synchronize(napi);
+ 
+-	napi_disable(napi);
++		napi_disable(napi);
+ 
++		netif_napi_del(napi);
++	}
+ 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+ 
+-	netif_napi_del(napi);
+-
+ 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
+ 
+ 	mana_deinit_cq(apc, &rxq->rx_cq);
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 7caa334f4888..b8a6c7504ee1 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -98,6 +98,8 @@ struct mana_txq {
+ 
+ 	atomic_t pending_sends;
+ 
++	bool napi_initialized;
++
+ 	struct mana_stats_tx stats;
+ };
+ 
 
 
