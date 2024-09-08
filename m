@@ -1,104 +1,53 @@
-Return-Path: <stable+bounces-73913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712019707AB
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 15:03:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779A79707AE
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 15:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F973282429
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:03:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5658B21752
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B37A15C13E;
-	Sun,  8 Sep 2024 13:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892D01494B4;
+	Sun,  8 Sep 2024 13:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="DcPcZlFn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HJqV71YX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+Ct7pD1"
 X-Original-To: stable@vger.kernel.org
-Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFE413633B;
-	Sun,  8 Sep 2024 13:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461563224;
+	Sun,  8 Sep 2024 13:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725800598; cv=none; b=ToejFU/SNzhmRjMLjt1BJP3S4P/0GXuTWkqigJY/mMn7XIe2IZkntqKcVTAV9d0hIrEZjjwAtxMa4tkOWo26Jt9pKIlsPNj+3P9j+6/7RciuyQSHnOCFKtqU4mnF20u0WewEp/SZL1rQU4RlaWtOtrXYB0MvHu8d9lMjjusk/u8=
+	t=1725800824; cv=none; b=bmFmDHPrIGw02ioAJhmMAPn3MImCiEwdtKWnroM7ECZYHtoYwDM0oXb9eMFKlRbsuO8tcr1yFfT6cO1muoH4CyYkeaPA2jXkRd8XftDE5AGTbZHd+zRDkiF2pTC3In6zy8V9m/Jp2vc8IbOyh5FtUngQMguElyaTUZ4wFY/foSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725800598; c=relaxed/simple;
-	bh=yDqka7/iZVNwvPVULdbCBaLgrGGi/qWNRbUdH6LLAkU=;
+	s=arc-20240116; t=1725800824; c=relaxed/simple;
+	bh=UriSX0qWuv42Dyu+KkCqcJvWVqwru2yx6Uczxx+lZbA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HttplKtq+HEmxM8RYIA8td3se7ZesHjh57v1GLPTavBoG6iHiHJyNi4nZ01nBeQUkn4SlqDsM7yvFSnNIoy5p5PPUKYrZQv3RpHGPpHgNcHyRUWzNw4/gcRs3obkYVWNU1bTL8M9XudfZqnGTIaKNEKj8I7A/lAQkTxQyn54P7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=DcPcZlFn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HJqV71YX; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id D732F1380189;
-	Sun,  8 Sep 2024 09:03:14 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Sun, 08 Sep 2024 09:03:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1725800594; x=1725886994; bh=EyEB1QfU+b
-	g7QcR7J67YpB8QE9vr1Ho4gvhdtqn6dbI=; b=DcPcZlFn5ugL/VFA9uLxWsqDrS
-	HcaURmyNOW+1/7OOu6nTFPkG2Y11Q5Vx8DG3kOtlsgYEjPiW1kFBkmZ6TlpB+yiF
-	Vhrp2Ux3Ohc26X/AU742ToU+FkrMSeXEPEfqG9B2huBa0g7cPpS1QC+sVPegOSgl
-	yztROYqLpkAqUac3jzaqjZOkwma+ood28q6nnmsGoL2DHje49t8yP2JaHT2w6u9r
-	Zfyko35kGRbq0vhqXWJ1WfaMRDhiX7yFrzIdmlaJyu/4+J76R8J1e3sBWByJ8WZA
-	rRqb5nFB+cTYpvxbbiOKIuo1I5Eyqi7TD766cdTlUuwbRiCsAznDuXfVoTwA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1725800594; x=1725886994; bh=EyEB1QfU+bg7QcR7J67YpB8QE9vr
-	1Ho4gvhdtqn6dbI=; b=HJqV71YX7L4aQX/kfSyx2YopDwi02hmtmxbfyz2ftP1O
-	qcP7hUqEEE7DtlTno+1Oot0CvUHxYYPyP7khTz8i5jlYZ3rGlnpTCLRWRI2eN0Z9
-	wNOThv9XKVmAOUxz2BJcq4wtPtwMWAUaJ85K8eoEUSef0JFfn51UVOmagKdmE1MI
-	TtV2GsRFong7aOvQieO40DvpSa6EkWKTWoPeQqyiLEiX5C+c4qvT02vu5kz7wvjh
-	I6fcTsUuidGFFYE4FJE6p8S1lKd1g41UQDHc0X8zP74hkx8Az3xowKf98Y0Ejz9j
-	a/hvGlUwF4WtANKh567M9ys7m3ymBvG5keLoJFgvDQ==
-X-ME-Sender: <xms:kqDdZqhf7aZl8v8fOsnPpO2v7Hx2Dr_N5U9G7abjH7YT5zkX0FEsAw>
-    <xme:kqDdZrDG2H24hiDy6RCDOYJA-QD4ZN0SadF0M_ceG8bALHBN7U_8yLL4YgWNeFa9P
-    mf7QOgQGrUKSw>
-X-ME-Received: <xmr:kqDdZiERbxns0Z4EIOx-wg5dnKY_Le9BjB6bYlNC-QsWdHVl4Z5b3psumf4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeihedgheelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheptggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvhhorhgvlh
-    esshhushgvrdgtiidprhgtphhtthhopehshhgvrhhrhidrhigrnhhgsehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopegtrghluhhmrdhmrggtkhgrhiesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesfhgsrdgtohhmpdhrtghpthhtohepjhhl
-    rgihthhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrihdrnhhgohesohhrrg
-    gtlhgvrdgtohhm
-X-ME-Proxy: <xmx:kqDdZjRd_UpRjFBMeLX33tOSWanPV6y828cjx_E3WEjyQyCSKBEsLw>
-    <xmx:kqDdZnwr0c-enagC1OTFb0uPE1s2lnhhLux8DngLYD2Ey9aUGtyoug>
-    <xmx:kqDdZh6IV4gIc5zvKuicClNvymgnpxx7fzOFOLDnLyiU4zrCoaSx3Q>
-    <xmx:kqDdZkx61aPcCiYcJcwuzuR6WSUc-4y3fY6Gc7xOtf9nESqtl_RCtw>
-    <xmx:kqDdZoqVnNfZBFhy6omsbkz-D_ZwLzC2dc0EyHVNsF-RE5tN0H3oFWUI>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 8 Sep 2024 09:03:14 -0400 (EDT)
-Date: Sun, 8 Sep 2024 15:03:12 +0200
-From: Greg KH <greg@kroah.com>
-To: cel@kernel.org
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
-	Petr Vorel <pvorel@suse.cz>, sherry.yang@oracle.com,
-	calum.mackay@oracle.com, kernel-team@fb.com,
-	Jeff Layton <jlayton@kernel.org>, Dai Ngo <dai.ngo@oracle.com>
-Subject: Re: [PATCH 5.10.y 01/19] nfsd: move reply cache initialization into
- nfsd startup
-Message-ID: <2024090804-arrest-unjustly-75e9@gregkh>
-References: <20240905153101.59927-1-cel@kernel.org>
- <20240905153101.59927-2-cel@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5ev8COE4TFmq8oMn3YkuU8TaQhd7dvHRvoPPKm9JIWBZrawdeFy8B4tiIoE3Fw6FYX9B+zhCfJp5a5W+HHwKjVVj2KwxVbF13Dneb/QahkrqmBe0rXdDQT1FsH80zCHK3Z+pc1ZnkxwY+6SFEhkiX89Vdb8G1zJKQg2afFGVHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+Ct7pD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE48CC4CEC3;
+	Sun,  8 Sep 2024 13:07:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725800824;
+	bh=UriSX0qWuv42Dyu+KkCqcJvWVqwru2yx6Uczxx+lZbA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C+Ct7pD1sV6TburUKXa+XmjEvzwfPm/gGevWOwl7nX9+GkOhPexKDZ85zUlzdQdPX
+	 eH86K4PmmcRnOsD1z10hHhBI8VZ16fS29fCxkGh0NxBLjV4lOhIBFE4kzNKEqoJ62L
+	 tCChkMakMEzWc2Xsq/Q+196BmvTciV55ooot8aZg=
+Date: Sun, 8 Sep 2024 15:06:48 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 5.15.y] mptcp: pm: re-using ID of unused flushed subflows
+Message-ID: <2024090839-passenger-preface-f0b7@gregkh>
+References: <2024082642-google-strongman-27a7@gregkh>
+ <20240906082853.1764704-2-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,29 +56,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240905153101.59927-2-cel@kernel.org>
+In-Reply-To: <20240906082853.1764704-2-matttbe@kernel.org>
 
-On Thu, Sep 05, 2024 at 11:30:43AM -0400, cel@kernel.org wrote:
-> From: Jeff Layton <jlayton@kernel.org>
+On Fri, Sep 06, 2024 at 10:28:54AM +0200, Matthieu Baerts (NGI0) wrote:
+> commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
 > 
-> [ Upstream commit f5f9d4a314da88c0a5faa6d168bf69081b7a25ae ]
-> 
-> There's no need to start the reply cache before nfsd is up and running,
-> and doing so means that we register a shrinker for every net namespace
-> instead of just the ones where nfsd is running.
-> 
-> Move it to the per-net nfsd startup instead.
-> 
-> Reported-by: Dai Ngo <dai.ngo@oracle.com>
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> Stable-dep-of: ed9ab7346e90 ("nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net")
-> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> ---
->  fs/nfsd/nfsctl.c |  8 --------
->  fs/nfsd/nfssvc.c | 10 +++++++++-
->  2 files changed, 9 insertions(+), 9 deletions(-)
 
-Whole series now queued up, thanks.
+I think I've got all of these now, thanks!
 
 greg k-h
 
