@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-73860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4593F9706D2
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE869706D4
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AED31C20D29
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:25:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 067A01C20D58
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35A014D715;
-	Sun,  8 Sep 2024 11:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207661531C9;
+	Sun,  8 Sep 2024 11:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NArb6u/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ol0zSEw"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8529536B0D
-	for <Stable@vger.kernel.org>; Sun,  8 Sep 2024 11:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C670436B0D
+	for <Stable@vger.kernel.org>; Sun,  8 Sep 2024 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725794698; cv=none; b=aftWRgDtrAhXCL5N/JCCq2WaPsJg2JtbFK4Wy9GiRqK7RCqnXm7ayroeOnZLMSU2oOAd5cNc3mEdGB8BjUcQ2AjWfZE/1qBReBliTWWvyvhlA+J6GgkXj30id+AwI51lAoKJAzTWk3wsb4eNMEsekNWwFrNgTuRSB6weLVdZ0so=
+	t=1725794779; cv=none; b=HeBwH8Tjl2N+j7uDjG3o762eP4usNa8NokflMH8MZMKTvRR9TtKvlSNMbWDTmY1T83k7wXQDVEsMYR+zoqfH9skVVjS6FDrWecfc+7KLvM/hqWqKtwoTzq7a6zOxe3rZQ2iCh8KflAz6g6SOeqhwj2IYnp1swDKdIK09LvkPGXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725794698; c=relaxed/simple;
-	bh=rVjUJ+bo00Yw1FjKOIcWOVsLkGG5lWzM4zSpucrNWBs=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=UAiXukp9rgp2Zn+V/ZctXSlLf03ChkId1/uu6w2cW/YInYPDH3TAophChwin24AH5V17lFEvOnavNaIxOstOGglrF9AUDV653Uzdlc+0sbcsZ9TegzhBrDKwwYEz5FSd60hnnrXok7FPKltis6xcD3Hg3O0L87M2P09CZyUNVK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NArb6u/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47FDC4CEC3;
-	Sun,  8 Sep 2024 11:24:57 +0000 (UTC)
+	s=arc-20240116; t=1725794779; c=relaxed/simple;
+	bh=1EatnJsqas1CQmg5U90xb77ZF7kMnT4VY9bwununheo=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=KTBHbG1uXzNUrKmf5LIb2gp8CKry1Hb7HStZpq0Mq30xCE2ao0VRkfs48fsbMHKUhgJfQ5lHdtxGJ7IeLNHrBProiMxzAKvimqs46N+uxHLFZeJCGCTbhliOAnlRoAA6wbVgn2WZmTHTWNmTvgOYMAFIJzQLGW0lFqvwnd0BTWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ol0zSEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01388C4CEC3;
+	Sun,  8 Sep 2024 11:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725794698;
-	bh=rVjUJ+bo00Yw1FjKOIcWOVsLkGG5lWzM4zSpucrNWBs=;
+	s=korg; t=1725794779;
+	bh=1EatnJsqas1CQmg5U90xb77ZF7kMnT4VY9bwununheo=;
 	h=Subject:To:From:Date:From;
-	b=NArb6u/MSba4E20MYkKhDf3Vc8YGvZ5Vg3G9V2UaPrcRk29/ZrtqlGq3dJuIU67aL
-	 cW4x5uK25fmOIrl0z/Nb6xIMSgKK4kbVu0Ft6KTt0OCCqt2Mh7ey5WpTTd+OfxDu1t
-	 SK7mjtKI+cj9/F8y3txPSrdxJ2KK1GcEaTY5Ceq8=
-Subject: patch "iio: magnetometer: ak8975: Fix reading for ak099xx sensors" added to char-misc-testing
+	b=2Ol0zSEwDm48bj8L38BL6J1XRSMgZ0UAzdxSh8E0uhw/TkD8pFVQIJEkpO60MZLb+
+	 U4Of7pmy7yH2LXTXJ2NbUSAFxWrvvDbo4u537D7lpXZw0TYLkWCGIRVRinW8IAxQRm
+	 OOiUts7yiSIlD07z+SC8p+vzAZNHxsVF8Wq9+k5g=
+Subject: patch "iio: magnetometer: ak8975: Fix reading for ak099xx sensors" added to char-misc-next
 To: barnabas.czeman@mainlining.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 13:24:44 +0200
-Message-ID: <2024090843-epidermal-lubricate-356a@gregkh>
+Date: Sun, 08 Sep 2024 13:25:14 +0200
+Message-ID: <2024090814-hurray-superhero-3cdd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
