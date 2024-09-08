@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24302970775
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:37:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9EB97079F
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1501F21808
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:37:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13BD5281D78
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7051531F4;
-	Sun,  8 Sep 2024 12:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73B015C149;
+	Sun,  8 Sep 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnQOZxZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIMnl4Z8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E278F1DA26
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76D515748B
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725799034; cv=none; b=lV7KdJJsQbM4M4JnvsTGi3KQ8Ndpc20EnOAk5pCSSm6fmq+VCG0uyJcTOLqfSC2cxmRw76NptjXmQ+CNfYTQk5cQtK1cjLR7WSlKpYQ/lNRYK3nbCFC2AmoUUCsDm4ENqvAGwH/vmuq7bUKScUiUMyPAD8ojfYAhdFbpfdtuUDA=
+	t=1725799862; cv=none; b=P87kAMuI5N1HKnBE+yIdPiKqmRP0bTU46NnA67VpOeQzeIgjq+ysVykwTOsPfH8SnkSYhLa1a0JKKVvWhjlRkHKgnpt+bBJAm+I4MDIbOIHffd1QAhj+mIDoomsItVAGsfZ9zdX1OQsaM7RIWAWh8kc7aP4dzS/c1GnaeQ7zKuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725799034; c=relaxed/simple;
-	bh=8CZK5Ocl/kMFnYq4kNG5RXWlQqLgly0OZpabarzb3Cw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i9LW2KedSN5j65NBcemf4RN94CcxBMDYTef2OA0Sq9fHFfDqgHNaK0o6YeRnwCpXsZ6KBTWRWZHZqbycIW4vngeovdJT2vshzAPtEdGPMvS/hThgJLHCf/FpqnQjoRsQwiC/lj+U8tCZbOdO1GboLj8uGob7kCoV7T7K46wx84k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnQOZxZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A315C4CEC3;
-	Sun,  8 Sep 2024 12:37:13 +0000 (UTC)
+	s=arc-20240116; t=1725799862; c=relaxed/simple;
+	bh=9kBrtj7ElRGxc1PZF/QF4cf8fQcRTYZGoA/tsWKj8KY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R3VMBoknngNUp1p3Qv5OQhMPcCUcH9wdJW4CJlsLPwvIPOOdxm8G7Lv4Xu/Kt5c50VFAMoqhIrC6/+vDk1wpTUVEz0T4nCvQAz7DrT6iH36ORrsRR+6qSqbcsD0fhoFvu0ArFK40PvQuKuydkRFQ6Ke7WegZh1NROK46DUIptj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIMnl4Z8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74A3C4CEC3;
+	Sun,  8 Sep 2024 12:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725799033;
-	bh=8CZK5Ocl/kMFnYq4kNG5RXWlQqLgly0OZpabarzb3Cw=;
+	s=korg; t=1725799862;
+	bh=9kBrtj7ElRGxc1PZF/QF4cf8fQcRTYZGoA/tsWKj8KY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UnQOZxZu5Sed/apIMvZtyzUgRl8U+wEycplqojbsKQqw0RmBxmVSKB/vLAjR6kR1y
-	 VzP2xcuIkN2DteF+GnDUTQ2Ld8sHPUNIFTxV7LtqrPEt+ihzFpi9wD7makRz9JBglX
-	 olqpVVYPFR4z28aT3Hgd5DEB7YvqPfJIEBEytm/c=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Determine IPS mode by ASIC and PMFW versions" failed to apply to 6.1-stable tree
-To: sunpeng.li@amd.com,alexander.deucher@amd.com,harry.wentland@amd.com
+	b=LIMnl4Z8dWjgr95Rzx676RMimokcyvBrLUBJWzN6cUBkd2yCyx1lx869LZqnpbXAr
+	 RJJprs2Zov3R2wRJ5bcCnQOc4dzCNi4S1AMkVuoWxVtKcUA6IcVx6KSHS0rYH6B37g
+	 GwTF/6l4SUXP7r54GhFmpojJ69GXXev5euT0LJ+c=
+Subject: FAILED: patch "[PATCH] ila: call nf_unregister_net_hooks() sooner" failed to apply to 4.19-stable tree
+To: edumazet@google.com,fw@strlen.de,kuba@kernel.org,syzkaller@googlegroups.com,tom@herbertland.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:37:11 +0200
-Message-ID: <2024090809-wrongly-repulsive-5a71@gregkh>
+Date: Sun, 08 Sep 2024 14:50:59 +0200
+Message-ID: <2024090859-daffodil-skillful-c1e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 65444581a4aecf0e96b4691bb20fc75c602f5863
+git cherry-pick -x 031ae72825cef43e4650140b800ad58bf7a6a466
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090809-wrongly-repulsive-5a71@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090859-daffodil-skillful-c1e1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-65444581a4ae ("drm/amd/display: Determine IPS mode by ASIC and PMFW versions")
-234e94555800 ("drm/amd/display: Enable copying of bounding box data from VBIOS DMUB")
-afca033f10d3 ("drm/amd/display: Add periodic detection for IPS")
-05c5ffaac770 ("drm/amd/display: gpuvm handling in DML21")
-9ba971b25316 ("drm/amd/display: Re-enable IPS2 for static screen")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-14813934b629 ("drm/amd/display: Allow RCG for Static Screen + LVP for DCN35")
-e779f4587f61 ("drm/amd/display: Add handling for DC power mode")
-cc263c3a0c9f ("drm/amd/display: remove context->dml2 dependency from DML21 wrapper")
-d62d5551dd61 ("drm/amd/display: Backup and restore only on full updates")
-2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
-4f5b8d78ca43 ("drm/amd/display: Init DPPCLK from SMU on dcn32")
-2728e9c7c842 ("drm/amd/display: add DC changes for DCN351")
-d2dea1f14038 ("drm/amd/display: Generalize new minimal transition path")
-0701117efd1e ("Revert "drm/amd/display: For FPO and SubVP/DRR configs program vmin/max sel"")
-a9b1a4f684b3 ("drm/amd/display: Add more checks for exiting idle in DC")
-13b3d6bdbeb4 ("drm/amd/display: add debugfs disallow edp psr")
-dcbf438d4834 ("drm/amd/display: Unify optimize_required flags and VRR adjustments")
-1630c6ded587 ("drm/amd/display: "Enable IPS by default"")
-8457bddc266c ("drm/amd/display: Revert "Rework DC Z10 restore"")
+031ae72825ce ("ila: call nf_unregister_net_hooks() sooner")
 
 thanks,
 
@@ -96,78 +77,195 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 65444581a4aecf0e96b4691bb20fc75c602f5863 Mon Sep 17 00:00:00 2001
-From: Leo Li <sunpeng.li@amd.com>
-Date: Tue, 27 Aug 2024 11:29:53 -0400
-Subject: [PATCH] drm/amd/display: Determine IPS mode by ASIC and PMFW versions
+From 031ae72825cef43e4650140b800ad58bf7a6a466 Mon Sep 17 00:00:00 2001
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 4 Sep 2024 14:44:18 +0000
+Subject: [PATCH] ila: call nf_unregister_net_hooks() sooner
 
-[Why]
+syzbot found an use-after-free Read in ila_nf_input [1]
 
-DCN IPS interoperates with other system idle power features, such as
-Zstates.
+Issue here is that ila_xlat_exit_net() frees the rhashtable,
+then call nf_unregister_net_hooks().
 
-On DCN35, there is a known issue where system Z8 + DCN IPS2 causes a
-hard hang. We observe this on systems where the SBIOS allows Z8.
+It should be done in the reverse way, with a synchronize_rcu().
 
-Though there is a SBIOS fix, there's no guarantee that users will get it
-any time soon, or even install it. A workaround is needed to prevent
-this from rearing its head in the wild.
+This is a good match for a pre_exit() method.
 
-[How]
+[1]
+ BUG: KASAN: use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+ BUG: KASAN: use-after-free in __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
+ BUG: KASAN: use-after-free in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+ BUG: KASAN: use-after-free in rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
+Read of size 4 at addr ffff888064620008 by task ksoftirqd/0/16
 
-For DCN35, check the pmfw version to determine whether the SBIOS has the
-fix. If not, set IPS1+RCG as the deepest possible state in all cases
-except for s0ix and display off (DPMS). Otherwise, enable all IPS
+CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.11.0-rc4-syzkaller-00238-g2ad6d23f465a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:93 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+  print_address_description mm/kasan/report.c:377 [inline]
+  print_report+0x169/0x550 mm/kasan/report.c:488
+  kasan_report+0x143/0x180 mm/kasan/report.c:601
+  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+  __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
+  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+  rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
+  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:132 [inline]
+  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
+  ila_nf_input+0x1fe/0x3c0 net/ipv6/ila/ila_xlat.c:190
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK+0x29e/0x450 include/linux/netfilter.h:312
+  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+  __netif_receive_skb+0x1ea/0x650 net/core/dev.c:5775
+  process_backlog+0x662/0x15b0 net/core/dev.c:6108
+  __napi_poll+0xcb/0x490 net/core/dev.c:6772
+  napi_poll net/core/dev.c:6841 [inline]
+  net_rx_action+0x89b/0x1240 net/core/dev.c:6963
+  handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
+  run_ksoftirqd+0xca/0x130 kernel/softirq.c:928
+  smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 28d43d0895896f84c038d906d244e0a95eb243ec)
-Cc: stable@vger.kernel.org
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x64620
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xbfffffff(buddy)
+raw: 00fff00000000000 ffffea0000959608 ffffea00019d9408 0000000000000000
+raw: 0000000000000000 0000000000000003 00000000bfffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52dc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_ZERO), pid 5242, tgid 5242 (syz-executor), ts 73611328570, free_ts 618981657187
+  set_page_owner include/linux/page_owner.h:32 [inline]
+  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1493
+  prep_new_page mm/page_alloc.c:1501 [inline]
+  get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3439
+  __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4695
+  __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
+  alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
+  ___kmalloc_large_node+0x8b/0x1d0 mm/slub.c:4103
+  __kmalloc_large_node_noprof+0x1a/0x80 mm/slub.c:4130
+  __do_kmalloc_node mm/slub.c:4146 [inline]
+  __kmalloc_node_noprof+0x2d2/0x440 mm/slub.c:4164
+  __kvmalloc_node_noprof+0x72/0x190 mm/util.c:650
+  bucket_table_alloc lib/rhashtable.c:186 [inline]
+  rhashtable_init_noprof+0x534/0xa60 lib/rhashtable.c:1071
+  ila_xlat_init_net+0xa0/0x110 net/ipv6/ila/ila_xlat.c:613
+  ops_init+0x359/0x610 net/core/net_namespace.c:139
+  setup_net+0x515/0xca0 net/core/net_namespace.c:343
+  copy_net_ns+0x4e2/0x7b0 net/core/net_namespace.c:508
+  create_new_namespaces+0x425/0x7b0 kernel/nsproxy.c:110
+  unshare_nsproxy_namespaces+0x124/0x180 kernel/nsproxy.c:228
+  ksys_unshare+0x619/0xc10 kernel/fork.c:3328
+  __do_sys_unshare kernel/fork.c:3399 [inline]
+  __se_sys_unshare kernel/fork.c:3397 [inline]
+  __x64_sys_unshare+0x38/0x40 kernel/fork.c:3397
+page last free pid 11846 tgid 11846 stack trace:
+  reset_page_owner include/linux/page_owner.h:25 [inline]
+  free_pages_prepare mm/page_alloc.c:1094 [inline]
+  free_unref_page+0xd22/0xea0 mm/page_alloc.c:2612
+  __folio_put+0x2c8/0x440 mm/swap.c:128
+  folio_put include/linux/mm.h:1486 [inline]
+  free_large_kmalloc+0x105/0x1c0 mm/slub.c:4565
+  kfree+0x1c4/0x360 mm/slub.c:4588
+  rhashtable_free_and_destroy+0x7c6/0x920 lib/rhashtable.c:1169
+  ila_xlat_exit_net+0x55/0x110 net/ipv6/ila/ila_xlat.c:626
+  ops_exit_list net/core/net_namespace.c:173 [inline]
+  cleanup_net+0x802/0xcc0 net/core/net_namespace.c:640
+  process_one_work kernel/workqueue.c:3231 [inline]
+  process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+  worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 983a977632ff..e6cea5b9bdb3 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1752,6 +1752,30 @@ static struct dml2_soc_bb *dm_dmub_get_vbios_bounding_box(struct amdgpu_device *
- 	return bb;
+Memory state around the buggy address:
+ ffff88806461ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88806461ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff888064620000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                      ^
+ ffff888064620080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff888064620100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+
+Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Tom Herbert <tom@herbertland.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Link: https://patch.msgid.link/20240904144418.1162839-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/ipv6/ila/ila.h b/net/ipv6/ila/ila.h
+index ad5f6f6ba333..85b92917849b 100644
+--- a/net/ipv6/ila/ila.h
++++ b/net/ipv6/ila/ila.h
+@@ -108,6 +108,7 @@ int ila_lwt_init(void);
+ void ila_lwt_fini(void);
+ 
+ int ila_xlat_init_net(struct net *net);
++void ila_xlat_pre_exit_net(struct net *net);
+ void ila_xlat_exit_net(struct net *net);
+ 
+ int ila_xlat_nl_cmd_add_mapping(struct sk_buff *skb, struct genl_info *info);
+diff --git a/net/ipv6/ila/ila_main.c b/net/ipv6/ila/ila_main.c
+index 69caed07315f..976c78efbae1 100644
+--- a/net/ipv6/ila/ila_main.c
++++ b/net/ipv6/ila/ila_main.c
+@@ -71,6 +71,11 @@ static __net_init int ila_init_net(struct net *net)
+ 	return err;
  }
  
-+static enum dmub_ips_disable_type dm_get_default_ips_mode(
-+	struct amdgpu_device *adev)
++static __net_exit void ila_pre_exit_net(struct net *net)
 +{
-+	/*
-+	 * On DCN35 systems with Z8 enabled, it's possible for IPS2 + Z8 to
-+	 * cause a hard hang. A fix exists for newer PMFW.
-+	 *
-+	 * As a workaround, for non-fixed PMFW, force IPS1+RCG as the deepest
-+	 * IPS state in all cases, except for s0ix and all displays off (DPMS),
-+	 * where IPS2 is allowed.
-+	 *
-+	 * When checking pmfw version, use the major and minor only.
-+	 */
-+	if (amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(3, 5, 0) &&
-+	    (adev->pm.fw_version & 0x00FFFF00) < 0x005D6300)
-+		return DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
-+
-+	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 5, 0))
-+		return DMUB_IPS_ENABLE;
-+
-+	/* ASICs older than DCN35 do not have IPSs */
-+	return DMUB_IPS_DISABLE_ALL;
++	ila_xlat_pre_exit_net(net);
 +}
 +
- static int amdgpu_dm_init(struct amdgpu_device *adev)
+ static __net_exit void ila_exit_net(struct net *net)
  {
- 	struct dc_init_data init_data;
-@@ -1863,7 +1887,7 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
- 	if (amdgpu_dc_debug_mask & DC_DISABLE_IPS)
- 		init_data.flags.disable_ips = DMUB_IPS_DISABLE_ALL;
- 	else
--		init_data.flags.disable_ips = DMUB_IPS_ENABLE;
-+		init_data.flags.disable_ips = dm_get_default_ips_mode(adev);
+ 	ila_xlat_exit_net(net);
+@@ -78,6 +83,7 @@ static __net_exit void ila_exit_net(struct net *net)
  
- 	init_data.flags.disable_ips_in_vpb = 0;
+ static struct pernet_operations ila_net_ops = {
+ 	.init = ila_init_net,
++	.pre_exit = ila_pre_exit_net,
+ 	.exit = ila_exit_net,
+ 	.id   = &ila_net_id,
+ 	.size = sizeof(struct ila_net),
+diff --git a/net/ipv6/ila/ila_xlat.c b/net/ipv6/ila/ila_xlat.c
+index 67e8c9440977..534a4498e280 100644
+--- a/net/ipv6/ila/ila_xlat.c
++++ b/net/ipv6/ila/ila_xlat.c
+@@ -619,6 +619,15 @@ int ila_xlat_init_net(struct net *net)
+ 	return 0;
+ }
  
++void ila_xlat_pre_exit_net(struct net *net)
++{
++	struct ila_net *ilan = net_generic(net, ila_net_id);
++
++	if (ilan->xlat.hooks_registered)
++		nf_unregister_net_hooks(net, ila_nf_hook_ops,
++					ARRAY_SIZE(ila_nf_hook_ops));
++}
++
+ void ila_xlat_exit_net(struct net *net)
+ {
+ 	struct ila_net *ilan = net_generic(net, ila_net_id);
+@@ -626,10 +635,6 @@ void ila_xlat_exit_net(struct net *net)
+ 	rhashtable_free_and_destroy(&ilan->xlat.rhash_table, ila_free_cb, NULL);
+ 
+ 	free_bucket_spinlocks(ilan->xlat.locks);
+-
+-	if (ilan->xlat.hooks_registered)
+-		nf_unregister_net_hooks(net, ila_nf_hook_ops,
+-					ARRAY_SIZE(ila_nf_hook_ops));
+ }
+ 
+ static int ila_xlat_addr(struct sk_buff *skb, bool sir2ila)
 
 
