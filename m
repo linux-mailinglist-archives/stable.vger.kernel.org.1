@@ -1,75 +1,77 @@
-Return-Path: <stable+bounces-73899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAA5970761
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:23:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047E197076A
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53371B2147C
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A05C1C20D23
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA7E15ECE7;
-	Sun,  8 Sep 2024 12:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E914C5AE;
+	Sun,  8 Sep 2024 12:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMqpvCIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOMeo1Uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD83156668
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0901DA26
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725798229; cv=none; b=a7pwWeWYp+fG9igTBA4hrYxXVl3YavERuPNJucBSn/E9PK2eQQ5xxGZW9l71KD7+pGCjDWUNKcnlJ5vE9yIfeiqoBjY0omutiQVKT8c1TdDnilKa/ZjmhdnnwFoKHQxOFV34MG4Aa73OowA7VrnuH4Dr2sWAbZoSdQ03V9W53Xw=
+	t=1725798948; cv=none; b=kyjzxzAFp7zhKCX7g7oxb4w40lpqwF4mh5VTfFnaytpTOOwEeVEV9EojT3oNlNyY+GEBBfqygSQg9/M4tGzRA0LDqMN4TQfO+TVXx/eBz6N3yFFaUsKqQxd4DUlM0WZz7S/rABfW/1Iw7MfsDQw2YKM2CURDCh+SCeQI34GQu/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725798229; c=relaxed/simple;
-	bh=NwR+Nbk01fWcfrONkFV4RKEexI8ZbrQypTL4tRfgi0Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RYyrU0X28cODFFLvDysvxBthgVCTzHItMuulOTBFc48ZaeWPJnL3DryqB0SUJNsXfxs9rfXERggzJbheQHtIYpmPe7XlOC/kz62TFFqATzZkzda1fCnQ3efHJ+YmKUlxkTSCRSv1wl2KSmbo9vUrCknFbIL9fo3l6LaNWvGyHBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMqpvCIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F3AC4CEC3;
-	Sun,  8 Sep 2024 12:23:48 +0000 (UTC)
+	s=arc-20240116; t=1725798948; c=relaxed/simple;
+	bh=7048aMBYZkvYDxsZfHPgS+XQjSrt/wxO69tV9D+WfuA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EqVxqtYIFMW+TTstJ0MKyTcQkQEbaEViKt1kq0vwv5d1iSzeAvrmE2lrK6aYSJe/KMsGqXe4Ulhddj/KZm46cbIUvS2+5GbZbH0lJCmUPItpeTpOAzLI7G0bh/vfcBY6zOynkZe1AvVwjinZgXcKbu7tY9iuPMF5ndc/bbC9BbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOMeo1Uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11CEC4CEC3;
+	Sun,  8 Sep 2024 12:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725798228;
-	bh=NwR+Nbk01fWcfrONkFV4RKEexI8ZbrQypTL4tRfgi0Q=;
+	s=korg; t=1725798948;
+	bh=7048aMBYZkvYDxsZfHPgS+XQjSrt/wxO69tV9D+WfuA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xMqpvCIfG+aVvjqu6bqKvODxSOuEygkHPiDvC1cMLHjnYBaFl9BJfvqIgPb12Zkwl
-	 xRcJHIG1MbiBVBbgg16lZ53PxrBHkajP0MAm+6DLKP40akZcInaV0R85Qd6NnW1SgG
-	 tpQ6tWESsyT+0p9LTL+ITjZXcuqiq0R4RwOWeAT0=
-Subject: FAILED: patch "[PATCH] fscache: delete fscache_cookie_lru_timer when fscache exits" failed to apply to 6.1-stable tree
-To: libaokun1@huawei.com,brauner@kernel.org,dhowells@redhat.com
+	b=jOMeo1Uulb9gElZvUc/LhlD7+5z0qpLX297cbta8aCCIdPPWobwmR7+jpuv711x2Y
+	 ThVQ717Renj4i9JcM/nohokm2Jaq48QIAp9rUj+nenP/vGP7jQjzA208yCfUQ0pHtt
+	 bZPzB/LGspqBwxnGqyBsEI9rvkgvRhtPdbTq8F+k=
+Subject: FAILED: patch "[PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb" failed to apply to 6.10-stable tree
+To: ville.syrjala@linux.intel.com,joonas.lahtinen@linux.intel.com,uma.shankar@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:23:39 +0200
-Message-ID: <2024090838-thus-fiftieth-f4f7@gregkh>
+Date: Sun, 08 Sep 2024 14:35:45 +0200
+Message-ID: <2024090844-result-caucasian-a9e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f
+git cherry-pick -x e8705632435ae2f2253b65d3786da389982e8813
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090838-thus-fiftieth-f4f7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090844-result-caucasian-a9e5@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-72a6e22c604c ("fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF")
+e8705632435a ("drm/i915: Fix readout degamma_lut mismatch on ilk/snb")
+da8c3cdb016c ("drm/i915: Rename bigjoiner master/slave to bigjoiner primary/secondary")
+fb4943574f92 ("drm/i915: Rename all bigjoiner to joiner")
 
 thanks,
 
@@ -77,69 +79,85 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f Mon Sep 17 00:00:00 2001
-From: Baokun Li <libaokun1@huawei.com>
-Date: Mon, 26 Aug 2024 19:20:56 +0800
-Subject: [PATCH] fscache: delete fscache_cookie_lru_timer when fscache exits
- to avoid UAF
+From e8705632435ae2f2253b65d3786da389982e8813 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Date: Wed, 10 Jul 2024 15:41:37 +0300
+Subject: [PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The fscache_cookie_lru_timer is initialized when the fscache module
-is inserted, but is not deleted when the fscache module is removed.
-If timer_reduce() is called before removing the fscache module,
-the fscache_cookie_lru_timer will be added to the timer list of
-the current cpu. Afterwards, a use-after-free will be triggered
-in the softIRQ after removing the fscache module, as follows:
+On ilk/snb the pipe may be configured to place the LUT before or
+after the CSC depending on various factors, but as there is only
+one LUT (no split mode like on IVB+) we only advertise a gamma_lut
+and no degamma_lut in the uapi to avoid confusing userspace.
 
-==================================================================
-BUG: unable to handle page fault for address: fffffbfff803c9e9
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
-Tainted: [W]=WARN
-RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
-Call Trace:
- <IRQ>
- tmigr_handle_remote_up+0x627/0x810
- __walk_groups.isra.0+0x47/0x140
- tmigr_handle_remote+0x1fa/0x2f0
- handle_softirqs+0x180/0x590
- irq_exit_rcu+0x84/0xb0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
- default_idle_call+0x38/0x60
- do_idle+0x2b5/0x300
- cpu_startup_entry+0x54/0x60
- start_secondary+0x20d/0x280
- common_startup_64+0x13e/0x148
- </TASK>
-Modules linked in: [last unloaded: netfs]
-==================================================================
+This can cause a problem during readout if the VBIOS/GOP enabled
+the LUT in the pre CSC configuration. The current code blindly
+assigns the results of the readout to the degamma_lut, which will
+cause a failure during the next atomic_check() as we aren't expecting
+anything to be in degamma_lut since it's not visible to userspace.
 
-Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
+Fix the problem by assigning whatever LUT we read out from the
+hardware into gamma_lut.
 
-Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d2559299d339 ("drm/i915: Make ilk_read_luts() capable of degamma readout")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11608
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240710124137.16773-1-ville.syrjala@linux.intel.com
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+(cherry picked from commit 33eca84db6e31091cef63584158ab64704f78462)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-diff --git a/fs/netfs/fscache_main.c b/fs/netfs/fscache_main.c
-index 42e98bb523e3..49849005eb7c 100644
---- a/fs/netfs/fscache_main.c
-+++ b/fs/netfs/fscache_main.c
-@@ -103,6 +103,7 @@ void __exit fscache_exit(void)
+diff --git a/drivers/gpu/drm/i915/display/intel_modeset_setup.c b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+index 7602cb30ebf1..e1213f3d93cc 100644
+--- a/drivers/gpu/drm/i915/display/intel_modeset_setup.c
++++ b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+@@ -326,6 +326,8 @@ static void intel_modeset_update_connector_atomic_state(struct drm_i915_private
  
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-+	timer_shutdown_sync(&fscache_cookie_lru_timer);
- 	destroy_workqueue(fscache_wq);
- 	pr_notice("FS-Cache unloaded\n");
- }
+ static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state)
+ {
++	struct drm_i915_private *i915 = to_i915(crtc_state->uapi.crtc->dev);
++
+ 	if (intel_crtc_is_joiner_secondary(crtc_state))
+ 		return;
+ 
+@@ -337,11 +339,30 @@ static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state
+ 	crtc_state->uapi.adjusted_mode = crtc_state->hw.adjusted_mode;
+ 	crtc_state->uapi.scaling_filter = crtc_state->hw.scaling_filter;
+ 
+-	/* assume 1:1 mapping */
+-	drm_property_replace_blob(&crtc_state->hw.degamma_lut,
+-				  crtc_state->pre_csc_lut);
+-	drm_property_replace_blob(&crtc_state->hw.gamma_lut,
+-				  crtc_state->post_csc_lut);
++	if (DISPLAY_INFO(i915)->color.degamma_lut_size) {
++		/* assume 1:1 mapping */
++		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
++					  crtc_state->pre_csc_lut);
++		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
++					  crtc_state->post_csc_lut);
++	} else {
++		/*
++		 * ilk/snb hw may be configured for either pre_csc_lut
++		 * or post_csc_lut, but we don't advertise degamma_lut as
++		 * being available in the uapi since there is only one
++		 * hardware LUT. Always assign the result of the readout
++		 * to gamma_lut as that is the only valid source of LUTs
++		 * in the uapi.
++		 */
++		drm_WARN_ON(&i915->drm, crtc_state->post_csc_lut &&
++			    crtc_state->pre_csc_lut);
++
++		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
++					  NULL);
++		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
++					  crtc_state->post_csc_lut ?:
++					  crtc_state->pre_csc_lut);
++	}
+ 
+ 	drm_property_replace_blob(&crtc_state->uapi.degamma_lut,
+ 				  crtc_state->hw.degamma_lut);
 
 
