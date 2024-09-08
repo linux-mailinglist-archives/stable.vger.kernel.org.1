@@ -1,187 +1,155 @@
-Return-Path: <stable+bounces-73927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3A29708E4
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 19:21:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54346970927
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 20:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628361F2170F
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 17:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 462361C210E3
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 18:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73264175D35;
-	Sun,  8 Sep 2024 17:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62CE16EB53;
+	Sun,  8 Sep 2024 18:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="AmEfoBQH"
+	dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b="abkiG8fB"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C0C3FF1;
-	Sun,  8 Sep 2024 17:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F67D535D8
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 18:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725816102; cv=none; b=f+bYTVmHvgbvCJzhj3VzM/N5O80PfrGKS+VCGJN05h68jwDvKmdZ0cJlUhh0aOCRZcor5YNSyN/68YNtayKnvoQCeBmAX+DwOpxQ5iHJXj13/GIFhdgHoeOQoj8GhMPOzjkWGI0xZ7ejCZ6Z4KHdtCp+tZl67/4VDz6ARKB7c9s=
+	t=1725818641; cv=none; b=D6pbMaZbegQy8QQncOeU0JnnqxsH4cu0P6OrZowkkuTowuZCFM6zvILFYIBFT9YgOWBCqzq31pmyDp5PbUr593i14YjFzjOXyxhstd/rAiG34yr5q4a9iZoph1TkwrdWMqEJfs21UsYo2haSjHHzMbw775znR4Sun0UWBLPbEiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725816102; c=relaxed/simple;
-	bh=s5AdX7opWebqYUMAyvGZvUBOnUh72v+qOX9yOf96rrM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j9GnY2QB+oT3P/Z/ysl38EScG58dSu/lbQtaxwDE9jj0G2j5Sj3+7I4Y1DIsveZvc+wk+8Bkk0zTMmDjr4JDdjQfhM/UEAmAxGyTcRYPe/m1aJeqFCo4ulAHPe0Q1hMq54yqVNIC+TXBbC8J4aScAPhSDzfxCm0fbRQJk7wo5s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=AmEfoBQH; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1725816084; x=1726420884; i=spasswolf@web.de;
-	bh=NBodCydRz1h5gjv4zRZqlA2bXbKHYH/Dy7GpYakwN5A=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=AmEfoBQHAZqUBN6vJqMrL4Ho9/UUzDyjcZJHXV1YUsDHb2bEDxI84R8T7CqE/D30
-	 QxdC1e6Heg0uM/ZpiK1KwNN5bs+v57uqriI/ugYqD7+zv2iWcdcis7eJfKVLfF5/Q
-	 tJP+a1vjhM5DzGBsdgPg8b4W3iYB+0mHsV0pYMLAqV5fczoO3UxpGroJxntUuCTlY
-	 8F5gaXY5v9KqI6fP51M7wAVcEeR2oRjYp5m9N1X7M+BX9d2Zb5ye8zHaPiXEYaBTz
-	 nYybR32KStE2M1HK0Yt7EMVnIA8ilRyAC1rnI5iqbEQ9c0VL9SK2Kw+n9kZxdAw5P
-	 52U7DbPzoXF+TKmUVA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MdfCN-1sDjjZ2mqv-00b9dl; Sun, 08
- Sep 2024 19:21:24 +0200
-Message-ID: <2390be3e4792fa95df68d1f28818a5ed60c3cfdf.camel@web.de>
-Subject: Re: Patch "wifi: mt76: mt7921: fix NULL pointer access in
- mt7921_ipv6_addr_change" has been added to the 6.6-stable tree
-From: Bert Karwatzki <spasswolf@web.de>
-To: Greg KH <greg@kroah.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, Kalle Valo	
- <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- spasswolf@web.de
-Date: Sun, 08 Sep 2024 19:21:23 +0200
-In-Reply-To: <2024090859-wooing-crock-6827@gregkh>
-References: <20240908133703.1652036-1-sashal@kernel.org>
-	 <38a42fddfd5b6cde1115b600a40ad4b158b430ea.camel@web.de>
-	 <2024090859-wooing-crock-6827@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.53.2-1 
+	s=arc-20240116; t=1725818641; c=relaxed/simple;
+	bh=nZN8scjb8KyukYtoO9Az1meJv0lebPBpAsN+5P83mRc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RyjwD+rNB2aLbs/uwYkUO/S9jRod8itYOjZicpGT0S2O20panvwmtLe3LLiHBWxqS5Gx1mCMPrUZAY4j3Ck+zqJmAwHmVtgCYCr/QWd+Su3hNHiOxi6uVHPI+juUj0G60ptCLKcCbmHU2lmewUOOTisRs3Mg88i5P2YwQmjV5aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com; spf=pass smtp.mailfrom=yhndnzj.com; dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b=abkiG8fB; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yhndnzj.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yhndnzj.com;
+	s=protonmail2; t=1725818630; x=1726077830;
+	bh=6pQjEJgxcCXQnfSSKttWuknSYhxuYvInnzchhzPrTcs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=abkiG8fBW1aYyY3rHc+N4PqNteJjac8jA+Jvz6yzGfxJubpQ9Nvj4N5wRu+59ep2R
+	 J/+1bZPi79CbCOh+lNdH+CcGGtsEiahZHlyJID43KW3R62Rv/rC+E1LE3q9oLIleG0
+	 5ZQ7HXwQOaFr/BL9DHFZnbDuTL0Rzn+9+5lisVfw87/fqDaG+AmcVDTzCEbgaCWj17
+	 LqY4DUT3zIGamXv5BEca+mqOWzhDtLp/pyLanW10C9+ww51PQQ+K0vYe3DSVRVY1gO
+	 sxUilox9Wo3NQqxuYBUhLo+I6/E8v/7q/yQU3Dj/wpsuTeg8jcO06rGsKKuguMsgmd
+	 rlgLqk5NkO/ZQ==
+Date: Sun, 08 Sep 2024 18:03:47 +0000
+To: stable@vger.kernel.org
+From: Mike Yuan <me@yhndnzj.com>
+Cc: Mike Yuan <me@yhndnzj.com>, Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>
+Subject: [PATCH 6.10.y] mm/memcontrol: respect zswap.writeback setting from parent cg too
+Message-ID: <20240908180219.31396-1-me@yhndnzj.com>
+In-Reply-To: <2024090839-crimp-posted-6a31@gregkh>
+References: <2024090839-crimp-posted-6a31@gregkh>
+Feedback-ID: 102487535:user:proton
+X-Pm-Message-ID: 9f561bb16a5e24d1080628faf22f09713aa04769
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uurudrL4R3buzzkca0cpSJPeV4jUhYMYFuvgiD3xhMYFSw/B1Fw
- i38vpmY1LqhuMseL+aVeLQF9xllDBVuWycSgJSSNFE37EZsAbHbwJOMhpxL+jAPXMJEqTHN
- YZoqTLZnWiB9zHSf4ho285LOaeDzlDWtSfi2DNFZtGRgjCncvIfh0Hg9IvEgZYeHbz0MHIv
- tvJRXd2Pm14CPVYQMQYyg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XWUuUQrklDE=;tueAQfh8SB0reV/T1xjwAp4jSVG
- SGVtd5oT4Z6HP65en3J9XUwMvi9V/M8JHgYy/lWGZQav9C5Mc4Yzn7tn0dgjv/1+rocnVzknf
- SShzOzQZOtAAevGK75QUJj/qr6eeNnlhlRVAB17qw5AEbX5Gl4hi3uYNxPTnsTsP8eWHKcexw
- gxnJVYmYO00EYc8/STMLXdgkY2IBlsAkaComZx08tJulOaUkycn5tBuAYXce8+iluk1wlBVdc
- S3ujzIIkgNCAcRROfmG5Yv57OG+o1WWYzZdfqeuJzNAFmjim/dCSH/sl9BaAPKnCKEq7jZ3Nb
- /c5FQHXo+JYQBTGiQYsmJnw11bM/Ez0Y4/rRRfPP9kMkcjAX6kJkbUrrdls+DSaYuLpz2khx6
- LdFpAW2wavKka0erkwe2WpNmgLtWEvE/irDE90BnLnjebLSP+cccVMV4z51f39V5aRSFkFUqy
- GEAJjFuCK5RaS+UhbnIVNTZAx5SFW4cKBwVS9BypCP3C9xK4qguObQK7ND/nnXofxHZCy54F4
- hAel9Jo49TD7QhL8bPEam3ODkIZoSrQbFz3J6VOxDpW24gSK0eij0rzNHEJv8CGH6hBmR0TZC
- 6amVR86r8VeP2xiXrCZHgSCg5j+EYVl0+Q5mk6T6KjJtO7Rdxl6PGfJbjLuvNKMUZvyOFGijj
- 5jEBrucNdI/iryIA6TUOb/TMYwmFbx/+SlShe6ta8QccywL9kvRkfTjIA3VOxILTIZMHKAapn
- bz/MWSW1xtw+3BHR0nUhvBatnqK9dFWSYAULF1nNm4xZd8oVihRKmrDk18a/ZSnC4Osti1S1L
- UFMDIaiRpDv4KzOhAHdNu5cA==
 
-Am Sonntag, dem 08.09.2024 um 16:40 +0200 schrieb Greg KH:
-> On Sun, Sep 08, 2024 at 04:27:49PM +0200, Bert Karwatzki wrote:
-> > Am Sonntag, dem 08.09.2024 um 09:37 -0400 schrieb Sasha Levin:
-> > > This is a note to let you know that I've just added the patch titled
-> > >
-> > >     wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_=
-change
-> > >
-> > > to the 6.6-stable tree which can be found at:
-> > >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-qu=
-eue.git;a=3Dsummary
-> > >
-> > > The filename of the patch is:
-> > >      wifi-mt76-mt7921-fix-null-pointer-access-in-mt7921_i.patch
-> > > and it can be found in the queue-6.6 subdirectory.
-> > >
-> > > If you, or anyone else, feels it should not be added to the stable t=
-ree,
-> > > please let <stable@vger.kernel.org> know about it.
-> > >
-> > >
-> > >
-> > > commit 857d7854c40324bfc70a6d32c9eb0792bc7c0b56
-> > > Author: Bert Karwatzki <spasswolf@web.de>
-> > > Date:   Mon Aug 12 12:45:41 2024 +0200
-> > >
-> > >     wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_=
-change
-> > >
-> > >     [ Upstream commit 479ffee68d59c599f8aed8fa2dcc8e13e7bd13c3 ]
-> > >
-> > >     When disabling wifi mt7921_ipv6_addr_change() is called as a not=
-ifier.
-> > >     At this point mvif->phy is already NULL so we cannot use it here=
-.
-> > >
-> > >     Signed-off-by: Bert Karwatzki <spasswolf@web.de>
-> > >     Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> > >     Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> > >     Link: https://patch.msgid.link/20240812104542.80760-1-spasswolf@=
-web.de
-> > >     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > >
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/driv=
-ers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > index 6a5c2cae087d..6dec54431312 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > @@ -1095,7 +1095,7 @@ static void mt7921_ipv6_addr_change(struct iee=
-e80211_hw *hw,
-> > >  				    struct inet6_dev *idev)
-> > >  {
-> > >  	struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
-> > > -	struct mt792x_dev *dev =3D mvif->phy->dev;
-> > > +	struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
-> > >  	struct inet6_ifaddr *ifa;
-> > >  	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
-> > >  	struct sk_buff *skb;
-> >
-> > The patch is only fixes a NULL pointer if the tree also contains this =
-commit:=C2=A0
-> >
-> > commit 574e609c4e6a0843a9ed53de79e00da8fb3e7437
-> > Author: Felix Fietkau <nbd@nbd.name>
-> > Date:   Thu Jul 4 15:09:47 2024 +0200
-> >
-> >     wifi: mac80211: clear vif drv_priv after remove_interface when sto=
-pping
-> >
-> >     Avoid reusing stale driver data when an interface is brought down =
-and up
-> >     again. In order to avoid having to duplicate the memset in every s=
-ingle
-> >     driver, do it here.
-> >
-> >     Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> >     Link: https://patch.msgid.link/20240704130947.48609-1-nbd@nbd.name
-> >     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> >
-> >
-> > In trees which do not contain this the patch is not necessary.
->
-> Ah, perhaps a Fixes: tag should have been used here then?
->
-> Anyway, I'll go drop this commit from the 2 trees now, thanks.
->
-> greg k-h
+commit e399257349098bf7c84343f99efb2bc9c22eb9fd upstream
 
-So
-"Fixes: 09c4e6a (" wifi: mac80211: clear vif drv_priv after remove_interfa=
-ce
-when stopping")"
-would be the correct tag?
+Currently, the behavior of zswap.writeback wrt. the cgroup hierarchy
+seems a bit odd. Unlike zswap.max, it doesn't honor the value from
+parent cgroups. This surfaced when people tried to globally disable zswap
+writeback, i.e. reserve physical swap space only for hibernation [1] -
+disabling zswap.writeback only for the root cgroup results in subcgroups
+with zswap.writeback=3D1 still performing writeback.
 
-Bert Karwatzki
+The inconsistency became more noticeable after I introduced
+the MemoryZSwapWriteback=3D systemd unit setting [2] for controlling
+the knob. The patch assumed that the kernel would enforce the value of
+parent cgroups. It could probably be workarounded from systemd's side,
+by going up the slice unit tree and inheriting the value. Yet I think it's
+more sensible to make it behave consistently with zswap.max and friends.
+
+[1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate=
+#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
+[2] https://github.com/systemd/systemd/pull/31734
+
+Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
+Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback disablin=
+g")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosryahmed@google.com>
+---
+ Documentation/admin-guide/cgroup-v2.rst |  7 ++++---
+ mm/memcontrol.c                         | 12 +++++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-=
+guide/cgroup-v2.rst
+index 8fbb0519d556..bf288421e7d9 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1706,9 +1706,10 @@ PAGE_SIZE multiple when read back.
+ =09entries fault back in or are written out to disk.
+=20
+   memory.zswap.writeback
+-=09A read-write single value file. The default value is "1". The
+-=09initial value of the root cgroup is 1, and when a new cgroup is
+-=09created, it inherits the current value of its parent.
++=09A read-write single value file. The default value is "1".
++=09Note that this setting is hierarchical, i.e. the writeback would be
++=09implicitly disabled for child cgroups if the upper hierarchy
++=09does so.
+=20
+ =09When this is set to 0, all swapping attempts to swapping devices
+ =09are disabled. This included both zswap writebacks, and swapping due
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 332f190bf3d6..82d60449e823 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5804,8 +5804,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *pare=
+nt_css)
+ =09WRITE_ONCE(memcg->soft_limit, PAGE_COUNTER_MAX);
+ #if defined(CONFIG_MEMCG_KMEM) && defined(CONFIG_ZSWAP)
+ =09memcg->zswap_max =3D PAGE_COUNTER_MAX;
+-=09WRITE_ONCE(memcg->zswap_writeback,
+-=09=09!parent || READ_ONCE(parent->zswap_writeback));
++=09WRITE_ONCE(memcg->zswap_writeback, true);
+ #endif
+ =09page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ =09if (parent) {
+@@ -8444,7 +8443,14 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *ob=
+jcg, size_t size)
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ =09/* if zswap is disabled, do not block pages going to the swapping devic=
+e */
+-=09return !is_zswap_enabled() || !memcg || READ_ONCE(memcg->zswap_writebac=
+k);
++=09if (!is_zswap_enabled())
++=09=09return true;
++
++=09for (; memcg; memcg =3D parent_mem_cgroup(memcg))
++=09=09if (!READ_ONCE(memcg->zswap_writeback))
++=09=09=09return false;
++
++=09return true;
+ }
+=20
+ static u64 zswap_current_read(struct cgroup_subsys_state *css,
+
+base-commit: 5945e30dd429c9d63cbb646a06b99c2003d17941
+--=20
+2.46.0
+
+
 
