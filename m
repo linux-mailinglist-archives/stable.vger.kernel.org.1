@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC45C97068F
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:26:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B66970690
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4021C20D70
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 10:26:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F6F41C2127B
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 10:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2C314A603;
-	Sun,  8 Sep 2024 10:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A264D14D435;
+	Sun,  8 Sep 2024 10:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtO1Bna3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVLECJed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE682E634
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 10:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91B14D2AC
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 10:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725791200; cv=none; b=d4tb+lRamIcrBarZfgRZCR8rAtqqPdUZ+XCTY8vLeFIHqepWKPCt7txsFtFMI32Wfc8rnnfKkrlSp8xTMyFSLCfQqyhFlbb09VLGS1JbXhsNqU6YslB/6Yn5wIjXjjahMHbz3EPQxlerq2k+qL9NBZQycbRA46ivFpVUt4eTe7A=
+	t=1725791204; cv=none; b=uWp8xnuJeaFKlOEwCrIhFMKrIjOIBmhgtUz9dc616eQ+5G3+2BhwDOKUZyA8Qs3zLA6d+H+zRhA+VfR//daLGBXrnzSZEUEzz50aTYC10U1AGqoPYj3LCbB+PxV4OMobTwpXFwvweUv5z9LBpfQ/R44FV03HU0i/hX1wj5An+as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725791200; c=relaxed/simple;
-	bh=/We8JGJnqsmEX9kfJjJcAgtS/+wLcRwgqXEax8T9cEo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kDY6b0ja/DmtsgDVVEUKJmtl3sNx1rzkCirDX0FVti9kdlNTs1d7m6wsrmAEZx94tRSFoeDKi2/R6gnuFRxno8XK7cN17AlHwlSxZldtyuBQqx3iholh1eGFaFpdZsiTmpnPHtZujtAInMNMifuBz1Dryw2cN6zc3Gci2AaWG+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtO1Bna3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08D9C4CEC3;
-	Sun,  8 Sep 2024 10:26:39 +0000 (UTC)
+	s=arc-20240116; t=1725791204; c=relaxed/simple;
+	bh=g0hxnTS52RbNeoQ1Ux3WMLF9uLlmNdcTuhVKAsBrhE8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GC96ziLjX25K0h7ddYfbWQ+QvMrpJ9yxyRh6rlo7N54DPupfIig2R2JQhAyAgYDEhBfTiTc1lVuj43rnNRlshfMKUPUC5Irfy9QEuhwoacKFg4dcK7Rfwur3FjSeqnfBqI0h1NioAYv+GRz+uFgF2wJxxaRnYpKxHSR8ORM1uTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVLECJed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2D0C4CEC3;
+	Sun,  8 Sep 2024 10:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725791200;
-	bh=/We8JGJnqsmEX9kfJjJcAgtS/+wLcRwgqXEax8T9cEo=;
+	s=korg; t=1725791204;
+	bh=g0hxnTS52RbNeoQ1Ux3WMLF9uLlmNdcTuhVKAsBrhE8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KtO1Bna3uf2XKdSVfEiBRQLtUaEFci+y725ZSQYYyolUgTfeZmz0kjH+C71Fn+Gzi
-	 s+1JojzlEAzFLbTHYCvqf/wEkQkRwi47IY8z6y4DdMr11R1bsnI5kjC0mu0umfJxD0
-	 iv4EG22LZanhMKqrHra3AshSJ8kPOqcedoQBsy14=
-Subject: FAILED: patch "[PATCH] perf/x86/intel: Limit the period on Haswell" failed to apply to 5.15-stable tree
+	b=XVLECJed2yg4zrb9RTlLWMI6OiH+SLlCe+yq/BxIvazD62LGZDUsjb639cTknLi+G
+	 JwTlRGjfALpiw1Qx9Kqu182dH0bDAT86He2eDNmEIZ2HHtazmvUg8QugmhsUrwJZYQ
+	 a3JK2PuhtbCg7LJ2fD+gDQdTMtAmRr0wonrJLhzY=
+Subject: FAILED: patch "[PATCH] perf/x86/intel: Limit the period on Haswell" failed to apply to 5.10-stable tree
 To: kan.liang@linux.intel.com,lihuafei1@huawei.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 12:26:37 +0200
-Message-ID: <2024090837-twisty-deodorant-ee35@gregkh>
+Date: Sun, 08 Sep 2024 12:26:38 +0200
+Message-ID: <2024090838-facility-embargo-19d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 25dfc9e357af8aed1ca79b318a73f2c59c1f0b2b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090837-twisty-deodorant-ee35@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090838-facility-embargo-19d0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,15 @@ cc37e520a236 ("perf/x86/amd: Make Zen3 branch sampling opt-in")
 ba2fe7500845 ("perf/x86/amd: Add AMD branch sampling period adjustment")
 ada543459cab ("perf/x86/amd: Add AMD Fam19h Branch Sampling support")
 369461ce8fb6 ("x86: perf: Move RDPMC event flag to a common definition")
+05485745ad48 ("perf/amd/uncore: Allow the driver to be built as a module")
+5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
+f83d2f91d259 ("perf/x86/intel: Add Alder Lake Hybrid support")
+58ae30c29a37 ("perf/x86/intel: Add attr_update for Hybrid PMUs")
+d9977c43bff8 ("perf/x86: Register hybrid PMUs")
+e11c1a7eb302 ("perf/x86: Factor out x86_pmu_show_pmu_cap")
+b98567298bad ("perf/x86: Remove temporary pmu assignment in event_init")
+34d5b61f29ee ("perf/x86/intel: Factor out intel_pmu_check_extra_regs")
+bc14fe1beeec ("perf/x86/intel: Factor out intel_pmu_check_event_constraints")
 
 thanks,
 
