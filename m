@@ -1,126 +1,185 @@
-Return-Path: <stable+bounces-73921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D317697082C
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 16:29:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE04970831
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 16:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878331F21C79
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D4E4B21190
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1E0171089;
-	Sun,  8 Sep 2024 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B72C170A39;
+	Sun,  8 Sep 2024 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joTKNOvL"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="gWFktRQ3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qxcW5IGO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E944515C127;
-	Sun,  8 Sep 2024 14:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D60EACD;
+	Sun,  8 Sep 2024 14:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725805778; cv=none; b=Y5IEmsJFezKwbL1VdH8oqw9ydiGZU8JVlm4lmCEF8Opb1Aqm6pDqTyZUyljQxjk1sa2gOhke+iGkqtlb+PKh6Y8PzCC4bqmve9zhrbpiDPze+uLvwQkvOWuPevf9qx6GFTss++4Du7nci3+N2sSGsFG6EY2aQ5oi+tZO6LO81Hw=
+	t=1725806426; cv=none; b=kpcBIcv0hTc2a6+bEOh5r0MBZaHmKoYLS6qe+9+aOUkt2dnnTiV5vYT1RVLpLq+wV2tLHlUOtcj1ngaTkirONcan23fe1RFx2Kqz6vc1wsSfQpNWzSBSqX7LR4H2BYZOCuCwuxFJNVSZEUsrraQp4S9nvbqDMnqLT4KoGG6loG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725805778; c=relaxed/simple;
-	bh=bZDaIE9L2S3stuNCEgJbTCe8JAXpaV/Ati1K509j9cI=;
+	s=arc-20240116; t=1725806426; c=relaxed/simple;
+	bh=+2gLntmAvGbRQUtBkZxq3O3ALhrtJAusPBITo6LWyNg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ix/VzQm+nbwoh1dnHkb61hh80+Df2StvH7Rhk4ZLjXdhYAKPv7ykCpakdmsyS7OBAH+n+X0AW29eODdxJMdZkIsHLb9n3IVV44GTe8QjB+wUYWETSO+STZJu5WOfIssstJxNSyPPljxcFG9i11lEeWwTiuLYkPt1tekBWZFML9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joTKNOvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6027C4CEC3;
-	Sun,  8 Sep 2024 14:29:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725805777;
-	bh=bZDaIE9L2S3stuNCEgJbTCe8JAXpaV/Ati1K509j9cI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=joTKNOvL39WgbE9UNBcEcEibBRmVGU8krgg2XbjXhLXtHAGfchLFkH7CdLVIK44H7
-	 rHOH5MpcfjGnzz0aa6/X+/jkHrkMT9i5DgevA+eoLPSA6RVzMjPulrqconueMXk89S
-	 1mGYFMSCj5JHqXzZorbeQFOeR+ue1MGeKhBANmb0=
-Date: Sun, 8 Sep 2024 16:29:34 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christian Heusel <christian@heusel.eu>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	"Jones, Morgan" <Morgan.Jones@viasat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	David Arcari <darcari@redhat.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-	"gautham.shenoy@amd.com" <gautham.shenoy@amd.com>,
-	"perry.yuan@amd.com" <perry.yuan@amd.com>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"li.meng@amd.com" <li.meng@amd.com>,
-	"ray.huang@amd.com" <ray.huang@amd.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: linux-6.6.y regression on amd-pstate
-Message-ID: <2024090825-clarity-cofounder-5c79@gregkh>
-References: <66f08ce529d246bd8315c87fe0f880e6@viasat.com>
- <645f2e77-336b-4a9c-b33e-06043010028b@amd.com>
- <2e36ee28-d3b8-4cdb-9d64-3d26ef0a9180@amd.com>
- <d6477bd059df414d85cd825ac8a5350d@viasat.com>
- <d6808d8e-acaf-46ac-812a-0a3e1df75b09@amd.com>
- <7f50abf9-e11a-4630-9970-f894c9caee52@amd.com>
- <f9085ef60f4b42c89b72c650a14db29c@viasat.com>
- <be2d96b0-63a6-42ea-a13b-1b9cf7f04694@amd.com>
- <2024090834-hull-unbalance-ca6b@gregkh>
- <2ffb55e3-6752-466a-b06b-98c324a8d3cc@heusel.eu>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qA3cMe0o7pYfVuPnO/UQIdgJUxl6ZoKMycfoMQezwHEhya9GcCTrLIAtSN3DZqWmTTuAg118N5/KdCNoSJvjJ9YvdEpBPgmRoJBgnyuHjhA4BT6vbN7YZ2h+KsH3xL2agkdhWagMj0Jr0ZvRAXTcxFjWsqwhkpXoFNRVWhjNbQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=gWFktRQ3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qxcW5IGO; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8F05711400B7;
+	Sun,  8 Sep 2024 10:40:23 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Sun, 08 Sep 2024 10:40:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1725806423;
+	 x=1725892823; bh=WZED2l7BcUUjeyjMCdr468O2Tgq6NDEaXYJLGb28iW0=; b=
+	gWFktRQ3sW92YJ6XdgaDWc3WKE5pwk7fOZ9Zfldn/cZQ2ckSRahzxwAVgt6krGq2
+	adHYgDNgkHoc1zlRV/UBG7giNluABAlhDC/XOhe0UNZnzoqBU5O2YVFd/cgNc/0C
+	iMrEtwuJ04LTN1QqDafqLi8ec4Ib++m+sXeUB2kxmIl05LnO8VjGg/ouyp06VkFM
+	XcjeJLCN+ApgDWJuBYIWfNBd1eDMXA0BdxUZoKqLGW+zO7NTm81swWVyP2fFY6N+
+	zp+OR5Z9d4xs+iwoT6AhZ8EKF/txIYaJeQQQTPsiD8g8ClBGQrwXBedjcSOqoNkC
+	Txc5ipXJPFc0xc1XHs1mGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725806423; x=
+	1725892823; bh=WZED2l7BcUUjeyjMCdr468O2Tgq6NDEaXYJLGb28iW0=; b=q
+	xcW5IGOZZttpNoBtcFNw+iSvOi8TEv404xAWnHaM60wGMBdYDqRV5PAwvbR0Kk15
+	EpVvNsu1RkMNNSF/K8UPjvLr8XCv6ArQcrCR5iydQzpSZSkCqBDwgb8c5TEwm9sQ
+	3SJri/d3n0HrjrODWSt6Uvps/7ZpTvM1xzJPgbqIaMNpccqAbNS3LwCN0qN0U+t3
+	Z8lpBa4PitpSduDi7jGhfBCD7CCvc7L86gqPbOHWNi4OwlcwXwOfm7GM47imvOvg
+	fw5Hr7qIWQQWcoFDch/ROCVxT2MtVtWNHoA/WEPpYhuMxPE7aChQLwBoJlipqTw2
+	V0YgLSR/+N0VPyiztwXfg==
+X-ME-Sender: <xms:V7fdZr4EODEqhsoEysORDI2DoybjTQoAETFLHWQok8UU7wuskdgt6w>
+    <xme:V7fdZg7VOrTtXcINOS6as1cTqRF-7Wlr9H0Lrn-duz1kXBhZNh_MND5-vyPFra9lf
+    tucA920cBG97w>
+X-ME-Received: <xmr:V7fdZiejvxxS2H7fQWwSXowT3h98HCi4lbsFEZBtKYBZfUBMDKAr8uQXVXs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeihedgjeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddu
+    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeeuleeuteeuveejheeluedvhfehgeeileefveegkeduffffteetgfdu
+    veegheegveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhmshhgihgurdhlihhnkh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgv
+    gheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpoh
+    huthdprhgtphhtthhopehsphgrshhsfiholhhfseifvggsrdguvgdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvg
+    dqtghomhhmihhtshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvhgr
+    lhhosegtohguvggruhhrohhrrgdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvg
+    hmlhhofhhtrdhnvght
+X-ME-Proxy: <xmx:V7fdZsLtBOkkJp7P9xzApSyG0-usnbcFTN7sNGSfq0jbJ93tlUQlcg>
+    <xmx:V7fdZvJL0UuD-_hrRluI8Vi1WthUmhSr8AbUVyVPYsypXISsFF2aog>
+    <xmx:V7fdZlxeV7J_cCfuS9dkTlorP8ls8n1i_AD0YNWjEmT1lF72w9OD_w>
+    <xmx:V7fdZrJmZ6X_QWZmNXKWs4BNuTfsn1LcMoG28OI5RpjRnlKzz7gdmg>
+    <xmx:V7fdZsC-ypzZQprqlEgVPOgEW_L6VF0g2uW6goKjNadQeGjVPSZ9v3UM>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Sep 2024 10:40:22 -0400 (EDT)
+Date: Sun, 8 Sep 2024 16:40:21 +0200
+From: Greg KH <greg@kroah.com>
+To: Bert Karwatzki <spasswolf@web.de>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Kalle Valo <kvalo@codeaurora.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: Patch "wifi: mt76: mt7921: fix NULL pointer access in
+ mt7921_ipv6_addr_change" has been added to the 6.6-stable tree
+Message-ID: <2024090859-wooing-crock-6827@gregkh>
+References: <20240908133703.1652036-1-sashal@kernel.org>
+ <38a42fddfd5b6cde1115b600a40ad4b158b430ea.camel@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <2ffb55e3-6752-466a-b06b-98c324a8d3cc@heusel.eu>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <38a42fddfd5b6cde1115b600a40ad4b158b430ea.camel@web.de>
 
-On Sun, Sep 08, 2024 at 04:12:28PM +0200, Christian Heusel wrote:
-> Hey Greg,
+On Sun, Sep 08, 2024 at 04:27:49PM +0200, Bert Karwatzki wrote:
+> Am Sonntag, dem 08.09.2024 um 09:37 -0400 schrieb Sasha Levin:
+> > This is a note to let you know that I've just added the patch titled
+> >
+> >     wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_change
+> >
+> > to the 6.6-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> >
+> > The filename of the patch is:
+> >      wifi-mt76-mt7921-fix-null-pointer-access-in-mt7921_i.patch
+> > and it can be found in the queue-6.6 subdirectory.
+> >
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> >
+> >
+> >
+> > commit 857d7854c40324bfc70a6d32c9eb0792bc7c0b56
+> > Author: Bert Karwatzki <spasswolf@web.de>
+> > Date:   Mon Aug 12 12:45:41 2024 +0200
+> >
+> >     wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_change
+> >
+> >     [ Upstream commit 479ffee68d59c599f8aed8fa2dcc8e13e7bd13c3 ]
+> >
+> >     When disabling wifi mt7921_ipv6_addr_change() is called as a notifier.
+> >     At this point mvif->phy is already NULL so we cannot use it here.
+> >
+> >     Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+> >     Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> >     Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> >     Link: https://patch.msgid.link/20240812104542.80760-1-spasswolf@web.de
+> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > index 6a5c2cae087d..6dec54431312 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > @@ -1095,7 +1095,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
+> >  				    struct inet6_dev *idev)
+> >  {
+> >  	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+> > -	struct mt792x_dev *dev = mvif->phy->dev;
+> > +	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+> >  	struct inet6_ifaddr *ifa;
+> >  	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
+> >  	struct sk_buff *skb;
 > 
-> On 24/09/08 04:05PM, Greg Kroah-Hartman wrote:
-> > On Thu, Sep 05, 2024 at 04:14:26PM -0500, Mario Limonciello wrote:
-> > > + stable
-> > > + regressions
-> > > New subject
-> > > 
-> > > Great news.
-> > > 
-> > > Greg, Sasha,
-> > > 
-> > > Can you please pull in these 3 commits specifically to 6.6.y to fix a
-> > > regression that was reported by Morgan in 6.6.y:
-> > > 
-> > > commit 12753d71e8c5 ("ACPI: CPPC: Add helper to get the highest performance
-> > > value")
-> > 
-> > This is fine, but:
-> > 
-> > > commit ed429c686b79 ("cpufreq: amd-pstate: Enable amd-pstate preferred core
-> > > support")
-> > 
-> > This is not a valid git id in Linus's tree :(
+> The patch is only fixes a NULL pointer if the tree also contains this commit: 
 > 
-> f3a052391822 ("cpufreq: amd-pstate: Enable amd-pstate preferred core support")
+> commit 574e609c4e6a0843a9ed53de79e00da8fb3e7437
+> Author: Felix Fietkau <nbd@nbd.name>
+> Date:   Thu Jul 4 15:09:47 2024 +0200
 > 
-> > 
-> > > commit 3d291fe47fe1 ("cpufreq: amd-pstate: fix the highest frequency issue
-> > > which limits performance")
-> > 
-> > And neither is this :(
+>     wifi: mac80211: clear vif drv_priv after remove_interface when stopping
 > 
-> bf202e654bfa ("cpufreq: amd-pstate: fix the highest frequency issue which limits performance")
+>     Avoid reusing stale driver data when an interface is brought down and up
+>     again. In order to avoid having to duplicate the memset in every single
+>     driver, do it here.
 > 
-> > So perhaps you got them wrong?
+>     Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>     Link: https://patch.msgid.link/20240704130947.48609-1-nbd@nbd.name
+>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > 
-> I have added the ID's of the matching commits from Linus' tree above! :)
 > 
+> In trees which do not contain this the patch is not necessary.
 
-Thanks, that works, all now queued up.
+Ah, perhaps a Fixes: tag should have been used here then?
+
+Anyway, I'll go drop this commit from the 2 trees now, thanks.
 
 greg k-h
 
