@@ -1,155 +1,148 @@
-Return-Path: <stable+bounces-73925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE27970869
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 17:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8C39708D0
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 18:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86404281B7F
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 15:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747E2281D62
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 16:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A553F172BDE;
-	Sun,  8 Sep 2024 15:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyoS4/yU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD281531C8;
+	Sun,  8 Sep 2024 16:49:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B51172773;
-	Sun,  8 Sep 2024 15:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECB238DD6;
+	Sun,  8 Sep 2024 16:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725809233; cv=none; b=PHz0B0SspjCOwLPcxBwthvVPuIqqFbCvElwji3rcdKdSjh9YK4Ye7+TGm/rI5Wv+KyvUC8GMBIZ1/vTLtuEiObbE//Hq8k7ke8K1QWlxJant3pgdZVLQoE4pNtSJ1ObW8SPQsqzUtk4b2pcFkj6ZpA8NBKOKBYVCnR9UD3jOuk0=
+	t=1725814144; cv=none; b=ExsV0MpHQV5Cdn0wRXfIgxrvZD6NoAFccJSanDDhLl7KceG2Hm9h0b3Y6wEMrvYC5ol+i6cFbvPFzdV4wWJtFmpw02BfIq8kA9vepR8ZjmuLyh4c/kish8o32UlDM+luNe0PqaWECNmcP4UKoVs9TeqNm4KgFOSGnxOgZZspRzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725809233; c=relaxed/simple;
-	bh=4moyDWWrRj2MAptHVCn4b48wcbz3IcwZ2VY0WVKUV1Q=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VZDte1gcQfGC3OA9yo+Oe8PIvCNBMMJVjGqXsjq9TJIIrxeqDvrVDCbAxgs7+UHn4uBV6xw0Oh1YfTpzI/jqcx0mif/fa90w56sK5+NdYbN5FMPBRJfJkUokZTn7zpsTs5xwq3vF1goupiFpS3+hnYDuRSUglvh3ZgvrJnMQh+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyoS4/yU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D42C4CEC3;
-	Sun,  8 Sep 2024 15:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725809232;
-	bh=4moyDWWrRj2MAptHVCn4b48wcbz3IcwZ2VY0WVKUV1Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iyoS4/yUnJnS1G15/qLt2QjzGCBwMELRKMY5GnGu2QescsS+3riXEZFwkqx7O0yNn
-	 /5kLdJJlVD8TXuJ87Pw2YontsjYPhZDHG4poccHhuIQZ5PClIiIo05pOnzPyftexDn
-	 50iGa1kFLsisI/secbKlWMXQK3RZiLLCeb0r6iR6p8jBaUFlVkCDM7AT/LeL/kNZao
-	 kE2SoUrQnHv45Sd4RYKK3/HX/v5KbKF7U4AxUsvSgCyJ3uBSkWEMfbq2AOHwAkGcUx
-	 snPeNuEvvb4GxMWLAFjGLWyqs8kFT8cpWDC6qoIdb29AB45HCNYr/ixKJXrGA3xob5
-	 r8Lkdk2LStYKw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1snJok-00Ah95-J3;
-	Sun, 08 Sep 2024 16:27:10 +0100
-Date: Sun, 08 Sep 2024 16:27:10 +0100
-Message-ID: <86bk0yupwx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jason Cooper <jason@lakedaemon.net>,
-	Marc Zyngier <marc.zyngier@arm.com>
-Subject: Re: Patch "irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued" has been added to the 6.6-stable tree
-In-Reply-To: <20240908133637.1651482-1-sashal@kernel.org>
-References: <20240908133637.1651482-1-sashal@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1725814144; c=relaxed/simple;
+	bh=pPyJ3kUirQYn4+JQ29MFE+X/XJy2rwfruUuUdLtdQvg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SNRFiTxIa/WL3EOihrd9qeyqeznhuEmzBQLZOTt9gTh5kTQtabON+6eDwjbx7c7gIvGVXDTeBytxXtc2Qbn3mihcwgPYndxFFJP+8NlA8nWdu+QhdJEDRmrL8CNjLmjJCv6fArDxslkYtGU3t55il47Wh15f/LxZLCjvaKO2wrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-39fd6a9acb6so13217105ab.0;
+        Sun, 08 Sep 2024 09:49:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725814142; x=1726418942;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CSdhcuMTGOIHru22hOTpdD1/wkvsf2zXlA9z1zicQdY=;
+        b=o2DkUjFh6vvHeFr5AsZ9njqWBLvOgM8gfWthmBdAsIjmHhpHE22EYk1JQGaX8T/onI
+         vTPQut6K1uyJLPwGU6+xKNaUtBIjIgL2QtGDDw7RLBLmDvTOY4IO5HlDErosAwabaTCK
+         SkQwllEMPQAPMdbIJYuzKgUAWhE/2u5T2FrGoi5VVu5OAMAgwOkC/vzjL8cKc4ChDNMh
+         XiwB1fG5YIQRktfSPwbufoSxh14kW0Fbv3K0TOel+ZHe4r48rf2q+6zZfMAqVAa9DsGK
+         v99fB54bdti9bWod+aAgqzrK9rBl8lPIgDz+K0PryCCKP0NrzNsYRflmMhj59ic8hGfh
+         rDoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMqu8TL8JUJLcibDRCqUx2KMEdoL2pNwLKsmOQxYbJl6wAc73gPnGWOv6lMoZt9+5p5BuPEbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzftCQROWwLQyBnuw70XyidQBjX06JCtgIGW9fQsWvJIV+XGRly
+	QVMi8/MZWILwHv1gNfqHYJspAOgiOfzHMYGoaASHcvBx+SMnu0ATftVq
+X-Google-Smtp-Source: AGHT+IFBh1TN9+2EYqwL6fhAVrBfDwQtaKapAwsg/HjpQ6QnQve+1WgZb7FQkCgDkITAj97KtPFS3Q==
+X-Received: by 2002:a05:6e02:180c:b0:36c:4688:85aa with SMTP id e9e14a558f8ab-3a04f079317mr109262395ab.10.1725814142243;
+        Sun, 08 Sep 2024 09:49:02 -0700 (PDT)
+Received: from [192.168.75.138] (104-63-89-173.lightspeed.livnmi.sbcglobal.net. [104.63.89.173])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a058fc7ed1sm9205155ab.2.2024.09.08.09.49.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2024 09:49:01 -0700 (PDT)
+Message-ID: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
+Subject: Re: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
+From: Trond Myklebust <trondmy@kernel.org>
+To: Oleksandr Tymoshenko <ovt@google.com>, Anna Schumaker <anna@kernel.org>
+Cc: linux-nfs@vger.kernel.org, jbongio@google.com, stable@vger.kernel.org
+Date: Sun, 08 Sep 2024 12:48:30 -0400
+In-Reply-To: <20240906-nfs-mount-deadlock-fix-v1-1-ea1aef533f9c@google.com>
+References: <20240906-nfs-mount-deadlock-fix-v1-1-ea1aef533f9c@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, tglx@linutronix.de, jason@lakedaemon.net, marc.zyngier@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
 
-On Sun, 08 Sep 2024 14:36:37 +0100,
-Sasha Levin <sashal@kernel.org> wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued
-> 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      irqchip-gic-v4-make-sure-a-vpe-is-locked-when-vmapp-.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 1a232324773145ff7ce59b6a1b52b3247223f9d4
-> Author: Marc Zyngier <maz@kernel.org>
-> Date:   Fri Jul 5 10:31:55 2024 +0100
-> 
->     irqchip/gic-v4: Make sure a VPE is locked when VMAPP is issued
->     
->     [ Upstream commit a84a07fa3100d7ad46a3d6882af25a3df9c9e7e3 ]
->     
->     In order to make sure that vpe->col_idx is correctly sampled when a VMAPP
->     command is issued, the vpe_lock must be held for the VPE. This is now
->     possible since the introduction of the per-VM vmapp_lock, which can be
->     taken before vpe_lock in the correct locking order.
->     
->     Signed-off-by: Marc Zyngier <maz@kernel.org>
->     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
->     Tested-by: Nianyao Tang <tangnianyao@huawei.com>
->     Link: https://lore.kernel.org/r/20240705093155.871070-4-maz@kernel.org
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-> index e25dea0e50c7..1e0f0e1bf481 100644
-> --- a/drivers/irqchip/irq-gic-v3-its.c
-> +++ b/drivers/irqchip/irq-gic-v3-its.c
-> @@ -1804,7 +1804,9 @@ static void its_map_vm(struct its_node *its, struct its_vm *vm)
->  		for (i = 0; i < vm->nr_vpes; i++) {
->  			struct its_vpe *vpe = vm->vpes[i];
->  
-> -			its_send_vmapp(its, vpe, true);
-> +			scoped_guard(raw_spinlock, &vpe->vpe_lock)
-> +				its_send_vmapp(its, vpe, true);
-> +
->  			its_send_vinvall(its, vpe);
->  		}
->  	}
-> @@ -1825,8 +1827,10 @@ static void its_unmap_vm(struct its_node *its, struct its_vm *vm)
->  	if (!--vm->vlpi_count[its->list_nr]) {
->  		int i;
->  
-> -		for (i = 0; i < vm->nr_vpes; i++)
-> +		for (i = 0; i < vm->nr_vpes; i++) {
-> +			guard(raw_spinlock)(&vm->vpes[i]->vpe_lock);
->  			its_send_vmapp(its, vm->vpes[i], false);
-> +		}
->  	}
->  
->  	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
->
+On Fri, 2024-09-06 at 00:57 +0000, Oleksandr Tymoshenko wrote:
+> nfs41_init_clientid does not signal a failure condition from
+> nfs4_proc_exchange_id and nfs4_proc_create_session to a client which
+> may
+> lead to mount syscall indefinitely blocked in the following stack
+> trace:
+> =C2=A0 nfs_wait_client_init_complete
+> =C2=A0 nfs41_discover_server_trunking
+> =C2=A0 nfs4_discover_server_trunking
+> =C2=A0 nfs4_init_client
+> =C2=A0 nfs4_set_client
+> =C2=A0 nfs4_create_server
+> =C2=A0 nfs4_try_get_tree
+> =C2=A0 vfs_get_tree
+> =C2=A0 do_new_mount
+> =C2=A0 __se_sys_mount
+>=20
+> and the client stuck in uninitialized state.
+>=20
+> In addition to this all subsequent mount calls would also get blocked
+> in
+> nfs_match_client waiting for the uninitialized client to finish
+> initialization:
+> =C2=A0 nfs_wait_client_init_complete
+> =C2=A0 nfs_match_client
+> =C2=A0 nfs_get_client
+> =C2=A0 nfs4_set_client
+> =C2=A0 nfs4_create_server
+> =C2=A0 nfs4_try_get_tree
+> =C2=A0 vfs_get_tree
+> =C2=A0 do_new_mount
+> =C2=A0 __se_sys_mount
+>=20
+> To avoid this situation propagate error condition to the mount thread
+> and let mount syscall fail properly.
+>=20
+> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+> ---
+> =C2=A0fs/nfs/nfs4state.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+> index 877f682b45f2..54ad3440ad2b 100644
+> --- a/fs/nfs/nfs4state.c
+> +++ b/fs/nfs/nfs4state.c
+> @@ -335,8 +335,8 @@ int nfs41_init_clientid(struct nfs_client *clp,
+> const struct cred *cred)
+> =C2=A0	if (!(clp->cl_exchange_flags & EXCHGID4_FLAG_CONFIRMED_R))
+> =C2=A0		nfs4_state_start_reclaim_reboot(clp);
+> =C2=A0	nfs41_finish_session_reset(clp);
+> -	nfs_mark_client_ready(clp, NFS_CS_READY);
+> =C2=A0out:
+> +	nfs_mark_client_ready(clp, status =3D=3D 0 ? NFS_CS_READY :
+> status);
+> =C2=A0	return status;
+> =C2=A0}
 
-No please.
+NACK. This will break all sorts of recovery scenarios, because it
+doesn't distinguish between an initial 'mount' and a server reboot
+recovery situation.
+Even in the case where we are in the initial mount, it also doesn't
+distinguish between transient errors such as NFS4ERR_DELAY or reboot
+errors such as NFS4ERR_STALE_CLIENTID, etc.
 
-Not only you are missing the essential part of the series (the patch
-introducing the per-VM lock that this change relies on), you are also
-missing the fixes that followed.
+Exactly what is the scenario that is causing your hang? Let's try to
+address that with a more targeted fix.
 
-So please drop this patch from the 6.6 and 6.1 queues.
 
-	M.
+--=20
+Trond Myklebust
+Linux NFS client maintainer, Hammerspace
+trond.myklebust@hammerspace.com
 
--- 
-Without deviation from the norm, progress is not possible.
+
 
