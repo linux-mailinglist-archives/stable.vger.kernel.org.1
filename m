@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489CB97075B
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EA297075C
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 14:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 076AB2822EC
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:20:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3441F21814
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3B015C152;
-	Sun,  8 Sep 2024 12:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91924157485;
+	Sun,  8 Sep 2024 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEXun/E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd8p31rp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8331366
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B711366
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725798022; cv=none; b=bXJJObPLFx5aaLG7X+fSCxdcv+d0C83DN3b7/mSpPrJhInnEQD95i5jULK0ovRdm1JSuEQevv6VzT2V04Bqr3Lx7niGonray4aNK6xJrIE3YtFFeLP7zhX8xtADO9BAfCDY+CUc9rJ3bKD+YOhLCB6sqIRZ1j9cg4MXSNC0RJbQ=
+	t=1725798047; cv=none; b=B5NdwCZmxvPUug1d8IjYZx7ecqtzTSiiOc5qGGEyIVOjs/gpOmcdVnlKG4X1x8cv6I/9v/yp/sG0MX0D50CHcwIUXW9pUntMwqpnVySP9JceykXSYdK40zVQNwQarCPHQSt7dcXF4PcEQviPVCBxFPvWkE00X6aNmuBCmd/lTiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725798022; c=relaxed/simple;
-	bh=YNCxJSMNPiIGHp5p9pLj649jN/36qe/oMF4n1kOlz3I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KHr3Y/HjYhlOMDQvQGlBtom7F4rm9v/gJRFS+bxzNTd6W1WgIqpuIqI9Q4NfYxTQxiqqc0GuUMdGMGezocaAyq6I+NX6BTm7pefXMzAej0k5yA8LeJcOT5BL2EWKsHfVsnjdIpnirw/2WeJn2ziVwHJ7omIfgxEjCXmNA2nESc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEXun/E+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C77C4CEC3;
-	Sun,  8 Sep 2024 12:20:21 +0000 (UTC)
+	s=arc-20240116; t=1725798047; c=relaxed/simple;
+	bh=tN5NbzMk7qm2nWL1Ode4qle2SugpWm19RaHgMSR0wf4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DUMlK11GetJ8XPA6L/DQiDQGwqL6Trgk72Dpi76a9vMGnSc1q3B2TaGZYk8FhZjUutQSk8+rCtTkTQAZo7UXYYu9NJdtG03wmenVKnvDs0h+3lt3MEyU9rzS3iCY0RxWRA44mIPRX2JvmoKuCWL3eFSEnKgLvR1eS3CHlI15VHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd8p31rp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F3CC4CEC3;
+	Sun,  8 Sep 2024 12:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725798022;
-	bh=YNCxJSMNPiIGHp5p9pLj649jN/36qe/oMF4n1kOlz3I=;
+	s=korg; t=1725798047;
+	bh=tN5NbzMk7qm2nWL1Ode4qle2SugpWm19RaHgMSR0wf4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YEXun/E+WHMtsIlmzf0Dk5j5nSgDLXWsAz34Vwbj0QEnte5U08If/0u7FXi8od658
-	 psefymNAKSInaBhpx2l0AH1ZzVhY/mqUNZ3Wk3Ur1StvB7FhmSZLgmlfQOhOMxc1Fz
-	 clHUaLTA4QDisJ9sHr/haU2Gk38DdQjdbB+OjFFA=
-Subject: FAILED: patch "[PATCH] nilfs2: protect references to superblock parameters exposed" failed to apply to 4.19-stable tree
-To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
+	b=jd8p31rpKjLuEmVjcA6G0jMhuqaLICgP+hCD8nbStsFtXtW4mlMniLUxfVhBTm6QG
+	 njQpAePt8e9GKrqqkNSmYPu8Hhpg+PedTOgjVa3T3D3zIHtQ9OlCzl+rSZB1m6fsB4
+	 JLdX1S9sEUeUIuJsNuJ9BjnNh8K4nquP4xIaHWRI=
+Subject: FAILED: patch "[PATCH] btrfs: fix race between direct IO write and fsync when using" failed to apply to 6.10-stable tree
+To: fdmanana@suse.com,dsterba@suse.com,jahn-andi@web.de,josef@toxicpanda.com,paulo.miguel.dias@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 14:20:07 +0200
-Message-ID: <2024090806-banner-stammer-f9a2@gregkh>
+Date: Sun, 08 Sep 2024 14:20:44 +0200
+Message-ID: <2024090844-flattered-badass-d13c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 683408258917541bdb294cd717c210a04381931e
+git cherry-pick -x cd9253c23aedd61eb5ff11f37a36247cd46faf86
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090806-banner-stammer-f9a2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090844-flattered-badass-d13c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-683408258917 ("nilfs2: protect references to superblock parameters exposed in sysfs")
-3bcd6c5bd483 ("nilfs2: replace snprintf in show functions with sysfs_emit")
+cd9253c23aed ("btrfs: fix race between direct IO write and fsync when using same fd")
+939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
+9aa29a20b700 ("btrfs: move the direct IO code into its own file")
+04ef7631bfa5 ("btrfs: cleanup duplicated parameters related to btrfs_create_dio_extent()")
+9fec848b3a33 ("btrfs: cleanup duplicated parameters related to create_io_em()")
+e9ea31fb5c1f ("btrfs: cleanup duplicated parameters related to btrfs_alloc_ordered_extent")
+cdc627e65c7e ("btrfs: cleanup duplicated parameters related to can_nocow_file_extent_args")
+c77a8c61002e ("btrfs: remove extent_map::block_start member")
+e28b851ed9b2 ("btrfs: remove extent_map::block_len member")
+4aa7b5d1784f ("btrfs: remove extent_map::orig_start member")
+3f255ece2f1e ("btrfs: introduce extra sanity checks for extent maps")
+3d2ac9922465 ("btrfs: introduce new members for extent_map")
+87a6962f73b1 ("btrfs: export the expected file extent through can_nocow_extent()")
+e8fe524da027 ("btrfs: rename extent_map::orig_block_len to disk_num_bytes")
+8996f61ab9ff ("btrfs: move fiemap code into its own file")
+56b7169f691c ("btrfs: use a btrfs_inode local variable at btrfs_sync_file()")
+e641e323abb3 ("btrfs: pass a btrfs_inode to btrfs_wait_ordered_range()")
+cef2daba4268 ("btrfs: pass a btrfs_inode to btrfs_fdatawrite_range()")
+4e660ca3a98d ("btrfs: use a regular rb_root instead of cached rb_root for extent_map_tree")
+7f5830bc964d ("btrfs: rename rb_root member of extent_map_tree from map to root")
 
 thanks,
 
@@ -78,104 +96,319 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 683408258917541bdb294cd717c210a04381931e Mon Sep 17 00:00:00 2001
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Sun, 11 Aug 2024 19:03:20 +0900
-Subject: [PATCH] nilfs2: protect references to superblock parameters exposed
- in sysfs
+From cd9253c23aedd61eb5ff11f37a36247cd46faf86 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Thu, 29 Aug 2024 18:25:49 +0100
+Subject: [PATCH] btrfs: fix race between direct IO write and fsync when using
+ same fd
 
-The superblock buffers of nilfs2 can not only be overwritten at runtime
-for modifications/repairs, but they are also regularly swapped, replaced
-during resizing, and even abandoned when degrading to one side due to
-backing device issues.  So, accessing them requires mutual exclusion using
-the reader/writer semaphore "nilfs->ns_sem".
+If we have 2 threads that are using the same file descriptor and one of
+them is doing direct IO writes while the other is doing fsync, we have a
+race where we can end up either:
 
-Some sysfs attribute show methods read this superblock buffer without the
-necessary mutual exclusion, which can cause problems with pointer
-dereferencing and memory access, so fix it.
+1) Attempt a fsync without holding the inode's lock, triggering an
+   assertion failures when assertions are enabled;
 
-Link: https://lkml.kernel.org/r/20240811100320.9913-1-konishi.ryusuke@gmail.com
-Fixes: da7141fb78db ("nilfs2: add /sys/fs/nilfs2/<device> group")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+2) Do an invalid memory access from the fsync task because the file private
+   points to memory allocated on stack by the direct IO task and it may be
+   used by the fsync task after the stack was destroyed.
 
-diff --git a/fs/nilfs2/sysfs.c b/fs/nilfs2/sysfs.c
-index a5569b7f47a3..14868a3dd592 100644
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -836,9 +836,15 @@ ssize_t nilfs_dev_revision_show(struct nilfs_dev_attr *attr,
- 				struct the_nilfs *nilfs,
- 				char *buf)
+The race happens like this:
+
+1) A user space program opens a file descriptor with O_DIRECT;
+
+2) The program spawns 2 threads using libpthread for example;
+
+3) One of the threads uses the file descriptor to do direct IO writes,
+   while the other calls fsync using the same file descriptor.
+
+4) Call task A the thread doing direct IO writes and task B the thread
+   doing fsyncs;
+
+5) Task A does a direct IO write, and at btrfs_direct_write() sets the
+   file's private to an on stack allocated private with the member
+   'fsync_skip_inode_lock' set to true;
+
+6) Task B enters btrfs_sync_file() and sees that there's a private
+   structure associated to the file which has 'fsync_skip_inode_lock' set
+   to true, so it skips locking the inode's VFS lock;
+
+7) Task A completes the direct IO write, and resets the file's private to
+   NULL since it had no prior private and our private was stack allocated.
+   Then it unlocks the inode's VFS lock;
+
+8) Task B enters btrfs_get_ordered_extents_for_logging(), then the
+   assertion that checks the inode's VFS lock is held fails, since task B
+   never locked it and task A has already unlocked it.
+
+The stack trace produced is the following:
+
+   assertion failed: inode_is_locked(&inode->vfs_inode), in fs/btrfs/ordered-data.c:983
+   ------------[ cut here ]------------
+   kernel BUG at fs/btrfs/ordered-data.c:983!
+   Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+   CPU: 9 PID: 5072 Comm: worker Tainted: G     U     OE      6.10.5-1-default #1 openSUSE Tumbleweed 69f48d427608e1c09e60ea24c6c55e2ca1b049e8
+   Hardware name: Acer Predator PH315-52/Covini_CFS, BIOS V1.12 07/28/2020
+   RIP: 0010:btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs]
+   Code: 50 d6 86 c0 e8 (...)
+   RSP: 0018:ffff9e4a03dcfc78 EFLAGS: 00010246
+   RAX: 0000000000000054 RBX: ffff9078a9868e98 RCX: 0000000000000000
+   RDX: 0000000000000000 RSI: ffff907dce4a7800 RDI: ffff907dce4a7800
+   RBP: ffff907805518800 R08: 0000000000000000 R09: ffff9e4a03dcfb38
+   R10: ffff9e4a03dcfb30 R11: 0000000000000003 R12: ffff907684ae7800
+   R13: 0000000000000001 R14: ffff90774646b600 R15: 0000000000000000
+   FS:  00007f04b96006c0(0000) GS:ffff907dce480000(0000) knlGS:0000000000000000
+   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   CR2: 00007f32acbfc000 CR3: 00000001fd4fa005 CR4: 00000000003726f0
+   Call Trace:
+    <TASK>
+    ? __die_body.cold+0x14/0x24
+    ? die+0x2e/0x50
+    ? do_trap+0xca/0x110
+    ? do_error_trap+0x6a/0x90
+    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+    ? exc_invalid_op+0x50/0x70
+    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+    ? asm_exc_invalid_op+0x1a/0x20
+    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+    btrfs_sync_file+0x21a/0x4d0 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+    ? __seccomp_filter+0x31d/0x4f0
+    __x64_sys_fdatasync+0x4f/0x90
+    do_syscall_64+0x82/0x160
+    ? do_futex+0xcb/0x190
+    ? __x64_sys_futex+0x10e/0x1d0
+    ? switch_fpu_return+0x4f/0xd0
+    ? syscall_exit_to_user_mode+0x72/0x220
+    ? do_syscall_64+0x8e/0x160
+    ? syscall_exit_to_user_mode+0x72/0x220
+    ? do_syscall_64+0x8e/0x160
+    ? syscall_exit_to_user_mode+0x72/0x220
+    ? do_syscall_64+0x8e/0x160
+    ? syscall_exit_to_user_mode+0x72/0x220
+    ? do_syscall_64+0x8e/0x160
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Another problem here is if task B grabs the private pointer and then uses
+it after task A has finished, since the private was allocated in the stack
+of task A, it results in some invalid memory access with a hard to predict
+result.
+
+This issue, triggering the assertion, was observed with QEMU workloads by
+two users in the Link tags below.
+
+Fix this by not relying on a file's private to pass information to fsync
+that it should skip locking the inode and instead pass this information
+through a special value stored in current->journal_info. This is safe
+because in the relevant section of the direct IO write path we are not
+holding a transaction handle, so current->journal_info is NULL.
+
+The following C program triggers the issue:
+
+   $ cat repro.c
+   /* Get the O_DIRECT definition. */
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include <unistd.h>
+   #include <stdint.h>
+   #include <fcntl.h>
+   #include <errno.h>
+   #include <string.h>
+   #include <pthread.h>
+
+   static int fd;
+
+   static ssize_t do_write(int fd, const void *buf, size_t count, off_t offset)
+   {
+       while (count > 0) {
+           ssize_t ret;
+
+           ret = pwrite(fd, buf, count, offset);
+           if (ret < 0) {
+               if (errno == EINTR)
+                   continue;
+               return ret;
+           }
+           count -= ret;
+           buf += ret;
+       }
+       return 0;
+   }
+
+   static void *fsync_loop(void *arg)
+   {
+       while (1) {
+           int ret;
+
+           ret = fsync(fd);
+           if (ret != 0) {
+               perror("Fsync failed");
+               exit(6);
+           }
+       }
+   }
+
+   int main(int argc, char *argv[])
+   {
+       long pagesize;
+       void *write_buf;
+       pthread_t fsyncer;
+       int ret;
+
+       if (argc != 2) {
+           fprintf(stderr, "Use: %s <file path>\n", argv[0]);
+           return 1;
+       }
+
+       fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0666);
+       if (fd == -1) {
+           perror("Failed to open/create file");
+           return 1;
+       }
+
+       pagesize = sysconf(_SC_PAGE_SIZE);
+       if (pagesize == -1) {
+           perror("Failed to get page size");
+           return 2;
+       }
+
+       ret = posix_memalign(&write_buf, pagesize, pagesize);
+       if (ret) {
+           perror("Failed to allocate buffer");
+           return 3;
+       }
+
+       ret = pthread_create(&fsyncer, NULL, fsync_loop, NULL);
+       if (ret != 0) {
+           fprintf(stderr, "Failed to create writer thread: %d\n", ret);
+           return 4;
+       }
+
+       while (1) {
+           ret = do_write(fd, write_buf, pagesize, 0);
+           if (ret != 0) {
+               perror("Write failed");
+               exit(5);
+           }
+       }
+
+       return 0;
+   }
+
+   $ mkfs.btrfs -f /dev/sdi
+   $ mount /dev/sdi /mnt/sdi
+   $ timeout 10 ./repro /mnt/sdi/foo
+
+Usually the race is triggered within less than 1 second. A test case for
+fstests will follow soon.
+
+Reported-by: Paulo Dias <paulo.miguel.dias@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219187
+Reported-by: Andreas Jahn <jahn-andi@web.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219199
+Reported-by: syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/00000000000044ff540620d7dee2@google.com/
+Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 75fa563e4cac..c8568b1a61c4 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -459,7 +459,6 @@ struct btrfs_file_private {
+ 	void *filldir_buf;
+ 	u64 last_index;
+ 	struct extent_state *llseek_cached_state;
+-	bool fsync_skip_inode_lock;
+ };
+ 
+ static inline u32 BTRFS_LEAF_DATA_SIZE(const struct btrfs_fs_info *info)
+diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
+index 67adbe9d294a..364bce34f034 100644
+--- a/fs/btrfs/direct-io.c
++++ b/fs/btrfs/direct-io.c
+@@ -864,13 +864,6 @@ ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	if (IS_ERR_OR_NULL(dio)) {
+ 		ret = PTR_ERR_OR_ZERO(dio);
+ 	} else {
+-		struct btrfs_file_private stack_private = { 0 };
+-		struct btrfs_file_private *private;
+-		const bool have_private = (file->private_data != NULL);
+-
+-		if (!have_private)
+-			file->private_data = &stack_private;
+-
+ 		/*
+ 		 * If we have a synchronous write, we must make sure the fsync
+ 		 * triggered by the iomap_dio_complete() call below doesn't
+@@ -879,13 +872,10 @@ ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 		 * partial writes due to the input buffer (or parts of it) not
+ 		 * being already faulted in.
+ 		 */
+-		private = file->private_data;
+-		private->fsync_skip_inode_lock = true;
++		ASSERT(current->journal_info == NULL);
++		current->journal_info = BTRFS_TRANS_DIO_WRITE_STUB;
+ 		ret = iomap_dio_complete(dio);
+-		private->fsync_skip_inode_lock = false;
+-
+-		if (!have_private)
+-			file->private_data = NULL;
++		current->journal_info = NULL;
+ 	}
+ 
+ 	/* No increment (+=) because iomap returns a cumulative value. */
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 9914419f3b7d..2aeb8116549c 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1603,7 +1603,6 @@ static inline bool skip_inode_logging(const struct btrfs_log_ctx *ctx)
+  */
+ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
  {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u32 major = le32_to_cpu(sbp[0]->s_rev_level);
--	u16 minor = le16_to_cpu(sbp[0]->s_minor_rev_level);
-+	struct nilfs_super_block *raw_sb;
-+	u32 major;
-+	u16 minor;
+-	struct btrfs_file_private *private = file->private_data;
+ 	struct dentry *dentry = file_dentry(file);
+ 	struct btrfs_inode *inode = BTRFS_I(d_inode(dentry));
+ 	struct btrfs_root *root = inode->root;
+@@ -1613,7 +1612,13 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	int ret = 0, err;
+ 	u64 len;
+ 	bool full_sync;
+-	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
++	bool skip_ilock = false;
 +
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	major = le32_to_cpu(raw_sb->s_rev_level);
-+	minor = le16_to_cpu(raw_sb->s_minor_rev_level);
-+	up_read(&nilfs->ns_sem);
++	if (current->journal_info == BTRFS_TRANS_DIO_WRITE_STUB) {
++		skip_ilock = true;
++		current->journal_info = NULL;
++		lockdep_assert_held(&inode->vfs_inode.i_rwsem);
++	}
  
- 	return sysfs_emit(buf, "%d.%d\n", major, minor);
- }
-@@ -856,8 +862,13 @@ ssize_t nilfs_dev_device_size_show(struct nilfs_dev_attr *attr,
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u64 dev_size = le64_to_cpu(sbp[0]->s_dev_size);
-+	struct nilfs_super_block *raw_sb;
-+	u64 dev_size;
+ 	trace_btrfs_sync_file(file, datasync);
+ 
+diff --git a/fs/btrfs/transaction.h b/fs/btrfs/transaction.h
+index 98c03ddc760b..dd9ce9b9f69e 100644
+--- a/fs/btrfs/transaction.h
++++ b/fs/btrfs/transaction.h
+@@ -27,6 +27,12 @@ struct btrfs_root_item;
+ struct btrfs_root;
+ struct btrfs_path;
+ 
++/*
++ * Signal that a direct IO write is in progress, to avoid deadlock for sync
++ * direct IO writes when fsync is called during the direct IO write path.
++ */
++#define BTRFS_TRANS_DIO_WRITE_STUB	((void *) 1)
 +
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	dev_size = le64_to_cpu(raw_sb->s_dev_size);
-+	up_read(&nilfs->ns_sem);
+ /* Radix-tree tag for roots that are part of the trasaction. */
+ #define BTRFS_ROOT_TRANS_TAG			0
  
- 	return sysfs_emit(buf, "%llu\n", dev_size);
- }
-@@ -879,9 +890,15 @@ ssize_t nilfs_dev_uuid_show(struct nilfs_dev_attr *attr,
- 			    struct the_nilfs *nilfs,
- 			    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%pUb\n", sbp[0]->s_uuid);
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = sysfs_emit(buf, "%pUb\n", raw_sb->s_uuid);
-+	up_read(&nilfs->ns_sem);
-+
-+	return len;
- }
- 
- static
-@@ -889,10 +906,16 @@ ssize_t nilfs_dev_volume_name_show(struct nilfs_dev_attr *attr,
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
- 
--	return scnprintf(buf, sizeof(sbp[0]->s_volume_name), "%s\n",
--			 sbp[0]->s_volume_name);
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = scnprintf(buf, sizeof(raw_sb->s_volume_name), "%s\n",
-+			raw_sb->s_volume_name);
-+	up_read(&nilfs->ns_sem);
-+
-+	return len;
- }
- 
- static const char dev_readme_str[] =
 
 
