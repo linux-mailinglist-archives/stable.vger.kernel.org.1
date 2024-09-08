@@ -1,155 +1,151 @@
-Return-Path: <stable+bounces-73859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3199706A1
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 12:38:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4593F9706D2
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14DF41C20BD3
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 10:38:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AED31C20D29
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FE714D70F;
-	Sun,  8 Sep 2024 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35A014D715;
+	Sun,  8 Sep 2024 11:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0BSzqJ0"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NArb6u/M"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769961DDC9
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8529536B0D
+	for <Stable@vger.kernel.org>; Sun,  8 Sep 2024 11:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725791882; cv=none; b=Z3jMXG7kf4VMtLV1KF4EYiX3XKiZYF15R0OfBVNz5PZ820rJiHs98LdZFkkLFb6dOMfVeqFEUa+Qyb+z6GrZ07qpVTxC9vV6J9ev1dbCL9qULjE7x1etiz/SouLPnajT4QVuf5+XSUJgg1MloZDz8EdtN7zZrkChM7VdWqVjmpM=
+	t=1725794698; cv=none; b=aftWRgDtrAhXCL5N/JCCq2WaPsJg2JtbFK4Wy9GiRqK7RCqnXm7ayroeOnZLMSU2oOAd5cNc3mEdGB8BjUcQ2AjWfZE/1qBReBliTWWvyvhlA+J6GgkXj30id+AwI51lAoKJAzTWk3wsb4eNMEsekNWwFrNgTuRSB6weLVdZ0so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725791882; c=relaxed/simple;
-	bh=jvHeRechxj2xn/cwqW8YduPdXl1ZV01eF0eVfbKgi7E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KcP9W2TWiH7DWVdBZFB8AvsqIhug3olyfppcbcVpfxjzMLYj6bjSQoe2a3s1PbDdG6skgP3H8qlQdZxIhFHdzci52E4qdgT8JlXLu2be1CsU4pySZGzuUCO5D0zpi8v5XeISggm59WAhLBg0F6hztOv5JzIKcBgEP+LV8BnmMtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0BSzqJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EE7C4CEC3;
-	Sun,  8 Sep 2024 10:38:01 +0000 (UTC)
+	s=arc-20240116; t=1725794698; c=relaxed/simple;
+	bh=rVjUJ+bo00Yw1FjKOIcWOVsLkGG5lWzM4zSpucrNWBs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=UAiXukp9rgp2Zn+V/ZctXSlLf03ChkId1/uu6w2cW/YInYPDH3TAophChwin24AH5V17lFEvOnavNaIxOstOGglrF9AUDV653Uzdlc+0sbcsZ9TegzhBrDKwwYEz5FSd60hnnrXok7FPKltis6xcD3Hg3O0L87M2P09CZyUNVK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NArb6u/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47FDC4CEC3;
+	Sun,  8 Sep 2024 11:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725791881;
-	bh=jvHeRechxj2xn/cwqW8YduPdXl1ZV01eF0eVfbKgi7E=;
-	h=Subject:To:Cc:From:Date:From;
-	b=a0BSzqJ0WtsdhGkBMPvIGFBVbmsvpcBL9VOAmZ+Q0OlIiLYCRu2NYJqUQtOhOWkES
-	 mr8VbjxZ90HYbdX5/kIyKrnVTChvRn9u+dvL/32IHR5xKA1CDWxb3ZXvcDCptfYWur
-	 gLMSLDECouX9X5NBnfNF82VOR4Dt9+0WyTBSbGFo=
-Subject: FAILED: patch "[PATCH] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS" failed to apply to 5.15-stable tree
-To: seanjc@google.com
-Cc: <stable@vger.kernel.org>
+	s=korg; t=1725794698;
+	bh=rVjUJ+bo00Yw1FjKOIcWOVsLkGG5lWzM4zSpucrNWBs=;
+	h=Subject:To:From:Date:From;
+	b=NArb6u/MSba4E20MYkKhDf3Vc8YGvZ5Vg3G9V2UaPrcRk29/ZrtqlGq3dJuIU67aL
+	 cW4x5uK25fmOIrl0z/Nb6xIMSgKK4kbVu0Ft6KTt0OCCqt2Mh7ey5WpTTd+OfxDu1t
+	 SK7mjtKI+cj9/F8y3txPSrdxJ2KK1GcEaTY5Ceq8=
+Subject: patch "iio: magnetometer: ak8975: Fix reading for ak099xx sensors" added to char-misc-testing
+To: barnabas.czeman@mainlining.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 12:37:51 +0200
-Message-ID: <2024090850-handrail-battering-849f@gregkh>
+Date: Sun, 08 Sep 2024 13:24:44 +0200
+Message-ID: <2024090843-epidermal-lubricate-356a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This is a note to let you know that I've just added the patch titled
 
-To reproduce the conflict and resubmit, you may use the following commands:
+    iio: magnetometer: ak8975: Fix reading for ak099xx sensors
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4bcdd831d9d01e0fb64faea50732b59b2ee88da1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090850-handrail-battering-849f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
 
-Possible dependencies:
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-4bcdd831d9d0 ("KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS")
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
 
-thanks,
+If you have any questions about this process, please let me know.
 
-greg k-h
 
------------------- original commit in Linus's tree ------------------
+From 129464e86c7445a858b790ac2d28d35f58256bbe Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?=
+ <barnabas.czeman@mainlining.org>
+Date: Mon, 19 Aug 2024 00:29:40 +0200
+Subject: iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 23 Jul 2024 16:20:55 -0700
-Subject: [PATCH] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
+Move ST2 reading with overflow handling after measurement data
+reading.
+ST2 register read have to be read after read measurment data,
+because it means end of the reading and realease the lock on the data.
+Remove ST2 read skip on interrupt based waiting because ST2 required to
+be read out at and of the axis read.
 
-Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
-leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
-reads guest memory.
+Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/magnetometer/ak8975.c | 32 +++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
-via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
-kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
-problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
-grab it unconditionally for KVM_SET_VCPU_EVENTS.
-
- =============================
- WARNING: suspicious RCU usage
- 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
- -----------------------------
- include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
-
- other info that might help us debug this:
-
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by repro/1071:
-  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-
- stack backtrace:
- CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x7f/0x90
-  lockdep_rcu_suspicious+0x13f/0x1a0
-  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
-  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
-  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
-  vmx_leave_nested+0x30/0x40 [kvm_intel]
-  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
-  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
-  ? mark_held_locks+0x49/0x70
-  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  ? lock_acquire+0xba/0x2d0
-  ? find_held_lock+0x2b/0x80
-  ? do_user_addr_fault+0x40c/0x6f0
-  ? lock_release+0xb7/0x270
-  __x64_sys_ioctl+0x82/0xb0
-  do_syscall_64+0x6c/0x170
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7ff11eb1b539
-  </TASK>
-
-Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM state is toggled")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 70219e406987..2c7327ef0f0d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6040,7 +6040,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
- 			break;
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index 67d5d1f2402f..1d5f79b7005b 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -696,22 +696,8 @@ static int ak8975_start_read_axis(struct ak8975_data *data,
+ 	if (ret < 0)
+ 		return ret;
  
-+		kvm_vcpu_srcu_read_lock(vcpu);
- 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
-+		kvm_vcpu_srcu_read_unlock(vcpu);
- 		break;
- 	}
- 	case KVM_GET_DEBUGREGS: {
+-	/* This will be executed only for non-interrupt based waiting case */
+-	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+-		ret = i2c_smbus_read_byte_data(client,
+-					       data->def->ctrl_regs[ST2]);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "Error in reading ST2\n");
+-			return ret;
+-		}
+-		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+-			   data->def->ctrl_masks[ST2_HOFL])) {
+-			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
++	/* Return with zero if the data is ready. */
++	return !data->def->ctrl_regs[ST1_DRDY];
+ }
+ 
+ /* Retrieve raw flux value for one of the x, y, or z axis.  */
+@@ -738,6 +724,20 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
+ 	if (ret < 0)
+ 		goto exit;
+ 
++	/* Read out ST2 for release lock on measurment data. */
++	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
++	if (ret < 0) {
++		dev_err(&client->dev, "Error in reading ST2\n");
++		goto exit;
++	}
++
++	if (ret & (data->def->ctrl_masks[ST2_DERR] |
++		   data->def->ctrl_masks[ST2_HOFL])) {
++		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
++		ret = -EINVAL;
++		goto exit;
++	}
++
+ 	mutex_unlock(&data->lock);
+ 
+ 	pm_runtime_mark_last_busy(&data->client->dev);
+-- 
+2.46.0
+
 
 
