@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FA097071B
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:52:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52CC97071C
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 13:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAB41C20DB0
-	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE22281C7A
+	for <lists+stable@lfdr.de>; Sun,  8 Sep 2024 11:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFE214EC50;
-	Sun,  8 Sep 2024 11:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04054156F46;
+	Sun,  8 Sep 2024 11:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6yTSo4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3l1blZv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7FD18C22
-	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 11:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86B414EC50
+	for <stable@vger.kernel.org>; Sun,  8 Sep 2024 11:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725796322; cv=none; b=u6PhZv5ZhSUZ1bDAPmSW1jgRCpWIKAFxhx32C7zSIM8hF5MPs6dj0SMa/nwO5xuZqp/sKLltyns+VpRP13Z3yReTLAv7obgl0fFMmO587uUXU0fbK1n2bUq8E0B+9nw8CTvMq07h+wD3QIP9b91UiYmoSKrzVaSUJP8NKPCx/Mk=
+	t=1725796353; cv=none; b=rAHXkxgaBQdFNhZguslADg2V2Lb3t9fiNp4AY33zSceGxdcd0/URNFANDqkkolWEigrCNxOx3fv60CZ+hy0p3LYz/ayh3l+kOGoTIavtKZEiMCiDdHKb71zDwvsiVvQ5JYjg8OCb69lSSPtmOfvr7N2bAU5iX4Ztl0Wl9UMaxeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725796322; c=relaxed/simple;
-	bh=Aqo6bgd8JkVDi0hWvuobvRT9U+1x2+nILzbBb79IXIk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ToY0qdJL5eIY2JKTunmisgk0rit+v5aqvxDuaFKQQUp6/u5NmMEvB/LZDzqmTuU9Mg6315CDcNkdHCLgP/sWCQSsfw4n/4GlxNGsPZSGd2F67olvDFQqTFQvd5ex3IXN6DrQhtMerludslZamq6Xy0cFRSjGZpVh1XXRk1qj790=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6yTSo4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1379C4CEC3;
-	Sun,  8 Sep 2024 11:52:01 +0000 (UTC)
+	s=arc-20240116; t=1725796353; c=relaxed/simple;
+	bh=El1+fpT6m0iptTRY8n9sgm1JQQ47tksF6cZ4HCR4H8M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ErrGWMSbiCEqyVPx2XJqeysGhVh7tXrG0QHIWgMCnMcQwUNoCXzjmfIGRmaAE7yGK3/gDypx2/Qcsi83tHG3bfai/XfCiwspxkNJljiFFlMqNLJq2PHf37qLxDuOPw0eFvmf5bp5wrv+UdG3XGnLubQN3NlF85a+WJRhUASrxRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3l1blZv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10EEC4CEC3;
+	Sun,  8 Sep 2024 11:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725796322;
-	bh=Aqo6bgd8JkVDi0hWvuobvRT9U+1x2+nILzbBb79IXIk=;
+	s=korg; t=1725796353;
+	bh=El1+fpT6m0iptTRY8n9sgm1JQQ47tksF6cZ4HCR4H8M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=a6yTSo4o6NxfNAgaipt7yi4zHDqxsWI4uSLigmtoixsLFKDt4suOYGSyfgJlDs03m
-	 97kampwxUztYgRIC98VEp6edNaQc92bpvgKKFAq8pJqO5j4EBRkMA/6Hup4025yQsU
-	 csnHfywWMdzg4tvKtyfPKW8fKCsdkokM6XHo8ASM=
-Subject: FAILED: patch "[PATCH] maple_tree: remove rcu_read_lock() from mt_validate()" failed to apply to 6.1-stable tree
-To: Liam.Howlett@Oracle.com,akpm@linux-foundation.org,hdanton@sina.com,paulmck@kernel.org,stable@vger.kernel.org,willy@infradead.org
+	b=h3l1blZvBNnHNbIJ4RjpVSHVeT2qy1umPzes3ZeUPg72h2YS+Y30kMPrVh6WXx8pF
+	 LyAFHvRM6kfDIXgNTL8GosBLiQCTKl0QNgP3UXqG3J14Oya7JmhQL3ENmbc9YE5Gt6
+	 K2bfWXYQ3BdlWCaxiuPGsldFCEGZFU8iVTrKoj3M=
+Subject: FAILED: patch "[PATCH] Revert "mm: skip CMA pages when they are not available"" failed to apply to 6.6-stable tree
+To: usamaarif642@gmail.com,akpm@linux-foundation.org,bharata@amd.com,david@redhat.com,hannes@cmpxchg.org,huangzhaoyang@gmail.com,leitao@debian.org,riel@surriel.com,stable@vger.kernel.org,vbabka@suse.cz,willy@infradead.org,yuzhao@google.com,zhaoyang.huang@unisoc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 08 Sep 2024 13:51:51 +0200
-Message-ID: <2024090851-coroner-surname-cd39@gregkh>
+Date: Sun, 08 Sep 2024 13:52:30 +0200
+Message-ID: <2024090830-imaging-symphonic-8783@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f806de88d8f7f8191afd0fd9b94db4cd058e7d4f
+git cherry-pick -x bfe0857c20c663fcc1592fa4e3a61ca12b07dac9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090851-coroner-surname-cd39@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090830-imaging-symphonic-8783@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-f806de88d8f7 ("maple_tree: remove rcu_read_lock() from mt_validate()")
-9a40d45c1f2c ("maple_tree: remove mas_searchable()")
-067311d33e65 ("maple_tree: separate ma_state node from status")
-271f61a8b41d ("maple_tree: clean up inlines for some functions")
-bf857ddd21d0 ("maple_tree: move debug check to __mas_set_range()")
-f7a590189539 ("maple_tree: make mas_erase() more robust")
-a2587a7e8d37 ("maple_tree: add test for mtree_dup()")
-fd32e4e9b764 ("maple_tree: introduce interfaces __mt_dup() and mtree_dup()")
-4f2267b58a22 ("maple_tree: add mt_free_one() and mt_attr() helpers")
-a8091f039c1e ("maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states")
-5c590804b6b0 ("maple_tree: add mas_is_active() to detect in-tree walks")
-530f745c7620 ("maple_tree: replace data before marking dead in split and spanning store")
-4ffc2ee2cf01 ("maple_tree: introduce mas_tree_parent() definition")
-1238f6a226dc ("maple_tree: introduce mas_put_in_tree()")
-72bcf4aa86ec ("maple_tree: reorder replacement of nodes to avoid live lock")
-fec29364348f ("maple_tree: reduce resets during store setup")
-da0892547b10 ("maple_tree: re-introduce entry to mas_preallocate() arguments")
-53bee98d004f ("mm: remove re-walk from mmap_region()")
-c1297987cc2a ("maple_tree: introduce __mas_set_range()")
-a489539e33c2 ("maple_tree: update mt_validate()")
+bfe0857c20c6 ("Revert "mm: skip CMA pages when they are not available"")
+97144ce008f9 ("mm/vmscan: use folio_migratetype() instead of get_pageblock_migratetype()")
 
 thanks,
 
@@ -96,57 +78,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f806de88d8f7f8191afd0fd9b94db4cd058e7d4f Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-Date: Tue, 20 Aug 2024 13:54:17 -0400
-Subject: [PATCH] maple_tree: remove rcu_read_lock() from mt_validate()
+From bfe0857c20c663fcc1592fa4e3a61ca12b07dac9 Mon Sep 17 00:00:00 2001
+From: Usama Arif <usamaarif642@gmail.com>
+Date: Wed, 21 Aug 2024 20:26:07 +0100
+Subject: [PATCH] Revert "mm: skip CMA pages when they are not available"
 
-The write lock should be held when validating the tree to avoid updates
-racing with checks.  Holding the rcu read lock during a large tree
-validation may also cause a prolonged rcu read window and "rcu_preempt
-detected stalls" warnings.
+This reverts commit 5da226dbfce3 ("mm: skip CMA pages when they are not
+available") and b7108d66318a ("Multi-gen LRU: skip CMA pages when they are
+not eligible").
 
-Link: https://lore.kernel.org/all/0000000000001d12d4062005aea1@google.com/
-Link: https://lkml.kernel.org/r/20240820175417.2782532-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reported-by: syzbot+036af2f0c7338a33b0cd@syzkaller.appspotmail.com
-Cc: Hillf Danton <hdanton@sina.com>
+lruvec->lru_lock is highly contended and is held when calling
+isolate_lru_folios.  If the lru has a large number of CMA folios
+consecutively, while the allocation type requested is not MIGRATE_MOVABLE,
+isolate_lru_folios can hold the lock for a very long time while it skips
+those.  For FIO workload, ~150million order=0 folios were skipped to
+isolate a few ZONE_DMA folios [1].  This can cause lockups [1] and high
+memory pressure for extended periods of time [2].
+
+Remove skipping CMA for MGLRU as well, as it was introduced in sort_folio
+for the same resaon as 5da226dbfce3a2f44978c2c7cf88166e69a6788b.
+
+[1] https://lore.kernel.org/all/CAOUHufbkhMZYz20aM_3rHZ3OcK4m2puji2FGpUpn_-DevGk3Kg@mail.gmail.com/
+[2] https://lore.kernel.org/all/ZrssOrcJIDy8hacI@gmail.com/
+
+[usamaarif642@gmail.com: also revert b7108d66318a, per Johannes]
+  Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
+  Link: https://lkml.kernel.org/r/357ac325-4c61-497a-92a3-bdbd230d5ec9@gmail.com
+Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
+Fixes: 5da226dbfce3 ("mm: skip CMA pages when they are not available")
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Bharata B Rao <bharata@amd.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: Matthew Wilcox <willy@infradead.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index aa3a5df15b8e..6df3a8b95808 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -7566,14 +7566,14 @@ static void mt_validate_nulls(struct maple_tree *mt)
-  * 2. The gap is correctly set in the parents
-  */
- void mt_validate(struct maple_tree *mt)
-+	__must_hold(mas->tree->ma_lock)
- {
- 	unsigned char end;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index cfa839284b92..bd489c1af228 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1604,25 +1604,6 @@ static __always_inline void update_lru_sizes(struct lruvec *lruvec,
  
- 	MA_STATE(mas, mt, 0, 0);
--	rcu_read_lock();
- 	mas_start(&mas);
- 	if (!mas_is_active(&mas))
--		goto done;
-+		return;
- 
- 	while (!mte_is_leaf(mas.node))
- 		mas_descend(&mas);
-@@ -7594,9 +7594,6 @@ void mt_validate(struct maple_tree *mt)
- 		mas_dfs_postorder(&mas, ULONG_MAX);
- 	}
- 	mt_validate_nulls(mt);
--done:
--	rcu_read_unlock();
--
  }
- EXPORT_SYMBOL_GPL(mt_validate);
  
+-#ifdef CONFIG_CMA
+-/*
+- * It is waste of effort to scan and reclaim CMA pages if it is not available
+- * for current allocation context. Kswapd can not be enrolled as it can not
+- * distinguish this scenario by using sc->gfp_mask = GFP_KERNEL
+- */
+-static bool skip_cma(struct folio *folio, struct scan_control *sc)
+-{
+-	return !current_is_kswapd() &&
+-			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
+-			folio_migratetype(folio) == MIGRATE_CMA;
+-}
+-#else
+-static bool skip_cma(struct folio *folio, struct scan_control *sc)
+-{
+-	return false;
+-}
+-#endif
+-
+ /*
+  * Isolating page from the lruvec to fill in @dst list by nr_to_scan times.
+  *
+@@ -1669,8 +1650,7 @@ static unsigned long isolate_lru_folios(unsigned long nr_to_scan,
+ 		nr_pages = folio_nr_pages(folio);
+ 		total_scan += nr_pages;
+ 
+-		if (folio_zonenum(folio) > sc->reclaim_idx ||
+-				skip_cma(folio, sc)) {
++		if (folio_zonenum(folio) > sc->reclaim_idx) {
+ 			nr_skipped[folio_zonenum(folio)] += nr_pages;
+ 			move_to = &folios_skipped;
+ 			goto move;
+@@ -4320,7 +4300,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 	}
+ 
+ 	/* ineligible */
+-	if (zone > sc->reclaim_idx || skip_cma(folio, sc)) {
++	if (zone > sc->reclaim_idx) {
+ 		gen = folio_inc_gen(lruvec, folio, false);
+ 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+ 		return true;
 
 
