@@ -1,148 +1,158 @@
-Return-Path: <stable+bounces-74066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD997200B
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B0E97200C
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0F83288CCF
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A79D288E0F
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C916DECB;
-	Mon,  9 Sep 2024 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE3F16F8F5;
+	Mon,  9 Sep 2024 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfQ7/5zT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8Fb4OXs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D8A166F26
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 17:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C151C28DCC;
+	Mon,  9 Sep 2024 17:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725901795; cv=none; b=Ur12O0aF6sib5COkhgUIVpVZWbPKYQSWkcLRaccJQ7mLUL/MqIY1Nj2wQszEASDVK/stxGrDZC0tSSM1OXldwOtxYYAgIf98DL0ghegPxLa4tmCfBxBhP16g9GaiAMv5fp6YVDT/HaXfPQ4HCMphB2JmGEHv4lEPxDa4zbeJAQU=
+	t=1725901824; cv=none; b=EHLeemiiHEK5bi+PY5rgojkJNI6p6OBWItO7RmZQgzeh7Mx//4g2gJaZg27kGNRtiV01mreGvj9Kk6WJX0qDtsvdFK66VpkFYoqjTOUAXoGNU4GiNajYI6lC3BEb39WdupnIJrP83WtZgPfKi8g+rPRlzk0T03Fjw1mCsgpnwKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725901795; c=relaxed/simple;
-	bh=pRMdSxT0gHH6BhI87xg7p1gOIaFcqpHuSqp25eR3YuU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M91E2i8I4k8TKvnjNsIjJOBVced4YtWyFKAS1LRXAg9GV0S1sKgQMEvYXpYqMsFdcDU00vsxuHROCu2N5yD60r6s/ONRzXRK7MYIAuMtH0AfZkkIVqRGYHr45kmC5iQQB/eBhEL0RERfSmyRVGGfQJUYrRlh7wvkWN9jAWU5EIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfQ7/5zT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68725C4CEC5;
-	Mon,  9 Sep 2024 17:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725901794;
-	bh=pRMdSxT0gHH6BhI87xg7p1gOIaFcqpHuSqp25eR3YuU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=wfQ7/5zTKgy8SezLV6QxELZx0Zt74fxHQhsusnAu5ae8qePgEbLdTlNOmhezZJhrt
-	 qtwfZX557I1eSQ+THD9aGGwfdO4Elp2QRjN3HDynEQ6a9fIYlOemHHyF5qMg94Apmi
-	 hCZA3A+mviqlf1yTCAsVE1ZmjSHj47CLJyJm5W8A=
-Subject: FAILED: patch "[PATCH] usb: dwc3: core: update LC timer as per USB Spec V3.2" failed to apply to 5.10-stable tree
-To: quic_faisalh@quicinc.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 19:09:43 +0200
-Message-ID: <2024090943-justness-geologist-75e9@gregkh>
+	s=arc-20240116; t=1725901824; c=relaxed/simple;
+	bh=qKdYi20L8c3yuVMWrbqPAZ/XZ6RyXtp8jHo7w/aIqxU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iGg9IgmsnvDIz8zCIPZzSACjrDg4S9B2kcsDGqry4ipTbx1gzkwuDCQM3rS6h4p3O/1ROCXWB64kWFWdMThHQ9GBmeWXkjt1qtIiIfgdOS5eyTGSRpvD040eG1DiHH68rRIXnLCm+kHrbpagJKC6u4l/g38IvY+2yBz9v2SkM6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8Fb4OXs; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2daaa9706a9so3544221a91.1;
+        Mon, 09 Sep 2024 10:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725901822; x=1726506622; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=daNjFnuTcCmEpOoIZjhoH91whn7ag3w5EoRvU+yWxhg=;
+        b=Q8Fb4OXsLuSmht5WFGD7XLgvbCIvOrc42EBmbvdjDu9/4ks3j4N7VxZzlwuGNB9rNt
+         30TGAHovSGdKN2/Ct6W4dlIdejj8KLbSnp/iaXuAg/mjwA+UsOXGhkKawse8u0ocUKFj
+         qHhNwubGCVu65Er0AGgqfYVCoSvveq4SKmw9J2l8ZR7i7OqpeLsWcSG2U+JQ9Q4RLdqA
+         tc5nH83EwgigsCVNN/Ii/1J/TMPaeeHa8vRgoEqokiUkhE8AC0rSUKFe3WBPcmvYMFMF
+         TBYggB1BAv7nCp+0nqkIGxWkqbEkga7tbmtqlycg2gMssCTBorNU469EBWlIYXHCXs3Y
+         +O2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725901822; x=1726506622;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=daNjFnuTcCmEpOoIZjhoH91whn7ag3w5EoRvU+yWxhg=;
+        b=OhAhfRYpt5r09eUmB/9pbjkuf0z95ODOsufIjMsKdsKxRUZ0vRdLpUqaqOo8m38zmx
+         oEhaJZynmYLz6h/XNyukr+PsRbF6Uw9WCXoL8EBT5NR95X6VbH6ITZqAisY22ylN8LAw
+         rZMXDkn/dUBB/EIk/4dTprS++gw0sPfnEBoOzunN8MGH2HiAayc213rBa1ks5CstHH2T
+         f6b/0v/M0QY54nT5wtGPytYTx7yk2QXZcMuGcuxA3LeYxSyWXG6Fu/OyZ8wlDuTwDIb3
+         V4qORdJ2GHW0eU6Y9CDZ3pG373CPSeVVB2rrsNYJGILlFN9pwEXqmH5LUKTTFVgMKWek
+         Mlgg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6HeoBF09KyZWIsYASRaA1blntr2Z0vI3wMBcoOjLZDsNvMiEciDdrY3yxHlxG5ZtcYIrZVSywHh6Xl3UZ@vger.kernel.org, AJvYcCUVgQk72gardvm/YuLKq1sEyvJA/16boAlXwCA8RYxhztNYyD5ZKVI43WgyxOqDP3U8dUdpj8GEKzYqF9sBQ1QrMw==@vger.kernel.org, AJvYcCUhZsGTw/ry+NQQg1CgLpOsQulAuM6qE/5fa0N4Ku2yYMsl9dWeSpk3gqzxNmOv07B+IRSh08DE@vger.kernel.org, AJvYcCVrtcn/E0gBvvyOSR68sxX00l5H4Hqvw7skF5cxip7bITukPJ2AHrbOFILi7tGwCTgoZPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysiM1ZYYyxmoJkwiWhiDaX3wchFF/mBOFFZEBm08FOy0IqcX4C
+	vR9A63s21FfICO+Lb6xHAKLtPza6TyopaH+SO4g4U+fwQay8L9c0smWXRmXvYzHCygNu/NKZbMc
+	NNjBGjzf4vmVqcBOdxULATzcpzCk=
+X-Google-Smtp-Source: AGHT+IHkXfv32KdkJ4x1MewUfjbF8ld5lIdHroVrl/Ktu0a82EfNshwMxovWSljn73/6at59mD5SKScqAPjBVdNQp5w=
+X-Received: by 2002:a17:90b:388b:b0:2cb:5112:740 with SMTP id
+ 98e67ed59e1d1-2dad50e87a8mr10745443a91.26.1725901821855; Mon, 09 Sep 2024
+ 10:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20240909155848.326640-1-kan.liang@linux.intel.com>
+In-Reply-To: <20240909155848.326640-1-kan.liang@linux.intel.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Mon, 9 Sep 2024 10:10:09 -0700
+Message-ID: <CAEf4Bza+CTNW9G2Bv5vKG0YP_X-41T+D3N0Ly2p8G+SFX-MyRA@mail.gmail.com>
+Subject: Re: [PATCH] perf/x86/intel: Allow to setup LBR for counting event for BPF
+To: kan.liang@linux.intel.com
+Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org, 
+	namhyung@kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Sep 9, 2024 at 8:58=E2=80=AFAM <kan.liang@linux.intel.com> wrote:
+>
+> From: Kan Liang <kan.liang@linux.intel.com>
+>
+> The BPF subsystem may capture LBR data on a counting event. However, the
+> current implementation assumes that LBR can/should only be used with
+> sampling events.
+>
+> For instance, retsnoop tool ([0]) makes an extensive use of this
+> functionality and sets up perf event as follows:
+>
+>         struct perf_event_attr attr;
+>
+>         memset(&attr, 0, sizeof(attr));
+>         attr.size =3D sizeof(attr);
+>         attr.type =3D PERF_TYPE_HARDWARE;
+>         attr.config =3D PERF_COUNT_HW_CPU_CYCLES;
+>         attr.sample_type =3D PERF_SAMPLE_BRANCH_STACK;
+>         attr.branch_sample_type =3D PERF_SAMPLE_BRANCH_KERNEL;
+>
+> To limit the LBR for a sampling event is to avoid unnecessary branch
+> stack setup for a counting event in the sample read. Because LBR is only
+> read in the sampling event's overflow.
+>
+> Although in most cases LBR is used in sampling, there is no HW limit to
+> bind LBR to the sampling mode. Allow an LBR setup for a counting event
+> unless in the sample read mode.
+>
+> Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK fla=
+g")
+> Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+> Closes: https://lore.kernel.org/lkml/20240905180055.1221620-1-andrii@kern=
+el.org/
+> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/x86/events/intel/core.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+LGTM, thanks! Tested and verified that this fixes the issue:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Andrii Nakryiko <andrii@kernel.org>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9149c9b0c7e046273141e41eebd8a517416144ac
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090943-justness-geologist-75e9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-9149c9b0c7e0 ("usb: dwc3: core: update LC timer as per USB Spec V3.2")
-63d7f9810a38 ("usb: dwc3: core: Enable GUCTL1 bit 10 for fixing termination error after resume bug")
-843714bb37d9 ("usb: dwc3: Decouple USB 2.0 L1 & L2 events")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9149c9b0c7e046273141e41eebd8a517416144ac Mon Sep 17 00:00:00 2001
-From: Faisal Hassan <quic_faisalh@quicinc.com>
-Date: Thu, 29 Aug 2024 15:15:02 +0530
-Subject: [PATCH] usb: dwc3: core: update LC timer as per USB Spec V3.2
-
-This fix addresses STAR 9001285599, which only affects DWC_usb3 version
-3.20a. The timer value for PM_LC_TIMER in DWC_usb3 3.20a for the Link
-ECN changes is incorrect. If the PM TIMER ECN is enabled via GUCTL2[19],
-the link compliance test (TD7.21) may fail. If the ECN is not enabled
-(GUCTL2[19] = 0), the controller will use the old timer value (5us),
-which is still acceptable for the link compliance test. Therefore, clear
-GUCTL2[19] to pass the USB link compliance test: TD 7.21.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240829094502.26502-1-quic_faisalh@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index ccc3895dbd7f..9eb085f359ce 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1386,6 +1386,21 @@ static int dwc3_core_init(struct dwc3 *dwc)
- 		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
- 	}
- 
-+	/*
-+	 * STAR 9001285599: This issue affects DWC_usb3 version 3.20a
-+	 * only. If the PM TIMER ECM is enabled through GUCTL2[19], the
-+	 * link compliance test (TD7.21) may fail. If the ECN is not
-+	 * enabled (GUCTL2[19] = 0), the controller will use the old timer
-+	 * value (5us), which is still acceptable for the link compliance
-+	 * test. Therefore, do not enable PM TIMER ECM in 3.20a by
-+	 * setting GUCTL2[19] by default; instead, use GUCTL2[19] = 0.
-+	 */
-+	if (DWC3_VER_IS(DWC3, 320A)) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUCTL2);
-+		reg &= ~DWC3_GUCTL2_LC_TIMER;
-+		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
-+	}
-+
- 	/*
- 	 * When configured in HOST mode, after issuing U3/L2 exit controller
- 	 * fails to send proper CRC checksum in CRC5 feild. Because of this
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 1e561fd8b86e..c71240e8f7c7 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -421,6 +421,7 @@
- 
- /* Global User Control Register 2 */
- #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
-+#define DWC3_GUCTL2_LC_TIMER			BIT(19)
- 
- /* Global User Control Register 3 */
- #define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
-@@ -1269,6 +1270,7 @@ struct dwc3 {
- #define DWC3_REVISION_290A	0x5533290a
- #define DWC3_REVISION_300A	0x5533300a
- #define DWC3_REVISION_310A	0x5533310a
-+#define DWC3_REVISION_320A	0x5533320a
- #define DWC3_REVISION_330A	0x5533330a
- 
- #define DWC31_REVISION_ANY	0x0
-
+> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+> index 605ed19043ed..2b5ff112d8d1 100644
+> --- a/arch/x86/events/intel/core.c
+> +++ b/arch/x86/events/intel/core.c
+> @@ -3981,8 +3981,12 @@ static int intel_pmu_hw_config(struct perf_event *=
+event)
+>                         x86_pmu.pebs_aliases(event);
+>         }
+>
+> -       if (needs_branch_stack(event) && is_sampling_event(event))
+> -               event->hw.flags  |=3D PERF_X86_EVENT_NEEDS_BRANCH_STACK;
+> +       if (needs_branch_stack(event)) {
+> +               /* Avoid branch stack setup for counting events in SAMPLE=
+ READ */
+> +               if (is_sampling_event(event) ||
+> +                   !(event->attr.sample_type & PERF_SAMPLE_READ))
+> +                       event->hw.flags |=3D PERF_X86_EVENT_NEEDS_BRANCH_=
+STACK;
+> +       }
+>
+>         if (branch_sample_counters(event)) {
+>                 struct perf_event *leader, *sibling;
+> --
+> 2.38.1
+>
 
