@@ -1,135 +1,137 @@
-Return-Path: <stable+bounces-74039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D78971D52
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 16:59:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA78971D5F
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C683283DC2
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 14:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B375E285126
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 15:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EE21BC067;
-	Mon,  9 Sep 2024 14:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA8219470;
+	Mon,  9 Sep 2024 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bFiG/umi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JV3DFSos"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="UEYY5X7T"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0831BAEDF;
-	Mon,  9 Sep 2024 14:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FE914295
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 15:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725893966; cv=none; b=i4GT9r3XuNS2o0K0C19kVavhR/YgjwkYonM0zC91GnBdy0hfQI2zxkYS6+M4+rqLchaxes3Zh2iIw5tdP7pOcxTUc2IXUhk0hJqiXDiKw5pbvTU8OQTLBMpDj4eBPLhIfq3poTWotos2tfJHqBOrf1iyIYNl59rqFWkOS+tL6bw=
+	t=1725894059; cv=none; b=gNt5zwBG6jtCo24PGC0av9WzhYSfkn2KDyaz4C4+68xnIhROxs3/jVi2p1B0sRiUBEQTn3DKcBF7J4IE15eZhx5Y6hi0CAsSCPYbsDfeIYotR7JU93OldYi8vYj8/1COa16vfhVvx7Yx3wNcLYcfN45urf3PUVZTdiBEebq+BmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725893966; c=relaxed/simple;
-	bh=VZzWImaVGvZ+HusKi9+ZgeFstudne9VxMal0n8xtoyU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qN7D9bugrDSe7W+SqoSKvBFpKY4EXcxY2yEc5UEqB9xti9itevEinMyzRIzhqJPxAe6/Dw6nrZD0MhzGwauj9E4sGmTKF551w4fv1LE4JZXJqCbdeNGtxZlqrEBWGJ4VIpA9gBFzoiol7HMNSjTieJ/g1IYJK8wDLm3Ve2fjQac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bFiG/umi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JV3DFSos; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Sep 2024 14:59:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725893963;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZGuLvSwhIs+7fXgB1ElI/IrUHRvHGd93VUeqQFY3cGI=;
-	b=bFiG/umiE1Nw5kp1Cq/QBIcwPfGs+9AhZGgAdavVFGl3NT6SVN8I58IjWcTTXQD23nSnC7
-	JjFfXDkkTATziVlAInRsKb/DyCtQrSEzatHxzEl9uANFEJl4CO6HoYOopcNdywCLolOh50
-	zwrLhNMtPhZxe0gEME195UVjTZqN2t3lGlQqPeahgV7DbQO1igQ2qJSDg+irbW8tcB4tD2
-	UQ0pdYbsk+24aJh167WBnmY/fTzHpUvanH/rvxJht3pwwLCsy3jpmdYvxUxFOSYUoC3tAW
-	rLPsNga6Z5W3aPnZj1Xh/tc7PMsztmeHYJmW/YYLYxYqCw/LnBf5y257kPGgCA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725893963;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZGuLvSwhIs+7fXgB1ElI/IrUHRvHGd93VUeqQFY3cGI=;
-	b=JV3DFSosbTSbAnup3CLludGaLMTp1+jPqXq8WbTzWjKnSJF/rVplUJPTP+OhQXb1aTWxkX
-	dhFiHonOYIY+mnCA==
-From: "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/debugobjects] debugobjects: Fix conditions in fill_pool()
-Cc: Zhen Lei <thunder.leizhen@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240904133944.2124-3-thunder.leizhen@huawei.com>
-References: <20240904133944.2124-3-thunder.leizhen@huawei.com>
+	s=arc-20240116; t=1725894059; c=relaxed/simple;
+	bh=RzOo4nswEo3jSmFZkHprYDJX4YMV6YOVmHsXRuguc3I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kJZqs7TUlck110RYuSCUPJ+Xi9mZSBdo4KevlzJRaRkmmwbYedu88VytNQjPsacHJIl/r5U4RMP1wsKQBili9+L7pfIZrRAtoKblIKuxEiyij6GL6GJ5i8y/8a54xIRe/lzb8cY0cmtH5R7Zyc48rvxgioPm7HdH0kr2TgOCzJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=UEYY5X7T; arc=none smtp.client-ip=185.136.64.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 20240909150052cf9d7150e6a994b10b
+        for <stable@vger.kernel.org>;
+        Mon, 09 Sep 2024 17:00:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=felix.moessbauer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=X8ddSxPwoRliEpQfz+Jf+VCcHRWUMvdaMj1Nlh/9NU8=;
+ b=UEYY5X7TmjROFRyYtCHlEzx4t24DMp5YL4hySPe6h9WTnpz0lWSLABoy7dAvKjnNF4b2s8
+ miG+PXci6F0GzQyXFt2C1WEkjpYWd8ybyLc3vzvpsIm2AHdaQ0nq33CQFK/hbU2zcnknNez7
+ ZJ/AMH5sWfu0/KgJqTCGoPF+J+zqjnUfjI5oWO4dNi/rIxz/lm5cyqne6k/Cbz9RKxASI8P5
+ 59eeZXbsQW/5kCh1kRKGvr8WUrl5pb8ptwj6dvQcuCNC1gyTGDF7ZrLwUhKqau0otFK+5tXj
+ hMa7SxWede2zJX1NGLh8ZTVb8s0bDuygmUzy3P1jK0d022gRhWUVDglw==;
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+To: axboe@kernel.dk
+Cc: asml.silence@gmail.com,
+	linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	dqminh@cloudflare.com,
+	longman@redhat.com,
+	adriaan.schmidt@siemens.com,
+	florian.bezdeka@siemens.com,
+	stable@vger.kernel.org,
+	Felix Moessbauer <felix.moessbauer@siemens.com>
+Subject: [PATCH 1/1] io_uring/sqpoll: do not allow pinning outside of cpuset
+Date: Mon,  9 Sep 2024 17:00:36 +0200
+Message-Id: <20240909150036.55921-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172589396281.2215.10073639447636391501.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-The following commit has been merged into the core/debugobjects branch of tip:
+The submit queue polling threads are userland threads that just never
+exit to the userland. When creating the thread with IORING_SETUP_SQ_AFF,
+the affinity of the poller thread is set to the cpu specified in
+sq_thread_cpu. However, this CPU can be outside of the cpuset defined
+by the cgroup cpuset controller. This violates the rules defined by the
+cpuset controller and is a potential issue for realtime applications.
 
-Commit-ID:     684d28feb8546d1e9597aa363c3bfcf52fe250b7
-Gitweb:        https://git.kernel.org/tip/684d28feb8546d1e9597aa363c3bfcf52fe250b7
-Author:        Zhen Lei <thunder.leizhen@huawei.com>
-AuthorDate:    Wed, 04 Sep 2024 21:39:40 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 09 Sep 2024 16:40:25 +02:00
+In b7ed6d8ffd6 we fixed the default affinity of the poller thread, in
+case no explicit pinning is required by inheriting the one of the
+creating task. In case of explicit pinning, the check is more
+complicated, as also a cpu outside of the parent cpumask is allowed.
+We implemented this by using cpuset_cpus_allowed (that has support for
+cgroup cpusets) and testing if the requested cpu is in the set.
 
-debugobjects: Fix conditions in fill_pool()
-
-fill_pool() uses 'obj_pool_min_free' to decide whether objects should be
-handed back to the kmem cache. But 'obj_pool_min_free' records the lowest
-historical value of the number of objects in the object pool and not the
-minimum number of objects which should be kept in the pool.
-
-Use 'debug_objects_pool_min_level' instead, which holds the minimum number
-which was scaled to the number of CPUs at boot time.
-
-[ tglx: Massage change log ]
-
-Fixes: d26bf5056fc0 ("debugobjects: Reduce number of pool_lock acquisitions in fill_pool()")
-Fixes: 36c4ead6f6df ("debugobjects: Add global free list and the counter")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240904133944.2124-3-thunder.leizhen@huawei.com
+Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
 ---
- lib/debugobjects.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 7226fdb..6329a86 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -142,13 +142,14 @@ static void fill_pool(void)
- 	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
- 	 * sections.
- 	 */
--	while (READ_ONCE(obj_nr_tofree) && (READ_ONCE(obj_pool_free) < obj_pool_min_free)) {
-+	while (READ_ONCE(obj_nr_tofree) &&
-+	       READ_ONCE(obj_pool_free) < debug_objects_pool_min_level) {
- 		raw_spin_lock_irqsave(&pool_lock, flags);
- 		/*
- 		 * Recheck with the lock held as the worker thread might have
- 		 * won the race and freed the global free list already.
- 		 */
--		while (obj_nr_tofree && (obj_pool_free < obj_pool_min_free)) {
-+		while (obj_nr_tofree && (obj_pool_free < debug_objects_pool_min_level)) {
- 			obj = hlist_entry(obj_to_free.first, typeof(*obj), node);
- 			hlist_del(&obj->node);
- 			WRITE_ONCE(obj_nr_tofree, obj_nr_tofree - 1);
+that's hopefully the last fix of cpu pinnings of the sq poller threads.
+However, there is more to come on the io-wq side. E.g the syscalls for
+IORING_REGISTER_IOWQ_AFF that can be used to change the affinites are
+not yet protected. I'm currently just lacking good reproducers for that.
+I also have to admit that I don't feel too comfortable making changes to
+the wq part, given that I don't have good tests.
+
+While fixing this, I'm wondering if it makes sense to add tests for the
+combination of pinning and cpuset. If yes, where should these tests be
+added?
+
+Best regards,
+Felix Moessbauer
+Siemens AG
+
+ io_uring/sqpoll.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 713be7c29388..b8ec8fec99b8 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -10,6 +10,7 @@
+ #include <linux/slab.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <linux/cpuset.h>
+ #include <linux/io_uring.h>
+ 
+ #include <uapi/linux/io_uring.h>
+@@ -459,10 +460,12 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 			return 0;
+ 
+ 		if (p->flags & IORING_SETUP_SQ_AFF) {
++			struct cpumask allowed_mask;
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
+-			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
++			cpuset_cpus_allowed(current, &allowed_mask);
++			if (!cpumask_test_cpu(cpu, &allowed_mask))
+ 				goto err_sqpoll;
+ 			sqd->sq_cpu = cpu;
+ 		} else {
+-- 
+2.39.2
+
 
