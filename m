@@ -1,256 +1,114 @@
-Return-Path: <stable+bounces-74002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A499715D8
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 12:58:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BC6971656
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 13:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC18DB24F50
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:58:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624ED1C22D69
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7517E1B530A;
-	Mon,  9 Sep 2024 10:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CE91B4C4C;
+	Mon,  9 Sep 2024 11:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qffQQga7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyT5Kta5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2EC1B4C4A;
-	Mon,  9 Sep 2024 10:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8161F15EFA1;
+	Mon,  9 Sep 2024 11:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725879510; cv=none; b=gh5eUuH3bIiJ0ScEp+YDPeQ7Ql438CXuHS9wGP8a+D1RAirNHeQN577i3HA5e06uk0bcpLqAD78SUEA89ilgW0KnOA9ncIkcLImHlcr6jhNhwaMIlA/JDeQjUX5ib/1RJk4wIlby5eH9tWKZR4Cy4B/mFOy0rQ1JTK++L2U5Xug=
+	t=1725880479; cv=none; b=Yo5rnydfJA9D5F8K6ULMjX4GWUD+t2vImmxl39M4kx/iOtJ0XvQCejQqg2r5g4WjWK1f+cOzUejEjnGZrrgU5mSznFKldHudsdJnCWMdi+q+7RhiAonseRaQ9420TQ3YWAI0xqLZ+OD2/nLgoRznP40JWgXvbZjk4sW+6hSY6AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725879510; c=relaxed/simple;
-	bh=uziYmtq37+Z6zrJILw3P2Hf7wc6u5U+5m+2Q4a9lW0E=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lqd1WjuTcRdTb28l24jk4wAnF4pUc3EWCzh2cxwwfzO96o3m1JQDRYStL8bfcn5e/u8MwBLWep2zFWd/ddL8tXr4Sk6P+SpM2SsobdWGqo2wUnMc8GOcK57wt0dPWoslLSHepa1ZekWWAYxNWRKNG4T9miWQHRjbIejpER3IRNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qffQQga7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90409C4CEC5;
-	Mon,  9 Sep 2024 10:58:29 +0000 (UTC)
+	s=arc-20240116; t=1725880479; c=relaxed/simple;
+	bh=Fr2THDwY0bsKTYQl34f7h+OcLTt8G836Z3JtedeGPTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NP63zgz9S6xG6Ef4Fnp6FZusBfx1uI72GapYWg1a/2zd9Nav6ZHiT9VntWw2EvBanbkj/PXnb3GUusFGjX3tatwVqlZ/T9Vs994yssF4gbUQEp/PQrm/hfG0cEDePr5bJnHPiXhUOQ4+01KKB75gdea5PAlfbuZqDhAhuJLNsDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyT5Kta5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4589AC4CEC5;
+	Mon,  9 Sep 2024 11:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725879509;
-	bh=uziYmtq37+Z6zrJILw3P2Hf7wc6u5U+5m+2Q4a9lW0E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qffQQga7/SG35bqfaVeksLac24dsmrxzJxAEEqumjUCyUf4Gj+5yMly0tKAWri7Lq
-	 LGH9/6BQe2VBgsp6ho6ZubAwbpbm+FEM7L381+GytW+K/6lNBLHYWhc183KB02VlPj
-	 IHPsl4HNopDwU0HLtJjq0Yk/6pIW8RXkSYOsi55m8Al1S/+nouoGCTwu3+V2Lm7NK7
-	 YAeH/56EdSrhWwIXIMJeJmHuE/fTVHl5qq1FrueLhcoL9EMJTnbedF2/2ngDAjrubn
-	 uocnuJ0s89oAUunHYLfDHCVONaMJshQKyPNPEnwbTLtH7X5KSjtSnGYXVwIo8Ykk2T
-	 VVypRZWtxyBPA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1snc6D-00B0FE-OV;
-	Mon, 09 Sep 2024 11:58:27 +0100
-Date: Mon, 09 Sep 2024 11:58:04 +0100
-Message-ID: <865xr5856r.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] arm64: KVM: prevent overflow in inject_abt64
-In-Reply-To: <20240909103828.16699-2-abelova@astralinux.ru>
-References: <20240909103828.16699-1-abelova@astralinux.ru>
-	<20240909103828.16699-2-abelova@astralinux.ru>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1725880479;
+	bh=Fr2THDwY0bsKTYQl34f7h+OcLTt8G836Z3JtedeGPTc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RyT5Kta5kuThcClujfWZqlsntpugpoGaos4uZAcOrhWAlvMddMhdy3ZSax7rUZPoK
+	 0NswgkZYVNUgYFhssRcRWbJp5jf43eP7IJKwzeiucLatvtqxKpKyYp1MjUMg6ElT0y
+	 K/ahZVjIQUPsKOhriHTpUj1XtTIjJdPQubzeQXCtxGhqrBfXcPC1sbbTsoBzkuFfrZ
+	 Wjg06atCOAGrxplSEbGb+QNbCMSeXdodF1yeJGJ/raTGlW5tQS4li0oC60xP0pc2GT
+	 8oamxOQgkyTQbsdOkO9cqBg/kim/5gfx0NXE5IwV6kTLfKVEbKqT603IA+MnaBKqw3
+	 H6JPb1x8ionhA==
+Date: Mon, 9 Sep 2024 12:14:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Szabolcs Nagy <nsz@port70.net>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Szabolcs Nagy <szabolcs.nagy@arm.com>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+	pabeni@redhat.com, mst@redhat.com, jasowang@redhat.com,
+	arefev@swemel.ru, alexander.duyck@gmail.com,
+	Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org,
+	Jakub Sitnicki <jakub@cloudflare.com>, Felix Fietkau <nbd@nbd.name>,
+	Yury Khrustalev <yury.khrustalev@arm.com>, nd@arm.com
+Subject: Re: [PATCH net v2] net: drop bad gso csum_start and offset in
+ virtio_net_hdr
+Message-ID: <0b14a8a8-4d98-46a3-9441-254345faa5df@sirena.org.uk>
+References: <20240729201108.1615114-1-willemdebruijn.kernel@gmail.com>
+ <ZtsTGp9FounnxZaN@arm.com>
+ <66db2542cfeaa_29a385294b9@willemb.c.googlers.com.notmuch>
+ <66de0487cfa91_30614529470@willemb.c.googlers.com.notmuch>
+ <20240909094527.GA3048202@port70.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: abelova@astralinux.ru, oliver.upton@linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HoiVCD7OSR8TbXx0"
+Content-Disposition: inline
+In-Reply-To: <20240909094527.GA3048202@port70.net>
+X-Cookie: Anything is possible, unless it's not.
 
-[dropping Christoffer and Matt from the list, as these addresses are
-pretty obsolete and I doubt they actually care]
 
-Anastasia,
+--HoiVCD7OSR8TbXx0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Mon, 09 Sep 2024 11:38:27 +0100,
-Anastasia Belova <abelova@astralinux.ru> wrote:
-> 
-> ESR_ELx_EC_IABT_LOW << ESR_ELx_EC_SHIFT = 0x20 << 26.
-> ESR_ELx_EC_IABT_CUR << ESR_ELx_EC_SHIFT = 0x21 << 26.
-> There operations' results are int with 1 in 32th bit.
-> While casting these values into u64 (esr is u64) 1
-> fills 32 highest bits.
-> 
-> Add explicit casting to prevent it.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> ---
->  arch/arm64/kvm/inject_fault.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-> index a640e839848e..b6b2cfff6629 100644
-> --- a/arch/arm64/kvm/inject_fault.c
-> +++ b/arch/arm64/kvm/inject_fault.c
-> @@ -74,9 +74,9 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
->  	 * an AArch32 fault, it means we managed to trap an EL0 fault.
->  	 */
->  	if (is_aarch32 || (cpsr & PSR_MODE_MASK) == PSR_MODE_EL0t)
-> -		esr |= (ESR_ELx_EC_IABT_LOW << ESR_ELx_EC_SHIFT);
-> +		esr |= ((u64)ESR_ELx_EC_IABT_LOW << ESR_ELx_EC_SHIFT);
->  	else
-> -		esr |= (ESR_ELx_EC_IABT_CUR << ESR_ELx_EC_SHIFT);
-> +		esr |= ((u64)ESR_ELx_EC_IABT_CUR << ESR_ELx_EC_SHIFT);
->  
->  	if (!is_iabt)
->  		esr |= ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT;
+On Mon, Sep 09, 2024 at 11:45:27AM +0200, Szabolcs Nagy wrote:
 
-Thanks for this. Although correct, this is a point fix that leaves
-plenty of opportunities for problems.
+> fvp is closed source but has freely available binaries
+> for x86_64 glibc based linux systems (behind registration
+> and license agreements) so in principle the issue can be
+> reproduced outside of arm but using fvp is not obvious.
 
-I'd rather you update all the ESR_ELx_EC_* constants to be defined as
-UL(0x..) instead of (0x..), which will allow us to forget this
-forever. Something like this (based on my working tree and won't apply
-on upstream, but you will hopefully get the idea):
+> hopefully somebody at arm can pick it up or at least
+> report this thread to the fvp team internally.
 
-diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
-index cc1b0ec7a51be..47799a7f95cf8 100644
---- a/arch/arm64/include/asm/esr.h
-+++ b/arch/arm64/include/asm/esr.h
-@@ -10,64 +10,64 @@
- #include <asm/memory.h>
- #include <asm/sysreg.h>
- 
--#define ESR_ELx_EC_UNKNOWN	(0x00)
--#define ESR_ELx_EC_WFx		(0x01)
-+#define ESR_ELx_EC_UNKNOWN	UL(0x00)
-+#define ESR_ELx_EC_WFx		UL(0x01)
- /* Unallocated EC: 0x02 */
--#define ESR_ELx_EC_CP15_32	(0x03)
--#define ESR_ELx_EC_CP15_64	(0x04)
--#define ESR_ELx_EC_CP14_MR	(0x05)
--#define ESR_ELx_EC_CP14_LS	(0x06)
--#define ESR_ELx_EC_FP_ASIMD	(0x07)
--#define ESR_ELx_EC_CP10_ID	(0x08)	/* EL2 only */
--#define ESR_ELx_EC_PAC		(0x09)	/* EL2 and above */
--#define ESR_ELx_EC_LS64B	(0x0A)
-+#define ESR_ELx_EC_CP15_32	UL(0x03)
-+#define ESR_ELx_EC_CP15_64	UL(0x04)
-+#define ESR_ELx_EC_CP14_MR	UL(0x05)
-+#define ESR_ELx_EC_CP14_LS	UL(0x06)
-+#define ESR_ELx_EC_FP_ASIMD	UL(0x07)
-+#define ESR_ELx_EC_CP10_ID	UL(0x08)	/* EL2 only */
-+#define ESR_ELx_EC_PAC		UL(0x09)	/* EL2 and above */
-+#define ESR_ELx_EC_LS64B	UL(0x0A)
- /* Unallocated EC: 0x0B */
--#define ESR_ELx_EC_CP14_64	(0x0C)
--#define ESR_ELx_EC_BTI		(0x0D)
--#define ESR_ELx_EC_ILL		(0x0E)
-+#define ESR_ELx_EC_CP14_64	UL(0x0C)
-+#define ESR_ELx_EC_BTI		UL(0x0D)
-+#define ESR_ELx_EC_ILL		UL(0x0E)
- /* Unallocated EC: 0x0F - 0x10 */
--#define ESR_ELx_EC_SVC32	(0x11)
--#define ESR_ELx_EC_HVC32	(0x12)	/* EL2 only */
--#define ESR_ELx_EC_SMC32	(0x13)	/* EL2 and above */
-+#define ESR_ELx_EC_SVC32	UL(0x11)
-+#define ESR_ELx_EC_HVC32	UL(0x12)	/* EL2 only */
-+#define ESR_ELx_EC_SMC32	UL(0x13)	/* EL2 and above */
- /* Unallocated EC: 0x14 */
--#define ESR_ELx_EC_SVC64	(0x15)
--#define ESR_ELx_EC_HVC64	(0x16)	/* EL2 and above */
--#define ESR_ELx_EC_SMC64	(0x17)	/* EL2 and above */
--#define ESR_ELx_EC_SYS64	(0x18)
--#define ESR_ELx_EC_SVE		(0x19)
--#define ESR_ELx_EC_ERET		(0x1a)	/* EL2 only */
-+#define ESR_ELx_EC_SVC64	UL(0x15)
-+#define ESR_ELx_EC_HVC64	UL(0x16)	/* EL2 and above */
-+#define ESR_ELx_EC_SMC64	UL(0x17)	/* EL2 and above */
-+#define ESR_ELx_EC_SYS64	UL(0x18)
-+#define ESR_ELx_EC_SVE		UL(0x19)
-+#define ESR_ELx_EC_ERET		UL(0x1a)	/* EL2 only */
- /* Unallocated EC: 0x1B */
--#define ESR_ELx_EC_FPAC		(0x1C)	/* EL1 and above */
--#define ESR_ELx_EC_SME		(0x1D)
-+#define ESR_ELx_EC_FPAC		UL(0x1C)	/* EL1 and above */
-+#define ESR_ELx_EC_SME		UL(0x1D)
- /* Unallocated EC: 0x1E */
--#define ESR_ELx_EC_IMP_DEF	(0x1f)	/* EL3 only */
--#define ESR_ELx_EC_IABT_LOW	(0x20)
--#define ESR_ELx_EC_IABT_CUR	(0x21)
--#define ESR_ELx_EC_PC_ALIGN	(0x22)
-+#define ESR_ELx_EC_IMP_DEF	UL(0x1f)	/* EL3 only */
-+#define ESR_ELx_EC_IABT_LOW	UL(0x20)
-+#define ESR_ELx_EC_IABT_CUR	UL(0x21)
-+#define ESR_ELx_EC_PC_ALIGN	UL(0x22)
- /* Unallocated EC: 0x23 */
--#define ESR_ELx_EC_DABT_LOW	(0x24)
--#define ESR_ELx_EC_DABT_CUR	(0x25)
--#define ESR_ELx_EC_SP_ALIGN	(0x26)
--#define ESR_ELx_EC_MOPS		(0x27)
--#define ESR_ELx_EC_FP_EXC32	(0x28)
-+#define ESR_ELx_EC_DABT_LOW	UL(0x24)
-+#define ESR_ELx_EC_DABT_CUR	UL(0x25)
-+#define ESR_ELx_EC_SP_ALIGN	UL(0x26)
-+#define ESR_ELx_EC_MOPS		UL(0x27)
-+#define ESR_ELx_EC_FP_EXC32	UL(0x28)
- /* Unallocated EC: 0x29 - 0x2B */
--#define ESR_ELx_EC_FP_EXC64	(0x2C)
-+#define ESR_ELx_EC_FP_EXC64	UL(0x2C)
- /* Unallocated EC: 0x2D - 0x2E */
--#define ESR_ELx_EC_SERROR	(0x2F)
--#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
--#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
--#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
--#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
--#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
--#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
-+#define ESR_ELx_EC_SERROR	UL(0x2F)
-+#define ESR_ELx_EC_BREAKPT_LOW	UL(0x30)
-+#define ESR_ELx_EC_BREAKPT_CUR	UL(0x31)
-+#define ESR_ELx_EC_SOFTSTP_LOW	UL(0x32)
-+#define ESR_ELx_EC_SOFTSTP_CUR	UL(0x33)
-+#define ESR_ELx_EC_WATCHPT_LOW	UL(0x34)
-+#define ESR_ELx_EC_WATCHPT_CUR	UL(0x35)
- /* Unallocated EC: 0x36 - 0x37 */
--#define ESR_ELx_EC_BKPT32	(0x38)
-+#define ESR_ELx_EC_BKPT32	UL(0x38)
- /* Unallocated EC: 0x39 */
--#define ESR_ELx_EC_VECTOR32	(0x3A)	/* EL2 only */
-+#define ESR_ELx_EC_VECTOR32	UL(0x3A)	/* EL2 only */
- /* Unallocated EC: 0x3B */
--#define ESR_ELx_EC_BRK64	(0x3C)
-+#define ESR_ELx_EC_BRK64	UL(0x3C)
- /* Unallocated EC: 0x3D - 0x3F */
--#define ESR_ELx_EC_MAX		(0x3F)
-+#define ESR_ELx_EC_MAX		UL(0x3F)
- 
- #define ESR_ELx_EC_SHIFT	(26)
- #define ESR_ELx_EC_WIDTH	(6)
+FWIW there's a tool called shrinkwrap which makes it quite a lot easier
+to get going:
 
-Could you please respin this quickly so that it can be taken in v6.12?
+   https://gitlab.arm.com/tooling/shrinkwrap
 
-Thanks,
+though since the models are very flexibile valid configurations that
+people see issues with aren't always covered by shrinkwrap.
 
-	M.
+--HoiVCD7OSR8TbXx0
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Without deviation from the norm, progress is not possible.
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbe2JQACgkQJNaLcl1U
+h9AmmAf/YFKKLxX04tgo73jfPK1KIxOpwDzijd1LbjSEQuCbTs3DwPnTmTss2w6g
+1d4cpRhEkJiZrxskfhaI3WDWhhUDcKGzES5SFSF5JzSp9r4tNKBu2Ser1JTwPuhl
+spvhdYegU73FWO25JM0JC+aXZwcUr4j0yJ39T04whRwfvKxMA+uwXx/3MzgJC+LV
++a30rMOG65K0Eh/EjRlAoZTkHKde/dRzqJ0AkpB7nyStdZDHThaapWOBcbAsHVXv
+r4wr52sgTb6m44bIfZqpxCzdZuVOjQhyhEoM1LQDwMAWhKrQ8N8tJfk5vaOM8sYu
+DxwcjGbeRvNe2B6kEXUG9W11U1yPew==
+=+Erf
+-----END PGP SIGNATURE-----
+
+--HoiVCD7OSR8TbXx0--
 
