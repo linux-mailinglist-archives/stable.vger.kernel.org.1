@@ -1,222 +1,126 @@
-Return-Path: <stable+bounces-74017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542749719A1
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 14:37:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CA69719C5
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 14:46:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FCCC1C22E23
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 12:37:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A30B2282D
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 12:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B851B5804;
-	Mon,  9 Sep 2024 12:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="egxI6oqd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BBB1B6542;
+	Mon,  9 Sep 2024 12:46:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2055A1B375C
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 12:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EAC1ACDE6;
+	Mon,  9 Sep 2024 12:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725885460; cv=none; b=HlfTrfMsJw6hzA0aL9Q+nZNZ1H3ip21Dy+tueQh9rAtkc7CGGQ3FpdDXXADjECvdcmfW9uqiPffPQSLZqQ8O7MTgSJRrDHKFEXXkWhOMDS5CXxmcIDPSdwSIEIqnys0cTACpCqqe8MElP2ScowrgVUWmXjRXUTz8QCtrsoUoyP8=
+	t=1725885982; cv=none; b=m7kZQKo20f5IOB+rjV2hAlD/F/QK5UBLh1ZnyIzzgEWKc2jwJYooOhjAXl9iFFaianWtL42VzoKXG1ebO77ra9Yw1p0zYbS/qmlch4d2ZLvHmgVahAVPf3eeq+Ahwg5MRgoN1OdJTgim66t+JZVYNbbvOSPqu2T3zpOHO8nT5Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725885460; c=relaxed/simple;
-	bh=p+IJEIxf/duWAJK9NmOQmVieQ3au2vO3640ZoAVoZ8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pgftdhh9mph12n5mu3NQuRmyQnSmDnEuhlmxTMsw9qAvxgCjSfL75hTvApmbdg6Pf32ycWPoRgRVSEkzSjEtaFxx6cVRCI4nghyT6Mu8Buma8MFmc96fbBSOfrg/Oynyf6FxVKU+qYWvZjsJBDm6gPMfy4mYhOPOprtGGpWDElw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=egxI6oqd; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Wb/yA7MmOMpJ7uPZGM++w1zIBXs2cTOoCfnoJjmbs9I=; b=egxI6oqdjYyEiKTN0QCEAPyP5o
-	c2mlUZfzgM9Tt7qLd/RltkpG45b0TIQ7Qfb9oD1mr/JGbcSQ58B6zzEZpT6WWit8AwQycLg8DVpPj
-	M4GJbBdLHLFEQLzjSFG0nHOFVwuekbsSDSIZ13qAdAkS7uYcVX0p2hs/D6U1UAPpY9IWLGkdhAEpJ
-	gKkWtZHV/v0ijfxjdhcVBpSY2pHQ8jcMdlXslUrXkZkJ+jIEUbIe/q+oO6x6z0HaBXbkWZFiWo60e
-	vOv7kmDfzUAvBmDSaIaqiJ+HzGqb68x8dL9teGjA/zHKvRCZcUk+omvnOXk8KN+2FUgk6iFiSB3RW
-	JKNsXikQ==;
-Received: from [90.241.98.187] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1snddo-00BXNo-0q; Mon, 09 Sep 2024 14:37:12 +0200
-Message-ID: <14ef37f4-b982-41c1-8121-80882917e9c0@igalia.com>
-Date: Mon, 9 Sep 2024 13:37:10 +0100
+	s=arc-20240116; t=1725885982; c=relaxed/simple;
+	bh=sZU3OKxBlSzVazElfSh77TMkqgMCzx5ikjkHkLKfk+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BQV+X5oRHTu47RMqZSjcsR6jbBQvQteI2pO4AKrTb4X/8OVKev37M/Dzs3TDDReXCiMlP7jnKU/x9DfeUNX61Y1GH3SLndaqblJ8rFAy7OnSTjaBqlmMPXUjWhnhVnQh+K6r3KV8cLwdbRyE61m4KpFY75kFzYc5pUUHpOH1hQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: DgsCfJsQQA2pGSFLf5SxYQ==
+X-CSE-MsgGUID: LI7UgcoCR+mOGX+jaTBTbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24127589"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="24127589"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 05:46:21 -0700
+X-CSE-ConnectionGUID: 8ym3nq4QQDG2LboGcvrbLA==
+X-CSE-MsgGUID: Oeb9iOyWQGyYaJJoxmnRBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="104120911"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 05:46:19 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1sndma-00000006n3n-2cIT;
+	Mon, 09 Sep 2024 15:46:16 +0300
+Date: Mon, 9 Sep 2024 15:46:16 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	James Harmison <jharmison@redhat.com>,
+	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] platform/x86: panasonic-laptop: Fix SINF array
+ out of bounds accesses
+Message-ID: <Zt7uGHDnUa4MVe9N@smile.fi.intel.com>
+References: <20240909113227.254470-1-hdegoede@redhat.com>
+ <Zt7kzwtNRdohoC-x@smile.fi.intel.com>
+ <a8fc0357-8358-4a35-b094-4667e5aa20d5@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/4] drm/sched: Add locking to drm_sched_entity_modify_sched
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Philipp Stanner <pstanner@redhat.com>, Tvrtko Ursulin <tursulin@igalia.com>,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- stable@vger.kernel.org
-References: <20240906180618.12180-1-tursulin@igalia.com>
- <20240906180618.12180-2-tursulin@igalia.com>
- <8d763e5162ebc130a05da3cefbff148cdb6ce042.camel@redhat.com>
- <80e02cde-19e7-4fb6-a572-fb45a639a3b7@amd.com>
- <2356e3d66da3e5795295267e527042ab44f192c8.camel@redhat.com>
- <fb9556a1-b48d-49ed-9b9c-74b21fb76af4@amd.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <fb9556a1-b48d-49ed-9b9c-74b21fb76af4@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8fc0357-8358-4a35-b094-4667e5aa20d5@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Mon, Sep 09, 2024 at 02:11:50PM +0200, Hans de Goede wrote:
+> On 9/9/24 2:06 PM, Andy Shevchenko wrote:
+> > On Mon, Sep 09, 2024 at 01:32:25PM +0200, Hans de Goede wrote:
 
-On 09/09/2024 13:18, Christian König wrote:
-> Am 09.09.24 um 14:13 schrieb Philipp Stanner:
->> On Mon, 2024-09-09 at 13:29 +0200, Christian König wrote:
->>> Am 09.09.24 um 11:44 schrieb Philipp Stanner:
->>>> On Fri, 2024-09-06 at 19:06 +0100, Tvrtko Ursulin wrote:
->>>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>>>
->>>>> Without the locking amdgpu currently can race
->>>>> amdgpu_ctx_set_entity_priority() and drm_sched_job_arm(),
->>>> I would explicitly say "amdgpu's amdgpu_ctx_set_entity_priority()
->>>> races
->>>> through drm_sched_entity_modify_sched() with drm_sched_job_arm()".
->>>>
->>>> The actual issue then seems to be drm_sched_job_arm() calling
->>>> drm_sched_entity_select_rq(). I would mention that, too.
->>>>
->>>>
->>>>> leading to the
->>>>> latter accesing potentially inconsitent entity->sched_list and
->>>>> entity->num_sched_list pair.
->>>>>
->>>>> The comment on drm_sched_entity_modify_sched() however says:
->>>>>
->>>>> """
->>>>>    * Note that this must be called under the same common lock for
->>>>> @entity as
->>>>>    * drm_sched_job_arm() and drm_sched_entity_push_job(), or the
->>>>> driver
->>>>> needs to
->>>>>    * guarantee through some other means that this is never called
->>>>> while
->>>>> new jobs
->>>>>    * can be pushed to @entity.
->>>>> """
->>>>>
->>>>> It is unclear if that is referring to this race or something
->>>>> else.
->>>> That comment is indeed a bit awkward. Both
->>>> drm_sched_entity_push_job()
->>>> and drm_sched_job_arm() take rq_lock. But
->>>> drm_sched_entity_modify_sched() doesn't.
->>>>
->>>> The comment was written in 981b04d968561. Interestingly, in
->>>> drm_sched_entity_push_job(), this "common lock" is mentioned with
->>>> the
->>>> soft requirement word "should" and apparently is more about keeping
->>>> sequence numbers in order when inserting.
->>>>
->>>> I tend to think that the issue discovered by you is unrelated to
->>>> that
->>>> comment. But if no one can make sense of the comment, should it
->>>> maybe
->>>> be removed? Confusing comment is arguably worse than no comment
->>> Agree, we probably mixed up in 981b04d968561 that submission needs a
->>> common lock and that rq/priority needs to be protected by the
->>> rq_lock.
->>>
->>> There is also the big FIXME in the drm_sched_entity documentation
->>> pointing out that this is most likely not implemented correctly.
->>>
->>> I suggest to move the rq, priority and rq_lock fields together in the
->>> drm_sched_entity structure and document that rq_lock is protecting
->>> the two.
->> That could also be a great opportunity for improving the lock naming:
+...
+
+> >> +static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
+> >> +{
+> >> +	struct device *dev = kobj_to_dev(kobj);
+> >> +	struct acpi_device *acpi = to_acpi_device(dev);
+> >> +	struct pcc_acpi *pcc = acpi_driver_data(acpi);
+> > 
+> > Isn't it the same as dev_get_drvdata()?
 > 
-> Well that comment made me laugh because I point out the same when the 
-> scheduler came out ~8years ago and nobody cared about it since then.
+> No I also thought so and I checked. It is not the same,
+> struct acpi_device has its own driver_data member, which
+> this gets.
+
+Ouch, you are right! It's a bit confusing :-(
+
+> >> +	if (attr == &dev_attr_mute.attr)
+> >> +		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
+> >> +
+> >> +	if (attr == &dev_attr_eco_mode.attr)
+> >> +		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
+> >> +
+> >> +	if (attr == &dev_attr_current_brightness.attr)
+> >> +		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
+> >> +
+> >> +	return attr->mode;
+> >> +}
+
+...
+
+> >> +	/*
+> >> +	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
+> >> +	 * Accesses to higher SINF entries are checked against num_sifr.
+> >> +	 */
+> >> +	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
+> >> +		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
+> > 
+> > acpi_handle_err() ?
 > 
-> But yeah completely agree :)
+> The driver is using pr_err() already in 18 other places, so IMHO it is better
+> to be consistent and also use it here.
 
-Maybe, but we need to keep in sight the fact some of these fixes may be 
-good to backport. In which case re-naming exercises are best left to follow.
+Fair enough, so can be material for a followup in the future.
 
-Also..
+-- 
+With Best Regards,
+Andy Shevchenko
 
->> void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t 
->> ts)
->> {
->>     /*
->>      * Both locks need to be grabbed, one to protect from entity->rq 
->> change
->>      * for entity from within concurrent drm_sched_entity_select_rq 
->> and the
->>      * other to update the rb tree structure.
->>      */
->>     spin_lock(&entity->rq_lock);
->>     spin_lock(&entity->rq->lock);
 
-.. I agree this is quite unredable and my initial reaction was a similar 
-ugh. However.. What names would you guys suggest and for what to make 
-this better and not lessen the logic of naming each individually?
-
-Regards,
-
-Tvrtko
-
->> [...]
->>
->>
->> P.
->>
->>
->>> Then audit the code if all users of rq and priority actually hold the
->>> correct locks while reading and writing them.
->>>
->>> Regards,
->>> Christian.
->>>
->>>> P.
->>>>
->>>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>>> Fixes: b37aced31eb0 ("drm/scheduler: implement a function to
->>>>> modify
->>>>> sched list")
->>>>> Cc: Christian König <christian.koenig@amd.com>
->>>>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>>>> Cc: Luben Tuikov <ltuikov89@gmail.com>
->>>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>>> Cc: David Airlie <airlied@gmail.com>
->>>>> Cc: Daniel Vetter <daniel@ffwll.ch>
->>>>> Cc: dri-devel@lists.freedesktop.org
->>>>> Cc: <stable@vger.kernel.org> # v5.7+
->>>>> ---
->>>>>    drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
->>>>>    1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c
->>>>> b/drivers/gpu/drm/scheduler/sched_entity.c
->>>>> index 58c8161289fe..ae8be30472cd 100644
->>>>> --- a/drivers/gpu/drm/scheduler/sched_entity.c
->>>>> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
->>>>> @@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struct
->>>>> drm_sched_entity *entity,
->>>>>    {
->>>>>        WARN_ON(!num_sched_list || !sched_list);
->>>>> +    spin_lock(&entity->rq_lock);
->>>>>        entity->sched_list = sched_list;
->>>>>        entity->num_sched_list = num_sched_list;
->>>>> +    spin_unlock(&entity->rq_lock);
->>>>>    }
->>>>>    EXPORT_SYMBOL(drm_sched_entity_modify_sched);
-> 
 
