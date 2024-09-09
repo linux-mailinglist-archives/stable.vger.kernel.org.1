@@ -1,135 +1,175 @@
-Return-Path: <stable+bounces-74094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F2597255A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 00:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D350197258D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 01:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 175461F24AE0
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39F931F2483E
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 23:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F278D18CC19;
-	Mon,  9 Sep 2024 22:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D808F18D64B;
+	Mon,  9 Sep 2024 23:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VfNbR2Yx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wkqQABt5"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8552C18CBF7
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 22:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3556918CBF0
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 23:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725921382; cv=none; b=lsDvqgRnGE2EjwJFSUQNmffYl0iKqrc5EV1IGtPZjnX8ZUb8+0Xr5d8+Wdr2Nbnl97WtsrWd1R5wNAAwuGp1ceMkco8maWp6yGHZYl76yNB5FNABW5hwsvvcCrqKgCOpv37g8WAZ/zKx6GZrGRBaJ0bx6NhujdJrFoCf1C57vbA=
+	t=1725923196; cv=none; b=eyyXanKWTVy1v7dQ6M4KGNbYEix/o/7/cpEvCw2VYQS/tf4JA+cBG0cG9UkWzG4ZzETT6S16ZY6iXFDAwt8i+voeiar0YYtqYrhK5V4YhyPlcM32Pe2vt/336A0li1bth8SC+FjSfI655zFqO4oFNnsOVyeN7W/8wux4zWCQzuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725921382; c=relaxed/simple;
-	bh=v/39exFJwhMuoVl7WLHYpG8vgwVP9StqtsFj1qr1wgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kWhdtRirASan8Wd5tB+PtVhMYg7PK4S7uDSq+PV5tgAw03qnUbDSgCdJxf6DOiHIaOIyNy9BpqPs8dQBiLB9jSMDF37eK1yBZr9QEm8rwkvxQG63U89z5u1YaCN7jIuyNXQcmnElYfH2oPqR205YzSZgriVHrdoz5j0opYgSh2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VfNbR2Yx; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 9 Sep 2024 22:36:11 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725921377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PAOwxfQaHCQqtI5pUon/+UOel8KmgsVnMsfbJQaWVLE=;
-	b=VfNbR2YxKTO00M+E11bjDCcDKgJZ2grBhvATdSx/2QjmfxN4lxvtuk5Z3kqt5qkxivgrpC
-	T+u3r1Lhjv2mx1FWGqIBqaBcynm2XlN/prAeu0U5cdnh0yh78e1qIwyd+9GxWZxXLxvjJ9
-	Uc+l3d4Vpb6IWmDO16ynNlFVed5g6fA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Snehal Koukuntla <snehalreddy@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
-	Sebastian Ene <sebastianene@google.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: arm64: Add memory length checks and remove
- inline in do_ffa_mem_xfer
-Message-ID: <Zt94W-rswpPRrzSP@linux.dev>
-References: <20240909180154.3267939-1-snehalreddy@google.com>
+	s=arc-20240116; t=1725923196; c=relaxed/simple;
+	bh=tA4DWGGXl2wN/3VFbN2IepAYv+ZlqamBVMEW+67Gtp4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qVNZyhu4FXSrGlFdr0I7Fp4O8Db+OVPi5k1s7W+d2pgC6p7wvNXcW6qL5KFdD7flitv9ZAQHcBVkHCm1TJ0IYhx9eGVJU/IIxUAMAaXb4PC04/RWk0japkBJpgdbjeCwkjq8jtxIdxsgVrWLbuQqhhlAT5me54Yp5bTID2nMWYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wkqQABt5; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-207349fa3d7so35335ad.1
+        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 16:06:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725923194; x=1726527994; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aShBmLESaA758ZKF/fFu1kSn26baZ/8Qzf7h76tj0Gg=;
+        b=wkqQABt570HHQiPAmy3fxs4uHmc5axYekRsI6+LQjeA3lUVDDccK2QHCZ76Au15d4k
+         ly3wjcAIFdF2uKSpiAIfrl8u9QEI8K4eIYkhCjew3KY5a1OvWAeu1mVInys7NlxzAejW
+         WscRWf5YqCJ83bAWdrGnBZiRC2TzYRXGNFtC1l2E8RgB3Htz/FflVVuT3SmsN5OYV/5j
+         3ADPa54lBXojSse54ZYkDb8ELsWfN31a72ZARkjb0wjbBeHZS6n/nXJ4EVB/XPyiUCMN
+         3qSDP4m5GUgg0yTlPryXJVf9cYUlu0SjG62Gp6AV1semDzD5BY5dKORCo60QGmbIydRv
+         QZuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725923194; x=1726527994;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aShBmLESaA758ZKF/fFu1kSn26baZ/8Qzf7h76tj0Gg=;
+        b=Yyk61VB4JTwYblSGiZaJsl0zHHHLg8AbWxkrJAq72TTXW/G5R8XS32pOO9u7r9afRe
+         7k+45rOQ2syXPbTFr9PlUeJpXejOAEtKauzUusOITPdhR4Gvuu/vdn+91nD9TfHzz1H1
+         Qjqsf+dU+W6l3DLtuRG86VMbWtK8JMWqU7XPcsXT6Dgc3TIzeI7T+c3pYgW7wpSsZf6p
+         G+OZxR/lcx32DTJ1/x1C2v1WiTcSHoz9JAx5sfO4nNqLauhnLHi4hu/luEFoFrMRritR
+         qnol7RLy41g8iQKI86t1F1W1FbbYtStMDTbtCX70ApS+fNQc7fR8z0oKaI7jlxiIyzlt
+         rKMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ+1Gw2DFvFKHfUwY1taOOv2l9AaIhg+Oe8oZ5FIa94X0sSu+oBT+MTt+lSafAPbWPKIrYexI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRQR/hPeqDCNy6dRK+DHPxv1TWAQs1DE4M2e3QFsVjbvLYaYS3
+	1r9jBi/FdTkcesyr6C7EYqJEeYt0oL3kH3GdmTheo4/Nl0EkViKVmHXHdYutLAstbOef3OklbT/
+	WfYwjU5VYuC4/6WFZYx533JW498s3NEIC540H
+X-Google-Smtp-Source: AGHT+IEkl1RiJp8XN4JioEsMZ2jra1Qgct/x2XpU+RcMxsDsTaY/b2vMZRoRdd8MaezkBBSKSZKew7Xjwwe+1O5GRiE=
+X-Received: by 2002:a17:902:dacd:b0:201:e646:4ca with SMTP id
+ d9443c01a7336-20744a38838mr1137015ad.14.1725923194141; Mon, 09 Sep 2024
+ 16:06:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240909180154.3267939-1-snehalreddy@google.com>
-X-Migadu-Flow: FLOW_OUT
+References: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
+ <20240909163610.2148932-1-ovt@google.com> <84f2415b4d5bb42dc7e26518983f53a997647130.camel@hammerspace.com>
+In-Reply-To: <84f2415b4d5bb42dc7e26518983f53a997647130.camel@hammerspace.com>
+From: Oleksandr Tymoshenko <ovt@google.com>
+Date: Mon, 9 Sep 2024 16:06:21 -0700
+Message-ID: <CACGj0ChtssX4hCCEnD9hah+-ioxmAB8SzFjJR3Uk1FEWMizv-A@mail.gmail.com>
+Subject: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
+To: Trond Myklebust <trondmy@hammerspace.com>
+Cc: "anna@kernel.org" <anna@kernel.org>, "jbongio@google.com" <jbongio@google.com>, 
+	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Snehal,
-
-On Mon, Sep 09, 2024 at 06:01:54PM +0000, Snehal Koukuntla wrote:
-> When we share memory through FF-A and the description of the buffers
-> exceeds the size of the mapped buffer, the fragmentation API is used.
-> The fragmentation API allows specifying chunks of descriptors in subsequent
-> FF-A fragment calls and no upper limit has been established for this.
-> The entire memory region transferred is identified by a handle which can be
-> used to reclaim the transferred memory.
-> To be able to reclaim the memory, the description of the buffers has to fit
-> in the ffa_desc_buf.
-> Add a bounds check on the FF-A sharing path to prevent the memory reclaim
-> from failing.
-> 
-> Also do_ffa_mem_xfer() does not need __always_inline
-> 
-> Fixes: 634d90cf0ac65 ("KVM: arm64: Handle FFA_MEM_LEND calls from the host")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Sebastian Ene <sebastianene@google.com>
-> Signed-off-by: Snehal Koukuntla <snehalreddy@google.com>
+On Mon, Sep 9, 2024 at 10:56=E2=80=AFAM Trond Myklebust <trondmy@hammerspac=
+e.com> wrote:
+>
+> On Mon, 2024-09-09 at 16:36 +0000, Oleksandr Tymoshenko wrote:
+> > > > nfs41_init_clientid does not signal a failure condition from
+> > > > nfs4_proc_exchange_id and nfs4_proc_create_session to a client
+> > > > which
+> > > > may
+> > > > lead to mount syscall indefinitely blocked in the following stack
+> >
+> > > NACK. This will break all sorts of recovery scenarios, because it
+> > > doesn't distinguish between an initial 'mount' and a server reboot
+> > > recovery situation.
+> > > Even in the case where we are in the initial mount, it also doesn't
+> > > distinguish between transient errors such as NFS4ERR_DELAY or
+> > > reboot
+> > > errors such as NFS4ERR_STALE_CLIENTID, etc.
+> >
+> > > Exactly what is the scenario that is causing your hang? Let's try
+> > > to
+> > > address that with a more targeted fix.
+> >
+> > The scenario is as follows: there are several NFS servers and several
+> > production machines with multiple NFS mounts. This is a containerized
+> > multi-tennant workflow so every tennant gets its own NFS mount to
+> > access their
+> > data. At some point nfs41_init_clientid fails in the initial
+> > mount.nfs call
+> > and all subsequent mount.nfs calls just hang in
+> > nfs_wait_client_init_complete
+> > until the original one, where nfs4_proc_exchange_id has failed, is
+> > killed.
+> >
+> > The cause of the nfs41_init_clientid failure in the production case
+> > is a timeout.
+> > The following error message is observed in logs:
+> >   NFS: state manager: lease expired failed on NFSv4 server <ip> with
+> > error 110
+> >
+>
+> How about something like the following fix then?
+> 8<-----------------------------------------------
+> From eb402b489bb0d0ada1a3dd9101d4d7e193402e46 Mon Sep 17 00:00:00 2001
+> Message-ID: <eb402b489bb0d0ada1a3dd9101d4d7e193402e46.1725904471.git.tron=
+d.myklebust@hammerspace.com>
+> From: Trond Myklebust <trond.myklebust@hammerspace.com>
+> Date: Mon, 9 Sep 2024 13:47:07 -0400
+> Subject: [PATCH] NFSv4: Fail mounts if the lease setup times out
+>
+> If the server is down when the client is trying to mount, so that the
+> calls to exchange_id or create_session fail, then we should allow the
+> mount system call to fail rather than hang and block other mount/umount
+> calls.
+>
+> Reported-by: Oleksandr Tymoshenko <ovt@google.com>
+> Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 > ---
+>  fs/nfs/nfs4state.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+> index 30aba1dedaba..59dcdf9bc7b4 100644
+> --- a/fs/nfs/nfs4state.c
+> +++ b/fs/nfs/nfs4state.c
+> @@ -2024,6 +2024,12 @@ static int nfs4_handle_reclaim_lease_error(struct =
+nfs_client *clp, int status)
+>                 nfs_mark_client_ready(clp, -EPERM);
+>                 clear_bit(NFS4CLNT_LEASE_CONFIRM, &clp->cl_state);
+>                 return -EPERM;
+> +       case -ETIMEDOUT:
+> +               if (clp->cl_cons_state =3D=3D NFS_CS_SESSION_INITING) {
+> +                       nfs_mark_client_ready(clp, -EIO);
+> +                       return -EIO;
+> +               }
+> +               fallthrough;
+>         case -EACCES:
+>         case -NFS4ERR_DELAY:
+>         case -EAGAIN:
+> --
 
-Next time around, please include some notes on what's changed between
-versions and ideally a link to the last patch. It helps latecomers (i.e.
-me) get an idea of what's happening w/ a patch.
-
->  arch/arm64/kvm/hyp/nvhe/ffa.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
-> index e715c157c2c4..637425f63fd1 100644
-> --- a/arch/arm64/kvm/hyp/nvhe/ffa.c
-> +++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
-> @@ -426,7 +426,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
->  	return;
->  }
->  
-> -static __always_inline void do_ffa_mem_xfer(const u64 func_id,
-> +static void do_ffa_mem_xfer(const u64 func_id,
->  					    struct arm_smccc_res *res,
->  					    struct kvm_cpu_context *ctxt)
->  {
-> @@ -461,6 +461,11 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
->  		goto out_unlock;
->  	}
->  
-> +	if (len > ffa_desc_buf.len) {
-> +		ret = FFA_RET_NO_MEMORY;
-> +		goto out_unlock;
-> +	}
-> +
-
-This check doesn't need to happen behind the host_buffers spinlock. Of
-course, keeping it behind the lock is benign, but this sort of thing
-prompts a reviewer to ask "why?"
-
-Besides that,
-
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-
--- 
-Thanks,
-Oliver
+This patch fixes the issue in my simulated environment. ETIMEDOUT is
+the error code that
+was observed in the production env but I guess it's not the only
+possible one. Would it make
+sense to handle all error conditions in the NFS_CS_SESSION_INITING
+state or are there
+some others that are recoverable?
 
