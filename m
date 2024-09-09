@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5871D970EA7
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995FC970EA8
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0380C1F22793
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:55:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4499A1F223B9
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BABD1AC45F;
-	Mon,  9 Sep 2024 06:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1870C1AD3ED;
+	Mon,  9 Sep 2024 06:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dv+YXuS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POBhSCWT"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268911F95E
-	for <Stable@vger.kernel.org>; Mon,  9 Sep 2024 06:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEE51F95E
+	for <Stable@vger.kernel.org>; Mon,  9 Sep 2024 06:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725864927; cv=none; b=rgHX1f37UfxoyfNeoCaRIW0664KzMEm8uzPF0gr3ID2s9EWezhHrV7Fn4XMdr+qi8NxJrf/GJem2oh7bbFBhmxFWgcYHTUI2Sgddxr40FDYxNU81JZlnbFKcDDgkLNWFOiESiFRHZCfEKJn5rksO/6xm1yJioRlhV1I0MqmZ/Bk=
+	t=1725864929; cv=none; b=gftFRV6qV9kV4GcrPRbDTkb3Flw1n102VzsieG0b7CaCwF3xIrxdhxSmNUG39I38JUcRAnRukniBEmHXPZzYZS5p2IgJF3ebjWjBvrfA288p6YKQX218B0QYZlMdZM8DJ5EU65Q0YGRQGdNnaVU6RzWGOge9z+hTUzX0OITOuUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725864927; c=relaxed/simple;
-	bh=qPmFX2DVko+K1tVImH2ATXskxfpCq7i7N37nrBJN5tw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RxWqtSkMjSxj0dCCAsHgYasJMS82PvGvZu6jF71+4zPWHnPLpOzcJyhI4R4AT7Lqq888MjVrSSxiT3/aDRwFFsbStiYykNpJ0V0+0KUd1wRQuG5gLy55aWF80wMFkQJ2C4zPpjNZC7NCtLZkJk+TixVF745djvVJf58IRhJ0YTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv+YXuS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495B2C4CEC5;
-	Mon,  9 Sep 2024 06:55:26 +0000 (UTC)
+	s=arc-20240116; t=1725864929; c=relaxed/simple;
+	bh=HYZH5LvUwFOWVq45zo+hlrJ/m8KsbJT9FX4Q7UREdtg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QCi9gseOz1hIUmHGPqX3BvvGV0YaokULyuKtiE2i4WViQb92KemnveWg+ZpXAb6FYYrZGRD/hmHsarzw9F3D+k92zxt7Ipg/2Slf1yIBdRM8b9xL/7UB4K9VNQMB8tsKZbPlxXAPXWgu6bhscYJ9M3BhVPvKQrNq2LCuy2BlEw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POBhSCWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F173C4CEC5;
+	Mon,  9 Sep 2024 06:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725864926;
-	bh=qPmFX2DVko+K1tVImH2ATXskxfpCq7i7N37nrBJN5tw=;
+	s=korg; t=1725864929;
+	bh=HYZH5LvUwFOWVq45zo+hlrJ/m8KsbJT9FX4Q7UREdtg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dv+YXuS7BB5B82bRrXuIaKfxR0FKPxnkYBFI9eEj6+oW3LpmR8QlvkpTYG5/mNqmF
-	 epvUWBQxsyUeJEfL7mypqP9CO1eYdT0ShCfgZaH8IHbPXGMyIO8Omx1mSc+CNRmSjS
-	 KcrOqVISIu+RZTxmsAtuSeuz48zfjJCsqCPgFeqo=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7124: fix DT configuration parsing" failed to apply to 6.1-stable tree
+	b=POBhSCWTqZdYhYsImj0rflaRXoY0ANj6Q88FS2IZdTQyJRkEQMwzntO4S/mdAIp5X
+	 u0fH5eW8x2kTBX/2vJalTyRuUhx7nZC51ABSomA+YujxnuyZ0oNIVtiSWSF8jQN737
+	 HZIKVh3BdFQZMsJbhuLnP81pYXLK6Q4nfqf/IM1M=
+Subject: FAILED: patch "[PATCH] iio: adc: ad7124: fix DT configuration parsing" failed to apply to 5.15-stable tree
 To: mitrutzceclan@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dumitru.ceclan@analog.com,nuno.sa@analog.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 08:55:15 +0200
-Message-ID: <2024090915-luridness-parameter-3447@gregkh>
+Date: Mon, 09 Sep 2024 08:55:16 +0200
+Message-ID: <2024090916-dazzling-showman-af36@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 61cbfb5368dd50ed0d65ce21d305aa923581db2b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090915-luridness-parameter-3447@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090916-dazzling-showman-af36@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,9 @@ d2ab4eea732d ("iio: adc: palmas: replace "wakeup" with "event"")
 6d52b0e70698 ("iio: adc: palmas: Take probe fully device managed.")
 49f76c499d38 ("iio: adc: palmas_gpadc: fix NULL dereference on rmmod")
 3a258747a01f ("iio: adc: ad7124: Silence no spi_device_id warnings")
+5cfe8a1c2577 ("iio: adc: ad7124: add sequencer support")
+fd5ba89e4cd4 ("iio: adc: ad7124: Add update_scan_mode")
+3f1a9c392d69 ("iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()")
 
 thanks,
 
