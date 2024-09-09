@@ -1,112 +1,110 @@
-Return-Path: <stable+bounces-74073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C6797214B
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86B2972169
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6B1028455D
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:47:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 204CE1C237CB
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCF617799F;
-	Mon,  9 Sep 2024 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03AE17ADEB;
+	Mon,  9 Sep 2024 17:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kh6nMD+e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CgFoZgQu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459894C74
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 17:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA6F43AA1;
+	Mon,  9 Sep 2024 17:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725904023; cv=none; b=bNqTjNSxU3YK7j8oNgnvwAjT1pZ8Bl8jVwMGwR/MrnrB//J4O/oanv3LhmjL/eTFe6w4i1z/W0wSDFMLmBnv7JNCeFrSMVuosoS5AEO9A7Ll5x8xUG2QiQLzfZOkjreBh8QT7pRuptjR46nqnjm5crtxZudmQIQzB6vb611rDyk=
+	t=1725904500; cv=none; b=qkEKfJpSC9HR6y+BZyqy54F7AARIwli3bzLUZH9tNOvORlio6chl3jrH98HtRuzWAL2a6zrzSX/O4fXM7Amun7X7Q0trywfJOpzimlkFut0v+EkCiabK7n19Z9+HJJYIdXLLfcxH+fE7I3OBgofBZSSJm6IsCLMYps/qDXpZpJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725904023; c=relaxed/simple;
-	bh=Gj0uwNKEM5tjvwAW8Z2u/i7BRSWF4hNtOwS7OXsWi4g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a7Pd6bTcYKlikad8d4JtitLTC7EHdCV1aTOn2UShWXJxjOgX/ucgPWuZzchHPpUstmSdJmqdRImv0yA6OJ+mOnk1tu48MIvJy2pQ84cUayIHHeaIQIyEw2J5AiGceCybNDiW+l1Zet8n0WAzdrFkrtdfAU9lRhveQibT88fB2cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kh6nMD+e; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2d8859d6e9dso4836140a91.1
-        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 10:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725904021; x=1726508821; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4UFCN+OBjYvXcl6IvxEv77iqHbcWMYYV9m8ZXJsZubM=;
-        b=kh6nMD+ek3cnDKJbq9oV+ziXCL4Q7xQahqGZETPZuGeXxPEKW0rwIcHzY51cds7Psn
-         kmRcKsBnH2X8VIdQWFNCMR0IK0zp46ut5OGBKReYHYYHLNYZMhxJPQnfywDucQNvg2Ka
-         Wg43w/xj+eXbCLASaQlnU4cYykdEDu/3YdKtk9WRGFUuKiL8NH139pA6WXJ5aYBdRPmp
-         zGWntsE/B/jObt888WIBeWIEYm3D9EeMTRZcPBmB5cFl/ytCnRNqY0qF05Pe4nz1Ktv9
-         +O5m1J+PwA1ERpaoWfxTQ5Ave4+sVAQxw5ETtzczr5Dr/fFnp5+j2NerUOnLJy08bt43
-         yQRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725904021; x=1726508821;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4UFCN+OBjYvXcl6IvxEv77iqHbcWMYYV9m8ZXJsZubM=;
-        b=Tp/CPsGj8Qq4u3A1QLG1A2a+jnJmZL9YHRAzQFGou5eg2XHanByO5aWIU3FkrmDy+u
-         R561rxUYQIG2j2d9aB1X05k/dgUDdjUaF+9bziEygCQbmrI50RpFLHqIIHf3dVT9lx+3
-         p0rxEYqISHHHyCqm7CDThXC2KY1icnEi/ObF7TXj7MUfs0fJ5Mp1IxFJJ9t/dyoG3P4j
-         X840wu+W27SZMCMpOc/Uwnz/+XY3bVfhuia/KAp/tDISVJ+RTLQ/yUXLezYJksyEY8PJ
-         haj9Q596gJFbs5VgyELNUUFlFKkr89jel6nfc858SEBlC8xwZCcs7jrHjDHkU+kLQKFS
-         Z0tw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbl+xxDlbfYvBhfHUoGjyMNtwy+8+Ce3H7KKQrRrrB/CNny84hy/WLKxpG3zVaoA1/FGEVbak=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzsy4e8ZZOdRLTg6FekXO/ENTq8foqbqssvR8Egam5ecHUoZd+
-	56SBGvjZ+Iio9On2RLU2aE1RPaAfbjT+tl1beVtDmc4pIbm+8CQpl0x/00tceniCAg==
-X-Google-Smtp-Source: AGHT+IGxW+ZKzsuJWtCDZr+gEy4pvLGcgVQaVBtzH9PxxuBHg4PvlC0/sMrPC1YDKXJS+mhG/tayuao=
-X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1148])
- (user=ovt job=sendgmr) by 2002:a17:90b:384c:b0:2d8:a73a:b87d with SMTP id
- 98e67ed59e1d1-2dad510c2d0mr26182a91.7.1725904021318; Mon, 09 Sep 2024
- 10:47:01 -0700 (PDT)
-Date: Mon,  9 Sep 2024 17:46:59 +0000
-In-Reply-To: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
+	s=arc-20240116; t=1725904500; c=relaxed/simple;
+	bh=B+6nPZlcTimswUoAomVeNialyu4KqNTg5gLHycOAFxw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=B0aZxNkgH/6O6cf445UKU7yL6A31E8x6jiLtve0cHZDd66uT3Ao4KpG0klebl0Jm8QhBHBiQeIqigth4I98EjMvMc1hyzYpSpdNh+7ck9/3xzX7wbN8+iGQ8bUW4qgPD2ekUMSclik5WI64i6ZN1l5luSG0VEs7WZiK7TQuE+iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CgFoZgQu; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725904499; x=1757440499;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=B+6nPZlcTimswUoAomVeNialyu4KqNTg5gLHycOAFxw=;
+  b=CgFoZgQu8HFnYu1wIescQefiLs/pb0gtp34I/4mjSuOVoiPiTSekQaiG
+   94Ji9sU5Txr4Dq88fECmq+As1qC5Mm0ju3xCybacC87vgyfKRdiVHV0nE
+   KSnREIeFrzJyaRRvgfIiqIHVtRgS/WIQRjvwWxUELFIVdC0DgKCywqusP
+   /EmLF7s7okaLHwxqEzkhKV6dEm+I/eGpjXSY9Y95E32pS9xvFlNLheEmT
+   G3gTT22ZlLZ6EzVaKoHDFCj/3PLCVb3oPEJExkRy9E09mkrCPkhs3zCq2
+   YLrQAmGS8Ym6JJTZoflcKoL+ArZXxQe12FbFKvwcq1MxOrZQsre5G8TOf
+   w==;
+X-CSE-ConnectionGUID: u3LfkfB0RumOQA/F/Ah7UA==
+X-CSE-MsgGUID: vHlhlP9FRWCN+yXXDigAdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="50028295"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="50028295"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 10:54:58 -0700
+X-CSE-ConnectionGUID: uMkhaP+/TcyFS9ccyBl4HA==
+X-CSE-MsgGUID: q3yNs7ZnQs+I83et4Gpy7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="71530730"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.60])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 10:54:56 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Andy Shevchenko <andy@kernel.org>, Hans de Goede <hdegoede@redhat.com>
+Cc: James Harmison <jharmison@redhat.com>, 
+ platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20240909113227.254470-1-hdegoede@redhat.com>
+References: <20240909113227.254470-1-hdegoede@redhat.com>
+Subject: Re: [PATCH v2 1/3] platform/x86: panasonic-laptop: Fix SINF array
+ out of bounds accesses
+Message-Id: <172590448046.2114.11735502570640542626.b4-ty@linux.intel.com>
+Date: Mon, 09 Sep 2024 20:54:40 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
-X-Mailer: git-send-email 2.46.0.598.g6f2099f65c-goog
-Message-ID: <20240909174659.2163601-1-ovt@google.com>
-Subject: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
-From: Oleksandr Tymoshenko <ovt@google.com>
-To: trondmy@kernel.org
-Cc: anna@kernel.org, jbongio@google.com, linux-nfs@vger.kernel.org, 
-	ovt@google.com, stable@vger.kernel.org, gonzo@bluezbox.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
->> nfs41_init_clientid does not signal a failure condition from
->> nfs4_proc_exchange_id and nfs4_proc_create_session to a client which
->> may
->> lead to mount syscall indefinitely blocked in the following stack
+On Mon, 09 Sep 2024 13:32:25 +0200, Hans de Goede wrote:
 
-> NACK. This will break all sorts of recovery scenarios, because it
-> doesn't distinguish between an initial 'mount' and a server reboot
-> recovery situation.
-> Even in the case where we are in the initial mount, it also doesn't
-> distinguish between transient errors such as NFS4ERR_DELAY or reboot
-> errors such as NFS4ERR_STALE_CLIENTID, etc.
+> The panasonic laptop code in various places uses the SINF array with index
+> values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
+> is big enough.
+> 
+> Not all panasonic laptops have this many SINF array entries, for example
+> the Toughbook CF-18 model only has 10 SINF array entries. So it only
+> supports the AC+DC brightness entries and mute.
+> 
+> [...]
 
-> Exactly what is the scenario that is causing your hang? Let's try to
-> address that with a more targeted fix.
 
-(re-sending with the correct subject, previous mistake was due to my tools failure)
+Thank you for your contribution, it has been applied to my local
+review-ilpo branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo branch only once I've pushed my
+local branch there, which might take a while.
 
-The scenario is as follows: there are several NFS servers and several
-production machines with multiple NFS mounts. This is a containerized
-multi-tennant workflow so every tennant gets its own NFS mount to access their
-data. At some point nfs41_init_clientid fails in the initial mount.nfs call
-and all subsequent mount.nfs calls just hang in nfs_wait_client_init_complete
-until the original one, where nfs4_proc_exchange_id has failed, is killed.
+The list of commits applied:
+[1/3] platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
+      commit: f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4
+[2/3] platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array
+      commit: 33297cef3101d950cec0033a0dce0a2d2bd59999
+[3/3] platform/x86: panasonic-laptop: Add support for programmable buttons
+      (no commit info)
 
-The cause of the nfs41_init_clientid failure in the production case is a timeout.
-The following error message is observed in logs:
-  NFS: state manager: lease expired failed on NFSv4 server <ip> with error 110
+--
+ i.
 
 
