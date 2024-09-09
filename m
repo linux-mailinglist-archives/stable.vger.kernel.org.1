@@ -1,107 +1,120 @@
-Return-Path: <stable+bounces-74068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B6E97202B
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:18:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D80F97204A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E692B28434E
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:18:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1F91F22C67
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DDF16EBEC;
-	Mon,  9 Sep 2024 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE112170853;
+	Mon,  9 Sep 2024 17:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TlCqGXy9"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="X70ZhHiE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932EA16DC12;
-	Mon,  9 Sep 2024 17:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC5816DC12
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 17:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725902285; cv=none; b=ipApMYN3wlvL3SGV3XbuF7eHZzH/PY9N1BOaNRoEH9XLiwZ8akGyOCVs5B05f0ycG6HuIWiIp27xlidHhBwkw9Bo/5msmsWgVdX2CCLvClF3OCHRdXnzYUoV3dfNELJQrfKjmnFObBPKPhCvzjJ+O0MuqoTdJeIXglWUVX6Gt10=
+	t=1725902396; cv=none; b=U7gnNpe1yRAUOcE7W+7RMC+Bo8cUFMOcP3OtNj2SYffakTIWQgChZCxUFizliXnZWCBuYT906Rw5Xo5bgSN9RoS2bZEJBgLY3kaXvP/1MPe23cfiXoAvTB+xwI3y0QHt0ah56+LwrUOUwWTbZgBB16UFezPIxtVGvFBTmmCGr8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725902285; c=relaxed/simple;
-	bh=jRvcT5vaZ1yjNBImWnpk0V2uFwgoGBAN6uyiNxAhmzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/fB3LRRU3DY3m5RFCIH5PZ8KxwWfEItLat2jjviODJHIb4/OPVwG3TbHgh84eApIgSia1FSL4HN0GlnjItOeK1MsEMNQiczxvkJ+vj88Nl9adj2KKx461wWj9IyLekZbGer5fJ+CY8l1Ik5V0okYogfYeQl39jyXlVKEJVeX70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TlCqGXy9; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 8F9522160F;
-	Mon,  9 Sep 2024 19:18:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725902281;
-	bh=9yaN+6PvTWZYukxvwhGYhSOARqeqhXV3MjF6RYf1eEk=; h=From:To:Subject;
-	b=TlCqGXy9JIvdXVnexYw/htm7OE9JoTl4q5jTTulWLYpKVj3ZbII3oo5u1qeqNoPvc
-	 HFoZgVbr6OoSQL+ecR2LafgEFcDKmE97UT97C8hgO6cj/KUw/L4eANhe2iodRLgt47
-	 8I2kyNUwFHzkYUZ3kIiOvzCRjayEnxW3UQW8AhdfOrhsjQP9aby86gu/JHkHXnN8GE
-	 OMdqDbw52vCjyvsdbvsiT+fq3pLCV9E6Q2NxLuICLJGK+naGemVxdC5pd2+BBLWWfA
-	 48yGJ0Bhwrgv3r3FSuX5vJgoRXsIIv4YvMLnx2l6mEPBNf0tj05ycEzGCNL8yHKP/H
-	 pr7d1J2voOIEA==
-Date: Mon, 9 Sep 2024 19:17:57 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: David Lin <yu-hao.lin@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] [PATCH] wifi: mwifiex: Ensure all STA and AP use the same
- channel
-Message-ID: <20240909171757.GA60827@francesco-nb>
-References: <20240830-mwifiex-check-channel-v1-1-b04e075c9184@pengutronix.de>
- <DU0PR04MB9636AF11600D2ABF286FA6EDD1932@DU0PR04MB9636.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1725902396; c=relaxed/simple;
+	bh=8BoMkn5SXIHtWnjRBod1zDwR+oWRI0NK0RTojYp4ruU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nertUiFVlMEBb+zJeeXOfLST0dXsCYuzLel3qP31HSBfDi82NKMYp7MdSNow/RCfu/B5fC6pk3jCEqiHk4IhYFYfhKI6V9ydf2i3k4vtCdjulNW1nxtcP2rdzZOuMdO2uVMPQzV4VvemjG74iO7RgcEulnM2zrzQmnJYlP62oTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=X70ZhHiE; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=XagxnHuvWTnXPSp9EJYblImoo9o4/CanOf0WFhU9a64=; b=X70ZhHiEVqZ31oKbHZDo4kgOCV
+	kJgl7emoHTj8PMkmaL822A/fLEsbhErjLbnLLg0NNcFjib8NrIYFi1JYRyQ3X2xTOAIg66oy7Aq1A
+	rHuJdCcDhIuNdcS48knB0Mqm4U+mumeoqg5unMcdjrTyfBgUsQ6qC7BI08hsHR6D4QnddYHbkgMrG
+	ivxXnHh6DP8NE3IZmEf+H2EMIylZJbrDnMqTvfb8WWcoeahsz1Nf3YUks1pm+zPkdSKUgwiZ/3tLF
+	e1zHfOuCFM+g8N3kozwQ0fKa2zRdEN/bvFjy/AddmWd/5V2XZlXyA1VzHJSG5AxBeq/bxuyV01paj
+	2bC7mBVg==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sni3B-00Bg4j-O4; Mon, 09 Sep 2024 19:19:41 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Philipp Stanner <pstanner@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/8] drm/sched: Add locking to drm_sched_entity_modify_sched
+Date: Mon,  9 Sep 2024 18:19:30 +0100
+Message-ID: <20240909171937.51550-2-tursulin@igalia.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240909171937.51550-1-tursulin@igalia.com>
+References: <20240909171937.51550-1-tursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9636AF11600D2ABF286FA6EDD1932@DU0PR04MB9636.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello Sascha,
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-On Tue, Sep 03, 2024 at 07:31:34AM +0000, David Lin wrote:
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > 
-> > The mwifiex chips support simultaneous Accesspoint and station mode, but this
-> > only works when all are using the same channel. The downstream driver uses
-> > ECSA which makes the Accesspoint automatically switch to the channel the
-> > station is going to use.  Until this is implemented in the mwifiex driver at
-> > least catch this situation and bail out with an error.
-> > Userspace doesn't have a meaningful way to figure out what went wrong, so
-> > print an error message to give the user a clue.
-> > 
-> > Without this patch the driver would timeout on the
-> > HostCmd_CMD_802_11_ASSOCIATE command when creating a station with a
-> > channel different from the one that an existing accesspoint uses.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Cc: stable@vger.kernel.org
+Without the locking amdgpu currently can race between
+amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
+drm_sched_job_arm(), leading to the latter accesing potentially
+inconsitent entity->sched_list and entity->num_sched_list pair.
 
-...
+v2:
+ * Improve commit message. (Philipp)
 
-> Please use
-> https://patchwork.kernel.org/project/linux-wireless/patch/20240902084311.2607-1-yu-hao.lin@nxp.com/
-> to replace this patch.
-> 
-> This patch can't let AP and STA running on the same channel if some
-> wiphy parameters are set.
-> 
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: <stable@vger.kernel.org> # v5.7+
+---
+ drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sasha, any comment on this? It seems you are solving the same issue (I
-did not look into any of the 2 patches myself so far).
-
-Francesco
-
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 58c8161289fe..ae8be30472cd 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
+ {
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
++	spin_lock(&entity->rq_lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
++	spin_unlock(&entity->rq_lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
+ 
+-- 
+2.46.0
 
 
