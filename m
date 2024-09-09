@@ -1,102 +1,128 @@
-Return-Path: <stable+bounces-73980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713C1971047
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:51:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993C097111B
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7564C1C20954
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 07:51:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EDD1C223D5
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D95A1B0101;
-	Mon,  9 Sep 2024 07:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D8F1B0108;
+	Mon,  9 Sep 2024 08:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQzTPGEF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yx8KFgNg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537B71B12C9
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 07:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7601B253A
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 08:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725868278; cv=none; b=B0b2vjQKjZmLqBj5jShZsmzSQts44ckipNKes/LO/HqVR5U3jR2jzkXo85RRrtKkyyBqpQ/mlmZsVnHmwX9536MGDwPco5o1VbrlzSD0Dqu0ya7Pt+tQC+odIJ5+rEY69LruBU1p2JUjn9AyMDhbtG5LWfUVWOiRFpijP5bBqtY=
+	t=1725868806; cv=none; b=LOMwMTFT6PU6vG+7RgH1KohyUP1DaliglDN4d+DSWJgfB9KC/UNhaAmTdlOF6jC9LhD+ZvVcLnb/zS1AOXqDc3W7zG+dCphP0KQaZTTdfUQfLpu3D+4r5hyTboOvB5aegsITPeG6hnDp4NsLmW9IvhxXzMMTiLkogVQ+4bbJQKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725868278; c=relaxed/simple;
-	bh=4Z9rO7eIPSKXCc1dXfCxwEtxcsJyS2Ot+zKnGm6iGkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dxTUisMUtKXNcDa3UiCXNYgcq0UcOuAnToIbwnX1StMHSyN6fBOzHKmu2Xb0lQEY+u2SZHSdzHX1yo7H9qe23FGMemL+StgpbYtqKsmWz4Oo/WbsEI9Jq4v8/9j2lf6UWB7KsrKRxYh4YyiZ+Avwo2jRWauTFzctgG+EM+nBBig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQzTPGEF; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725868278; x=1757404278;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=4Z9rO7eIPSKXCc1dXfCxwEtxcsJyS2Ot+zKnGm6iGkw=;
-  b=KQzTPGEFXsebTd9TYDs51LVf5IZSfxPgKPyENrI/29zFAO13zn8WV4Jk
-   e6a+8KrJVMGhX1/FL66PNdhHTaTud2opYG4Hx+gI261/fgvaXDLcf6zWc
-   jT3ZB8AXbf0Xi7JVrZAgzSLX2xW59pPyXgmniwXEZcTfmgjpfqwtI2pZ0
-   pjB8Md6neL1oQ1ZF9gZmTq3j/dj7m2tuDwfSzZwLm6O3i6VlVSv0Df3Y7
-   47Po6P2I6J7cJEGXhqMFfLcQy41VHqyjWuTd6YSA7Fg0EI10cOoXWvNqX
-   Ql4NbXNWi2t7FEtAmsftQdohE/rZJWtpuR5MBBUL/jrVvL11CQZk1UHih
-   Q==;
-X-CSE-ConnectionGUID: OilsUH/QSSeAw0zGDEDarg==
-X-CSE-MsgGUID: v0SQgcknSouNA51fQJFbgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24654388"
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="24654388"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 00:50:46 -0700
-X-CSE-ConnectionGUID: MLd9rl7JRLCZ1iccLYaHMQ==
-X-CSE-MsgGUID: eipR/MCdRdCJZjLgsioTww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="66211088"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Sep 2024 00:50:44 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1snZAY-000EUL-10;
-	Mon, 09 Sep 2024 07:50:42 +0000
-Date: Mon, 9 Sep 2024 15:49:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.6 2/4] riscv: dts: starfive: pinfunc: Fix the pins name
- of I2STX1
-Message-ID: <Zt6opBhkO4lU4fMn@b20ea791c01f>
+	s=arc-20240116; t=1725868806; c=relaxed/simple;
+	bh=gASu9HJMykXfExbmgPC2VNk6kZ5rnWb5Dpl91MM9Uv0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gA4kJZ1DteGYXzcB41I27mlv0akPbgqV3YO2wQxtbBUk4sV1pd6nt/T6ClHO1Zjue5qXQlv1uVJNfWBGPBWqwflon+armpn4ENFDuh0tIyGDTVFXGOOrKjeWWhNRl7CrmxR2yMqJEqkrinqPFg2kXpf73oQmicPDZUKtQeJ6dtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yx8KFgNg; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8d2b4a5bf1so180896966b.2
+        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 01:00:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725868803; x=1726473603; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i9PBBHIYLAYRXzcCFakl56INq2rd/4/lng5YYPxEOZc=;
+        b=Yx8KFgNgkwHnZ5FcpYYfuSeiw4xUqReprYWUEYgVZv/waKOJh6GcAEppa+DEQKkWBh
+         UxK2ECty3U+hThCnrK05xxHP6AA1zW5rytEyd4VYlH99YZ8K1/vjvGRXAJMkgAhyz58/
+         adtlu5OQRiJMFkxfdy+PvO3TFkAS7MJmLLNpAZbvgcCvqItN7+izjUv4cPoudJhgT9by
+         k+4dXhQj2O2mRzPsrr6Qcd8n2wJ1nurE6cqxA66MC4Zwp6b4sdCDX7gcU4ZiIQA0WmhG
+         +QLyajg3yaDJNBErev1H9lJgOasVq2GiSkVhn7zz3cTVBXpOEqsmDeETP6fm/xzl6M6X
+         wMTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725868803; x=1726473603;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i9PBBHIYLAYRXzcCFakl56INq2rd/4/lng5YYPxEOZc=;
+        b=d3FszRvi7F4lGIj1MLWOjzUPEXwk97Fw3owhQyTmN6T+apuAPLEOqzOjFN1jrEODfQ
+         6UP0Yz5B2GM0dUO0ShNPAoVQLJIlmFXh6NTKtMV/SusTZJCpIH+6BTbgYNOeMlzs3MqL
+         PWGGGDUAztYDaA69s7y/mnznDNGgt2d+RsYaEPNU1n1SDTRSQDE3NzZFdkI39RFjotoU
+         GBQN5FTOhQPywaDcnRkczTdqad8RsRYorYyNIUin5SH0hUGfwDr7CBqSypEjSyk8d29f
+         eo9Y/zUD0Y4SZfjTDpJgyF0r7trDmjUrcBS3ifYZqT5KqPiGWfM3cfeLxc49ShiiS/co
+         kHKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVjltTNm1D4GTSoXrJnPvd9Tb7ajV7IkvQhWaiMGDqmgZrR0qslHBAZ6bZz94X08m2T22qJ7VA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxzu/HTb3NI2DhvFHBafxRlqpC/894AkvIk5qKXBa0couKgIFtM
+	haHSNqaOrCovNBUNwQGTyFUUMDQJ4gr1cg8U0dsuv+egb8TlUZCdnEItUw6BKCYNE3rf20ULLxH
+	XMobdlrNY4EE017YNRwkPr/0c6Pc/hXDC0xw1
+X-Google-Smtp-Source: AGHT+IF7bflO4E8blx4goAwDZGqrnf9Fzrlsnqdpl7vuwjrs1ihpS5afrZCe06fxAHAyEPJLi0rChmMnAxRNFq45+SQ=
+X-Received: by 2002:a17:907:3e05:b0:a7a:ab8a:38f with SMTP id
+ a640c23a62f3a-a8a88841c41mr843882966b.41.1725868802314; Mon, 09 Sep 2024
+ 01:00:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8830E9DA269F759D+20240909074645.1161554-2-wangyuli@uniontech.com>
+References: <2024090859-daffodil-skillful-c1e1@gregkh>
+In-Reply-To: <2024090859-daffodil-skillful-c1e1@gregkh>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 9 Sep 2024 09:59:49 +0200
+Message-ID: <CANn89iJU9jPB+G5ETqwcEKcrRFt5ONVGF7=TsLnA21FUKT3+Rg@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] ila: call nf_unregister_net_hooks()
+ sooner" failed to apply to 4.19-stable tree
+To: gregkh@linuxfoundation.org
+Cc: fw@strlen.de, kuba@kernel.org, syzkaller@googlegroups.com, 
+	tom@herbertland.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sun, Sep 8, 2024 at 2:51=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 4.19-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-4.19.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 031ae72825cef43e4650140b800ad58bf7a6a466
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090859-=
+daffodil-skillful-c1e1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+>
+> Possible dependencies:
+>
+> 031ae72825ce ("ila: call nf_unregister_net_hooks() sooner")
+>
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
+Hi Greg, I think you can cherry-pick this patch from linux-5.3 era,
+adding the pre_exit() method
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+commit d7d99872c144a2c2f5d9c9d83627fa833836cba5
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Tue Jun 18 11:08:59 2019 -0700
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+    netns: add pre_exit method to struct pernet_operations
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.6 2/4] riscv: dts: starfive: pinfunc: Fix the pins name of I2STX1
-Link: https://lore.kernel.org/stable/8830E9DA269F759D%2B20240909074645.1161554-2-wangyuli%40uniontech.com
+Then cherry-picking 031ae72825cef43e4650140b800ad58bf7a6a466 will work
+just fine.
 
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Thanks.
 
