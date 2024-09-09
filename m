@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A3C970EAE
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:56:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39785970EAF
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4B91F22371
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA139282740
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B01AC8B0;
-	Mon,  9 Sep 2024 06:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2591AC8B0;
+	Mon,  9 Sep 2024 06:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2ZATw65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM8HK6dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAC41F95E
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 06:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6B81F95E
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 06:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725865003; cv=none; b=Wpy5XK7gVZeWjQ/EfOIF5uWMcjJL+TSV/B4ZlfBl4Q5IUbX58U5zuNk9qoHZ5VQXg+LXWSswFeFZqZYYhajZT7fLkeiG6d7QkTwkme10KOHnh0obrEm6hlM4tnTcmoc03wBx/anV6KeU0ebYXgBKjATZHW+r0uvm9sta15ZYN2s=
+	t=1725865032; cv=none; b=AH3qUPIIifmDUsEXUatSAsuZWDRTTacP7M17YcUkKi0O59psLLB183IAHlbMwh8uBLuSVod8OE4FnPK28Lo+ayf42k8rXPXDA5dFk8P52+oZOPN/roCXC+TqzuGMUGJTfDvkc/UZvGOU5FIF1mzmfMyvoJg8rTr7McrkOJHHpjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725865003; c=relaxed/simple;
-	bh=FEwmk4dP+Z8KhtdImXBswdqRwtGSAZqdR+2m1yM2BeU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=spUxArtfqxqg7utqyEQ2adnIn4ytCczB/BsFwjPh4gkUU7RhIrYmaEVDOgtlVyb5GNx1QkqNgnI/dafS1qpOlfkjt/XW4mq8xvxFHwnF9utJqAKZSY6XmmyT5I7KnTHpoilScak0/ECMU/Fzslo6jkg2Pvus1cTZqNEhYyISRh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2ZATw65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42967C4CEC5;
-	Mon,  9 Sep 2024 06:56:43 +0000 (UTC)
+	s=arc-20240116; t=1725865032; c=relaxed/simple;
+	bh=MPUA1bO06Eyo1PizSOKPSE4xolMiXvVVTSFT+CPGtHA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jWBwTmQBJ/6O8DAh1nYcBUkHxVrQqpQuoPhJ8QJ6UrZI6pdoHw8mYeuCMvTEJH2psD5TGa7zEtwMe81lAV9lRonqts2vaBQ7gstG1dl1cNV6tVyoYePUU4AkJXy0jjJSxEOsHo7AD2G6yieecRzR73UenrdtSw9+f6eU3nt2wMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM8HK6dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A33C4CEC5;
+	Mon,  9 Sep 2024 06:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725865003;
-	bh=FEwmk4dP+Z8KhtdImXBswdqRwtGSAZqdR+2m1yM2BeU=;
+	s=korg; t=1725865032;
+	bh=MPUA1bO06Eyo1PizSOKPSE4xolMiXvVVTSFT+CPGtHA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=d2ZATw65/8bp2V4yIkkJX/qtaQ53pFve8bDmWy+x2vpYqxgvP1OH8q1DigidjuWNo
-	 wJqmeluP2GICpdDxTB2LW2m9fr4MEi5oL4Bp+gSGI3QVe/KDReUqi3BDPK3T9Q8yfd
-	 TsFNrlZHqmlkT6mM6ZWibTQ+x52c9XkEf6Kp985w=
+	b=VM8HK6dXw8Zz+aCcdhyIlReGvR5Hu24MH3s1fP3f7YxU4PnWCr0nnYtfXfVTETYTK
+	 tfkEMSqXMTGL6zrCrC+OZgYo9nCoEp6YODdzCRifibZhjn4P2CsiUxVmzxgSWpeF16
+	 umqsFvrepc5icdBhMeSzlbSTOxi6851iR+N3Nv5w=
 Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Fix cable registration" failed to apply to 6.10-stable tree
 To: heikki.krogerus@linux.intel.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 08:56:40 +0200
-Message-ID: <2024090940-margarita-overpower-8f88@gregkh>
+Date: Mon, 09 Sep 2024 08:57:09 +0200
+Message-ID: <2024090909-goes-yogurt-80fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ git checkout FETCH_HEAD
 git cherry-pick -x 87eb3cb4ec619299cd5572e1d5eb68aef4074ac2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090940-margarita-overpower-8f88@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090909-goes-yogurt-80fa@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
