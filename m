@@ -1,99 +1,119 @@
-Return-Path: <stable+bounces-74036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F151D971D08
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 16:47:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D16971D30
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 16:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 961D91F23235
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 14:47:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32CD9283F6A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 14:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934921BB693;
-	Mon,  9 Sep 2024 14:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3741BBBD1;
+	Mon,  9 Sep 2024 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fINFt5lZ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OuobNaCR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC43F1B81D8
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 14:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A98228EC;
+	Mon,  9 Sep 2024 14:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725893271; cv=none; b=eulvRrMUDJDRcKFgPRQrQ5AXaiFBDl0E6NAhuBYHfrWNc6+yIBlq+fnzpe7noOki/IVnDmUh85dGkHNDOvc01Ex1lzCa3OTCTIoSzc5CJNpH0Iv+iVzqVLZ6AZSAzwcFxjV7TolE/7jyKVxirZvaIrVYJU4lFWHoiHWnBsZ4+T0=
+	t=1725893523; cv=none; b=qQHIioKoTEeH0ZwcIb2Qg/Hy2/ezTl9WkPchv8qIkdBYjdOV3ftawlS6GP0uUqWx13OQKHhhE/RtR5rm4q+O2CmLsYZFNnH+vFyBFSvHWL8vtVu6yxRMq1iepKihPt8Mo5rX/7UUMEmzD/05/TlGtaigWMXtZPMve0UzzHyhWUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725893271; c=relaxed/simple;
-	bh=asAZe8YzvYhEV8FAxRmbmJaZ6esSeXwBmPV269inlNA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nzM5Gi6z4fCxUOWO0Sh2tyrpUW0vfvOnyM48pEwMq8T/OtYb5rRewFbku+BneZaD3rnA8HVn/Hlt7wWUAeZNTwkFP+wnRS9CiFV/2XaFo6wfAyc6GYReSRRWuZL6QObL6A5DKoF9jJFMDqTffUlfU44Lk8j4jvr7VADyt17ipUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fINFt5lZ; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-427fc9834deso125045e9.0
-        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 07:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725893268; x=1726498068; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FwgDAi1gLUiDWZhKqK1xpoJFYtWhb/ZP7ejGCNPGNUo=;
-        b=fINFt5lZd8kdhrismc8ttdPFRZ6lqmJRWRW2rJtKp2Vy8eE9IuUi7EmtVAEv4xVY9Z
-         g8VjR1AtBP9o9CnUDXGA932qQUNK0iEJOOa8h5ErOGwef1OGg/84TYymz3qXTj6dL0Gu
-         1b701ta5WD91w9/JigjnTOy2mEB05sshE/AIvmPgrJhxGIJAaji6Pce3pDr3PyIkxRhE
-         wy9kWV6lMrqRhh8WJhUNzRg08+YlV9FYY4QfqMDa8B8LkJa/x6Dm+Kw9qYlMQ9GI/QJq
-         NHUuXVVe6CEICVKaoIg0aYjO89tDOeGwtiZm0HX29+regOPUB8p0cbaQp+nvYRaLHvqk
-         buEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725893268; x=1726498068;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FwgDAi1gLUiDWZhKqK1xpoJFYtWhb/ZP7ejGCNPGNUo=;
-        b=TE1Q410OfLyZUreCp+a+AQ9Aay/SBXuaHn/iDX3gnQ6a7Jp6KSLAaUFxmtqO91LsWJ
-         JcJPAwsC64sGSZlaId7zx0DuSsrMzNLUUGNCiHbbtI/tuU0TAVyMhpkwv32UG9SchGn3
-         JzrGGfVBU94pW3IZBIQBc3rpOFaYMqV1Y6jrQ7SyZCR8NIj1FmC3+iH7pCXM/NfFjCUN
-         q3Wnj3CdqBb5gCQgq0WfRVHf6Y+uUt8aphX1KEe/ApkraUAuox/0LMIN6jIfUQEbrpgf
-         bCyxSui9BL2gBGGPuHYIM+FWBijPSby+2IoKF+1UKbt5U8PwkJ8HdUpHuPox7ZFbOp+5
-         Nn1w==
-X-Gm-Message-State: AOJu0YxpepZdaHhDhCDCtP2a47ScZ0XCoN/zRw7D0kqZfVPyyvoKw9P3
-	VB3guShmF6ZZ2J3ttW7azOBHPTDdlgdl9hM7Xr8zOlkFEqwkZ7kowJY4MWPNu+WursSFgPS6KgX
-	NJYiL3KBdmu+Y+TzK9c7dpy+zhT9bwAbXvL0971FsedgnLEzoi5K0
-X-Google-Smtp-Source: AGHT+IHnEQNjibz7ncnOczoITR2Zv2f/YxqvzupCqqqX1E2j0n9LnLHv7RDVO+XCywWB7ZMdWTrBz4SHh7xBfyKChPw=
-X-Received: by 2002:a05:600c:a00c:b0:426:8ee5:3e9c with SMTP id
- 5b1f17b1804b1-42cad76493dmr3275735e9.6.1725893267373; Mon, 09 Sep 2024
- 07:47:47 -0700 (PDT)
+	s=arc-20240116; t=1725893523; c=relaxed/simple;
+	bh=pLZ5KfsWDtAOi+9pBh4TXhl1PKUKCxpwGHqM1/9+ReQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UD29Jak6SSY+9zM6SZu7CVSg5c1VmcLK/ENc+ZUmN6yQdmRPSZkjp3By1nVJlqTur6eHDaVRj7At4CluNvsU6oANnKg/fP3+5bxLNsYvCeayXJpLnwMYv5zZTe0dirLFC/HP57qNv7F1icn4M2M2ZZcgCHgYIMslHeDsPVl3ykM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OuobNaCR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489DRRU1018266;
+	Mon, 9 Sep 2024 14:51:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	oOjcXjUbwSgzNSp733a017RyzNlbU++LiGHcquc+GRM=; b=OuobNaCRXJPSD37/
+	h6GFvdKWgDwZ9E+aaDB0rDm8XV/Kxf71t+5iRBp+8a7P8wx5rEb+esby1oxOTcR9
+	eBXKjbWHa3sT6pvWcLOlGNj1Aq2FH46w/DviifBzn4RoeeYMiYUbR4BnjpoC6Ie/
+	ykhT2XwpGWEggk3nFb76qHOzr+ovF+sumy45M031XEDF4DMEgwllqYwvdu5V4HUS
+	O1O53chC9mWmp3ttzqTtg+Ea1A+blx6UWaYCTbLkL/nSDpgKspBm+RwPBKfV5uCu
+	g3Qn5VBh1OgCU6bY3zdreNRzY+a6nJZhrzXLJAYKxEqTvNjiSJ1U+l3gRBe4+Pxj
+	EJPhYA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy7fk3xt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Sep 2024 14:51:36 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 489Epaw6007195
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 9 Sep 2024 14:51:36 GMT
+Received: from [192.168.143.77] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 9 Sep 2024
+ 07:51:35 -0700
+Message-ID: <f133990e-548e-1d57-ccfd-b130a642fc58@quicinc.com>
+Date: Mon, 9 Sep 2024 07:51:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240909124838.1803757-1-sashal@kernel.org>
-In-Reply-To: <20240909124838.1803757-1-sashal@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 9 Sep 2024 16:47:09 +0200
-Message-ID: <CAG48ez3GBwDc=RWVixeNW8Ppt4J2dOk0wUdEjoYZ0x3_1ToyAA@mail.gmail.com>
-Subject: Re: Patch "userfaultfd: fix checks for huge PMDs" has been added to
- the 6.1-stable tree
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Cc: stable-commits@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v3 1/2] ufs: core: fix the issue of ICU failure
+Content-Language: en-US
+To: <peter.wang@mediatek.com>, <linux-scsi@vger.kernel.org>,
+        <martin.petersen@oracle.com>, <avri.altman@wdc.com>,
+        <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
+CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+        <chun-hung.wu@mediatek.com>, <alice.chao@mediatek.com>,
+        <cc.chou@mediatek.com>, <chaotian.jing@mediatek.com>,
+        <jiajie.hao@mediatek.com>, <powen.kao@mediatek.com>,
+        <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
+        <tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
+        <naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
+        <stable@vger.kernel.org>
+References: <20240909082100.24019-1-peter.wang@mediatek.com>
+ <20240909082100.24019-2-peter.wang@mediatek.com>
+From: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
+In-Reply-To: <20240909082100.24019-2-peter.wang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: OERjaQ1dmJ05ckrU32UtKX53KSI__z5R
+X-Proofpoint-GUID: OERjaQ1dmJ05ckrU32UtKX53KSI__z5R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409090118
 
-On Mon, Sep 9, 2024 at 2:48=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
-e:
-> This is a note to let you know that I've just added the patch titled
->
->     userfaultfd: fix checks for huge PMDs
->
-> to the 6.1-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
+On 9/9/2024 1:20 AM, peter.wang@mediatek.com wrote:
+> From: Peter Wang <peter.wang@mediatek.com>
+> 
+> When setting the ICU bit without using read-modify-write,
+> SQRTCy will restart SQ again and receive an RTC return
+> error code 2 (Failure - SQ not stopped).
+> 
+> Additionally, the error log has been modified so that
+> this type of error can be observed.
+> 
+> Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+> ---
 
-Thanks for the backport!
-
-Are you also doing the backport for older trees, or should someone
-else take care of that?
+Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
 
