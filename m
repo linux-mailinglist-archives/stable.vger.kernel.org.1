@@ -1,301 +1,262 @@
-Return-Path: <stable+bounces-73982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56BD971121
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:06:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB1997114C
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F12028241D
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:06:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5331C2254E
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6021B1417;
-	Mon,  9 Sep 2024 08:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jkMqUL2p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E261B1D74;
+	Mon,  9 Sep 2024 08:09:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00EB1B1429;
-	Mon,  9 Sep 2024 08:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9983A1B1D6F
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 08:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725868957; cv=none; b=Uf5ktHjPodBRtbBSQeCxYLIzqKtP1OVVD8lS3s5xstqFpJb7nTCID0w4iqFJWpakpzu0w4vBTVgOQ5uguYUoWVAsO3fLyySN91g2cmCKVMiFjgrsDeqJHN82K0L4lasRgoSC9MQIpkv6QLn95r8J2iP662kHF3gl9ozWBU6worM=
+	t=1725869385; cv=none; b=qSP2dTrCgjHQ+CiywpjQMbG1imbd7ECiYKx8Y2ExBjr+CNH6pXPkFd4f3IxMFYnnY6Nm86zqVl6YdpJFujhDOOMQF+F1gbx5Z8uQxUBcLpBDekiyLvyXSwlg+asAMGaxRT/Pj9XvGAjtOKtpuolzgmLX2twszsGjDa3i4B2ww30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725868957; c=relaxed/simple;
-	bh=ytRkeTlmX47xgE5z+ryf8DfSbFZAeaxEumWqDo97RlY=;
+	s=arc-20240116; t=1725869385; c=relaxed/simple;
+	bh=1SrsKOmljKg1dqS9QP+GyyaTXlt3wvv/Srb1oslrWE0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Grr71RvmbdKYDWhEEWjuh4wBVQ6fm2mgvy0WeJicVdriw6SjZyeWGdclFeYJcm4f5899dLc5y5vpfvePfxjHPDl98qc/87Sb0Fvr7Kn3h3zL2vqJwSiSBvdYwKlGkuMhdEcTE7jl2FBPf8492q21HN9VIhdlI//z24Bsg8sJr7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jkMqUL2p; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D4C8240E0284;
-	Mon,  9 Sep 2024 08:02:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BubQY1UG0zYB; Mon,  9 Sep 2024 08:02:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1725868944; bh=z3avvgf0RPSwKTwCWWF/4sM2ZNrDEy7cyjOWOIK1NG4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jkMqUL2pn4sM+04ZqI3ZX+K3H4IbKgDImk8IaBVMxdfs1ph0JbWJjmMf+yJD+yVkY
-	 l7D5eR9HZ7shm5PvrcEYD6B4IAOytj0Pj0P185GbFKZ2hZTCu0+bQfrO23Y6rbtVKl
-	 u08GNg4Svn5rvW+aYu0YaCpfAdyouCjrhswZVdVXfTRrHvdczKZFxnNuvGXssW0mDs
-	 5g9yncujn+Jc0lMStaSszMnJhost3vk8JTDz3sLgh2JFJMOfoGv4EtsIk5U6LinwoN
-	 LhuOKXQ/dswn2JJDj74FSRMpn0hJiEJqYjiZ/0S02GvADaMVFWtWgnV7jVxWpvAsyD
-	 3+2POqtkrNrZbFD8URiG4rmQup37zReSD+X76JagfDh9Xj7UayKPK24rHqPK8mERvB
-	 54bA16wXWuuHiF0KFgbco8sH1eR4Olrizzs7fM1rCKdI28U57NdMfCCEy9Lorwdh7Y
-	 P1UHdZEE0WcAVK5NkPpyQQvbzWgjiDuyqWPnbsfl2BVOrtZPtfAaNLY9DzOwbj3R1n
-	 0R7BKj1k+HPQoePR/XQk7iwjHV0wK2pjKz+VZQxnvbMuVWQDEKXt2A01x/lZlL1YL7
-	 QPMiqH0wFcw2t7bT0/Pb2dw6LIB0zDXl/ntNDGkKl1dks217ueT6KarHPxI/ROGK6i
-	 +1XN6NhXhT7RLo3NxaFQtmgM=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9D80F40E0198;
-	Mon,  9 Sep 2024 08:02:07 +0000 (UTC)
-Date: Mon, 9 Sep 2024 10:02:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Hugues Bruant <hugues.bruant@gmail.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Tony Luck <tony.luck@intel.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Julius Werner <jwerner@chromium.org>,
-	chrome-platform@lists.linux.dev,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [REGRESSION] soft lockup on boot starting with kernel 6.10 /
- commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
-Message-ID: <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
-References: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=om+26rUHSuE/1iuTxsvUGbBmQFjBCJ/z+WLBDcKN4JwYerCTbzNopWUrXFA7N1gzC1Xq8CItlktnrjopPQmcnEQuwlDawvem04iWJ4PthELvMVf5fXZMe1OL01GjonuoQfMihMRFWPiVS7wcH7QBgmsCMo1VQysV4Ay6p59Vaj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snZSo-00062r-7P; Mon, 09 Sep 2024 10:09:34 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snZSn-006bZL-Ea; Mon, 09 Sep 2024 10:09:33 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snZSn-00Fcqb-17;
+	Mon, 09 Sep 2024 10:09:33 +0200
+Date: Mon, 9 Sep 2024 10:09:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 02/12] wifi: mwifiex: fix MAC address handling
+Message-ID: <Zt6tPcCI5Ov81md8@pengutronix.de>
+References: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
+ <20240826-mwifiex-cleanup-1-v1-2-56e6f8e056ec@pengutronix.de>
+ <20240906144036.GA45399@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
+In-Reply-To: <20240906144036.GA45399@francesco-nb>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Sun, Sep 08, 2024 at 11:53:56PM -0700, Hugues Bruant wrote:
-> Hi,
->=20
-> I have discovered a 100% reliable soft lockup on boot on my laptop:
-> Purism Librem 14, Intel Core i7-10710U, 48Gb RAM, Samsung Evo Plus 970
-> SSD, CoreBoot BIOS, grub bootloader, Arch Linux.
->=20
-> The last working release is kernel 6.9.10, every release from 6.10
-> onwards reliably exhibit the issue, which, based on journalctl logs,
-> seems to be triggered somewhere in systemd-udev:
-> https://gitlab.archlinux.org/-/project/42594/uploads/04583baf22189a0a8bb2=
-f8773096e013/lockup.log
->=20
-> Bisect points to commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
+On Fri, Sep 06, 2024 at 04:40:36PM +0200, Francesco Dolcini wrote:
+> On Mon, Aug 26, 2024 at 01:01:23PM +0200, Sascha Hauer wrote:
+> > The mwifiex driver tries to derive the MAC addresses of the virtual
+> > interfaces from the permanent address by adding the bss_num of the
+> > particular interface used. It does so each time the virtual interface
+> > is changed from AP to station or the other way round. This means that
+> > the devices MAC address changes during a change_virtual_intf call which
+> > is pretty unexpected by userspace.
+> 
+> Is this the only reason for this patch or there are other reasons?
+> I'd like to understand the whole impact, to be sure the backport to
+> stable is what we want.
+> 
+> > Furthermore the driver doesn't use the permanent address to add the
+> > bss_num to, but instead the current MAC address increases each time
+> > we do a change_virtual_intf.
+> > 
+> > Fix this by initializing the MAC address once from the permanent MAC
+> > address during creation of the virtual interface and never touch it
+> > again. This also means that userspace can set a different MAC address
+> > which then stays like this forever and is not unexpectedly changed
+> > by the driver.
+> > 
+> > It is not clear how many (if any) MAC addresses after the permanent MAC
+> > address are reserved for a device, so set the locally admistered
+> > bit for all MAC addresses modified from the permanent address.
+> 
+> I wonder if we should not just use the same permanent mac address whatever
+> the virtual interface is. Do we have something similar in other wireless
+> drivers?
 
-That's a merge commit. Meaning, the bisection likely went into the wrong
-direction.
+Yes, there are at least four driver that generate different MAC
+addresses for different vifs:
 
-Looking at your log, the first warn is in framebuffer_coreboot. Some mess in
-the sysfs platform devices registration.
+drivers/net/wireless/ath/ath6kl/cfg80211.c:3816
+drivers/net/wireless/ath/wil6210/cfg80211.c:732
+drivers/net/wireless/microchip/wilc1000/netdev.c:983
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:606
 
-Adding the relevant people for that:
+(line numbers match 6.11-rc6):
 
-Aug 20 20:29:36 luna kernel: sysfs: cannot create duplicate filename '/bus/=
-platform/devices/simple-framebuffer.0'
-Aug 20 20:29:36 luna kernel: CPU: 5 PID: 571 Comm: (udev-worker) Tainted: G=
-           OE      6.10.6-arch1-1 #1 703d152c24f1971e36f16e505405e456fc9e23=
-f8
-Aug 20 20:29:36 luna kernel: Hardware name: Purism Librem 14/Librem 14, BIO=
-S 4.14-Purism-1 06/18/2021
-Aug 20 20:29:36 luna kernel: Call Trace:
-Aug 20 20:29:36 luna kernel:  <TASK>
-Aug 20 20:29:36 luna kernel:  dump_stack_lvl+0x5d/0x80
-Aug 20 20:29:36 luna kernel:  sysfs_warn_dup.cold+0x17/0x23
-Aug 20 20:29:36 luna kernel:  sysfs_do_create_link_sd+0xcf/0xe0
-Aug 20 20:29:36 luna kernel:  bus_add_device+0x6b/0x130
-Aug 20 20:29:36 luna kernel:  device_add+0x3b3/0x870
-Aug 20 20:29:36 luna kernel:  platform_device_add+0xed/0x250
-Aug 20 20:29:36 luna kernel:  platform_device_register_full+0xbb/0x140
-Aug 20 20:29:36 luna kernel:  platform_device_register_resndata.constprop.0=
-+0x54/0x80 [framebuffer_coreboot a587d2fc243ebaa0205c3badd33442a004d284e0]
-Aug 20 20:29:36 luna kernel:  framebuffer_probe+0x165/0x1b0 [framebuffer_co=
-reboot a587d2fc243ebaa0205c3badd33442a004d284e0]
-Aug 20 20:29:36 luna kernel:  really_probe+0xdb/0x340
-Aug 20 20:29:36 luna kernel:  ? pm_runtime_barrier+0x54/0x90
-Aug 20 20:29:36 luna kernel:  ? __pfx___driver_attach+0x10/0x10
-Aug 20 20:29:36 luna kernel:  __driver_probe_device+0x78/0x110
-Aug 20 20:29:36 luna kernel:  driver_probe_device+0x1f/0xa0
-Aug 20 20:29:36 luna kernel:  __driver_attach+0xba/0x1c0
-Aug 20 20:29:36 luna kernel:  bus_for_each_dev+0x8c/0xe0
-Aug 20 20:29:36 luna kernel:  bus_add_driver+0x112/0x1f0
-Aug 20 20:29:36 luna kernel:  driver_register+0x72/0xd0
-Aug 20 20:29:36 luna kernel:  ? __pfx_framebuffer_driver_init+0x10/0x10 [fr=
-amebuffer_coreboot a587d2fc243ebaa0205c3badd33442a004d284e0]
-Aug 20 20:29:36 luna kernel:  do_one_initcall+0x58/0x310
-Aug 20 20:29:36 luna kernel:  do_init_module+0x60/0x220
-Aug 20 20:29:36 luna kernel:  init_module_from_file+0x89/0xe0
-Aug 20 20:29:36 luna kernel:  idempotent_init_module+0x121/0x320
-Aug 20 20:29:36 luna kernel:  __x64_sys_finit_module+0x5e/0xb0
-Aug 20 20:29:36 luna kernel:  do_syscall_64+0x82/0x190
-Aug 20 20:29:36 luna kernel:  ? __do_sys_newfstatat+0x3c/0x80
-Aug 20 20:29:36 luna kernel:  ? syscall_exit_to_user_mode+0x72/0x200
-Aug 20 20:29:36 luna kernel:  ? do_syscall_64+0x8e/0x190
-Aug 20 20:29:36 luna kernel:  ? do_sys_openat2+0x9c/0xe0
-Aug 20 20:29:36 luna kernel:  ? syscall_exit_to_user_mode+0x72/0x200
-Aug 20 20:29:36 luna kernel:  ? do_syscall_64+0x8e/0x190
-Aug 20 20:29:36 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:36 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:36 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:36 luna kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-Aug 20 20:29:36 luna kernel: RIP: 0033:0x7b1bee2f81fd
+For the mac80211 based drivers there are also tricks played to use
+unique MAC addresses in ieee80211_assign_perm_addr().
 
-The real issue is in i915 however.
+For reference in mwifiex setting different MAC addresses for different
+interfaces goes down to:
 
-However, you have out-of-tree modules. Try reproducing it without them.
+| commit 864164683678e27c931b5909c72a001b1b943f36
+| Author: Xinming Hu <huxm@marvell.com>
+| Date:   Tue Feb 13 14:10:15 2018 +0800
+| 
+|     mwifiex: set different mac address for interfaces with same bss type
+| 
+|     Multiple interfaces with same bss type could affect each other if
+|     they are sharing the same mac address. In this patch, different
+|     mac address is assigned to new interface which have same bss type
+|     with exist interfaces.
+| 
+|     Signed-off-by: Xinming Hu <huxm@marvell.com>
+|     Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Adding i915 people too.
 
-Aug 20 20:29:37 luna kernel: resource: Trying to free nonexistent resource =
-<0x00000000a0000000-0x00000000a0257fff>
-Aug 20 20:29:37 luna kernel: BUG: unable to handle page fault for address: =
-0000000300000031
-Aug 20 20:29:37 luna kernel: #PF: supervisor read access in kernel mode
-Aug 20 20:29:37 luna kernel: #PF: error_code(0x0000) - not-present page
-Aug 20 20:29:37 luna kernel: PGD 0 P4D 0=20
-Aug 20 20:29:37 luna kernel: Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-Aug 20 20:29:37 luna kernel: CPU: 9 PID: 552 Comm: (udev-worker) Tainted: G=
-           OE      6.10.6-arch1-1 #1 703d152c24f1971e36f16e505405e456fc9e23=
-f8
-Aug 20 20:29:37 luna kernel: Hardware name: Purism Librem 14/Librem 14, BIO=
-S 4.14-Purism-1 06/18/2021
-Aug 20 20:29:37 luna kernel: RIP: 0010:__release_resource+0x34/0xb0
-Aug 20 20:29:37 luna kernel: Code: 8d 50 38 48 8b 40 38 48 85 c0 75 27 eb 6=
-a 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 90 4=
-8 8d 50 30 <48> 8b 40 30 48 85 c0 74 45 48 39 c7 75 ee 40 84 f6 75 45 48 8b=
- 4f
-Aug 20 20:29:37 luna kernel: RSP: 0018:ffffb30dc207f930 EFLAGS: 00010296
-Aug 20 20:29:37 luna kernel: RAX: 0000000300000001 RBX: ffff8fa34616e900 RC=
-X: ffff8fa3424aac50
-Aug 20 20:29:37 luna kernel: RDX: 0000000300000031 RSI: 0000000000000001 RD=
-I: ffff8fa34616e900
-Aug 20 20:29:37 luna kernel: RBP: ffff8fa3460e1400 R08: ffff8fa3424a97b8 R0=
-9: 0000000000000000
-Aug 20 20:29:37 luna kernel: R10: 0000000000000000 R11: 0000000000000000 R1=
-2: ffff8fa341671000
-Aug 20 20:29:37 luna kernel: R13: 0000000000000000 R14: ffff8fa3416710c8 R1=
-5: ffff8fa341671000
-Aug 20 20:29:37 luna kernel: FS:  00007b1bee0eb880(0000) GS:ffff8fae6e48000=
-0(0000) knlGS:0000000000000000
-Aug 20 20:29:37 luna kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050=
-033
-Aug 20 20:29:37 luna kernel: CR2: 0000000300000031 CR3: 0000000103924002 CR=
-4: 00000000003706f0
-Aug 20 20:29:37 luna kernel: Call Trace:
-Aug 20 20:29:37 luna kernel:  <TASK>
-Aug 20 20:29:37 luna kernel:  ? __die_body.cold+0x19/0x27
-Aug 20 20:29:37 luna kernel:  ? page_fault_oops+0x15a/0x2d0
-Aug 20 20:29:37 luna kernel:  ? exc_page_fault+0x81/0x190
-Aug 20 20:29:37 luna kernel:  ? asm_exc_page_fault+0x26/0x30
-Aug 20 20:29:37 luna kernel:  ? __release_resource+0x34/0xb0
-Aug 20 20:29:37 luna kernel:  release_resource+0x26/0x40
-Aug 20 20:29:37 luna kernel:  platform_device_del+0x51/0x90
-Aug 20 20:29:37 luna kernel:  platform_device_unregister+0x12/0x30
-Aug 20 20:29:37 luna kernel:  sysfb_disable+0x2f/0x80
-Aug 20 20:29:37 luna kernel:  aperture_remove_conflicting_pci_devices+0x8c/=
-0xa0
-Aug 20 20:29:37 luna kernel:  i915_driver_probe+0x7c8/0xac0 [i915 6caac5d02=
-e3122d822ca0c852e7e5ed826a3aaea]
-Aug 20 20:29:37 luna kernel:  local_pci_probe+0x42/0x90
-Aug 20 20:29:37 luna kernel:  pci_device_probe+0xbd/0x290
-Aug 20 20:29:37 luna kernel:  ? sysfs_do_create_link_sd+0x6e/0xe0
-Aug 20 20:29:37 luna kernel:  really_probe+0xdb/0x340
-Aug 20 20:29:37 luna kernel:  ? pm_runtime_barrier+0x54/0x90
-Aug 20 20:29:37 luna kernel:  ? __pfx___driver_attach+0x10/0x10
-Aug 20 20:29:37 luna kernel:  __driver_probe_device+0x78/0x110
-Aug 20 20:29:37 luna kernel:  driver_probe_device+0x1f/0xa0
-Aug 20 20:29:37 luna kernel:  __driver_attach+0xba/0x1c0
-Aug 20 20:29:37 luna kernel:  bus_for_each_dev+0x8c/0xe0
-Aug 20 20:29:37 luna kernel:  bus_add_driver+0x112/0x1f0
-Aug 20 20:29:37 luna kernel:  driver_register+0x72/0xd0
-Aug 20 20:29:37 luna kernel:  i915_init+0x23/0x90 [i915 6caac5d02e3122d822c=
-a0c852e7e5ed826a3aaea]
-Aug 20 20:29:37 luna kernel:  ? __pfx_i915_init+0x10/0x10 [i915 6caac5d02e3=
-122d822ca0c852e7e5ed826a3aaea]
-Aug 20 20:29:37 luna kernel:  do_one_initcall+0x58/0x310
-Aug 20 20:29:37 luna kernel:  do_init_module+0x60/0x220
-Aug 20 20:29:37 luna kernel:  init_module_from_file+0x89/0xe0
-Aug 20 20:29:37 luna kernel:  idempotent_init_module+0x121/0x320
-Aug 20 20:29:37 luna kernel:  __x64_sys_finit_module+0x5e/0xb0
-Aug 20 20:29:37 luna kernel:  do_syscall_64+0x82/0x190
-Aug 20 20:29:37 luna kernel:  ? switch_fpu_return+0x4e/0xd0
-Aug 20 20:29:37 luna kernel:  ? syscall_exit_to_user_mode+0x72/0x200
-Aug 20 20:29:37 luna kernel:  ? do_syscall_64+0x8e/0x190
-Aug 20 20:29:37 luna kernel:  ? syscall_exit_to_user_mode+0x72/0x200
-Aug 20 20:29:37 luna kernel:  ? do_syscall_64+0x8e/0x190
-Aug 20 20:29:37 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:37 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:37 luna kernel:  ? clear_bhb_loop+0x25/0x80
-Aug 20 20:29:37 luna kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-Aug 20 20:29:37 luna kernel: RIP: 0033:0x7b1bee2f81fd
-Aug 20 20:29:37 luna kernel: Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f=
-3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 2=
-4 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 fa 0c 00 f7 d8 64 89 01=
- 48
-Aug 20 20:29:37 luna kernel: RSP: 002b:00007ffe062c2ac8 EFLAGS: 00000246 OR=
-IG_RAX: 0000000000000139
-Aug 20 20:29:37 luna kernel: RAX: ffffffffffffffda RBX: 000056171c8d0a00 RC=
-X: 00007b1bee2f81fd
-Aug 20 20:29:37 luna kernel: RDX: 0000000000000004 RSI: 00007b1bee0e5061 RD=
-I: 0000000000000026
-Aug 20 20:29:37 luna kernel: RBP: 00007ffe062c2b80 R08: 0000000000000001 R0=
-9: 00007ffe062c2b10
-Aug 20 20:29:37 luna kernel: R10: 0000000000000040 R11: 0000000000000246 R1=
-2: 00007b1bee0e5061
-Aug 20 20:29:37 luna kernel: R13: 0000000000020000 R14: 000056171c8d18c0 R1=
-5: 000056171c8d31e0
-Aug 20 20:29:37 luna kernel:  </TASK>
-Aug 20 20:29:37 luna kernel: Modules linked in: intel_powerclamp ath9k(+) s=
-nd_compress coretemp ac97_bus ath9k_common snd_pcm_dmaengine kvm_intel snd_=
-hda_intel ath9k_hw joydev snd_intel_dspcfg mousedev ath snd_intel_sdw_acpi =
-i915(+) kvm snd_hda_codec iTCO_wdt mac80211 snd_hda_core processor_thermal_=
-device_pci_legacy intel_pmc_bxt snd_hwdep processor_thermal_device hid_mult=
-itouch ee1004 iTCO_vendor_support processor_thermal_wt_hint drm_buddy snd_p=
-cm rapl processor_thermal_rfim hid_generic spi_nor r8169 i2c_i801 i2c_algo_=
-bit libarc4 memconsole_coreboot processor_thermal_rapl snd_timer intel_csta=
-te intel_rapl_msr framebuffer_coreboot memconsole cbmem intel_uncore snd in=
-tel_rapl_common realtek ttm i2c_smbus cfg80211 mtd processor_thermal_wt_req=
- psmouse mdio_devres pcspkr soundcore i2c_mux processor_thermal_power_floor=
- drm_display_helper intel_lpss_pci libphy processor_thermal_mbox intel_lpss=
- cec rfkill int340x_thermal_zone intel_pmc_core i2c_hid_acpi idma64 intel_g=
-tt intel_soc_dts_iosf intel_pch_thermal i2c_hid intel_vsec intel_hid video
-Aug 20 20:29:37 luna kernel:  pmt_telemetry pmt_class pinctrl_cannonlake wm=
-i sparse_keymap coreboot_table mac_hid pkcs8_key_parser crypto_user loop ac=
-pi_call(OE) nfnetlink ip_tables x_tables ext4 crc32c_generic crc16 mbcache =
-jbd2 uas usb_storage dm_crypt cbc encrypted_keys trusted asn1_encoder tee d=
-m_mod crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_ge=
-neric gf128mul ghash_clmulni_intel serio_raw sha512_ssse3 atkbd sha256_ssse=
-3 sha1_ssse3 libps2 aesni_intel vivaldi_fmap nvme crypto_simd nvme_core spi=
-_intel_pci cryptd xhci_pci spi_intel i8042 nvme_auth xhci_pci_renesas serio=
- librem_ec_acpi(OE)
-Aug 20 20:29:37 luna kernel: CR2: 0000000300000031
-Aug 20 20:29:37 luna kernel: ---[ end trace 0000000000000000 ]---
+> 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  drivers/net/wireless/marvell/mwifiex/cfg80211.c |  4 +-
+> >  drivers/net/wireless/marvell/mwifiex/init.c     |  1 -
+> >  drivers/net/wireless/marvell/mwifiex/main.c     | 54 ++++++++++++-------------
+> >  drivers/net/wireless/marvell/mwifiex/main.h     |  5 ++-
+> >  4 files changed, 30 insertions(+), 34 deletions(-)
+> > 
+> ...
+> 
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+> > index 96d1f6039fbca..46acddd03ffd1 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> > @@ -971,34 +971,16 @@ mwifiex_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+> >  }
+> >  
+> >  int mwifiex_set_mac_address(struct mwifiex_private *priv,
+> > -			    struct net_device *dev, bool external,
+> > -			    u8 *new_mac)
+> > +			    struct net_device *dev, u8 *new_mac)
+> >  {
+> >  	int ret;
+> > -	u64 mac_addr, old_mac_addr;
+> > +	u64 old_mac_addr;
+> >  
+> > -	old_mac_addr = ether_addr_to_u64(priv->curr_addr);
+> > +	netdev_info(dev, "%s: old: %pM new: %pM\n", __func__, priv->curr_addr, new_mac);
+> >  
+> > -	if (external) {
+> > -		mac_addr = ether_addr_to_u64(new_mac);
+> > -	} else {
+> > -		/* Internal mac address change */
+> > -		if (priv->bss_type == MWIFIEX_BSS_TYPE_ANY)
+> > -			return -EOPNOTSUPP;
+> this was the only usage of MWIFIEX_BSS_TYPE_ANY, correct? Did it had any
+> reason before?
 
---=20
-Regards/Gruss,
-    Boris.
+I haven't found a path to get here with priv->bss_type ==
+MWIFIEX_BSS_TYPE_ANY. This function is called from
+mwifiex_init_new_priv_params() and mwifiex_add_virtual_intf(). Both
+functions set priv->bss_type to something else or bail out with an error
+before calling mwifiex_set_mac_address(). It's also called from the
+ndo_set_mac_address method, but for a registered net device the bss_type
+should also be set to something meaningful.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> > -
+> > -		mac_addr = old_mac_addr;
+> > -
+> > -		if (priv->bss_type == MWIFIEX_BSS_TYPE_P2P) {
+> > -			mac_addr |= BIT_ULL(MWIFIEX_MAC_LOCAL_ADMIN_BIT);
+> > -			mac_addr += priv->bss_num;
+> > -		} else if (priv->adapter->priv[0] != priv) {
+> > -			/* Set mac address based on bss_type/bss_num */
+> > -			mac_addr ^= BIT_ULL(priv->bss_type + 8);
+> > -			mac_addr += priv->bss_num;
+> > -		}
+> > -	}
+> > +	old_mac_addr = ether_addr_to_u64(priv->curr_addr);
+> >  
+> > -	u64_to_ether_addr(mac_addr, priv->curr_addr);
+> > +	ether_addr_copy(priv->curr_addr, new_mac);
+> >  
+> >  	/* Send request to firmware */
+> >  	ret = mwifiex_send_cmd(priv, HostCmd_CMD_802_11_MAC_ADDRESS,
+> > @@ -1015,6 +997,26 @@ int mwifiex_set_mac_address(struct mwifiex_private *priv,
+> >  	return 0;
+> >  }
+> >  
+> > +int mwifiex_set_default_mac_address(struct mwifiex_private *priv,
+> > +				    struct net_device *dev)
+> > +{
+> > +	int priv_num;
+> > +	u8 mac[ETH_ALEN];
+> > +
+> > +	ether_addr_copy(mac, priv->adapter->perm_addr);
+> > +
+> > +	for (priv_num = 0; priv_num < priv->adapter->priv_num; priv_num++)
+> > +		if (priv == priv->adapter->priv[priv_num])
+> > +			break;
+> > +
+> > +	if (priv_num) {
+> > +		eth_addr_add(mac, priv_num);
+> > +		mac[0] |= 0x2;
+> > +	}
+> 
+> Please see my concern on this in the beginning of the email.
+> 
+> > @@ -1364,10 +1366,6 @@ void mwifiex_init_priv_params(struct mwifiex_private *priv,
+> >  	priv->assocresp_idx = MWIFIEX_AUTO_IDX_MASK;
+> >  	priv->gen_idx = MWIFIEX_AUTO_IDX_MASK;
+> >  	priv->num_tx_timeout = 0;
+> > -	if (is_valid_ether_addr(dev->dev_addr))
+> > -		ether_addr_copy(priv->curr_addr, dev->dev_addr);
+> > -	else
+> > -		ether_addr_copy(priv->curr_addr, priv->adapter->perm_addr);
+> 
+> With this change, when mfg_mode is true, priv->curr_addr will be not
+> initialized. Wanted?
+
+Not wanted, just me being ignorant. Let's have a look:
+
+priv->adapter->perm_addr is initialized in the response handling of the
+HostCmd_CMD_GET_HW_SPEC command. This command is only issued when
+mfg_mode is false, so in mfg mode priv->adapter->perm_addr will be the
+zero address.
+
+The only documentation we have for mfg_mode is:
+
+manufacturing mode enable:1, disable:0
+
+I don't know what this really is about, but I could imagine that this
+is for initial factory bringup when the chip is not parametrized and thus
+doesn't have a permanent MAC address yet.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
