@@ -1,120 +1,113 @@
-Return-Path: <stable+bounces-73956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9CF970EA1
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:53:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D02D970EA3
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2258A1F22976
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:53:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFBC1B2227D
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D47D177999;
-	Mon,  9 Sep 2024 06:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7A1AD3E4;
+	Mon,  9 Sep 2024 06:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY7LLEP+"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S7nrBuv7"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F711F95E
-	for <Stable@vger.kernel.org>; Mon,  9 Sep 2024 06:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB221F95E;
+	Mon,  9 Sep 2024 06:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725864824; cv=none; b=b2/eaatDGqNP/SwLwkvjWBxyU1WgvDBkXqhl/GdXxyaXVXZ6OS1zrL9l/TRIatCyyo+tjNZa62jl0BV87fR/5DztskqgB7LlvRANuX66uFHhvX6dLElPRCwyUMjTBuGgLdTxndLPhSMhIGxuccm0qG/QH39YVaf2OOu3FR4bkGQ=
+	t=1725864849; cv=none; b=EKFa5uTqkEtncdYqU44fnDhRLDFvJxbi3F9gsLpfBE9tnHmixZz7nlK2sBcEOMTF9Ck6wR85O/xbui6phk8er4hbeDcU5DA6PpigXQhEYtqOow4S5FTMtq+p0UeHaW7NKMIQvX5r9S7z1NZ7S2iaIxpHKukLSsJH3fq3KsD+Oro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725864824; c=relaxed/simple;
-	bh=ETaEuqtK5QQQo9yCDOY0JQv795K0z+mXPm+cp3IiOcI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JvMbPG1GZfmRNnHx1/0a8l8EOqlWrhuyyKkCJtGgbTTx1IVg3QFXOtGN4rgCVsegoxBU+9mG+jplpQa5NtxayCAb57EW3859xnBb76ABY7/WwAECM6iMJzucaOt5NIKlfzfTrX7WlL7J9f1Z4rMfhA5YjGerYWQuS7FeQUHBXkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY7LLEP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE50FC4CEC5;
-	Mon,  9 Sep 2024 06:53:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725864824;
-	bh=ETaEuqtK5QQQo9yCDOY0JQv795K0z+mXPm+cp3IiOcI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ZY7LLEP+Q2/vCyCF48G92wn9XuWPNZVw6TJqO0G61Vce4ceTsaa4MFNXSnEfCatkK
-	 6Re6miO+G9Wdf5CFcc+QCZVEYwTb7nuw1aza7GZ4BZqPYjwAdDZzB1kZnfp8ajaO9n
-	 VQa74UPluBs+DEYsJut9LCwqc8vcw1qgHq9+9hC0=
-Subject: FAILED: patch "[PATCH] staging: iio: frequency: ad9834: Validate frequency parameter" failed to apply to 4.19-stable tree
-To: amishin@t-argos.ru,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dan.carpenter@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 08:53:40 +0200
-Message-ID: <2024090940-shale-handcart-eb5d@gregkh>
+	s=arc-20240116; t=1725864849; c=relaxed/simple;
+	bh=s90mMIl9Yk0dS3ZxwgoGrwtmHEwr0osOFdbPy6fBLDg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=bdDhRRdV09lnwII1WXs0xMNu/5PoMoYj/eXSZttori9AQfEpl0HPv1GbLqKSySJ8SNzZC7jmMZ5e01g6TwORQQDfhrPYKfc07gwzct9DQA/3ucNhJ8F25mNFWazYaeRs//GBo+cJ+7BYjfrgpBt/veWGqoOZ9oeRgv6pd4EgYoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S7nrBuv7; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6db2a9da800so29441627b3.0;
+        Sun, 08 Sep 2024 23:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725864847; x=1726469647; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q7d8zwumBa2mhTup4zQYqTmBFbEzejGeaSSz2DQo8ts=;
+        b=S7nrBuv7Wd4RCq6XcJqxFRIiauxhIb8v9qD909mhgONYmYcHnrPrjzWT+9DvPfFGfR
+         kQYmUlCT9zDON3gJ23OgKjT11LZ0DeOULUEP79GklmB73s9iythKug/BP63NXxxa510v
+         yW6FD9jBVCuGzozi+qYs2uC45W8UioAs5L1UKfzytl4nJIsd69b5UYAYtb29S0ikMtrt
+         zeS0MQ4AocgXU81MVJgEdd2q9rCt6o7ekHFhiVia4sggJqulbXsK7pbhFgtsdD09I54G
+         XjVWdmyItefW0bst+XHPnRtLyj7NxJoT7lz5eXrx8kB90u7Seq5miv6tdWgPGFjL2Cv2
+         6QEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725864847; x=1726469647;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q7d8zwumBa2mhTup4zQYqTmBFbEzejGeaSSz2DQo8ts=;
+        b=Qi1i2q8gC5Savo+4UDnpyEj+E9oRzZ1OaZdo3KE+CiHlRMS+dpS2yIvqhUW6OwUtaM
+         oVwcxGXUE2vy3pJBieqmjWwFb1MyuRSh2AwPIIpJk/wK1aE8cEv/zkqIt9WmW/TaAAwc
+         2AThN1iMo9LNZVylXVE/Uyd5sk/MCvA8xCnKC+5MAnzpdfzr9SaATLp3pRURQEnf2/XW
+         u3a3sc2VQlC1/oJR2/K2MHVHt1aS5LnJJwn3ed6OO4n+Y7HYkDg+0CR4KhetYDW9i+pO
+         TAETNq95vW9pEGD3Kw+6rw/cipMoIK76z8PbWgnhQLE46j+YcPsrbSowtaOpoJg/elm8
+         60Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVsCNCu1ZmIcSpaYlzyUQ8sn52ZBXmcxq9tkwu6UhJ6HzwZUucfoI8cu6mz4exmNb5RUJPfyu7bnmkhyKg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4mZfOSuf8h8uyFdkJsk/vLtzqUSfBI0T5OzJJ/9EGhiSLND7r
+	t2SvrAPOqeAsG0/F6tOFQcyca3vvdXqNfwpiDSFq+4AqaRwTFHPuEYN9Afyf+Eh1PbFid9QipDR
+	aqYAuHKisxoF92Vc1PqlFfoelCkAL/j0GdxM=
+X-Google-Smtp-Source: AGHT+IGf+k1Qbf5QZG88Dg+4QfNHq6ywW4JlKCO4pQ/VZyLmq0NSpIL5vgjIjpH3e3gxkgq+6y9vc0izdS8MD1vtfww=
+X-Received: by 2002:a05:690c:28b:b0:6d6:a5b7:3ff with SMTP id
+ 00721157ae682-6db26016c10mr136267497b3.14.1725864847299; Sun, 08 Sep 2024
+ 23:54:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+From: Hugues Bruant <hugues.bruant@gmail.com>
+Date: Sun, 8 Sep 2024 23:53:56 -0700
+Message-ID: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
+Subject: [REGRESSION] soft lockup on boot starting with kernel 6.10 / commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Fenghua Yu <fenghua.yu@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi,
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I have discovered a 100% reliable soft lockup on boot on my laptop:
+Purism Librem 14, Intel Core i7-10710U, 48Gb RAM, Samsung Evo Plus 970
+SSD, CoreBoot BIOS, grub bootloader, Arch Linux.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The last working release is kernel 6.9.10, every release from 6.10
+onwards reliably exhibit the issue, which, based on journalctl logs,
+seems to be triggered somewhere in systemd-udev:
+https://gitlab.archlinux.org/-/project/42594/uploads/04583baf22189a0a8bb2f8773096e013/lockup.log
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x b48aa991758999d4e8f9296c5bbe388f293ef465
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090940-shale-handcart-eb5d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Bisect points to commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
 
-Possible dependencies:
+At a glance, I see two potentially problematic changes in this diff.
+Specifically, in the refactoring to move the call to rdt_ctrl_update
+inside the loop that walks over r->domains :
 
-b48aa9917589 ("staging: iio: frequency: ad9834: Validate frequency parameter value")
-8e8040c52e63 ("staging: iio: frequency: ad9833: Load clock using clock framework")
-80109c32348d ("staging: iio: frequency: ad9833: Get frequency value statically")
+  1. the change from on_each_cpu_mask to smp_call_function_any means
+that preemption is no longer disabled around the call to
+rdt_ctrl_update, which could plausibly be a problem
 
-thanks,
+  2. there's now a race condition on the msr_params struct: afaict
+there's no write barrier, so if the call to rdt_ctrl_update is
+executed on a different CPU, it could plausibly read an outdated value
+of the dom field, which prior to this series of patches wasn't passed
+as an explicit parameter, but derived inside rdt_ctrl_update
 
-greg k-h
+For initial report to Arch Linux bugtracker and bisect log see:
+https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/74
 
------------------- original commit in Linus's tree ------------------
-
-From b48aa991758999d4e8f9296c5bbe388f293ef465 Mon Sep 17 00:00:00 2001
-From: Aleksandr Mishin <amishin@t-argos.ru>
-Date: Wed, 3 Jul 2024 18:45:06 +0300
-Subject: [PATCH] staging: iio: frequency: ad9834: Validate frequency parameter
- value
-
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
-
-Modify parameters checking.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index a7a5cdcc6590..47e7d7e6d920 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
- 
- 	clk_freq = clk_get_rate(st->mclk);
- 
--	if (fout > (clk_freq / 2))
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
-
+Best
+Hugues
 
