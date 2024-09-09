@@ -1,107 +1,99 @@
-Return-Path: <stable+bounces-73997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFE7971580
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 12:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54261971588
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 12:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE9181F230FC
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:40:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C7528400E
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 10:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58AD1B3735;
-	Mon,  9 Sep 2024 10:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40AC1B2EFA;
+	Mon,  9 Sep 2024 10:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nl5HU6a4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.astralinux.ru (mx.astralinux.ru [89.232.161.68])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B86E1B2ED5;
-	Mon,  9 Sep 2024 10:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.232.161.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68151B3735
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 10:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725878407; cv=none; b=rgCTBsiDswkiZtfT6wQBarcG+26jpsQYGbo0N/jQWur3dREuieuER3bHnSNZZ/7I2X35q8WVrtgGLMu+3U54DFnWpjFF5qFSs7x73l10pAxvmW/bvRg/1qGTPYjSgmOB6WTfPw4NxGDh1VU0jyweM3WVj3V2W3C6UThcAUbfvNE=
+	t=1725878467; cv=none; b=ahXGFzb9uAdb0nEhlfS+mJMAaq8AXh0M+ri12NsUsj6UZSPARcb+RPbs6jLiLEpnp+yzej8aj/SaSa4lp3OMORH22hk2E/TdjRGiEV4BjX/iaLu5x4OUW88XyNjeVsU0Yx+y51Irsx//i/xBEgDqSb6tYnOrRZM4GGisoW3G1qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725878407; c=relaxed/simple;
-	bh=Izr3JLPlYBReGtByqi0KocixlambMNHRNmKsigvBQpI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mf1Lm9yacf0yZ5Xw0xKSk7rBcoK8Ku2HqdahN6SH5zwRAUQ9Y30iJeDTFaeaEBvsqd2jTtYCqdbWwhtEurh+/OrBJMHfa7qbQShSKsg8BcCQlYWbcAbJhiE8ZZcMGqviM8L1yJ6j8isgGy2vzY6E+4V087+urAu5/x0xX5rLnA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=89.232.161.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from [10.177.185.111] (helo=new-mail.astralinux.ru)
-	by mx.astralinux.ru with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <abelova@astralinux.ru>)
-	id 1snbms-00BGaZ-9C; Mon, 09 Sep 2024 13:38:26 +0300
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.198.22.134])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4X2Nck68X3z1c0X1;
-	Mon,  9 Sep 2024 13:39:34 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Anastasia Belova <abelova@astralinux.ru>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Matt Evans <matt.evans@arm.com>,
-	Christoffer Dall <christoffer.dall@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] arm64: KVM: prevent overflow in inject_abt64
-Date: Mon,  9 Sep 2024 13:38:28 +0300
-Message-Id: <20240909103828.16699-3-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240909103828.16699-1-abelova@astralinux.ru>
-References: <20240909103828.16699-1-abelova@astralinux.ru>
+	s=arc-20240116; t=1725878467; c=relaxed/simple;
+	bh=bkkVOFPMzK8x0H7vn8y6CLobx1jEoXgleqBVwLGiMlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=igwDB+CVMGONBfCrV+6PBzcMpLECyIFWYpwW5xNhiQ7E8DZqPb41yO7CDyald9vB1jSYn/bSZi0+Le65QC5aj/PHUFFG7e9YGAp+vsixRz9BJJWAKCpAXBnGGeP5C46bM2nZVXeliIxFUvt6qDhj1XlN2nIddbsEobjb3VkPaLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nl5HU6a4; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725878466; x=1757414466;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=bkkVOFPMzK8x0H7vn8y6CLobx1jEoXgleqBVwLGiMlQ=;
+  b=Nl5HU6a4J/v07bg33rOphtz20jnnt+qKtAXdjTgKQkxuhZdHjWm4j26O
+   vWSlyhF3lkwyeFYJo4PAccDQ08xNwOk7FYFoyV3ICfnMcfHrHpO3ydfOq
+   cPAL2VJ0ymN9sF0UTHVT76B3BZ/+LRL0l7giquomzKewJHj4Ox12vT3u6
+   uXKROP/6ViRCUYWdhGd3mJqlHUspMCcNyI3v/0JLkXUjGpzWStFNd1ibv
+   T8zybuGt3bfmw4MPnUaoOiW1Eq0WdE19VRbuL2XywE9Nny43CXLWR1qD+
+   ozOveKx+tSbfrlOXJv0WN/1ExLn6Jgx77d77VX6QOjKVHdEAwNjMhpx9y
+   w==;
+X-CSE-ConnectionGUID: GBXTMF8BR/CmETIsMOhw6A==
+X-CSE-MsgGUID: oX+cnNVPSbuhAJAkJ4Iq2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="13438309"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="13438309"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 03:41:05 -0700
+X-CSE-ConnectionGUID: y8vGagTfTz6pU83Ib8RXzg==
+X-CSE-MsgGUID: 9QznlKdDRceUjvSw7NLvAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="89918976"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Sep 2024 03:41:04 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1snbpO-000EcW-0Z;
+	Mon, 09 Sep 2024 10:41:02 +0000
+Date: Mon, 9 Sep 2024 18:40:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anastasia Belova <abelova@astralinux.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] arm64: KVM: prevent overflow in inject_abt64
+Message-ID: <Zt7Qt4o30hU4TY95@b20ea791c01f>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DrWeb-SpamScore: 0
-X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetnhgrshhtrghsihgruceuvghlohhvrgcuoegrsggvlhhovhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeevhfduuefhueektdefkedvgfekgfekffegvdetffehfefhffejhfehveevudeigfenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudelkedrvddvrddufeegnecurfgrrhgrmhephhgvlhhopehrsghtrgdqmhhskhdqlhhtqddutdeitdeivddrrghsthhrrghlihhnuhigrdhruhdpihhnvghtpedutddrudelkedrvddvrddufeegmeefheeifeekpdhmrghilhhfrhhomheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdpnhgspghrtghpthhtohepudehpdhrtghpthhtohepmhgriieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdprhgtphhtthhopeholhhivhgvrhdruhhpthhonheslhhinhhugidruggvvhdprhgtphhtthhopehjrghmvghsrdhmohhrshgvsegrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrh
- hmrdgtohhmpdhrtghpthhtohephihuiigvnhhghhhuiheshhhurgifvghirdgtohhmpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrthhtrdgvvhgrnhhssegrrhhmrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhffhgvrhdruggrlhhlsehlihhnrghrohdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehkvhhmrghrmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvhgtqdhprhhojhgvtghtsehlihhnuhigthgvshhtihhnghdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghenucffrhdrhggvsgcutehnthhishhprghmmecunecuvfgrghhsme
-X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.7.202406240#1725640479#02
-X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128, SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12165305, Updated: 2024-Sep-09 08:42:30 UTC]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240909103828.16699-3-abelova@astralinux.ru>
 
-ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
-This operation's result is int with 1 in 32th bit.
-While casting this value into u64 (esr is u64) 1
-fills 32 highest bits.
+Hi,
 
-Add explicit casting to prevent it.
+Thanks for your patch.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: e4fe9e7dc382 ("kvm: arm64: Fix EC field in inject_abt64")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
- arch/arm64/kvm/inject_fault.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-index b6b2cfff6629..6cb191b799ac 100644
---- a/arch/arm64/kvm/inject_fault.c
-+++ b/arch/arm64/kvm/inject_fault.c
-@@ -79,7 +79,7 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
- 		esr |= ((u64)ESR_ELx_EC_IABT_CUR << ESR_ELx_EC_SHIFT);
- 
- 	if (!is_iabt)
--		esr |= ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT;
-+		esr |= (u64)ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT;
- 
- 	esr |= ESR_ELx_FSC_EXTABT;
- 
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 2/2] arm64: KVM: prevent overflow in inject_abt64
+Link: https://lore.kernel.org/stable/20240909103828.16699-3-abelova%40astralinux.ru
+
 -- 
-2.30.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
