@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-74092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303EE972529
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 00:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441B697252B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 00:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6240A1C22820
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 014A7285941
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E329E18CC10;
-	Mon,  9 Sep 2024 22:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D8C17D373;
+	Mon,  9 Sep 2024 22:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Fsicmo9b"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ONP+l99f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA8B18C924;
-	Mon,  9 Sep 2024 22:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5F118C02A;
+	Mon,  9 Sep 2024 22:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725920194; cv=none; b=Nfskfz9QM1yqKx+1WG06gX5PJERyZn99vqEDqevrPIE4mhL3mzrL/4w/SDah3yN9F1EuDMeiX72zUk1lqqe+K9CCiyXQk1xX1AboBJQwRq9YOvV2CyhfQYW7ZveZ67lAsQWsh3k9CX/LpatLfwHJ97hppu8qng/AEodhQyEaCy0=
+	t=1725920197; cv=none; b=dj/I4Fo/mkPYpZgDrXWe68HpSRMC+163+Ej/MIL7GCkipe1wQGWVtFAVBSI+ze+7Bv6i5iqiq4CDqEPERdfsPNjb9vV5W+54nbwiyU2tez0sVyiNZw1to0pCxOhAqrS2z9jiS7kohg3w/mniPYV+RWHSZyuqVjcQkQuv3cRc+Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725920194; c=relaxed/simple;
-	bh=yRRjc493j/hb/LPeAt6VaA//Ry3EyC+ktbpmOEP2Nfk=;
-	h=Date:To:From:Subject:Message-Id; b=MruRVl6WVpvughrxtLrHpiaIEHJ2eT+hCmCs96pBzvwg3Td4n0G4GKo0lfBMNS3JWDY5LfzXjvtW3McSAe7FacQHMnTRjUUa/TR9wTqJqjeoQ5R3ITxEG9HLYyLT6LJ97EqLinLBkQQ767nor0oRdBf5z7GViIsv6j1xJWJaUeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Fsicmo9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767DBC4CEC5;
-	Mon,  9 Sep 2024 22:16:34 +0000 (UTC)
+	s=arc-20240116; t=1725920197; c=relaxed/simple;
+	bh=vCqGNHESZNZjXTAC1cttMwThZyJazwIykjd2ClBg9GQ=;
+	h=Date:To:From:Subject:Message-Id; b=pjljYPgxGMNvhJKQ5pkPYLfloDJ8fYOZ5dKHJz3KVwb4eeHJKaa3olM4465fghroMJF9JMj7V4aO3r+71gKsw02ZnHrBr5a9SpExLWGEwq/cvLqT56oHF9g9N7qhsk7a2Z/qziQbhZzGtXHGSOwlEMpEW3AdGGwwxwLeXYRH8ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ONP+l99f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7193C4CEC5;
+	Mon,  9 Sep 2024 22:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725920194;
-	bh=yRRjc493j/hb/LPeAt6VaA//Ry3EyC+ktbpmOEP2Nfk=;
+	s=korg; t=1725920196;
+	bh=vCqGNHESZNZjXTAC1cttMwThZyJazwIykjd2ClBg9GQ=;
 	h=Date:To:From:Subject:From;
-	b=Fsicmo9b+tlM5izfW5ylZ3dmbR5o5x6H1HcWrMYpk8/oIadASGlnRkBd4Fc8ra8Nq
-	 arqKkSyh53e97L4r6l4aQ0paxYj8yH42rLDA7OC97A0f8/Zndw+xcLKZIXONBq70kR
-	 6Zp+XqwyRdx0/ykit47jAtxOx0s4G3jJ/OiYdjds=
-Date: Mon, 09 Sep 2024 15:16:33 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
+	b=ONP+l99f/E1sk0wgXBM86oa9tm898nfRyLLwKORQO+lQBK2HV9IIAnvHWjWbCz/qI
+	 O5vbagh5IqNq9Q0zQRQ15zef1xoRUVsdGX5azTENBYwleu2qXYWMmG/Te0y1GXcS5H
+	 I22KghZwCGtHMqhjv5aINUzYw2zvjDGSeHOZE/+c=
+Date: Mon, 09 Sep 2024 15:16:36 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,sj@kernel.org,linux@roeck-us.net,david@redhat.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch removed from -mm tree
-Message-Id: <20240909221634.767DBC4CEC5@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch removed from -mm tree
+Message-Id: <20240909221636.D7193C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,93 +50,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: cancel dqi_sync_work before freeing oinfo
+     Subject: mm/damon/vaddr: protect vma traversal in __damon_va_thre_regions() with rcu read lock
 has been removed from the -mm tree.  Its filename was
-     ocfs2-cancel-dqi_sync_work-before-freeing-oinfo.patch
+     mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: ocfs2: cancel dqi_sync_work before freeing oinfo
-Date: Wed, 4 Sep 2024 15:10:03 +0800
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: mm/damon/vaddr: protect vma traversal in __damon_va_thre_regions() with rcu read lock
+Date: Wed, 4 Sep 2024 17:12:04 -0700
 
-ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
-end, if error occurs after successfully reading global quota, it will
-trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
+Traversing VMAs of a given maple tree should be protected by rcu read
+lock.  However, __damon_va_three_regions() is not doing the protection. 
+Hold the lock.
 
-ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
-
-This reports that there is an active delayed work when freeing oinfo in
-error handling, so cancel dqi_sync_work first.  BTW, return status instead
-of -1 when .read_file_info fails.
-
-Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
-Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
-Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
+Link: https://lkml.kernel.org/r/20240905001204.1481-1-sj@kernel.org
+Fixes: d0cf3dd47f0d ("damon: convert __damon_va_three_regions to use the VMA iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/b83651a0-5b24-4206-b860-cb54ffdf209b@roeck-us.net
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/quota_local.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/damon/vaddr.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ocfs2/quota_local.c~ocfs2-cancel-dqi_sync_work-before-freeing-oinfo
-+++ a/fs/ocfs2/quota_local.c
-@@ -692,7 +692,7 @@ static int ocfs2_local_read_info(struct
- 	int status;
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_quota_recovery *rec;
--	int locked = 0;
-+	int locked = 0, global_read = 0;
+--- a/mm/damon/vaddr.c~mm-damon-vaddr-protect-vma-traversal-in-__damon_va_thre_regions-with-rcu-read-lock
++++ a/mm/damon/vaddr.c
+@@ -126,6 +126,7 @@ static int __damon_va_three_regions(stru
+ 	 * If this is too slow, it can be optimised to examine the maple
+ 	 * tree gaps.
+ 	 */
++	rcu_read_lock();
+ 	for_each_vma(vmi, vma) {
+ 		unsigned long gap;
  
- 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
- 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
-@@ -700,6 +700,7 @@ static int ocfs2_local_read_info(struct
- 	if (!oinfo) {
- 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
- 			       " info.");
-+		status = -ENOMEM;
- 		goto out_err;
+@@ -146,6 +147,7 @@ static int __damon_va_three_regions(stru
+ next:
+ 		prev = vma;
  	}
- 	info->dqi_priv = oinfo;
-@@ -712,6 +713,7 @@ static int ocfs2_local_read_info(struct
- 	status = ocfs2_global_read_info(sb, type);
- 	if (status < 0)
- 		goto out_err;
-+	global_read = 1;
++	rcu_read_unlock();
  
- 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
- 	if (status < 0) {
-@@ -782,10 +784,12 @@ out_err:
- 		if (locked)
- 			ocfs2_inode_unlock(lqinode, 1);
- 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
-+		if (global_read)
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
- 		kfree(oinfo);
- 	}
- 	brelse(bh);
--	return -1;
-+	return status;
- }
- 
- /* Write local info to quota file */
+ 	if (!sz_range(&second_gap) || !sz_range(&first_gap))
+ 		return -EINVAL;
 _
 
-Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
 
-ocfs2-cleanup-return-value-and-mlog-in-ocfs2_global_read_info.patch
+maple_tree-mark-three-functions-as-__maybe_unused.patch
 
 
