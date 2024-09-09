@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-73962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C13D970EA9
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:56:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C43970EAB
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B911282742
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E22211F22A4B
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2351AC8B0;
-	Mon,  9 Sep 2024 06:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743AF1AC8B0;
+	Mon,  9 Sep 2024 06:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rccyyGi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD0SKpu9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBCB1F95E
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 06:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321401F95E
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 06:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725864985; cv=none; b=WiqLXc58wB8Hwl7yvOhosmL3TqwtEMl8Vmk4sXJ8i1P7cn3h25uzYo5TOYZU0WPBLsmm1Qo5borx7mdASRuxw/oSzFWKzutb5BFSz4XVUIym342FQC0VrdUKy9lr1d/MBmvyUi5bBkFXzGhDW2HLNFwj2w415JnD4tN9gNSjwwQ=
+	t=1725864992; cv=none; b=QC1fDUhLpSjCW8WUb+ktp5TTwUEOj0RN/BV1OgjOtM4YHKIRSNwZL2Ae4Nwr+zfqce3wi0ZtJrg0YrnQZlcrnkFhsc/wZVBIYuoSUDHHyoYjcS0xAPJubKhnGerqIaZlOVKLBHaB35vwDEICN1Mk3qpthubhojtqFa1IPQUS/BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725864985; c=relaxed/simple;
-	bh=+Ju7bgNTgtTzotMZ4VSXRfbctlvD9YnsiTARJb8dplI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oEe4e0EeSjuL3XmfhdO30yhCm75j6NP1NfiWh5xfPwmqwjaKBZFAmEC+dm3+/JLzQsRBfWk3AOu6UT8LnwPTTFh/VN3B3vwGi4NYp4WC00E1KPaTF5KxpiRaSSW3YfHTAOHTdjLekQdWfPNCi0aRhzvGYPUjnDrTwqpikxLz2jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rccyyGi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F83C4CEC5;
-	Mon,  9 Sep 2024 06:56:24 +0000 (UTC)
+	s=arc-20240116; t=1725864992; c=relaxed/simple;
+	bh=9L+GSVTJb5w1sy8niTbJU3gA53y+L9LffMwuP8lsoUs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nCnchETaTZ3zX9wCZBjSy46iMNHd0nb8IbJH9Ri4O3V3Cs9AiuIUymkaIogrEmCqdJfF475tKtfBDyYQWd8WkakugmhFrlnzTeZHhetkv2DRUhRfSkf/spz6xP0pAVpTLcUPuJ30mr6PDLFCWkyrCD4mxE3yLceIzLBQ/iOsBnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD0SKpu9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B34C4CEC5;
+	Mon,  9 Sep 2024 06:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725864985;
-	bh=+Ju7bgNTgtTzotMZ4VSXRfbctlvD9YnsiTARJb8dplI=;
+	s=korg; t=1725864991;
+	bh=9L+GSVTJb5w1sy8niTbJU3gA53y+L9LffMwuP8lsoUs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rccyyGi9OkHRY/5HvrC/yyx/8cdUHDIjEZVJUdRQ6ukNfwStO9CTxXXg0SD5HOgr5
-	 iRTdoHIbBm1rIVfjj0hzXWlrPvj/zybpFcpsJtpKodHxiJxW+3HqsJ08KLxAE3qbYz
-	 lLu2WxV7eQKZLkQdFuqNg7c2E8SI9sqS0zitBZ5U=
-Subject: FAILED: patch "[PATCH] usb: dwc3: Avoid waking up gadget during startxfer" failed to apply to 6.1-stable tree
+	b=eD0SKpu9S37adGB/zu3n2XL4vfCeJODBVG5fdihmWtWaGF4aEkpke3RwPlxMS6L1x
+	 FxiUrOXc19vg5EVw3nr8iYbvjVmAyq/esVrNAf1ms/N0Uzre6MJND28Ad35dydqQVI
+	 xcMz55oYjClDpMDrhE3sFymq2boqpA54C1zehfNQ=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Avoid waking up gadget during startxfer" failed to apply to 5.10-stable tree
 To: quic_prashk@quicinc.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 08:56:22 +0200
-Message-ID: <2024090921-chastity-calzone-c81f@gregkh>
+Date: Mon, 09 Sep 2024 08:56:23 +0200
+Message-ID: <2024090923-trustful-helium-3f09@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 00dcf2fa449f23a263343d7fe051741bdde65d0b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090921-chastity-calzone-c81f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090923-trustful-helium-3f09@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 00dcf2fa449f ("usb: dwc3: Avoid waking up gadget during startxfer")
 047161686b81 ("usb: dwc3: Add remote wakeup handling")
+a02a26eb0aea ("usb: dwc3: gadget: Ignore Update Transfer cmd params")
+63c4c320ccf7 ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
+40edb52298df ("usb: dwc3: avoid NULL access of usb_gadget_driver")
+c560e76319a9 ("usb: dwc3: gadget: Fix START_TRANSFER link state check")
+475e8be53d04 ("usb: dwc3: gadget: Check for disabled LPM quirk")
+82c46b8ed9dc ("usb: dwc3: gadget: Introduce a DWC3 VBUS draw callback")
 
 thanks,
 
