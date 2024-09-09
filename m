@@ -1,128 +1,135 @@
-Return-Path: <stable+bounces-74084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6BF972204
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 20:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA6B97236B
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08681C23344
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 18:40:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF62C1C21C94
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 20:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4ED189517;
-	Mon,  9 Sep 2024 18:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I6rlqljj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71AA18A6BD;
+	Mon,  9 Sep 2024 20:16:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mailhost.m5p.com (mailhost.m5p.com [74.104.188.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B40183CDB;
-	Mon,  9 Sep 2024 18:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B2813B2B0
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 20:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.104.188.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725907243; cv=none; b=useWPk0JZT7HO8Ikq0cjrrOLi/4/iy7oghKFqFBpdghQKOyYQ7GV9Hdhl36HKKgciUBsVlJFzyNzss3+xTecFC3YAc5EjbcyXXuUMMEm3GtujuQ+yj3rJqPA0TH8oGtiIalR89THoATr8eHH1Bz6eytu60MNn39Jf5QpRkcZXaY=
+	t=1725912987; cv=none; b=E4iJY9rLbfBulAjGwyzDnhmxsyRvobGdTIvlakjnWW6IWXPdKKeK5bRO44Wxj54ENriCJM7TK1BLvecxDTUn4WureLS/4OmsQpisx+JmkKPNNmZw/2+FGASouVIPcL1JDD2JFLHocU6hACE21W3lMq9dUjmlyoMd1GJloThQP9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725907243; c=relaxed/simple;
-	bh=ldth771QtKYp1aOO9EKui3hX7A0F+l9TXfrgCTBSWZY=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Bb8F9aHtW+vh3RWI0WZ/sBRxPg387tNI2Bs7Y8df8yoalmfN5FmTO+H/87Am4sv4O6+l4ngse7hUuU/cx4SUlN98z6MY4FBujtK/NWnf0XUTCS2VCt71OKHMdmOCh8B4OPni1BVCZ0uVN5DtSN0nFrW1u86WcGhWyvlgA7lBxXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I6rlqljj; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725907242; x=1757443242;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=ldth771QtKYp1aOO9EKui3hX7A0F+l9TXfrgCTBSWZY=;
-  b=I6rlqljjyr93xIyeXYqGeDUno4QAh+oDzXV/ro9Z03sUwna+BaWwpDmn
-   KhoCbfb9u13HOxD8Og9k5XIRoXnNma/5foPQt0XIenUZvVHen548mborA
-   K63ad+rA68jsgq7BvXPWSsCjkAXLKqfyNlLkeBh7FetRwj7TYPa0trjY/
-   ZmMMhpE/0KZalw9pOWM4rQ/H1b0qpYj/dzo2T8tLntP5bfi4W5qJOGcAk
-   awPVCoP0oPLre/U9XHXSuYcUoDVHLcJFRPN6UYPZuv2EXUnUuHlsniEkh
-   BHAxDqiNCuFSzDa4R30iL5aXG5uaGr5tMzrnckKyn0qC31Wzncya59R8n
-   Q==;
-X-CSE-ConnectionGUID: MzCLjFEvR86hfSuGhvN9hg==
-X-CSE-MsgGUID: h445T1epRyaqWo+6OnZwww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24120412"
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="24120412"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 11:40:41 -0700
-X-CSE-ConnectionGUID: OxYL5/vJTWqo4UpbyrhYig==
-X-CSE-MsgGUID: REAwAcRSSvG247ovHd1ddg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="97571629"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.59])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 11:40:39 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 9 Sep 2024 21:40:36 +0300 (EEST)
-To: Hans de Goede <hdegoede@redhat.com>
-cc: Andy Shevchenko <andy@kernel.org>, James Harmison <jharmison@redhat.com>, 
-    platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] platform/x86: panasonic-laptop: Fix SINF array
- out of bounds accesses
-In-Reply-To: <172590448046.2114.11735502570640542626.b4-ty@linux.intel.com>
-Message-ID: <68b1cc24-1ef0-c247-f2c0-546e7ee96ed9@linux.intel.com>
-References: <20240909113227.254470-1-hdegoede@redhat.com> <172590448046.2114.11735502570640542626.b4-ty@linux.intel.com>
+	s=arc-20240116; t=1725912987; c=relaxed/simple;
+	bh=Xcepxi3Vf5hzhYTTmdtAHNH6ZioEjv18t57AIxS4jVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BAbvzmWKzeNw0FSFqFEUmuhJT49bMQ5f57f/mKz+ELbiF5dAiKvo8sJZjGTmxfApFcmmj/6NYc6Wqloan3B5ez3ELhCsPzi7Qm5ce8yMmNrl+++H5KgHoDmlw61NEWq9fJq+Ty0f7mJUWf015GHHIFfnRgIF7XhsXAUED1Ea+CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com; spf=pass smtp.mailfrom=m5p.com; arc=none smtp.client-ip=74.104.188.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m5p.com
+Received: from m5p.com (mailhost.m5p.com [IPv6:2001:470:8ac4:0:0:0:0:f7])
+	by mailhost.m5p.com (8.18.1/8.17.1) with ESMTPS id 489K2B7q017432
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Mon, 9 Sep 2024 16:02:17 -0400 (EDT)
+	(envelope-from ehem@m5p.com)
+Received: (from ehem@localhost)
+	by m5p.com (8.18.1/8.15.2/Submit) id 489K28xU017431;
+	Mon, 9 Sep 2024 13:02:08 -0700 (PDT)
+	(envelope-from ehem)
+Date: Mon, 9 Sep 2024 13:02:08 -0700
+From: Elliott Mitchell <ehem+xen@m5p.com>
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Takashi Iwai <tiwai@suse.de>, Ariadne Conill <ariadne@ariadne.space>,
+        xen-devel@lists.xenproject.org, alsa-devel@alsa-project.org,
+        stable@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH] Revert "ALSA: memalloc: Workaround for Xen PV"
+Message-ID: <Zt9UQJcYT58LtuRV@mattapan.m5p.com>
+References: <20240906184209.25423-1-ariadne@ariadne.space>
+ <877cbnewib.wl-tiwai@suse.de>
+ <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-732980885-1725905230=:966"
-Content-ID: <e5d23138-5364-e501-91cd-848664a367e0@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Sat, Sep 07, 2024 at 11:38:50AM +0100, Andrew Cooper wrote:
+> On 07/09/2024 8:46 am, Takashi Iwai wrote:
+> > On Fri, 06 Sep 2024 20:42:09 +0200,
+> > Ariadne Conill wrote:
+> >> This patch attempted to work around a DMA issue involving Xen, but
+> >> causes subtle kernel memory corruption.
+> >>
+> >> When I brought up this patch in the XenDevel matrix channel, I was
+> >> told that it had been requested by the Qubes OS developers because
+> >> they were trying to fix an issue where the sound stack would fail
+> >> after a few hours of uptime.  They wound up disabling SG buffering
+> >> entirely instead as a workaround.
+> >>
+> >> Accordingly, I propose that we should revert this workaround patch,
+> >> since it causes kernel memory corruption and that the ALSA and Xen
+> >> communities should collaborate on fixing the underlying problem in
+> >> such a way that SG buffering works correctly under Xen.
+> >>
+> >> This reverts commit 53466ebdec614f915c691809b0861acecb941e30.
+> >>
+> >> Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+> >> Cc: stable@vger.kernel.org
+> >> Cc: xen-devel@lists.xenproject.org
+> >> Cc: alsa-devel@alsa-project.org
+> >> Cc: Takashi Iwai <tiwai@suse.de>
+> > The relevant code has been largely rewritten for 6.12, so please check
+> > the behavior with sound.git tree for-next branch.  I guess the same
+> > issue should happen as the Xen workaround was kept and applied there,
+> > too, but it has to be checked at first.
+> >
+> > If the issue is persistent with there, the fix for 6.12 code would be
+> > rather much simpler like the blow.
+> >
+> >
+> > thanks,
+> >
+> > Takashi
+> >
+> > --- a/sound/core/memalloc.c
+> > +++ b/sound/core/memalloc.c
+> > @@ -793,9 +793,6 @@ static void *snd_dma_sg_alloc(struct snd_dma_buffer *dmab, size_t size)
+> >  	int type = dmab->dev.type;
+> >  	void *p;
+> >  
+> > -	if (cpu_feature_enabled(X86_FEATURE_XENPV))
+> > -		return snd_dma_sg_fallback_alloc(dmab, size);
+> > -
+> >  	/* try the standard DMA API allocation at first */
+> >  	if (type == SNDRV_DMA_TYPE_DEV_WC_SG)
+> >  		dmab->dev.type = SNDRV_DMA_TYPE_DEV_WC;
+> >
+> >
+> 
+> Individual subsystems ought not to know or care about XENPV; it's a
+> layering violation.
+> 
+> If the main APIs don't behave properly, then it probably means we've got
+> a bug at a lower level (e.g. Xen SWIOTLB is a constant source of fun)
+> which is probably affecting other subsystems too.
 
---8323328-732980885-1725905230=:966
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <7b4c3389-35f1-d4c2-1810-61c91372e9f9@linux.intel.com>
+This is a big problem.  Debian bug #988477 (https://bugs.debian.org/988477)
+showed up in May 2021.  While some characteristics are quite different,
+the time when it was first reported is similar to the above and it is
+also likely a DMA bug with Xen.
 
-On Mon, 9 Sep 2024, Ilpo J=E4rvinen wrote:
 
-> On Mon, 09 Sep 2024 13:32:25 +0200, Hans de Goede wrote:
->=20
-> > The panasonic laptop code in various places uses the SINF array with in=
-dex
-> > values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF arra=
-y
-> > is big enough.
-> >=20
-> > Not all panasonic laptops have this many SINF array entries, for exampl=
-e
-> > the Toughbook CF-18 model only has 10 SINF array entries. So it only
-> > supports the AC+DC brightness entries and mute.
-> >=20
-> > [...]
->=20
->=20
-> Thank you for your contribution, it has been applied to my local
-> review-ilpo branch. Note it will show up in the public
-> platform-drivers-x86/review-ilpo branch only once I've pushed my
-> local branch there, which might take a while.
->=20
-> The list of commits applied:
-> [1/3] platform/x86: panasonic-laptop: Fix SINF array out of bounds access=
-es
->       commit: f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4
-> [2/3] platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf =
-array
->       commit: 33297cef3101d950cec0033a0dce0a2d2bd59999
-> [3/3] platform/x86: panasonic-laptop: Add support for programmable button=
-s
->       (no commit info)
+-- 
+(\___(\___(\______          --=> 8-) EHM <=--          ______/)___/)___/)
+ \BS (    |         ehem+sigmsg@m5p.com  PGP 87145445         |    )   /
+  \_CS\   |  _____  -O #include <stddisclaimer.h> O-   _____  |   /  _/
+8A19\___\_|_/58D2 7E3D DDF4 7BA6 <-PGP-> 41D1 B375 37D0 8714\_|_/___/5445
 
-Hmpf, b4 messed this one up. Only patches 1-2 were applied and 3 should=20
-go through for-next.
 
---=20
- i.
---8323328-732980885-1725905230=:966--
 
