@@ -1,117 +1,120 @@
-Return-Path: <stable+bounces-73955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF80970E1A
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:47:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9CF970EA1
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90C41C21E11
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2258A1F22976
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D472B1AC8A5;
-	Mon,  9 Sep 2024 06:47:27 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D47D177999;
+	Mon,  9 Sep 2024 06:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY7LLEP+"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169201AC88B;
-	Mon,  9 Sep 2024 06:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F711F95E
+	for <Stable@vger.kernel.org>; Mon,  9 Sep 2024 06:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725864447; cv=none; b=ExAKWbAybw7mLsWvsptqWQ5hBL0Z4OOCNXqQ7AyxRjGwdhw6zw3h7y+UUOpEEAJkT6WG3Ol4fqBNjCDyW2yZxxUjGkGW/O/BrJueFMxNaEi6i5Ih9yYnt745f8VjtdP/RcIUCu+MiGel76DEsiAskMk2TYWvpGkuQhP7aG4+6qk=
+	t=1725864824; cv=none; b=b2/eaatDGqNP/SwLwkvjWBxyU1WgvDBkXqhl/GdXxyaXVXZ6OS1zrL9l/TRIatCyyo+tjNZa62jl0BV87fR/5DztskqgB7LlvRANuX66uFHhvX6dLElPRCwyUMjTBuGgLdTxndLPhSMhIGxuccm0qG/QH39YVaf2OOu3FR4bkGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725864447; c=relaxed/simple;
-	bh=L6008oDfcpGOdp3sZj7mO4v81wzU3PhcgEhuJkxXEyk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jsktdDJ/tanHWOlKO7WMgR2R+FyZAh9umHla75fKu09P6AIR9mNmqmXEHU0CrSR6NlbvpRwP6uCVfjrqHoY7gyIpFTmtLyul93C8CMX8XIIGGvpmeWymh9sxj/WGPRo6TG0p7CN9mRkhkiTjytyXU04U5L0a5lUnCxywwwLkp5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAC3vn7rmd5mr8gUAg--.35535S2;
-	Mon, 09 Sep 2024 14:47:15 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	make24@iscas.ac.cn,
-	bskeggs@redhat.com,
-	airlied@redhat.com,
-	akpm@linux-foundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] drm/nouveau: fix a possible null pointer dereference
-Date: Mon,  9 Sep 2024 14:47:06 +0800
-Message-Id: <20240909064706.1199176-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1725864824; c=relaxed/simple;
+	bh=ETaEuqtK5QQQo9yCDOY0JQv795K0z+mXPm+cp3IiOcI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JvMbPG1GZfmRNnHx1/0a8l8EOqlWrhuyyKkCJtGgbTTx1IVg3QFXOtGN4rgCVsegoxBU+9mG+jplpQa5NtxayCAb57EW3859xnBb76ABY7/WwAECM6iMJzucaOt5NIKlfzfTrX7WlL7J9f1Z4rMfhA5YjGerYWQuS7FeQUHBXkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY7LLEP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE50FC4CEC5;
+	Mon,  9 Sep 2024 06:53:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725864824;
+	bh=ETaEuqtK5QQQo9yCDOY0JQv795K0z+mXPm+cp3IiOcI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ZY7LLEP+Q2/vCyCF48G92wn9XuWPNZVw6TJqO0G61Vce4ceTsaa4MFNXSnEfCatkK
+	 6Re6miO+G9Wdf5CFcc+QCZVEYwTb7nuw1aza7GZ4BZqPYjwAdDZzB1kZnfp8ajaO9n
+	 VQa74UPluBs+DEYsJut9LCwqc8vcw1qgHq9+9hC0=
+Subject: FAILED: patch "[PATCH] staging: iio: frequency: ad9834: Validate frequency parameter" failed to apply to 4.19-stable tree
+To: amishin@t-argos.ru,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dan.carpenter@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 09 Sep 2024 08:53:40 +0200
+Message-ID: <2024090940-shale-handcart-eb5d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3vn7rmd5mr8gUAg--.35535S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFykCryUWr4DuFyDCF1ftFb_yoW8GFWkpF
-	srG34YyFW5JFZruF18Ja4avF15G3W7JF1xuw10van3C3ZayryUtryrXryYgryfAFW3Kr12
-	qwnFvFy7WF12krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbCPfPUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In ch7006_encoder_get_modes(), the return value of drm_mode_duplicate() is
-used directly in drm_mode_probed_add(), which will lead to a NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Cc: stable@vger.kernel.org
-Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/gpu/drm/i2c/ch7006_drv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+The patch below does not apply to the 4.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
-index 131512a5f3bd..48bf6e4e8bdb 100644
---- a/drivers/gpu/drm/i2c/ch7006_drv.c
-+++ b/drivers/gpu/drm/i2c/ch7006_drv.c
-@@ -229,6 +229,7 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
- {
- 	struct ch7006_priv *priv = to_ch7006_priv(encoder);
- 	const struct ch7006_mode *mode;
-+	struct drm_display_mode *encoder_mode = NULL;
- 	int n = 0;
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x b48aa991758999d4e8f9296c5bbe388f293ef465
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090940-shale-handcart-eb5d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+
+Possible dependencies:
+
+b48aa9917589 ("staging: iio: frequency: ad9834: Validate frequency parameter value")
+8e8040c52e63 ("staging: iio: frequency: ad9833: Load clock using clock framework")
+80109c32348d ("staging: iio: frequency: ad9833: Get frequency value statically")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b48aa991758999d4e8f9296c5bbe388f293ef465 Mon Sep 17 00:00:00 2001
+From: Aleksandr Mishin <amishin@t-argos.ru>
+Date: Wed, 3 Jul 2024 18:45:06 +0300
+Subject: [PATCH] staging: iio: frequency: ad9834: Validate frequency parameter
+ value
+
+In ad9834_write_frequency() clk_get_rate() can return 0. In such case
+ad9834_calc_freqreg() call will lead to division by zero. Checking
+'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
+ad9834_write_frequency() is called from ad9834_write(), where fout is
+taken from text buffer, which can contain any value.
+
+Modify parameters checking.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index a7a5cdcc6590..47e7d7e6d920 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
  
- 	for (mode = ch7006_modes; mode->mode.clock; mode++) {
-@@ -236,8 +237,11 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
- 		    ~mode->valid_norms & 1<<priv->norm)
- 			continue;
+ 	clk_freq = clk_get_rate(st->mclk);
  
--		drm_mode_probed_add(connector,
--				drm_mode_duplicate(encoder->dev, &mode->mode));
-+		encoder_mode = drm_mode_duplicate(encoder->dev, &mode->mode);
-+		if (!encoder_mode)
-+			return 0;
-+
-+		drm_mode_probed_add(connector, encoder_mode);
+-	if (fout > (clk_freq / 2))
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
  
- 		n++;
- 	}
--- 
-2.25.1
+ 	regval = ad9834_calc_freqreg(clk_freq, fout);
 
 
