@@ -1,260 +1,327 @@
-Return-Path: <stable+bounces-73993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD4971475
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26242971455
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF3681F23826
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98AC1F238B0
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C401B3733;
-	Mon,  9 Sep 2024 09:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E471AD9C3;
+	Mon,  9 Sep 2024 09:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="11Qbcmzr";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="t/Xgoo6V";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="11Qbcmzr";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="t/Xgoo6V"
 X-Original-To: stable@vger.kernel.org
-Received: from port70.net (port70.net [81.7.13.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFFD1B0107;
-	Mon,  9 Sep 2024 09:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.7.13.123
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311281B2536;
+	Mon,  9 Sep 2024 09:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725875543; cv=none; b=lYXq5Kt1pNdeStaJIqW6wm2V8+ciFc+89jTly2fTIVt4BRdYhJRDoyxSZLAzos9C2/OLcjzVSKl02AGMTSXlbqlqf/wpSlgF5AFaGGxrnUUvx2Jhbu/lPLnhUqRNEw6I8KzDOJ3IcS6itzeXRy+xKLul5I4X5Q1MozF7PAKCpl4=
+	t=1725875357; cv=none; b=oKE1ELL9DFlxl2CGDGdDegU0LqT6hemSqWofHU0nvWxukliwXnyYNZC4NRc6DEW2/Oq6W6Z9I7ukq45l47nKzsaHuYmngKrHdvIzWKilsDyS3k7LjnReEWwHUs6XZ/sO1jYnXTGhAigKKVzg6LYddd7FHmILV6P2H3TloPUPlas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725875543; c=relaxed/simple;
-	bh=M8sb/PsgH6GywjheuqRbGJHO9C6dffq+g1GeO45Gbkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fX7a9BKbBtZSdMKb2UHvKZ83QQYS6qpGWkyKIyG459RDZIdbbGEw8+QzOF7BMXho6aITw3PH0Texgb4yl03JrKFgbp66hKG6O30VkK/MEWS0amaHVConf8LUQ/b2r8IsNzlNwGdIMUZkhE6dCFdVwj4Bwp7aXXVBojcyuuxLDCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=port70.net; spf=pass smtp.mailfrom=port70.net; arc=none smtp.client-ip=81.7.13.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=port70.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=port70.net
-Received: by port70.net (Postfix, from userid 1002)
-	id 9A289ABEC0C7; Mon,  9 Sep 2024 11:45:27 +0200 (CEST)
-Date: Mon, 9 Sep 2024 11:45:27 +0200
-From: Szabolcs Nagy <nsz@port70.net>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Szabolcs Nagy <szabolcs.nagy@arm.com>, netdev@vger.kernel.org,
-	davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, mst@redhat.com, jasowang@redhat.com,
-	arefev@swemel.ru, alexander.duyck@gmail.com,
-	Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org,
-	Jakub Sitnicki <jakub@cloudflare.com>, Felix Fietkau <nbd@nbd.name>,
-	Mark Brown <broonie@kernel.org>,
-	Yury Khrustalev <yury.khrustalev@arm.com>, nd@arm.com
-Subject: Re: [PATCH net v2] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <20240909094527.GA3048202@port70.net>
-References: <20240729201108.1615114-1-willemdebruijn.kernel@gmail.com>
- <ZtsTGp9FounnxZaN@arm.com>
- <66db2542cfeaa_29a385294b9@willemb.c.googlers.com.notmuch>
- <66de0487cfa91_30614529470@willemb.c.googlers.com.notmuch>
+	s=arc-20240116; t=1725875357; c=relaxed/simple;
+	bh=iq0k+4FXljaFhQ+ErzpXOczbkq5LYNq1P7G1F4lhUMI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XBOR98VCDJHQoRUnph7utWanLRxqr77wASvyS8f2xVbLv9lRIhKzcMHUEZm9/XBlY52Amer3zGu/Vs33aTZsvHX0h0xdWmYWLlLjWtZCzntSgasIQBSKMgc2ftne8ycD6BBuLQPooZvwPmX6qw7xqBcyH8FQG1HKOb+CiISbrz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=11Qbcmzr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=t/Xgoo6V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=11Qbcmzr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=t/Xgoo6V; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4AA9A21BD9;
+	Mon,  9 Sep 2024 09:49:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1725875353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iq0k+4FXljaFhQ+ErzpXOczbkq5LYNq1P7G1F4lhUMI=;
+	b=11QbcmzrQPRcqhteOwfy0PjGuRTlpKDcN1dIProQsWSlhp2DllT1UnHb0wA9WfVTAMI3Jn
+	VBhYF9sohOUJPEV3KuX/CrMJiQJ0jwEPZD+03KkpeQhWacBPrbYns9wsTAC2pkyGZGbV/4
+	BbbT8VYkGhDlxWDEsDZpEC/UCFIehZo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1725875353;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iq0k+4FXljaFhQ+ErzpXOczbkq5LYNq1P7G1F4lhUMI=;
+	b=t/Xgoo6VLIrvgpY0//dquGyzkR31wzBH+HGj4VK5ZaER+QAeL3o3lWsBAkcWLmN/igrHi4
+	jfeLiSh7LhpoV8CQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=11Qbcmzr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="t/Xgoo6V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1725875353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iq0k+4FXljaFhQ+ErzpXOczbkq5LYNq1P7G1F4lhUMI=;
+	b=11QbcmzrQPRcqhteOwfy0PjGuRTlpKDcN1dIProQsWSlhp2DllT1UnHb0wA9WfVTAMI3Jn
+	VBhYF9sohOUJPEV3KuX/CrMJiQJ0jwEPZD+03KkpeQhWacBPrbYns9wsTAC2pkyGZGbV/4
+	BbbT8VYkGhDlxWDEsDZpEC/UCFIehZo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1725875353;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iq0k+4FXljaFhQ+ErzpXOczbkq5LYNq1P7G1F4lhUMI=;
+	b=t/Xgoo6VLIrvgpY0//dquGyzkR31wzBH+HGj4VK5ZaER+QAeL3o3lWsBAkcWLmN/igrHi4
+	jfeLiSh7LhpoV8CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAB3713312;
+	Mon,  9 Sep 2024 09:49:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VlG+L5jE3mY4CwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 09 Sep 2024 09:49:12 +0000
+Message-ID: <fe2ac80d-3a52-4b99-b187-8e15286fc647@suse.de>
+Date: Mon, 9 Sep 2024 11:49:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66de0487cfa91_30614529470@willemb.c.googlers.com.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] soft lockup on boot starting with kernel 6.10 /
+ commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
+To: Borislav Petkov <bp@alien8.de>, Hugues Bruant <hugues.bruant@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>, Tony Luck
+ <tony.luck@intel.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
+ Brian Norris <briannorris@chromium.org>, Julius Werner
+ <jwerner@chromium.org>, chrome-platform@lists.linux.dev,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+References: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
+ <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Rspamd-Queue-Id: 4AA9A21BD9
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.91 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[alien8.de,gmail.com];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -2.91
+X-Spam-Flag: NO
 
-* Willem de Bruijn <willemdebruijn.kernel@gmail.com> [2024-09-08 16:09:43 -0400]:
-> Willem de Bruijn wrote:
-> > Szabolcs Nagy wrote:
-> > > The 07/29/2024 16:10, Willem de Bruijn wrote:
-> > > > From: Willem de Bruijn <willemb@google.com>
-> > > > 
-> > > > Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
-> > > > for GSO packets.
-> > > > 
-> > > > The function already checks that a checksum requested with
-> > > > VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
-> > > > this might not hold for segs after segmentation.
-> > > > 
-> > > > Syzkaller demonstrated to reach this warning in skb_checksum_help
-> > > > 
-> > > > 	offset = skb_checksum_start_offset(skb);
-> > > > 	ret = -EINVAL;
-> > > > 	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
-> > > > 
-> > > > By injecting a TSO packet:
-> > > > 
-> > > > WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
-> > > >  ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
-> > > >  ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
-> > > >  __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
-> > > >  iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
-> > > >  ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
-> > > >  __gre_xmit net/ipv4/ip_gre.c:469 [inline]
-> > > >  ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
-> > > >  __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
-> > > >  netdev_start_xmit include/linux/netdevice.h:4864 [inline]
-> > > >  xmit_one net/core/dev.c:3595 [inline]
-> > > >  dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
-> > > >  __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
-> > > >  packet_snd net/packet/af_packet.c:3073 [inline]
-> > > > 
-> > > > The geometry of the bad input packet at tcp_gso_segment:
-> > > > 
-> > > > [   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
-> > > > [   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
-> > > > [   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
-> > > > [   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
-> > > > ip_summed=3 complete_sw=0 valid=0 level=0)
-> > > > 
-> > > > Mitigate with stricter input validation.
-> > > > 
-> > > > csum_offset: for GSO packets, deduce the correct value from gso_type.
-> > > > This is already done for USO. Extend it to TSO. Let UFO be:
-> > > > udp[46]_ufo_fragment ignores these fields and always computes the
-> > > > checksum in software.
-> > > > 
-> > > > csum_start: finding the real offset requires parsing to the transport
-> > > > header. Do not add a parser, use existing segmentation parsing. Thanks
-> > > > to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
-> > > > Again test both TSO and USO. Do not test UFO for the above reason, and
-> > > > do not test UDP tunnel offload.
-> > > > 
-> > > > GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
-> > > > CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
-> > > > from devices with no checksum offload"), but then still these fields
-> > > > are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
-> > > > need to test for ip_summed == CHECKSUM_PARTIAL first.
-> > > > 
-> > > > This revises an existing fix mentioned in the Fixes tag, which broke
-> > > > small packets with GSO offload, as detected by kselftests.
-> > > > 
-> > > > Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
-> > > > Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
-> > > > Fixes: e269d79c7d35 ("net: missing check virtio")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> > > > 
-> > > > ---
-> > > > 
-> > > > v1->v2
-> > > >   - skb_transport_header instead of skb->transport_header (edumazet@)
-> > > >   - typo: migitate -> mitigate
-> > > > ---
-> > > 
-> > > this breaks booting from nfs root on an arm64 fvp
-> > > model for me.
-> > > 
-> > > i see two fixup commits
-> > > 
-> > > commit 30b03f2a0592eee1267298298eac9dd655f55ab2
-> > > Author:     Jakub Sitnicki <jakub@cloudflare.com>
-> > > AuthorDate: 2024-08-08 11:56:22 +0200
-> > > Commit:     Jakub Kicinski <kuba@kernel.org>
-> > > CommitDate: 2024-08-09 21:58:08 -0700
-> > > 
-> > >     udp: Fall back to software USO if IPv6 extension headers are present
-> > > 
-> > > and
-> > > 
-> > > commit b128ed5ab27330deeeaf51ea8bb69f1442a96f7f
-> > > Author:     Felix Fietkau <nbd@nbd.name>
-> > > AuthorDate: 2024-08-19 17:06:21 +0200
-> > > Commit:     Jakub Kicinski <kuba@kernel.org>
-> > > CommitDate: 2024-08-21 17:15:05 -0700
-> > > 
-> > >     udp: fix receiving fraglist GSO packets
-> > > 
-> > > but they don't fix the issue for me,
-> > > at the boot console i see
-> > > 
-> > > ...
-> > > [    3.686846] Sending DHCP requests ., OK
-> > > [    3.687302] IP-Config: Got DHCP answer from 172.20.51.254, my address is 172.20.51.1
-> > > [    3.687423] IP-Config: Complete:
-> > > [    3.687482]      device=eth0, hwaddr=ea:0d:79:71:af:cd, ipaddr=172.20.51.1, mask=255.255.255.0, gw=172.20.51.254
-> > > [    3.687631]      host=172.20.51.1, domain=, nis-domain=(none)
-> > > [    3.687719]      bootserver=172.20.51.254, rootserver=10.2.80.41, rootpath=
-> > > [    3.687771]      nameserver0=172.20.51.254, nameserver1=172.20.51.252, nameserver2=172.20.51.251
-> > > [    3.689075] clk: Disabling unused clocks
-> > > [    3.689167] PM: genpd: Disabling unused power domains
-> > > [    3.689258] ALSA device list:
-> > > [    3.689330]   No soundcards found.
-> > > [    3.716297] VFS: Mounted root (nfs4 filesystem) on device 0:24.
-> > > [    3.716843] devtmpfs: mounted
-> > > [    3.734352] Freeing unused kernel memory: 10112K
-> > > [    3.735178] Run /sbin/init as init process
-> > > [    3.743770] eth0: bad gso: type: 1, size: 1440
-> > > [    3.744186] eth0: bad gso: type: 1, size: 1440
-> > > ...
-> > > [  154.610991] eth0: bad gso: type: 1, size: 1440
-> > > [  185.330941] nfs: server 10.2.80.41 not responding, still trying
-> > > ...
-> > > 
-> > > the "bad gso" message keeps repeating and init
-> > > is not executed.
-> > > 
-> > > if i revert the 3 patches above on 6.11-rc6 then
-> > > init runs without "bad gso" error.
-> > > 
-> > > this affects testing the arm64-gcs patches on
-> > > top of 6.11-rc3 and 6.11-rc6
-> > > 
-> > > not sure if this is an fvp or kernel bug.
-> > 
-> > Thanks for the report, sorry that you're encountering this breakage.
-> > 
-> > Makes sense that this commit introduced it
-> > 
-> >         if (virtio_net_hdr_to_skb(skb, &hdr->hdr,
-> >                                   virtio_is_little_endian(vi->vdev))) {
-> >                 net_warn_ratelimited("%s: bad gso: type: %u, size: %u\n",
-> >                                      dev->name, hdr->hdr.gso_type,
-> >                                      hdr->hdr.gso_size);
-> >                 goto frame_err;
-> >         }
-> >         
-> > Type 1 is VIRTIO_NET_HDR_GSO_TCPV4
-> > 
-> > Most likely this application is inserting a packet with flag
-> > VIRTIO_NET_HDR_F_NEEDS_CSUM and a wrong csum_start. Or is requesting
-> > TSO without checksum offload at all. In which case the kernel goes out
-> > of its way to find the right offset, but may fail.
-> > 
-> > Which nfs-client is this? I'd like to take a look at the sourcecode.
-> > 
-> > Unfortunately the kernel warning lacks a few useful pieces of data,
-> > such as the other virtio_net_hdr fields and the packet length.
-> 
-> This happens on the virtio-net receive path, so the bad data is
-> received from the hypervisor.
-> 
-> >From what I gather that arm64 fvp (Fixed Virtual Platforms) hypervisor
-> is closed source?
-> 
-> Disabling GRO on this device will likely work as temporary workaround.
-> 
-> What we can do is instead of dropping packets to correct their offset:
-> 
->                 case SKB_GSO_TCPV4:
->                 case SKB_GSO_TCPV6:
-> -                        if (skb->csum_offset != offsetof(struct tcphdr, check))
-> -                                return -EINVAL;
-> +                        if (skb->csum_offset != offsetof(struct tcphdr, check)) {
-> +                                DEBUG_NET_WARN_ON_ONCE(1);
-> +                                skb->csum_offset = offsetof(struct tcphdr, check);
-> +                        }
-> 
-> If the issue is in csum_offset. If the new csum_start check fails,
-> that won't help.
-> 
-> It would be helpful to see these values at this point, e.g., with
-> skb_dump(KERN_INFO, skb, false);
-
-thanks for the quick response.
-
-i sent this issue on my last day at the company so
-i won't be able to help with this any more, sorry.
-
-fvp is closed source but has freely available binaries
-for x86_64 glibc based linux systems (behind registration
-and license agreements) so in principle the issue can be
-reproduced outside of arm but using fvp is not obvious.
-
-hopefully somebody at arm can pick it up or at least
-report this thread to the fvp team internally.
+SGkNCg0KQW0gMDkuMDkuMjQgdW0gMTA6MDIgc2NocmllYiBCb3Jpc2xhdiBQZXRrb3Y6DQo+
+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogcmVzb3VyY2U6IFRyeWluZyB0byBmcmVl
+IG5vbmV4aXN0ZW50IHJlc291cmNlIDwweDAwMDAwMDAwYTAwMDAwMDAtMHgwMDAwMDAwMGEw
+MjU3ZmZmPg0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6IEJVRzogdW5hYmxlIHRv
+IGhhbmRsZSBwYWdlIGZhdWx0IGZvciBhZGRyZXNzOiAwMDAwMDAwMzAwMDAwMDMxDQo+IEF1
+ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogI1BGOiBzdXBlcnZpc29yIHJlYWQgYWNjZXNz
+IGluIGtlcm5lbCBtb2RlDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogI1BGOiBl
+cnJvcl9jb2RlKDB4MDAwMCkgLSBub3QtcHJlc2VudCBwYWdlDQo+IEF1ZyAyMCAyMDoyOToz
+NyBsdW5hIGtlcm5lbDogUEdEIDAgUDREIDANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2Vy
+bmVsOiBPb3BzOiBPb3BzOiAwMDAwIFsjMV0gUFJFRU1QVCBTTVAgTk9QVEkNCj4gQXVnIDIw
+IDIwOjI5OjM3IGx1bmEga2VybmVsOiBDUFU6IDkgUElEOiA1NTIgQ29tbTogKHVkZXYtd29y
+a2VyKSBUYWludGVkOiBHICAgICAgICAgICBPRSAgICAgIDYuMTAuNi1hcmNoMS0xICMxIDcw
+M2QxNTJjMjRmMTk3MWUzNmYxNmU1MDU0MDVlNDU2ZmM5ZTIzZjgNCj4gQXVnIDIwIDIwOjI5
+OjM3IGx1bmEga2VybmVsOiBIYXJkd2FyZSBuYW1lOiBQdXJpc20gTGlicmVtIDE0L0xpYnJl
+bSAxNCwgQklPUyA0LjE0LVB1cmlzbS0xIDA2LzE4LzIwMjENCj4gQXVnIDIwIDIwOjI5OjM3
+IGx1bmEga2VybmVsOiBSSVA6IDAwMTA6X19yZWxlYXNlX3Jlc291cmNlKzB4MzQvMHhiMA0K
+PiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6IENvZGU6IDhkIDUwIDM4IDQ4IDhiIDQw
+IDM4IDQ4IDg1IGMwIDc1IDI3IGViIDZhIDY2IDY2IDJlIDBmIDFmIDg0IDAwIDAwIDAwIDAw
+IDAwIDY2IDY2IDJlIDBmIDFmIDg0IDAwIDAwIDAwIDAwIDAwIDY2IDkwIDQ4IDhkIDUwIDMw
+IDw0OD4gOGIgNDAgMzAgNDggODUgYzAgNzQgNDUgNDggMzkgYzcgNzUgZWUgNDAgODQgZjYg
+NzUgNDUgNDggOGIgNGYNCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiBSU1A6IDAw
+MTg6ZmZmZmIzMGRjMjA3ZjkzMCBFRkxBR1M6IDAwMDEwMjk2DQo+IEF1ZyAyMCAyMDoyOToz
+NyBsdW5hIGtlcm5lbDogUkFYOiAwMDAwMDAwMzAwMDAwMDAxIFJCWDogZmZmZjhmYTM0NjE2
+ZTkwMCBSQ1g6IGZmZmY4ZmEzNDI0YWFjNTANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2Vy
+bmVsOiBSRFg6IDAwMDAwMDAzMDAwMDAwMzEgUlNJOiAwMDAwMDAwMDAwMDAwMDAxIFJESTog
+ZmZmZjhmYTM0NjE2ZTkwMA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6IFJCUDog
+ZmZmZjhmYTM0NjBlMTQwMCBSMDg6IGZmZmY4ZmEzNDI0YTk3YjggUjA5OiAwMDAwMDAwMDAw
+MDAwMDAwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogUjEwOiAwMDAwMDAwMDAw
+MDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDAwMCBSMTI6IGZmZmY4ZmEzNDE2NzEwMDANCj4g
+QXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiBSMTM6IDAwMDAwMDAwMDAwMDAwMDAgUjE0
+OiBmZmZmOGZhMzQxNjcxMGM4IFIxNTogZmZmZjhmYTM0MTY3MTAwMA0KPiBBdWcgMjAgMjA6
+Mjk6MzcgbHVuYSBrZXJuZWw6IEZTOiAgMDAwMDdiMWJlZTBlYjg4MCgwMDAwKSBHUzpmZmZm
+OGZhZTZlNDgwMDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAwMDANCj4gQXVnIDIwIDIw
+OjI5OjM3IGx1bmEga2VybmVsOiBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAw
+MDAwMDAwMDgwMDUwMDMzDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogQ1IyOiAw
+MDAwMDAwMzAwMDAwMDMxIENSMzogMDAwMDAwMDEwMzkyNDAwMiBDUjQ6IDAwMDAwMDAwMDAz
+NzA2ZjANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiBDYWxsIFRyYWNlOg0KPiBB
+dWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICA8VEFTSz4NCj4gQXVnIDIwIDIwOjI5OjM3
+IGx1bmEga2VybmVsOiAgPyBfX2RpZV9ib2R5LmNvbGQrMHgxOS8weDI3DQo+IEF1ZyAyMCAy
+MDoyOTozNyBsdW5hIGtlcm5lbDogID8gcGFnZV9mYXVsdF9vb3BzKzB4MTVhLzB4MmQwDQo+
+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogID8gZXhjX3BhZ2VfZmF1bHQrMHg4MS8w
+eDE5MA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICA/IGFzbV9leGNfcGFnZV9m
+YXVsdCsweDI2LzB4MzANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiAgPyBfX3Jl
+bGVhc2VfcmVzb3VyY2UrMHgzNC8weGIwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5l
+bDogIHJlbGVhc2VfcmVzb3VyY2UrMHgyNi8weDQwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5h
+IGtlcm5lbDogIHBsYXRmb3JtX2RldmljZV9kZWwrMHg1MS8weDkwDQo+IEF1ZyAyMCAyMDoy
+OTozNyBsdW5hIGtlcm5lbDogIHBsYXRmb3JtX2RldmljZV91bnJlZ2lzdGVyKzB4MTIvMHgz
+MA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBzeXNmYl9kaXNhYmxlKzB4MmYv
+MHg4MA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBhcGVydHVyZV9yZW1vdmVf
+Y29uZmxpY3RpbmdfcGNpX2RldmljZXMrMHg4Yy8weGEwDQoNCkl0J3MgbG9va3MgbGlrZSBh
+bm90aGVyIHJlcG9ydCBvZiBhIGtub3duIHByb2JsZW0uIFBsZWFzZSB0cnkgdGhlIHBhdGNo
+IGF0DQoNCiDCoGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC82MTAx
+NzEvP3Nlcmllcz0xMzc1ODcmcmV2PTENCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiBB
+dWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBpOTE1X2RyaXZlcl9wcm9iZSsweDdjOC8w
+eGFjMCBbaTkxNSA2Y2FhYzVkMDJlMzEyMmQ4MjJjYTBjODUyZTdlNWVkODI2YTNhYWVhXQ0K
+PiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBsb2NhbF9wY2lfcHJvYmUrMHg0Mi8w
+eDkwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIHBjaV9kZXZpY2VfcHJvYmUr
+MHhiZC8weDI5MA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICA/IHN5c2ZzX2Rv
+X2NyZWF0ZV9saW5rX3NkKzB4NmUvMHhlMA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJu
+ZWw6ICByZWFsbHlfcHJvYmUrMHhkYi8weDM0MA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBr
+ZXJuZWw6ICA/IHBtX3J1bnRpbWVfYmFycmllcisweDU0LzB4OTANCj4gQXVnIDIwIDIwOjI5
+OjM3IGx1bmEga2VybmVsOiAgPyBfX3BmeF9fX2RyaXZlcl9hdHRhY2grMHgxMC8weDEwDQo+
+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIF9fZHJpdmVyX3Byb2JlX2RldmljZSsw
+eDc4LzB4MTEwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIGRyaXZlcl9wcm9i
+ZV9kZXZpY2UrMHgxZi8weGEwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIF9f
+ZHJpdmVyX2F0dGFjaCsweGJhLzB4MWMwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5l
+bDogIGJ1c19mb3JfZWFjaF9kZXYrMHg4Yy8weGUwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5h
+IGtlcm5lbDogIGJ1c19hZGRfZHJpdmVyKzB4MTEyLzB4MWYwDQo+IEF1ZyAyMCAyMDoyOToz
+NyBsdW5hIGtlcm5lbDogIGRyaXZlcl9yZWdpc3RlcisweDcyLzB4ZDANCj4gQXVnIDIwIDIw
+OjI5OjM3IGx1bmEga2VybmVsOiAgaTkxNV9pbml0KzB4MjMvMHg5MCBbaTkxNSA2Y2FhYzVk
+MDJlMzEyMmQ4MjJjYTBjODUyZTdlNWVkODI2YTNhYWVhXQ0KPiBBdWcgMjAgMjA6Mjk6Mzcg
+bHVuYSBrZXJuZWw6ICA/IF9fcGZ4X2k5MTVfaW5pdCsweDEwLzB4MTAgW2k5MTUgNmNhYWM1
+ZDAyZTMxMjJkODIyY2EwYzg1MmU3ZTVlZDgyNmEzYWFlYV0NCj4gQXVnIDIwIDIwOjI5OjM3
+IGx1bmEga2VybmVsOiAgZG9fb25lX2luaXRjYWxsKzB4NTgvMHgzMTANCj4gQXVnIDIwIDIw
+OjI5OjM3IGx1bmEga2VybmVsOiAgZG9faW5pdF9tb2R1bGUrMHg2MC8weDIyMA0KPiBBdWcg
+MjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBpbml0X21vZHVsZV9mcm9tX2ZpbGUrMHg4OS8w
+eGUwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIGlkZW1wb3RlbnRfaW5pdF9t
+b2R1bGUrMHgxMjEvMHgzMjANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiAgX194
+NjRfc3lzX2Zpbml0X21vZHVsZSsweDVlLzB4YjANCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEg
+a2VybmVsOiAgZG9fc3lzY2FsbF82NCsweDgyLzB4MTkwDQo+IEF1ZyAyMCAyMDoyOTozNyBs
+dW5hIGtlcm5lbDogID8gc3dpdGNoX2ZwdV9yZXR1cm4rMHg0ZS8weGQwDQo+IEF1ZyAyMCAy
+MDoyOTozNyBsdW5hIGtlcm5lbDogID8gc3lzY2FsbF9leGl0X3RvX3VzZXJfbW9kZSsweDcy
+LzB4MjAwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogID8gZG9fc3lzY2FsbF82
+NCsweDhlLzB4MTkwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogID8gc3lzY2Fs
+bF9leGl0X3RvX3VzZXJfbW9kZSsweDcyLzB4MjAwDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5h
+IGtlcm5lbDogID8gZG9fc3lzY2FsbF82NCsweDhlLzB4MTkwDQo+IEF1ZyAyMCAyMDoyOToz
+NyBsdW5hIGtlcm5lbDogID8gY2xlYXJfYmhiX2xvb3ArMHgyNS8weDgwDQo+IEF1ZyAyMCAy
+MDoyOTozNyBsdW5hIGtlcm5lbDogID8gY2xlYXJfYmhiX2xvb3ArMHgyNS8weDgwDQo+IEF1
+ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogID8gY2xlYXJfYmhiX2xvb3ArMHgyNS8weDgw
+DQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogIGVudHJ5X1NZU0NBTExfNjRfYWZ0
+ZXJfaHdmcmFtZSsweDc2LzB4N2UNCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiBS
+SVA6IDAwMzM6MHg3YjFiZWUyZjgxZmQNCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVs
+OiBDb2RlOiBmZiBjMyA2NiAyZSAwZiAxZiA4NCAwMCAwMCAwMCAwMCAwMCA5MCBmMyAwZiAx
+ZSBmYSA0OCA4OSBmOCA0OCA4OSBmNyA0OCA4OSBkNiA0OCA4OSBjYSA0ZCA4OSBjMiA0ZCA4
+OSBjOCA0YyA4YiA0YyAyNCAwOCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDczIDAxIGMz
+IDQ4IDhiIDBkIGUzIGZhIDBjIDAwIGY3IGQ4IDY0IDg5IDAxIDQ4DQo+IEF1ZyAyMCAyMDoy
+OTozNyBsdW5hIGtlcm5lbDogUlNQOiAwMDJiOjAwMDA3ZmZlMDYyYzJhYzggRUZMQUdTOiAw
+MDAwMDI0NiBPUklHX1JBWDogMDAwMDAwMDAwMDAwMDEzOQ0KPiBBdWcgMjAgMjA6Mjk6Mzcg
+bHVuYSBrZXJuZWw6IFJBWDogZmZmZmZmZmZmZmZmZmZkYSBSQlg6IDAwMDA1NjE3MWM4ZDBh
+MDAgUkNYOiAwMDAwN2IxYmVlMmY4MWZkDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5l
+bDogUkRYOiAwMDAwMDAwMDAwMDAwMDA0IFJTSTogMDAwMDdiMWJlZTBlNTA2MSBSREk6IDAw
+MDAwMDAwMDAwMDAwMjYNCj4gQXVnIDIwIDIwOjI5OjM3IGx1bmEga2VybmVsOiBSQlA6IDAw
+MDA3ZmZlMDYyYzJiODAgUjA4OiAwMDAwMDAwMDAwMDAwMDAxIFIwOTogMDAwMDdmZmUwNjJj
+MmIxMA0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6IFIxMDogMDAwMDAwMDAwMDAw
+MDA0MCBSMTE6IDAwMDAwMDAwMDAwMDAyNDYgUjEyOiAwMDAwN2IxYmVlMGU1MDYxDQo+IEF1
+ZyAyMCAyMDoyOTozNyBsdW5hIGtlcm5lbDogUjEzOiAwMDAwMDAwMDAwMDIwMDAwIFIxNDog
+MDAwMDU2MTcxYzhkMThjMCBSMTU6IDAwMDA1NjE3MWM4ZDMxZTANCj4gQXVnIDIwIDIwOjI5
+OjM3IGx1bmEga2VybmVsOiAgPC9UQVNLPg0KPiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJu
+ZWw6IE1vZHVsZXMgbGlua2VkIGluOiBpbnRlbF9wb3dlcmNsYW1wIGF0aDlrKCspIHNuZF9j
+b21wcmVzcyBjb3JldGVtcCBhYzk3X2J1cyBhdGg5a19jb21tb24gc25kX3BjbV9kbWFlbmdp
+bmUga3ZtX2ludGVsIHNuZF9oZGFfaW50ZWwgYXRoOWtfaHcgam95ZGV2IHNuZF9pbnRlbF9k
+c3BjZmcgbW91c2VkZXYgYXRoIHNuZF9pbnRlbF9zZHdfYWNwaSBpOTE1KCspIGt2bSBzbmRf
+aGRhX2NvZGVjIGlUQ09fd2R0IG1hYzgwMjExIHNuZF9oZGFfY29yZSBwcm9jZXNzb3JfdGhl
+cm1hbF9kZXZpY2VfcGNpX2xlZ2FjeSBpbnRlbF9wbWNfYnh0IHNuZF9od2RlcCBwcm9jZXNz
+b3JfdGhlcm1hbF9kZXZpY2UgaGlkX211bHRpdG91Y2ggZWUxMDA0IGlUQ09fdmVuZG9yX3N1
+cHBvcnQgcHJvY2Vzc29yX3RoZXJtYWxfd3RfaGludCBkcm1fYnVkZHkgc25kX3BjbSByYXBs
+IHByb2Nlc3Nvcl90aGVybWFsX3JmaW0gaGlkX2dlbmVyaWMgc3BpX25vciByODE2OSBpMmNf
+aTgwMSBpMmNfYWxnb19iaXQgbGliYXJjNCBtZW1jb25zb2xlX2NvcmVib290IHByb2Nlc3Nv
+cl90aGVybWFsX3JhcGwgc25kX3RpbWVyIGludGVsX2NzdGF0ZSBpbnRlbF9yYXBsX21zciBm
+cmFtZWJ1ZmZlcl9jb3JlYm9vdCBtZW1jb25zb2xlIGNibWVtIGludGVsX3VuY29yZSBzbmQg
+aW50ZWxfcmFwbF9jb21tb24gcmVhbHRlayB0dG0gaTJjX3NtYnVzIGNmZzgwMjExIG10ZCBw
+cm9jZXNzb3JfdGhlcm1hbF93dF9yZXEgcHNtb3VzZSBtZGlvX2RldnJlcyBwY3Nwa3Igc291
+bmRjb3JlIGkyY19tdXggcHJvY2Vzc29yX3RoZXJtYWxfcG93ZXJfZmxvb3IgZHJtX2Rpc3Bs
+YXlfaGVscGVyIGludGVsX2xwc3NfcGNpIGxpYnBoeSBwcm9jZXNzb3JfdGhlcm1hbF9tYm94
+IGludGVsX2xwc3MgY2VjIHJma2lsbCBpbnQzNDB4X3RoZXJtYWxfem9uZSBpbnRlbF9wbWNf
+Y29yZSBpMmNfaGlkX2FjcGkgaWRtYTY0IGludGVsX2d0dCBpbnRlbF9zb2NfZHRzX2lvc2Yg
+aW50ZWxfcGNoX3RoZXJtYWwgaTJjX2hpZCBpbnRlbF92c2VjIGludGVsX2hpZCB2aWRlbw0K
+PiBBdWcgMjAgMjA6Mjk6MzcgbHVuYSBrZXJuZWw6ICBwbXRfdGVsZW1ldHJ5IHBtdF9jbGFz
+cyBwaW5jdHJsX2Nhbm5vbmxha2Ugd21pIHNwYXJzZV9rZXltYXAgY29yZWJvb3RfdGFibGUg
+bWFjX2hpZCBwa2NzOF9rZXlfcGFyc2VyIGNyeXB0b191c2VyIGxvb3AgYWNwaV9jYWxsKE9F
+KSBuZm5ldGxpbmsgaXBfdGFibGVzIHhfdGFibGVzIGV4dDQgY3JjMzJjX2dlbmVyaWMgY3Jj
+MTYgbWJjYWNoZSBqYmQyIHVhcyB1c2Jfc3RvcmFnZSBkbV9jcnlwdCBjYmMgZW5jcnlwdGVk
+X2tleXMgdHJ1c3RlZCBhc24xX2VuY29kZXIgdGVlIGRtX21vZCBjcmN0MTBkaWZfcGNsbXVs
+IGNyYzMyX3BjbG11bCBjcmMzMmNfaW50ZWwgcG9seXZhbF9jbG11bG5pIHBvbHl2YWxfZ2Vu
+ZXJpYyBnZjEyOG11bCBnaGFzaF9jbG11bG5pX2ludGVsIHNlcmlvX3JhdyBzaGE1MTJfc3Nz
+ZTMgYXRrYmQgc2hhMjU2X3Nzc2UzIHNoYTFfc3NzZTMgbGlicHMyIGFlc25pX2ludGVsIHZp
+dmFsZGlfZm1hcCBudm1lIGNyeXB0b19zaW1kIG52bWVfY29yZSBzcGlfaW50ZWxfcGNpIGNy
+eXB0ZCB4aGNpX3BjaSBzcGlfaW50ZWwgaTgwNDIgbnZtZV9hdXRoIHhoY2lfcGNpX3JlbmVz
+YXMgc2VyaW8gbGlicmVtX2VjX2FjcGkoT0UpDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtl
+cm5lbDogQ1IyOiAwMDAwMDAwMzAwMDAwMDMxDQo+IEF1ZyAyMCAyMDoyOTozNyBsdW5hIGtl
+cm5lbDogLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0tDQo+DQoNCi0tIA0K
+LS0NClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNF
+IFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0Niwg
+OTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMs
+IEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJu
+YmVyZykNCg0K
 
