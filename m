@@ -1,193 +1,236 @@
-Return-Path: <stable+bounces-73973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62AE970EBC
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:01:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F97970FD3
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D1F282DD1
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 07:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD091B21C9A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 07:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E22D175D28;
-	Mon,  9 Sep 2024 07:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1a1nCa6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214441B0129;
+	Mon,  9 Sep 2024 07:28:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBE64C8D
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 07:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from audible.transient.net (audible.transient.net [24.143.126.66])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 56CE72AD00
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 07:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.143.126.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725865294; cv=none; b=I8Ntgd3MutDg08yv6Pg76fKzqOf4FbvUvkP6H7ZhOSxTldHwAsKPj6n4esvDUVqFMMusVquFrQB32s3rTeC/rqcgMdjwxXa7fEcjd8A2UKOh4F7k4ujeO1JCqzWS8/WLnUDX1N+uHZZ+6OZMGiLUrNJc/Je979m2COjlkrrjHKM=
+	t=1725866931; cv=none; b=QpxyQIADs5b2sizqwCt9ZwwLYVR4r5W8WYHXn6A6wofuTbaWlblHS7cO2OzapyPpo6zD3dsN0veaLuujM4dsUYUtNF0oevhY4+N6UNsuPvlBoPr0YdD8fxEe7ywG9ZBtkg5f12MyoXPUvWISkmoDF4ja30utcLQhna2Is6J8g4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725865294; c=relaxed/simple;
-	bh=QulUIKgwdH7zCh18D4Wrjj6TSENX91shKAA3RTydLJ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dIbz4v9SYyaLJX3ayiSdcxoFUKg4vJYX5tOGyTlJA2MvKGt9irqod095Lso4BlxNXLflli1698xl59Gc8iPn1zPPBr0YTWiD6nM7pWIcQ5+E4Cxr1USIC8iuus9vqD2iw9bVCkxe8bP9KqrqCYl4aLCZ14innR4fhPCtmlz3TZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1a1nCa6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32EBC4CEC5;
-	Mon,  9 Sep 2024 07:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725865294;
-	bh=QulUIKgwdH7zCh18D4Wrjj6TSENX91shKAA3RTydLJ0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=a1a1nCa684vxi6KjUDKS6qXwynImPhKbt2TJIMuaFds8CkCXLSkZHJTn+oSD6cgze
-	 lIRop2SlMn0vU/2hLifhs1PnD6heBYyGMACf0NB3b9bPHUDstUItsqr95GBx0idC/E
-	 j/hzHohT/T99t3ULNqk+OrPasUoKK6gOT805fhR0=
-Subject: FAILED: patch "[PATCH] perf/aux: Fix AUX buffer serialization" failed to apply to 4.19-stable tree
-To: peterz@infradead.org,mingo@kernel.org,ole@binarygecko.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Sep 2024 09:01:23 +0200
-Message-ID: <2024090922-directed-majorette-f8ad@gregkh>
+	s=arc-20240116; t=1725866931; c=relaxed/simple;
+	bh=iPIS2/A4UyMGxN239RnR5liQztzw/zwjjc9c9v2vi1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DS/bbibxP7SvjATz2n/v0HdmnYhihvSfSseQxRAhyUYNQJoez22iKp+/4Jxxl0CQ0hdxI3bLxy+pIRazEh9KSePoaj6q7Q/OeQoAePg0+TvwJEXk0hO3vycoV9RP02XSc6eWoinlKtgSmijzL0n34RWeudJh0kf8Wv8CepxtJoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=audible.transient.net; spf=none smtp.mailfrom=audible.transient.net; arc=none smtp.client-ip=24.143.126.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=audible.transient.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=audible.transient.net
+Received: (qmail 2206 invoked from network); 9 Sep 2024 07:28:47 -0000
+Received: from cucamonga.audible.transient.net (192.168.2.5)
+  by canarsie.audible.transient.net with QMQP; 9 Sep 2024 07:28:47 -0000
+Received: (nullmailer pid 23244 invoked by uid 1000);
+	Mon, 09 Sep 2024 07:28:46 -0000
+Date: Mon, 9 Sep 2024 07:28:46 +0000
+From: Jamie Heilman <jamie@audible.transient.net>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, peterz@infradead.org, stable@vger.kernel.org
+Subject: Re: regression in 6.6.46; arch/x86/mm/pti.c
+Message-ID: <Zt6jru89n7DBECCr@audible.transient.net>
+Mail-Followup-To: Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, peterz@infradead.org,
+	stable@vger.kernel.org
+References: <Zt6Bh2J5xMcCETbb@audible.transient.net>
+ <87h6apcp9x.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h6apcp9x.ffs@tglx>
 
+Thomas Gleixner wrote:
+> On Mon, Sep 09 2024 at 05:03, Jamie Heilman wrote:
+> > 3db03fb4995e ("x86/mm: Fix pti_clone_entry_text() for i386") which got
+> > landed in 6.6.46, has introduced two back to back warnings on boot on
+> > my 32bit system (found on 6.6.50):
+> 
+> Right.
+> 
+> > Reverting that commit removes the warnings (tested against 6.6.50).
+> > The follow-on commit of c48b5a4cf312 ("x86/mm: Fix PTI for i386 some
+> > more") doesn't apply cleanly to 6.6.50, but I did try out a build of
+> > 6.11-rc7 and that works fine too with no warnings on boot.
+> 
+> See backport below.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Yep, that tests out fine for me too.  Thanks!
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> ---
+> From: Thomas Gleixner <tglx@linutronix.de>
+> Date:   Tue Aug 6 20:48:43 2024 +0200
+> Subject: [PATCH 6.6.y, 6.1.y, 5.10.y] x86/mm: Fix PTI for i386 some more
+> 
+> commit c48b5a4cf3125adb679e28ef093f66ff81368d05 upstream.
+> 
+> So it turns out that we have to do two passes of
+> pti_clone_entry_text(), once before initcalls, such that device and
+> late initcalls can use user-mode-helper / modprobe and once after
+> free_initmem() / mark_readonly().
+> 
+> Now obviously mark_readonly() can cause PMD splits, and
+> pti_clone_pgtable() doesn't like that much.
+> 
+> Allow the late clone to split PMDs so that pagetables stay in sync.
+> 
+> [peterz: Changelog and comments]
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
+> Link: https://lkml.kernel.org/r/20240806184843.GX37996@noisy.programming.kicks-ass.net
+> ---
+>  arch/x86/mm/pti.c |   45 +++++++++++++++++++++++++++++----------------
+>  1 file changed, 29 insertions(+), 16 deletions(-)
+> 
+> --- a/arch/x86/mm/pti.c
+> +++ b/arch/x86/mm/pti.c
+> @@ -241,7 +241,7 @@ static pmd_t *pti_user_pagetable_walk_pm
+>   *
+>   * Returns a pointer to a PTE on success, or NULL on failure.
+>   */
+> -static pte_t *pti_user_pagetable_walk_pte(unsigned long address)
+> +static pte_t *pti_user_pagetable_walk_pte(unsigned long address, bool late_text)
+>  {
+>  	gfp_t gfp = (GFP_KERNEL | __GFP_NOTRACK | __GFP_ZERO);
+>  	pmd_t *pmd;
+> @@ -251,10 +251,15 @@ static pte_t *pti_user_pagetable_walk_pt
+>  	if (!pmd)
+>  		return NULL;
+>  
+> -	/* We can't do anything sensible if we hit a large mapping. */
+> +	/* Large PMD mapping found */
+>  	if (pmd_large(*pmd)) {
+> -		WARN_ON(1);
+> -		return NULL;
+> +		/* Clear the PMD if we hit a large mapping from the first round */
+> +		if (late_text) {
+> +			set_pmd(pmd, __pmd(0));
+> +		} else {
+> +			WARN_ON_ONCE(1);
+> +			return NULL;
+> +		}
+>  	}
+>  
+>  	if (pmd_none(*pmd)) {
+> @@ -283,7 +288,7 @@ static void __init pti_setup_vsyscall(vo
+>  	if (!pte || WARN_ON(level != PG_LEVEL_4K) || pte_none(*pte))
+>  		return;
+>  
+> -	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR);
+> +	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR, false);
+>  	if (WARN_ON(!target_pte))
+>  		return;
+>  
+> @@ -301,7 +306,7 @@ enum pti_clone_level {
+>  
+>  static void
+>  pti_clone_pgtable(unsigned long start, unsigned long end,
+> -		  enum pti_clone_level level)
+> +		  enum pti_clone_level level, bool late_text)
+>  {
+>  	unsigned long addr;
+>  
+> @@ -390,7 +395,7 @@ pti_clone_pgtable(unsigned long start, u
+>  				return;
+>  
+>  			/* Allocate PTE in the user page-table */
+> -			target_pte = pti_user_pagetable_walk_pte(addr);
+> +			target_pte = pti_user_pagetable_walk_pte(addr, late_text);
+>  			if (WARN_ON(!target_pte))
+>  				return;
+>  
+> @@ -453,7 +458,7 @@ static void __init pti_clone_user_shared
+>  		phys_addr_t pa = per_cpu_ptr_to_phys((void *)va);
+>  		pte_t *target_pte;
+>  
+> -		target_pte = pti_user_pagetable_walk_pte(va);
+> +		target_pte = pti_user_pagetable_walk_pte(va, false);
+>  		if (WARN_ON(!target_pte))
+>  			return;
+>  
+> @@ -476,7 +481,7 @@ static void __init pti_clone_user_shared
+>  	start = CPU_ENTRY_AREA_BASE;
+>  	end   = start + (PAGE_SIZE * CPU_ENTRY_AREA_PAGES);
+>  
+> -	pti_clone_pgtable(start, end, PTI_CLONE_PMD);
+> +	pti_clone_pgtable(start, end, PTI_CLONE_PMD, false);
+>  }
+>  #endif /* CONFIG_X86_64 */
+>  
+> @@ -493,11 +498,11 @@ static void __init pti_setup_espfix64(vo
+>  /*
+>   * Clone the populated PMDs of the entry text and force it RO.
+>   */
+> -static void pti_clone_entry_text(void)
+> +static void pti_clone_entry_text(bool late)
+>  {
+>  	pti_clone_pgtable((unsigned long) __entry_text_start,
+>  			  (unsigned long) __entry_text_end,
+> -			  PTI_LEVEL_KERNEL_IMAGE);
+> +			  PTI_LEVEL_KERNEL_IMAGE, late);
+>  }
+>  
+>  /*
+> @@ -572,7 +577,7 @@ static void pti_clone_kernel_text(void)
+>  	 * pti_set_kernel_image_nonglobal() did to clear the
+>  	 * global bit.
+>  	 */
+> -	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE);
+> +	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE, false);
+>  
+>  	/*
+>  	 * pti_clone_pgtable() will set the global bit in any PMDs
+> @@ -639,8 +644,15 @@ void __init pti_init(void)
+>  
+>  	/* Undo all global bits from the init pagetables in head_64.S: */
+>  	pti_set_kernel_image_nonglobal();
+> +
+>  	/* Replace some of the global bits just for shared entry text: */
+> -	pti_clone_entry_text();
+> +	/*
+> +	 * This is very early in boot. Device and Late initcalls can do
+> +	 * modprobe before free_initmem() and mark_readonly(). This
+> +	 * pti_clone_entry_text() allows those user-mode-helpers to function,
+> +	 * but notably the text is still RW.
+> +	 */
+> +	pti_clone_entry_text(false);
+>  	pti_setup_espfix64();
+>  	pti_setup_vsyscall();
+>  }
+> @@ -657,10 +669,11 @@ void pti_finalize(void)
+>  	if (!boot_cpu_has(X86_FEATURE_PTI))
+>  		return;
+>  	/*
+> -	 * We need to clone everything (again) that maps parts of the
+> -	 * kernel image.
+> +	 * This is after free_initmem() (all initcalls are done) and we've done
+> +	 * mark_readonly(). Text is now NX which might've split some PMDs
+> +	 * relative to the early clone.
+>  	 */
+> -	pti_clone_entry_text();
+> +	pti_clone_entry_text(true);
+>  	pti_clone_kernel_text();
+>  
+>  	debug_checkwx_user();
+> 
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2ab9d830262c132ab5db2f571003d80850d56b2a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090922-directed-majorette-f8ad@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-2ab9d830262c ("perf/aux: Fix AUX buffer serialization")
-c1e8d7c6a7a6 ("mmap locking API: convert mmap_sem comments")
-d8ed45c5dcd4 ("mmap locking API: use coccinelle to convert mmap_sem rwsem call sites")
-5a36f0f3f518 ("Merge tag 'vfio-v5.8-rc1' of git://github.com/awilliam/linux-vfio")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2ab9d830262c132ab5db2f571003d80850d56b2a Mon Sep 17 00:00:00 2001
-From: Peter Zijlstra <peterz@infradead.org>
-Date: Mon, 2 Sep 2024 10:14:24 +0200
-Subject: [PATCH] perf/aux: Fix AUX buffer serialization
-
-Ole reported that event->mmap_mutex is strictly insufficient to
-serialize the AUX buffer, add a per RB mutex to fully serialize it.
-
-Note that in the lock order comment the perf_event::mmap_mutex order
-was already wrong, that is, it nesting under mmap_lock is not new with
-this patch.
-
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Reported-by: Ole <ole@binarygecko.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index c973e3c11e03..8a6c6bbcd658 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1255,8 +1255,9 @@ static void put_ctx(struct perf_event_context *ctx)
-  *	  perf_event_context::mutex
-  *	    perf_event::child_mutex;
-  *	      perf_event_context::lock
-- *	    perf_event::mmap_mutex
-  *	    mmap_lock
-+ *	      perf_event::mmap_mutex
-+ *	        perf_buffer::aux_mutex
-  *	      perf_addr_filters_head::lock
-  *
-  *    cpu_hotplug_lock
-@@ -6373,12 +6374,11 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 		event->pmu->event_unmapped(event, vma->vm_mm);
- 
- 	/*
--	 * rb->aux_mmap_count will always drop before rb->mmap_count and
--	 * event->mmap_count, so it is ok to use event->mmap_mutex to
--	 * serialize with perf_mmap here.
-+	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
-+	 * to avoid complications.
- 	 */
- 	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
--	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &event->mmap_mutex)) {
-+	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
- 		/*
- 		 * Stop all AUX events that are writing to this buffer,
- 		 * so that we can free its AUX pages and corresponding PMU
-@@ -6395,7 +6395,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 		rb_free_aux(rb);
- 		WARN_ON_ONCE(refcount_read(&rb->aux_refcount));
- 
--		mutex_unlock(&event->mmap_mutex);
-+		mutex_unlock(&rb->aux_mutex);
- 	}
- 
- 	if (atomic_dec_and_test(&rb->mmap_count))
-@@ -6483,6 +6483,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 	struct perf_event *event = file->private_data;
- 	unsigned long user_locked, user_lock_limit;
- 	struct user_struct *user = current_user();
-+	struct mutex *aux_mutex = NULL;
- 	struct perf_buffer *rb = NULL;
- 	unsigned long locked, lock_limit;
- 	unsigned long vma_size;
-@@ -6531,6 +6532,9 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 		if (!rb)
- 			goto aux_unlock;
- 
-+		aux_mutex = &rb->aux_mutex;
-+		mutex_lock(aux_mutex);
-+
- 		aux_offset = READ_ONCE(rb->user_page->aux_offset);
- 		aux_size = READ_ONCE(rb->user_page->aux_size);
- 
-@@ -6681,6 +6685,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 		atomic_dec(&rb->mmap_count);
- 	}
- aux_unlock:
-+	if (aux_mutex)
-+		mutex_unlock(aux_mutex);
- 	mutex_unlock(&event->mmap_mutex);
- 
- 	/*
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index 451514442a1b..e072d995d670 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -40,6 +40,7 @@ struct perf_buffer {
- 	struct user_struct		*mmap_user;
- 
- 	/* AUX area */
-+	struct mutex			aux_mutex;
- 	long				aux_head;
- 	unsigned int			aux_nest;
- 	long				aux_wakeup;	/* last aux_watermark boundary crossed by aux_head */
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 8cadf97bc290..4f46f688d0d4 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -337,6 +337,8 @@ ring_buffer_init(struct perf_buffer *rb, long watermark, int flags)
- 	 */
- 	if (!rb->nr_pages)
- 		rb->paused = 1;
-+
-+	mutex_init(&rb->aux_mutex);
- }
- 
- void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)
-
+-- 
+Jamie Heilman                     http://audible.transient.net/~jamie/
 
