@@ -1,309 +1,381 @@
-Return-Path: <stable+bounces-74020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763FF971AFE
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 15:27:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A595971B02
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 15:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEEB4B20DB6
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 13:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 272C31C229D6
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 13:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCDB1B86F4;
-	Mon,  9 Sep 2024 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AC11B86EE;
+	Mon,  9 Sep 2024 13:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="m9E5qXxF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD5gR6jC"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F060D1B86F3
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 13:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DBD1B1510;
+	Mon,  9 Sep 2024 13:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725888454; cv=none; b=V65lPL9KRF9MSsuBGKeE/UzsIEM0HTJlhbFphKaeOW6wGNLKHRdK4z6qvfh8MMm4jalj49FTNZIn3NwRSfvAv6ITLXxVVw5NGZvK9V+yCHRYm42M67e/HxlRrJ0155tIbR628KxdXcXbNA3G/Ktwagwhsu+hMgAHCBzAOMzQ3Oc=
+	t=1725888545; cv=none; b=m1mYzPq7LzX39yIk2m1+k+zvj79mQGJL4kasDHOf1bkEJAXn4bQtVTtsNPwh2jGgVso4QKKygyDiba9xgPHGrTQL6GfW3OjEI4frTev6m3aFJgnAmN2bshcHVNl0MWvvgZVXePvxj1L8wauAQrUT5sDW4Cjj0kwZ3zt9KCe9BdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725888454; c=relaxed/simple;
-	bh=qgRQQyqefdleDDbF1S13RlvzTb64NCJir9GfOCkZj1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xri0AnZb92G+C2AEdjzyPGRUEIb/JU12KTV8mvFS9AkxWyEDj43achsbWQzbXaIpIJWt0MPGC2sFbllbFRs3wzh4JZ9TObZUuTO6YdilobIPDk003xPSZ3p4DR+OcwmBhzUaIAPKJHNuSe06uN5SgsQ76Vx1t4KD4PRAw55yLd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=m9E5qXxF; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2yQhDSOt8/EbRfKKNAwDkSfCqLJvpk2XxpjWlczDXx0=; b=m9E5qXxFoF4mNLRawylfn7rXdn
-	LcH8twcuwCQmynPhgg4WdlMJ417rgdGRMuREnsimQWMzv0RXF04dGroKUMAigd/DkHjzNwSywraQb
-	b8HJ+fPA+yCkBzHeH1dDqfZXEC1kmbPz/d21iRsj8c2845Xset4hPpmDPjPuh0fBlQeWO3i4ZS4IG
-	y6KaW+ds8p+pugG6rmSmvJpYFfh31n6ltEV7euxoLkwNB+hJzhF/IFCQJ7+uR2lmvnA7YBcpPi7CQ
-	eLhc3bl+Iw2rjuIDLB8+KKB28r21pcwI/wxV2/TzBmNNSTGc5ovO7nBymYISKBS+ounhkRiGl6DxI
-	LFMfw58Q==;
-Received: from [90.241.98.187] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1sneQG-00BYyl-NE; Mon, 09 Sep 2024 15:27:16 +0200
-Message-ID: <1848b0fc-7031-46f2-b7f8-f7c086fb00ce@igalia.com>
-Date: Mon, 9 Sep 2024 14:27:15 +0100
+	s=arc-20240116; t=1725888545; c=relaxed/simple;
+	bh=lT8Zc01sEYS0cSmYeiNHxliIQxFZ1ovy5EHOHVpX7wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n0D7TTIc2Ja5U0kLo95zp+1JxuSRpa0ooQAMAqzgwXDObzoTXnjBlWGiOLAo189UvenzoUURt8d4mMIjECXl3T6k0rYFIO0sEe96+z0BQBqLOhx4mLNu61Gcq58qb7ijP8elNCqCARD62qnj8QxxNMtoofqcSN+NrPLIpLYgy3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD5gR6jC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA83CC4CEC5;
+	Mon,  9 Sep 2024 13:29:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725888544;
+	bh=lT8Zc01sEYS0cSmYeiNHxliIQxFZ1ovy5EHOHVpX7wQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MD5gR6jC8rsIMSrlYu4nUNxSh0w7QFwqF+hIPHpuSQGofbqlaf25mTCyVL59xKBWR
+	 soZ6UWza6DoehBg6toYHGSmN5CNqGflZKZHcAXncO/YzU1xFZvU9KUEwvhHmewrzYY
+	 +cS4gdFxEGtanRAYl3gvR4wlP16iTYDXNZ5w2TXsaIwohmJ8s5z8Zl7te1Ppbuv7ul
+	 8TyLnHDLhDSSKQ6itwR5yIZ2TsEkFbKJBDR2XbHFRnFyx7lQLQMyOEKX7Nb2JGtJ6W
+	 je3+aUx+aUmzZuXMXIVgs0LwEzNEnO/Xo1gd1aT7JAjKTrdeXyDiMzgeDCtLafxemW
+	 ay7DZ0v1v+79g==
+From: fdmanana@kernel.org
+To: stable@vger.kernel.org
+Cc: linux-btrfs@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	Filipe Manana <fdmanana@suse.com>,
+	Paulo Dias <paulo.miguel.dias@gmail.com>,
+	Andreas Jahn <jahn-andi@web.de>,
+	syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH for 6.10 stable] btrfs: fix race between direct IO write and fsync when using same fd
+Date: Mon,  9 Sep 2024 14:28:50 +0100
+Message-ID: <c122a3476373e9ee2e74163f00c7e65b04a3aa2d.1725811416.git.fdmanana@suse.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/4] drm/sched: Add locking to drm_sched_entity_modify_sched
-To: Philipp Stanner <pstanner@redhat.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- stable@vger.kernel.org
-References: <20240906180618.12180-1-tursulin@igalia.com>
- <20240906180618.12180-2-tursulin@igalia.com>
- <8d763e5162ebc130a05da3cefbff148cdb6ce042.camel@redhat.com>
- <80e02cde-19e7-4fb6-a572-fb45a639a3b7@amd.com>
- <2356e3d66da3e5795295267e527042ab44f192c8.camel@redhat.com>
- <fb9556a1-b48d-49ed-9b9c-74b21fb76af4@amd.com>
- <14ef37f4-b982-41c1-8121-80882917e9c0@igalia.com>
- <d8944e6ad57e4efcd480d917a38f9cee9475d59c.camel@redhat.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <d8944e6ad57e4efcd480d917a38f9cee9475d59c.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: Filipe Manana <fdmanana@suse.com>
 
-On 09/09/2024 13:46, Philipp Stanner wrote:
-> On Mon, 2024-09-09 at 13:37 +0100, Tvrtko Ursulin wrote:
->>
->> On 09/09/2024 13:18, Christian König wrote:
->>> Am 09.09.24 um 14:13 schrieb Philipp Stanner:
->>>> On Mon, 2024-09-09 at 13:29 +0200, Christian König wrote:
->>>>> Am 09.09.24 um 11:44 schrieb Philipp Stanner:
->>>>>> On Fri, 2024-09-06 at 19:06 +0100, Tvrtko Ursulin wrote:
->>>>>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>>>>>
->>>>>>> Without the locking amdgpu currently can race
->>>>>>> amdgpu_ctx_set_entity_priority() and drm_sched_job_arm(),
->>>>>> I would explicitly say "amdgpu's
->>>>>> amdgpu_ctx_set_entity_priority()
->>>>>> races
->>>>>> through drm_sched_entity_modify_sched() with
->>>>>> drm_sched_job_arm()".
->>>>>>
->>>>>> The actual issue then seems to be drm_sched_job_arm() calling
->>>>>> drm_sched_entity_select_rq(). I would mention that, too.
->>>>>>
->>>>>>
->>>>>>> leading to the
->>>>>>> latter accesing potentially inconsitent entity->sched_list
->>>>>>> and
->>>>>>> entity->num_sched_list pair.
->>>>>>>
->>>>>>> The comment on drm_sched_entity_modify_sched() however
->>>>>>> says:
->>>>>>>
->>>>>>> """
->>>>>>>     * Note that this must be called under the same common
->>>>>>> lock for
->>>>>>> @entity as
->>>>>>>     * drm_sched_job_arm() and drm_sched_entity_push_job(),
->>>>>>> or the
->>>>>>> driver
->>>>>>> needs to
->>>>>>>     * guarantee through some other means that this is never
->>>>>>> called
->>>>>>> while
->>>>>>> new jobs
->>>>>>>     * can be pushed to @entity.
->>>>>>> """
->>>>>>>
->>>>>>> It is unclear if that is referring to this race or
->>>>>>> something
->>>>>>> else.
->>>>>> That comment is indeed a bit awkward. Both
->>>>>> drm_sched_entity_push_job()
->>>>>> and drm_sched_job_arm() take rq_lock. But
->>>>>> drm_sched_entity_modify_sched() doesn't.
->>>>>>
->>>>>> The comment was written in 981b04d968561. Interestingly, in
->>>>>> drm_sched_entity_push_job(), this "common lock" is mentioned
->>>>>> with
->>>>>> the
->>>>>> soft requirement word "should" and apparently is more about
->>>>>> keeping
->>>>>> sequence numbers in order when inserting.
->>>>>>
->>>>>> I tend to think that the issue discovered by you is unrelated
->>>>>> to
->>>>>> that
->>>>>> comment. But if no one can make sense of the comment, should
->>>>>> it
->>>>>> maybe
->>>>>> be removed? Confusing comment is arguably worse than no
->>>>>> comment
->>>>> Agree, we probably mixed up in 981b04d968561 that submission
->>>>> needs a
->>>>> common lock and that rq/priority needs to be protected by the
->>>>> rq_lock.
->>>>>
->>>>> There is also the big FIXME in the drm_sched_entity
->>>>> documentation
->>>>> pointing out that this is most likely not implemented
->>>>> correctly.
->>>>>
->>>>> I suggest to move the rq, priority and rq_lock fields together
->>>>> in the
->>>>> drm_sched_entity structure and document that rq_lock is
->>>>> protecting
->>>>> the two.
->>>> That could also be a great opportunity for improving the lock
->>>> naming:
->>>
->>> Well that comment made me laugh because I point out the same when
->>> the
->>> scheduler came out ~8years ago and nobody cared about it since
->>> then.
->>>
->>> But yeah completely agree :)
->>
->> Maybe, but we need to keep in sight the fact some of these fixes may
->> be
->> good to backport. In which case re-naming exercises are best left to
->> follow.
-> 
-> My argument basically. It's good if fixes and other improvements are
-> separated, in general, unless there is a practical / good reason not
-> to.
+commit cd9253c23aedd61eb5ff11f37a36247cd46faf86 upstream.
 
-Ah cool, I am happy to add follow up patches after the fixes.
+If we have 2 threads that are using the same file descriptor and one of
+them is doing direct IO writes while the other is doing fsync, we have a
+race where we can end up either:
 
->> Also..
->>
->>>> void drm_sched_rq_update_fifo(struct drm_sched_entity *entity,
->>>> ktime_t
->>>> ts)
->>>> {
->>>>      /*
->>>>       * Both locks need to be grabbed, one to protect from entity-
->>>>> rq
->>>> change
->>>>       * for entity from within concurrent
->>>> drm_sched_entity_select_rq
->>>> and the
->>>>       * other to update the rb tree structure.
->>>>       */
->>>>      spin_lock(&entity->rq_lock);
->>>>      spin_lock(&entity->rq->lock);
->>
->> .. I agree this is quite unredable and my initial reaction was a
->> similar
->> ugh. However.. What names would you guys suggest and for what to make
->> this better and not lessen the logic of naming each individually?
-> 
-> According to the documentation, drm_sched_rq.lock does not protect the
-> entire runque, but "@lock: to modify the entities list."
-> 
-> So I would keep drm_sched_entity.rq_lock as it is, because it indeed
-> protects the entire runqueue.
+1) Attempt a fsync without holding the inode's lock, triggering an
+   assertion failures when assertions are enabled;
 
-Agreed on entity->rq_lock.
+2) Do an invalid memory access from the fsync task because the file private
+   points to memory allocated on stack by the direct IO task and it may be
+   used by the fsync task after the stack was destroyed.
 
-> And drm_sched_rq.lock could be named "entities_lock" or
-> "entities_list_lock" or something. That's debatable, but it should be
-> something that highlights that this lock is not for locking the entire
-> runque as the one in the entity apparently is.
+The race happens like this:
 
-AFAICT it also protects rq->current_entity and rq->rb_tree_root in which 
-case it is a bit more tricky. Only rq->sched is outside its scope. Hm. 
-Maybe just re-arrange the struct to be like:
+1) A user space program opens a file descriptor with O_DIRECT;
 
-struct drm_sched_rq {
-	struct drm_gpu_scheduler	*sched;
+2) The program spawns 2 threads using libpthread for example;
 
-	spinlock_t			lock;
-	/* Following members are protected by the @lock: */
-	struct list_head		entities;
-	struct drm_sched_entity		*current_entity;
-	struct rb_root_cached		rb_tree_root;
-};
+3) One of the threads uses the file descriptor to do direct IO writes,
+   while the other calls fsync using the same file descriptor.
 
-I have no ideas for better naming. But this would be inline with 
-Christian's suggestion for tidying the order in drm_sched_entity.
+4) Call task A the thread doing direct IO writes and task B the thread
+   doing fsyncs;
 
-I am also not sure what is the point of setting rq->current_entity in 
-drm_sched_rq_select_entity_fifo().
+5) Task A does a direct IO write, and at btrfs_direct_write() sets the
+   file's private to an on stack allocated private with the member
+   'fsync_skip_inode_lock' set to true;
 
-Regards,
+6) Task B enters btrfs_sync_file() and sees that there's a private
+   structure associated to the file which has 'fsync_skip_inode_lock' set
+   to true, so it skips locking the inode's vfs lock;
 
-Tvrtko
+7) Task A completes the direct IO write, and resets the file's private to
+   NULL since it had no prior private and our private was stack allocated.
+   Then it unlocks the inode's vfs lock;
 
-> 
-> 
-> Cheers,
-> P.
-> 
->>
->> Regards,
->>
->> Tvrtko
->>
->>>> [...]
->>>>
->>>>
->>>> P.
->>>>
->>>>
->>>>> Then audit the code if all users of rq and priority actually
->>>>> hold the
->>>>> correct locks while reading and writing them.
->>>>>
->>>>> Regards,
->>>>> Christian.
->>>>>
->>>>>> P.
->>>>>>
->>>>>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>>>>> Fixes: b37aced31eb0 ("drm/scheduler: implement a function
->>>>>>> to
->>>>>>> modify
->>>>>>> sched list")
->>>>>>> Cc: Christian König <christian.koenig@amd.com>
->>>>>>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>>>>>> Cc: Luben Tuikov <ltuikov89@gmail.com>
->>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>>>>> Cc: David Airlie <airlied@gmail.com>
->>>>>>> Cc: Daniel Vetter <daniel@ffwll.ch>
->>>>>>> Cc: dri-devel@lists.freedesktop.org
->>>>>>> Cc: <stable@vger.kernel.org> # v5.7+
->>>>>>> ---
->>>>>>>     drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
->>>>>>>     1 file changed, 2 insertions(+)
->>>>>>>
->>>>>>> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c
->>>>>>> b/drivers/gpu/drm/scheduler/sched_entity.c
->>>>>>> index 58c8161289fe..ae8be30472cd 100644
->>>>>>> --- a/drivers/gpu/drm/scheduler/sched_entity.c
->>>>>>> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
->>>>>>> @@ -133,8 +133,10 @@ void
->>>>>>> drm_sched_entity_modify_sched(struct
->>>>>>> drm_sched_entity *entity,
->>>>>>>     {
->>>>>>>         WARN_ON(!num_sched_list || !sched_list);
->>>>>>> +    spin_lock(&entity->rq_lock);
->>>>>>>         entity->sched_list = sched_list;
->>>>>>>         entity->num_sched_list = num_sched_list;
->>>>>>> +    spin_unlock(&entity->rq_lock);
->>>>>>>     }
->>>>>>>     EXPORT_SYMBOL(drm_sched_entity_modify_sched);
->>>
->>
-> 
+8) Task B enters btrfs_get_ordered_extents_for_logging(), then the
+   assertion that checks the inode's vfs lock is held fails, since task B
+   never locked it and task A has already unlocked it.
+
+The stack trace produced is the following:
+
+   Aug 21 11:46:43 kerberos kernel: assertion failed: inode_is_locked(&inode->vfs_inode), in fs/btrfs/ordered-data.c:983
+   Aug 21 11:46:43 kerberos kernel: ------------[ cut here ]------------
+   Aug 21 11:46:43 kerberos kernel: kernel BUG at fs/btrfs/ordered-data.c:983!
+   Aug 21 11:46:43 kerberos kernel: Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+   Aug 21 11:46:43 kerberos kernel: CPU: 9 PID: 5072 Comm: worker Tainted: G     U     OE      6.10.5-1-default #1 openSUSE Tumbleweed 69f48d427608e1c09e60ea24c6c55e2ca1b049e8
+   Aug 21 11:46:43 kerberos kernel: Hardware name: Acer Predator PH315-52/Covini_CFS, BIOS V1.12 07/28/2020
+   Aug 21 11:46:43 kerberos kernel: RIP: 0010:btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs]
+   Aug 21 11:46:43 kerberos kernel: Code: 50 d6 86 c0 e8 (...)
+   Aug 21 11:46:43 kerberos kernel: RSP: 0018:ffff9e4a03dcfc78 EFLAGS: 00010246
+   Aug 21 11:46:43 kerberos kernel: RAX: 0000000000000054 RBX: ffff9078a9868e98 RCX: 0000000000000000
+   Aug 21 11:46:43 kerberos kernel: RDX: 0000000000000000 RSI: ffff907dce4a7800 RDI: ffff907dce4a7800
+   Aug 21 11:46:43 kerberos kernel: RBP: ffff907805518800 R08: 0000000000000000 R09: ffff9e4a03dcfb38
+   Aug 21 11:46:43 kerberos kernel: R10: ffff9e4a03dcfb30 R11: 0000000000000003 R12: ffff907684ae7800
+   Aug 21 11:46:43 kerberos kernel: R13: 0000000000000001 R14: ffff90774646b600 R15: 0000000000000000
+   Aug 21 11:46:43 kerberos kernel: FS:  00007f04b96006c0(0000) GS:ffff907dce480000(0000) knlGS:0000000000000000
+   Aug 21 11:46:43 kerberos kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   Aug 21 11:46:43 kerberos kernel: CR2: 00007f32acbfc000 CR3: 00000001fd4fa005 CR4: 00000000003726f0
+   Aug 21 11:46:43 kerberos kernel: Call Trace:
+   Aug 21 11:46:43 kerberos kernel:  <TASK>
+   Aug 21 11:46:43 kerberos kernel:  ? __die_body.cold+0x14/0x24
+   Aug 21 11:46:43 kerberos kernel:  ? die+0x2e/0x50
+   Aug 21 11:46:43 kerberos kernel:  ? do_trap+0xca/0x110
+   Aug 21 11:46:43 kerberos kernel:  ? do_error_trap+0x6a/0x90
+   Aug 21 11:46:43 kerberos kernel:  ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+   Aug 21 11:46:43 kerberos kernel:  ? exc_invalid_op+0x50/0x70
+   Aug 21 11:46:43 kerberos kernel:  ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+   Aug 21 11:46:43 kerberos kernel:  ? asm_exc_invalid_op+0x1a/0x20
+   Aug 21 11:46:43 kerberos kernel:  ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+   Aug 21 11:46:43 kerberos kernel:  ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+   Aug 21 11:46:43 kerberos kernel:  btrfs_sync_file+0x21a/0x4d0 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
+   Aug 21 11:46:43 kerberos kernel:  ? __seccomp_filter+0x31d/0x4f0
+   Aug 21 11:46:43 kerberos kernel:  __x64_sys_fdatasync+0x4f/0x90
+   Aug 21 11:46:43 kerberos kernel:  do_syscall_64+0x82/0x160
+   Aug 21 11:46:43 kerberos kernel:  ? do_futex+0xcb/0x190
+   Aug 21 11:46:43 kerberos kernel:  ? __x64_sys_futex+0x10e/0x1d0
+   Aug 21 11:46:43 kerberos kernel:  ? switch_fpu_return+0x4f/0xd0
+   Aug 21 11:46:43 kerberos kernel:  ? syscall_exit_to_user_mode+0x72/0x220
+   Aug 21 11:46:43 kerberos kernel:  ? do_syscall_64+0x8e/0x160
+   Aug 21 11:46:43 kerberos kernel:  ? syscall_exit_to_user_mode+0x72/0x220
+   Aug 21 11:46:43 kerberos kernel:  ? do_syscall_64+0x8e/0x160
+   Aug 21 11:46:43 kerberos kernel:  ? syscall_exit_to_user_mode+0x72/0x220
+   Aug 21 11:46:43 kerberos kernel:  ? do_syscall_64+0x8e/0x160
+   Aug 21 11:46:43 kerberos kernel:  ? syscall_exit_to_user_mode+0x72/0x220
+   Aug 21 11:46:43 kerberos kernel:  ? do_syscall_64+0x8e/0x160
+   Aug 21 11:46:43 kerberos kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Another problem here is if task B grabs the private pointer and then uses
+it after task A has finished, since the private was allocated in the stack
+of trask A, it results in some invalid memory access with a hard to predict
+result.
+
+This issue, triggering the assertion, was observed with QEMU workloads by
+two users in the Link tags below.
+
+Fix this by not relying on a file's private to pass information to fsync
+that it should skip locking the inode and instead pass this information
+through a special value stored in current->journal_info. This is safe
+because in the relevant section of the direct IO write path we are not
+holding a transaction handle, so current->journal_info is NULL.
+
+The following C program triggers the issue:
+
+   $ cat repro.c
+   /* Get the O_DIRECT definition. */
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include <unistd.h>
+   #include <stdint.h>
+   #include <fcntl.h>
+   #include <errno.h>
+   #include <string.h>
+   #include <pthread.h>
+
+   static int fd;
+
+   static ssize_t do_write(int fd, const void *buf, size_t count, off_t offset)
+   {
+       while (count > 0) {
+           ssize_t ret;
+
+           ret = pwrite(fd, buf, count, offset);
+           if (ret < 0) {
+               if (errno == EINTR)
+                   continue;
+               return ret;
+           }
+           count -= ret;
+           buf += ret;
+       }
+       return 0;
+   }
+
+   static void *fsync_loop(void *arg)
+   {
+       while (1) {
+           int ret;
+
+           ret = fsync(fd);
+           if (ret != 0) {
+               perror("Fsync failed");
+               exit(6);
+           }
+       }
+   }
+
+   int main(int argc, char *argv[])
+   {
+       long pagesize;
+       void *write_buf;
+       pthread_t fsyncer;
+       int ret;
+
+       if (argc != 2) {
+           fprintf(stderr, "Use: %s <file path>\n", argv[0]);
+           return 1;
+       }
+
+       fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0666);
+       if (fd == -1) {
+           perror("Failed to open/create file");
+           return 1;
+       }
+
+       pagesize = sysconf(_SC_PAGE_SIZE);
+       if (pagesize == -1) {
+           perror("Failed to get page size");
+           return 2;
+       }
+
+       ret = posix_memalign(&write_buf, pagesize, pagesize);
+       if (ret) {
+           perror("Failed to allocate buffer");
+           return 3;
+       }
+
+       ret = pthread_create(&fsyncer, NULL, fsync_loop, NULL);
+       if (ret != 0) {
+           fprintf(stderr, "Failed to create writer thread: %d\n", ret);
+           return 4;
+       }
+
+       while (1) {
+           ret = do_write(fd, write_buf, pagesize, 0);
+           if (ret != 0) {
+               perror("Write failed");
+               exit(5);
+           }
+       }
+
+       return 0;
+   }
+
+   $ mkfs.btrfs -f /dev/sdi
+   $ mount /dev/sdi /mnt/sdi
+   $ timeout 10 ./repro /mnt/sdi/foo
+
+Usually the race is triggered within less than 1 second. A test case for
+fstests will follow soon.
+
+Reported-by: Paulo Dias <paulo.miguel.dias@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219187
+Reported-by: Andreas Jahn <jahn-andi@web.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219199
+Reported-by: syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/00000000000044ff540620d7dee2@google.com/
+Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/ctree.h       |  1 -
+ fs/btrfs/file.c        | 25 ++++++++++---------------
+ fs/btrfs/transaction.h |  6 ++++++
+ 3 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index a56209d275c1..b2e4b30b8fae 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -457,7 +457,6 @@ struct btrfs_file_private {
+ 	void *filldir_buf;
+ 	u64 last_index;
+ 	struct extent_state *llseek_cached_state;
+-	bool fsync_skip_inode_lock;
+ };
+ 
+ static inline u32 BTRFS_LEAF_DATA_SIZE(const struct btrfs_fs_info *info)
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index ca434f0cd27f..66dfee873906 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1558,13 +1558,6 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	if (IS_ERR_OR_NULL(dio)) {
+ 		ret = PTR_ERR_OR_ZERO(dio);
+ 	} else {
+-		struct btrfs_file_private stack_private = { 0 };
+-		struct btrfs_file_private *private;
+-		const bool have_private = (file->private_data != NULL);
+-
+-		if (!have_private)
+-			file->private_data = &stack_private;
+-
+ 		/*
+ 		 * If we have a synchoronous write, we must make sure the fsync
+ 		 * triggered by the iomap_dio_complete() call below doesn't
+@@ -1573,13 +1566,10 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 		 * partial writes due to the input buffer (or parts of it) not
+ 		 * being already faulted in.
+ 		 */
+-		private = file->private_data;
+-		private->fsync_skip_inode_lock = true;
++		ASSERT(current->journal_info == NULL);
++		current->journal_info = BTRFS_TRANS_DIO_WRITE_STUB;
+ 		ret = iomap_dio_complete(dio);
+-		private->fsync_skip_inode_lock = false;
+-
+-		if (!have_private)
+-			file->private_data = NULL;
++		current->journal_info = NULL;
+ 	}
+ 
+ 	/* No increment (+=) because iomap returns a cumulative value. */
+@@ -1811,7 +1801,6 @@ static inline bool skip_inode_logging(const struct btrfs_log_ctx *ctx)
+  */
+ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ {
+-	struct btrfs_file_private *private = file->private_data;
+ 	struct dentry *dentry = file_dentry(file);
+ 	struct inode *inode = d_inode(dentry);
+ 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
+@@ -1821,7 +1810,13 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	int ret = 0, err;
+ 	u64 len;
+ 	bool full_sync;
+-	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
++	bool skip_ilock = false;
++
++	if (current->journal_info == BTRFS_TRANS_DIO_WRITE_STUB) {
++		skip_ilock = true;
++		current->journal_info = NULL;
++		lockdep_assert_held(&inode->i_rwsem);
++	}
+ 
+ 	trace_btrfs_sync_file(file, datasync);
+ 
+diff --git a/fs/btrfs/transaction.h b/fs/btrfs/transaction.h
+index 4e451ab173b1..62ec85f4b777 100644
+--- a/fs/btrfs/transaction.h
++++ b/fs/btrfs/transaction.h
+@@ -27,6 +27,12 @@ struct btrfs_root_item;
+ struct btrfs_root;
+ struct btrfs_path;
+ 
++/*
++ * Signal that a direct IO write is in progress, to avoid deadlock for sync
++ * direct IO writes when fsync is called during the direct IO write path.
++ */
++#define BTRFS_TRANS_DIO_WRITE_STUB	((void *) 1)
++
+ /* Radix-tree tag for roots that are part of the trasaction. */
+ #define BTRFS_ROOT_TRANS_TAG			0
+ 
+-- 
+2.43.0
+
 
