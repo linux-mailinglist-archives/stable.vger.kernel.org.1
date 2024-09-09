@@ -1,214 +1,230 @@
-Return-Path: <stable+bounces-74050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93614971E97
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 18:02:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80AE971EC7
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 18:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5E0284E6C
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 16:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427391F2479A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 16:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4045F136663;
-	Mon,  9 Sep 2024 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5353A3D38E;
+	Mon,  9 Sep 2024 16:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I3DFai8N"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XsJIt7Bw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0672374C;
-	Mon,  9 Sep 2024 16:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725897733; cv=none; b=NyDrY4a0p9+FwGoWm6MTupKrNc05BIAjaCnQts5L7IbUJUUf6VT4FS4J7xSOfpeOso+RsXDJ5SinVr0/8bTAkjQA6LD6vzCIL8/1fmgrOBQxVq8hxSKoKcHCWfxvLooXXSeuMMG45QuuD3zFCv/tMKDaC8v7KK5HokSFYZ9eygU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725897733; c=relaxed/simple;
-	bh=KKDt/4lx2HO72S+NqAJeZLFcyRm3P3ZwFdxC6THERhs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L0zFMLVOq6Nd0zlplIOY4k8dczw8vz3fn44sdUZA7npvveg0S/wE/z7l3rvd9kxVQYOmhUgf3+mp5G6G1pG0pkPhltkcnYj0LcuboqZwAXSTq1oLVYzt/pOAyyAu5LNG3cLMS3GOM9e55v94eniXq3TyjC7nMplWiGuP1MNRHHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I3DFai8N; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9375D1BC39;
+	Mon,  9 Sep 2024 16:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725898205; cv=fail; b=meFWpH/fdptXnFidpfZe0XXcsUoRTJqMVLHm7YEzdLtFtYQSydXjNOBuAYquo/Ceg/8VEpeNDxxbce1hfjXGQIWG2o3XR4ZRHTcmiGsv6KLkCJF5tdd7cRhdCwRM2oEAT0Y9DlxQjgQpbFIfxKOUuxp+4AqPkQGSvrxSGLtFPe4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725898205; c=relaxed/simple;
+	bh=fMtwf0Ad3XZSJ5BmtJRfDIS5SlmbD+1uVbFPJGWmc1I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Aq6763HEfZezDM25pFRIsVOO93lvUrEQ+y5E0C4aeRUkg/mpJPW8HdKjIsvyLeAWZb3g1EAcqUl3qsM/OWLAquDFeQk3xqkiGRUJPKAzf09PqDMCd7LqoRuXEdC2s37PMCGvw7/Nk8S7eUdi8t0BuHTkYlj6hCAueE20GskU8BQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XsJIt7Bw; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725897731; x=1757433731;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KKDt/4lx2HO72S+NqAJeZLFcyRm3P3ZwFdxC6THERhs=;
-  b=I3DFai8NVIQhUvBpLQjQGu0CXGfL2i+NrA6kaDzeP1qerWyHPrdSHKF2
-   zIJRPIHwgjejz/0k68zoALCCYXRyx3pbdpTWYnNIqeFXeVnHSYtCWwq8q
-   eWhIQO+JZMiyMxuqHxMm+y2x2Y8keR8dhZuSpC66ZaltSFYGoyKI1Mjs5
-   9slwaxMZhzX1L43fqEUxEy4IpQ5L2OFv1QRK/OPvEirD4rf7sdtHOji56
-   GR/yTvqnx+8YlAWUtsgLdad1TY5ZYr7C//OFFSDUGIbpp3U4bUpxaOJU8
-   cN3sK5Mroy5fAzRU6wKHXwDE1neMpKilZn2jPXIndX1H4Naz6o58DLgqY
-   A==;
-X-CSE-ConnectionGUID: WrhNYfsnTAqlL5DV/Mn4aQ==
-X-CSE-MsgGUID: EW5BEODeTK6k86Xh8yEeZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="35949373"
+  t=1725898204; x=1757434204;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=fMtwf0Ad3XZSJ5BmtJRfDIS5SlmbD+1uVbFPJGWmc1I=;
+  b=XsJIt7Bw+ynci+lxcfluiy+EJBK1YfFW/43o7YTSOMH9b9xB9wfm1XfQ
+   vm9+N8HkHDzHlfeDCSLSQMaapmQEiH+uGjE+GEB+980CcLTG83Ds+bjK3
+   hn1TL/6BDoQCJtPR8YIarZ35vgGGIuunk/lrmFl+Mv3pKdqLVaZM86Hww
+   R2RBQXb8tCwlFfHSCI9G0gNJIOQZ92YrF1lXrHvenhpmsj0sQEVxmqFoC
+   pqAUq/SzaMm2EMo6UJ2bdTodSjHcPPtdyPv2384PDQxd1fS00dcYQUD/8
+   F49HzkArlXTtby7kGGDs+il0l6LghNf4QiVaiMXks1k+JrWh0emHaMXg3
+   g==;
+X-CSE-ConnectionGUID: atPscObjQtCIVZw/pJS12Q==
+X-CSE-MsgGUID: HSL0pITHTvCEnhRtkSGsxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24756058"
 X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="35949373"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 09:02:11 -0700
-X-CSE-ConnectionGUID: nb8wUGgtQICX5rP5J5UD7Q==
-X-CSE-MsgGUID: jNy+FW2zRP24JE8Lhht7NA==
+   d="scan'208";a="24756058"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 09:10:04 -0700
+X-CSE-ConnectionGUID: uywivMRdTQmJN0ZPJDLWdg==
+X-CSE-MsgGUID: I2JMtTaYQ1WIxYfIj2QFPg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="71320223"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 09:02:10 -0700
-Received: from [10.212.55.50] (kliang2-mobl1.ccr.corp.intel.com [10.212.55.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id AAF6E20CFEDB;
-	Mon,  9 Sep 2024 09:02:08 -0700 (PDT)
-Message-ID: <b0f93820-0d3b-4fe2-9ad5-f33640f3a4a8@linux.intel.com>
-Date: Mon, 9 Sep 2024 12:02:07 -0400
+   d="scan'208";a="70824856"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Sep 2024 09:10:03 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 9 Sep 2024 09:10:02 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 9 Sep 2024 09:10:02 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.40) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 9 Sep 2024 09:10:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eiBkz3cdp8gGFEKHUXURbKHJGd9bGSi13GDIAZomcNwbHB3SnJ3wh2pYxMkFnOZFFE3L1YC3/8uhu/E5UTvE647yvnBF/UbYDm2XblXezxNm7rplyHxp/RT8mA3cPA38FvrwJ/gCWkTvE9YGBJdYoq1uTpZwtiAfYKuzc6C+/PUvT777mbdoD/xHPChDw9uR3/BAK+WkL0yKxJ2NukO2sBEBYTwXvg20GbsO1otoWXnuV5VGDqMYKYw2Pq80IQLXUkwz/5ku90tQUnFHUSDGtoRA+k7ccH0zGCcXFngxIyVEG2sAuEGFxmV6f2tLlkGEuQ/39ytxlqxP6KVgLJyzkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fMtwf0Ad3XZSJ5BmtJRfDIS5SlmbD+1uVbFPJGWmc1I=;
+ b=pgqb52YF2fsYqFWqEb06az4RRJDhdT47hqF6kyUjFWa1VeO0W45T41Pvk4IL8sybsyapScNO4dtPI2k02XTmGMESsiSqXQfCf9+b8p+OTf/mvWXUsngv5GDXxx40qQV0jWYs9T3ydVvMTtBNJsmZsVnASBveLnTZ6leyJctehufxBeD+xIwYBmnGiCHXV7cQ65b70lVR/gIlxoir5tTFIXtQTEBtt2dlTBgsmbiCDGJWpLQGcC6YOMTrbjd++lKSSUQXH3ygmQsba/pfkNBqoTa9e2OVpxkjudQtxp6mltCSBhptkJmKz9oAoaPX4pBMnNl3ZfHV7l42NEL2QF2iGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
+ by CH3PR11MB7674.namprd11.prod.outlook.com (2603:10b6:610:12b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Mon, 9 Sep
+ 2024 16:08:13 +0000
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::acfd:b7e:b73b:9361]) by SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::acfd:b7e:b73b:9361%4]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
+ 16:08:12 +0000
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Borislav Petkov <bp@alien8.de>, Hugues Bruant <hugues.bruant@gmail.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Yu, Fenghua"
+	<fenghua.yu@intel.com>, "Chatre, Reinette" <reinette.chatre@intel.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>, Brian Norris <briannorris@chromium.org>,
+	Julius Werner <jwerner@chromium.org>, "chrome-platform@lists.linux.dev"
+	<chrome-platform@lists.linux.dev>, Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, "Vivi, Rodrigo"
+	<rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: RE: [REGRESSION] soft lockup on boot starting with kernel 6.10 /
+ commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
+Thread-Topic: [REGRESSION] soft lockup on boot starting with kernel 6.10 /
+ commit 5186ba33234c9a90833f7c93ce7de80e25fac6f5
+Thread-Index: AQHbAoUXCU2+GdbFwEygAz1aapAWGbJPGA4AgACHL1A=
+Date: Mon, 9 Sep 2024 16:08:12 +0000
+Message-ID: <SJ1PR11MB60831AF34B75030EBA3D5721FC992@SJ1PR11MB6083.namprd11.prod.outlook.com>
+References: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
+ <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
+In-Reply-To: <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|CH3PR11MB7674:EE_
+x-ms-office365-filtering-correlation-id: 3fda8308-7730-42e5-66e0-08dcd0e99b28
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?ZWRjekdqeEs2VTVjWTgxTXA5eGhUaTVqLzFGeWhKQ0dqVy9QNnhVWXJ1WnpH?=
+ =?utf-8?B?QnRXZGMxeXEzbi81K1hFb0l0dGZmMnMwQmFkLzVJM3VqcDVnVHhOTnVCbTdu?=
+ =?utf-8?B?dEF0cEljbXF1RmhxRUtVTitSb0hFOHBXNGdIT0VSU1Avait5ZE5wUlM3S0Y3?=
+ =?utf-8?B?Njd0WkZlTDB5eXpqMStLdnZnL3Rzb01uOHJEVkVnUGJUNXUrTnNxR1dUcGh6?=
+ =?utf-8?B?eXdXVyt1UndsaUYrcUJ4WUhUMEpXOUo4R2Y3ME9OSk0vcnNnYmtBSVRzTzVJ?=
+ =?utf-8?B?YTRCaFZhdjQ0WFUrc05wcUVmck91MFVJK3Vud2pRSXY4R3dYUitnTmZIZ0dQ?=
+ =?utf-8?B?YnFnT05jQmU5eWs5eEJWVmVMTEljL3J6ME91M1Q0TVlSSFl5Rk5xNnZtdzJI?=
+ =?utf-8?B?aVVFY0VFTGtCWkRFRUJ5UGdhY2p5a0tSVC9RdVA5a0FLZ2NKeXRDZXVSQWFE?=
+ =?utf-8?B?cFR3TWRPeHlEK1B6WFFRVG1KT3BQd0t5dXc2SW1ucG5NTUIyQkhqVWt0YUg0?=
+ =?utf-8?B?dFhuREt4bzJadkdkcnZWYXRjeURDYk9RN2dRSlh6RVlzQ2l0eVpEU00xZWNh?=
+ =?utf-8?B?cDl6U2JySWZjOFF3dFlsakRuaEJySGhtZVhIL3NJbWZNOTNScGh3K1NhektY?=
+ =?utf-8?B?RE5QZTU5WkQveDk4cGxKWUpUbEdpekRTSWFBSk5UeU51UW1HWklUM1B2UnNi?=
+ =?utf-8?B?RjBRUnBETmI3UFI3UnB1TnAzQ3cxYTFRanRBUVp3YnR5aS84R0lnbFdXUElL?=
+ =?utf-8?B?WExDSTQ5a3RUQkY1MnBDSGRxa1hIYjRRRE9VMTIrNmVaNldmeUtBSUNuei9o?=
+ =?utf-8?B?ZVVRU0pFaWE2WVMxYUJDMTVnY0t3NnBNV2dEU3V6RWtrWHBHbStJMGhiMjJh?=
+ =?utf-8?B?VWs4ZTJ6YW9pdzlJRExVOHdObUVTSEhIV0RnSHBmVDFpV0t5VXFQNnBLN01D?=
+ =?utf-8?B?blhxeXNZTDFwcDVEdk1uNTdKdzhoT0NWdVpBQ2U3dW9OQjljZnU2QTdlekNC?=
+ =?utf-8?B?UzV2ZVVKanAybXNqNXZrNHk1cTJ3RlVGNmNPRGRtUEZpZGpPZUFHUFdEZ3dv?=
+ =?utf-8?B?UkI5STFRMVdOd0tYWG9mZ21jK1B1aGgwd1VMQ2pyaXlOZDd6dTU1cC9ZUExU?=
+ =?utf-8?B?Y1IxQmxJbU10cnQzb1RuSDUycHQzMjJQclhJeEJONEpGZ2Jta3B6dFBjcTRo?=
+ =?utf-8?B?WDRSejdybjVrM0NRR0V6ZVNpczR4N3EwdzlTbTRSTHk3UURVMzNYYWpuUkN3?=
+ =?utf-8?B?Umh2NDV2bDV1UEt1ZVBSVzl2TGl0SGowZ203ODErYWZXdjJQU25PYzcvMDN1?=
+ =?utf-8?B?b24zaEpwcTREakZjbHQrZUkvanlTZnFON1c2aTdsT2kwOEpBTnFiRTdIblFY?=
+ =?utf-8?B?ZDdQb0RPZjhNM3N5MkxuaksxdXhXaVRWbkJ6UTVlNitqRWhpVWttWXBlTjJD?=
+ =?utf-8?B?Q0s0ZlhvVTFJNXNpMmJFWmFsZ2kvaWZPWkQ3ZERNODZQblFaVWZ0ZEU2YzR5?=
+ =?utf-8?B?TCtYSTNVeHEvM3hOM3Y2eEI3V1doMG9HSFZ4RFlJSy9vSFhUUFJtVk1LSndE?=
+ =?utf-8?B?VlNTd09WdVpmVGY3VkJLREJXczVqZW41R1VUMThKVHNvYmN2NURhMVVGRkNV?=
+ =?utf-8?B?VGpNdStjRjdMVjBRTytqUWxyYk5TcTlkM0xUOFowQmZqMC94bVBpSVJwVVBp?=
+ =?utf-8?B?TkRvbWk4TlFVZ3lIcEc2WWRDWVhrNUVxUWpRQnBycmpELzZZZnBSQkx4a0g4?=
+ =?utf-8?B?clErTHRIa0VxaE11VGw5dGtKQ1hta3hSQkRsLzVFb3hjT3oxa054eEVFRzl5?=
+ =?utf-8?Q?ro8niEfBCs79AltrwGLwa0dRsr+vqQHM9K2g8=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzNMMDlselE0Y3MvSkdjc2dIS1hJTmdXRi9NajlDTjZpcFNGQzgwcDdWK3VG?=
+ =?utf-8?B?SVZ2eDRQVEMvZk0yZCs4WmJma1ZtdjZYTG9GYXdwQWpmalhuTjVYajlVRFRT?=
+ =?utf-8?B?MnBWMUZqK29pYXZOemdSTkZyWVloMEhteWZQZHdBbUlWdU9yeUhhQmhwZHlR?=
+ =?utf-8?B?Qy82WHVTN2ZQZnFkRGtCcVp6Qis0bCsrRXF6TVdwNHhFd0lyYS9JTk1PYit2?=
+ =?utf-8?B?OEFIeGdFWFNYTWZVSkFmZUdSa2UwbU9BL3NLOFg4eEs0cFhpVzhlYzBZVXZN?=
+ =?utf-8?B?NjNlZGlrZDBmYlN1TW96RTg3ZTVNdzZYbjB5NS82eEs4OCtWanVoV1Flb292?=
+ =?utf-8?B?RStSdGpVamEvb0pVbUw2dkMvQnBRUXNMOEZkZENJY2NTOFkwUUt4dVJjN0lw?=
+ =?utf-8?B?UGxBa1R5eGhxdndLV1Ixa0JZWlJEZm96TS9nYjN5UkpySEJTRTVzbGxsWGFm?=
+ =?utf-8?B?Y3lKQkpwRXZmMVNESlNiR21iRTNRQ3dDblNxcHY5N25wNHZYTDV0RklPN2h2?=
+ =?utf-8?B?c0JKTjQ5OCs2Z0Y2R2FQVlhSQklPTENsN1FHcFVzVHdpYi9SMlhWaEk0b3Ar?=
+ =?utf-8?B?WjlYK0dCVk9pdGZPaEJBeldrMU8xNmFOb0FrYVlkZGszL1VXM0FjaFlpaWlK?=
+ =?utf-8?B?QnlPSVplNnlxZVJtZHlXbzQ4eFMyQk1RM01RYW1uRGRXS3UwRExURjA2WGZN?=
+ =?utf-8?B?RWR2NG00NEV5Tk1iQVVTZHJBQWtWN05YZVJqeGhIWW9vb1lzbk5Tejd3TWhz?=
+ =?utf-8?B?dnc3NmtHQ3YyV1NUYmpJcC9xSGVqdkVnR0VKWk5HdmhveUZIQnVqUzZqSVNv?=
+ =?utf-8?B?QkNsV2FGOFNlejRuRmwvRTZscktUTkhkTDhEY0Fua1cyeFdaNWhGUWlzVFhR?=
+ =?utf-8?B?cGNZVHh0RW9WQUE4NUU2WHFjdHRDUGo2dDIrWFBXeGVnYUxVL1EvV1VUNHhH?=
+ =?utf-8?B?ZmJFZFM1ZDVLQ0t2cEE3V0UzV1UvQzQxZXUrSVVkM0JOS0lBWWlGVURnOTN4?=
+ =?utf-8?B?cFgyVTJtS1haN2VsbDBPUThOTUY4djJvVy9VRkYzTEVIWTFidU11V2xsYmNy?=
+ =?utf-8?B?d0FJb2kyK3dPdnR6cGkxOFZkUEJqZVAvZjQ5aUkzdHdtczNLbnZsTTRrZXhZ?=
+ =?utf-8?B?TThtdVVUa3pRNWtyUmJSRDI5MnNDTmtkQmxWUFMxWHFSSWdUS2ltQmlJMXAv?=
+ =?utf-8?B?NW01RThDQlJoUGVCYW5WejRhSjByNjltUEV6UXZDQThGb0tmTzFqSDZ2UE9G?=
+ =?utf-8?B?eTh3bGdvSkxuekpaeHZBVkdrTC8xU1IxMDdiNzBCazNhQVVUNjZkSG5oM0JV?=
+ =?utf-8?B?TjlGRjAvMWJ0U21Gek0wa1JJUWVQbVM4dG1mVlhyaGlvVklSVnJKTFBmVzZG?=
+ =?utf-8?B?blg0YTdPMzZYZStYNHVtYStFbE03Q2IwY1NXSTZwY2tmSk9HMnQ4MFNSWENW?=
+ =?utf-8?B?Q0pKQ1FUZ1JRcy9adjVnVXAxS1lwSm8xVXhvZkdkdTlaUFB1MEIvS2hIYWRN?=
+ =?utf-8?B?U2cyWExvMXdDNVRobEt4c28zOHJLeDZTZllpQ1JXNjg4T2NqVVF0ZHZwdnNl?=
+ =?utf-8?B?cWhIOHlIWDBRenN0eCsyU2c4L3ppMFE4OWpQYkNyZ3JMOHQ3cXN1RkhqV2JZ?=
+ =?utf-8?B?ck9hRnFjWkd0bUhjZXZBTkgyRWp6M1U1RnZVZHltaWFSSXpNQzB6NFBNWktk?=
+ =?utf-8?B?Ykc3Qkw1bFE1Sm84K2JnVy9xMjhFZUJBSzliRTIrS2lCVkszMFNDNmdxMmVj?=
+ =?utf-8?B?S2hNZ2h5dEFldklPWGMyeU9MejBZRXZlN0NHVWlzWktsRlF1dmp4YThvUDhL?=
+ =?utf-8?B?RnJhS0UxMnlUUnFOVzdNWGxRVnRyZ2t1NTNzc1B2Z1NVSExYbS9zYXFLdFV6?=
+ =?utf-8?B?eXE1bmVsTHVDRWo0M29TaFJlM1E4Mk1kV0E3QlRWaDZ5SlFqU0hpWFNKdDdH?=
+ =?utf-8?B?QTB3RzRuM2kyVCt4YzJUMDNzZ0RuY3NTUi9XTktTUmltdEdWTFlZcldPY3hJ?=
+ =?utf-8?B?aUN1YTUvRkg5ak1aQyswMWpoUnRNN3NqckRkREdJSjVMNHFtVEl5RlE3Y3RO?=
+ =?utf-8?B?a2k2a3ZFb3JrSVNVOHZJSlFaYkhHem9DcjFBZDZ5NldNSXRHT2p4NUszS2s5?=
+ =?utf-8?Q?v0cp8H3/epkrF9apF8j/P0BUt?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf/x86: fix wrong assumption that LBR is only useful
- for sampling events
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>, linux-perf-users@vger.kernel.org,
- peterz@infradead.org, x86@kernel.org, mingo@redhat.com,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, acme@kernel.org,
- kernel-team@meta.com, stable@vger.kernel.org
-References: <20240905180055.1221620-1-andrii@kernel.org>
- <ddfd906c-83cc-490a-a4bb-4fa43793d882@linux.intel.com>
- <CAEf4Bza9H=nH4+=dDNm55X5LZp4MVSkKyBcnuNq3+8cP6qt=uQ@mail.gmail.com>
- <e7e0ef26-2335-4e67-984c-705cb33ff4c3@linux.intel.com>
- <CAEf4BzYOxpLAowE=4A=qUreLkgKBkDYbOxnidbnQNKQdLx7=WQ@mail.gmail.com>
-Content-Language: en-US
-From: "Liang, Kan" <kan.liang@linux.intel.com>
-In-Reply-To: <CAEf4BzYOxpLAowE=4A=qUreLkgKBkDYbOxnidbnQNKQdLx7=WQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fda8308-7730-42e5-66e0-08dcd0e99b28
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2024 16:08:12.8436
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AOSY7D7OteZlcbcwdE7YQJcr6m42kb2wH3n2rs+WmS/ta0MGhezJ/ZJq5ABLLYfF5pb00MKeUGyGCvbjq33r3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7674
+X-OriginatorOrg: intel.com
 
-
-
-On 2024-09-05 4:33 p.m., Andrii Nakryiko wrote:
-> On Thu, Sep 5, 2024 at 1:29 PM Liang, Kan <kan.liang@linux.intel.com> wrote:
->>
->>
->>
->> On 2024-09-05 4:22 p.m., Andrii Nakryiko wrote:
->>> On Thu, Sep 5, 2024 at 12:21 PM Liang, Kan <kan.liang@linux.intel.com> wrote:
->>>>
->>>>
->>>>
->>>> On 2024-09-05 2:00 p.m., Andrii Nakryiko wrote:
->>>>> It's incorrect to assume that LBR can/should only be used with sampling
->>>>> events. BPF subsystem provides bpf_get_branch_snapshot() BPF helper,
->>>>> which expects a properly setup and activated perf event which allows
->>>>> kernel to capture LBR data.
->>>>>
->>>>> For instance, retsnoop tool ([0]) makes an extensive use of this
->>>>> functionality and sets up perf event as follows:
->>>>>
->>>>>       struct perf_event_attr attr;
->>>>>
->>>>>       memset(&attr, 0, sizeof(attr));
->>>>>       attr.size = sizeof(attr);
->>>>>       attr.type = PERF_TYPE_HARDWARE;
->>>>>       attr.config = PERF_COUNT_HW_CPU_CYCLES;
->>>>>       attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
->>>>>       attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
->>>>>
->>>>> Commit referenced in Fixes tag broke this setup by making invalid assumption
->>>>> that LBR is useful only for sampling events. Remove that assumption.
->>>>>
->>>>> Note, earlier we removed a similar assumption on AMD side of LBR support,
->>>>> see [1] for details.
->>>>>
->>>>>   [0] https://github.com/anakryiko/retsnoop
->>>>>   [1] 9794563d4d05 ("perf/x86/amd: Don't reject non-sampling events with configured LBR")
->>>>>
->>>>> Cc: stable@vger.kernel.org # 6.8+
->>>>> Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
->>>>> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
->>>>> ---
->>>>>  arch/x86/events/intel/core.c | 2 +-
->>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->>>>> index 9e519d8a810a..f82a342b8852 100644
->>>>> --- a/arch/x86/events/intel/core.c
->>>>> +++ b/arch/x86/events/intel/core.c
->>>>> @@ -3972,7 +3972,7 @@ static int intel_pmu_hw_config(struct perf_event *event)
->>>>>                       x86_pmu.pebs_aliases(event);
->>>>>       }
->>>>>
->>>>> -     if (needs_branch_stack(event) && is_sampling_event(event))
->>>>> +     if (needs_branch_stack(event))
->>>>>               event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
->>>>
->>>> To limit the LBR for a sampling event is to avoid unnecessary branch
->>>> stack setup for a counting event in the sample read. The above change
->>>> should break the sample read case.
->>>>
->>>> How about the below patch (not test)? Is it good enough for the BPF usage?
->>>>
->>>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->>>> index 0c9c2706d4ec..8d67cbda916b 100644
->>>> --- a/arch/x86/events/intel/core.c
->>>> +++ b/arch/x86/events/intel/core.c
->>>> @@ -3972,8 +3972,12 @@ static int intel_pmu_hw_config(struct perf_event
->>>> *event)
->>>>                 x86_pmu.pebs_aliases(event);
->>>>         }
->>>>
->>>> -       if (needs_branch_stack(event) && is_sampling_event(event))
->>>> -               event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
->>>> +       if (needs_branch_stack(event)) {
->>>> +               /* Avoid branch stack setup for counting events in SAMPLE READ */
->>>> +               if (is_sampling_event(event) ||
->>>> +                   !(event->attr.sample_type & PERF_SAMPLE_READ))
->>>> +                       event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
->>>> +       }
->>>>
->>>
->>> I'm sure it will be fine for my use case, as I set only
->>> PERF_SAMPLE_BRANCH_STACK.
->>>
->>> But I'll leave it up to perf subsystem experts to decide if this
->>> condition makes sense, because looking at what PERF_SAMPLE_READ is:
->>>
->>>           PERF_SAMPLE_READ
->>>                  Record counter values for all events in a group,
->>>                  not just the group leader.
->>>
->>> It's not clear why this would disable LBR, if specified.
->>
->> It only disables the counting event with SAMPLE_READ, since LBR is only
->> read in the sampling event's overflow.
->>
-> 
-> Ok, sounds good! Would you like to send a proper patch with your
-> proposed changes?
-
-The patch has been posted. Please give it a try.
-https://lore.kernel.org/lkml/20240909155848.326640-1-kan.liang@linux.intel.com/
-
-Thanks,
-Kan
-> 
->> Thanks,
->> Kan
->>>
->>>>         if (branch_sample_counters(event)) {
->>>>                 struct perf_event *leader, *sibling;
->>>>
->>>>
->>>> Thanks,
->>>> Kan
->>>>>
->>>>>       if (branch_sample_counters(event)) {
-> 
+PiBJIGhhdmUgZGlzY292ZXJlZCBhIDEwMCUgcmVsaWFibGUgc29mdCBsb2NrdXAgb24gYm9vdCBv
+biBteSBsYXB0b3A6DQo+IFB1cmlzbSBMaWJyZW0gMTQsIEludGVsIENvcmUgaTctMTA3MTBVLCA0
+OEdiIFJBTSwgU2Ftc3VuZyBFdm8gUGx1cyA5NzANCj4gU1NELCBDb3JlQm9vdCBCSU9TLCBncnVi
+IGJvb3Rsb2FkZXIsIEFyY2ggTGludXguDQo+IA0KPiBUaGUgbGFzdCB3b3JraW5nIHJlbGVhc2Ug
+aXMga2VybmVsIDYuOS4xMCwgZXZlcnkgcmVsZWFzZSBmcm9tIDYuMTANCj4gb253YXJkcyByZWxp
+YWJseSBleGhpYml0IHRoZSBpc3N1ZSwgd2hpY2gsIGJhc2VkIG9uIGpvdXJuYWxjdGwgbG9ncywN
+Cj4gc2VlbXMgdG8gYmUgdHJpZ2dlcmVkIHNvbWV3aGVyZSBpbiBzeXN0ZW1kLXVkZXY6DQo+IGh0
+dHBzOi8vZ2l0bGFiLmFyY2hsaW51eC5vcmcvLS9wcm9qZWN0LzQyNTk0L3VwbG9hZHMvMDQ1ODNi
+YWYyMjE4OWEwYThiYjJmODc3MzA5NmUwMTMvbG9ja3VwLmxvZw0KPiANCj4gQmlzZWN0IHBvaW50
+cyB0byBjb21taXQgNTE4NmJhMzMyMzRjOWE5MDgzM2Y3YzkzY2U3ZGU4MGUyNWZhYzZmNQ0KDQpE
+b2VzIHRoYXQgSW50ZWwgQ29yZSBpNy0xMDcxMFUgZXZlbiBleGVjdXRlIHRoZSBSRFQgY29kZT8g
+TW9zdCBjbGllbnQgcGFydHMNCmRvbid0IHN1cHBvcnQgUkRULiBZb3UgY2FuIGNoZWNrIGlmIHlv
+dXJzIGRvZXMgYnkgbG9va2luZyBmb3IgInJkdF9hIiBpbiANCi9wcm9jL2NwdWluZm8uDQoNCi1U
+b255DQo=
 
