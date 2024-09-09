@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-74065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D048797200A
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD997200B
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 19:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7742886E4
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0F83288CCF
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 17:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A732142AA1;
-	Mon,  9 Sep 2024 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C916DECB;
+	Mon,  9 Sep 2024 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgjqrxIy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfQ7/5zT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7A816C852
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D8A166F26
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 17:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725901786; cv=none; b=e8Fi1i4DUlBHbQdgQQWA8YoaTujbpqZnoP0NTxjoxD7kkGefc1ETUvc5V9vbYkiLrXieMwB6NvMpXHMBvAGHVW+9PuFOP4WUptGTa6iMocAN4x7fcIKiA9x5oB2gfJHOW4rd+1hv/yb0TE4nL6IAETLxR+irIpo9zEaPBPmfzJ4=
+	t=1725901795; cv=none; b=Ur12O0aF6sib5COkhgUIVpVZWbPKYQSWkcLRaccJQ7mLUL/MqIY1Nj2wQszEASDVK/stxGrDZC0tSSM1OXldwOtxYYAgIf98DL0ghegPxLa4tmCfBxBhP16g9GaiAMv5fp6YVDT/HaXfPQ4HCMphB2JmGEHv4lEPxDa4zbeJAQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725901786; c=relaxed/simple;
-	bh=nwozwE1Wp3UI+E/PMTRl4ZeTVvkBpWso8u4SRYOwVxg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jjGBYnJJ/+kyyuQdd40r02LmBsEKdZ+wtXPQImm9VnA58v6q0yLUEDRr2IF4ajjueIBisZKnD/EIdjrgIB1ryG6ReQ+dvYmv2TJsyU8Z8Sms1j9KPJWIW/9EQemolOQwkDxvEFZI+6g8EriMebYt6RdC88c2ElOeLdYybbr93xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgjqrxIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81789C4CEC7;
-	Mon,  9 Sep 2024 17:09:45 +0000 (UTC)
+	s=arc-20240116; t=1725901795; c=relaxed/simple;
+	bh=pRMdSxT0gHH6BhI87xg7p1gOIaFcqpHuSqp25eR3YuU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M91E2i8I4k8TKvnjNsIjJOBVced4YtWyFKAS1LRXAg9GV0S1sKgQMEvYXpYqMsFdcDU00vsxuHROCu2N5yD60r6s/ONRzXRK7MYIAuMtH0AfZkkIVqRGYHr45kmC5iQQB/eBhEL0RERfSmyRVGGfQJUYrRlh7wvkWN9jAWU5EIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfQ7/5zT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68725C4CEC5;
+	Mon,  9 Sep 2024 17:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725901785;
-	bh=nwozwE1Wp3UI+E/PMTRl4ZeTVvkBpWso8u4SRYOwVxg=;
+	s=korg; t=1725901794;
+	bh=pRMdSxT0gHH6BhI87xg7p1gOIaFcqpHuSqp25eR3YuU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EgjqrxIy47OT6H+usmasAY7J9pujK5FapfVfFMt8lMJHy+Lmkr7BuXpiyoay4EgyV
-	 V/DIY6GhPXTlGmD/uOyLKHDNSUiJskUoT8WybG7QGqRo9RFikCE1qUMD4OykgGNrvZ
-	 DQVbgl6aK3gQfU53j6tqBBMoycPvWiIAM/X1QyVo=
-Subject: FAILED: patch "[PATCH] usb: dwc3: core: update LC timer as per USB Spec V3.2" failed to apply to 5.4-stable tree
+	b=wfQ7/5zTKgy8SezLV6QxELZx0Zt74fxHQhsusnAu5ae8qePgEbLdTlNOmhezZJhrt
+	 qtwfZX557I1eSQ+THD9aGGwfdO4Elp2QRjN3HDynEQ6a9fIYlOemHHyF5qMg94Apmi
+	 hCZA3A+mviqlf1yTCAsVE1ZmjSHj47CLJyJm5W8A=
+Subject: FAILED: patch "[PATCH] usb: dwc3: core: update LC timer as per USB Spec V3.2" failed to apply to 5.10-stable tree
 To: quic_faisalh@quicinc.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 09 Sep 2024 19:09:43 +0200
-Message-ID: <2024090942-clunky-disobey-80a9@gregkh>
+Message-ID: <2024090943-justness-geologist-75e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,32 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9149c9b0c7e046273141e41eebd8a517416144ac
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090942-clunky-disobey-80a9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024090943-justness-geologist-75e9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 9149c9b0c7e0 ("usb: dwc3: core: update LC timer as per USB Spec V3.2")
 63d7f9810a38 ("usb: dwc3: core: Enable GUCTL1 bit 10 for fixing termination error after resume bug")
 843714bb37d9 ("usb: dwc3: Decouple USB 2.0 L1 & L2 events")
-9af21dd6faeb ("usb: dwc3: Add support for DWC_usb32 IP")
-8bb14308a869 ("usb: dwc3: core: Use role-switch default dr_mode")
-d94ea5319813 ("usb: dwc3: gadget: Properly set maxpacket limit")
-586f4335700f ("usb: dwc3: Fix GTXFIFOSIZ.TXFDEP macro name")
-7ba6b09fda5e ("usb: dwc3: core: add support for disabling SS instances in park mode")
-5eb5afb07853 ("usb: dwc3: use proper initializers for property entries")
-9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
 
 thanks,
 
