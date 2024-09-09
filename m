@@ -1,60 +1,52 @@
-Return-Path: <stable+bounces-73954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DE1970E01
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:40:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF80970E1A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 08:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC3A1F228B2
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:40:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90C41C21E11
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 06:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750261AC8B0;
-	Mon,  9 Sep 2024 06:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D472B1AC8A5;
+	Mon,  9 Sep 2024 06:47:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DE01AD410;
-	Mon,  9 Sep 2024 06:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169201AC88B;
+	Mon,  9 Sep 2024 06:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725864019; cv=none; b=eLsJ1aIOlaJvJ0SCW37bAESSX+UDTx7VhQkkUgJznII52zwU2Fwz94bcY8C8mM/5wyum9wD3Y6H1YlHO+HdkN+RYoq0y/npzLacT7jQCR9EbbpRqrxM8ICkqPMJHHTl6WVYeFdF0xDdp8KSe1m6LGC04eafg4iUY4XvIXfLx64s=
+	t=1725864447; cv=none; b=ExAKWbAybw7mLsWvsptqWQ5hBL0Z4OOCNXqQ7AyxRjGwdhw6zw3h7y+UUOpEEAJkT6WG3Ol4fqBNjCDyW2yZxxUjGkGW/O/BrJueFMxNaEi6i5Ih9yYnt745f8VjtdP/RcIUCu+MiGel76DEsiAskMk2TYWvpGkuQhP7aG4+6qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725864019; c=relaxed/simple;
-	bh=f1R0koMml7lKfyHh7RQ05dSO/br5e+PtMQqNKcmrDHc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Nq3FpVz5DiBSh2SiECHsnjdgkCTMKfd3S9OO20WYV9IvGS/+2pci0VDsI2IfO8Rp4egppIXlp3dH0wP7RfbxZTyStWki8rte2DGYfOB1s1Rwh1sUfjiN6YF6AQ++PDdSeTxkTz9bXSsg9Dz+/zre/kFyk/H1jGisjD+E0s2Ql14=
+	s=arc-20240116; t=1725864447; c=relaxed/simple;
+	bh=L6008oDfcpGOdp3sZj7mO4v81wzU3PhcgEhuJkxXEyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jsktdDJ/tanHWOlKO7WMgR2R+FyZAh9umHla75fKu09P6AIR9mNmqmXEHU0CrSR6NlbvpRwP6uCVfjrqHoY7gyIpFTmtLyul93C8CMX8XIIGGvpmeWymh9sxj/WGPRo6TG0p7CN9mRkhkiTjytyXU04U5L0a5lUnCxywwwLkp5k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAC3vn5BmN5mcIQUAg--.35475S2;
-	Mon, 09 Sep 2024 14:40:09 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAC3vn7rmd5mr8gUAg--.35535S2;
+	Mon, 09 Sep 2024 14:47:15 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alvin.lee2@amd.com,
-	wenjing.liu@amd.com,
-	roman.li@amd.com,
-	dillon.varone@amd.com,
-	moadhuri@amd.com,
-	aurabindo.pillai@amd.com,
+	make24@iscas.ac.cn,
+	bskeggs@redhat.com,
+	airlied@redhat.com,
 	akpm@linux-foundation.org
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] drm/amd/display: Add null check before access structs in dcn32_enable_phantom_plane
-Date: Mon,  9 Sep 2024 14:40:00 +0800
-Message-Id: <20240909064000.1198047-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] drm/nouveau: fix a possible null pointer dereference
+Date: Mon,  9 Sep 2024 14:47:06 +0800
+Message-Id: <20240909064706.1199176-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,48 +55,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3vn5BmN5mcIQUAg--.35475S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtFyftrykJF1fAr1fGrWktFb_yoW8Jryfpw
-	43Gayakw1DJrnFga9xJ3WjqFZxW3WvkFZ7KrZIywna9ayjyr93C3s8ur9xCrWUGFyjkw43
-	tF1IyrsrKF4qyrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowAC3vn7rmd5mr8gUAg--.35535S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFykCryUWr4DuFyDCF1ftFb_yoW8GFWkpF
+	srG34YyFW5JFZruF18Ja4avF15G3W7JF1xuw10van3C3ZayryUtryrXryYgryfAFW3Kr12
+	qwnFvFy7WF12krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
 	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
 	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJV
 	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28Icx
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
 	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
 	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
 	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRRH7K3UUUUU==
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbCPfPUUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In dcn32_enable_phantom_plane, we should better check null pointer before
-accessing various structs.
+In ch7006_encoder_get_modes(), the return value of drm_mode_duplicate() is
+used directly in drm_mode_probed_add(), which will lead to a NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
 Cc: stable@vger.kernel.org
-Fixes: 235c67634230 ("drm/amd/display: add DCN32/321 specific files for Display Core")
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i2c/ch7006_drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-index 969658313fd6..1d1b40d22f42 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-@@ -1650,6 +1650,8 @@ static void dcn32_enable_phantom_plane(struct dc *dc,
- 			phantom_plane = prev_phantom_plane;
- 		else
- 			phantom_plane = dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state);
-+		if (!phantom_plane)
-+			return;
+diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
+index 131512a5f3bd..48bf6e4e8bdb 100644
+--- a/drivers/gpu/drm/i2c/ch7006_drv.c
++++ b/drivers/gpu/drm/i2c/ch7006_drv.c
+@@ -229,6 +229,7 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ {
+ 	struct ch7006_priv *priv = to_ch7006_priv(encoder);
+ 	const struct ch7006_mode *mode;
++	struct drm_display_mode *encoder_mode = NULL;
+ 	int n = 0;
  
- 		memcpy(&phantom_plane->address, &curr_pipe->plane_state->address, sizeof(phantom_plane->address));
- 		memcpy(&phantom_plane->scaling_quality, &curr_pipe->plane_state->scaling_quality,
+ 	for (mode = ch7006_modes; mode->mode.clock; mode++) {
+@@ -236,8 +237,11 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ 		    ~mode->valid_norms & 1<<priv->norm)
+ 			continue;
+ 
+-		drm_mode_probed_add(connector,
+-				drm_mode_duplicate(encoder->dev, &mode->mode));
++		encoder_mode = drm_mode_duplicate(encoder->dev, &mode->mode);
++		if (!encoder_mode)
++			return 0;
++
++		drm_mode_probed_add(connector, encoder_mode);
+ 
+ 		n++;
+ 	}
 -- 
 2.25.1
 
