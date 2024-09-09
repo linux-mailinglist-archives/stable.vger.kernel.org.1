@@ -1,135 +1,109 @@
-Return-Path: <stable+bounces-74085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA6B97236B
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:16:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A7E9723BF
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF62C1C21C94
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 20:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BA311C235D3
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 20:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71AA18A6BD;
-	Mon,  9 Sep 2024 20:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81DB189F57;
+	Mon,  9 Sep 2024 20:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ymar0CjH"
 X-Original-To: stable@vger.kernel.org
-Received: from mailhost.m5p.com (mailhost.m5p.com [74.104.188.4])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B2813B2B0
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 20:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.104.188.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5702017623C;
+	Mon,  9 Sep 2024 20:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725912987; cv=none; b=E4iJY9rLbfBulAjGwyzDnhmxsyRvobGdTIvlakjnWW6IWXPdKKeK5bRO44Wxj54ENriCJM7TK1BLvecxDTUn4WureLS/4OmsQpisx+JmkKPNNmZw/2+FGASouVIPcL1JDD2JFLHocU6hACE21W3lMq9dUjmlyoMd1GJloThQP9I=
+	t=1725913963; cv=none; b=NmAK2//WXKZNHpNA1cK6c42tIq0zTkL4GN2nO+W4Vz4X3dMlpwUUX/5j4bEy1U1x3UwALGFBCEk3dudzwGhMPKgJ0RC3DW5nUVxpwbl3G1TabJn2g3aBfME3oj3Gz3MlxW3JpBoJHF6zIxR19dtsmHh7MEXwfwURVrEbFP4QSE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725912987; c=relaxed/simple;
-	bh=Xcepxi3Vf5hzhYTTmdtAHNH6ZioEjv18t57AIxS4jVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BAbvzmWKzeNw0FSFqFEUmuhJT49bMQ5f57f/mKz+ELbiF5dAiKvo8sJZjGTmxfApFcmmj/6NYc6Wqloan3B5ez3ELhCsPzi7Qm5ce8yMmNrl+++H5KgHoDmlw61NEWq9fJq+Ty0f7mJUWf015GHHIFfnRgIF7XhsXAUED1Ea+CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com; spf=pass smtp.mailfrom=m5p.com; arc=none smtp.client-ip=74.104.188.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m5p.com
-Received: from m5p.com (mailhost.m5p.com [IPv6:2001:470:8ac4:0:0:0:0:f7])
-	by mailhost.m5p.com (8.18.1/8.17.1) with ESMTPS id 489K2B7q017432
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 9 Sep 2024 16:02:17 -0400 (EDT)
-	(envelope-from ehem@m5p.com)
-Received: (from ehem@localhost)
-	by m5p.com (8.18.1/8.15.2/Submit) id 489K28xU017431;
-	Mon, 9 Sep 2024 13:02:08 -0700 (PDT)
-	(envelope-from ehem)
-Date: Mon, 9 Sep 2024 13:02:08 -0700
-From: Elliott Mitchell <ehem+xen@m5p.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Takashi Iwai <tiwai@suse.de>, Ariadne Conill <ariadne@ariadne.space>,
-        xen-devel@lists.xenproject.org, alsa-devel@alsa-project.org,
-        stable@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH] Revert "ALSA: memalloc: Workaround for Xen PV"
-Message-ID: <Zt9UQJcYT58LtuRV@mattapan.m5p.com>
-References: <20240906184209.25423-1-ariadne@ariadne.space>
- <877cbnewib.wl-tiwai@suse.de>
- <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
+	s=arc-20240116; t=1725913963; c=relaxed/simple;
+	bh=AJhd8owgl3wgf9vnWFFzARsYkI3LcQ0Uzl6xhNwmfsM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=jBdFJ5xVt60aO/f0ACl0QTJTq4yXzOj7ICjRIYWaIAZV4JmYlYPR5uYUCo5Q5O6eOnAlfx3cMijTRw0Bw74b5P8my0V0OSkuBvn/LPzk/pv4aBh26yf6NKXZVDPZxsosqAikZC64n97PJIDfgt98TntXyvgMi48PUoUcB5TySEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ymar0CjH; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6c354091616so27215446d6.0;
+        Mon, 09 Sep 2024 13:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725913961; x=1726518761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AJhd8owgl3wgf9vnWFFzARsYkI3LcQ0Uzl6xhNwmfsM=;
+        b=Ymar0CjHKLPniBICg0K8ofRw+IogqfTWAxQHpJlmTb+ooSXfPKu59QUGMCgBFADAB6
+         vT/1TodKII3g9DoPHcT6Q4Bkf/O4zRDuODh72xbyNAlj87TSh1Pu00Z4ybanRdZPtwXY
+         Oflrze3vs2PbWcU7Wq29oXO6D8qVFphpym1fjCc/tkCegJGRyqzO2nq7lfKHPA1PF+T8
+         1cnmIyZknzq9rDf6WBFiZvUaIIcOx9dw50UVhs8ThHLkSmHj4QIar1+pHkeHYo8gnpbm
+         8Aa1AN8wkQ4qu0DidGe7iLHd8yyr5G1Mjpb5tZ64kuW9oLoksfwZLSHw6YbxoQzZyWT9
+         ISMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725913961; x=1726518761;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AJhd8owgl3wgf9vnWFFzARsYkI3LcQ0Uzl6xhNwmfsM=;
+        b=e4fGtVD4Jo3iq+BGtEPCAto8kJv2wXpj1b3sEIMU6UJIbc7o06vOWIJlrZQ/rB3uli
+         m40YTXB56qFnx5qcfDxCTL4MMq2rCa3HLyPefRRqbe6SGd689YJjuPL7hg1lklQXhekO
+         bt0t7eA7xv6K4KPJn9bPDsE8sb0OztJ9Sk2hzSVOd/jYe6fu/gptiwL2FZiop3BemT3t
+         iuCqL1nLHsrazqRCbUFIqyQLuia9ydMb1qVq9Ow6RbGsOIkfIY5M0a2FGp5VtZpmk63J
+         fRYVvuIhKMWLZ+LKCX/TwsEGyCUNvgwln922PnRxaabc3hurTH3f9ZPl61+8GHyTeqsk
+         s3KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIeY6XjW6Xq+3nxLP6I8H52bv1gFBf1qXkfbRBK7l18oMreDB1f09/WQ0JtjRRZY/gSEJV6+0Q@vger.kernel.org, AJvYcCVbTevv4iCiViJMENSwAg8TIgV2Jc0DBgDHN27fSIuJwq2YcWnNwaN0P89nVJxAZXqoN5s1R4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl4NU6bMM3XQ6znRPQMRVAqIftViRCfjMUk5nRptWHRxW8Qblc
+	4mUbEd0e5/ZyoO8EpuyXc0moCRw6EYN7RvMaLrc7FVY+J8VJBZWz
+X-Google-Smtp-Source: AGHT+IGpOpN4QIrmPyS4/VyYBCv6C0MghytA7UdSQ6aM+1e63zWW6d8Cl9JLbV60071xSvGltyiGkg==
+X-Received: by 2002:a0c:fb4d:0:b0:6c5:317a:a664 with SMTP id 6a1803df08f44-6c5317aa66fmr94833696d6.3.1725913960989;
+        Mon, 09 Sep 2024 13:32:40 -0700 (PDT)
+Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c53474d844sm23884196d6.77.2024.09.09.13.32.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2024 13:32:40 -0700 (PDT)
+Date: Mon, 09 Sep 2024 16:32:40 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Christian Theune <christian@theune.cc>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ regressions@lists.linux.dev, 
+ stable@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ mathieu.tortuyaux@gmail.com
+Message-ID: <66df5b684b1ea_7296f29460@willemb.c.googlers.com.notmuch>
+In-Reply-To: <0B75F6BF-0E0E-4BCC-8557-95A5D8D80038@theune.cc>
+References: <89503333-86C5-4E1E-8CD8-3B882864334A@theune.cc>
+ <2024090309-affair-smitten-1e62@gregkh>
+ <CA+FuTSdqnNq1sPMOUZAtH+zZy+Fx-z3pL-DUBcVbhc0DZmRWGQ@mail.gmail.com>
+ <2024090952-grope-carol-537b@gregkh>
+ <66df3fb5a228e_3d03029498@willemb.c.googlers.com.notmuch>
+ <0B75F6BF-0E0E-4BCC-8557-95A5D8D80038@theune.cc>
+Subject: Re: Follow-up to "net: drop bad gso csum_start and offset in
+ virtio_net_hdr" - backport for 5.15 needed
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 07, 2024 at 11:38:50AM +0100, Andrew Cooper wrote:
-> On 07/09/2024 8:46 am, Takashi Iwai wrote:
-> > On Fri, 06 Sep 2024 20:42:09 +0200,
-> > Ariadne Conill wrote:
-> >> This patch attempted to work around a DMA issue involving Xen, but
-> >> causes subtle kernel memory corruption.
-> >>
-> >> When I brought up this patch in the XenDevel matrix channel, I was
-> >> told that it had been requested by the Qubes OS developers because
-> >> they were trying to fix an issue where the sound stack would fail
-> >> after a few hours of uptime.  They wound up disabling SG buffering
-> >> entirely instead as a workaround.
-> >>
-> >> Accordingly, I propose that we should revert this workaround patch,
-> >> since it causes kernel memory corruption and that the ALSA and Xen
-> >> communities should collaborate on fixing the underlying problem in
-> >> such a way that SG buffering works correctly under Xen.
-> >>
-> >> This reverts commit 53466ebdec614f915c691809b0861acecb941e30.
-> >>
-> >> Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-> >> Cc: stable@vger.kernel.org
-> >> Cc: xen-devel@lists.xenproject.org
-> >> Cc: alsa-devel@alsa-project.org
-> >> Cc: Takashi Iwai <tiwai@suse.de>
-> > The relevant code has been largely rewritten for 6.12, so please check
-> > the behavior with sound.git tree for-next branch.  I guess the same
-> > issue should happen as the Xen workaround was kept and applied there,
-> > too, but it has to be checked at first.
-> >
-> > If the issue is persistent with there, the fix for 6.12 code would be
-> > rather much simpler like the blow.
-> >
-> >
-> > thanks,
-> >
-> > Takashi
-> >
-> > --- a/sound/core/memalloc.c
-> > +++ b/sound/core/memalloc.c
-> > @@ -793,9 +793,6 @@ static void *snd_dma_sg_alloc(struct snd_dma_buffer *dmab, size_t size)
-> >  	int type = dmab->dev.type;
-> >  	void *p;
-> >  
-> > -	if (cpu_feature_enabled(X86_FEATURE_XENPV))
-> > -		return snd_dma_sg_fallback_alloc(dmab, size);
-> > -
-> >  	/* try the standard DMA API allocation at first */
-> >  	if (type == SNDRV_DMA_TYPE_DEV_WC_SG)
-> >  		dmab->dev.type = SNDRV_DMA_TYPE_DEV_WC;
-> >
-> >
-> 
-> Individual subsystems ought not to know or care about XENPV; it's a
-> layering violation.
-> 
-> If the main APIs don't behave properly, then it probably means we've got
-> a bug at a lower level (e.g. Xen SWIOTLB is a constant source of fun)
-> which is probably affecting other subsystems too.
+Christian Theune wrote:
+> I can contribute live testing and can quickly reproduce the issue.
+> =
 
-This is a big problem.  Debian bug #988477 (https://bugs.debian.org/988477)
-showed up in May 2021.  While some characteristics are quite different,
-the time when it was first reported is similar to the above and it is
-also likely a DMA bug with Xen.
+> If anything is there that should be tested for apart from verifying the=
+ fix, I=E2=80=99d be happy to try.
 
-
--- 
-(\___(\___(\______          --=> 8-) EHM <=--          ______/)___/)___/)
- \BS (    |         ehem+sigmsg@m5p.com  PGP 87145445         |    )   /
-  \_CS\   |  _____  -O #include <stddisclaimer.h> O-   _____  |   /  _/
-8A19\___\_|_/58D2 7E3D DDF4 7BA6 <-PGP-> 41D1 B375 37D0 8714\_|_/___/5445
-
-
+If you perform the repro steps and verify that this solves the issue,
+that would be helpful, thanks. =
 
