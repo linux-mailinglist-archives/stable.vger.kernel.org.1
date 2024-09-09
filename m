@@ -1,176 +1,246 @@
-Return-Path: <stable+bounces-74096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE71972599
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 01:11:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0119725CC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 01:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F581C2349C
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 23:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A57D1F24687
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 23:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F87D18DF61;
-	Mon,  9 Sep 2024 23:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4447D18E775;
+	Mon,  9 Sep 2024 23:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dKZ3/aPJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="l9jH09XH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAEC8F5A
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 23:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C1118E34F;
+	Mon,  9 Sep 2024 23:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725923459; cv=none; b=uboWyGklk1knlc+CQhEjTwjQiew8c7hdY8RF4B9fhqCGL5OAjGCadbRSKLr2uN738BtMI4Va+kvXayEhbfwlnnfYfrihdbvEFtWAFo5Um1qb9loOp7pzyCa2tv752TGN7cyz8mLAN/bdjsLXJmRI7V2uOQIYz6273sSJhGzpyZw=
+	t=1725925328; cv=none; b=KaM9YUGwSHJ/EwuR32FBiEp8KeXPPCMk5YN2eJnu6W5DE0Vfmv3O4HlAqT6fluPu3X2rSTCIvUgtPUKl1WDrAwGu5edJ/dmvoIMQC4hIGjGKfeBOmgFU7C/05mbGoLvd1lLyigVofcGRxZD6bJ2XQIxzRTpKep98lEtGttw4fkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725923459; c=relaxed/simple;
-	bh=oIJ+rL9mrzFg4nGv/QDKfFNqVzSKCzfZHCECytF9GaE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UtlZUMUzkorc44Vup/BmR09+mh+JJNrT+SCwNM2CmimpTDigOEHx4rUWvzMSWMoth/1CEVbDirNDVOzfJX1G4mXOM7VqnSOdn//uwdbUfEqhvz20oB1s6xWSJUSs8h2S5lw9ygaxf8ho9XVlyqrhtiZGA+AsdDgwDi0RL0Rec3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dKZ3/aPJ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-205909af9b5so38046845ad.3
-        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 16:10:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725923457; x=1726528257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HZh2alFMXDh+0I/PORIOhnSxg+pPIbp0SXWJnUsPdc8=;
-        b=dKZ3/aPJXZwtJzWP81XMv7DqcmuX/AtHE3unEJqebD8Udq+++xwB1bRKw47irZp0Ti
-         1U6cy707YyykpWF3zVzzz4puMyjZedxFVqyP69i/1Iw8JGo+tEcauaXAwdTC+mRLdvyo
-         qyajQknXqCjEJJG+o+K803JRNZhTw9B2iEIgMjDTpjiz+P7FOZY/xQFB400ke+xxrWgk
-         XcXLND/cTOC5TrJRrvuBd6IhB2uu5V3F9JzrLbdjIlQFK5tH7ORfDsTGbzSxoP1XSKmG
-         RFbHyT7xwjoabCtEDx/IksaxgjwFEzTB2dpTmkcnrO/UD/ND5Yud0nurYazpU20yqw/L
-         h1rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725923457; x=1726528257;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HZh2alFMXDh+0I/PORIOhnSxg+pPIbp0SXWJnUsPdc8=;
-        b=npVNkJ/qn55Eef5MgMu3rjt6UMWaMZ/WUrGbpBH9jsrEjSURdE/IRjgAWb+EdziVjo
-         Zkm0rGkRvqFDDB5bvAv+RsGgd3dlSSeFec/RkaQzgFdg3D/2wgc0+W3KoW7tc8lBkZhk
-         EQEfMv/EDtKaR1LtS/bBDTtX9nwxo7/Z6xQqz+esbrQ/mYcIX7xdILlmXPkh63MeW6La
-         FJKqg7JtN5maig9a0VtiJ6Upld7Op/hSEBEvsgSJRTaX1CBebokvNIUbOSpDVjfIdl9E
-         01z5fjXC9cPm824wmtR7CtlkWte/BzyQFx4vfY3llRDuRhl90NYW2oOhiiWM68N6+Kx0
-         azng==
-X-Gm-Message-State: AOJu0Yy51jz8z2xVSBRjNumv4unBaJ2EjkyWDPTAvC75XTC4oxxb3R2Q
-	E2JFVo4atACnlHBZIlTR3Qlu3p4vxS9AqjPG8dWI1CilyBEy3yhe+jvg+jna
-X-Google-Smtp-Source: AGHT+IESr7aqaFYafXyI6JKtm7pyBKvfYvTxTuZZEkVIJRvwKK2UAxFj9kISZL43m5zUfDG0cGmFJg==
-X-Received: by 2002:a17:902:eccf:b0:205:6a9b:7e3e with SMTP id d9443c01a7336-206f05faedcmr185190525ad.56.1725923456398;
-        Mon, 09 Sep 2024 16:10:56 -0700 (PDT)
-Received: from diogo-jahchan-ASUS-TUF-Gaming-A15-FA507RM-FA507RM.. ([200.4.98.1])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d825ba5bcesm3776085a12.90.2024.09.09.16.10.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2024 16:10:55 -0700 (PDT)
-From: Diogo Jahchan Koike <djahchankoike@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	syzbot+958967f249155967d42a@syzkaller.appspotmail.com,
-	Yonghong Song <yhs@fb.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Diogo Jahchan Koike <djahchankoike@gmail.com>
-Subject: [PATCH 6.1.y] bpf: Silence a warning in btf_type_id_size()
-Date: Mon,  9 Sep 2024 20:09:58 -0300
-Message-ID: <20240909231017.340597-1-djahchankoike@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1725925328; c=relaxed/simple;
+	bh=vA5uwzkGoXQcnd6cgnG1EUTZSPqy4VTag6OXIdt5mx0=;
+	h=Date:To:From:Subject:Message-Id; b=ZNIr+QZG+2ccUG2JnJjuh1wx3sEcjDTXIqFXj2qPpIgvy9HE2/mcL9cxXTrntRzrVfo1obe0jCn6E3N2ilNI0eI7kKsbJ2SwZd1ZAsp5F1pInAY6tglsFlLQiu3aRJpAaa6Fo5srhrcriz1Qj+j8XD//T4tPRvSHSkq/gqxgqpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=l9jH09XH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C67C4CEC5;
+	Mon,  9 Sep 2024 23:42:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1725925327;
+	bh=vA5uwzkGoXQcnd6cgnG1EUTZSPqy4VTag6OXIdt5mx0=;
+	h=Date:To:From:Subject:From;
+	b=l9jH09XH21Kp1QzdZKjZNRJn16CU3dyOD0BZPyI76m+CdXLsCa57XdhnCwNgVu/BB
+	 M/h5nNbv6yDd3kbE8K9d3snWRHMlLBXWYnfVyy6vjG7SOS3C1JTmMjpF8NF1gMzmXC
+	 oGE6PfGmOyNyrZGVxyCnBkgvomBT0bTbX/sTlVhk=
+Date: Mon, 09 Sep 2024 16:42:07 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,muchun.song@linux.dev,kent.overstreet@linux.dev,yuzhao@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-codetag-fix-pgalloc_tag_split.patch removed from -mm tree
+Message-Id: <20240909234207.C4C67C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Yonghong Song <yhs@fb.com>
 
-commit e6c2f594ed961273479505b42040782820190305 upstream.
+The quilt patch titled
+     Subject: mm/codetag: fix pgalloc_tag_split()
+has been removed from the -mm tree.  Its filename was
+     mm-codetag-fix-pgalloc_tag_split.patch
 
-syzbot reported a warning in [1] with the following stacktrace:
-  WARNING: CPU: 0 PID: 5005 at kernel/bpf/btf.c:1988 btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
-  ...
-  RIP: 0010:btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
-  ...
-  Call Trace:
-   <TASK>
-   map_check_btf kernel/bpf/syscall.c:1024 [inline]
-   map_create+0x1157/0x1860 kernel/bpf/syscall.c:1198
-   __sys_bpf+0x127f/0x5420 kernel/bpf/syscall.c:5040
-   __do_sys_bpf kernel/bpf/syscall.c:5162 [inline]
-   __se_sys_bpf kernel/bpf/syscall.c:5160 [inline]
-   __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5160
-   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-   do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-With the following btf
-  [1] DECL_TAG 'a' type_id=4 component_idx=-1
-  [2] PTR '(anon)' type_id=0
-  [3] TYPE_TAG 'a' type_id=2
-  [4] VAR 'a' type_id=3, linkage=static
-and when the bpf_attr.btf_key_type_id = 1 (DECL_TAG),
-the following WARN_ON_ONCE in btf_type_id_size() is triggered:
-  if (WARN_ON_ONCE(!btf_type_is_modifier(size_type) &&
-                   !btf_type_is_var(size_type)))
-          return NULL;
+------------------------------------------------------
+From: Yu Zhao <yuzhao@google.com>
+Subject: mm/codetag: fix pgalloc_tag_split()
+Date: Thu, 5 Sep 2024 22:21:07 -0600
 
-Note that 'return NULL' is the correct behavior as we don't want
-a DECL_TAG type to be used as a btf_{key,value}_type_id even
-for the case like 'DECL_TAG -> STRUCT'. So there
-is no correctness issue here, we just want to silence warning.
+The current assumption is that a large folio can only be split into
+order-0 folios.  That is not the case for hugeTLB demotion, nor for THP
+split: see commit c010d47f107f ("mm: thp: split huge page to any lower
+order pages").
 
-To silence the warning, I added DECL_TAG as one of kinds in
-btf_type_nosize() which will cause btf_type_id_size() returning
-NULL earlier without the warning.
+When a large folio is split into ones of a lower non-zero order, only the
+new head pages should be tagged.  Tagging tail pages can cause imbalanced
+"calls" counters, since only head pages are untagged by pgalloc_tag_sub()
+and the "calls" counts on tail pages are leaked, e.g.,
 
-  [1] https://lore.kernel.org/bpf/000000000000e0df8d05fc75ba86@google.com/
+  # echo 2048kB >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote_size
+  # echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+  # time echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote
+  # echo 0 >/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  # grep alloc_gigantic_folio /proc/allocinfo
 
-Reported-by: syzbot+958967f249155967d42a@syzkaller.appspotmail.com
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/r/20230530205029.264910-1-yhs@fb.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-(cherry picked from commit e6c2f594ed961273479505b42040782820190305)
-Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
+Before this patch:
+  0  549427200  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+
+  real  0m2.057s
+  user  0m0.000s
+  sys   0m2.051s
+
+After this patch:
+  0          0  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+
+  real  0m1.711s
+  user  0m0.000s
+  sys   0m1.704s
+
+Not tagging tail pages also improves the splitting time, e.g., by about
+15% when demoting 1GB hugeTLB folios to 2MB ones, as shown above.
+
+Link: https://lkml.kernel.org/r/20240906042108.1150526-2-yuzhao@google.com
+Fixes: be25d1d4e822 ("mm: create new codetag references during page splitting")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/bpf/btf.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 7582ec4fd413..2c58a6c3f978 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -466,10 +466,16 @@ static bool btf_type_is_fwd(const struct btf_type *t)
- 	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
- }
+ include/linux/mm.h          |   30 ++++++++++++++++++++++++++++++
+ include/linux/pgalloc_tag.h |   31 -------------------------------
+ mm/huge_memory.c            |    2 +-
+ mm/hugetlb.c                |    2 +-
+ mm/page_alloc.c             |    4 ++--
+ 5 files changed, 34 insertions(+), 35 deletions(-)
+
+--- a/include/linux/mm.h~mm-codetag-fix-pgalloc_tag_split
++++ a/include/linux/mm.h
+@@ -4084,4 +4084,34 @@ void vma_pgtable_walk_end(struct vm_area
  
-+static bool btf_type_is_decl_tag(const struct btf_type *t)
+ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *size);
+ 
++#ifdef CONFIG_MEM_ALLOC_PROFILING
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
 +{
-+	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
-+}
++	int i;
++	struct alloc_tag *tag;
++	unsigned int nr_pages = 1 << new_order;
 +
- static bool btf_type_nosize(const struct btf_type *t)
- {
- 	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
--	       btf_type_is_func(t) || btf_type_is_func_proto(t);
-+	       btf_type_is_func(t) || btf_type_is_func_proto(t) ||
-+	       btf_type_is_decl_tag(t);
++	if (!mem_alloc_profiling_enabled())
++		return;
++
++	tag = pgalloc_tag_get(&folio->page);
++	if (!tag)
++		return;
++
++	for (i = nr_pages; i < (1 << old_order); i += nr_pages) {
++		union codetag_ref *ref = get_page_tag_ref(folio_page(folio, i));
++
++		if (ref) {
++			/* Set new reference to point to the original tag */
++			alloc_tag_ref_set(ref, tag);
++			put_page_tag_ref(ref);
++		}
++	}
++}
++#else /* !CONFIG_MEM_ALLOC_PROFILING */
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
++{
++}
++#endif /* CONFIG_MEM_ALLOC_PROFILING */
++
+ #endif /* _LINUX_MM_H */
+--- a/include/linux/pgalloc_tag.h~mm-codetag-fix-pgalloc_tag_split
++++ a/include/linux/pgalloc_tag.h
+@@ -80,36 +80,6 @@ static inline void pgalloc_tag_sub(struc
+ 	}
  }
  
- static bool btf_type_nosize_or_null(const struct btf_type *t)
-@@ -492,11 +498,6 @@ static bool btf_type_is_datasec(const struct btf_type *t)
- 	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
- }
- 
--static bool btf_type_is_decl_tag(const struct btf_type *t)
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
 -{
--	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
+-	int i;
+-	struct page_ext *first_page_ext;
+-	struct page_ext *page_ext;
+-	union codetag_ref *ref;
+-	struct alloc_tag *tag;
+-
+-	if (!mem_alloc_profiling_enabled())
+-		return;
+-
+-	first_page_ext = page_ext = page_ext_get(page);
+-	if (unlikely(!page_ext))
+-		return;
+-
+-	ref = codetag_ref_from_page_ext(page_ext);
+-	if (!ref->ct)
+-		goto out;
+-
+-	tag = ct_to_alloc_tag(ref->ct);
+-	page_ext = page_ext_next(page_ext);
+-	for (i = 1; i < nr; i++) {
+-		/* Set new reference to point to the original tag */
+-		alloc_tag_ref_set(codetag_ref_from_page_ext(page_ext), tag);
+-		page_ext = page_ext_next(page_ext);
+-	}
+-out:
+-	page_ext_put(first_page_ext);
 -}
 -
- static bool btf_type_is_decl_tag_target(const struct btf_type *t)
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
  {
- 	return btf_type_is_func(t) || btf_type_is_struct(t) ||
--- 
-2.43.0
+ 	struct alloc_tag *tag = NULL;
+@@ -142,7 +112,6 @@ static inline void clear_page_tag_ref(st
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 				   unsigned int nr) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr) {}
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page) { return NULL; }
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+--- a/mm/huge_memory.c~mm-codetag-fix-pgalloc_tag_split
++++ a/mm/huge_memory.c
+@@ -3226,7 +3226,7 @@ static void __split_huge_page(struct pag
+ 	/* Caller disabled irqs, so they are still disabled here */
+ 
+ 	split_page_owner(head, order, new_order);
+-	pgalloc_tag_split(head, 1 << order);
++	pgalloc_tag_split(folio, order, new_order);
+ 
+ 	/* See comment in __split_huge_page_tail() */
+ 	if (folio_test_anon(folio)) {
+--- a/mm/hugetlb.c~mm-codetag-fix-pgalloc_tag_split
++++ a/mm/hugetlb.c
+@@ -3778,7 +3778,7 @@ static long demote_free_hugetlb_folios(s
+ 		list_del(&folio->lru);
+ 
+ 		split_page_owner(&folio->page, huge_page_order(src), huge_page_order(dst));
+-		pgalloc_tag_split(&folio->page, 1 <<  huge_page_order(src));
++		pgalloc_tag_split(folio, huge_page_order(src), huge_page_order(dst));
+ 
+ 		for (i = 0; i < pages_per_huge_page(src); i += pages_per_huge_page(dst)) {
+ 			struct page *page = folio_page(folio, i);
+--- a/mm/page_alloc.c~mm-codetag-fix-pgalloc_tag_split
++++ a/mm/page_alloc.c
+@@ -2776,7 +2776,7 @@ void split_page(struct page *page, unsig
+ 	for (i = 1; i < (1 << order); i++)
+ 		set_page_refcounted(page + i);
+ 	split_page_owner(page, order, 0);
+-	pgalloc_tag_split(page, 1 << order);
++	pgalloc_tag_split(page_folio(page), order, 0);
+ 	split_page_memcg(page, order, 0);
+ }
+ EXPORT_SYMBOL_GPL(split_page);
+@@ -4974,7 +4974,7 @@ static void *make_alloc_exact(unsigned l
+ 		struct page *last = page + nr;
+ 
+ 		split_page_owner(page, order, 0);
+-		pgalloc_tag_split(page, 1 << order);
++		pgalloc_tag_split(page_folio(page), order, 0);
+ 		split_page_memcg(page, order, 0);
+ 		while (page < --last)
+ 			set_page_refcounted(last);
+_
+
+Patches currently in -mm which might be from yuzhao@google.com are
+
 
 
