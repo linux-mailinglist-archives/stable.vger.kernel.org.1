@@ -1,157 +1,200 @@
-Return-Path: <stable+bounces-74008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915739716EC
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 13:32:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72419716F0
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 13:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8761C217CE
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:32:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43B01C2209A
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4A91B5ED8;
-	Mon,  9 Sep 2024 11:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A15E42A81;
+	Mon,  9 Sep 2024 11:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CbsSDnvL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jS4tGdQK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FACF1AF4F0
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 11:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BEE1AD24A
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 11:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725881503; cv=none; b=CzgI5W8z1spjH+a7y++ngyx9gwtmM0VV6+J51ksNqDHUAWBEa1zz/SvwTJgczPncMyJZP61HqVdH55v2jG5WHv2jCoL7rGj+lii5ov0obhGgmE8/OOK1+U1ufgxDNMWzU3R9ELqK6ga13Ln36y1mTZc/YOwdva/4C/Qd5TTe9uk=
+	t=1725881557; cv=none; b=LQHWhIFSqptQ7TcVr6rFpPLebDgags8lSbIcYRz75uve8q+fIbImMK/XnYvpRNDr5zgXonZpT01Bb4Qre5qRlXmiZUDt5wemtZOf+kyVzvTTBKhpvX9OZ/gxFzE+TC7qVejE8m6XZVaWNtmI77EUXEWdNhwjVRYxrlC+TMyE12o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725881503; c=relaxed/simple;
-	bh=NCkdSWjfMe59VFhGI52m44MeRPXZiWAWdxlbJAIMkOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a1UALaal0iK3spAbtS27x3X3HuONpo5akzE/gZpfcLbAooHsukB6CCiGXaCzQYCju0D1iHKjiYwUKPAp6ZUD/fN0rLTNgm8Qe8+O2s5A3sGaWzZg8/WKr19rNd2LwG/KvlQ9zG/efXm48xF3KIBsr+qu9Dz9mSKw0+fldwEeeQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CbsSDnvL; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42cbb08a1a5so2746785e9.3
-        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 04:31:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725881500; x=1726486300; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uSQ8DnlWBkAu7rryVAU68vxkUdLhsbCL/EHImXGoOho=;
-        b=CbsSDnvLbF7+aCcHa/1csReAOQzdZ/1i+32W9inYHXKQJuVToffcFrmzhBt5n9BuuV
-         huJBh8zMTTaDJnwjUXNdWvh0iH1STE8PdBpmPr/fi3sT3tloVAgKJg/yrmcBb7VNoWIY
-         zGeG+U/mP7NBUyenD6Lp0S9l0jxnYS2ZpkE2dvuJniJ5FzssUnOtjaKGakVsTHk7NwWk
-         5UkkTMcWVNpQZOn77XV6jzBmaca1+gVLE54Hg1+BA83nqfhuVlvM1NhXrKbMSIwYOSl6
-         +LaktnMoToo+OzOIOpXlpAyPe1hmQeIrMefzsl52rMnIRXFp9DzPjLg0sW8a6+6G/q6F
-         OnMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725881500; x=1726486300;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uSQ8DnlWBkAu7rryVAU68vxkUdLhsbCL/EHImXGoOho=;
-        b=U2sjCpZ/QibOLJukpZvD8lJ+5oZii1shZ17kzRThHXH+a6/7ta14rfNGHM7bBGMPDU
-         ghWp1IZxjIwDhNzvNs28k66gqBFQ/E4KZdcwc8kBgfIV4BDEXRCg9IZ7AkLs1r5nuTys
-         j7gf8hUFqpB9wF8W5IKC3+S0S8Cqcmx1C23YYusiI8lSFaDJQQwd/kh6B8JK8PLqMUWy
-         zlPtjOe278pBxrhrit+eFz7RtjBzUHiApoDa3c8zDsMt63j9fUgkL6tnkaBojE4r96Gc
-         0LWCF7KmR+IZ4iDGHHC5vHIm4OotyWSkeA09Gc2T1tcYYeOCtWCXQ1H/HrPqxe5JEQ/r
-         R54g==
-X-Forwarded-Encrypted: i=1; AJvYcCU0iEM4taacEC9Hq95oe5jgmRiqNA+LeYomQEBbuK+CS8MQciatB+8SJyLA9V/aV4fFFu5QzIA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaPsNx8zRzmAEIfYdsKPPuLaWFDPJNWDIIZaQVaI6bLSYyGIWh
-	maMSMx5U4f5AjO5c5fVtpOKoZiq+zJ+3mzqHe3XxRjS/HlcHp1uZ
-X-Google-Smtp-Source: AGHT+IF5JWMxmrkXMHQ1hLF1Imsbf560J8naprq0JYGcLAYu7eBg/ZJazjze3qFIZW3QP01yw4XYug==
-X-Received: by 2002:a05:600c:3ba7:b0:42c:ba1f:543e with SMTP id 5b1f17b1804b1-42cba1f5946mr9572135e9.26.1725881499523;
-        Mon, 09 Sep 2024 04:31:39 -0700 (PDT)
-Received: from [10.254.108.81] (munvpn.amd.com. [165.204.72.6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895676117sm5795161f8f.60.2024.09.09.04.31.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Sep 2024 04:31:39 -0700 (PDT)
-Message-ID: <9f2bd368-1d73-4d87-9b13-c90cd5a2cbbe@gmail.com>
-Date: Mon, 9 Sep 2024 13:31:36 +0200
+	s=arc-20240116; t=1725881557; c=relaxed/simple;
+	bh=x2Ryh5vvYgUKJ8r1znK27TaE4jlrhPeKdPulyTOEeEI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jnCFZ72D3T/2/aatdsFmCz7eqtBvZtKuST1EfRnF7kb/HTwOBZiG9CSqRO1DhPDGFtc51qQiApTGpds5kfNGTk8SlruBnLzeELt8CXWcN7vrW3wj0Ob4K9jRqJ2OZVETBlfXLe+9d53bpgtenue8lu7YdSYUmqYrvDuiocZx8K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jS4tGdQK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725881554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=l9M38SIGJ+j1pCk7T0JxjWcvCY0KZya8CZjLB091hok=;
+	b=jS4tGdQKQV0eWXMcZatFH0dy/NdYnOdD/abnK5dqYnVngZ+C8IJ3ErKgVDI6RYbNMeBZgO
+	QCrpHFSd6Lk22577lsvCkg4jWLW4ZlFPDj4NIqZv4oXWRE9165Gmw+F0hzj+bytY/jOWky
+	sTEyjWJ3yKQBof2v9szpYJ/cqA5JFAs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-495-QDM2Ipz5Oui5C6qUDGBEdw-1; Mon,
+ 09 Sep 2024 07:32:33 -0400
+X-MC-Unique: QDM2Ipz5Oui5C6qUDGBEdw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BFA481953948;
+	Mon,  9 Sep 2024 11:32:32 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.168])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CA46919560AA;
+	Mon,  9 Sep 2024 11:32:29 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	James Harmison <jharmison@redhat.com>,
+	platform-driver-x86@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
+Date: Mon,  9 Sep 2024 13:32:25 +0200
+Message-ID: <20240909113227.254470-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/4] drm/sched: Always wake up correct scheduler in
- drm_sched_entity_push_job
-To: Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Luben Tuikov
- <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- stable@vger.kernel.org
-References: <20240906180618.12180-1-tursulin@igalia.com>
- <20240906180618.12180-3-tursulin@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <20240906180618.12180-3-tursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Am 06.09.24 um 20:06 schrieb Tvrtko Ursulin:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->
-> Since drm_sched_entity_modify_sched() can modify the entities run queue
-> lets make sure to only derefernce the pointer once so both adding and
-> waking up are guaranteed to be consistent.
->
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Luben Tuikov <ltuikov89@gmail.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.7+
-> ---
->   drivers/gpu/drm/scheduler/sched_entity.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
-> index ae8be30472cd..62b07ef7630a 100644
-> --- a/drivers/gpu/drm/scheduler/sched_entity.c
-> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-> @@ -599,6 +599,8 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
->   
->   	/* first job wakes up scheduler */
->   	if (first) {
-> +		struct drm_sched_rq *rq;
-> +
+The panasonic laptop code in various places uses the SINF array with index
+values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
+is big enough.
 
-I think we should go a step further and keep the scheduler to wake up 
-and not the rq.
+Not all panasonic laptops have this many SINF array entries, for example
+the Toughbook CF-18 model only has 10 SINF array entries. So it only
+supports the AC+DC brightness entries and mute.
 
-Regards,
-Christian.
+Check that the SINF array has a minimum size which covers all AC+DC
+brightness entries and refuse to load if the SINF array is smaller.
 
->   		/* Add the entity to the run queue */
->   		spin_lock(&entity->rq_lock);
->   		if (entity->stopped) {
-> @@ -608,13 +610,15 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
->   			return;
->   		}
->   
-> -		drm_sched_rq_add_entity(entity->rq, entity);
-> +		rq = entity->rq;
-> +
-> +		drm_sched_rq_add_entity(rq, entity);
->   		spin_unlock(&entity->rq_lock);
->   
->   		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
->   			drm_sched_rq_update_fifo(entity, submit_ts);
->   
-> -		drm_sched_wakeup(entity->rq->sched, entity);
-> +		drm_sched_wakeup(rq->sched, entity);
->   	}
->   }
->   EXPORT_SYMBOL(drm_sched_entity_push_job);
+For higher SINF indexes hide the sysfs attributes when the SINF array
+does not contain an entry for that attribute, avoiding show()/store()
+accessing the array out of bounds and add bounds checking to the probe()
+and resume() code accessing these.
+
+Fixes: e424fb8cc4e6 ("panasonic-laptop: avoid overflow in acpi_pcc_hotkey_add()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+- Some panasonic laptops have only 10 SINF entries. Change the required
+  minimum SQTY to SQTY > SINF_DC_CUR_BRIGHT and avoid the driver accessing
+  higher indexes by adding num_sifr checks.
+---
+ drivers/platform/x86/panasonic-laptop.c | 49 ++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index cf845ee1c7b1..39044119d2a6 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -773,6 +773,24 @@ static DEVICE_ATTR_RW(dc_brightness);
+ static DEVICE_ATTR_RW(current_brightness);
+ static DEVICE_ATTR_RW(cdpower);
+ 
++static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct acpi_device *acpi = to_acpi_device(dev);
++	struct pcc_acpi *pcc = acpi_driver_data(acpi);
++
++	if (attr == &dev_attr_mute.attr)
++		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
++
++	if (attr == &dev_attr_eco_mode.attr)
++		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
++
++	if (attr == &dev_attr_current_brightness.attr)
++		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute *pcc_sysfs_entries[] = {
+ 	&dev_attr_numbatt.attr,
+ 	&dev_attr_lcdtype.attr,
+@@ -787,8 +805,9 @@ static struct attribute *pcc_sysfs_entries[] = {
+ };
+ 
+ static const struct attribute_group pcc_attr_group = {
+-	.name	= NULL,		/* put in device directory */
+-	.attrs	= pcc_sysfs_entries,
++	.name		= NULL,		/* put in device directory */
++	.attrs		= pcc_sysfs_entries,
++	.is_visible	= pcc_sysfs_is_visible,
+ };
+ 
+ 
+@@ -941,12 +960,15 @@ static int acpi_pcc_hotkey_resume(struct device *dev)
+ 	if (!pcc)
+ 		return -EINVAL;
+ 
+-	acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
+-	acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
++	if (pcc->num_sifr > SINF_MUTE)
++		acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
++	if (pcc->num_sifr > SINF_ECO_MODE)
++		acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
+ 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, pcc->sticky_key);
+ 	acpi_pcc_write_sset(pcc, SINF_AC_CUR_BRIGHT, pcc->ac_brightness);
+ 	acpi_pcc_write_sset(pcc, SINF_DC_CUR_BRIGHT, pcc->dc_brightness);
+-	acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
++	if (pcc->num_sifr > SINF_CUR_BRIGHT)
++		acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
+ 
+ 	return 0;
+ }
+@@ -963,8 +985,12 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 
+ 	num_sifr = acpi_pcc_get_sqty(device);
+ 
+-	if (num_sifr < 0 || num_sifr > 255) {
+-		pr_err("num_sifr out of range");
++	/*
++	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
++	 * Accesses to higher SINF entries are checked against num_sifr.
++	 */
++	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
++		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -1020,11 +1046,14 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, 0);
+ 	pcc->sticky_key = 0;
+ 
+-	pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
+-	pcc->mute = pcc->sinf[SINF_MUTE];
+ 	pcc->ac_brightness = pcc->sinf[SINF_AC_CUR_BRIGHT];
+ 	pcc->dc_brightness = pcc->sinf[SINF_DC_CUR_BRIGHT];
+-	pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
++	if (pcc->num_sifr > SINF_MUTE)
++		pcc->mute = pcc->sinf[SINF_MUTE];
++	if (pcc->num_sifr > SINF_ECO_MODE)
++		pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
++	if (pcc->num_sifr > SINF_CUR_BRIGHT)
++		pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
+ 
+ 	/* add sysfs attributes */
+ 	result = sysfs_create_group(&device->dev.kobj, &pcc_attr_group);
+-- 
+2.46.0
 
 
