@@ -1,226 +1,220 @@
-Return-Path: <stable+bounces-74087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582DB9723FE
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 22:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976AC97243C
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 23:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B85C1C21C57
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 20:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967EB1C22E72
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 21:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB9C18C029;
-	Mon,  9 Sep 2024 20:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9D818C012;
+	Mon,  9 Sep 2024 21:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mZERXfqN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERwDth0p"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4418B498;
-	Mon,  9 Sep 2024 20:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B2A189F2F;
+	Mon,  9 Sep 2024 21:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725915218; cv=none; b=ceTtjZxMuF07n81XHLxHZrJsFBo2s/w8lyUosLBGaQ5pY3tR6NboJonG9uernJ/qVSbYyM6cBjW9OLU7t77YhFn2aATInCIcFnNkopPAA8xuDV4DDaXozl8+rkV5XdWYuWxDt2Q0VLcgz7623paJwqXqdwgCTYTUGTwrCbq/qS8=
+	t=1725916187; cv=none; b=ShZQaQIlrg7aM92R3WYqlA63IY1ia751yDn+lTEbIbWthr0W5A7kTlKQ86sKIj1jDNiHHtl02vfKPpO0reEAo5wGWm79QSE3sDuOOS55lPwvOvw4CQotujHd4dB6Ubq+Y/8soXiJu6W1JTcxl5q50wSb+4K9KyybfPlQE6r5stE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725915218; c=relaxed/simple;
-	bh=3E/HP412xnXyT+6T/tXNpnLsI+ni3kx8fU/86uCfJcY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPmHbpiSfINPzcfqkStZhWYd2qbpfcjaLu0He+BjsIDAaXQ299M7EQZliliAb3upJbyvhw1GKlsvQnltoQxuTKlNmIq0T1KPmZrsVd6xoVO01XTpYBug47k+dyk5V+08tpCLRqtF/8FX6BdUBrlVUE2cMXD1ceTSa3p/rN+QnhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mZERXfqN; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725915217; x=1757451217;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3E/HP412xnXyT+6T/tXNpnLsI+ni3kx8fU/86uCfJcY=;
-  b=mZERXfqN3An631lSQG/tptfpq3W193SDLaRD5tJRNk6q+YedFzNjlu5M
-   2j6Ssqcv0c8BzZqQBBEiAwpXwfan3ut/H2qwy05xBTwVly2paGL58zlom
-   MtiZh/m4z/eYN7cHben4HeZZTS7T5LBOSmu1C2SyurTtaliHvGdm7nWz5
-   boqMExw9RSwEOM/ERYKcB0fD2ZMaMysTIwzZOlsRsW5yWjE8u57ASX6pi
-   TLm2nozBgSd6eJydoPRri7diy8Y1xLZQbZFpTODYngvikd+TWI2xuUcXk
-   CN7VmFWYB0ku5rDfvsVXZmosQX3ABypRn80g6bGOnQM1WbI/PgwGGHih8
-   Q==;
-X-CSE-ConnectionGUID: DlgcwBbsRGewnVfzvR6Skw==
-X-CSE-MsgGUID: 3DhEoM7aRMy+TZ5Qb79hjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="42151262"
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="42151262"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 13:53:34 -0700
-X-CSE-ConnectionGUID: CPBKTypsSMCZMz983fLaZg==
-X-CSE-MsgGUID: HjuxUFOuTvCCRCj+vbMPzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="71194507"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa005.fm.intel.com with ESMTP; 09 Sep 2024 13:53:34 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	netdev@vger.kernel.org
-Cc: Michal Kubiak <michal.kubiak@intel.com>,
-	anthony.l.nguyen@intel.com,
-	aleksander.lobakin@intel.com,
-	przemyslaw.kitszel@intel.com,
-	joshua.a.hay@intel.com,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	willemb@google.com,
-	stable@vger.kernel.org
-Subject: [PATCH net-next v3 5/6] idpf: fix netdev Tx queue stop/wake
-Date: Mon,  9 Sep 2024 13:53:20 -0700
-Message-ID: <20240909205323.3110312-6-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
-In-Reply-To: <20240909205323.3110312-1-anthony.l.nguyen@intel.com>
-References: <20240909205323.3110312-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1725916187; c=relaxed/simple;
+	bh=w8IFxQX5YWTJSzB+chnohiLD1I+m+PX4MYFOS4ApNJ8=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=MV6Dq1yf5LP1+ozXb/i5QzY9sjRC+g46/eZbYf3aTY8Ly7wM7M360NjbPuh2wmjkPXbvshEn3Iktut5jLKgXOVudDBDWyhfyGRKBmeuzge1a+cZo7VKuHlsZZJ4jszH/N27odaW3CdJL2g1H1G/AV50Ba7k2TDc38/eOig7PIRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERwDth0p; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-45812fdcd0aso27118121cf.0;
+        Mon, 09 Sep 2024 14:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725916184; x=1726520984; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vB1sLfNUIxF1SuRHAmBARTktsFoKlKzlpMkspkLekfk=;
+        b=ERwDth0p0IXwg11COkBKMUOsjLlHxPKPKOqaKGocJoRphotcmtVmv2S7Yj81M3Jczw
+         pkCi8mxFylAzXAL4XZjsq4g4a1rrD3bGGl/c0Q0OCYjYVl1WiOkT7i44StOGiIHqEqpB
+         yEUF6nq3/1O5P0RMYuTTyH6BSWPfKWNhZMSA5LKSlC/6DbQioZi4PINWLhICVGdRp6DG
+         7uVD5uE7i7hK9g2LTJkVpuU7zl9P+E8Ll4vOjTAEa4KYEoWOcHoSaJtcLnbjskC/4Q2k
+         RMBAR6cXfynlG6H8B543EprMN56BVrxa0HaFkEcJcMmd0TfXpZy+ulILNlip/pQnIfJR
+         N4nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725916184; x=1726520984;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vB1sLfNUIxF1SuRHAmBARTktsFoKlKzlpMkspkLekfk=;
+        b=qOgyiUVMhK6+38G9Av/TC+cqpRLIULTanBz+ijeN7U7CgelphWIDG9svx2kY2MCgU4
+         k8YrE0pxlNV4NnjNooe9PxjFnagK27lHRvmdShmBi80A+nI+7+dPDE5VXcszA4Zqt6S4
+         OliDUay7Dye6rO5uzjxGycwn4wUd0K6EK4EYKbktqRCn3Pj2fI0pRc2vurjGXnQ+CB2F
+         EYu2PzJsWt9r13pnrnl2pgz5IkEU02GvJxK8lvtgOneCS2KOLY7Wx+Tp673QEki6Tngo
+         7KfGPQn9sk1sYyRQG8kdrc+DwJjOWb/11X4gxZAKVWFoiekgFQZdyndq7KRTLw8/9JK/
+         Qj8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUb+elB4r9Y646qn3+iva9TPSKGGfdOmEt5yOmWG6WTY5G9GqNr0l3c21dQ7bmvFrZ/5h/S6k8=@vger.kernel.org, AJvYcCWIsmH7TwU6rQo01XpWCfh+jvcn4O4BfP3cfZ7Csf1wISuBCyUpa+2fgQPza6hLJXpA5q6tWOp9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/3tHk9zJ2KBe1XcAnhVb6adZBwJWULZCxiFT6dKtzdTkznHJJ
+	SO0/M3RGrygKqUXiwbFmNNUrjyLVI0blDYRoWvy2PIkPeZxYLBTt
+X-Google-Smtp-Source: AGHT+IGnxp2ZaWp6eHC5weneKJv5KNdurXNsjNpQgJstESoV+PwFxGZgKNxEahdtODj5PA3F9SUlVg==
+X-Received: by 2002:ac8:5ad0:0:b0:458:3564:f305 with SMTP id d75a77b69052e-4583c743a3dmr17631361cf.24.1725916184485;
+        Mon, 09 Sep 2024 14:09:44 -0700 (PDT)
+Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e9df9asm23716551cf.50.2024.09.09.14.09.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2024 14:09:43 -0700 (PDT)
+Date: Mon, 09 Sep 2024 17:09:43 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowang@redhat.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Szabolcs Nagy <szabolcs.nagy@arm.com>, 
+ netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ arefev@swemel.ru, 
+ alexander.duyck@gmail.com, 
+ Willem de Bruijn <willemb@google.com>, 
+ stable@vger.kernel.org, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Felix Fietkau <nbd@nbd.name>, 
+ Mark Brown <broonie@kernel.org>, 
+ Yury Khrustalev <yury.khrustalev@arm.com>, 
+ nd@arm.com
+Message-ID: <66df641780764_7585d294af@willemb.c.googlers.com.notmuch>
+In-Reply-To: <66df1229c854f_38b8b294a7@willemb.c.googlers.com.notmuch>
+References: <20240729201108.1615114-1-willemdebruijn.kernel@gmail.com>
+ <ZtsTGp9FounnxZaN@arm.com>
+ <66db2542cfeaa_29a385294b9@willemb.c.googlers.com.notmuch>
+ <66de0487cfa91_30614529470@willemb.c.googlers.com.notmuch>
+ <20240908164252-mutt-send-email-mst@kernel.org>
+ <CACGkMEtchtLYAVgUYGFt3e-1UjNBy+h0Kv-7K3dRiiKEr7gnKw@mail.gmail.com>
+ <66de653b4e0f9_cd37294c3@willemb.c.googlers.com.notmuch>
+ <CACGkMEtu3c3xVWukFnGriOk4UjKyMVKU7gNQ5v38nHy1q2=DpQ@mail.gmail.com>
+ <66de6e0d26a4a_ec892942@willemb.c.googlers.com.notmuch>
+ <CACGkMEvpx9D-XVS5xKpzxqgJKBdSfXxZ182PgjRePD1RzNKtVA@mail.gmail.com>
+ <66df1229c854f_38b8b294a7@willemb.c.googlers.com.notmuch>
+Subject: Re: [PATCH net v2] net: drop bad gso csum_start and offset in
+ virtio_net_hdr
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+Willem de Bruijn wrote:
+> > > > > So I guess VIRTIO_NET_HDR_GSO_* without VIRTIO_NET_HDR_F_DATA_VALID
+> > > > > would be wrong on rx.
+> > > > >
+> > > > > But the new check
+> > > > >
+> > > > >         if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+> > > > >
+> > > > >                 [...]
+> > > > >
+> > > > >                 case SKB_GSO_TCPV4:
+> > > > >                 case SKB_GSO_TCPV6:
+> > > > >                         if (skb->csum_offset != offsetof(struct tcphdr, check))
+> > > > >                                 return -EINVAL;
+> > > > >
+> > > > > should be limited to callers of virtio_net_hdr_to_skb on the tx/GSO path.
+> > > > >
+> > > > > Looking what the cleanest/minimal patch is to accomplish that.
+> > > > >
+> > > >
+> > > > virtio_net_hdr_to_skb() translates virtio-net header to skb metadata,
+> > > > so it's RX. For TX the helper should be virtio_net_hdr_from_skb()
+> > > > which translates skb metadata to virtio hdr.
+> > >
+> > > virtio_net_hdr_to_skb is used by PF_PACKET, tun and tap
+> > 
+> > Exactly.
+> > 
+> > > when injecting a packet into the egress path.
+> > 
+> > For tuntap it's still the RX path. For PF_PACEKT and macvtap, it's the tx.
+> > 
+> > Maybe a new parameter to virtio_net_hdr_to_skb()?
+> 
+> This is the most straightforward approach. But requires changse to all
+> callers, in a patch targeting all the stable branches.
+> 
+> I'd prefer if we can detect ingress vs egress directly.
 
-netif_txq_maybe_stop() returns -1, 0, or 1, while
-idpf_tx_maybe_stop_common() says it returns 0 or -EBUSY. As a result,
-there sometimes are Tx queue timeout warnings despite that the queue
-is empty or there is at least enough space to restart it.
-Make idpf_tx_maybe_stop_common() inline and returning true or false,
-handling the return of netif_txq_maybe_stop() properly. Use a correct
-goto in idpf_tx_maybe_stop_splitq() to avoid stopping the queue or
-incrementing the stops counter twice.
+Not doing this, because both on ingress and egress the allowed
+ip_summed types are more relaxed than I imagined.
 
-Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
-Fixes: a5ab9ee0df0b ("idpf: add singleq start_xmit and napi poll")
-Cc: stable@vger.kernel.org # 6.7+
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  4 +++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 35 +++++--------------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  9 ++++-
- 3 files changed, 21 insertions(+), 27 deletions(-)
+Let's just make the check more narrow to avoid such false positives.
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index 947d3ff9677c..5ba360abbe66 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -375,6 +375,10 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- 				      IDPF_TX_DESCS_FOR_CTX)) {
- 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
- 
-+		u64_stats_update_begin(&tx_q->stats_sync);
-+		u64_stats_inc(&tx_q->q_stats.q_busy);
-+		u64_stats_update_end(&tx_q->stats_sync);
-+
- 		return NETDEV_TX_BUSY;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 9844d01eaedb..5d74f324bcd4 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2132,29 +2132,6 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
- }
- 
--/**
-- * idpf_tx_maybe_stop_common - 1st level check for common Tx stop conditions
-- * @tx_q: the queue to be checked
-- * @size: number of descriptors we want to assure is available
-- *
-- * Returns 0 if stop is not needed
-- */
--int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size)
--{
--	struct netdev_queue *nq;
--
--	if (likely(IDPF_DESC_UNUSED(tx_q) >= size))
--		return 0;
--
--	u64_stats_update_begin(&tx_q->stats_sync);
--	u64_stats_inc(&tx_q->q_stats.q_busy);
--	u64_stats_update_end(&tx_q->stats_sync);
--
--	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
--
--	return netif_txq_maybe_stop(nq, IDPF_DESC_UNUSED(tx_q), size, size);
--}
--
- /**
-  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
-  * @tx_q: the queue to be checked
-@@ -2166,7 +2143,7 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
- 				     unsigned int descs_needed)
- {
- 	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
--		goto splitq_stop;
-+		goto out;
- 
- 	/* If there are too many outstanding completions expected on the
- 	 * completion queue, stop the TX queue to give the device some time to
-@@ -2185,10 +2162,12 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
- 	return 0;
- 
- splitq_stop:
-+	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
-+
-+out:
- 	u64_stats_update_begin(&tx_q->stats_sync);
- 	u64_stats_inc(&tx_q->q_stats.q_busy);
- 	u64_stats_update_end(&tx_q->stats_sync);
--	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
- 
- 	return -EBUSY;
- }
-@@ -2211,7 +2190,11 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
- 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 	tx_q->next_to_use = val;
- 
--	idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED);
-+	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
-+		u64_stats_update_begin(&tx_q->stats_sync);
-+		u64_stats_inc(&tx_q->q_stats.q_busy);
-+		u64_stats_update_end(&tx_q->stats_sync);
-+	}
- 
- 	/* Force memory writes to complete before letting h/w
- 	 * know there are new descriptors to fetch.  (Only
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 3a2a92e79e60..33305de06975 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1018,7 +1018,6 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
- 			   struct idpf_tx_buf *first, u16 ring_idx);
- unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
- 					 struct sk_buff *skb);
--int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size);
- void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
- netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- 				  struct idpf_tx_queue *tx_q);
-@@ -1027,4 +1026,12 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
- 				      u16 cleaned_count);
- int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
- 
-+static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
-+					     u32 needed)
-+{
-+	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					  IDPF_DESC_UNUSED(tx_q),
-+					  needed, needed);
-+}
-+
- #endif /* !_IDPF_TXRX_H_ */
--- 
-2.42.0
+GRO indeed allows CHECKSUM_NONE.
+
+But TSO also accepts packets that are not CHECKSUM_PARTIAL, and will
+fix up csum_start/csum_off. In tcp4_gso_segment:
+
+        if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+                const struct iphdr *iph = ip_hdr(skb);
+                struct tcphdr *th = tcp_hdr(skb);
+
+                /* Set up checksum pseudo header, usually expect stack to
+                 * have done this already.
+                 */
+
+                th->check = 0;
+                skb->ip_summed = CHECKSUM_PARTIAL;
+                __tcp_v4_send_check(skb, iph->saddr, iph->daddr);
+        }
+
+With __tcp_v4_send_check:
+
+	void __tcp_v4_send_check(struct sk_buff *skb, __be32 saddr, __be32 daddr)
+	{
+		struct tcphdr *th = tcp_hdr(skb);
+
+		th->check = ~tcp_v4_check(skb->len, saddr, daddr, 0);
+		skb->csum_start = skb_transport_header(skb) - skb->head;
+		skb->csum_offset = offsetof(struct tcphdr, check);
+	}    
+
+That means that we can relax the check on input from userspace to
+bad CHECKSUM_PARTIAL input:
+
+@@ -173,7 +173,8 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+                        break;
+                case SKB_GSO_TCPV4:
+                case SKB_GSO_TCPV6:
+-                       if (skb->csum_offset != offsetof(struct tcphdr, check))
++                       if (skb->ip_summed == CHECKSUM_PARTIAL &&
++                           skb->csum_offset != offsetof(struct tcphdr, check))
+                                return -EINVAL;
+
+I've verified that this test still catches the bad packet from the
+syzkaller report in the Link in the commit.
+
+
+
+
+> Based on ip_summed, pkt_type, is_skb_wmem or so. But so far have not
+> found a suitable condition.
+> 
+> I noticed something else: as you point out TUN is ingress. Unlike
+> virtnet_receive, it does not set ip_summed to CHECKSUM_UNNECESSARY if
+> VIRTIO_NET_HDR_F_DATA_VALID. It probably should. GRO expects packets
+> to have had their integrity verified. CHECKSUM_NONE on ingress is not
+> correct for GRO.
+> 
+> And also related: no GRO should be generated by a device unless
+> VIRTIO_NET_HDR_F_DATA_VALID is also passed? I have to check the spec
+> if it says anything about this.
 
 
