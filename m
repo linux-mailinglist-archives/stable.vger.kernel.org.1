@@ -1,244 +1,136 @@
-Return-Path: <stable+bounces-73987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1259712C9
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:00:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EEE97137B
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 11:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246FE284F39
-	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:00:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E11BEB21F5E
+	for <lists+stable@lfdr.de>; Mon,  9 Sep 2024 09:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AC71B253B;
-	Mon,  9 Sep 2024 09:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC0E1B3B29;
+	Mon,  9 Sep 2024 09:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bMW0HSj5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="df+srGlx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373171B14E1
-	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 09:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCDA1B3B1A
+	for <stable@vger.kernel.org>; Mon,  9 Sep 2024 09:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725872446; cv=none; b=KcEnFHVVz32KnqduhF5K3tRlHFWeY7RbvDXZ8jzzd9emc2g0bXUJPGV8xXQ0bAAeL1FtLVGYXRG3bGrP2RfrMvQTm+KxnFfi+nwHfo8htZMx8OhbVFnZoHD1WhCCBcUIRP/E9A/71rZAZ1MSGoSj3diWmtBEgCIQiFxDi/NFaq0=
+	t=1725874059; cv=none; b=gxi2Jmtk3hE5ZgtfiZSVUSlTxjMPSzRW23tHHEL4BYIbsm7I+/QvkktLvrLPSzcDSUZ8dkC/T25M5Zi9DVTjswJRCrRLXYC0/L9q5OOdd4uaaZpOiCz5H9pcftVGfKb5psYzF6uY5r6Kl30+SzMp0QjjhGqMWtyB6OV0hnZASQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725872446; c=relaxed/simple;
-	bh=2uC5gx32sskCSSJUT5Ov8169MdJ5hiOqqo6nmCSsehk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TBxhWOlV0SagXeJy4zlhNw4Migao2FQ2uwNp8bfTMIIesN7LSLUgO4tAAI79NCH6/8vnSKYFDvlGS41fXDblbxescyxW+o9FNG+VHHabYyzgL6vZKyC4lV5BKDSNRknKggbBy55VYxRDUXH+oxoU2/NPpW6EBgTowhADgElmgIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bMW0HSj5; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1725874059; c=relaxed/simple;
+	bh=ZX8JeUzZtwC9DY0sa3lCUCCrglgEUya5de/tbILFcLw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gYzaeRnDqEfg5Z9/0tkfTjWpReRm5FoZ+nadL5Q8Hmv6SpanF4HzD2LP2R2lAV5bF9qW6JA/JhDfaJgmA9MsVh3N0tywVG6UfAPykB0rXrNR60l8AYipI+aidTgzcZLpp04lvNe88dvJ7Rj32Fhup0QcIUnyfUOVYxnmkqwvINE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=df+srGlx; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725872445; x=1757408445;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2uC5gx32sskCSSJUT5Ov8169MdJ5hiOqqo6nmCSsehk=;
-  b=bMW0HSj5VXeOrO+Z7eSakjQCzTx0zcE5iRM0XjBGN/JscYQHFiWmIfj1
-   D9a1Ja9lJb2FxGBZcdI13D89vXaPq7+Cj1gVjP2931sWJr1h7AguOO//7
-   q6xzNAJxy61GlBZEdJOpb6Dhdf4NAFBQ3bw+CefxUXMETRr6obBDXPb8t
-   yp/Z7fIU1unDRluE6HYpGX4UQrSWBSX7FvcqsP/bDKYBVb1zBQp6L7MzT
-   P1uTIV2Z3a22iftlULHmD4NXN7jTj35PQpvo6mreffcqMn88uYodIHaQt
-   Vcadk8oV+Zrr152jOqAu8mPOwGDLRMBqnDtHBSI6SKRPyzZ+6EpKckwHg
+  t=1725874057; x=1757410057;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=ZX8JeUzZtwC9DY0sa3lCUCCrglgEUya5de/tbILFcLw=;
+  b=df+srGlxskTWAiqMGEJ1GNVpHRclU/YTNxm66MfmYEWzp1JnW2JSf+mI
+   t0M6k+KJ5UhvrjU8TJUPXnPjc9XWwe1Ff60KBzaNBPKEBhXDFL6obRuMx
+   9Ntvcj6qGGJ031rw9KOVwaj/dxDbtwyccDVCnTL2MA7ZTmFFh6SwYkSD0
+   j+Xie+u/VCshbZf+TpTRRPXLqaPg6sVvQiGNdSC64GaDtDHUjZjMsKe5U
+   ZJSYVZBCSowsGpVLcWf3pnWzaVJI10fNQABhXepgHx5s6WxgIGpITJNgl
+   07s4liXmR2B1lgzGnA+Ysb12if3NesIQgFVK4/FWvD6SWZto0DSWzwW50
    w==;
-X-CSE-ConnectionGUID: 1ee9xPn7Rc614cmLmqdtrg==
-X-CSE-MsgGUID: V9bUtr7wSyaD8kdOIzqMzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24702208"
+X-CSE-ConnectionGUID: Wh95hPOOQbCePTCqlBHuxQ==
+X-CSE-MsgGUID: urC2A3miQiebdQamjqXsWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24672234"
 X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="24702208"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:00:44 -0700
-X-CSE-ConnectionGUID: Xzeh5670Qo+L5eYCiSkdkg==
-X-CSE-MsgGUID: saHSMxoWTLqBzmzXVkhq4A==
+   d="scan'208";a="24672234"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:27:36 -0700
+X-CSE-ConnectionGUID: i93HDXq4RfWuhIxqFVF5mQ==
+X-CSE-MsgGUID: uAE50xKtRsSnmt9bf9KgeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="66237344"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO jhogande-mobl1..) ([10.245.245.9])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:00:42 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.10.y 2/2] drm/i915/display: Increase Fast Wake Sync length as a quirk
-Date: Mon,  9 Sep 2024 11:59:18 +0300
-Message-Id: <20240909085918.3239275-2-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240909085918.3239275-1-jouni.hogander@intel.com>
-References: <2024090806-marbles-stegosaur-6314@gregkh>
- <20240909085918.3239275-1-jouni.hogander@intel.com>
+   d="scan'208";a="89888267"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.176])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:27:29 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: "Kulkarni, Vandita" <vandita.kulkarni@intel.com>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/i915/bios: fix printk format width
+In-Reply-To: <SJ0PR11MB6789D9701C99A53699E65D438D9D2@SJ0PR11MB6789.namprd11.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240905112519.4186408-1-jani.nikula@intel.com>
+ <SJ0PR11MB6789D9701C99A53699E65D438D9D2@SJ0PR11MB6789.namprd11.prod.outlook.com>
+Date: Mon, 09 Sep 2024 12:27:26 +0300
+Message-ID: <878qw1mb29.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-In commit "drm/i915/display: Increase number of fast wake precharge pulses"
-we were increasing Fast Wake sync pulse length to fix problems observed on
-Dell Precision 5490 laptop with AUO panel. Later we have observed this is
-causing problems on other panels.
+On Thu, 05 Sep 2024, "Kulkarni, Vandita" <vandita.kulkarni@intel.com> wrote:
+>> -----Original Message-----
+>> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of Jani
+>> Nikula
+>> Sent: Thursday, September 5, 2024 4:55 PM
+>> To: intel-gfx@lists.freedesktop.org
+>> Cc: Nikula, Jani <jani.nikula@intel.com>; stable@vger.kernel.org
+>> Subject: [PATCH] drm/i915/bios: fix printk format width
+>>
+>> s/0x04%x/0x%04x/ to use 0 prefixed width 4 instead of printing 04 verbatim.
+>>
+>> Fixes: 51f5748179d4 ("drm/i915/bios: create fake child devices on missing
+>> VBT")
+>> Cc: <stable@vger.kernel.org> # v5.13+
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> ---
+>
+> LGTM.
+> Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
 
-Fix these problems by increasing Fast Wake sync pulse length as a quirk
-applied for Dell Precision 5490 with problematic panel.
+Pushed to din, thanks for the review.
 
-Fixes: f77772866385 ("drm/i915/display: Increase number of fast wake precharge pulses")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Closes: http://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9739
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2246
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11762
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902064241.1020965-3-jouni.hogander@intel.com
-(cherry picked from commit fcba2ed66b39252210f4e739722ebcc5398c2197)
-Requires: 43cf50eb1408 ("drm/i915/display: Add mechanism to use sink model when applying quirk")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit a13494de53258d8cf82ed3bcd69176bbf7f2640e)
----
- drivers/gpu/drm/i915/display/intel_dp_aux.c | 16 +++++++++++-----
- drivers/gpu/drm/i915/display/intel_dp_aux.h |  2 +-
- drivers/gpu/drm/i915/display/intel_psr.c    |  2 +-
- drivers/gpu/drm/i915/display/intel_quirks.c | 19 ++++++++++++++++++-
- drivers/gpu/drm/i915/display/intel_quirks.h |  1 +
- 5 files changed, 32 insertions(+), 8 deletions(-)
+BR,
+Jani.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/i915/display/intel_dp_aux.c
-index b8a53bb174dab..be58185a77c01 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
-@@ -13,6 +13,7 @@
- #include "intel_dp_aux.h"
- #include "intel_dp_aux_regs.h"
- #include "intel_pps.h"
-+#include "intel_quirks.h"
- #include "intel_tc.h"
- 
- #define AUX_CH_NAME_BUFSIZE	6
-@@ -142,16 +143,21 @@ static int intel_dp_aux_sync_len(void)
- 	return precharge + preamble;
- }
- 
--int intel_dp_aux_fw_sync_len(void)
-+int intel_dp_aux_fw_sync_len(struct intel_dp *intel_dp)
- {
-+	int precharge = 10; /* 10-16 */
-+	int preamble = 8;
-+
- 	/*
- 	 * We faced some glitches on Dell Precision 5490 MTL laptop with panel:
- 	 * "Manufacturer: AUO, Model: 63898" when using HW default 18. Using 20
- 	 * is fixing these problems with the panel. It is still within range
--	 * mentioned in eDP specification.
-+	 * mentioned in eDP specification. Increasing Fast Wake sync length is
-+	 * causing problems with other panels: increase length as a quirk for
-+	 * this specific laptop.
- 	 */
--	int precharge = 12; /* 10-16 */
--	int preamble = 8;
-+	if (intel_has_dpcd_quirk(intel_dp, QUIRK_FW_SYNC_LEN))
-+		precharge += 2;
- 
- 	return precharge + preamble;
- }
-@@ -211,7 +217,7 @@ static u32 skl_get_aux_send_ctl(struct intel_dp *intel_dp,
- 		DP_AUX_CH_CTL_TIME_OUT_MAX |
- 		DP_AUX_CH_CTL_RECEIVE_ERROR |
- 		DP_AUX_CH_CTL_MESSAGE_SIZE(send_bytes) |
--		DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(intel_dp_aux_fw_sync_len()) |
-+		DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(intel_dp_aux_fw_sync_len(intel_dp)) |
- 		DP_AUX_CH_CTL_SYNC_PULSE_SKL(intel_dp_aux_sync_len());
- 
- 	if (intel_tc_port_in_tbt_alt_mode(dig_port))
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.h b/drivers/gpu/drm/i915/display/intel_dp_aux.h
-index 76d1f2ed7c2f4..593f58fafab71 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_aux.h
-+++ b/drivers/gpu/drm/i915/display/intel_dp_aux.h
-@@ -20,6 +20,6 @@ enum aux_ch intel_dp_aux_ch(struct intel_encoder *encoder);
- 
- void intel_dp_aux_irq_handler(struct drm_i915_private *i915);
- u32 intel_dp_aux_pack(const u8 *src, int src_bytes);
--int intel_dp_aux_fw_sync_len(void);
-+int intel_dp_aux_fw_sync_len(struct intel_dp *intel_dp);
- 
- #endif /* __INTEL_DP_AUX_H__ */
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 3c7da862222bf..7173ffc7c66c1 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1356,7 +1356,7 @@ static bool _compute_alpm_params(struct intel_dp *intel_dp,
- 	int tfw_exit_latency = 20; /* eDP spec */
- 	int phy_wake = 4;	   /* eDP spec */
- 	int preamble = 8;	   /* eDP spec */
--	int precharge = intel_dp_aux_fw_sync_len() - preamble;
-+	int precharge = intel_dp_aux_fw_sync_len(intel_dp) - preamble;
- 	u8 max_wake_lines;
- 
- 	io_wake_time = max(precharge, io_buffer_wake_time(crtc_state)) +
-diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
-index bce1f67c918bb..dfd8b4960e6d6 100644
---- a/drivers/gpu/drm/i915/display/intel_quirks.c
-+++ b/drivers/gpu/drm/i915/display/intel_quirks.c
-@@ -70,6 +70,14 @@ static void quirk_no_pps_backlight_power_hook(struct intel_display *display)
- 	drm_info(display->drm, "Applying no pps backlight power quirk\n");
- }
- 
-+static void quirk_fw_sync_len(struct intel_dp *intel_dp)
-+{
-+	struct intel_display *display = to_intel_display(intel_dp);
-+
-+	intel_set_dpcd_quirk(intel_dp, QUIRK_FW_SYNC_LEN);
-+	drm_info(display->drm, "Applying Fast Wake sync pulse count quirk\n");
-+}
-+
- struct intel_quirk {
- 	int device;
- 	int subsystem_vendor;
-@@ -224,6 +232,15 @@ static struct intel_quirk intel_quirks[] = {
- };
- 
- static struct intel_dpcd_quirk intel_dpcd_quirks[] = {
-+	/* Dell Precision 5490 */
-+	{
-+		.device = 0x7d55,
-+		.subsystem_vendor = 0x1028,
-+		.subsystem_device = 0x0cc7,
-+		.sink_oui = SINK_OUI(0x38, 0xec, 0x11),
-+		.hook = quirk_fw_sync_len,
-+	},
-+
- };
- 
- void intel_init_quirks(struct intel_display *display)
-@@ -265,7 +282,7 @@ void intel_init_dpcd_quirks(struct intel_dp *intel_dp,
- 		    !memcmp(q->sink_oui, ident->oui, sizeof(ident->oui)) &&
- 		    (!memcmp(q->sink_device_id, ident->device_id,
- 			    sizeof(ident->device_id)) ||
--		     mem_is_zero(q->sink_device_id, sizeof(q->sink_device_id))))
-+		     !memchr_inv(q->sink_device_id, 0, sizeof(q->sink_device_id))))
- 			q->hook(intel_dp);
- 	}
- }
-diff --git a/drivers/gpu/drm/i915/display/intel_quirks.h b/drivers/gpu/drm/i915/display/intel_quirks.h
-index c8db50b9ab74d..cafdebda75354 100644
---- a/drivers/gpu/drm/i915/display/intel_quirks.h
-+++ b/drivers/gpu/drm/i915/display/intel_quirks.h
-@@ -19,6 +19,7 @@ enum intel_quirk_id {
- 	QUIRK_INVERT_BRIGHTNESS,
- 	QUIRK_LVDS_SSC_DISABLE,
- 	QUIRK_NO_PPS_BACKLIGHT_POWER_HOOK,
-+	QUIRK_FW_SYNC_LEN,
- };
- 
- void intel_init_quirks(struct intel_display *display);
+
+>
+> Thanks.
+>>  drivers/gpu/drm/i915/display/intel_bios.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c
+>> b/drivers/gpu/drm/i915/display/intel_bios.c
+>> index cd32c9cd38a9..daa4b9535123 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_bios.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
+>> @@ -2949,7 +2949,7 @@ init_vbt_missing_defaults(struct intel_display
+>> *display)
+>>               list_add_tail(&devdata->node, &display-
+>> >vbt.display_devices);
+>>
+>>               drm_dbg_kms(display->drm,
+>> -                         "Generating default VBT child device with type
+>> 0x04%x on port %c\n",
+>> +                         "Generating default VBT child device with type
+>> 0x%04x on port
+>> +%c\n",
+>>                           child->device_type, port_name(port));
+>>       }
+>>
+>> --
+>> 2.39.2
+>
+
 -- 
-2.34.1
-
+Jani Nikula, Intel
 
