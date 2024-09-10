@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35657973560
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E6F9735AD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5E62861DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593A8B29C30
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC0E18C344;
-	Tue, 10 Sep 2024 10:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8A81922D6;
+	Tue, 10 Sep 2024 10:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTNsr2LU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnUg3MTR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFD1188A38;
-	Tue, 10 Sep 2024 10:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18670143880;
+	Tue, 10 Sep 2024 10:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965232; cv=none; b=ihHl7z9eBBJQLlD30TY5SPhFGN4wzxBJaB3V4j+uXLpyKLiS1s4WdK+f7pXoIABj3aT6Bbeon8DoIzD9riDTFM6v3nXCo9hQVvR1mue4+reP10kmAt2P/H4KjFt3nida3+eiESjv+M3ubs7wQ3u72rLSjxTrj5DuOM3Lt2stUbo=
+	t=1725964677; cv=none; b=Cb6UAchc2Caz0QG++y4YZB8Q5azI2ES3h58eVOV1NUpnueq4/TTuuAKD7/rxPDGhbSHKzDHsKuSePC0dThYxQsbn+IlIwQ2vGr8CdEYdQM86gJBulczSOeCV8YYo09KQ0fyvNgFIij192RmjIh11HJr9kdwfnsb8g3EmXUK6ICA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965232; c=relaxed/simple;
-	bh=31lougarGKOHIGsNhzLIo9/rfqxGa9j06w59OHJznyw=;
+	s=arc-20240116; t=1725964677; c=relaxed/simple;
+	bh=A8B4GVGu5DJB8WLuGzgqOtajWzuN5SvJgxxtrotXr54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AD6Bl8ZRwgjgh8KGT/wRaxg+3Pk+AgDKYb3BwZQSgRm42szIB28xUgTWfkvUtAkylfznGEd7Dj+f9Sz2N/COLdliFDoUDK1zbYMLQO4S6JgM3gcK3KRLvKGSgCOkd/K4A5UOqZkuojlVS/8dXj3P5Gxy5LRwSx8RwqhGQcF6VQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTNsr2LU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148A4C4CEC3;
-	Tue, 10 Sep 2024 10:47:10 +0000 (UTC)
+	 MIME-Version; b=igS09OfBw4f9B/SJ6vItlidHOdJN7JzP/2DCwn5AyzDGOw7iVhLpFPrG6/mhGRT2uuze3EbZuo4A2Y6cydEuJtm82v10xDM47KRV3eVsKzUcUrhXlXMkDo+2lQbxXJnTo90sM233olH0D2aOaIFDrAPzSqCUgG9OJkWjGUHqglI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnUg3MTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F8EC4CEC3;
+	Tue, 10 Sep 2024 10:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965231;
-	bh=31lougarGKOHIGsNhzLIo9/rfqxGa9j06w59OHJznyw=;
+	s=korg; t=1725964677;
+	bh=A8B4GVGu5DJB8WLuGzgqOtajWzuN5SvJgxxtrotXr54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTNsr2LUN1jQBZt4PX2Qwl/AcaHfjsFDkWOYfpyHWW3pSDp+vCbJ0tQsCBT+71APi
-	 z+W12Qqg7EkJ0ikOwTFTWOZEcJSLNFmgWuyntAa+nNbo0PHCuc7UgwhDBPrUJBfB2q
-	 65X7r8wj+9KlNA3gWXKQsPOnz6iZ/+mRlTrxlsec=
+	b=PnUg3MTRcrpw1yFq8iMEFZPuaYmSQHZEKBSbiAwckkoHZjm2o5B949NXvEcsSoINg
+	 67jlyPrMYMybMtsDz9v6hSqKpsZZYdVlThlv+OSk+xaiMXFwKmwes1YbKfa4YiZPqW
+	 IYbCGjLfZT4QpuAMfSLTMV082dBnFfFB/TDW8lvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/186] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
-Date: Tue, 10 Sep 2024 11:34:09 +0200
-Message-ID: <20240910092600.932432477@linuxfoundation.org>
+	Andrea Parri <parri.andrea@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 263/269] membarrier: riscv: Add full memory barrier in switch_mm()
+Date: Tue, 10 Sep 2024 11:34:10 +0200
+Message-ID: <20240910092617.125910172@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Andrea Parri <parri.andrea@gmail.com>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+commit d6cfd1770f20392d7009ae1fdb04733794514fa9 upstream.
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+The membarrier system call requires a full memory barrier after storing
+to rq->curr, before going back to user-space.  The barrier is only
+needed when switching between processes: the barrier is implied by
+mmdrop() when switching from kernel to userspace, and it's not needed
+when switching from userspace to kernel.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
+Rely on the feature/mechanism ARCH_HAS_MEMBARRIER_CALLBACKS and on the
+primitive membarrier_arch_switch_mm(), already adopted by the PowerPC
+architecture, to insert the required barrier.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fab957c11efe2f ("RISC-V: Atomic and Locking Code")
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/r/20240131144936.29190-2-parri.andrea@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ MAINTAINERS                         |    2 +-
+ arch/riscv/Kconfig                  |    1 +
+ arch/riscv/include/asm/membarrier.h |   31 +++++++++++++++++++++++++++++++
+ arch/riscv/mm/context.c             |    2 ++
+ kernel/sched/core.c                 |    5 +++--
+ 5 files changed, 38 insertions(+), 3 deletions(-)
+ create mode 100644 arch/riscv/include/asm/membarrier.h
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index f25eb111c051..34d3ac52de89 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
- 	}
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13702,7 +13702,7 @@ M:	Mathieu Desnoyers <mathieu.desnoyers@
+ M:	"Paul E. McKenney" <paulmck@kernel.org>
+ L:	linux-kernel@vger.kernel.org
+ S:	Supported
+-F:	arch/powerpc/include/asm/membarrier.h
++F:	arch/*/include/asm/membarrier.h
+ F:	include/uapi/linux/membarrier.h
+ F:	kernel/sched/membarrier.c
  
--- 
-2.43.0
-
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -27,6 +27,7 @@ config RISCV
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select ARCH_HAS_KCOV
++	select ARCH_HAS_MEMBARRIER_CALLBACKS
+ 	select ARCH_HAS_MMIOWB
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PMEM_API
+--- /dev/null
++++ b/arch/riscv/include/asm/membarrier.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_RISCV_MEMBARRIER_H
++#define _ASM_RISCV_MEMBARRIER_H
++
++static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
++					     struct mm_struct *next,
++					     struct task_struct *tsk)
++{
++	/*
++	 * Only need the full barrier when switching between processes.
++	 * Barrier when switching from kernel to userspace is not
++	 * required here, given that it is implied by mmdrop(). Barrier
++	 * when switching from userspace to kernel is not needed after
++	 * store to rq->curr.
++	 */
++	if (IS_ENABLED(CONFIG_SMP) &&
++	    likely(!(atomic_read(&next->membarrier_state) &
++		     (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
++		      MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
++		return;
++
++	/*
++	 * The membarrier system call requires a full memory barrier
++	 * after storing to rq->curr, before going back to user-space.
++	 * Matches a full barrier in the proximity of the membarrier
++	 * system call entry.
++	 */
++	smp_mb();
++}
++
++#endif /* _ASM_RISCV_MEMBARRIER_H */
+--- a/arch/riscv/mm/context.c
++++ b/arch/riscv/mm/context.c
+@@ -323,6 +323,8 @@ void switch_mm(struct mm_struct *prev, s
+ 	if (unlikely(prev == next))
+ 		return;
+ 
++	membarrier_arch_switch_mm(prev, next, task);
++
+ 	/*
+ 	 * Mark the current MM context as inactive, and the next as
+ 	 * active.  This is at least used by the icache flushing
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6679,8 +6679,9 @@ static void __sched notrace __schedule(u
+ 		 *
+ 		 * Here are the schemes providing that barrier on the
+ 		 * various architectures:
+-		 * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC.
+-		 *   switch_mm() rely on membarrier_arch_switch_mm() on PowerPC.
++		 * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC,
++		 *   RISC-V.  switch_mm() relies on membarrier_arch_switch_mm()
++		 *   on PowerPC and on RISC-V.
+ 		 * - finish_lock_switch() for weakly-ordered
+ 		 *   architectures where spin_unlock is a full barrier,
+ 		 * - switch_to() for arm64 (weakly-ordered, spin_unlock
 
 
 
