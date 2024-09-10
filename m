@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-74433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB5B972F46
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:50:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3944972F75
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2272881E7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:50:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F50C1F24E79
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CA718BC3F;
-	Tue, 10 Sep 2024 09:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC7D1885A6;
+	Tue, 10 Sep 2024 09:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmzfNgok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmySJCGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D9317BB01;
-	Tue, 10 Sep 2024 09:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92D946444;
+	Tue, 10 Sep 2024 09:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961790; cv=none; b=ZrmEUP8/xl4F/IiXvF2LgHY58Vb4tS2X2GWAvTuS/e17ARsdaVeTixOnIZ50IO91/ldufEP/x7czVCl4lvvqnaHn1RWVhFBYFvi2XWWv1o+SOv/ABbgML9Z2Ea0SAv5aPpr/ohOnh6n0n+ie5DJDTMJvBCiR4R8FrRAGr6UUgMA=
+	t=1725961902; cv=none; b=otGALy7O0/Ie6n1O3gu0trRbSVPxVZ0IJlJ9Ypz+9WzuZGo069S+9AFs17XyCyyRAm2eWHOMO124S5xEpnAht6Z/7sY1eV84K3C+YN8kWM5JAHYhcC3YVbZg9yQzFZy+HmwKYr2cfM+ODMLBdSZPVSZ0pRkF6wVuIyydEqhJv+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961790; c=relaxed/simple;
-	bh=S0h3WZ4F0ppAKiX4YAuBt8ckkwwWgh/0t4I7D/nIkLI=;
+	s=arc-20240116; t=1725961902; c=relaxed/simple;
+	bh=sK0iNmQP+wRgN+zy8jL5MGfOF26I6S2GuL2vdJd44iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVvoRpdqGna+Q88roEA4m+AEZ9ZywrMd8VGT0Bwpu5ja5Z8xvBW2PLiRJFk0gLwxyCgZDTWqGhmrJ2w8pwctsiCCmzXPuWSm4xEYlqE6ZrSuq2Ww4lKhq2MbGr8HunWzXne+fdL9HztJ4OV8IEnc24e44MMmLYO50OkN26sP0VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmzfNgok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEE6C4CEC3;
-	Tue, 10 Sep 2024 09:49:50 +0000 (UTC)
+	 MIME-Version; b=Mf3LgssZccaEaYn2s5inhv+kI9+CENHibWBce/OaVuWSBbp7PEMp3INPKWy3/a+FqwzJAU7mS1B2NImqSdu8zfjtXII7nQfd4DVMx/p4Vkim1D1qxgYAHuXNLhnPYhVcsOCpVUQhDB4b9xCDmNKD+s+Nvjq+0/X/jIzzvoJJMdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmySJCGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE14C4CEC3;
+	Tue, 10 Sep 2024 09:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961790;
-	bh=S0h3WZ4F0ppAKiX4YAuBt8ckkwwWgh/0t4I7D/nIkLI=;
+	s=korg; t=1725961902;
+	bh=sK0iNmQP+wRgN+zy8jL5MGfOF26I6S2GuL2vdJd44iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmzfNgokOyS1oE4t77GLRW/cd/hZ8x/Ch0njC4U/Jb7UFp/8ZQuJUjmBQDL7h5qgw
-	 6UjDgGMfaRExD4GZ7yI+fRAe120p/XW4jYVgwjob71CQb9w/z/2qKgTVv949Fc2LDi
-	 w/PcAIiZr3yfKEdKFUSkMiDKdQ0AIdmjsyxmH6W8=
+	b=qmySJCGe5VFMctkrE2oNJCpVmojFlj+CH6B29JGlCi0QHXDwa+LA3N+HS5ZW4x7IQ
+	 UC9/QRzokNMt0eQvbuClaUeZQwrHh9/3vSck+hmQ5Ssgx/ApTlAjB1M4yKpe6Grt2U
+	 /0TxdZqduM27nEh1QU8a6GMvV+ya70lnGSB6vt/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanghui Li <yanghui.li@mediatek.com>,
-	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Jeongjun Park <aha310510@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 189/375] bpf, net: Fix a potential race in do_sock_getsockopt()
-Date: Tue, 10 Sep 2024 11:29:46 +0200
-Message-ID: <20240910092628.838567579@linuxfoundation.org>
+Subject: [PATCH 6.10 190/375] bpf: add check for invalid name in btf_name_valid_section()
+Date: Tue, 10 Sep 2024 11:29:47 +0200
+Message-ID: <20240910092628.875900536@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -70,92 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 33f339a1ba54e56bba57ee9a77c71e385ab4825c ]
+[ Upstream commit bb6705c3f93bed2af03d43691743d4c43e3c8e6f ]
 
-There's a potential race when `cgroup_bpf_enabled(CGROUP_GETSOCKOPT)` is
-false during the execution of `BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN`, but
-becomes true when `BPF_CGROUP_RUN_PROG_GETSOCKOPT` is called.
-This inconsistency can lead to `BPF_CGROUP_RUN_PROG_GETSOCKOPT` receiving
-an "-EFAULT" from `__cgroup_bpf_run_filter_getsockopt(max_optlen=0)`.
-Scenario shown as below:
+If the length of the name string is 1 and the value of name[0] is NULL
+byte, an OOB vulnerability occurs in btf_name_valid_section() and the
+return value is true, so the invalid name passes the check.
 
-           `process A`                      `process B`
-           -----------                      ------------
-  BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN
-                                            enable CGROUP_GETSOCKOPT
-  BPF_CGROUP_RUN_PROG_GETSOCKOPT (-EFAULT)
+To solve this, you need to check if the first position is NULL byte and
+if the first character is printable.
 
-To resolve this, remove the `BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN` macro and
-directly uses `copy_from_sockptr` to ensure that `max_optlen` is always
-set before `BPF_CGROUP_RUN_PROG_GETSOCKOPT` is invoked.
-
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Co-developed-by: Yanghui Li <yanghui.li@mediatek.com>
-Signed-off-by: Yanghui Li <yanghui.li@mediatek.com>
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://patch.msgid.link/20240830082518.23243-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Fixes: bd70a8fb7ca4 ("bpf: Allow all printable characters in BTF DATASEC names")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://lore.kernel.org/r/20240831054702.364455-1-aha310510@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf-cgroup.h | 9 ---------
- net/socket.c               | 4 ++--
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ kernel/bpf/btf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index fb3c3e7181e6..ce91d9b2acb9 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -390,14 +390,6 @@ static inline bool cgroup_bpf_sock_enabled(struct sock *sk,
- 	__ret;								       \
- })
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index fe360b5b211d..2f157ffbc67c 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -817,9 +817,11 @@ static bool btf_name_valid_section(const struct btf *btf, u32 offset)
+ 	const char *src = btf_str_by_offset(btf, offset);
+ 	const char *src_limit;
  
--#define BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen)			       \
--({									       \
--	int __ret = 0;							       \
--	if (cgroup_bpf_enabled(CGROUP_GETSOCKOPT))			       \
--		copy_from_sockptr(&__ret, optlen, sizeof(int));		       \
--	__ret;								       \
--})
--
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, optlen,   \
- 				       max_optlen, retval)		       \
- ({									       \
-@@ -518,7 +510,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_SYSCTL(head,table,write,buf,count,pos) ({ 0; })
--#define BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, \
- 				       optlen, max_optlen, retval) ({ retval; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT_KERN(sock, level, optname, optval, \
-diff --git a/net/socket.c b/net/socket.c
-index e416920e9399..b5a003974058 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2350,7 +2350,7 @@ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
- int do_sock_getsockopt(struct socket *sock, bool compat, int level,
- 		       int optname, sockptr_t optval, sockptr_t optlen)
- {
--	int max_optlen __maybe_unused;
-+	int max_optlen __maybe_unused = 0;
- 	const struct proto_ops *ops;
- 	int err;
- 
-@@ -2359,7 +2359,7 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
- 		return err;
- 
- 	if (!compat)
--		max_optlen = BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen);
-+		copy_from_sockptr(&max_optlen, optlen, sizeof(int));
- 
- 	ops = READ_ONCE(sock->ops);
- 	if (level == SOL_SOCKET) {
++	if (!*src)
++		return false;
++
+ 	/* set a limit on identifier length */
+ 	src_limit = src + KSYM_NAME_LEN;
+-	src++;
+ 	while (*src && src < src_limit) {
+ 		if (!isprint(*src))
+ 			return false;
 -- 
 2.43.0
 
