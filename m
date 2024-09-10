@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA0B973242
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EB497315A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A25C61F2706B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92CF01C2545C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7968A190692;
-	Tue, 10 Sep 2024 10:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4864191F96;
+	Tue, 10 Sep 2024 10:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0DCgQoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvPu9c9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368F8190684;
-	Tue, 10 Sep 2024 10:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695D7191476;
+	Tue, 10 Sep 2024 10:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963324; cv=none; b=KrP11OivxISnVw9TFkTK2wfEayVpaO/3f2OBWW9Al2972wXrLAi3D+AeNpYExfZgoY21w2DKcKdfAkGLu+1iUNbKYeY6jSZZ5/Z75WgCZ2aeReRpgWc/IPz9kiAyJ4Ejay8D8b49Rbagln+8hrfcuDSuX18WZlnAWcgJPkGdl9E=
+	t=1725962773; cv=none; b=JdYHCfLjkeGBuHNugTp90BoMWeV1AC+s7AgLD+vUrBoxnVZLQIj+tjCkg4gASC5BjDbdl0Ju1GBECsw2Nh/XpynuM2CCKov/cHERqvuXOw8OtnVPw2UoSDgL3g+nredd5A0/U88Wvh7258M74/EQa5FnQYGxozUMl76UjY3ix38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963324; c=relaxed/simple;
-	bh=M/CyZL5wrZ7ZUcne6CMKlnComSRTSwYpxDZCWcK+Fjo=;
+	s=arc-20240116; t=1725962773; c=relaxed/simple;
+	bh=A6HywdAmH5M8iLqSD9ESP3Wae1b3bVhB+gzPDeCdsNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CdDVbKMrCq0lneI+I2eijy+pX7sCsrypKZRHt3UTmbGwFfV7d8JPCX+JKZtC9oCPB93q5RgLThhqi2neStPtpU5mN7S8sWDm1exKoFU1NQnB7O814oijnAoUH0erypT1muGzSL+0H37vhP1+hEZcdLbx62K7wvEbxxDWQ/SwHUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0DCgQoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B15C4CEC3;
-	Tue, 10 Sep 2024 10:15:23 +0000 (UTC)
+	 MIME-Version; b=uYsQGVT0p09Q6bs3xjBfWabua4Bmf5gNuJ9+CtQD2KfwZulmfPCTGhJO9KGyyICahNUZASE7fhcYTYdFFkHhO1QH4xWBWgW6vjdjjh5iWO/35e3ev0TUqvTjmswYd3lPUAArt75VH6rolqkX8jhcgZAA45iTOI5ipojfwCWAAfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvPu9c9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DC0C4CECD;
+	Tue, 10 Sep 2024 10:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963324;
-	bh=M/CyZL5wrZ7ZUcne6CMKlnComSRTSwYpxDZCWcK+Fjo=;
+	s=korg; t=1725962773;
+	bh=A6HywdAmH5M8iLqSD9ESP3Wae1b3bVhB+gzPDeCdsNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0DCgQoV0LxDCePa33Feap7F8mX40lb2ah26QkUjaUZisuhfhcYHYCXNX5NS1aub9
-	 cHCafrmyAcjTdrh3KA0ZA+HFbMUxDec2gxJDQ+67foR6Hm/+Z6k2zocJwe7DT3O0Fg
-	 kagkf7RcnaE0Hs6YjlVLys8QU1vnTgjk9HhAavQA=
+	b=SvPu9c9Y7kxTphSwQOLELcc8u8TqMl23VTNvo3Ldj0yV8gaCsZTtWyeizlOvvqIy/
+	 7uUStt0XTx2/g7sUOTqeDR5FCoYaaWt/BZsDwuJsolRoIk5d+iwfR4yD747ycmGost
+	 2N3MlHsof6b4rshsLLCucC9UzL5HWFZWlx9WJmjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/214] drm/amd/display: Add array index check for hdcp ddc access
+	Georg Gottleuber <ggo@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 017/192] nvme-pci: Add sleep quirk for Samsung 990 Evo
 Date: Tue, 10 Sep 2024 11:30:41 +0200
-Message-ID: <20240910092559.559036614@linuxfoundation.org>
+Message-ID: <20240910092558.651896653@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Georg Gottleuber <ggo@tuxedocomputers.com>
 
-[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
+commit 61aa894e7a2fda4ee026523b01d07e83ce2abb72 upstream.
 
-[Why]
-Coverity reports OVERRUN warning. Do not check if array
-index valid.
+On some TUXEDO platforms, a Samsung 990 Evo NVMe leads to a high
+power consumption in s2idle sleep (2-3 watts).
 
-[How]
-Check msg_id valid and valid array index.
+This patch applies 'Force No Simple Suspend' quirk to achieve a
+sleep with a lower power consumption, typically around 0.5 watts.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index 8e9caae7c955..1b2df97226a3 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3107,6 +3107,17 @@ static unsigned long check_vendor_combin
+ 		    dmi_match(DMI_BOARD_NAME, "NS5x_7xPU") ||
+ 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1"))
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
++	} else if (pdev->vendor == 0x144d && pdev->device == 0xa80d) {
++		/*
++		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
++		 * because of high power consumption (> 2 Watt) in s2idle
++		 * sleep. Only some boards with Intel CPU are affected.
++		 */
++		if (dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
++		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
++		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
++		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
++			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
+ 	}
  
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
- 
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
-@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		success = hdcp->config.ddc.funcs.read_i2c(
- 				hdcp->config.ddc.handle,
- 				HDCP_I2C_ADDR,
-@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
- 
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
- 
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.write_dpcd(
-@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
- 		memmove(&hdcp->buf[1], buf, buf_len);
- 		success = hdcp->config.ddc.funcs.write_i2c(
--- 
-2.43.0
-
+ 	/*
 
 
 
