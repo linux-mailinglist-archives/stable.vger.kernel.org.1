@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-74260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D47972E57
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:42:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5923A972E4B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 121FDB26A7C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B68D287BF7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7557E18D643;
-	Tue, 10 Sep 2024 09:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1962518EFDD;
+	Tue, 10 Sep 2024 09:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVBzK/kS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNDNxkXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C3818B46D;
-	Tue, 10 Sep 2024 09:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0DE18C03D;
+	Tue, 10 Sep 2024 09:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961285; cv=none; b=rEDxZI5g/kJTe16Tno8x9f0IlpY4xOU14Wg1F3LQ137FUqt6HaqQyFD+0Gv+mWMS9I7jvJ9rT/DKn4uY1KoEoMzStsyJWqNeHlNOVNXIyo53jOLy+uzW4GgHakuiDRgLD1cC+KSk1ZfJTJsW9xcrBrsCOrRZs2N+YPXMWTs1LHs=
+	t=1725961258; cv=none; b=WyFY7qRISXDktN9Hh9eSZEBgt+qzfDrhUYrnWkZb8udpmPx6n2y3QCyWEZfimc+YlLDUMw/9gz1bkW+unU5VcvyURPeF0EP5f91SXgTzRi8bFKP9RpKHIGQMd/bhrHutgtvVoRE+42KNmApK6vinDCss+rr4TTXhkz6ljXIgVXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961285; c=relaxed/simple;
-	bh=9Z5asG++OxZfAFz4RlQ1PH5W0OuwAIYqiL9I/idQ/IY=;
+	s=arc-20240116; t=1725961258; c=relaxed/simple;
+	bh=d2WRz4wVUnla3d5wpG3pLbOOJJ9kC0V7Qig4Fbsuvq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2rFaQxoqt3YDjT0jVa13ZXohHDH+84QaAv3YAKg8I5MvSUsJYm89Q1f14EgLH9a+jIGs74PiOnu2Fs0Tg7oFrjrieIbxkIWHI1VWdhzW0yx0J919GecbqwFLuhFV75lp6pnoyotO4wr/JV1IPw81l8S8UTYNWhEmixZu0ZrYSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVBzK/kS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC5EC4CEC3;
-	Tue, 10 Sep 2024 09:41:24 +0000 (UTC)
+	 MIME-Version; b=rbjsztEY/jggRiNx02G9UeIrCGNP7TesuMYtNVscYWl1i8MAnqV4y08T//AKSDHfbAwU9y8I9ifPUjB2grhB0vOIxCNaMgo9TgoBBfVlW0E8cEGgu5LfutcUIh1ixKm6g6TSBFAoMfBTvcpL8KWVmKeBT/ROV+ai1fkp0E7cPrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNDNxkXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53916C4CEC6;
+	Tue, 10 Sep 2024 09:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961285;
-	bh=9Z5asG++OxZfAFz4RlQ1PH5W0OuwAIYqiL9I/idQ/IY=;
+	s=korg; t=1725961258;
+	bh=d2WRz4wVUnla3d5wpG3pLbOOJJ9kC0V7Qig4Fbsuvq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVBzK/kSzDv68HcN7reM/0pgJ0nKo2WNZ/bORviK9VgQqoj1wE0lyf9lGuLWhH04Y
-	 uqr9WkZobuNxSmrqeJ4LeCq3mVTG+AzL7PjG5+0PsIBksNIVNuM6dQkKgNVSgHIBuv
-	 m6SJLL3PG8kchPyiQe+YQEG6wJH3Kkiy+UkR+pQg=
+	b=yNDNxkXCyT8WBZ3EMRQdU4UoyvGJlrSJakB317DJxf4iyntQrE1JzIsoxJnbLLQ4f
+	 pkQkDQ/+d58YyIppYn6D54fX/siLtCEN4sKBpSPr18CFkYJ73ec/8wp57Rz+Qu+cz4
+	 Li7866ANFk7xUlv2HbvxJAj5PEAMYP7eEc9C7Hlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 009/375] KVM: SVM: fix emulation of msr reads/writes of MSR_FS_BASE and MSR_GS_BASE
-Date: Tue, 10 Sep 2024 11:26:46 +0200
-Message-ID: <20240910092622.573894846@linuxfoundation.org>
+Subject: [PATCH 6.10 010/375] KVM: SVM: Dont advertise Bus Lock Detect to guest if SVM support is missing
+Date: Tue, 10 Sep 2024 11:26:47 +0200
+Message-ID: <20240910092622.607498977@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -65,53 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-commit dad1613e0533b380318281c1519e1a3477c2d0d2 upstream.
+commit 54950bfe2b69cdc06ef753872b5225e54eb73506 upstream.
 
-If these msrs are read by the emulator (e.g due to 'force emulation' prefix),
-SVM code currently fails to extract the corresponding segment bases,
-and return them to the emulator.
+If host supports Bus Lock Detect, KVM advertises it to guests even if
+SVM support is absent. Additionally, guest wouldn't be able to use it
+despite guest CPUID bit being set. Fix it by unconditionally clearing
+the feature bit in KVM cpu capability.
 
-Fix that.
-
+Reported-by: Jim Mattson <jmattson@google.com>
+Closes: https://lore.kernel.org/r/CALMp9eRet6+v8Y1Q-i6mqPm4hUow_kJNhmVHfOV8tMfuSS=tVg@mail.gmail.com
+Fixes: 76ea438b4afc ("KVM: X86: Expose bus lock debug exception to guest")
 Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20240802151608.72896-3-mlevitsk@redhat.com
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240808062937.1149-4-ravi.bangoria@amd.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/kvm/svm/svm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -2863,6 +2863,12 @@ static int svm_get_msr(struct kvm_vcpu *
- 	case MSR_CSTAR:
- 		msr_info->data = svm->vmcb01.ptr->save.cstar;
- 		break;
-+	case MSR_GS_BASE:
-+		msr_info->data = svm->vmcb01.ptr->save.gs.base;
-+		break;
-+	case MSR_FS_BASE:
-+		msr_info->data = svm->vmcb01.ptr->save.fs.base;
-+		break;
- 	case MSR_KERNEL_GS_BASE:
- 		msr_info->data = svm->vmcb01.ptr->save.kernel_gs_base;
- 		break;
-@@ -3088,6 +3094,12 @@ static int svm_set_msr(struct kvm_vcpu *
- 	case MSR_CSTAR:
- 		svm->vmcb01.ptr->save.cstar = data;
- 		break;
-+	case MSR_GS_BASE:
-+		svm->vmcb01.ptr->save.gs.base = data;
-+		break;
-+	case MSR_FS_BASE:
-+		svm->vmcb01.ptr->save.fs.base = data;
-+		break;
- 	case MSR_KERNEL_GS_BASE:
- 		svm->vmcb01.ptr->save.kernel_gs_base = data;
- 		break;
+@@ -5223,6 +5223,9 @@ static __init void svm_set_cpu_caps(void
+ 
+ 	/* CPUID 0x8000001F (SME/SEV features) */
+ 	sev_set_cpu_caps();
++
++	/* Don't advertise Bus Lock Detect to guest if SVM support is absent */
++	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+ }
+ 
+ static __init int svm_hardware_setup(void)
 
 
 
