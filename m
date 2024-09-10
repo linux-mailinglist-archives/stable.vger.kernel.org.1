@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-74395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9385C972F12
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:49:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A888972F26
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567FF286DF4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:49:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B18BB2293C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D5818C006;
-	Tue, 10 Sep 2024 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBC818B462;
+	Tue, 10 Sep 2024 09:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8tTTEty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGt6jzwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081A14D431;
-	Tue, 10 Sep 2024 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01217BB01;
+	Tue, 10 Sep 2024 09:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961679; cv=none; b=W4FsUVz+o68EJqBto6/p1oJUtwBZwjJh+AZrgNXL54wmCAO2hnOsxWBNiXv3Bw453Rf5107WHsn14WGFf465EIE6edycDdoi+jWZ2mlryxRMqS9pUo4tzxcfEqL6QviooZ9Ud+fIpRsRRh8rtBafaHvbUPlghOW15vvzA4S1mBo=
+	t=1725961708; cv=none; b=uO8ZVJWLpwoOPcAazn0I6NRwCFITe5deixKVCz76xWKp1B6a/trB6PTTG8175Ch3SlSF27CS2Xcn22KMRzde6pqLVmyStBBaYjdFcQW5zakCScVODbQP3D0yhrKSA14++aSl1BPpmzeODWI70hRDmO6bDUmTDwZ0jxrDWlkjww4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961679; c=relaxed/simple;
-	bh=awxfpA49x9lHnxEzT92iu1qaCjXyPCcZkUvjLcZ1xM8=;
+	s=arc-20240116; t=1725961708; c=relaxed/simple;
+	bh=C01R6YXnuhXtvcSjAvgSc3whoGn4l0+OxFcQpr5p0Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPLG4whwobNsM0zg0j6uBpoBiqj5OzaSfXd9/zSUgdJqLt5LLPxgkWbg0fGaObYhHiHysFeJMYQN3CMqKMdLpKvApMOIBUQaAqrk9ZyGGOSjV6I3ZtUBE8VcteQAnhWA8Dl/OW7AlgDIAwiUzWQY7sLMbdxg6I9Xn2e+SAzOrc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8tTTEty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A56C4CEC3;
-	Tue, 10 Sep 2024 09:47:58 +0000 (UTC)
+	 MIME-Version; b=otNjwtLYKd8U+QrX+OBD24/HAlNmkzlNE0z83ga+P/Uij3m5K/Gt+iofKPU0G+aFq8mAKmepzVILYDQX5Ktf6zUXLHuRkCzEdFWLNGGM8C/vzS8hxUtF5M4Qydsb2c8MKYOzxKUxi8iqk+AkqITWGUoWGyCZNHCRJzq5ViOrxII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGt6jzwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002C1C4CEC3;
+	Tue, 10 Sep 2024 09:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961679;
-	bh=awxfpA49x9lHnxEzT92iu1qaCjXyPCcZkUvjLcZ1xM8=;
+	s=korg; t=1725961708;
+	bh=C01R6YXnuhXtvcSjAvgSc3whoGn4l0+OxFcQpr5p0Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8tTTEtyGm4jkjEzSYXY8xHXRnOElGD1i8hT4EMIB4XzQ/CvUOmjRmzkRikjym0io
-	 bu2mxAfinCJHoh73t8pJwbTqs5V1M/c4qvwD/b4cgQtWdHL/8OrGGkXUoy46xOpCxm
-	 FCaxCBFirDvJMKzcqffX7x0lxZ0VLVT46zvuzbmQ=
+	b=OGt6jzwU3r/Fji+dB0Lx6z/CQ/18GtAZxrQK2/vOtJ4CByKAuOChj3L/tFBqYg+lY
+	 0JcQB+wxjMmwa5kaMcI/dRNtZaqAszZM+vt+eoR7zVjdjjBNP9dDV8e6Ck3nUpy414
+	 qTEoVaECKTSi1PahRzmM6OoQr5UZPjOAL5JXs950=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Breno Leitao <leitao@debian.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 134/375] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
-Date: Tue, 10 Sep 2024 11:28:51 +0200
-Message-ID: <20240910092626.938549146@linuxfoundation.org>
+Subject: [PATCH 6.10 135/375] seccomp: release task filters when the task exits
+Date: Tue, 10 Sep 2024 11:28:52 +0200
+Message-ID: <20240910092626.977719241@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -67,54 +68,118 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Andrei Vagin <avagin@google.com>
 
-[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+[ Upstream commit bfafe5efa9754ebc991750da0bcca2a6694f3ed3 ]
 
-Smatch warns:
+Previously, seccomp filters were released in release_task(), which
+required the process to exit and its zombie to be collected. However,
+exited threads/processes can't trigger any seccomp events, making it
+more logical to release filters upon task exits.
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+This adjustment simplifies scenarios where a parent is tracing its child
+process. The parent process can now handle all events from a seccomp
+listening descriptor and then call wait to collect a child zombie.
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
+seccomp_filter_release takes the siglock to avoid races with
+seccomp_sync_threads. There was an idea to bypass taking the lock by
+checking PF_EXITING, but it can be set without holding siglock if
+threads have SIGNAL_GROUP_EXIT. This means it can happen concurently
+with seccomp_filter_release.
 
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
+This change also fixes another minor problem. Suppose that a group
+leader installs the new filter without SECCOMP_FILTER_FLAG_TSYNC, exits,
+and becomes a zombie. Without this change, SECCOMP_FILTER_FLAG_TSYNC
+from any other thread can never succeed, seccomp_can_sync_threads() will
+check a zombie leader and is_ancestor() will fail.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Link: https://lore.kernel.org/r/20240628021014.231976-3-avagin@google.com
+Reviewed-by: Tycho Andersen <tandersen@netflix.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/exit.c    |  3 ++-
+ kernel/seccomp.c | 23 ++++++++++++++++++-----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 8064d9c3de86..f7e86e09c49f 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -19,6 +19,7 @@
- #include <linux/lockdep.h>
- #include <linux/memblock.h>
- #include <linux/mutex.h>
-+#include <linux/nospec.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/reboot.h>
-@@ -1916,6 +1917,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 81fcee45d630..be81342caf1b 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -277,7 +277,6 @@ void release_task(struct task_struct *p)
+ 	}
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
+ 	write_unlock_irq(&tasklist_lock);
+-	seccomp_filter_release(p);
+ 	proc_flush_pid(thread_pid);
+ 	put_pid(thread_pid);
+ 	release_thread(p);
+@@ -834,6 +833,8 @@ void __noreturn do_exit(long code)
+ 	io_uring_files_cancel();
+ 	exit_signals(tsk);  /* sets PF_EXITING */
+ 
++	seccomp_filter_release(tsk);
 +
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+ 	acct_update_integrals(tsk);
+ 	group_dead = atomic_dec_and_test(&tsk->signal->live);
+ 	if (group_dead) {
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index e30b60b57614..b02337e95664 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -502,6 +502,9 @@ static inline pid_t seccomp_can_sync_threads(void)
+ 		/* Skip current, since it is initiating the sync. */
+ 		if (thread == caller)
+ 			continue;
++		/* Skip exited threads. */
++		if (thread->flags & PF_EXITING)
++			continue;
+ 
+ 		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
+ 		    (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
+@@ -563,18 +566,21 @@ static void __seccomp_filter_release(struct seccomp_filter *orig)
+  * @tsk: task the filter should be released from.
+  *
+  * This function should only be called when the task is exiting as
+- * it detaches it from its filter tree. As such, READ_ONCE() and
+- * barriers are not needed here, as would normally be needed.
++ * it detaches it from its filter tree. PF_EXITING has to be set
++ * for the task.
+  */
+ void seccomp_filter_release(struct task_struct *tsk)
+ {
+-	struct seccomp_filter *orig = tsk->seccomp.filter;
++	struct seccomp_filter *orig;
+ 
+-	/* We are effectively holding the siglock by not having any sighand. */
+-	WARN_ON(tsk->sighand != NULL);
++	if (WARN_ON((tsk->flags & PF_EXITING) == 0))
++		return;
+ 
++	spin_lock_irq(&tsk->sighand->siglock);
++	orig = tsk->seccomp.filter;
+ 	/* Detach task from its filter tree. */
+ 	tsk->seccomp.filter = NULL;
++	spin_unlock_irq(&tsk->sighand->siglock);
+ 	__seccomp_filter_release(orig);
+ }
+ 
+@@ -602,6 +608,13 @@ static inline void seccomp_sync_threads(unsigned long flags)
+ 		if (thread == caller)
+ 			continue;
+ 
++		/*
++		 * Skip exited threads. seccomp_filter_release could have
++		 * been already called for this task.
++		 */
++		if (thread->flags & PF_EXITING)
++			continue;
++
+ 		/* Get a task reference for the new leaf node. */
+ 		get_seccomp_filter(caller);
+ 
 -- 
 2.43.0
 
