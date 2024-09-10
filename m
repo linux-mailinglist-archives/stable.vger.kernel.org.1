@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927E497339B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A01973277
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6D31F23352
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0D6528654F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8804B19259E;
-	Tue, 10 Sep 2024 10:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FF419E838;
+	Tue, 10 Sep 2024 10:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhaz5c4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy1lDsq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4616418B487;
-	Tue, 10 Sep 2024 10:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAC3192D70;
+	Tue, 10 Sep 2024 10:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964173; cv=none; b=rd3EyHlr05+7YWA8CJ0j7hKh9t62EXlxCPJ32pS2cuqIlEsjd+3+HccHWOuQObMEocU8ETUQyzgk9UAgPz5o1n2gMjQVK01FZJHlXTtpLHl+Pi5TZDq/C1JF5FQ193Ni8JuwY462ysVPeju+oBOXHTIZR4ouj7RF8jbvqnNU43Y=
+	t=1725963438; cv=none; b=U01kwB9q+LnwtLD6BZhfnI9rMLouJyrytk20HXB0kiEqR/PAY8ClcLyLIm9n/OwYr+m9wd/QvjvlmZ2+swuhvBbeyMqBkEEcJdoIORH5VhgAqDO2IFY2k0PzUJVT1Zsy14vRk+Q/hnhdTBv7aVo4b4DmPtdISNoe3IA0quSkk4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964173; c=relaxed/simple;
-	bh=lfcA1tMasXpTMte/oWLxu9NGmxepC0UAxk761dztpzo=;
+	s=arc-20240116; t=1725963438; c=relaxed/simple;
+	bh=MfqTLIH6vJw/bEKO4DvpK72lsSLDaKCBxUFWjuH8YNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBPhLChiUKfaeNt/rj+t5DfGaKC6kwstYoENWS/oGmK9D122PIqHaihDPzJ5JvMYzwjB87vgwXpmDnktbYSnl/o13TTsOfpgdF2CAu9wG+lohklomHwDqhL59yKzuxv07mtfltOJP9i+JsgHI6ZRaX9TeUKKXh0BeP47PmEjv1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhaz5c4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C044AC4CEC3;
-	Tue, 10 Sep 2024 10:29:32 +0000 (UTC)
+	 MIME-Version; b=raS1zrv403EfYcIFund6boJKrTyeITtKlc8pnFPzKIijXqnay0wQc7AU5XNkbnnAaWpRkwZrsTljj+3tABedxJd5LfS2oJz28MJ+2RdoFhv3BBDG5QI7fpRuYwdi+cAcdM+FDE6BW70SgHC+phJ5w4c1R4lSapevZck1D0bio7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy1lDsq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBC1C4CEC3;
+	Tue, 10 Sep 2024 10:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964173;
-	bh=lfcA1tMasXpTMte/oWLxu9NGmxepC0UAxk761dztpzo=;
+	s=korg; t=1725963438;
+	bh=MfqTLIH6vJw/bEKO4DvpK72lsSLDaKCBxUFWjuH8YNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhaz5c4JlmZl6c1wKPw3KHVsr2JHPdqbfnemk2bSL1t0mG5bZiW5CbW1ZFBBZRE7Q
-	 R/EBcBzkoBykFYpPzLlL7497RHoOT/i9RG4xjnp+OeX81V/Qi+AkqxY67G36W1zopG
-	 Rbq2tcRFXe3yBT3yWLbzpNYpaOLBipJ5DPgl8Wmc=
+	b=Oy1lDsq37GIcgXRCAnDaBAU4LbbqRDyNtRkt2yHq+dV0xg0yqBRHfMG/DE0gXYSeH
+	 cbz2l57fDW5SEZbSF2+0vM4Vg89fZmgDGPr4AOSe6HGdhwhYNvQX6CDJGmM4MEjVAt
+	 XHeOnIP3v0b/r1QOPBObOEC7Mn36IlVd9D5Wx58w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Michael Chen <michael.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/269] smack: unix sockets: fix accept()ed socket label
+Subject: [PATCH 5.15 030/214] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
 Date: Tue, 10 Sep 2024 11:30:52 +0200
-Message-ID: <20240910092610.508401131@linuxfoundation.org>
+Message-ID: <20240910092600.019934305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Michael Chen <michael.chen@amd.com>
 
-[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
+[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
 
-When a process accept()s connection from a unix socket
-(either stream or seqpacket)
-it gets the socket with the label of the connecting process.
+Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
+in some use case. This would lead code scanner to complain about
+access beyond. Re-define it in union to enforce 8-byte size and
+alignment to avoid potential issue.
 
-For example, if a connecting process has a label 'foo',
-the accept()ed socket will also have 'in' and 'out' labels 'foo',
-regardless of the label of the listener process.
-
-This is because kernel creates unix child sockets
-in the context of the connecting process.
-
-I do not see any obvious way for the listener to abuse
-alien labels coming with the new socket, but,
-to be on the safe side, it's better fix new socket labels.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 98c2bdbfcaed..4625674f0e95 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -3769,12 +3769,18 @@ static int smack_unix_stream_connect(struct sock *sock,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index d54ceebd346b..30c70b3ab17f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -42,8 +42,6 @@
+ #define CRAT_OEMTABLEID_LENGTH	8
+ #define CRAT_RESERVED_LENGTH	6
  
--	/*
--	 * Cross reference the peer labels for SO_PEERSEC.
--	 */
- 	if (rc == 0) {
-+		/*
-+		 * Cross reference the peer labels for SO_PEERSEC.
-+		 */
- 		nsp->smk_packet = ssp->smk_out;
- 		ssp->smk_packet = osp->smk_out;
-+
-+		/*
-+		 * new/child/established socket must inherit listening socket labels
-+		 */
-+		nsp->smk_out = osp->smk_out;
-+		nsp->smk_in  = osp->smk_in;
+-#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
+-
+ /* Compute Unit flags */
+ #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
+ #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 98cca5f2b27f..59e7ca0e8470 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -910,8 +910,7 @@ static void kfd_update_system_properties(void)
+ 	dev = list_last_entry(&topology_device_list,
+ 			struct kfd_topology_device, list);
+ 	if (dev) {
+-		sys_props.platform_id =
+-			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
++		sys_props.platform_id = dev->oem_id64;
+ 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
+ 		sys_props.platform_rev = dev->oem_revision;
  	}
- 
- 	return rc;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index a8db017c9b8e..c2dbd75b9161 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -184,7 +184,10 @@ struct kfd_topology_device {
+ 	struct attribute		attr_gpuid;
+ 	struct attribute		attr_name;
+ 	struct attribute		attr_props;
+-	uint8_t				oem_id[CRAT_OEMID_LENGTH];
++	union {
++		uint8_t				oem_id[CRAT_OEMID_LENGTH];
++		uint64_t			oem_id64;
++	};
+ 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
+ 	uint32_t			oem_revision;
+ };
 -- 
 2.43.0
 
