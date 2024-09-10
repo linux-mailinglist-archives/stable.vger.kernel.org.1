@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C7B973397
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E21973268
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA39A28476A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0E56287B96
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9D21946BA;
-	Tue, 10 Sep 2024 10:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3081922DC;
+	Tue, 10 Sep 2024 10:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0agtqKqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnulWzgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEDD18A6B9;
-	Tue, 10 Sep 2024 10:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29779188921;
+	Tue, 10 Sep 2024 10:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964158; cv=none; b=rsu0HcdNr6UwXLsBTGg90j0bbjfawKO8oQG3fxuWLQbD1gWuVliMFDF+A1lBUnAIbQRFmUcyrVN83XHXyv8txVbJn07VCj5AuTiMxQvsGHlR83DUzuTuMHmOAYNYM/UWT6VovlEVbrW/G+P95D2NQmHFioMQD04ombq4B90IJtk=
+	t=1725963395; cv=none; b=bNzZ7KFTccnsU0jrsqp4im/RdSZSXRNqouCNli2WvcEQJcX1J0GOuLV3UXAPH/KnnGdmBetYhVOxuqEQ879c3vrMYYJcwr5dUyqD4seBBA31KIGbB9x9USg9S9Fmk5dbF46mCWtWZyTmTKafRkmDTx2FfL1RB4NgVVS2bW4uzFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964158; c=relaxed/simple;
-	bh=38P6p5QSr/IVGHipU3lSmKGEn+0SyLpy/+Ex5TCQWqI=;
+	s=arc-20240116; t=1725963395; c=relaxed/simple;
+	bh=FegvPVOAgec5yL9kEG3lAlZLRmIoavSNsCqgv2FF4Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMwYKYQ9xJOYgf/UFqU2bMDJs8B4PBIXFKNoO68lSZxF+ixSxYNFMzvnC2658t45zTZXoxDPraq/hyZsjyOaQZQ5ymI3LEiSOg39ibHmqp4zRt9XDWqdOLEYUsY+l4GZ6viRy3nX2zdnvxyt8kCEfOuPg/3QdczS9rZIzLNBvZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0agtqKqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24773C4CEC3;
-	Tue, 10 Sep 2024 10:29:17 +0000 (UTC)
+	 MIME-Version; b=LdgvJvDh+8tmac74w34vxj5gQO/cyO53dclcea52Sir4s6oU+sEcnnW6fYH3FK0yHmcnkT1GAcp0mifM1Dve+oTMDyoC2wWFZX0yYMyCdeCBXhPKV8/TqdbR4Dc4gmlCaddak4suQc9xfApOg6ZXPIrUSDnB/ugWfGwFXi1qtEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnulWzgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419D7C4CEC3;
+	Tue, 10 Sep 2024 10:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964158;
-	bh=38P6p5QSr/IVGHipU3lSmKGEn+0SyLpy/+Ex5TCQWqI=;
+	s=korg; t=1725963394;
+	bh=FegvPVOAgec5yL9kEG3lAlZLRmIoavSNsCqgv2FF4Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0agtqKqaCFRVoe/4XARogU+86hn6kYD1F+zj8swSBz6k/Pkdb1Tge2xutBSBGQHWM
-	 Dqjb+nauVcDz9IeyuxqahRPqavGTb9FFZlAEUbtnLQmhy1dILLno2zjYWGFr/jWrhG
-	 ONJ7NXJoFCZnWqJddazBxmYlsj6QKcYhfwNx9VIE=
+	b=wnulWzgU05A94pzJcK3EzKj+ACEeKGYh32o+DoY1uFJgTiQX8ocvgRTA9IJlAlvD5
+	 oEJcSIvZk/8WmlT8UryYt3xq69amxYP6nCTD6qrWi92iVhMwzKxHMfSMHwibqbU+zm
+	 3IBYJ9E4mzq2BtLcVw4tmM6xZUxJ4OOy0MBJ9kfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Alan Previn <alan.previn.teres.alexis@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 060/269] drm/i915: Do not attempt to load the GSC multiple times
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 025/214] drm/amdgpu/pm: Fix uninitialized variable agc_btc_response
 Date: Tue, 10 Sep 2024 11:30:47 +0200
-Message-ID: <20240910092610.347593550@linuxfoundation.org>
+Message-ID: <20240910092559.810375617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit 59d3cfdd7f9655a0400ac453bf92199204f8b2a1 upstream.
+[ Upstream commit df4409d8a04dd39d7f2aa0c5f528a56b99eaaa13 ]
 
-If the GSC FW fails to load the GSC HW hangs permanently; the only ways
-to recover it are FLR or D3cold entry, with the former only being
-supported on driver unload and the latter only on DGFX, for which we
-don't need to load the GSC. Therefore, if GSC fails to load there is no
-need to try again because the HW is stuck in the error state and the
-submission to load the FW would just hang the GSCCS.
+Assign an default value to agc_btc_response in failed case
 
-Note that, due to wa_14015076503, on MTL the GuC escalates all GSCCS
-hangs to full GT resets, which would trigger a new attempt to load the
-GSC FW in the post-reset HW re-init; this issue is also fixed by not
-attempting to load the GSC FW after an error.
-
-Fixes: 15bd4a67e914 ("drm/i915/gsc: GSC firmware loading")
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.3+
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240820215952.2290807-1-daniele.ceraolospurio@intel.com
-(cherry picked from commit 03ded4d432a1fb7bb6c44c5856d14115f6f6c3b9)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c |    2 +-
- drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h  |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c
-@@ -304,7 +304,7 @@ void intel_gsc_uc_load_start(struct inte
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index fadceaba031e..81fd79a5fd7d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -2365,15 +2365,20 @@ static int vega10_acg_enable(struct pp_hwmgr *hwmgr)
  {
- 	struct intel_gt *gt = gsc_uc_to_gt(gsc);
+ 	struct vega10_hwmgr *data = hwmgr->backend;
+ 	uint32_t agc_btc_response;
++	int ret;
  
--	if (!intel_uc_fw_is_loadable(&gsc->fw))
-+	if (!intel_uc_fw_is_loadable(&gsc->fw) || intel_uc_fw_is_in_error(&gsc->fw))
- 		return;
+ 	if (data->smu_features[GNLD_ACG].supported) {
+ 		if (0 == vega10_enable_smc_features(hwmgr, true,
+ 					data->smu_features[GNLD_DPM_PREFETCHER].smu_feature_bitmap))
+ 			data->smu_features[GNLD_DPM_PREFETCHER].enabled = true;
  
- 	if (intel_gsc_uc_fw_init_done(gsc))
---- a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h
-@@ -258,6 +258,11 @@ static inline bool intel_uc_fw_is_runnin
- 	return __intel_uc_fw_status(uc_fw) == INTEL_UC_FIRMWARE_RUNNING;
- }
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_InitializeAcg, NULL);
++		if (ret)
++			return ret;
  
-+static inline bool intel_uc_fw_is_in_error(struct intel_uc_fw *uc_fw)
-+{
-+	return intel_uc_fw_status_to_error(__intel_uc_fw_status(uc_fw)) != 0;
-+}
-+
- static inline bool intel_uc_fw_is_overridden(const struct intel_uc_fw *uc_fw)
- {
- 	return uc_fw->user_overridden;
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_RunAcgBtc, &agc_btc_response);
++		if (ret)
++			agc_btc_response = 0;
+ 
+ 		if (1 == agc_btc_response) {
+ 			if (1 == data->acg_loop_state)
+-- 
+2.43.0
+
 
 
 
