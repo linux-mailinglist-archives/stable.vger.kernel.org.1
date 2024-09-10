@@ -1,156 +1,102 @@
-Return-Path: <stable+bounces-74736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A844B97311E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DF6972EAA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB5DD1C251A8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:08:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6162F1C2447B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D716E19994A;
-	Tue, 10 Sep 2024 10:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E94C18DF99;
+	Tue, 10 Sep 2024 09:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArZLRenp"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="cxYTCWj5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F211922EB;
-	Tue, 10 Sep 2024 10:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327B018B49E
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 09:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962678; cv=none; b=lf9gm0knQ+ZZ7hlwVzHetYiNvW13M3r4yNzR+1Xn6EXz2QgpQePZ9IoTbphtM7ZpdCUx+nNskAb+BH42bR8Um30es+X1AwDSw0T+UUDM7YlBlRo6RG2CN3rLHefBKYjpzH9bskBFngXdOrcSj4PoQbHLtuTMnCWb91Tjgyn2Go4=
+	t=1725961455; cv=none; b=Xm/38O6A+dEJtRGvU7Hpq22LgmA2QSJy7zDB3rjwHWx/4IRSzkbLLY9dcm2QyqrC/AFdxIwt0esvwTEowAXlrjDk3AIxcmHRn6VnGqGYi6yzxBOPrmdpjwo8wQsgdL8XIOvJqhcTKHXhO9gtKYTqc0JicJgj0ncKxZ3cFdAZKA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962678; c=relaxed/simple;
-	bh=SdOngYKkbqw/ovQLG3CUdqBBX/l3H6napyFZ3D2EtYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4C1tw5GpwzQjW0PwHV0KgDAIwsfbmyblnnVPmv/64s2OrRULlCitv9/Jbf6dYyQ1r0QOfp+Aqw+ahGVIz7l1f3wFka2mYHrLqgWsm+QoHSZPwmgDT3ElkJm6OmhrU6M1BkCGCqLSyMugB1OXCfoJqD1elsE3fbYyJmVai8i4CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArZLRenp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3898C4CECE;
-	Tue, 10 Sep 2024 10:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962678;
-	bh=SdOngYKkbqw/ovQLG3CUdqBBX/l3H6napyFZ3D2EtYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArZLRenpPXP1k6dUstitViRuOt1SWuVY8l07X86Z9mS1BONz/lpcEYVSfnPuKNgNz
-	 K2kWbF7TvbYkuDVch4keePlZ4Yahc64g5CKavg5U0jVYntjKHDzgriLcmZ8iA9oKe8
-	 ng15awLIwKP2tm1yOtTiBio4RsHwkOeb3bPKYq04=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
-	Jianyong Wu <jianyong.wu@arm.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/121] arm64: acpi: Move get_cpu_for_acpi_id() to a header
-Date: Tue, 10 Sep 2024 11:33:09 +0200
-Message-ID: <20240910092551.227293495@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1725961455; c=relaxed/simple;
+	bh=5Mnw3axJAIwpwRX3D7vDfAt8dGOxLqafot8dnaWq2OE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AmMWEAXTJy27HKdbxANoIRtRXyTFxyrAS+hL0N76Y/jJDMgD4KkkA/Z3p81bCLnbCpqCfZDZpD8vPPV3Mf/bIB3g2s4kSJ188kFYnafL5VmTQ7mitvLBSnDL4CNffelaXAgGYjI+T2crgahHJuxBdqxUHh/Ju/OpMaxFNnYD4MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=cxYTCWj5; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1725961419;
+	bh=UovoYRmdBX8rwdbB8DvCLFmn2/3FebltkFIJ6+n0WSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=cxYTCWj5MsGdigGDMLrdmfjvYoIVoalWPVGT09IXShVvY+ApNR1KkgtNsN4W9VGKm
+	 u8+Wfy18R/wmy7tG0SL3tPTV2agRnl8aKs5zxl9HgxLH6zzgN3ZfmTp+sRTdLELGoZ
+	 6doZsc2nz4QPx1MsGv3amXXTU4DzkuM3dD0Ef+Sc=
+X-QQ-mid: bizesmtpsz10t1725961410teqnfo
+X-QQ-Originating-IP: OFziPhhF4B39nEzGKEEYzSv4NwTeqycvIaR52ke/M/c=
+Received: from [10.4.11.213] ( [221.226.144.218])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 10 Sep 2024 17:43:22 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 8814383505997166564
+Message-ID: <0D03D3D118FBAF5F+abf1276e-4c7d-4c9a-8d6f-278b69022680@uniontech.com>
+Date: Tue, 10 Sep 2024 17:43:21 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y 2/2] iio: adc: ad7124: fix DT configuration parsing
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Dumitru Ceclan <dumitru.ceclan@analog.com>, Nuno Sa <nuno.sa@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <2024090914-province-underdone-1eea@gregkh>
+ <20240910090757.649865-1-helugang@uniontech.com>
+ <0ACF46DADA3C2900+20240910090757.649865-2-helugang@uniontech.com>
+ <2024091053-boundless-blob-20bd@gregkh>
+From: HeLuang <helugang@uniontech.com>
+In-Reply-To: <2024091053-boundless-blob-20bd@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-
-5.4-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: James Morse <james.morse@arm.com>
-
-[ Upstream commit 8d34b6f17b9ac93faa2791eb037dcb08bdf755de ]
-
-ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-to the Linux CPU number.
-
-The helper to retrieve this mapping is only available in arm64's NUMA
-code.
-
-Move it to live next to get_acpi_id_for_cpu().
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Link: https://lore.kernel.org/r/20240529133446.28446-12-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/include/asm/acpi.h | 11 +++++++++++
- arch/arm64/kernel/acpi_numa.c | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index a45366c3909b..f391ea7a5409 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -110,6 +110,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
- 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
- }
- 
-+static inline int get_cpu_for_acpi_id(u32 uid)
-+{
-+	int cpu;
-+
-+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-+		if (uid == get_acpi_id_for_cpu(cpu))
-+			return cpu;
-+
-+	return -EINVAL;
-+}
-+
- static inline void arch_fix_phys_package_id(int num, u32 slot) { }
- void __init acpi_init_cpus(void);
- int apei_claim_sea(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-index 048b75cadd2f..c5feac18c238 100644
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
- 	return acpi_early_node_map[cpu];
- }
- 
--static inline int get_cpu_for_acpi_id(u32 uid)
--{
--	int cpu;
--
--	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
--		if (uid == get_acpi_id_for_cpu(cpu))
--			return cpu;
--
--	return -EINVAL;
--}
--
- static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
- 				      const unsigned long end)
- {
--- 
-2.43.0
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz7a-0
 
 
 
+在 2024/9/10 17:23, Greg KH 写道:
+> On Tue, Sep 10, 2024 at 05:07:57PM +0800, He Lugang wrote:
+>> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+>>
+>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> 
+> Why is this 2 different addresses?
+> 
+> And why was this sent twice?
+> 
+> confused,
+> 
+> greg k-h
+> 
+
+Hi,greg
+
+About the two email addresses because the email address mismatch message 
+from the checkpatch.pl,so I just and the signed-off-by one,should we 
+just ignore it?
+
+Also pls just pass over the first patch mail because of lack of dependency.
+
+----
+Regards,
+Lugang
 
