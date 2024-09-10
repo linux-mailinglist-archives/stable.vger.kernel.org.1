@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-75283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04526973554
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C637697329F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BDBEB2E8E5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B0D2878B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F43F2AF15;
-	Tue, 10 Sep 2024 10:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296EC192B74;
+	Tue, 10 Sep 2024 10:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+4hAD9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCAH2MXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4982918FC72;
-	Tue, 10 Sep 2024 10:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB91B1922FC;
+	Tue, 10 Sep 2024 10:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964282; cv=none; b=JzIDXzNWOghUtWG02cTWvn906MK/DHTp8+nMt2R0iYcUdKxH7YY/ISVXqbm1Z0COV9qk5NgNRGaf7+fTxGmZSi5LGsfeB5xb7etCvWhleyvK4VPfbff5UO+X/9K6Mz0+AgQrBEj4rfYaQjogkymrUY3CyLoQ/qxis46VQrYGeZg=
+	t=1725963549; cv=none; b=mBcghlPi6hzgkE+x2Le0gG86tlHkmsyA6OFeKnpPRGlZYbvzYM/OhfvZD7eSH8k8vOdseWPcjAc5B/c6LKI7TIyEESEmxc3WAkPyv9R3SusIlsOJ5j2QP7yGE1z4btrKTbV2NnccivXw7MkmrIiDcgwnxGVUxUnb28KpbcxHUDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964282; c=relaxed/simple;
-	bh=kjkFbMKwTR5hC/LPuo0motOxixG+vydoK+U9Km2bvZw=;
+	s=arc-20240116; t=1725963549; c=relaxed/simple;
+	bh=+yIkudfKEIkmZaqSuJ0oYNNetEeLG8l0ivhMzjv2h8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqzhv26Qel06o+S2hQu2bdu2gcg1VNqA/CxpwO0t57IfVxv+dZ6hPV2zf1w4CqrzTnmjxyHEbOqzLmfUGKGLHYRWyefDHusoKKUEbvDd+B58pkPW7VPKzR5dAjlsXHbBBKhbMpovKnQ/DjQxoIVcVcuHzZFklmFluavRebHJMLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+4hAD9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4267C4CEC3;
-	Tue, 10 Sep 2024 10:31:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iaYtSEVywy0cEuGSvxTBWFnZlyHZSHbjpxjPVkbscXGInoaWAQG4i4ejYzGfAanI8KrHF/xe2GIQ7MKZ95sa7RQUS98Bjo/4GrsIM5ytHksRPXAXwJNX6Wkg2adFUtCo1JfOp7hM25m6qaiqyt/q2WkaiTQwRbncsobBgp8wf9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCAH2MXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E76C4CEC3;
+	Tue, 10 Sep 2024 10:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964282;
-	bh=kjkFbMKwTR5hC/LPuo0motOxixG+vydoK+U9Km2bvZw=;
+	s=korg; t=1725963549;
+	bh=+yIkudfKEIkmZaqSuJ0oYNNetEeLG8l0ivhMzjv2h8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+4hAD9ZmrtKtvcQB1NkZ6D5EW0lDxAZHQT+tdUac2nqfNPi1Q0unu77y2zTU8QXI
-	 rC1viVMOsjt1FJgr0rv4DvDksdKZH7fiNhJTPDro0nOoKG/6WjMGxgGfp3Q/mOF/1f
-	 fD43Xvvt5auk6avYpFHZZGPikHWWO2zJ1fxyXH5w=
+	b=fCAH2MXogdYcYC48pUygUnptqEm7rZstcOM8SJXc+LwbKgus+UcloR6q4lRUKhTZm
+	 IbZLeDHAnP+9PPrzxSgQgUeTa+tcyvbHncV+y7YDIsfnNlqUpCbTlCB3CXL+S77YDn
+	 sLx4SA6o80MJEV2CMiJaK+/VMNL251GtK+QP/ik0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanghui Li <yanghui.li@mediatek.com>,
-	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/269] bpf, net: Fix a potential race in do_sock_getsockopt()
-Date: Tue, 10 Sep 2024 11:31:57 +0200
-Message-ID: <20240910092612.820612939@linuxfoundation.org>
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 096/214] mptcp: avoid duplicated SUB_CLOSED events
+Date: Tue, 10 Sep 2024 11:31:58 +0200
+Message-ID: <20240910092602.711737064@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 33f339a1ba54e56bba57ee9a77c71e385ab4825c ]
+commit d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 upstream.
 
-There's a potential race when `cgroup_bpf_enabled(CGROUP_GETSOCKOPT)` is
-false during the execution of `BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN`, but
-becomes true when `BPF_CGROUP_RUN_PROG_GETSOCKOPT` is called.
-This inconsistency can lead to `BPF_CGROUP_RUN_PROG_GETSOCKOPT` receiving
-an "-EFAULT" from `__cgroup_bpf_run_filter_getsockopt(max_optlen=0)`.
-Scenario shown as below:
+The initial subflow might have already been closed, but still in the
+connection list. When the worker is instructed to close the subflows
+that have been marked as closed, it might then try to close the initial
+subflow again.
 
-           `process A`                      `process B`
-           -----------                      ------------
-  BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN
-                                            enable CGROUP_GETSOCKOPT
-  BPF_CGROUP_RUN_PROG_GETSOCKOPT (-EFAULT)
+ A consequence of that is that the SUB_CLOSED event can be seen twice:
 
-To resolve this, remove the `BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN` macro and
-directly uses `copy_from_sockptr` to ensure that `max_optlen` is always
-set before `BPF_CGROUP_RUN_PROG_GETSOCKOPT` is invoked.
+  # ip mptcp endpoint
+  1.1.1.1 id 1 subflow dev eth0
+  2.2.2.2 id 2 subflow dev eth1
 
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Co-developed-by: Yanghui Li <yanghui.li@mediatek.com>
-Signed-off-by: Yanghui Li <yanghui.li@mediatek.com>
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://patch.msgid.link/20240830082518.23243-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # ip mptcp monitor &
+  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
+
+  # ip mptcp endpoint delete id 1
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+
+The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
+second one from __mptcp_close_subflow().
+
+To avoid doing the post-closed processing twice, the subflow is now
+marked as closed the first time.
+
+Note that it is not enough to check if we are dealing with the first
+subflow and check its sk_state: the subflow might have been reset or
+closed before calling mptcp_close_ssk().
+
+Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
+Cc: stable@vger.kernel.org
+Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflict in protocol.h due to commit f1f26512a9bf ("mptcp: use plain
+  bool instead of custom binary enum"), commit dfc8d0603033 ("mptcp:
+  implement delayed seq generation for passive fastopen") and more that
+  are not in this version, because they modify the context and the size
+  of __unused. The conflict is easy to resolve, by not only adding the
+  new field (close_event_done), and __unused. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf-cgroup.h | 9 ---------
- net/socket.c               | 4 ++--
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ net/mptcp/protocol.c |    6 ++++++
+ net/mptcp/protocol.h |    4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 2aa82b7aed89..d4f2c8706042 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -375,14 +375,6 @@ static inline bool cgroup_bpf_sock_enabled(struct sock *sk,
- 	__ret;								       \
- })
- 
--#define BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen)			       \
--({									       \
--	int __ret = 0;							       \
--	if (cgroup_bpf_enabled(CGROUP_GETSOCKOPT))			       \
--		copy_from_sockptr(&__ret, optlen, sizeof(int));		       \
--	__ret;								       \
--})
--
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, optlen,   \
- 				       max_optlen, retval)		       \
- ({									       \
-@@ -500,7 +492,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_SYSCTL(head,table,write,buf,count,pos) ({ 0; })
--#define BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, \
- 				       optlen, max_optlen, retval) ({ retval; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT_KERN(sock, level, optname, optval, \
-diff --git a/net/socket.c b/net/socket.c
-index d275f5f14882..9db33cd4a71b 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2355,7 +2355,7 @@ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
- int do_sock_getsockopt(struct socket *sock, bool compat, int level,
- 		       int optname, sockptr_t optval, sockptr_t optlen)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2337,6 +2337,12 @@ static void __mptcp_close_ssk(struct soc
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
  {
--	int max_optlen __maybe_unused;
-+	int max_optlen __maybe_unused = 0;
- 	const struct proto_ops *ops;
- 	int err;
- 
-@@ -2364,7 +2364,7 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
- 		return err;
- 
- 	if (!compat)
--		max_optlen = BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen);
-+		copy_from_sockptr(&max_optlen, optlen, sizeof(int));
- 
- 	ops = READ_ONCE(sock->ops);
- 	if (level == SOL_SOCKET) {
--- 
-2.43.0
-
++	/* The first subflow can already be closed and still in the list */
++	if (subflow->close_event_done)
++		return;
++
++	subflow->close_event_done = true;
++
+ 	if (sk->sk_state == TCP_ESTABLISHED)
+ 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
+ 	__mptcp_close_ssk(sk, ssk, subflow);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -441,7 +441,9 @@ struct mptcp_subflow_context {
+ 		can_ack : 1,        /* only after processing the remote a key */
+ 		disposable : 1,	    /* ctx can be free at ulp release time */
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+-		valid_csum_seen : 1;        /* at least one csum validated */
++		valid_csum_seen : 1,        /* at least one csum validated */
++		close_event_done : 1,       /* has done the post-closed part */
++		__unused : 11;
+ 	enum mptcp_data_avail data_avail;
+ 	u32	remote_nonce;
+ 	u64	thmac;
 
 
 
