@@ -1,98 +1,92 @@
-Return-Path: <stable+bounces-75767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9908A97455C
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 00:05:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1616D97461B
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 00:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617F2286B3B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 22:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC04288352
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 22:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BD41AAE2C;
-	Tue, 10 Sep 2024 22:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B951AC43B;
+	Tue, 10 Sep 2024 22:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfpDMTbz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMkvoXNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4078617BB3D;
-	Tue, 10 Sep 2024 22:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA701F951;
+	Tue, 10 Sep 2024 22:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726005915; cv=none; b=O0n+AqwVGZ3l5gRU14Ipoc3AL+ct43bbmjDhedjf1jw0ytTTjssi37wgnzJXFETcSiax1nFO2ko71peCjLCFNeGHitp4X0fPmgK5ZsP/Hi4K9xyYc8xV/y5Oz9pK2jV/Ttzlm9DcZYlR00rm4v+WINdJg7pyClNbLu2LKv4lnz0=
+	t=1726008247; cv=none; b=Y0jEKJ2QBXrryAHoqJOXRnxoRutUyFN9pNRxmrfVc30f95TCXAeWwFlitqrQQpk85R8CleqfuqrTk6higzQ2oD7EkxySNPTIVmIDUgMdLl/EtNDWNF6gCakGeU6kO/RS7S/yYhj/PGiHXyXybJ/JaGakkX2iQ15HUN2zhUM0x80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726005915; c=relaxed/simple;
-	bh=NRLEHkoUp4iA1+zIm4JewpKZibG28aKp1yzvDTqM6F0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wbv6rzLAxJnHH7RNsEQwu7XKcqv9P4IL/UQ4Bivy5wOGfrB6NEEC3uQ42p/Fcj+9LKGHPig77BSbf1cHuwIDRk0f7qgdyJ4lgNlr2STgOdRraEz0BT3781eewl0Y8wB4tFNBiBuMoh8D6RiVR7J8KoCyRbyeg50bsY+Q2cF59fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfpDMTbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC21C4CEC3;
-	Tue, 10 Sep 2024 22:05:10 +0000 (UTC)
+	s=arc-20240116; t=1726008247; c=relaxed/simple;
+	bh=2C22c+h3eJ6IwjxO28xiElPTv1O/OAwDF5xufoz0r2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KPAuoqksgGME3HoeqKkqVpwnyL7Ila6NxzOt/jyHisjk+7IPOeHq18MG5px4aiisfSyhwyyfOZ/gtJNSAHrYgXBYwhjRQeELXIJoCB1UZUpNUXGn4cDMwhUxPJb+lfzxjppCxpG+8ZR3MOhlSKibphNBFBGDtXNceEGnVoFh7h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMkvoXNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5367FC4CEC3;
+	Tue, 10 Sep 2024 22:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726005915;
-	bh=NRLEHkoUp4iA1+zIm4JewpKZibG28aKp1yzvDTqM6F0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QfpDMTbzaIFpaCUfJciulQOrsSBF78SGRfK2Cxmt0YGdI4vpyzJftvvrKD3v4vS1E
-	 xoiHPaerNZVdaBfFzS+QVJjePMvaESihhtP5EWnhOQ1+B8F0qOdePDwlM9txshaJSh
-	 XdhlEpgVg8ghClMj1Jh44vVneN/T/Pexqx1TpoqnjOHj6FSaMwavfe13aUAnkbFWMS
-	 OiXiRMTyaqhGj8Wz2xo12o94/qypYiOIi5YTtHAINI/5K0FOmD4vjpIibWHgcScR9F
-	 wHM5pGBihAvuf7aoF/2VpmfJxq2z37jkwtJ1wVohHdCQdUnZVcE90OQoZbzfP4dse/
-	 /EES3xDlZhomA==
-Date: Tue, 10 Sep 2024 23:05:07 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/192] 6.1.110-rc1 review
-Message-ID: <ea450041-b282-4667-b29d-22e633e2f034@sirena.org.uk>
-References: <20240910092557.876094467@linuxfoundation.org>
+	s=k20201202; t=1726008246;
+	bh=2C22c+h3eJ6IwjxO28xiElPTv1O/OAwDF5xufoz0r2I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SMkvoXNSTbr8zEcMXXgY3dAwrDQARPJJP78rND4Pp5fyuvHTMvQn55SM8J3oOdpvZ
+	 TRVPytn0uI7WfKuxMj58J4L8A7Ijt/UYBbMWhpUIElAa/9sDzMyDEjaoiomExZfO2e
+	 FcJxkoIKxx6NP3Oo7+8XyEE2rPPeRgdbuVzApJWgqGUR+G1pPIh6gEKoBeWqc8E3AH
+	 dJ1DdxVlFcUUtiVkFnPPzZF/xS7fCg9B8nllx7ann7AaRF3T5JGdVS0eWoNFdWw065
+	 UvdPvFG5G0acvcISL9WwECbjHQcBEgANtwNorKb99opDqTRJ3G6fYc86vxX1NZv4ea
+	 C9HTUsIEFR68A==
+Date: Tue, 10 Sep 2024 15:44:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCHv2 net] usbnet: fix cyclical race on disconnect with work
+ queue
+Message-ID: <20240910154405.641a459f@kernel.org>
+In-Reply-To: <20240905134811.35963-1-oneukum@suse.com>
+References: <20240905134811.35963-1-oneukum@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RhBarRI6VwanoEjX"
-Content-Disposition: inline
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-X-Cookie: You're not Dave.  Who are you?
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu,  5 Sep 2024 15:46:50 +0200 Oliver Neukum wrote:
+> +static inline bool usbnet_going_away(struct usbnet *ubn)
+> +{
+> +	smp_mb__before_atomic(); /* against usbnet_mark_going_away() */
+> +	return test_bit(EVENT_UNPLUG, &ubn->flags);
+> +}
+> +
+> +static inline void usbnet_mark_going_away(struct usbnet *ubn)
+> +{
+> +	set_bit(EVENT_UNPLUG, &ubn->flags);
+> +	smp_mb__after_atomic(); /* against usbnet_going_away() */
+> +}
 
---RhBarRI6VwanoEjX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I have sort of an inverse question to what Paolo asked :)
+AFAIU we need the double-cancel because checking the flag and
+scheduling are not atomic. But if we do that why the memory
+barriers? They make it seem like we're doing something clever
+with memory ordering, while really we're just depending on normal
+properties of the tasklet/timer/work APIs.
 
-On Tue, Sep 10, 2024 at 11:30:24AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.110 release.
-> There are 192 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+FTR disable_work_sync() would work nicely here but it'd be
+a PITA for backports.
 
-Tested-by: Mark Brown <broonie@kernel.org>
-
---RhBarRI6VwanoEjX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbgwpMACgkQJNaLcl1U
-h9CLswf/SxTNjChCzJGQauDu4Yy+LP1470itfUPiXzilyZpn9fY2qrb5Fy+VjNSO
-UdeCMgdUdXLJgSpysdmo3x2L6fPUGE0pY2Aqd/AZ6Tp1tUYXV2FC6PSF0GTUgmf1
-gh1t1qFKLePZ2qKAbq4Nk+NChWHNB+ELYxs0SmEJGoa3sXiYVK9dEtI8yHTN4Sox
-3a+6kVgJJu3dqSXOUS+eo4Olbrw1eY7+L6v7h94WG5/LA7RHvnThp+3bpEz4nuNI
-zBI42PtYEGS83gtDkBis2g6ZqplvZv98EmivjVFWx5Nl50UckaqCvVlVHPVatHqK
-3NI8nkQZRnxEkQNX8hZ0OCGQD86Ymw==
-=R0/4
------END PGP SIGNATURE-----
-
---RhBarRI6VwanoEjX--
+Also - is this based on some report or syzbot? I'm a bit tempted
+to put this in net-next given how unlikely the race is vs how
+commonly used the driver is.
+-- 
+pw-bot: cr
 
