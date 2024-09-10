@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-75474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277409734D2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE939733E2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1CDC1F25C9C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BD991C24E1C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2591E191F73;
-	Tue, 10 Sep 2024 10:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10BA1917FB;
+	Tue, 10 Sep 2024 10:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLygIzs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vXwyn9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B81191F70;
-	Tue, 10 Sep 2024 10:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04261917DE;
+	Tue, 10 Sep 2024 10:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964838; cv=none; b=Ms0TPRxU7SreFopCmRVuqOrZudwM4rH668RSt8q72JHa0AEvdRkuxpv23axBnL+y6ruCw2ZEsm2DEOAnGbpDElVMPbAqr0sWbHDVl1WCHbQSkoeCrcUm+wsrYSLmUrodPqxn5PPY1yFq4bae2gouXZEHys/qQH/vbzTqzKpXAag=
+	t=1725964361; cv=none; b=u9E5wWvBdXMhT58inw7MN66y8EguUALQ/xKNwmwUlhUB9akeJj3am10B9MDSscQiSA0RL41Tp5X85SWnExqT4tTGe/SsbCEWkpcxVLMXFd71Ad48BicAuoaHboZI7DfbTXgWSigYtgTs3QE3d/sthcdrZ7Dtv4Pi8PMDgUuNOxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964838; c=relaxed/simple;
-	bh=ZIIhzErESG+1CMM43CwWCBLdFAw8DCUaomsFss+zPf4=;
+	s=arc-20240116; t=1725964361; c=relaxed/simple;
+	bh=sKNp6vBe1BaTXGUF7K9lYNdl23rYIsSHrmAm4Q5R65E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHzaVwaibSLySCxlQ9nLN/Q60w546SS0y8iUCyEPGdJ5AJIH23WvymV0aj9oC5ZuQ0BZDo5oGCz1f2MYaX8RQYsRfnhO/XUg/Cjv0XSG/YHrFRA913D4/uQCTstX6qVR/SnDFtClbhY5jC1GkYkAtRlzKvsOkQn+loeKuDlELEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLygIzs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59485C4CEC3;
-	Tue, 10 Sep 2024 10:40:38 +0000 (UTC)
+	 MIME-Version; b=NlE+XH0QgzxW2/Lrw7ipoEEPVuF0YNFIXS7laz4+2vI+SPoiViK92/2UaULtKOiPgY8JHj6T9EIrZWUTPYp39Dy5JjXRvabe7VeIGcsWGGnx/DosA80Fuj5qxwGPEOUphyqs7otfZkp0epsZ1ZKmo+FOwVvGCUredGJqSO78BPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vXwyn9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA9DC4CEC6;
+	Tue, 10 Sep 2024 10:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964838;
-	bh=ZIIhzErESG+1CMM43CwWCBLdFAw8DCUaomsFss+zPf4=;
+	s=korg; t=1725964361;
+	bh=sKNp6vBe1BaTXGUF7K9lYNdl23rYIsSHrmAm4Q5R65E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLygIzs1b1FKXLPBzU0wOuNQARpJDS1g6i2HVe9Kk7xYxtOIwDbNrg23PZemurzED
-	 WqUp87zvW1JKjvckxjiuVMoL1SVr70vAES3dvVHOkNput4DMMTquwimvS9L5jVOUZx
-	 FllvDv8Ju49V0/6nACgojickXGmXRDI88nHjQv60=
+	b=2vXwyn9c+403yKByTbpzSb47ahISkOctkboo1iAZOnSbrxrPK94iUINC+pUly5/sy
+	 Zyah2ZSh6ZDaH/BN6ZPWTjb7gsVPWm1wDuo0ckaPiRPd8ZtObrqg/atxzgx38hBqFx
+	 uvSAqi2EFHSY7gulH+y3woTEShgQdSbWzlTfZbf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH 5.10 049/186] rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
+	Andreas Ziegler <ziegler.andreas@siemens.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 157/269] libbpf: Add NULL checks to bpf_object__{prev_map,next_map}
 Date: Tue, 10 Sep 2024 11:32:24 +0200
-Message-ID: <20240910092556.529674794@linuxfoundation.org>
+Message-ID: <20240910092613.790516648@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Andreas Ziegler <ziegler.andreas@siemens.com>
 
-commit cc5645fddb0ce28492b15520306d092730dffa48 upstream.
+[ Upstream commit cedc12c5b57f7efa6dbebfb2b140e8675f5a2616 ]
 
-There is a possibility of buffer overflow in
-show_rcu_tasks_trace_gp_kthread() if counters, passed
-to sprintf() are huge. Counter numbers, needed for this
-are unrealistically high, but buffer overflow is still
-possible.
+In the current state, an erroneous call to
+bpf_object__find_map_by_name(NULL, ...) leads to a segmentation
+fault through the following call chain:
 
-Use snprintf() with buffer size instead of sprintf().
+  bpf_object__find_map_by_name(obj = NULL, ...)
+  -> bpf_object__for_each_map(pos, obj = NULL)
+  -> bpf_object__next_map((obj = NULL), NULL)
+  -> return (obj = NULL)->maps
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+While calling bpf_object__find_map_by_name with obj = NULL is
+obviously incorrect, this should not lead to a segmentation
+fault but rather be handled gracefully.
 
-Fixes: edf3775f0ad6 ("rcu-tasks: Add count for idle tasks on offline CPUs")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+As __bpf_map__iter already handles this situation correctly, we
+can delegate the check for the regular case there and only add
+a check in case the prev or next parameter is NULL.
+
+Signed-off-by: Andreas Ziegler <ziegler.andreas@siemens.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240703083436.505124-1-ziegler.andreas@siemens.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tasks.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1240,7 +1240,7 @@ static void show_rcu_tasks_trace_gp_kthr
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index de35b9a21dad..ceed16a10285 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -9753,7 +9753,7 @@ __bpf_map__iter(const struct bpf_map *m, const struct bpf_object *obj, int i)
+ struct bpf_map *
+ bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
  {
- 	char buf[64];
+-	if (prev == NULL)
++	if (prev == NULL && obj != NULL)
+ 		return obj->maps;
  
--	sprintf(buf, "N%d h:%lu/%lu/%lu", atomic_read(&trc_n_readers_need_end),
-+	snprintf(buf, sizeof(buf), "N%d h:%lu/%lu/%lu", atomic_read(&trc_n_readers_need_end),
- 		data_race(n_heavy_reader_ofl_updates),
- 		data_race(n_heavy_reader_updates),
- 		data_race(n_heavy_reader_attempts));
+ 	return __bpf_map__iter(prev, obj, 1);
+@@ -9762,7 +9762,7 @@ bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
+ struct bpf_map *
+ bpf_object__prev_map(const struct bpf_object *obj, const struct bpf_map *next)
+ {
+-	if (next == NULL) {
++	if (next == NULL && obj != NULL) {
+ 		if (!obj->nr_maps)
+ 			return NULL;
+ 		return obj->maps + obj->nr_maps - 1;
+-- 
+2.43.0
+
 
 
 
