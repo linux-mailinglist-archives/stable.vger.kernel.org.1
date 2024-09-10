@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58349972FF4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBF9973088
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022AB1F221A4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08C31C244FC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0A218A6D1;
-	Tue, 10 Sep 2024 09:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830118C037;
+	Tue, 10 Sep 2024 10:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo2nD1Aj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOz7l/yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBDC172BAE;
-	Tue, 10 Sep 2024 09:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5B18B491;
+	Tue, 10 Sep 2024 10:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962175; cv=none; b=bOvvmTYQ6H+fz0Jpm4e8zjpz4AqC2syAEz2s02J7eod1bFVazTUGMY6YI6Y2+jKQX0sbLLejrDjsBjqowoMC8nnRMyAfN9ZvZt8jy29sFm7WCdp21TEVVluQDQEGYgVM0HohKEZnZ7jblWbdugDzH/fNGmbfUKHvOX9Sbz+AqNo=
+	t=1725962463; cv=none; b=fuarA2xVGOP8KMidDV3TISDBnL7SJSkV4NEMqjv86CRR0QE9qMxE69skXbM/CkCtOijcV04qO67ilmTKsPhDKfBm04qku/nHzSNgvg75ePdztFTeXeuX7YF335qc+is8DuNJ5dBjpIVO4xYO/o4C1rNoSjZf4Slm0B7kjFs7NUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962175; c=relaxed/simple;
-	bh=3aGLPJnIlHcd+F7S2nCnS2SFyNM866lA79Tp6iSK2jE=;
+	s=arc-20240116; t=1725962463; c=relaxed/simple;
+	bh=rIj1dCZttI+tGvdK2mWqse0vcEMGoVBPvHyKm8rC/kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D2xZiia7n5TTcIghoEbmY2zCbp8PABjO8vLlroM1LEyA1odJzksqt1FMS4pJC6P7Bwce5d9NK20it8bGJq6bVFAi0/Z/mdJw5utqg8GZxJR1rXu4L0Ok1sEAtMk4ndr8Q53VvR1mKXoNZFbHC+P2f2mSlR659YpkeeQvvEjiyZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo2nD1Aj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C9DC4CEC3;
-	Tue, 10 Sep 2024 09:56:15 +0000 (UTC)
+	 MIME-Version; b=AYYcZal0fPnzmaz1eeWddTZgReQ08epUQIdWc5eZEdTF26vGx3jKcvkjsINFUPS+djYFjrzsB3JPp9r6XRfIi/m2zzIjklmBV5rYZcg5RCtS4QrhsWnQuog6yqVfjna67MHrXprTLBw+dHV3Xf3NDl5QXSVMzan4p1AEhxsCRx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOz7l/yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EB1C4CEC3;
+	Tue, 10 Sep 2024 10:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962175;
-	bh=3aGLPJnIlHcd+F7S2nCnS2SFyNM866lA79Tp6iSK2jE=;
+	s=korg; t=1725962463;
+	bh=rIj1dCZttI+tGvdK2mWqse0vcEMGoVBPvHyKm8rC/kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yo2nD1Aj0Ebb4WfXhh/GEGjqXUts3SWVndmlXTIAsxK0V9lVT2olF5DHTuQQQbUgi
-	 WW6ccC5F45EzMJsMwNufgtbtbKBdLSSOoOZfRdu/axwjUjFvMnrtlz6jww//S5JQks
-	 H1J4VSBu9HeeU0uxXnimb45Zd9qQeQkR3fgdReAo=
+	b=IOz7l/ykplKsFNMQV4NAKntIY8L5srvTowi3HYSmPqkGwWJwREWCe6q6Ayp+kALXw
+	 l/XaiJZSJaJ430lY4bCT0oRIDZVkxjZCqGrvvMAmnWGPtPNvbJY4KyA1nB7QZ0Owgq
+	 OUrZ1d893tzxgOOW3/sY5MM5/ieJUCnZXurozTDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 321/375] can: mcp251xfd: mcp251xfd_handle_rxif_ring_uinc(): factor out in separate function
+Subject: [PATCH 5.4 043/121] ALSA: hda: Add input value sanity checks to HDMI channel map controls
 Date: Tue, 10 Sep 2024 11:31:58 +0200
-Message-ID: <20240910092633.348662836@linuxfoundation.org>
+Message-ID: <20240910092547.786408666@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d49184b7b585f9da7ee546b744525f62117019f6 ]
+[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
 
-This is a preparation patch.
+Add a simple sanity check to HD-audio HDMI Channel Map controls.
+Although the value might not be accepted for the actual connection, we
+can filter out some bogus values beforehand, and that should be enough
+for making kselftest happier.
 
-Sending the UINC messages followed by incrementing the tail pointer
-will be called in more than one place in upcoming patches, so factor
-this out into a separate function.
-
-Also make mcp251xfd_handle_rxif_ring_uinc() safe to be called with a
-"len" of 0.
-
-Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 85505e585637 ("can: mcp251xfd: rx: prepare to workaround broken RX FIFO head index erratum")
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c | 48 +++++++++++++-------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-index ced8d9c81f8c..5e2f39de88f3 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-@@ -197,6 +197,37 @@ mcp251xfd_rx_obj_read(const struct mcp251xfd_priv *priv,
- 	return err;
+diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
+index 2efee794cac6..79ccec2da387 100644
+--- a/sound/hda/hdmi_chmap.c
++++ b/sound/hda/hdmi_chmap.c
+@@ -753,6 +753,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	return 0;
  }
  
-+static int
-+mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
-+				struct mcp251xfd_rx_ring *ring,
-+				u8 len)
++/* a simple sanity check for input values to chmap kcontrol */
++static int chmap_value_check(struct hdac_chmap *hchmap,
++			     const struct snd_ctl_elem_value *ucontrol)
 +{
-+	int offset;
-+	int err;
++	int i;
 +
-+	if (!len)
-+		return 0;
-+
-+	/* Increment the RX FIFO tail pointer 'len' times in a
-+	 * single SPI message.
-+	 *
-+	 * Note:
-+	 * Calculate offset, so that the SPI transfer ends on
-+	 * the last message of the uinc_xfer array, which has
-+	 * "cs_change == 0", to properly deactivate the chip
-+	 * select.
-+	 */
-+	offset = ARRAY_SIZE(ring->uinc_xfer) - len;
-+	err = spi_sync_transfer(priv->spi,
-+				ring->uinc_xfer + offset, len);
-+	if (err)
-+		return err;
-+
-+	ring->tail += len;
-+
++	for (i = 0; i < hchmap->channels_max; i++) {
++		if (ucontrol->value.integer.value[i] < 0 ||
++		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
++			return -EINVAL;
++	}
 +	return 0;
 +}
 +
- static int
- mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 			   struct mcp251xfd_rx_ring *ring)
-@@ -210,8 +241,6 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 		return err;
+ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 			      struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -764,6 +778,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 	unsigned char chmap[8], per_pin_chmap[8];
+ 	int i, err, ca, prepared = 0;
  
- 	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
--		int offset;
--
- 		rx_tail = mcp251xfd_get_rx_tail(ring);
- 
- 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
-@@ -227,22 +256,9 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 				return err;
- 		}
- 
--		/* Increment the RX FIFO tail pointer 'len' times in a
--		 * single SPI message.
--		 *
--		 * Note:
--		 * Calculate offset, so that the SPI transfer ends on
--		 * the last message of the uinc_xfer array, which has
--		 * "cs_change == 0", to properly deactivate the chip
--		 * select.
--		 */
--		offset = ARRAY_SIZE(ring->uinc_xfer) - len;
--		err = spi_sync_transfer(priv->spi,
--					ring->uinc_xfer + offset, len);
-+		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
- 		if (err)
- 			return err;
--
--		ring->tail += len;
- 	}
- 
- 	return 0;
++	err = chmap_value_check(hchmap, ucontrol);
++	if (err < 0)
++		return err;
++
+ 	/* No monitor is connected in dyn_pcm_assign.
+ 	 * It's invalid to setup the chmap
+ 	 */
 -- 
 2.43.0
 
