@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677509733DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B505F9731B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2589C28A7D0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D94928BA3A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBDC1917DD;
-	Tue, 10 Sep 2024 10:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC9D19ABB6;
+	Tue, 10 Sep 2024 10:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gV0FFoE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F890yl27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3727581D;
-	Tue, 10 Sep 2024 10:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16519ABA1;
+	Tue, 10 Sep 2024 10:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964353; cv=none; b=ZkKnKXLX+kytXBU6dnddKb8/ExXiIcTsgMHtISzLaav8cFo+nyLaMg1exYC4ihY0hfAxVRieMWIt9x1FLkPCNLgRwwSobXMaIFtceR4ALRtiJhv5TZ6uGKBbGQw0H1I0EboEtbhxilXsZ/ZlcN3wfwWLMpiqt+e+Xak09c1sIJ0=
+	t=1725963018; cv=none; b=ijvpbL8yy3EG0aLf5tcR67KkWTUX1z4Jy5w8LMKqr07lQV1+gHKKBU3wDl7FZiDmC95DzV8m9yDBhAYIhMExvn5Cq8qingEwp0kH5xUt719Jq6AAsN8FYg2mkoQsSnu3NGRYrl0E9WPYxvKqHiSBUVyZt0j+NeAUvu5HvRRXk6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964353; c=relaxed/simple;
-	bh=cvdtacIgadADaVusgDlKKtRlyNdKBINoVwM1JmJ8Wt0=;
+	s=arc-20240116; t=1725963018; c=relaxed/simple;
+	bh=MqYqfshstCmkT8IvjTV73NXMVqKOBx+qZEbYJot0J3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyLpdPNJdqVGo7wYphurhSvHtUH5cFcraCEhpBYDesig3vHL7VLfGZ64gzYaPn0g7B8q+xTJKd1cP1rqiqQVlBvMVfj/JNFW6Ra5c+XRTXtuP43Bo5FAwCE1Xq4v3IDA15PPEHXNJHQY1ta08iS6LPnFVmVNenMliezh1Orsnh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gV0FFoE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C437C4CEC3;
-	Tue, 10 Sep 2024 10:32:32 +0000 (UTC)
+	 MIME-Version; b=qye8oxpew0fLpEOw4WSNdYV9aCBmWpmHI8BUGSz2cp0T6ow67IKEc1EGRLyu76cNufIUdjCcJhmV34fn6YS3qgBOU8f6d7bTLRa9Tq3z0AY2v+aLwLyWoI8zZqfdFUF4PSxNArsso87LKGNRUpbSPWmPEhM2PcXe8h39Zhr7BDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F890yl27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61FFC4CEDB;
+	Tue, 10 Sep 2024 10:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964352;
-	bh=cvdtacIgadADaVusgDlKKtRlyNdKBINoVwM1JmJ8Wt0=;
+	s=korg; t=1725963018;
+	bh=MqYqfshstCmkT8IvjTV73NXMVqKOBx+qZEbYJot0J3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gV0FFoE7qhq8dNek0dG0wZ5OIgUrLsD50buUbN0aoDIVacShtS2qZ9RgvfNx8CMXt
-	 0h02KRE7STFkpv09ZTs6ZDLibQdqTBEnNaNn7bK5398suFcTrAGkk/lhLj2xhUcByG
-	 nua0LD0j9cRK6YyfbAOow5q/a4p1VfmWRAneqIqk=
+	b=F890yl27lk1GclC3TVjEe/TQp/euc+ZfeOhtsepmRntEK9/tBvUmMjMC4ayITp+0n
+	 /P/nfVl0J/8hAWxoQ1+3McFLSQbcyyzmaMqwwnjlQUnIqA+5CoKosF3vgM9cGqdcFs
+	 PWaawpDetIUC7F6Y9S4FBS9dv1owg/GsnO6sel0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/269] Bluetooth: hci_sync: Add helper functions to manipulate cmd_sync queue
-Date: Tue, 10 Sep 2024 11:31:43 +0200
-Message-ID: <20240910092612.324820264@linuxfoundation.org>
+Subject: [PATCH 6.1 080/192] ice: Use ice_max_xdp_frame_size() in ice_xdp_setup_prog()
+Date: Tue, 10 Sep 2024 11:31:44 +0200
+Message-ID: <20240910092601.279199687@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,212 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 505ea2b295929e7be2b4e1bc86ee31cb7862fb01 ]
+[ Upstream commit 60bc72b3c4e9127f29686770005da40b10be0576 ]
 
-This adds functions to queue, dequeue and lookup into the cmd_sync
-list.
+This should have been used in there from day 1, let us address that
+before introducing XDP multi-buffer support for Rx side.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+Link: https://lore.kernel.org/bpf/20230131204506.219292-8-maciej.fijalkowski@intel.com
+Stable-dep-of: 04c7e14e5b0b ("ice: do not bring the VSI up, if it was down before the XDP setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_sync.h |  12 +++
- net/bluetooth/hci_sync.c         | 132 +++++++++++++++++++++++++++++--
- 2 files changed, 136 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 28 +++++++++++------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 37ca8477b3f4..24c0053d8f0c 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -50,6 +50,18 @@ int hci_cmd_sync_submit(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 			void *data, hci_cmd_sync_work_destroy_t destroy);
- int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 		       void *data, hci_cmd_sync_work_destroy_t destroy);
-+struct hci_cmd_sync_work_entry *
-+hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy);
-+int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			    void *data, hci_cmd_sync_work_destroy_t destroy);
-+void hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
-+			       struct hci_cmd_sync_work_entry *entry);
-+bool hci_cmd_sync_dequeue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy);
-+bool hci_cmd_sync_dequeue_once(struct hci_dev *hdev,
-+			      hci_cmd_sync_work_func_t func, void *data,
-+			      hci_cmd_sync_work_destroy_t destroy);
- 
- int hci_update_eir_sync(struct hci_dev *hdev);
- int hci_update_class_sync(struct hci_dev *hdev);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 19ceb7ce66bf..ed18e35c7097 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -651,6 +651,17 @@ void hci_cmd_sync_init(struct hci_dev *hdev)
- 	INIT_DELAYED_WORK(&hdev->adv_instance_expire, adv_timeout_expire);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 15876f388d68..cd9bcc3536fb 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2886,6 +2886,18 @@ int ice_vsi_determine_xdp_res(struct ice_vsi *vsi)
+ 	return 0;
  }
  
-+static void _hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
-+				       struct hci_cmd_sync_work_entry *entry,
-+				       int err)
++/**
++ * ice_max_xdp_frame_size - returns the maximum allowed frame size for XDP
++ * @vsi: Pointer to VSI structure
++ */
++static int ice_max_xdp_frame_size(struct ice_vsi *vsi)
 +{
-+	if (entry->destroy)
-+		entry->destroy(hdev, entry->data, err);
-+
-+	list_del(&entry->list);
-+	kfree(entry);
++	if (test_bit(ICE_FLAG_LEGACY_RX, vsi->back->flags))
++		return ICE_RXBUF_1664;
++	else
++		return ICE_RXBUF_3072;
 +}
 +
- void hci_cmd_sync_clear(struct hci_dev *hdev)
+ /**
+  * ice_xdp_setup_prog - Add or remove XDP eBPF program
+  * @vsi: VSI to setup XDP for
+@@ -2896,11 +2908,11 @@ static int
+ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		   struct netlink_ext_ack *extack)
  {
- 	struct hci_cmd_sync_work_entry *entry, *tmp;
-@@ -659,13 +670,8 @@ void hci_cmd_sync_clear(struct hci_dev *hdev)
- 	cancel_work_sync(&hdev->reenable_adv_work);
+-	int frame_size = vsi->netdev->mtu + ICE_ETH_PKT_HDR_PAD;
++	unsigned int frame_size = vsi->netdev->mtu + ICE_ETH_PKT_HDR_PAD;
+ 	bool if_running = netif_running(vsi->netdev);
+ 	int ret = 0, xdp_ring_err = 0;
  
- 	mutex_lock(&hdev->cmd_sync_work_lock);
--	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list) {
--		if (entry->destroy)
--			entry->destroy(hdev, entry->data, -ECANCELED);
+-	if (frame_size > vsi->rx_buf_len) {
++	if (frame_size > ice_max_xdp_frame_size(vsi)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MTU too large for loading XDP");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -7329,18 +7341,6 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	dev_err(dev, "Rebuild failed, unload and reload driver\n");
+ }
+ 
+-/**
+- * ice_max_xdp_frame_size - returns the maximum allowed frame size for XDP
+- * @vsi: Pointer to VSI structure
+- */
+-static int ice_max_xdp_frame_size(struct ice_vsi *vsi)
+-{
+-	if (test_bit(ICE_FLAG_LEGACY_RX, vsi->back->flags))
+-		return ICE_RXBUF_1664;
+-	else
+-		return ICE_RXBUF_3072;
+-}
 -
--		list_del(&entry->list);
--		kfree(entry);
--	}
-+	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list)
-+		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
- 	mutex_unlock(&hdev->cmd_sync_work_lock);
- }
- 
-@@ -757,6 +763,115 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- }
- EXPORT_SYMBOL(hci_cmd_sync_queue);
- 
-+static struct hci_cmd_sync_work_entry *
-+_hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			   void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	struct hci_cmd_sync_work_entry *entry, *tmp;
-+
-+	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list) {
-+		if (func && entry->func != func)
-+			continue;
-+
-+		if (data && entry->data != data)
-+			continue;
-+
-+		if (destroy && entry->destroy != destroy)
-+			continue;
-+
-+		return entry;
-+	}
-+
-+	return NULL;
-+}
-+
-+/* Queue HCI command entry once:
-+ *
-+ * - Lookup if an entry already exist and only if it doesn't creates a new entry
-+ *   and queue it.
-+ */
-+int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			    void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
-+		return 0;
-+
-+	return hci_cmd_sync_queue(hdev, func, data, destroy);
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_queue_once);
-+
-+/* Lookup HCI command entry:
-+ *
-+ * - Return first entry that matches by function callback or data or
-+ *   destroy callback.
-+ */
-+struct hci_cmd_sync_work_entry *
-+hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	struct hci_cmd_sync_work_entry *entry;
-+
-+	mutex_lock(&hdev->cmd_sync_work_lock);
-+	entry = _hci_cmd_sync_lookup_entry(hdev, func, data, destroy);
-+	mutex_unlock(&hdev->cmd_sync_work_lock);
-+
-+	return entry;
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_lookup_entry);
-+
-+/* Cancel HCI command entry */
-+void hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
-+			       struct hci_cmd_sync_work_entry *entry)
-+{
-+	mutex_lock(&hdev->cmd_sync_work_lock);
-+	_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
-+	mutex_unlock(&hdev->cmd_sync_work_lock);
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_cancel_entry);
-+
-+/* Dequeue one HCI command entry:
-+ *
-+ * - Lookup and cancel first entry that matches.
-+ */
-+bool hci_cmd_sync_dequeue_once(struct hci_dev *hdev,
-+			       hci_cmd_sync_work_func_t func,
-+			       void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	struct hci_cmd_sync_work_entry *entry;
-+
-+	entry = hci_cmd_sync_lookup_entry(hdev, func, data, destroy);
-+	if (!entry)
-+		return false;
-+
-+	hci_cmd_sync_cancel_entry(hdev, entry);
-+
-+	return true;
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_dequeue_once);
-+
-+/* Dequeue HCI command entry:
-+ *
-+ * - Lookup and cancel any entry that matches by function callback or data or
-+ *   destroy callback.
-+ */
-+bool hci_cmd_sync_dequeue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	struct hci_cmd_sync_work_entry *entry;
-+	bool ret = false;
-+
-+	mutex_lock(&hdev->cmd_sync_work_lock);
-+	while ((entry = _hci_cmd_sync_lookup_entry(hdev, func, data,
-+						   destroy))) {
-+		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
-+		ret = true;
-+	}
-+	mutex_unlock(&hdev->cmd_sync_work_lock);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_dequeue);
-+
- int hci_update_eir_sync(struct hci_dev *hdev)
- {
- 	struct hci_cp_write_eir cp;
-@@ -3048,7 +3163,8 @@ int hci_update_passive_scan(struct hci_dev *hdev)
- 	    hci_dev_test_flag(hdev, HCI_UNREGISTER))
- 		return 0;
- 
--	return hci_cmd_sync_queue(hdev, update_passive_scan_sync, NULL, NULL);
-+	return hci_cmd_sync_queue_once(hdev, update_passive_scan_sync, NULL,
-+				       NULL);
- }
- 
- int hci_write_sc_support_sync(struct hci_dev *hdev, u8 val)
+ /**
+  * ice_change_mtu - NDO callback to change the MTU
+  * @netdev: network interface device structure
 -- 
 2.43.0
 
