@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551DD9731BD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B3897348B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011BD1F29381
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170B628E1F4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5842218DF9E;
-	Tue, 10 Sep 2024 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2657818DF60;
+	Tue, 10 Sep 2024 10:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qMKwo16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/BvJKLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1606A188A0C;
-	Tue, 10 Sep 2024 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00317C220;
+	Tue, 10 Sep 2024 10:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963027; cv=none; b=Cu7siC978PcEZoZhf/M+WwTJ58g4VuJpnerG8EK5oiH09PnplS4/uEMgYHBOIf9dffCDJPbXulez2UurWcU9c4G4tHVM8RYlr+CH10xTSQNo1On95Z/JZrLKtUqUsI+cTeB1qzTyH+Chs1WlYqbAJ0s0xf38YDwlARxdYhWjne0=
+	t=1725964729; cv=none; b=BO4JMKO8/Z/X7C35YUWKWT6rJbu+USlkGS4ETanqqpV/wD6l5aVqOhdxVZDKF30PgM120eaA/SG61NVdHzeMxbraRSgWuS+StTsObnBJ2UBYq2IhEUIUq00bRufCI6pyil+9qe1ExXulvfZ26HiVzEBY4Fu96MNRflwjH9vHvp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963027; c=relaxed/simple;
-	bh=gU/ww9U8LtCqcoalfInV1+ATQYmyFhXG0rIv029wrTw=;
+	s=arc-20240116; t=1725964729; c=relaxed/simple;
+	bh=llK0AIrJ+0Udu8TzPYc3q+5MZbiLnQpL9NHwinwWNZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5RUR0Aj0wb7Ll5CrEHL74Z4dcO1PppdboECEFnGtYNTQPcirIthEIUwtm04p262lDgd8X5oLQDtifxLJVwikg2sOs1WPno161lG7w7Hh0nTELrgJjG/qukbclFQx8NdRHlwNwe8YlIXyqorvRGNhhTOlioZPAdUZHp9snvSoAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qMKwo16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C05EC4CEC6;
-	Tue, 10 Sep 2024 10:10:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tQQmmCRQmghl93LI/jVzIHD8LVbdQrrgYBEBJHCSvW7MHWI8V0gDZ6BirX9JsgxcHIgxuqQgHGaQEzdQ13S9BIJi/Gd2OKiTSEYl/BugCHIoliEnVZlOe1BAMF7NSq2A7iK7LmZ0fC7qddOheW+D0D+5wf+etGfVvSlPXH7yKoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/BvJKLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F51C4CEC3;
+	Tue, 10 Sep 2024 10:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963026;
-	bh=gU/ww9U8LtCqcoalfInV1+ATQYmyFhXG0rIv029wrTw=;
+	s=korg; t=1725964729;
+	bh=llK0AIrJ+0Udu8TzPYc3q+5MZbiLnQpL9NHwinwWNZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qMKwo16pdP3RpTpxzmXlhogZfercQZRXcwbDDb+im/B0XZfETqONdViD6h308ZlU
-	 Gbjfn9Do3jbW11lGZvd1OIREmmrR00CBiyJrrsAzc9EfnHQBzxeHJ28hQ6ciEnXC23
-	 Jt+eZZYXpAeqbLkVcaAqDv2PfOyLDNBcriPx+kPI=
+	b=K/BvJKLHeWdgdKgLNZPNnyRIUhmBfp+Lq6zTl6DquAPwUQ/2R6mExhXp4xHT8p/7l
+	 3U3pu2OJ1KKsd2ywlM2C5yAgf30JnzpFV+iywjmdhgo+ugjngZJGaMTtuShSDtCjZf
+	 Mgw+3BUkNqzEoN2Sk95rehzIXHyFw5FgxMhIug74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tim Huang <Tim.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/192] usbnet: modern method to get random MAC
+Subject: [PATCH 5.10 012/186] drm/amdgpu: fix uninitialized scalar variable warning
 Date: Tue, 10 Sep 2024 11:31:47 +0200
-Message-ID: <20240910092601.410755827@linuxfoundation.org>
+Message-ID: <20240910092555.156905260@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit bab8eb0dd4cb995caa4a0529d5655531c2ec5e8e ]
+[ Upstream commit 9a5f15d2a29d06ce5bd50919da7221cda92afb69 ]
 
-The driver generates a random MAC once on load
-and uses it over and over, including on two devices
-needing a random MAC at the same time.
+Clear warning that uses uninitialized value fw_size.
 
-Jakub suggested revamping the driver to the modern
-API for setting a random MAC rather than fixing
-the old stuff.
-
-The bug is as old as the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://patch.msgid.link/20240829175201.670718-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 405e588f8a3a..0f848d318544 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -61,9 +61,6 @@
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index d6f295103595..bd53844a8ba4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -404,6 +404,8 @@ static void amdgpu_virt_add_bad_page(struct amdgpu_device *adev,
+ 	uint64_t retired_page;
+ 	uint32_t bp_idx, bp_cnt;
  
- /*-------------------------------------------------------------------------*/
- 
--// randomly generated ethernet address
--static u8	node_id [ETH_ALEN];
--
- /* use ethtool to change the level for any given device */
- static int msg_level = -1;
- module_param (msg_level, int, 0);
-@@ -1726,7 +1723,6 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 
- 	dev->net = net;
- 	strscpy(net->name, "usb%d", sizeof(net->name));
--	eth_hw_addr_set(net, node_id);
- 
- 	/* rx and tx sides can use different message sizes;
- 	 * bind() should set rx_urb_size in that case.
-@@ -1800,9 +1796,9 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		goto out4;
- 	}
- 
--	/* let userspace know we have a random address */
--	if (ether_addr_equal(net->dev_addr, node_id))
--		net->addr_assign_type = NET_ADDR_RANDOM;
-+	/* this flags the device for user space */
-+	if (!is_valid_ether_addr(net->dev_addr))
-+		eth_hw_addr_random(net);
- 
- 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
- 		SET_NETDEV_DEVTYPE(net, &wlan_type);
-@@ -2212,7 +2208,6 @@ static int __init usbnet_init(void)
- 	BUILD_BUG_ON(
- 		sizeof_field(struct sk_buff, cb) < sizeof(struct skb_data));
- 
--	eth_random_addr(node_id);
- 	return 0;
- }
- module_init(usbnet_init);
++	memset(&bp, 0, sizeof(bp));
++
+ 	if (bp_block_size) {
+ 		bp_cnt = bp_block_size / sizeof(uint64_t);
+ 		for (bp_idx = 0; bp_idx < bp_cnt; bp_idx++) {
 -- 
 2.43.0
 
