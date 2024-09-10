@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471C2973419
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB6A9735C5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B93928B914
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6BC0B29574
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8235C190678;
-	Tue, 10 Sep 2024 10:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F15314B06C;
+	Tue, 10 Sep 2024 10:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSTrGmi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cpjnmdnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E36918C33D;
-	Tue, 10 Sep 2024 10:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00EC18B491;
+	Tue, 10 Sep 2024 10:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964467; cv=none; b=FTrNKHqmPjwW58g+n62hC2VQgwXcnxsTAjlNbGW6U/S3ahlVtTu1xfBxyO+VCun8dg27hubh5Pa8ajfONmutzEz9vBupOlG6KuEXvFprBFXRArrfchSpbAvD7INSo1sw9E8CvuUlv5EbtNFuhi9px8bO1lcSp7W9rkwGVqwRtns=
+	t=1725964948; cv=none; b=mCgfAHzWaCE8L7fgkAb361sjhknocbgW6S0IK3FEudEfI4XhfF6mXtgwFOmgXldASu3UcSEI/6rLti+SsTFED5AGcICOiZ23oZ0W1A3DshYyBuCg/NJil4D2E+L72Dk8PAEdQZOpJUlZTxVfA8V8C2GuvYzMxlTrEQ8opc3DCRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964467; c=relaxed/simple;
-	bh=YKKTlR7xHMwcS3ZUYzdzGmNKgu/INj1d15aCWiaB5GI=;
+	s=arc-20240116; t=1725964948; c=relaxed/simple;
+	bh=1h9uS/MjkXWAccwo+AFZ9NTSVl573UeCHsZQfdOStAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSzYXZ7RiG47aCpzDbN5EB9FWtMq8WSCf6FajjDbE5qOh9RgA/PsClgJGGunIonnJDRpbsNT5TkgNimTPoQNRLtr5P9a6RtOG3EevLTGIdis2zWbgkB2v1l5C11OX/i8yrnkxiSbDnDAU4R6uYlXp84CviEXO/uff1u0C5NFeP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSTrGmi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25BC4CEC3;
-	Tue, 10 Sep 2024 10:34:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J/UMk5LZbVJpJrRBminu8uInnNf7zPk/9ZJUoF9OZFEhGckfgDoCi5E1mDTeeuL5gMJJoqDpURSyVBq9CHlpgfhlgLwOuH9+Y4dhbEAyhbqz7+6yr4shYp9SkifWnVEbfxhjUo7+2H4lr/KPRYNTrlxWG4cnjOkqEZtvgRtGBPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cpjnmdnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A67EC4CEC3;
+	Tue, 10 Sep 2024 10:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964466;
-	bh=YKKTlR7xHMwcS3ZUYzdzGmNKgu/INj1d15aCWiaB5GI=;
+	s=korg; t=1725964948;
+	bh=1h9uS/MjkXWAccwo+AFZ9NTSVl573UeCHsZQfdOStAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSTrGmi6fppUbE3egSTXqjQf+7xNtJNINIPphgweex7bIgaLnxUgwoIRT5rGvF45E
-	 4kum+Pw2hSVkCAsjcGda53rEiRl3eisEo4/nKfKIhdiJIjTVHBA4usr5bkkBCX3r+w
-	 7naxinXSBt+rfQ3QiWGb+ePbowf1S0imwgr/2x1I=
+	b=CpjnmdnhMg178sdrrE98q1VYEnyqyadmkCtwRg1w8T0+nk9rq5LY+CxICfsASKpuo
+	 gt9ub7GzhaEjw3uH6PzZy7cWVCgzwNna202qR/d+tdJjEhBSsKEg1XgCYSZC8AkFbB
+	 ZN2CD3WUx0cb5YAzlODrXKgUvBGlZ5eK05eC/Hn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/269] ata: pata_macio: Use WARN instead of BUG
+	Amir Goldstein <amir73il@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 085/186] NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
 Date: Tue, 10 Sep 2024 11:33:00 +0200
-Message-ID: <20240910092614.993551740@linuxfoundation.org>
+Message-ID: <20240910092558.009752724@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit d4bc0a264fb482b019c84fbc7202dd3cab059087 ]
+[ Upstream commit 5ec39944f874e1ecc09f624a70dfaa8ac3bf9d08 ]
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
+In function ‘export_stats_init’,
+    inlined from ‘svc_export_alloc’ at fs/nfsd/export.c:866:6:
+fs/nfsd/export.c:337:16: warning: ‘nfsd_percpu_counters_init’ accessing 40 bytes in a region of size 0 [-Wstringop-overflow=]
+  337 |         return nfsd_percpu_counters_init(&stats->counter, EXP_STATS_COUNTERS_NUM);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/nfsd/export.c:337:16: note: referencing argument 1 of type ‘struct percpu_counter[0]’
+fs/nfsd/stats.h: In function ‘svc_export_alloc’:
+fs/nfsd/stats.h:40:5: note: in a call to function ‘nfsd_percpu_counters_init’
+   40 | int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 93483ac5fec6 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/nfsd/stats.c |    2 +-
+ fs/nfsd/stats.h |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 17f6ccee53c7..ffbb2e8591ce 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -541,7 +541,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -74,7 +74,7 @@ static int nfsd_show(struct seq_file *se
  
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
+ DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
  
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -553,11 +554,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
- 		}
- 	}
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num)
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num)
+ {
+ 	int i, err = 0;
  
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -36,9 +36,9 @@ extern struct nfsd_stats	nfsdstats;
  
- 	/* Convert the last command to an input/output */
- 	table--;
--- 
-2.43.0
-
+ extern struct svc_stat		nfsd_svcstats;
+ 
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_reset(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_destroy(struct percpu_counter counters[], int num);
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ int nfsd_stat_init(void);
+ void nfsd_stat_shutdown(void);
+ 
 
 
 
