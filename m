@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A230D972DD4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015CA97307C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576B61F25141
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9BC1C24634
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43FC18A6B9;
-	Tue, 10 Sep 2024 09:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462A118FC79;
+	Tue, 10 Sep 2024 10:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTrEHNC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EINr7H9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D461189903;
-	Tue, 10 Sep 2024 09:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0523117BEAE;
+	Tue, 10 Sep 2024 10:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725960998; cv=none; b=MyVuvX3mD/HrGi1y9C9JLooiSJ6/Pr+EdfTyoBw6E7IbuKRPI+ZpB8QOfSxiMYT/00ou8ucXv/uyJ/34iSXLgUJYMddtG3YnsE5cafXgN4T/Xi3KaZdmcVgm3VMRKVbd/kLqqh3uciMJEKcKzgr32JBYP7BWhtK+zwioklyZ/3w=
+	t=1725962431; cv=none; b=a5CeUgxl5iKLZOPDNFZHY1sRNxc8BYclNH/nkp8yGyEMSsXuGlKo+0oz2nMvZQondJBMNjlXNLUvjldnZR/sbdfHcvkOhd2LN87Apc+ZmNR4eXR4kFqPdtnCZyPwQsEgC5ytR7tl6HVfL8y+9GnuU/NBErBdwiZINvjzdxfvCPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725960998; c=relaxed/simple;
-	bh=abfbYkCt50zVGDME99Sfd+5E2pJRTPoOQNIJevw1Qs0=;
+	s=arc-20240116; t=1725962431; c=relaxed/simple;
+	bh=shCrHnkSKy5jM1V2dXZvoUPRTI4Q0tv1N1qwxZoZmx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqZPsxOphkVirjQl7HpMRemBxfH+KC5WC6xFwzkoRYoypFtJoxJ9dGHz16eo/Usa88v5WzEbmPb0Pwg7if149lRVEsadDGOuc64CFkhi08J4sEJ6J6kEXShDkz9LizgbIAsAuFRERJy2O1CprbP7CDJ2Mqe8PGGZBnKIPRu4wUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTrEHNC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2483C4CEC3;
-	Tue, 10 Sep 2024 09:36:37 +0000 (UTC)
+	 MIME-Version; b=GCPXIrv6ByI+SwJT2duaIjlV5W5KJevEmpwRnd72iYwIp1r4F0i6j1cTrG+c9Mw1qd/gqblt1FR6AUnvUHWi2uyegZJpLQIBTVycSYauSBgFPAiA3yHniqGUSVuAteLv4TFM8LU1nR+JMJGxcRJ0EHdw8EOYTZbgt6EktRL+rLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EINr7H9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF6FC4CEC3;
+	Tue, 10 Sep 2024 10:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725960998;
-	bh=abfbYkCt50zVGDME99Sfd+5E2pJRTPoOQNIJevw1Qs0=;
+	s=korg; t=1725962430;
+	bh=shCrHnkSKy5jM1V2dXZvoUPRTI4Q0tv1N1qwxZoZmx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTrEHNC0lRL7KuziblPKb/VU25+9gkKQHXZaEg2Wk+DRk7TgMxcv0Vx+8vLddvZkT
-	 NPKvzlYT5dPFWUE+4JxP67rDjLIkpVWCt23VOe1xTC1dI6QeNPPvmbE+wC+D5dN44v
-	 PErqJsmmXeQEo7CHlIxc4MSTydqxrSh/2H/k+kgY=
+	b=EINr7H9hrSh7so0pOy3+LZD2VR2GlzNo+eok9XtZpzT0CI8EHJooQr5dJa1oiHqiD
+	 io9XBX4CcmMM7LN6gAY17K5SAAHBTTDnz3L6mT9SASk1c+58FFnaOqxCGmGEpp7GpW
+	 iWXOgaHDaNoJnQ4PmK+QKF5QJ+MDyxL+bsb/ap/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 19/96] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 006/121] drm/amd/display: Check gpio_id before used as array index
 Date: Tue, 10 Sep 2024 11:31:21 +0200
-Message-ID: <20240910092542.267525141@linuxfoundation.org>
+Message-ID: <20240910092546.047295250@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
+[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
 
-The Sirius notebooks have two sets of speakers 0x17 (sides) and
-0x1d (top center). The side speakers are active by default but
-the top speakers aren't.
+[WHY & HOW]
+GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
+should be checked in advance.
 
-This patch provides a pincfg quirk to activate the top speakers.
+This fixes 5 OVERRUN issues reported by Coverity.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -230,6 +230,7 @@ enum {
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
-+	CXT_PINCFG_TOP_SPEAKER,
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index 0be817f8cae6..f76ec0dd29e7 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -242,6 +242,9 @@ static bool is_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return false;
++
+ 	return service->busyness[id][en];
+ }
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -884,6 +885,13 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = cxt_pincfg_sws_js201d,
- 	},
-+	[CXT_PINCFG_TOP_SPEAKER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1d, 0x82170111 },
-+			{ }
-+		},
-+	},
- };
+@@ -250,6 +253,9 @@ static void set_pin_busy(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = true;
+ }
  
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -978,6 +986,8 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
- 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
-+	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
-+	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
- 	{}
- };
+@@ -258,6 +264,9 @@ static void set_pin_free(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
++	if (id == GPIO_ID_UNKNOWN)
++		return;
++
+ 	service->busyness[id][en] = false;
+ }
  
-@@ -996,6 +1006,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
-+	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
- 	{}
- };
- 
+@@ -266,7 +275,7 @@ enum gpio_result dal_gpio_service_lock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
+@@ -280,7 +289,7 @@ enum gpio_result dal_gpio_service_unlock(
+ 	enum gpio_id id,
+ 	uint32_t en)
+ {
+-	if (!service->busyness[id]) {
++	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
+ 		ASSERT_CRITICAL(false);
+ 		return GPIO_RESULT_OPEN_FAILED;
+ 	}
+-- 
+2.43.0
+
 
 
 
