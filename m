@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B996973140
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1687973236
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EB11F27293
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 885FE28710B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D0A18C932;
-	Tue, 10 Sep 2024 10:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B393918D643;
+	Tue, 10 Sep 2024 10:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ggvI9J5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3YqceD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696F18C325;
-	Tue, 10 Sep 2024 10:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7179218C039;
+	Tue, 10 Sep 2024 10:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962710; cv=none; b=m1an2DVsch2WTQo2Icvg8JzANRofPRyTwqgg2Xwmmcv2BuQUhUsfQnJCLcSoGCvdUBQcAs+dqfTv8QPcKaTGFyheP3VYlbG3EWIyUVPWQsuvmfRG3QTlFlOxFpqKSPaJFvPPLoed/81OU7YvIdtVdfQEQCZmHJ8geQDTDw04zFc=
+	t=1725963277; cv=none; b=D2UM27cuICxkJsUt/L4lDKPy5Il95YRG0JYfh2/xEJHyycrAjSiLFUdflUZVKisc9MdzAxCMEFIA1/U1UKCezhT2heVdCs+eVz8UPqXoXaHkvEnjhsq7gPjJ2TXOlJQDuxU9BehrC6xeBIlm0ihnu4eCJjMb7xlb62YLcGumltY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962710; c=relaxed/simple;
-	bh=gAHcY62WEcD0uhdinERFGXn0MFAum+wQ0PtsmJJaRB4=;
+	s=arc-20240116; t=1725963277; c=relaxed/simple;
+	bh=bc79nCXqHkCvo9ETFb5ijAuBU7njYyIBIz0ik7SbPyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IB1E1XYuqo/UYNR/4k7cdUzNQ5ef6Frlan7YgPjm/bmeCCakMi3uynALE1LGs71AX/+nFUi7ZzimI/K5c6TTBEiDwq3+vj92h7pq9NZPCl4VJrgatHDeZgvwIleiY4Gs7BozQ0wiikrzxSZPs8099lvTjAy/5mu1aCGqPPXK69I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ggvI9J5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E406C4CEC3;
-	Tue, 10 Sep 2024 10:05:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nUPpA4o4u5CmqN8oAujIhRwJi0C9pnwVQWeia8nF+f007awWw9/BKBOLReK497PWTwzchVNSQKwUp5we95FIFDuSzOQl8HG5Zv00csnzqw4N5z+Y3U8Pg6ApbYotGwVIkcQWPIBDq8HlV+repBrYPMor+W7qAOTt1mbuD91SwWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3YqceD3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E184EC4CEC3;
+	Tue, 10 Sep 2024 10:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962710;
-	bh=gAHcY62WEcD0uhdinERFGXn0MFAum+wQ0PtsmJJaRB4=;
+	s=korg; t=1725963277;
+	bh=bc79nCXqHkCvo9ETFb5ijAuBU7njYyIBIz0ik7SbPyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ggvI9J5jP7KYon1Vm99+xcIMNLQ/0OfiAe4yInsgocI0PLYG99IawpLszPIfOC/M
-	 O+JGP9BJ6gzfFgSiEIM3t+m4oIWgF497sYvEKJXx/6nFbYptyi0pqsc1bc4gRekCHO
-	 wVUWNuApa0Flfv1wbf75SoullQANcWRP9cLSPqvM=
+	b=q3YqceD3pQtVC+8FxJG2EodQh7Hdk0NRLSPuh0HuMIIutISGZ6UwB6OW0JCk3y9Ru
+	 XTKiUejfnEi5csTCP2YjTWe5C2sDtlkpoFMnyOozHDbqdcyHEX5pLDGZvQmTiu+Dbh
+	 Q27QAVVCNbff9MHsLHbN1ExzhPm9qdrBLahTCGxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/121] drm/i915/fence: Mark debug_fence_free() with __maybe_unused
+Subject: [PATCH 6.1 169/192] can: mcp251xfd: mcp251xfd_handle_rxif_ring_uinc(): factor out in separate function
 Date: Tue, 10 Sep 2024 11:33:13 +0200
-Message-ID: <20240910092551.404209844@linuxfoundation.org>
+Message-ID: <20240910092604.857627798@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit f99999536128b14b5d765a9982763b5134efdd79 ]
+[ Upstream commit d49184b7b585f9da7ee546b744525f62117019f6 ]
 
-When debug_fence_free() is unused
-(CONFIG_DRM_I915_SW_FENCE_DEBUG_OBJECTS=n), it prevents kernel builds
-with clang, `make W=1` and CONFIG_WERROR=y:
+This is a preparation patch.
 
-.../i915_sw_fence.c:118:20: error: unused function 'debug_fence_free' [-Werror,-Wunused-function]
-  118 | static inline void debug_fence_free(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~
+Sending the UINC messages followed by incrementing the tail pointer
+will be called in more than one place in upcoming patches, so factor
+this out into a separate function.
 
-Fix this by marking debug_fence_free() with __maybe_unused.
+Also make mcp251xfd_handle_rxif_ring_uinc() safe to be called with a
+"len" of 0.
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
-
-Fixes: fc1584059d6c ("drm/i915: Integrate i915_sw_fence with debugobjects")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 8be4dce5ea6f2368cc25edc71989c4690fa66964)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c | 48 +++++++++++++-------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index 475e4b9485af..8f20668a860e 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -64,7 +64,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
- 	debug_object_destroy(fence, &i915_sw_fence_debug_descr);
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index ced8d9c81f8c..5e2f39de88f3 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -197,6 +197,37 @@ mcp251xfd_rx_obj_read(const struct mcp251xfd_priv *priv,
+ 	return err;
  }
  
--static inline void debug_fence_free(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
- {
- 	debug_object_free(fence, &i915_sw_fence_debug_descr);
- 	smp_wmb(); /* flush the change in state before reallocation */
-@@ -102,7 +102,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
- {
- }
++static int
++mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
++				struct mcp251xfd_rx_ring *ring,
++				u8 len)
++{
++	int offset;
++	int err;
++
++	if (!len)
++		return 0;
++
++	/* Increment the RX FIFO tail pointer 'len' times in a
++	 * single SPI message.
++	 *
++	 * Note:
++	 * Calculate offset, so that the SPI transfer ends on
++	 * the last message of the uinc_xfer array, which has
++	 * "cs_change == 0", to properly deactivate the chip
++	 * select.
++	 */
++	offset = ARRAY_SIZE(ring->uinc_xfer) - len;
++	err = spi_sync_transfer(priv->spi,
++				ring->uinc_xfer + offset, len);
++	if (err)
++		return err;
++
++	ring->tail += len;
++
++	return 0;
++}
++
+ static int
+ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			   struct mcp251xfd_rx_ring *ring)
+@@ -210,8 +241,6 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 		return err;
  
--static inline void debug_fence_free(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
- {
- }
+ 	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
+-		int offset;
+-
+ 		rx_tail = mcp251xfd_get_rx_tail(ring);
  
+ 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
+@@ -227,22 +256,9 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 				return err;
+ 		}
+ 
+-		/* Increment the RX FIFO tail pointer 'len' times in a
+-		 * single SPI message.
+-		 *
+-		 * Note:
+-		 * Calculate offset, so that the SPI transfer ends on
+-		 * the last message of the uinc_xfer array, which has
+-		 * "cs_change == 0", to properly deactivate the chip
+-		 * select.
+-		 */
+-		offset = ARRAY_SIZE(ring->uinc_xfer) - len;
+-		err = spi_sync_transfer(priv->spi,
+-					ring->uinc_xfer + offset, len);
++		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
+ 		if (err)
+ 			return err;
+-
+-		ring->tail += len;
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
