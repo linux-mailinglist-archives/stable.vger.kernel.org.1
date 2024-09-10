@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9F69732BC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4963F973590
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE76C28914C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1DEDB2E4C1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212BA18C34D;
-	Tue, 10 Sep 2024 10:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C85B18C932;
+	Tue, 10 Sep 2024 10:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5P+EW2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvjY/pfr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4855199FB5;
-	Tue, 10 Sep 2024 10:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B85118B48A;
+	Tue, 10 Sep 2024 10:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963596; cv=none; b=p28JXknW73eUgicLIIvtIhQ8aed6TFuGNuy26QiQg6zEs5NYFZYDBayPsy4w8sqY1l2ihlz/1WdRJxqokXBHtVLo3VqxyjIKGfHa6//nLAiLXzaT96uqckeISTdmw3HNc+v8BCK7ioN7JdJ9CN1HOj6f+SDBjwNoa/E8V+WsLOU=
+	t=1725964892; cv=none; b=f14jH1+i5YZTcNwuPccan6lGaxv1zk9+bsh1Hs43Rc38c6xnmzmZCgimdREJrAZj08CHdVz1EwHMI8kWDP7UWATzGM6lPLcjD3+rrnj9KnlXZG+cgAJ9xqgsqHq1ZttQQP8MZTbGSJaupv2NLVbYJgAHJeULgr37rpNyXlAjLdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963596; c=relaxed/simple;
-	bh=RCsXbUCkLWC9E8dZLnnnAj2d2bw7XDJCPnIqD+gQueQ=;
+	s=arc-20240116; t=1725964892; c=relaxed/simple;
+	bh=9+WZCmNRZgULOuUp1PUgXt+bcS2AvULUKmwPx3czs+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNFRYdkgf+Q0tluZkjeZuN0Cx+pjoCSH6ID5mjbxErsUHM1Wcs6hMeexu77bis1FESKI36TSLEtAxXPWaXbbnRdRqpplD0kXqIQLfw4vf+iTzYkn/MtbO7+O8M7qMfpzsZQyo8Vic0FpgFBJRJSnOz/musOX7i3bRikBiNe9DsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5P+EW2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA4EC4CEC6;
-	Tue, 10 Sep 2024 10:19:56 +0000 (UTC)
+	 MIME-Version; b=XptZLT7j1RN9VAibTBWDdOVhc5xAOfKtn4n3mWfrFhKouCM0VEX4ZOEyPU4iozMBfA/0arBSVBivDKmUgATBMP/BABgE/yiAyjlT/3HvF3+lzb9zsHh93DA2Kx3nfg8cGLsQJd5lYckeeKCf9akZjZcdI8e+x9wkcDnPVlTktGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvjY/pfr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36D9C4CEC3;
+	Tue, 10 Sep 2024 10:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963596;
-	bh=RCsXbUCkLWC9E8dZLnnnAj2d2bw7XDJCPnIqD+gQueQ=;
+	s=korg; t=1725964892;
+	bh=9+WZCmNRZgULOuUp1PUgXt+bcS2AvULUKmwPx3czs+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5P+EW2zA2EnMNgBHf2oPku5UfL6YkrFEivA3G5VSf87oQu+e/OmgHs6hQHhaer1x
-	 5S/+yntB7l5VUKlxXWysAjkkUAN0McBjHUfiUfgbUuJJdciY+KgUa/vha0s1bJnwpk
-	 425CtJ4hQPy2VzWkB7eEapN28HwB9th4OiKEvXOo=
+	b=NvjY/pfreq97AtRIzETwfBOi4Q4wlHOITrZCYusXOP7tuBPvBTmkhWjhjMDWwqGhh
+	 +F1swOhrmVqhhU6kTA/SFhZl9vyEqDYFlUSXhnq7HIHk2kyzDyudxim6QCvYDA0f2B
+	 MmjrsnWfqAQkh5iKjuR+NHkXp002z6R6MhQ/O3so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Haoran Liu <liuhaoran14@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/214] leds: spi-byte: Call of_node_put() on error path
-Date: Tue, 10 Sep 2024 11:32:13 +0200
-Message-ID: <20240910092603.345792975@linuxfoundation.org>
+Subject: [PATCH 5.10 039/186] drm/meson: plane: Add error handling
+Date: Tue, 10 Sep 2024 11:32:14 +0200
+Message-ID: <20240910092556.150012759@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Haoran Liu <liuhaoran14@163.com>
 
-[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
+[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
 
-Add a missing call to of_node_put(np) on error.
+This patch adds robust error handling to the meson_plane_create
+function in drivers/gpu/drm/meson/meson_plane.c. The function
+previously lacked proper handling for potential failure scenarios
+of the drm_universal_plane_init call.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
+[narmstrong: fixe the commit subject]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-spi-byte.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index f1964c96fb15..82696e0607a5 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
- 		dev_err(dev, "Device must have exactly one LED sub-node.");
- 		return -EINVAL;
- 	}
--	child = of_get_next_available_child(dev_of_node(dev), NULL);
+diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
+index 255c6b863f8d..6d54c565b34f 100644
+--- a/drivers/gpu/drm/meson/meson_plane.c
++++ b/drivers/gpu/drm/meson/meson_plane.c
+@@ -529,6 +529,7 @@ int meson_plane_create(struct meson_drm *priv)
+ 	struct meson_plane *meson_plane;
+ 	struct drm_plane *plane;
+ 	const uint64_t *format_modifiers = format_modifiers_default;
++	int ret;
  
- 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
- 	if (!led)
-@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+ 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
+ 				   GFP_KERNEL);
+@@ -543,12 +544,16 @@ int meson_plane_create(struct meson_drm *priv)
+ 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
+ 		format_modifiers = format_modifiers_afbc_g12a;
  
-+	child = of_get_next_available_child(dev_of_node(dev), NULL);
- 	state = of_get_property(child, "default-state", NULL);
- 	if (state) {
- 		if (!strcmp(state, "on")) {
- 			led->ldev.brightness = led->ldev.max_brightness;
- 		} else if (strcmp(state, "off")) {
-+			of_node_put(child);
- 			/* all other cases except "off" */
- 			dev_err(dev, "default-state can only be 'on' or 'off'");
- 			return -EINVAL;
-@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
+-	drm_universal_plane_init(priv->drm, plane, 0xFF,
+-				 &meson_plane_funcs,
+-				 supported_drm_formats,
+-				 ARRAY_SIZE(supported_drm_formats),
+-				 format_modifiers,
+-				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
++					&meson_plane_funcs,
++					supported_drm_formats,
++					ARRAY_SIZE(supported_drm_formats),
++					format_modifiers,
++					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	if (ret) {
++		devm_kfree(priv->drm->dev, meson_plane);
++		return ret;
++	}
  
- 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
- 	if (ret) {
-+		of_node_put(child);
- 		mutex_destroy(&led->mutex);
- 		return ret;
- 	}
-+
-+	of_node_put(child);
- 	spi_set_drvdata(spi, led);
+ 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
  
- 	return 0;
 -- 
 2.43.0
 
