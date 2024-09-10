@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955F297324F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:21:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F689733C7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 568E2289BDF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:21:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7406B288EF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E657F191F6D;
-	Tue, 10 Sep 2024 10:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43B319FA6B;
+	Tue, 10 Sep 2024 10:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVcfM8ir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXRUhoY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89567192B84;
-	Tue, 10 Sep 2024 10:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAA219F10E;
+	Tue, 10 Sep 2024 10:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963344; cv=none; b=BtpIrGhlZjVzK0DIYjYfdDC8wsCcnndQ8kmidbIpTwRClOiGaSqb0IRNOho+41UBcuRc6E0kBzRQpzAeOZeFFtTxpQPOZsY4jy2ZPG0aL+n4J0mIr+WEqyzpiua9gRww5mm+Z1q55lMN19M33MS+M5hUfQ1+jJsUe9bMTRIBfxY=
+	t=1725964017; cv=none; b=TXMxXFrQaa80ek2jYmIEkWAlm5G0klE4CB1uuAKwtcb+0I/eraIPd57+B/iZNu8n58WSaSMw0mkuR5Y5vgd++XqQSw15mixENyYIOQTZd98m6FjGHwd91EQWQ9ZgSVa1Ziv1MTtdYfAZCJ7mk0MuPbixJBka9eJX9hPEfZQzHvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963344; c=relaxed/simple;
-	bh=J/tcyfzlzgOHBvCtmbH1PHUkO/4uMP4tacB9CoTPUFM=;
+	s=arc-20240116; t=1725964017; c=relaxed/simple;
+	bh=xqBrdNDQvTvrDZJ5UIvMeu4P26nCHLNVjWpttJoSvYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqQCq1+W/dd8VfHuq36YTLeYmTouJ3geqpSBe6Mki+YIOYydPiZRNRsQerRqbcsQ6BBUuGw0NrzwV/yfoNZq6DxzUyo0J10GCQZuEjde46Br+To2ceykqO0JUfIaPt0RSegkHwtUzLTmpDlX17EH5WY4uV9Js8+Un6RcF6OSO1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVcfM8ir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA62C4CEC6;
-	Tue, 10 Sep 2024 10:15:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XRUJJs19nnYH9TrTcTcCe7yU0w29KMcOTU2NbPLtAZbQAOAwm60QGFHWWokeiyp3Z1tnCbH2RKnIKAqLPaFw+IXU/W1zlAXmtwr2Qaiv6D+sPUsAxH4+4x+PUU74FwsS61EHO9a/Ij9xP3W9tT3hgHg5IZsJKKjfp7uXf5fCmvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXRUhoY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25663C4CEC3;
+	Tue, 10 Sep 2024 10:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963344;
-	bh=J/tcyfzlzgOHBvCtmbH1PHUkO/4uMP4tacB9CoTPUFM=;
+	s=korg; t=1725964017;
+	bh=xqBrdNDQvTvrDZJ5UIvMeu4P26nCHLNVjWpttJoSvYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVcfM8ir6FfEYnxYYUtNjNFQM18ft0S6Vz4gsyRrEgwqai7TKNmKzZyW9G5OrwBdI
-	 oX+FDX2QobPBUei3YV9N65ITh5o9wbzF+J1kx6qCKFAsH2GJlrhAJ3rJJjJ63mD6j0
-	 UES2/FzSs1NIjWJa1Ji7T3PfFPRXRkF87OBGic1Q=
+	b=CXRUhoY4ZUILi+UpJsMxuJGSersrQh+Tuqhh/hpWmNn1rRAtK97eUNZe0W6MZAqDr
+	 xieI95x+VeU+3nhK1JtTfQ9O/c7WrSwZ+Jr5JGlRevQUx8K60yh5yMBI3rUFJa3M55
+	 KofgNB/gM1ap7YJ8QF3Gv6G8JZ6yUOinOSLpCMR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Konstantin Ovsepian <ovs@meta.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/214] dma-debug: avoid deadlock between dma debug vs printk and netconsole
+	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
+	Brian Norris <briannorris@chromium.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 040/269] spi: rockchip: Resolve unbalanced runtime PM / system PM handling
 Date: Tue, 10 Sep 2024 11:30:27 +0200
-Message-ID: <20240910092558.928328533@linuxfoundation.org>
+Message-ID: <20240910092609.687797274@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit bd44ca3de49cc1badcff7a96010fa2c64f04868c ]
+commit be721b451affbecc4ba4eaac3b71cdbdcade1b1b upstream.
 
-Currently the dma debugging code can end up indirectly calling printk
-under the radix_lock. This happens when a radix tree node allocation
-fails.
+Commit e882575efc77 ("spi: rockchip: Suspend and resume the bus during
+NOIRQ_SYSTEM_SLEEP_PM ops") stopped respecting runtime PM status and
+simply disabled clocks unconditionally when suspending the system. This
+causes problems when the device is already runtime suspended when we go
+to sleep -- in which case we double-disable clocks and produce a
+WARNing.
 
-This is a problem because the printk code, when used together with
-netconsole, can end up inside the dma debugging code while trying to
-transmit a message over netcons.
+Switch back to pm_runtime_force_{suspend,resume}(), because that still
+seems like the right thing to do, and the aforementioned commit makes no
+explanation why it stopped using it.
 
-This creates the possibility of either a circular deadlock on the same
-CPU, with that CPU trying to grab the radix_lock twice, or an ABBA
-deadlock between different CPUs, where one CPU grabs the console lock
-first and then waits for the radix_lock, while the other CPU is holding
-the radix_lock and is waiting for the console lock.
+Also, refactor some of the resume() error handling, because it's not
+actually a good idea to re-disable clocks on failure.
 
-The trace captured by lockdep is of the ABBA variant.
-
--> #2 (&dma_entry_hash[i].lock){-.-.}-{2:2}:
-                  _raw_spin_lock_irqsave+0x5a/0x90
-                  debug_dma_map_page+0x79/0x180
-                  dma_map_page_attrs+0x1d2/0x2f0
-                  bnxt_start_xmit+0x8c6/0x1540
-                  netpoll_start_xmit+0x13f/0x180
-                  netpoll_send_skb+0x20d/0x320
-                  netpoll_send_udp+0x453/0x4a0
-                  write_ext_msg+0x1b9/0x460
-                  console_flush_all+0x2ff/0x5a0
-                  console_unlock+0x55/0x180
-                  vprintk_emit+0x2e3/0x3c0
-                  devkmsg_emit+0x5a/0x80
-                  devkmsg_write+0xfd/0x180
-                  do_iter_readv_writev+0x164/0x1b0
-                  vfs_writev+0xf9/0x2b0
-                  do_writev+0x6d/0x110
-                  do_syscall_64+0x80/0x150
-                  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
--> #0 (console_owner){-.-.}-{0:0}:
-                  __lock_acquire+0x15d1/0x31a0
-                  lock_acquire+0xe8/0x290
-                  console_flush_all+0x2ea/0x5a0
-                  console_unlock+0x55/0x180
-                  vprintk_emit+0x2e3/0x3c0
-                  _printk+0x59/0x80
-                  warn_alloc+0x122/0x1b0
-                  __alloc_pages_slowpath+0x1101/0x1120
-                  __alloc_pages+0x1eb/0x2c0
-                  alloc_slab_page+0x5f/0x150
-                  new_slab+0x2dc/0x4e0
-                  ___slab_alloc+0xdcb/0x1390
-                  kmem_cache_alloc+0x23d/0x360
-                  radix_tree_node_alloc+0x3c/0xf0
-                  radix_tree_insert+0xf5/0x230
-                  add_dma_entry+0xe9/0x360
-                  dma_map_page_attrs+0x1d2/0x2f0
-                  __bnxt_alloc_rx_frag+0x147/0x180
-                  bnxt_alloc_rx_data+0x79/0x160
-                  bnxt_rx_skb+0x29/0xc0
-                  bnxt_rx_pkt+0xe22/0x1570
-                  __bnxt_poll_work+0x101/0x390
-                  bnxt_poll+0x7e/0x320
-                  __napi_poll+0x29/0x160
-                  net_rx_action+0x1e0/0x3e0
-                  handle_softirqs+0x190/0x510
-                  run_ksoftirqd+0x4e/0x90
-                  smpboot_thread_fn+0x1a8/0x270
-                  kthread+0x102/0x120
-                  ret_from_fork+0x2f/0x40
-                  ret_from_fork_asm+0x11/0x20
-
-This bug is more likely than it seems, because when one CPU has run out
-of memory, chances are the other has too.
-
-The good news is, this bug is hidden behind the CONFIG_DMA_API_DEBUG, so
-not many users are likely to trigger it.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reported-by: Konstantin Ovsepian <ovs@meta.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e882575efc77 ("spi: rockchip: Suspend and resume the bus during NOIRQ_SYSTEM_SLEEP_PM ops")
+Cc: stable@vger.kernel.org
+Reported-by: Ondřej Jirman <megi@xff.cz>
+Closes: https://lore.kernel.org/lkml/20220621154218.sau54jeij4bunf56@core/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Link: https://patch.msgid.link/20240827171126.1115748-1-briannorris@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c |   23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 1f9a8cee42241..09ccb4d6bc7b6 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -447,8 +447,11 @@ void debug_dma_dump_mappings(struct device *dev)
-  * dma_active_cacheline entry to track per event.  dma_map_sg(), on the
-  * other hand, consumes a single dma_debug_entry, but inserts 'nents'
-  * entries into the tree.
-+ *
-+ * Use __GFP_NOWARN because the printk from an OOM, to netconsole, could end
-+ * up right back in the DMA debugging code, leading to a deadlock.
-  */
--static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC);
-+static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC | __GFP_NOWARN);
- static DEFINE_SPINLOCK(radix_lock);
- #define ACTIVE_CACHELINE_MAX_OVERLAP ((1 << RADIX_TREE_MAX_TAGS) - 1)
- #define CACHELINE_PER_PAGE_SHIFT (PAGE_SHIFT - L1_CACHE_SHIFT)
--- 
-2.43.0
-
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -974,14 +974,16 @@ static int rockchip_spi_suspend(struct d
+ {
+ 	int ret;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 
+ 	ret = spi_controller_suspend(ctlr);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	clk_disable_unprepare(rs->spiclk);
+-	clk_disable_unprepare(rs->apb_pclk);
++	ret = pm_runtime_force_suspend(dev);
++	if (ret < 0) {
++		spi_controller_resume(ctlr);
++		return ret;
++	}
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+ 
+@@ -992,25 +994,14 @@ static int rockchip_spi_resume(struct de
+ {
+ 	int ret;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 
+ 	pinctrl_pm_select_default_state(dev);
+ 
+-	ret = clk_prepare_enable(rs->apb_pclk);
++	ret = pm_runtime_force_resume(dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = clk_prepare_enable(rs->spiclk);
+-	if (ret < 0)
+-		clk_disable_unprepare(rs->apb_pclk);
+-
+-	ret = spi_controller_resume(ctlr);
+-	if (ret < 0) {
+-		clk_disable_unprepare(rs->spiclk);
+-		clk_disable_unprepare(rs->apb_pclk);
+-	}
+-
+-	return 0;
++	return spi_controller_resume(ctlr);
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
 
 
 
