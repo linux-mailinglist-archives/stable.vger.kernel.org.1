@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016D29732BF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD4697348A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5C51F22291
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1404C1F210B5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B42199FB7;
-	Tue, 10 Sep 2024 10:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873518CBE9;
+	Tue, 10 Sep 2024 10:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZP7/7OCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxQ0J6VY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048218C03E;
-	Tue, 10 Sep 2024 10:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D2818C002;
+	Tue, 10 Sep 2024 10:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963620; cv=none; b=urzo/XbI/IPeY/DhVR759B8SddG8/YKZak1+GtqEA4ypcuoNcn192HXZ/yVuoY71L9MgXMkBYWlwbxSmY705FF2e10yuzzOtx/y7a44pSM4cVHDKoWLAhY+2O4MFJ9KKVt/QSKADV8m1Lu2v+R6Kz6jdSDS4TaoU2n+JeWJEYiQ=
+	t=1725964727; cv=none; b=h/3lOhV2UiqSuD2ZVl3lim46pVMW+wRec6LWofoZSjd3lxY3VBG5rDwirnyXaSceIzUeisMfOQuyb9ryuXaFALNI9+luXySV1xjugegC9o/MP4gZajN7zI1k5wrvg/0NEBu7VIM9cB7wxX30iK7WiMz4Io90mRCNroSirDX8kxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963620; c=relaxed/simple;
-	bh=fCYacT93f/SZoGv9SgJZ5V8MSpN3Y4hgOkegiH5VCaA=;
+	s=arc-20240116; t=1725964727; c=relaxed/simple;
+	bh=NvTHhqXI/e5w/omqR9skAYomFpi11zK5y7MNf22BCbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpYYX97IHiPfgsgrFHAkNwEHVzLqyyEefhJA+oZfyvJ2p+CWprIJDc+Fi4q30L93v5Ty0AzS+KJDYO7Kon3SCVKvPbCDaMiYZ6D+/czYfHY/WMyf+OmWcHtykaAT6gApcM0pSDy+CuoXeJA3PD58nNFatdrNsE3bOpGJihqPnW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZP7/7OCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD58C4CEC3;
-	Tue, 10 Sep 2024 10:20:19 +0000 (UTC)
+	 MIME-Version; b=KK9uRATjPsb8YuNYiXp3/4p7TLFyghEwqgjaLAckCoHa5+K4zsHN5PE5/GZqqfAme3VsDxHycV/0S9Nt59pMQao1zOMqcRho9gnDsd15zJsO8PF8AVOUsQ+oxQWoRocRNsCDguHrq5f9oA1YxgBDp/xGjTltfGsHPW9GGeVaT4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxQ0J6VY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E4C4CEC3;
+	Tue, 10 Sep 2024 10:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963620;
-	bh=fCYacT93f/SZoGv9SgJZ5V8MSpN3Y4hgOkegiH5VCaA=;
+	s=korg; t=1725964726;
+	bh=NvTHhqXI/e5w/omqR9skAYomFpi11zK5y7MNf22BCbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZP7/7OCeU5fvZGT56TqRsFdKhJccDfST4QCe7wLlto8gpxhqzOC7yAxU5B8nT5qzs
-	 Zs0b4KNbonT+k6mJay7wwftFJxeZ9izHSUpefYZqArushtHcTK2S2v38nCMqgRGMLU
-	 GqnOLSgqlyfcK9eqrdM2UlUv7q2vdGOni45F5UXw=
+	b=yxQ0J6VYOyylNn6pJKtUuu3bpXUWFx3aNQs0VbAG0ug5oC2mzs1KKXCJNUHt+uYve
+	 V0GadulabIn7+XjJ3BV3a3DTK+1VexpL+ndYtNZ/OAbmM+xj1yUjBxrA5TOQJZze5W
+	 G8+BO5GMHMczkyZ0n/u54lpbrCl4NfU5OF5ipuRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 083/214] clk: qcom: clk-alpha-pll: Update set_rate for Zonda PLL
-Date: Tue, 10 Sep 2024 11:31:45 +0200
-Message-ID: <20240910092602.128357067@linuxfoundation.org>
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/186] drm/amd/pm: fix the Out-of-bounds read warning
+Date: Tue, 10 Sep 2024 11:31:46 +0200
+Message-ID: <20240910092555.114715256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-commit f4973130d255dd4811006f5822d4fa4d0de9d712 upstream.
+[ Upstream commit 12c6967428a099bbba9dfd247bb4322a984fcc0b ]
 
-The Zonda PLL has a 16 bit signed alpha and in the cases where the alpha
-value is greater than 0.5, the L value needs to be adjusted accordingly.
-Thus update the logic to handle the signed alpha val.
+using index i - 1U may beyond element index
+for mc_data[] when i = 0.
 
-Fixes: f21b6bfecc27 ("clk: qcom: clk-alpha-pll: add support for zonda pll")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240731062916.2680823-5-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -39,6 +39,7 @@
- #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
- # define PLL_POST_DIV_SHIFT	8
- # define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
-+# define PLL_ALPHA_MSB		BIT(15)
- # define PLL_ALPHA_EN		BIT(24)
- # define PLL_ALPHA_MODE		BIT(25)
- # define PLL_VCO_SHIFT		20
-@@ -1913,6 +1914,18 @@ static void clk_zonda_pll_disable(struct
- 	regmap_write(regmap, PLL_OPMODE(pll), 0x0);
- }
- 
-+static void zonda_pll_adjust_l_val(unsigned long rate, unsigned long prate, u32 *l)
-+{
-+	u64 remainder, quotient;
-+
-+	quotient = rate;
-+	remainder = do_div(quotient, prate);
-+	*l = quotient;
-+
-+	if ((remainder * 2) / prate)
-+		*l = *l + 1;
-+}
-+
- static int clk_zonda_pll_set_rate(struct clk_hw *hw, unsigned long rate,
- 				  unsigned long prate)
- {
-@@ -1929,6 +1942,9 @@ static int clk_zonda_pll_set_rate(struct
- 	if (ret < 0)
- 		return ret;
- 
-+	if (a & PLL_ALPHA_MSB)
-+		zonda_pll_adjust_l_val(rate, prate, &l);
-+
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
- 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
- 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index 01dc46dc9c8a..165af862d054 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -73,8 +73,9 @@ static int atomctrl_retrieve_ac_timing(
+ 					j++;
+ 				} else if ((table->mc_reg_address[i].uc_pre_reg_data &
+ 							LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
+-					table->mc_reg_table_entry[num_ranges].mc_data[i] =
+-						table->mc_reg_table_entry[num_ranges].mc_data[i-1];
++					if (i)
++						table->mc_reg_table_entry[num_ranges].mc_data[i] =
++							table->mc_reg_table_entry[num_ranges].mc_data[i-1];
+ 				}
+ 			}
+ 			num_ranges++;
+-- 
+2.43.0
+
 
 
 
