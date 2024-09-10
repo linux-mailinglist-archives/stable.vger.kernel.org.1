@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-74511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388F8972FB1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8B6972FB0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2483B27CE9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27FF21C24493
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9412318A94C;
-	Tue, 10 Sep 2024 09:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D9A18B487;
+	Tue, 10 Sep 2024 09:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZm4545c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01rhNdwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170246444;
-	Tue, 10 Sep 2024 09:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C685A46444;
+	Tue, 10 Sep 2024 09:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962020; cv=none; b=Vw5uFg9cAvhGXCKMPYNQdq55Gy3pcQwkPl+ADBaj3LwU0DeEEHEtg8jeAsspUTnZVy2rKAEka62DdKNTmNdO5j3buZU9piLzj9TXbg58Bi0VJLkUAw8Vtrh/UhQvBmHFGjgbDp8YP4FC/mS1PmWiDGKtZjbkwAj/xYrsm/98HGE=
+	t=1725962025; cv=none; b=i/pv3zMH6+Kj2oTRU1Z9gdwsvwUT+BI+Ewcm5Vnoos1kazwh5XAVVINUYvIM5M7IrploT4lG1LKtrKWaRbsLIc6lrCLjR9mv6vM5slQxxxIK0QmpqVVosMXtvyqI0Y5b4OP79QTIM+2UcNdl+JqSpyKpBrAHJhhcWzmzPDPxhNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962020; c=relaxed/simple;
-	bh=v0JLhdjb4/rRy6h4gM8F78AN7k6VWqNAAnY7TFHbBx8=;
+	s=arc-20240116; t=1725962025; c=relaxed/simple;
+	bh=/agO7h7JIGtoQVjveGiSfcNoSduXeZdGpJPl4RF1UMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOalnyTg5ziqnEjrx4aPRStQpVhcX81PUPcHRfk3A3suFKTA5nvMcM52GgIRVMCDhDgKVq8qFcUjaLI38JenDhAFm3CUQkpi4JM90anHJLoe9a8hsgl20l769pMznYtFfmqd9TqdU5uTtWnMBUC6ncNVzw20ew+43MV402ksyR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZm4545c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E71C4CEC3;
-	Tue, 10 Sep 2024 09:53:39 +0000 (UTC)
+	 MIME-Version; b=X0vIMIMMyaKvy3QXAn/s5kTDEW5gjUGurXmxw0aZuiXHdz9z5GrN43h0kQwPbn2LRt15T24B4VHNVf9kq0PTFkcUEl3KAje+guAu9l6iveduunjU0EYlytaefMN01362rPmHKNuOeEUABJ7eGR4bPuxlNaH2cjMyrsVGZ+IyKyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01rhNdwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E217C4CEC6;
+	Tue, 10 Sep 2024 09:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962019;
-	bh=v0JLhdjb4/rRy6h4gM8F78AN7k6VWqNAAnY7TFHbBx8=;
+	s=korg; t=1725962025;
+	bh=/agO7h7JIGtoQVjveGiSfcNoSduXeZdGpJPl4RF1UMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZm4545c4TQ/Y5bg5GbrJA6wJCDBZlabFaqLkreSygXJ2Kg+qC0DE+4xJjQTjN1uL
-	 wAw9IbNYiPPNa0bH6WisUpzMMd9MMPG6NgqvkYq0p8uIZ8jBMFt00E63DjLtJhbcT0
-	 DBIqBiAuTsQrDn7ojGPcrSaBJbPkodc7md9KI34U=
+	b=01rhNdwrjCBjh7PLW1krlcrycVKSMx2cXtYoHl++WHY/e0lsoqFWw6P1UmK9xpIkR
+	 mijFImCahPzOCN7gNYj/GwjTl2ulFZPSaJi6u5Q3ZJuFxEeaufdbHkOFI4BNroBJuR
+	 NUZXB1d1LGSuk3BIQBqbUplj2jlfBVoJ6OG5eiAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Foster Snowhill <forst@pen.gy>,
-	Georgi Valkov <gvalkov@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 268/375] usbnet: ipheth: race between ipheth_close and error handling
-Date: Tue, 10 Sep 2024 11:31:05 +0200
-Message-ID: <20240910092631.558608549@linuxfoundation.org>
+Subject: [PATCH 6.10 269/375] Squashfs: sanity check symbolic link size
+Date: Tue, 10 Sep 2024 11:31:06 +0200
+Message-ID: <20240910092631.598987701@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -68,42 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
+[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
 
-ipheth_sndbulk_callback() can submit carrier_work
-as a part of its error handling. That means that
-the driver must make sure that the work is cancelled
-after it has made sure that no more URB can terminate
-with an error condition.
+Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
 
-Hence the order of actions in ipheth_close() needs
-to be inverted.
+This is caused by an uninitialised page, which is ultimately caused
+by a corrupted symbolic link size read from disk.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Tested-by: Georgi Valkov <gvalkov@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The reason why the corrupted symlink size causes an uninitialised
+page is due to the following sequence of events:
+
+1. squashfs_read_inode() is called to read the symbolic
+   link from disk.  This assigns the corrupted value
+   3875536935 to inode->i_size.
+
+2. Later squashfs_symlink_read_folio() is called, which assigns
+   this corrupted value to the length variable, which being a
+   signed int, overflows producing a negative number.
+
+3. The following loop that fills in the page contents checks that
+   the copied bytes is less than length, which being negative means
+   the loop is skipped, producing an uninitialised page.
+
+This patch adds a sanity check which checks that the symbolic
+link size is not larger than expected.
+
+--
+
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
+V2: fix spelling mistake.
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ipheth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/squashfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 687d70cfc556..6eeef10edada 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -475,8 +475,8 @@ static int ipheth_close(struct net_device *net)
- {
- 	struct ipheth_device *dev = netdev_priv(net);
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index 16bd693d0b3a..d5918eba27e3 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -279,8 +279,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
--	cancel_delayed_work_sync(&dev->carrier_work);
- 	netif_stop_queue(net);
-+	cancel_delayed_work_sync(&dev->carrier_work);
- 	return 0;
- }
- 
+-		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
++		if (inode->i_size > PAGE_SIZE) {
++			ERROR("Corrupted symlink\n");
++			return -EINVAL;
++		}
++
++		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_symlink_inode_ops;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &squashfs_symlink_aops;
 -- 
 2.43.0
 
