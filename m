@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-75440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B123097348F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CB797319F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73BE628E1B5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F0A11C25612
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F5717C220;
-	Tue, 10 Sep 2024 10:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFF8198842;
+	Tue, 10 Sep 2024 10:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQ75daRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJeEltvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59DE1552FD;
-	Tue, 10 Sep 2024 10:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C82197556;
+	Tue, 10 Sep 2024 10:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964738; cv=none; b=dqn6dpVs8TwTdBL1VSPPttVq8x61OmLWg5ko8+Q6R2yzAvMeA3jHEk9cncKh0egzvqMLi3FjOeD2W/RMU0NXUWTutZSu6tuNTMuZSp8dTsZHHmWWxZurfbJ97FJDf/UuF0pyjT0ZezLTfc6qsY9oDth2xWEF+uUoDJtMxzRo9Y0=
+	t=1725962952; cv=none; b=cehrQvFLXqDXY1Eg5LHNVT4ZSEAUhPe50CWiXr/SBPs3no+huBg/UDUDaGMR0rY+fmaXgVmBkMgiqLOObHtZOUyJcWEJuAeXW4d1ASgzZQEqEWUGQubjnmt+gZSiERvF7dW3yr5OXPaVkJEJCc+6m1/4I1QwjU85sUcw4gf38ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964738; c=relaxed/simple;
-	bh=bc17jKE/oGeS66HC45WE9kx2mtN2UEwpAjVHpY/aSis=;
+	s=arc-20240116; t=1725962952; c=relaxed/simple;
+	bh=njQjSleoxhCzJ4VBasWhVvqI5xlHSqeG7wEE5kyrTME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5Cn7ly8zV0LwSaDoV3EvoEQgBCZ32RPHZ1a/MZgUXcZRl3APfRvXEHRWYc+0/aWOU7o9b8+lwM8i7nvShlSELDc6Ty+kdyKGMvuLB5y4jlLdS4qk21RzUtVYqGajgG3yJ8jQxJjwZJJsfxGuWvml8AFo8Fjg+vTHyctMqEaoTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQ75daRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCF3C4CEC3;
-	Tue, 10 Sep 2024 10:38:58 +0000 (UTC)
+	 MIME-Version; b=HiVp5emiaLE8hHP0SwNdOvzhrcZnzlWNn5Zof1BiMhN8wb5HDYujI+LsqaKFtIv5J78V+ZrJ+4b+Y7Ri+S+75u2wambMB+IFTeh0FtT/uXyXsAW4A9ECBnPVKK1dlBxxLLMR8KaHbW2AFx1pwVyj2j3KZ7kvvyvo+HsoRLPpdxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJeEltvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817A1C4CEC3;
+	Tue, 10 Sep 2024 10:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964738;
-	bh=bc17jKE/oGeS66HC45WE9kx2mtN2UEwpAjVHpY/aSis=;
+	s=korg; t=1725962951;
+	bh=njQjSleoxhCzJ4VBasWhVvqI5xlHSqeG7wEE5kyrTME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQ75daRB9Ig2aD8i27TqA4+lg53XZmBh/bLdWNLehkjglP/B1fjiiAArKZrzSRu9K
-	 0dB+/+3HllwKHXS7iQaXP40bkwO/dpKCQmgLpGKK/05ZYpk9DTy2VAbm88KQ778S1x
-	 ElASQURROFjFozgh6XlYZ9bJ9BRe82Z+qWgbSfvs=
+	b=RJeEltvyBx1REDFuwg2aF38bQOZs6AEYick6T7eTJtsb8xz/zWWAr0B2SNTZjir9L
+	 4xK+CkNUVY2+fi3acOvNxqMITZdw0jtOGtRW/NZkLORecI6F0cxO9mZWAkUaoeOLGO
+	 qeYRLd592XY3CppUMXLzsVk8haZbCfhU8vTAXPpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonas Gorski <jonas.gorski@bisdn.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/186] drm/amd/display: Check gpio_id before used as array index
+Subject: [PATCH 6.1 086/192] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
 Date: Tue, 10 Sep 2024 11:31:50 +0200
-Message-ID: <20240910092555.271052253@linuxfoundation.org>
+Message-ID: <20240910092601.531120832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jonas Gorski <jonas.gorski@bisdn.de>
 
-[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
+[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
 
-[WHY & HOW]
-GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
-should be checked in advance.
+When userspace wants to take over a fdb entry by setting it as
+EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
+BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
 
-This fixes 5 OVERRUN issues reported by Coverity.
+If the bridge updates the entry later because its port changed, we clear
+the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
+flag set.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+If userspace then wants to take over the entry again,
+br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
+setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
+update.
+
+Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
+if this was a user fdb entry or not.
+
+Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
+Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/bridge/br_fdb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index dae8e489c8cf..a7c92c64490c 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -241,6 +241,9 @@ static bool is_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return false;
-+
- 	return service->busyness[id][en];
- }
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index e7f4fccb6adb..882b6a67e11f 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -1388,12 +1388,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			modified = true;
+ 		}
  
-@@ -249,6 +252,9 @@ static void set_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = true;
- }
+-		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
++		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+-			/* Take over SW learned entry */
+-			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
++		} else {
+ 			modified = true;
+ 		}
  
-@@ -257,6 +263,9 @@ static void set_pin_free(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = false;
- }
- 
-@@ -265,7 +274,7 @@ enum gpio_result dal_gpio_service_lock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
-@@ -279,7 +288,7 @@ enum gpio_result dal_gpio_service_unlock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
 -- 
 2.43.0
 
