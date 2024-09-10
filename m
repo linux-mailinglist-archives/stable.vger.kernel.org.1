@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-75004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA280973284
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1BA973188
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0851C242F2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9990D28A7C9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3612E19343B;
-	Tue, 10 Sep 2024 10:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B4D192D9D;
+	Tue, 10 Sep 2024 10:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNeQa0nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLqHMtLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E767814D431;
-	Tue, 10 Sep 2024 10:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF07919308E;
+	Tue, 10 Sep 2024 10:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963468; cv=none; b=ZA2kKxXOlkYhqCjUORI8wM3pAJFArEyiWO29m2Y/oDB3z9dDaZWovnuPW0VJyM+Fo/JNNBVZ6ZUqRUywSM7Sr1AQwkgekgvo4mzuIW7QzY5pqDXHWMoCbMI5RVniJn75t9Zjse3+L9l9jLRtRtEoj4/FZzy/C7lfmGwez4uHofU=
+	t=1725962896; cv=none; b=VYgLf/mvYsOu1/y97R6SvF56CazAGmknb8HW9Bo56Ecx5b/MUy833kPVk7Of/lYQGR6XydsxGwaoD0DUID3IoKtfV3C3X6JXjstQudkyVqJBexQHpeFjqPBm29e5XrvP7YsE1HLy2FNCLOsCizQ7CqFLOcL5h9XdDPXilxiDBB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963468; c=relaxed/simple;
-	bh=T3egVNj0GnVN3z4hze2XhPcDi1jsZYhPUGpYEdHRzyk=;
+	s=arc-20240116; t=1725962896; c=relaxed/simple;
+	bh=hHEYz3eJFDuXIWGm/n/EaFNJUhdQH2VTC2XCM0kcs5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyM3jLeDkdFsZW+8b9yP05zRBmDl7HCw5KZ4m3jRRus7Le0IzlSJXjoR5DoMvF0pplr5C8F01J92bjgALktc5eawmYPPTBVjAhVat0gFo2zE656P+AKvQbkGy7GEaG1kN/5c58dtf2jfyPxplMY9x73bhE9ZnOXji8MW/hSOobo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNeQa0nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B668C4CEC3;
-	Tue, 10 Sep 2024 10:17:47 +0000 (UTC)
+	 MIME-Version; b=a1hMFprU9qg6F0UD3eMgQLKir4RQ9RgJPp4cd5ANnw7CPMwmqoUoAdMkQTOY3FGvJI0ovlM97zc+HO1KoZg3SqTLN5F9Q6TJfylkMc6GKlbFbetPKq0zZ5Tiq6tQ2XFlC2FRu7tKcOyqpqzheNj5mDz2u46nvxklqwM5fNoZt0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLqHMtLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728E5C4CEC3;
+	Tue, 10 Sep 2024 10:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963467;
-	bh=T3egVNj0GnVN3z4hze2XhPcDi1jsZYhPUGpYEdHRzyk=;
+	s=korg; t=1725962895;
+	bh=hHEYz3eJFDuXIWGm/n/EaFNJUhdQH2VTC2XCM0kcs5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNeQa0nhp9/4f6hVUWZeDZxZNal3NfwD7VTsucZgtpR9yKmnVmfYwKOmrv1XgGUOU
-	 JpXhiSku/U176Tw9viIVXcIfsZYXPAi1rlU55jZjOm2yMseBFRUH3JtjJKQJGgPdS7
-	 OxwKb3TU27JjyXOlhPLGiE0UcqN9AKGxj8iG5Ea8=
+	b=kLqHMtLp9zth3Cd1x28t49peaKTNlqgFCk2JjBPJDYqCGcl13I3OLXvLUYvr0VgC2
+	 CDkA6c3griKNf/sPRlr//+8HHS+kaVrz6IcUPvTGm7JC2wWSIA7CYhIz8RYAnTPkNU
+	 1nnfMotci1wxKj7J4OcOJXr4B9c1ygmYRY9weQy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilien Perreault <maximilienperreault@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 068/214] ALSA: hda/realtek: Support mute LED on HP Laptop 14-dq2xxx
+	Harry Wentland <harry.wentland@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 066/192] drm/amd/display: Check denominator pbn_div before used
 Date: Tue, 10 Sep 2024 11:31:30 +0200
-Message-ID: <20240910092601.527250762@linuxfoundation.org>
+Message-ID: <20240910092600.719870874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilien Perreault <maximilienperreault@gmail.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 47a9e8dbb8d4713a9aac7cc6ce3c82dcc94217d8 upstream.
+[ Upstream commit 116a678f3a9abc24f5c9d2525b7393d18d9eb58e ]
 
-The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
+[WHAT & HOW]
+A denominator cannot be 0, and is checked before used.
 
-Signed-off-by: Maximilien Perreault <maximilienperreault@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240904031013.21220-1-maximilienperreault@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes 1 DIVIDE_BY_ZERO issue reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9177,6 +9177,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fd, "HP Laptop 14-dq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 0be1a1149a3f..393e32259a77 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6767,7 +6767,7 @@ static int dm_update_mst_vcpi_slots_for_dsc(struct drm_atomic_state *state,
+ 			}
+ 		}
+ 
+-		if (j == dc_state->stream_count)
++		if (j == dc_state->stream_count || pbn_div == 0)
+ 			continue;
+ 
+ 		slot_num = DIV_ROUND_UP(pbn, pbn_div);
+-- 
+2.43.0
+
 
 
 
