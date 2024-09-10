@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4073997313D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA539734E8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62A85B2848F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1991C25057
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36B4192B74;
-	Tue, 10 Sep 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A857518EFEE;
+	Tue, 10 Sep 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjv/Y84v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5EPZ5pN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D54192581;
-	Tue, 10 Sep 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2218DF88;
+	Tue, 10 Sep 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962699; cv=none; b=Hs22GLaL+gpeenLIhKFpT97CarxyjMkEsJiwBGBGXxiE08bFUQFS7ZSSQRw4VcKNeTWuZrKeKiRxHhZsk6AM02Vl60pl8zqNYDKBdl5OaqGRRD3Ug5soXn4r0H1VfcEjj4RuKUarj6fRUMKzxAX6FiQbw58l1D0fGERDwP8843U=
+	t=1725964916; cv=none; b=FT90YGp/KgfJEzuv40zOj/9ReGX+PX8u2AxCH+MS13N1P7HjqZzP39rkMXebJ9ReOlVRkNdGVgh39x8pXtN0jb9aJIdgTIWv/BHbIqza3YD2Gc7sEcdzlqj3hEauKGDDaGJSwG5srFUY7Txj7tf3OsqAW284nVHGyCquk+Eb+qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962699; c=relaxed/simple;
-	bh=tAPfoqS4TtI5qJjxu/6jrIfOZzIvcfKjxWD5mx/T//M=;
+	s=arc-20240116; t=1725964916; c=relaxed/simple;
+	bh=b/fNIPAxikXA0ebjbvSLJteOPew2QLkIVsROXcTvqo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOvEp9uujZkde0FuwrMYQaHjfkGiaWDCzhyPkT5BIAKkCbPS+oIfXPF7V2WTXlYF812duaBFzYaUpw1RyeP6GcGMGBE4uI05KE0UjGAyijUCvFiES0/BdytXTehdFHX1TINJitplX1ILTt1IBnIlj/83KdXeJQGR2Y0N0sjTHdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjv/Y84v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCEC4CEC3;
-	Tue, 10 Sep 2024 10:04:58 +0000 (UTC)
+	 MIME-Version; b=D5PovPz77FwguzxCRlG+AVFpMyvtcGwZB4emD2Y9pwgXRA+97Qh1C8ci3GaM10Qo38U68f9OyTgjH5R2FvCpj4l3zxH++jkelP51ooXN19J0QyHrHTNcctnvr1RpNUtcCwbJwg/5bS/7I5lV0gRABjIgQIkJJsnusqM270k0Tzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5EPZ5pN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A05C4CEC3;
+	Tue, 10 Sep 2024 10:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962699;
-	bh=tAPfoqS4TtI5qJjxu/6jrIfOZzIvcfKjxWD5mx/T//M=;
+	s=korg; t=1725964916;
+	bh=b/fNIPAxikXA0ebjbvSLJteOPew2QLkIVsROXcTvqo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjv/Y84v3lLnYJCKZ8xw5dVTuZVlY08dYZbpVu2qvzSl3wl6yj3yLiTytD2CXKZJ5
-	 nhH2BYQ+XqlM4DMr+jpFJUvzKYzH2jEKTpnKFae6ZRTfXKgQw0RfKwMq1ZBlPzk4xJ
-	 8lzkHMoFdHKOm9Fo/PPHIqNhvSDiNmAlvynB3cGw=
+	b=U5EPZ5pNa4RMfmZpO0NqVZ2dlUYQQFhNMh0LjuOqpc2ZUQfmYaB74971oOwOWMuGf
+	 GcoMv9dSQnSCr/dru/irnEnP8MmxB0G6BIO/GABSZ4m2l1j76yGoPEphkcs6t91KsF
+	 y88K4mxb1sZWEFUh35GL8UCq8YNSLhzo1aDwCtMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/121] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
-Date: Tue, 10 Sep 2024 11:32:49 +0200
-Message-ID: <20240910092550.312265443@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.10 075/186] btrfs: fix use-after-free after failure to create a snapshot
+Date: Tue, 10 Sep 2024 11:32:50 +0200
+Message-ID: <20240910092557.617472969@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
+commit 28b21c558a3753171097193b6f6602a94169093a upstream.
 
-We're seeing reports of soft lockups when iterating through the loops,
-so let's add rescheduling points.
+At ioctl.c:create_snapshot(), we allocate a pending snapshot structure and
+then attach it to the transaction's list of pending snapshots. After that
+we call btrfs_commit_transaction(), and if that returns an error we jump
+to 'fail' label, where we kfree() the pending snapshot structure. This can
+result in a later use-after-free of the pending snapshot:
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) We allocated the pending snapshot and added it to the transaction's
+   list of pending snapshots;
+
+2) We call btrfs_commit_transaction(), and it fails either at the first
+   call to btrfs_run_delayed_refs() or btrfs_start_dirty_block_groups().
+   In both cases, we don't abort the transaction and we release our
+   transaction handle. We jump to the 'fail' label and free the pending
+   snapshot structure. We return with the pending snapshot still in the
+   transaction's list;
+
+3) Another task commits the transaction. This time there's no error at
+   all, and then during the transaction commit it accesses a pointer
+   to the pending snapshot structure that the snapshot creation task
+   has already freed, resulting in a user-after-free.
+
+This issue could actually be detected by smatch, which produced the
+following warning:
+
+  fs/btrfs/ioctl.c:843 create_snapshot() warn: '&pending_snapshot->list' not removed from list
+
+So fix this by not having the snapshot creation ioctl directly add the
+pending snapshot to the transaction's list. Instead add the pending
+snapshot to the transaction handle, and then at btrfs_commit_transaction()
+we add the snapshot to the list only when we can guarantee that any error
+returned after that point will result in a transaction abort, in which
+case the ioctl code can safely free the pending snapshot and no one can
+access it anymore.
+
+CC: stable@vger.kernel.org # 5.10+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/ioctl.c       |    5 +----
+ fs/btrfs/transaction.c |   24 ++++++++++++++++++++++++
+ fs/btrfs/transaction.h |    2 ++
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index c7ca8cdc8801..98fbd2c5d7b7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -47,6 +47,7 @@
- #include <linux/vfs.h>
- #include <linux/inet.h>
- #include <linux/in6.h>
-+#include <linux/sched.h>
- #include <linux/slab.h>
- #include <net/ipv6.h>
- #include <linux/netdevice.h>
-@@ -454,6 +455,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
- 		ret = fn(server, data);
- 		if (ret)
- 			goto out;
-+		cond_resched();
- 		rcu_read_lock();
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -853,10 +853,7 @@ static int create_snapshot(struct btrfs_
+ 		goto fail;
  	}
- 	rcu_read_unlock();
--- 
-2.43.0
-
+ 
+-	spin_lock(&fs_info->trans_lock);
+-	list_add(&pending_snapshot->list,
+-		 &trans->transaction->pending_snapshots);
+-	spin_unlock(&fs_info->trans_lock);
++	trans->pending_snapshot = pending_snapshot;
+ 
+ 	ret = btrfs_commit_transaction(trans);
+ 	if (ret)
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -2075,6 +2075,27 @@ static inline void btrfs_wait_delalloc_f
+ 	}
+ }
+ 
++/*
++ * Add a pending snapshot associated with the given transaction handle to the
++ * respective handle. This must be called after the transaction commit started
++ * and while holding fs_info->trans_lock.
++ * This serves to guarantee a caller of btrfs_commit_transaction() that it can
++ * safely free the pending snapshot pointer in case btrfs_commit_transaction()
++ * returns an error.
++ */
++static void add_pending_snapshot(struct btrfs_trans_handle *trans)
++{
++	struct btrfs_transaction *cur_trans = trans->transaction;
++
++	if (!trans->pending_snapshot)
++		return;
++
++	lockdep_assert_held(&trans->fs_info->trans_lock);
++	ASSERT(cur_trans->state >= TRANS_STATE_COMMIT_START);
++
++	list_add(&trans->pending_snapshot->list, &cur_trans->pending_snapshots);
++}
++
+ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
+ {
+ 	struct btrfs_fs_info *fs_info = trans->fs_info;
+@@ -2161,6 +2182,8 @@ int btrfs_commit_transaction(struct btrf
+ 
+ 	spin_lock(&fs_info->trans_lock);
+ 	if (cur_trans->state >= TRANS_STATE_COMMIT_START) {
++		add_pending_snapshot(trans);
++
+ 		spin_unlock(&fs_info->trans_lock);
+ 		refcount_inc(&cur_trans->use_count);
+ 		ret = btrfs_end_transaction(trans);
+@@ -2243,6 +2266,7 @@ int btrfs_commit_transaction(struct btrf
+ 	 * COMMIT_DOING so make sure to wait for num_writers to == 1 again.
+ 	 */
+ 	spin_lock(&fs_info->trans_lock);
++	add_pending_snapshot(trans);
+ 	cur_trans->state = TRANS_STATE_COMMIT_DOING;
+ 	spin_unlock(&fs_info->trans_lock);
+ 	wait_event(cur_trans->writer_wait,
+--- a/fs/btrfs/transaction.h
++++ b/fs/btrfs/transaction.h
+@@ -122,6 +122,8 @@ struct btrfs_trans_handle {
+ 	struct btrfs_transaction *transaction;
+ 	struct btrfs_block_rsv *block_rsv;
+ 	struct btrfs_block_rsv *orig_rsv;
++	/* Set by a task that wants to create a snapshot. */
++	struct btrfs_pending_snapshot *pending_snapshot;
+ 	refcount_t use_count;
+ 	unsigned int type;
+ 	/*
 
 
 
