@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-75491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80C79734E1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCC69734A6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F5431F25EFF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94959B2EBD1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB1918C913;
-	Tue, 10 Sep 2024 10:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00801192B9F;
+	Tue, 10 Sep 2024 10:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T26MIJIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiRAu9bA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFCA2AF15;
-	Tue, 10 Sep 2024 10:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B285D18F2F0;
+	Tue, 10 Sep 2024 10:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964889; cv=none; b=KotRKsvKnjeAup+2R1bYPSuf3XvWZ4tp8UzyrwVbMhY0c3gn1vKcUAFvaXsQo/TQswTaD5+Y2R7wKOMvmC1euPyAyj4gEI2mq+x4G2hfvqWcrMt7e3noVyrn++mxXuGq+djbsfW7Hmq3TikejyxN+pNVosGcaUGjmrAkuoJQF7o=
+	t=1725964437; cv=none; b=MwYHvpaYlQ7EUu5BT3HAe6cgsbMxE+WYnPxcBd7O/oac/IdbpfvQXIMCltpPjovU4/NH8gQSsaFLDvQEQYxMDY2Hzzz+Y0C1OoJRw0zpuHw4cUprZqkH8C1oB7XGH73HcpvwKa6T1TtGJN0Wnn79nGfq+9GT9lmevzUiBWnm8aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964889; c=relaxed/simple;
-	bh=eFnGCDAFaDj8H2r2W7Jaq7uRrLzEKAhmyD6wU+SwsKw=;
+	s=arc-20240116; t=1725964437; c=relaxed/simple;
+	bh=gv0GPmvj4ihvxuC9LcUz7EqD/PEtpChGEh4Ba/4MTow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqkeAbKJ0QqUkuFhtAzxwP92J2FoMyMaHdrf2L/lX8/+lOrAu6LYsFyKVFWEB2rxy2YOwyerMTiLn3VdJLA6mqC7MSoGR0u/G87O2Avb/ikwjmHrG3x6m9aU4yfJYXizbhcESSUoAcB9cb5yhvQQkIIz2eNbUja929mV4nGlpy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T26MIJIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE50C4CEC3;
-	Tue, 10 Sep 2024 10:41:28 +0000 (UTC)
+	 MIME-Version; b=G6pKuDukpyj4B3pOqk0WPaRtTJNYzjfH/cEvkQmZISxxIq3AoZcWfMRvziofFzNLCEPNeP8OzbHJMwIxUHi0WBhRhGD8oDnio4SzxvnI6h3phxi12xM5e/Y0hhX1GGR74NfIKD1OBimnsh2+Bt5sCEJS2+VF9uyn8gRsKSpM9ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiRAu9bA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AE1C4CEC3;
+	Tue, 10 Sep 2024 10:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964889;
-	bh=eFnGCDAFaDj8H2r2W7Jaq7uRrLzEKAhmyD6wU+SwsKw=;
+	s=korg; t=1725964437;
+	bh=gv0GPmvj4ihvxuC9LcUz7EqD/PEtpChGEh4Ba/4MTow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T26MIJIJnPxV9VNycfEgM76iL0nVsEr0PSPFEhm6Y10FLv4age33HSKUZHdUVSr1X
-	 Wjq3z6Q2L7kyQFdHHMPX8eDtEYV3IPcXBdoeswfHLNlBi3MwvOuboLbqU16lEN4Ku9
-	 yGtOrB2SoaFvPoljV89wmuddwvhiIDPcDFxgziuA=
+	b=iiRAu9bAbM7uD7cS/J8Y1QlucmWQ7H8y4ZJwocqiWYrEznKrRjB9YHa0dLOUB09cz
+	 b/NuSqqI6YGe873iopvkeG449wph0M0xyhCNOqrQgs/WzDMtt+9c6nAZkr012b7VYN
+	 rd9BCwHMVTZMPGzo69i2nxhhnp4RFO01ydQhzDZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Krishna Kumar <krishnak@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/186] smack: tcp: ipv4, fix incorrect labeling
+Subject: [PATCH 6.6 146/269] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
 Date: Tue, 10 Sep 2024 11:32:13 +0200
-Message-ID: <20240910092556.112509909@linuxfoundation.org>
+Message-ID: <20240910092613.420265593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Schaufler <casey@schaufler-ca.com>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
-when a label 'foo' connects to a label 'bar' with tcp/ipv4,
-'foo' always gets 'foo' in returned ipv4 packets. So,
-1) returned packets are incorrectly labeled ('foo' instead of 'bar')
-2) 'bar' can write to 'foo' without being authorized to write.
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-Here is a scenario how to see this:
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
 
-* Take two machines, let's call them C and S,
-   with active Smack in the default state
-   (no settings, no rules, no labeled hosts, only builtin labels)
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
 
-* At S, add Smack rule 'foo bar w'
-   (labels 'foo' and 'bar' are instantiated at S at this moment)
-
-* At S, at label 'bar', launch a program
-   that listens for incoming tcp/ipv4 connections
-
-* From C, at label 'foo', connect to the listener at S.
-   (label 'foo' is instantiated at C at this moment)
-   Connection succeedes and works.
-
-* Send some data in both directions.
-* Collect network traffic of this connection.
-
-All packets in both directions are labeled with the CIPSO
-of the label 'foo'. Hence, label 'bar' writes to 'foo' without
-being authorized, and even without ever being known at C.
-
-If anybody cares: exactly the same happens with DCCP.
-
-This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
-and it looks unintentional. At least, no explanation was provided.
-
-I changed returned packes label into the 'bar',
-to bring it into line with the Smack documentation claims.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 8c790563b33a..88bcda1f07bf 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4228,7 +4228,7 @@ static int smack_inet_conn_request(struct sock *sk, struct sk_buff *skb,
- 	rcu_read_unlock();
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 881d420637bf..092c9ac0d26d 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -39,7 +39,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
+ {
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
- 	if (hskp == NULL)
--		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
-+		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
- 	else
- 		netlbl_req_delattr(req);
+ 	if (php_slot->irq > 0) {
+@@ -58,7 +57,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
  
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
 -- 
 2.43.0
 
