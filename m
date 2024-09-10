@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4675A972DFF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E857973085
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53B51F264E5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF45C28723E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F3B188CB3;
-	Tue, 10 Sep 2024 09:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC42190054;
+	Tue, 10 Sep 2024 10:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaWavkcV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK0dZQuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6530E18B481;
-	Tue, 10 Sep 2024 09:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B918B491;
+	Tue, 10 Sep 2024 10:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961098; cv=none; b=fYqutUaI4ACW3GYmnWa5TqGYZyFe1lp26Me29yhaRvkengcRgALLkYrHDQhESrEwDe0hEBnrMTtBRQDCXdHkg27DduZIzR8DP3OQugwb/MoGFseAaduZf2FXJoz9LeUdah+g9NadEfwHm+n3gzwAReZSMXwgCR/4UnVzPLC3dro=
+	t=1725962454; cv=none; b=sM66k0pPYCOmlpkv5lDAZ4ju9DoqVCP0xqKZBxUlXP2IGYoHvmevVcFemtX/zyGJ9C2JrmzkutNuJGKW6FpD12YBdVUJ5jvyy7m5CC2GqW36xvMS9jAOV0FOEhEqtEh+EZY53EjGIeIiEWyuLIASYx9VqaZv0bN7Y4DVOkVsGeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961098; c=relaxed/simple;
-	bh=8Uj8lWpVvhTX33w5GJT1qTpMn1UYleJMzpa6qeSFPPk=;
+	s=arc-20240116; t=1725962454; c=relaxed/simple;
+	bh=JTYc2G7kKHukB39j/Om0IDhzKwge1eJGEp8siIprKeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBif1a8LhIudL37OzsMsndXYOjEo8hIYNpAqVSoladvsdCmyLI1bshDKjMFPbsUOEDlgBktGudbSlRwbBtHnlgO9FosTeVaj345JIAiRAuH2dcpnhixVW9AZ+UkKetjSoE9YyDn1TM/D1LUKrjfxCkoji7vc3miLtKUir00NOU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaWavkcV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A68BC4CECE;
-	Tue, 10 Sep 2024 09:38:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mQNghCZGywRaLaXUxiYVnpAYQVh1AIEoBgwQW/TqQ7ciDxV6Ox8oDOwAUJlfAAWIPJXTAtw46jPUlCmAVqYGVJs1eUJROfzVlA8VKpJG2SYcmzE5RoeWU9+lzYoEMqsblhRmupUNNBKKYbnpG3DkvVH20R/8qtcrhnMGIEmAOgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK0dZQuH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24CCC4CEC3;
+	Tue, 10 Sep 2024 10:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961098;
-	bh=8Uj8lWpVvhTX33w5GJT1qTpMn1UYleJMzpa6qeSFPPk=;
+	s=korg; t=1725962454;
+	bh=JTYc2G7kKHukB39j/Om0IDhzKwge1eJGEp8siIprKeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaWavkcVbxruxqh8PL0QOIp6u0KKIobxpJi13lnMIJ5prIiXuOHiLWkIznoAtLr6Z
-	 fBkFuvJkTPuxDyBdh10SwkZKKs6lHa9/Ujl7CAezHyL6jTu0OVN2sGg/zcQJuwaE//
-	 MIpX1huLJQioVmFpl+iDtYOBh5Qf6s2IG6UrpLkk=
+	b=PK0dZQuH2zqJsjnay2MZy8rv+HKYvZb0MMpGKlMV+bsgpJotUDqAe3NmkGdatV6TF
+	 ALockNF1+s+h+PuXg6xHAioBVmkAE51kTYemGlmCWjqGxPL8TfE7QF4OTqBN8JGZGm
+	 ZiUTCD3RguJuqCDf1a5ECo+sPamvA8RqEd1Kcovc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 52/96] iommu/vt-d: Handle volatile descriptor status read
-Date: Tue, 10 Sep 2024 11:31:54 +0200
-Message-ID: <20240910092543.814634764@linuxfoundation.org>
+	syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.4 040/121] sched: sch_cake: fix bulk flow accounting logic for host fairness
+Date: Tue, 10 Sep 2024 11:31:55 +0200
+Message-ID: <20240910092547.639908493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
+commit 546ea84d07e3e324644025e2aae2d12ea4c5896e upstream.
 
-Queued invalidation wait descriptor status is volatile in that IOMMU
-hardware writes the data upon completion.
+In sch_cake, we keep track of the count of active bulk flows per host,
+when running in dst/src host fairness mode, which is used as the
+round-robin weight when iterating through flows. The count of active
+bulk flows is updated whenever a flow changes state.
 
-Use READ_ONCE() to prevent compiler optimizations which ensures memory
-reads every time. As a side effect, READ_ONCE() also enforces strict
-types and may add an extra instruction. But it should not have negative
-performance impact since we use cpu_relax anyway and the extra time(by
-adding an instruction) may allow IOMMU HW request cacheline ownership
-easier.
+This has a peculiar interaction with the hash collision handling: when a
+hash collision occurs (after the set-associative hashing), the state of
+the hash bucket is simply updated to match the new packet that collided,
+and if host fairness is enabled, that also means assigning new per-host
+state to the flow. For this reason, the bulk flow counters of the
+host(s) assigned to the flow are decremented, before new state is
+assigned (and the counters, which may not belong to the same host
+anymore, are incremented again).
 
-e.g. gcc 12.3
-BEFORE:
-	81 38 ad de 00 00       cmpl   $0x2,(%rax)
+Back when this code was introduced, the host fairness mode was always
+enabled, so the decrement was unconditional. When the configuration
+flags were introduced the *increment* was made conditional, but
+the *decrement* was not. Which of course can lead to a spurious
+decrement (and associated wrap-around to U16_MAX).
 
-AFTER (with READ_ONCE())
-    772f:       8b 00                   mov    (%rax),%eax
-    7731:       3d ad de 00 00          cmp    $0x2,%eax
-                                        //status data is 32 bit
+AFAICT, when host fairness is disabled, the decrement and wrap-around
+happens as soon as a hash collision occurs (which is not that common in
+itself, due to the set-associative hashing). However, in most cases this
+is harmless, as the value is only used when host fairness mode is
+enabled. So in order to trigger an array overflow, sch_cake has to first
+be configured with host fairness disabled, and while running in this
+mode, a hash collision has to occur to cause the overflow. Then, the
+qdisc has to be reconfigured to enable host fairness, which leads to the
+array out-of-bounds because the wrapped-around value is retained and
+used as an array index. It seems that syzbot managed to trigger this,
+which is quite impressive in its own right.
 
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by introducing the same conditional check on
+decrement as is used on increment.
+
+The original bug predates the upstreaming of cake, but the commit listed
+in the Fixes tag touched that code, meaning that this patch won't apply
+before that.
+
+Fixes: 712639929912 ("sch_cake: Make the dual modes fairer")
+Reported-by: syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20240903160846.20909-1-toke@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/dmar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_cake.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iommu/dmar.c b/drivers/iommu/dmar.c
-index 3ea851583724..865847546f8e 100644
---- a/drivers/iommu/dmar.c
-+++ b/drivers/iommu/dmar.c
-@@ -1292,7 +1292,7 @@ int qi_submit_sync(struct qi_desc *desc, struct intel_iommu *iommu)
- 	 */
- 	writel(qi->free_head << DMAR_IQ_SHIFT, iommu->reg + DMAR_IQT_REG);
- 
--	while (qi->desc_status[wait_index] != QI_DONE) {
-+	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
- 		/*
- 		 * We will leave the interrupts disabled, to prevent interrupt
- 		 * context to queue another cmd while a cmd is already submitted
--- 
-2.43.0
-
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -749,12 +749,15 @@ skip_hash:
+ 		 * queue, accept the collision, update the host tags.
+ 		 */
+ 		q->way_collisions++;
+-		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
+-			q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
+-			q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
+-		}
+ 		allocate_src = cake_dsrc(flow_mode);
+ 		allocate_dst = cake_ddst(flow_mode);
++
++		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
++			if (allocate_src)
++				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
++			if (allocate_dst)
++				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
++		}
+ found:
+ 		/* reserve queue for future packets in same flow */
+ 		reduced_hash = outer_hash + k;
 
 
 
