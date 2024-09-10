@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-74804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55477973181
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1279733A2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883A71C23FBE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1177285ABC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E2A19343E;
-	Tue, 10 Sep 2024 10:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5295E194A7C;
+	Tue, 10 Sep 2024 10:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT2SlomR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lu2Kysbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1FE190664;
-	Tue, 10 Sep 2024 10:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C4F194A42;
+	Tue, 10 Sep 2024 10:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962878; cv=none; b=pYd1kfFstei+bmOLgOmfiDxjtfHB3r6fwSIvJN9U/j75uNc1Qh34fDEgLgSjNWFHliBqZT3943SmUhmSv/05WMzyUP/HmAUgS18l6SngJIpApGS3JhfF0bixlhPzHA6DHiUQm48jj/z77cLfi1SbYS8d05nPHKToQBUdlqAnB0A=
+	t=1725964191; cv=none; b=YrJrhy0K5rQEv9iZ+pyDUNoEQ3tzuoUFoXHozR4GMAu0XM+H+FORUH7u/aeKBCXQunGrLbiYspNWz7Vr5HAOOaJa01mnH4GNP59RQsqS30nW91wLldcw3Y6TkNEwrpIqbSu4hy2TwwQJVD0QrzXTQPky9E9e+EaHsU/hjNeTTH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962878; c=relaxed/simple;
-	bh=cqXq9y2QOMUcWwW+yl+pu3DGkMHrVXHW4ZDE8i00JBc=;
+	s=arc-20240116; t=1725964191; c=relaxed/simple;
+	bh=pkNvrvXpPdqyW38la7R1NjCbKLnV6MHZCPPm7HlA9nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJ4+HVCyn//1hvwvz0HNo7zDTNoKpmtHEy/HHZdD6ss4Wt3Ss+LnDcQHbpZHtSAZ2azOpv1FZtKFpOmhkvMVmblvtE6/Wwzz6KMEae5dkmoCC7nStMObetQz1e3qIh6vhSnVmQPbq8yKfgzcGYGBXXUANoxnI8IkssJjXlomLRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT2SlomR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3176C4CEC6;
-	Tue, 10 Sep 2024 10:07:57 +0000 (UTC)
+	 MIME-Version; b=dmNzpD3vNUa/ynAHI86J7LeZpUWzW6G7wdB+5WyGR5Cd1/Z3PevaXTR4VK2OSpzGinHXseozyHBufPpHqG3YqPlpTchwVD6qK3FRTXcxaa3S9twZ35MtfXw9EzRMEe3MddjTlECofIg6CvISteYZLFIN0amQ6F1SyAPGsQyAGAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lu2Kysbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A38DC4CEC3;
+	Tue, 10 Sep 2024 10:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962878;
-	bh=cqXq9y2QOMUcWwW+yl+pu3DGkMHrVXHW4ZDE8i00JBc=;
+	s=korg; t=1725964190;
+	bh=pkNvrvXpPdqyW38la7R1NjCbKLnV6MHZCPPm7HlA9nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IT2SlomRSkXmhlbBWg4ayDV/rYT6nQyO0AOT5n4U3RHl7vrmd7qRtTqLkDZdhvnYd
-	 emM6Y491wZI+SnIJz5w0oiMtXsl31q4/KK1BRI7LTDYKJpAPEabwUsYG4PhVmt6Hf0
-	 ttLafDXLdOrSW66g+9sY66qtgNpf1vA4qgJiJwRI=
+	b=lu2Kysbf9hXeeKdUzuqilfyijxtAu6wsUnJfkeeU6Grr7sqfU9/ojbFf2Hhl2benf
+	 yMOY/Yt8hCpxfBiK7WaP+dLAJy8MfmqYks/gnsCTGOcFrknMn4Y8fwXQORpoXDdEJ+
+	 ZNFdV0H770jLIsMzN4TOk/RBiNxHnwTkHdDH8lMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/192] media: vivid: dont set HDMI TX controls if there are no HDMI outputs
-Date: Tue, 10 Sep 2024 11:31:25 +0200
-Message-ID: <20240910092600.504410224@linuxfoundation.org>
+Subject: [PATCH 6.6 099/269] rust: Use awk instead of recent xargs
+Date: Tue, 10 Sep 2024 11:31:26 +0200
+Message-ID: <20240910092611.746516993@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Matthew Maurer <mmaurer@google.com>
 
-[ Upstream commit 17763960b1784578e8fe915304b330922f646209 ]
+[ Upstream commit 45f97e6385cad6d0e48a27ddcd08793bb4d35851 ]
 
-When setting the EDID it would attempt to update two controls
-that are only present if there is an HDMI output configured.
+`awk` is already required by the kernel build, and the `xargs` feature
+used in current Rust detection is not present in all `xargs` (notably,
+toybox based xargs, used in the Android kernel build).
 
-If there isn't any (e.g. when the vivid module is loaded with
-node_types=1), then calling VIDIOC_S_EDID would crash.
-
-Fix this by first checking if outputs are present.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Link: https://lore.kernel.org/r/20230928205045.2375899-1-mmaurer@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: b8673d56935c ("rust: kbuild: fix export of bss symbols")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ rust/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index bff95cb57718..3864df45077d 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -1810,8 +1810,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 		return -EINVAL;
- 	if (edid->blocks == 0) {
- 		dev->edid_blocks = 0;
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		if (dev->num_outputs) {
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		}
- 		phys_addr = CEC_PHYS_ADDR_INVALID;
- 		goto set_phys_addr;
- 	}
-@@ -1835,8 +1837,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 			display_present |=
- 				dev->display_present[i] << j++;
+diff --git a/rust/Makefile b/rust/Makefile
+index e5619f25b55c..7e33ebe8a9f4 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -363,9 +363,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers.c FORCE
+ quiet_cmd_exports = EXPORTS $@
+       cmd_exports = \
+ 	$(NM) -p --defined-only $< \
+-		| grep -E ' (T|R|D) ' | cut -d ' ' -f 3 \
+-		| xargs -Isymbol \
+-		echo 'EXPORT_SYMBOL_RUST_GPL(symbol);' > $@
++		| awk '/ (T|R|D) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
  
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
-+	if (dev->num_outputs) {
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
-+	}
- 
- set_phys_addr:
- 	/* TODO: a proper hotplug detect cycle should be emulated here */
+ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+ 	$(call if_changed,exports)
 -- 
 2.43.0
 
