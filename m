@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-75208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6B6973372
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA85973165
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32701F25557
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E6289CD5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA3118595E;
-	Tue, 10 Sep 2024 10:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF4418595E;
+	Tue, 10 Sep 2024 10:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxVDxNI1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+qjHR2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EFD18DF69;
-	Tue, 10 Sep 2024 10:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3798C18FDB9;
+	Tue, 10 Sep 2024 10:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964064; cv=none; b=OxWIRt7wUmuMnIvReudXeDbW/0axHk+i8k+nGnu5INCKZHWm2+1BMXF6qZbuTpiIPZzvMwB90CwGPTs+sY9ryh64zuUVLOEw8tQIrRqz+SUXx1KcJU1zIIaQIxppCmN3YZpOfsX8WyyWEK14GGQGFzQylk8Fa87RBow/TiJ4H+8=
+	t=1725962805; cv=none; b=kdvPpDmy34jB42YjBIjjEdTC1DQCz3zoKxKhnTPt7A5tMjs+RsfexVZOk5rYSp3JpEedag1RMSJvGAQOe+7xv9RSGt1t+oBX+G2tWOrHe2lUMWS1pLaupnaSpY5wo1FQ7NKrlG9ang+iZcYSzLHVY58gMUdePFqoEv1LIHSdf2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964064; c=relaxed/simple;
-	bh=QIzxKzGyAxqIsxZnu8UVLTfJjUQrYWeE87bA67HzRes=;
+	s=arc-20240116; t=1725962805; c=relaxed/simple;
+	bh=wlYcoFSCPL0vk8R++32aCaap39EiHp1YM/LVa9Fpb0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apnD6flYIizLjlpRTZBvZl1xnRQsTct+lT9AS5rLKw2RWoMXGFFKam75ELuFjWk9sZIQ8a31OIOry2rgiMkZYgZfaCOgGo9sC5VKc1Fc/HMu3pY/XfkLR3Kkf9A+heA8IW2EOM5uw8rzuqM9JRVl7NxSLr3+xRVVcIvUc+iQekw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxVDxNI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3052FC4CEC3;
-	Tue, 10 Sep 2024 10:27:44 +0000 (UTC)
+	 MIME-Version; b=qneRX1xfIfLrM5XZHMIDhnz7DeUVfauFIYxTAd/4La42mGFEbQVSSBu6gCBwc1+dpoL5dk3L/6n66A1kVQEFA+qC/lJpVkTvy5pfeZVw7ns2zDljP3tlamfhVc+16i6vLhSV0xILuAbc5LmeKOwFq+qir5PRaJoFkkrbCMkYh70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+qjHR2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BDBC4CEC6;
+	Tue, 10 Sep 2024 10:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964064;
-	bh=QIzxKzGyAxqIsxZnu8UVLTfJjUQrYWeE87bA67HzRes=;
+	s=korg; t=1725962805;
+	bh=wlYcoFSCPL0vk8R++32aCaap39EiHp1YM/LVa9Fpb0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxVDxNI1NqyddOlOEcdmbUmKmzoFQ+Mf2i2l8YIRSWvBdKfETMRDcbql9IkMRZUZR
-	 J1nwPw8rlSN81u3uH4OSmZ1UdNCjEUv+3i50ZZUXGZyTRPXqCvXnFMG6EKUAMDnse5
-	 759hnvBuUApeZPswmp98VHQVOggzezo+SHxdNOZk=
+	b=G+qjHR2FI1JO97RkVPXTyWJBLj8SMYU+sl1MuApTb5HcSRGrtSNQIMtMauKLE3TQv
+	 zY/m5oYrVFY70Jh7LKDdRl9JMp+TY0EWzoUa0lefx+H7kAozbBv9g4RQQYxGFo0lfA
+	 JO8f4NKIlxyRZfOUjAeEJOQNiQJwiC8v5YkEV5zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tom Herbert <tom@herbertland.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 055/269] ila: call nf_unregister_net_hooks() sooner
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 018/192] Revert "Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE"
 Date: Tue, 10 Sep 2024 11:30:42 +0200
-Message-ID: <20240910092610.189624760@linuxfoundation.org>
+Message-ID: <20240910092558.692826213@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,199 +60,223 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 031ae72825cef43e4650140b800ad58bf7a6a466 upstream.
+commit 532f8bcd1c2c4e8112f62e1922fd1703bc0ffce0 upstream.
 
-syzbot found an use-after-free Read in ila_nf_input [1]
+This reverts commit 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 which
+breaks compatibility with commands like:
 
-Issue here is that ila_xlat_exit_net() frees the rhashtable,
-then call nf_unregister_net_hooks().
+bluetoothd[46328]: @ MGMT Command: Load.. (0x0013) plen 74  {0x0001} [hci0]
+        Keys: 2
+        BR/EDR Address: C0:DC:DA:A5:E5:47 (Samsung Electronics Co.,Ltd)
+        Key type: Authenticated key from P-256 (0x03)
+        Central: 0x00
+        Encryption size: 16
+        Diversifier[2]: 0000
+        Randomizer[8]: 0000000000000000
+        Key[16]: 6ed96089bd9765be2f2c971b0b95f624
+        LE Address: D7:2A:DE:1E:73:A2 (Static)
+        Key type: Unauthenticated key from P-256 (0x02)
+        Central: 0x00
+        Encryption size: 16
+        Diversifier[2]: 0000
+        Randomizer[8]: 0000000000000000
+        Key[16]: 87dd2546ededda380ffcdc0a8faa4597
+@ MGMT Event: Command Status (0x0002) plen 3                {0x0001} [hci0]
+      Load Long Term Keys (0x0013)
+        Status: Invalid Parameters (0x0d)
 
-It should be done in the reverse way, with a synchronize_rcu().
-
-This is a good match for a pre_exit() method.
-
-[1]
- BUG: KASAN: use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
- BUG: KASAN: use-after-free in __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-Read of size 4 at addr ffff888064620008 by task ksoftirqd/0/16
-
-CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.11.0-rc4-syzkaller-00238-g2ad6d23f465a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:93 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
-  __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:132 [inline]
-  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
-  ila_nf_input+0x1fe/0x3c0 net/ipv6/ila/ila_xlat.c:190
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK+0x29e/0x450 include/linux/netfilter.h:312
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1ea/0x650 net/core/dev.c:5775
-  process_backlog+0x662/0x15b0 net/core/dev.c:6108
-  __napi_poll+0xcb/0x490 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0x89b/0x1240 net/core/dev.c:6963
-  handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
-  run_ksoftirqd+0xca/0x130 kernel/softirq.c:928
-  smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x64620
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xbfffffff(buddy)
-raw: 00fff00000000000 ffffea0000959608 ffffea00019d9408 0000000000000000
-raw: 0000000000000000 0000000000000003 00000000bfffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52dc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_ZERO), pid 5242, tgid 5242 (syz-executor), ts 73611328570, free_ts 618981657187
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1493
-  prep_new_page mm/page_alloc.c:1501 [inline]
-  get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3439
-  __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4695
-  __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
-  alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
-  ___kmalloc_large_node+0x8b/0x1d0 mm/slub.c:4103
-  __kmalloc_large_node_noprof+0x1a/0x80 mm/slub.c:4130
-  __do_kmalloc_node mm/slub.c:4146 [inline]
-  __kmalloc_node_noprof+0x2d2/0x440 mm/slub.c:4164
-  __kvmalloc_node_noprof+0x72/0x190 mm/util.c:650
-  bucket_table_alloc lib/rhashtable.c:186 [inline]
-  rhashtable_init_noprof+0x534/0xa60 lib/rhashtable.c:1071
-  ila_xlat_init_net+0xa0/0x110 net/ipv6/ila/ila_xlat.c:613
-  ops_init+0x359/0x610 net/core/net_namespace.c:139
-  setup_net+0x515/0xca0 net/core/net_namespace.c:343
-  copy_net_ns+0x4e2/0x7b0 net/core/net_namespace.c:508
-  create_new_namespaces+0x425/0x7b0 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0x124/0x180 kernel/nsproxy.c:228
-  ksys_unshare+0x619/0xc10 kernel/fork.c:3328
-  __do_sys_unshare kernel/fork.c:3399 [inline]
-  __se_sys_unshare kernel/fork.c:3397 [inline]
-  __x64_sys_unshare+0x38/0x40 kernel/fork.c:3397
-page last free pid 11846 tgid 11846 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1094 [inline]
-  free_unref_page+0xd22/0xea0 mm/page_alloc.c:2612
-  __folio_put+0x2c8/0x440 mm/swap.c:128
-  folio_put include/linux/mm.h:1486 [inline]
-  free_large_kmalloc+0x105/0x1c0 mm/slub.c:4565
-  kfree+0x1c4/0x360 mm/slub.c:4588
-  rhashtable_free_and_destroy+0x7c6/0x920 lib/rhashtable.c:1169
-  ila_xlat_exit_net+0x55/0x110 net/ipv6/ila/ila_xlat.c:626
-  ops_exit_list net/core/net_namespace.c:173 [inline]
-  cleanup_net+0x802/0xcc0 net/core/net_namespace.c:640
-  process_one_work kernel/workqueue.c:3231 [inline]
-  process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
-  worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Memory state around the buggy address:
- ffff88806461ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88806461ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888064620000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                      ^
- ffff888064620080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff888064620100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Herbert <tom@herbertland.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20240904144418.1162839-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/bluez/bluez/issues/875
+Fixes: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila.h      |    1 +
- net/ipv6/ila/ila_main.c |    6 ++++++
- net/ipv6/ila/ila_xlat.c |   13 +++++++++----
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ include/net/bluetooth/hci_core.h |    5 -----
+ net/bluetooth/mgmt.c             |   25 +++++++------------------
+ net/bluetooth/smp.c              |    7 -------
+ 3 files changed, 7 insertions(+), 30 deletions(-)
 
---- a/net/ipv6/ila/ila.h
-+++ b/net/ipv6/ila/ila.h
-@@ -108,6 +108,7 @@ int ila_lwt_init(void);
- void ila_lwt_fini(void);
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -187,7 +187,6 @@ struct blocked_key {
+ struct smp_csrk {
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
+-	u8 link_type;
+ 	u8 type;
+ 	u8 val[16];
+ };
+@@ -197,7 +196,6 @@ struct smp_ltk {
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
+-	u8 link_type;
+ 	u8 authenticated;
+ 	u8 type;
+ 	u8 enc_size;
+@@ -212,7 +210,6 @@ struct smp_irk {
+ 	bdaddr_t rpa;
+ 	bdaddr_t bdaddr;
+ 	u8 addr_type;
+-	u8 link_type;
+ 	u8 val[16];
+ };
  
- int ila_xlat_init_net(struct net *net);
-+void ila_xlat_pre_exit_net(struct net *net);
- void ila_xlat_exit_net(struct net *net);
+@@ -220,8 +217,6 @@ struct link_key {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
+-	u8 bdaddr_type;
+-	u8 link_type;
+ 	u8 type;
+ 	u8 val[HCI_LINK_KEY_SIZE];
+ 	u8 pin_len;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2903,8 +2903,7 @@ static int load_link_keys(struct sock *s
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_link_key_info *key = &cp->keys[i];
  
- int ila_xlat_nl_cmd_add_mapping(struct sk_buff *skb, struct genl_info *info);
---- a/net/ipv6/ila/ila_main.c
-+++ b/net/ipv6/ila/ila_main.c
-@@ -71,6 +71,11 @@ ila_xlat_init_fail:
- 	return err;
- }
+-		/* Considering SMP over BREDR/LE, there is no need to check addr_type */
+-		if (key->type > 0x08)
++		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
+ 			return mgmt_cmd_status(sk, hdev->id,
+ 					       MGMT_OP_LOAD_LINK_KEYS,
+ 					       MGMT_STATUS_INVALID_PARAMS);
+@@ -7141,7 +7140,6 @@ static int load_irks(struct sock *sk, st
  
-+static __net_exit void ila_pre_exit_net(struct net *net)
-+{
-+	ila_xlat_pre_exit_net(net);
-+}
-+
- static __net_exit void ila_exit_net(struct net *net)
- {
- 	ila_xlat_exit_net(net);
-@@ -78,6 +83,7 @@ static __net_exit void ila_exit_net(stru
+ 	for (i = 0; i < irk_count; i++) {
+ 		struct mgmt_irk_info *irk = &cp->irks[i];
+-		u8 addr_type = le_addr_type(irk->addr.type);
  
- static struct pernet_operations ila_net_ops = {
- 	.init = ila_init_net,
-+	.pre_exit = ila_pre_exit_net,
- 	.exit = ila_exit_net,
- 	.id   = &ila_net_id,
- 	.size = sizeof(struct ila_net),
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -619,6 +619,15 @@ int ila_xlat_init_net(struct net *net)
- 	return 0;
- }
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_IRK,
+@@ -7151,12 +7149,8 @@ static int load_irks(struct sock *sk, st
+ 			continue;
+ 		}
  
-+void ila_xlat_pre_exit_net(struct net *net)
-+{
-+	struct ila_net *ilan = net_generic(net, ila_net_id);
-+
-+	if (ilan->xlat.hooks_registered)
-+		nf_unregister_net_hooks(net, ila_nf_hook_ops,
-+					ARRAY_SIZE(ila_nf_hook_ops));
-+}
-+
- void ila_xlat_exit_net(struct net *net)
- {
- 	struct ila_net *ilan = net_generic(net, ila_net_id);
-@@ -626,10 +635,6 @@ void ila_xlat_exit_net(struct net *net)
- 	rhashtable_free_and_destroy(&ilan->xlat.rhash_table, ila_free_cb, NULL);
- 
- 	free_bucket_spinlocks(ilan->xlat.locks);
+-		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
+-		if (irk->addr.type == BDADDR_BREDR)
+-			addr_type = BDADDR_BREDR;
 -
--	if (ilan->xlat.hooks_registered)
--		nf_unregister_net_hooks(net, ila_nf_hook_ops,
--					ARRAY_SIZE(ila_nf_hook_ops));
- }
+ 		hci_add_irk(hdev, &irk->addr.bdaddr,
+-			    addr_type, irk->val,
++			    le_addr_type(irk->addr.type), irk->val,
+ 			    BDADDR_ANY);
+ 	}
  
- static int ila_xlat_addr(struct sk_buff *skb, bool sir2ila)
+@@ -7237,7 +7231,6 @@ static int load_long_term_keys(struct so
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_ltk_info *key = &cp->keys[i];
+ 		u8 type, authenticated;
+-		u8 addr_type = le_addr_type(key->addr.type);
+ 
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_LTK,
+@@ -7272,12 +7265,8 @@ static int load_long_term_keys(struct so
+ 			continue;
+ 		}
+ 
+-		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
+-		if (key->addr.type == BDADDR_BREDR)
+-			addr_type = BDADDR_BREDR;
+-
+ 		hci_add_ltk(hdev, &key->addr.bdaddr,
+-			    addr_type, type, authenticated,
++			    le_addr_type(key->addr.type), type, authenticated,
+ 			    key->val, key->enc_size, key->ediv, key->rand);
+ 	}
+ 
+@@ -9545,7 +9534,7 @@ void mgmt_new_link_key(struct hci_dev *h
+ 
+ 	ev.store_hint = persistent;
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
++	ev.key.addr.type = BDADDR_BREDR;
+ 	ev.key.type = key->type;
+ 	memcpy(ev.key.val, key->val, HCI_LINK_KEY_SIZE);
+ 	ev.key.pin_len = key->pin_len;
+@@ -9596,7 +9585,7 @@ void mgmt_new_ltk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(LE_LINK, key->bdaddr_type);
+ 	ev.key.type = mgmt_ltk_type(key);
+ 	ev.key.enc_size = key->enc_size;
+ 	ev.key.ediv = key->ediv;
+@@ -9625,7 +9614,7 @@ void mgmt_new_irk(struct hci_dev *hdev,
+ 
+ 	bacpy(&ev.rpa, &irk->rpa);
+ 	bacpy(&ev.irk.addr.bdaddr, &irk->bdaddr);
+-	ev.irk.addr.type = link_to_bdaddr(irk->link_type, irk->addr_type);
++	ev.irk.addr.type = link_to_bdaddr(LE_LINK, irk->addr_type);
+ 	memcpy(ev.irk.val, irk->val, sizeof(irk->val));
+ 
+ 	mgmt_event(MGMT_EV_NEW_IRK, hdev, &ev, sizeof(ev), NULL);
+@@ -9654,7 +9643,7 @@ void mgmt_new_csrk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &csrk->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(csrk->link_type, csrk->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(LE_LINK, csrk->bdaddr_type);
+ 	ev.key.type = csrk->type;
+ 	memcpy(ev.key.val, csrk->val, sizeof(csrk->val));
+ 
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1059,7 +1059,6 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->remote_irk) {
+-		smp->remote_irk->link_type = hcon->type;
+ 		mgmt_new_irk(hdev, smp->remote_irk, persistent);
+ 
+ 		/* Now that user space can be considered to know the
+@@ -1074,28 +1073,24 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->csrk) {
+-		smp->csrk->link_type = hcon->type;
+ 		smp->csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->csrk, persistent);
+ 	}
+ 
+ 	if (smp->responder_csrk) {
+-		smp->responder_csrk->link_type = hcon->type;
+ 		smp->responder_csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
+ 	}
+ 
+ 	if (smp->ltk) {
+-		smp->ltk->link_type = hcon->type;
+ 		smp->ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->ltk, persistent);
+ 	}
+ 
+ 	if (smp->responder_ltk) {
+-		smp->responder_ltk->link_type = hcon->type;
+ 		smp->responder_ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
+@@ -1115,8 +1110,6 @@ static void smp_notify_keys(struct l2cap
+ 		key = hci_add_link_key(hdev, smp->conn->hcon, &hcon->dst,
+ 				       smp->link_key, type, 0, &persistent);
+ 		if (key) {
+-			key->link_type = hcon->type;
+-			key->bdaddr_type = hcon->dst_type;
+ 			mgmt_new_link_key(hdev, key, persistent);
+ 
+ 			/* Don't keep debug keys around if the relevant
 
 
 
