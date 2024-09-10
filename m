@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4698C9732B3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341A89731E7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 792A21C2417C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B506B2A0E1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D16B199948;
-	Tue, 10 Sep 2024 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6863191F73;
+	Tue, 10 Sep 2024 10:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08Ym72aC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPVJ5BUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B61B199941;
-	Tue, 10 Sep 2024 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4351191476;
+	Tue, 10 Sep 2024 10:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963588; cv=none; b=mHnUW10nRSFq9pVrgQHTbfmyPFK8J/yQaxN48MNGfsLBHj2pZJChCv/WF2P28igFdCHBQK/2pKZYFFFFueAPOLHlH0pDdtfwEisUIcg8u5SG4pFuybywVRmnUQygvvawoL95XVg+8v08WCj6jSs8i+PPnPY+9M9sQCC9trztjno=
+	t=1725963068; cv=none; b=swspum6PMga17Rgm9rOTZgw6bPIzvWIBoek9dE+BpErzQjQgvKtd2WSMj1+I58MoiAicqR5PMmv1yPu+SmHJOxdJ3lXUcNpbpzAVNpHI0c2SJj17kWHIXTYu3xYfw2yTwfIJnVU9oL/0ZrjdnxwasSI6lKWm8Mk6VYFMPcHFrGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963588; c=relaxed/simple;
-	bh=K/W4cWDg7mFWJnKHmH9C53LT0dv1Zk+MB12X/Wo6tpM=;
+	s=arc-20240116; t=1725963068; c=relaxed/simple;
+	bh=c5Xizq0BHzUpJb2WHIbr0ijK9hxcANbAHWlaHmYnK7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol6eFP5ca08o9eqhEqPg9DENvGwzvEXt5E9vkOVdvh+TcOB9JpkBzK31cjSY9vdEJwl3la2aN39o8Ym8YQqwkQnxduTI8tSvpmSi2uPqKMU0OVJG6Org21kLbvwwjWov6j7za/kDMoNANwrymgB0FjtGIO1oTPbRL5UE1IgW1tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08Ym72aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AD1C4CEC3;
-	Tue, 10 Sep 2024 10:19:47 +0000 (UTC)
+	 MIME-Version; b=r2H7/eNu0O5lEVdWe/N/D2V2lMvQoLJ/ZbRDJ9UjPsIxJaPEhBj7/vDYTC8fIkkg0QqSL+AAKfMsuwu0uY6k8cKK1aJPk9vSJwr02Tu/8sxrCKqRe9xLHlBOjZl8p++MZe4ZJd5DPXvcYYTgKhiJHvu3wCzy/mCNw3AkOEGbNOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPVJ5BUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109EBC4CEC3;
+	Tue, 10 Sep 2024 10:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963587;
-	bh=K/W4cWDg7mFWJnKHmH9C53LT0dv1Zk+MB12X/Wo6tpM=;
+	s=korg; t=1725963068;
+	bh=c5Xizq0BHzUpJb2WHIbr0ijK9hxcANbAHWlaHmYnK7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08Ym72aC+gGUuk9tbeg6TBxehd7U8k6OkbKx7UbLAPPRy6p0HDnetuU2To+7ffXif
-	 6Je/FF0riIS1pTb/uYwICWTACx8pddurRw78liMb8lCF7TRSnILqBvFVOB/poewtFG
-	 aYWFFZZg1Q5+0FsfclMHCzmgXrO9j4vUXfGUhcLU=
+	b=yPVJ5BUpxW/h5Zt0PY4WVRgU6TKYpisLPpi4HYtddCe3FI8spFrKrUmeXeKwshCF+
+	 v7LDEskrGGCDsD5b+b5/tdgjvg1vQVrpVG9RbkBF8Twm+WtvjXRbbCqf1FRslLLO63
+	 s0xgZgqfilQWmSSvqc7kt/K5RUtMfehcVQwIV8fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 108/214] netfilter: nf_conncount: fix wrong variable type
-Date: Tue, 10 Sep 2024 11:32:10 +0200
-Message-ID: <20240910092603.218896198@linuxfoundation.org>
+Subject: [PATCH 6.1 107/192] smp: Add missing destroy_work_on_stack() call in smp_call_on_cpu()
+Date: Tue, 10 Sep 2024 11:32:11 +0200
+Message-ID: <20240910092602.400857587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
+[ Upstream commit 77aeb1b685f9db73d276bad4bb30d48505a6fd23 ]
 
-Now there is a issue is that code checks reports a warning: implicit
-narrowing conversion from type 'unsigned int' to small type 'u8' (the
-'keylen' variable). Fix it by removing the 'keylen' variable.
+For CONFIG_DEBUG_OBJECTS_WORK=y kernels sscs.work defined by
+INIT_WORK_ONSTACK() is initialized by debug_object_init_on_stack() for
+the debug check in __init_work() to work correctly.
 
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+But this lacks the counterpart to remove the tracked object from debug
+objects again, which will cause a debug object warning once the stack is
+freed.
+
+Add the missing destroy_work_on_stack() invocation to cure that.
+
+[ tglx: Massaged changelog ]
+
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20240704065213.13559-1-qiang.zhang1211@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 82f36beb2e76..0ce12a33ffda 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -310,7 +310,6 @@ insert_tree(struct net *net,
- 	struct nf_conncount_rb *rbconn;
- 	struct nf_conncount_tuple *conn;
- 	unsigned int count = 0, gc_count = 0;
--	u8 keylen = data->keylen;
- 	bool do_gc = true;
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 63e466bb6b03..0acd433afa7b 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -1262,6 +1262,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
  
- 	spin_lock_bh(&nf_conncount_locks[hash]);
-@@ -322,7 +321,7 @@ insert_tree(struct net *net,
- 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
+ 	queue_work_on(cpu, system_wq, &sscs.work);
+ 	wait_for_completion(&sscs.done);
++	destroy_work_on_stack(&sscs.work);
  
- 		parent = *rbnode;
--		diff = key_diff(key, rbconn->key, keylen);
-+		diff = key_diff(key, rbconn->key, data->keylen);
- 		if (diff < 0) {
- 			rbnode = &((*rbnode)->rb_left);
- 		} else if (diff > 0) {
-@@ -367,7 +366,7 @@ insert_tree(struct net *net,
- 
- 	conn->tuple = *tuple;
- 	conn->zone = *zone;
--	memcpy(rbconn->key, key, sizeof(u32) * keylen);
-+	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
- 
- 	nf_conncount_list_init(&rbconn->list);
- 	list_add(&conn->node, &rbconn->list.head);
-@@ -392,7 +391,6 @@ count_tree(struct net *net,
- 	struct rb_node *parent;
- 	struct nf_conncount_rb *rbconn;
- 	unsigned int hash;
--	u8 keylen = data->keylen;
- 
- 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
- 	root = &data->root[hash];
-@@ -403,7 +401,7 @@ count_tree(struct net *net,
- 
- 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
- 
--		diff = key_diff(key, rbconn->key, keylen);
-+		diff = key_diff(key, rbconn->key, data->keylen);
- 		if (diff < 0) {
- 			parent = rcu_dereference_raw(parent->rb_left);
- 		} else if (diff > 0) {
+ 	return sscs.ret;
+ }
 -- 
 2.43.0
 
