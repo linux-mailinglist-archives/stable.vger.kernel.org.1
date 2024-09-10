@@ -1,280 +1,183 @@
-Return-Path: <stable+bounces-74110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4C19728F1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:40:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0E3972904
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44CE1F25031
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 05:40:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E11F1C23C31
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 05:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2314A16DEAB;
-	Tue, 10 Sep 2024 05:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066A714C581;
+	Tue, 10 Sep 2024 05:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Z8lS/+xV";
-	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="MDWneh/i"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="MjQRKAR3";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="MjQRKAR3"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7401531C0;
-	Tue, 10 Sep 2024 05:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=60.244.123.138
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725946852; cv=fail; b=AdeQNvPP9mBy4Cn0SizrqvpfynzKe/kFBD81SSb6AuivXZCxwKqCdG2itl5Hhm8joWejLvjxZKFNwiVijUHKymTGmJXAbJU7Wo6M+EhM6c628E0TtuXwQTkmIsHFlkX4JzHyc+J1QfTqg/ESlAit5OlSsy/0M1F94NAOr32C6PU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725946852; c=relaxed/simple;
-	bh=Pru7kAHTQlX/CBqU6OX1Ubs/QROR2aOpWi9VhTiPhZY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PN//LQ78w7qjo39jdIiJlhqDRFnmSOdWAgqafAYkIGF7Y+++lUotyYddWESJ4fq5f4PmFgEkFBcCcQ/oZxkktT9b6da29Bz/r396XbHSjYpmYpwiAxG8+hZQGn2GHZtckGDyRWtlvuNXPvwJl1snF+3ohRnuW6WPWihfzICawf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Z8lS/+xV; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=MDWneh/i; arc=fail smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 35b9d4866f3711efb66947d174671e26-20240910
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=Pru7kAHTQlX/CBqU6OX1Ubs/QROR2aOpWi9VhTiPhZY=;
-	b=Z8lS/+xV8PZSgqmvihUl9YK8uNm5J56QWfJtxOdQOjQyeWk4ycP7BpBVBJCSftZJ33ja+D7Fzrpeuwfl62D0BaoDTnwkSj4e6IJayZTFucTefC9P6G22QoRvqG5WpBn4V0cy+6Ea2LfQSsK4jXrS0+Cqppa/PF3GdUG09S7GSBE=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:d1f3872e-c99c-4b88-955e-041c55cc0c24,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:700fb8bf-d7af-4351-93aa-42531abf0c7b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|-5,EDM:-3,IP:ni
-	l,URL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
-	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 35b9d4866f3711efb66947d174671e26-20240910
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 141467922; Tue, 10 Sep 2024 13:40:38 +0800
-Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 10 Sep 2024 13:40:37 +0800
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 10 Sep 2024 13:40:37 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=py4lNG3aXjWXzQ6NXJ+kmskykhdQjj00+IxBNTTVwXl2cnqNttILZyIKeyPskMdM05eWExnoCPA8ImgD1WhTxRwjtU3C0NoKarjnPm0Hnkg3e3ZXhohl/w6mHIzVWvoEdZcRMTjH6MgJ5G6Qbp/DXfw3eBuEsU1odIq5DeSeDf4xOfgxYXy4Xd2DkMKdsBSUQsyIlOcHIzYQ2Y80NMhdZUYp+CJVTXqpPossgoNsTPUks1LzUYCMeiQL6912KUyvi9cTdGqVgNvBmLzjzedKyzAo2U8FHfEIMXPGU0BfMMLj+eL6t9oXJHDVpnrnelWXGSl5Zyb6LixaAaSZKCNcag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pru7kAHTQlX/CBqU6OX1Ubs/QROR2aOpWi9VhTiPhZY=;
- b=xTtilMWLV2fx5QBKzng8bJJ5z1fQKVvRguyTVxRtMUCWLGl0Pn/84PNDi3xpJGVQeWn4QwQABGnXKql8xc/Qi+na+WXyFBMtEw2PDlaqIVnSQwCxvHQlarLmAVDzOn4txfHzYlsS2Qap/UBNyLvdtzR3wftB4nzslQvu9t6gBgDP9u1XFE7Gr2kBBnYhj4JkszoG2m49ld5UGMObQOu8lYPdOM0PQIh3HIhXea1c7LMuZ2cd/VpjqadhBedvEF1QLSu80cwPaovcQv3QNuHKao+HRE00F1wXRCTgQ7wUAaoOesOA+kpAWEqJ+LBg34tDf7l90o8bVqAVDKNIHfmWdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pru7kAHTQlX/CBqU6OX1Ubs/QROR2aOpWi9VhTiPhZY=;
- b=MDWneh/iI28yAoKr0r5TNO61QvVoADOQkwodsRDfgCjF1WydlguvxyJaMBGDKP6IdRgQaCjRibmtNv2JBhzfjudVIWmMy1rfdb2YBWBMFBiXC9hh2ZVYeelRB/SLpD9TK5TI3bHKSySc/c/uCRpIFhovRI3VvU65GOjhk55olvQ=
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com (2603:1096:301:66::6)
- by KL1PR03MB7037.apcprd03.prod.outlook.com (2603:1096:820:da::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Tue, 10 Sep
- 2024 05:40:35 +0000
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::3945:7dbc:62bd:c31c]) by PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::3945:7dbc:62bd:c31c%7]) with mapi id 15.20.7939.022; Tue, 10 Sep 2024
- 05:40:35 +0000
-From: =?utf-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>
-To: "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"bvanassche@acm.org" <bvanassche@acm.org>, "avri.altman@wdc.com"
-	<avri.altman@wdc.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-	"alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>
-CC: "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	=?utf-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
-	=?utf-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
-	=?utf-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
-	=?utf-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
-	=?utf-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>, wsd_upstream
-	<wsd_upstream@mediatek.com>, "quic_nguyenb@quicinc.com"
-	<quic_nguyenb@quicinc.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, =?utf-8?B?TGluIEd1aSAo5qGC5p6XKQ==?=
-	<Lin.Gui@mediatek.com>, =?utf-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?=
-	<Chun-hung.Wu@mediatek.com>, =?utf-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?=
-	<Tun-yu.Yu@mediatek.com>, =?utf-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
-	<Chaotian.Jing@mediatek.com>, =?utf-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
-	<Powen.Kao@mediatek.com>, =?utf-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
-	<Naomi.Chu@mediatek.com>, =?utf-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
-	<Qilin.Tan@mediatek.com>
-Subject: Re: [PATCH v3 2/2] ufs: core: requeue aborted request
-Thread-Topic: [PATCH v3 2/2] ufs: core: requeue aborted request
-Thread-Index: AQHbApFPUl786o1LT0mMnOkb43t8YrJPp0EAgADbhIA=
-Date: Tue, 10 Sep 2024 05:40:34 +0000
-Message-ID: <2c93526e74cca5ac7ee6d952a80051733ea37c2c.camel@mediatek.com>
-References: <20240909082100.24019-1-peter.wang@mediatek.com>
-	 <20240909082100.24019-3-peter.wang@mediatek.com>
-	 <c4d22b9c-2554-4871-94dc-3dae4bd62a5a@acm.org>
-In-Reply-To: <c4d22b9c-2554-4871-94dc-3dae4bd62a5a@acm.org>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PSAPR03MB5605:EE_|KL1PR03MB7037:EE_
-x-ms-office365-filtering-correlation-id: 4dc96b58-d429-41e2-a3b9-08dcd15b17b5
-x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?RjJpT1doQ3FuMUVBNys0UW03K1owdHpsRFBhb21jR0J5dUgzYVVqbUJKM3h5?=
- =?utf-8?B?MFdsQTZQL1R0V2xXbjc5ZDBXbnQ1SlFpTEVYMTkvQ044OWdoUWcwQVBPdjJB?=
- =?utf-8?B?RytJeEthMTM2U3FoT3pSYkswd2xPK2Q2L2JIREhReXAzTldZbW5MWENPMjZq?=
- =?utf-8?B?VGRZUzBhUzkxUDFGd0d6RjJTbzZWZUJXNmRYYkNXMzJ1MExFYkVWWlFxOUcv?=
- =?utf-8?B?TlRnREdlOW9mMW5uRm9LK3RIWUFnaHlQTVNLRzlxaGRpK3htalB1cXRNRnhG?=
- =?utf-8?B?RWlGcFREYUVUcHFjMFpBRFJoZWpHZ0tHTHZlUlhKQVZEK2RIUi9uOFNDZWt4?=
- =?utf-8?B?M1o0ZHNLVC96NHhRK1NEemZ5Unk4UW9mWC9xeFloampDaSt2Z3pyWlloM0lT?=
- =?utf-8?B?VGduWUtJTzNXWG9mbGp6MGpRVUVWU1hTYXRONFdJZ2R6a1BmZkV6U21EbDkv?=
- =?utf-8?B?YVhCb0FyeUhBMExvUEEyVnBtU1ZiV21hNUFYSnBpK0VreVhra0JUWm1kRTZ2?=
- =?utf-8?B?K3phMWFVUmZYN2VhQkNqKzM0SDQxbzRmUThPVnlFWWNhYTFiZ2E2ZW42SHgx?=
- =?utf-8?B?R3hXek1xbmQ2Z2E1aVYwSmI0VHVSRGY5NmtGUFZ1RERLRjNPSXdsZjZmSFNi?=
- =?utf-8?B?OW9BVmVtR1h0c0dWV0pZdnFPNXlZbHByYVc2bllrWFBQUGl3NHhIb3hYejVo?=
- =?utf-8?B?N2d0bDhIQ0pkZFk0SHBoQnE3c2dlVUhHbzlMYXhnQ0lHbkdxVXpJbWJFM0N4?=
- =?utf-8?B?QWYzVmlFTmhoSlU3aGswRm44RDgycnlJVkh1cEFYbFFIdi9ya2c0WlZkTFNW?=
- =?utf-8?B?em5BWUlsSEpQYjRyT1JTMFdjcUdoZG1hR24xS21DRTc3aFBYc3NRLzg3RlhX?=
- =?utf-8?B?d1NlNUdVTGtJMGprL001dzRzWkhCWit2SHBtRGd1ZEJ1Qm53M284OGVNc1lS?=
- =?utf-8?B?Vzd4MmhSRFVpdFR1WTFidFhPT1FxZmVTYUYzejZIektyV085WkVmeE44V1pE?=
- =?utf-8?B?Y09sTDhBOUk2UFVmaU5wZ0JwelFXeVo3UkR6c0ZueGJoNXcyMS9ZRmtqeEc1?=
- =?utf-8?B?Zzc5YlZ3R2Qzdno1cGZsYVpXMldrWGYvekZ6bTZsSEdWM0k0YVljaHNtd3d0?=
- =?utf-8?B?V0FzT3BiVUZQN3JNcWM1TmdJVzEyaXpvQUlGY0Z2bGFiSzhnbThmVGNWajlW?=
- =?utf-8?B?SWJPZjd2d3hnVkphQXp1aWxKelBJZEhMcHRrekNvMTlveDY5SUxTNHUrdjJI?=
- =?utf-8?B?Wm9SYVZ3TzdnUWdsTWtrcVR2QzVodERsZkpxZ20rdkMzUElkVkxrKzNRYWhv?=
- =?utf-8?B?T3I1cnFtWXRXeUFxUndHdk50YkxlYjRQTExBM2o5MWJYaDMxUDkzcHNrYXVR?=
- =?utf-8?B?ZGdaN3pIa1VKV2JkQ01WcmZTMGdMWjRvWmpSbFFOVEduNHR5SGpibkpUOUlR?=
- =?utf-8?B?UzJCN0xEL2hrRjduN2NkMU1PVDFGd3R2RHByRDRXTlprS0ZyYVpwbCtiZE1o?=
- =?utf-8?B?UjhoRUhIanU3TGZTcVhENHdIaGZiS1RtVTFFQ0l2VEFLRklpZHZhTTU5V2hS?=
- =?utf-8?B?WGova0dDRzlQVnEweFdyZUZvOTFydDBqUGRuaWFaNVcvbURSUU1vc2w2d21a?=
- =?utf-8?B?bEFGS0RIdE1LdHlCOWlnY056SElKY2RpTHFwQUMvakg0TFdjTU9YUkxpcEdm?=
- =?utf-8?B?cytpRmc0N3pLMEdxbmNueDBaeE5QcWo2eGFhM3RRZnRWOE1EV016UjZnNzF5?=
- =?utf-8?B?K1hBbStkUUkvMXV4QkcwdW5jZnJoRkZJMkYrNExRcnphRWdxTmVJNzU2OG51?=
- =?utf-8?B?Um11T1Q4N09HYkl1TXJTTGlYdWhWc2tlUERYZ1h1NTRMVXdyUUkvWFgxbjNN?=
- =?utf-8?B?eVBxdUpZdmI3ZXVLTFRHbGdmSlBwSXMvRDNyZHlGMFdLenc9PQ==?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR03MB5605.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OWJmRUpTZTJsNUlWdEd1L0k4YU9PMVY4VnpCeE94UUxJdDdWS1FWZURYR216?=
- =?utf-8?B?UGZxeS9jT1RvM1hqQkZ2U1MwMDlEejZnVUdhSlY4enNYcjk1T2VZOWdadnFy?=
- =?utf-8?B?N0lDTmdSaExoVHBKd3hIV1Q3THRnRWpuQ1lqb0hZSGJwUzFZbEpFQnRqeWJo?=
- =?utf-8?B?ZyszN0VOYjJiaWI3bTBKZ01aRXB2VHI2dkNWL3FGcUxyMkRsWUl6VWh2ZUpD?=
- =?utf-8?B?bk9CSDEyS0NZWnpkd2FYQ3VyeFZxRHZzSWZHTWJGZERlUVRNb3lxdWJHdkJr?=
- =?utf-8?B?QXU3NDdMMkVnRHcvR0Q4NXhZS0NNbWhpN2lWVDh3VC9lM1JqbnRtWDZDVVpy?=
- =?utf-8?B?UnF4bWpyNC9abmZkQm9TbFNNNDk0UlVySFBXTDZML3FyQXBUMG5YSUYyaWVu?=
- =?utf-8?B?cUZzZVlqOXY4R3JjL2U2cm0wdUxFY3FCOTRkTDk0U2YvLzRmUzIyVXVGeExr?=
- =?utf-8?B?REJwMVg4UUNRMG5DVElpcGRFUnNaR1ZrWmxpRE93dWRncEEwVWRZdHhXMnhM?=
- =?utf-8?B?WXpjTW9UWldoaTdwWWRWb3J5dHdySEZpQUJGN2JKQytMcis2YXRSZlpIbFZi?=
- =?utf-8?B?OGRLckVXdXkxR0FCS3ZUY2JQTnZUV0owd1RjVkZRUTcramtlRVNxTloxK3g5?=
- =?utf-8?B?OC9McEd4c1FRTVBUdWd2cWNRcjRtRldCb0VMQzRleFg0eklmTmFjeXdHeE9P?=
- =?utf-8?B?UFUwWVpDTXVtOFh3bVJxdktoalVYaTJ6YlFWeE1HWXMrSjhyNlFjUUdHbUNn?=
- =?utf-8?B?SGFYWGlSTWlWVkExZFkxVFF5cTJic0NTbHBUWmRPZDQyZzh2a2JSZVhNSEt3?=
- =?utf-8?B?WmYvOEx5U21EWXcvYXF3RUxoMGlqdUp3bE9UelFqN3E5NWErUGdnMTJjN1ZC?=
- =?utf-8?B?bGpIbkN2WUpsNjNjdWh6eXBhdm9BWWQwUXcwNzJ0aHAwMjlvYktsQjd1aEpm?=
- =?utf-8?B?UHpSUzJNM3dvVkJacUZLZFhzeDgxU2hoNGN5b21NZUd5UmJzdVFXazErZExN?=
- =?utf-8?B?cmRUNnBjakJvQmJQYWUwMHEwMzBIYzhkOGMxd3gyYUU2akxyRVpmc2JlOGhT?=
- =?utf-8?B?RzNpL1JMbFgxcHdVWDdZV01UTFF3WU1td3JqYzZXb0ZqaFhBUkRYbi9ySE02?=
- =?utf-8?B?RzZpZlVQRU82VVpweGNwNmIzT1ZtcG5LN0E4bURaRzlDbS91VFZDZEI5VzR3?=
- =?utf-8?B?dUJReVhlN3F1T3lpNy94Qmd6OHRnNkFVelZrODNyRlhTL2pKTDVjNVVSZnBI?=
- =?utf-8?B?UlU3cTk5RmV6OXpTQkVKc3pibExQbkphNjdVb3B0VXRrdzNSblF1Rkc4Z0F5?=
- =?utf-8?B?Z0dHU3RBcUdvdk9pYTdaV1c1ZFlxRlh4bE1BL2pwTFNSWW5LdisrOVBFbXhW?=
- =?utf-8?B?ZU9GRjlnQTcwVFlLWWV2TnZtam9GZVZDeUpDd3dzN0VPUWdrZUcxcmk5QXEw?=
- =?utf-8?B?MVI0dnR0UmM1Ny91ZlFwbVRLV041SmNadS9nTjlmR2cwc3d6Z3Nhc2wxMGJU?=
- =?utf-8?B?UXl4V0tvc29DSnFtUzIvSHZ6ZHJMOHRjU3gvNTFkTGZuUTMveWZFcE9lcG9C?=
- =?utf-8?B?V09KOVJtT0tvaVJhWU54YVdZRFJvemJPQXFRc2xiYW95NnpJcXRSZ1dzL0Vj?=
- =?utf-8?B?WlE0Si90anBwZjdwNkhCV3J3aTBEbW1nZHJIWFg3S0tJbGdobmFCWVA4aklU?=
- =?utf-8?B?MjFxdVQ3UmNBRnZtWHo0Mng0NjVkaVlpZ2E3NWV4WkllZURmaC9PaEIvZHpw?=
- =?utf-8?B?NElZRWQ1bHdlZkovaTdJNTBNdnBxWjJrSUNpZDBQNHpScW91QXl1VGVaYk9v?=
- =?utf-8?B?eGh3aXEybjRnUWRhZkxJazVDTlpsbnpRUWJHME5iSHlTR0IyVHNaUXl5a1Yw?=
- =?utf-8?B?L2h0dGwwL3pxbGF3ajRjWmFpZkpsVXJML3lGaEZkellQalVsWFRBY2dmdVE3?=
- =?utf-8?B?RGcxR2txMjB3TFFSamoxMWlsV1RXNjBmQ2VMb0p4S1JqSlJIL2NKeXFCamZx?=
- =?utf-8?B?Q0VMTkZqTGFOSTVqVDM3T0VhNWxtNGQwNGFJNjJFU1B0TW4yaW53bFRBVjRp?=
- =?utf-8?B?c1F0aVdtRFk0Ti9WbmVrVlFTTVh2NzViT3c2Qm1mTzFqeXJTanZBSnV2ejQ3?=
- =?utf-8?B?OTZlZUxRWU1odGUzR0J5eEFGQTFIcVA3VjdRZ0tiaHh5Tm12RjQ3Y2ZDdUxy?=
- =?utf-8?B?Z0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2FD469C12901064DB62943060890E1FE@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52617BA42;
+	Tue, 10 Sep 2024 05:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725947507; cv=none; b=t9Dvx8OIg5lUBYwjLHFltuvMHkUpKNCSvjZhFws7Bqd2dkgds5v5gmx1AqqSEmyscB3VprTQN+b3FHwofvHMezRwubslmQwBD9wpV2fJ0dqgYvCS2FuJSePt1DdB4onaH3bDcrc5IYijlwi3WkMWaBAQr4KqqqBhUYvOKLQ156g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725947507; c=relaxed/simple;
+	bh=jg4yZ2t7HOOAxBRuP13nbwyGcqwPFl6GsdUWs8lKUlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P1sGyrjF7uef75Qa2JIx91zbx6jX+DGi/hEsesKTa07zMssERa475VGuLccFpYB4QRE4kSwRYwsfDSofOutXo4t9wPdNy4PEqCcbDhsrkBOjmLAyF5L91ZNBSMdndNCIJrJcAX9vxKTJ2NQFXVX2wyqpvJnqFB/gqGc0lDeQzsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=MjQRKAR3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=MjQRKAR3; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EC161F7FB;
+	Tue, 10 Sep 2024 05:51:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1725947498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=hO8nqWpasQbNfWu5b5Ch2sNiwtLPhmu1QkKoX4syByw=;
+	b=MjQRKAR3Ep2tRw3klBSaqtY57rR16ajf20DDRdb80V5y9JjBbhrv5Cm+AJK6lIjuTwJmB0
+	PZJksE9iOmmez86+s2XPVbbS5FhoanF7FBekVTcjdWaSrC3LYF0Qt0oKLPI6xFgkWASp8C
+	HyO5tCLSnfSbOvrPO5jTXuSFKk5WpvQ=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=MjQRKAR3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1725947498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=hO8nqWpasQbNfWu5b5Ch2sNiwtLPhmu1QkKoX4syByw=;
+	b=MjQRKAR3Ep2tRw3klBSaqtY57rR16ajf20DDRdb80V5y9JjBbhrv5Cm+AJK6lIjuTwJmB0
+	PZJksE9iOmmez86+s2XPVbbS5FhoanF7FBekVTcjdWaSrC3LYF0Qt0oKLPI6xFgkWASp8C
+	HyO5tCLSnfSbOvrPO5jTXuSFKk5WpvQ=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 17DF413A3A;
+	Tue, 10 Sep 2024 05:51:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yqQqMmje32a2CgAAD6G6ig
+	(envelope-from <wqu@suse.com>); Tue, 10 Sep 2024 05:51:36 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: qgroup: set a more sane default value for subtree drop threshold
+Date: Tue, 10 Sep 2024 15:21:04 +0930
+Message-ID: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PSAPR03MB5605.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4dc96b58-d429-41e2-a3b9-08dcd15b17b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2024 05:40:34.9184
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: alfok59IxxQo8oQmLNzPEk1HduHwdPF3Dq6X2LwPjIKv5Y0cFGxRZWP3T8zBbofRZOWIFrA3ffclYp97J/xN0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7037
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--31.413700-8.000000
-X-TMASE-MatchedRID: cnNFLnOjrwrUL3YCMmnG4t7SWiiWSV/1bkEYJ8otHacNcckEPxfz2DEU
-	xl1gE1bkfdd9BtGlLLzx1uczIHKx54/qvvWxLCnegOqr/r0d+CzOo//J/EA1QauZoybwHAwkzvR
-	QSqpv1wVOFu8ssjxG85/4EzkSEHbPKYkG37rHS8XAJnGRMfFxyX4rryovYbmmymP/1piI/6Hz0Q
-	r7GJy0y/zapuMg7DQgwBcnC/GJrtacl7+trwU+WKtWSWds/km2hEIiqNvBrmNQ+OxFt/19oRMGt
-	PkUyFbdK/hZaW+O9Z9ICsMQxCDS2EHWbmeNr66Rk3rl+MaNgxCBHKTJ+sfXGaxp9wUsWVTUZ10w
-	KXUWXnItlP65WKSrb3F03j9r9uDDSe3iZ10QiJNsG7r4Qh7N3DY7kSH7jlNHEYcWuAHCdKujxYy
-	RBa/qJRVHsNBZf9aRAYt5KiTiutkLbigRnpKlKT4yqD4LKu3A
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--31.413700-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP:
-	DE07647886CBE09AADC9B585C27FF281287F850C23177FDEE7754619753E67E62000:8
-X-MTK: N
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1EC161F7FB
+X-Spam-Score: -5.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-5.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[suse.com:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:mid,suse.com:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-T24gTW9uLCAyMDI0LTA5LTA5IGF0IDA5OjM0IC0wNzAwLCBCYXJ0IFZhbiBBc3NjaGUgd3JvdGU6
-DQo+ICAJIA0KPiBFeHRlcm5hbCBlbWFpbCA6IFBsZWFzZSBkbyBub3QgY2xpY2sgbGlua3Mgb3Ig
-b3BlbiBhdHRhY2htZW50cyB1bnRpbA0KPiB5b3UgaGF2ZSB2ZXJpZmllZCB0aGUgc2VuZGVyIG9y
-IHRoZSBjb250ZW50Lg0KPiAgT24gOS85LzI0IDE6MjEgQU0sIHBldGVyLndhbmdAbWVkaWF0ZWsu
-Y29tIHdyb3RlOg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Vmcy9jb3JlL3Vmcy1tY3EuYyBi
-L2RyaXZlcnMvdWZzL2NvcmUvdWZzLQ0KPiBtY3EuYw0KPiA+IGluZGV4IDM5MDM5NDdkYmVkMS4u
-MWY1N2ViZjI0YTM5IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvdWZzL2NvcmUvdWZzLW1jcS5j
-DQo+ID4gKysrIGIvZHJpdmVycy91ZnMvY29yZS91ZnMtbWNxLmMNCj4gPiBAQCAtNjQyLDYgKzY0
-Miw3IEBAIHN0YXRpYyBib29sIHVmc2hjZF9tY3Ffc3FlX3NlYXJjaChzdHJ1Y3QNCj4gdWZzX2hi
-YSAqaGJhLA0KPiA+ICAgbWF0Y2ggPSBsZTY0X3RvX2NwdSh1dHJkLT5jb21tYW5kX2Rlc2NfYmFz
-ZV9hZGRyKSAmIENRRV9VQ0RfQkE7DQo+ID4gICBpZiAoYWRkciA9PSBtYXRjaCkgew0KPiA+ICAg
-dWZzaGNkX21jcV9udWxsaWZ5X3NxZSh1dHJkKTsNCj4gPiArbHJicC0+YWJvcnRfaW5pdGlhdGVk
-X2J5X2VyciA9IHRydWU7DQo+ID4gICByZXQgPSB0cnVlOw0KPiA+ICAgZ290byBvdXQ7DQo+ID4g
-ICB9DQo+IA0KPiBBcyBtZW50aW9uZWQgYmVmb3JlLCBJIHRoaW5rIHRoYXQgdGhpcyBjaGFuZ2Ug
-aXMgd3JvbmcuIFNldHRpbmcNCj4gbHJicC0+YWJvcnRfaW5pdGlhdGVkX2J5X2VyciBhZmZlY3Rz
-IHRoZSB2YWx1ZSBvZiBzY3NpX2NtbmQ6OnJlc3VsdC4NCj4gVGhpcyBtZW1iZXIgdmFyaWFibGUg
-aXMgaWdub3JlZCBmb3IgYWJvcnRlZCBjb21tYW5kcy4gQWx0aG91Z2ggdGhlDQo+IGFib3ZlIGNo
-YW5nZSBkb2VzIG5vdCBhZmZlY3QgdGhlIFNDU0kgZXJyb3IgaGFuZGxlciwgSSB0aGluayBpdA0K
-PiBzaG91bGQNCj4gYmUgbGVmdCBvdXQgYmVjYXVzZSBpdCB3aWxsIGNvbmZ1c2UgYW55b25lIHdo
-byByZWFkcyB0aGUgVUZTIGRyaXZlcg0KPiBjb2RlDQo+IGFuZCB3aG8gaGFzIG5vdCBmb2xsb3dl
-ZCB0aGlzIGRpc2N1c3Npb24uDQo+IA0KDQpIaSBCYXJ0LA0KDQpTaW5jZSB0aGlzIGlzIHVubGlr
-ZWx5IHRvIGhhcHBlbiBhbmQgdGhlIGNvZGUgaXMgbm90IGV4cGVjdGVkIA0KdG8gcmVhY2ggaGVy
-ZSwgSSB0aGluayBpdCdzIGJldHRlciB0byB3YWl0IGFuZCBzZWUgaWYgaXQgb2NjdXJzLg0KQW5k
-IG9wZW4gYSBkaXNjdXNzaW9uIG9uIGhvdyB0byBkZWFsIHdpdGggdGhpcyBjYXNlIGlmIG9jY3Vy
-cy4NCkkgd2lsbCByZW1vdmUgaXQgaW4gdGhlIG5leHQgdmVyc2lvbi4NCg0KDQo+ID4gQEAgLTc1
-NjEsNiArNzU1MiwxNiBAQCBpbnQgdWZzaGNkX3RyeV90b19hYm9ydF90YXNrKHN0cnVjdCB1ZnNf
-aGJhDQo+ICpoYmEsIGludCB0YWcpDQo+ID4gICBnb3RvIG91dDsNCj4gPiAgIH0NCj4gPiAgIA0K
-PiA+ICsvKg0KPiA+ICsgKiBXaGVuIHRoZSBob3N0IHNvZnR3YXJlIHJlY2VpdmVzIGEgIkZVTkNU
-SU9OIENPTVBMRVRFIiwgc2V0IGZsYWcNCj4gPiArICogdG8gcmVxdWV1ZSBjb21tYW5kIGFmdGVy
-IHJlY2VpdmUgcmVzcG9uc2Ugd2l0aCBPQ1NfQUJPUlRFRA0KPiA+ICsgKiBTREIgbW9kZTogVVRS
-TENMUiBUYXNrIE1hbmFnZW1lbnQgcmVzcG9uc2Ugd2hpY2ggbWVhbnMgYQ0KPiBUcmFuc2Zlcg0K
-PiA+ICsgKiAgICAgICAgICAgUmVxdWVzdCB3YXMgYWJvcnRlZC4NCj4gPiArICogTUNRIG1vZGU6
-IEhvc3Qgd2lsbCBwb3N0IHRvIENRIHdpdGggT0NTX0FCT1JURUQgYWZ0ZXIgU1ENCj4gY2xlYW51
-cA0KPiA+ICsgKi8NCj4gPiAraWYgKCFlcnIpDQo+ID4gK2xyYnAtPmFib3J0X2luaXRpYXRlZF9i
-eV9lcnIgPSB0cnVlOw0KPiANCj4gUGxlYXNlIGFkZCBhIGNvbW1lbnQgdGhhdCBleHBsYWlucyB0
-aGF0IHRoZSBwdXJwb3NlIG9mIHRoaXMgY29kZSBpcw0KPiB0byANCj4gcmVxdWV1ZSBjb21tYW5k
-cyBhYm9ydGVkIGJ5IHVmc2hjZF9hYm9ydF9hbGwoKS4NCj4gDQoNCk9rYXksIEkgd2lsbCBhZGQg
-bW9yZSBjb21tZW50Lg0KDQo+ID4gKyAqIEBhYm9ydF9pbml0aWF0ZWRfYnlfZXJyOiBhYm9ydCBp
-bml0aWF0ZWQgYnkgZXJyb3INCj4gDQo+IFRoZSBtZW1iZXIgdmFyaWFibGUgbmFtZSBhbmQgYWxz
-byB0aGUgZXhwbGFuYXRpb24gb2YgdGhpcyBtZW1iZXINCj4gdmFyaWFibGUgYXJlIGluY29tcHJl
-aGVuc2libGUgdG8gbWUuDQo+IA0KDQpJIHdpbGwgYWRkIG1vcmUgZmxhZyBkZXNjcmlwdGlvbiB0
-b28uDQoNClRoYW5rcy4NClBldGVyDQoNCg0KPiBUaGFua3MsDQo+IA0KPiBCYXJ0Lg0K
+Since commit 011b46c30476 ("btrfs: skip subtree scan if it's too high to
+avoid low stall in btrfs_commit_transaction()"), btrfs qgroup can
+automatically skip large subtree scan at the cost of marking qgroup
+inconsistent.
+
+It's designed to address the final performance problem of snapshot drop
+with qgroup enabled, but to be safe the default value is
+BTRFS_MAX_LEVEL, requiring a user space daemon to set a different value
+to make it work.
+
+I'd say it's not a good idea to rely on user space tool to set this
+default value, especially when some operations (snapshot dropping) can
+be triggered immediately after mount, leaving a very small window to
+that that sysfs interface.
+
+So instead of disabling this new feature by default, enable it with a
+low threshold (3), so that large subvolume tree drop at mount time won't
+cause huge qgroup workload.
+
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+ fs/btrfs/disk-io.c | 2 +-
+ fs/btrfs/qgroup.c  | 2 +-
+ fs/btrfs/qgroup.h  | 2 ++
+ 3 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 25d768e67e37..a9bd54d1be1e 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1959,7 +1959,7 @@ static void btrfs_init_qgroup(struct btrfs_fs_info *fs_info)
+ 	fs_info->qgroup_seq = 1;
+ 	fs_info->qgroup_ulist = NULL;
+ 	fs_info->qgroup_rescan_running = false;
+-	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
++	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
+ 	mutex_init(&fs_info->qgroup_rescan_lock);
+ }
+ 
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index c297909f1506..aec096dc8829 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1407,7 +1407,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	fs_info->quota_root = NULL;
+ 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_ON;
+ 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
+-	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
++	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
+ 	spin_unlock(&fs_info->qgroup_lock);
+ 
+ 	btrfs_free_qgroup_config(fs_info);
+diff --git a/fs/btrfs/qgroup.h b/fs/btrfs/qgroup.h
+index 98adf4ec7b01..c229256d6fd5 100644
+--- a/fs/btrfs/qgroup.h
++++ b/fs/btrfs/qgroup.h
+@@ -121,6 +121,8 @@ struct btrfs_inode;
+ #define BTRFS_QGROUP_RUNTIME_FLAG_CANCEL_RESCAN		(1ULL << 63)
+ #define BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING		(1ULL << 62)
+ 
++#define BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT		(3)
++
+ /*
+  * Record a dirty extent, and info qgroup to update quota on it
+  */
+-- 
+2.46.0
+
 
