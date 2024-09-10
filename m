@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C8C973257
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5949732FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96587B27A78
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98141285712
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0865E19755E;
-	Tue, 10 Sep 2024 10:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568AE192D7F;
+	Tue, 10 Sep 2024 10:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgCMYQmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA6BCXfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E6E196D9A;
-	Tue, 10 Sep 2024 10:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138BC18FC73;
+	Tue, 10 Sep 2024 10:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963236; cv=none; b=ldW3ownkZGuIrZCEJaT28fjZM+U+zAbtB1DEBFNINcGYN3Fsw10z5E2lSJguZ9ovQX9jGHP0cQhqH9x6wuWLJZaro7f7CEzZde5nT9Tm2DH7FBA4keyV9spmJWtUvz2n5KjX4RhBtyLUMJtdNU5OOjJp3BDcyuBEaB1w0StylpI=
+	t=1725963808; cv=none; b=uzWEHEFFagkaOpI0mRkg4iggL0ipfiCDX1n1ytmVdmxxpdkgB3M45NAt5mtwnF+Af9X5aegKdklfGrUPExTwN+ZvjSgKUN8RT3EYImTYhjFGNFPstOTFjAa2EVarlWbMq6TiX8RnPaq41WudWcD/qKNGS40oppr9gBGjpMdmFWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963236; c=relaxed/simple;
-	bh=CaTbse4lHJ9AcaNaw/rXYESMSgGNd4170uGf6FhFsAY=;
+	s=arc-20240116; t=1725963808; c=relaxed/simple;
+	bh=0F4MitRKD8PL/l9VtoMRlDhVtZmx0vhJojo0/ejh/Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ga7xmwuPh69KL9DpZnwFFAx4VWie0XG8fItVqfXTEC9MX9LPBjjahzxvKN9qxDKZHWpPrnZ7TYsCWsmpMUczHM5FTb6DHOdAGtmTgPSOhFX7/QNkqeAnZn4HIFgVTgpxAecgwVZZTtuNhssbrgBCs/DZezhvKL9eytykC8IaQv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgCMYQmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63C7C4CEC3;
-	Tue, 10 Sep 2024 10:13:55 +0000 (UTC)
+	 MIME-Version; b=kbvsDjsBZD7fpa6VU6zmCka5lu5rqHZtypuYOdOCPbHJbkETrcWaw+UlRxaoWDCndCrIbMJO5jcXyU6StsFmFsAlp3kidBC7a1SWSTgCWD9Y8nSUidicyUw83MVFkdWmB5U2x+gvh0kVChFNR30Jeg8sypGE4kxoDc+7gnA5Z/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA6BCXfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908BCC4CEC3;
+	Tue, 10 Sep 2024 10:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963236;
-	bh=CaTbse4lHJ9AcaNaw/rXYESMSgGNd4170uGf6FhFsAY=;
+	s=korg; t=1725963808;
+	bh=0F4MitRKD8PL/l9VtoMRlDhVtZmx0vhJojo0/ejh/Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgCMYQmQ8msf0LBIdou86Irni9KsjSSU8jnaNrv5HF9ud99jiGknOvTZPXDcKdQwL
-	 HAfC7I3HH5gZj/ic0LtQLuOGWKxgCLXbPb/7BvUwQuA4FjyIN4+i27cmJVsm8SypgA
-	 +K1ogQ1GXZc3fY9tfLSQPu05oHEGpt6rs8qGmNJM=
+	b=IA6BCXfA1kVkNYxfM18JyK37ZsPfB1IocFA3zMmEXln1pLDmGib1q5hRgrxF7jLwn
+	 15LsRlAAiIzDLER/b2z/a7ILB1v3apdHftLv5kj9FlabPRbd8PGlpVqT6XcIv5wLDf
+	 Mv+3Wqx6zWEkCSQGDEMQzey3Wuj+1thL6BofV//s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/192] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+	Naman Jain <namjain@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH 5.15 184/214] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
 Date: Tue, 10 Sep 2024 11:33:26 +0200
-Message-ID: <20240910092605.313722406@linuxfoundation.org>
+Message-ID: <20240910092606.202032174@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
+commit 6fd28941447bf2c8ca0f26fda612a1cabc41663f upstream.
 
-When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
-it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+Rescind offer handling relies on rescind callbacks for some of the
+resources cleanup, if they are registered. It does not unregister
+vmbus device for the primary channel closure, when callback is
+registered. Without it, next onoffer does not come, rescind flag
+remains set and device goes to unusable state.
 
-.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
-   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+Add logic to unregister vmbus for the primary channel in rescind callback
+to ensure channel removal and relid release, and to ensure that next
+onoffer can be received and handled properly.
 
-Fix this by marking debug_fence_init_onstack() with __maybe_unused.
-
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
-
-Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240829071312.1595-3-namjain@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hv/vmbus_drv.c       |    1 +
+ drivers/uio/uio_hv_generic.c |    8 ++++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index 6fc0d1b89690..c2ac1900d73e 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -51,7 +51,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- 	debug_object_init(fence, &i915_sw_fence_debug_descr);
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2008,6 +2008,7 @@ static umode_t vmbus_chan_attr_is_visibl
+ 
+ 	return attr->mode;
+ }
++EXPORT_SYMBOL_GPL(vmbus_device_unregister);
+ 
+ static struct attribute_group vmbus_chan_group = {
+ 	.attrs = vmbus_chan_attrs,
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -119,6 +119,14 @@ static void hv_uio_rescind(struct vmbus_
+ 
+ 	/* Wake up reader */
+ 	uio_event_notify(&pdata->info);
++
++	/*
++	 * With rescind callback registered, rescind path will not unregister the device
++	 * from vmbus when the primary channel is rescinded.
++	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
++	 * Unregister the device from vmbus here.
++	 */
++	vmbus_device_unregister(channel->device_obj);
  }
  
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
- }
-@@ -94,7 +94,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- {
- }
- 
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- }
- 
--- 
-2.43.0
-
+ /* Sysfs API to allow mmap of the ring buffers
 
 
 
