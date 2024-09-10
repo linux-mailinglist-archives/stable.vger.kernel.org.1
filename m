@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AEBF97301A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D100972E00
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8211C23FCB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED4A2870BB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D1114D431;
-	Tue, 10 Sep 2024 09:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B750518B495;
+	Tue, 10 Sep 2024 09:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0U+xL3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5zLI0pN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDB218C03E;
-	Tue, 10 Sep 2024 09:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1C1885A6;
+	Tue, 10 Sep 2024 09:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962249; cv=none; b=Z5+wwVR8KFxkLCDHHixnr3yeBXL2WXagA0B0/QO3rY+L1F2+pAeAic+quZi0t0SeuVy09aeDiM1e2Kwd9dpK/CyKFFOQrWn4QD0weSYUmohrvJG9LG9v8Gefp4ZsS+OXL6lmzkVfye6KRY8XmcZERriw7Wv+hXW4rReiyUxciZg=
+	t=1725961101; cv=none; b=WjT4Ps6kUaVkMToZxu+9ane2AGSR80hx0gd4Y0f2ed/yUIRXvqvTeU+HUZkmEOBFdAomN3LgTXDNh/fFhqfHHuKyoQaLCRSQ5TAOeCrnES3pB/Ccjn+PBEFE7RPI1JAZgvq0v5vKGv0zhl2Gjxbm6k3KQ9GFMz8OimezEfFbKSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962249; c=relaxed/simple;
-	bh=ka0lGrS/ffUNOahWcVxEpmad6l3Bklyi1gkqFcdaahg=;
+	s=arc-20240116; t=1725961101; c=relaxed/simple;
+	bh=YBLOBL1VrZioOKmOzE46RTVZBoEyezkPubZTkDDIy4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imoyl37OvmSXIybWiMyc+3ldo+nNhIs34TjYRtIVv7EfRjm57hU1/bfbvFSsjqfNXVxZ15vcK7t8aysisllloGIyE/yK0/ii/Nuzf6ivFmjPGo/UY+IwAqFZKl/219DPjjKxh7Cv9qmyH9uNIUwTZBiw8rG5VYbsmQqyk95vbz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0U+xL3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBA3C4CEC3;
-	Tue, 10 Sep 2024 09:57:28 +0000 (UTC)
+	 MIME-Version; b=A2zN9t45c6VXs/QzDbgUJyAi9HsbYsyYo198jLBO7fXVWTef4FHJT1/FemFMbNkbTwYxY6OhGVY9AaCKCk0qeqdGxOizGoN3Oi65ph9qNzIaRtYiJKepIATp50cs1vX/YhVl1Af0WFX+x1c74hbWP6+1t55pW8PJ1RuSO1xhJBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5zLI0pN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E1C4CECC;
+	Tue, 10 Sep 2024 09:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962249;
-	bh=ka0lGrS/ffUNOahWcVxEpmad6l3Bklyi1gkqFcdaahg=;
+	s=korg; t=1725961100;
+	bh=YBLOBL1VrZioOKmOzE46RTVZBoEyezkPubZTkDDIy4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0U+xL3iiI/MA/6iakKhFXU7VgVFSDT+nkD6xda5w7cHguXyFkTNaEEoHWXt6MIyu
-	 fr0gI14RYo5v9fTLBl9K3/F74NvGaXrINs7vIFRUDXRebrrZGP5KwNAIQdehHM3LQr
-	 Y6hxeKY1sJxqkcp2S5KeWqpnIl+7F2EpMX0IDSwU=
+	b=m5zLI0pN11n/lew8vMtvTRnnxzh9lxnA0IWVRIiLWXa3C5/5JB303xNJEv6yB+pmo
+	 0I0hNHwSM4B1K6r8t/JFg3GdcVIKclLjZ/ooz+xaIXxRYWw4g2uY0CW+6JXD00YYCs
+	 +CT8U+p6f0nSa9+4J4ixVdhCJPnbCZiLGa3xCikM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 318/375] ACPI: processor: Fix memory leaks in error paths of processor_add()
+Subject: [PATCH 4.19 53/96] cgroup: Protect css->cgroup write under css_set_lock
 Date: Tue, 10 Sep 2024 11:31:55 +0200
-Message-ID: <20240910092633.248163473@linuxfoundation.org>
+Message-ID: <20240910092543.863051822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 47ec9b417ed9b6b8ec2a941cd84d9de62adc358a ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-If acpi_processor_get_info() returned an error, pr and the associated
-pr->throttling.shared_cpu_map were leaked.
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-The unwind code was in the wrong order wrt to setup, relying on
-some unwind actions having no affect (clearing variables that were
-never set etc).  That makes it harder to reason about so reorder
-and add appropriate labels to only undo what was actually set up
-in the first place.
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240529133446.28446-6-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index c052cdeca9fd..5f5a01ccfc3a 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -400,7 +400,7 @@ static int acpi_processor_add(struct acpi_device *device,
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 6322b56529e9..30c058806702 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1712,9 +1712,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
  
- 	result = acpi_processor_get_info(device);
- 	if (result) /* Processor is not physically present or unavailable */
--		return result;
-+		goto err_clear_driver_data;
- 
- 	BUG_ON(pr->id >= nr_cpu_ids);
- 
-@@ -415,7 +415,7 @@ static int acpi_processor_add(struct acpi_device *device,
- 			"BIOS reported wrong ACPI id %d for the processor\n",
- 			pr->id);
- 		/* Give up, but do not abort the namespace scan. */
--		goto err;
-+		goto err_clear_driver_data;
- 	}
- 	/*
- 	 * processor_device_array is not cleared on errors to allow buggy BIOS
-@@ -427,12 +427,12 @@ static int acpi_processor_add(struct acpi_device *device,
- 	dev = get_cpu_device(pr->id);
- 	if (!dev) {
- 		result = -ENODEV;
--		goto err;
-+		goto err_clear_per_cpu;
- 	}
- 
- 	result = acpi_bind_one(dev, device);
- 	if (result)
--		goto err;
-+		goto err_clear_per_cpu;
- 
- 	pr->dev = dev;
- 
-@@ -443,10 +443,11 @@ static int acpi_processor_add(struct acpi_device *device,
- 	dev_err(dev, "Processor driver could not be attached\n");
- 	acpi_unbind_one(dev);
- 
-- err:
--	free_cpumask_var(pr->throttling.shared_cpu_map);
--	device->driver_data = NULL;
-+ err_clear_per_cpu:
- 	per_cpu(processors, pr->id) = NULL;
-+ err_clear_driver_data:
-+	device->driver_data = NULL;
-+	free_cpumask_var(pr->throttling.shared_cpu_map);
-  err_free_pr:
- 	kfree(pr);
- 	return result;
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
