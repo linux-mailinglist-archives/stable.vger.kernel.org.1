@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A849734CC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC24973407
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D54B1F25EF7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D844928BB52
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7B41991CD;
-	Tue, 10 Sep 2024 10:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72453192B8E;
+	Tue, 10 Sep 2024 10:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNn/65XU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTtCizq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376A51917DD;
-	Tue, 10 Sep 2024 10:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31841172BA8;
+	Tue, 10 Sep 2024 10:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964821; cv=none; b=C9F/WUL2yAuZCU9Dly3doF8TmA/Bd7tkajCh7O7uyNb7iDQ70dK/6NkG7gFoPWqNU763rakics9/B4upz4BY46whNA2QVOktBgy1MpYZCF53D/oKlpZP2NTVLMXtZTtR5VOcGgY8B1bw4gv3BSGzUzPVbNQIUz+JCQ5xyMHu+rs=
+	t=1725964423; cv=none; b=iuo9h0pps8ApHDPAtmyqSsDRtUeW5eBOd/z7/R0ckmb9pEd2FT09t1VI8SEgAcDsYwYz4yWsY7IJCjEpSsenHOZeR7zSztVF3PJjg7UQk0kDiq2Hm6i+MSxyCI9qBhDRza9fGbOFWwEKwzvNEkZgeyfKD8V2LM2edRj+W3bG/j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964821; c=relaxed/simple;
-	bh=N5bFS1rKIKjN/64NgzSlFVclkrdTGyFYePA0Du+qISI=;
+	s=arc-20240116; t=1725964423; c=relaxed/simple;
+	bh=IpKsCMASEGoVWn7pyIpULflRdAQCXlVQaRsyv68zh60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5Fpeh30KORpAYuTIp2t7ffiwyy/Gawyw//Kz1QcZPSoA7/HRxK/hxf2o/qUZNzkufK6xm8m9RozXpKQWdqfdo6YT2aelPogtNoLI6Zl/eaUYX1mnRLVJ2JC9f1XH/J+K9S4rlybsCEfuRI2rLijVt0vTreVTObMPVmGkPh6dmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNn/65XU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B214BC4CECE;
-	Tue, 10 Sep 2024 10:40:20 +0000 (UTC)
+	 MIME-Version; b=sTxKRTTjHlfreJU0ymKQprs/QTVt7tcaGCkyvSJoN5QNSBoc+dOgbQuXCm8iFh2H7+mRE5AOs93/d84Wzs9+qx3l5XaZwRQuVcOIiHwOjyaGx0MVSxxpLBYdWyRV1VYIc0DgCGnjZFGXo44n9Kj8PV6/+gf+ZhXeBZVRlJ3/z78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTtCizq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1BEC4CEC3;
+	Tue, 10 Sep 2024 10:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964821;
-	bh=N5bFS1rKIKjN/64NgzSlFVclkrdTGyFYePA0Du+qISI=;
+	s=korg; t=1725964423;
+	bh=IpKsCMASEGoVWn7pyIpULflRdAQCXlVQaRsyv68zh60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNn/65XUIUCv/Sum52XKLktKOEL5Muj9gERoamhE+9LPjSbyf8MB4myfn6d0EMJPE
-	 VjoCTGYGS1cGXxaqZp2HPByWyJb5DjDtc0URMksA3Ieda52XxDXMYIeuv3GGDQBZKX
-	 5v0BoR77FFxGLRSL0obBHpSp/z7D5EIIyD82Leh4=
+	b=WTtCizq+ibR6gcnvaTP2CNH3WU7jYKhOwCEj8y3+07Ww8jDzd4m4Swxo66JfSqGOm
+	 +zf2f3cuHp3S8Fd7oXDVU89GdkrKBZapBLz0LiP0YfCz0jbvS37Unq6qstkzVjaZg9
+	 uDGZwqPz9axzxje2aborkXhGmupvbRXLE7bE+AAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/186] media: uvcvideo: Enforce alignment of frame and interval
+Subject: [PATCH 6.6 151/269] crypto: qat - fix unintentional re-enabling of error interrupts
 Date: Tue, 10 Sep 2024 11:32:18 +0200
-Message-ID: <20240910092556.303056003@linuxfoundation.org>
+Message-ID: <20240910092613.603654629@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
 
-[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
+[ Upstream commit f0622894c59458fceb33c4197462bc2006f3fc6b ]
 
-Struct uvc_frame and interval (u32*) are packaged together on
-streaming->formats on a single contiguous allocation.
+The logic that detects pending VF2PF interrupts unintentionally clears
+the section of the error mask register(s) not related to VF2PF.
+This might cause interrupts unrelated to VF2PF, reported through
+errsou3 and errsou5, to be reported again after the execution
+of the function disable_pending_vf2pf_interrupts() in dh895xcc
+and GEN2 devices.
 
-Right now they are allocated right after uvc_format, without taking into
-consideration their required alignment.
+Fix by updating only section of errmsk3 and errmsk5 related to VF2PF.
 
-This is working fine because both structures have a field with a
-pointer, but it will stop working when the sizeof() of any of those
-structs is not a multiple of the sizeof(void*).
-
-Enforce that alignment during the allocation.
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
+Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_gen2_pfvf.c       | 4 +++-
+ .../crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c  | 8 ++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 6334f99f1854..cfbc7595cd0b 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -948,16 +948,26 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 		goto error;
- 	}
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen2_pfvf.c b/drivers/crypto/intel/qat/qat_common/adf_gen2_pfvf.c
+index 70ef11963938..43af81fcab86 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_gen2_pfvf.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_gen2_pfvf.c
+@@ -100,7 +100,9 @@ static u32 adf_gen2_disable_pending_vf2pf_interrupts(void __iomem *pmisc_addr)
+ 	errmsk3 |= ADF_GEN2_ERR_MSK_VF2PF(ADF_GEN2_VF_MSK);
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
  
--	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
-+	/*
-+	 * Allocate memory for the formats, the frames and the intervals,
-+	 * plus any required padding to guarantee that everything has the
-+	 * correct alignment.
-+	 */
-+	size = nformats * sizeof(*format);
-+	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
-+	size = ALIGN(size, __alignof__(*interval))
- 	     + nintervals * sizeof(*interval);
+-	errmsk3 &= ADF_GEN2_ERR_MSK_VF2PF(sources | disabled);
++	/* Update only section of errmsk3 related to VF2PF */
++	errmsk3 &= ~ADF_GEN2_ERR_MSK_VF2PF(ADF_GEN2_VF_MSK);
++	errmsk3 |= ADF_GEN2_ERR_MSK_VF2PF(sources | disabled);
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
+ 
+ 	/* Return the sources of the (new) interrupt(s) */
+diff --git a/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c b/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
+index 09551f949126..0e40897cc983 100644
+--- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
+@@ -191,8 +191,12 @@ static u32 disable_pending_vf2pf_interrupts(void __iomem *pmisc_addr)
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK5, errmsk5);
+ 
+-	errmsk3 &= ADF_DH895XCC_ERR_MSK_VF2PF_L(sources | disabled);
+-	errmsk5 &= ADF_DH895XCC_ERR_MSK_VF2PF_U(sources | disabled);
++	/* Update only section of errmsk3 and errmsk5 related to VF2PF */
++	errmsk3 &= ~ADF_DH895XCC_ERR_MSK_VF2PF_L(ADF_DH895XCC_VF_MSK);
++	errmsk5 &= ~ADF_DH895XCC_ERR_MSK_VF2PF_U(ADF_DH895XCC_VF_MSK);
 +
- 	format = kzalloc(size, GFP_KERNEL);
--	if (format == NULL) {
-+	if (!format) {
- 		ret = -ENOMEM;
- 		goto error;
- 	}
++	errmsk3 |= ADF_DH895XCC_ERR_MSK_VF2PF_L(sources | disabled);
++	errmsk5 |= ADF_DH895XCC_ERR_MSK_VF2PF_U(sources | disabled);
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
+ 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK5, errmsk5);
  
--	frame = (struct uvc_frame *)&format[nformats];
--	interval = (u32 *)&frame[nframes];
-+	frame = (void *)format + nformats * sizeof(*format);
-+	frame = PTR_ALIGN(frame, __alignof__(*frame));
-+	interval = (void *)frame + nframes * sizeof(*frame);
-+	interval = PTR_ALIGN(interval, __alignof__(*interval));
- 
- 	streaming->format = format;
- 	streaming->nformats = nformats;
 -- 
 2.43.0
 
