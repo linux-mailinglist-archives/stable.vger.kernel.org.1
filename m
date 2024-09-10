@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-74334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82FD972EBF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:46:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C86972EDA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164EB1C23B7C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:46:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE181288812
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB62191F63;
-	Tue, 10 Sep 2024 09:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A791922DC;
+	Tue, 10 Sep 2024 09:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrSr8PRz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH1fJf7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637761917FB;
-	Tue, 10 Sep 2024 09:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E208F13B2B0;
+	Tue, 10 Sep 2024 09:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961502; cv=none; b=ZM7ThZpKkAthkjjRmcng95NRe/uaNFwSDhg8XGP+pNEjPW6nGj9Gv/VoiCpiKcDQ1Fz8N8ix61wxQi90BJk8dGJWb344w41tORdKRjsS/75InB2jzTmMJhglyWPFzTnsCud2WzjY742FSj43RAonNwAHcs1RWg5CoabDl3jERTY=
+	t=1725961535; cv=none; b=Y0cmWTAzssEnW9YVhmhxtWOUUYKCdMelzFl3O7SeBj9kSx2vUW+iQqFCqCNp6EPJT2eUKjG7hmWurIsRcJXu8QQ0+dPqSKdENUv3s4ANsrr5nlkB4QZJBCuRKyW9ax6Y0bJFSufogw3PrvkPZccI8NPOg7RpzKLTMgJiLqtQTyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961502; c=relaxed/simple;
-	bh=x5zLTzWcbHLspxuv6cxRdD8o3gAscpawtZruNyu/ipU=;
+	s=arc-20240116; t=1725961535; c=relaxed/simple;
+	bh=zXcY7N99zX/gJSThEtkj1vE9nlCdhUtNT70FyekDUEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAodWhUJ+n/PcQql+DiEzyObD6GVZ2KzovnjNqsS4WvgVVtJ9ppJjJc7lBjYfSvAdG8QSsKzntWwD73ePno8pmdkOIeQASXDFzDtEkCuctBEOjnghXeyK07CbfcnNcJNs9iq4EAFQ8ZakiVvs4qM77QY/CsvIzt1l831tkWG9+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrSr8PRz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB0DC4CEC3;
-	Tue, 10 Sep 2024 09:45:01 +0000 (UTC)
+	 MIME-Version; b=BrEjkJFJHEp44w5+lbSGN93VYAAm0Nr3aib0rdZBC+g+9SD4/JooPeeazU6BiC+otbR7X5yIbqlrBzN82tMG3Se2DVVVIpw8zWZdoOpWyHQgXmGwYzo9mEituyjynHsaOXrrMXoYuLiL8kXzyKk/Wj/JX7RXRaeHDM2En8+vN+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH1fJf7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69934C4CEC3;
+	Tue, 10 Sep 2024 09:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961502;
-	bh=x5zLTzWcbHLspxuv6cxRdD8o3gAscpawtZruNyu/ipU=;
+	s=korg; t=1725961534;
+	bh=zXcY7N99zX/gJSThEtkj1vE9nlCdhUtNT70FyekDUEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrSr8PRz4zR65DRNTCo4vlc8L7aTOSUt9PKlaB0M/TTkdDaahUkE6I1LbzmbktJM4
-	 m7LuPXWiQRTM1sMcGJ8G3ncG+v1SmsC4+qJALR5vOC1H01A/mZdUAnqlKkLQcUvooQ
-	 3oCOr2QrVSn+Ja1vX885Vt09Q4e0/fq/ig5iYwxs=
+	b=wH1fJf7wk1tGp7DFvybKqrgGAVQjvvHJVsPsHbwaJnSp4hv9Jqh2CHtIHWureMlHs
+	 FLZSdEK+JI31iqdJyRIrh2J+BXR9Cb8XoL7dKOkgujqvAybZ6V7vXZV7tugxgdOTLX
+	 LjcZeGB73NJ1AWwdmwNSn52/QmnMZYEjEsEb7UvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 074/375] Revert "drm/amdgpu: align pp_power_profile_mode with kernel docs"
-Date: Tue, 10 Sep 2024 11:27:51 +0200
-Message-ID: <20240910092624.704260589@linuxfoundation.org>
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.10 075/375] Revert "wifi: ath11k: restore country code during resume"
+Date: Tue, 10 Sep 2024 11:27:52 +0200
+Message-ID: <20240910092624.736148717@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -64,46 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-commit 1a8d845470941f1b6de1b392227530c097dc5e0c upstream.
+commit d3e154d7776ba57ab679fb816fb87b627fba21c9 upstream.
 
-This reverts commit 8f614469de248a4bc55fb07e55d5f4c340c75b11.
+This reverts commit 7f0343b7b8710436c1e6355c71782d32ada47e0c.
 
-This breaks some manual setting of the profile mode in
-certain cases.
+We are going to revert commit 166a490f59ac ("wifi: ath11k: support hibernation"), on
+which this commit depends. With that commit reverted, this one is not needed any
+more, so revert this commit first.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3600
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7a199557643e993d4e7357860624b8aa5d8f4340)
-Cc: stable@vger.kernel.org
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240830073420.5790-2-quic_bqiang@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2257,7 +2257,8 @@ static int smu_adjust_power_state_dynami
- 		smu_dpm_ctx->dpm_level = level;
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1009,16 +1009,6 @@ int ath11k_core_resume(struct ath11k_bas
+ 		return -ETIMEDOUT;
  	}
  
--	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
-+	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
-+		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
- 		index = fls(smu->workload_mask);
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
-@@ -2336,7 +2337,8 @@ static int smu_switch_power_profile(void
- 		workload[0] = smu->workload_setting[index];
- 	}
- 
--	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
-+	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
-+		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
- 		smu_bump_power_profile_mode(smu, workload, 0);
- 
- 	return 0;
+-	if (ab->hw_params.current_cc_support &&
+-	    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
+-		ret = ath11k_reg_set_cc(ar);
+-		if (ret) {
+-			ath11k_warn(ab, "failed to set country code during resume: %d\n",
+-				    ret);
+-			return ret;
+-		}
+-	}
+-
+ 	ret = ath11k_dp_rx_pktlog_start(ab);
+ 	if (ret)
+ 		ath11k_warn(ab, "failed to start rx pktlog during resume: %d\n",
 
 
 
