@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D347B9734DC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735FE9732D0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 123B91C24F2B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DFEE1F2123F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9485118B462;
-	Tue, 10 Sep 2024 10:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1509418EFE4;
+	Tue, 10 Sep 2024 10:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeb/EnjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsHu7gSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518F117BB0C;
-	Tue, 10 Sep 2024 10:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89D017A589;
+	Tue, 10 Sep 2024 10:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964871; cv=none; b=DOLeQ9lhDz4VI9l32n4cfXurUCknO+psH7Usgnf5Hqw3/F+1xG7CYU5nKywQ4Clldu0NZ6/1lubhYi7PCXa4TQ1CbC2Ab/57InCZbflcsaCJdMWzygvdmcL0NDN2aKouzRplvD0uHFvcnhm5EUTkX5m/WzZevPllOY+oxszCFBE=
+	t=1725963661; cv=none; b=TVNm5fmv4QhQwlvv2reY6o0gR/+ds24VUMahiM4DYWEZPL9XzUE0hPK9e0Id+HYcPwh3lRbeMTvbcQ2FtvPzUSdyvd9TsfpXJNDf7N6wQIQ+NJNxUX88eWN1EG6EUGx6jJpR2CY5LO7msxTEgKAXvlktiCQmgnf76HW3IulEWEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964871; c=relaxed/simple;
-	bh=5LT3BcNgjkSlox16UgKQx017AGhRqsmSlTeB0x4BGzs=;
+	s=arc-20240116; t=1725963661; c=relaxed/simple;
+	bh=ai5HHTH90gtrD6G74tFKM9Woahg0YhasIztoLCGIMq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Veegzqr16azQSFp4PSJQw/aXftlGwuNtjk6mdz82KHP1UYUDAMi3bs73vWXmmk2S78+jgzFgMrB66HQJSjZE1gEf1jGTv3fi1CFHn5p45PfjSLxfhA1CoMv+Bp1ROLdvmFcw9mu335wA0xpD6omMuc/b2ipTG+Ny//uKY24LRKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeb/EnjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB80AC4CEC3;
-	Tue, 10 Sep 2024 10:41:10 +0000 (UTC)
+	 MIME-Version; b=leEona1HmUOzLv5MelZyZd1j/Xsc3RdgYsPvmaVuMVqeRiAyui9QOG2EbrvZZSHGzd+P/FcxmhjUlms4ozHhfl44Su2pc+beip9HbnyrXCFLPGXd5J9P2UJEnvUNr8WDimtF17KGyNBiglMuJSeqa/mVGlGmdZoJqQM9mau2MSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsHu7gSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F174EC4CEC3;
+	Tue, 10 Sep 2024 10:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964871;
-	bh=5LT3BcNgjkSlox16UgKQx017AGhRqsmSlTeB0x4BGzs=;
+	s=korg; t=1725963661;
+	bh=ai5HHTH90gtrD6G74tFKM9Woahg0YhasIztoLCGIMq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qeb/EnjH906Latj7+XM14tuhQsZaosVWnGYb2lCNzM9V2bovV7n8s4sph/Cru/9Lm
-	 NPqsoNyXFKGxnrp/T6wbZScEi07liiIpT5gSXCBLatagWjt/XBX4/0pzWa9/gfYCX/
-	 oH64vKHlIohw1utHBWvb/w/ZpqgRTyttUCVH95SY=
+	b=XsHu7gSy0L0TpnJOnkpGaIWB4uOkAkiicCDxGNVH7+Kc0kUTKxzXfWxlHJg67T2uT
+	 Z0UzqUgYIb6PQBfGvdsjdfNi9/xG01pi9WcVBKwsfTzLw/vIxuUulN+KZZwJytrke0
+	 /hmu/fIJykmvDpxuzY2JALhj9Ihg0umreqENxHx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 059/186] ata: libata: Fix memory leak for error path in ata_host_alloc()
-Date: Tue, 10 Sep 2024 11:32:34 +0200
-Message-ID: <20240910092556.917515720@linuxfoundation.org>
+	Jonas Gorski <jonas.gorski@bisdn.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 133/214] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
+Date: Tue, 10 Sep 2024 11:32:35 +0200
+Message-ID: <20240910092604.189661937@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Jonas Gorski <jonas.gorski@bisdn.de>
 
-commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
+[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
 
-In ata_host_alloc(), if devres_alloc() fails to allocate the device host
-resource data pointer, the already allocated ata_host structure is not
-freed before returning from the function. This results in a potential
-memory leak.
+When userspace wants to take over a fdb entry by setting it as
+EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
+BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
 
-Call kfree(host) before jumping to the error handling path to ensure
-that the ata_host structure is properly freed if devres_alloc() fails.
+If the bridge updates the entry later because its port changed, we clear
+the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
+flag set.
 
-Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If userspace then wants to take over the entry again,
+br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
+setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
+update.
+
+Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
+if this was a user fdb entry or not.
+
+Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
+Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bridge/br_fdb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5429,8 +5429,10 @@ struct ata_host *ata_host_alloc(struct d
- 	}
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 46812b659710..83ec74b67340 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -1299,12 +1299,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			modified = true;
+ 		}
  
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
--	if (!dr)
-+	if (!dr) {
-+		kfree(host);
- 		goto err_out;
-+	}
+-		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
++		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+-			/* Take over SW learned entry */
+-			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
++		} else {
+ 			modified = true;
+ 		}
  
- 	devres_add(dev, dr);
- 	dev_set_drvdata(dev, host);
+-- 
+2.43.0
+
 
 
 
