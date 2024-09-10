@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A50973292
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDC497317D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC1A2842BE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1995A1C247F8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8FB1946CD;
-	Tue, 10 Sep 2024 10:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DE19341A;
+	Tue, 10 Sep 2024 10:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSpKSyYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od+sg+7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90CC143880;
-	Tue, 10 Sep 2024 10:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FBD18C32F;
+	Tue, 10 Sep 2024 10:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963521; cv=none; b=LOzr3tpjSI33Mgi5YLcVT0rDmdNaiR+j4UKl31/a5JUhq3UEz9Q/K2KJ8xsL7lnmhGXwdGpYqxju9tTKrqwYPO+lG7qKwpJCKgdhrfVXsgf1UE3U8NTAeGzaXlaaQZXhFGcOEyrDEgrOmebLihHwf5jTRLXpyl+ST1892dipqHA=
+	t=1725962866; cv=none; b=MJCJ/GWYv4fZ4UxmoUOhwXa5cBAvrL/Ld/vexMJNHf2prL/p0+Rcfd757KmnKxKkmav5k3hE50+I1GKvMW5R70l9wkC//KcUv7dS913WsrNBdSZtMZVXZtKlrZDHybU21lfHt6cbvl/Eos9u4xBdpHZrsBHxi8jtmUMsNoJIajM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963521; c=relaxed/simple;
-	bh=CGiLpLcjT9rO+n4IacF8u5iNQkCnEMKzgEDIBBx2D+w=;
+	s=arc-20240116; t=1725962866; c=relaxed/simple;
+	bh=tdwrJYQ1d6KQQRZtozEtHVuICLmNcZ6j31gQXeFz7Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsYGTHOKs6Gp4DsiBZDTvl5pWzkTh6NaaX+Y0ZrTAxKpUFu3DRpr8jCnp2IJ5cbc3OfNA8oOAEUsuaFskLgGYWHcXNNs+IEZyacn0VKjwE/SGHK/RxuhHSDy/gvcSHGM7C4dBPhTBJk1fR34Pjh+arYshSFz58r5rYJ062l6bwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSpKSyYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B764C4CEC6;
-	Tue, 10 Sep 2024 10:18:39 +0000 (UTC)
+	 MIME-Version; b=NDeVU8JnbtuUNPir4fSn/T12SZ/aoAAyfNvCSI/V//WKTuXWT00v8TEdWRKV8LgaltJG/vSsvH2mJLQ3hQxSxZ+GB/fABJcpkEenPedUWflFB+vCAu4zmB//It0+X3wQrK9LbjcRWwZ9fEJ9iwtL4BieW8QMMqcw6kQoANA/GCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od+sg+7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABD9C4CEC3;
+	Tue, 10 Sep 2024 10:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963520;
-	bh=CGiLpLcjT9rO+n4IacF8u5iNQkCnEMKzgEDIBBx2D+w=;
+	s=korg; t=1725962866;
+	bh=tdwrJYQ1d6KQQRZtozEtHVuICLmNcZ6j31gQXeFz7Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSpKSyYuAtge+0ffzMDO3W3//NNVncryj+ZWY/sWt2O/RwMFilSyTWCqYtROSK0Gh
-	 P9hR58cByuHTPrmAAkyEZWkqK+GvQjk1DDuO1fvWlrOCXgaXUCOHrV+NVa9AXhbgOZ
-	 RUKhCuuhqzeoPM1Vn8jt+Bo1ezby5QaAWZ2I1rCw=
+	b=od+sg+7xSqdcIB70/AvMY19/jOdQ5QFJQMAGiNzD834n3QrCqyItM3I9qg48gp1qw
+	 fx4QnSs9b83917Xq4HOWSKiG8amRryS4T1gCT/Cg690SVMUuNCs+dPsS6Q7Ne8uqAs
+	 aaUUK7YCYyvxqNEeeXG2z+TowYbaQQGuSP0qNcW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 058/214] ext4: reject casefold inode flag without casefold feature
-Date: Tue, 10 Sep 2024 11:31:20 +0200
-Message-ID: <20240910092601.132881367@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/192] usb: gadget: aspeed_udc: validate endpoint index for ast udc
+Date: Tue, 10 Sep 2024 11:31:21 +0200
+Message-ID: <20240910092600.319701680@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 upstream.
+[ Upstream commit ee0d382feb44ec0f445e2ad63786cd7f3f6a8199 ]
 
-It is invalid for the casefold inode flag to be set without the casefold
-superblock feature flag also being set.  e2fsck already considers this
-case to be invalid and handles it by offering to clear the casefold flag
-on the inode.  __ext4_iget() also already considered this to be invalid,
-sort of, but it only got so far as logging an error message; it didn't
-actually reject the inode.  Make it reject the inode so that other code
-doesn't have to handle this case.  This matches what f2fs does.
+We should verify the bound of the array to assure that host
+may not manipulate the index to point past endpoint array.
 
-Note: we could check 's_encoding != NULL' instead of
-ext4_has_feature_casefold().  This would make the check robust against
-the casefold feature being enabled by userspace writing to the page
-cache of the mounted block device.  However, it's unsolvable in general
-for filesystems to be robust against concurrent writes to the page cache
-of the mounted block device.  Though this very particular scenario
-involving the casefold feature is solvable, we should not pretend that
-we can support this model, so let's just check the casefold feature.
-tune2fs already forbids enabling casefold on a mounted filesystem.
+Found by static analysis.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230814182903.37267-2-ebiggers@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240625022306.2568122-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/aspeed_udc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4921,9 +4921,12 @@ struct inode *__ext4_iget(struct super_b
- 				 "iget: bogus i_mode (%o)", inode->i_mode);
- 		goto bad_inode;
- 	}
--	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb))
-+	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "casefold flag without casefold feature");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
- 		ext4_error_inode(inode, function, line, 0, err_str);
- 		ret = -EFSCORRUPTED;
+diff --git a/drivers/usb/gadget/udc/aspeed_udc.c b/drivers/usb/gadget/udc/aspeed_udc.c
+index cedf17e38245..1a5a1115c1d9 100644
+--- a/drivers/usb/gadget/udc/aspeed_udc.c
++++ b/drivers/usb/gadget/udc/aspeed_udc.c
+@@ -1009,6 +1009,8 @@ static void ast_udc_getstatus(struct ast_udc_dev *udc)
+ 		break;
+ 	case USB_RECIP_ENDPOINT:
+ 		epnum = crq.wIndex & USB_ENDPOINT_NUMBER_MASK;
++		if (epnum >= AST_UDC_NUM_ENDPOINTS)
++			goto stall;
+ 		status = udc->ep[epnum].stopped;
+ 		break;
+ 	default:
+-- 
+2.43.0
+
 
 
 
