@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-74609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2617E973030
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A817A9730E5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D58B25F3E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68DE0288477
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B2618B491;
-	Tue, 10 Sep 2024 09:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CE218E773;
+	Tue, 10 Sep 2024 10:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2JIBnPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL5UpvWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8080617BEAE;
-	Tue, 10 Sep 2024 09:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2266A18787E;
+	Tue, 10 Sep 2024 10:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962304; cv=none; b=layV1HzaaFqaEgNsSPKfL/NrnylCHngfG8Ep5j6Bbdw5mbwfEmtjQ9lkmmRYJaJAmRz4mmc6n25PcvWKbOI4q5qmQiDw6LIa2f5Fr59dVd9aRVAozIEeFxDbCadhWIYPyNr2tn5CwkOy/3H/hwARL2BuqHG7s1yM6agGeOwLmuA=
+	t=1725962595; cv=none; b=O8I5Zcf0vvp7U0BDDLjXIxQppO5u10Awq8zsUNJa2LJaNvJ66ZCTXW8T9tNgMKjshW9BbMuxw4g2vDdknhC5JaQCATTGwkb7mLxTPt2lLWKR+Lzx0hXVfKs7MaDNp9OC03Dj+2x2i4gHMPyAV6nLI5+/BOsyJyUmtXoOukjrcOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962304; c=relaxed/simple;
-	bh=9Ww1WAp4VlxtTS4UdwlfJGyCK/nU2KHWk2hi7/D/Ckc=;
+	s=arc-20240116; t=1725962595; c=relaxed/simple;
+	bh=N8P+pxTkvZVhITh6Q1/3P9ea6LFPjffYoPGLZ9TE8rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5uMu/mTwK35i5EaK12u6eTrlJuhln57fUmYxwCoE9vhQ8cQI3MnPiWUYagZ1WSrlJr7XSvPM7Fm/hfn/D6eY08km4jwE9t2906HWLNA6FsTr2cDtQ1dJ8sMSELpcgDZZqNf01FKqktspJUhWPSHd2KT016ehV71UPAoqt6iUcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2JIBnPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05240C4CEC3;
-	Tue, 10 Sep 2024 09:58:23 +0000 (UTC)
+	 MIME-Version; b=u66YO8/1auVIlyKremQiA5WT1iPgFntvSytdxT1HPir9s3qwbJ7Xw21tKonMg66Fucirz8cnKFQPSfynB9OylxvxnVpgJ+Gb8R5FMiiA2n1PaXZvVqKShi0CLTTlU+A13aPgRlDT9sA3At0Fiiy78WwyHkGXoi02h6JD/HuinW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL5UpvWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDC2C4CEC3;
+	Tue, 10 Sep 2024 10:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962304;
-	bh=9Ww1WAp4VlxtTS4UdwlfJGyCK/nU2KHWk2hi7/D/Ckc=;
+	s=korg; t=1725962594;
+	bh=N8P+pxTkvZVhITh6Q1/3P9ea6LFPjffYoPGLZ9TE8rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2JIBnPwYa6RbDChZOw8kewW/k7P78zfHQQ8xf4UBBeiu9OQj6AgDFw3ONh1iZKyP
-	 vNuTtfEY+QP2nQoFu5rkvS5dKRA5ElYJuikkksmKnfu1S5L6lZXnXjszuxjkKo/wsf
-	 dH1E0ng3hZFnRsCYRmXaAVbntzj+h+wV61L5DlSI=
+	b=LL5UpvWVQ/gPEsNCoM7+uBaVetkCxH+iI9xrjA0zXlfWULvr5zWkUYsmNU8ApHPav
+	 QOStp6oY43wuNUnJ8TGc6YotIdUKwji+Mz8ycy+/1u3eSVCfRTr2ERd9UZ+yOeAhIq
+	 K15Z7YWQ5cgUxhXZ76UowHFLomMt1JeQmHNe7bBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 364/375] cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3
+Subject: [PATCH 5.4 086/121] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
 Date: Tue, 10 Sep 2024 11:32:41 +0200
-Message-ID: <20240910092634.852621735@linuxfoundation.org>
+Message-ID: <20240910092549.959070700@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,147 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit a68c74865f517e26728735aba0ae05055eaff76c ]
+[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
 
-Port a number of SMB2/3 async readv/writev fixes to the SMB1 transport:
+Some arch + compiler combinations report a potentially unused variable
+location in btrfs_lookup_dentry(). This is a false alert as the variable
+is passed by value and always valid or there's an error. The compilers
+cannot probably reason about that although btrfs_inode_by_name() is in
+the same file.
 
-    commit a88d60903696c01de577558080ec4fc738a70475
-    cifs: Don't advance the I/O iterator before terminating subrequest
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
 
-    commit ce5291e56081730ec7d87bc9aa41f3de73ff3256
-    cifs: Defer read completion
+   m68k-gcc8/m68k-allmodconfig
+   mips-gcc8/mips-allmodconfig
+   powerpc-gcc5/powerpc-all{mod,yes}config
+   powerpc-gcc5/ppc64_defconfig
 
-    commit 1da29f2c39b67b846b74205c81bf0ccd96d34727
-    netfs, cifs: Fix handling of short DIO read
+Initialize it to zero, this should fix the warnings and won't change the
+behaviour as btrfs_inode_by_name() accepts only a root or inode item
+types, otherwise returns an error.
 
-Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reported-by: Steve French <stfrench@microsoft.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 54 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 8 deletions(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 6dce70f17208..cfae2e918209 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1261,16 +1261,32 @@ CIFS_open(const unsigned int xid, struct cifs_open_parms *oparms, int *oplock,
- 	return rc;
- }
- 
-+static void cifs_readv_worker(struct work_struct *work)
-+{
-+	struct cifs_io_subrequest *rdata =
-+		container_of(work, struct cifs_io_subrequest, subreq.work);
-+
-+	netfs_subreq_terminated(&rdata->subreq,
-+				(rdata->result == 0 || rdata->result == -EAGAIN) ?
-+				rdata->got_bytes : rdata->result, true);
-+}
-+
- static void
- cifs_readv_callback(struct mid_q_entry *mid)
- {
- 	struct cifs_io_subrequest *rdata = mid->callback_data;
-+	struct netfs_inode *ictx = netfs_inode(rdata->rreq->inode);
- 	struct cifs_tcon *tcon = tlink_tcon(rdata->req->cfile->tlink);
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	struct smb_rqst rqst = { .rq_iov = rdata->iov,
- 				 .rq_nvec = 2,
- 				 .rq_iter = rdata->subreq.io_iter };
--	struct cifs_credits credits = { .value = 1, .instance = 0 };
-+	struct cifs_credits credits = {
-+		.value = 1,
-+		.instance = 0,
-+		.rreq_debug_id = rdata->rreq->debug_id,
-+		.rreq_debug_index = rdata->subreq.debug_index,
-+	};
- 
- 	cifs_dbg(FYI, "%s: mid=%llu state=%d result=%d bytes=%zu\n",
- 		 __func__, mid->mid, mid->mid_state, rdata->result,
-@@ -1282,6 +1298,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 		if (server->sign) {
- 			int rc = 0;
- 
-+			iov_iter_truncate(&rqst.rq_iter, rdata->got_bytes);
- 			rc = cifs_verify_signature(&rqst, server,
- 						  mid->sequence_number);
- 			if (rc)
-@@ -1306,13 +1323,21 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 		rdata->result = -EIO;
- 	}
- 
--	if (rdata->result == 0 || rdata->result == -EAGAIN)
--		iov_iter_advance(&rdata->subreq.io_iter, rdata->got_bytes);
-+	if (rdata->result == -ENODATA) {
-+		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
-+		rdata->result = 0;
-+	} else {
-+		if (rdata->got_bytes < rdata->actual_len &&
-+		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
-+		    ictx->remote_i_size) {
-+			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
-+			rdata->result = 0;
-+		}
-+	}
-+
- 	rdata->credits.value = 0;
--	netfs_subreq_terminated(&rdata->subreq,
--				(rdata->result == 0 || rdata->result == -EAGAIN) ?
--				rdata->got_bytes : rdata->result,
--				false);
-+	INIT_WORK(&rdata->subreq.work, cifs_readv_worker);
-+	queue_work(cifsiod_wq, &rdata->subreq.work);
- 	release_mid(mid);
- 	add_credits(server, &credits, 0);
- }
-@@ -1619,9 +1644,15 @@ static void
- cifs_writev_callback(struct mid_q_entry *mid)
- {
- 	struct cifs_io_subrequest *wdata = mid->callback_data;
-+	struct TCP_Server_Info *server = wdata->server;
- 	struct cifs_tcon *tcon = tlink_tcon(wdata->req->cfile->tlink);
- 	WRITE_RSP *smb = (WRITE_RSP *)mid->resp_buf;
--	struct cifs_credits credits = { .value = 1, .instance = 0 };
-+	struct cifs_credits credits = {
-+		.value = 1,
-+		.instance = 0,
-+		.rreq_debug_id = wdata->rreq->debug_id,
-+		.rreq_debug_index = wdata->subreq.debug_index,
-+	};
- 	ssize_t result;
- 	size_t written;
- 
-@@ -1657,9 +1688,16 @@ cifs_writev_callback(struct mid_q_entry *mid)
- 		break;
- 	}
- 
-+	trace_smb3_rw_credits(credits.rreq_debug_id, credits.rreq_debug_index,
-+			      wdata->credits.value,
-+			      server->credits, server->in_flight,
-+			      0, cifs_trace_rw_credits_write_response_clear);
- 	wdata->credits.value = 0;
- 	cifs_write_subrequest_terminated(wdata, result, true);
- 	release_mid(mid);
-+	trace_smb3_rw_credits(credits.rreq_debug_id, credits.rreq_debug_index, 0,
-+			      server->credits, server->in_flight,
-+			      credits.value, cifs_trace_rw_credits_write_response_add);
- 	add_credits(tcon->ses->server, &credits, 0);
- }
- 
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index d2a988bf9c89..cd72409ccc94 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -6087,7 +6087,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
+ 	struct inode *inode;
+ 	struct btrfs_root *root = BTRFS_I(dir)->root;
+ 	struct btrfs_root *sub_root = root;
+-	struct btrfs_key location;
++	struct btrfs_key location = { 0 };
+ 	u8 di_type = 0;
+ 	int index;
+ 	int ret = 0;
 -- 
 2.43.0
 
