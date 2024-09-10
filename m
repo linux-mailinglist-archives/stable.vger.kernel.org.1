@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-75387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65C697344C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7772A973310
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8321D28DF51
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2F81F232F3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5516018FDD5;
-	Tue, 10 Sep 2024 10:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DD2190493;
+	Tue, 10 Sep 2024 10:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRDe1kEG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7U3EqWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104D5184549;
-	Tue, 10 Sep 2024 10:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3264218F2F0;
+	Tue, 10 Sep 2024 10:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964582; cv=none; b=Cue/C5DLehfiL1f5gvptTCz1YXHtFWryAN0WevrbWmAFYkvx8p9aBPpghypyBa0ouvqEj2TKnv7hOombhcef6NiyJ1H4M1JY+0JYSa0LkJL6HSsDVE6UJMQYeZ45prg9KGFCdp46CRbqWzryzE3BKiiTXNKAJVmE+k3pcbSpdAw=
+	t=1725963846; cv=none; b=Z3gb9xSp0E/sCPrBvFnQXWYL2dUNUGXPNguZcfHdc3l9IeNlwBgCcT/T4f9cgSPVSNN4XU1ysOUl+WKcuT9efMP3NDBXu5imWyUcb0IZbdVXMor1nIhZdhs5ln4c1P9cutInPYVwamm8FJ9OH5gfPLbePi2SyH4aqrZ/NLzh6uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964582; c=relaxed/simple;
-	bh=6Oz1+ZdCl0gvJ7ReHkxA2lay1w/iKlviAujqwhXS058=;
+	s=arc-20240116; t=1725963846; c=relaxed/simple;
+	bh=QBaaREHC8zWuvuOz4enQ5hOXgqUR6R0yUNjc+tuaB8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTAoftKJhHMYX6uOaQAV1UatHqPphJbSUmUTwD2SI6UMzEetXYHL2twOaOyy4f2R9pswovzovrip2aLm/tuUtsCWkrY6CpsUw5WOrcMyToAuZN5Nl7J8djgADOBDQzuJxiXpajRhvwAjHwXEYNknxgd7Pz8VjFopsqLrdhEmmTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRDe1kEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57350C4CEC3;
-	Tue, 10 Sep 2024 10:36:21 +0000 (UTC)
+	 MIME-Version; b=Jw3jQyPR39d3NAxkVQ8xgE+K53td1mlED2M1zLw2mvVLzyryR3aYuQSzh8R1E7Bo1hKaJrgThS9slMj7m7mh/R1OXe7jnRnFRWNjJVRmaM2rBh71lvKGeZ0cGCMPfgLJS9aamhc7Qhbz7L1pEixrO5xK1lGzXyt+0jria0YhZWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7U3EqWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6C0C4CEC3;
+	Tue, 10 Sep 2024 10:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964581;
-	bh=6Oz1+ZdCl0gvJ7ReHkxA2lay1w/iKlviAujqwhXS058=;
+	s=korg; t=1725963846;
+	bh=QBaaREHC8zWuvuOz4enQ5hOXgqUR6R0yUNjc+tuaB8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRDe1kEGp1SMKw0Ib3IBaiJitueUcEiFliC7P9UHtRKsHYOg7cPx++Ugo8EUHnGLz
-	 7f29CwQtZFJCoPp18yvvbHEBKxpc/wyt8aDJyGyaiUPN5jhoLheVG+WQaZkq8fgBmK
-	 6I3OXp97u38zarhHSgNsdORrQQ6qN/urgH7enxHc=
+	b=W7U3EqWKYepgqodG5UskVRdi7zs0qHc8jfUN3EwlUHnRNvAIxNBq1Fiq828jeB3q/
+	 XFIAVDaoJq56GO8a+7dWNX+esqTRPPj+/ZUtbAhOAo4cQKCYe3bWT8mtA7mgNzf/Yj
+	 tq7iSLzeIa3nfuazyxBLgmQwoMHI8Ku6LgzHY2oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
-	Jianyong Wu <jianyong.wu@arm.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/269] arm64: acpi: Move get_cpu_for_acpi_id() to a header
+Subject: [PATCH 5.15 196/214] workqueue: Improve scalability of workqueue watchdog touch
 Date: Tue, 10 Sep 2024 11:33:38 +0200
-Message-ID: <20240910092616.150203605@linuxfoundation.org>
+Message-ID: <20240910092606.605536099@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 8d34b6f17b9ac93faa2791eb037dcb08bdf755de ]
+[ Upstream commit 98f887f820c993e05a12e8aa816c80b8661d4c87 ]
 
-ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-to the Linux CPU number.
+On a ~2000 CPU powerpc system, hard lockups have been observed in the
+workqueue code when stop_machine runs (in this case due to CPU hotplug).
+This is due to lots of CPUs spinning in multi_cpu_stop, calling
+touch_nmi_watchdog() which ends up calling wq_watchdog_touch().
+wq_watchdog_touch() writes to the global variable wq_watchdog_touched,
+and that can find itself in the same cacheline as other important
+workqueue data, which slows down operations to the point of lockups.
 
-The helper to retrieve this mapping is only available in arm64's NUMA
-code.
+In the case of the following abridged trace, worker_pool_idr was in
+the hot line, causing the lockups to always appear at idr_find.
 
-Move it to live next to get_acpi_id_for_cpu().
+  watchdog: CPU 1125 self-detected hard LOCKUP @ idr_find
+  Call Trace:
+  get_work_pool
+  __queue_work
+  call_timer_fn
+  run_timer_softirq
+  __do_softirq
+  do_softirq_own_stack
+  irq_exit
+  timer_interrupt
+  decrementer_common_virt
+  * interrupt: 900 (timer) at multi_cpu_stop
+  multi_cpu_stop
+  cpu_stopper_thread
+  smpboot_thread_fn
+  kthread
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Link: https://lore.kernel.org/r/20240529133446.28446-12-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fix this by having wq_watchdog_touch() only write to the line if the
+last time a touch was recorded exceeds 1/4 of the watchdog threshold.
+
+Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 11 +++++++++++
- arch/arm64/kernel/acpi_numa.c | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ kernel/workqueue.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 6792a1f83f2a..bc9a6656fc0c 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -119,6 +119,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
- 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
- }
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index f7975a8f665f..73002260674f 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5935,12 +5935,18 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
  
-+static inline int get_cpu_for_acpi_id(u32 uid)
-+{
-+	int cpu;
-+
-+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-+		if (uid == get_acpi_id_for_cpu(cpu))
-+			return cpu;
-+
-+	return -EINVAL;
-+}
-+
- static inline void arch_fix_phys_package_id(int num, u32 slot) { }
- void __init acpi_init_cpus(void);
- int apei_claim_sea(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-index ccbff21ce1fa..2465f291c7e1 100644
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
- 	return acpi_early_node_map[cpu];
- }
- 
--static inline int get_cpu_for_acpi_id(u32 uid)
--{
--	int cpu;
--
--	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
--		if (uid == get_acpi_id_for_cpu(cpu))
--			return cpu;
--
--	return -EINVAL;
--}
--
- static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
- 				      const unsigned long end)
+ notrace void wq_watchdog_touch(int cpu)
  {
++	unsigned long thresh = READ_ONCE(wq_watchdog_thresh) * HZ;
++	unsigned long touch_ts = READ_ONCE(wq_watchdog_touched);
++	unsigned long now = jiffies;
++
+ 	if (cpu >= 0)
+-		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
++		per_cpu(wq_watchdog_touched_cpu, cpu) = now;
+ 	else
+ 		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
+ 
+-	wq_watchdog_touched = jiffies;
++	/* Don't unnecessarily store to global cacheline */
++	if (time_after(now, touch_ts + thresh / 4))
++		WRITE_ONCE(wq_watchdog_touched, jiffies);
+ }
+ 
+ static void wq_watchdog_set_thresh(unsigned long thresh)
 -- 
 2.43.0
 
