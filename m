@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-75136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEB9973313
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E32973564
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19C81C248C4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F43AB22DEA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DE9190667;
-	Tue, 10 Sep 2024 10:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694A018D637;
+	Tue, 10 Sep 2024 10:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Akmfmmeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arpune1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACBA18C02F;
-	Tue, 10 Sep 2024 10:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2726318CBE6;
+	Tue, 10 Sep 2024 10:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963854; cv=none; b=JQ6HkElCyTk+6OG4f5wiXOe4g3+NY0TFZp+NuilD7fHslC98SkTHiY7vYautY7Q7KKota5W1l3cbEbMkCG97k9y5cHHlaow74Jgd6zVXDbzwUiboY+fziLFnwSRxwcl/7wA2KPMTgBFDSq4VX5WZI5sWOshKCnH/OgRPAkMSVT0=
+	t=1725965149; cv=none; b=SIMgbayekR8ibD2HscfL3lbpN05EJ0vCzT0vFzJHbCp1fR/Qj2xxbEZC94ZNlN3WsCTlKNCfgh4uPXKDg5Vu0hEKw8H9f4hIwO8w+VQ2wKc4WwO8HWwbQ+O0O/oarx8mxdxO5xdsLqadfQ/CxyvvW8PSJKsgh8CFWEloZfO+0vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963854; c=relaxed/simple;
-	bh=ocAijvjIGazYpfcLIWF3tNfyqCGs3On+0d6elu4lh9M=;
+	s=arc-20240116; t=1725965149; c=relaxed/simple;
+	bh=PbEzIVCQ0W8S2svPUd5gQntavcrDmrK5sDzaCjLcHNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDKHCP4o3Y6OS8arPNlIk4LRREUGkibvmB6mKHv0TBpcwEn4pCuKWyH6qC4CLyYnpdS7oL8PmAfmD5pbVH6XLW79+Zu2FeOEf2L70WJsY94R3DC0wRE0gdv2uWDUbA+Ikzb1Ans1bFvUDWzqWLj3nIGuXm2hQXbqQbNkJcfP/pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Akmfmmeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C9C4CEC3;
-	Tue, 10 Sep 2024 10:24:14 +0000 (UTC)
+	 MIME-Version; b=HPDmcZsLs0Q9r8moFEFP3SJepayXb7uN14CpqDP+KST9jFWJfCbOlJVnvLlRRj6I8sVscNQeZfPJywUQG02TNMCfPQgKgzS6a3KnFnuSAZY/zfdM0KAdyTBxnWiDTxF1zU27+U73PIXZdZclGgwNFpnbju9vwJQnbY9zHRAlhDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arpune1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8F8C4CEC3;
+	Tue, 10 Sep 2024 10:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963854;
-	bh=ocAijvjIGazYpfcLIWF3tNfyqCGs3On+0d6elu4lh9M=;
+	s=korg; t=1725965149;
+	bh=PbEzIVCQ0W8S2svPUd5gQntavcrDmrK5sDzaCjLcHNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkmfmmeoLgePNxIAKOy8TUcfyQ6lNp/X8nG2nJu0qn438nbj6NwZhOlO4OHrNGQ6X
-	 Dc20TqzPvUQRexPlRpXM6iH7cUIJ4Bk6gzryeXYlFYVCpCyybaAjN+B74h8kSWSyfT
-	 LfsTF6iOxCvx4ld6ZC+pQF4HA1wyU1ACf/BxYY7w=
+	b=arpune1+FEXtesiG+DBsSY0g28CZckQ1llFPwCQD9wwDtpSApcGbw2NDJKKvfKO0d
+	 nXHQriYa+bVIN0L4FRHqvaWA7vFOi4nvVQcz4r5wjAf3zWGMLrYGUgkyy24CcYjWCp
+	 Pnl1qztuk5GqGA4JoXu48k7m3wd44vz9kkbVDwC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
-	Jianyong Wu <jianyong.wu@arm.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jonas Gorski <jonas.gorski@bisdn.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/214] arm64: acpi: Move get_cpu_for_acpi_id() to a header
+Subject: [PATCH 5.10 126/186] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
 Date: Tue, 10 Sep 2024 11:33:41 +0200
-Message-ID: <20240910092606.704356541@linuxfoundation.org>
+Message-ID: <20240910092559.771215010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Jonas Gorski <jonas.gorski@bisdn.de>
 
-[ Upstream commit 8d34b6f17b9ac93faa2791eb037dcb08bdf755de ]
+[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
 
-ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-to the Linux CPU number.
+When userspace wants to take over a fdb entry by setting it as
+EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
+BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
 
-The helper to retrieve this mapping is only available in arm64's NUMA
-code.
+If the bridge updates the entry later because its port changed, we clear
+the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
+flag set.
 
-Move it to live next to get_acpi_id_for_cpu().
+If userspace then wants to take over the entry again,
+br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
+setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
+update.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Link: https://lore.kernel.org/r/20240529133446.28446-12-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
+if this was a user fdb entry or not.
+
+Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
+Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 11 +++++++++++
- arch/arm64/kernel/acpi_numa.c | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ net/bridge/br_fdb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index bd68e1b7f29f..0d1da93a5bad 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -97,6 +97,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
- 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
- }
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 8a6470a21702..8751571a3cb0 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -1238,12 +1238,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			modified = true;
+ 		}
  
-+static inline int get_cpu_for_acpi_id(u32 uid)
-+{
-+	int cpu;
-+
-+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-+		if (uid == get_acpi_id_for_cpu(cpu))
-+			return cpu;
-+
-+	return -EINVAL;
-+}
-+
- static inline void arch_fix_phys_package_id(int num, u32 slot) { }
- void __init acpi_init_cpus(void);
- int apei_claim_sea(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-index 5d88ae2ae490..31d27e36137c 100644
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
- 	return acpi_early_node_map[cpu];
- }
+-		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
++		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+-			/* Take over SW learned entry */
+-			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
++		} else {
+ 			modified = true;
+ 		}
  
--static inline int get_cpu_for_acpi_id(u32 uid)
--{
--	int cpu;
--
--	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
--		if (uid == get_acpi_id_for_cpu(cpu))
--			return cpu;
--
--	return -EINVAL;
--}
--
- static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
- 				      const unsigned long end)
- {
 -- 
 2.43.0
 
