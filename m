@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-74748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49548973141
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDEC9734FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B251F272AB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 132481C250E0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A4A18C325;
-	Tue, 10 Sep 2024 10:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0471922E1;
+	Tue, 10 Sep 2024 10:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9k+VJZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wi374CnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454718B46D;
-	Tue, 10 Sep 2024 10:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED2E17A924;
+	Tue, 10 Sep 2024 10:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962713; cv=none; b=KUuKIKWuyW6NYpKe2NvY75Nbnl9K7eJYhBuwUN/ikmBCuNiNqv7Dk4DEsVg3XJAPh0T3AqtgVcz+o8l+YPH5zFqKpFzdU817/RqsWC9RwzKRU+rP8htD/degq5mRqkCXWVCoP6A7KizAu2NGHE/18Ckadnb1/EDw5TslGBFps8g=
+	t=1725964987; cv=none; b=ao+LsSVSbX5zbrlbZ8eqf0CXF2yMjKD1b3/luMkt8P5PJWkkTLKpXnT896aC06tN+3XfNjIewabJIJe9v7TtI8+g9mwoX5r+/DOVmiQKXuFFyscYznKOjRLt6xJZQraTdCoGdHlHJngXELOs+aNt7IftqUifX365yVUPcSKHx4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962713; c=relaxed/simple;
-	bh=oEv3vMhlaCqgaRTIAgvgmNM63QnOipi81b/eFRC7lIw=;
+	s=arc-20240116; t=1725964987; c=relaxed/simple;
+	bh=rUM5gl37fPw5b/2mfR6qYgoAwBqkoEUe2opCySo3xXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIL75SqMYwPFcvgNKwnvJIbaKO1RfrsGRfvzCpNVl1rrct0dTHae/fNeYsq5pRfDLs3xCS3vClVLkXbSRfzRxePVr396kR11e7HF6ehtsBeLi59IneW/9o0zFpKfDYRU+/vAtVG5Z6N5nIeEeain2slXBbxagixFLon0AbhOpi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9k+VJZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF17C4CEC3;
-	Tue, 10 Sep 2024 10:05:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BRhbzfAyUlN6pUL/O52i1bGO7SHjok/Gro5YSmHTITbawILC0LGEAa0bGmPQdMJFUN4+nDYkut2/zCssHGxtNqaB/VOUq0ulPHO+G/o9lHolgfHf6PVlPxjh8hzV7kyi9WwtnxsRMk7WP45YC7CIavZUDDWOopBTz7OeDvcp50k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wi374CnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684A3C4CEC6;
+	Tue, 10 Sep 2024 10:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962713;
-	bh=oEv3vMhlaCqgaRTIAgvgmNM63QnOipi81b/eFRC7lIw=;
+	s=korg; t=1725964986;
+	bh=rUM5gl37fPw5b/2mfR6qYgoAwBqkoEUe2opCySo3xXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9k+VJZA3pJ6NyJ8++VFUOuGFhiftLy9ILIR/onyOMQ4JpfvWp/mNAUn3SMltG0jQ
-	 i3I7xig5jpMpQ04Vgnj+64HrgtxdYhV9PrnV1R4Cvv2J3qDbgZ8VFH19+wyGnIFx+q
-	 zxV4X/PO9ZJH/bGNIbQe6Mp9UihkOwMsIyGj315o=
+	b=wi374CnFPtndqOdEIIgJLoJxv3jmavUQuXqo6UPMVXxR4TOIjNnBQQkhF9n6x0TcV
+	 X1wJaWTS+qN91ifhd+s6oFT3JwMpcBKl2TGfGaWTX3LENXEYgPvhejxU8HH7WrPbCV
+	 nn4SOVMuPfqFhoQo5QZaPLLT2XVenX6J0civ57Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roland Xu <mu001999@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4 119/121] rtmutex: Drop rt_mutex::wait_lock before scheduling
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 099/186] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
 Date: Tue, 10 Sep 2024 11:33:14 +0200
-Message-ID: <20240910092551.450115510@linuxfoundation.org>
+Message-ID: <20240910092558.606482840@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roland Xu <mu001999@outlook.com>
+From: Pali Rohár <pali@kernel.org>
 
-commit d33d26036a0274b472299d7dcdaa5fb34329f91b upstream.
+[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
 
-rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
-good case it returns with the lock held and in the deadlock case it emits a
-warning and goes into an endless scheduling loop with the lock held, which
-triggers the 'scheduling in atomic' warning.
+IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
+generic_handle_domain_irq() is never called for these IRQs.
 
-Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
-and dropping into the schedule for ever loop.
+Disallow mapping these IRQs.
 
-[ tglx: Moved unlock before the WARN(), removed the pointless comment,
-  	massaged changelog, added Fixes tag ]
+[ Marek: changed commit message ]
 
-Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
-Signed-off-by: Roland Xu <mu001999@outlook.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/rtmutex.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-armada-370-xp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1204,6 +1204,7 @@ __rt_mutex_slowlock(struct rt_mutex *loc
- }
- 
- static void rt_mutex_handle_deadlock(int res, int detect_deadlock,
-+				     struct rt_mutex *lock,
- 				     struct rt_mutex_waiter *w)
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index c76fb70c70bb..e865a43428b8 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -546,6 +546,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
+ static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
+ 				      unsigned int virq, irq_hw_number_t hw)
  {
- 	/*
-@@ -1213,6 +1214,7 @@ static void rt_mutex_handle_deadlock(int
- 	if (res != -EDEADLOCK || detect_deadlock)
- 		return;
- 
-+	raw_spin_unlock_irq(&lock->wait_lock);
- 	/*
- 	 * Yell lowdly and stop the task right here.
- 	 */
-@@ -1268,7 +1270,7 @@ rt_mutex_slowlock(struct rt_mutex *lock,
- 	if (unlikely(ret)) {
- 		__set_current_state(TASK_RUNNING);
- 		remove_waiter(lock, &waiter);
--		rt_mutex_handle_deadlock(ret, chwalk, &waiter);
-+		rt_mutex_handle_deadlock(ret, chwalk, lock, &waiter);
- 	}
- 
- 	/*
++	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
++	if (hw <= 1)
++		return -EINVAL;
++
+ 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
+ 	if (!is_percpu_irq(hw))
+ 		writel(hw, per_cpu_int_base +
+-- 
+2.43.0
+
 
 
 
