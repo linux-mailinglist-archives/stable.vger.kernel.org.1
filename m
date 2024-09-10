@@ -1,51 +1,56 @@
-Return-Path: <stable+bounces-74272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7745E972E64
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:42:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218C1972E68
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CDA21F256E1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:42:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45AD61C23C2B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA9218C325;
-	Tue, 10 Sep 2024 09:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E4418FC80;
+	Tue, 10 Sep 2024 09:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="If//TT9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWGdf/xD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D313618C03D;
-	Tue, 10 Sep 2024 09:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9D318C91B;
+	Tue, 10 Sep 2024 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961320; cv=none; b=Mqvf+SkpXeqcTt62AAg7CBY3BzhmZqPKEBzUROEmzKz+KECoMlt8FI8EUnC3HwQakGbxj5q1sQhrYKw8dr8WNgeHQO3VJ01CesOSGIt/Fs/hBVYkTc+M9HUmj1IMx8R49IiNcDeRQwz8sk7lFNXz4HCi+5uBZaS/repm7zbJuEw=
+	t=1725961327; cv=none; b=VlE+lb/+AZpZov9goj8sscNCP+AU3UHzebrXvAzqeqgerGPMdFxtQ+mpCovZ6LNf4K/AK0OppdZKrTiVopcCyDxBX/DsNt86+OseD4STGzlCTuflUrT0lBnCIg5jBm9xq6nxGAwZNz7si9uXmG0yH2QCKOEqTcph1mEVbvb0aG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961320; c=relaxed/simple;
-	bh=yVASHphMYt5irefRZz0lY+ph7MKikbC3ORPMoUzsrJ0=;
+	s=arc-20240116; t=1725961327; c=relaxed/simple;
+	bh=ZKJbdoMae/ztHh35b/5h2T3/a0eIt+Xy+NCjf0pqwU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUqaSGfv+fvAGPpPioylCpcM4I7J//bxOnap0U3dn191OLLmGX+QUCXZVeTuPOawk7r1URPUxp4xMNJ3Jow+oqBPfow02bJhG3wHC+emp/IB96Y9AiUp+qNsd2K0Bp19tveLlCeWF+yCTr7p9pKZMKCm+N4/XlFOtHzV3CmX09g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=If//TT9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF79C4CEC3;
-	Tue, 10 Sep 2024 09:42:00 +0000 (UTC)
+	 MIME-Version; b=O7dJ8dWxHEQ6yPiWc7jsw2qu3Y4f001vsH3b0rWkgArWUkwER0DBfWHrweOKFXnip+O75ArvfIq98gh0GR5gUlr4+Ik+r/enlh1Lnt1n/p5X65NXXrbGtnl824wQjh8XiWi0CCD9JhQq4vzLy6A62/U+pkhyQUTDyTotrWFAGJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWGdf/xD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1BBC4CEC3;
+	Tue, 10 Sep 2024 09:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961320;
-	bh=yVASHphMYt5irefRZz0lY+ph7MKikbC3ORPMoUzsrJ0=;
+	s=korg; t=1725961326;
+	bh=ZKJbdoMae/ztHh35b/5h2T3/a0eIt+Xy+NCjf0pqwU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=If//TT9GBPiz/6pEshghOXrPtWNPDwGrYvep0iLFlJ4rvfGFOqOkEiybGOubBhSq0
-	 ZORT5UjdrYL9l02m89X9gtW2RJ7+j6KOHYlYsQWw/dlSFlLRieq/m5ERrXLZz8H/7j
-	 pexq1v7qKpqiZ7LyJCTHbLr5huReKEc00TdRnNPY=
+	b=iWGdf/xDMKQLnfJ7L/RmOIbwuGvZT0dTxUVuzo5FymF37WyJLm8yvJGkOhCIoTFa/
+	 QA5T/PPbvdeTz/5HyOzF3K3s36WpZM4ZTyHC9+UrBtb83nEYStpju0JXW5LOwHP0ol
+	 Po5PJfJHgCt7iY9tSawo2xAYUmmV0Yc7mxePt1SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.10 031/375] Bluetooth: MGMT: Ignore keys being loaded with invalid type
-Date: Tue, 10 Sep 2024 11:27:08 +0200
-Message-ID: <20240910092623.287298547@linuxfoundation.org>
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 032/375] selftests: mm: fix build errors on armhf
+Date: Tue, 10 Sep 2024 11:27:09 +0200
+Message-ID: <20240910092623.314101083@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -64,90 +69,185 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 1e9683c9b6ca88cc9340cdca85edd6134c8cffe3 upstream.
+commit b808f629215685c1941b1cd567c7b7ccb3c90278 upstream.
 
-Due to 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 there could be keys stored
-with the wrong address type so this attempt to detect it and ignore them
-instead of just failing to load all keys.
+The __NR_mmap isn't found on armhf.  The mmap() is commonly available
+system call and its wrapper is present on all architectures.  So it should
+be used directly.  It solves problem for armhf and doesn't create problem
+for other architectures.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/bluez/bluez/issues/875
-Fixes: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Remove sys_mmap() functions as they aren't doing anything else other than
+calling mmap().  There is no need to set errno = 0 manually as glibc
+always resets it.
+
+For reference errors are as following:
+
+  CC       seal_elf
+seal_elf.c: In function 'sys_mmap':
+seal_elf.c:39:33: error: '__NR_mmap' undeclared (first use in this function)
+   39 |         sret = (void *) syscall(__NR_mmap, addr, len, prot,
+      |                                 ^~~~~~~~~
+
+mseal_test.c: In function 'sys_mmap':
+mseal_test.c:90:33: error: '__NR_mmap' undeclared (first use in this function)
+   90 |         sret = (void *) syscall(__NR_mmap, addr, len, prot,
+      |                                 ^~~~~~~~~
+
+Link: https://lkml.kernel.org/r/20240809082511.497266-1-usama.anjum@collabora.com
+Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c |   37 +++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ tools/testing/selftests/mm/mseal_test.c |   37 +++++++++++---------------------
+ tools/testing/selftests/mm/seal_elf.c   |   13 -----------
+ 2 files changed, 14 insertions(+), 36 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2831,15 +2831,6 @@ static int load_link_keys(struct sock *s
- 	bt_dev_dbg(hdev, "debug_keys %u key_count %u", cp->debug_keys,
- 		   key_count);
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -128,17 +128,6 @@ static int sys_mprotect_pkey(void *ptr,
+ 	return sret;
+ }
  
--	for (i = 0; i < key_count; i++) {
--		struct mgmt_link_key_info *key = &cp->keys[i];
+-static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+-	unsigned long flags, unsigned long fd, unsigned long offset)
+-{
+-	void *sret;
 -
--		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
--			return mgmt_cmd_status(sk, hdev->id,
--					       MGMT_OP_LOAD_LINK_KEYS,
--					       MGMT_STATUS_INVALID_PARAMS);
--	}
+-	errno = 0;
+-	sret = (void *) syscall(__NR_mmap, addr, len, prot,
+-		flags, fd, offset);
+-	return sret;
+-}
 -
- 	hci_dev_lock(hdev);
+ static int sys_munmap(void *ptr, size_t size)
+ {
+ 	int sret;
+@@ -219,7 +208,7 @@ static void setup_single_address(int siz
+ {
+ 	void *ptr;
  
- 	hci_link_keys_clear(hdev);
-@@ -2864,6 +2855,19 @@ static int load_link_keys(struct sock *s
- 			continue;
- 		}
+-	ptr = sys_mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	*ptrOut = ptr;
+ }
  
-+		if (key->addr.type != BDADDR_BREDR) {
-+			bt_dev_warn(hdev,
-+				    "Invalid link address type %u for %pMR",
-+				    key->addr.type, &key->addr.bdaddr);
-+			continue;
-+		}
-+
-+		if (key->type > 0x08) {
-+			bt_dev_warn(hdev, "Invalid link key type %u for %pMR",
-+				    key->type, &key->addr.bdaddr);
-+			continue;
-+		}
-+
- 		/* Always ignore debug keys and require a new pairing if
- 		 * the user wants to use them.
- 		 */
-@@ -7147,15 +7151,6 @@ static int load_long_term_keys(struct so
+@@ -228,7 +217,7 @@ static void setup_single_address_rw(int
+ 	void *ptr;
+ 	unsigned long mapflags = MAP_ANONYMOUS | MAP_PRIVATE;
  
- 	bt_dev_dbg(hdev, "key_count %u", key_count);
+-	ptr = sys_mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, 0);
+ 	*ptrOut = ptr;
+ }
  
--	for (i = 0; i < key_count; i++) {
--		struct mgmt_ltk_info *key = &cp->keys[i];
+@@ -252,7 +241,7 @@ bool seal_support(void)
+ 	void *ptr;
+ 	unsigned long page_size = getpagesize();
+ 
+-	ptr = sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	if (ptr == (void *) -1)
+ 		return false;
+ 
+@@ -528,8 +517,8 @@ static void test_seal_zero_address(void)
+ 	int prot;
+ 
+ 	/* use mmap to change protection. */
+-	ptr = sys_mmap(0, size, PROT_NONE,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ptr = mmap(0, size, PROT_NONE,
++		   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	FAIL_TEST_IF_FALSE(ptr == 0);
+ 
+ 	size = get_vma_size(ptr, &prot);
+@@ -1256,8 +1245,8 @@ static void test_seal_mmap_overwrite_pro
+ 	}
+ 
+ 	/* use mmap to change protection. */
+-	ret2 = sys_mmap(ptr, size, PROT_NONE,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, size, PROT_NONE,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1287,8 +1276,8 @@ static void test_seal_mmap_expand(bool s
+ 	}
+ 
+ 	/* use mmap to expand. */
+-	ret2 = sys_mmap(ptr, size, PROT_READ,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, size, PROT_READ,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1315,8 +1304,8 @@ static void test_seal_mmap_shrink(bool s
+ 	}
+ 
+ 	/* use mmap to shrink. */
+-	ret2 = sys_mmap(ptr, 8 * page_size, PROT_READ,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, 8 * page_size, PROT_READ,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1697,7 +1686,7 @@ static void test_seal_discard_ro_anon_on
+ 	ret = fallocate(fd, 0, 0, size);
+ 	FAIL_TEST_IF_FALSE(!ret);
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ, mapflags, fd, 0);
++	ptr = mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+ 	FAIL_TEST_IF_FALSE(ptr != MAP_FAILED);
+ 
+ 	if (seal) {
+@@ -1727,7 +1716,7 @@ static void test_seal_discard_ro_anon_on
+ 	int ret;
+ 	unsigned long mapflags = MAP_ANONYMOUS | MAP_SHARED;
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ, mapflags, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+ 	FAIL_TEST_IF_FALSE(ptr != (void *)-1);
+ 
+ 	if (seal) {
+--- a/tools/testing/selftests/mm/seal_elf.c
++++ b/tools/testing/selftests/mm/seal_elf.c
+@@ -61,17 +61,6 @@ static int sys_mseal(void *start, size_t
+ 	return sret;
+ }
+ 
+-static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+-	unsigned long flags, unsigned long fd, unsigned long offset)
+-{
+-	void *sret;
 -
--		if (!ltk_is_valid(key))
--			return mgmt_cmd_status(sk, hdev->id,
--					       MGMT_OP_LOAD_LONG_TERM_KEYS,
--					       MGMT_STATUS_INVALID_PARAMS);
--	}
+-	errno = 0;
+-	sret = (void *) syscall(__NR_mmap, addr, len, prot,
+-		flags, fd, offset);
+-	return sret;
+-}
 -
- 	hci_dev_lock(hdev);
+ static inline int sys_mprotect(void *ptr, size_t size, unsigned long prot)
+ {
+ 	int sret;
+@@ -87,7 +76,7 @@ static bool seal_support(void)
+ 	void *ptr;
+ 	unsigned long page_size = getpagesize();
  
- 	hci_smp_ltks_clear(hdev);
-@@ -7171,6 +7166,12 @@ static int load_long_term_keys(struct so
- 				    &key->addr.bdaddr);
- 			continue;
- 		}
-+
-+		if (!ltk_is_valid(key)) {
-+			bt_dev_warn(hdev, "Invalid LTK for %pMR",
-+				    &key->addr.bdaddr);
-+			continue;
-+		}
+-	ptr = sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	if (ptr == (void *) -1)
+ 		return false;
  
- 		switch (key->type) {
- 		case MGMT_LTK_UNAUTHENTICATED:
 
 
 
