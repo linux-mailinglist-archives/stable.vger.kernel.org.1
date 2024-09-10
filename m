@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0550D972FE5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63234973076
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF6B72802AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C97286984
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3CE18C32B;
-	Tue, 10 Sep 2024 09:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8FC18F2FD;
+	Tue, 10 Sep 2024 10:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovmhkjmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJD0n178"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6955718C32F;
-	Tue, 10 Sep 2024 09:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA718DF99;
+	Tue, 10 Sep 2024 10:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962131; cv=none; b=lJnVWghyuXA12S5MHF28je/h1HK+7wjCnBmsbtj/RdRcsHDTIo9bZ5TO1GSLvD+aw4zJXvp+QMbhsp49FW8M/c608m46veZW2nPYXfBdCmm5msSJuLMOb7cHPfOTbWwcZecGMGEJJHHFlua/sql9KrfO/RzblrI4KJGbo1WrKAE=
+	t=1725962419; cv=none; b=joLFCIX6vtUkwUtK+SxfgIRAOMIihy8ErmFtKJzNEyxqLuygNAfI0G56u01LGlm9ZIn5y2XOYPsByirxsLzt1XXfYKt0Ay4IGCb+kAzV2haErN9NqxGNuwrSxwknwAC1eZH3E5bHOnzUJw1zPUcC6gB5cssjho/GSgGcUWqKhgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962131; c=relaxed/simple;
-	bh=Ouzw1Qc/G2acv0C/gyxmifZjiyOc6Q5yLGb7t6EezVs=;
+	s=arc-20240116; t=1725962419; c=relaxed/simple;
+	bh=F5myLYcC+cvZjYi9/noIQRiqjUR+Nn8CTgY4QvxFdsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sro/Xud4AQP01v3WAdp097pzCUzswsoC3GjvxLlJN9tyHzCSi0uYEGWZVUW+//c/QNAeAT9QYPbR+u34K6c9RMZJUwAjQ2WHWSLpmxGTPxVGm+BhAO3511RgwGDyNnxCHZu4fHkfRRk633NC9vKeTfnSmWcC1uMvq6XKk9Pd4PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovmhkjmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC799C4CECD;
-	Tue, 10 Sep 2024 09:55:30 +0000 (UTC)
+	 MIME-Version; b=fplgPTxdapsoXmNV0BUnICMTKFCc3MkJvOHzfK3IDmXZX4ZDgM1ZfGUfyHj+YTEc1LqnCMOB2JoiqyxdzhUGVoPNJDFNSHh7JWJ0F33d2oy79bDgYhF3zDR4Bd7gm6Gdg0sFY21yDbeO8ugKGm21CeDiJj8W8Nv/nyI82JAwMx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJD0n178; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C6C4CEC3;
+	Tue, 10 Sep 2024 10:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962131;
-	bh=Ouzw1Qc/G2acv0C/gyxmifZjiyOc6Q5yLGb7t6EezVs=;
+	s=korg; t=1725962419;
+	bh=F5myLYcC+cvZjYi9/noIQRiqjUR+Nn8CTgY4QvxFdsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovmhkjmJbmRi4V2k02MqthQ0NACTCddyIytyGjjF3eb2XKRvUBdKIygxaauCH8eah
-	 kZCu4BKuP4ZkRaQxo8XdmW80Npmz2BinwPSSJfDWjzjP5B8xd69mpqmlYSuFEUg8wz
-	 CWy8wxIniwddpVPnXJLxoTFs0OPrO4EtPRIdpFFU=
+	b=cJD0n178FYri10sK8yhi+FvubxYlO/vkxUeCRCCOnxD5+Xm2Sz0KdFwS3E2mfr1E0
+	 t2Ctc1Cfcq8irUdeCDIYTk0xezq0FFvMI2uGT/F1LNm60SdlaMLcYrEB9TRQf26Cpy
+	 Dhqj/PloT7i3Mrp9td6PPEu839bgels0JvcFf+Rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.10 305/375] clocksource/drivers/imx-tpm: Fix return -ETIME when delta exceeds INT_MAX
+	robelin <robelin@nvidia.com>,
+	Sameer Pujar <spujar@nvidia.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.4 027/121] ASoC: dapm: Fix UAF for snd_soc_pcm_runtime object
 Date: Tue, 10 Sep 2024 11:31:42 +0200
-Message-ID: <20240910092632.809526772@linuxfoundation.org>
+Message-ID: <20240910092547.018907001@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: robelin <robelin@nvidia.com>
 
-commit 5b8843fcd49827813da80c0f590a17ae4ce93c5d upstream.
+commit b4a90b543d9f62d3ac34ec1ab97fc5334b048565 upstream.
 
-In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
-is larger than INT_MAX.
+When using kernel with the following extra config,
 
-For example:
+  - CONFIG_KASAN=y
+  - CONFIG_KASAN_GENERIC=y
+  - CONFIG_KASAN_INLINE=y
+  - CONFIG_KASAN_VMALLOC=y
+  - CONFIG_FRAME_WARN=4096
 
-tpm_set_next_event(delta = 0xffff_fffe)
-{
-        ...
-        next = tpm_read_counter(); // assume next is 0x10
-        next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
-        now = tpm_read_counter();  // now is 0x10
-        ...
+kernel detects that snd_pcm_suspend_all() access a freed
+'snd_soc_pcm_runtime' object when the system is suspended, which
+leads to a use-after-free bug:
 
-        return (int)(next - now) <= 0 ? -ETIME : 0;
-                     ^^^^^^^^^^
-                     0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
-                     cast to int. So return -ETIME.
-}
+[   52.047746] BUG: KASAN: use-after-free in snd_pcm_suspend_all+0x1a8/0x270
+[   52.047765] Read of size 1 at addr ffff0000b9434d50 by task systemd-sleep/2330
 
-To fix this, introduce a 'prev' variable and check if 'now - prev' is
-larger than delta.
+[   52.047785] Call trace:
+[   52.047787]  dump_backtrace+0x0/0x3c0
+[   52.047794]  show_stack+0x34/0x50
+[   52.047797]  dump_stack_lvl+0x68/0x8c
+[   52.047802]  print_address_description.constprop.0+0x74/0x2c0
+[   52.047809]  kasan_report+0x210/0x230
+[   52.047815]  __asan_report_load1_noabort+0x3c/0x50
+[   52.047820]  snd_pcm_suspend_all+0x1a8/0x270
+[   52.047824]  snd_soc_suspend+0x19c/0x4e0
 
-Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-1-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+The snd_pcm_sync_stop() has a NULL check on 'substream->runtime' before
+making any access. So we need to always set 'substream->runtime' to NULL
+everytime we kfree() it.
+
+Fixes: a72706ed8208 ("ASoC: codec2codec: remove ephemeral variables")
+Signed-off-by: robelin <robelin@nvidia.com>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://patch.msgid.link/20240823144342.4123814-2-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/soc-dapm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(
- static int tpm_set_next_event(unsigned long delta,
- 				struct clock_event_device *evt)
- {
--	unsigned long next, now;
-+	unsigned long next, prev, now;
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -4003,6 +4003,7 @@ static int snd_soc_dai_link_event(struct
  
--	next = tpm_read_counter();
--	next += delta;
-+	prev = tpm_read_counter();
-+	next = prev + delta;
- 	writel(next, timer_base + TPM_C0V);
- 	now = tpm_read_counter();
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		kfree(substream->runtime);
++		substream->runtime = NULL;
+ 		break;
  
-@@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned l
- 	 * of writing CNT registers which may cause the min_delta event got
- 	 * missed, so we need add a ETIME check here in case it happened.
- 	 */
--	return (int)(next - now) <= 0 ? -ETIME : 0;
-+	return (now - prev) >= delta ? -ETIME : 0;
- }
- 
- static int tpm_set_state_oneshot(struct clock_event_device *evt)
+ 	default:
 
 
 
