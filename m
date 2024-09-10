@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4963F973590
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:52:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D99B9732DA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1DEDB2E4C1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CAE2899A9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C85B18C932;
-	Tue, 10 Sep 2024 10:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233EE1917C4;
+	Tue, 10 Sep 2024 10:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvjY/pfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kum2nlRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B85118B48A;
-	Tue, 10 Sep 2024 10:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61BD18FC93;
+	Tue, 10 Sep 2024 10:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964892; cv=none; b=f14jH1+i5YZTcNwuPccan6lGaxv1zk9+bsh1Hs43Rc38c6xnmzmZCgimdREJrAZj08CHdVz1EwHMI8kWDP7UWATzGM6lPLcjD3+rrnj9KnlXZG+cgAJ9xqgsqHq1ZttQQP8MZTbGSJaupv2NLVbYJgAHJeULgr37rpNyXlAjLdU=
+	t=1725963708; cv=none; b=MIHZbfvzqFaNYXLD0da6Hj0C++LeQphUnIUN3wzTHq97KkHJm4PpIncFF40Z371tunIhmcQetBP+vVMKaNiAhNjoR+YaUVDEI3iX4mO/shX11uEOr75z6QgqsbltkklhnC8Q+8SrYVssbPIY7KssCT8GW5ljWmWjYre+yRoOLIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964892; c=relaxed/simple;
-	bh=9+WZCmNRZgULOuUp1PUgXt+bcS2AvULUKmwPx3czs+o=;
+	s=arc-20240116; t=1725963708; c=relaxed/simple;
+	bh=PMKoHF658eP4LM1hWjvbAdiIcloQOmpOjmkP11ClRnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XptZLT7j1RN9VAibTBWDdOVhc5xAOfKtn4n3mWfrFhKouCM0VEX4ZOEyPU4iozMBfA/0arBSVBivDKmUgATBMP/BABgE/yiAyjlT/3HvF3+lzb9zsHh93DA2Kx3nfg8cGLsQJd5lYckeeKCf9akZjZcdI8e+x9wkcDnPVlTktGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvjY/pfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36D9C4CEC3;
-	Tue, 10 Sep 2024 10:41:31 +0000 (UTC)
+	 MIME-Version; b=eSyED6l0ZoeLUebr1nzf775qd5CYIullDQl8nMXH1vSq1WRP0n+MfdkB0TqiJ6knDQy8eLFeBPdfVEYM52nOGFbR+mH6oeumzKRIkDut5/STqifXHIbcOPCo6oiPhwhYnWorUgPUKWzS2PyUtv1jQvXr0fTOkthYROf3j/07POs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kum2nlRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E08FC4CEC3;
+	Tue, 10 Sep 2024 10:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964892;
-	bh=9+WZCmNRZgULOuUp1PUgXt+bcS2AvULUKmwPx3czs+o=;
+	s=korg; t=1725963708;
+	bh=PMKoHF658eP4LM1hWjvbAdiIcloQOmpOjmkP11ClRnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvjY/pfreq97AtRIzETwfBOi4Q4wlHOITrZCYusXOP7tuBPvBTmkhWjhjMDWwqGhh
-	 +F1swOhrmVqhhU6kTA/SFhZl9vyEqDYFlUSXhnq7HIHk2kyzDyudxim6QCvYDA0f2B
-	 MmjrsnWfqAQkh5iKjuR+NHkXp002z6R6MhQ/O3so=
+	b=kum2nlRBoIajXIXKZvF+5P35pWWPz9kagUduIAZXyAVhONMDJQS4OuQ93P4SlE2SO
+	 2lvxC1kUDr3h4n1zhKdmujmcIIaoM7jISI0CDD9I2RJXO3EWOX9P7E6NweMgPUvRFB
+	 qFrGFH/4xvfBZZzRrVijI1iCwMideLFD8LUlUi9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Liu <liuhaoran14@163.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/186] drm/meson: plane: Add error handling
+Subject: [PATCH 5.15 112/214] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Date: Tue, 10 Sep 2024 11:32:14 +0200
-Message-ID: <20240910092556.150012759@linuxfoundation.org>
+Message-ID: <20240910092603.380592249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Liu <liuhaoran14@163.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
+[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
 
-This patch adds robust error handling to the meson_plane_create
-function in drivers/gpu/drm/meson/meson_plane.c. The function
-previously lacked proper handling for potential failure scenarios
-of the drm_universal_plane_init call.
+After being asked about support for WPA3 for BCM43224 chipset it
+was found that all it takes is setting the MFP_CAPABLE flag and
+mac80211 will take care of all that is needed [1].
 
-Signed-off-by: Haoran Liu <liuhaoran14@163.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
-[narmstrong: fixe the commit subject]
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
+Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
-index 255c6b863f8d..6d54c565b34f 100644
---- a/drivers/gpu/drm/meson/meson_plane.c
-+++ b/drivers/gpu/drm/meson/meson_plane.c
-@@ -529,6 +529,7 @@ int meson_plane_create(struct meson_drm *priv)
- 	struct meson_plane *meson_plane;
- 	struct drm_plane *plane;
- 	const uint64_t *format_modifiers = format_modifiers_default;
-+	int ret;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index eadac0f5590f..e09f5416abe7 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1088,6 +1088,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
  
- 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
- 				   GFP_KERNEL);
-@@ -543,12 +544,16 @@ int meson_plane_create(struct meson_drm *priv)
- 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
- 		format_modifiers = format_modifiers_afbc_g12a;
- 
--	drm_universal_plane_init(priv->drm, plane, 0xFF,
--				 &meson_plane_funcs,
--				 supported_drm_formats,
--				 ARRAY_SIZE(supported_drm_formats),
--				 format_modifiers,
--				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
-+	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
-+					&meson_plane_funcs,
-+					supported_drm_formats,
-+					ARRAY_SIZE(supported_drm_formats),
-+					format_modifiers,
-+					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
-+	if (ret) {
-+		devm_kfree(priv->drm->dev, meson_plane);
-+		return ret;
-+	}
- 
- 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
- 
+ 	hw->extra_tx_headroom = brcms_c_get_header_len();
+ 	hw->queues = N_TX_QUEUES;
 -- 
 2.43.0
 
