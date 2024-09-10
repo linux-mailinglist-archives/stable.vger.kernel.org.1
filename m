@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-74353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E907972EE2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:48:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B647B972EEE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808EC1C23DE1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:47:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7385D287B29
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FA118C021;
-	Tue, 10 Sep 2024 09:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A16618EFE1;
+	Tue, 10 Sep 2024 09:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLPy8HGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcasK0wf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C817BEAE;
-	Tue, 10 Sep 2024 09:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16608188CB3;
+	Tue, 10 Sep 2024 09:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961559; cv=none; b=AZqr3T0mbQMQe+Nv7ynlCdimC6s9YVsZF3V+HZwgD98BmkxKFrq61kMfgKvoVM3+KfZDe7UFm2PNriaN8v5hIw6XOg/i6JHjDoAqk5UypRb0NirC/QdQ7zQUxa0VjKeP/8f/NM6BzKfSWSO3LWdL5Ks/ZtlvsaDv2OJ8ry/vdVY=
+	t=1725961591; cv=none; b=F6SsPc+m9ObwUNlIdcX9iZlC9vl1nCAzhu2b1JzwOGyx2QgpqLwYTzj/6d/ctsOolGevnmPxD6rkNsaCXeF1aPfPeBsK62bf88NAxibkSBtjleqPl6oFN2RxyZIFQ+5ERwB6jqyWJ7oezfl69sBVI1Q9a4Snjva3zODEzu2J8NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961559; c=relaxed/simple;
-	bh=0S76bNUtu/cwnZKcz84SW0nMCEeB1hjeN/vZL8Wuetw=;
+	s=arc-20240116; t=1725961591; c=relaxed/simple;
+	bh=tpU0BoNQSxMcLWrvmw+rgxf8DHAFnF2wJex/z0XKdOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5IV25VWpW9kujWsF9Y2TW5fL5/xG9kOCHMRvMu72lXB3spri8lAAM4MRtNL7bw0J7sjIvqHSG5Lw5Z26mXz+Kt1KkozWVbO5rNlBmHYBNnXF0ZBINlDspZFxZEkoJoIVVTSMFdeRsBRwMbln2ESi1uxjWofKBc6KOeVhUCiZQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLPy8HGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627BEC4CEC3;
-	Tue, 10 Sep 2024 09:45:58 +0000 (UTC)
+	 MIME-Version; b=bp+2CJd5RCrTCjH3n0UoZ2yxFJrFproW5A2PqC3+42DokGkCypaQ3mohKWSt432g06vZ5aLXmsNveQ6X/sQ2wElA8xzsv1r4uzgjZac2z7o24ZNkQTR2UfAZrm12XL6o/l7y0uSVaU+zocfOuBykbf+EZdCDVj6shb/bVboanec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcasK0wf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9387AC4CEC3;
+	Tue, 10 Sep 2024 09:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961558;
-	bh=0S76bNUtu/cwnZKcz84SW0nMCEeB1hjeN/vZL8Wuetw=;
+	s=korg; t=1725961591;
+	bh=tpU0BoNQSxMcLWrvmw+rgxf8DHAFnF2wJex/z0XKdOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLPy8HGD6nPWrh65JAnZBqdSbiV3aML08uOPODtN444oQd4gcFn+mLQuuN29LT+p8
-	 e8Pn3QhP0LVaT/1r4cuS/dKhyBL5YOqDogiloYF1CUQTRPye4FnKfQ/c+5vbZrr3uX
-	 0yH8Tx+79T3rgwvX+g9ca0zjufR+A8yasn7SY834=
+	b=gcasK0wfmdrAEPS7cgOUrVCLZBCuViZDfrxRmxq02GU0y2J/WEzW3EFuAmwutiw2G
+	 xM9myqEaY39HEwYEM/mrUkazFqbYsrVhwkBSR7BpcTOVxUJWAZZ42qp6AneLU9j5Gk
+	 //apnE/0kORbNW9EQ/G8r8SCmGP+a6BbZbhGfZO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rakesh Ughreja <rughreja@habana.ai>,
-	Ofir Bitton <obitton@habana.ai>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 103/375] accel/habanalabs/gaudi2: unsecure edma max outstanding register
-Date: Tue, 10 Sep 2024 11:28:20 +0200
-Message-ID: <20240910092625.844649635@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.10 104/375] irqchip/renesas-rzg2l: Reorder function calls in rzg2l_irqc_irq_disable()
+Date: Tue, 10 Sep 2024 11:28:21 +0200
+Message-ID: <20240910092625.882779350@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -66,33 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rakesh Ughreja <rughreja@habana.ai>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 3309887c6ff8ca2ac05a74e1ee5d1c44829f63f2 ]
+[ Upstream commit 492eee82574b163fbb3f099c74ce3b4322d0af28 ]
 
-Netowrk EDMAs uses more outstanding transfers so this needs to be
-programmed by EDMA firmware.
+The order of function calls in the disable operation should be the reverse
+of that in the enable operation. Thus, reorder the function calls to first
+disable the parent IRQ chip before disabling the TINT IRQ.
 
-Signed-off-by: Rakesh Ughreja <rughreja@habana.ai>
-Reviewed-by: Ofir Bitton <obitton@habana.ai>
-Signed-off-by: Ofir Bitton <obitton@habana.ai>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com> # on RZ/G3S
+Link: https://lore.kernel.org/r/20240606194813.676823-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/gaudi2/gaudi2_security.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-index 34bf80c5a44b..307ccb912ccd 100644
---- a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-+++ b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-@@ -479,6 +479,7 @@ static const u32 gaudi2_pb_dcr0_edma0_unsecured_regs[] = {
- 	mmDCORE0_EDMA0_CORE_CTX_TE_NUMROWS,
- 	mmDCORE0_EDMA0_CORE_CTX_IDX,
- 	mmDCORE0_EDMA0_CORE_CTX_IDX_INC,
-+	mmDCORE0_EDMA0_CORE_WR_COMP_MAX_OUTSTAND,
- 	mmDCORE0_EDMA0_CORE_RD_LBW_RATE_LIM_CFG,
- 	mmDCORE0_EDMA0_QM_CQ_CFG0_0,
- 	mmDCORE0_EDMA0_QM_CQ_CFG0_1,
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index f6484bf15e0b..5a4521cf3ec6 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -162,8 +162,8 @@ static void rzg2l_tint_irq_endisable(struct irq_data *d, bool enable)
+ 
+ static void rzg2l_irqc_irq_disable(struct irq_data *d)
+ {
+-	rzg2l_tint_irq_endisable(d, false);
+ 	irq_chip_disable_parent(d);
++	rzg2l_tint_irq_endisable(d, false);
+ }
+ 
+ static void rzg2l_irqc_irq_enable(struct irq_data *d)
 -- 
 2.43.0
 
