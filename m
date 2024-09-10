@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AEB973295
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5213697317E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8201F25D7B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10011F282AF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DB2194C6A;
-	Tue, 10 Sep 2024 10:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71E7190493;
+	Tue, 10 Sep 2024 10:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcIEWlV9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU+Ei57y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF311922EF;
-	Tue, 10 Sep 2024 10:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A3618C32F;
+	Tue, 10 Sep 2024 10:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963526; cv=none; b=KtJo/X16NdWyhO4LHyygJaVZznI2Xwh5HY1bBrGSKThHiZu0MzuMCG3eMhbzixw18CKNZzNM0DwHcf5K98LFBupCNAlGbruoYBMkLrRRYytbcmHgIoO/2r121i0gorpLXkqbPmkfG6i5JIeBSFEuOLivnGgh1xz+3F4ymILBfB4=
+	t=1725962869; cv=none; b=Z7aa1zSv31x/2guu5OmE686S7D97LunffJpnFLquf2Ww8KMPFZ0+6zSYhSwM0ldzllFwgZlFtUWDkvUsjd4FRSMDbFbBGflM5RC3JMrFSurK/k2tqpPaZ+iESJqNtX6bA1QHCqkx1r2Cg8jFS9+vzySj+AZkhwTvAsKri6gVk3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963526; c=relaxed/simple;
-	bh=TpwBpkpwXdxb+227WGLut5qO9ebW2pjLlssUn46tW/I=;
+	s=arc-20240116; t=1725962869; c=relaxed/simple;
+	bh=B0z/GThXao3MHHbtzZzA2vhcfySkr1jzj7vKe9SuvS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kn4NMOZ0O7vCVBRQQpfA4pgqegEjnJ3vCSVQzJCgjYL3drIQbsFQFW9DCgOrtKkcePA8K/0KeRzy+Jz3z4OYHbOv5qkTWEtjtbJSRE1qNWiPg5RBTxemByQ54L0b6bJlQEY02TePe+iB9YNCv4WXyiJDiROS8rV+UAHrW9z8uwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcIEWlV9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AF1C4CEC3;
-	Tue, 10 Sep 2024 10:18:45 +0000 (UTC)
+	 MIME-Version; b=V926JBLMOVelEQI0uU0PUoNoJGCNiGyQ/ZLDU34J4VU/geiAI8SnDQe4DE5NlC4jYnBBRRhS80ZaPwhtBIcl/2rjp0Dv44rUiL0HHGXMmWlxnwBK1+7vQv6Jf5yeVjllYMwQREB/vAyqB9J2NBht2eNz5aWE9DLcc//sqQChRvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU+Ei57y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067F9C4CEC3;
+	Tue, 10 Sep 2024 10:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963526;
-	bh=TpwBpkpwXdxb+227WGLut5qO9ebW2pjLlssUn46tW/I=;
+	s=korg; t=1725962869;
+	bh=B0z/GThXao3MHHbtzZzA2vhcfySkr1jzj7vKe9SuvS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcIEWlV9yh5omFLc0c8he6eSu4aciR6wYHv8doMzyCuQecOCsOSCQS57/AZcjsJS2
-	 a5HmT6RHko2lREmAKeB7howgq4BudsdVUWKf+pVfthjHZaKShUQo+281grvZoVpiTf
-	 PUz1fZv0qa1lDkQHkzxMD6gbfspIa1RFGF/8bkSY=
+	b=qU+Ei57yq2f8oXcviCQdG8BS1FdT5KYoOE3lB6XNCBj1FazaurW6ucnQ9dd5sOucV
+	 ujq5MNRKYJRAxVJl8sqTIenjGwUVxiOPT0thIChPZ21hZUGABEEHKpLf34E0VU09q1
+	 eP1Nmu2GGoElxShqG8HqIHysatgKJmIyvQK4A3Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 060/214] ext4: handle redirtying in ext4_bio_write_page()
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/192] drm/amd/display: Check HDCP returned status
 Date: Tue, 10 Sep 2024 11:31:22 +0200
-Message-ID: <20240910092601.221786831@linuxfoundation.org>
+Message-ID: <20240910092600.361951045@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 04e568a3b31cfbd545c04c8bfc35c20e5ccfce0f upstream.
+[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
 
-Since we want to transition transaction commits to use ext4_writepages()
-for writing back ordered, add handling of page redirtying into
-ext4_bio_write_page(). Also move buffer dirty bit clearing into the same
-place other buffer state handling.
+[WHAT & HOW]
+Check mod_hdcp_execute_and_set() return values in authenticated_dp.
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20221207112722.22220-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes 3 CHECKED_RETURN issues reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/page-io.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/page-io.c
-+++ b/fs/ext4/page-io.c
-@@ -490,6 +490,13 @@ int ext4_bio_write_page(struct ext4_io_s
- 			/* A hole? We can safely clear the dirty bit */
- 			if (!buffer_mapped(bh))
- 				clear_buffer_dirty(bh);
-+			/*
-+			 * Keeping dirty some buffer we cannot write? Make
-+			 * sure to redirty the page. This happens e.g. when
-+			 * doing writeout for transaction commit.
-+			 */
-+			if (buffer_dirty(bh) && !PageDirty(page))
-+				redirty_page_for_writepage(wbc, page);
- 			if (io->io_bio)
- 				ext4_io_submit(io);
- 			continue;
-@@ -497,6 +504,7 @@ int ext4_bio_write_page(struct ext4_io_s
- 		if (buffer_new(bh))
- 			clear_buffer_new(bh);
- 		set_buffer_async_write(bh);
-+		clear_buffer_dirty(bh);
- 		nr_to_submit++;
- 	} while ((bh = bh->b_this_page) != head);
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+index 1ddb4f5eac8e..93c0455766dd 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
+ 	}
  
-@@ -539,7 +547,10 @@ int ext4_bio_write_page(struct ext4_io_s
- 			printk_ratelimited(KERN_ERR "%s: ret = %d\n", __func__, ret);
- 			redirty_page_for_writepage(wbc, page);
- 			do {
--				clear_buffer_async_write(bh);
-+				if (buffer_async_write(bh)) {
-+					clear_buffer_async_write(bh);
-+					set_buffer_dirty(bh);
-+				}
- 				bh = bh->b_this_page;
- 			} while (bh != head);
- 			goto unlock;
-@@ -552,7 +563,6 @@ int ext4_bio_write_page(struct ext4_io_s
- 			continue;
- 		io_submit_add_bh(io, inode, page, bounce_page, bh);
- 		nr_submitted++;
--		clear_buffer_dirty(bh);
- 	} while ((bh = bh->b_this_page) != head);
- 
- unlock:
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
++		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
+ 				&input->bstatus_read, &status,
+-				hdcp, "bstatus_read");
++				hdcp, "bstatus_read"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_link_integrity_dp,
++		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
+ 				&input->link_integrity_check, &status,
+-				hdcp, "link_integrity_check");
++				hdcp, "link_integrity_check"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
++		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+ 				&input->reauth_request_check, &status,
+-				hdcp, "reauth_request_check");
++				hdcp, "reauth_request_check"))
++			goto out;
+ out:
+ 	return status;
+ }
+-- 
+2.43.0
+
 
 
 
