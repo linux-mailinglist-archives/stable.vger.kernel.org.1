@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EDA9732F0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E9497321E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6218C1F234E8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F385F1C212B5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A552C190068;
-	Tue, 10 Sep 2024 10:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80348192B6F;
+	Tue, 10 Sep 2024 10:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPOzXZZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbAMeAMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6AF5381A;
-	Tue, 10 Sep 2024 10:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF6719259F;
+	Tue, 10 Sep 2024 10:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963764; cv=none; b=tcXkh2KMRxzc4GqPMxjLRMJGoRxwFfx/aDq8AxM2fKDSnbAGEdwIRGVB9YOq8kwg2OVoqFBCCQDPAai6QdPWyEWEBQaVtfCWfGwqt6E28ue1GKMCDgqOnBWjTnX1+XV+QIR6P28RGVd02E4FJ4AE+jlGoYEc7Hk5BGDPFFlaH4o=
+	t=1725963242; cv=none; b=V9Ym2f7hBniLW5pkMszyy3vHoR74XxA7lL3VhK8ItJJkauUJcEvpkAg2QkMiZkVkI1lcnAQR9RzJVwqxA7H80U1T3ZeVPSE/qM1zEMg5Oh7yIyOoiKc2iyCRoCtdd1WHo2aSHI+ESbTN2E44nR46mLLEgsjLSc+rVDSfpyYCItc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963764; c=relaxed/simple;
-	bh=uGDPa54hvKUHFtGqFOiJ23r0FSwwwIqeZTx+zN6qOi0=;
+	s=arc-20240116; t=1725963242; c=relaxed/simple;
+	bh=KWMO3XNKw+BrPYVIyEjbzVp+htLwhP9bBgPndzd+ODA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tb1otEIWtT2foz1Lcq5NLdF/Q2LYAJf+ekIZia8pWJ53W4dGTVgKgJG1sw+lEe7jUk7LQJ3jJ4zdmHOysnThyDmIGO4hDG32MpMxOHj7AF/DkNnkXEjAR67s2RnX/OWg6H2NLfheMXv7aa1O8L1vnGl5qDfZj2jx/QDWRKuXYqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPOzXZZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B79C4CEC3;
-	Tue, 10 Sep 2024 10:22:43 +0000 (UTC)
+	 MIME-Version; b=lOLMFAdXy7cFcbhg8sq36iJBtbQwc24OV/hN5mG/7WKRj91EGyLI7rsMNacaOlG0aGlZAK49KDlG7t/VOH2XTzj/1Qx0LYrPeNrtX54CRpKKw4u6D5SBESfe9VH3EJIOnsFTqfbJpUgkxDmPjOOZNOn1VL1bq4Gm+vhqaKpN/54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbAMeAMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D37C4CEC3;
+	Tue, 10 Sep 2024 10:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963764;
-	bh=uGDPa54hvKUHFtGqFOiJ23r0FSwwwIqeZTx+zN6qOi0=;
+	s=korg; t=1725963242;
+	bh=KWMO3XNKw+BrPYVIyEjbzVp+htLwhP9bBgPndzd+ODA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPOzXZZZ0WE0iF6BavNp90kYZcyhq6fCa0x4EupNzVO0pdXt6JV6AT9NyrwttNp1f
-	 qlMieK7qALsns+5ocXER6h/ltaKYHEzKJC9h95a6auFI7xKWo3gJk0bxL5gxH/YBey
-	 MeExOi+q2asur+wlz9N4H4OjYkDNRXU8qB8GhtMY=
+	b=ZbAMeAMb4072NDR1MeDErz2kKFJKd0C+1wu7EL5zcRBoY6xPo+XXlAP7Zj1XMstJ/
+	 WunwsiAvcCN3nvFPFar6EbmM2PDNcu0y/CC8focC3uqYF2cizIeSqHZd8Jmg+vkKPZ
+	 R/JPGuInb2Rr56rMvUcXT5+/b7f/fb6jAMGNy9iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/214] of/irq: Prevent device address out-of-bounds read in interrupt map walk
+Subject: [PATCH 6.1 166/192] ACPI: processor: Fix memory leaks in error paths of processor_add()
 Date: Tue, 10 Sep 2024 11:33:10 +0200
-Message-ID: <20240910092605.554639415@linuxfoundation.org>
+Message-ID: <20240910092604.746526850@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit b739dffa5d570b411d4bdf4bb9b8dfd6b7d72305 ]
+[ Upstream commit 47ec9b417ed9b6b8ec2a941cd84d9de62adc358a ]
 
-When of_irq_parse_raw() is invoked with a device address smaller than
-the interrupt parent node (from #address-cells property), KASAN detects
-the following out-of-bounds read when populating the initial match table
-(dyndbg="func of_irq_parse_* +p"):
+If acpi_processor_get_info() returned an error, pr and the associated
+pr->throttling.shared_cpu_map were leaked.
 
-  OF: of_irq_parse_one: dev=/soc@0/picasso/watchdog, index=0
-  OF:  parent=/soc@0/pci@878000000000/gpio0@17,0, intsize=2
-  OF:  intspec=4
-  OF: of_irq_parse_raw: ipar=/soc@0/pci@878000000000/gpio0@17,0, size=2
-  OF:  -> addrsize=3
-  ==================================================================
-  BUG: KASAN: slab-out-of-bounds in of_irq_parse_raw+0x2b8/0x8d0
-  Read of size 4 at addr ffffff81beca5608 by task bash/764
+The unwind code was in the wrong order wrt to setup, relying on
+some unwind actions having no affect (clearing variables that were
+never set etc).  That makes it harder to reason about so reorder
+and add appropriate labels to only undo what was actually set up
+in the first place.
 
-  CPU: 1 PID: 764 Comm: bash Tainted: G           O       6.1.67-484c613561-nokia_sm_arm64 #1
-  Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.01-12.24.03-dirty 01/01/2023
-  Call trace:
-   dump_backtrace+0xdc/0x130
-   show_stack+0x1c/0x30
-   dump_stack_lvl+0x6c/0x84
-   print_report+0x150/0x448
-   kasan_report+0x98/0x140
-   __asan_load4+0x78/0xa0
-   of_irq_parse_raw+0x2b8/0x8d0
-   of_irq_parse_one+0x24c/0x270
-   parse_interrupts+0xc0/0x120
-   of_fwnode_add_links+0x100/0x2d0
-   fw_devlink_parse_fwtree+0x64/0xc0
-   device_add+0xb38/0xc30
-   of_device_add+0x64/0x90
-   of_platform_device_create_pdata+0xd0/0x170
-   of_platform_bus_create+0x244/0x600
-   of_platform_notify+0x1b0/0x254
-   blocking_notifier_call_chain+0x9c/0xd0
-   __of_changeset_entry_notify+0x1b8/0x230
-   __of_changeset_apply_notify+0x54/0xe4
-   of_overlay_fdt_apply+0xc04/0xd94
-   ...
-
-  The buggy address belongs to the object at ffffff81beca5600
-   which belongs to the cache kmalloc-128 of size 128
-  The buggy address is located 8 bytes inside of
-   128-byte region [ffffff81beca5600, ffffff81beca5680)
-
-  The buggy address belongs to the physical page:
-  page:00000000230d3d03 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1beca4
-  head:00000000230d3d03 order:1 compound_mapcount:0 compound_pincount:0
-  flags: 0x8000000000010200(slab|head|zone=2)
-  raw: 8000000000010200 0000000000000000 dead000000000122 ffffff810000c300
-  raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffffff81beca5500: 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffffff81beca5580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  >ffffff81beca5600: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                        ^
-   ffffff81beca5680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffffff81beca5700: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
-  ==================================================================
-  OF:  -> got it !
-
-Prevent the out-of-bounds read by copying the device address into a
-buffer of sufficient size.
-
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Link: https://lore.kernel.org/r/20240812100652.3800963-1-stefan.wiehler@nokia.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240529133446.28446-6-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_processor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 352e14b007e7..ad0cb49e233a 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -288,7 +288,8 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 	struct device_node *p;
- 	const __be32 *addr;
- 	u32 intsize;
--	int i, res;
-+	int i, res, addr_len;
-+	__be32 addr_buf[3] = { 0 };
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 5662c157fda7..8bd5c4fa91f2 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -373,7 +373,7 @@ static int acpi_processor_add(struct acpi_device *device,
  
- 	pr_debug("of_irq_parse_one: dev=%pOF, index=%d\n", device, index);
+ 	result = acpi_processor_get_info(device);
+ 	if (result) /* Processor is not physically present or unavailable */
+-		return result;
++		goto err_clear_driver_data;
  
-@@ -297,13 +298,19 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 		return of_irq_parse_oldworld(device, index, out_irq);
+ 	BUG_ON(pr->id >= nr_cpu_ids);
  
- 	/* Get the reg property (if any) */
--	addr = of_get_property(device, "reg", NULL);
-+	addr = of_get_property(device, "reg", &addr_len);
-+
-+	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
-+	if (addr_len > (3 * sizeof(__be32)))
-+		addr_len = 3 * sizeof(__be32);
-+	if (addr)
-+		memcpy(addr_buf, addr, addr_len);
+@@ -388,7 +388,7 @@ static int acpi_processor_add(struct acpi_device *device,
+ 			"BIOS reported wrong ACPI id %d for the processor\n",
+ 			pr->id);
+ 		/* Give up, but do not abort the namespace scan. */
+-		goto err;
++		goto err_clear_driver_data;
+ 	}
+ 	/*
+ 	 * processor_device_array is not cleared on errors to allow buggy BIOS
+@@ -400,12 +400,12 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev = get_cpu_device(pr->id);
+ 	if (!dev) {
+ 		result = -ENODEV;
+-		goto err;
++		goto err_clear_per_cpu;
+ 	}
  
- 	/* Try the new-style interrupts-extended first */
- 	res = of_parse_phandle_with_args(device, "interrupts-extended",
- 					"#interrupt-cells", index, out_irq);
- 	if (!res)
--		return of_irq_parse_raw(addr, out_irq);
-+		return of_irq_parse_raw(addr_buf, out_irq);
+ 	result = acpi_bind_one(dev, device);
+ 	if (result)
+-		goto err;
++		goto err_clear_per_cpu;
  
- 	/* Look for the interrupt parent. */
- 	p = of_irq_find_parent(device);
-@@ -333,7 +340,7 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 	pr->dev = dev;
  
+@@ -416,10 +416,11 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev_err(dev, "Processor driver could not be attached\n");
+ 	acpi_unbind_one(dev);
  
- 	/* Check if there are any interrupt-map translations to process */
--	res = of_irq_parse_raw(addr, out_irq);
-+	res = of_irq_parse_raw(addr_buf, out_irq);
-  out:
- 	of_node_put(p);
- 	return res;
+- err:
+-	free_cpumask_var(pr->throttling.shared_cpu_map);
+-	device->driver_data = NULL;
++ err_clear_per_cpu:
+ 	per_cpu(processors, pr->id) = NULL;
++ err_clear_driver_data:
++	device->driver_data = NULL;
++	free_cpumask_var(pr->throttling.shared_cpu_map);
+  err_free_pr:
+ 	kfree(pr);
+ 	return result;
 -- 
 2.43.0
 
