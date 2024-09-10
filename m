@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C95973501
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91935973314
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479ED28879B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8C6287D53
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C619068E;
-	Tue, 10 Sep 2024 10:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C401922E8;
+	Tue, 10 Sep 2024 10:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNyPDA92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7JpiS3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C02188CDC;
-	Tue, 10 Sep 2024 10:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB6018A6B9;
+	Tue, 10 Sep 2024 10:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964995; cv=none; b=E0rPfXMEBkgTm1ImiiF5i67B8wUwR6bGLRpoZLTa6eSErC6LiKM3lqPllPiYVjbWEOAuYQ8wpuLoiUksl9UfO4k/zKyGAyXoa9C2dPX2uBsWKCr2d0+l1ZNcqfY9/EPidvnioxgbeoaD9GyWTisYKbYLYJKF5ZGfTRjFXDAafwQ=
+	t=1725963860; cv=none; b=FDeQGXOCtfRefqseqU0QvCo8k3di0Tn486Wrf1J+BqRJZ7rnzgCXjhnCVg3t4i8/x/LGkGikJTKVwDhgyTLzGvhGpUEOdQ3Do9dUPRgpxF6tRhKAuxh0yYfNTzGn6yWHuccR2obSidnyBKc+RFHl4eZCkzZ682cdfTWfFKxesbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964995; c=relaxed/simple;
-	bh=lpB++LjPRoEVDrUS5hjUKhplS2QNFyxePjd6dG7ZoDE=;
+	s=arc-20240116; t=1725963860; c=relaxed/simple;
+	bh=G9TFs1UOY1WdbrGbN5hJmDx8y8pvVGBFLxMAhsNjQv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cbq3n3ps7cBMBWJTfBIWQjvr/bGFXvtXxdEUdt7MAtU4NNsb5sidbE3KAR0cI1Dfm920XNekBZjKwSm6NF1IMbZ1QmKimZUefab6X9b35eaHDwBLLcZXeeNIrepSjgNEhuQ6iVqBFHp6UbIAoCJbTwQk+pQ+pXXcXa1qJCw1JUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNyPDA92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227C2C4CEC3;
-	Tue, 10 Sep 2024 10:43:14 +0000 (UTC)
+	 MIME-Version; b=Sj+/zJFDqb82B0tKkXWpXGEbgB2FkhIG3byuxOKMgZ/crKvGoyikVID0a8DDDwyTf1xucTERhfY5VmQ8XM7i5RWLcS2ycTvSS8IfjvJPMiQwTqL0O6Dpo+Pu18vUPLOKam9ZXeiQ02E8NnDSPe0d/WcUxEi3V/QJlsbLefTWbUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7JpiS3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34805C4CEC3;
+	Tue, 10 Sep 2024 10:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964995;
-	bh=lpB++LjPRoEVDrUS5hjUKhplS2QNFyxePjd6dG7ZoDE=;
+	s=korg; t=1725963860;
+	bh=G9TFs1UOY1WdbrGbN5hJmDx8y8pvVGBFLxMAhsNjQv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNyPDA929Uo+/2HLmtrLwTjk7a7Oja9Ys9vWhKkwv3a13oCJGGN7lXnok/KN1r0KN
-	 HPYuYjsjxtL46pqSmLgS+TFrBGJ4CGpYVSL8UkcrtSFhI1PkX14RXbl7iU0EK/imWn
-	 bl67Vpja9QaXSEda/hHDpn6KylC77FCwYfljSP7c=
+	b=E7JpiS3WGqH3gzap1NsPcHYh7cVOc7pTTkI9SUBOnWTqZOkNqL2TNqMBZInULN6CY
+	 Qju9SlOMFexpNbVqBKXELKAuaiI/QJLH5zPYjoZ4vRe4MhlYvX8+x95TF3OBBMB6Ux
+	 K6ZrR2eKobyIGMbfmgUeWHzpb97pwTEezw8oG1wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/186] netfilter: nf_conncount: fix wrong variable type
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 175/214] iio: buffer-dmaengine: fix releasing dma channel on error
 Date: Tue, 10 Sep 2024 11:33:17 +0200
-Message-ID: <20240910092558.735977154@linuxfoundation.org>
+Message-ID: <20240910092605.861101832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
+commit 84c65d8008764a8fb4e627ff02de01ec4245f2c4 upstream.
 
-Now there is a issue is that code checks reports a warning: implicit
-narrowing conversion from type 'unsigned int' to small type 'u8' (the
-'keylen' variable). Fix it by removing the 'keylen' variable.
+If dma_get_slave_caps() fails, we need to release the dma channel before
+returning an error to avoid leaking the channel.
 
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2d6ca60f3284 ("iio: Add a DMAengine framework based buffer")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20240723-iio-fix-dmaengine-free-on-error-v1-1-2c7cbc9b92ff@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conncount.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 82f36beb2e76..0ce12a33ffda 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -310,7 +310,6 @@ insert_tree(struct net *net,
- 	struct nf_conncount_rb *rbconn;
- 	struct nf_conncount_tuple *conn;
- 	unsigned int count = 0, gc_count = 0;
--	u8 keylen = data->keylen;
- 	bool do_gc = true;
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -180,7 +180,7 @@ static struct iio_buffer *iio_dmaengine_
  
- 	spin_lock_bh(&nf_conncount_locks[hash]);
-@@ -322,7 +321,7 @@ insert_tree(struct net *net,
- 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
+ 	ret = dma_get_slave_caps(chan, &caps);
+ 	if (ret < 0)
+-		goto err_free;
++		goto err_release;
  
- 		parent = *rbnode;
--		diff = key_diff(key, rbconn->key, keylen);
-+		diff = key_diff(key, rbconn->key, data->keylen);
- 		if (diff < 0) {
- 			rbnode = &((*rbnode)->rb_left);
- 		} else if (diff > 0) {
-@@ -367,7 +366,7 @@ insert_tree(struct net *net,
+ 	/* Needs to be aligned to the maximum of the minimums */
+ 	if (caps.src_addr_widths)
+@@ -206,6 +206,8 @@ static struct iio_buffer *iio_dmaengine_
  
- 	conn->tuple = *tuple;
- 	conn->zone = *zone;
--	memcpy(rbconn->key, key, sizeof(u32) * keylen);
-+	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
+ 	return &dmaengine_buffer->queue.buffer;
  
- 	nf_conncount_list_init(&rbconn->list);
- 	list_add(&conn->node, &rbconn->list.head);
-@@ -392,7 +391,6 @@ count_tree(struct net *net,
- 	struct rb_node *parent;
- 	struct nf_conncount_rb *rbconn;
- 	unsigned int hash;
--	u8 keylen = data->keylen;
- 
- 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
- 	root = &data->root[hash];
-@@ -403,7 +401,7 @@ count_tree(struct net *net,
- 
- 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
- 
--		diff = key_diff(key, rbconn->key, keylen);
-+		diff = key_diff(key, rbconn->key, data->keylen);
- 		if (diff < 0) {
- 			parent = rcu_dereference_raw(parent->rb_left);
- 		} else if (diff > 0) {
--- 
-2.43.0
-
++err_release:
++	dma_release_channel(chan);
+ err_free:
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
 
 
 
