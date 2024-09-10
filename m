@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-74472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FE8972F76
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7BA972F81
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E89284E05
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BEF1F24FE5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E687718A6D2;
-	Tue, 10 Sep 2024 09:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35578172BAE;
+	Tue, 10 Sep 2024 09:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1b5Zzhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOXSIWYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56EA46444;
-	Tue, 10 Sep 2024 09:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FC4224F6;
+	Tue, 10 Sep 2024 09:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961905; cv=none; b=Hs1E9PRYf5RGsbp4aYpZHZlC2VqhVIsHGPyhWGmId4DPkv1SdsV1wP3/4xXYhaTknIHC5WgTOhCIjb5Jy7Ej33cNQ7lwQs0j8lgzFohJ+DeF/gFOcEQ126ZrA0OBjWwkwKHxCsqRxLog5gDzifxUDCbnbOzWrfpM699+7j+NO7Q=
+	t=1725961938; cv=none; b=Ec3Lvl7UdxtTaQUtkRnuftBG6E75LMqSmzhDl15lPiQ55tczJUozKdwrMQg897P9gkUqoSQfT6LRV4p2qrTaQCCW+sACGBML7yLnlgoYL1qK1kJfucoLq1Dm7MDS8gnj3D+5+fEtI+89xbX8bb4bEPqloG6SyJQwUMZDQiVY52E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961905; c=relaxed/simple;
-	bh=LxtSbMcO89GqqBTEU7oodrlVhpA9MSnvaQdjLGlCxEo=;
+	s=arc-20240116; t=1725961938; c=relaxed/simple;
+	bh=irsXM0Zgt7q4D1IkjWHTbPXos92erjj/B9ZEGcbjWLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCwa6B9cqLj7hf+VZjdQ4caboSU6wLGqmkszVOdtXuEJIRNDr6Rwu9gz9lRL1RteuhHKKTNhuwjGersdsRVjgLdBQZzcUGnkInHhRN1VlR+oinIDn5b+fyiOKNWI2FedpGECSdEFvfWHso93XCIwztdZCjRm8Qm+W7MO5stPUw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1b5Zzhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251B3C4CEC3;
-	Tue, 10 Sep 2024 09:51:44 +0000 (UTC)
+	 MIME-Version; b=VKoJgJJdQJjSPfS63VVoBwgmMiLEMluFr8XsuKPS8+Z5k+kO/uyAPvt6oKnKIg7UFJPgllBT3XutL0NNu4gF3/6vAyTYRHGm6DsKx8i1vShQk/d4u1A6iWo0B9aGl1iLeXeUpf3CAkJf9fr0AiJl+uSp1ep3LhuPVx+zaFi6sMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOXSIWYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2ECC4CEC3;
+	Tue, 10 Sep 2024 09:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961905;
-	bh=LxtSbMcO89GqqBTEU7oodrlVhpA9MSnvaQdjLGlCxEo=;
+	s=korg; t=1725961937;
+	bh=irsXM0Zgt7q4D1IkjWHTbPXos92erjj/B9ZEGcbjWLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1b5Zzhd1q/6xyKcE4Gm8HgEKXxCjg0uXd6PBSGIHNvdfaYW3h//FuyKy+Tj9rxYs
-	 k6LZtg7dSG3DZNggVBxwuTY/EqFe3gga06511iZTiZ3HsJrMQ3jQTeC4ovhTZXSW8s
-	 jAfeuBdaMO5pa4tfUjFWhLJLDAADDkNrSfI8cEn8=
+	b=BOXSIWYKDgK7JzMXT2usGGqj/+JRjjLxQQWklQyavtBvDlTq3AIgvu70TdGMWxkMB
+	 TPOGvqW+Y5CLEZakXDhgZHIqePB3ce9auPavK83J/J3twl41YH0H+GySPtxtw4HpiN
+	 DnfHmMftNcZ+tWkRZ3pJqftok/Q5uWqtlBZpHvrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 221/375] hwmon: (nct6775-core) Fix underflows seen when writing limit attributes
-Date: Tue, 10 Sep 2024 11:30:18 +0200
-Message-ID: <20240910092629.966368317@linuxfoundation.org>
+Subject: [PATCH 6.10 222/375] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
+Date: Tue, 10 Sep 2024 11:30:19 +0200
+Message-ID: <20240910092629.997843937@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -67,7 +67,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 0403e10bf0824bf0ec2bb135d4cf1c0cc3bf4bf0 ]
+[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
 
 DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
 negative number such as -9223372036854775808 is provided by the user.
@@ -76,22 +76,31 @@ Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/w83627ehf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 9fbab8f02334..934fed3dd586 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -2262,7 +2262,7 @@ store_temp_offset(struct device *dev, struct device_attribute *attr,
+diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+index fe960c0a624f..7d7d70afde65 100644
+--- a/drivers/hwmon/w83627ehf.c
++++ b/drivers/hwmon/w83627ehf.c
+@@ -895,7 +895,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
  	if (err < 0)
  		return err;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
  
  	mutex_lock(&data->update_lock);
- 	data->temp_offset[nr] = val;
+ 	data->target_temp[nr] = val;
+@@ -920,7 +920,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
+ 		return err;
+ 
+ 	/* Limit the temp to 0C - 15C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
 -- 
 2.43.0
 
