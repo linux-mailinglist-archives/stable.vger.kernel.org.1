@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-75573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7362797353E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C1297346D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 301C9283879
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C5E028E06C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA4218C928;
-	Tue, 10 Sep 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05823192B7F;
+	Tue, 10 Sep 2024 10:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jejhuVh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwkKuup5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DFF18C34B;
-	Tue, 10 Sep 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C41922D9;
+	Tue, 10 Sep 2024 10:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965128; cv=none; b=p+AsLAeCnlx/etgyP3dE7WNrX4HI1zHunVaCd843qTxYO5WvL5hE7lm6xyYa0V1JAvkGqFCSehiH0U+ugIZTXz3/2rQjodungtOF+OS29mkWx17XKJwyGhFBmZza4Jrnkl72PJ1OVMBVLzN7g+/8mkKMmhCW7/dRxxC32qh10Pk=
+	t=1725964647; cv=none; b=F24fet8m6MkVwHbxCupb2TopHRWTxLi9ahZbmE37JOeRb3BwfOcmX07hXvyi/C0Xln0aiIg5SanJc7bY6CHPPCXv/V18sK11CAdE0Fl8gWcUvgq5hiHqQJ0CXu1dDV+arirJdKrY/9k0HY2Y0uHlJFiCb1q045iTxMlYc/Vj+y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965128; c=relaxed/simple;
-	bh=CuxxlbMrVXyqIuGfWoX0PN0cbZIp4KME5Qrt7mFz/gY=;
+	s=arc-20240116; t=1725964647; c=relaxed/simple;
+	bh=kjCg/CEPRtiCMdh36O9fg/X9s1j0Hg4hQoWliciXzzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXb62YUuKFw0slmfo08P0d5zSjJjebyiS/oGkM8V7cur6j0OdO94QHuvhzjtYhLIqO7Fv2MYiHsQWRpoUPtb5HGM3jn9Gv5AbwK0foBHCt+2/52+rHpBQXntjwz1QDiDnvIeZ9I+eFm/HNah2bRi+vL83HZ4G/Ir75iE3CVfP3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jejhuVh+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D99CC4CEC3;
-	Tue, 10 Sep 2024 10:45:27 +0000 (UTC)
+	 MIME-Version; b=C8In0/nhXGCe9td0zZ3D91xKFmTWIQ5HXfpu17/LC9xd3rGFt/+9BMPXx2FMqNjk9j16qxUstpGA80Hgg0zreeEXNnCBFTPc/V4VK/WFnw5q6W8FwkocBUOhnabzuxOeiADjPiYeFf+ZPLdYuA4S49rOc3f1d3hoCwr3BI+9pHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwkKuup5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9EBC4CEC3;
+	Tue, 10 Sep 2024 10:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965128;
-	bh=CuxxlbMrVXyqIuGfWoX0PN0cbZIp4KME5Qrt7mFz/gY=;
+	s=korg; t=1725964647;
+	bh=kjCg/CEPRtiCMdh36O9fg/X9s1j0Hg4hQoWliciXzzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jejhuVh+ImtLquaCiOFR1qqqbc4HcibEh94diZe9nnUTpM8zvd9tDIFdFIr1RHWaf
-	 BRtkfmx6rvGcnFbhW8W3zvlv47UZcwSWslLo0dEIebMw+34jK+h3gscXmf2Cz3FhxY
-	 ZXGVlJH6zdXaSXtZULfJ7vuRMxDO6CSoaKmiexB0=
+	b=mwkKuup5pHtKHX4KzFaKPckp2fXqvnAdNNmC5shjciR5vM+LiXvgBtrammIXvH+CR
+	 JAB2kbWI+2xR2Lutcl9s6tZxzSY18GgiV6zFkzypR4abPpryAnr6E/BCjle9DjZohq
+	 2RFA7H0fwou15qbL26JwFfhuDQSUU+a1bXq9DDII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/186] kselftests: dmabuf-heaps: Ensure the driver name is null-terminated
+Subject: [PATCH 6.6 254/269] clk: qcom: gcc-sm8550: Dont park the USB RCG at registration time
 Date: Tue, 10 Sep 2024 11:34:01 +0200
-Message-ID: <20240910092600.605270948@linuxfoundation.org>
+Message-ID: <20240910092616.853222874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +66,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenghui Yu <yuzenghui@huawei.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 291e4baf70019f17a81b7b47aeb186b27d222159 ]
+[ Upstream commit 7b6dfa1bbe7f727315d2e05a2fc8e4cfeb779156 ]
 
-Even if a vgem device is configured in, we will skip the import_vgem_fd()
-test almost every time.
+Amit Pundir reports that audio and USB-C host mode stops working if the
+gcc_usb30_prim_master_clk_src clk is registered and
+clk_rcg2_shared_init() parks it on XO. Skip parking this clk at
+registration time to fix those issues.
 
-  TAP version 13
-  1..11
-  # Testing heap: system
-  # =======================================
-  # Testing allocation and importing:
-  ok 1 # SKIP Could not open vgem -1
+Partially revert commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon
+registration") by skipping the parking bit for this clk, but keep the
+part where we cache the config register. That's still necessary to
+figure out the true parent of the clk at registration time.
 
-The problem is that we use the DRM_IOCTL_VERSION ioctl to query the driver
-version information but leave the name field a non-null-terminated string.
-Terminate it properly to actually test against the vgem device.
-
-While at it, let's check the length of the driver name is exactly 4 bytes
-and return early otherwise (in case there is a name like "vgemfoo" that
-gets converted to "vgem\0" unexpectedly).
-
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240729024604.2046-1-yuzenghui@huawei.com
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Fixes: 929c75d57566 ("clk: qcom: gcc-sm8550: Mark RCGs shared where applicable")
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Reported-by: Amit Pundir <amit.pundir@linaro.org>
+Closes: https://lore.kernel.org/CAMi1Hd1KQBE4kKUdAn8E5FV+BiKzuv+8FoyWQrrTHPDoYTuhgA@mail.gmail.com
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20240819233628.2074654-3-swboyd@chromium.org
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/clk-rcg.h    |  1 +
+ drivers/clk/qcom/clk-rcg2.c   | 30 ++++++++++++++++++++++++++++++
+ drivers/clk/qcom/gcc-sm8550.c |  2 +-
+ 3 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-index 909da9cdda97..aa4be40f7d49 100644
---- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-+++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-@@ -29,9 +29,11 @@ static int check_vgem(int fd)
- 	version.name = name;
+diff --git a/drivers/clk/qcom/clk-rcg.h b/drivers/clk/qcom/clk-rcg.h
+index e6d84c8c7989..84c497f361bc 100644
+--- a/drivers/clk/qcom/clk-rcg.h
++++ b/drivers/clk/qcom/clk-rcg.h
+@@ -176,6 +176,7 @@ extern const struct clk_ops clk_byte2_ops;
+ extern const struct clk_ops clk_pixel_ops;
+ extern const struct clk_ops clk_gfx3d_ops;
+ extern const struct clk_ops clk_rcg2_shared_ops;
++extern const struct clk_ops clk_rcg2_shared_no_init_park_ops;
+ extern const struct clk_ops clk_dp_ops;
  
- 	ret = ioctl(fd, DRM_IOCTL_VERSION, &version);
--	if (ret)
-+	if (ret || version.name_len != 4)
- 		return 0;
+ struct clk_rcg_dfs_data {
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index b9f2a29be927..461f54fe5e4f 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -1182,6 +1182,36 @@ const struct clk_ops clk_rcg2_shared_ops = {
+ };
+ EXPORT_SYMBOL_GPL(clk_rcg2_shared_ops);
  
-+	name[4] = '\0';
++static int clk_rcg2_shared_no_init_park(struct clk_hw *hw)
++{
++	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
 +
- 	return !strcmp(name, "vgem");
- }
++	/*
++	 * Read the config register so that the parent is properly mapped at
++	 * registration time.
++	 */
++	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &rcg->parked_cfg);
++
++	return 0;
++}
++
++/*
++ * Like clk_rcg2_shared_ops but skip the init so that the clk frequency is left
++ * unchanged at registration time.
++ */
++const struct clk_ops clk_rcg2_shared_no_init_park_ops = {
++	.init = clk_rcg2_shared_no_init_park,
++	.enable = clk_rcg2_shared_enable,
++	.disable = clk_rcg2_shared_disable,
++	.get_parent = clk_rcg2_shared_get_parent,
++	.set_parent = clk_rcg2_shared_set_parent,
++	.recalc_rate = clk_rcg2_shared_recalc_rate,
++	.determine_rate = clk_rcg2_determine_rate,
++	.set_rate = clk_rcg2_shared_set_rate,
++	.set_rate_and_parent = clk_rcg2_shared_set_rate_and_parent,
++};
++EXPORT_SYMBOL_GPL(clk_rcg2_shared_no_init_park_ops);
++
+ /* Common APIs to be used for DFS based RCGR */
+ static void clk_rcg2_dfs_populate_freq(struct clk_hw *hw, unsigned int l,
+ 				       struct freq_tbl *f)
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index bf7b7c5d4606..eb3765c57b65 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -1159,7 +1159,7 @@ static struct clk_rcg2 gcc_usb30_prim_master_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
+ };
  
 -- 
 2.43.0
