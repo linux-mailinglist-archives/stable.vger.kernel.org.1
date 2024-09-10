@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F069973177
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1386973273
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39F131F281A4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72709287DA8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C879188A38;
-	Tue, 10 Sep 2024 10:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40203192D90;
+	Tue, 10 Sep 2024 10:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFoHcWz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJtWQ1/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE6818C32F;
-	Tue, 10 Sep 2024 10:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B80192D94;
+	Tue, 10 Sep 2024 10:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962849; cv=none; b=vCxyJ+wtNv+NIwK/TLzaJexb3tO+3s0bZEl92Z7YFPNFZuQOksM1b9MZItALTyoRr01YhW0ybkZpL2eMGXBSN0H8sY8LvIYi+JnA72rW7kVH1RmvjiMBfQluSF2dyCLfN6jGsP2AIxydh8Fm/HTGIgWaCu5k7rWtflcLiagk4Mw=
+	t=1725963427; cv=none; b=VFkopg/IhQv+hJBrAZpsgqW5OzeVzPZGsZ/goBJhRlacLjcjFwSOjCSEdU5uzifgyl0s17qMJ882HOq/2VfRaYhvcYTdHbGJZzPlgGY++NiRjhSr64vVmsJvhmUMjPHxCl9xq4wYOVxhF5yXcN2PAZ22Eg2PgWFjc4KJEadJWbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962849; c=relaxed/simple;
-	bh=k1mHl/Rwy40bU1F7FRKKpLIZ+WeUQJGLyKxJXD3z184=;
+	s=arc-20240116; t=1725963427; c=relaxed/simple;
+	bh=rBIlFtjs4EuCB4Yv5e0nBn5JvNr4nfZAe4UYXJupI/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrGlsWRJycSyWTNtqb5+lU5pbNO2zB5dTnj0Qcv/3taLwBn9xUzbSSy6qgJlA2gPysgKnapDqvdYRgMOcGUz8iQsc0GK41st768acvmGSxloRQ+UwpXRcKcvpQ69rnVhGuOGAzJhhEa69C1QO/C2yBKfIFNCCNncbE9503XWWG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFoHcWz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E0EC4CEC3;
-	Tue, 10 Sep 2024 10:07:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RSu9/ikXaef8U8TMzFkKblMUrvt0mC2dYSz5IPhT/E4flnPLNXGtrD5r0GfoB9uzcloK3EbGD3fDh5sZdmsf7nLeI91KzCoRAQJMHXpVoNDjQy5oKQnv6M3I1cdyYFyp7FnxShuBLBNpskcpGTIFFFOUbYyXVsDUmD0zFL5sthM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJtWQ1/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA2AC4CEDA;
+	Tue, 10 Sep 2024 10:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962848;
-	bh=k1mHl/Rwy40bU1F7FRKKpLIZ+WeUQJGLyKxJXD3z184=;
+	s=korg; t=1725963426;
+	bh=rBIlFtjs4EuCB4Yv5e0nBn5JvNr4nfZAe4UYXJupI/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFoHcWz1+n6gDpmM1x6uwTYoq2794uUiOMBDnIV4sJAa5WQ7mDZRDu7mONtuGpf1t
-	 Ctjm6XtcdqGQT9I48hf5q4oJnjL3ZJXSZN4Xn5jigcsLAFW9mJxegaPCkkyDys0qo8
-	 milrMKGpaIWaOyc0ivy1WJsm/TJAL5ukFPaHRrR0=
+	b=dJtWQ1/RPcUgQ5tJWlGVf5lr3fqLXptKM3adI9K3L2XG2AHYopGZtbF1eUiq0jDNk
+	 L7466cEyP+dIDSfslDvEfupFNvUEvK23uALOfZTH8Gje6m8uydH99pbxSqsnfdAmP2
+	 OYVxKEkOlvJR48TIyl3dqk6E9fl3KT0D8OxNYfFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.1 024/192] fuse: update stats for pages in dropped aux writeback list
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 026/214] drm/amdgpu: Fix out-of-bounds write warning
 Date: Tue, 10 Sep 2024 11:30:48 +0200
-Message-ID: <20240910092558.951450738@linuxfoundation.org>
+Message-ID: <20240910092559.845020885@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit f7790d67785302b3116bbbfda62a5a44524601a3 upstream.
+[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
 
-In the case where the aux writeback list is dropped (e.g. the pages
-have been truncated or the connection is broken), the stats for
-its pages and backing device info need to be updated as well.
+Check the ring type value to fix the out-of-bounds
+write warning
 
-Fixes: e2653bd53a98 ("fuse: fix leaked aux requests")
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Cc: <stable@vger.kernel.org> # v5.1
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1703,10 +1703,16 @@ __acquires(fi->lock)
- 	fuse_writepage_finish(fm, wpa);
- 	spin_unlock(&fi->lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 294ad2929485..de05b7f864f2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -263,7 +263,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
+ 	ring->max_dw = max_dw;
+ 	ring->hw_prio = hw_prio;
  
--	/* After fuse_writepage_finish() aux request list is private */
-+	/* After rb_erase() aux request list is private */
- 	for (aux = wpa->next; aux; aux = next) {
-+		struct backing_dev_info *bdi = inode_to_bdi(aux->inode);
-+
- 		next = aux->next;
- 		aux->next = NULL;
-+
-+		dec_wb_stat(&bdi->wb, WB_WRITEBACK);
-+		dec_node_page_state(aux->ia.ap.pages[0], NR_WRITEBACK_TEMP);
-+		wb_writeout_inc(&bdi->wb);
- 		fuse_writepage_free(aux);
- 	}
- 
+-	if (!ring->no_scheduler) {
++	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
+ 		hw_ip = ring->funcs->type;
+ 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
+ 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
+-- 
+2.43.0
+
 
 
 
