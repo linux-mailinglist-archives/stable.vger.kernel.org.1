@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB4497351B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9964F973458
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6092289235
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C84028D94F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C35B18C003;
-	Tue, 10 Sep 2024 10:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8919068E;
+	Tue, 10 Sep 2024 10:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvPFYaAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6myK+4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFE3C8DF;
-	Tue, 10 Sep 2024 10:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC023190072;
+	Tue, 10 Sep 2024 10:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965063; cv=none; b=KhCKVKsYhpNxp47Q4ud6FyoOsy0Ql88hgXUBV+20n4k5XYHdu6GrgYOWXzxYJtLMufeYR/qSZ0WFD4QRw7E1c3vwVjKzTzKU547vClBiA/jICWkZPHvdsmW5JljhONFBZAtqwqWsFYyC/ZX4OPAPyXuLIBC3JGLA131rIEnPAVg=
+	t=1725964615; cv=none; b=qGGhZYst6kilXfGwBo8Ks1j0mwFArrLjja4eFz7F/aBOnQa6DNgQkl54oepNqQFjjN1LL1N9Rl79DFrTFxuz2EnG1UoEywHRlpttzaPlvINecrTtdea0fn3eEiaAtBgE52sNnaZEZ3XF+uuguwiL79rR6dhcads2PMBJHNYumIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965063; c=relaxed/simple;
-	bh=uPhPLPf3YsAaso9Ynt8EzanGGL9VjbqZ8uma6XcZ35o=;
+	s=arc-20240116; t=1725964615; c=relaxed/simple;
+	bh=x4hu3FWnrFDJSFLfYLJ5AF3+KAnfePZDTv7+vtsC5nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/I9IEmEfe6d2zeyBaHmcxKms1LW4A09lfqItGEQynI8n4Eif1D5f4+Pgg5IDyreJMoCytgniVFReIYmdBZo+XIAIbXivndDLWHHMpInkDywsGrZSt1a4HLOrTorTqcWRJSG2LuFPiFR+5PXEDdKBfXeyMtYEy0nv1/5nWVx2jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvPFYaAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA58C4CEC3;
-	Tue, 10 Sep 2024 10:44:23 +0000 (UTC)
+	 MIME-Version; b=lfck+wxh7clMztGBuyUvc+/MXWZ7OCWVj96zyWRnBoHOgIa1N2rZBFPWd50j1mtNM8UMyccirFBNFfEDQNmLToydrFALaeYpOYxYXtto7cCabWU6OV9BJ0UOxWH2Nn3y5+iC/lS+tmYpTxfnoeEsn4xzpPRMuphOTJHY0Jgod/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6myK+4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15E9C4CEC6;
+	Tue, 10 Sep 2024 10:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965063;
-	bh=uPhPLPf3YsAaso9Ynt8EzanGGL9VjbqZ8uma6XcZ35o=;
+	s=korg; t=1725964615;
+	bh=x4hu3FWnrFDJSFLfYLJ5AF3+KAnfePZDTv7+vtsC5nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvPFYaANs+20hMXeQygJE+liB0HFVC2+hWsP6RqDNMsF/B6RGZOrYpG3zV3LDEz5w
-	 b7kchsLPqPJJpTl00RRzXzcCxjlsHxejC0vZFoyXfFFzSu9zJQkNsEaLEnIpagfMNr
-	 Rqg+pMYqal89Ugk22PLTyKp854ZodH4Crf6kyAT0=
+	b=T6myK+4urpccgdI29P09XviRTzjZrmYOUn+xMZfB8Vzs5/gHLLfa4a4u4nqahZzTR
+	 xG4cOtkThgd4imFlplXVG2K8xDbbJU62WeJe95nEvuelXBqKWrxXq6LCDzkPcoS4xE
+	 H5byEZTLHnv/h+8JkuxHD6H4WX3xd5urUH4TeRIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/186] ALSA: hda: Add input value sanity checks to HDMI channel map controls
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 205/269] staging: iio: frequency: ad9834: Validate frequency parameter value
 Date: Tue, 10 Sep 2024 11:33:12 +0200
-Message-ID: <20240910092558.529309723@linuxfoundation.org>
+Message-ID: <20240910092615.366668309@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
+commit b48aa991758999d4e8f9296c5bbe388f293ef465 upstream.
 
-Add a simple sanity check to HD-audio HDMI Channel Map controls.
-Although the value might not be accepted for the actual connection, we
-can filter out some bogus values beforehand, and that should be enough
-for making kselftest happier.
+In ad9834_write_frequency() clk_get_rate() can return 0. In such case
+ad9834_calc_freqreg() call will lead to division by zero. Checking
+'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
+ad9834_write_frequency() is called from ad9834_write(), where fout is
+taken from text buffer, which can contain any value.
 
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Modify parameters checking.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/staging/iio/frequency/ad9834.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
-index aad5c4bf4d34..0ebf4d907852 100644
---- a/sound/hda/hdmi_chmap.c
-+++ b/sound/hda/hdmi_chmap.c
-@@ -753,6 +753,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct
  
-+/* a simple sanity check for input values to chmap kcontrol */
-+static int chmap_value_check(struct hdac_chmap *hchmap,
-+			     const struct snd_ctl_elem_value *ucontrol)
-+{
-+	int i;
-+
-+	for (i = 0; i < hchmap->channels_max; i++) {
-+		if (ucontrol->value.integer.value[i] < 0 ||
-+		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
-+			return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 			      struct snd_ctl_elem_value *ucontrol)
- {
-@@ -764,6 +778,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 	unsigned char chmap[8], per_pin_chmap[8];
- 	int i, err, ca, prepared = 0;
+ 	clk_freq = clk_get_rate(st->mclk);
  
-+	err = chmap_value_check(hchmap, ucontrol);
-+	if (err < 0)
-+		return err;
-+
- 	/* No monitor is connected in dyn_pcm_assign.
- 	 * It's invalid to setup the chmap
- 	 */
--- 
-2.43.0
-
+-	if (fout > (clk_freq / 2))
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
+ 
+ 	regval = ad9834_calc_freqreg(clk_freq, fout);
 
 
 
