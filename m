@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-74918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3AF973210
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855DF973503
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB4D28DF3F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B828E1C250BF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE24D195F22;
-	Tue, 10 Sep 2024 10:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A28190692;
+	Tue, 10 Sep 2024 10:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6idpwm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiWogUql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1DF190676;
-	Tue, 10 Sep 2024 10:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE185381A;
+	Tue, 10 Sep 2024 10:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963215; cv=none; b=CLT+/14NUsvC/HdTgsJIEl6OYrscNWthKRic8E1QhabMZtQG5329x0vlOisqQvu+4rOe6z+jIiHtxOU3dAweeCEOZ8Ob8u/nwhKZFdwdJCxSQZIFouhm9ljuJloONr2KGSc9Xb+CG1P78ZekUZZOsOrGVEB7qd4/YV3yzK4xC58=
+	t=1725965001; cv=none; b=pw9u2jWxhd62JDSLC8eGjUWT5T3JmvdXyBZtu7lScu9L2uZcDR3cStDWYWWFDTLP8uolcTwDZBH18Wb6MMU70TOJJ4r9cw4gdO+0Bgh3NMSVgkkX9qzjYI/G7fBETBP09wF2KMS8sXdQDz8miWkW2UNcqwiE8LgkFi1Kxld8Uio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963215; c=relaxed/simple;
-	bh=A0fxUINh6WpCoKRAYtGONXC+9kfgA5YwOApoL1fFqrA=;
+	s=arc-20240116; t=1725965001; c=relaxed/simple;
+	bh=WhOpEI6ntfl8bt5IEXnwnpY9AP1IfcWSu1wdZhp/KvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHRPvF3GW28bOrh6Tbshd2b2gYRkJoJAqJ0R2SDgpKwTHOMAdcP1XsJXj361gMhkKpokzvHWKhdX6XNwiVB0QeWv/oW8PkIjubxRN1dRuakfDQcJkhoj//AR/tRPq6HwHHiGBDPgmrxf4YIrR4k1mznqMia/x1GVObt9WGQHZKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6idpwm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311D4C4CEC3;
-	Tue, 10 Sep 2024 10:13:35 +0000 (UTC)
+	 MIME-Version; b=XaR12lfUgZ2/qg5t3zyI06skD5ieF216lv/iULhiRwE+KwEsMPW2qjmybNxFYbBW78qUV24UKMIyPErb0ATYMoTnExv4TheqWTZBZ+kDHqLqkJX2lvwbm4vCMu86hXGQzOkg+r77mDTLcfM61FIF2w8cpTEJSgpOGyVQi53UXDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiWogUql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17018C4CEC3;
+	Tue, 10 Sep 2024 10:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963215;
-	bh=A0fxUINh6WpCoKRAYtGONXC+9kfgA5YwOApoL1fFqrA=;
+	s=korg; t=1725965001;
+	bh=WhOpEI6ntfl8bt5IEXnwnpY9AP1IfcWSu1wdZhp/KvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6idpwm48/JulnfLkmeqlfJ7a3eJ/J1Hg/3Mcrc5h6nnZSqyWNjv+u/fajHhqlmPM
-	 uBr9kzN9MJU+PV4NmxQTBGz+P2FwEmaI/F1e3zvK1n3MLYDzwBB2eWPnv3cYZrWgvd
-	 2qwZf9xgzh7iwc5ElX3ohs7un/FsNyd2qiIPz2ow=
+	b=tiWogUqlmVriLxNOhrnIRHIYyojBbuxPIjbT5kCDKvGCLMawGSqpZV/LWoNPNIraN
+	 8FA1JvuNMGpQKc94ErpeaTsIYSICM3wg3UHKpgX7k0FOdX+8SySa/wouePOFBSeXL/
+	 5gyUjHhDLL5DhiTWyjraJdHutC7T41Ocenq97/1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/192] powerpc/64e: remove unused IBM HTW code
+Subject: [PATCH 5.10 104/186] media: vivid: fix wrong sizeimage value for mplane
 Date: Tue, 10 Sep 2024 11:33:19 +0200
-Message-ID: <20240910092605.065151803@linuxfoundation.org>
+Message-ID: <20240910092558.814410506@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,382 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 88715b6e5d529f4ef3830ad2a893e4624c6af0b8 ]
+[ Upstream commit 0fd7c0c2c156270dceb8c15fad3120cdce03e539 ]
 
-Patch series "Reimplement huge pages without hugepd on powerpc (8xx, e500,
-book3s/64)", v7.
+In several places a division by fmt->vdownsampling[p] was
+missing in the sizeimage[p] calculation, causing incorrect
+behavior for multiplanar formats were some planes are smaller
+than the first plane.
 
-Unlike most architectures, powerpc 8xx HW requires a two-level pagetable
-topology for all page sizes.  So a leaf PMD-contig approach is not
-feasible as such.
+Found by new v4l2-compliance tests.
 
-Possible sizes on 8xx are 4k, 16k, 512k and 8M.
-
-First level (PGD/PMD) covers 4M per entry.  For 8M pages, two PMD entries
-must point to a single entry level-2 page table.  Until now that was done
-using hugepd.  This series changes it to use standard page tables where
-the entry is replicated 1024 times on each of the two pagetables refered
-by the two associated PMD entries for that 8M page.
-
-For e500 and book3s/64 there are less constraints because it is not tied
-to the HW assisted tablewalk like on 8xx, so it is easier to use leaf PMDs
-(and PUDs).
-
-On e500 the supported page sizes are 4M, 16M, 64M, 256M and 1G.  All at
-PMD level on e500/32 (mpc85xx) and mix of PMD and PUD for e500/64.  We
-encode page size with 4 available bits in PTE entries.  On e300/32 PGD
-entries size is increases to 64 bits in order to allow leaf-PMD entries
-because PTE are 64 bits on e500.
-
-On book3s/64 only the hash-4k mode is concerned.  It supports 16M pages as
-cont-PMD and 16G pages as cont-PUD.  In other modes (radix-4k, radix-6k
-and hash-64k) the sizes match with PMD and PUD sizes so that's just leaf
-entries.  The hash processing make things a bit more complex.  To ease
-things, __hash_page_huge() is modified to bail out when DIRTY or ACCESSED
-bits are missing, leaving it to mm core to fix it.
-
-This patch (of 23):
-
-The nohash HTW_IBM (Hardware Table Walk) code is unused since support for
-A2 was removed in commit fb5a515704d7 ("powerpc: Remove platforms/ wsp and
-associated pieces") (2014).
-
-The remaining supported CPUs use either no HTW (data_tlb_miss_bolted), or
-the e6500 HTW (data_tlb_miss_e6500).
-
-Link: https://lkml.kernel.org/r/cover.1719928057.git.christophe.leroy@csgroup.eu
-Link: https://lkml.kernel.org/r/820dd1385ecc931f07b0d7a0fa827b1613917ab6.1719928057.git.christophe.leroy@csgroup.eu
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: d92b5cc29c79 ("powerpc/64e: Define mmu_pte_psize static")
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/nohash/mmu-e500.h |   3 +-
- arch/powerpc/mm/nohash/tlb.c               |  57 +-----
- arch/powerpc/mm/nohash/tlb_low_64e.S       | 195 ---------------------
- 3 files changed, 2 insertions(+), 253 deletions(-)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |  5 +++--
+ drivers/media/test-drivers/vivid/vivid-vid-out.c | 16 +++++++++-------
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/mmu-e500.h b/arch/powerpc/include/asm/nohash/mmu-e500.h
-index e43a418d3ccd..9b5ba73d33d6 100644
---- a/arch/powerpc/include/asm/nohash/mmu-e500.h
-+++ b/arch/powerpc/include/asm/nohash/mmu-e500.h
-@@ -303,8 +303,7 @@ extern unsigned long linear_map_top;
- extern int book3e_htw_mode;
- 
- #define PPC_HTW_NONE	0
--#define PPC_HTW_IBM	1
--#define PPC_HTW_E6500	2
-+#define PPC_HTW_E6500	1
- 
- /*
-  * 64-bit booke platforms don't load the tlb in the tlb miss handler code.
-diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-index 2c15c86c7015..19df1e13fe0e 100644
---- a/arch/powerpc/mm/nohash/tlb.c
-+++ b/arch/powerpc/mm/nohash/tlb.c
-@@ -403,9 +403,8 @@ void tlb_flush_pgtable(struct mmu_gather *tlb, unsigned long address)
- static void __init setup_page_sizes(void)
- {
- 	unsigned int tlb0cfg;
--	unsigned int tlb0ps;
- 	unsigned int eptcfg;
--	int i, psize;
-+	int psize;
- 
- #ifdef CONFIG_PPC_E500
- 	unsigned int mmucfg = mfspr(SPRN_MMUCFG);
-@@ -474,50 +473,6 @@ static void __init setup_page_sizes(void)
- 		goto out;
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index 437889e51ca0..907781c2e613 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -113,8 +113,9 @@ static int vid_cap_queue_setup(struct vb2_queue *vq,
+ 		if (*nplanes != buffers)
+ 			return -EINVAL;
+ 		for (p = 0; p < buffers; p++) {
+-			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h +
+-						dev->fmt_cap->data_offset[p])
++			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h /
++					dev->fmt_cap->vdownsampling[p] +
++					dev->fmt_cap->data_offset[p])
+ 				return -EINVAL;
+ 		}
+ 	} else {
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/media/test-drivers/vivid/vivid-vid-out.c
+index cd6c247547d6..9038be90ab35 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
+@@ -63,14 +63,16 @@ static int vid_out_queue_setup(struct vb2_queue *vq,
+ 		if (sizes[0] < size)
+ 			return -EINVAL;
+ 		for (p = 1; p < planes; p++) {
+-			if (sizes[p] < dev->bytesperline_out[p] * h +
+-				       vfmt->data_offset[p])
++			if (sizes[p] < dev->bytesperline_out[p] * h /
++					vfmt->vdownsampling[p] +
++					vfmt->data_offset[p])
+ 				return -EINVAL;
+ 		}
+ 	} else {
+ 		for (p = 0; p < planes; p++)
+-			sizes[p] = p ? dev->bytesperline_out[p] * h +
+-				       vfmt->data_offset[p] : size;
++			sizes[p] = p ? dev->bytesperline_out[p] * h /
++					vfmt->vdownsampling[p] +
++					vfmt->data_offset[p] : size;
  	}
- #endif
--
--	tlb0cfg = mfspr(SPRN_TLB0CFG);
--	tlb0ps = mfspr(SPRN_TLB0PS);
--	eptcfg = mfspr(SPRN_EPTCFG);
--
--	/* Look for supported direct sizes */
--	for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
--		struct mmu_psize_def *def = &mmu_psize_defs[psize];
--
--		if (tlb0ps & (1U << (def->shift - 10)))
--			def->flags |= MMU_PAGE_SIZE_DIRECT;
--	}
--
--	/* Indirect page sizes supported ? */
--	if ((tlb0cfg & TLBnCFG_IND) == 0 ||
--	    (tlb0cfg & TLBnCFG_PT) == 0)
--		goto out;
--
--	book3e_htw_mode = PPC_HTW_IBM;
--
--	/* Now, we only deal with one IND page size for each
--	 * direct size. Hopefully all implementations today are
--	 * unambiguous, but we might want to be careful in the
--	 * future.
--	 */
--	for (i = 0; i < 3; i++) {
--		unsigned int ps, sps;
--
--		sps = eptcfg & 0x1f;
--		eptcfg >>= 5;
--		ps = eptcfg & 0x1f;
--		eptcfg >>= 5;
--		if (!ps || !sps)
--			continue;
--		for (psize = 0; psize < MMU_PAGE_COUNT; psize++) {
--			struct mmu_psize_def *def = &mmu_psize_defs[psize];
--
--			if (ps == (def->shift - 10))
--				def->flags |= MMU_PAGE_SIZE_INDIRECT;
--			if (sps == (def->shift - 10))
--				def->ind = ps + 10;
--		}
--	}
--
- out:
- 	/* Cleanup array and print summary */
- 	pr_info("MMU: Supported page sizes\n");
-@@ -546,10 +501,6 @@ static void __init setup_mmu_htw(void)
- 	 */
  
- 	switch (book3e_htw_mode) {
--	case PPC_HTW_IBM:
--		patch_exception(0x1c0, exc_data_tlb_miss_htw_book3e);
--		patch_exception(0x1e0, exc_instruction_tlb_miss_htw_book3e);
--		break;
- #ifdef CONFIG_PPC_E500
- 	case PPC_HTW_E6500:
- 		extlb_level_exc = EX_TLB_SIZE;
-@@ -580,12 +531,6 @@ static void early_init_this_mmu(void)
- 		mmu_pte_psize = MMU_PAGE_2M;
- 		break;
+ 	if (vq->num_buffers + *nbuffers < 2)
+@@ -127,7 +129,7 @@ static int vid_out_buf_prepare(struct vb2_buffer *vb)
  
--	case PPC_HTW_IBM:
--		mas4 |= MAS4_INDD;
--		mas4 |=	BOOK3E_PAGESZ_1M << MAS4_TSIZED_SHIFT;
--		mmu_pte_psize = MMU_PAGE_1M;
--		break;
--
- 	case PPC_HTW_NONE:
- 		mas4 |=	BOOK3E_PAGESZ_4K << MAS4_TSIZED_SHIFT;
- 		mmu_pte_psize = mmu_virtual_psize;
-diff --git a/arch/powerpc/mm/nohash/tlb_low_64e.S b/arch/powerpc/mm/nohash/tlb_low_64e.S
-index 76cf456d7976..d831a111eaba 100644
---- a/arch/powerpc/mm/nohash/tlb_low_64e.S
-+++ b/arch/powerpc/mm/nohash/tlb_low_64e.S
-@@ -893,201 +893,6 @@ virt_page_table_tlb_miss_whacko_fault:
- 	TLB_MISS_EPILOG_ERROR
- 	b	exc_data_storage_book3e
+ 	for (p = 0; p < planes; p++) {
+ 		if (p)
+-			size = dev->bytesperline_out[p] * h;
++			size = dev->bytesperline_out[p] * h / vfmt->vdownsampling[p];
+ 		size += vb->planes[p].data_offset;
  
--
--/**************************************************************
-- *                                                            *
-- * TLB miss handling for Book3E with hw page table support    *
-- *                                                            *
-- **************************************************************/
--
--
--/* Data TLB miss */
--	START_EXCEPTION(data_tlb_miss_htw)
--	TLB_MISS_PROLOG
--
--	/* Now we handle the fault proper. We only save DEAR in normal
--	 * fault case since that's the only interesting values here.
--	 * We could probably also optimize by not saving SRR0/1 in the
--	 * linear mapping case but I'll leave that for later
--	 */
--	mfspr	r14,SPRN_ESR
--	mfspr	r16,SPRN_DEAR		/* get faulting address */
--	srdi	r11,r16,44		/* get region */
--	xoris	r11,r11,0xc
--	cmpldi	cr0,r11,0		/* linear mapping ? */
--	beq	tlb_load_linear		/* yes -> go to linear map load */
--	cmpldi	cr1,r11,1		/* vmalloc mapping ? */
--
--	/* We do the user/kernel test for the PID here along with the RW test
--	 */
--	srdi.	r11,r16,60		/* Check for user region */
--	ld	r15,PACAPGD(r13)	/* Load user pgdir */
--	beq	htw_tlb_miss
--
--	/* XXX replace the RMW cycles with immediate loads + writes */
--1:	mfspr	r10,SPRN_MAS1
--	rlwinm	r10,r10,0,16,1		/* Clear TID */
--	mtspr	SPRN_MAS1,r10
--	ld	r15,PACA_KERNELPGD(r13)	/* Load kernel pgdir */
--	beq+	cr1,htw_tlb_miss
--
--	/* We got a crappy address, just fault with whatever DEAR and ESR
--	 * are here
--	 */
--	TLB_MISS_EPILOG_ERROR
--	b	exc_data_storage_book3e
--
--/* Instruction TLB miss */
--	START_EXCEPTION(instruction_tlb_miss_htw)
--	TLB_MISS_PROLOG
--
--	/* If we take a recursive fault, the second level handler may need
--	 * to know whether we are handling a data or instruction fault in
--	 * order to get to the right store fault handler. We provide that
--	 * info by keeping a crazy value for ESR in r14
--	 */
--	li	r14,-1	/* store to exception frame is done later */
--
--	/* Now we handle the fault proper. We only save DEAR in the non
--	 * linear mapping case since we know the linear mapping case will
--	 * not re-enter. We could indeed optimize and also not save SRR0/1
--	 * in the linear mapping case but I'll leave that for later
--	 *
--	 * Faulting address is SRR0 which is already in r16
--	 */
--	srdi	r11,r16,44		/* get region */
--	xoris	r11,r11,0xc
--	cmpldi	cr0,r11,0		/* linear mapping ? */
--	beq	tlb_load_linear		/* yes -> go to linear map load */
--	cmpldi	cr1,r11,1		/* vmalloc mapping ? */
--
--	/* We do the user/kernel test for the PID here along with the RW test
--	 */
--	srdi.	r11,r16,60		/* Check for user region */
--	ld	r15,PACAPGD(r13)		/* Load user pgdir */
--	beq	htw_tlb_miss
--
--	/* XXX replace the RMW cycles with immediate loads + writes */
--1:	mfspr	r10,SPRN_MAS1
--	rlwinm	r10,r10,0,16,1			/* Clear TID */
--	mtspr	SPRN_MAS1,r10
--	ld	r15,PACA_KERNELPGD(r13)		/* Load kernel pgdir */
--	beq+	htw_tlb_miss
--
--	/* We got a crappy address, just fault */
--	TLB_MISS_EPILOG_ERROR
--	b	exc_instruction_storage_book3e
--
--
--/*
-- * This is the guts of the second-level TLB miss handler for direct
-- * misses. We are entered with:
-- *
-- * r16 = virtual page table faulting address
-- * r15 = PGD pointer
-- * r14 = ESR
-- * r13 = PACA
-- * r12 = TLB exception frame in PACA
-- * r11 = crap (free to use)
-- * r10 = crap (free to use)
-- *
-- * It can be re-entered by the linear mapping miss handler. However, to
-- * avoid too much complication, it will save/restore things for us
-- */
--htw_tlb_miss:
--#ifdef CONFIG_PPC_KUAP
--	mfspr	r10,SPRN_MAS1
--	rlwinm.	r10,r10,0,0x3fff0000
--	beq-	htw_tlb_miss_fault /* KUAP fault */
--#endif
--	/* Search if we already have a TLB entry for that virtual address, and
--	 * if we do, bail out.
--	 *
--	 * MAS1:IND should be already set based on MAS4
--	 */
--	PPC_TLBSRX_DOT(0,R16)
--	beq	htw_tlb_miss_done
--
--	/* Now, we need to walk the page tables. First check if we are in
--	 * range.
--	 */
--	rldicl.	r10,r16,64-PGTABLE_EADDR_SIZE,PGTABLE_EADDR_SIZE+4
--	bne-	htw_tlb_miss_fault
--
--	/* Get the PGD pointer */
--	cmpldi	cr0,r15,0
--	beq-	htw_tlb_miss_fault
--
--	/* Get to PGD entry */
--	rldicl	r11,r16,64-(PGDIR_SHIFT-3),64-PGD_INDEX_SIZE-3
--	clrrdi	r10,r11,3
--	ldx	r15,r10,r15
--	cmpdi	cr0,r15,0
--	bge	htw_tlb_miss_fault
--
--	/* Get to PUD entry */
--	rldicl	r11,r16,64-(PUD_SHIFT-3),64-PUD_INDEX_SIZE-3
--	clrrdi	r10,r11,3
--	ldx	r15,r10,r15
--	cmpdi	cr0,r15,0
--	bge	htw_tlb_miss_fault
--
--	/* Get to PMD entry */
--	rldicl	r11,r16,64-(PMD_SHIFT-3),64-PMD_INDEX_SIZE-3
--	clrrdi	r10,r11,3
--	ldx	r15,r10,r15
--	cmpdi	cr0,r15,0
--	bge	htw_tlb_miss_fault
--
--	/* Ok, we're all right, we can now create an indirect entry for
--	 * a 1M or 256M page.
--	 *
--	 * The last trick is now that because we use "half" pages for
--	 * the HTW (1M IND is 2K and 256M IND is 32K) we need to account
--	 * for an added LSB bit to the RPN. For 64K pages, there is no
--	 * problem as we already use 32K arrays (half PTE pages), but for
--	 * 4K page we need to extract a bit from the virtual address and
--	 * insert it into the "PA52" bit of the RPN.
--	 */
--	rlwimi	r15,r16,32-9,20,20
--	/* Now we build the MAS:
--	 *
--	 * MAS 0   :	Fully setup with defaults in MAS4 and TLBnCFG
--	 * MAS 1   :	Almost fully setup
--	 *               - PID already updated by caller if necessary
--	 *               - TSIZE for now is base ind page size always
--	 * MAS 2   :	Use defaults
--	 * MAS 3+7 :	Needs to be done
--	 */
--	ori	r10,r15,(BOOK3E_PAGESZ_4K << MAS3_SPSIZE_SHIFT)
--
--	srdi	r16,r10,32
--	mtspr	SPRN_MAS3,r10
--	mtspr	SPRN_MAS7,r16
--
--	tlbwe
--
--htw_tlb_miss_done:
--	/* We don't bother with restoring DEAR or ESR since we know we are
--	 * level 0 and just going back to userland. They are only needed
--	 * if you are going to take an access fault
--	 */
--	TLB_MISS_EPILOG_SUCCESS
--	rfi
--
--htw_tlb_miss_fault:
--	/* We need to check if it was an instruction miss. We know this
--	 * though because r14 would contain -1
--	 */
--	cmpdi	cr0,r14,-1
--	beq	1f
--	mtspr	SPRN_DEAR,r16
--	mtspr	SPRN_ESR,r14
--	TLB_MISS_EPILOG_ERROR
--	b	exc_data_storage_book3e
--1:	TLB_MISS_EPILOG_ERROR
--	b	exc_instruction_storage_book3e
--
- /*
-  * This is the guts of "any" level TLB miss handler for kernel linear
-  * mapping misses. We are entered with:
+ 		if (vb2_get_plane_payload(vb, p) < size) {
+@@ -334,8 +336,8 @@ int vivid_g_fmt_vid_out(struct file *file, void *priv,
+ 	for (p = 0; p < mp->num_planes; p++) {
+ 		mp->plane_fmt[p].bytesperline = dev->bytesperline_out[p];
+ 		mp->plane_fmt[p].sizeimage =
+-			mp->plane_fmt[p].bytesperline * mp->height +
+-			fmt->data_offset[p];
++			mp->plane_fmt[p].bytesperline * mp->height /
++			fmt->vdownsampling[p] + fmt->data_offset[p];
+ 	}
+ 	for (p = fmt->buffers; p < fmt->planes; p++) {
+ 		unsigned stride = dev->bytesperline_out[p];
 -- 
 2.43.0
 
