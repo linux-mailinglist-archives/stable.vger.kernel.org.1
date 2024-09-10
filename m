@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1687973236
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49548973141
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 885FE28710B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B251F272AB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B393918D643;
-	Tue, 10 Sep 2024 10:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A4A18C325;
+	Tue, 10 Sep 2024 10:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3YqceD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9k+VJZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7179218C039;
-	Tue, 10 Sep 2024 10:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454718B46D;
+	Tue, 10 Sep 2024 10:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963277; cv=none; b=D2UM27cuICxkJsUt/L4lDKPy5Il95YRG0JYfh2/xEJHyycrAjSiLFUdflUZVKisc9MdzAxCMEFIA1/U1UKCezhT2heVdCs+eVz8UPqXoXaHkvEnjhsq7gPjJ2TXOlJQDuxU9BehrC6xeBIlm0ihnu4eCJjMb7xlb62YLcGumltY=
+	t=1725962713; cv=none; b=KUuKIKWuyW6NYpKe2NvY75Nbnl9K7eJYhBuwUN/ikmBCuNiNqv7Dk4DEsVg3XJAPh0T3AqtgVcz+o8l+YPH5zFqKpFzdU817/RqsWC9RwzKRU+rP8htD/degq5mRqkCXWVCoP6A7KizAu2NGHE/18Ckadnb1/EDw5TslGBFps8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963277; c=relaxed/simple;
-	bh=bc79nCXqHkCvo9ETFb5ijAuBU7njYyIBIz0ik7SbPyg=;
+	s=arc-20240116; t=1725962713; c=relaxed/simple;
+	bh=oEv3vMhlaCqgaRTIAgvgmNM63QnOipi81b/eFRC7lIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nUPpA4o4u5CmqN8oAujIhRwJi0C9pnwVQWeia8nF+f007awWw9/BKBOLReK497PWTwzchVNSQKwUp5we95FIFDuSzOQl8HG5Zv00csnzqw4N5z+Y3U8Pg6ApbYotGwVIkcQWPIBDq8HlV+repBrYPMor+W7qAOTt1mbuD91SwWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3YqceD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E184EC4CEC3;
-	Tue, 10 Sep 2024 10:14:36 +0000 (UTC)
+	 MIME-Version; b=cIL75SqMYwPFcvgNKwnvJIbaKO1RfrsGRfvzCpNVl1rrct0dTHae/fNeYsq5pRfDLs3xCS3vClVLkXbSRfzRxePVr396kR11e7HF6ehtsBeLi59IneW/9o0zFpKfDYRU+/vAtVG5Z6N5nIeEeain2slXBbxagixFLon0AbhOpi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9k+VJZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF17C4CEC3;
+	Tue, 10 Sep 2024 10:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963277;
-	bh=bc79nCXqHkCvo9ETFb5ijAuBU7njYyIBIz0ik7SbPyg=;
+	s=korg; t=1725962713;
+	bh=oEv3vMhlaCqgaRTIAgvgmNM63QnOipi81b/eFRC7lIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3YqceD3pQtVC+8FxJG2EodQh7Hdk0NRLSPuh0HuMIIutISGZ6UwB6OW0JCk3y9Ru
-	 XTKiUejfnEi5csTCP2YjTWe5C2sDtlkpoFMnyOozHDbqdcyHEX5pLDGZvQmTiu+Dbh
-	 Q27QAVVCNbff9MHsLHbN1ExzhPm9qdrBLahTCGxY=
+	b=p9k+VJZA3pJ6NyJ8++VFUOuGFhiftLy9ILIR/onyOMQ4JpfvWp/mNAUn3SMltG0jQ
+	 i3I7xig5jpMpQ04Vgnj+64HrgtxdYhV9PrnV1R4Cvv2J3qDbgZ8VFH19+wyGnIFx+q
+	 zxV4X/PO9ZJH/bGNIbQe6Mp9UihkOwMsIyGj315o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/192] can: mcp251xfd: mcp251xfd_handle_rxif_ring_uinc(): factor out in separate function
-Date: Tue, 10 Sep 2024 11:33:13 +0200
-Message-ID: <20240910092604.857627798@linuxfoundation.org>
+	Roland Xu <mu001999@outlook.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 119/121] rtmutex: Drop rt_mutex::wait_lock before scheduling
+Date: Tue, 10 Sep 2024 11:33:14 +0200
+Message-ID: <20240910092551.450115510@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Roland Xu <mu001999@outlook.com>
 
-[ Upstream commit d49184b7b585f9da7ee546b744525f62117019f6 ]
+commit d33d26036a0274b472299d7dcdaa5fb34329f91b upstream.
 
-This is a preparation patch.
+rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
+good case it returns with the lock held and in the deadlock case it emits a
+warning and goes into an endless scheduling loop with the lock held, which
+triggers the 'scheduling in atomic' warning.
 
-Sending the UINC messages followed by incrementing the tail pointer
-will be called in more than one place in upcoming patches, so factor
-this out into a separate function.
+Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
+and dropping into the schedule for ever loop.
 
-Also make mcp251xfd_handle_rxif_ring_uinc() safe to be called with a
-"len" of 0.
+[ tglx: Moved unlock before the WARN(), removed the pointless comment,
+  	massaged changelog, added Fixes tag ]
 
-Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
+Signed-off-by: Roland Xu <mu001999@outlook.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c | 48 +++++++++++++-------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ kernel/locking/rtmutex.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-index ced8d9c81f8c..5e2f39de88f3 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-@@ -197,6 +197,37 @@ mcp251xfd_rx_obj_read(const struct mcp251xfd_priv *priv,
- 	return err;
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1204,6 +1204,7 @@ __rt_mutex_slowlock(struct rt_mutex *loc
  }
  
-+static int
-+mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
-+				struct mcp251xfd_rx_ring *ring,
-+				u8 len)
-+{
-+	int offset;
-+	int err;
-+
-+	if (!len)
-+		return 0;
-+
-+	/* Increment the RX FIFO tail pointer 'len' times in a
-+	 * single SPI message.
-+	 *
-+	 * Note:
-+	 * Calculate offset, so that the SPI transfer ends on
-+	 * the last message of the uinc_xfer array, which has
-+	 * "cs_change == 0", to properly deactivate the chip
-+	 * select.
-+	 */
-+	offset = ARRAY_SIZE(ring->uinc_xfer) - len;
-+	err = spi_sync_transfer(priv->spi,
-+				ring->uinc_xfer + offset, len);
-+	if (err)
-+		return err;
-+
-+	ring->tail += len;
-+
-+	return 0;
-+}
-+
- static int
- mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 			   struct mcp251xfd_rx_ring *ring)
-@@ -210,8 +241,6 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 		return err;
+ static void rt_mutex_handle_deadlock(int res, int detect_deadlock,
++				     struct rt_mutex *lock,
+ 				     struct rt_mutex_waiter *w)
+ {
+ 	/*
+@@ -1213,6 +1214,7 @@ static void rt_mutex_handle_deadlock(int
+ 	if (res != -EDEADLOCK || detect_deadlock)
+ 		return;
  
- 	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
--		int offset;
--
- 		rx_tail = mcp251xfd_get_rx_tail(ring);
- 
- 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
-@@ -227,22 +256,9 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 				return err;
- 		}
- 
--		/* Increment the RX FIFO tail pointer 'len' times in a
--		 * single SPI message.
--		 *
--		 * Note:
--		 * Calculate offset, so that the SPI transfer ends on
--		 * the last message of the uinc_xfer array, which has
--		 * "cs_change == 0", to properly deactivate the chip
--		 * select.
--		 */
--		offset = ARRAY_SIZE(ring->uinc_xfer) - len;
--		err = spi_sync_transfer(priv->spi,
--					ring->uinc_xfer + offset, len);
-+		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
- 		if (err)
- 			return err;
--
--		ring->tail += len;
++	raw_spin_unlock_irq(&lock->wait_lock);
+ 	/*
+ 	 * Yell lowdly and stop the task right here.
+ 	 */
+@@ -1268,7 +1270,7 @@ rt_mutex_slowlock(struct rt_mutex *lock,
+ 	if (unlikely(ret)) {
+ 		__set_current_state(TASK_RUNNING);
+ 		remove_waiter(lock, &waiter);
+-		rt_mutex_handle_deadlock(ret, chwalk, &waiter);
++		rt_mutex_handle_deadlock(ret, chwalk, lock, &waiter);
  	}
  
- 	return 0;
--- 
-2.43.0
-
+ 	/*
 
 
 
