@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-75583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF33973547
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664C09732C3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A791C2488D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DC71B2AE94
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564C518DF73;
-	Tue, 10 Sep 2024 10:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F73D19AA75;
+	Tue, 10 Sep 2024 10:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BzVZ6u6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnUzYqRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D8B1DA4C;
-	Tue, 10 Sep 2024 10:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1211E199FDD;
+	Tue, 10 Sep 2024 10:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965158; cv=none; b=ZtshzUxXCwYt9a/Bewbm576WfX83iihzc+Rnfkh55R8ezzg223AogQcUP4baE9lshed1b6wjx52GF/ZgotkHoYwB+Ia2GxEEZD2pZ+TGwjAh9ErECeiTXtbpKfVQMe5RuoQQCTK3TrLAlx3ck/sAl8PmUTzKOt9taP4NUeW9oO8=
+	t=1725963263; cv=none; b=h720SZWaff8VT+oIois4BYuJB1dR8LDG7KRZEiGqa6T1etaLz5ilPu0/igFZ82yhKmXUTav/m4vqH0tE0qSn2zoJsNzc+lfN7vFspz1GvKYMMNlGAbMDXtl01xHOhl/zcue2t+a0S+dqWQFrMiEl704Ue72gmzuicAmGD+faqrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965158; c=relaxed/simple;
-	bh=Ee2qPGsf4k2If/216VbpP0er17voOAdctm64G9Uoleg=;
+	s=arc-20240116; t=1725963263; c=relaxed/simple;
+	bh=BQsIBGKgcU7J3Jvtu+ZTRMFzGKo655sRLZ6m2fnyX5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hhq5v0qZ0pwt8SpzBDGnheHFLDdZOKF9Mwqi4YgUDos4uznAXvQ/ozXNWVkX2+ERuL/iMnKn/dBtkU6cu+BnPQZNLrF+vHn7hBW4qW8oe7l/k5i23bts3yS7c3jmPqIR402ne15IyTMpvfw+Av4YhgHa+Vsa6b4RTq+C0xif3D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BzVZ6u6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D526C4CEC3;
-	Tue, 10 Sep 2024 10:45:57 +0000 (UTC)
+	 MIME-Version; b=cQD4ThAvMlsYB5NYui89luDn41lYOn154phvMbopjwJvW5Wr9Cfbyvja1UjvDCxK3XSraIbE8yAi3xcABZ5JII0t4LQkPaS/pogwQ8nPQBw89tm2akMdswNvA1oLvzsNbn451w074yugJv7axszJhaKA//y4hJWLy51pHVw9oqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnUzYqRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADA2C4CEC6;
+	Tue, 10 Sep 2024 10:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965157;
-	bh=Ee2qPGsf4k2If/216VbpP0er17voOAdctm64G9Uoleg=;
+	s=korg; t=1725963262;
+	bh=BQsIBGKgcU7J3Jvtu+ZTRMFzGKo655sRLZ6m2fnyX5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BzVZ6u6uUg0B6n+5nevNHyd90hI6Dj7UBN1zlB6yW3BNwYbmQYYM1VqbJrjUJLeU
-	 +9cfNGG19oEIUsRwTbPBC+yZcY1nSoZ44zCA7+0pFx1BCWWCGG+aOcVtimOOV3lcy5
-	 b6wSlB31s4bvrrk9qDhUOdDQeMge1Abx1qWnt8lc=
+	b=YnUzYqRXE83IkPWtj/Yfl7Spy4D+1SpF9wpHIfkoWuOg/S0PKXBrmZBV0OsfRFgsC
+	 QGOlAUXT0XD37a0FBp1geNYDsGpGTd2kS77grCGnFkVd/VREs4izlI2LCAYYUiTzX7
+	 ZgjTU4ojfMx2gmDyPPZqUeKkbwW2Alz5xmc5mDM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/186] net: usb: dont write directly to netdev->dev_addr
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tomas Krcka <krckatom@amazon.de>
+Subject: [PATCH 6.1 190/192] memcg: protect concurrent access to mem_cgroup_idr
 Date: Tue, 10 Sep 2024 11:33:34 +0200
-Message-ID: <20240910092559.477267772@linuxfoundation.org>
+Message-ID: <20240910092605.613147364@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,241 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-[ Upstream commit 2674e7ea22ba0e22a2d1603bd51e0b8f6442a267 ]
+commit 9972605a238339b85bd16b084eed5f18414d22db upstream.
 
-Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
-of VLANs...") introduced a rbtree for faster Ethernet address look
-up. To maintain netdev->dev_addr in this tree we need to make all
-the writes to it got through appropriate helpers.
+Commit 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after
+many small jobs") decoupled the memcg IDs from the CSS ID space to fix the
+cgroup creation failures.  It introduced IDR to maintain the memcg ID
+space.  The IDR depends on external synchronization mechanisms for
+modifications.  For the mem_cgroup_idr, the idr_alloc() and idr_replace()
+happen within css callback and thus are protected through cgroup_mutex
+from concurrent modifications.  However idr_remove() for mem_cgroup_idr
+was not protected against concurrency and can be run concurrently for
+different memcgs when they hit their refcnt to zero.  Fix that.
 
-Manually fix all net/usb drivers without separate maintainers.
+We have been seeing list_lru based kernel crashes at a low frequency in
+our fleet for a long time.  These crashes were in different part of
+list_lru code including list_lru_add(), list_lru_del() and reparenting
+code.  Upon further inspection, it looked like for a given object (dentry
+and inode), the super_block's list_lru didn't have list_lru_one for the
+memcg of that object.  The initial suspicions were either the object is
+not allocated through kmem_cache_alloc_lru() or somehow
+memcg_list_lru_alloc() failed to allocate list_lru_one() for a memcg but
+returned success.  No evidence were found for these cases.
 
-v2: catc does DMA to the buffer, leave the conversion to Oliver
+Looking more deeply, we started seeing situations where valid memcg's id
+is not present in mem_cgroup_idr and in some cases multiple valid memcgs
+have same id and mem_cgroup_idr is pointing to one of them.  So, the most
+reasonable explanation is that these situations can happen due to race
+between multiple idr_remove() calls or race between
+idr_alloc()/idr_replace() and idr_remove().  These races are causing
+multiple memcgs to acquire the same ID and then offlining of one of them
+would cleanup list_lrus on the system for all of them.  Later access from
+other memcgs to the list_lru cause crashes due to missing list_lru_one.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: bab8eb0dd4cb ("usbnet: modern method to get random MAC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240802235822.1830976-1-shakeel.butt@linux.dev
+Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after many small jobs")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adapted over commit 6f0df8e16eb5 ("memcontrol: ensure memcg acquired by id is
+  properly set up") not in the tree ]
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ch9200.c      | 4 +++-
- drivers/net/usb/cx82310_eth.c | 5 +++--
- drivers/net/usb/kaweth.c      | 3 +--
- drivers/net/usb/mcs7830.c     | 4 +++-
- drivers/net/usb/sierra_net.c  | 6 ++++--
- drivers/net/usb/sr9700.c      | 4 +++-
- drivers/net/usb/sr9800.c      | 5 +++--
- drivers/net/usb/usbnet.c      | 6 ++++--
- 8 files changed, 24 insertions(+), 13 deletions(-)
+ mm/memcontrol.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-index d7f3b70d5477..f69d9b902da0 100644
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -336,6 +336,7 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5143,11 +5143,28 @@ static struct cftype mem_cgroup_legacy_f
+  */
+ 
+ static DEFINE_IDR(mem_cgroup_idr);
++static DEFINE_SPINLOCK(memcg_idr_lock);
++
++static int mem_cgroup_alloc_id(void)
++{
++	int ret;
++
++	idr_preload(GFP_KERNEL);
++	spin_lock(&memcg_idr_lock);
++	ret = idr_alloc(&mem_cgroup_idr, NULL, 1, MEM_CGROUP_ID_MAX + 1,
++			GFP_NOWAIT);
++	spin_unlock(&memcg_idr_lock);
++	idr_preload_end();
++	return ret;
++}
+ 
+ static void mem_cgroup_id_remove(struct mem_cgroup *memcg)
  {
- 	int retval = 0;
- 	unsigned char data[2];
-+	u8 addr[ETH_ALEN];
- 
- 	retval = usbnet_get_endpoints(dev, intf);
- 	if (retval)
-@@ -383,7 +384,8 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
- 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_CTRL, data, 0x02,
- 			       CONTROL_TIMEOUT_MS);
- 
--	retval = get_mac_address(dev, dev->net->dev_addr);
-+	retval = get_mac_address(dev, addr);
-+	eth_hw_addr_set(dev->net, addr);
- 
- 	return retval;
+ 	if (memcg->id.id > 0) {
++		spin_lock(&memcg_idr_lock);
+ 		idr_remove(&mem_cgroup_idr, memcg->id.id);
++		spin_unlock(&memcg_idr_lock);
++
+ 		memcg->id.id = 0;
+ 	}
  }
-diff --git a/drivers/net/usb/cx82310_eth.c b/drivers/net/usb/cx82310_eth.c
-index c4568a491dc4..79a47e2fd437 100644
---- a/drivers/net/usb/cx82310_eth.c
-+++ b/drivers/net/usb/cx82310_eth.c
-@@ -146,6 +146,7 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
- 	u8 link[3];
- 	int timeout = 50;
- 	struct cx82310_priv *priv;
-+	u8 addr[ETH_ALEN];
+@@ -5270,8 +5287,7 @@ static struct mem_cgroup *mem_cgroup_all
+ 	if (!memcg)
+ 		return ERR_PTR(error);
  
- 	/* avoid ADSL modems - continue only if iProduct is "USB NET CARD" */
- 	if (usb_string(udev, udev->descriptor.iProduct, buf, sizeof(buf)) > 0
-@@ -202,12 +203,12 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
- 		goto err;
- 
- 	/* get the MAC address */
--	ret = cx82310_cmd(dev, CMD_GET_MAC_ADDR, true, NULL, 0,
--			  dev->net->dev_addr, ETH_ALEN);
-+	ret = cx82310_cmd(dev, CMD_GET_MAC_ADDR, true, NULL, 0, addr, ETH_ALEN);
- 	if (ret) {
- 		netdev_err(dev->net, "unable to read MAC address: %d\n", ret);
- 		goto err;
- 	}
-+	eth_hw_addr_set(dev->net, addr);
- 
- 	/* start (does not seem to have any effect?) */
- 	ret = cx82310_cmd(dev, CMD_START, false, NULL, 0, NULL, 0);
-diff --git a/drivers/net/usb/kaweth.c b/drivers/net/usb/kaweth.c
-index 144c686b4333..9b2bc1993ece 100644
---- a/drivers/net/usb/kaweth.c
-+++ b/drivers/net/usb/kaweth.c
-@@ -1044,8 +1044,7 @@ static int kaweth_probe(
- 		goto err_all_but_rxbuf;
- 
- 	memcpy(netdev->broadcast, &bcast_addr, sizeof(bcast_addr));
--	memcpy(netdev->dev_addr, &kaweth->configuration.hw_addr,
--               sizeof(kaweth->configuration.hw_addr));
-+	eth_hw_addr_set(netdev, (u8 *)&kaweth->configuration.hw_addr);
- 
- 	netdev->netdev_ops = &kaweth_netdev_ops;
- 	netdev->watchdog_timeo = KAWETH_TX_TIMEOUT;
-diff --git a/drivers/net/usb/mcs7830.c b/drivers/net/usb/mcs7830.c
-index 7e40e2e2f372..57281296ba2c 100644
---- a/drivers/net/usb/mcs7830.c
-+++ b/drivers/net/usb/mcs7830.c
-@@ -480,17 +480,19 @@ static const struct net_device_ops mcs7830_netdev_ops = {
- static int mcs7830_bind(struct usbnet *dev, struct usb_interface *udev)
- {
- 	struct net_device *net = dev->net;
-+	u8 addr[ETH_ALEN];
- 	int ret;
- 	int retry;
- 
- 	/* Initial startup: Gather MAC address setting from EEPROM */
- 	ret = -EINVAL;
- 	for (retry = 0; retry < 5 && ret; retry++)
--		ret = mcs7830_hif_get_mac_address(dev, net->dev_addr);
-+		ret = mcs7830_hif_get_mac_address(dev, addr);
- 	if (ret) {
- 		dev_warn(&dev->udev->dev, "Cannot read MAC address\n");
- 		goto out;
- 	}
-+	eth_hw_addr_set(net, addr);
- 
- 	mcs7830_data_set_multicast(net);
- 
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index 0abd257b634c..777f672f288c 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -669,6 +669,7 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 		0x00, 0x00, SIERRA_NET_HIP_MSYNC_ID, 0x00};
- 	static const u8 shdwn_tmplate[sizeof(priv->shdwn_msg)] = {
- 		0x00, 0x00, SIERRA_NET_HIP_SHUTD_ID, 0x00};
-+	u8 mod[2];
- 
- 	dev_dbg(&dev->udev->dev, "%s", __func__);
- 
-@@ -698,8 +699,9 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 	dev->net->netdev_ops = &sierra_net_device_ops;
- 
- 	/* change MAC addr to include, ifacenum, and to be unique */
--	dev->net->dev_addr[ETH_ALEN-2] = atomic_inc_return(&iface_counter);
--	dev->net->dev_addr[ETH_ALEN-1] = ifacenum;
-+	mod[0] = atomic_inc_return(&iface_counter);
-+	mod[1] = ifacenum;
-+	dev_addr_mod(dev->net, ETH_ALEN - 2, mod, 2);
- 
- 	/* prepare shutdown message template */
- 	memcpy(priv->shdwn_msg, shdwn_tmplate, sizeof(priv->shdwn_msg));
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 8d2e3daf03cf..1ec11a08820d 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -326,6 +326,7 @@ static int sr9700_bind(struct usbnet *dev, struct usb_interface *intf)
- {
- 	struct net_device *netdev;
- 	struct mii_if_info *mii;
-+	u8 addr[ETH_ALEN];
- 	int ret;
- 
- 	ret = usbnet_get_endpoints(dev, intf);
-@@ -356,11 +357,12 @@ static int sr9700_bind(struct usbnet *dev, struct usb_interface *intf)
- 	 * EEPROM automatically to PAR. In case there is no EEPROM externally,
- 	 * a default MAC address is stored in PAR for making chip work properly.
- 	 */
--	if (sr_read(dev, SR_PAR, ETH_ALEN, netdev->dev_addr) < 0) {
-+	if (sr_read(dev, SR_PAR, ETH_ALEN, addr) < 0) {
- 		netdev_err(netdev, "Error reading MAC address\n");
- 		ret = -ENODEV;
- 		goto out;
- 	}
-+	eth_hw_addr_set(netdev, addr);
- 
- 	/* power up and reset phy */
- 	sr_write_reg(dev, SR_PRR, PRR_PHY_RST);
-diff --git a/drivers/net/usb/sr9800.c b/drivers/net/usb/sr9800.c
-index a5332e99102a..351e0edcda2a 100644
---- a/drivers/net/usb/sr9800.c
-+++ b/drivers/net/usb/sr9800.c
-@@ -731,6 +731,7 @@ static int sr9800_bind(struct usbnet *dev, struct usb_interface *intf)
- 	struct sr_data *data = (struct sr_data *)&dev->data;
- 	u16 led01_mux, led23_mux;
- 	int ret, embd_phy;
-+	u8 addr[ETH_ALEN];
- 	u32 phyid;
- 	u16 rx_ctl;
- 
-@@ -756,12 +757,12 @@ static int sr9800_bind(struct usbnet *dev, struct usb_interface *intf)
- 	}
- 
- 	/* Get the MAC address */
--	ret = sr_read_cmd(dev, SR_CMD_READ_NODE_ID, 0, 0, ETH_ALEN,
--			  dev->net->dev_addr);
-+	ret = sr_read_cmd(dev, SR_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, addr);
- 	if (ret < 0) {
- 		netdev_dbg(dev->net, "Failed to read MAC address: %d\n", ret);
- 		return ret;
- 	}
-+	eth_hw_addr_set(dev->net, addr);
- 	netdev_dbg(dev->net, "mac addr : %pM\n", dev->net->dev_addr);
- 
- 	/* Initialize MII structure */
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 01f80aea1605..e87d3108ef05 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -148,12 +148,13 @@ EXPORT_SYMBOL_GPL(usbnet_get_endpoints);
- 
- int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
- {
-+	u8		addr[ETH_ALEN];
- 	int 		tmp = -1, ret;
- 	unsigned char	buf [13];
- 
- 	ret = usb_string(dev->udev, iMACAddress, buf, sizeof buf);
- 	if (ret == 12)
--		tmp = hex2bin(dev->net->dev_addr, buf, 6);
-+		tmp = hex2bin(addr, buf, 6);
- 	if (tmp < 0) {
- 		dev_dbg(&dev->udev->dev,
- 			"bad MAC string %d fetch, %d\n", iMACAddress, tmp);
-@@ -161,6 +162,7 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
- 			ret = -EINVAL;
- 		return ret;
- 	}
-+	eth_hw_addr_set(dev->net, addr);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
-@@ -1694,7 +1696,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 
- 	dev->net = net;
- 	strscpy(net->name, "usb%d", sizeof(net->name));
--	memcpy (net->dev_addr, node_id, sizeof node_id);
-+	eth_hw_addr_set(net, node_id);
- 
- 	/* rx and tx sides can use different message sizes;
- 	 * bind() should set rx_urb_size in that case.
--- 
-2.43.0
-
+-	memcg->id.id = idr_alloc(&mem_cgroup_idr, NULL,
+-				 1, MEM_CGROUP_ID_MAX + 1, GFP_KERNEL);
++	memcg->id.id = mem_cgroup_alloc_id();
+ 	if (memcg->id.id < 0) {
+ 		error = memcg->id.id;
+ 		goto fail;
+@@ -5316,7 +5332,9 @@ static struct mem_cgroup *mem_cgroup_all
+ 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
+ 	memcg->deferred_split_queue.split_queue_len = 0;
+ #endif
++	spin_lock(&memcg_idr_lock);
+ 	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
++	spin_unlock(&memcg_idr_lock);
+ 	lru_gen_init_memcg(memcg);
+ 	return memcg;
+ fail:
 
 
 
