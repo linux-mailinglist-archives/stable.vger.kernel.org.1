@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C378973342
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6142297315B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1551B20DBF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927C41C25575
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DAF19DF8D;
-	Tue, 10 Sep 2024 10:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499041922C4;
+	Tue, 10 Sep 2024 10:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+Gxui4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2YImq/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834C19DF67;
-	Tue, 10 Sep 2024 10:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071C0192B8E;
+	Tue, 10 Sep 2024 10:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963432; cv=none; b=Lx8Mh0YhY76bM5M9A8xBdjlrt2Q0ZQ7bNltSJjbjW+SLFXMK3pTM4gyWgEmDxVD0qX/NH83aJ6R6uZSqAouCUB9DtqY0S8aqA+GQavNMLY1O1xxJUVdCRPrx5i2jO18olHwJC+8yKgAd7R38MAGEAIenkYpWRzULGY8wCI9l31g=
+	t=1725962776; cv=none; b=BpfkQ+dNTCAdEhTvJkQiPocn9PVdHd6zBuT8OXX9QxIDExIhE5p/mmjWp3I8Wd2r3XYnAjLKPMWwsHjO/6BxusW37T0nBBTOs7QtKV56BA1dHmAQUOkDY8Ko/r2qf9OxVoVA8sJb5qiyqOXobrf2Fb8UnwL3D0F8ZYKhK0sJJCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963432; c=relaxed/simple;
-	bh=AmC2IiVJcfUF5hJ3rxpKTKTPndEgku8Yo3lQrXsz/7Y=;
+	s=arc-20240116; t=1725962776; c=relaxed/simple;
+	bh=jiFqoLeuo+ejxXNFplrP9QjFn7tWgVaZvahD2MygNcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHfqFMByLEJP7VAolisvQRgPi3pmFxo/qFVyajxTZUORi7HnBCfD7/uaxyDqhw8+hJfzppYSlxTrJxMQktyPDw7zMi++Y9/Gn/pBztkP+1HlZc66dekxlQ/v93t2LTnxCACzL2lnDdYMJ2sdlAsk4c38Rs37KauzTru7Ju5PXHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+Gxui4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591A1C4CECD;
-	Tue, 10 Sep 2024 10:17:12 +0000 (UTC)
+	 MIME-Version; b=ZcnkXNFEhLq0SXh182/E1Lzq/bnppv0pIl1kZPnBPMIuOOUH8Br5B/rMcWRDrL8iV8rGXiNFFAvg3kEZze2RRzRu171Dg3f/0yQp1++0t4w888RUbHUbC4QcUqkfMpWm0vJIpdIcKj6aH4ia/WZETKcRPyjOaCDpMyx7f9bG1AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2YImq/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8134DC4CEC3;
+	Tue, 10 Sep 2024 10:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963432;
-	bh=AmC2IiVJcfUF5hJ3rxpKTKTPndEgku8Yo3lQrXsz/7Y=;
+	s=korg; t=1725962775;
+	bh=jiFqoLeuo+ejxXNFplrP9QjFn7tWgVaZvahD2MygNcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+Gxui4uxtB+mdbTCyAZQ6G3fnILexflW8EbyNTynirmVg0CXcJcEH1PT8TJWoptk
-	 r3z8c0HDfM8/TAhfNHbueN/r4q0X3GHOL4QBVCIRICf8Q6YBjbAysL6XPTkUtrQE/S
-	 GVK1CBUbwZXrLcVOfH5ZH+KyySGHnIk+RFXzakZ8=
+	b=W2YImq/XfILKxBPRnsuUhJzVshU7GeLNuRLuknWfWq2tqnouiXnqQ4Q1xS3ezoq9h
+	 1nqGVMIbmWMmxLSOJStBGsRRP/v5yEKFTeHTIYk1jgEu0mgNbY74P3MWaGIyS6j4rl
+	 O2D2gG0/zMREEBMSvK/tuciR/nk43qgQox8QVrqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/214] drm/amdgpu: fix ucode out-of-bounds read warning
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 026/192] clk: qcom: clk-alpha-pll: Fix the pll post div mask
 Date: Tue, 10 Sep 2024 11:30:50 +0200
-Message-ID: <20240910092559.929971648@linuxfoundation.org>
+Message-ID: <20240910092559.037096326@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
+commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
 
-Clear warning that read ucode[] may out-of-bounds.
+The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-index f1a050379190..682de88cf91f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
- 		struct amdgpu_firmware_info *ucode;
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -40,7 +40,7 @@
  
- 		id = fw_type_convert(cgs_device, type);
-+		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
-+			return -EINVAL;
-+
- 		ucode = &adev->firmware.ucode[id];
- 		if (ucode->fw == NULL)
- 			return -EINVAL;
--- 
-2.43.0
-
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
++# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
+ # define PLL_VCO_SHIFT		20
 
 
 
