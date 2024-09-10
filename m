@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-74639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23D097306C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A01972DE1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B5E28733E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BBF2863C3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FB418E76F;
-	Tue, 10 Sep 2024 09:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0810E188CC1;
+	Tue, 10 Sep 2024 09:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqy9mj0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgmJEX2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1D618E021;
-	Tue, 10 Sep 2024 09:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B803314F12C;
+	Tue, 10 Sep 2024 09:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962390; cv=none; b=rNX+UtMPcoN+vYoxWXv0/r1IXaJOpCfim0Mhl5377JjKnRN6xYROoG0XHfrzQiCwjzAIjxHWbxWHPVMMJW+kYxewozmPw8pwNsuqqIlmTs7tc3EcxmBN7wcR9XPevEnGSUovwJk44Y6bDQAaKWaPKUtQlO8XAhU6G0x/36zLyy0=
+	t=1725961036; cv=none; b=fcVdAcawBqmuhejA94bYX9JfyrgVZeL+7FZPY8YsLGSVJJoUzMacK7Qh+tJ9kHQ6t3Z2/y7+NW/P6s/IVzuwqauWk7+dXoAOYofy5Kkj8QkfLXToqTyQeDmWfjeZcvmyhaC0WmCHMVLW1lQSTGrdX7Y5VO851t2oOqwBozSW6yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962390; c=relaxed/simple;
-	bh=jOqfpA3xMmn9L9An1KuEWsWCL6zb8JTBoOWYCEOqt2c=;
+	s=arc-20240116; t=1725961036; c=relaxed/simple;
+	bh=uhAM2JZdJW1ORc1iEOW1T7hOwMeHFs2Ikrds2IEAPuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XO5Bbfd3vu2i4gZSijpwj9vRLOeBXybidRDBdtROipliK6wBtfHZLK+czW+i4MxQH3iepzexoU3xf8pd1xCXvNT1Vn+mAT3bSAjcQQO3LIsCd/tSUXFEjUFUfTTrwi82qfaRDgKRLfFzxDYAl61v8GNwlPxJky6/dhtuDdzTRRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqy9mj0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607D5C4CEC3;
-	Tue, 10 Sep 2024 09:59:49 +0000 (UTC)
+	 MIME-Version; b=QlrVnCJSYzs3QitI5MVsQL4e7bhmRle7MhvIyrc75vCfIKf8eZYcYpzEPYQqc53fWCgyaFWGPwQYKT38HqnhPlTObc1njaMpXxttg3Vc0DHe9GYax1HH0kuK66iO4qq/zEGY+baQZX/eFb0xxvncngGu4Prew7oAz+V7pYb3OBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgmJEX2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEA2C4CEC3;
+	Tue, 10 Sep 2024 09:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962389;
-	bh=jOqfpA3xMmn9L9An1KuEWsWCL6zb8JTBoOWYCEOqt2c=;
+	s=korg; t=1725961036;
+	bh=uhAM2JZdJW1ORc1iEOW1T7hOwMeHFs2Ikrds2IEAPuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqy9mj0Du3ZMiz1bD6LLMRmbcif/KId9om3LxDuQ48gK/SMGTJGjyZDrrXgGsXEEe
-	 fjgI1sE+gn64syI55omtXPX0Vp1F+Yz2fY5Nhs9HPj56BvPORHI4pC9aNA97RPxnth
-	 8ob4WC1N+0HMr3HhPbgXkVJGPcyGpsYwuiNX77EQ=
+	b=IgmJEX2ZQiZfhA1oQj1XYX0J8lfXOLv/xrOY2jGWN6MWyOpPG3g8RhpbBNZJm9f7G
+	 m4fKP7SR+gfy5QATNaEB7esP2VZSMxsnTooSTK1D8wMoyx6e9GkYCnPCSE+r3HbyFO
+	 nYosL/UU2cBuID+mvXUep9UOtguLQVk109NkgOew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/121] wifi: cfg80211: make hash table duplicates more survivable
+Subject: [PATCH 4.19 31/96] udf: Avoid excessive partition lengths
 Date: Tue, 10 Sep 2024 11:31:33 +0200
-Message-ID: <20240910092546.600896301@linuxfoundation.org>
+Message-ID: <20240910092542.863861537@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-Jiazi Li reported that they occasionally see hash table duplicates
-as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
-isn't clear how that happens, nor have I been able to reproduce it,
-but if it does happen, the kernel crashes later, when it tries to
-unhash the entry that's now not hashed.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-Try to make this situation more survivable by removing the BSS from
-the list(s) as well, that way it's fully leaked here (as had been
-the intent in the hash insert error path), and no longer reachable
-through the list(s) so it shouldn't be unhashed again later.
-
-Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index c74882e3c309..b28e652514e8 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1003,7 +1003,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(cfg80211_get_bss);
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 6273ffd312cc..22c76a33f6f3 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1054,12 +1054,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
--static void rb_insert_bss(struct cfg80211_registered_device *rdev,
-+static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *bss)
- {
- 	struct rb_node **p = &rdev->bss_tree.rb_node;
-@@ -1019,7 +1019,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 	map = &sbi->s_partmaps[p_index];
  
- 		if (WARN_ON(!cmp)) {
- 			/* will sort of leak this BSS */
--			return;
-+			return false;
- 		}
- 
- 		if (cmp < 0)
-@@ -1030,6 +1030,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 	rb_link_node(&bss->rbn, parent, p);
- 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
-+	return true;
- }
- 
- static struct cfg80211_internal_bss *
-@@ -1056,6 +1057,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
- 	return NULL;
- }
- 
-+static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
-+				struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	if (!rb_insert_bss(rdev, bss))
-+		return;
-+	list_add_tail(&bss->list, &rdev->bss_list);
-+	rdev->bss_entries++;
-+}
-+
-+static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
-+                                struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	rb_erase(&bss->rbn, &rdev->bss_tree);
-+	if (!rb_insert_bss(rdev, bss)) {
-+		list_del(&bss->list);
-+		if (!list_empty(&bss->hidden_list))
-+			list_del_init(&bss->hidden_list);
-+		if (!list_empty(&bss->pub.nontrans_list))
-+			list_del_init(&bss->pub.nontrans_list);
-+		rdev->bss_entries--;
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
 +	}
-+	rdev->bss_generation++;
-+}
-+
- static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
- 				   struct cfg80211_internal_bss *new)
- {
-@@ -1331,9 +1360,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 			bss_ref_get(rdev, pbss);
- 		}
  
--		list_add_tail(&new->list, &rdev->bss_list);
--		rdev->bss_entries++;
--		rb_insert_bss(rdev, new);
-+		cfg80211_insert_bss(rdev, new);
- 		found = new;
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1115,6 +1122,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
  	}
- 
-@@ -2142,10 +2169,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
- 			rdev->bss_generation++;
- 	}
--
--	rb_erase(&cbss->rbn, &rdev->bss_tree);
--	rb_insert_bss(rdev, cbss);
--	rdev->bss_generation++;
-+	cfg80211_rehash_bss(rdev, cbss);
- 
- 	list_for_each_entry_safe(nontrans_bss, tmp,
- 				 &cbss->pub.nontrans_list,
-@@ -2153,9 +2177,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		bss = container_of(nontrans_bss,
- 				   struct cfg80211_internal_bss, pub);
- 		bss->pub.channel = chan;
--		rb_erase(&bss->rbn, &rdev->bss_tree);
--		rb_insert_bss(rdev, bss);
--		rdev->bss_generation++;
-+		cfg80211_rehash_bss(rdev, bss);
- 	}
- 
- done:
 -- 
 2.43.0
 
