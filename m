@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-74452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09231972F60
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EB8972F61
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5351C24A7D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4EE1288866
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB4718CC16;
-	Tue, 10 Sep 2024 09:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7390118C01F;
+	Tue, 10 Sep 2024 09:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Trtc0uNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAnn+HUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB44B18C913;
-	Tue, 10 Sep 2024 09:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ED714F12C;
+	Tue, 10 Sep 2024 09:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961846; cv=none; b=nJ6YrsZDy/R5gMM9eeyIszot589FPgsUzNchN4xzbl6QgbqGY/ZBatagKdhiqfcfPnbe3N+G0YbRZwNq8gy7NNnQZY7jzVvJw+AeYRuYmh/TegDG1mws9/SlTY1EV93eoadvRkqMN688ut+NKc+mMTDV8Oi8gXN7Oq8FjHe1BKs=
+	t=1725961852; cv=none; b=QSBgI7tf2HZNMDDzOnUp6jy0OuiqtBEwPlDprSfHk+5nCrvF0B+k9pgXjj5fRnhlfBsvm1ffahptp/tkQ1/lez1T/YZX9kMv+N6ovl4ofmp/6pRY7h6Ko6Pxp5udF9Ovpcom7gLhjsRMl7DfIladTJ11ttQpuqqKrtfxCNb1bH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961846; c=relaxed/simple;
-	bh=YmdfpbvXpwRoBVzv+f7tMjWgcn5bcAUKIWh7NrDJUAQ=;
+	s=arc-20240116; t=1725961852; c=relaxed/simple;
+	bh=Mmg3PwR3C6VjHzuRMhvPc9JTIf6JAwtriXAGpNNUNAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qe5OF8VHzVtR9Hol4qsswvCsvwqZOsn5/fPE4NMCMUNrhNQgsT9lMa6rnHw9awSHR8jh4l4S6lqiNi/LIBVjWSW8A0B4yZtfa8ymQkQLA9vt50hB/0sg1rp5QZFBuYvKVlzTT0HkbFUsPFBCZcsgipmAQz9qBK4oVC2+hLXay/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Trtc0uNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF054C4CED1;
-	Tue, 10 Sep 2024 09:50:45 +0000 (UTC)
+	 MIME-Version; b=kCUL/sNJIMRAZnqOQGhcVQqXHg81J2f0eK6R3eCSFnQu3x53Vx2uM+/alLzlrZurkIKiFrPqpL7HjeMkYWOB7iy/Zo8ftzLQK9uHBenkbHaUrPfo8cAOCrAejrj4ESzE/MSVHuMh6JhnCvi5eOLk14i0EY7DfS2gliX+0GpUMNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAnn+HUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B48C4CEC3;
+	Tue, 10 Sep 2024 09:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961846;
-	bh=YmdfpbvXpwRoBVzv+f7tMjWgcn5bcAUKIWh7NrDJUAQ=;
+	s=korg; t=1725961852;
+	bh=Mmg3PwR3C6VjHzuRMhvPc9JTIf6JAwtriXAGpNNUNAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Trtc0uNcCHcpq4OegPcKDXXIOPZLgwXkPOL/M7teC3vFaerln02ijwegc69weXCg7
-	 Z2JwN9zYM2oyhMxvlBSdocevwTmymEsn0u3X3yAtXQeqSRk776Z9W0VGAicC+lhn8j
-	 ZonSipY1FIm94XIQBKfdvLukdVx8TQJL+u/IAh2U=
+	b=wAnn+HUit5bAO4EfVQpotxOVdD6ponIQWiLH0x3w5MRdlhHk7Dq4jhQQLpEju1i4j
+	 PVPLFCH/LKAQTl6qtOGtQczevKnnNIx1tegyCdGtE9ryZZyzTEC24pg8uG6erc84pJ
+	 1wG28pyMNNgwuAgNDN/l4Zq89l516gttZNX55Mt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 209/375] um: line: always fill *error_out in setup_one_line()
-Date: Tue, 10 Sep 2024 11:30:06 +0200
-Message-ID: <20240910092629.535250859@linuxfoundation.org>
+Subject: [PATCH 6.10 210/375] devres: Initialize an uninitialized struct member
+Date: Tue, 10 Sep 2024 11:30:07 +0200
+Message-ID: <20240910092629.568303134@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -66,42 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 824ac4a5edd3f7494ab1996826c4f47f8ef0f63d ]
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-The pointer isn't initialized by callers, but I have
-encountered cases where it's still printed; initialize
-it in all possible cases in setup_one_line().
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-Link: https://patch.msgid.link/20240703172235.ad863568b55f.Iaa1eba4db8265d7715ba71d5f6bb8c7ff63d27e9@changeid
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index d82bc3fdb86e..43d8959cc746 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -383,6 +383,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			parse_chan_pair(NULL, line, n, opts, error_out);
- 			err = 0;
- 		}
-+		*error_out = "configured as 'none'";
- 	} else {
- 		char *new = kstrdup(init, GFP_KERNEL);
- 		if (!new) {
-@@ -406,6 +407,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			}
- 		}
- 		if (err) {
-+			*error_out = "failed to parse channel pair";
- 			line->init_str = NULL;
- 			line->valid = 0;
- 			kfree(new);
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 8d709dbd4e0c..e9b0d94aeabd 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -567,6 +567,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
+ 
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
 -- 
 2.43.0
 
