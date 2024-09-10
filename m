@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-75144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D6897331A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FA1973506
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02252287694
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF65288967
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC7F18C025;
-	Tue, 10 Sep 2024 10:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB34E191F96;
+	Tue, 10 Sep 2024 10:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnLR7Esi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkC4dEyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE31319412E;
-	Tue, 10 Sep 2024 10:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E6E18893C;
+	Tue, 10 Sep 2024 10:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963878; cv=none; b=WKtsQeLKJTTs6D8thyDHC3CIyC1ASKVm4kAM14IKWIm2PtzkngacQHQiwDKkJopjtVEMXnjAJAfxFohXb2EsvT/054AT5pCFKXB3iK3j/PIsxU8TBHtmgt5UL0ZkxaawIHgzLumw37IZg+IT8PZ7U+ic0hYqrIRsNZ6yaSuafp8=
+	t=1725965013; cv=none; b=fQ9Vs23UMs5qSliB6qUJmltipfLi1f1FOWR8s5Hf684QaezPyM/IH6jgt+zLBPp8uFV5ytl8mh/T2ftC25N7QPzSt8OBK1FEQ+is87aTckZs905lUmhwgv3fM4RynXMVTVyodCP1qJe7Gvm7oHHxtnOGVMgUtuRAO/HDVh2zn9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963878; c=relaxed/simple;
-	bh=xxnSZ+SXibYuTYPuYQDVDLmuxQ72mVwY8kLPmdWx40A=;
+	s=arc-20240116; t=1725965013; c=relaxed/simple;
+	bh=RQ5vC85m/T23st9yL+3Nq7ChicN1/gMUkjJb2CB+rWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhL+nZD7BuZ14emlM9NyJI24/nEy769newld7Qm7PsVAuntY5H9v8WGui8IvCweA0vzzGLPRxDG6ZPRP5xdFCvPp7XK1YsDRi/fAh5HvMoY0e62+oM3GJbtPCl/3XefGi3mATplKdulf+Hugl16VK1PHaExFYzMBHUqLG87X2ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnLR7Esi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1DFC4CEC3;
-	Tue, 10 Sep 2024 10:24:37 +0000 (UTC)
+	 MIME-Version; b=IaH88J4jdriurM43HBKip/AqFD994i/CjE4m8OP0ADFcGG7OAVMIw9LFC+nRT048/W3nQblz8E1R9SwKvK7LxXI2jgzwwoI93js+/SY9MEXRC+UiOprRK/VClidKi3d+yPXEwE1iSYjGqvam68sekXrLP4N0kAOYe4yurjy8iWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkC4dEyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10069C4CEC3;
+	Tue, 10 Sep 2024 10:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963878;
-	bh=xxnSZ+SXibYuTYPuYQDVDLmuxQ72mVwY8kLPmdWx40A=;
+	s=korg; t=1725965013;
+	bh=RQ5vC85m/T23st9yL+3Nq7ChicN1/gMUkjJb2CB+rWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnLR7EsiMRxZaJpy6ZcLl4KcHM0AzaHQabcpnCqfFmYmYIXDL4bsyYHDcvFoBRVuv
-	 8E8aidR+Af6pa/8FuyAB+lG3pdcU1ZdTfBngerZPGxjtahFS5bkjQiAsSqO1j3drsq
-	 rgHVvksBj6fPQuJ3HrsYp314aZ+Qffzi1qRNXySY=
+	b=bkC4dEyHx9A/14k2p4FgaXADh5B1FRipSQy8phZ3oJv2n5YXy7QD5cU859Xo/YdyW
+	 FVXk4HxWVBcODihwU9sJa7MzAMW6vvYOPpbvP1EV8pN0NMLMR0LQHMb0N1bsYrkTwL
+	 Q44hb1kXkICUzOhuHa0xIDOqF/jCUomirq61OsU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Todd Kjos <tkjos@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 181/214] binder: fix UAF caused by offsets overwrite
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 108/186] media: vivid: dont set HDMI TX controls if there are no HDMI outputs
 Date: Tue, 10 Sep 2024 11:33:23 +0200
-Message-ID: <20240910092606.088283448@linuxfoundation.org>
+Message-ID: <20240910092558.982574710@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 4df153652cc46545722879415937582028c18af5 upstream.
+[ Upstream commit 17763960b1784578e8fe915304b330922f646209 ]
 
-Binder objects are processed and copied individually into the target
-buffer during transactions. Any raw data in-between these objects is
-copied as well. However, this raw data copy lacks an out-of-bounds
-check. If the raw data exceeds the data section size then the copy
-overwrites the offsets section. This eventually triggers an error that
-attempts to unwind the processed objects. However, at this point the
-offsets used to index these objects are now corrupted.
+When setting the EDID it would attempt to update two controls
+that are only present if there is an HDMI output configured.
 
-Unwinding with corrupted offsets can result in decrements of arbitrary
-nodes and lead to their premature release. Other users of such nodes are
-left with a dangling pointer triggering a use-after-free. This issue is
-made evident by the following KASAN report (trimmed):
+If there isn't any (e.g. when the vivid module is loaded with
+node_types=1), then calling VIDIOC_S_EDID would crash.
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in _raw_spin_lock+0xe4/0x19c
-  Write of size 4 at addr ffff47fc91598f04 by task binder-util/743
+Fix this by first checking if outputs are present.
 
-  CPU: 9 UID: 0 PID: 743 Comm: binder-util Not tainted 6.11.0-rc4 #1
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   _raw_spin_lock+0xe4/0x19c
-   binder_free_buf+0x128/0x434
-   binder_thread_write+0x8a4/0x3260
-   binder_ioctl+0x18f0/0x258c
-  [...]
-
-  Allocated by task 743:
-   __kmalloc_cache_noprof+0x110/0x270
-   binder_new_node+0x50/0x700
-   binder_transaction+0x413c/0x6da8
-   binder_thread_write+0x978/0x3260
-   binder_ioctl+0x18f0/0x258c
-  [...]
-
-  Freed by task 745:
-   kfree+0xbc/0x208
-   binder_thread_read+0x1c5c/0x37d4
-   binder_ioctl+0x16d8/0x258c
-  [...]
-  ==================================================================
-
-To avoid this issue, let's check that the raw data copy is within the
-boundaries of the data section.
-
-Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
-Cc: Todd Kjos <tkjos@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240822182353.2129600-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -3173,6 +3173,7 @@ static void binder_transaction(struct bi
- 		 */
- 		copy_size = object_offset - user_offset;
- 		if (copy_size && (user_offset > object_offset ||
-+				object_offset > tr->data_size ||
- 				binder_alloc_copy_user_to_buffer(
- 					&target_proc->alloc,
- 					t->buffer, user_offset,
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index 907781c2e613..2ce7f5567f51 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -1802,8 +1802,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
+ 		return -EINVAL;
+ 	if (edid->blocks == 0) {
+ 		dev->edid_blocks = 0;
+-		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
+-		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
++		if (dev->num_outputs) {
++			v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
++			v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
++		}
+ 		phys_addr = CEC_PHYS_ADDR_INVALID;
+ 		goto set_phys_addr;
+ 	}
+@@ -1827,8 +1829,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
+ 			display_present |=
+ 				dev->display_present[i] << j++;
+ 
+-	v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
+-	v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
++	if (dev->num_outputs) {
++		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
++		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
++	}
+ 
+ set_phys_addr:
+ 	/* TODO: a proper hotplug detect cycle should be emulated here */
+-- 
+2.43.0
+
 
 
 
