@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-75052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F99397336E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93F297351C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9673B2956A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5734B2CE32
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7672199FBA;
-	Tue, 10 Sep 2024 10:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B234E1917C4;
+	Tue, 10 Sep 2024 10:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siAaThwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYS6ijo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A53199E9D;
-	Tue, 10 Sep 2024 10:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D48E19149F;
+	Tue, 10 Sep 2024 10:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963608; cv=none; b=rW5JUO3YLRqW/DHVN6fY9NwF0sBaqmBTnvWNbl0jglaqyycrp6NFqjEEzhC3YZk1tLpR1FA8jZ+Q9CQDR3Q+wNpbdx6cPQHNq/8v1gpk3wVtQPab7LjUzIyqOvfBZGUT8tXMNj4dwyqX4TyrAdQ4az6OHO1KrWYxhnuESXeHla8=
+	t=1725964347; cv=none; b=hRKgqYJQyy/vKA25Oe/YCH+EdScUo3fLogNpXwv6FHDSyK+D+48kkAoW2WHKX4fdksXNbnBRgrM0+baI69YTwpFua3zBGq23X2eDWPH7/7jKLw5Y3YFLYUHsPcfIVR6uBooBCJm7Co2AIGQNO7RPIPXaqB57JvZ1uMJ3fcvL9Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963608; c=relaxed/simple;
-	bh=b4FJBFWFhojzSTLgJnP92Bv8yCQnMc6tUZ+RuK5G9h8=;
+	s=arc-20240116; t=1725964347; c=relaxed/simple;
+	bh=KJTTg2kiH6WLcsIzcIrgA12DOQz/eSEwl8B7F4wBDMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oujU1valbOy8IG9SYtnzJ3oyWumZFozoWpWRT/xi+Ez4mIC3xzc70YEF8PeqVRwQKPuvO+SHOUScGO6j9Sg7KV9KA9eieDDXwYYiB+ftsuoIgBR/ykiXqPKdoc5wMRR9t/D3W4EKACCj6WmBfKqqLh58ukcAx8WnWen9/oDb6wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siAaThwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBD5C4CEC3;
-	Tue, 10 Sep 2024 10:20:07 +0000 (UTC)
+	 MIME-Version; b=cvYN4KcGdrWsReHVpc/M0CY/hBWkTkDUZFJ8GrmuDVlShhfOR/ZiJzOtIbVbWRZsbJGclEsjbhNJReUuZCQj6pUFYsuvYjf7P4b/zBtePpcg6sMfNYU/OS+30Yzxl7b6WmSFeNmRvtk7S3OgtSORczkvG82S0s3IZi+LA86+sMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYS6ijo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F70C4CEC3;
+	Tue, 10 Sep 2024 10:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963608;
-	bh=b4FJBFWFhojzSTLgJnP92Bv8yCQnMc6tUZ+RuK5G9h8=;
+	s=korg; t=1725964347;
+	bh=KJTTg2kiH6WLcsIzcIrgA12DOQz/eSEwl8B7F4wBDMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siAaThwCnuFVSiFMcN82PfMFiWX+u956LNBUP4Lw7Rm9IdI/De8+/fPDeJHiEZYMv
-	 hABKJUwNBH1Fp2pXspYYMKAyZBbb1PVXvr5C+pcq3wob3htd+EVdLf1aQgnGqQOo2r
-	 EaTYOBi/Vt4F10DD53PkCpOsfRy0bFZRjpA6YOQk=
+	b=hYS6ijo6gJAR0Y5uuTPqOPkue6OjBOYlOdy+xWK4mgNiu/8iwXbLLyZ/R9zsHGVSe
+	 1JyDs6QGuMA//mDReJgTkLNXdfqMNK8Zn3hDPKYjwUYMOLVBmLzlAaLFSKBhg79QuL
+	 yUaxb1teug/RbregZ2nsT2ZrYF4bHGRq4qG6Tw70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 089/214] nilfs2: fix state management in error path of log writing function
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/269] ice: do not bring the VSI up, if it was down before the XDP setup
 Date: Tue, 10 Sep 2024 11:31:51 +0200
-Message-ID: <20240910092602.394414698@linuxfoundation.org>
+Message-ID: <20240910092612.596001714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-commit 6576dd6695f2afca3f4954029ac4a64f82ba60ab upstream.
+[ Upstream commit 04c7e14e5b0b6227e7b00d7a96ca2f2426ab9171 ]
 
-After commit a694291a6211 ("nilfs2: separate wait function from
-nilfs_segctor_write") was applied, the log writing function
-nilfs_segctor_do_construct() was able to issue I/O requests continuously
-even if user data blocks were split into multiple logs across segments,
-but two potential flaws were introduced in its error handling.
+After XDP configuration is completed, we bring the interface up
+unconditionally, regardless of its state before the call to .ndo_bpf().
 
-First, if nilfs_segctor_begin_construction() fails while creating the
-second or subsequent logs, the log writing function returns without
-calling nilfs_segctor_abort_construction(), so the writeback flag set on
-pages/folios will remain uncleared.  This causes page cache operations to
-hang waiting for the writeback flag.  For example,
-truncate_inode_pages_final(), which is called via nilfs_evict_inode() when
-an inode is evicted from memory, will hang.
+Preserve the information whether the interface had to be brought down and
+later bring it up only in such case.
 
-Second, the NILFS_I_COLLECTED flag set on normal inodes remain uncleared.
-As a result, if the next log write involves checkpoint creation, that's
-fine, but if a partial log write is performed that does not, inodes with
-NILFS_I_COLLECTED set are erroneously removed from the "sc_dirty_files"
-list, and their data and b-tree blocks may not be written to the device,
-corrupting the block mapping.
-
-Fix these issues by uniformly calling nilfs_segctor_abort_construction()
-on failure of each step in the loop in nilfs_segctor_do_construct(),
-having it clean up logs and segment usages according to progress, and
-correcting the conditions for calling nilfs_redirty_inodes() to ensure
-that the NILFS_I_COLLECTED flag is cleared.
-
-Link: https://lkml.kernel.org/r/20240814101119.4070-1-konishi.ryusuke@gmail.com
-Fixes: a694291a6211 ("nilfs2: separate wait function from nilfs_segctor_write")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1833,6 +1833,9 @@ static void nilfs_segctor_abort_construc
- 	nilfs_abort_logs(&logs, ret ? : err);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 3ee92b0e62ff..4d3a9fc79a6c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2931,8 +2931,8 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		   struct netlink_ext_ack *extack)
+ {
+ 	unsigned int frame_size = vsi->netdev->mtu + ICE_ETH_PKT_HDR_PAD;
+-	bool if_running = netif_running(vsi->netdev);
+ 	int ret = 0, xdp_ring_err = 0;
++	bool if_running;
  
- 	list_splice_tail_init(&sci->sc_segbufs, &logs);
-+	if (list_empty(&logs))
-+		return; /* if the first segment buffer preparation failed */
+ 	if (prog && !prog->aux->xdp_has_frags) {
+ 		if (frame_size > ice_max_xdp_frame_size(vsi)) {
+@@ -2949,8 +2949,11 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		return 0;
+ 	}
+ 
++	if_running = netif_running(vsi->netdev) &&
++		     !test_and_set_bit(ICE_VSI_DOWN, vsi->state);
 +
- 	nilfs_cancel_segusage(&logs, nilfs->ns_sufile);
- 	nilfs_free_incomplete_logs(&logs, nilfs);
- 
-@@ -2077,7 +2080,7 @@ static int nilfs_segctor_do_construct(st
- 
- 		err = nilfs_segctor_begin_construction(sci, nilfs);
- 		if (unlikely(err))
--			goto out;
-+			goto failed;
- 
- 		/* Update time stamp */
- 		sci->sc_seg_ctime = ktime_get_real_seconds();
-@@ -2140,10 +2143,9 @@ static int nilfs_segctor_do_construct(st
- 	return err;
- 
-  failed_to_write:
--	if (sci->sc_stage.flags & NILFS_CF_IFILE_STARTED)
--		nilfs_redirty_inodes(&sci->sc_dirty_files);
--
-  failed:
-+	if (mode == SC_LSEG_SR && nilfs_sc_cstage_get(sci) >= NILFS_ST_IFILE)
-+		nilfs_redirty_inodes(&sci->sc_dirty_files);
- 	if (nilfs_doing_gc())
- 		nilfs_redirty_inodes(&sci->sc_gc_inodes);
- 	nilfs_segctor_abort_construction(sci, nilfs, err);
+ 	/* need to stop netdev while setting up the program for Rx rings */
+-	if (if_running && !test_and_set_bit(ICE_VSI_DOWN, vsi->state)) {
++	if (if_running) {
+ 		ret = ice_down(vsi);
+ 		if (ret) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Preparing device for XDP attach failed");
+-- 
+2.43.0
+
 
 
 
