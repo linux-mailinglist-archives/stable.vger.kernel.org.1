@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-74560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00460972FEF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21914972FD0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24BD21C24A72
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDC7281566
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E892818C002;
-	Tue, 10 Sep 2024 09:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDBD189F3B;
+	Tue, 10 Sep 2024 09:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FK+KOVPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kw5XuDNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64F5188A1E;
-	Tue, 10 Sep 2024 09:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CD21885A6;
+	Tue, 10 Sep 2024 09:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962163; cv=none; b=X9qHIUeZDAbzhmJORE+alQJWOx4hi3cDM2g5IRxFZB71T7bSmC2swgvaKIufRTXrfLsPyBSp7pPgRnD53MOEsgd8yIl731h39E6AxGb/VapDoDqprwnvddCf06eFNSikXtuNdYFh+JK6g4OoJhno4dgZkk2JgPH3LAQUjTBUB+g=
+	t=1725962078; cv=none; b=taSEDo0ID5wKx3QgVmkouYysg+xyr5fGvD2b+PUNfZAA3mCDFwv1s/++/bATJAKxHX1MyFikaQTqPLBZ6oJNtOz3tdMvoZPjONN873Cz58f3a/JZi9+DsI1ASTQEsEs0EJZv8ib7h3UROrnLsTj21+bm3XjcA3XHvJYMAaYlaq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962163; c=relaxed/simple;
-	bh=4QCZZk37wFCErnCr3xT36rjH5Z5ZFSDLxcTvvu6mIHI=;
+	s=arc-20240116; t=1725962078; c=relaxed/simple;
+	bh=lG0CLnVG9DGA09crZE7BY7cwQ92ib9lEgxSgUnFykA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QeJaJYDxL72T6NiAaYfOcCbiswsHCeEXGEtuaAXknxgnINvUBY6yd9h9pYJbNHiUlP0a5D6d5oPOJpAZfj6RwHEzeuK9PavajQ567yygMG4a2S22IxUhOG2yZ81j3EZIYedwU4k8iuXYx4OsPlMNKaWy4Bf7y+tKuQGGChpsa1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FK+KOVPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251F3C4CEC3;
-	Tue, 10 Sep 2024 09:56:02 +0000 (UTC)
+	 MIME-Version; b=bk52ipgJ9MxtGauJuPHSsQxl2knM9+Bg6orOnWdtw3ue9fcwI9kh501WGvQT6B+yKjuTeWyBrsJ61Q2XGsPwEuNfqgnDZR/9oEK5plhokXKyfFMoQN823Hfypw4xud5hIYNSt3G2VlAhsP8Y8XL7CYp+GaM9ZEYbdXxdLjMhpO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kw5XuDNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EF2C4CEC3;
+	Tue, 10 Sep 2024 09:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962163;
-	bh=4QCZZk37wFCErnCr3xT36rjH5Z5ZFSDLxcTvvu6mIHI=;
+	s=korg; t=1725962078;
+	bh=lG0CLnVG9DGA09crZE7BY7cwQ92ib9lEgxSgUnFykA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FK+KOVPOSvE90PObknbSBqWtA453+xKQtLICIhjIlP6toelPM1mCrowkYB67pacbu
-	 K25da/yJ8suRPclu7u6WAaLV2o+3D2J+F95gB69DteeTnQ5dZEdZN2cPTUX5JCDGFX
-	 S8s5ZLtlZTT43XcUPXeSe8QGlkIvT2qhTop7Ero8=
+	b=kw5XuDNjQbSb7LOrheVlXEGElQO3HqN73m2wpeiHQclXSgdI3rVgDfwlVlJYiUwI4
+	 mc9KFsaWaq7QGRwd+ZeXcqE+HVV/3UPH0tW5r92vxhp0erKMpedEyvAgJv0VuaxlHX
+	 DlhraZvsSjFWGk60vNqjMOh/UEwn524MYA1MhLEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Yunxiang Li <Yunxiang.Li@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Emily Deng <Emily.Deng@amd.com>,
+	Zhigang Luo <zhigang.luo@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 279/375] drm/amdgpu: Fix two reset triggered in a row
-Date: Tue, 10 Sep 2024 11:31:16 +0200
-Message-ID: <20240910092631.931695623@linuxfoundation.org>
+Subject: [PATCH 6.10 280/375] drm/amdgpu: Add reset_context flag for host FLR
+Date: Tue, 10 Sep 2024 11:31:17 +0200
+Message-ID: <20240910092631.967980401@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -69,128 +70,124 @@ Content-Transfer-Encoding: 8bit
 
 From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit f4322b9f8ad5f9f62add288c785d2e10bb6a5efe ]
+[ Upstream commit 25c01191c2555351922e5515b6b6d31357975031 ]
 
-Some times a hang GPU causes multiple reset sources to schedule resets.
-The second source will be able to trigger an unnecessary reset if they
-schedule after we call amdgpu_device_stop_pending_resets.
+There are other reset sources that pass NULL as the job pointer, such as
+amdgpu_amdkfd_reset_work. Therefore, using the job pointer to check if
+the FLR comes from the host does not work.
 
-Move amdgpu_device_stop_pending_resets to after the reset is done. Since
-at this point the GPU is supposedly in a good state, any reset scheduled
-after this point would be a legitimate reset.
-
-Remove unnecessary and incorrect checks for amdgpu_in_reset that was
-kinda serving this purpose.
+Add a flag in reset_context to explicitly mark host triggered reset, and
+set this flag when we receive host reset notification.
 
 Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Stable-dep-of: 6e4aa08fa9c6 ("drm/amdgpu: Fix amdgpu_device_reset_sriov retry logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 19 ++++++++++---------
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   |  2 +-
- drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c      |  2 +-
- drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c      |  2 +-
- drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c      |  2 +-
- 5 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 13 ++++++++-----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h  |  1 +
+ drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c      |  1 +
+ drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c      |  1 +
+ drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c      |  1 +
+ 5 files changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index d24d7a108624..9f7f96be1ac7 100644
+index 9f7f96be1ac7..bd6f2aba0662 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5072,8 +5072,6 @@ static int amdgpu_device_reset_sriov(struct amdgpu_device *adev,
+@@ -5057,13 +5057,13 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
+  * amdgpu_device_reset_sriov - reset ASIC for SR-IOV vf
+  *
+  * @adev: amdgpu_device pointer
+- * @from_hypervisor: request from hypervisor
++ * @reset_context: amdgpu reset context pointer
+  *
+  * do VF FLR and reinitialize Asic
+  * return 0 means succeeded otherwise failed
+  */
+ static int amdgpu_device_reset_sriov(struct amdgpu_device *adev,
+-				     bool from_hypervisor)
++				     struct amdgpu_reset_context *reset_context)
+ {
+ 	int r;
+ 	struct amdgpu_hive_info *hive = NULL;
+@@ -5072,12 +5072,15 @@ static int amdgpu_device_reset_sriov(struct amdgpu_device *adev,
  retry:
  	amdgpu_amdkfd_pre_reset(adev);
  
--	amdgpu_device_stop_pending_resets(adev);
--
- 	if (from_hypervisor)
+-	if (from_hypervisor)
++	if (test_bit(AMDGPU_HOST_FLR, &reset_context->flags)) {
++		clear_bit(AMDGPU_HOST_FLR, &reset_context->flags);
  		r = amdgpu_virt_request_full_gpu(adev, true);
- 	else
-@@ -5828,13 +5826,6 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
- 				  r, adev_to_drm(tmp_adev)->unique);
- 			tmp_adev->asic_reset_res = r;
- 		}
--
--		if (!amdgpu_sriov_vf(tmp_adev))
--			/*
--			* Drop all pending non scheduler resets. Scheduler resets
--			* were already dropped during drm_sched_stop
--			*/
--			amdgpu_device_stop_pending_resets(tmp_adev);
- 	}
- 
- 	/* Actual ASIC resets if needed.*/
-@@ -5856,6 +5847,16 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
- 			goto retry;
- 	}
- 
-+	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
-+		/*
-+		 * Drop any pending non scheduler resets queued before reset is done.
-+		 * Any reset scheduled after this point would be valid. Scheduler resets
-+		 * were already dropped during drm_sched_stop and no new ones can come
-+		 * in before drm_sched_start.
-+		 */
-+		amdgpu_device_stop_pending_resets(tmp_adev);
+-	else
++	} else {
+ 		r = amdgpu_virt_reset_gpu(adev);
 +	}
+ 	if (r)
+ 		return r;
 +
- skip_hw_reset:
+ 	amdgpu_ras_set_fed(adev, false);
+ 	amdgpu_irq_gpu_reset_resume_helper(adev);
  
- 	/* Post ASIC reset for all devs .*/
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 26cea0076c9b..e12d179a451b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -601,7 +601,7 @@ static void amdgpu_virt_update_vf2pf_work_item(struct work_struct *work)
- 	if (ret) {
- 		adev->virt.vf2pf_update_retry_cnt++;
- 		if ((adev->virt.vf2pf_update_retry_cnt >= AMDGPU_VF2PF_UPDATE_MAX_RETRY_LIMIT) &&
--		    amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev)) {
-+		    amdgpu_sriov_runtime(adev)) {
- 			amdgpu_ras_set_fed(adev, true);
- 			if (amdgpu_reset_domain_schedule(adev->reset_domain,
- 							  &adev->kfd.reset_work))
+@@ -5831,7 +5834,7 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 	/* Actual ASIC resets if needed.*/
+ 	/* Host driver will handle XGMI hive reset for SRIOV */
+ 	if (amdgpu_sriov_vf(adev)) {
+-		r = amdgpu_device_reset_sriov(adev, job ? false : true);
++		r = amdgpu_device_reset_sriov(adev, reset_context);
+ 		if (r)
+ 			adev->asic_reset_res = r;
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
+index b11d190ece53..5a9cc043b858 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
+@@ -33,6 +33,7 @@ enum AMDGPU_RESET_FLAGS {
+ 	AMDGPU_NEED_FULL_RESET = 0,
+ 	AMDGPU_SKIP_HW_RESET = 1,
+ 	AMDGPU_SKIP_COREDUMP = 2,
++	AMDGPU_HOST_FLR = 3,
+ };
+ 
+ struct amdgpu_reset_context {
 diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
-index 0c7275bca8f7..c5ba9c4757a8 100644
+index c5ba9c4757a8..f4c47492e0cd 100644
 --- a/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
 +++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
-@@ -319,7 +319,7 @@ static int xgpu_ai_mailbox_rcv_irq(struct amdgpu_device *adev,
+@@ -292,6 +292,7 @@ static void xgpu_ai_mailbox_flr_work(struct work_struct *work)
+ 		reset_context.method = AMD_RESET_METHOD_NONE;
+ 		reset_context.reset_req_dev = adev;
+ 		clear_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
++		set_bit(AMDGPU_HOST_FLR, &reset_context.flags);
  
- 	switch (event) {
- 		case IDH_FLR_NOTIFICATION:
--		if (amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev))
-+		if (amdgpu_sriov_runtime(adev))
- 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
- 								&adev->virt.flr_work),
- 				  "Failed to queue work! at %s",
+ 		amdgpu_device_gpu_recover(adev, NULL, &reset_context);
+ 	}
 diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
-index aba00d961627..fa9d1b02f391 100644
+index fa9d1b02f391..14cc7910e5cf 100644
 --- a/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
 +++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
-@@ -358,7 +358,7 @@ static int xgpu_nv_mailbox_rcv_irq(struct amdgpu_device *adev,
+@@ -328,6 +328,7 @@ static void xgpu_nv_mailbox_flr_work(struct work_struct *work)
+ 		reset_context.method = AMD_RESET_METHOD_NONE;
+ 		reset_context.reset_req_dev = adev;
+ 		clear_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
++		set_bit(AMDGPU_HOST_FLR, &reset_context.flags);
  
- 	switch (event) {
- 	case IDH_FLR_NOTIFICATION:
--		if (amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev))
-+		if (amdgpu_sriov_runtime(adev))
- 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
- 				   &adev->virt.flr_work),
- 				  "Failed to queue work! at %s",
+ 		amdgpu_device_gpu_recover(adev, NULL, &reset_context);
+ 	}
 diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
-index 59f53c743362..14a065516ae4 100644
+index 14a065516ae4..78cd07744ebe 100644
 --- a/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
 +++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
-@@ -560,7 +560,7 @@ static int xgpu_vi_mailbox_rcv_irq(struct amdgpu_device *adev,
- 		r = xgpu_vi_mailbox_rcv_msg(adev, IDH_FLR_NOTIFICATION);
+@@ -529,6 +529,7 @@ static void xgpu_vi_mailbox_flr_work(struct work_struct *work)
+ 		reset_context.method = AMD_RESET_METHOD_NONE;
+ 		reset_context.reset_req_dev = adev;
+ 		clear_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
++		set_bit(AMDGPU_HOST_FLR, &reset_context.flags);
  
- 		/* only handle FLR_NOTIFY now */
--		if (!r && !amdgpu_in_reset(adev))
-+		if (!r)
- 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
- 								&adev->virt.flr_work),
- 				  "Failed to queue work! at %s",
+ 		amdgpu_device_gpu_recover(adev, NULL, &reset_context);
+ 	}
 -- 
 2.43.0
 
