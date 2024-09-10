@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EA697320C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882B39735B6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81BB28DDBF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A76B7B2A2AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DDD19597F;
-	Tue, 10 Sep 2024 10:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436191917C2;
+	Tue, 10 Sep 2024 10:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A556OIiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q1bLbZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E62183CB0;
-	Tue, 10 Sep 2024 10:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0088B17A924;
+	Tue, 10 Sep 2024 10:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963207; cv=none; b=gb8XAirOTyu0Fm0Vi/8r2KJiRroos9opLpIXpA1kejJWA0SufOjVtm+dFKPzZdj+zvPtUtlMdhxbOVYTYIEgeekjB17PpJ0cTDyg8ePSY0jsHB6zgqy0Rg2wODn8zGxEvLK4gA9b1FilVbmDKvpK5LNmXHQxsxUfIbdpIl8X4r8=
+	t=1725964961; cv=none; b=YmPkAacGwzbbWKPlRV+FCIMOgyfxPaF/bGs+US1bxki2eZ/poqMYC9LoMPV8jlRzVkJrr9WSu6YyvVL8Ime/OIkStp7bg0bg/794fRt+GJ1QnsB4YJFl9EvLcEpFbYiSLU20C3lI/Nt+tu9TFK2+/4qGbunkefV9xY8W+RWnxus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963207; c=relaxed/simple;
-	bh=ws94GRKAy6GDAyIuuGR3Li7xlAsJj9cH0ZG+gKqVONE=;
+	s=arc-20240116; t=1725964961; c=relaxed/simple;
+	bh=gL66Vnk9UaQcgH21EyqW4OIUMEYuqbYWYJmbq7fhALc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dr8aft5Hhb06J6u2dLgOmesr8e5eDYSY8spEfQtZ+/supii9Ia/0GBFCu3klv7Q7YC1dhRVdNmKIS0aDgmlAJYvWDW1Sk5wLi481KotE2OHOvIfNaMok6m3x0e1XrEk8pBiC3ioOG8W9ugTQK/yqAinIDbPsA5DJqj5fkr4YTTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A556OIiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69163C4CEC3;
-	Tue, 10 Sep 2024 10:13:26 +0000 (UTC)
+	 MIME-Version; b=PgpSrGf0KptivbICPehJzYPvoisJbJndn4kiFkuwEGr/FRbyVrdOMxHQej5jEYVrW/p64FILOpf82pRYejE8KJIoEksina8M1J3jvxXa0ejA5XCEIO6hdTZ6hJH88Dhu6+Vj4ieo5HeRv7575xJRYC6ksZ2WTXRc0d6NEeYk+1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q1bLbZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF2BC4CEC3;
+	Tue, 10 Sep 2024 10:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963206;
-	bh=ws94GRKAy6GDAyIuuGR3Li7xlAsJj9cH0ZG+gKqVONE=;
+	s=korg; t=1725964960;
+	bh=gL66Vnk9UaQcgH21EyqW4OIUMEYuqbYWYJmbq7fhALc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A556OIiSy5KFYXotVT8PZRby1k0LKeilovbuh8yQJ3J7YvnYzYRkBRsSdAllAt8va
-	 X/M/n1EO6/e+aeke8FUJH1TdfL6LGoOvoyufrVTr2L8O1sttfrmHks3x6ehtbcE5UW
-	 SJ7U2EdjnLBIR44blpsOVlJe7DXTYbwCHiA2CBUE=
+	b=1q1bLbZPFq2Kl+RE0vP+dIHjoX+mLaU+BOG9ftR3oil1pvghKa19ba/7t0GQZqQUB
+	 5bF9r/7SLzvJzdOsNcjTq0Nhe93dHHj9VtEYOqZ+gFlznOsYziI3r1egut5Bors9e+
+	 C89j1TVJ82SIjPBV1iUUr0K7Ct9CLrSKFVwiQ37w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>
-Subject: [PATCH 6.1 134/192] io_uring/sqpoll: Do not set PF_NO_SETAFFINITY on sqpoll threads
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 063/186] mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K
 Date: Tue, 10 Sep 2024 11:32:38 +0200
-Message-ID: <20240910092603.533066733@linuxfoundation.org>
+Message-ID: <20240910092557.081697276@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-commit a5fc1441af7719e93dc7a638a960befb694ade89 upstream.
+commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890 upstream.
 
-Users may specify a CPU where the sqpoll thread would run. This may
-conflict with cpuset operations because of strict PF_NO_SETAFFINITY
-requirement. That flag is unnecessary for polling "kernel" threads, see
-the reasoning in commit 01e68ce08a30 ("io_uring/io-wq: stop setting
-PF_NO_SETAFFINITY on io-wq workers"). Drop the flag on poll threads too.
+Commit 616f87661792 ("mmc: pass queue_limits to blk_mq_alloc_disk") [1]
+revealed the long living issue in dw_mmc.c driver, existing since the
+time when it was first introduced in commit f95f3850f7a9 ("mmc: dw_mmc:
+Add Synopsys DesignWare mmc host driver."), also making kernel boot
+broken on platforms using dw_mmc driver with 16K or 64K pages enabled,
+with this message in dmesg:
 
-Fixes: 01e68ce08a30 ("io_uring/io-wq: stop setting PF_NO_SETAFFINITY on io-wq workers")
-Link: https://lore.kernel.org/all/20230314162559.pnyxdllzgw7jozgx@blackpad/
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Link: https://lore.kernel.org/r/20230314183332.25834-1-mkoutny@suse.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+    mmcblk: probe of mmc0:0001 failed with error -22
+
+That's happening because mmc_blk_probe() fails when it calls
+blk_validate_limits() consequently, which returns the error due to
+failed max_segment_size check in this code:
+
+    /*
+     * The maximum segment size has an odd historic 64k default that
+     * drivers probably should override.  Just like the I/O size we
+     * require drivers to at least handle a full page per segment.
+     */
+    ...
+    if (WARN_ON_ONCE(lim->max_segment_size < PAGE_SIZE))
+        return -EINVAL;
+
+In case when IDMAC (Internal DMA Controller) is used, dw_mmc.c always
+sets .max_seg_size to 4 KiB:
+
+    mmc->max_seg_size = 0x1000;
+
+The comment in the code above explains why it's incorrect. Arnd
+suggested setting .max_seg_size to .max_req_size to fix it, which is
+also what some other drivers are doing:
+
+   $ grep -rl 'max_seg_size.*=.*max_req_size' drivers/mmc/host/ | \
+     wc -l
+   18
+
+This change is not only fixing the boot with 16K/64K pages, but also
+leads to a better MMC performance. The linear write performance was
+tested on E850-96 board (eMMC only), before commit [1] (where it's
+possible to boot with 16K/64K pages without this fix, to be able to do
+a comparison). It was tested with this command:
+
+    # dd if=/dev/zero of=somefile bs=1M count=500 oflag=sync
+
+Test results are as follows:
+
+  - 4K pages,  .max_seg_size = 4 KiB:                   94.2 MB/s
+  - 4K pages,  .max_seg_size = .max_req_size = 512 KiB: 96.9 MB/s
+  - 16K pages, .max_seg_size = 4 KiB:                   126 MB/s
+  - 16K pages, .max_seg_size = .max_req_size = 2 MiB:   128 MB/s
+  - 64K pages, .max_seg_size = 4 KiB:                   138 MB/s
+  - 64K pages, .max_seg_size = .max_req_size = 8 MiB:   138 MB/s
+
+Unfortunately, SD card controller is not enabled in E850-96 yet, so it
+wasn't possible for me to run the test on some cheap SD cards to check
+this patch's impact on those. But it's possible that this change might
+also reduce the writes count, thus improving SD/eMMC longevity.
+
+All credit for the analysis and the suggested solution goes to Arnd.
+
+[1] https://lore.kernel.org/all/20240215070300.2200308-18-hch@lst.de/
+
+Fixes: f95f3850f7a9 ("mmc: dw_mmc: Add Synopsys DesignWare mmc host driver.")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYtddf2Fd3be+YShHP6CmSDNcn0ptW8qg+stUKW+Cn0rjQ@mail.gmail.com/
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240306232052.21317-1-semen.protsenko@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/dw_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -233,7 +233,6 @@ static int io_sq_thread(void *data)
- 		set_cpus_allowed_ptr(current, cpumask_of(sqd->sq_cpu));
- 	else
- 		set_cpus_allowed_ptr(current, cpu_online_mask);
--	current->flags |= PF_NO_SETAFFINITY;
- 
- 	/*
- 	 * Force audit context to get setup, in case we do prep side async
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2826,8 +2826,8 @@ static int dw_mci_init_slot(struct dw_mc
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_seg_size = 0x1000;
+-		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
++		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
++		mmc->max_seg_size = mmc->max_req_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 
 
 
