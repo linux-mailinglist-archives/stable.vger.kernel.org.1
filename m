@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-75540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622DC97350F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D81C973300
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950171C250EF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6F51C24CA5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D87D187FF9;
-	Tue, 10 Sep 2024 10:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8E1192D94;
+	Tue, 10 Sep 2024 10:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSMuGv+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBgbIQKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C44417BB0C;
-	Tue, 10 Sep 2024 10:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58902192D86;
+	Tue, 10 Sep 2024 10:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965034; cv=none; b=PX2fOI95eIbj4/ic/ToNH+fNrazcX8I6AsOTUJlZrBNwfsV62/cO4a+Q020jtTscRNNAUR5DyYLiKf7b4w16KM7Lo88Tq16WZospZlmGRH1+RfFX6pRjP0RLo/tT/UolYJzVCtqunmFA9NNk1cpAB0JeWSJB+MQDD2Oq9UEG8OA=
+	t=1725963817; cv=none; b=T1fNa81U85Hi079gJXzctzDYshfWO5IDJUQB3o5vLKD9WtPvCETCNAtXRm/aeLdo29JCrTMGzfznMoHMHURZzYg5RYyUWPF4x6AkvQwQK3msRmkH/GfRXL6pbTsw3sOK6EaQOv4guJX7bG45AvbBh4CaJU81bbWV5VpuxIyEClU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965034; c=relaxed/simple;
-	bh=UKhzNOPUaiDqDwls7Yr1BmQXWDTUSKizDz+op2KWjME=;
+	s=arc-20240116; t=1725963817; c=relaxed/simple;
+	bh=KJTH1faCjdRoj784Rv1IgfgbNc79Hf7SJmDVnEscCps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVoWW1CLTqHPw4zlBbxyjl3e3MXGLWZlYBW/PmS2bZ3Y2zt1pMOFd+reEI2HApsIXL+/tMlbsWEbb4y81FJC81w+O/aqCo+Rtvn88YquBNHwdHOc+q9zxIU7sISnWgrTOmxOZytjbr0Qq0CNpTSKdrhKDjvQHfbBKuJrH7LVqDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSMuGv+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88BEC4CEC3;
-	Tue, 10 Sep 2024 10:43:53 +0000 (UTC)
+	 MIME-Version; b=nW4CmjTFTuNMBClp9NJDOs+fxNkoOb0Z4p7EWGbrNwjwrRpcHpAYFRtmxW0f0TeDkwt7BCG1nCTJomhZ13YbjgBRqiN8aYDaUtOKl5kpz/zSwxtfIlFSgbe7+vp/2s5ksKvjzdGfg+UC3QMAr8Hp89Rzg2i0xiiuwZck0zrEs9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBgbIQKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765D8C4CEC3;
+	Tue, 10 Sep 2024 10:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965034;
-	bh=UKhzNOPUaiDqDwls7Yr1BmQXWDTUSKizDz+op2KWjME=;
+	s=korg; t=1725963816;
+	bh=KJTH1faCjdRoj784Rv1IgfgbNc79Hf7SJmDVnEscCps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSMuGv+w+XZa/eCfBlEMZJ+EyeSrS9uYB17be8rb2Vx7XNrjzG6g7sFAOY/lQJ81x
-	 ZwlPUi5RXx1ztjG45iWD+MrH+w5d1ZD0C+RX52YtQ3C/2N0B0sql/76U/CqvWp49zG
-	 B12ZigJ9jH2WcnxmA3DJTKsxcWnZ5XxvV8/V1/Kk=
+	b=pBgbIQKz3ch0pRSbNhyVLgPwBekEZ8r6or3EONzGb+s3KvfpoWuCsreVP3bLix/nj
+	 A61oSKObKZfw3v3SnYZLiJSOMF7EZHS86yV/TT7so6sZpbgFZoIc/RN/nLttXutcer
+	 HYXkRH9Odwe25++Fe/35Lm3lIYsWxfxJMZyWk9eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 114/186] svcrdma: Catch another Reply chunk overflow case
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ye Li <ye.li@nxp.com>,
+	Jason Liu <jason.hui.liu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.15 187/214] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
 Date: Tue, 10 Sep 2024 11:33:29 +0200
-Message-ID: <20240910092559.227766007@linuxfoundation.org>
+Message-ID: <20240910092606.302477945@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit e5decb2eb5f4d1f64ba9196b4bad0e26a441c81c ]
+commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
 
-When space in the Reply chunk runs out in the middle of a segment,
-we end up passing a zero-length SGL to rdma_rw_ctx_init(), and it
-oopses.
+The value written into the TPM CnV can only be updated into the hardware
+when the counter increases. Additional writes to the CnV write buffer are
+ignored until the register has been updated. Therefore, we need to check
+if the CnV has been updated before continuing. This may require waiting for
+1 counter cycle in the worst case.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: ffc17e1479e8 ("platform/x86: dell-smbios: Fix error path in dell_smbios_init()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_rw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_rw.c b/net/sunrpc/xprtrdma/svc_rdma_rw.c
-index 80a0c0e87590..7c50eddb8d3c 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
-@@ -460,6 +460,8 @@ svc_rdma_build_writes(struct svc_rdma_write_info *info,
- 		offset += info->wi_seg_off;
+--- a/drivers/clocksource/timer-imx-tpm.c
++++ b/drivers/clocksource/timer-imx-tpm.c
+@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
+ 	now = tpm_read_counter();
  
- 		write_len = min(remaining, length - info->wi_seg_off);
-+		if (!write_len)
-+			goto out_overflow;
- 		ctxt = svc_rdma_get_rw_ctxt(rdma,
- 					    (write_len >> PAGE_SHIFT) + 2);
- 		if (!ctxt)
--- 
-2.43.0
-
+ 	/*
++	 * Need to wait CNT increase at least 1 cycle to make sure
++	 * the C0V has been updated into HW.
++	 */
++	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
++		while (now == tpm_read_counter())
++			;
++
++	/*
+ 	 * NOTE: We observed in a very small probability, the bus fabric
+ 	 * contention between GPU and A7 may results a few cycles delay
+ 	 * of writing CNT registers which may cause the min_delta event got
 
 
 
