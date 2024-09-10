@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-75156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA545973324
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DBC973524
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98669283663
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82BBC1F26007
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715D518C344;
-	Tue, 10 Sep 2024 10:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE89190472;
+	Tue, 10 Sep 2024 10:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsu0o1BW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPfY5wmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF9018B488;
-	Tue, 10 Sep 2024 10:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADA518E77F;
+	Tue, 10 Sep 2024 10:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963911; cv=none; b=F9mkPjSIvR6Gf43onGQv29Odk7p4UqkeDA32+glV+LWRFxcRLtUiNumFHjrSKU7/ox+BH9i8pn837Rk+07VEoygPeOiamFNH5tKmL94Jd6rePQwyFSmPHidZsGFUB7maTjEC5gyNd1D8pCsvAqYs7C4+IQFgL+WkWzuGRsInnHg=
+	t=1725965090; cv=none; b=s4ufaYLJNL/W65Pw/SC+97INn1TTLHyHTFSSt8eLXECj/ES7DSNBFvQ1ini8wPyU/oGB4jKka0XuFPI44F724iocyddhYUH2/70olwEHxeaIamqrj6kMeu1I/5Cu8kNxIIcta6LeFELEimNB4xi88uN4OINLcTGmldaEqFuFWXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963911; c=relaxed/simple;
-	bh=tEZG4ccmUCynyqM7ckIsvY1HQT44jD+WHtPMYt/jH4w=;
+	s=arc-20240116; t=1725965090; c=relaxed/simple;
+	bh=BKTDbhWMBsjkmUm36WqSijsZl7YNH7b6RSO31nKqCHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZeD4jr/+aK9hnKqmMVHoNKPepraBfFZW45vVdQQjMlO8Dvd6H+hnWHC12RG9nOf0dWJgBW7gfyjTwNPhDMm/qUG65XV6M1GFSL8q8dUhOrqf9DWgKN7QNu5mJO98RXO8Rj1cTQTjZHt8fdHNF8JH44i6LxKhqsp12jl8DscehI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsu0o1BW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F36C4CEC3;
-	Tue, 10 Sep 2024 10:25:10 +0000 (UTC)
+	 MIME-Version; b=MIhLFrQhPGvLtmAUhZuA+h4pSs0/vDyPPFMuhzfeLVvCVcljseQChdp8sxGM9BpfJ4QD2lOwO5XabMJ5KFA8PquWrd9rDCYzu0Toiz2U7MbLW4fMr1c1ohWjWL/ERdTs9y3ZPCFkZviynoCsGwQOwjiiyvyXYIB6Ri5tzO9PSaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPfY5wmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FB5C4CEC3;
+	Tue, 10 Sep 2024 10:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963911;
-	bh=tEZG4ccmUCynyqM7ckIsvY1HQT44jD+WHtPMYt/jH4w=;
+	s=korg; t=1725965090;
+	bh=BKTDbhWMBsjkmUm36WqSijsZl7YNH7b6RSO31nKqCHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsu0o1BW918l0baKlwnpNvWbenWe9XpLTzKzglt+D6Io2qy6Z5faArMT487C7tb+1
-	 1sLWaiaw9Rp8FUQgtmIDCYauj6g9U8ckdkUnMN+2KrpRRb5Q6XZ28I36ZfwNrluMRe
-	 C5IphgcMxJ34tyfSXuL/IZXhXnvKvzQrEXTCY+gY=
+	b=bPfY5wmpt3H2QTlbUw1nH1hGlqS5HsKnAVHFcjRu5MORG9tC8+ujrnCYg3gW20Fvy
+	 TuXZWcO1q3xA4+ip6qxXPh7ws7KWrIjoWOaZcpTfWCPCnRV7rX6EBJc1G91WuRurHi
+	 qpchIdm3ZTSYpPXVIUfYQS+fPwA9/E4BYfVDo8Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuri Benditovich <yuri.benditovich@daynix.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 207/214] net: change maximum number of UDP segments to 128
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Krishna Kumar <krishnak@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 134/186] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
 Date: Tue, 10 Sep 2024 11:33:49 +0200
-Message-ID: <20240910092606.970151688@linuxfoundation.org>
+Message-ID: <20240910092600.107420349@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit 1382e3b6a3500c245e5278c66d210c02926f804f ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-The commit fc8b2a619469
-("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-adds check of potential number of UDP segments vs
-UDP_MAX_SEGMENTS in linux/virtio_net.h.
-After this change certification test of USO guest-to-guest
-transmit on Windows driver for virtio-net device fails,
-for example with packet size of ~64K and mss of 536 bytes.
-In general the USO should not be more restrictive than TSO.
-Indeed, in case of unreasonably small mss a lot of segments
-can cause queue overflow and packet loss on the destination.
-Limit of 128 segments is good for any practical purpose,
-with minimal meaningful mss of 536 the maximal UDP packet will
-be divided to ~120 segments.
-The number of segments for UDP packets is validated vs
-UDP_MAX_SEGMENTS also in udp.c (v4,v6), this does not affect
-quest-to-guest path but does affect packets sent to host, for
-example.
-It is important to mention that UDP_MAX_SEGMENTS is kernel-only
-define and not available to user mode socket applications.
-In order to request MSS smaller than MTU the applications
-just uses setsockopt with SOL_UDP and UDP_SEGMENT and there is
-no limitations on socket API level.
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-Fixes: fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
 
-[5.15-stable: fix conflict with neighboring but unrelated code from
-              e2a4392b61f6 ("udp: introduce udp->udp_flags")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
+
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h                  |    2 +-
- tools/testing/selftests/net/udpgso.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -94,7 +94,7 @@ struct udp_sock {
- 	int		forward_deficit;
- };
- 
--#define UDP_MAX_SEGMENTS	(1 << 6UL)
-+#define UDP_MAX_SEGMENTS	(1 << 7UL)
- 
- static inline struct udp_sock *udp_sk(const struct sock *sk)
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 04565162a449..cf9c0e75f0be 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -38,7 +38,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
  {
---- a/tools/testing/selftests/net/udpgso.c
-+++ b/tools/testing/selftests/net/udpgso.c
-@@ -34,7 +34,7 @@
- #endif
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
- #ifndef UDP_MAX_SEGMENTS
--#define UDP_MAX_SEGMENTS	(1 << 6UL)
-+#define UDP_MAX_SEGMENTS	(1 << 7UL)
- #endif
+ 	if (php_slot->irq > 0) {
+@@ -57,7 +56,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
  
- #define CONST_MTU_TEST	1500
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
+-- 
+2.43.0
+
 
 
 
