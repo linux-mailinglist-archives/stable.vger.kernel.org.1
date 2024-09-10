@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F70C972FBD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C01972DEB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEF991F212C7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977141C23DF3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36718EFDA;
-	Tue, 10 Sep 2024 09:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE3B18A6D2;
+	Tue, 10 Sep 2024 09:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHbzX9CI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhmdOXlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C6818E778;
-	Tue, 10 Sep 2024 09:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DA3188A1E;
+	Tue, 10 Sep 2024 09:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962043; cv=none; b=QlTxrf9dEXvOBfabEiZPdnaTshEEcT1XIghPvJuzHYBwlLd8XxyIHFl3Auf04Dhsi8h6kZVVAub6pa6p8XUgpFlu6RNAr/1jnBKiapFvBsvhy0pcsoqHedYssGigWH3L7H6G58FEb23/v93PqbXD8FYyvl8xTLxyzJZg6cJnuN4=
+	t=1725961057; cv=none; b=WeQDbhFiz0yetOw8bNc1lMPbZ8NPK/pIhv5pNSjnsAqHsq8Hq2sTklyAa2Ao/tP+QH1pCxjGRAIXmGbLalkMbSXAFbF6vZY8pf+ufdCg/j8UZ2Kx7PHRIcFgBvimMQNd3Gwd8TqmvJSwqVpFIBFI6SUI/ziPoAmY7HXkmYEj5AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962043; c=relaxed/simple;
-	bh=7VjUgqY+WnRyP+nGTjirGeIRCfcBZaVuQCyDwPOv+f8=;
+	s=arc-20240116; t=1725961057; c=relaxed/simple;
+	bh=JwxEE8/YApkEvH75SUSwYErhZRCCk7E3t1u66GYnESc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkJ3Xs6SmL+Ln2J9zc/WOKcqVE50rV6kBA1Dw8MiqIGK4EGA7ORGsI2nq930Gr6XlP9RAShMBOsceTpPc5s0UucGouqXn4vZoOCVPf5GWGys85XZndiPtxgxMLvLUr0lLLX7dY8bORxazPQDbn4at7/fClDx3y+vkb8aeuw1JL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHbzX9CI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AA9C4CEC3;
-	Tue, 10 Sep 2024 09:54:02 +0000 (UTC)
+	 MIME-Version; b=uNzpZdanO3pKXrUnAbvrI4AKvwOs9ke7Z4PhlSio6KRWKb7KMe3oriTNruQ8IKiYhIrVoQ7+yFzcdEEPzZm+yDsc31u6Wyp6hSH/oSEkVM20H7yNjJrgeGSyNIRYxjD8ac5jCihieBprF+7T+RQ7Q4ZVhXk0pfiewNpxxRttq00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhmdOXlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89F3C4CEC3;
+	Tue, 10 Sep 2024 09:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962043;
-	bh=7VjUgqY+WnRyP+nGTjirGeIRCfcBZaVuQCyDwPOv+f8=;
+	s=korg; t=1725961057;
+	bh=JwxEE8/YApkEvH75SUSwYErhZRCCk7E3t1u66GYnESc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHbzX9CI0sqoqXvmK3378btTFM+tC1HnXWpnDfh6XrlV7Z23VQhZvrQBvnNM7/jfV
-	 cKFSOR61M08uai3pPGOCjDGaHldOz/wIVydjbUXSnZulZgbb0oYWBJOv9sihlL2qyh
-	 +OOXSFckAytMwmhGH28szDxedHBnWVVrH8pBu5Yw=
+	b=vhmdOXlwPVXhIWBLq2tE8mylEDAFvAeXGSEkH7kEYQDdvl7THyKmtrWpmdurQc7ED
+	 Bj7n0aJhFhz3Re3Sjt7KAyIInzZ/dQQjtstD3uqMu8YWmBDv/Rrot9C1wsJQVi/kMo
+	 Tpj5lDK8iyLp/vcaDAHqyZLOOydEdVbc6Holl4xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 275/375] spi: spi-fsl-lpspi: limit PRESCALE bit in TCR register
-Date: Tue, 10 Sep 2024 11:31:12 +0200
-Message-ID: <20240910092631.799678791@linuxfoundation.org>
+Subject: [PATCH 4.19 11/96] smack: tcp: ipv4, fix incorrect labeling
+Date: Tue, 10 Sep 2024 11:31:13 +0200
+Message-ID: <20240910092541.899440805@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 783bf5d09f86b9736605f3e01a3472e55ef98ff8 ]
+[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
 
-Referring to the errata ERR051608 of I.MX93, LPSPI TCR[PRESCALE]
-can only be configured to be 0 or 1, other values are not valid
-and will cause LPSPI to not work.
+Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
+when a label 'foo' connects to a label 'bar' with tcp/ipv4,
+'foo' always gets 'foo' in returned ipv4 packets. So,
+1) returned packets are incorrectly labeled ('foo' instead of 'bar')
+2) 'bar' can write to 'foo' without being authorized to write.
 
-Add the prescale limitation for LPSPI in I.MX93. Other platforms
-are not affected.
+Here is a scenario how to see this:
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Link: https://patch.msgid.link/20240820070658.672127-1-carlos.song@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+* Take two machines, let's call them C and S,
+   with active Smack in the default state
+   (no settings, no rules, no labeled hosts, only builtin labels)
+
+* At S, add Smack rule 'foo bar w'
+   (labels 'foo' and 'bar' are instantiated at S at this moment)
+
+* At S, at label 'bar', launch a program
+   that listens for incoming tcp/ipv4 connections
+
+* From C, at label 'foo', connect to the listener at S.
+   (label 'foo' is instantiated at C at this moment)
+   Connection succeedes and works.
+
+* Send some data in both directions.
+* Collect network traffic of this connection.
+
+All packets in both directions are labeled with the CIPSO
+of the label 'foo'. Hence, label 'bar' writes to 'foo' without
+being authorized, and even without ever being known at C.
+
+If anybody cares: exactly the same happens with DCCP.
+
+This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
+and it looks unintentional. At least, no explanation was provided.
+
+I changed returned packes label into the 'bar',
+to bring it into line with the Smack documentation claims.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index f2d7eedd324b..30d56f8775d7 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -82,6 +82,10 @@
- #define TCR_RXMSK	BIT(19)
- #define TCR_TXMSK	BIT(18)
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index d9bff4ba7f2e..158f4df39be4 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4291,7 +4291,7 @@ static int smack_inet_conn_request(struct sock *sk, struct sk_buff *skb,
+ 	rcu_read_unlock();
  
-+struct fsl_lpspi_devtype_data {
-+	u8 prescale_max;
-+};
-+
- struct lpspi_config {
- 	u8 bpw;
- 	u8 chip_select;
-@@ -119,10 +123,25 @@ struct fsl_lpspi_data {
- 	bool usedma;
- 	struct completion dma_rx_completion;
- 	struct completion dma_tx_completion;
-+
-+	const struct fsl_lpspi_devtype_data *devtype_data;
-+};
-+
-+/*
-+ * ERR051608 fixed or not:
-+ * https://www.nxp.com/docs/en/errata/i.MX93_1P87f.pdf
-+ */
-+static struct fsl_lpspi_devtype_data imx93_lpspi_devtype_data = {
-+	.prescale_max = 1,
-+};
-+
-+static struct fsl_lpspi_devtype_data imx7ulp_lpspi_devtype_data = {
-+	.prescale_max = 8,
- };
- 
- static const struct of_device_id fsl_lpspi_dt_ids[] = {
--	{ .compatible = "fsl,imx7ulp-spi", },
-+	{ .compatible = "fsl,imx7ulp-spi", .data = &imx7ulp_lpspi_devtype_data,},
-+	{ .compatible = "fsl,imx93-spi", .data = &imx93_lpspi_devtype_data,},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, fsl_lpspi_dt_ids);
-@@ -297,9 +316,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
- 	unsigned int perclk_rate, scldiv, div;
-+	u8 prescale_max;
- 	u8 prescale;
- 
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+	prescale_max = fsl_lpspi->devtype_data->prescale_max;
- 
- 	if (!config.speed_hz) {
- 		dev_err(fsl_lpspi->dev,
-@@ -315,7 +336,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 
- 	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
- 
--	for (prescale = 0; prescale < 8; prescale++) {
-+	for (prescale = 0; prescale < prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
-@@ -822,6 +843,7 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
- 
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
-+	const struct fsl_lpspi_devtype_data *devtype_data;
- 	struct fsl_lpspi_data *fsl_lpspi;
- 	struct spi_controller *controller;
- 	struct resource *res;
-@@ -830,6 +852,10 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	u32 temp;
- 	bool is_target;
- 
-+	devtype_data = of_device_get_match_data(&pdev->dev);
-+	if (!devtype_data)
-+		return -ENODEV;
-+
- 	is_target = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
- 	if (is_target)
- 		controller = devm_spi_alloc_target(&pdev->dev,
-@@ -848,6 +874,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->is_target = is_target;
- 	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
- 						"fsl,spi-only-use-cs1-sel");
-+	fsl_lpspi->devtype_data = devtype_data;
- 
- 	init_completion(&fsl_lpspi->xfer_done);
+ 	if (hskp == NULL)
+-		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
++		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+ 		netlbl_req_delattr(req);
  
 -- 
 2.43.0
