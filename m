@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-75030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CA897329D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578B59733DA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B8121C2487A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51D84B25B1A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541BB198840;
-	Tue, 10 Sep 2024 10:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB9E18E76F;
+	Tue, 10 Sep 2024 10:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co6WndrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKo/NzVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1A146444;
-	Tue, 10 Sep 2024 10:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577982AF15;
+	Tue, 10 Sep 2024 10:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963544; cv=none; b=XjgjwFP12bNt44Y+dNOUtK2XHrJFYAOU8UyzS95myE6MelCDCSImLKVCV+U07Dw5yU/cmGag6NNI+Vu0wOAvTftCWc5qFH4h9aT2a9hdoCWSiXX9jAW322fny/KHwI9rv07tE8tRC3m1W3w9wasWqhcJ19gajqnVEvZNaWzuFsI=
+	t=1725964279; cv=none; b=R3yFrVvpIm1Ko/cxpQGkvjpDoe+l9QsUJ4JPYO2FVaPLyUs9Ey5+GzBTtp/5cE8nmwAFqt+gja8KagS90rGiWO98Hhflq0bcPM+4juV0tkKUDyiIW4/RsAnh03MrowGTDta1r7sW9SUWpG4v5Zw4GlDqv9KBAZwy57Y8S9AacSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963544; c=relaxed/simple;
-	bh=HJ/r12rIsjK088zdRAtkyN5nPnaJHT3e7Zh0NRWrPkw=;
+	s=arc-20240116; t=1725964279; c=relaxed/simple;
+	bh=lh1tk/Bd4lHI2GH5FI+2QvTwfm1aXFE4yFQt5VvLyt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cR5ZjZQdGx4kEBVCDORA3D5BWliHYk9tubm0/htEpIvfJZu4Ady9E1wseqJbKH2jEDXe3KVSNwh6aPSwbfsIdRQAkkNS2XGJAv3knRcqWTzIKG//NWrW0ZGVOc+WEHntxjdHy0wn5FIfbGZFft+c2TEkk2QAjfWBDbzagMPFEA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co6WndrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C13C4CEC3;
-	Tue, 10 Sep 2024 10:19:03 +0000 (UTC)
+	 MIME-Version; b=aJdaeo6JPDHltvcjeEj+1+Yw4rPJTXsqW0hiK8jx6fSc7QnaGel+aeVF1VSOR+Bp5UJLkPfVi4KnLyVBv5/EbSSGwcBTnRVsh+AuS1gZ/+rgwICEZLbe2g1QLAL1iKynHzH+VoImyi4sxlZFIYcCeHfQLibJSxVdFhOtwdRrsZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKo/NzVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33EAC4CEC3;
+	Tue, 10 Sep 2024 10:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963543;
-	bh=HJ/r12rIsjK088zdRAtkyN5nPnaJHT3e7Zh0NRWrPkw=;
+	s=korg; t=1725964279;
+	bh=lh1tk/Bd4lHI2GH5FI+2QvTwfm1aXFE4yFQt5VvLyt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=co6WndrN9jdPFBAncq70gI7Ot2oVzatTyIbjthucv6FJ0TnTWtyEpCHlq7cX/5PIy
-	 X8jsJaRf7GdfLOwywfWrGQNQr+nT8bl9Dfv4UfqFf2jtIupyBANm+7ZONBUlO1gjg1
-	 0wdGnKGvcaaPCoVXEPIjSNulJrGJQCwZbnMhhzWY=
+	b=lKo/NzVj+k9ho5gGjgNUhoDqz2Yvqbb5V4IkdFnDi2z80p0k6mvsYZakGesbrsFvD
+	 oaLqygJnKcElJgJEkSijf78bbhaDD3bNDc8jtbQWqNhieQITLjn3RYxmevyqLqQadh
+	 2DkWKP7DNA0IaD+kOdWbBvPfBkn3vHU605Khl3PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Breno Leitao <leitao@debian.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 094/214] mptcp: constify a bunch of of helpers
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 129/269] net/socket: Break down __sys_getsockopt
 Date: Tue, 10 Sep 2024 11:31:56 +0200
-Message-ID: <20240910092602.620217448@linuxfoundation.org>
+Message-ID: <20240910092612.780013150@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,236 +65,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 90d930882139f166ed2551205d6f6d8c50b656fb upstream.
+[ Upstream commit 0b05b0cd78c92371fdde6333d006f39eaf9e0860 ]
 
-A few pm-related helpers don't touch arguments which lacking
-the const modifier, let's constify them.
+Split __sys_getsockopt() into two functions by removing the core
+logic into a sub-function (do_sock_getsockopt()). This will avoid
+code duplication when doing the same operation in other callers, for
+instance.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 48e50dcbcbaa ("mptcp: pm: avoid possible UaF when selecting endp")
-[ Conflicts because a few modified helpers from the original patch are
-  not present in this version. We don't need to do anything with them. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+do_sock_getsockopt() will be called by io_uring getsockopt() command
+operation in the following patch.
+
+The same was done for the setsockopt pair.
+
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20231016134750.1381153-5-leitao@debian.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 33f339a1ba54 ("bpf, net: Fix a potential race in do_sock_getsockopt()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm.c         |    4 ++--
- net/mptcp/pm_netlink.c |   36 ++++++++++++++++++------------------
- net/mptcp/protocol.h   |   18 +++++++++---------
- 3 files changed, 29 insertions(+), 29 deletions(-)
+ include/linux/bpf-cgroup.h |  2 +-
+ include/net/sock.h         |  4 +--
+ net/core/sock.c            |  8 -----
+ net/socket.c               | 64 ++++++++++++++++++++++++--------------
+ 4 files changed, 44 insertions(+), 34 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -202,7 +202,7 @@ void mptcp_pm_add_addr_received(struct m
+diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+index ebfd3c5a776a..2aa82b7aed89 100644
+--- a/include/linux/bpf-cgroup.h
++++ b/include/linux/bpf-cgroup.h
+@@ -379,7 +379,7 @@ static inline bool cgroup_bpf_sock_enabled(struct sock *sk,
+ ({									       \
+ 	int __ret = 0;							       \
+ 	if (cgroup_bpf_enabled(CGROUP_GETSOCKOPT))			       \
+-		get_user(__ret, optlen);				       \
++		copy_from_sockptr(&__ret, optlen, sizeof(int));		       \
+ 	__ret;								       \
+ })
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index bb010cc53b91..2a1aee503848 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1877,11 +1877,11 @@ int sock_setsockopt(struct socket *sock, int level, int op,
+ 		    sockptr_t optval, unsigned int optlen);
+ int do_sock_setsockopt(struct socket *sock, bool compat, int level,
+ 		       int optname, sockptr_t optval, int optlen);
++int do_sock_getsockopt(struct socket *sock, bool compat, int level,
++		       int optname, sockptr_t optval, sockptr_t optlen);
+ 
+ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		  sockptr_t optval, sockptr_t optlen);
+-int sock_getsockopt(struct socket *sock, int level, int op,
+-		    char __user *optval, int __user *optlen);
+ int sock_gettstamp(struct socket *sock, void __user *userstamp,
+ 		   bool timeval, bool time32);
+ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 55d85d50b3e4..bc2a4e38dcea 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2019,14 +2019,6 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 	return 0;
  }
  
- void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
--			      struct mptcp_addr_info *addr)
-+			      const struct mptcp_addr_info *addr)
+-int sock_getsockopt(struct socket *sock, int level, int optname,
+-		    char __user *optval, int __user *optlen)
+-{
+-	return sk_getsockopt(sock->sk, level, optname,
+-			     USER_SOCKPTR(optval),
+-			     USER_SOCKPTR(optlen));
+-}
+-
+ /*
+  * Initialize an sk_lock.
+  *
+diff --git a/net/socket.c b/net/socket.c
+index aa563fc0cee4..d275f5f14882 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -2352,6 +2352,43 @@ SYSCALL_DEFINE5(setsockopt, int, fd, int, level, int, optname,
+ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
+ 							 int optname));
+ 
++int do_sock_getsockopt(struct socket *sock, bool compat, int level,
++		       int optname, sockptr_t optval, sockptr_t optlen)
++{
++	int max_optlen __maybe_unused;
++	const struct proto_ops *ops;
++	int err;
++
++	err = security_socket_getsockopt(sock, level, optname);
++	if (err)
++		return err;
++
++	if (!compat)
++		max_optlen = BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen);
++
++	ops = READ_ONCE(sock->ops);
++	if (level == SOL_SOCKET) {
++		err = sk_getsockopt(sock->sk, level, optname, optval, optlen);
++	} else if (unlikely(!ops->getsockopt)) {
++		err = -EOPNOTSUPP;
++	} else {
++		if (WARN_ONCE(optval.is_kernel || optlen.is_kernel,
++			      "Invalid argument type"))
++			return -EOPNOTSUPP;
++
++		err = ops->getsockopt(sock, level, optname, optval.user,
++				      optlen.user);
++	}
++
++	if (!compat)
++		err = BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, level, optname,
++						     optval, optlen, max_optlen,
++						     err);
++
++	return err;
++}
++EXPORT_SYMBOL(do_sock_getsockopt);
++
+ /*
+  *	Get a socket option. Because we don't know the option lengths we have
+  *	to pass a user mode parameter for the protocols to sort out.
+@@ -2359,37 +2396,18 @@ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
+ int __sys_getsockopt(int fd, int level, int optname, char __user *optval,
+ 		int __user *optlen)
  {
- 	struct mptcp_pm_data *pm = &msk->pm;
+-	int max_optlen __maybe_unused;
+-	const struct proto_ops *ops;
+ 	int err, fput_needed;
+ 	struct socket *sock;
++	bool compat;
  
-@@ -260,7 +260,7 @@ void mptcp_pm_mp_fail_received(struct so
+ 	sock = sockfd_lookup_light(fd, &err, &fput_needed);
+ 	if (!sock)
+ 		return err;
  
- /* path manager helpers */
+-	err = security_socket_getsockopt(sock, level, optname);
+-	if (err)
+-		goto out_put;
++	compat = in_compat_syscall();
++	err = do_sock_getsockopt(sock, compat, level, optname,
++				 USER_SOCKPTR(optval), USER_SOCKPTR(optlen));
  
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, struct sk_buff *skb,
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 			      unsigned int opt_size, unsigned int remaining,
- 			      struct mptcp_addr_info *addr, bool *echo,
- 			      bool *port, bool *drop_other_suboptions)
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -60,7 +60,7 @@ struct pm_nl_pernet {
- #define ADD_ADDR_RETRANS_MAX	3
- 
- static bool addresses_equal(const struct mptcp_addr_info *a,
--			    struct mptcp_addr_info *b, bool use_port)
-+			    const struct mptcp_addr_info *b, bool use_port)
- {
- 	bool addr_equals = false;
- 
-@@ -123,7 +123,7 @@ static void remote_address(const struct
+-	if (!in_compat_syscall())
+-		max_optlen = BPF_CGROUP_GETSOCKOPT_MAX_OPTLEN(optlen);
+-
+-	ops = READ_ONCE(sock->ops);
+-	if (level == SOL_SOCKET)
+-		err = sock_getsockopt(sock, level, optname, optval, optlen);
+-	else if (unlikely(!ops->getsockopt))
+-		err = -EOPNOTSUPP;
+-	else
+-		err = ops->getsockopt(sock, level, optname, optval,
+-					    optlen);
+-
+-	if (!in_compat_syscall())
+-		err = BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, level, optname,
+-						     USER_SOCKPTR(optval),
+-						     USER_SOCKPTR(optlen),
+-						     max_optlen, err);
+-out_put:
+ 	fput_light(sock->file, fput_needed);
+ 	return err;
  }
- 
- static bool lookup_subflow_by_saddr(const struct list_head *list,
--				    struct mptcp_addr_info *saddr)
-+				    const struct mptcp_addr_info *saddr)
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_addr_info cur;
-@@ -141,7 +141,7 @@ static bool lookup_subflow_by_saddr(cons
- }
- 
- static bool lookup_subflow_by_daddr(const struct list_head *list,
--				    struct mptcp_addr_info *daddr)
-+				    const struct mptcp_addr_info *daddr)
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_addr_info cur;
-@@ -162,8 +162,8 @@ static struct mptcp_pm_addr_entry *
- select_local_address(const struct pm_nl_pernet *pernet,
- 		     struct mptcp_sock *msk)
- {
-+	const struct sock *sk = (const struct sock *)msk;
- 	struct mptcp_pm_addr_entry *entry, *ret = NULL;
--	struct sock *sk = (struct sock *)msk;
- 
- 	msk_owned_by_me(msk);
- 
-@@ -219,16 +219,16 @@ select_signal_address(struct pm_nl_perne
- 	return ret;
- }
- 
--unsigned int mptcp_pm_get_add_addr_signal_max(struct mptcp_sock *msk)
-+unsigned int mptcp_pm_get_add_addr_signal_max(const struct mptcp_sock *msk)
- {
--	struct pm_nl_pernet *pernet;
-+	const struct pm_nl_pernet *pernet;
- 
--	pernet = net_generic(sock_net((struct sock *)msk), pm_nl_pernet_id);
-+	pernet = net_generic(sock_net((const struct sock *)msk), pm_nl_pernet_id);
- 	return READ_ONCE(pernet->add_addr_signal_max);
- }
- EXPORT_SYMBOL_GPL(mptcp_pm_get_add_addr_signal_max);
- 
--unsigned int mptcp_pm_get_add_addr_accept_max(struct mptcp_sock *msk)
-+unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk)
- {
- 	struct pm_nl_pernet *pernet;
- 
-@@ -237,7 +237,7 @@ unsigned int mptcp_pm_get_add_addr_accep
- }
- EXPORT_SYMBOL_GPL(mptcp_pm_get_add_addr_accept_max);
- 
--unsigned int mptcp_pm_get_subflows_max(struct mptcp_sock *msk)
-+unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk)
- {
- 	struct pm_nl_pernet *pernet;
- 
-@@ -246,7 +246,7 @@ unsigned int mptcp_pm_get_subflows_max(s
- }
- EXPORT_SYMBOL_GPL(mptcp_pm_get_subflows_max);
- 
--unsigned int mptcp_pm_get_local_addr_max(struct mptcp_sock *msk)
-+unsigned int mptcp_pm_get_local_addr_max(const struct mptcp_sock *msk)
- {
- 	struct pm_nl_pernet *pernet;
- 
-@@ -264,8 +264,8 @@ static void check_work_pending(struct mp
- }
- 
- struct mptcp_pm_add_entry *
--mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
--				struct mptcp_addr_info *addr)
-+mptcp_lookup_anno_list_by_saddr(const struct mptcp_sock *msk,
-+				const struct mptcp_addr_info *addr)
- {
- 	struct mptcp_pm_add_entry *entry;
- 
-@@ -346,7 +346,7 @@ out:
- 
- struct mptcp_pm_add_entry *
- mptcp_pm_del_add_timer(struct mptcp_sock *msk,
--		       struct mptcp_addr_info *addr, bool check_id)
-+		       const struct mptcp_addr_info *addr, bool check_id)
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
-@@ -364,7 +364,7 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- }
- 
- static bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
--				     struct mptcp_pm_addr_entry *entry)
-+				     const struct mptcp_pm_addr_entry *entry)
- {
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
-@@ -410,8 +410,8 @@ void mptcp_pm_free_anno_list(struct mptc
- 	}
- }
- 
--static bool lookup_address_in_vec(struct mptcp_addr_info *addrs, unsigned int nr,
--				  struct mptcp_addr_info *addr)
-+static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
-+				  const struct mptcp_addr_info *addr)
- {
- 	int i;
- 
-@@ -1329,7 +1329,7 @@ int mptcp_pm_get_flags_and_ifindex_by_id
- }
- 
- static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
--				      struct mptcp_addr_info *addr)
-+				      const struct mptcp_addr_info *addr)
- {
- 	struct mptcp_pm_add_entry *entry;
- 
-@@ -1344,7 +1344,7 @@ static bool remove_anno_list_by_saddr(st
- }
- 
- static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
--				      struct mptcp_addr_info *addr,
-+				      const struct mptcp_addr_info *addr,
- 				      bool force)
- {
- 	struct mptcp_rm_list list = { .nr = 0 };
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -738,7 +738,7 @@ void mptcp_pm_subflow_closed(struct mptc
- void mptcp_pm_add_addr_received(struct mptcp_sock *msk,
- 				const struct mptcp_addr_info *addr);
- void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
--			      struct mptcp_addr_info *addr);
-+			      const struct mptcp_addr_info *addr);
- void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
-@@ -752,10 +752,10 @@ void mptcp_pm_free_anno_list(struct mptc
- bool mptcp_pm_sport_in_anno_list(struct mptcp_sock *msk, const struct sock *sk);
- struct mptcp_pm_add_entry *
- mptcp_pm_del_add_timer(struct mptcp_sock *msk,
--		       struct mptcp_addr_info *addr, bool check_id);
-+		       const struct mptcp_addr_info *addr, bool check_id);
- struct mptcp_pm_add_entry *
--mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
--				struct mptcp_addr_info *addr);
-+mptcp_lookup_anno_list_by_saddr(const struct mptcp_sock *msk,
-+				const struct mptcp_addr_info *addr);
- int mptcp_pm_get_flags_and_ifindex_by_id(struct net *net, unsigned int id,
- 					 u8 *flags, int *ifindex);
- 
-@@ -814,7 +814,7 @@ static inline int mptcp_rm_addr_len(cons
- 	return TCPOLEN_MPTCP_RM_ADDR_BASE + roundup(rm_list->nr - 1, 4) + 1;
- }
- 
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, struct sk_buff *skb,
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 			      unsigned int opt_size, unsigned int remaining,
- 			      struct mptcp_addr_info *addr, bool *echo,
- 			      bool *port, bool *drop_other_suboptions);
-@@ -830,10 +830,10 @@ void mptcp_pm_nl_rm_subflow_received(str
- 				     const struct mptcp_rm_list *rm_list);
- int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
- bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
--unsigned int mptcp_pm_get_add_addr_signal_max(struct mptcp_sock *msk);
--unsigned int mptcp_pm_get_add_addr_accept_max(struct mptcp_sock *msk);
--unsigned int mptcp_pm_get_subflows_max(struct mptcp_sock *msk);
--unsigned int mptcp_pm_get_local_addr_max(struct mptcp_sock *msk);
-+unsigned int mptcp_pm_get_add_addr_signal_max(const struct mptcp_sock *msk);
-+unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk);
-+unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk);
-+unsigned int mptcp_pm_get_local_addr_max(const struct mptcp_sock *msk);
- 
- void mptcp_sockopt_sync(struct mptcp_sock *msk, struct sock *ssk);
- void mptcp_sockopt_sync_all(struct mptcp_sock *msk);
+-- 
+2.43.0
+
 
 
 
