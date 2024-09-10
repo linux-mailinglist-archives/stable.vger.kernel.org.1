@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5727C972DF6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333E3973012
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B8051C24513
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4532841D1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF35718A6B9;
-	Tue, 10 Sep 2024 09:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D6A18B485;
+	Tue, 10 Sep 2024 09:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqcuKDVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6SFvOKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4A1189F58;
-	Tue, 10 Sep 2024 09:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA1F18A94C;
+	Tue, 10 Sep 2024 09:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961083; cv=none; b=fiXFYN1hVYdJF2stglF472/rR1WJMw1OBsyTdXhroZpI4P1JeQo3FtmangDVcyIJRN24qHivIqt/c1IqRac8doSnCsg/SgvJWmKC3DVKaRXkPFyMrUMxwYPVdZrGy/r+ghz+YdwpWT2aBBdcqA/+tq7McmGJqPOSyCihpeZtrws=
+	t=1725962234; cv=none; b=DOU1Rlyk0PwRBuGZNKH25fHMzHcUDOi7G1OvxfcsZ9A5pXuRFi5UQWd0dTEInwv41w4cvWnmhC1cMuWE9u5SccPCwJRcFvcQHpkosoarcOAaZ2jET6TioXA/aDafOE6Z23y1SOF1BFpP9y2hPwZuKEiJ57T/0EYyN+DWazjUX6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961083; c=relaxed/simple;
-	bh=HDirkgMuhnQr3zSGDspZ65vRHFJYzbjTdttwimAd8Fs=;
+	s=arc-20240116; t=1725962234; c=relaxed/simple;
+	bh=ciWfcBY3RrcPUPKQeT778n6gUYhfsybJLBbuL5f7DOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L37Fto8E9KOIIXz6IExEL7vyoXvgWXaqvQe0A1MAS7pdYrEErlrP5c5Wq0Ok7MlA8cJCC3ywySKi/9Ttn9FFdI2lL5Uy6GTNrxwwxZjaj1h7PZU6rPGR4A8lHKRRDD2NfjJPEg2KdQtpBIvrqW9OQLj2VclxZLfXwoZWTDmBCMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqcuKDVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CF6C4CEC3;
-	Tue, 10 Sep 2024 09:38:02 +0000 (UTC)
+	 MIME-Version; b=gRe+dAJ4lKO7B2oHJyvypf6u3QzKNtM9fu+JgPuMGz5VINEfpI9SvtoUx6rbWxjwhDEnfkvObVxEOfnZqoVYMnZD3Pd1hSId/Mr4npyvPi+TgwPJB+bRHotiPdtxb+p/yVGRx+IKQhcSCXlw9mcBO1JL+mnpNd3JXA+RqVj4pZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6SFvOKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80EFC4CEC3;
+	Tue, 10 Sep 2024 09:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961083;
-	bh=HDirkgMuhnQr3zSGDspZ65vRHFJYzbjTdttwimAd8Fs=;
+	s=korg; t=1725962234;
+	bh=ciWfcBY3RrcPUPKQeT778n6gUYhfsybJLBbuL5f7DOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqcuKDVySmAgK9Utdk069sVAO567uoaZE98ltxIDHyWxYNzocJJzM6iY2xZp3dmyn
-	 psnFvVCUJsg5yuIrcYEtv2w3E0hVJxy5eWWRqih0B48Dd4J5OTexTnjVOZa2TaLI1k
-	 1BXwX9UyDf3FLmPtHPerVZ4kPCOi6VbeiBZe2DQQ=
+	b=k6SFvOKRSEgYbDywVo0Yor1eE+waTA9hzXuDwf6jbh0QviwO8Ooj68J/0IHttSQJW
+	 Dwe20XDZC1hxpg5c9vw2m5QFJeqz8JmW9UvBbzRWYSlVMptX4yMaQ+ctW0NSgjs05k
+	 tqgwCNZ36h5/NuT4oAbcLCzTfuvQGoBX9rrWcLgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 48/96] net: bridge: fdb: convert added_by_user to bitops
+Subject: [PATCH 6.10 313/375] workqueue: Improve scalability of workqueue watchdog touch
 Date: Tue, 10 Sep 2024 11:31:50 +0200
-Message-ID: <20240910092543.637295133@linuxfoundation.org>
+Message-ID: <20240910092633.074799577@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,190 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit ac3ca6af443aa495c7907e5010ac77fbd2450eaa ]
+[ Upstream commit 98f887f820c993e05a12e8aa816c80b8661d4c87 ]
 
-Straight-forward convert of the added_by_user field to bitops.
+On a ~2000 CPU powerpc system, hard lockups have been observed in the
+workqueue code when stop_machine runs (in this case due to CPU hotplug).
+This is due to lots of CPUs spinning in multi_cpu_stop, calling
+touch_nmi_watchdog() which ends up calling wq_watchdog_touch().
+wq_watchdog_touch() writes to the global variable wq_watchdog_touched,
+and that can find itself in the same cacheline as other important
+workqueue data, which slows down operations to the point of lockups.
 
-Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
+In the case of the following abridged trace, worker_pool_idr was in
+the hot line, causing the lockups to always appear at idr_find.
+
+  watchdog: CPU 1125 self-detected hard LOCKUP @ idr_find
+  Call Trace:
+  get_work_pool
+  __queue_work
+  call_timer_fn
+  run_timer_softirq
+  __do_softirq
+  do_softirq_own_stack
+  irq_exit
+  timer_interrupt
+  decrementer_common_virt
+  * interrupt: 900 (timer) at multi_cpu_stop
+  multi_cpu_stop
+  cpu_stopper_thread
+  smpboot_thread_fn
+  kthread
+
+Fix this by having wq_watchdog_touch() only write to the line if the
+last time a touch was recorded exceeds 1/4 of the watchdog threshold.
+
+Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_fdb.c       | 25 ++++++++++++-------------
- net/bridge/br_private.h   |  4 ++--
- net/bridge/br_switchdev.c |  6 ++++--
- 3 files changed, 18 insertions(+), 17 deletions(-)
+ kernel/workqueue.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 25aeaedce762..7ae27569ced9 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -230,7 +230,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
- 			f->dst = op;
--			f->added_by_user = 0;
-+			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
- 	}
-@@ -241,7 +241,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
- 		f->dst = NULL;
--		f->added_by_user = 0;
-+		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index f26b0511b023..ffbf99fb53bf 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -7586,12 +7586,18 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
  
-@@ -257,7 +257,7 @@ void br_fdb_find_delete_local(struct net_bridge *br,
- 	spin_lock_bh(&br->hash_lock);
- 	f = br_fdb_find(br, addr, vid);
- 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--	    !f->added_by_user && f->dst == p)
-+	    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) && f->dst == p)
- 		fdb_delete_local(br, p, f);
- 	spin_unlock_bh(&br->hash_lock);
+ notrace void wq_watchdog_touch(int cpu)
+ {
++	unsigned long thresh = READ_ONCE(wq_watchdog_thresh) * HZ;
++	unsigned long touch_ts = READ_ONCE(wq_watchdog_touched);
++	unsigned long now = jiffies;
++
+ 	if (cpu >= 0)
+-		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
++		per_cpu(wq_watchdog_touched_cpu, cpu) = now;
+ 	else
+ 		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
+ 
+-	wq_watchdog_touched = jiffies;
++	/* Don't unnecessarily store to global cacheline */
++	if (time_after(now, touch_ts + thresh / 4))
++		WRITE_ONCE(wq_watchdog_touched, jiffies);
  }
-@@ -273,7 +273,7 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
- 	vg = nbp_vlan_group(p);
- 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
- 		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
--		    !f->added_by_user) {
-+		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
- 			/* delete old one */
- 			fdb_delete_local(br, p, f);
  
-@@ -315,7 +315,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
- 	/* If old entry was unassociated with any port, then delete it. */
- 	f = br_fdb_find(br, br->dev->dev_addr, 0);
- 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--	    !f->dst && !f->added_by_user)
-+	    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
- 		fdb_delete_local(br, NULL, f);
- 
- 	fdb_insert(br, NULL, newaddr, 0);
-@@ -331,7 +331,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
- 			continue;
- 		f = br_fdb_find(br, br->dev->dev_addr, v->vid);
- 		if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--		    !f->dst && !f->added_by_user)
-+		    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
- 			fdb_delete_local(br, NULL, f);
- 		fdb_insert(br, NULL, newaddr, v->vid);
- 	}
-@@ -511,7 +511,6 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
- 			set_bit(BR_FDB_LOCAL, &fdb->flags);
- 		if (is_static)
- 			set_bit(BR_FDB_STATIC, &fdb->flags);
--		fdb->added_by_user = 0;
- 		fdb->added_by_external_learn = 0;
- 		fdb->offloaded = 0;
- 		fdb->updated = fdb->used = jiffies;
-@@ -605,7 +604,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
- 			if (now != fdb->updated)
- 				fdb->updated = now;
- 			if (unlikely(added_by_user))
--				fdb->added_by_user = 1;
-+				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 			if (unlikely(fdb_modified)) {
- 				trace_br_fdb_update(br, source, addr, vid, added_by_user);
- 				fdb_notify(br, fdb, RTM_NEWNEIGH, true);
-@@ -616,7 +615,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
- 		fdb = fdb_create(br, source, addr, vid, 0, 0);
- 		if (fdb) {
- 			if (unlikely(added_by_user))
--				fdb->added_by_user = 1;
-+				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 			trace_br_fdb_update(br, source, addr, vid,
- 					    added_by_user);
- 			fdb_notify(br, fdb, RTM_NEWNEIGH, true);
-@@ -850,7 +849,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
- 		modified = true;
- 	}
- 
--	fdb->added_by_user = 1;
-+	set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 
- 	fdb->used = jiffies;
- 	if (modified) {
-@@ -1107,7 +1106,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			goto err_unlock;
- 		}
- 		if (swdev_notify)
--			fdb->added_by_user = 1;
-+			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 		fdb->added_by_external_learn = 1;
- 		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
- 	} else {
-@@ -1121,14 +1120,14 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 		if (fdb->added_by_external_learn) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!fdb->added_by_user) {
-+		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
- 			/* Take over SW learned entry */
- 			fdb->added_by_external_learn = 1;
- 			modified = true;
- 		}
- 
- 		if (swdev_notify)
--			fdb->added_by_user = 1;
-+			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 
- 		if (modified)
- 			fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 131e5be58468..9132f11db683 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -173,6 +173,7 @@ enum {
- 	BR_FDB_LOCAL,
- 	BR_FDB_STATIC,
- 	BR_FDB_STICKY,
-+	BR_FDB_ADDED_BY_USER,
- };
- 
- struct net_bridge_fdb_key {
-@@ -187,8 +188,7 @@ struct net_bridge_fdb_entry {
- 	struct net_bridge_fdb_key	key;
- 	struct hlist_node		fdb_node;
- 	unsigned long			flags;
--	unsigned char			added_by_user:1,
--					added_by_external_learn:1,
-+	unsigned char			added_by_external_learn:1,
- 					offloaded:1;
- 
- 	/* write-heavy members should not affect lookups */
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index b993df770675..e8948d49e5fc 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -127,14 +127,16 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
- 		br_switchdev_fdb_call_notifiers(false, fdb->key.addr.addr,
- 						fdb->key.vlan_id,
- 						fdb->dst->dev,
--						fdb->added_by_user,
-+						test_bit(BR_FDB_ADDED_BY_USER,
-+							 &fdb->flags),
- 						fdb->offloaded);
- 		break;
- 	case RTM_NEWNEIGH:
- 		br_switchdev_fdb_call_notifiers(true, fdb->key.addr.addr,
- 						fdb->key.vlan_id,
- 						fdb->dst->dev,
--						fdb->added_by_user,
-+						test_bit(BR_FDB_ADDED_BY_USER,
-+							 &fdb->flags),
- 						fdb->offloaded);
- 		break;
- 	}
+ static void wq_watchdog_set_thresh(unsigned long thresh)
 -- 
 2.43.0
 
