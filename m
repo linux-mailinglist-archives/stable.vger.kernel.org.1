@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725B4972E1D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DCD9730EE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112161F2456F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207961C24AD4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB91A18C006;
-	Tue, 10 Sep 2024 09:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5C190698;
+	Tue, 10 Sep 2024 10:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chMtv6On"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN4LkHCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EBB18BC28;
-	Tue, 10 Sep 2024 09:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A119066C;
+	Tue, 10 Sep 2024 10:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961169; cv=none; b=USmsse/BlLvlhwi+d0wJ486jg63e9uVVdnPk9RkRXOKU+dFuJTnMQuvjuMAFoTt93Vdxgo3ooBD5VYwg2jKtoITAySvH0rF+aehGgOV44MIZRcRgrHN5okZf8loTH0G7IrwEqe4egREzrhg4UuBDpQU3R5RfJmkc78s3H/xfyJA=
+	t=1725962612; cv=none; b=Z9FA8tedzLSsljCd/vkUiv21YSPizQdVwhPkfgZbfGqek0dJRT2k7JGa3mN35jcZAf4GLJ70Ckae/jqnJgHbqOuNsLjyaBd5/JY8srNp76Oor23dmjxu4dtIGO7EPGbfy9NNeLYsZ6MxTRU1KrxzWbH9Jq2dVK10mxXGHvQGWSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961169; c=relaxed/simple;
-	bh=rR+bq/6fmiqu8mKUxz4ifANDVf00GH1QJXYYfxZwAaE=;
+	s=arc-20240116; t=1725962612; c=relaxed/simple;
+	bh=fVsWifwhvbNhVtKhlFkwtBI5zTcWYXpDDnyNPFMJ/80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnlrgpEXmqbHOg322aVn6khoO0pBQ7bornfd4dAkYNe6zQ29e8Nq7QmXb7san218BkcmxM0EkE3EIfIT2ZgMBzZAHhL9M2WicPe5nWy+Izonr8o6T6DOzJ7COMA9mzyqTY70EggUuQSTL9DzSMCTm7npQQYUeVyODy3IaM8CUAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chMtv6On; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB37C4CEC3;
-	Tue, 10 Sep 2024 09:39:28 +0000 (UTC)
+	 MIME-Version; b=EKwtFEFkxj1moYwIIosnAoiWJSCFp//dNTARYd+76N3BN6F0Sy28YFaeZqQrmKjbWqOGEpdHvX3d5v96ig7pWg47OafJtPDbqt7bz6TE3jR4cKt6AHvhGL4xZZX2C1f/8mUcgeMiXFSd6ReUv3OKQZ8m0pU/SSY85QOR32Uz+48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN4LkHCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028FEC4CEC3;
+	Tue, 10 Sep 2024 10:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961169;
-	bh=rR+bq/6fmiqu8mKUxz4ifANDVf00GH1QJXYYfxZwAaE=;
+	s=korg; t=1725962612;
+	bh=fVsWifwhvbNhVtKhlFkwtBI5zTcWYXpDDnyNPFMJ/80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chMtv6OnggYoDvaN58EL5M/s72JieYvkxEiorEZpgRTP/Xn6mwuWbqIiGi4FRPIBi
-	 uvII7t4KsH2k28xc1ONjNlfNIYKE9LQ0QgfIxERq0wuGAz4LtLgKqLQbhYpV4VHwlM
-	 Q1dL1p7ypRrhBbLrZbTfStzSv6vNNq62hP8uml8Y=
+	b=cN4LkHCpPkVN2yM7LMDBzc/AIzQnIemsIiwRjllMGPBRDdn64SjdGoSmoYnLsYNvo
+	 e5zcEHP6Wie7dJ+X7dNqR+/t+iI7JrmCksFItgv7Ybr+NCGxNXCNftHUS6Y+866psu
+	 GAHEVhnfiDqmtq00lQR8w9sQ2dbdRzdbj4YpNrRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: [PATCH 4.19 77/96] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
-Date: Tue, 10 Sep 2024 11:32:19 +0200
-Message-ID: <20240910092544.928631249@linuxfoundation.org>
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/121] net: bridge: fdb: convert added_by_user to bitops
+Date: Tue, 10 Sep 2024 11:32:20 +0200
+Message-ID: <20240910092548.945785594@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-commit 6fd28941447bf2c8ca0f26fda612a1cabc41663f upstream.
+[ Upstream commit ac3ca6af443aa495c7907e5010ac77fbd2450eaa ]
 
-Rescind offer handling relies on rescind callbacks for some of the
-resources cleanup, if they are registered. It does not unregister
-vmbus device for the primary channel closure, when callback is
-registered. Without it, next onoffer does not come, rescind flag
-remains set and device goes to unusable state.
+Straight-forward convert of the added_by_user field to bitops.
 
-Add logic to unregister vmbus for the primary channel in rescind callback
-to ensure channel removal and relid release, and to ensure that next
-onoffer can be received and handled properly.
-
-Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240829071312.1595-3-namjain@linux.microsoft.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c       |    1 +
- drivers/uio/uio_hv_generic.c |    8 ++++++++
- 2 files changed, 9 insertions(+)
+ net/bridge/br_fdb.c       | 25 ++++++++++++-------------
+ net/bridge/br_private.h   |  4 ++--
+ net/bridge/br_switchdev.c |  6 ++++--
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1973,6 +1973,7 @@ acpi_walk_err:
- 		vmbus_acpi_remove(device);
- 	return ret_val;
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 3645c1172b50..6f00cca4afc8 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -225,7 +225,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
+ 		    (!vid || br_vlan_find(vg, vid))) {
+ 			f->dst = op;
+-			f->added_by_user = 0;
++			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 			return;
+ 		}
+ 	}
+@@ -236,7 +236,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
+ 	    (!vid || (v && br_vlan_should_use(v)))) {
+ 		f->dst = NULL;
+-		f->added_by_user = 0;
++		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 		return;
+ 	}
+ 
+@@ -252,7 +252,7 @@ void br_fdb_find_delete_local(struct net_bridge *br,
+ 	spin_lock_bh(&br->hash_lock);
+ 	f = br_fdb_find(br, addr, vid);
+ 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-	    !f->added_by_user && f->dst == p)
++	    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) && f->dst == p)
+ 		fdb_delete_local(br, p, f);
+ 	spin_unlock_bh(&br->hash_lock);
  }
-+EXPORT_SYMBOL_GPL(vmbus_device_unregister);
+@@ -268,7 +268,7 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
+ 	vg = nbp_vlan_group(p);
+ 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
+ 		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-		    !f->added_by_user) {
++		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
+ 			/* delete old one */
+ 			fdb_delete_local(br, p, f);
  
- static const struct acpi_device_id vmbus_acpi_device_ids[] = {
- 	{"VMBUS", 0},
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -119,6 +119,14 @@ static void hv_uio_rescind(struct vmbus_
+@@ -310,7 +310,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
+ 	/* If old entry was unassociated with any port, then delete it. */
+ 	f = br_fdb_find(br, br->dev->dev_addr, 0);
+ 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-	    !f->dst && !f->added_by_user)
++	    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
+ 		fdb_delete_local(br, NULL, f);
  
- 	/* Wake up reader */
- 	uio_event_notify(&pdata->info);
-+
-+	/*
-+	 * With rescind callback registered, rescind path will not unregister the device
-+	 * from vmbus when the primary channel is rescinded.
-+	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
-+	 * Unregister the device from vmbus here.
-+	 */
-+	vmbus_device_unregister(channel->device_obj);
- }
+ 	fdb_insert(br, NULL, newaddr, 0);
+@@ -326,7 +326,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
+ 			continue;
+ 		f = br_fdb_find(br, br->dev->dev_addr, v->vid);
+ 		if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-		    !f->dst && !f->added_by_user)
++		    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
+ 			fdb_delete_local(br, NULL, f);
+ 		fdb_insert(br, NULL, newaddr, v->vid);
+ 	}
+@@ -506,7 +506,6 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
+ 			set_bit(BR_FDB_LOCAL, &fdb->flags);
+ 		if (is_static)
+ 			set_bit(BR_FDB_STATIC, &fdb->flags);
+-		fdb->added_by_user = 0;
+ 		fdb->added_by_external_learn = 0;
+ 		fdb->offloaded = 0;
+ 		fdb->updated = fdb->used = jiffies;
+@@ -600,7 +599,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 			if (now != fdb->updated)
+ 				fdb->updated = now;
+ 			if (unlikely(added_by_user))
+-				fdb->added_by_user = 1;
++				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 			if (unlikely(fdb_modified)) {
+ 				trace_br_fdb_update(br, source, addr, vid, added_by_user);
+ 				fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+@@ -611,7 +610,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 		fdb = fdb_create(br, source, addr, vid, 0, 0);
+ 		if (fdb) {
+ 			if (unlikely(added_by_user))
+-				fdb->added_by_user = 1;
++				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 			trace_br_fdb_update(br, source, addr, vid,
+ 					    added_by_user);
+ 			fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+@@ -871,7 +870,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 		modified = true;
+ 	}
  
- /* Sysfs API to allow mmap of the ring buffers
+-	fdb->added_by_user = 1;
++	set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 
+ 	fdb->used = jiffies;
+ 	if (modified) {
+@@ -1129,7 +1128,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			goto err_unlock;
+ 		}
+ 		if (swdev_notify)
+-			fdb->added_by_user = 1;
++			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 		fdb->added_by_external_learn = 1;
+ 		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
+ 	} else {
+@@ -1143,14 +1142,14 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 		if (fdb->added_by_external_learn) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!fdb->added_by_user) {
++		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+ 			/* Take over SW learned entry */
+ 			fdb->added_by_external_learn = 1;
+ 			modified = true;
+ 		}
+ 
+ 		if (swdev_notify)
+-			fdb->added_by_user = 1;
++			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 
+ 		if (modified)
+ 			fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index b495778911a2..a439e0cfc686 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -177,6 +177,7 @@ enum {
+ 	BR_FDB_LOCAL,
+ 	BR_FDB_STATIC,
+ 	BR_FDB_STICKY,
++	BR_FDB_ADDED_BY_USER,
+ };
+ 
+ struct net_bridge_fdb_key {
+@@ -191,8 +192,7 @@ struct net_bridge_fdb_entry {
+ 	struct net_bridge_fdb_key	key;
+ 	struct hlist_node		fdb_node;
+ 	unsigned long			flags;
+-	unsigned char			added_by_user:1,
+-					added_by_external_learn:1,
++	unsigned char			added_by_external_learn:1,
+ 					offloaded:1;
+ 
+ 	/* write-heavy members should not affect lookups */
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index 921310d3cbae..5010fbf74778 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -129,14 +129,16 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
+ 		br_switchdev_fdb_call_notifiers(false, fdb->key.addr.addr,
+ 						fdb->key.vlan_id,
+ 						fdb->dst->dev,
+-						fdb->added_by_user,
++						test_bit(BR_FDB_ADDED_BY_USER,
++							 &fdb->flags),
+ 						fdb->offloaded);
+ 		break;
+ 	case RTM_NEWNEIGH:
+ 		br_switchdev_fdb_call_notifiers(true, fdb->key.addr.addr,
+ 						fdb->key.vlan_id,
+ 						fdb->dst->dev,
+-						fdb->added_by_user,
++						test_bit(BR_FDB_ADDED_BY_USER,
++							 &fdb->flags),
+ 						fdb->offloaded);
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
