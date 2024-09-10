@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3869731B3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F307B9734D3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB4A728B7E1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B620F28E283
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF16118CBE0;
-	Tue, 10 Sep 2024 10:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181C21917E4;
+	Tue, 10 Sep 2024 10:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy6P82zg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRrJSnCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE1618C90B;
-	Tue, 10 Sep 2024 10:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF818FC73;
+	Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963006; cv=none; b=Gund77rZ/FFiu9FRj2qzKru6f6jcK/eTWPyQXlmve9bt1WB1p1hT2IUhzwIt7P8Ffxs9muTPSSwi6o4YYW0LpPKd+LfuD3y7ki7uoBqeL6OGPHq130a6Russ6N5WDC3reZwGrPJyJysvx5Y0WwnXYZnZN+2wDYoCtDGxCJeCvM0=
+	t=1725964841; cv=none; b=HftevemUhyfJZ4144uWhVT9A0Zz4sAhJnPVcIWRVJ38b6UxToGDUnzlveZrPws7kVpiezs2hXDq9gshOk34DulA/Jx8odd4YVJBIZrq+idISCc2LvqA8JqsKLpfrRYstZ1SjHN/Ww03BHxzYoURicmsab1YF4OliRcMoFF0dBuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963006; c=relaxed/simple;
-	bh=4wBjWdfpmMQUeJXWEWj9bAihF++Bi4vK7LrYqdICbvw=;
+	s=arc-20240116; t=1725964841; c=relaxed/simple;
+	bh=WXkGJmX1d5GYt5V48NNARyzAiiqKS/daISzdfT2iRLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BD6eBNMhGD63EHvJbZX2gKa6StRl17U6LIqILSgpkAtCr8RlzrpcoHdtAOL8VOrg5FxX5U01CXfi1e9nsUiH+zRI8w/JQlCXcVAUVtEE/HR7ACCAlVTsSzDqI962NKtw8S/hKt8nJrpm28qT2eMMBOj0nsIF2TkWDBlFMteTlYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy6P82zg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132D7C4CEC3;
-	Tue, 10 Sep 2024 10:10:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tZLPa4jWKSSP8TqOX2tiDDhg0jKOjZUzcwo+5pyiYGTHmfB6ZFCW/y9hR0XhrzysiMCeQXOXkUQTbAKeJ/z+ch/4VfxfRDSdqgsH4e5j9p54IZP+UzUT3JiDYPWT2zpblYFkLIPk4h0lTw3274NboZrT0AdwY29Jnl6gFarbdMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRrJSnCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E9C4CEC6;
+	Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963006;
-	bh=4wBjWdfpmMQUeJXWEWj9bAihF++Bi4vK7LrYqdICbvw=;
+	s=korg; t=1725964841;
+	bh=WXkGJmX1d5GYt5V48NNARyzAiiqKS/daISzdfT2iRLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy6P82zg3bP6kcyktspyS2pKvdfbFuJopDKOPIX3XBTYCnHAolK8fkAhxH1NkdhGK
-	 ri8RbisH5jOEnUzf7wI2B+IBm17g09sP9ELjrcCLgD6QjsU6+DMu7WMScRBoAtYbEK
-	 +QI00AdUiPi14uMSJm8TcIwwsZyUw8TF1BJDlpnQ=
+	b=RRrJSnCGWhTMhlZv3JuvXeUN2tpGv/F8apo8jGAHjcw+KdTer3mdZod807EbK0QNd
+	 zSfLyyGsvY9Cj/5Rk/+btqJSFxDUPr7Imca+n+MTVLGm7NbUY11gEm39M2WwdYJC+B
+	 vvjlGCR/SnZreWd6gvWEkkP9nFf2nWymdONnNLqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zha <Yifan.Zha@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/192] drm/amdgpu: Set no_hw_access when VF request full GPU fails
+Subject: [PATCH 5.10 032/186] PCI: al: Check IORESOURCE_BUS existence during probe
 Date: Tue, 10 Sep 2024 11:32:07 +0200
-Message-ID: <20240910092602.245523374@linuxfoundation.org>
+Message-ID: <20240910092555.893962689@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zha <Yifan.Zha@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 33f23fc3155b13c4a96d94a0a22dc26db767440b ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-[Why]
-If VF request full GPU access and the request failed,
-the VF driver can get stuck accessing registers for an extended period during
-the unload of KMS.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-[How]
-Set no_hw_access flag when VF request for full GPU access fails
-This prevents further hardware access attempts, avoiding the prolonged
-stuck state.
+But that's hard to verify, so check for NULL anyway.
 
-Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index af50e6ce39e1..d7b76a3d2d55 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -132,8 +132,10 @@ int amdgpu_virt_request_full_gpu(struct amdgpu_device *adev, bool init)
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index f973fbca90cf..ac772fb11aa7 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -250,18 +250,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
- 	if (virt->ops && virt->ops->req_full_gpu) {
- 		r = virt->ops->req_full_gpu(adev, init);
--		if (r)
-+		if (r) {
-+			adev->no_hw_access = true;
- 			return r;
-+		}
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct pcie_port *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
- 		adev->virt.caps &= ~AMDGPU_SRIOV_CAPS_RUNTIME;
- 	}
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
+ 
+ 	ecam_bus_mask = (pcie->ecam_size >> 20) - 1;
+@@ -295,6 +301,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
+ }
+ 
+ static int al_pcie_host_init(struct pcie_port *pp)
+@@ -313,7 +321,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
