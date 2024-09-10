@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-74861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AC09731CF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840339734D0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72CDFB21312
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71EC1C2504D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA048192B84;
-	Tue, 10 Sep 2024 10:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B740191F63;
+	Tue, 10 Sep 2024 10:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BE3AE59t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/ypis1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26AC1917C2;
-	Tue, 10 Sep 2024 10:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2AB1917E4;
+	Tue, 10 Sep 2024 10:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963047; cv=none; b=okH4cNA1K+4wf63VvD5DIM6OT+ZhImqRHh0NMEXhec41vgoRGUOCfzlFKythwGPGODSa8WgNF8ESs3SaOkrziIKZR3wAAEKn+p4kzCN2oCQKbEHOangYHDR6pjNcVoYv0XMnSQTq5n6zIX21ob4mo4fQi+qclTOkZgzt5CUoiLk=
+	t=1725964833; cv=none; b=oPOJbzxdQmqf5GbU6gxG4DJniY43SqF7q/19XvbSxGOofkNRkY2suxU5XaL9LBvP0iCeHSC/nF8HfoMeJC4PQiYXxWS8276Dg7x4uhURpPPCL46ZaME4LlqmNecEewO/256iURq8lTJSGjLUkv0c68ZT0a7ysjV76sGE0e7vLVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963047; c=relaxed/simple;
-	bh=tuIfdRGyTpQPzHt71V1QvkvXBHGXQGL9Jllltqv7Ti0=;
+	s=arc-20240116; t=1725964833; c=relaxed/simple;
+	bh=rFIaZxL5bLSfxGd7ERXNa3HaCB6EPPKxq4TbY3KZhmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FK/hPHFtY+gCFtDinNvNhV318PZQXK0rfKZI0PE1/UkXL2gxux97HWF5bXMABk7M7g9V40H0tHLBlCAc+7luqVh3HYSZrLkqXz5gajVKzuDZCb9b/KCHAR5mFYOGpMDdvULV1NmstrOPWTLa+dqGCo3f8j3BMRDPPjFh/4+g4iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BE3AE59t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2869CC4CEC6;
-	Tue, 10 Sep 2024 10:10:46 +0000 (UTC)
+	 MIME-Version; b=Rn9QyeY0wiv/XN+qoeZPT8l0MYIqqj9GYpeyVjVoD9rUoF50SjFMcOIrsmgMBbm+EE3Vn0xlWpbIgLnQicXMzNDGod55egWwTekwsfse7V7TSKZ9+lXC+23WiiDPciPONPMJrTXJiV+QBwSlltCtr9V6mReJfwZ66R1uZwtnbQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/ypis1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8540CC4CEC3;
+	Tue, 10 Sep 2024 10:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963047;
-	bh=tuIfdRGyTpQPzHt71V1QvkvXBHGXQGL9Jllltqv7Ti0=;
+	s=korg; t=1725964832;
+	bh=rFIaZxL5bLSfxGd7ERXNa3HaCB6EPPKxq4TbY3KZhmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BE3AE59tmXOZhwmcxPVB2ohi17A8Mg6W4zwbdFzYCia0DMNOLUH47QoHPQ8r+Cz/y
-	 MjuMJgOXCuf5ra6WCOH3//zfXUE/UflAk+CfstWQeA1ZKxvQYSwr+CtLgGv2V5k5p6
-	 3qqu3eWAHmsY4fFXpPDoCb2qU+IDf6s3108SA1dM=
+	b=O/ypis1Wlky60yHxPpRIvfV8NDel1CVZ8TpV7jsGslN7y0r0saL+xgVcVKUrYnZKo
+	 j72EBryYnbaLjIpBIbZCCJyfYzdqmPEGY5nxs/uZEL04GRZrkgERBUZjwTCqufGFAW
+	 MabxiQLSrrCPd2J63ZwOAbkOhsgizfIe+zqE2sMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/192] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
+	Eric Dumazet <edumazet@google.com>,
+	Stanislav Fomichev <sdf@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 047/186] net: set SOCK_RCU_FREE before inserting socket into hashtable
 Date: Tue, 10 Sep 2024 11:32:22 +0200
-Message-ID: <20240910092602.880633000@linuxfoundation.org>
+Message-ID: <20240910092556.445252995@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
+commit 871019b22d1bcc9fab2d1feba1b9a564acbb6e99 upstream.
 
-Some arch + compiler combinations report a potentially unused variable
-location in btrfs_lookup_dentry(). This is a false alert as the variable
-is passed by value and always valid or there's an error. The compilers
-cannot probably reason about that although btrfs_inode_by_name() is in
-the same file.
+We've started to see the following kernel traces:
 
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
+ WARNING: CPU: 83 PID: 0 at net/core/filter.c:6641 sk_lookup+0x1bd/0x1d0
 
-   m68k-gcc8/m68k-allmodconfig
-   mips-gcc8/mips-allmodconfig
-   powerpc-gcc5/powerpc-all{mod,yes}config
-   powerpc-gcc5/ppc64_defconfig
+ Call Trace:
+  <IRQ>
+  __bpf_skc_lookup+0x10d/0x120
+  bpf_sk_lookup+0x48/0xd0
+  bpf_sk_lookup_tcp+0x19/0x20
+  bpf_prog_<redacted>+0x37c/0x16a3
+  cls_bpf_classify+0x205/0x2e0
+  tcf_classify+0x92/0x160
+  __netif_receive_skb_core+0xe52/0xf10
+  __netif_receive_skb_list_core+0x96/0x2b0
+  napi_complete_done+0x7b5/0xb70
+  <redacted>_poll+0x94/0xb0
+  net_rx_action+0x163/0x1d70
+  __do_softirq+0xdc/0x32e
+  asm_call_irq_on_stack+0x12/0x20
+  </IRQ>
+  do_softirq_own_stack+0x36/0x50
+  do_softirq+0x44/0x70
 
-Initialize it to zero, this should fix the warnings and won't change the
-behaviour as btrfs_inode_by_name() accepts only a root or inode item
-types, otherwise returns an error.
+__inet_hash can race with lockless (rcu) readers on the other cpus:
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  __inet_hash
+    __sk_nulls_add_node_rcu
+    <- (bpf triggers here)
+    sock_set_flag(SOCK_RCU_FREE)
+
+Let's move the SOCK_RCU_FREE part up a bit, before we are inserting
+the socket into hashtables. Note, that the race is really harmless;
+the bpf callers are handling this situation (where listener socket
+doesn't have SOCK_RCU_FREE set) correctly, so the only
+annoyance is a WARN_ONCE.
+
+More details from Eric regarding SOCK_RCU_FREE timeline:
+
+Commit 3b24d854cb35 ("tcp/dccp: do not touch listener sk_refcnt under
+synflood") added SOCK_RCU_FREE. At that time, the precise location of
+sock_set_flag(sk, SOCK_RCU_FREE) did not matter, because the thread calling
+__inet_hash() owns a reference on sk. SOCK_RCU_FREE was only tested
+at dismantle time.
+
+Commit 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+started checking SOCK_RCU_FREE _after_ the lookup to infer whether
+the refcount has been taken care of.
+
+Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[Resolved conflict for 5.10 and below.]
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 2 +-
+ net/ipv4/inet_hashtables.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 934e360d1aef..e5017b2ade57 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -5890,7 +5890,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
- 	struct inode *inode;
- 	struct btrfs_root *root = BTRFS_I(dir)->root;
- 	struct btrfs_root *sub_root = root;
--	struct btrfs_key location;
-+	struct btrfs_key location = { 0 };
- 	u8 di_type = 0;
- 	int ret = 0;
- 
--- 
-2.43.0
-
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -653,6 +653,7 @@ int __inet_hash(struct sock *sk, struct
+ 		if (err)
+ 			goto unlock;
+ 	}
++	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
+ 		sk->sk_family == AF_INET6)
+ 		__sk_nulls_add_node_tail_rcu(sk, &ilb->nulls_head);
+@@ -660,7 +661,6 @@ int __inet_hash(struct sock *sk, struct
+ 		__sk_nulls_add_node_rcu(sk, &ilb->nulls_head);
+ 	inet_hash2(hashinfo, sk);
+ 	ilb->count++;
+-	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+ unlock:
+ 	spin_unlock(&ilb->lock);
 
 
 
