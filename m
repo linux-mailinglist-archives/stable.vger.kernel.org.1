@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CE9972DEA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F70C972FBD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17A6E1F25A38
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEF991F212C7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C10446444;
-	Tue, 10 Sep 2024 09:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36718EFDA;
+	Tue, 10 Sep 2024 09:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lr0WA4vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHbzX9CI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A110189903;
-	Tue, 10 Sep 2024 09:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C6818E778;
+	Tue, 10 Sep 2024 09:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961054; cv=none; b=EeYJhDOFNnI+bzJY9u/Q0dY2sC8GWMBIHv3XsYcaIFnok3pg7pBkwEtxl2AMKYsKBP6YVRuZiaxkYOA0Cebvyrab+7AGX6n4ZD0YuqDpes5fzhYmPV2Vsv+MuvHEK3ptJQHXasAg4NyWxfWlZjrSRwUWqD99FonSXSbZmUpdsJk=
+	t=1725962043; cv=none; b=QlTxrf9dEXvOBfabEiZPdnaTshEEcT1XIghPvJuzHYBwlLd8XxyIHFl3Auf04Dhsi8h6kZVVAub6pa6p8XUgpFlu6RNAr/1jnBKiapFvBsvhy0pcsoqHedYssGigWH3L7H6G58FEb23/v93PqbXD8FYyvl8xTLxyzJZg6cJnuN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961054; c=relaxed/simple;
-	bh=6X+4r6CO7k6XJVDJL3n9KSnHVjsUxZpZxrpYdUmYr/A=;
+	s=arc-20240116; t=1725962043; c=relaxed/simple;
+	bh=7VjUgqY+WnRyP+nGTjirGeIRCfcBZaVuQCyDwPOv+f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfuFp7Ykq1T9SuLjV9Z3o9Ba5NPltx3/el4yH/+6Ptysy24YJ0QbjL3hP5RBDJ20hkb45s9gS5kZCnITm9qSegQ4Q6gbj7gk7QvZ6Z47psroMDdooU3BG9540TI/qb/OIH7/BV4/5UOaTdcbVD84o5cULQZEvFf8hhpyDXT4sbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lr0WA4vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE75C4CEC6;
-	Tue, 10 Sep 2024 09:37:33 +0000 (UTC)
+	 MIME-Version; b=bkJ3Xs6SmL+Ln2J9zc/WOKcqVE50rV6kBA1Dw8MiqIGK4EGA7ORGsI2nq930Gr6XlP9RAShMBOsceTpPc5s0UucGouqXn4vZoOCVPf5GWGys85XZndiPtxgxMLvLUr0lLLX7dY8bORxazPQDbn4at7/fClDx3y+vkb8aeuw1JL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHbzX9CI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AA9C4CEC3;
+	Tue, 10 Sep 2024 09:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961054;
-	bh=6X+4r6CO7k6XJVDJL3n9KSnHVjsUxZpZxrpYdUmYr/A=;
+	s=korg; t=1725962043;
+	bh=7VjUgqY+WnRyP+nGTjirGeIRCfcBZaVuQCyDwPOv+f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lr0WA4vd37ByAdnulIJy+cJbzI4QDrNHlFObhPWks1W9KHDOsglxJHGOQY1kMk610
-	 1wdzMh2U3wu/LwE7ESADnh+k0tgyEnVarKM+6BsFVDk0AdDye5PunH4u9jCNb5Pwtc
-	 KTNoyta48SVJO3P4kJb+r6F0aSBFYXqBN4NptY48=
+	b=hHbzX9CI0sqoqXvmK3378btTFM+tC1HnXWpnDfh6XrlV7Z23VQhZvrQBvnNM7/jfV
+	 cKFSOR61M08uai3pPGOCjDGaHldOz/wIVydjbUXSnZulZgbb0oYWBJOv9sihlL2qyh
+	 +OOXSFckAytMwmhGH28szDxedHBnWVVrH8pBu5Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Holesch <simon@holesch.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Hongren Zheng <i@zenithal.me>,
+	Carlos Song <carlos.song@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/96] usbip: Dont submit special requests twice
+Subject: [PATCH 6.10 275/375] spi: spi-fsl-lpspi: limit PRESCALE bit in TCR register
 Date: Tue, 10 Sep 2024 11:31:12 +0200
-Message-ID: <20240910092541.855766303@linuxfoundation.org>
+Message-ID: <20240910092631.799678791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Holesch <simon@holesch.de>
+From: Carlos Song <carlos.song@nxp.com>
 
-[ Upstream commit 8b6b386f9aa936ed0c190446c71cf59d4a507690 ]
+[ Upstream commit 783bf5d09f86b9736605f3e01a3472e55ef98ff8 ]
 
-Skip submitting URBs, when identical requests were already sent in
-tweak_special_requests(). Instead call the completion handler directly
-to return the result of the URB.
+Referring to the errata ERR051608 of I.MX93, LPSPI TCR[PRESCALE]
+can only be configured to be 0 or 1, other values are not valid
+and will cause LPSPI to not work.
 
-Even though submitting those requests twice should be harmless, there
-are USB devices that react poorly to some duplicated requests.
+Add the prescale limitation for LPSPI in I.MX93. Other platforms
+are not affected.
 
-One example is the ChipIdea controller implementation in U-Boot: The
-second SET_CONFIGURATION request makes U-Boot disable and re-enable all
-endpoints. Re-enabling an endpoint in the ChipIdea controller, however,
-was broken until U-Boot commit b272c8792502 ("usb: ci: Fix gadget
-reinit").
-
-Signed-off-by: Simon Holesch <simon@holesch.de>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Hongren Zheng <i@zenithal.me>
-Tested-by: Hongren Zheng <i@zenithal.me>
-Link: https://lore.kernel.org/r/20240519141922.171460-1-simon@holesch.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Link: https://patch.msgid.link/20240820070658.672127-1-carlos.song@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/stub_rx.c | 77 ++++++++++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 27 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/usbip/stub_rx.c b/drivers/usb/usbip/stub_rx.c
-index b88eeaee637a..72501198be45 100644
---- a/drivers/usb/usbip/stub_rx.c
-+++ b/drivers/usb/usbip/stub_rx.c
-@@ -144,53 +144,62 @@ static int tweak_set_configuration_cmd(struct urb *urb)
- 	if (err && err != -ENODEV)
- 		dev_err(&sdev->udev->dev, "can't set config #%d, error %d\n",
- 			config, err);
--	return 0;
-+	return err;
- }
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index f2d7eedd324b..30d56f8775d7 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -82,6 +82,10 @@
+ #define TCR_RXMSK	BIT(19)
+ #define TCR_TXMSK	BIT(18)
  
- static int tweak_reset_device_cmd(struct urb *urb)
- {
- 	struct stub_priv *priv = (struct stub_priv *) urb->context;
- 	struct stub_device *sdev = priv->sdev;
-+	int err;
- 
- 	dev_info(&urb->dev->dev, "usb_queue_reset_device\n");
- 
--	if (usb_lock_device_for_reset(sdev->udev, NULL) < 0) {
-+	err = usb_lock_device_for_reset(sdev->udev, NULL);
-+	if (err < 0) {
- 		dev_err(&urb->dev->dev, "could not obtain lock to reset device\n");
--		return 0;
-+		return err;
- 	}
--	usb_reset_device(sdev->udev);
-+	err = usb_reset_device(sdev->udev);
- 	usb_unlock_device(sdev->udev);
- 
--	return 0;
-+	return err;
- }
- 
- /*
-  * clear_halt, set_interface, and set_configuration require special tricks.
-+ * Returns 1 if request was tweaked, 0 otherwise.
-  */
--static void tweak_special_requests(struct urb *urb)
-+static int tweak_special_requests(struct urb *urb)
- {
-+	int err;
++struct fsl_lpspi_devtype_data {
++	u8 prescale_max;
++};
 +
- 	if (!urb || !urb->setup_packet)
--		return;
-+		return 0;
- 
- 	if (usb_pipetype(urb->pipe) != PIPE_CONTROL)
--		return;
-+		return 0;
- 
- 	if (is_clear_halt_cmd(urb))
- 		/* tweak clear_halt */
--		 tweak_clear_halt_cmd(urb);
-+		err = tweak_clear_halt_cmd(urb);
- 
- 	else if (is_set_interface_cmd(urb))
- 		/* tweak set_interface */
--		tweak_set_interface_cmd(urb);
-+		err = tweak_set_interface_cmd(urb);
- 
- 	else if (is_set_configuration_cmd(urb))
- 		/* tweak set_configuration */
--		tweak_set_configuration_cmd(urb);
-+		err = tweak_set_configuration_cmd(urb);
- 
- 	else if (is_reset_device_cmd(urb))
--		tweak_reset_device_cmd(urb);
--	else
-+		err = tweak_reset_device_cmd(urb);
-+	else {
- 		usbip_dbg_stub_rx("no need to tweak\n");
-+		return 0;
-+	}
+ struct lpspi_config {
+ 	u8 bpw;
+ 	u8 chip_select;
+@@ -119,10 +123,25 @@ struct fsl_lpspi_data {
+ 	bool usedma;
+ 	struct completion dma_rx_completion;
+ 	struct completion dma_tx_completion;
 +
-+	return !err;
- }
++	const struct fsl_lpspi_devtype_data *devtype_data;
++};
++
++/*
++ * ERR051608 fixed or not:
++ * https://www.nxp.com/docs/en/errata/i.MX93_1P87f.pdf
++ */
++static struct fsl_lpspi_devtype_data imx93_lpspi_devtype_data = {
++	.prescale_max = 1,
++};
++
++static struct fsl_lpspi_devtype_data imx7ulp_lpspi_devtype_data = {
++	.prescale_max = 8,
+ };
  
- /*
-@@ -468,6 +477,7 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
- 	int support_sg = 1;
- 	int np = 0;
- 	int ret, i;
-+	int is_tweaked;
+ static const struct of_device_id fsl_lpspi_dt_ids[] = {
+-	{ .compatible = "fsl,imx7ulp-spi", },
++	{ .compatible = "fsl,imx7ulp-spi", .data = &imx7ulp_lpspi_devtype_data,},
++	{ .compatible = "fsl,imx93-spi", .data = &imx93_lpspi_devtype_data,},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_lpspi_dt_ids);
+@@ -297,9 +316,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+ 	unsigned int perclk_rate, scldiv, div;
++	u8 prescale_max;
+ 	u8 prescale;
  
- 	if (pipe == -1)
- 		return;
-@@ -580,8 +590,11 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
- 		priv->urbs[i]->pipe = pipe;
- 		priv->urbs[i]->complete = stub_complete;
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++	prescale_max = fsl_lpspi->devtype_data->prescale_max;
  
--		/* no need to submit an intercepted request, but harmless? */
--		tweak_special_requests(priv->urbs[i]);
-+		/*
-+		 * all URBs belong to a single PDU, so a global is_tweaked flag is
-+		 * enough
-+		 */
-+		is_tweaked = tweak_special_requests(priv->urbs[i]);
+ 	if (!config.speed_hz) {
+ 		dev_err(fsl_lpspi->dev,
+@@ -315,7 +336,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
  
- 		masking_bogus_flags(priv->urbs[i]);
- 	}
-@@ -594,22 +607,32 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
  
- 	/* urb is now ready to submit */
- 	for (i = 0; i < priv->num_urbs; i++) {
--		ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
-+		if (!is_tweaked) {
-+			ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
+-	for (prescale = 0; prescale < 8; prescale++) {
++	for (prescale = 0; prescale < prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+@@ -822,6 +843,7 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
  
--		if (ret == 0)
--			usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
--					pdu->base.seqnum);
--		else {
--			dev_err(&udev->dev, "submit_urb error, %d\n", ret);
--			usbip_dump_header(pdu);
--			usbip_dump_urb(priv->urbs[i]);
-+			if (ret == 0)
-+				usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
-+						pdu->base.seqnum);
-+			else {
-+				dev_err(&udev->dev, "submit_urb error, %d\n", ret);
-+				usbip_dump_header(pdu);
-+				usbip_dump_urb(priv->urbs[i]);
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
++	const struct fsl_lpspi_devtype_data *devtype_data;
+ 	struct fsl_lpspi_data *fsl_lpspi;
+ 	struct spi_controller *controller;
+ 	struct resource *res;
+@@ -830,6 +852,10 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	u32 temp;
+ 	bool is_target;
  
-+				/*
-+				 * Pessimistic.
-+				 * This connection will be discarded.
-+				 */
-+				usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
-+				break;
-+			}
-+		} else {
- 			/*
--			 * Pessimistic.
--			 * This connection will be discarded.
-+			 * An identical URB was already submitted in
-+			 * tweak_special_requests(). Skip submitting this URB to not
-+			 * duplicate the request.
- 			 */
--			usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
--			break;
-+			priv->urbs[i]->status = 0;
-+			stub_complete(priv->urbs[i]);
- 		}
- 	}
++	devtype_data = of_device_get_match_data(&pdev->dev);
++	if (!devtype_data)
++		return -ENODEV;
++
+ 	is_target = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
+ 	if (is_target)
+ 		controller = devm_spi_alloc_target(&pdev->dev,
+@@ -848,6 +874,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	fsl_lpspi->is_target = is_target;
+ 	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
+ 						"fsl,spi-only-use-cs1-sel");
++	fsl_lpspi->devtype_data = devtype_data;
+ 
+ 	init_completion(&fsl_lpspi->xfer_done);
  
 -- 
 2.43.0
