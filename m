@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15CE97300D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9369730DD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97961F2373F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89D72B245F4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20188188A28;
-	Tue, 10 Sep 2024 09:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF4418C325;
+	Tue, 10 Sep 2024 10:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJf4UTHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw+tqzM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC231EEC9;
-	Tue, 10 Sep 2024 09:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5EE18C913;
+	Tue, 10 Sep 2024 10:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962225; cv=none; b=PZBo0Pnu+WlFqEuN5X2jmFOCarlkd4OpHT45Z3tMTBB7M0XUhvuFUlXYVnJnloAGcGKi7CnynYRZq4W5cD6TOKDMK9fAA7TuNKk6oP3+G2WJtMdUe9SM6XEueewmKZjQBDXh6L+Ruxs1s3SVuZqXLSRbM4e719LzNdGgKLeSMlg=
+	t=1725962564; cv=none; b=EZkOQyOEN6sbdUxlI3e1EImZckmNE3AI/nCxgRgKH5MS4fTgrlLrOHDN0QjqsV3dDQx/mwPg0XlJ4qha5HLQoxdEWT/XDf+yIiwxFEMuLxVxnM0HkgLu15RuF/ihwaM89M0WPT8IEe9NRZRRU5j+vcbWWU7ykTL0X9ffLGaVvgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962225; c=relaxed/simple;
-	bh=n/NQI/bF5Tf1+5ajBsYKa41DBhwrJv/biF2hjmCeW0w=;
+	s=arc-20240116; t=1725962564; c=relaxed/simple;
+	bh=0EPPkxMTyfPfECd0+5LdNElXui3bQRPGTd98q/IsZgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIANFdxzFEbzfcnzhs43WGyOCM2ErRQyM1FT5937trxbaw1DXD7kuIZKrOpkEBsPY+CBjeYVA6h9YSRa3QzgSAXR8qrD0zJkeNR639msRaZK7vyntIWgujpsuSqKHOJsXVt56433hyKECH2jYK0PnUOn9DcY/QQyNQawcAs1R3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJf4UTHf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05556C4CECE;
-	Tue, 10 Sep 2024 09:57:04 +0000 (UTC)
+	 MIME-Version; b=EIwincHzssh9zzumxOFmR9d4x9RGT7RBsoUgEuUmzhdxZSZPJmDOHyVKvjH7EX6tL92VvrrJvjSF1yae8dig0SW49ptM3HyPOcTU4KyMHQGxKNrcwbVNvnnX8I3Y7Q4oTDe81HORInt3AaBoJ9rHJxO7F05j50Ax2GqnDBZrQPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw+tqzM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11555C4CEC6;
+	Tue, 10 Sep 2024 10:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962225;
-	bh=n/NQI/bF5Tf1+5ajBsYKa41DBhwrJv/biF2hjmCeW0w=;
+	s=korg; t=1725962564;
+	bh=0EPPkxMTyfPfECd0+5LdNElXui3bQRPGTd98q/IsZgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJf4UTHfvWmuMfBirxV7CN1c1/rbmzQ4y9SkikazcQ5qZFJ9dGvRBW8PXuF2V9IbV
-	 /WQT1DauGVj3XaXUQoi8Gwr5KKQrB4AZGagWWftHQiF4jKEjWn/QbRTeDDrbqCnlVS
-	 gQfEvPaRsX6ZyIGrVnSSgQxIkJgcyF7Qp6JjTufU=
+	b=Dw+tqzM3XG29NGlALook0xPw30eJFmj1KyqSY/u6hpuEdEqGIj/qaj+AeQt+wjXiG
+	 knAse+Wvv4GQ9mpFcKauy8kWSsmMEpqaV1Gj2msD5wlRTLT/CxcMgzbO0zjbzKW7lv
+	 2VC68sTBW8gyxTCPPazpgkArn2wspQMRWg5qb6Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	devi priya <quic_devipriy@quicinc.com>,
-	Amandeep Singh <quic_amansing@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Len Baker <len.baker@gmx.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 337/375] clk: qcom: ipq9574: Update the alpha PLL type for GPLLs
+Subject: [PATCH 5.4 059/121] drivers/net/usb: Remove all strcpy() uses
 Date: Tue, 10 Sep 2024 11:32:14 +0200
-Message-ID: <20240910092633.902101095@linuxfoundation.org>
+Message-ID: <20240910092548.635466426@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: devi priya <quic_devipriy@quicinc.com>
+From: Len Baker <len.baker@gmx.com>
 
-[ Upstream commit 6357efe3abead68048729adf11a9363881657939 ]
+[ Upstream commit 493c3ca6bd754d8587604496eb814f72e933075d ]
 
-Update PLL offsets to DEFAULT_EVO to configure MDIO to 800MHz.
+strcpy() performs no bounds checking on the destination buffer. This
+could result in linear overflows beyond the end of the buffer, leading
+to all kinds of misbehaviors. The safe replacement is strscpy().
 
-The incorrect clock frequency leads to an incorrect MDIO clock. This,
-in turn, affects the MDIO hardware configurations as the divider is
-calculated from the MDIO clock frequency. If the clock frequency is
-not as expected, the MDIO register fails due to the generation of an
-incorrect MDIO frequency.
-
-This issue is critical as it results in incorrect MDIO configurations
-and ultimately leads to the MDIO function not working. This results in
-a complete feature failure affecting all Ethernet PHYs. Specifically,
-Ethernet will not work on IPQ9574 due to this issue.
-
-Currently, the clock frequency is set to CLK_ALPHA_PLL_TYPE_DEFAULT.
-However, this setting does not yield the expected clock frequency.
-To rectify this, we need to change this to CLK_ALPHA_PLL_TYPE_DEFAULT_EVO.
-
-This modification ensures that the clock frequency aligns with our
-expectations, thereby resolving the MDIO register failure and ensuring
-the proper functioning of the Ethernet on IPQ9574.
-
-Fixes: d75b82cff488 ("clk: qcom: Add Global Clock Controller driver for IPQ9574")
-Signed-off-by: devi priya <quic_devipriy@quicinc.com>
-Signed-off-by: Amandeep Singh <quic_amansing@quicinc.com>
-Link: https://lore.kernel.org/r/20240806061105.2849944-1-quic_amansing@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Len Baker <len.baker@gmx.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bab8eb0dd4cb ("usbnet: modern method to get random MAC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq9574.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/usb/ipheth.c | 2 +-
+ drivers/net/usb/usbnet.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
-index f8b9a1e93bef..cdbbf2cc9c5d 100644
---- a/drivers/clk/qcom/gcc-ipq9574.c
-+++ b/drivers/clk/qcom/gcc-ipq9574.c
-@@ -65,7 +65,7 @@ static const struct clk_parent_data gcc_sleep_clk_data[] = {
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 73ad78f47763..9887eb282beb 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -443,7 +443,7 @@ static int ipheth_probe(struct usb_interface *intf,
  
- static struct clk_alpha_pll gpll0_main = {
- 	.offset = 0x20000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(0),
-@@ -93,7 +93,7 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
+ 	netdev->netdev_ops = &ipheth_netdev_ops;
+ 	netdev->watchdog_timeo = IPHETH_TX_TIMEOUT;
+-	strcpy(netdev->name, "eth%d");
++	strscpy(netdev->name, "eth%d", sizeof(netdev->name));
  
- static struct clk_alpha_pll_postdiv gpll0 = {
- 	.offset = 0x20000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll0",
-@@ -107,7 +107,7 @@ static struct clk_alpha_pll_postdiv gpll0 = {
+ 	dev = netdev_priv(netdev);
+ 	dev->udev = udev;
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index bc37e268a15e..bf018f7ca445 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1711,7 +1711,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 	dev->interrupt_count = 0;
  
- static struct clk_alpha_pll gpll4_main = {
- 	.offset = 0x22000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(2),
-@@ -122,7 +122,7 @@ static struct clk_alpha_pll gpll4_main = {
+ 	dev->net = net;
+-	strcpy (net->name, "usb%d");
++	strscpy(net->name, "usb%d", sizeof(net->name));
+ 	memcpy (net->dev_addr, node_id, sizeof node_id);
  
- static struct clk_alpha_pll_postdiv gpll4 = {
- 	.offset = 0x22000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll4",
-@@ -136,7 +136,7 @@ static struct clk_alpha_pll_postdiv gpll4 = {
+ 	/* rx and tx sides can use different message sizes;
+@@ -1738,13 +1738,13 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
+ 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
+ 		     (net->dev_addr [0] & 0x02) == 0))
+-			strcpy (net->name, "eth%d");
++			strscpy(net->name, "eth%d", sizeof(net->name));
+ 		/* WLAN devices should always be named "wlan%d" */
+ 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+-			strcpy(net->name, "wlan%d");
++			strscpy(net->name, "wlan%d", sizeof(net->name));
+ 		/* WWAN devices should always be named "wwan%d" */
+ 		if ((dev->driver_info->flags & FLAG_WWAN) != 0)
+-			strcpy(net->name, "wwan%d");
++			strscpy(net->name, "wwan%d", sizeof(net->name));
  
- static struct clk_alpha_pll gpll2_main = {
- 	.offset = 0x21000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(1),
-@@ -151,7 +151,7 @@ static struct clk_alpha_pll gpll2_main = {
- 
- static struct clk_alpha_pll_postdiv gpll2 = {
- 	.offset = 0x21000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll2",
+ 		/* devices that cannot do ARP */
+ 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
 -- 
 2.43.0
 
