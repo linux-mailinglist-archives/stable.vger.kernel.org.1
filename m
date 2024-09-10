@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EB69732FC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2283897350A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DDFF1F21FB3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1291F25511
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73813191F72;
-	Tue, 10 Sep 2024 10:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D443D1917E4;
+	Tue, 10 Sep 2024 10:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU417sEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ubGb5a3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E1B18F2DF;
-	Tue, 10 Sep 2024 10:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9101518595E;
+	Tue, 10 Sep 2024 10:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963805; cv=none; b=mGXYWnI8A0Ci+h6z7VFdm9hhIeAtg/V/+Jt7cQQa/6N/KFHBPUVTwRQ2bHJjkWi8sz8+FZwViizi09LMqv5/K0PnmlCb9dO7chEBiIsj6c1lNi/hH4FWZpoaRwcdGu4eNCQubbVFSHq9B0PYdrJgJKs8Ck/cN1VW15OuxNWMHKA=
+	t=1725965022; cv=none; b=KbaJSrxf3GvwLOu+gYkGmsUYU1puo5zAjE0GNmJuqHW+dz2gRN8opXwOSf5VBiHpVyUJU4ImOHMYk/QYA4npwiHRw+d6KumRNaK6qbbrovXFoYphF82u8uX0vIe34WSGAbBOwggBpqJUlXfpflxrOiQjSb0DBSw/HzZrEYzP+0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963805; c=relaxed/simple;
-	bh=PwzzMcXZ3l+IHrltQ/gmk+0+pDK8U8SLLGGkRldgOtM=;
+	s=arc-20240116; t=1725965022; c=relaxed/simple;
+	bh=jhlFT+NUkr1aBnvtAJ+oalwiEXRUN8NDvOEYfxEjU08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZVPDNY4FlGWVjCvY2M/5jhbKAABSgaAEji01ayu8UilfE6ZPlPf7UtE7jyPm2PTJhUIWNpoYhwZXwR/0zYHNivMN7C7gcq9/ZV5gNJ2uAAb1iqpDVBdFMfqRBZ13qZSj+GSsyoMMlXG8gBel1wmop8Ia3Wod45PbVjdmftiylY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU417sEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD57CC4CECD;
-	Tue, 10 Sep 2024 10:23:24 +0000 (UTC)
+	 MIME-Version; b=UD6ENe9oMwNPi10wDwl3Ps5HU32OrH5QuJD3w2IOhJGWpz/rFNNZeHTL8hPmwnnR/w9cvNM/zBtR3o07XrZJbj9uBPonmuUidlnZnVFnWXIUH/PxI3hol99k8CtYgArNO8Hzu+kNgWkU1z/1uYtxrAc7IDJNUzBRXd6r6MaO3KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ubGb5a3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180F6C4CEC3;
+	Tue, 10 Sep 2024 10:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963805;
-	bh=PwzzMcXZ3l+IHrltQ/gmk+0+pDK8U8SLLGGkRldgOtM=;
+	s=korg; t=1725965022;
+	bh=jhlFT+NUkr1aBnvtAJ+oalwiEXRUN8NDvOEYfxEjU08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vU417sEZmv1A/3gG9aa/zfEKsoLt8LhZHqkw04ob+20USmgXfQb2h9DbAFaBQDIJF
-	 nS1Ex3pNTowII07YNkNOtSp3gI/HKB0BYvyNwjLJZoMPoJi6/VskLXnuh8bJyNlf2i
-	 HjVqmyKOisswk1LmYd/UgOUChhnK7zQhRdYHTJww=
+	b=2ubGb5a3tmBVIonEu9C0Ou/okVPFsllZTvUBGIuE1Be+u3hJUwtsuBPeZPYa6c8Ub
+	 QyTxeA4+TafHACRZGAJi9KGcstozAMx7/qWx5J0sGPLFaYlyOq8OqRd1vGm2azAIlG
+	 Pe0BxIsBF4i82E83uGzPQSdiC8Gi0hNAqwKrdo9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 5.15 183/214] uio_hv_generic: Fix kernel NULL pointer dereference in hv_uio_rescind
+	Chen Ni <nichen@iscas.ac.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/186] media: qcom: camss: Add check for v4l2_fwnode_endpoint_parse
 Date: Tue, 10 Sep 2024 11:33:25 +0200
-Message-ID: <20240910092606.170855310@linuxfoundation.org>
+Message-ID: <20240910092559.055922409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit fb1adbd7e50f3d2de56d0a2bb0700e2e819a329e upstream.
+[ Upstream commit 4caf6d93d9f2c11d6441c64e1c549c445fa322ed ]
 
-For primary VM Bus channels, primary_channel pointer is always NULL. This
-pointer is valid only for the secondary channels. Also, rescind callback
-is meant for primary channels only.
+Add check for the return value of v4l2_fwnode_endpoint_parse() and
+return the error if it fails in order to catch the error.
 
-Fix NULL pointer dereference by retrieving the device_obj from the parent
-for the primary channel.
-
-Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240829071312.1595-2-namjain@linux.microsoft.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -104,10 +104,11 @@ static void hv_uio_channel_cb(void *cont
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 9186881afc98..d074f426980d 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -431,8 +431,11 @@ static int camss_of_parse_endpoint_node(struct device *dev,
+ 	struct v4l2_fwnode_bus_mipi_csi2 *mipi_csi2;
+ 	struct v4l2_fwnode_endpoint vep = { { 0 } };
+ 	unsigned int i;
++	int ret;
  
- /*
-  * Callback from vmbus_event when channel is rescinded.
-+ * It is meant for rescind of primary channels only.
-  */
- static void hv_uio_rescind(struct vmbus_channel *channel)
- {
--	struct hv_device *hv_dev = channel->primary_channel->device_obj;
-+	struct hv_device *hv_dev = channel->device_obj;
- 	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
+-	v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
++	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
++	if (ret)
++		return ret;
  
- 	/*
+ 	csd->interface.csiphy_id = vep.base.port;
+ 
+-- 
+2.43.0
+
 
 
 
