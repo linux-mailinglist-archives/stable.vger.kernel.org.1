@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A817A9730E5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B895973032
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68DE0288477
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B863F1F2528E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CE218E773;
-	Tue, 10 Sep 2024 10:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA0D188A28;
+	Tue, 10 Sep 2024 09:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL5UpvWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NClgQdsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2266A18787E;
-	Tue, 10 Sep 2024 10:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8ABEEC9;
+	Tue, 10 Sep 2024 09:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962595; cv=none; b=O8I5Zcf0vvp7U0BDDLjXIxQppO5u10Awq8zsUNJa2LJaNvJ66ZCTXW8T9tNgMKjshW9BbMuxw4g2vDdknhC5JaQCATTGwkb7mLxTPt2lLWKR+Lzx0hXVfKs7MaDNp9OC03Dj+2x2i4gHMPyAV6nLI5+/BOsyJyUmtXoOukjrcOY=
+	t=1725962307; cv=none; b=PTNUJPGJ178JgNkI4jh0ejxrLBPP5K2g0pXbG1XUWjZKhzac/z9Lj0dyVHvQpC2t090vYekd5NUIWXIP4PnK6xGtX1ysslBo8yoXHZ6UwxNh/OJxFqAYLMNU7zDwE9IuSSk4GfyuxpCOo8KQMeyC9xVnMfCOtOdY3SJ1Gz/efmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962595; c=relaxed/simple;
-	bh=N8P+pxTkvZVhITh6Q1/3P9ea6LFPjffYoPGLZ9TE8rI=;
+	s=arc-20240116; t=1725962307; c=relaxed/simple;
+	bh=f8/mC497iKN1ns4zbcICCW6c/HwykwVR27XceAz/xq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u66YO8/1auVIlyKremQiA5WT1iPgFntvSytdxT1HPir9s3qwbJ7Xw21tKonMg66Fucirz8cnKFQPSfynB9OylxvxnVpgJ+Gb8R5FMiiA2n1PaXZvVqKShi0CLTTlU+A13aPgRlDT9sA3At0Fiiy78WwyHkGXoi02h6JD/HuinW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL5UpvWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDC2C4CEC3;
-	Tue, 10 Sep 2024 10:03:14 +0000 (UTC)
+	 MIME-Version; b=gUPwPFAP6v2fxsQvsZp9sslXy534posV7UC/s0HvMG2YBBV5w3OlqtRlxCw9t92h9iCV7qIN/zvAphr/r0vmqd8pl6OAKEtN2sjnNQFpBqsWiuNBj6U0uN6FE8JWtruIqiG9fl3ZXy30hop7XpCaaILxS8xAS4hi6aP9oZET1VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NClgQdsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84ABC4CEC6;
+	Tue, 10 Sep 2024 09:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962594;
-	bh=N8P+pxTkvZVhITh6Q1/3P9ea6LFPjffYoPGLZ9TE8rI=;
+	s=korg; t=1725962307;
+	bh=f8/mC497iKN1ns4zbcICCW6c/HwykwVR27XceAz/xq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL5UpvWVQ/gPEsNCoM7+uBaVetkCxH+iI9xrjA0zXlfWULvr5zWkUYsmNU8ApHPav
-	 QOStp6oY43wuNUnJ8TGc6YotIdUKwji+Mz8ycy+/1u3eSVCfRTr2ERd9UZ+yOeAhIq
-	 K15Z7YWQ5cgUxhXZ76UowHFLomMt1JeQmHNe7bBk=
+	b=NClgQdsh2d9d/V7MqhxNBfCeNsPKndUp92Z2f3vU8nIpRJYCNU5saRonsJICCfyTf
+	 t4pm2AfEWwAXvEd3rXXC5nnsmXUAyBS9j3+8H3PX8JgyKpTnneP7ObvyBHKXQJoGZ5
+	 BR/EUzyIWWIKucND1F2t4UQck5+FFkeJFcVXLloI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Weiwen Hu <huweiwen@linux.alibaba.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 086/121] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
-Date: Tue, 10 Sep 2024 11:32:41 +0200
-Message-ID: <20240910092549.959070700@linuxfoundation.org>
+Subject: [PATCH 6.10 365/375] nvme: rename nvme_sc_to_pr_err to nvme_status_to_pr_err
+Date: Tue, 10 Sep 2024 11:32:42 +0200
+Message-ID: <20240910092634.882981730@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Weiwen Hu <huweiwen@linux.alibaba.com>
 
-[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
+[ Upstream commit 22f19a584d7045e0509f103dbc5c0acfd6415163 ]
 
-Some arch + compiler combinations report a potentially unused variable
-location in btrfs_lookup_dentry(). This is a false alert as the variable
-is passed by value and always valid or there's an error. The compilers
-cannot probably reason about that although btrfs_inode_by_name() is in
-the same file.
+This should better match its semantic.  "sc" is used in the NVMe spec to
+specifically refer to the last 8 bits in the status field. We should not
+reuse "sc" here.
 
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
-
-   m68k-gcc8/m68k-allmodconfig
-   mips-gcc8/mips-allmodconfig
-   powerpc-gcc5/powerpc-all{mod,yes}config
-   powerpc-gcc5/ppc64_defconfig
-
-Initialize it to zero, this should fix the warnings and won't change the
-behaviour as btrfs_inode_by_name() accepts only a root or inode item
-types, otherwise returns an error.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Weiwen Hu <huweiwen@linux.alibaba.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Stable-dep-of: 899d2e5a4e3d ("nvmet: Identify-Active Namespace ID List command should reject invalid nsid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pr.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index d2a988bf9c89..cd72409ccc94 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6087,7 +6087,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
- 	struct inode *inode;
- 	struct btrfs_root *root = BTRFS_I(dir)->root;
- 	struct btrfs_root *sub_root = root;
--	struct btrfs_key location;
-+	struct btrfs_key location = { 0 };
- 	u8 di_type = 0;
- 	int index;
- 	int ret = 0;
+diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
+index 8fa1ffcdaed4..a6db5edfab03 100644
+--- a/drivers/nvme/host/pr.c
++++ b/drivers/nvme/host/pr.c
+@@ -72,12 +72,12 @@ static int nvme_send_ns_pr_command(struct nvme_ns *ns, struct nvme_command *c,
+ 	return nvme_submit_sync_cmd(ns->queue, c, data, data_len);
+ }
+ 
+-static int nvme_sc_to_pr_err(int nvme_sc)
++static int nvme_status_to_pr_err(int status)
+ {
+-	if (nvme_is_path_error(nvme_sc))
++	if (nvme_is_path_error(status))
+ 		return PR_STS_PATH_FAILED;
+ 
+-	switch (nvme_sc & 0x7ff) {
++	switch (status & 0x7ff) {
+ 	case NVME_SC_SUCCESS:
+ 		return PR_STS_SUCCESS;
+ 	case NVME_SC_RESERVATION_CONFLICT:
+@@ -121,7 +121,7 @@ static int nvme_pr_command(struct block_device *bdev, u32 cdw10,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return nvme_sc_to_pr_err(ret);
++	return nvme_status_to_pr_err(ret);
+ }
+ 
+ static int nvme_pr_register(struct block_device *bdev, u64 old,
+@@ -196,7 +196,7 @@ static int nvme_pr_resv_report(struct block_device *bdev, void *data,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return nvme_sc_to_pr_err(ret);
++	return nvme_status_to_pr_err(ret);
+ }
+ 
+ static int nvme_pr_read_keys(struct block_device *bdev,
 -- 
 2.43.0
 
