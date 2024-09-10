@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6A597305A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00460972FEF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5009E1C24A1D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24BD21C24A72
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38A118C02E;
-	Tue, 10 Sep 2024 09:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E892818C002;
+	Tue, 10 Sep 2024 09:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGCbqNv9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FK+KOVPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7223017BB01;
-	Tue, 10 Sep 2024 09:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64F5188A1E;
+	Tue, 10 Sep 2024 09:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962363; cv=none; b=amGweS/XPPin5kxxWHoG2DEs40S+FKov5W7WtPA4G+A9tkkPCmKhcfB+nTB5mB+cAFOE6E5RYvSvNVrCRJAxx7+R5mIrJZWbuEQueivKTzWTvqs3PnxkWyiVP+03BQLfHg3ixXdP4Qz4jtz/GEMtGnlAZuFcCJPe2EhwZss5EmM=
+	t=1725962163; cv=none; b=X9qHIUeZDAbzhmJORE+alQJWOx4hi3cDM2g5IRxFZB71T7bSmC2swgvaKIufRTXrfLsPyBSp7pPgRnD53MOEsgd8yIl731h39E6AxGb/VapDoDqprwnvddCf06eFNSikXtuNdYFh+JK6g4OoJhno4dgZkk2JgPH3LAQUjTBUB+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962363; c=relaxed/simple;
-	bh=i1AoxKkk58WUMSI94qUKG2vjuv/q4ZbbWU1pRj7wWbo=;
+	s=arc-20240116; t=1725962163; c=relaxed/simple;
+	bh=4QCZZk37wFCErnCr3xT36rjH5Z5ZFSDLxcTvvu6mIHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8YG5mFZG53uUByOq5ruu1HR3e3mabkqobImtIZUVO2+8ZPQUa0eGUj98oq2jZce5AFEK+VGg/EE1eB9YWF9bZ5GhtahOjErnKG0QuPzQjCQcXassHTRm3fNdD6ms7AfdhCgnIhK61Jrj0kbsrEaFCFkkpUt5JHtF69tnl6s00w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGCbqNv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBC2C4CEC3;
-	Tue, 10 Sep 2024 09:59:22 +0000 (UTC)
+	 MIME-Version; b=QeJaJYDxL72T6NiAaYfOcCbiswsHCeEXGEtuaAXknxgnINvUBY6yd9h9pYJbNHiUlP0a5D6d5oPOJpAZfj6RwHEzeuK9PavajQ567yygMG4a2S22IxUhOG2yZ81j3EZIYedwU4k8iuXYx4OsPlMNKaWy4Bf7y+tKuQGGChpsa1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FK+KOVPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251F3C4CEC3;
+	Tue, 10 Sep 2024 09:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962363;
-	bh=i1AoxKkk58WUMSI94qUKG2vjuv/q4ZbbWU1pRj7wWbo=;
+	s=korg; t=1725962163;
+	bh=4QCZZk37wFCErnCr3xT36rjH5Z5ZFSDLxcTvvu6mIHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGCbqNv93brY0+oj97Nj+tK7N45kCLWO0vpzgi2EKeanTkN7kvhUssJG/ObNAPIvS
-	 MFJpYY6JJ1PQIPDwJHzYm6WKrOgas5UTE0S1McAf66NKhI4+fn7T16ZbJ7UHvx27WS
-	 xxy5FeI2OIwGFUjTwCfQum1bxfGyY/79KBhr8tck=
+	b=FK+KOVPOSvE90PObknbSBqWtA453+xKQtLICIhjIlP6toelPM1mCrowkYB67pacbu
+	 K25da/yJ8suRPclu7u6WAaLV2o+3D2J+F95gB69DteeTnQ5dZEdZN2cPTUX5JCDGFX
+	 S8s5ZLtlZTT43XcUPXeSe8QGlkIvT2qhTop7Ero8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Mueller <philm@manjaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/121] drm: panel-orientation-quirks: Add quirk for OrangePi Neo
+Subject: [PATCH 6.10 279/375] drm/amdgpu: Fix two reset triggered in a row
 Date: Tue, 10 Sep 2024 11:31:16 +0200
-Message-ID: <20240910092545.803994043@linuxfoundation.org>
+Message-ID: <20240910092631.931695623@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Mueller <philm@manjaro.org>
+From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit d60c429610a14560085d98fa6f4cdb43040ca8f0 ]
+[ Upstream commit f4322b9f8ad5f9f62add288c785d2e10bb6a5efe ]
 
-This adds a DMI orientation quirk for the OrangePi Neo Linux Gaming
-Handheld.
+Some times a hang GPU causes multiple reset sources to schedule resets.
+The second source will be able to trigger an unnecessary reset if they
+schedule after we call amdgpu_device_stop_pending_resets.
 
-Signed-off-by: Philip Mueller <philm@manjaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240715045818.1019979-1-philm@manjaro.org
+Move amdgpu_device_stop_pending_resets to after the reset is done. Since
+at this point the GPU is supposedly in a good state, any reset scheduled
+after this point would be a legitimate reset.
+
+Remove unnecessary and incorrect checks for amdgpu_in_reset that was
+kinda serving this purpose.
+
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 6e4aa08fa9c6 ("drm/amdgpu: Fix amdgpu_device_reset_sriov retry logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 19 ++++++++++---------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   |  2 +-
+ drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c      |  2 +-
+ drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c      |  2 +-
+ drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c      |  2 +-
+ 5 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 43de9dfcba19a..f1091cb87de0c 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -318,6 +318,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OrangePi Neo */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "NEO-01"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* Samsung GalaxyBook 10.6 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index d24d7a108624..9f7f96be1ac7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5072,8 +5072,6 @@ static int amdgpu_device_reset_sriov(struct amdgpu_device *adev,
+ retry:
+ 	amdgpu_amdkfd_pre_reset(adev);
+ 
+-	amdgpu_device_stop_pending_resets(adev);
+-
+ 	if (from_hypervisor)
+ 		r = amdgpu_virt_request_full_gpu(adev, true);
+ 	else
+@@ -5828,13 +5826,6 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 				  r, adev_to_drm(tmp_adev)->unique);
+ 			tmp_adev->asic_reset_res = r;
+ 		}
+-
+-		if (!amdgpu_sriov_vf(tmp_adev))
+-			/*
+-			* Drop all pending non scheduler resets. Scheduler resets
+-			* were already dropped during drm_sched_stop
+-			*/
+-			amdgpu_device_stop_pending_resets(tmp_adev);
+ 	}
+ 
+ 	/* Actual ASIC resets if needed.*/
+@@ -5856,6 +5847,16 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 			goto retry;
+ 	}
+ 
++	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
++		/*
++		 * Drop any pending non scheduler resets queued before reset is done.
++		 * Any reset scheduled after this point would be valid. Scheduler resets
++		 * were already dropped during drm_sched_stop and no new ones can come
++		 * in before drm_sched_start.
++		 */
++		amdgpu_device_stop_pending_resets(tmp_adev);
++	}
++
+ skip_hw_reset:
+ 
+ 	/* Post ASIC reset for all devs .*/
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 26cea0076c9b..e12d179a451b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -601,7 +601,7 @@ static void amdgpu_virt_update_vf2pf_work_item(struct work_struct *work)
+ 	if (ret) {
+ 		adev->virt.vf2pf_update_retry_cnt++;
+ 		if ((adev->virt.vf2pf_update_retry_cnt >= AMDGPU_VF2PF_UPDATE_MAX_RETRY_LIMIT) &&
+-		    amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev)) {
++		    amdgpu_sriov_runtime(adev)) {
+ 			amdgpu_ras_set_fed(adev, true);
+ 			if (amdgpu_reset_domain_schedule(adev->reset_domain,
+ 							  &adev->kfd.reset_work))
+diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
+index 0c7275bca8f7..c5ba9c4757a8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
++++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c
+@@ -319,7 +319,7 @@ static int xgpu_ai_mailbox_rcv_irq(struct amdgpu_device *adev,
+ 
+ 	switch (event) {
+ 		case IDH_FLR_NOTIFICATION:
+-		if (amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev))
++		if (amdgpu_sriov_runtime(adev))
+ 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
+ 								&adev->virt.flr_work),
+ 				  "Failed to queue work! at %s",
+diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
+index aba00d961627..fa9d1b02f391 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
++++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c
+@@ -358,7 +358,7 @@ static int xgpu_nv_mailbox_rcv_irq(struct amdgpu_device *adev,
+ 
+ 	switch (event) {
+ 	case IDH_FLR_NOTIFICATION:
+-		if (amdgpu_sriov_runtime(adev) && !amdgpu_in_reset(adev))
++		if (amdgpu_sriov_runtime(adev))
+ 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
+ 				   &adev->virt.flr_work),
+ 				  "Failed to queue work! at %s",
+diff --git a/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c b/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
+index 59f53c743362..14a065516ae4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
++++ b/drivers/gpu/drm/amd/amdgpu/mxgpu_vi.c
+@@ -560,7 +560,7 @@ static int xgpu_vi_mailbox_rcv_irq(struct amdgpu_device *adev,
+ 		r = xgpu_vi_mailbox_rcv_msg(adev, IDH_FLR_NOTIFICATION);
+ 
+ 		/* only handle FLR_NOTIFY now */
+-		if (!r && !amdgpu_in_reset(adev))
++		if (!r)
+ 			WARN_ONCE(!amdgpu_reset_domain_schedule(adev->reset_domain,
+ 								&adev->virt.flr_work),
+ 				  "Failed to queue work! at %s",
 -- 
 2.43.0
 
