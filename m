@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D81C973300
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9171973220
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6F51C24CA5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F0F287089
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8E1192D94;
-	Tue, 10 Sep 2024 10:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57143198A21;
+	Tue, 10 Sep 2024 10:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBgbIQKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwDAK+gA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58902192D86;
-	Tue, 10 Sep 2024 10:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13420198853;
+	Tue, 10 Sep 2024 10:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963817; cv=none; b=T1fNa81U85Hi079gJXzctzDYshfWO5IDJUQB3o5vLKD9WtPvCETCNAtXRm/aeLdo29JCrTMGzfznMoHMHURZzYg5RYyUWPF4x6AkvQwQK3msRmkH/GfRXL6pbTsw3sOK6EaQOv4guJX7bG45AvbBh4CaJU81bbWV5VpuxIyEClU=
+	t=1725963248; cv=none; b=hoEPfDan2e56VZOpuD22iwrcFoLxaSfD4YuB6Di4J6IHalgFEuUxdG+XKyBIPpAcngL2z5Q3qm4Kn0O4pDfItpRl3BzXEvsSSAvcWEBlvV1yn337tfAVGIvJaurMZlC/H/IKzVOzAM1mx2zt+RB4OdCZvCNwGDXa2ReSLV4Ioa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963817; c=relaxed/simple;
-	bh=KJTH1faCjdRoj784Rv1IgfgbNc79Hf7SJmDVnEscCps=;
+	s=arc-20240116; t=1725963248; c=relaxed/simple;
+	bh=baw3PKk6fNYzAlutoa/kWz+6mvrHxsMuszGZ6rJb61M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nW4CmjTFTuNMBClp9NJDOs+fxNkoOb0Z4p7EWGbrNwjwrRpcHpAYFRtmxW0f0TeDkwt7BCG1nCTJomhZ13YbjgBRqiN8aYDaUtOKl5kpz/zSwxtfIlFSgbe7+vp/2s5ksKvjzdGfg+UC3QMAr8Hp89Rzg2i0xiiuwZck0zrEs9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBgbIQKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765D8C4CEC3;
-	Tue, 10 Sep 2024 10:23:36 +0000 (UTC)
+	 MIME-Version; b=AZNj2C0OHoNrkYFWPk51+/ptwPXZzsQTenQLxMiK1QSwJJnaEppw0mxwgz0NeTXm01D/tuQmLbGIlx0vxxB6b17cdgpJ1qPk9cv5+GFuQNU7tIg86ys8rkXHAtgRsUyl8rVCfk5D8rWHzAe4OnyHoC/uB0wh32HB7zc+fzv+z4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwDAK+gA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED79C4CEC3;
+	Tue, 10 Sep 2024 10:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963816;
-	bh=KJTH1faCjdRoj784Rv1IgfgbNc79Hf7SJmDVnEscCps=;
+	s=korg; t=1725963248;
+	bh=baw3PKk6fNYzAlutoa/kWz+6mvrHxsMuszGZ6rJb61M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBgbIQKz3ch0pRSbNhyVLgPwBekEZ8r6or3EONzGb+s3KvfpoWuCsreVP3bLix/nj
-	 A61oSKObKZfw3v3SnYZLiJSOMF7EZHS86yV/TT7so6sZpbgFZoIc/RN/nLttXutcer
-	 HYXkRH9Odwe25++Fe/35Lm3lIYsWxfxJMZyWk9eQ=
+	b=rwDAK+gAScuVqKlIjk6MpWyf7EiswXMX47FiYpFLFGRxytHqNEKe86mfNf3Akv558
+	 dWU8S9EZNfalb1wI5/REcP5Ue+xZKu92+lhoikxo5clg4b77ZHYxUt4iyLyjGmwbFk
+	 KqH7giKuworCKce2aiUhnSbyIONfq4FfUb2VdxM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.15 187/214] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
+	Liao Chen <liaochen4@huawei.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 185/192] gpio: modepin: Enable module autoloading
 Date: Tue, 10 Sep 2024 11:33:29 +0200
-Message-ID: <20240910092606.302477945@linuxfoundation.org>
+Message-ID: <20240910092605.422139661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
+[ Upstream commit a5135526426df5319d5f4bcd15ae57c45a97714b ]
 
-The value written into the TPM CnV can only be updated into the hardware
-when the counter increases. Additional writes to the CnV write buffer are
-ignored until the register has been updated. Therefore, we need to check
-if the CnV has been updated before continuing. This may require waiting for
-1 counter cycle in the worst case.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7687a5b0ee93 ("gpio: modepin: Add driver support for modepin GPIO controller")
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/20240902115848.904227-1-liaochen4@huawei.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpio/gpio-zynqmp-modepin.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
- 	now = tpm_read_counter();
+diff --git a/drivers/gpio/gpio-zynqmp-modepin.c b/drivers/gpio/gpio-zynqmp-modepin.c
+index a0d69387c153..2f3c9ebfa78d 100644
+--- a/drivers/gpio/gpio-zynqmp-modepin.c
++++ b/drivers/gpio/gpio-zynqmp-modepin.c
+@@ -146,6 +146,7 @@ static const struct of_device_id modepin_platform_id[] = {
+ 	{ .compatible = "xlnx,zynqmp-gpio-modepin", },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, modepin_platform_id);
  
- 	/*
-+	 * Need to wait CNT increase at least 1 cycle to make sure
-+	 * the C0V has been updated into HW.
-+	 */
-+	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
-+		while (now == tpm_read_counter())
-+			;
-+
-+	/*
- 	 * NOTE: We observed in a very small probability, the bus fabric
- 	 * contention between GPU and A7 may results a few cycles delay
- 	 * of writing CNT registers which may cause the min_delta event got
+ static struct platform_driver modepin_platform_driver = {
+ 	.driver = {
+-- 
+2.43.0
+
 
 
 
