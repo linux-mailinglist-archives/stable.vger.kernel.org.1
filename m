@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-75275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C42D9733C0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AEB973295
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5581C24204
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8201F25D7B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E2D1991D9;
-	Tue, 10 Sep 2024 10:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DB2194C6A;
+	Tue, 10 Sep 2024 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXoClQJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcIEWlV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFFF17BEAD;
-	Tue, 10 Sep 2024 10:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF311922EF;
+	Tue, 10 Sep 2024 10:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964258; cv=none; b=jIjYkIJ+HnIXMM0DRooEznNUVUdLuJnAH//5+2oncdoy5Bymqed0gWS8dsyHK6AbP/7U1nWF9jW6ECJ4BJNXN2ikgibZYDDiGEJZBMC8xW9jbh4n7bz36sdBs1qhX/R3YlSMe0GtCMfdDpBTXCkLV251wN5UrBL9QAhZrabY9qE=
+	t=1725963526; cv=none; b=KtJo/X16NdWyhO4LHyygJaVZznI2Xwh5HY1bBrGSKThHiZu0MzuMCG3eMhbzixw18CKNZzNM0DwHcf5K98LFBupCNAlGbruoYBMkLrRRYytbcmHgIoO/2r121i0gorpLXkqbPmkfG6i5JIeBSFEuOLivnGgh1xz+3F4ymILBfB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964258; c=relaxed/simple;
-	bh=K6dGNg+dGOe4KxJIGneD24U+KrzDF4fKIOl4BhvmYxI=;
+	s=arc-20240116; t=1725963526; c=relaxed/simple;
+	bh=TpwBpkpwXdxb+227WGLut5qO9ebW2pjLlssUn46tW/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtQ0nvZGrp8ki3on3qd4WmQEzUfC6dPDTry9GYEcwRFKWN/QD15DZ+lpoexCs2hg6Sp7csVOfvc4pFcCPhabr88Ota71ghp2MjRF6pj+htHAopm3ldext/hcrryS86IUAGYXKLqLTzcRuYn4+qgtWJl2ketbxvKCV6xRhCwe6Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXoClQJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DA9C4CEC3;
-	Tue, 10 Sep 2024 10:30:58 +0000 (UTC)
+	 MIME-Version; b=Kn4NMOZ0O7vCVBRQQpfA4pgqegEjnJ3vCSVQzJCgjYL3drIQbsFQFW9DCgOrtKkcePA8K/0KeRzy+Jz3z4OYHbOv5qkTWEtjtbJSRE1qNWiPg5RBTxemByQ54L0b6bJlQEY02TePe+iB9YNCv4WXyiJDiROS8rV+UAHrW9z8uwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcIEWlV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AF1C4CEC3;
+	Tue, 10 Sep 2024 10:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964258;
-	bh=K6dGNg+dGOe4KxJIGneD24U+KrzDF4fKIOl4BhvmYxI=;
+	s=korg; t=1725963526;
+	bh=TpwBpkpwXdxb+227WGLut5qO9ebW2pjLlssUn46tW/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXoClQJhtP52FciZlctEEVlkMHidYGXu/hYFiI7oo6sNZDm/2bBSqHEWrrN5L/kyF
-	 QpBjTCmzrgwviUcbmPlDksxhQuLwgp7l+gw3y7zj5MgmpzA8+0aeKQi7+1gxn11jvG
-	 yu3XQkx5oSH1o1kdLV6zPF+qgxnZX5dQBKwshNrs=
+	b=hcIEWlV9yh5omFLc0c8he6eSu4aciR6wYHv8doMzyCuQecOCsOSCQS57/AZcjsJS2
+	 a5HmT6RHko2lREmAKeB7howgq4BudsdVUWKf+pVfthjHZaKShUQo+281grvZoVpiTf
+	 PUz1fZv0qa1lDkQHkzxMD6gbfspIa1RFGF/8bkSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/269] drm/amd/display: Check denominator pbn_div before used
-Date: Tue, 10 Sep 2024 11:31:21 +0200
-Message-ID: <20240910092611.559619329@linuxfoundation.org>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 060/214] ext4: handle redirtying in ext4_bio_write_page()
+Date: Tue, 10 Sep 2024 11:31:22 +0200
+Message-ID: <20240910092601.221786831@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 116a678f3a9abc24f5c9d2525b7393d18d9eb58e ]
+commit 04e568a3b31cfbd545c04c8bfc35c20e5ccfce0f upstream.
 
-[WHAT & HOW]
-A denominator cannot be 0, and is checked before used.
+Since we want to transition transaction commits to use ext4_writepages()
+for writing back ordered, add handling of page redirtying into
+ext4_bio_write_page(). Also move buffer dirty bit clearing into the same
+place other buffer state handling.
 
-This fixes 1 DIVIDE_BY_ZERO issue reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20221207112722.22220-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/page-io.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 44c155683824..f0ebf686b06f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6937,7 +6937,7 @@ static int dm_update_mst_vcpi_slots_for_dsc(struct drm_atomic_state *state,
- 			}
- 		}
- 
--		if (j == dc_state->stream_count)
-+		if (j == dc_state->stream_count || pbn_div == 0)
+--- a/fs/ext4/page-io.c
++++ b/fs/ext4/page-io.c
+@@ -490,6 +490,13 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			/* A hole? We can safely clear the dirty bit */
+ 			if (!buffer_mapped(bh))
+ 				clear_buffer_dirty(bh);
++			/*
++			 * Keeping dirty some buffer we cannot write? Make
++			 * sure to redirty the page. This happens e.g. when
++			 * doing writeout for transaction commit.
++			 */
++			if (buffer_dirty(bh) && !PageDirty(page))
++				redirty_page_for_writepage(wbc, page);
+ 			if (io->io_bio)
+ 				ext4_io_submit(io);
  			continue;
+@@ -497,6 +504,7 @@ int ext4_bio_write_page(struct ext4_io_s
+ 		if (buffer_new(bh))
+ 			clear_buffer_new(bh);
+ 		set_buffer_async_write(bh);
++		clear_buffer_dirty(bh);
+ 		nr_to_submit++;
+ 	} while ((bh = bh->b_this_page) != head);
  
- 		slot_num = DIV_ROUND_UP(pbn, pbn_div);
--- 
-2.43.0
-
+@@ -539,7 +547,10 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			printk_ratelimited(KERN_ERR "%s: ret = %d\n", __func__, ret);
+ 			redirty_page_for_writepage(wbc, page);
+ 			do {
+-				clear_buffer_async_write(bh);
++				if (buffer_async_write(bh)) {
++					clear_buffer_async_write(bh);
++					set_buffer_dirty(bh);
++				}
+ 				bh = bh->b_this_page;
+ 			} while (bh != head);
+ 			goto unlock;
+@@ -552,7 +563,6 @@ int ext4_bio_write_page(struct ext4_io_s
+ 			continue;
+ 		io_submit_add_bh(io, inode, page, bounce_page, bh);
+ 		nr_submitted++;
+-		clear_buffer_dirty(bh);
+ 	} while ((bh = bh->b_this_page) != head);
+ 
+ unlock:
 
 
 
