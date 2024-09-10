@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451D697319A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E929732A2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E292E1F28774
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57D0AB29491
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77573196DA2;
-	Tue, 10 Sep 2024 10:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F2519004B;
+	Tue, 10 Sep 2024 10:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4wvBBAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6SaD++e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36057194C8B;
-	Tue, 10 Sep 2024 10:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81221922F1;
+	Tue, 10 Sep 2024 10:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962940; cv=none; b=YQdj7R3Rb/z+zPkkqFNEK7atnIcadR67sFg8T8EbEc/3C85AUJ/2k6TAXDQdwCdoLlnxCSPdd2MQ6XL8hq0nbi46I4+j6vuPCsAYiXE4u9QXZ1mRKV9AcJM5UewiIjljGqgMwxJwcV035rvuoVJIma2Q6bHwU+tpH2LBbmM7mnI=
+	t=1725963514; cv=none; b=JhAF9Zs9F8PonQR+JqOznH0ZafX9hs8C1GwdOhdcR2jvhdmPmcE6Xow4rkp8MW9ez78Kld226BZSzwmXTmz9wtPHLGUkR9genvwozIYcprE9Y+ZVC3QXokmDXLfxYiO43Cg6RHHh9cE4EvvI4JJYsv4gJxgjZmeqVYuliyN3Orw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962940; c=relaxed/simple;
-	bh=OT6gIzIuSp6zIzSvFj3Nxad2hg3cYhH7b2l+i6o8SuY=;
+	s=arc-20240116; t=1725963514; c=relaxed/simple;
+	bh=mjp6gnWFcU7nq05pGJK7iDM3lQTWDhpEXR7SOylGA0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXApgPD7nYZ8ksHfZ77s0Ye5mCI7dcpcuPhVs2Q7T/qRcycf5IQPpuQhVLK9z3SF8SFZwCTprgj2W5bZQoixrQTD56WvNpm0tUw47DxcUh+HF0yFdfOL9Id9I9eL55lT+N1ZI7gzFo0OtbImov9WKq8a+KSg51aeVimO29EvRkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4wvBBAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCFDC4CEC3;
-	Tue, 10 Sep 2024 10:08:59 +0000 (UTC)
+	 MIME-Version; b=uJ+5v+GD9+4qQFOpLMuT+qIYzEDi5CPslhdr1Uf4EOrUY31ZJvqKpmSprGYv+ldIgWedOnlCsAQofJn6Rvzg5JBqSkUaSmiuuHwp68/IcqNcglB6fsxf1DzoxwnhIw8H4QiAFxVL8BDuUOeT8XTbKC+17uLjiTG9R66V2pqIkRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6SaD++e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D326C4CEC6;
+	Tue, 10 Sep 2024 10:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962939;
-	bh=OT6gIzIuSp6zIzSvFj3Nxad2hg3cYhH7b2l+i6o8SuY=;
+	s=korg; t=1725963514;
+	bh=mjp6gnWFcU7nq05pGJK7iDM3lQTWDhpEXR7SOylGA0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4wvBBAs4jicIFblKiGKx6ENbMppAUKDy8MPld+ca/OKLWaAQ8T4H2K2sazFbgLpo
-	 F587tlyn2hiKd4dFbyFt6z9YjnmoTosRKltZRQXwJovDxGOWVwwROphgF738DfV1et
-	 3yeN5mJlBZuVsJkRiLh9ViuaBpHa/p7hq520FXhY=
+	b=o6SaD++eXSEh9WFpaVBNrieCv9vKx6iClzJ/tijNmPQe37CA125Tu228ah6TQIzO+
+	 +WBkejd1cnZpkaWMENy5i9HUU8X8jWin5iTNdWvV7m9Av334sNzsUHQHmApR29FGtP
+	 NQSHhNFafuXWtVr9nAK7tHADB67omMYqaKVOPdco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/192] leds: spi-byte: Call of_node_put() on error path
+	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.15 056/214] virtio_net: Fix napi_skb_cache_put warning
 Date: Tue, 10 Sep 2024 11:31:18 +0200
-Message-ID: <20240910092600.211418747@linuxfoundation.org>
+Message-ID: <20240910092601.045506313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
+commit f8321fa75102246d7415a6af441872f6637c93ab upstream.
 
-Add a missing call to of_node_put(np) on error.
+After the commit bdacf3e34945 ("net: Use nested-BH locking for
+napi_alloc_cache.") was merged, the following warning began to appear:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	 WARNING: CPU: 5 PID: 1 at net/core/skbuff.c:1451 napi_skb_cache_put+0x82/0x4b0
+
+	  __warn+0x12f/0x340
+	  napi_skb_cache_put+0x82/0x4b0
+	  napi_skb_cache_put+0x82/0x4b0
+	  report_bug+0x165/0x370
+	  handle_bug+0x3d/0x80
+	  exc_invalid_op+0x1a/0x50
+	  asm_exc_invalid_op+0x1a/0x20
+	  __free_old_xmit+0x1c8/0x510
+	  napi_skb_cache_put+0x82/0x4b0
+	  __free_old_xmit+0x1c8/0x510
+	  __free_old_xmit+0x1c8/0x510
+	  __pfx___free_old_xmit+0x10/0x10
+
+The issue arises because virtio is assuming it's running in NAPI context
+even when it's not, such as in the netpoll case.
+
+To resolve this, modify virtnet_poll_tx() to only set NAPI when budget
+is available. Same for virtnet_poll_cleantx(), which always assumed that
+it was in a NAPI context.
+
+Fixes: df133f3f9625 ("virtio_net: bulk free tx skbs")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Link: https://patch.msgid.link/20240712115325.54175-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Shivani: Modified to apply on v6.6.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-spi-byte.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index 2bc5c99daf51..6883d3ba382f 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
- 		dev_err(dev, "Device must have exactly one LED sub-node.");
- 		return -EINVAL;
- 	}
--	child = of_get_next_available_child(dev_of_node(dev), NULL);
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1548,7 +1548,7 @@ static bool is_xdp_raw_buffer_queue(stru
+ 		return false;
+ }
  
- 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
- 	if (!led)
-@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+-static void virtnet_poll_cleantx(struct receive_queue *rq)
++static void virtnet_poll_cleantx(struct receive_queue *rq, int budget)
+ {
+ 	struct virtnet_info *vi = rq->vq->vdev->priv;
+ 	unsigned int index = vq2rxq(rq->vq);
+@@ -1561,7 +1561,7 @@ static void virtnet_poll_cleantx(struct
+ 	if (__netif_tx_trylock(txq)) {
+ 		do {
+ 			virtqueue_disable_cb(sq->vq);
+-			free_old_xmit_skbs(sq, true);
++			free_old_xmit_skbs(sq, !!budget);
+ 		} while (unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
  
-+	child = of_get_next_available_child(dev_of_node(dev), NULL);
- 	state = of_get_property(child, "default-state", NULL);
- 	if (state) {
- 		if (!strcmp(state, "on")) {
- 			led->ldev.brightness = led->ldev.max_brightness;
- 		} else if (strcmp(state, "off")) {
-+			of_node_put(child);
- 			/* all other cases except "off" */
- 			dev_err(dev, "default-state can only be 'on' or 'off'");
- 			return -EINVAL;
-@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
+ 		if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS)
+@@ -1580,7 +1580,7 @@ static int virtnet_poll(struct napi_stru
+ 	unsigned int received;
+ 	unsigned int xdp_xmit = 0;
  
- 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
- 	if (ret) {
-+		of_node_put(child);
- 		mutex_destroy(&led->mutex);
- 		return ret;
- 	}
-+
-+	of_node_put(child);
- 	spi_set_drvdata(spi, led);
+-	virtnet_poll_cleantx(rq);
++	virtnet_poll_cleantx(rq, budget);
  
- 	return 0;
--- 
-2.43.0
-
+ 	received = virtnet_receive(rq, budget, &xdp_xmit);
+ 
+@@ -1683,7 +1683,7 @@ static int virtnet_poll_tx(struct napi_s
+ 	txq = netdev_get_tx_queue(vi->dev, index);
+ 	__netif_tx_lock(txq, raw_smp_processor_id());
+ 	virtqueue_disable_cb(sq->vq);
+-	free_old_xmit_skbs(sq, true);
++	free_old_xmit_skbs(sq, !!budget);
+ 
+ 	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS)
+ 		netif_tx_wake_queue(txq);
 
 
 
