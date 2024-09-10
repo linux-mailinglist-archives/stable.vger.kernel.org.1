@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBF9973088
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820F4972E05
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08C31C244FC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEF9CB26695
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830118C037;
-	Tue, 10 Sep 2024 10:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120801891A5;
+	Tue, 10 Sep 2024 09:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOz7l/yk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+N22FEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5B18B491;
-	Tue, 10 Sep 2024 10:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30C41885A6;
+	Tue, 10 Sep 2024 09:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962463; cv=none; b=fuarA2xVGOP8KMidDV3TISDBnL7SJSkV4NEMqjv86CRR0QE9qMxE69skXbM/CkCtOijcV04qO67ilmTKsPhDKfBm04qku/nHzSNgvg75ePdztFTeXeuX7YF335qc+is8DuNJ5dBjpIVO4xYO/o4C1rNoSjZf4Slm0B7kjFs7NUE=
+	t=1725961109; cv=none; b=ZzEfNCjKbfoMKr7DV/mEu14Ioi+Tbeu9VLYaZwKCLe5zBJ27oBzT8nPDcVnI0L8d56rPgc9WWoeXgrc/KNiM4luZ5sBadKnANjAN3Ndf8O0KiOL4WRrhqUK1RkXpwg1TTwUiILtjDCPTPwppOSDZxEvC1LNg4S/aGdED4/f27A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962463; c=relaxed/simple;
-	bh=rIj1dCZttI+tGvdK2mWqse0vcEMGoVBPvHyKm8rC/kw=;
+	s=arc-20240116; t=1725961109; c=relaxed/simple;
+	bh=5mnm/Mg3Vmpm75sAsIbRyw6IFHl3IEswNSDvNYiQmus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYYcZal0fPnzmaz1eeWddTZgReQ08epUQIdWc5eZEdTF26vGx3jKcvkjsINFUPS+djYFjrzsB3JPp9r6XRfIi/m2zzIjklmBV5rYZcg5RCtS4QrhsWnQuog6yqVfjna67MHrXprTLBw+dHV3Xf3NDl5QXSVMzan4p1AEhxsCRx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOz7l/yk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EB1C4CEC3;
-	Tue, 10 Sep 2024 10:01:02 +0000 (UTC)
+	 MIME-Version; b=gS7l9+vlgCC6YP/XXI1ZKcF29phGtEckDs5KOkZgh4vHwfVi0SN8TFQX0mH8PMeJZf07AljftaBQXPYSYrT4AOtRGDeU38bnZwocTP1R8Ae9ng9FyqUsu/vsNwnYRXBqnTa9DFe/u+sLWLVEflAdIe3qFbE7cOonwyPYNJG4x+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+N22FEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B8AC4CEC3;
+	Tue, 10 Sep 2024 09:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962463;
-	bh=rIj1dCZttI+tGvdK2mWqse0vcEMGoVBPvHyKm8rC/kw=;
+	s=korg; t=1725961109;
+	bh=5mnm/Mg3Vmpm75sAsIbRyw6IFHl3IEswNSDvNYiQmus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOz7l/ykplKsFNMQV4NAKntIY8L5srvTowi3HYSmPqkGwWJwREWCe6q6Ayp+kALXw
-	 l/XaiJZSJaJ430lY4bCT0oRIDZVkxjZCqGrvvMAmnWGPtPNvbJY4KyA1nB7QZ0Owgq
-	 OUrZ1d893tzxgOOW3/sY5MM5/ieJUCnZXurozTDo=
+	b=Y+N22FEsh7/TM1iGYkX3ar5KJ98Gfl6VV8VA2/i2+88LYR1ytb9n79sgTiOnW036d
+	 VE64kV1oJuEyUcAvPbPSaSsJYOfr8WHeYBwxi2mhLmaVBDTJEuXZ9YOeFCQH3j7yRG
+	 fCFmKAHwZ/z20+q7twqZMU8HKU8Qij9oH0Q0fQYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Krishna Kumar <krishnak@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/121] ALSA: hda: Add input value sanity checks to HDMI channel map controls
+Subject: [PATCH 4.19 56/96] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
 Date: Tue, 10 Sep 2024 11:31:58 +0200
-Message-ID: <20240910092547.786408666@linuxfoundation.org>
+Message-ID: <20240910092543.988870429@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-Add a simple sanity check to HD-audio HDMI Channel Map controls.
-Although the value might not be accepted for the actual connection, we
-can filter out some bogus values beforehand, and that should be enough
-for making kselftest happier.
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
+
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
+
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
-index 2efee794cac6..79ccec2da387 100644
---- a/sound/hda/hdmi_chmap.c
-+++ b/sound/hda/hdmi_chmap.c
-@@ -753,6 +753,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
- 
-+/* a simple sanity check for input values to chmap kcontrol */
-+static int chmap_value_check(struct hdac_chmap *hchmap,
-+			     const struct snd_ctl_elem_value *ucontrol)
-+{
-+	int i;
-+
-+	for (i = 0; i < hchmap->channels_max; i++) {
-+		if (ucontrol->value.integer.value[i] < 0 ||
-+		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
-+			return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 			      struct snd_ctl_elem_value *ucontrol)
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 3276a5e4c430..486fad430958 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -35,7 +35,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
  {
-@@ -764,6 +778,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 	unsigned char chmap[8], per_pin_chmap[8];
- 	int i, err, ca, prepared = 0;
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
-+	err = chmap_value_check(hchmap, ucontrol);
-+	if (err < 0)
-+		return err;
-+
- 	/* No monitor is connected in dyn_pcm_assign.
- 	 * It's invalid to setup the chmap
- 	 */
+ 	if (php_slot->irq > 0) {
+@@ -54,7 +53,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
+ 
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
 -- 
 2.43.0
 
