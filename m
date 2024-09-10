@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D089733E5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26569732C9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6226028A994
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50681C24AF6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73A5191F6D;
-	Tue, 10 Sep 2024 10:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFAB18DF97;
+	Tue, 10 Sep 2024 10:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEvOg/t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgSWfaeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FBA1917FA;
-	Tue, 10 Sep 2024 10:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B854187FF9;
+	Tue, 10 Sep 2024 10:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964370; cv=none; b=C4jaOFni9IDwBnVCIm75AoFsEBi0/YZVf+wTDVgLS/j7r40/BpDTUg3t2p5O7EsbiSZReozAyNNGpnFkLq/l9CPMy2Ugl0x9c87oF8bZUSrO+yPasV6JMY0VE23wFR1PPfXf0fZmtyfU4BdiGxVhLqZDSYGA/r6tWjVPB/Ek0BA=
+	t=1725963635; cv=none; b=K+O7oXC6DsOk5fNRRdPC8LWuu7EfswGuJ1DTeiz0rusXTGRt5BFc4RdhjzFa/rbIgNwt8MyaYm9VI47lG6hW3ftkXTNtok9HE1JJ6O3JqXbgxzbz7rTHwkVbu2WE7X273WZBjfPMuMqZ9fGg4+1eur2hGuTHctAGEvCcLptdxUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964370; c=relaxed/simple;
-	bh=KOriNQyLsBUPDBnjI5+VGJ+Rvc9Bsp7VvcfKB/VxYDo=;
+	s=arc-20240116; t=1725963635; c=relaxed/simple;
+	bh=H3X6TgTirhMMNDD1jOHaD67R1auujoyDpo52+GPpkdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/Bxef0HbPlz3TC86WM/YGnqgLu38ne/k1Tx6FetaETZT+dthklLjM5/uYSpEISLKRnjROgX0htlEYD0RPoBR2NFajdtEVKIlzLxxtxrcj/5oeKV2kL2qOR3wuIsqpWMjoSG4QJzk1u5Ye/3/0TL06UZ+g7aojd+HRrEguR1qMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEvOg/t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88EAC4CEC3;
-	Tue, 10 Sep 2024 10:32:49 +0000 (UTC)
+	 MIME-Version; b=ICtcfX5+7NsGmXJP9CRV5E6SJI/k21Q3L8SfIxSKruAOPdpuavBTHjOvjdQ6wTmjDGgFq0uSxxpKqA+wlQc1kaBW+s/TUK7/VL36m3709p8lInV7XTLdAtaL/Ji2BYoLHT0DXlQjN0zDuSoQqw5WFYEJ1J6U4NHBmYfo1JnBiiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgSWfaeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855FCC4CEC3;
+	Tue, 10 Sep 2024 10:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964370;
-	bh=KOriNQyLsBUPDBnjI5+VGJ+Rvc9Bsp7VvcfKB/VxYDo=;
+	s=korg; t=1725963634;
+	bh=H3X6TgTirhMMNDD1jOHaD67R1auujoyDpo52+GPpkdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEvOg/t2E20wCpR0KM4u5GkKO2EPWRwKHOx2CslrhM5UR581Fi/DSd6LTLP9OQOvu
-	 yDXn6Gv//K88zNg1+0cCxW+kts2pIrg/ZcAddyDU2x8GjFDEbQJafwwH/5836EcbQ7
-	 cbyDlV4FOEMF3YItNTzbxblxVZECUG40gq1yHru0=
+	b=SgSWfaeEn7IpaG4XwrCkAcEr/JCCsZ+B89CN5GDce0rF1Jbw5eR/t3sc8m0pmmRda
+	 ia5XFJy8MXjKcfrqvC23xCBY31v+VFMBj7yacPOvuSC2Lp8YjabWbZjLe1j1tIyhAo
+	 HKJT+B4+LlQR2stUYCFvZ+SkqaR2+Vf7Rmmj+n98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/269] jbd2: avoid mount failed when commit block is partial submitted
+Subject: [PATCH 5.15 125/214] igc: Unlock on error in igc_io_resume()
 Date: Tue, 10 Sep 2024 11:32:27 +0200
-Message-ID: <20240910092613.883466820@linuxfoundation.org>
+Message-ID: <20240910092603.868356248@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0bab8db4152c4a2185a1367db09cc402bdc62d5e ]
+[ Upstream commit ef4a99a0164e3972abb421cbb1b09ea6c61414df ]
 
-We encountered a problem that the file system could not be mounted in
-the power-off scenario. The analysis of the file system mirror shows that
-only part of the data is written to the last commit block.
-The valid data of the commit block is concentrated in the first sector.
-However, the data of the entire block is involved in the checksum calculation.
-For different hardware, the minimum atomic unit may be different.
-If the checksum of a committed block is incorrect, clear the data except the
-'commit_header' and then calculate the checksum. If the checkusm is correct,
-it is considered that the block is partially committed, Then continue to replay
-journal.
+Call rtnl_unlock() on this error path, before returning.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240620072405.3533701-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: bc23aa949aeb ("igc: Add pcie error handler support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
-index 5b771a3d8d9a..421c0d360836 100644
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -448,6 +448,27 @@ static int jbd2_commit_block_csum_verify(journal_t *j, void *buf)
- 	return provided == cpu_to_be32(calculated);
- }
- 
-+static bool jbd2_commit_block_csum_verify_partial(journal_t *j, void *buf)
-+{
-+	struct commit_header *h;
-+	__be32 provided;
-+	__u32 calculated;
-+	void *tmpbuf;
-+
-+	tmpbuf = kzalloc(j->j_blocksize, GFP_KERNEL);
-+	if (!tmpbuf)
-+		return false;
-+
-+	memcpy(tmpbuf, buf, sizeof(struct commit_header));
-+	h = tmpbuf;
-+	provided = h->h_chksum[0];
-+	h->h_chksum[0] = 0;
-+	calculated = jbd2_chksum(j, j->j_csum_seed, tmpbuf, j->j_blocksize);
-+	kfree(tmpbuf);
-+
-+	return provided == cpu_to_be32(calculated);
-+}
-+
- static int jbd2_block_tag_csum_verify(journal_t *j, journal_block_tag_t *tag,
- 				      journal_block_tag3_t *tag3,
- 				      void *buf, __u32 sequence)
-@@ -814,6 +835,13 @@ static int do_one_pass(journal_t *journal,
- 			if (pass == PASS_SCAN &&
- 			    !jbd2_commit_block_csum_verify(journal,
- 							   bh->b_data)) {
-+				if (jbd2_commit_block_csum_verify_partial(
-+								  journal,
-+								  bh->b_data)) {
-+					pr_notice("JBD2: Find incomplete commit block in transaction %u block %lu\n",
-+						  next_commit_ID, next_log_block);
-+					goto chksum_ok;
-+				}
- 			chksum_error:
- 				if (commit_time < last_trans_commit_time)
- 					goto ignore_crc_mismatch;
-@@ -828,6 +856,7 @@ static int do_one_pass(journal_t *journal,
- 				}
- 			}
- 			if (pass == PASS_SCAN) {
-+			chksum_ok:
- 				last_trans_commit_time = commit_time;
- 				head_block = next_log_block;
- 			}
-@@ -847,6 +876,7 @@ static int do_one_pass(journal_t *journal,
- 					  next_log_block);
- 				need_check_commit_time = true;
- 			}
-+
- 			/* If we aren't in the REVOKE pass, then we can
- 			 * just skip over this block. */
- 			if (pass != PASS_REVOKE) {
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 7605115e6a1b..27c24bfc2dbe 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -7057,6 +7057,7 @@ static void igc_io_resume(struct pci_dev *pdev)
+ 	rtnl_lock();
+ 	if (netif_running(netdev)) {
+ 		if (igc_open(netdev)) {
++			rtnl_unlock();
+ 			netdev_err(netdev, "igc_open failed after reset\n");
+ 			return;
+ 		}
 -- 
 2.43.0
 
