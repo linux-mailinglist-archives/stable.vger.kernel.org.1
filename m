@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEAA972FED
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4A3972DD7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44C128390A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31FF62859A2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81B818B462;
-	Tue, 10 Sep 2024 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0F91891A5;
+	Tue, 10 Sep 2024 09:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zahvsli4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBTLhWDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86447171671;
-	Tue, 10 Sep 2024 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EC346444;
+	Tue, 10 Sep 2024 09:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962157; cv=none; b=CfmWb8ttNramG0PN7Gzt9Z5ELWDXx2mNmecCBMbbVPbiAzLJ1iTPsJZmCiTV2OnOZ8a0Q8oJv2SGZihZk71wweZ4g/2rhrr6rZM0swMXVV3Y1xFqXp64Tomgm5BA+xEGa3IM8L1FpHr9A5h7gDzmScAlpjoXWEls0QubkVOszTo=
+	t=1725961010; cv=none; b=EGYjPNjF4/ajPn+lgXGG9p5Q4WpWHSSCUWCtWa9nNJ4QSys3+F6Gyt6Fv5LCBOR5ISqVh086nLgWY4/wEvBu/Ndw1gPLO2T0L83a3vE5YBc1OId8ZKYrB5wokyAotwlze2lpVy8srWRaTcj4Svog3oiegMm4qx96J3muux+pyns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962157; c=relaxed/simple;
-	bh=Y7lSGduLu5si3zoKzzw2s+I/kDbjtIVlrMsRTSbb9q4=;
+	s=arc-20240116; t=1725961010; c=relaxed/simple;
+	bh=oocNm9dgaajSwYGTtWzrbTNIi6RkD6/YlKiCSMo/MvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTfSb/h4EFGYRiaWDMF58uJr8axwk1giSQvYrVsdhzoJT4k+iUn6mQw/7Drvjm5lNBOJNGO6NC2pMdloxnW+Cpnu1hIXXtacJ5CsjZX8Oz2ZoHwpwpMZG2YU2z5mEGIfXVfbNURA+MsVvrsiSfv9RxQ+8vUYxav0KDMuCtNNky0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zahvsli4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A865C4CEC3;
-	Tue, 10 Sep 2024 09:55:56 +0000 (UTC)
+	 MIME-Version; b=lMhC22YGeJQ0xGTc1kEX1sjOlkwLYLICtggvUcETwqRYO/xJuHoioCnXDevG04feAY1ZnQwbBKUl9bA3dlGBE+Eek87QnV909bikz6jAZ1FsX7ET2wMWj8yxla5oxF4kwgQL3LFCPXF9ad0eB85CrLEoMGgp+KZTBwzz/QJbAsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBTLhWDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4342C4CEC3;
+	Tue, 10 Sep 2024 09:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962157;
-	bh=Y7lSGduLu5si3zoKzzw2s+I/kDbjtIVlrMsRTSbb9q4=;
+	s=korg; t=1725961010;
+	bh=oocNm9dgaajSwYGTtWzrbTNIi6RkD6/YlKiCSMo/MvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zahvsli4muwvO7XymwSK7CSQyXywJrW+NcOYSI77FTsoyetqHIFj0BtZRHJK1pOru
-	 tCkpoKwvYfcPZw/HlonAvNUlUYrfUVfa/Vk2KiGelwrwgQri0Ah33If3ZpOSmFzLnK
-	 W3usDFg25aUoGKye3qxdzx0JQkEQwCdVSNRErzjo=
+	b=sBTLhWDQ7hJ4lU8aClj3aARYyl6ID6Qney84AVu/SIWSqiKpyMaKkVYVpqjIMIsKX
+	 vHKknWtFc3YDIMLeB9FfsjEr1pgJ5WrM0CKEfi4J6hS8w/nDLsoprFtLAqPmd/T/fW
+	 dcyhk/QkJG+u3wVLrgwLxCZBex/QK1nmmah0HqyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Andreas Westman Dorcsak <hedmoo@yahoo.com>
-Subject: [PATCH 6.10 287/375] iio: imu: inv_mpu6050: fix interrupt status read for old buggy chips
+	Jann Horn <jannh@google.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 4.19 22/96] fuse: use unsigned type for getxattr/listxattr size truncation
 Date: Tue, 10 Sep 2024 11:31:24 +0200
-Message-ID: <20240910092632.209565736@linuxfoundation.org>
+Message-ID: <20240910092542.414130483@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Jann Horn <jannh@google.com>
 
-commit 0a3b517c8089aa4cf339f41460d542c681409386 upstream.
+commit b18915248a15eae7d901262f108d6ff0ffb4ffc1 upstream.
 
-Interrupt status read seems to be broken on some old MPU-6050 like
-chips. Fix by reverting to previous driver behavior bypassing interrupt
-status read. This is working because these chips are not supporting
-WoM and data ready is the only interrupt source.
+The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
+parsing the FUSE daemon's response to a zero-length getxattr/listxattr
+request.
+On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
+wrong: The min_t() will pass through any size values that are negative when
+interpreted as signed.
+fuse_listxattr() will then return this userspace-supplied negative value,
+which callers will treat as an error value.
 
-Fixes: 5537f653d9be ("iio: imu: inv_mpu6050: add new interrupt handler for WoM events")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # LG P895
-Tested-by: Andreas Westman Dorcsak <hedmoo@yahoo.com> # LG P880
-Link: https://patch.msgid.link/20240814143735.327302-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This kind of bug pattern can lead to fairly bad security bugs because of
+how error codes are used in the Linux kernel. If a caller were to convert
+the numeric error into an error pointer, like so:
+
+    struct foo *func(...) {
+      int len = fuse_getxattr(..., NULL, 0);
+      if (len < 0)
+        return ERR_PTR(len);
+      ...
+    }
+
+then it would end up returning this userspace-supplied negative value cast
+to a pointer - but the caller of this function wouldn't recognize it as an
+error pointer (IS_ERR_VALUE() only detects values in the narrow range in
+which legitimate errno values are), and so it would just be treated as a
+kernel pointer.
+
+I think there is at least one theoretical codepath where this could happen,
+but that path would involve virtio-fs with submounts plus some weird
+SELinux configuration, so I think it's probably not a concern in practice.
+
+Cc: stable@vger.kernel.org # v4.9
+Fixes: 63401ccdb2ca ("fuse: limit xattr returned size")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/fuse/xattr.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -248,12 +248,20 @@ static irqreturn_t inv_mpu6050_interrupt
- 	int result;
- 
- 	switch (st->chip_type) {
-+	case INV_MPU6000:
- 	case INV_MPU6050:
-+	case INV_MPU9150:
-+		/*
-+		 * WoM is not supported and interrupt status read seems to be broken for
-+		 * some chips. Since data ready is the only interrupt, bypass interrupt
-+		 * status read and always assert data ready bit.
-+		 */
-+		wom_bits = 0;
-+		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
-+		goto data_ready_interrupt;
- 	case INV_MPU6500:
- 	case INV_MPU6515:
- 	case INV_MPU6880:
--	case INV_MPU6000:
--	case INV_MPU9150:
- 	case INV_MPU9250:
- 	case INV_MPU9255:
- 		wom_bits = INV_MPU6500_BIT_WOM_INT;
-@@ -279,6 +287,7 @@ static irqreturn_t inv_mpu6050_interrupt
- 		}
+--- a/fs/fuse/xattr.c
++++ b/fs/fuse/xattr.c
+@@ -79,7 +79,7 @@ ssize_t fuse_getxattr(struct inode *inod
  	}
- 
-+data_ready_interrupt:
- 	/* handle raw data interrupt */
- 	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
- 		indio_dev->pollfunc->timestamp = st->it_timestamp;
+ 	ret = fuse_simple_request(fc, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_SIZE_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_SIZE_MAX);
+ 	if (ret == -ENOSYS) {
+ 		fc->no_getxattr = 1;
+ 		ret = -EOPNOTSUPP;
+@@ -141,7 +141,7 @@ ssize_t fuse_listxattr(struct dentry *en
+ 	}
+ 	ret = fuse_simple_request(fc, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_LIST_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_LIST_MAX);
+ 	if (ret > 0 && size)
+ 		ret = fuse_verify_xattr_list(list, ret);
+ 	if (ret == -ENOSYS) {
 
 
 
