@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3404497347B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2F1973523
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEAC1F22C2B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D0E1F25EE9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC1518CBE0;
-	Tue, 10 Sep 2024 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B51190056;
+	Tue, 10 Sep 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXKNItIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKGyUEmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA3F18C344;
-	Tue, 10 Sep 2024 10:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E60A18FC9F;
+	Tue, 10 Sep 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964688; cv=none; b=vAQ1MsQ3ORI53OGUDXO9GjDrUZdD1IbuR1rL6lDbK5QUjBQg0jehSTlfCcSIoKWTow4uRvcVKFVVBec/iqIIyD8pb7aOoyfTD1uK2sW+wxRc6kMzGvXAqLaXSGYcONXBbn+5QERyPHV06SJA9Mh7Z1HQpshrTZoBTl7j1Yi6oqw=
+	t=1725965087; cv=none; b=lPQjzEo0tjqNm+/03VSKPLVGCn66/xDlJ1jJJjAWA/chlChAl2FbPQuCffubmHYLlP7ucK6jlLW238mvXIL+k/eEqu/5WB5uWgQ1tvRaPMMGZeYVxc/8hTygrBfViryxgbQYcuXcHJOaR+/1fLgHs8ruh6C9XMWMjSpoUMPINao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964688; c=relaxed/simple;
-	bh=vLsvtNQTyLhy/hLdSOQPs4jU1Me6tIK+vuuHXRLb/2U=;
+	s=arc-20240116; t=1725965087; c=relaxed/simple;
+	bh=IBBnYYlfsny63xncUVgp1fJnKZeSvUQYxU32GyKrlgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ng4c3d+FoSHa64z9FJA7h0ySXzgq7OrfBiwVxYqicA/qUjrLZ4ovY2N1AL0S/vmWQ0MvJw4wqzv8zranL0ZBGFEre2sCgmfhmhSfXc1tvktBMjlZJ7GmBgllDvvI0mdDE+bP8qd4oIIdEoxxh/OI8hc26A8msTSPHMDpPABcYcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXKNItIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4655DC4CEC3;
-	Tue, 10 Sep 2024 10:38:08 +0000 (UTC)
+	 MIME-Version; b=juROkmt/tCpaiA6orJchicYKMBH2TaCOanu/2Hf4UxfSkXdn1EYAYYuMYHrvgTfh2QkOcG8/piMJWPlR5OmLZ44djaKoYFBHgfxhI7glNtcbSNGnkEcmC0zNSV7wJqhHaKlKO6b4Thz8q/D5OP/o2zbCSkwbf3s7xSWLomgY9hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKGyUEmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24E3C4CEC3;
+	Tue, 10 Sep 2024 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964688;
-	bh=vLsvtNQTyLhy/hLdSOQPs4jU1Me6tIK+vuuHXRLb/2U=;
+	s=korg; t=1725965087;
+	bh=IBBnYYlfsny63xncUVgp1fJnKZeSvUQYxU32GyKrlgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXKNItIvfOVIC4oLkdFGOLPzOmRWBMTiCcXib16I787Ei3svDnp7xHH7J/uRr4loi
-	 WDGuI3LUVUVOAgAP20LUD/D9VJk6ZwMieiTw/C4lH2585yd11IRJEfrLIEPZZgJrgq
-	 kC+3TAQxeg6l7dvsrE5+cTx2JHoAtxwnOFP9x/HY=
+	b=aKGyUEmPcI/29z3JHC17ci+b60dajExFPQBZNnAuK2AjfyFQKSD5mtaVBTHSAxYWE
+	 qluY4jj1LDDDc7QsTpRir31+IRblGKQq9Z5ynuLMcK4srZe5n9hmFVO1250vXE7H7x
+	 A2PCZiJnCFLagFe7gD4zWtz4UCBc1snb2MMofs2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/269] crypto: starfive - Align rsa input data to 32-bit
+Subject: [PATCH 5.10 133/186] devres: Initialize an uninitialized struct member
 Date: Tue, 10 Sep 2024 11:33:48 +0200
-Message-ID: <20240910092616.449533773@linuxfoundation.org>
+Message-ID: <20240910092600.065240991@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Jie Ho <jiajie.ho@starfivetech.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 6aad7019f697ab0bed98eba737d19bd7f67713de ]
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-Hardware expects RSA input plain/ciphertext to be 32-bit aligned.
-Set fixed length for preallocated buffer to the maximum supported
-keysize of the hardware and shift input text accordingly.
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-cryp.h |  3 ++-
- drivers/crypto/starfive/jh7110-rsa.c  | 12 ++++++++----
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/starfive/jh7110-cryp.h b/drivers/crypto/starfive/jh7110-cryp.h
-index fe011d50473d..f386e9897896 100644
---- a/drivers/crypto/starfive/jh7110-cryp.h
-+++ b/drivers/crypto/starfive/jh7110-cryp.h
-@@ -30,6 +30,7 @@
- #define MAX_KEY_SIZE				SHA512_BLOCK_SIZE
- #define STARFIVE_AES_IV_LEN			AES_BLOCK_SIZE
- #define STARFIVE_AES_CTR_LEN			AES_BLOCK_SIZE
-+#define STARFIVE_RSA_MAX_KEYSZ			256
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 8a74008c13c4..e3a735d0213a 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -577,6 +577,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
  
- union starfive_aes_csr {
- 	u32 v;
-@@ -217,7 +218,7 @@ struct starfive_cryp_request_ctx {
- 	unsigned int				digsize;
- 	unsigned long				in_sg_len;
- 	unsigned char				*adata;
--	u8 rsa_data[] __aligned(sizeof(u32));
-+	u8 rsa_data[STARFIVE_RSA_MAX_KEYSZ] __aligned(sizeof(u32));
- };
- 
- struct starfive_cryp_dev *starfive_cryp_find_dev(struct starfive_cryp_ctx *ctx);
-diff --git a/drivers/crypto/starfive/jh7110-rsa.c b/drivers/crypto/starfive/jh7110-rsa.c
-index f31bbd825f88..fbc06f8ee95f 100644
---- a/drivers/crypto/starfive/jh7110-rsa.c
-+++ b/drivers/crypto/starfive/jh7110-rsa.c
-@@ -37,7 +37,6 @@
- // A * A * R mod N ==> A
- #define CRYPTO_CMD_AARN			0x7
- 
--#define STARFIVE_RSA_MAX_KEYSZ		256
- #define STARFIVE_RSA_RESET		0x2
- 
- static inline int starfive_pka_wait_done(struct starfive_cryp_ctx *ctx)
-@@ -91,7 +90,7 @@ static int starfive_rsa_montgomery_form(struct starfive_cryp_ctx *ctx,
- {
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
- 	struct starfive_cryp_request_ctx *rctx = ctx->rctx;
--	int count = rctx->total / sizeof(u32) - 1;
-+	int count = (ALIGN(rctx->total, 4) / 4) - 1;
- 	int loop;
- 	u32 temp;
- 	u8 opsize;
-@@ -274,12 +273,17 @@ static int starfive_rsa_enc_core(struct starfive_cryp_ctx *ctx, int enc)
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
- 	struct starfive_cryp_request_ctx *rctx = ctx->rctx;
- 	struct starfive_rsa_key *key = &ctx->rsa_key;
--	int ret = 0;
-+	int ret = 0, shift = 0;
- 
- 	writel(STARFIVE_RSA_RESET, cryp->base + STARFIVE_PKA_CACR_OFFSET);
- 
-+	if (!IS_ALIGNED(rctx->total, sizeof(u32))) {
-+		shift = sizeof(u32) - (rctx->total & 0x3);
-+		memset(rctx->rsa_data, 0, shift);
-+	}
-+
- 	rctx->total = sg_copy_to_buffer(rctx->in_sg, rctx->nents,
--					rctx->rsa_data, rctx->total);
-+					rctx->rsa_data + shift, rctx->total);
- 
- 	if (enc) {
- 		key->bitlen = key->e_bitlen;
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
 -- 
 2.43.0
 
