@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-75186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C2E973343
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1589597332C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 492F728471F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:30:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 815F41F22C65
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3025918DF97;
-	Tue, 10 Sep 2024 10:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54839198E65;
+	Tue, 10 Sep 2024 10:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SG7CklFg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYI/hRLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30F814B06C;
-	Tue, 10 Sep 2024 10:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1209718C340;
+	Tue, 10 Sep 2024 10:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964000; cv=none; b=I2ZfA35qadU68cfQbiOWtZTtdgBwYEYnSqNg25N27adi8Fv2/tRavfhyzXD/LoVDJIqE5eJhNhdYceYcjzITihTtMaiT0bSGT5fnLWnF7iiN+5LM4HsjfezzyDrHwjaS+yXUbjNslhP59uBOdkvaAQ2y7mTCeUoU1WmFwaOJfjQ=
+	t=1725963929; cv=none; b=TBK/N7QTnrOyaR+/mS3sDVWb+/HCPtUz3XfonMRaxRIZduuomDIe6K7ufYa+gYuswOQWNOqLjJSfNd3yJdXTlNB4VoSivS0EFHMMrbTb/BcQlc8eg1JEi7qWaHRJGw+P7PBVErl3SJDL3mMLzAKQps8oS4FUxHzuADgZBk3Z9kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964000; c=relaxed/simple;
-	bh=t3/Xj+ET0mZZjlzm76vGxaMqbA2aN1L2mRKCEWYg6dw=;
+	s=arc-20240116; t=1725963929; c=relaxed/simple;
+	bh=UOJqYEbsWd7AFtWju4OTg1Tkpc+BeqQCeGseZDx5CdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxMPwWRN336F2vsmjxAXzw0XxYMEwW6l7AU/b0LZZFxoal5I974RJhoYVfx3id+D6FvbwUaqSdgCNtrmfb3h/P2FyX2eVLHb9EwpIzv/9B6XopgPW+4lJyEiyocnGwVjv+4UoXG57jiIJYT3i4uh93+mmV2sssFSHdqOFMw+Bho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SG7CklFg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FAEC4CEC3;
-	Tue, 10 Sep 2024 10:26:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZmUd51I0oBNc7ckYIqbrmDj5VWhtb+EMVsD7Ho9JT3FmhQGqwdJt+Qd82LdM99VphOCFAB0SVY3nNung1S6P34iVOkrqEUwOCmtPMWM42GEgN9ynM7rbBDN1W5LVLbhh3Cq5F/EX7RJASkdMBk5bXhgke1hKbNVclB3sgsIZuJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYI/hRLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8994AC4CEC3;
+	Tue, 10 Sep 2024 10:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963999;
-	bh=t3/Xj+ET0mZZjlzm76vGxaMqbA2aN1L2mRKCEWYg6dw=;
+	s=korg; t=1725963928;
+	bh=UOJqYEbsWd7AFtWju4OTg1Tkpc+BeqQCeGseZDx5CdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SG7CklFgWgETT4sp9nTkiPwvK97L8m8rvvc4w53m8QQr/ckHbcAao5wcMtZI24JBf
-	 T6gVX8+AsCxLn2Kxzs+9PGLAYFEBBPYoDHaoe3Pll6YWZT/4DkrRHCTzF6wt+4BCN6
-	 2qrmKm1YiVygJKqZpM4B/Okw+J2IgJ5Ty9EBJge0=
+	b=aYI/hRLcgyXiHcR5ykCUbkA+a/Va4R9Y9o2bSyJ1AsRTxAPNJ8axa/aIACtW9L5dT
+	 84rRlwijBDH1OaKgN2PYZSywNIPx+Gmg2ohDi2m/maJiAb9kB2stjP+RAeYVWWj8Ad
+	 l+StRBNXkB6a4EYPeJK+x5u33SJ6YzwvfC8mezmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilien Perreault <maximilienperreault@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 009/269] ALSA: hda/realtek: Support mute LED on HP Laptop 14-dq2xxx
-Date: Tue, 10 Sep 2024 11:29:56 +0200
-Message-ID: <20240910092608.575996241@linuxfoundation.org>
+	Geetika Moolchandani <geetika@linux.ibm.com>,
+	Vaishnavi Bhat <vaish123@in.ibm.com>,
+	Jijo Varghese <vargjijo@in.ibm.com>,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 010/269] powerpc/qspinlock: Fix deadlock in MCS queue
+Date: Tue, 10 Sep 2024 11:29:57 +0200
+Message-ID: <20240910092608.614118772@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -59,37 +63,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilien Perreault <maximilienperreault@gmail.com>
+From: Nysal Jan K.A. <nysal@linux.ibm.com>
 
-commit 47a9e8dbb8d4713a9aac7cc6ce3c82dcc94217d8 upstream.
+commit 734ad0af3609464f8f93e00b6c0de1e112f44559 upstream.
 
-The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
+If an interrupt occurs in queued_spin_lock_slowpath() after we increment
+qnodesp->count and before node->lock is initialized, another CPU might
+see stale lock values in get_tail_qnode(). If the stale lock value happens
+to match the lock on that CPU, then we write to the "next" pointer of
+the wrong qnode. This causes a deadlock as the former CPU, once it becomes
+the head of the MCS queue, will spin indefinitely until it's "next" pointer
+is set by its successor in the queue.
 
-Signed-off-by: Maximilien Perreault <maximilienperreault@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240904031013.21220-1-maximilienperreault@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Running stress-ng on a 16 core (16EC/16VP) shared LPAR, results in
+occasional lockups similar to the following:
+
+   $ stress-ng --all 128 --vm-bytes 80% --aggressive \
+               --maximize --oomable --verify  --syslog \
+               --metrics  --times  --timeout 5m
+
+   watchdog: CPU 15 Hard LOCKUP
+   ......
+   NIP [c0000000000b78f4] queued_spin_lock_slowpath+0x1184/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   Call Trace:
+    0xc000002cfffa3bf0 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    raw_spin_rq_lock_nested.part.135+0x4c/0xd0
+    sched_ttwu_pending+0x60/0x1f0
+    __flush_smp_call_function_queue+0x1dc/0x670
+    smp_ipi_demux_relaxed+0xa4/0x100
+    xive_muxed_ipi_action+0x20/0x40
+    __handle_irq_event_percpu+0x80/0x240
+    handle_irq_event_percpu+0x2c/0x80
+    handle_percpu_irq+0x84/0xd0
+    generic_handle_irq+0x54/0x80
+    __do_irq+0xac/0x210
+    __do_IRQ+0x74/0xd0
+    0x0
+    do_IRQ+0x8c/0x170
+    hardware_interrupt_common_virt+0x29c/0x2a0
+   --- interrupt: 500 at queued_spin_lock_slowpath+0x4b8/0x1490
+   ......
+   NIP [c0000000000b6c28] queued_spin_lock_slowpath+0x4b8/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   --- interrupt: 500
+    0xc0000029c1a41d00 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    futex_wake+0x100/0x260
+    do_futex+0x21c/0x2a0
+    sys_futex+0x98/0x270
+    system_call_exception+0x14c/0x2f0
+    system_call_vectored_common+0x15c/0x2ec
+
+The following code flow illustrates how the deadlock occurs.
+For the sake of brevity, assume that both locks (A and B) are
+contended and we call the queued_spin_lock_slowpath() function.
+
+        CPU0                                   CPU1
+        ----                                   ----
+  spin_lock_irqsave(A)                          |
+  spin_unlock_irqrestore(A)                     |
+    spin_lock(B)                                |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++;                       |
+  (Note that nodes[0].lock == A)                |
+         |                                      |
+         ▼                                      |
+      Interrupt                                 |
+  (happens before "nodes[0].lock = B")          |
+         |                                      |
+         ▼                                      |
+  spin_lock_irqsave(A)                          |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++                        |
+   nodes[1].lock = A                            |
+         |                                      |
+         ▼                                      |
+  Tail of MCS queue                             |
+         |                             spin_lock_irqsave(A)
+         ▼                                      |
+  Head of MCS queue                             ▼
+         |                             CPU0 is previous tail
+         ▼                                      |
+   Spin indefinitely                            ▼
+  (until "nodes[1].next != NULL")      prev = get_tail_qnode(A, CPU0)
+                                                |
+                                                ▼
+                                       prev == &qnodes[CPU0].nodes[0]
+                                     (as qnodes[CPU0].nodes[0].lock == A)
+                                                |
+                                                ▼
+                                       WRITE_ONCE(prev->next, node)
+                                                |
+                                                ▼
+                                        Spin indefinitely
+                                     (until nodes[0].locked == 1)
+
+Thanks to Saket Kumar Bhaskar for help with recreating the issue
+
+Fixes: 84990b169557 ("powerpc/qspinlock: add mcs queueing for contended waiters")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Reported-by: Vaishnavi Bhat <vaish123@in.ibm.com>
+Reported-by: Jijo Varghese <vargjijo@in.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240829022830.1164355-1-nysal@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/lib/qspinlock.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9873,6 +9873,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fd, "HP Laptop 14-dq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+--- a/arch/powerpc/lib/qspinlock.c
++++ b/arch/powerpc/lib/qspinlock.c
+@@ -715,7 +715,15 @@ again:
+ 	}
+ 
+ release:
+-	qnodesp->count--; /* release the node */
++	/*
++	 * Clear the lock before releasing the node, as another CPU might see stale
++	 * values if an interrupt occurs after we increment qnodesp->count
++	 * but before node->lock is initialized. The barrier ensures that
++	 * there are no further stores to the node after it has been released.
++	 */
++	node->lock = NULL;
++	barrier();
++	qnodesp->count--;
+ }
+ 
+ void queued_spin_lock_slowpath(struct qspinlock *lock)
 
 
 
