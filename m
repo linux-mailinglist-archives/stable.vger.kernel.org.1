@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-74552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32951972FE7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EE297301B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5CBF2817A0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0E351C20E30
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583FE18B495;
-	Tue, 10 Sep 2024 09:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B3418C324;
+	Tue, 10 Sep 2024 09:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/pX2I58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1L6rLA4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D44188921;
-	Tue, 10 Sep 2024 09:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B7C18C037;
+	Tue, 10 Sep 2024 09:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962140; cv=none; b=dAYJ7Qp8nQJ1iTGbwI5JpmUDV/FKGSH+l6yQbkyYgBmMZKdFwryEya9opTxrlBAWK1GQbwRC1K8kmMdw0wabXzMuXfcFwNR9Z/MbqH1MjWfqaOdCH3nejKNHy+1KbfhbDeKIFjjq3614pSphoBfapr8eNhqwRe/PljC+erIlEwQ=
+	t=1725962252; cv=none; b=qhuHs+O0GxukaijpAux3K81tzRHVAw85WA6nhOskAOIPY8doYhhZIJGp2nYWjZhgxi3ot6J1udl3KZhzYsPV7aqyGKhrYovqFe2f2bntnPa2SqD6j3VgLhyItqvo4bHCDePMeb3HZ0SltWAR+b/pUIbILgSrbImpbekJVplyjyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962140; c=relaxed/simple;
-	bh=i11TATC7Vhf/amBO+GNCm5LeIhAro8VxzA7fPy2isxs=;
+	s=arc-20240116; t=1725962252; c=relaxed/simple;
+	bh=c687+32gDaUV+akqNfd6c5Esng/mLndeqyQ3jUHSbNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6oZrZIWz0HE5N4+EOkOa/VyB21e594NsgXxe+wOxh4aAiDOKg7fnLMfcWk5Ow0LdWnR6cJ+BrMZFECES7WQSVJ5NCbSydQP0Fa2g1BMjLJWjbm3MQLNyWg9K6NVdEzQeZW03C8UVcgSvwpKPycuDVcJk/bUGqW7oFUP3S8St2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/pX2I58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92164C4CEC3;
-	Tue, 10 Sep 2024 09:55:39 +0000 (UTC)
+	 MIME-Version; b=DLGnstsVMgMramEKM28qNTWrzVSFajS4IyWHm7FdBebjV/Y5OQl1JGvoeZCwI3725q4Wu5LekrcmTbgun4mK+gtnTv0Pe7jB2IV3pxOHNYUrpCojCy8+Vkp5wg0RoWmhSkbMRA28i1qxam2ER4T2m/fVPIBsA3vfYM3DsZBp+1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L6rLA4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805FBC4CEC3;
+	Tue, 10 Sep 2024 09:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962140;
-	bh=i11TATC7Vhf/amBO+GNCm5LeIhAro8VxzA7fPy2isxs=;
+	s=korg; t=1725962251;
+	bh=c687+32gDaUV+akqNfd6c5Esng/mLndeqyQ3jUHSbNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/pX2I58ojVui7GsPinR+r9/cl9PLKZSNc3V6DiX41QpPmPOYBsDcvpUE+DWQ60Iw
-	 6dG8RsSjviRmTE5S0Rrv7QeROdDfwZXbAmWHXoETEocl5rATEaPie1N8e8Jps84Ybl
-	 zWbYCk+T6itcww4FusEk2Jqu06AFovLEPfCfJJc4=
+	b=1L6rLA4Xx+ZmznmC+dTrGndZ2iQ/93AdvbwYhO5ioUuH1gxW+Dfi5MrI4YcIM23B/
+	 4G53KWoyzveIBfeTZLRnKw1I3ExDeNr4LNiYkOZxdYg53Hi6ZUrww578MZEU1LlZPY
+	 fdoBgIn3lvRnCOP9274qH5E3nu+XTLQjmXbM65ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
+	Ole <ole@binarygecko.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>
-Subject: [PATCH 6.10 308/375] uprobes: Use kzalloc to allocate xol area
-Date: Tue, 10 Sep 2024 11:31:45 +0200
-Message-ID: <20240910092632.911004165@linuxfoundation.org>
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.10 309/375] perf/aux: Fix AUX buffer serialization
+Date: Tue, 10 Sep 2024 11:31:46 +0200
+Message-ID: <20240910092632.946196516@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -66,42 +66,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit e240b0fde52f33670d1336697c22d90a4fe33c84 upstream.
+commit 2ab9d830262c132ab5db2f571003d80850d56b2a upstream.
 
-To prevent unitialized members, use kzalloc to allocate
-the xol area.
+Ole reported that event->mmap_mutex is strictly insufficient to
+serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-Fixes: b059a453b1cf1 ("x86/vdso: Add mremap hook to vm_special_mapping")
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Note that in the lock order comment the perf_event::mmap_mutex order
+was already wrong, that is, it nesting under mmap_lock is not new with
+this patch.
+
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Reported-by: Ole <ole@binarygecko.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20240903102313.3402529-1-svens@linux.ibm.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/uprobes.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/events/core.c        |   18 ++++++++++++------
+ kernel/events/internal.h    |    1 +
+ kernel/events/ring_buffer.c |    2 ++
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1480,7 +1480,7 @@ static struct xol_area *__create_xol_are
- 	uprobe_opcode_t insn = UPROBE_SWBP_INSN;
- 	struct xol_area *area;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1255,8 +1255,9 @@ static void put_ctx(struct perf_event_co
+  *	  perf_event_context::mutex
+  *	    perf_event::child_mutex;
+  *	      perf_event_context::lock
+- *	    perf_event::mmap_mutex
+  *	    mmap_lock
++ *	      perf_event::mmap_mutex
++ *	        perf_buffer::aux_mutex
+  *	      perf_addr_filters_head::lock
+  *
+  *    cpu_hotplug_lock
+@@ -6383,12 +6384,11 @@ static void perf_mmap_close(struct vm_ar
+ 		event->pmu->event_unmapped(event, vma->vm_mm);
  
--	area = kmalloc(sizeof(*area), GFP_KERNEL);
-+	area = kzalloc(sizeof(*area), GFP_KERNEL);
- 	if (unlikely(!area))
- 		goto out;
+ 	/*
+-	 * rb->aux_mmap_count will always drop before rb->mmap_count and
+-	 * event->mmap_count, so it is ok to use event->mmap_mutex to
+-	 * serialize with perf_mmap here.
++	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
++	 * to avoid complications.
+ 	 */
+ 	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
+-	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &event->mmap_mutex)) {
++	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
+ 		/*
+ 		 * Stop all AUX events that are writing to this buffer,
+ 		 * so that we can free its AUX pages and corresponding PMU
+@@ -6405,7 +6405,7 @@ static void perf_mmap_close(struct vm_ar
+ 		rb_free_aux(rb);
+ 		WARN_ON_ONCE(refcount_read(&rb->aux_refcount));
  
-@@ -1490,7 +1490,6 @@ static struct xol_area *__create_xol_are
- 		goto free_area;
+-		mutex_unlock(&event->mmap_mutex);
++		mutex_unlock(&rb->aux_mutex);
+ 	}
  
- 	area->xol_mapping.name = "[uprobes]";
--	area->xol_mapping.fault = NULL;
- 	area->xol_mapping.pages = area->pages;
- 	area->pages[0] = alloc_page(GFP_HIGHUSER);
- 	if (!area->pages[0])
+ 	if (atomic_dec_and_test(&rb->mmap_count))
+@@ -6493,6 +6493,7 @@ static int perf_mmap(struct file *file,
+ 	struct perf_event *event = file->private_data;
+ 	unsigned long user_locked, user_lock_limit;
+ 	struct user_struct *user = current_user();
++	struct mutex *aux_mutex = NULL;
+ 	struct perf_buffer *rb = NULL;
+ 	unsigned long locked, lock_limit;
+ 	unsigned long vma_size;
+@@ -6541,6 +6542,9 @@ static int perf_mmap(struct file *file,
+ 		if (!rb)
+ 			goto aux_unlock;
+ 
++		aux_mutex = &rb->aux_mutex;
++		mutex_lock(aux_mutex);
++
+ 		aux_offset = READ_ONCE(rb->user_page->aux_offset);
+ 		aux_size = READ_ONCE(rb->user_page->aux_size);
+ 
+@@ -6691,6 +6695,8 @@ unlock:
+ 		atomic_dec(&rb->mmap_count);
+ 	}
+ aux_unlock:
++	if (aux_mutex)
++		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
+ 
+ 	/*
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -40,6 +40,7 @@ struct perf_buffer {
+ 	struct user_struct		*mmap_user;
+ 
+ 	/* AUX area */
++	struct mutex			aux_mutex;
+ 	long				aux_head;
+ 	unsigned int			aux_nest;
+ 	long				aux_wakeup;	/* last aux_watermark boundary crossed by aux_head */
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -337,6 +337,8 @@ ring_buffer_init(struct perf_buffer *rb,
+ 	 */
+ 	if (!rb->nr_pages)
+ 		rb->paused = 1;
++
++	mutex_init(&rb->aux_mutex);
+ }
+ 
+ void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)
 
 
 
