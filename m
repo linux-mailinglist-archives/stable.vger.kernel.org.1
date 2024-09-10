@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9859732DD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5067B9734EE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B3B1F22AAA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836FD1C248C7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE401917DE;
-	Tue, 10 Sep 2024 10:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4018518FC99;
+	Tue, 10 Sep 2024 10:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB8aUvXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nq9R1SXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E27318C00C;
-	Tue, 10 Sep 2024 10:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7FF18DF88;
+	Tue, 10 Sep 2024 10:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963717; cv=none; b=WNjI4H0GDLug48H4IJ9FAOKlC1shR62ORaFXXDN9jlW/Y+a7emKlnKh78JkU9NJiKOe5LFs7kKMYi+bGWBjp5oZil6XDGdJtsR34/Hc2qejk7AHWaqZ969VFmd3wy1uYOzIP8CFQEjQ24Jl1geY/yTlNJIUqpQQhN/5TmH3Yq+I=
+	t=1725964934; cv=none; b=ojjNmIz/u66jg/CDI3gXW4EIf+J2Pe9rXLZwcUkDv5afAfG25bSSHXnfL6ASe94yixiajvFH4OZtuTLyWkNWRFlc/ybcvSdANkjpWjXxhNYzjnYJgsaoSloDCf/+QHocVxJRZIoPVQVx16sWiz909dmEBuSq1+q5IEI43voExE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963717; c=relaxed/simple;
-	bh=5gPLELi1x7BJTBK4NM7QyMmo1223iw/6kn7GQUv45Is=;
+	s=arc-20240116; t=1725964934; c=relaxed/simple;
+	bh=HaZK9IqnXQ7g4xuoE8sgyLlwKBMo7Lb8uVdFDSxIRMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBETqRpMEC8FROOM5hxf9EGmAOM7uYavAQ+ReyMSKKnjhdG8QmiY0gBhhpo+rnduRP2TG5DiQQAa8LUvxcfXbkCGfkAjN/o3bH+8Ovhrz0dqnwV5XlITRtxoCqPURHcUqTWXpbxPECwMXoc52zG1VgKcGOMfNsN3dZrDzlAW9/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB8aUvXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15002C4CEC3;
-	Tue, 10 Sep 2024 10:21:56 +0000 (UTC)
+	 MIME-Version; b=WbZ0MWSCBnt6hsQZsT1J8xUP6EI+pbhWREkvtQGtX+1L5cQOKyoBECeq2V8Ajf/C8Yo0q+ZgJ4h3yA0hZ+fEY0FBkyV1U0b/Z2t7z64sh8Q+YSdqFyKmmMK3OKLij/MPjy/9XLz1iIGM0jH8eKPanzFdpajaAFmbiT52agF8FBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nq9R1SXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760E9C4CEC3;
+	Tue, 10 Sep 2024 10:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963717;
-	bh=5gPLELi1x7BJTBK4NM7QyMmo1223iw/6kn7GQUv45Is=;
+	s=korg; t=1725964933;
+	bh=HaZK9IqnXQ7g4xuoE8sgyLlwKBMo7Lb8uVdFDSxIRMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VB8aUvXeeoN5Tz6J8NU7pFrRv/1P+RTZkC4b/AAPkJ7pNPc1cI5z2KOoaUc2PJH3S
-	 gLjRhQ6HlAeFzAZHFkyO1kuHkUXhTzEs0/wydCiGbysHEimoEsGykJTkGWgAk6hsae
-	 yKa12soATG16R5dRWkl7X6SLIN3CX6pV4l2Um/U4=
+	b=nq9R1SXnS5+/9xK+0GiuTBvHlNiVbw1s6u5qK+eI6kjeIWEli83LZN56Uoe2Z7nXV
+	 Vi6PAtrctYx1LB+T40+blV2gATphNXA2Obkq1ov8W3iUWjm83eMXy+Z34IYDyrNYUE
+	 kXUuqZdruRwdl+ozBKxQ1v8Hgg1ZHlssyyYUhDuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/214] btrfs: replace BUG_ON with ASSERT in walk_down_proc()
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 080/186] NFSD: Refactor nfsd_reply_cache_free_locked()
 Date: Tue, 10 Sep 2024 11:32:55 +0200
-Message-ID: <20240910092604.988459085@linuxfoundation.org>
+Message-ID: <20240910092557.808254750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1f9d44c0a12730a24f8bb75c5e1102207413cc9b ]
+[ Upstream commit 35308e7f0fc3942edc87d9c6dc78c4a096428957 ]
 
-We have a couple of areas where we check to make sure the tree block is
-locked before looking up or messing with references.  This is old code
-so it has this as BUG_ON().  Convert this to ASSERT() for developers.
+To reduce contention on the bucket locks, we must avoid calling
+kfree() while each bucket lock is held.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Start by refactoring nfsd_reply_cache_free_locked() into a helper
+that removes an entry from the bucket (and must therefore run under
+the lock) and a second helper that frees the entry (which does not
+need to hold the lock).
+
+For readability, rename the helpers nfsd_cacherep_<verb>.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: a9507f6af145 ("NFSD: Replace nfsd_prune_bucket()")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfscache.c |   27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 24cbddc0b36f..ea488b5f5cd8 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5086,7 +5086,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
- 	if (lookup_info &&
- 	    ((wc->stage == DROP_REFERENCE && wc->refs[level] != 1) ||
- 	     (wc->stage == UPDATE_BACKREF && !(wc->flags[level] & flag)))) {
--		BUG_ON(!path->locks[level]);
-+		ASSERT(path->locks[level]);
- 		ret = btrfs_lookup_extent_info(trans, fs_info,
- 					       eb->start, level, 1,
- 					       &wc->refs[level],
-@@ -5110,7 +5110,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -110,21 +110,33 @@ nfsd_reply_cache_alloc(struct svc_rqst *
+ 	return rp;
+ }
  
- 	/* wc->stage == UPDATE_BACKREF */
- 	if (!(wc->flags[level] & flag)) {
--		BUG_ON(!path->locks[level]);
-+		ASSERT(path->locks[level]);
- 		ret = btrfs_inc_ref(trans, root, eb, 1);
- 		BUG_ON(ret); /* -ENOMEM */
- 		ret = btrfs_dec_ref(trans, root, eb, 0);
--- 
-2.43.0
-
++static void nfsd_cacherep_free(struct svc_cacherep *rp)
++{
++	if (rp->c_type == RC_REPLBUFF)
++		kfree(rp->c_replvec.iov_base);
++	kmem_cache_free(drc_slab, rp);
++}
++
+ static void
+-nfsd_reply_cache_free_locked(struct nfsd_drc_bucket *b, struct svc_cacherep *rp,
+-				struct nfsd_net *nn)
++nfsd_cacherep_unlink_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
++			    struct svc_cacherep *rp)
+ {
+-	if (rp->c_type == RC_REPLBUFF && rp->c_replvec.iov_base) {
++	if (rp->c_type == RC_REPLBUFF && rp->c_replvec.iov_base)
+ 		nfsd_stats_drc_mem_usage_sub(nn, rp->c_replvec.iov_len);
+-		kfree(rp->c_replvec.iov_base);
+-	}
+ 	if (rp->c_state != RC_UNUSED) {
+ 		rb_erase(&rp->c_node, &b->rb_head);
+ 		list_del(&rp->c_lru);
+ 		atomic_dec(&nn->num_drc_entries);
+ 		nfsd_stats_drc_mem_usage_sub(nn, sizeof(*rp));
+ 	}
+-	kmem_cache_free(drc_slab, rp);
++}
++
++static void
++nfsd_reply_cache_free_locked(struct nfsd_drc_bucket *b, struct svc_cacherep *rp,
++				struct nfsd_net *nn)
++{
++	nfsd_cacherep_unlink_locked(nn, b, rp);
++	nfsd_cacherep_free(rp);
+ }
+ 
+ static void
+@@ -132,8 +144,9 @@ nfsd_reply_cache_free(struct nfsd_drc_bu
+ 			struct nfsd_net *nn)
+ {
+ 	spin_lock(&b->cache_lock);
+-	nfsd_reply_cache_free_locked(b, rp, nn);
++	nfsd_cacherep_unlink_locked(nn, b, rp);
+ 	spin_unlock(&b->cache_lock);
++	nfsd_cacherep_free(rp);
+ }
+ 
+ int nfsd_drc_slab_create(void)
 
 
 
