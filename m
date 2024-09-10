@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-75697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D0973F96
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:30:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCE5973FA0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89104B281D1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:30:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADC328349F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD451BC9E3;
-	Tue, 10 Sep 2024 17:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA1E1BD002;
+	Tue, 10 Sep 2024 17:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSERkTQm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fsnCEoQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4511BC07D;
-	Tue, 10 Sep 2024 17:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F401BCA12;
+	Tue, 10 Sep 2024 17:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988998; cv=none; b=gAljGZSa99M60D2D8KQSXW+VG129G2jkQgnCDsDzEj/tFWWOaBsSUwdCBJ9J54mMtMzGt4+EtC9EcljXg5gMtUYw1kZksI5mwkh7YbP243LUhwdVVyXpHLnhOOMw7z5Nkwxi20g54ImYz5hY3xWqDbnSYszAgiAKV6uQ6AmfPEs=
+	t=1725989001; cv=none; b=TN06IMRpn0StkJE3Mtevp6VNBQrAyRHjNngHCndkd7Bhg+0Najj+MjX7XzSFwMQ9mkFJcUi19abLidSo6TcAGIhPKW1OGy65L4m/8LYLlcTShWJgSjVjAe5TTuLdln1HNy1rS1gQu57VmAeebmrcSc5tXwSZ8suPlOXF0ylcPWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988998; c=relaxed/simple;
-	bh=QC9waTAYhanq0vRqyFrmyLWHIwfCfeopNkfwbFRwz1s=;
+	s=arc-20240116; t=1725989001; c=relaxed/simple;
+	bh=0OjB6Sc1p5YtedZLLX1wZKVFYQugNgt1v2e4bVCToao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUGo6LyuNKb7yTZYGW6uNjVpRgdfE1lMTihq+MHtrTqDP7FtuVOVXXW6drKcy2hTyTMjOkpg9rIaXQbLd4ysDzAU4isNCgUDGT3Owjo7DqUl3INO/WvqZsZQqBrJAIjfPmvgyi6wyO0P46ltRZ9tcnxFk30iNtD71uZH7duNdiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSERkTQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9F8C4CECD;
-	Tue, 10 Sep 2024 17:23:17 +0000 (UTC)
+	 MIME-Version; b=IarIjXbF5RMnmEt9U33sQZzf60qqLB+LQC4+ZNMCcq/qGehJqpUtdQnDQB/HDo7KLEnMQWE+nAN2Duscwqyz03pxlKk722oWqYYxm0vRS23KfM7WgqU2nvdNpkg+Ctsce7NselSHSyXuTR6TiU5boIqJHaN3YhExxaQwc3DFaCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fsnCEoQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B30DC4CECD;
+	Tue, 10 Sep 2024 17:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988998;
-	bh=QC9waTAYhanq0vRqyFrmyLWHIwfCfeopNkfwbFRwz1s=;
+	s=k20201202; t=1725989000;
+	bh=0OjB6Sc1p5YtedZLLX1wZKVFYQugNgt1v2e4bVCToao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSERkTQm59XrbRJ2uY2Odref4X/0gi/zhmN23L46HPg8EeeRFtrfSnbxJosKUhPsB
-	 8y44f5yPU2edjRWEFRDWT9XcD3xD6RmQnEsURBDQsMfbeY3QIvfqTs9eM4oc76coGb
-	 Ky1LGdjW8D5lqXIWPsTlfwgXCFXRS3DTe8Sfis+caXLUeA1lIf+t9Whs5ee13C52YG
-	 VSdQfxLqyuLankI2iDOfOin3p2yi1dnfes5gpDzkvbNJ6Zo/V/chex6movRKg79X70
-	 F1I5pm7DG4aXahDZy+OhDntZVRqBfUYz5w6+EI8WRhA38Xiqj6WRj2H3V+DCilGgc+
-	 PaTIX2MuKcA5A==
+	b=fsnCEoQ/ouhumCBZS3nSO2q2ExXp5V4gK1wMaWhr9DlP4sqo9Q3gO5EB+5IjOlrBv
+	 jOo7Q/NA4eFcxk7ij4dVsf0XrGo0c2g3W/epimlqAshcTovdwXexNv4L+fSGs4jxeb
+	 vnBgC4DJCUdAFH4aBSE+i1N/Bm/PMgJLCN6vBrDlEDZmiRuhyNdTAA0CloncTexCfU
+	 EMM5nTNJOQNVz/cYvCtec4AbRcrGKkNVYbaDw0kCMUTrnOBk4JyrrPghnL8SRavaKO
+	 N34cA0/eLx930Eo+/OWeQ0YJpHxqFJuWsmqqkLwJ35So+o6+SqHjLe42HbwVnHAAmX
+	 imp1q0rSD8aCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Markuss Broks <markuss.broks@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/12] spi: spidev: Add an entry for elgin,jg10309-01
-Date: Tue, 10 Sep 2024 13:22:49 -0400
-Message-ID: <20240910172301.2415973-7-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	mario.limonciello@amd.com,
+	me@jwang.link,
+	end.to.start@mail.ru,
+	git@augustwikerfors.se,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/12] ASoC: amd: yc: Add a quirk for MSI Bravo 17 (D7VEK)
+Date: Tue, 10 Sep 2024 13:22:50 -0400
+Message-ID: <20240910172301.2415973-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172301.2415973-1-sashal@kernel.org>
 References: <20240910172301.2415973-1-sashal@kernel.org>
@@ -66,36 +72,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.50
 Content-Transfer-Encoding: 8bit
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Markuss Broks <markuss.broks@gmail.com>
 
-[ Upstream commit 5f3eee1eef5d0edd23d8ac0974f56283649a1512 ]
+[ Upstream commit 283844c35529300c8e10f7a263e35e3c5d3580ac ]
 
-The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
-The marking on the LCD is JG10309-01.
+MSI Bravo 17 (D7VEK), like other laptops from the family,
+has broken ACPI tables and needs a quirk for internal mic
+to work.
 
-Add the "elgin,jg10309-01" compatible string.
-
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patch.msgid.link/20240828180057.3167190-2-festevam@gmail.com
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+Link: https://patch.msgid.link/20240829130313.338508-1-markuss.broks@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index b97206d47ec6..edc47a97cbe4 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -735,6 +735,7 @@ static int spidev_of_check(struct device *dev)
- static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
-+	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
- 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f6c1dbd0ebcf..248e3bcbf386 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -353,6 +353,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
