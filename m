@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5266972FE6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D13973082
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A271B280F91
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C908A287317
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9120B18CC1D;
-	Tue, 10 Sep 2024 09:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FF718FDB1;
+	Tue, 10 Sep 2024 10:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5x/pmhx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIPQTCM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1F813AD09;
-	Tue, 10 Sep 2024 09:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D5818FDB7;
+	Tue, 10 Sep 2024 10:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962134; cv=none; b=aVa9D9bDVz/IIdzY9ZxYMEMJOJu5LqTf5kSFknfbt7WI8cDAtA6/AxhjuNQ653WwC64kPEsaNyFcqOwbF8+tlaofm30I2+ORIJ87SE2HVkwBKXyRDu1dZpzesp3SLhcLRNPdnq0QtRONMoW99msXh8DM6ddzvuUw+1xzy7DOVUg=
+	t=1725962446; cv=none; b=oP5L3YzYbsMywkrvPXesQoFmj9PQgPjGdZFKrIjlebTfSV4Vhdm9pFL5diN0/yUWIN13v5naB9uTYj7uI4L7LbBgPX45amE9X2Ms4gIEZ1KNXi74cWj1W7O4XrQz5l9+7X4jdu+sIHMVv5HRwaestiF3e25CrRI4SrNG9vF8ALQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962134; c=relaxed/simple;
-	bh=rkJgsCF7Ms1/f0nxR0EAZYZrP7O0/yMvk3Il8Wd92n0=;
+	s=arc-20240116; t=1725962446; c=relaxed/simple;
+	bh=H3L/+09se/XgLSoPILaCkBh5hrRqJpJNyDf4GG/iqkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SytpOFBHc9UoTqd94GC6o16hZB7OrdqQOuUIcGBQufdKYB6RJLOfU432iTU6T4xKBes85svV47BKTG4hayZOFuV0Ig2Qhn9DYc/IaA4NABNuHB4rpVh5fReuuYsqlRhuuh599EqqnaLDYXKsBhl07fb2Cx2ciG9rmEPUqoB1pVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5x/pmhx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB719C4CEC3;
-	Tue, 10 Sep 2024 09:55:33 +0000 (UTC)
+	 MIME-Version; b=QeTsNehJRKQ6MZZYVGBX3Neq9hAk8KfQc9J1SEFg10CJFn0Q+Qvprq4oRimHwJuLjReMUuSdNFhfls+hTxTUbJTN4pAkjV9Qaqw5D8JmI6HsPzlRaIfDc3c1rdY0Yr6CgyV8xJ0DL58ojDntWG3cJgLEaeswUKdnWGOSUZG2uCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIPQTCM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269AEC4CEC3;
+	Tue, 10 Sep 2024 10:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962134;
-	bh=rkJgsCF7Ms1/f0nxR0EAZYZrP7O0/yMvk3Il8Wd92n0=;
+	s=korg; t=1725962445;
+	bh=H3L/+09se/XgLSoPILaCkBh5hrRqJpJNyDf4GG/iqkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5x/pmhxDCtKjglVGnW8i/4o1SBHaFt6nITP0mC0qjQ13XF3fRPcy057IA8zjODIw
-	 kg9iJOfYfCAseEfsLGsn/GOfIQl4gzOeCJxkRJi4j27Rk8+M1l8aTqTDp4EJ51w3Xm
-	 sg1vd4ebuHaE0gJyEy0fPM65eFoM/gNzKO6D/1J4=
+	b=jIPQTCM3DGJrrGX0ymadvYEFcb1hN6uJOrq2AB9xTwfJSkrNrFwIjllr01RYUObTz
+	 6QFAyIxUQGIwZ1gpMCfc4SMbaAnq4lJ4DkOP5yRPH6lLv7moHpWAcsIFlO7/tpk8C/
+	 uzXZ9ufS5xuzb0r7IpI9+lIirE3EkKWH9H7v2V5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.10 306/375] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
-Date: Tue, 10 Sep 2024 11:31:43 +0200
-Message-ID: <20240910092632.843634556@linuxfoundation.org>
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.4 029/121] ata: libata: Fix memory leak for error path in ata_host_alloc()
+Date: Tue, 10 Sep 2024 11:31:44 +0200
+Message-ID: <20240910092547.118298534@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
+commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
 
-The value written into the TPM CnV can only be updated into the hardware
-when the counter increases. Additional writes to the CnV write buffer are
-ignored until the register has been updated. Therefore, we need to check
-if the CnV has been updated before continuing. This may require waiting for
-1 counter cycle in the worst case.
+In ata_host_alloc(), if devres_alloc() fails to allocate the device host
+resource data pointer, the already allocated ata_host structure is not
+freed before returning from the function. This results in a potential
+memory leak.
 
+Call kfree(host) before jumping to the error handling path to ensure
+that the ata_host structure is properly freed if devres_alloc() fails.
+
+Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
 Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/ata/libata-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
- 	now = tpm_read_counter();
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -6203,8 +6203,10 @@ struct ata_host *ata_host_alloc(struct d
+ 	}
  
- 	/*
-+	 * Need to wait CNT increase at least 1 cycle to make sure
-+	 * the C0V has been updated into HW.
-+	 */
-+	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
-+		while (now == tpm_read_counter())
-+			;
-+
-+	/*
- 	 * NOTE: We observed in a very small probability, the bus fabric
- 	 * contention between GPU and A7 may results a few cycles delay
- 	 * of writing CNT registers which may cause the min_delta event got
+ 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
+-	if (!dr)
++	if (!dr) {
++		kfree(host);
+ 		goto err_out;
++	}
+ 
+ 	devres_add(dev, dr);
+ 	dev_set_drvdata(dev, host);
 
 
 
