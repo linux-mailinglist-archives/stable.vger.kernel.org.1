@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B5A97347C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA545973324
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F178B1F257A6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98669283663
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB118C025;
-	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715D518C344;
+	Tue, 10 Sep 2024 10:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3gSm3DR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsu0o1BW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7A18A6B9;
-	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF9018B488;
+	Tue, 10 Sep 2024 10:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964691; cv=none; b=Y57V+hqzrl0gN7NGpbpYR8Amp66HcATuf4mCorzepS+dnQESgjURZaXuxspgm9iIrMH6VPtspMpSzxbGR9yuOVRIy46Dz6sc8fzKnM6JeSIh9qXmhSBVnspBp+JsOG9yfJzeXhNn+tIwbpopR21Hb6XPbphAuNlU4ZooKgo8o+E=
+	t=1725963911; cv=none; b=F9mkPjSIvR6Gf43onGQv29Odk7p4UqkeDA32+glV+LWRFxcRLtUiNumFHjrSKU7/ox+BH9i8pn837Rk+07VEoygPeOiamFNH5tKmL94Jd6rePQwyFSmPHidZsGFUB7maTjEC5gyNd1D8pCsvAqYs7C4+IQFgL+WkWzuGRsInnHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964691; c=relaxed/simple;
-	bh=YTcUVjnjHf5PQul2GMNrR3MIPEe6X41fKoZ+4HpzJFw=;
+	s=arc-20240116; t=1725963911; c=relaxed/simple;
+	bh=tEZG4ccmUCynyqM7ckIsvY1HQT44jD+WHtPMYt/jH4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+gNXnCZqsc8tfqBvCCB15GUZ2fMQRDWHiv7cWQe+F9O+t3iNi1qxR3qexi+FMv+PtvgvFFk4vD9KR92vxIK+Tc45E93JKb9EtQLBjJP33l0K985PQ3+YIoopX8N7d8siw6Wn7nbgPyLykEc7gkmkCLh5Wh3xiFbSAjHDpQ2m0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3gSm3DR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350B5C4CEC3;
-	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
+	 MIME-Version; b=GZeD4jr/+aK9hnKqmMVHoNKPepraBfFZW45vVdQQjMlO8Dvd6H+hnWHC12RG9nOf0dWJgBW7gfyjTwNPhDMm/qUG65XV6M1GFSL8q8dUhOrqf9DWgKN7QNu5mJO98RXO8Rj1cTQTjZHt8fdHNF8JH44i6LxKhqsp12jl8DscehI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsu0o1BW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F36C4CEC3;
+	Tue, 10 Sep 2024 10:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964691;
-	bh=YTcUVjnjHf5PQul2GMNrR3MIPEe6X41fKoZ+4HpzJFw=;
+	s=korg; t=1725963911;
+	bh=tEZG4ccmUCynyqM7ckIsvY1HQT44jD+WHtPMYt/jH4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3gSm3DRM87CwvIjG9yQ0DNusTXANGfATtsCMvq/E7tX5ZcpJ3Krco2W7LaZGgl2n
-	 yMDb/b/lHtGTXR0Aub94D6XjwncrOeTRZQvQM9EmWPRK8T10fHM5NC8WkoEcL6GZcj
-	 gz86qywpi2h6U2LrFjbkzLShqcvW9A4oRJZb5Un8=
+	b=gsu0o1BW918l0baKlwnpNvWbenWe9XpLTzKzglt+D6Io2qy6Z5faArMT487C7tb+1
+	 1sLWaiaw9Rp8FUQgtmIDCYauj6g9U8ckdkUnMN+2KrpRRb5Q6XZ28I36ZfwNrluMRe
+	 C5IphgcMxJ34tyfSXuL/IZXhXnvKvzQrEXTCY+gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/269] crypto: starfive - Fix nent assignment in rsa dec
+	Yuri Benditovich <yuri.benditovich@daynix.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 207/214] net: change maximum number of UDP segments to 128
 Date: Tue, 10 Sep 2024 11:33:49 +0200
-Message-ID: <20240910092616.487048555@linuxfoundation.org>
+Message-ID: <20240910092606.970151688@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Jie Ho <jiajie.ho@starfivetech.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
 
-[ Upstream commit 8323c036789b8b4a61925fce439a89dba17b7f2f ]
+[ Upstream commit 1382e3b6a3500c245e5278c66d210c02926f804f ]
 
-Missing src scatterlist nent assignment in rsa decrypt function.
-Removing all unneeded assignment and use nents value from req->src
-instead.
+The commit fc8b2a619469
+("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+adds check of potential number of UDP segments vs
+UDP_MAX_SEGMENTS in linux/virtio_net.h.
+After this change certification test of USO guest-to-guest
+transmit on Windows driver for virtio-net device fails,
+for example with packet size of ~64K and mss of 536 bytes.
+In general the USO should not be more restrictive than TSO.
+Indeed, in case of unreasonably small mss a lot of segments
+can cause queue overflow and packet loss on the destination.
+Limit of 128 segments is good for any practical purpose,
+with minimal meaningful mss of 536 the maximal UDP packet will
+be divided to ~120 segments.
+The number of segments for UDP packets is validated vs
+UDP_MAX_SEGMENTS also in udp.c (v4,v6), this does not affect
+quest-to-guest path but does affect packets sent to host, for
+example.
+It is important to mention that UDP_MAX_SEGMENTS is kernel-only
+define and not available to user mode socket applications.
+In order to request MSS smaller than MTU the applications
+just uses setsockopt with SOL_UDP and UDP_SEGMENT and there is
+no limitations on socket API level.
 
-Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+
+[5.15-stable: fix conflict with neighboring but unrelated code from
+              e2a4392b61f6 ("udp: introduce udp->udp_flags")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/starfive/jh7110-cryp.h | 1 -
- drivers/crypto/starfive/jh7110-rsa.c  | 3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ include/linux/udp.h                  |    2 +-
+ tools/testing/selftests/net/udpgso.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-cryp.h b/drivers/crypto/starfive/jh7110-cryp.h
-index f386e9897896..607f70292b21 100644
---- a/drivers/crypto/starfive/jh7110-cryp.h
-+++ b/drivers/crypto/starfive/jh7110-cryp.h
-@@ -213,7 +213,6 @@ struct starfive_cryp_request_ctx {
- 	struct scatterlist			*out_sg;
- 	struct ahash_request			ahash_fbk_req;
- 	size_t					total;
--	size_t					nents;
- 	unsigned int				blksize;
- 	unsigned int				digsize;
- 	unsigned long				in_sg_len;
-diff --git a/drivers/crypto/starfive/jh7110-rsa.c b/drivers/crypto/starfive/jh7110-rsa.c
-index fbc06f8ee95f..1db9a3d02848 100644
---- a/drivers/crypto/starfive/jh7110-rsa.c
-+++ b/drivers/crypto/starfive/jh7110-rsa.c
-@@ -282,7 +282,7 @@ static int starfive_rsa_enc_core(struct starfive_cryp_ctx *ctx, int enc)
- 		memset(rctx->rsa_data, 0, shift);
- 	}
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -94,7 +94,7 @@ struct udp_sock {
+ 	int		forward_deficit;
+ };
  
--	rctx->total = sg_copy_to_buffer(rctx->in_sg, rctx->nents,
-+	rctx->total = sg_copy_to_buffer(rctx->in_sg, sg_nents(rctx->in_sg),
- 					rctx->rsa_data + shift, rctx->total);
+-#define UDP_MAX_SEGMENTS	(1 << 6UL)
++#define UDP_MAX_SEGMENTS	(1 << 7UL)
  
- 	if (enc) {
-@@ -333,7 +333,6 @@ static int starfive_rsa_enc(struct akcipher_request *req)
- 	rctx->in_sg = req->src;
- 	rctx->out_sg = req->dst;
- 	rctx->total = req->src_len;
--	rctx->nents = sg_nents(rctx->in_sg);
- 	ctx->rctx = rctx;
+ static inline struct udp_sock *udp_sk(const struct sock *sk)
+ {
+--- a/tools/testing/selftests/net/udpgso.c
++++ b/tools/testing/selftests/net/udpgso.c
+@@ -34,7 +34,7 @@
+ #endif
  
- 	return starfive_rsa_enc_core(ctx, 1);
--- 
-2.43.0
-
+ #ifndef UDP_MAX_SEGMENTS
+-#define UDP_MAX_SEGMENTS	(1 << 6UL)
++#define UDP_MAX_SEGMENTS	(1 << 7UL)
+ #endif
+ 
+ #define CONST_MTU_TEST	1500
 
 
 
