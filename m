@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F7197331B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EF973261
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C62D287315
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27BA3B258F6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979A9194C6A;
-	Tue, 10 Sep 2024 10:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB3218DF72;
+	Tue, 10 Sep 2024 10:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvqT3RID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJRGw+H6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324791922F6;
-	Tue, 10 Sep 2024 10:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C1318C039;
+	Tue, 10 Sep 2024 10:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963881; cv=none; b=aKywUxrvn9DlywFOWIuYmgM7AYUcw6s9W65aBPsAC2lPg9PFEqtey1bmg1x83dVeDvyNg5KTO2Ka+ybo+9wxd/UMD9v7yd/3GzuTjS38S+M2ZPhgfRF7xN0yEJyuTWoauXLk98XILoS5DyTmIctlWp5sye7XHUnScGbAfpyfku0=
+	t=1725963280; cv=none; b=fE3kuZPGWZu8J7s4//ETJlf6NoV/rkrAznUg7Q6s5zKK0kI7qRlMUzg4phBoV9bzs9+bfsgcWoHe3uryqFjua11lKbh3qzJNCWenSimJH9XuRUZOgGIgfXxNrQ2KvhzRX9cO5QoC9SBi1PGRl29srGrLcoipbWcdB5ZL2Tp5gqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963881; c=relaxed/simple;
-	bh=Aa6VdyvlzcSUkI/8rXvOK9k8pNJU3kldM5zwOFZvytY=;
+	s=arc-20240116; t=1725963280; c=relaxed/simple;
+	bh=jpdNPREx9DZN3Wa56TM6tXHAcqPHWSTl8HYg3HYiP5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXymOWEgr0H5FO0/HxYrcQjYGccM3ZfXs6SWWrZ4lbD9A38zb3nGYwOaVXHNsOFSvPgr7QNBZzjtIXeVzeOYSU108XibLWVBlXMmpkUnS0sab5qgzDpTZLS7IX2/XvhK9+IqGeLbDzDkK1jDwazS2uZ7h7NlQOgm5NLYq0fdvx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvqT3RID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD984C4CEC3;
-	Tue, 10 Sep 2024 10:24:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jYzoGUPK3hf+yC13p4kD11fPIAlo+gYM4ydKzeM92wu9lUnf9BtcJQixyA7ZCkyn0fdNo4EfovdDcYF2FVghqcixYAQyV+g+Zv8/EmOoQW7Rvagf6m7Emn7Mjc8Mb47L6GymBYU75ut22R7fy87jWmu21J9JnNhYnj9LuB9iRQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJRGw+H6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5E1C4CEC3;
+	Tue, 10 Sep 2024 10:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963881;
-	bh=Aa6VdyvlzcSUkI/8rXvOK9k8pNJU3kldM5zwOFZvytY=;
+	s=korg; t=1725963280;
+	bh=jpdNPREx9DZN3Wa56TM6tXHAcqPHWSTl8HYg3HYiP5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvqT3RIDHLt8MNry4a+pBiwJPUIblPwCtidcbxq+gGoZmyc8Ohhaf51P+vLJ5LSLA
-	 wo9imHkeVLLRPzU2TXxy44Wb/1exZxLiXoiV6zPQ4BL18z6T7ZRrZpEMi9+d0eBU4Z
-	 04mQOLbQsVqBca281zzeBh9JzjNNLbyeXHnWmMsQ=
+	b=EJRGw+H68is6N2ZSBCskSo0y9zq++E9Ma5SPLX24VcLCcTMuU5sg3hcEnDnwlt0Yk
+	 IQxU1yo/jseYTuf4pd+BQePpTXG2wfJVVAGuF7a3S2u2VqDuTifIu3veR989xXA56U
+	 x6J1bsDBa1EZhKHFvM2tWzo0W01ic/OV+tJ7JBy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 172/214] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
+Subject: [PATCH 6.1 170/192] can: mcp251xfd: rx: prepare to workaround broken RX FIFO head index erratum
 Date: Tue, 10 Sep 2024 11:33:14 +0200
-Message-ID: <20240910092605.706772156@linuxfoundation.org>
+Message-ID: <20240910092604.888577609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,256 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
+[ Upstream commit 85505e585637a737e4713c1386c30e37c325b82e ]
 
-We're seeing reports of soft lockups when iterating through the loops,
-so let's add rescheduling points.
+This is a preparatory patch to work around erratum DS80000789E 6 of
+the mcp2518fd, the other variants of the chip family (mcp2517fd and
+mcp251863) are probably also affected.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+When handling the RX interrupt, the driver iterates over all pending
+FIFOs (which are implemented as ring buffers in hardware) and reads
+the FIFO header index from the RX FIFO STA register of the chip.
+
+In the bad case, the driver reads a too large head index. In the
+original code, the driver always trusted the read value, which caused
+old CAN frames that were already processed, or new, incompletely
+written CAN frames to be (re-)processed.
+
+Instead of reading and trusting the head index, read the head index
+and calculate the number of CAN frames that were supposedly received -
+replace mcp251xfd_rx_ring_update() with mcp251xfd_get_rx_len().
+
+The mcp251xfd_handle_rxif_ring() function reads the received CAN
+frames from the chip, iterates over them and pushes them into the
+network stack. Prepare that the iteration can be stopped if an old CAN
+frame is detected. The actual code to detect old or incomplete frames
+and abort will be added in the next patch.
+
+Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com
+Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 89 +++++++++++--------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 12 +--
+ 3 files changed, 56 insertions(+), 47 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index a847011f36c9..9e672aed3590 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -47,6 +47,7 @@
- #include <linux/vfs.h>
- #include <linux/inet.h>
- #include <linux/in6.h>
-+#include <linux/sched.h>
- #include <linux/slab.h>
- #include <net/ipv6.h>
- #include <linux/netdevice.h>
-@@ -219,6 +220,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
- 		ret = fn(server, data);
- 		if (ret)
- 			goto out;
-+		cond_resched();
- 		rcu_read_lock();
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 915d505a304f..5ed0cd62f4f8 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -513,6 +513,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
+ 		}
+ 
+ 		rx_ring->obj_num = rx_obj_num;
++		rx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(rx_ring->obj_num_shift_to_u8) -
++			ilog2(rx_obj_num);
+ 		rx_ring->obj_size = rx_obj_size;
+ 		priv->rx[i] = rx_ring;
  	}
- 	rcu_read_unlock();
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index 5e2f39de88f3..5d0fb1c454cd 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -16,23 +16,14 @@
+ 
+ #include "mcp251xfd.h"
+ 
+-static inline int
+-mcp251xfd_rx_head_get_from_chip(const struct mcp251xfd_priv *priv,
+-				const struct mcp251xfd_rx_ring *ring,
+-				u8 *rx_head, bool *fifo_empty)
++static inline bool mcp251xfd_rx_fifo_sta_empty(const u32 fifo_sta)
+ {
+-	u32 fifo_sta;
+-	int err;
+-
+-	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
+-			  &fifo_sta);
+-	if (err)
+-		return err;
+-
+-	*rx_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
+-	*fifo_empty = !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++}
+ 
+-	return 0;
++static inline bool mcp251xfd_rx_fifo_sta_full(const u32 fifo_sta)
++{
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
+ 
+ static inline int
+@@ -80,29 +71,49 @@ mcp251xfd_check_rx_tail(const struct mcp251xfd_priv *priv,
+ }
+ 
+ static int
+-mcp251xfd_rx_ring_update(const struct mcp251xfd_priv *priv,
+-			 struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_len(const struct mcp251xfd_priv *priv,
++		     const struct mcp251xfd_rx_ring *ring,
++		     u8 *len_p)
+ {
+-	u32 new_head;
+-	u8 chip_rx_head;
+-	bool fifo_empty;
++	const u8 shift = ring->obj_num_shift_to_u8;
++	u8 chip_head, tail, len;
++	u32 fifo_sta;
+ 	int err;
+ 
+-	err = mcp251xfd_rx_head_get_from_chip(priv, ring, &chip_rx_head,
+-					      &fifo_empty);
+-	if (err || fifo_empty)
++	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
++			  &fifo_sta);
++	if (err)
++		return err;
++
++	if (mcp251xfd_rx_fifo_sta_empty(fifo_sta)) {
++		*len_p = 0;
++		return 0;
++	}
++
++	if (mcp251xfd_rx_fifo_sta_full(fifo_sta)) {
++		*len_p = ring->obj_num;
++		return 0;
++	}
++
++	chip_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
++
++	err =  mcp251xfd_check_rx_tail(priv, ring);
++	if (err)
+ 		return err;
++	tail = mcp251xfd_get_rx_tail(ring);
+ 
+-	/* chip_rx_head, is the next RX-Object filled by the HW.
+-	 * The new RX head must be >= the old head.
++	/* First shift to full u8. The subtraction works on signed
++	 * values, that keeps the difference steady around the u8
++	 * overflow. The right shift acts on len, which is an u8.
+ 	 */
+-	new_head = round_down(ring->head, ring->obj_num) + chip_rx_head;
+-	if (new_head <= ring->head)
+-		new_head += ring->obj_num;
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(chip_head));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(tail));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(len));
+ 
+-	ring->head = new_head;
++	len = (chip_head << shift) - (tail << shift);
++	*len_p = len >> shift;
+ 
+-	return mcp251xfd_check_rx_tail(priv, ring);
++	return 0;
+ }
+ 
+ static void
+@@ -208,6 +219,8 @@ mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
+ 	if (!len)
+ 		return 0;
+ 
++	ring->head += len;
++
+ 	/* Increment the RX FIFO tail pointer 'len' times in a
+ 	 * single SPI message.
+ 	 *
+@@ -233,22 +246,22 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			   struct mcp251xfd_rx_ring *ring)
+ {
+ 	struct mcp251xfd_hw_rx_obj_canfd *hw_rx_obj = ring->obj;
+-	u8 rx_tail, len;
++	u8 rx_tail, len, l;
+ 	int err, i;
+ 
+-	err = mcp251xfd_rx_ring_update(priv, ring);
++	err = mcp251xfd_get_rx_len(priv, ring, &len);
+ 	if (err)
+ 		return err;
+ 
+-	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
++	while ((l = mcp251xfd_get_rx_linear_len(ring, len))) {
+ 		rx_tail = mcp251xfd_get_rx_tail(ring);
+ 
+ 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
+-					    rx_tail, len);
++					    rx_tail, l);
+ 		if (err)
+ 			return err;
+ 
+-		for (i = 0; i < len; i++) {
++		for (i = 0; i < l; i++) {
+ 			err = mcp251xfd_handle_rxif_one(priv, ring,
+ 							(void *)hw_rx_obj +
+ 							i * ring->obj_size);
+@@ -256,9 +269,11 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 				return err;
+ 		}
+ 
+-		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
++		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, l);
+ 		if (err)
+ 			return err;
++
++		len -= l;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index 78d12dda08a0..ca5f4e670ec1 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -553,6 +553,7 @@ struct mcp251xfd_rx_ring {
+ 	u8 nr;
+ 	u8 fifo_nr;
+ 	u8 obj_num;
++	u8 obj_num_shift_to_u8;
+ 	u8 obj_size;
+ 
+ 	union mcp251xfd_write_reg_buf irq_enable_buf;
+@@ -889,18 +890,9 @@ static inline u8 mcp251xfd_get_rx_tail(const struct mcp251xfd_rx_ring *ring)
+ 	return ring->tail & (ring->obj_num - 1);
+ }
+ 
+-static inline u8 mcp251xfd_get_rx_len(const struct mcp251xfd_rx_ring *ring)
+-{
+-	return ring->head - ring->tail;
+-}
+-
+ static inline u8
+-mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring, u8 len)
+ {
+-	u8 len;
+-
+-	len = mcp251xfd_get_rx_len(ring);
+-
+ 	return min_t(u8, len, ring->obj_num - mcp251xfd_get_rx_tail(ring));
+ }
+ 
 -- 
 2.43.0
 
