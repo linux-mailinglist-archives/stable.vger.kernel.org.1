@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C629734E2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15E09732AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0652868DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7F41C242FA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8F2AF15;
-	Tue, 10 Sep 2024 10:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF97F199929;
+	Tue, 10 Sep 2024 10:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs3h6uI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byw0wQsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D3818A6AA;
-	Tue, 10 Sep 2024 10:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF45199389;
+	Tue, 10 Sep 2024 10:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964895; cv=none; b=SQikftjyF5AAiKZJ5w0odn21Kk7I37GyWGGB+71TS2CI8JyBhoPrfnwc59MGY9C5WVHzR4UBJLkKvw8Ne8Nt2ajRyQ9uLx6qiUrzriQIvfJ80eRz+pWXrVKGIIBNHVWbiwStHxe+KsUxHklOvt6v/zrWb5ifmKIvzxTUGa2Mv9U=
+	t=1725963573; cv=none; b=sJJVNj0wlalUMG6tDyrIhHCHB5g1Sfr137k9NGKtEFf+XcS6XRD7IlkOoGPia70xzDrowqqDBiUTCTUjKrajyYGp6fqkf673kn5J8j8TsJgasCUUgfyOb/f/x9Ye1r3azJ/RmOS5ruCiwuuaKHT64lDc9wprsYGC2+S6xnKSKns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964895; c=relaxed/simple;
-	bh=s1iQGj9y/azcqLEG1F5C5Wy00Ytl69BFFtcwR2iLgCk=;
+	s=arc-20240116; t=1725963573; c=relaxed/simple;
+	bh=gRQ4IRzqjtLrtTo9Vu1WBXlS06HpMldBG8FPRBel+Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFAnwJgXyiYbCbEgtY+gyCby1mBWeb7h7vooJF/Hj/cJ3fIzJ4ufKSJFMGIlFWZC8bs2VZr2IbzfOoIf1JxiAYIEXaJd6PErcpGJyrmCP7L3DOAe7a6c66BXzscgGzUSSuyq790YZwXb8ec1Db4yTOCWMOb4QIJxqXVipEhzh1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs3h6uI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F3C4CEC3;
-	Tue, 10 Sep 2024 10:41:34 +0000 (UTC)
+	 MIME-Version; b=i7KRHgJ1Hp2oCwsTm7LJnlVn3rQEFvZNuvryZ10koHyDuvua61+TaG2ruifhqYDfgOnhZ9avxfOiEtWv+49NSVQa7JAphAujiTnvmxv20bJ7PFRFNiLMhVXUeiD8aNq/1mP1LU1yR6/gTbFq/9YYGIIcqADe07LMm69jGOyG4QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byw0wQsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FD1C4CEC3;
+	Tue, 10 Sep 2024 10:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964895;
-	bh=s1iQGj9y/azcqLEG1F5C5Wy00Ytl69BFFtcwR2iLgCk=;
+	s=korg; t=1725963573;
+	bh=gRQ4IRzqjtLrtTo9Vu1WBXlS06HpMldBG8FPRBel+Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qs3h6uI3+9pl7CaHzIR8d4EVzDxsUDYV9VZnIWBHUCtn7WBmj2vkUaCVR0ahOHToV
-	 5wdBH7VyKIC30gwFLPtxXeiRFezqSTS4USnAKrO7gJ2MOOTMjZLBbA54bDqeBFvzhJ
-	 RF2cmwzaP+38678JegNfKm7Fq8v6D1Fu+fJpirDY=
+	b=byw0wQsugdFkCpSbImUrmQNJkXsu58NeZ/w6DQ02iffD6HU2vnBFXw7wwY93Ce7b7
+	 +dmcCtLtH24FBtmNoE3IR726uNCPIJoEUmA3qGRKqSpEyz++DNWDDIVe5xFU+S0PvU
+	 fCZgafNrEJRR20efE84uow5jWtYbAMLqdhzq9XAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/186] drm/amd/pm: check negtive return for table entries
+Subject: [PATCH 5.15 103/214] ALSA: hda: Add input value sanity checks to HDMI channel map controls
 Date: Tue, 10 Sep 2024 11:32:05 +0200
-Message-ID: <20240910092555.826214443@linuxfoundation.org>
+Message-ID: <20240910092602.997530114@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
+[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
 
-Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
+Add a simple sanity check to HD-audio HDMI Channel Map controls.
+Although the value might not be accepted for the actual connection, we
+can filter out some bogus values beforehand, and that should be enough
+for making kselftest happier.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-index 31a32a79cfc2..fe70ab4e65bb 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
-@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
+index aad5c4bf4d34..0ebf4d907852 100644
+--- a/sound/hda/hdmi_chmap.c
++++ b/sound/hda/hdmi_chmap.c
+@@ -753,6 +753,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	return 0;
+ }
+ 
++/* a simple sanity check for input values to chmap kcontrol */
++static int chmap_value_check(struct hdac_chmap *hchmap,
++			     const struct snd_ctl_elem_value *ucontrol)
++{
++	int i;
++
++	for (i = 0; i < hchmap->channels_max; i++) {
++		if (ucontrol->value.integer.value[i] < 0 ||
++		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
++			return -EINVAL;
++	}
++	return 0;
++}
++
+ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 			      struct snd_ctl_elem_value *ucontrol)
  {
- 	int result;
- 	unsigned int i;
--	unsigned int table_entries;
- 	struct pp_power_state *state;
--	int size;
-+	int size, table_entries;
+@@ -764,6 +778,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 	unsigned char chmap[8], per_pin_chmap[8];
+ 	int i, err, ca, prepared = 0;
  
- 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
- 		return 0;
-@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
- 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
- 		return 0;
- 
--	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
-+	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
- 
--	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
-+	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
- 					  sizeof(struct pp_power_state);
- 
--	if (table_entries == 0 || size == 0) {
-+	if (table_entries <= 0 || size == 0) {
- 		pr_warn("Please check whether power state management is supported on this asic\n");
-+		hwmgr->num_ps = 0;
-+		hwmgr->ps_size = 0;
- 		return 0;
- 	}
-+	hwmgr->num_ps = table_entries;
-+	hwmgr->ps_size = size;
- 
- 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
- 	if (hwmgr->ps == NULL)
++	err = chmap_value_check(hchmap, ucontrol);
++	if (err < 0)
++		return err;
++
+ 	/* No monitor is connected in dyn_pcm_assign.
+ 	 * It's invalid to setup the chmap
+ 	 */
 -- 
 2.43.0
 
