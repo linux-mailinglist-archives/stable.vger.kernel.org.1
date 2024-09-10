@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-74874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D739731D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774B19733FB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 694261F22804
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C89F1F25C10
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD4018C002;
-	Tue, 10 Sep 2024 10:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA0E19B595;
+	Tue, 10 Sep 2024 10:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/UVmcCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrXzr2WD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487AB18BC28;
-	Tue, 10 Sep 2024 10:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF01922C4;
+	Tue, 10 Sep 2024 10:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963086; cv=none; b=RKZwZ42mFjYW3Nn4jV0uMDFImHZo0yd1Dn1kDp32H7DSQ0GBPGEcwJJ6EquhKPTFEbekIDPZE8+Nq8yFDtO1UwBSRNPPZ7ToZwW8rxOJ18bHPGzGo11asgwEg9JKtqiJLMB7vjhz85BFQtB5EuUlf93PwO6q5wdDQ0qWmxZll80=
+	t=1725964393; cv=none; b=SD/Big3P/ww4VTdGxmOuLJTecR3ePX1ZTI1CZP4YHZYOBQctKZ/s/gL0MSeXlNvVjn9HVevM8H+e7bbmM49TwRK1Kza+16WIhABdMs0wXdsKzgTw+FO0Z8r/R5y4CeuLiho6AbQjDgy0nHckTw0VWUwav8fjGcsAxqkWhO3SPhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963086; c=relaxed/simple;
-	bh=1VbbEDvwZ3tBR9zUjfA6WiW36iDmtSA9ZMpljn2pShM=;
+	s=arc-20240116; t=1725964393; c=relaxed/simple;
+	bh=vQ2V3lKVBDFQmO0IS+u03pV3tTvtfvfBmSmKd0lMwag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABFfP3ACnOdmBAPe5kuYz1in7TWyABH3RQgdQnSr1UnidNmlX4ovoEAen6TgEFCMq87f1wlfOofcBgrCTgo+PA/MXC1HDLhzibq2sK7Ybz79XzSQygn2ag51dcqvkJEt86+1htXgu2EpX5UVi4S+hMrBpia8065kAJ8us2kFc6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/UVmcCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B0C4CEC3;
-	Tue, 10 Sep 2024 10:11:25 +0000 (UTC)
+	 MIME-Version; b=lBgK4u3oFmV05djWL5dh5Z8gJiV2FUnHVGxaDpjWaz4RUM1IicpVY2ceyXV+bGWVEZ6Xu9h/IyFZMJS7xHriIPeK4dBui6mGXczKak6D0xniV5TajCAl+wp+pulc0Jv2sBxic0yetUC7SdsyAnTOtiY6K9VKcntZ6SR45eOxip8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrXzr2WD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54959C4CEC6;
+	Tue, 10 Sep 2024 10:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963086;
-	bh=1VbbEDvwZ3tBR9zUjfA6WiW36iDmtSA9ZMpljn2pShM=;
+	s=korg; t=1725964393;
+	bh=vQ2V3lKVBDFQmO0IS+u03pV3tTvtfvfBmSmKd0lMwag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/UVmcCs8uJruXEBwEPYHwc3NC6VhZ/e8c1UORymnCe5FqC6oDG9L21hcGMisy3mR
-	 ySpttUDa3uB6qYi+x4EXQ0CQ348Gny6+xjGTzweaR39dn1wiiB6kq2XuvCCWjuLHaO
-	 6CRkJbAqVOJ8E5Q8MUhnhMVaRAivyFq0o4I6J1z8=
+	b=hrXzr2WDZvEn9FRKTKKqKqY7Nwt8rwG4Y1k2iR5OYtyjXYA70R0R6UPp0iVWOzl7j
+	 0eDDaOcq1AIC0z+KtJKzpu374GdnaJMUzQWLUjCty6Aw2cGW5bZP+4Xnftfx86Ig5Y
+	 fGteVFZAGGE0JwKK6sMODLslZ0FRBj+5vA16ABLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1 130/192] selftests: mptcp: fix backport issues
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/269] btrfs: clean up our handling of refs == 0 in snapshot delete
 Date: Tue, 10 Sep 2024 11:32:34 +0200
-Message-ID: <20240910092603.370503971@linuxfoundation.org>
+Message-ID: <20240910092614.110587867@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,184 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-By accident, some patches modifying the MPTCP selftests have been
-applied twice, using different versions of the patch [1].
+[ Upstream commit b8ccef048354074a548f108e51d0557d6adfd3a3 ]
 
-These patches have been dropped, but it looks like quilt incorrectly
-handled that by placing the new subtests at the wrong place: in
-userspace_tests() instead of endpoint_tests(). That caused a few other
-patches not to apply properly.
+In reada we BUG_ON(refs == 0), which could be unkind since we aren't
+holding a lock on the extent leaf and thus could get a transient
+incorrect answer.  In walk_down_proc we also BUG_ON(refs == 0), which
+could happen if we have extent tree corruption.  Change that to return
+-EUCLEAN.  In do_walk_down() we catch this case and handle it correctly,
+however we return -EIO, which -EUCLEAN is a more appropriate error code.
+Finally in walk_up_proc we have the same BUG_ON(refs == 0), so convert
+that to proper error handling.  Also adjust the error message so we can
+actually do something with the information.
 
-Not to have to revert and re-apply patches, this issue can be fixed by
-moving some code around.
-
-Link: https://lore.kernel.org/fc21db4a-508d-41db-aa45-e3bc06d18ce7@kernel.org [1]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |  138 ++++++++++++------------
- 1 file changed, 69 insertions(+), 69 deletions(-)
+ fs/btrfs/extent-tree.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3236,75 +3236,6 @@ userspace_tests()
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 0 1
- 	fi
--
--	# remove and re-add
--	if reset "delete re-add signal" &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 3
--		pm_nl_set_limits $ns2 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
--		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
--		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
--		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
--		local tests_pid=$!
--
--		wait_mpj $ns2
--		chk_subflow_nr needtitle "before delete" 2
--
--		pm_nl_del_endpoint $ns1 1 10.0.2.1
--		pm_nl_del_endpoint $ns1 2 224.0.0.1
--		sleep 0.5
--		chk_subflow_nr "" "after delete" 1
--
--		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
--		wait_mpj $ns2
--		chk_subflow_nr "" "after re-add" 3
--
--		pm_nl_del_endpoint $ns1 42 10.0.1.1
--		sleep 0.5
--		chk_subflow_nr "" "after delete ID 0" 2
--
--		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
--		wait_mpj $ns2
--		chk_subflow_nr "" "after re-add" 3
--		kill_tests_wait
--
--		chk_join_nr 4 4 4
--		chk_add_nr 5 5
--		chk_rm_nr 3 2 invert
--	fi
--
--	# flush and re-add
--	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 2
--		pm_nl_set_limits $ns2 1 2
--		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
--		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
--		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
--		local tests_pid=$!
--
--		wait_attempt_fail $ns2
--		chk_subflow_nr needtitle "before flush" 1
--
--		pm_nl_flush_endpoint $ns2
--		pm_nl_flush_endpoint $ns1
--		wait_rm_addr $ns2 0
--		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
--		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
--		wait_mpj $ns2
--		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
--		wait_mpj $ns2
--		kill_wait "${tests_pid}"
--		kill_tests_wait
--
--		chk_join_nr 2 2 2
--		chk_add_nr 2 2
--		chk_rm_nr 1 0 invert
--	fi
- }
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 2d39481fb3ce..72851adc1fee 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5085,7 +5085,15 @@ static noinline void reada_walk_down(struct btrfs_trans_handle *trans,
+ 		/* We don't care about errors in readahead. */
+ 		if (ret < 0)
+ 			continue;
+-		BUG_ON(refs == 0);
++
++		/*
++		 * This could be racey, it's conceivable that we raced and end
++		 * up with a bogus refs count, if that's the case just skip, if
++		 * we are actually corrupt we will notice when we look up
++		 * everything again with our locks.
++		 */
++		if (refs == 0)
++			continue;
  
- endpoint_tests()
-@@ -3375,6 +3306,75 @@ endpoint_tests()
- 		chk_join_nr 6 6 6
- 		chk_rm_nr 4 4
- 	fi
-+
-+	# remove and re-add
-+	if reset "delete re-add signal" &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 3
-+		pm_nl_set_limits $ns2 3 3
-+		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
-+		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
-+		local tests_pid=$!
-+
-+		wait_mpj $ns2
-+		chk_subflow_nr needtitle "before delete" 2
-+
-+		pm_nl_del_endpoint $ns1 1 10.0.2.1
-+		pm_nl_del_endpoint $ns1 2 224.0.0.1
-+		sleep 0.5
-+		chk_subflow_nr "" "after delete" 1
-+
-+		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "" "after re-add" 3
-+
-+		pm_nl_del_endpoint $ns1 42 10.0.1.1
-+		sleep 0.5
-+		chk_subflow_nr "" "after delete ID 0" 2
-+
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "" "after re-add" 3
-+		kill_tests_wait
-+
-+		chk_join_nr 4 4 4
-+		chk_add_nr 5 5
-+		chk_rm_nr 3 2 invert
-+	fi
-+
-+	# flush and re-add
-+	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 1 2
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
-+		local tests_pid=$!
-+
-+		wait_attempt_fail $ns2
-+		chk_subflow_nr needtitle "before flush" 1
-+
-+		pm_nl_flush_endpoint $ns2
-+		pm_nl_flush_endpoint $ns1
-+		wait_rm_addr $ns2 0
-+		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		wait_mpj $ns2
-+		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
-+		wait_mpj $ns2
-+		kill_wait "${tests_pid}"
-+		kill_tests_wait
-+
-+		chk_join_nr 2 2 2
-+		chk_add_nr 2 2
-+		chk_rm_nr 1 0 invert
-+	fi
- }
+ 		if (wc->stage == DROP_REFERENCE) {
+ 			if (refs == 1)
+@@ -5152,7 +5160,11 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+ 		BUG_ON(ret == -ENOMEM);
+ 		if (ret)
+ 			return ret;
+-		BUG_ON(wc->refs[level] == 0);
++		if (unlikely(wc->refs[level] == 0)) {
++			btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
++				  eb->start);
++			return -EUCLEAN;
++		}
+ 	}
  
- # [$1: error message]
+ 	if (wc->stage == DROP_REFERENCE) {
+@@ -5286,8 +5298,9 @@ static noinline int do_walk_down(struct btrfs_trans_handle *trans,
+ 		goto out_unlock;
+ 
+ 	if (unlikely(wc->refs[level - 1] == 0)) {
+-		btrfs_err(fs_info, "Missing references.");
+-		ret = -EIO;
++		btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
++			  bytenr);
++		ret = -EUCLEAN;
+ 		goto out_unlock;
+ 	}
+ 	*lookup_info = 0;
+@@ -5487,7 +5500,12 @@ static noinline int walk_up_proc(struct btrfs_trans_handle *trans,
+ 				path->locks[level] = 0;
+ 				return ret;
+ 			}
+-			BUG_ON(wc->refs[level] == 0);
++			if (unlikely(wc->refs[level] == 0)) {
++				btrfs_tree_unlock_rw(eb, path->locks[level]);
++				btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
++					  eb->start);
++				return -EUCLEAN;
++			}
+ 			if (wc->refs[level] == 1) {
+ 				btrfs_tree_unlock_rw(eb, path->locks[level]);
+ 				path->locks[level] = 0;
+-- 
+2.43.0
+
 
 
 
