@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F44897331F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EE69734B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53CBF2851C0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA620B277EC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208F196C6C;
-	Tue, 10 Sep 2024 10:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9775F191F7B;
+	Tue, 10 Sep 2024 10:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/UvmXGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtirxqiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510D91922F6;
-	Tue, 10 Sep 2024 10:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550A0191F67;
+	Tue, 10 Sep 2024 10:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963896; cv=none; b=bmDcwbVRe07k4R0VxMEYbwmHDQVEX8Iujmx/0d0PJTqTKPVZW7WkcJnGmIhFeWILAQsHo6l/RHkbSxy5nlLa2PPHyv3IEPSPkh1u8RBDAX6PcXmyBkNsWJf5YUXxRUxE7CgA6NPpufLpsraILmX9JVvIvoE2Qkw4fSmmyOdTw0g=
+	t=1725964633; cv=none; b=pDQPm/POq8ZM8B9gxV9dpXrIntAzZCxn6mvq/noYmngLpnPVx82QUdEpB1hKfXpvOsmg4lTztwHh4yhT1Z+pqrIZYkX7fagUBHebl/lzrzYhM7B2WNAdGaDVUcPM42SxC7kdXIOsDl+qOwHgRSYxokWvtWO5e4uz2zbhUXhFAPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963896; c=relaxed/simple;
-	bh=3w7z3t1Cvk3CqkwsRax9ypu/RVaX7MjzkDzJouP3HX8=;
+	s=arc-20240116; t=1725964633; c=relaxed/simple;
+	bh=tSck6IRuH5z4iGPYVkopgweqLJrL5y/JZzDq70XK8dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBUq6lyHUFxBhpUbG7ZJKk8cQEFUquCrIbSFel2MyxrL1eysDFqlUrrdS0EV87pEsZVtFfmaSY9DSYOCOlWxdCt/Bn2A3C/6A4XjGAjnS2ThFWl2vWhyIO1EyUGD7IZfPLN7n3Wm1eglAYg+JRpSbMShVfPs4lSEouFocRi1iKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/UvmXGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0B7C4CEC3;
-	Tue, 10 Sep 2024 10:24:55 +0000 (UTC)
+	 MIME-Version; b=K6CtKCT+F2ewn4XcroXSAwvtOD3eGXnbNnkgydxg88I30cmFWnlao0NeP0pJ9uXizofz99dNi9o3fBpt72VaJJoN47bSHBbTs71D+sLh5Vo3ZTwtFfi88rMKaSeug9cOq/7ynpaqELOrSXM436Cs6lnImCUSOTmEN2O8T3ZFA94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtirxqiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819A4C4CEC3;
+	Tue, 10 Sep 2024 10:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963896;
-	bh=3w7z3t1Cvk3CqkwsRax9ypu/RVaX7MjzkDzJouP3HX8=;
+	s=korg; t=1725964632;
+	bh=tSck6IRuH5z4iGPYVkopgweqLJrL5y/JZzDq70XK8dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/UvmXGLrv2QtaJB2ObDD+VY4DNY4LbMmeAhm0jinytS1JFf3+oTNJzVjK3G3A1XW
-	 sWnrvIzesSpV25DerE2RTQGiL2H9rAZx7zQ+yCL5MCI/cb1CiRmhJQMBspkn3ENxCm
-	 LfOegx4aRWk8anmL7/Pou6Tx29mvMV9xjlkah2tA=
+	b=PtirxqiX36BchTwPiUE1lG4XBMAlBqFz54l3eLK5hXL3HLjHcsipugvWBAMWXPwDe
+	 5O+uc5FTkdcBObFbb3i4hX0ghYlUerp/i9KIHD3U8Ht1TvKZPLzclqR9eubZSkNsCp
+	 O3CWiHfIfmzIN4G3AE/sZ9Tk01l8N9X0zrPngB08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 214/214] udp: fix receiving fraglist GSO packets
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 249/269] nvmet-tcp: fix kernel crash if commands allocation fails
 Date: Tue, 10 Sep 2024 11:33:56 +0200
-Message-ID: <20240910092607.239593880@linuxfoundation.org>
+Message-ID: <20240910092616.695725926@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit b128ed5ab27330deeeaf51ea8bb69f1442a96f7f upstream.
+[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
 
-When assembling fraglist GSO packets, udp4_gro_complete does not set
-skb->csum_start, which makes the extra validation in __udp_gso_segment fail.
+If the commands allocation fails in nvmet_tcp_alloc_cmds()
+the kernel crashes in nvmet_tcp_release_queue_work() because of
+a NULL pointer dereference.
 
-Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240819150621.59833-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  nvmet: failed to install queue 0 cntlid 1 ret 6
+  Unable to handle kernel NULL pointer dereference at
+         virtual address 0000000000000008
+
+Fix the bug by setting queue->nr_cmds to zero in case
+nvmet_tcp_alloc_cmd() fails.
+
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -277,7 +277,8 @@ struct sk_buff *__udp_gso_segment(struct
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index c65a1f4421f6..bd142aed20f4 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1859,8 +1859,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
+ 	}
  
- 	if (unlikely(skb_checksum_start(gso_skb) !=
--		     skb_transport_header(gso_skb)))
-+		     skb_transport_header(gso_skb) &&
-+		     !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)))
- 		return ERR_PTR(-EINVAL);
+ 	queue->nr_cmds = sq->size * 2;
+-	if (nvmet_tcp_alloc_cmds(queue))
++	if (nvmet_tcp_alloc_cmds(queue)) {
++		queue->nr_cmds = 0;
+ 		return NVME_SC_INTERNAL;
++	}
+ 	return 0;
+ }
  
- 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+-- 
+2.43.0
+
 
 
 
