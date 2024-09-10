@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBC69732FA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 965F29734FA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3C32284B9A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521A92884A8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFB0192D6A;
-	Tue, 10 Sep 2024 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2C8190056;
+	Tue, 10 Sep 2024 10:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkumJb1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ekc1G6dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7954C191F72;
-	Tue, 10 Sep 2024 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF2719005D;
+	Tue, 10 Sep 2024 10:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963796; cv=none; b=Mjx5dXHmuTv0MTeGCeExcTIe/Sf3BOzMshE03xDRSooY6u/CLvlXIZPLA/S5krvxjX/A3/7xMQ3ffJ+Heoa7j2siLiElvwOxCtuhRTLLpRMvUo4g9j/c7lZCk8W3pUE0KODJOXUnZLk1KTzJ1Ppv7prs9VF+Bvl/HiHtQxyRWjg=
+	t=1725964978; cv=none; b=mu7A5Ah6jcCTviVLQ/VhZjIcIXXlcUg6DSLkmFkn4FT6G0xKQlG9W1Rx1N/N6PBriswLDlj4XRGjv8TUeiAZLsFCDISeipl6KSueLAO8j1WzLeE5OxJ9nW+1Na54STXNk2w8dIF5Q9ynpVyzKuuUyhMGL4gkDr7UoNirwq6NVSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963796; c=relaxed/simple;
-	bh=z31QGl1pt3vSqbQ0P4AnrgAbAtU1jdx27MSzCswNShY=;
+	s=arc-20240116; t=1725964978; c=relaxed/simple;
+	bh=xkv+YmfHMy5AKGTipmxwwJdx11s7luzjoFsferQfl6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evTJUceuQ/7TbiYudhzkU0vL/s80yQK9L/Ka8UovNRQdKvSJrZVCf01xk9zBpoNfTr4qRcyYpN8ccwN3nDkwDelTIn3r3jWZAdK2ZI0FECF9zmbJMYcTb8x+Cbwvhx7ar3nlcn1UbJCvTN3+LWfk5c4ywX5EJiuzf1P+vS4xD98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkumJb1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB124C4CEC3;
-	Tue, 10 Sep 2024 10:23:15 +0000 (UTC)
+	 MIME-Version; b=ETJVPch1pii4VjVxP3k2dxSWz8Quyne2ZiepkDI6GAN/DU+mJXTqPJ6g/7zHPpq8dDnQKAPGF3GVUTSYmYP+rzascxXJyowDB8o8d8fIcXBPLCe8XeC7b5+jLfREMGesYkrIk89arx7hOh2zfCzHbH1G6GXSNdfQZ9hAUVLUQCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ekc1G6dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA61DC4CEC3;
+	Tue, 10 Sep 2024 10:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963796;
-	bh=z31QGl1pt3vSqbQ0P4AnrgAbAtU1jdx27MSzCswNShY=;
+	s=korg; t=1725964978;
+	bh=xkv+YmfHMy5AKGTipmxwwJdx11s7luzjoFsferQfl6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkumJb1Oe8KvzyH/AckjgpelcK9FtY57qg+tiKjZ4W0dNB0TTKGFyanL7dLPCsLGo
-	 v1c8Q2QO8GfyTm3A+NI6FtwQ9mxoIhN0vyng2c6uVMQveAYR3xTyfTMzOcvBIQNkKo
-	 Y4moyJpAhzyOV9CVmFVqeiRrK6jIDytqTkppK2gQ=
+	b=Ekc1G6dXUlBfRXBXY2GyBDGpf4VIzfB1HA2btBaVPA0WoerjP7SI4kSIIgPAPmsCq
+	 AH9aNgDCdwWBl8nsGxDu7bzR7tksGN38T+oTCzq6qiDuM7i5y8zJGRUWtivVSTUl2H
+	 XEWg9K9sxyajoZVsBB+kTJMDL1kZv/FjiGrBqH18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/214] hwmon: (adc128d818) Fix underflows seen when writing limit attributes
+	Simon Arlott <simon@octiron.net>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 069/186] can: mcp251x: fix deadlock if an interrupt occurs during mcp251x_open
 Date: Tue, 10 Sep 2024 11:32:44 +0200
-Message-ID: <20240910092604.557465827@linuxfoundation.org>
+Message-ID: <20240910092557.355168258@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Simon Arlott <simon@octiron.net>
 
-[ Upstream commit 8cad724c8537fe3e0da8004646abc00290adae40 ]
+commit 7dd9c26bd6cf679bcfdef01a8659791aa6487a29 upstream.
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+The mcp251x_hw_wake() function is called with the mpc_lock mutex held and
+disables the interrupt handler so that no interrupts can be processed while
+waking the device. If an interrupt has already occurred then waiting for
+the interrupt handler to complete will deadlock because it will be trying
+to acquire the same mutex.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0                           CPU1
+----                           ----
+mcp251x_open()
+ mutex_lock(&priv->mcp_lock)
+  request_threaded_irq()
+                               <interrupt>
+                               mcp251x_can_ist()
+                                mutex_lock(&priv->mcp_lock)
+  mcp251x_hw_wake()
+   disable_irq() <-- deadlock
+
+Use disable_irq_nosync() instead because the interrupt handler does
+everything while holding the mutex so it doesn't matter if it's still
+running.
+
+Fixes: 8ce8c0abcba3 ("can: mcp251x: only reset hardware as required")
+Signed-off-by: Simon Arlott <simon@octiron.net>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/4fc08687-1d80-43fe-9f0d-8ef8475e75f6@0882a8b5-c6c3-11e9-b005-00805fc181fe.uuid.home.arpa
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/adc128d818.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/spi/mcp251x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-index fd938c70293f..739cd48228d4 100644
---- a/drivers/hwmon/adc128d818.c
-+++ b/drivers/hwmon/adc128d818.c
-@@ -176,7 +176,7 @@ static ssize_t adc128_in_store(struct device *dev,
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -755,7 +755,7 @@ static int mcp251x_hw_wake(struct spi_de
+ 	int ret;
  
- 	mutex_lock(&data->update_lock);
- 	/* 10 mV LSB on limit registers */
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 10), 0, 255);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, 0, 2550), 10);
- 	data->in[index][nr] = regval << 4;
- 	reg = index == 1 ? ADC128_REG_IN_MIN(nr) : ADC128_REG_IN_MAX(nr);
- 	i2c_smbus_write_byte_data(data->client, reg, regval);
-@@ -214,7 +214,7 @@ static ssize_t adc128_temp_store(struct device *dev,
- 		return err;
+ 	/* Force wakeup interrupt to wake device, but don't execute IST */
+-	disable_irq(spi->irq);
++	disable_irq_nosync(spi->irq);
+ 	mcp251x_write_2regs(spi, CANINTE, CANINTE_WAKIE, CANINTF_WAKIF);
  
- 	mutex_lock(&data->update_lock);
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
- 	data->temp[index] = regval << 1;
- 	i2c_smbus_write_byte_data(data->client,
- 				  index == 1 ? ADC128_REG_TEMP_MAX
--- 
-2.43.0
-
+ 	/* Wait for oscillator startup timer after wake up */
 
 
 
