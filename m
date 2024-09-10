@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E00E97313A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A33D9731F0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 411401F271CA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22BD28D5A9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77973192B62;
-	Tue, 10 Sep 2024 10:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB155192D75;
+	Tue, 10 Sep 2024 10:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCqm+UqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hG9A2laq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D78188A28;
-	Tue, 10 Sep 2024 10:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9960E18A6D2;
+	Tue, 10 Sep 2024 10:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962696; cv=none; b=hFPxZIqlsQMWubaAmnQNCAyo9lHM2A5UueDB51FJAP7paslgRMbSMhN2VfFxTzqsq7ucbJebM7L28aRfjnCDq4qgDYHg9SapGtJQIlOMtJcIK/ttLZTxbz68b3tyIWo+rXWujdpv/lXOTuDPtzdo1Ny1KFgrlpbgoy/sy5oQBA4=
+	t=1725963124; cv=none; b=gMokDCDunRxwXSv10R01oogWjwRMmrbzivTdBHLwRDfvg90iddSHZnlbwu3OLLIqBwdCFoGhlRVBUJjuRx9+VuI+AYVfFYkh4H/lwFSZKgs5PZFZmgk7n0ALkoEXvylAr16rta/HDVAciYzuTK6jllVCF/eP+vAjbLd3RsBIUnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962696; c=relaxed/simple;
-	bh=jWwqoGCZgRzeptDrlnPwi0NLADTdKe59VmCSOSH+nmQ=;
+	s=arc-20240116; t=1725963124; c=relaxed/simple;
+	bh=34h3zAawToUvW9+JZmU6g31kUkNQvF3FtpZ3BiRuYwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtYrIPphnK1X8gZEWF09jLr2DqJih06W1RmLz1HL2jDHlEzylnif8G7MOOD/qHnpZlbSBHyVeJo4Oja2rPEPuqL+VC0uminrbtdJ2fIdxRYj4HSlTHqRXZkCUNsrYOx83D0EPUGdsrcYiTrCvuTVB8aLi+DPX9DwlhIt+3dc/jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCqm+UqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05D7C4CEC3;
-	Tue, 10 Sep 2024 10:04:55 +0000 (UTC)
+	 MIME-Version; b=JlIHJqffGwv3GMEmmwV5/pyCR9oi4xfPbyM4k9k0s2aXNxnwFTXDptnnXdl+A8F+qaly8V6c2rK2w+fgg9x/PaI1CPE80oeALTIk5ynwCWKhw7C26ZrQf3dO3bdAeCtxJ4UY9QhxoVW6aN/r2+lL1AE45lG9E3zig85v4q/p4Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hG9A2laq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B01FC4CEC3;
+	Tue, 10 Sep 2024 10:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962696;
-	bh=jWwqoGCZgRzeptDrlnPwi0NLADTdKe59VmCSOSH+nmQ=;
+	s=korg; t=1725963124;
+	bh=34h3zAawToUvW9+JZmU6g31kUkNQvF3FtpZ3BiRuYwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCqm+UqEONolGiwT6wBC+eU054Lk4N4iCC9+zdyd1G3zfz1v+jcPX+1LyubmDUo5O
-	 9gg/qZc/eTL4K2hgsftRGt7xKLUHEuBmAQOBx2RgKGl2BgHBuA7JxQVAX1Yhvo113Y
-	 dtrjsBVmbcfqDQwRihVPfyIZ/6ePrGXo2pygEk/w=
+	b=hG9A2laqmef4xtTg+ue/guR/C6TdMwWr+PGJLurZqtk8wnE1NZrjRKylVGNTvyt2W
+	 0y9qQkF3xsSX26q1uB4CoUXKbBS8S1AzTixtYAr88GMsCgnCsjeViv+k+zRL3HJFz6
+	 BPMgG7g8Wcn1/HiuHQ9JmoBsxvsrH6tWz3+6OkZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/121] ata: pata_macio: Use WARN instead of BUG
+	stable <stable@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.1 144/192] nvmem: Fix return type of devm_nvmem_device_get() in kerneldoc
 Date: Tue, 10 Sep 2024 11:32:48 +0200
-Message-ID: <20240910092550.264901236@linuxfoundation.org>
+Message-ID: <20240910092603.904698345@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit d4bc0a264fb482b019c84fbc7202dd3cab059087 ]
+commit c69f37f6559a8948d70badd2b179db7714dedd62 upstream.
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
+devm_nvmem_device_get() returns an nvmem device, not an nvmem cell.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2a5402ec7c6d044 ("nvmem: Add nvmem_device based consumer apis.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240902142510.71096-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/nvmem/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 1bfd0154dad5..a601768956e8 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -540,7 +540,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1092,13 +1092,13 @@ void nvmem_device_put(struct nvmem_devic
+ EXPORT_SYMBOL_GPL(nvmem_device_put);
  
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
- 
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -552,11 +553,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
- 		}
- 	}
- 
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
- 
- 	/* Convert the last command to an input/output */
- 	table--;
--- 
-2.43.0
-
+ /**
+- * devm_nvmem_device_get() - Get nvmem cell of device form a given id
++ * devm_nvmem_device_get() - Get nvmem device of device form a given id
+  *
+  * @dev: Device that requests the nvmem device.
+  * @id: name id for the requested nvmem device.
+  *
+- * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_cell
+- * on success.  The nvmem_cell will be freed by the automatically once the
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.  The nvmem_device will be freed by the automatically once the
+  * device is freed.
+  */
+ struct nvmem_device *devm_nvmem_device_get(struct device *dev, const char *id)
 
 
 
