@@ -1,103 +1,95 @@
-Return-Path: <stable+bounces-75379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F66973441
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4AD97351F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C2728D9E2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3191F26006
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A0019923F;
-	Tue, 10 Sep 2024 10:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F446184549;
+	Tue, 10 Sep 2024 10:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e62jTtEj"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0D11991B5;
-	Tue, 10 Sep 2024 10:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3644C18E77F;
+	Tue, 10 Sep 2024 10:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964559; cv=none; b=kIqFqYzMB5WqJ+Vz5B5U5JbVEn8goumafUcasKkPlT68N2PBAHcqHB4sTwdquWBJuwQ4y7n+YrPlxruZbg6cHBYcxEOPBFTAfncg/cXEgiYEHFJB2wcgyvxhcUEbB70VFxZP27aIavwHOZ5S8K1RSNGdE8C8TBOUbUab/gzkiFM=
+	t=1725965080; cv=none; b=lY9hG7XkBcD/kolEJi+TNsiRo2UjvkJ3t4d+nQYBdoBtzTOfi14NsP+eYNJDa0bn+RtfPoEP4YwbpLqxZf32gpIrIOo/hNEzIcxJMUgLzd2l5k7z6bbGXmsx3Aa12MWpAatJCUiL3fB2IOu4D2oaha6LCDy4/hfrak81m/YuCnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964559; c=relaxed/simple;
-	bh=rXp9VPIWYwYxP3tRta0x35hYjF5C4uWsNb8Pc5MPAjU=;
+	s=arc-20240116; t=1725965080; c=relaxed/simple;
+	bh=z7FP6MI3CdOXNgKEvzJJRPXvE9yxDWTTbJBaq0V/bL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hx/346YZkB17KbdkmlDd1sI1YAszzZPA8mMKuYve2KfFsnoSzWaDv6pFuloXIvb18ME0wLPpCqz/FNjIp1KGHkSuBmaoE89xeLSkx8bnCG9h91QNGSGKyY2TWvD1a5eamTCJAWJaYFgS3slrvZQKhmc4njqkuXvg6cMUzfHfwFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 3285E1C009E; Tue, 10 Sep 2024 12:35:55 +0200 (CEST)
-Date: Tue, 10 Sep 2024 12:35:54 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WHJqzZhD8+Kwrr5QvR5zvxep3wTkyH/9t74FLOiPyRccPZP9ShtotpWH57F/Xe77uo+gIZX/7UrwwHSb9Z7D+dmzxYnoZQKdY7q5WnwjT019CHCoQS6IgR+nxTdDxWkNZ0xB+wvV5jDss4Rc/PZWSqppsLwsy22ze5U/KGPKG+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e62jTtEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62653C4CECE;
+	Tue, 10 Sep 2024 10:44:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725965080;
+	bh=z7FP6MI3CdOXNgKEvzJJRPXvE9yxDWTTbJBaq0V/bL4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e62jTtEjIApyF3AfB/A0pYMX1Id2BUUuAMKEsQD6GEUCz+pQs/QusUhW1Tg09Uq6P
+	 oUMMiuSdt6Qx9iQowWsJkuf4xLfFVCf59YBdKgacjVtp20QRhdtVESBehyHQ34Vneq
+	 S2FwItAxwDpYvnG/fXnUEkCrMlRs3TPT3Tf2Q5Vs=
+Date: Tue, 10 Sep 2024 12:44:36 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pavel Machek <pavel@denx.de>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
 	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
 Subject: Re: [PATCH 6.1 000/192] 6.1.110-rc1 review
-Message-ID: <ZuAhCgJ3LUBROwBR@duo.ucw.cz>
+Message-ID: <2024091051-blooper-comply-47d3@gregkh>
 References: <20240910092557.876094467@linuxfoundation.org>
+ <ZuAhCgJ3LUBROwBR@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZVbRxP2zarSARuXd"
-Content-Disposition: inline
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-
-
---ZVbRxP2zarSARuXd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZuAhCgJ3LUBROwBR@duo.ucw.cz>
 
-Hi!
+On Tue, Sep 10, 2024 at 12:35:54PM +0200, Pavel Machek wrote:
+> Hi!
+> 
+> > This is the start of the stable review cycle for the 6.1.110 release.
+> > There are 192 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> Can you quote git hash of the 6.1.110-rc1?
 
-> This is the start of the stable review cycle for the 6.1.110 release.
-> There are 192 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Nope!  We create the git trees for those that want throw-away trees,
+once I create them I automatically delete them so I don't even know the
+hash anymore.
 
-Can you quote git hash of the 6.1.110-rc1?
+> We do have
+> 
+> Linux 6.1.110-rc1 (244a97bb85be)
+> Greg Kroah-Hartman authored 1 day ago
+> 
+> passing tests
+> 
+> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.1.y
+> 
+> . But that's 1 day old.
 
-We do have
+Lots have changed since then, please use the latest.
 
-Linux 6.1.110-rc1 (244a97bb85be)
-Greg Kroah-Hartman authored 1 day ago
+thanks,
 
-passing tests
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
-
-=2E But that's 1 day old.
-
-Best regards,
-									Pavel
-								=09
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---ZVbRxP2zarSARuXd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZuAhCgAKCRAw5/Bqldv6
-8nInAKCAfDzvB/g7di65iJIiWwf1ut9eEQCdHD1aUpkZmIRykjHO2l2uq8zPlU4=
-=0bYm
------END PGP SIGNATURE-----
-
---ZVbRxP2zarSARuXd--
+greg k-h
 
