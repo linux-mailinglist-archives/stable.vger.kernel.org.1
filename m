@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-74835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4756A9731AB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CA897329D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE395B27E06
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B8121C2487A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84C619923A;
-	Tue, 10 Sep 2024 10:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541BB198840;
+	Tue, 10 Sep 2024 10:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxE08SgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co6WndrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748D619066D;
-	Tue, 10 Sep 2024 10:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1A146444;
+	Tue, 10 Sep 2024 10:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962971; cv=none; b=Q3kR3DVqGJSlJF8oyMdcWjFjaxFL4f7FgKJS48TC9FUeKq9RZn70plSSUihyPUshHVsZ/vIFtBQy/sDwAG43+GGlt0d3IdswTzngXMbomZ07ksidGCnxE0o1VRdZewPwrdftwka5IcjcBTXjzPnxisuFo2HXX2ddrsZMI1t03Q0=
+	t=1725963544; cv=none; b=XjgjwFP12bNt44Y+dNOUtK2XHrJFYAOU8UyzS95myE6MelCDCSImLKVCV+U07Dw5yU/cmGag6NNI+Vu0wOAvTftCWc5qFH4h9aT2a9hdoCWSiXX9jAW322fny/KHwI9rv07tE8tRC3m1W3w9wasWqhcJ19gajqnVEvZNaWzuFsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962971; c=relaxed/simple;
-	bh=OUKG4WZZrWdiAxN/s9soPXn+MIdAc0mfrs6xGZPVVlo=;
+	s=arc-20240116; t=1725963544; c=relaxed/simple;
+	bh=HJ/r12rIsjK088zdRAtkyN5nPnaJHT3e7Zh0NRWrPkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aT1a1GU8CtJrPBXX8sTM82JOAvp2bBB08Kc+ICii1mM1U74nHX0qNg49qjB/C2jEN6LWORY02PmFvmoU9vTC8pDuhrRK7xYYWgaBpsM23UJ8WgC1SXM54jYltBr4o1zfKmgddOIhZoZbWDcZ7Lyi/ShBX9g3O7a1dL2vmJAMyoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxE08SgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF18BC4CEC3;
-	Tue, 10 Sep 2024 10:09:30 +0000 (UTC)
+	 MIME-Version; b=cR5ZjZQdGx4kEBVCDORA3D5BWliHYk9tubm0/htEpIvfJZu4Ady9E1wseqJbKH2jEDXe3KVSNwh6aPSwbfsIdRQAkkNS2XGJAv3knRcqWTzIKG//NWrW0ZGVOc+WEHntxjdHy0wn5FIfbGZFft+c2TEkk2QAjfWBDbzagMPFEA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co6WndrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C13C4CEC3;
+	Tue, 10 Sep 2024 10:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962971;
-	bh=OUKG4WZZrWdiAxN/s9soPXn+MIdAc0mfrs6xGZPVVlo=;
+	s=korg; t=1725963543;
+	bh=HJ/r12rIsjK088zdRAtkyN5nPnaJHT3e7Zh0NRWrPkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxE08SgPHZeAXuxTMA+la5UswL55d4UgZ22fHYMOHLmU5giH+E1cPRki1cq0JcrYn
-	 Jjw/InALE/dPa9MpD8KuCtmk2LNCUgwG5QwIsHA7QHGWlI4Pt6r6bnPySp/hjTS9V+
-	 F6nQ3y/7BBx4F8cVZ63sues5hVGHuB9veLwRIGnM=
+	b=co6WndrN9jdPFBAncq70gI7Ot2oVzatTyIbjthucv6FJ0TnTWtyEpCHlq7cX/5PIy
+	 X8jsJaRf7GdfLOwywfWrGQNQr+nT8bl9Dfv4UfqFf2jtIupyBANm+7ZONBUlO1gjg1
+	 0wdGnKGvcaaPCoVXEPIjSNulJrGJQCwZbnMhhzWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/192] iommu/vt-d: Handle volatile descriptor status read
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 094/214] mptcp: constify a bunch of of helpers
 Date: Tue, 10 Sep 2024 11:31:56 +0200
-Message-ID: <20240910092601.792085378@linuxfoundation.org>
+Message-ID: <20240910092602.620217448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
+commit 90d930882139f166ed2551205d6f6d8c50b656fb upstream.
 
-Queued invalidation wait descriptor status is volatile in that IOMMU
-hardware writes the data upon completion.
+A few pm-related helpers don't touch arguments which lacking
+the const modifier, let's constify them.
 
-Use READ_ONCE() to prevent compiler optimizations which ensures memory
-reads every time. As a side effect, READ_ONCE() also enforces strict
-types and may add an extra instruction. But it should not have negative
-performance impact since we use cpu_relax anyway and the extra time(by
-adding an instruction) may allow IOMMU HW request cacheline ownership
-easier.
-
-e.g. gcc 12.3
-BEFORE:
-	81 38 ad de 00 00       cmpl   $0x2,(%rax)
-
-AFTER (with READ_ONCE())
-    772f:       8b 00                   mov    (%rax),%eax
-    7731:       3d ad de 00 00          cmp    $0x2,%eax
-                                        //status data is 32 bit
-
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 48e50dcbcbaa ("mptcp: pm: avoid possible UaF when selecting endp")
+[ Conflicts because a few modified helpers from the original patch are
+  not present in this version. We don't need to do anything with them. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/dmar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm.c         |    4 ++--
+ net/mptcp/pm_netlink.c |   36 ++++++++++++++++++------------------
+ net/mptcp/protocol.h   |   18 +++++++++---------
+ 3 files changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 4759f79ad7b9..345c161ffb27 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1402,7 +1402,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
- 	 */
- 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -202,7 +202,7 @@ void mptcp_pm_add_addr_received(struct m
+ }
  
--	while (qi->desc_status[wait_index] != QI_DONE) {
-+	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
- 		/*
- 		 * We will leave the interrupts disabled, to prevent interrupt
- 		 * context to queue another cmd while a cmd is already submitted
--- 
-2.43.0
-
+ void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
+-			      struct mptcp_addr_info *addr)
++			      const struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_pm_data *pm = &msk->pm;
+ 
+@@ -260,7 +260,7 @@ void mptcp_pm_mp_fail_received(struct so
+ 
+ /* path manager helpers */
+ 
+-bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, struct sk_buff *skb,
++bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 			      unsigned int opt_size, unsigned int remaining,
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *port, bool *drop_other_suboptions)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -60,7 +60,7 @@ struct pm_nl_pernet {
+ #define ADD_ADDR_RETRANS_MAX	3
+ 
+ static bool addresses_equal(const struct mptcp_addr_info *a,
+-			    struct mptcp_addr_info *b, bool use_port)
++			    const struct mptcp_addr_info *b, bool use_port)
+ {
+ 	bool addr_equals = false;
+ 
+@@ -123,7 +123,7 @@ static void remote_address(const struct
+ }
+ 
+ static bool lookup_subflow_by_saddr(const struct list_head *list,
+-				    struct mptcp_addr_info *saddr)
++				    const struct mptcp_addr_info *saddr)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_addr_info cur;
+@@ -141,7 +141,7 @@ static bool lookup_subflow_by_saddr(cons
+ }
+ 
+ static bool lookup_subflow_by_daddr(const struct list_head *list,
+-				    struct mptcp_addr_info *daddr)
++				    const struct mptcp_addr_info *daddr)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_addr_info cur;
+@@ -162,8 +162,8 @@ static struct mptcp_pm_addr_entry *
+ select_local_address(const struct pm_nl_pernet *pernet,
+ 		     struct mptcp_sock *msk)
+ {
++	const struct sock *sk = (const struct sock *)msk;
+ 	struct mptcp_pm_addr_entry *entry, *ret = NULL;
+-	struct sock *sk = (struct sock *)msk;
+ 
+ 	msk_owned_by_me(msk);
+ 
+@@ -219,16 +219,16 @@ select_signal_address(struct pm_nl_perne
+ 	return ret;
+ }
+ 
+-unsigned int mptcp_pm_get_add_addr_signal_max(struct mptcp_sock *msk)
++unsigned int mptcp_pm_get_add_addr_signal_max(const struct mptcp_sock *msk)
+ {
+-	struct pm_nl_pernet *pernet;
++	const struct pm_nl_pernet *pernet;
+ 
+-	pernet = net_generic(sock_net((struct sock *)msk), pm_nl_pernet_id);
++	pernet = net_generic(sock_net((const struct sock *)msk), pm_nl_pernet_id);
+ 	return READ_ONCE(pernet->add_addr_signal_max);
+ }
+ EXPORT_SYMBOL_GPL(mptcp_pm_get_add_addr_signal_max);
+ 
+-unsigned int mptcp_pm_get_add_addr_accept_max(struct mptcp_sock *msk)
++unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk)
+ {
+ 	struct pm_nl_pernet *pernet;
+ 
+@@ -237,7 +237,7 @@ unsigned int mptcp_pm_get_add_addr_accep
+ }
+ EXPORT_SYMBOL_GPL(mptcp_pm_get_add_addr_accept_max);
+ 
+-unsigned int mptcp_pm_get_subflows_max(struct mptcp_sock *msk)
++unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk)
+ {
+ 	struct pm_nl_pernet *pernet;
+ 
+@@ -246,7 +246,7 @@ unsigned int mptcp_pm_get_subflows_max(s
+ }
+ EXPORT_SYMBOL_GPL(mptcp_pm_get_subflows_max);
+ 
+-unsigned int mptcp_pm_get_local_addr_max(struct mptcp_sock *msk)
++unsigned int mptcp_pm_get_local_addr_max(const struct mptcp_sock *msk)
+ {
+ 	struct pm_nl_pernet *pernet;
+ 
+@@ -264,8 +264,8 @@ static void check_work_pending(struct mp
+ }
+ 
+ struct mptcp_pm_add_entry *
+-mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
+-				struct mptcp_addr_info *addr)
++mptcp_lookup_anno_list_by_saddr(const struct mptcp_sock *msk,
++				const struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 
+@@ -346,7 +346,7 @@ out:
+ 
+ struct mptcp_pm_add_entry *
+ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+-		       struct mptcp_addr_info *addr, bool check_id)
++		       const struct mptcp_addr_info *addr, bool check_id)
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 	struct sock *sk = (struct sock *)msk;
+@@ -364,7 +364,7 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ }
+ 
+ static bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+-				     struct mptcp_pm_addr_entry *entry)
++				     const struct mptcp_pm_addr_entry *entry)
+ {
+ 	struct mptcp_pm_add_entry *add_entry = NULL;
+ 	struct sock *sk = (struct sock *)msk;
+@@ -410,8 +410,8 @@ void mptcp_pm_free_anno_list(struct mptc
+ 	}
+ }
+ 
+-static bool lookup_address_in_vec(struct mptcp_addr_info *addrs, unsigned int nr,
+-				  struct mptcp_addr_info *addr)
++static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
++				  const struct mptcp_addr_info *addr)
+ {
+ 	int i;
+ 
+@@ -1329,7 +1329,7 @@ int mptcp_pm_get_flags_and_ifindex_by_id
+ }
+ 
+ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
+-				      struct mptcp_addr_info *addr)
++				      const struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 
+@@ -1344,7 +1344,7 @@ static bool remove_anno_list_by_saddr(st
+ }
+ 
+ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+-				      struct mptcp_addr_info *addr,
++				      const struct mptcp_addr_info *addr,
+ 				      bool force)
+ {
+ 	struct mptcp_rm_list list = { .nr = 0 };
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -738,7 +738,7 @@ void mptcp_pm_subflow_closed(struct mptc
+ void mptcp_pm_add_addr_received(struct mptcp_sock *msk,
+ 				const struct mptcp_addr_info *addr);
+ void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
+-			      struct mptcp_addr_info *addr);
++			      const struct mptcp_addr_info *addr);
+ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+@@ -752,10 +752,10 @@ void mptcp_pm_free_anno_list(struct mptc
+ bool mptcp_pm_sport_in_anno_list(struct mptcp_sock *msk, const struct sock *sk);
+ struct mptcp_pm_add_entry *
+ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+-		       struct mptcp_addr_info *addr, bool check_id);
++		       const struct mptcp_addr_info *addr, bool check_id);
+ struct mptcp_pm_add_entry *
+-mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
+-				struct mptcp_addr_info *addr);
++mptcp_lookup_anno_list_by_saddr(const struct mptcp_sock *msk,
++				const struct mptcp_addr_info *addr);
+ int mptcp_pm_get_flags_and_ifindex_by_id(struct net *net, unsigned int id,
+ 					 u8 *flags, int *ifindex);
+ 
+@@ -814,7 +814,7 @@ static inline int mptcp_rm_addr_len(cons
+ 	return TCPOLEN_MPTCP_RM_ADDR_BASE + roundup(rm_list->nr - 1, 4) + 1;
+ }
+ 
+-bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, struct sk_buff *skb,
++bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 			      unsigned int opt_size, unsigned int remaining,
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *port, bool *drop_other_suboptions);
+@@ -830,10 +830,10 @@ void mptcp_pm_nl_rm_subflow_received(str
+ 				     const struct mptcp_rm_list *rm_list);
+ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
+ bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
+-unsigned int mptcp_pm_get_add_addr_signal_max(struct mptcp_sock *msk);
+-unsigned int mptcp_pm_get_add_addr_accept_max(struct mptcp_sock *msk);
+-unsigned int mptcp_pm_get_subflows_max(struct mptcp_sock *msk);
+-unsigned int mptcp_pm_get_local_addr_max(struct mptcp_sock *msk);
++unsigned int mptcp_pm_get_add_addr_signal_max(const struct mptcp_sock *msk);
++unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk);
++unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk);
++unsigned int mptcp_pm_get_local_addr_max(const struct mptcp_sock *msk);
+ 
+ void mptcp_sockopt_sync(struct mptcp_sock *msk, struct sock *ssk);
+ void mptcp_sockopt_sync_all(struct mptcp_sock *msk);
 
 
 
