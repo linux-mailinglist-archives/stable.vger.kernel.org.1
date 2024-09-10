@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-75614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF88973565
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B78973471
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43361F2615C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E443828DF51
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C484F18B491;
-	Tue, 10 Sep 2024 10:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D294018E77C;
+	Tue, 10 Sep 2024 10:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvyEx9AI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eP4OhEcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F71C8DF;
-	Tue, 10 Sep 2024 10:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910C814D280;
+	Tue, 10 Sep 2024 10:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965246; cv=none; b=bzWmxms2qp2EmoGjxMw5lCrevsI6D1sKttN57p4+UxXNDepqFby26rIzT+DVpTpLzNTbIZJpM6/14kfVbVyiR35OR40t9lQzU3Ni2NQBGKg4Yo7/o2zRP2vZung3ucMmarQUSvzpYZxIHfwRjyaaWYhTSSMEzln1kpINV6IEhGs=
+	t=1725964659; cv=none; b=Fgw9j03+VriI1ZqBwdUjru9n8tZLh/ck5zpBVI+/yBE2wxmm6u/m/GfRiBK01UgHsijgdLuUOzACw/McUksJD8aXDjJ03wmbzwcxR3YVxrYMQuxbLdtft0ZOOXExTc6HtC7mTW3Ic+NYVFN2/GHeVLTBdoGtFHXyly5zqtJY+S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965246; c=relaxed/simple;
-	bh=tS+YvTVGb5P0KzSKKUgGVd+DnrFATzKWEL71Fd9JN/0=;
+	s=arc-20240116; t=1725964659; c=relaxed/simple;
+	bh=OfcXLmEYlSEtyRgXFc2bsjCU+Mtg/PkuKYtVK51C4yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiPZ4x7eYcELp+m1yWoZAF3cYiVO4GpwGssS3+PM98X1vuQ/AAI2I9LSGEZgrgrp9hJn1Nw0CG534R7BnGxvV3CDImpqk5grJhA25XmaXj+vbyjs6ShoHvoRnZ0QYwiVrAma28Dc/zAjMeFvcFuA7jM3q+Q+4wAt5NFgu81j3Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvyEx9AI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0063C4CEC3;
-	Tue, 10 Sep 2024 10:47:25 +0000 (UTC)
+	 MIME-Version; b=t9OpDzbhdStdloLdYm83U6ap6lh0nQsJIOu7V/xTF/x3+j+BHbqfA20szn/xGXZf2Li3qXGemkHW/h2Z/+fafdm7a9WhcQ8fxXonR72+KK+FKOQM0LTKsVjW1qnnBRTAPLH9PcCz8Vv6AXTTkwttxo4JHIXEYcupnNd/Tw1dhXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eP4OhEcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D94BC4CEC3;
+	Tue, 10 Sep 2024 10:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965246;
-	bh=tS+YvTVGb5P0KzSKKUgGVd+DnrFATzKWEL71Fd9JN/0=;
+	s=korg; t=1725964659;
+	bh=OfcXLmEYlSEtyRgXFc2bsjCU+Mtg/PkuKYtVK51C4yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvyEx9AI/0W8ZL7EJjz4Vz8deaSddE/GyXOikEw3qifHXhMpki3xDRmDw55xWzYZo
-	 mpEekYfKR1hIT1bpqPeDhVlACs5PUWoyyomvrjxKOpGkvMMIH6s8yXuhB6mJ56KBIs
-	 UGftqbnoKcn6ehYYWljg8dVNFFyFT/mbtVoCuaeM=
+	b=eP4OhEcdx4Qubao3JU6lqEoJ8bhxwbkLbNlpPkmbh4pVW0aKAdm1YUG0kNwaiRbeK
+	 J+jWF0ArVpMMTjP3Sk/AknnFuGVaTPrd/0igK3jCGylyst0+YTZw7KzNm6Q5RVWQ0f
+	 Rul2yjTOErEeaoL5B63OP97/4Tdt6heBt/Oyiw5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+24c0361074799d02c452@syzkaller.appspotmail.com,
-	Camila Alvarez <cam.alvarez.i@gmail.com>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/186] HID: cougar: fix slab-out-of-bounds Read in cougar_report_fixup
+Subject: [PATCH 6.6 257/269] gpio: rockchip: fix OF node leak in probe()
 Date: Tue, 10 Sep 2024 11:34:04 +0200
-Message-ID: <20240910092600.731700703@linuxfoundation.org>
+Message-ID: <20240910092616.940354469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Camila Alvarez <cam.alvarez.i@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a6e9c391d45b5865b61e569146304cff72821a5d ]
+[ Upstream commit adad2e460e505a556f5ea6f0dc16fe95e62d5d76 ]
 
-report_fixup for the Cougar 500k Gaming Keyboard was not verifying
-that the report descriptor size was correct before accessing it
+Driver code is leaking OF node reference from of_get_parent() in
+probe().
 
-Reported-by: syzbot+24c0361074799d02c452@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=24c0361074799d02c452
-Signed-off-by: Camila Alvarez <cam.alvarez.i@gmail.com>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/20240826150832.65657-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-cougar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-rockchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-cougar.c b/drivers/hid/hid-cougar.c
-index 28d671c5e0ca..d173b13ff198 100644
---- a/drivers/hid/hid-cougar.c
-+++ b/drivers/hid/hid-cougar.c
-@@ -106,7 +106,7 @@ static void cougar_fix_g6_mapping(void)
- static __u8 *cougar_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 				 unsigned int *rsize)
- {
--	if (rdesc[2] == 0x09 && rdesc[3] == 0x02 &&
-+	if (*rsize >= 117 && rdesc[2] == 0x09 && rdesc[3] == 0x02 &&
- 	    (rdesc[115] | rdesc[116] << 8) >= HID_MAX_USAGES) {
- 		hid_info(hdev,
- 			"usage count exceeds max: fixing up report descriptor\n");
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index b35b9604413f..caeb3bdc78f8 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -713,6 +713,7 @@ static int rockchip_gpio_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 
+ 	pctldev = of_pinctrl_get(pctlnp);
++	of_node_put(pctlnp);
+ 	if (!pctldev)
+ 		return -EPROBE_DEFER;
+ 
 -- 
 2.43.0
 
