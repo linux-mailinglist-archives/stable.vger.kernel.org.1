@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-75091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AE49732DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF57F973415
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53AE8289A30
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6F431F25D37
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7B618C003;
-	Tue, 10 Sep 2024 10:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9702F192D74;
+	Tue, 10 Sep 2024 10:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSEhZOVb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fe3ysJFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C89218FDAF;
-	Tue, 10 Sep 2024 10:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562D518C025;
+	Tue, 10 Sep 2024 10:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963723; cv=none; b=F2hz7Gwmt0FLZqMrIelEDbLVu4ueF0nAUwE6zUGutDOwGy0KFLYoFOIwRqvMT7kx1Bq41L2gwL0VA2WI1rtUYy4PAITseJnVpZryKxbFWd1SXIqaaRQCEqdX3gh1W1asZtAPLG6wjx0so1kP1gyD3I1GErwuL1IpvQZ6vdKaywA=
+	t=1725964458; cv=none; b=MoxrPoxasiOXkeMxavDFag2DQeucexXyS+0c7zKTKpZhy2UTXFiNx30JyCsGvxsvCqqj2qYcLnkgz+CZ3Tx7BJ0DO8cAZUi3XmaojQzpormK+FHM5hWzKHwdFof7a4usHHS09xO8f/foX/5Z9NKjJMazS54nIzGI1b0D9W19euM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963723; c=relaxed/simple;
-	bh=FMSRezxVBTvwlBoCpYcJIgQ+h5JKCZnFvEpS/zYrgj8=;
+	s=arc-20240116; t=1725964458; c=relaxed/simple;
+	bh=GS6yjkC7vGI2EbL57ftD/uCzoK9xia6+p86yOB9Xpn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzkcVr6stuuE/LanUAZR8IMyt5Ht/AhIguUpZ5jrw5U7Y1setWYTKBwMxuM3nT6n1ebJrnX1PHgNGzLGpmp9246XoFQnpkpT/DeJbn/dBeW/+gOpAXSY4euhP92aESSKgLLdb3jIe+9PoZAp/9/x+nhFAtDIwp+WYZFQTFijWw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSEhZOVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9982C4CECD;
-	Tue, 10 Sep 2024 10:22:02 +0000 (UTC)
+	 MIME-Version; b=ogCRLqEkCbMcsvkqxf9nW02zy/S/CFBYeOkUFR9XcipVuyCehyYsoto7LB6bhyNRdQA32R/s5RHuYgWDLgjhmBzAd1Cc9b+rB1Wksbfwv7+dCl8GiCUGddwVBXE5QzjeKk0mJjf0gW2OFcAAg1Xsb/YueE5vGAY+vUuxGvdiIWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fe3ysJFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DEFC4CEC3;
+	Tue, 10 Sep 2024 10:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963723;
-	bh=FMSRezxVBTvwlBoCpYcJIgQ+h5JKCZnFvEpS/zYrgj8=;
+	s=korg; t=1725964458;
+	bh=GS6yjkC7vGI2EbL57ftD/uCzoK9xia6+p86yOB9Xpn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSEhZOVbG6DG6Rh0kq1+AKxDY3wKLt58gNJgiw8e8yqxN9IUmEAVol/BkTwI6bSuB
-	 m+rGdcBpB0Nb9uZAG3fPZI+rq+4Ou/pBp4SMBf1xk2/6XJbIuau6+lsNjYKD3CyIoS
-	 I+MTyHopuah8b4DIKmoKC6EmIpXNeP0vwizRkbMc=
+	b=fe3ysJFvz9cPfSBWwxD5OXaHz1bNrcEUsWoBMxwCwVKR2/KIb/9CY+voW6FwcqIDD
+	 r/jD8d4nl3drxlrB4hKCWSwdee6x/zErmq4pDsHfOm1wwdZQW7R4xOwgy3+55Vh7A2
+	 C753pxPPYrY4BMg6wFzxBrg4adi6xV+gLb/yBJuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/214] btrfs: replace BUG_ON() with error handling at update_ref_for_cow()
+Subject: [PATCH 6.6 190/269] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
 Date: Tue, 10 Sep 2024 11:32:57 +0200
-Message-ID: <20240910092605.065703217@linuxfoundation.org>
+Message-ID: <20240910092614.892752960@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit b56329a782314fde5b61058e2a25097af7ccb675 ]
+[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
 
-Instead of a BUG_ON() just return an error, log an error message and
-abort the transaction in case we find an extent buffer belonging to the
-relocation tree that doesn't have the full backref flag set. This is
-unexpected and should never happen (save for bugs or a potential bad
-memory).
+If we need to increase the tree depth, allocate a new node, and then
+race with another thread that increased the tree depth before us, we'll
+still have a preallocated node that might be used later.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+If we then use that node for a new non-root node, it'll still have a
+pointer to the old root instead of being zeroed - fix this by zeroing it
+in the cmpxchg failure path.
+
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/generic-radix-tree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 8b53313bf3b2..0b8c8b5094ef 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -306,8 +306,16 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
+index 7dfa88282b00..78f081d695d0 100644
+--- a/lib/generic-radix-tree.c
++++ b/lib/generic-radix-tree.c
+@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
+ 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
+ 			v = new_root;
+ 			new_node = NULL;
++		} else {
++			new_node->children[0] = NULL;
+ 		}
  	}
  
- 	owner = btrfs_header_owner(buf);
--	BUG_ON(owner == BTRFS_TREE_RELOC_OBJECTID &&
--	       !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
-+	if (unlikely(owner == BTRFS_TREE_RELOC_OBJECTID &&
-+		     !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF))) {
-+		btrfs_crit(fs_info,
-+"found tree block at bytenr %llu level %d root %llu refs %llu flags %llx without full backref flag set",
-+			   buf->start, btrfs_header_level(buf),
-+			   btrfs_root_id(root), refs, flags);
-+		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
- 
- 	if (refs > 1) {
- 		if ((owner == root->root_key.objectid ||
 -- 
 2.43.0
 
