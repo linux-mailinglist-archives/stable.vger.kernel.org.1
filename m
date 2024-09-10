@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF9B973290
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D30497317A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF1DA1C24844
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05FC289863
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154A51922F3;
-	Tue, 10 Sep 2024 10:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CA0193096;
+	Tue, 10 Sep 2024 10:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSJ1mx35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3ftGU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D53143880;
-	Tue, 10 Sep 2024 10:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AC7188CC1;
+	Tue, 10 Sep 2024 10:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963517; cv=none; b=fBcWMrMzMmRkvigQQDhvwr6GKI+TFTRWD7lVE9VYqluaiuPXRj21YmK8rJt1K07cDW8lJsJP25J5X+FD/HPVfWGiHSdAs9/CQxIiq4T5YgVDmjn97ytjZ+S+UNHGxxDtPH7aueh0SdBWJzu6e3rpMWy9vUWxuMtp+HJz0gJjR/g=
+	t=1725962860; cv=none; b=bBKZUQgEGyu+rgPdFNpZcsYt+FwA2r6m+v3X+bV4eIz9YgdyAEOTgib07wDL42mGYrXwADj58SV2xj/GXgCudpJdHc7VpA7ncUV/46aTx29hNjiVTfWHNIKD2J+AUm8h/HHAk41JiNwNDxk9o7OVjGWB7Zz/NutkhZ1eqyQmxsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963517; c=relaxed/simple;
-	bh=jiB71eZ2UY4cXQ07Z/J3mk5u4L7/mvnmXYrgeIHcn6A=;
+	s=arc-20240116; t=1725962860; c=relaxed/simple;
+	bh=FoCWUZPMU8wbpWcOvW5tjY7yPDZirI6IUPmq7oxo8Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+RIJpj1sg6zRLIJXmmQ3td8060UvhpHrchKN2z8uYMvlSHpdYSHWr7PRttpoATbrm+uUtPhUZR1fLvOK4p5YnrvYc1GPeHUZ7TlJxzbZJeZJSN0hvuGFHCTyoJwtVm0XHyh5Wm1VeCcgL5686Vx/I/pQmfcQmrGLDZ8f5Q2Vfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSJ1mx35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E8AC4CEC3;
-	Tue, 10 Sep 2024 10:18:37 +0000 (UTC)
+	 MIME-Version; b=aeHLDx+4FOboXMX3ufhQY45oHaH/ayDhg/Sl876ir7m8+14VUmhDR8mvZwZatj3S38tvTnTOUj5UpLL1DYJQSyL47B55bqrjdWDpBJOT5lR6EiDmElwLcSPnUUkRUO4PCC8zlbcIH0TqRDZENpOZIxSLXS7cQO0EUR3Jcx4LRo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG3ftGU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B625C4CEC3;
+	Tue, 10 Sep 2024 10:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963517;
-	bh=jiB71eZ2UY4cXQ07Z/J3mk5u4L7/mvnmXYrgeIHcn6A=;
+	s=korg; t=1725962860;
+	bh=FoCWUZPMU8wbpWcOvW5tjY7yPDZirI6IUPmq7oxo8Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSJ1mx35eF07j3t8aDPQ5C20YSNST+EURAsIsxDkYWyVbJK2Hp6fNj80KzLm7Wbed
-	 JqjGPM6iMJ5KZuE2kNsIPyZqH73aMUsDzPiCP9EsHpsszYV+F06JFgdxq5OefUaeqB
-	 sIasxXdYpPcJoIcEexuwBqUZ/JAjvwAVTbpmi80I=
+	b=rG3ftGU+jHVQoBjUa1yO3JaWTmVNre40HkHMPTLT0FpH7jTjclxaU6XvqZUBlIBiF
+	 m5yCTESMmQQ8h2cCTJmJ20O67IO2EoYSqxC2P/SEMTKP8tE4HVAt7ZYHsTyYgpYKCQ
+	 HvD8lc3vuXm7dIfeuzhSeF3tUCYWHwS4lsHCfEX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH 5.15 057/214] rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/192] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Date: Tue, 10 Sep 2024 11:31:19 +0200
-Message-ID: <20240910092601.093140586@linuxfoundation.org>
+Message-ID: <20240910092600.245193181@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-commit cc5645fddb0ce28492b15520306d092730dffa48 upstream.
+[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
 
-There is a possibility of buffer overflow in
-show_rcu_tasks_trace_gp_kthread() if counters, passed
-to sprintf() are huge. Counter numbers, needed for this
-are unrealistically high, but buffer overflow is still
-possible.
+After being asked about support for WPA3 for BCM43224 chipset it
+was found that all it takes is setting the MFP_CAPABLE flag and
+mac80211 will take care of all that is needed [1].
 
-Use snprintf() with buffer size instead of sprintf().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: edf3775f0ad6 ("rcu-tasks: Add count for idle tasks on offline CPUs")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tasks.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1323,7 +1323,7 @@ void show_rcu_tasks_trace_gp_kthread(voi
- {
- 	char buf[64];
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index a4034d44609b..94b1e4f15b41 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1089,6 +1089,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
  
--	sprintf(buf, "N%d h:%lu/%lu/%lu", atomic_read(&trc_n_readers_need_end),
-+	snprintf(buf, sizeof(buf), "N%d h:%lu/%lu/%lu", atomic_read(&trc_n_readers_need_end),
- 		data_race(n_heavy_reader_ofl_updates),
- 		data_race(n_heavy_reader_updates),
- 		data_race(n_heavy_reader_attempts));
+ 	hw->extra_tx_headroom = brcms_c_get_header_len();
+ 	hw->queues = N_TX_QUEUES;
+-- 
+2.43.0
+
 
 
 
