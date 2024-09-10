@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4189731D1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCC39732CC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCDC81C256B1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A33301C20751
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2680191F7C;
-	Tue, 10 Sep 2024 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F9618E76B;
+	Tue, 10 Sep 2024 10:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8HuT4w1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhWvZJp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8258C18FC9C;
-	Tue, 10 Sep 2024 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B23187FF9;
+	Tue, 10 Sep 2024 10:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963074; cv=none; b=kzDBiiG0Mbpa6grFaxLJjkniEZ+4ay41g9hpaXxk9sRBG6ykuj81PPXyS2P6PKRoz9udFmWcr/79vnyeBu+UUW6na6e0nDQwT9tYBtCrQmXLnQa2C2rT5LKZDDNAuPPey/hblzDJHUQlqXEV0zBMLL3qMdznvM11+oom/Tf78Pg=
+	t=1725963643; cv=none; b=YTC89fKa07HTXmMajGcrFmKvrBKgPqrnf284Jk2gYTK99ya+LnoKgCVKfMGbqfnhl9OdOlaQShCrw4XG1QS4tUbA90gIm+H0EQdANn0/MOqmgWqa3Y1EQ7VGX8XsXWUeuBxqjlmmqfyde/l/+bnNMu7cU8TvchhrEint3KJHVdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963074; c=relaxed/simple;
-	bh=8diSeC4mGxq6oJxB/ERH28E+5BzndmcZiF2LwRaV+Ow=;
+	s=arc-20240116; t=1725963643; c=relaxed/simple;
+	bh=YBijp4GNy4XkUJsd+Up//J7Xecscd20Foy/xCzY/U6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/S6Lyo8S8ercef+MJwTZlRQ7tuI+sfOufkOnViWkxJl59RVUGuafzcJgsBmc0QwXVXhI8REISiMaqti7un4Jogn8FFhHhwLXMjbfuty8nW93gPwqPqHHa1Jg5nwhfefDK3qFN01jTJ42Oi3MuCSx1jh6ZrSXH/XvLUnf4239XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8HuT4w1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09808C4CEC3;
-	Tue, 10 Sep 2024 10:11:13 +0000 (UTC)
+	 MIME-Version; b=tpuamyYj62ivf0GINzwZ5iGUOORqtpO7c8bBAR5j41qV0ZZiJ0zDuhVtWMhACLZ+b/f5+FUAjzILfzodSTK/Cb7c5qRsqj3zLOw2AVZBo8j3HSrjVuttsLSt3SUblAfnVCMPRAikJkaP1ovC/T4FSfhtGFHedGp65zN5M5ZiUwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhWvZJp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4023FC4CEC3;
+	Tue, 10 Sep 2024 10:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963074;
-	bh=8diSeC4mGxq6oJxB/ERH28E+5BzndmcZiF2LwRaV+Ow=;
+	s=korg; t=1725963643;
+	bh=YBijp4GNy4XkUJsd+Up//J7Xecscd20Foy/xCzY/U6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8HuT4w1K8hts5l70AJnwjRuTw5/jtcYL1VEo+WFM5CSVgRKHbuvVpW0kKQWYHlBM
-	 qzIKuMbVyzU93CmpNVVsC1DgBq5WUQ5IrjEOrIMrmp2THEBrem0WedhVwqkJpD0cw3
-	 5Qi+mbDV/KHL5mAtntPW4s+IWM7kUEGtngoPCQ1A=
+	b=ZhWvZJp5hi+qjqnigMJf2SZS+VHonl2kK+vpCePIDhSC8VsQFHbfWz3A3E9FeY4L1
+	 bXkcICamk3AGI29ZsL1Vkc2FgtaPLNt98mdSOMGFh5Ap+HpEOEx3o8wUKzlLh4ptYS
+	 ntiuDtBEs1zvd88l93dtgSM/Z6RItTVlL97x14G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Oliver Neukum <oneukum@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/192] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
+Subject: [PATCH 5.15 128/214] usbnet: modern method to get random MAC
 Date: Tue, 10 Sep 2024 11:32:30 +0200
-Message-ID: <20240910092603.206738044@linuxfoundation.org>
+Message-ID: <20240910092603.982368964@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+[ Upstream commit bab8eb0dd4cb995caa4a0529d5655531c2ec5e8e ]
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+The driver generates a random MAC once on load
+and uses it over and over, including on two devices
+needing a random MAC at the same time.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
+Jakub suggested revamping the driver to the modern
+API for setting a random MAC rather than fixing
+the old stuff.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+The bug is as old as the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/20240829175201.670718-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/usbnet.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index 7dfa88282b00..78f081d695d0 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 95b8c612a179..8e4f85fb8c77 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -64,9 +64,6 @@
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-// randomly generated ethernet address
+-static u8	node_id [ETH_ALEN];
+-
+ /* use ethtool to change the level for any given device */
+ static int msg_level = -1;
+ module_param (msg_level, int, 0);
+@@ -1729,7 +1726,6 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 
+ 	dev->net = net;
+ 	strscpy(net->name, "usb%d", sizeof(net->name));
+-	eth_hw_addr_set(net, node_id);
+ 
+ 	/* rx and tx sides can use different message sizes;
+ 	 * bind() should set rx_urb_size in that case.
+@@ -1803,9 +1799,9 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		goto out4;
  	}
  
+-	/* let userspace know we have a random address */
+-	if (ether_addr_equal(net->dev_addr, node_id))
+-		net->addr_assign_type = NET_ADDR_RANDOM;
++	/* this flags the device for user space */
++	if (!is_valid_ether_addr(net->dev_addr))
++		eth_hw_addr_random(net);
+ 
+ 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+ 		SET_NETDEV_DEVTYPE(net, &wlan_type);
+@@ -2215,7 +2211,6 @@ static int __init usbnet_init(void)
+ 	BUILD_BUG_ON(
+ 		sizeof_field(struct sk_buff, cb) < sizeof(struct skb_data));
+ 
+-	eth_random_addr(node_id);
+ 	return 0;
+ }
+ module_init(usbnet_init);
 -- 
 2.43.0
 
