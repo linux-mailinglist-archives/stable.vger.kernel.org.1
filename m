@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-75332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EBE973408
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585829734CD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D2F1F25BD9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B9EA1C24F3E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D0618C32E;
-	Tue, 10 Sep 2024 10:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8E61917F6;
+	Tue, 10 Sep 2024 10:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUNchu7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQEqYHYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5F418F2F0;
-	Tue, 10 Sep 2024 10:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC381917E2;
+	Tue, 10 Sep 2024 10:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964426; cv=none; b=DRzvwk0xAoinjatAJ5s85aOQbiNt09Q/nIFXjjNYFSHN4aPxVi8fBPnhZUCqD8uVV2gLp3Tpb7Qbc/tqBKKaJpq/Nmzfb4RStWfq8SNd5pcKxANw7s8FAT6imQaUYTM3RMezbbgneUnDqm6HvujkxFx2z1yTAhp0wDeFLMFHQLg=
+	t=1725964824; cv=none; b=GteFdD6z59JuorZpCxh8VAjIrxEo/eMYrWVVSH0hO5Tc6VPRAY5XeNNlwAcwpB84Cv6xRsVd1TimLvK1rJ+fUbEdIxh9BXcboYIzVQW/g4aK3CptASCR+zQ8c4OjgEfKLcGjmmIiZt9JCSmBAHKGFQhFSDRUBUnyPrtAXZSNqb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964426; c=relaxed/simple;
-	bh=CxYTFAC3uCrrepRDcx88oVVWHal5rxgoPCSD8zLcuWk=;
+	s=arc-20240116; t=1725964824; c=relaxed/simple;
+	bh=pfKAkEzgcnF30Pfm8GMgFNae07TLNkA9B4YMlUGoDI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azEDWBwHWsTi6CHzXfsHYUBn0nAXsXm9JfFcysZmclGJsDCpC8kZ6LYuhjzscATzXbkCXwZ1NTBB2S72Yv06PZvfnKhYM+wrXWDkV4XhAvd46T/woF2UciUFMDPslDeXrFo7Wj+DbbZF9GzORrupsNTzzUDIe3BDYcb4RqAVprE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUNchu7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AB9C4CEC3;
-	Tue, 10 Sep 2024 10:33:45 +0000 (UTC)
+	 MIME-Version; b=c8mdIQEyX3Fsru1ex/RTvnkjKScOn0DPPORr/ubqMtz78jZBDbEVWLB2amasV0GOVXfW06acP7jkIUSo4Ibx1bU1w9vqU72VLyHaSbkqULApos3SwezT20S11OOQxR0PEu1YQqecZq2NIQs2mwt4DjVVNq2Jaa+eqScCGLmWgSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQEqYHYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A69CC4CEC3;
+	Tue, 10 Sep 2024 10:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964426;
-	bh=CxYTFAC3uCrrepRDcx88oVVWHal5rxgoPCSD8zLcuWk=;
+	s=korg; t=1725964824;
+	bh=pfKAkEzgcnF30Pfm8GMgFNae07TLNkA9B4YMlUGoDI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUNchu7xUVyP12ULJS84COC5+FAAYrqLN24ritFZ6hTEFIJ7I6rsLjmKQhhOCLs46
-	 lPy/WLaBUhmczqx0K1qstNDhIhsgFVCQYlFnBjQfh5p9X95lB1s2KuIrA/EINS6v+c
-	 V0Bxl0gSTtO/SCghY222qc3rXrOJJSwJ+IjjE2EY=
+	b=xQEqYHYiRXDzY7ykF8ENZcN4knL2N7FCQScQLljn1h351vavij97Aj9lKByyKAWaH
+	 L5kOxdem6RSdbfsqFIs2p9Vr4Is5Q9bUy7xK03X+1LwHMY01KEvNtmjtDGkBUdFXEu
+	 +mLk1BBLblVySsLoEjqIilTDTbnCXJdVUMcj9clY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/269] hwmon: (adc128d818) Fix underflows seen when writing limit attributes
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 044/186] block: initialize integrity buffer to zero before writing it to media
 Date: Tue, 10 Sep 2024 11:32:19 +0200
-Message-ID: <20240910092613.636456548@linuxfoundation.org>
+Message-ID: <20240910092556.339524768@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 8cad724c8537fe3e0da8004646abc00290adae40 ]
+commit 899ee2c3829c5ac14bfc7d3c4a5846c0b709b78f upstream.
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+Metadata added by bio_integrity_prep is using plain kmalloc, which leads
+to random kernel memory being written media.  For PI metadata this is
+limited to the app tag that isn't used by kernel generated metadata,
+but for non-PI metadata the entire buffer leaks kernel memory.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding the __GFP_ZERO flag to allocations for writes.
+
+Fixes: 7ba1ba12eeef ("block: Block layer data integrity support")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Link: https://lore.kernel.org/r/20240613084839.1044015-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/adc128d818.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/bio-integrity.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-index 46e3c8c50765..73fd96799847 100644
---- a/drivers/hwmon/adc128d818.c
-+++ b/drivers/hwmon/adc128d818.c
-@@ -176,7 +176,7 @@ static ssize_t adc128_in_store(struct device *dev,
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -216,6 +216,7 @@ bool bio_integrity_prep(struct bio *bio)
+ 	unsigned int bytes, offset, i;
+ 	unsigned int intervals;
+ 	blk_status_t status;
++	gfp_t gfp = GFP_NOIO;
  
- 	mutex_lock(&data->update_lock);
- 	/* 10 mV LSB on limit registers */
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 10), 0, 255);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, 0, 2550), 10);
- 	data->in[index][nr] = regval << 4;
- 	reg = index == 1 ? ADC128_REG_IN_MIN(nr) : ADC128_REG_IN_MAX(nr);
- 	i2c_smbus_write_byte_data(data->client, reg, regval);
-@@ -214,7 +214,7 @@ static ssize_t adc128_temp_store(struct device *dev,
- 		return err;
+ 	if (!bi)
+ 		return true;
+@@ -238,12 +239,20 @@ bool bio_integrity_prep(struct bio *bio)
+ 		if (!bi->profile->generate_fn ||
+ 		    !(bi->flags & BLK_INTEGRITY_GENERATE))
+ 			return true;
++
++		/*
++		 * Zero the memory allocated to not leak uninitialized kernel
++		 * memory to disk.  For PI this only affects the app tag, but
++		 * for non-integrity metadata it affects the entire metadata
++		 * buffer.
++		 */
++		gfp |= __GFP_ZERO;
+ 	}
+ 	intervals = bio_integrity_intervals(bi, bio_sectors(bio));
  
- 	mutex_lock(&data->update_lock);
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
- 	data->temp[index] = regval << 1;
- 	i2c_smbus_write_byte_data(data->client,
- 				  index == 1 ? ADC128_REG_TEMP_MAX
--- 
-2.43.0
-
+ 	/* Allocate kernel buffer for protection data */
+ 	len = intervals * bi->tuple_size;
+-	buf = kmalloc(len, GFP_NOIO | q->bounce_gfp);
++	buf = kmalloc(len, gfp | q->bounce_gfp);
+ 	status = BLK_STS_RESOURCE;
+ 	if (unlikely(buf == NULL)) {
+ 		printk(KERN_ERR "could not allocate integrity buffer\n");
 
 
 
