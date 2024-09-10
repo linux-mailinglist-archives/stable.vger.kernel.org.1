@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-75199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2930A97335D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD66973373
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E006C287F24
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2314C286B54
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDA118CBE6;
-	Tue, 10 Sep 2024 10:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE00818FC7B;
+	Tue, 10 Sep 2024 10:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+ZTaQua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKlsegF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA9918C003;
-	Tue, 10 Sep 2024 10:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F90172BA8;
+	Tue, 10 Sep 2024 10:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964038; cv=none; b=LCzIG7Qw0f+JYpncd1HTZHOCnv2l2qTkGpmr/57BAn8H9S97Yfc+hOhuz9N6zedlxxzNzBn4jtTDzra4wKwB3qbuvKtUzhxjREoUqLJED+mQ38vhG+FHqWVhzWd6nB1uL58ZBbHd4NhsrY9FC4bD5poazvVShdxH/wYt+GqjfHo=
+	t=1725964067; cv=none; b=nBicCzSv2iNCohqmlf+xn0FAIpY5qxf7WuW+ihWkGgz5E0LcBLch8e5WiuD2wbKOQEW6GIxl5udZA/JPzx39BQ7hLPfP2ct6QDLVGOE5ki6aWPUor4N9yfSAZN6w6OzyxQ/EmtzOlV3bsIelWZXclhZmocPO004yJ7Lel+4cJOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964038; c=relaxed/simple;
-	bh=HwLIAOoK0yOLGF8uD2dBidu0r87RxlK1eVFzj4Z7YGg=;
+	s=arc-20240116; t=1725964067; c=relaxed/simple;
+	bh=Dn2rOKFNOOLQs6R/WVUbtIL12046MnyCcj87G0gQI4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5ZWMbmtuPOGVdnI+0Nu3owK6HpA0X8smyY24w1P0QzinhW8U/oFa7m9CdTdAfDBB/deE0aEHjpUKYw7uVF5lDSbNps0Y1IjV6llohR7GojNlTO+4TjGXrhGDl6GdgV0PlG3Lhf22YyNy9ISF4DtNc1wAwvsjkCNRy5dHJEz+bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+ZTaQua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51D7C4CEC3;
-	Tue, 10 Sep 2024 10:27:17 +0000 (UTC)
+	 MIME-Version; b=CCEK8NPtRSuL21kBtIVn0FadD6P29SEx8JiZqQdQ0HQ+B3fvCT33Jf8Ih9EvoAX8saApA/WrOd8MoB3d8xL8fZ0bnrhclNDn4SSbzn7GPvvfbFEnXCGOj4qCQybz8CH5pDtc/gJXPhgDCrsbMbJH0SYpwGxvl0N35iTs8UJfq6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKlsegF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD6CC4CEC3;
+	Tue, 10 Sep 2024 10:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964038;
-	bh=HwLIAOoK0yOLGF8uD2dBidu0r87RxlK1eVFzj4Z7YGg=;
+	s=korg; t=1725964067;
+	bh=Dn2rOKFNOOLQs6R/WVUbtIL12046MnyCcj87G0gQI4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+ZTaQuaw824Jnf+RTAiUSPkdXPS0/SlZI1STGqqKhwYLr7ny16D16OmMzSkw8dvQ
-	 4JmwVzNwbJrQbrb5VaZKi+rjgBAqPk/eoJubgMAB1rVGN84IAgQ8ilNsYxjOYcYVDj
-	 nKiWaNEzBvluzcxemktej7SgQImFEOw7pt1GaeAY=
+	b=hKlsegF7szSAm+zazoVUeWnNkQ4Ne/GWsgN/DqUDbAvV6RsGqsLX7TwWnywR4pMv1
+	 /zrMB4romNSTkBceE0TSH93NFSWEpQX9xL+BzZdXdR80R70tGb4GyI/HUrVBDo6Qfk
+	 ORw/lwqexb3BCuKT9U5W9q/fSYQjpB58fcNDsuYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Josef Bacik <josef@toxicpanda.com>,
+	Jann Horn <jannh@google.com>,
 	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 029/269] fuse: update stats for pages in dropped aux writeback list
-Date: Tue, 10 Sep 2024 11:30:16 +0200
-Message-ID: <20240910092609.277248473@linuxfoundation.org>
+Subject: [PATCH 6.6 030/269] fuse: use unsigned type for getxattr/listxattr size truncation
+Date: Tue, 10 Sep 2024 11:30:17 +0200
+Message-ID: <20240910092609.315936724@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -66,44 +65,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-commit f7790d67785302b3116bbbfda62a5a44524601a3 upstream.
+commit b18915248a15eae7d901262f108d6ff0ffb4ffc1 upstream.
 
-In the case where the aux writeback list is dropped (e.g. the pages
-have been truncated or the connection is broken), the stats for
-its pages and backing device info need to be updated as well.
+The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
+parsing the FUSE daemon's response to a zero-length getxattr/listxattr
+request.
+On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
+wrong: The min_t() will pass through any size values that are negative when
+interpreted as signed.
+fuse_listxattr() will then return this userspace-supplied negative value,
+which callers will treat as an error value.
 
-Fixes: e2653bd53a98 ("fuse: fix leaked aux requests")
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Cc: <stable@vger.kernel.org> # v5.1
+This kind of bug pattern can lead to fairly bad security bugs because of
+how error codes are used in the Linux kernel. If a caller were to convert
+the numeric error into an error pointer, like so:
+
+    struct foo *func(...) {
+      int len = fuse_getxattr(..., NULL, 0);
+      if (len < 0)
+        return ERR_PTR(len);
+      ...
+    }
+
+then it would end up returning this userspace-supplied negative value cast
+to a pointer - but the caller of this function wouldn't recognize it as an
+error pointer (IS_ERR_VALUE() only detects values in the narrow range in
+which legitimate errno values are), and so it would just be treated as a
+kernel pointer.
+
+I think there is at least one theoretical codepath where this could happen,
+but that path would involve virtio-fs with submounts plus some weird
+SELinux configuration, so I think it's probably not a concern in practice.
+
+Cc: stable@vger.kernel.org # v4.9
+Fixes: 63401ccdb2ca ("fuse: limit xattr returned size")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/fuse/xattr.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1735,10 +1735,16 @@ __acquires(fi->lock)
- 	fuse_writepage_finish(fm, wpa);
- 	spin_unlock(&fi->lock);
- 
--	/* After fuse_writepage_finish() aux request list is private */
-+	/* After rb_erase() aux request list is private */
- 	for (aux = wpa->next; aux; aux = next) {
-+		struct backing_dev_info *bdi = inode_to_bdi(aux->inode);
-+
- 		next = aux->next;
- 		aux->next = NULL;
-+
-+		dec_wb_stat(&bdi->wb, WB_WRITEBACK);
-+		dec_node_page_state(aux->ia.ap.pages[0], NR_WRITEBACK_TEMP);
-+		wb_writeout_inc(&bdi->wb);
- 		fuse_writepage_free(aux);
+--- a/fs/fuse/xattr.c
++++ b/fs/fuse/xattr.c
+@@ -81,7 +81,7 @@ ssize_t fuse_getxattr(struct inode *inod
  	}
- 
+ 	ret = fuse_simple_request(fm, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_SIZE_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_SIZE_MAX);
+ 	if (ret == -ENOSYS) {
+ 		fm->fc->no_getxattr = 1;
+ 		ret = -EOPNOTSUPP;
+@@ -143,7 +143,7 @@ ssize_t fuse_listxattr(struct dentry *en
+ 	}
+ 	ret = fuse_simple_request(fm, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_LIST_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_LIST_MAX);
+ 	if (ret > 0 && size)
+ 		ret = fuse_verify_xattr_list(list, ret);
+ 	if (ret == -ENOSYS) {
 
 
 
