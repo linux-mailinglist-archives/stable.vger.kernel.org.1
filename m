@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434109733A1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38211973264
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14C4AB25063
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF4002883EC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B64E192D69;
-	Tue, 10 Sep 2024 10:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B12A1922CA;
+	Tue, 10 Sep 2024 10:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgXfszi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Med8SHfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A21188A38;
-	Tue, 10 Sep 2024 10:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC77190496;
+	Tue, 10 Sep 2024 10:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964106; cv=none; b=J+BMijp8zFKanbW6Y2ddQ5QA5OhF/LY8MWMF1oPPoXnenq1QhX6dMP7AInQ0fqR6ckUqFLafUMNq3KSru6jXi2zajFMBE3KDhF4bkjX2cj/XIyZClYfQkp/EnsfmAyjDWNUU+KIUa0IWqi0Bj5LbJWgtzJTMGmuwfVv5dcUByWw=
+	t=1725963374; cv=none; b=CuOgygnkVBzk7K8qWNQJX8i3objKFfCv0yA/w/fV+VjFaMLUxuH7iYe+H1RQxp09Gv6LBVSdJIOFnVnpSU1PoWmdPgfUoxOMovQfYzyTHPwQjFZV1piTP7lJqKhPzZWVxcYwK3XvIDZP8XtsY6fFc1Tt5IwU3AKGeJ+xLD4tDtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964106; c=relaxed/simple;
-	bh=7YRYtOPBaV+/DGkg2O8d9vSOYjunepgAPP7I3XlnWz4=;
+	s=arc-20240116; t=1725963374; c=relaxed/simple;
+	bh=39JI3mMMPy0a7bcRnd5alLDb4Z6julHtggfCNt8xLio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aT2eN3X+vUfgz2zgrsLvzN17Euoc6XZYuO8UxZR0GSVqdl3TBvhsn5rjVz89x5JSHwP8PxSeE8hLKz293kReOJlWf6foOc7xCezb1kmyJEL74k2ZMIW91a+BiIIj+OeailN52LFzqcK4WrynQwdezsC5gbh+7g25Xd1PxBupHPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgXfszi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D022C4CEC3;
-	Tue, 10 Sep 2024 10:28:25 +0000 (UTC)
+	 MIME-Version; b=RUroXTF7NOKo4o8JC+PGMldNboNyq5w+EZzEkR19/NxHjXW+RxiabZXDibkbIROt5c+K1KjkCEPmo9v+SmuCCLi813aU5PYfXRf1Lgxc1AFL6eJHp5OO6+byA4DY+JWGvRSzD4BFdNSGuo0vc+fgXjsg6mdNU4St7IeMP8Ajc/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Med8SHfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD0C4CEC3;
+	Tue, 10 Sep 2024 10:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964105;
-	bh=7YRYtOPBaV+/DGkg2O8d9vSOYjunepgAPP7I3XlnWz4=;
+	s=korg; t=1725963374;
+	bh=39JI3mMMPy0a7bcRnd5alLDb4Z6julHtggfCNt8xLio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgXfszi+C22CDfXE0Pv7hSDLEJgfN0grTQaA4bCFNLwPP2/4fqZerOWNGNjJVQvas
-	 xVt0zri8uIBO2GOjGvldIjZyHyRx/0tmoD9CHN6GfScw5L5dyLlhJPfYZzbm9s3sxQ
-	 gCCl0pILdV8i1bxIqIbJrSUEEXtDMbQZDGFAcqmc=
+	b=Med8SHfns/U29NqfmaeGwA0c1/5n7qYxcQRQpuJ5oV4M0sJY1U/1b9U8yDIQdsGBH
+	 xyiUtiQCtERamnSm3D54pHOWSVK4qPmC9otqxIRT+qVZa43q3z1kb79hCv7xG2fctP
+	 ckBUOM6EfSb9mmBRIKzZU66fZpeVsnqMLQGkH1RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/269] af_unix: Remove put_pid()/put_cred() in copy_peercred().
-Date: Tue, 10 Sep 2024 11:30:57 +0200
-Message-ID: <20240910092610.697624960@linuxfoundation.org>
+Subject: [PATCH 5.15 036/214] drm/amd/pm: check negtive return for table entries
+Date: Tue, 10 Sep 2024 11:30:58 +0200
+Message-ID: <20240910092600.244572448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
+[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
 
-When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
-the listener's sk_peer_pid/sk_peer_cred are copied to the client in
-copy_peercred().
+Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
 
-Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
-we need not call put_pid() and put_cred() there.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index b7f62442d826..dca4429014db 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -693,9 +693,6 @@ static void init_peercred(struct sock *sk)
- 
- static void copy_peercred(struct sock *sk, struct sock *peersk)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+index 1d829402cd2e..59b18395983a 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
  {
--	const struct cred *old_cred;
--	struct pid *old_pid;
--
- 	if (sk < peersk) {
- 		spin_lock(&sk->sk_peer_lock);
- 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
-@@ -703,16 +700,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
- 		spin_lock(&peersk->sk_peer_lock);
- 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+ 	int result;
+ 	unsigned int i;
+-	unsigned int table_entries;
+ 	struct pp_power_state *state;
+-	int size;
++	int size, table_entries;
+ 
+ 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
+ 		return 0;
+@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+ 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
+ 		return 0;
+ 
+-	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
++	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
+ 
+-	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
++	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
+ 					  sizeof(struct pp_power_state);
+ 
+-	if (table_entries == 0 || size == 0) {
++	if (table_entries <= 0 || size == 0) {
+ 		pr_warn("Please check whether power state management is supported on this asic\n");
++		hwmgr->num_ps = 0;
++		hwmgr->ps_size = 0;
+ 		return 0;
  	}
--	old_pid = sk->sk_peer_pid;
--	old_cred = sk->sk_peer_cred;
-+
- 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
- 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
++	hwmgr->num_ps = table_entries;
++	hwmgr->ps_size = size;
  
- 	spin_unlock(&sk->sk_peer_lock);
- 	spin_unlock(&peersk->sk_peer_lock);
--
--	put_pid(old_pid);
--	put_cred(old_cred);
- }
- 
- static int unix_listen(struct socket *sock, int backlog)
+ 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
+ 	if (hwmgr->ps == NULL)
 -- 
 2.43.0
 
