@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A87E973145
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9861F973248
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6B71C25577
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA3E289AAA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B528718C343;
-	Tue, 10 Sep 2024 10:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BC5191476;
+	Tue, 10 Sep 2024 10:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUdy2Yeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUDLvk7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AAF1885A5;
-	Tue, 10 Sep 2024 10:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3A318B498;
+	Tue, 10 Sep 2024 10:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962725; cv=none; b=n7q4HEahqfdyaxfmzTDmw3jS7/bwZD9rBeJGHNkh2YyFGg9xjVL3qTq8+rFdBXMZKrkb6H7ce+7RnyQMK0T9TOdQX9XX2UDkG2MUPsQBf1CPPwitlGJdu5YTOS6AVdUbZ6DnmpgfjIHke7pblNajypBWT0puKgv4jcvxlJkb07k=
+	t=1725963338; cv=none; b=aBe29G59kQbbf/ZSdPVePrcNp45o37qqcp0A+f9n8rXh+ekUWiA9TPX7A8b3TOTLxopFLM2E4kKNdXdBERIZmcI/cE1jrpyB00RZn3uPP4jBy284x8k8W+YqxjeFFg7MlwHJvPHz+hRFAfixOoNixc0XansPpVE7/DXY6qIleoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962725; c=relaxed/simple;
-	bh=XXRA0mBpTqniW9/tijckUyUC/wcAzA0+M8YDdz7iXBc=;
+	s=arc-20240116; t=1725963338; c=relaxed/simple;
+	bh=x4U5I1eTBLqHFAVJhJRhsZ55T3OmfzmweYCbfvgTK2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KC+q5ylyFKLzaJg0uDf4Qt9BzhQStzgehiOjAtTkSBEY6zHqVdzfDmhm8075msR/T647v7cHYPEiBptIhgwvWNlHaWJ5LOnG5sYqwUkUPpH1QAVqPDtSZ211nXfZn6VtxlVWV12GXhPSxTC8RyvKM+/CYBURMDxEvPLQxog0HUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUdy2Yeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC80C4CEC6;
-	Tue, 10 Sep 2024 10:05:24 +0000 (UTC)
+	 MIME-Version; b=IH/Vx1/RC91Z5ArD4wGz84lSvQz5SIx4igC/2eiURtCT+Uol9qaD7mB6U02dM9lgN7f5Zikh6uG/6VUSR8MkH9pfWvG/PNPjSlu88QOCmPhCzpf2neg9hejgNEa8ZnlUJzDV5Ll73DNyejGqhM+ulJSOUzdyj5eRSU5/BG4mNek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUDLvk7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462F2C4CED0;
+	Tue, 10 Sep 2024 10:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962725;
-	bh=XXRA0mBpTqniW9/tijckUyUC/wcAzA0+M8YDdz7iXBc=;
+	s=korg; t=1725963338;
+	bh=x4U5I1eTBLqHFAVJhJRhsZ55T3OmfzmweYCbfvgTK2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUdy2YeuBDfUz98NeeoBUMjPhjswICX3yOjOP5KFbe3/neBRvBmJ0uLTzLWfuhGsg
-	 BDFnTi9TbtDN0h253qb4jBGSI1ToF6oMY1ZNVwTTmgddlHByS62yworj6mleExOCyc
-	 lrE9VdWp0bqPbeCUctAS813W7f543RsXme7vwB6A=
+	b=JUDLvk7j0zZNrgDKFWK9yoLPsyQSwb6n3jMtwxcvbqSAZp/xFeIEe2it8mf6ANWGU
+	 AO6MeLx/GY77l+GKbykgLsrxh8AowiubWfChfmI8SVE1zQ7RKGtCTBhaEQl49Byj3Z
+	 HXGAEsUcLoBM82jsJG1LOEKxDMqywog8quF4kghc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 001/192] sch/netem: fix use after free in netem_dequeue
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/214] ALSA: hda/conexant: Mute speakers at suspend / shutdown
 Date: Tue, 10 Sep 2024 11:30:25 +0200
-Message-ID: <20240910092557.944134672@linuxfoundation.org>
+Message-ID: <20240910092558.853481425@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
+[ Upstream commit 4f61c8fe35202702426cfc0003e15116a01ba885 ]
 
-If netem_dequeue() enqueues packet to inner qdisc and that qdisc
-returns __NET_XMIT_STOLEN. The packet is dropped but
-qdisc_tree_reduce_backlog() is not called to update the parent's
-q.qlen, leading to the similar use-after-free as Commit
-e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
-fails")
+Use the new helper to mute speakers at suspend / shutdown for avoiding
+click noises.
 
-Commands to trigger KASAN UaF:
-
-ip link add type dummy
-ip link set lo up
-ip link set dummy0 up
-tc qdisc add dev lo parent root handle 1: drr
-tc filter add dev lo parent 1: basic classid 1:1
-tc class add dev lo classid 1:1 drr
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2: handle 3: drr
-tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
-redirect dev dummy0
-tc class add dev lo classid 3:1 drr
-ping -c1 -W0.01 localhost # Trigger bug
-tc class del dev lo classid 1:1
-tc class add dev lo classid 1:1 drr
-ping -c1 -W0.01 localhost # UaF
-
-Fixes: 50612537e9ab ("netem: fix classful handling")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1228269
+Link: https://patch.msgid.link/20240726142625.2460-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_conexant.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -733,11 +733,10 @@ deliver:
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 09a272c65be11..802a33aaa0d62 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -205,6 +205,8 @@ static void cx_auto_shutdown(struct hda_codec *codec)
+ {
+ 	struct conexant_spec *spec = codec->spec;
  
- 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
- 				kfree_skb_list(to_free);
--				if (err != NET_XMIT_SUCCESS &&
--				    net_xmit_drop_count(err)) {
--					qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1,
--								  pkt_len);
-+				if (err != NET_XMIT_SUCCESS) {
-+					if (net_xmit_drop_count(err))
-+						qdisc_qstats_drop(sch);
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
++	snd_hda_gen_shutup_speakers(codec);
++
+ 	/* Turn the problematic codec into D3 to avoid spurious noises
+ 	   from the internal speaker during (and after) reboot */
+ 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
+-- 
+2.43.0
+
 
 
 
