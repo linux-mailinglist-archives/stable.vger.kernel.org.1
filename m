@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-74953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC70D973240
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF0097314C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A5911C20DFB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D18C1289ECF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D618718FC74;
-	Tue, 10 Sep 2024 10:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E272E18F2FD;
+	Tue, 10 Sep 2024 10:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkE/h2Yh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Qw9Au9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944DF17A589;
-	Tue, 10 Sep 2024 10:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143C18EFFA;
+	Tue, 10 Sep 2024 10:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963318; cv=none; b=u4eBKRasfTzHAxdsuGAhqzj1IU0r2SuNJZULodDIwb55Wao9ndzJmZ6XkK4z7Wg4/gcKL/jA18yqDxNd1CS4jtemuqHoXCFO47MU6Vhx/z4Kf2LAzQxIspv6b5NHizS1qBW19bijM6qPdqrYsd1WezIzPpWHHiqlVZ3OBsjr0sQ=
+	t=1725962743; cv=none; b=uBc5y7Ypnwwmhhm4bC8Q4orV9B/QZdnCfS6F9CFmWzqhu5OLSJzvQbAiGEcG/0rAI7DpxzKYVcIdswyjwMQ+cnyjzaRH7dw1j9SYjffh0RmnmF3fZeGbZBZpFT8HJ9BSIpX1JWYrXme5dVt1JXh5lh0/o3N+Rpkhb6YHuXG3foM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963318; c=relaxed/simple;
-	bh=KGrTCApl2YCG/DslEmPKcz28liXL4W6S6C8to+cGXCU=;
+	s=arc-20240116; t=1725962743; c=relaxed/simple;
+	bh=lsVI3R5doL7+TFU8dMBsYu9HaF5ZMJcUb8g05vrf0kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2rQ2lT71RsZ4vzQBkNfWp6FG7x2cpx/cqYI2EZOkLDka40IBEig6Dqx8eIYkEpm/UK+bSNV7YKqonqSgBNNTV9M10aXx0OqWwVJbmtsFk4UQe9QP7jvMP3wQR/iYTr6dkmN4VxIRg1CvfWWdmys9lgMf236WfQDNneQH6bzzms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkE/h2Yh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F28C4CEC3;
-	Tue, 10 Sep 2024 10:15:17 +0000 (UTC)
+	 MIME-Version; b=KlOdrkBBRKZS/i9jbXSOy/SULJko3KxcBIlMCmhHC44BJIBI1njvIDcX7KnK4r+ShueUxtTMDMAwss1avtu66yV3yatdvCurZi+KnB4iMRsjMYCsPvBPa/JcoOqPCn98XErsHUTaHlwWTJIRZNyTHwjqFfDGdyavR5HFUBxuUv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Qw9Au9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2024C4CECD;
+	Tue, 10 Sep 2024 10:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963318;
-	bh=KGrTCApl2YCG/DslEmPKcz28liXL4W6S6C8to+cGXCU=;
+	s=korg; t=1725962743;
+	bh=lsVI3R5doL7+TFU8dMBsYu9HaF5ZMJcUb8g05vrf0kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkE/h2Yh4paW3SVFezKBMNgY45+39QQQrFe7PqMfPDSdc+aAPrPaRbYjlQteqHnOG
-	 8Az/23n5/lQxX8xHd7+wOLcCVQPog//t6PW0zmsF7PxkNr6kfJFhNhyrQL2U3kFPWh
-	 rBsg2jTGLsIvaCjSeIIT1bdazmYv66yJe+Sf8WYQ=
+	b=X6Qw9Au9/IM4yvPjGl3ygnRJBzyXpomKcC9jQGK9+MYfYDMB2teGaAP+TkWOj14fT
+	 ahzzJkRGiCDl8+lT0+K8/EaCVrNkhcLxUE2nr5FzGCmFRcp1APJrTMvc97PScBZYjp
+	 GXCMZqWw8af5MX/6kK5SmCnHLgjUzlDS/At2v7uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/214] drm/amd/display: Check gpio_id before used as array index
+	Max Ramanouski <max8rr8@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.1 015/192] x86/kaslr: Expose and use the end of the physical memory address space
 Date: Tue, 10 Sep 2024 11:30:39 +0200
-Message-ID: <20240910092559.476934583@linuxfoundation.org>
+Message-ID: <20240910092558.568932042@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +64,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
+commit ea72ce5da22806d5713f3ffb39a6d5ae73841f93 upstream.
 
-[WHY & HOW]
-GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
-should be checked in advance.
+iounmap() on x86 occasionally fails to unmap because the provided valid
+ioremap address is not below high_memory. It turned out that this
+happens due to KASLR.
 
-This fixes 5 OVERRUN issues reported by Coverity.
+KASLR uses the full address space between PAGE_OFFSET and vaddr_end to
+randomize the starting points of the direct map, vmalloc and vmemmap
+regions.  It thereby limits the size of the direct map by using the
+installed memory size plus an extra configurable margin for hot-plug
+memory.  This limitation is done to gain more randomization space
+because otherwise only the holes between the direct map, vmalloc,
+vmemmap and vaddr_end would be usable for randomizing.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The limited direct map size is not exposed to the rest of the kernel, so
+the memory hot-plug and resource management related code paths still
+operate under the assumption that the available address space can be
+determined with MAX_PHYSMEM_BITS.
+
+request_free_mem_region() allocates from (1 << MAX_PHYSMEM_BITS) - 1
+downwards.  That means the first allocation happens past the end of the
+direct map and if unlucky this address is in the vmalloc space, which
+causes high_memory to become greater than VMALLOC_START and consequently
+causes iounmap() to fail for valid ioremap addresses.
+
+MAX_PHYSMEM_BITS cannot be changed for that because the randomization
+does not align with address bit boundaries and there are other places
+which actually require to know the maximum number of address bits.  All
+remaining usage sites of MAX_PHYSMEM_BITS have been analyzed and found
+to be correct.
+
+Cure this by exposing the end of the direct map via PHYSMEM_END and use
+that for the memory hot-plug and resource management related places
+instead of relying on MAX_PHYSMEM_BITS. In the KASLR case PHYSMEM_END
+maps to a variable which is initialized by the KASLR initialization and
+otherwise it is based on MAX_PHYSMEM_BITS as before.
+
+To prevent future hickups add a check into add_pages() to catch callers
+trying to add memory above PHYSMEM_END.
+
+Fixes: 0483e1fa6e09 ("x86/mm: Implement ASLR for kernel memory regions")
+Reported-by: Max Ramanouski <max8rr8@gmail.com>
+Reported-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-By: Max Ramanouski <max8rr8@gmail.com>
+Tested-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/87ed6soy3z.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/page_64.h          |    1 +
+ arch/x86/include/asm/pgtable_64_types.h |    4 ++++
+ arch/x86/mm/init_64.c                   |    4 ++++
+ arch/x86/mm/kaslr.c                     |   32 ++++++++++++++++++++++++++------
+ include/linux/mm.h                      |    4 ++++
+ kernel/resource.c                       |    6 ++----
+ mm/memory_hotplug.c                     |    2 +-
+ mm/sparse.c                             |    2 +-
+ 8 files changed, 43 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index dae8e489c8cf..a7c92c64490c 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -241,6 +241,9 @@ static bool is_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return false;
-+
- 	return service->busyness[id][en];
- }
+--- a/arch/x86/include/asm/page_64.h
++++ b/arch/x86/include/asm/page_64.h
+@@ -17,6 +17,7 @@ extern unsigned long phys_base;
+ extern unsigned long page_offset_base;
+ extern unsigned long vmalloc_base;
+ extern unsigned long vmemmap_base;
++extern unsigned long physmem_end;
  
-@@ -249,6 +252,9 @@ static void set_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
+ static __always_inline unsigned long __phys_addr_nodebug(unsigned long x)
  {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = true;
- }
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -139,6 +139,10 @@ extern unsigned int ptrs_per_p4d;
+ # define VMEMMAP_START		__VMEMMAP_BASE_L4
+ #endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
  
-@@ -257,6 +263,9 @@ static void set_pin_free(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
++#ifdef CONFIG_RANDOMIZE_MEMORY
++# define PHYSMEM_END		physmem_end
++#endif
 +
- 	service->busyness[id][en] = false;
- }
- 
-@@ -265,7 +274,7 @@ enum gpio_result dal_gpio_service_lock(
- 	enum gpio_id id,
- 	uint32_t en)
+ /*
+  * End of the region for which vmalloc page tables are pre-allocated.
+  * For non-KMSAN builds, this is the same as VMALLOC_END.
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -950,8 +950,12 @@ static void update_end_of_memory_vars(u6
+ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
+ 	      struct mhp_params *params)
  {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
++	unsigned long end = ((start_pfn + nr_pages) << PAGE_SHIFT) - 1;
+ 	int ret;
+ 
++	if (WARN_ON_ONCE(end > PHYSMEM_END))
++		return -ERANGE;
++
+ 	ret = __add_pages(nid, start_pfn, nr_pages, params);
+ 	WARN_ON_ONCE(ret);
+ 
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -47,13 +47,24 @@ static const unsigned long vaddr_end = C
+  */
+ static __initdata struct kaslr_memory_region {
+ 	unsigned long *base;
++	unsigned long *end;
+ 	unsigned long size_tb;
+ } kaslr_regions[] = {
+-	{ &page_offset_base, 0 },
+-	{ &vmalloc_base, 0 },
+-	{ &vmemmap_base, 0 },
++	{
++		.base	= &page_offset_base,
++		.end	= &physmem_end,
++	},
++	{
++		.base	= &vmalloc_base,
++	},
++	{
++		.base	= &vmemmap_base,
++	},
+ };
+ 
++/* The end of the possible address space for physical memory */
++unsigned long physmem_end __ro_after_init;
++
+ /* Get size in bytes used by the memory region */
+ static inline unsigned long get_padding(struct kaslr_memory_region *region)
+ {
+@@ -82,6 +93,8 @@ void __init kernel_randomize_memory(void
+ 	BUILD_BUG_ON(vaddr_end != CPU_ENTRY_AREA_BASE);
+ 	BUILD_BUG_ON(vaddr_end > __START_KERNEL_map);
+ 
++	/* Preset the end of the possible address space for physical memory */
++	physmem_end = ((1ULL << MAX_PHYSMEM_BITS) - 1);
+ 	if (!kaslr_memory_enabled())
+ 		return;
+ 
+@@ -128,11 +141,18 @@ void __init kernel_randomize_memory(void
+ 		vaddr += entropy;
+ 		*kaslr_regions[i].base = vaddr;
+ 
++		/* Calculate the end of the region */
++		vaddr += get_padding(&kaslr_regions[i]);
+ 		/*
+-		 * Jump the region and add a minimum padding based on
+-		 * randomization alignment.
++		 * KASLR trims the maximum possible size of the
++		 * direct-map. Update the physmem_end boundary.
++		 * No rounding required as the region starts
++		 * PUD aligned and size is in units of TB.
+ 		 */
+-		vaddr += get_padding(&kaslr_regions[i]);
++		if (kaslr_regions[i].end)
++			*kaslr_regions[i].end = __pa_nodebug(vaddr - 1);
++
++		/* Add a minimum padding based on randomization alignment. */
+ 		vaddr = round_up(vaddr + 1, PUD_SIZE);
+ 		remain_entropy -= entropy;
  	}
-@@ -279,7 +288,7 @@ enum gpio_result dal_gpio_service_unlock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -92,6 +92,10 @@ extern const int mmap_rnd_compat_bits_ma
+ extern int mmap_rnd_compat_bits __read_mostly;
+ #endif
+ 
++#ifndef PHYSMEM_END
++# define PHYSMEM_END	((1ULL << MAX_PHYSMEM_BITS) - 1)
++#endif
++
+ #include <asm/page.h>
+ #include <asm/processor.h>
+ 
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1781,8 +1781,7 @@ static resource_size_t gfr_start(struct
+ 	if (flags & GFR_DESCENDING) {
+ 		resource_size_t end;
+ 
+-		end = min_t(resource_size_t, base->end,
+-			    (1ULL << MAX_PHYSMEM_BITS) - 1);
++		end = min_t(resource_size_t, base->end, PHYSMEM_END);
+ 		return end - size + 1;
  	}
--- 
-2.43.0
-
+ 
+@@ -1799,8 +1798,7 @@ static bool gfr_continue(struct resource
+ 	 * @size did not wrap 0.
+ 	 */
+ 	return addr > addr - size &&
+-	       addr <= min_t(resource_size_t, base->end,
+-			     (1ULL << MAX_PHYSMEM_BITS) - 1);
++	       addr <= min_t(resource_size_t, base->end, PHYSMEM_END);
+ }
+ 
+ static resource_size_t gfr_next(resource_size_t addr, resource_size_t size,
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1530,7 +1530,7 @@ struct range __weak arch_get_mappable_ra
+ 
+ struct range mhp_get_pluggable_range(bool need_mapping)
+ {
+-	const u64 max_phys = (1ULL << MAX_PHYSMEM_BITS) - 1;
++	const u64 max_phys = PHYSMEM_END;
+ 	struct range mhp_range;
+ 
+ 	if (need_mapping) {
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -129,7 +129,7 @@ static inline int sparse_early_nid(struc
+ static void __meminit mminit_validate_memmodel_limits(unsigned long *start_pfn,
+ 						unsigned long *end_pfn)
+ {
+-	unsigned long max_sparsemem_pfn = 1UL << (MAX_PHYSMEM_BITS-PAGE_SHIFT);
++	unsigned long max_sparsemem_pfn = (PHYSMEM_END + 1) >> PAGE_SHIFT;
+ 
+ 	/*
+ 	 * Sanity checks - do not allow an architecture to pass
 
 
 
