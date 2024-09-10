@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110F49732F3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D594973588
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA54C2825AB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19718B290EB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58203191F88;
-	Tue, 10 Sep 2024 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7D18C327;
+	Tue, 10 Sep 2024 10:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYPkpCPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql1icXCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158E718C036;
-	Tue, 10 Sep 2024 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBA2C8DF;
+	Tue, 10 Sep 2024 10:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963773; cv=none; b=B7/A59SoULhs9xgfGA9f0DAAFrKkPRm9Gy0f7D7MJqXicHlTugElhzsqhvDMmDP0xHTb6yI0oRPS5P4MBFjXfb1ZJZc9B9zTYxGkJc/oRfYAjSbxLIflxAU5d4wP6kgPgahHWjUhfos9Gu1ujJi/JfPPw4gedsNNbc1Nznt0qZs=
+	t=1725965066; cv=none; b=uph7DyKSw8xp/uVMHcYensgBYWKrC5y5pqwutUByTZ2hppyDLri+B2BnTyKnhbXfQcBk5OcsBLgdSXkBdEi//pV/ZrfBrYWcYkiSF42W3r4nXKlCwYJpCRqur3r9ln1ddL+WkIuN78k37D/Ay1ag2xCsdSKIUFWCi1R45RbYNoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963773; c=relaxed/simple;
-	bh=+OJSst2OSQko4/qOokf4+5QiNNmRur/46OlMZTFXFyY=;
+	s=arc-20240116; t=1725965066; c=relaxed/simple;
+	bh=ChRbT8EtTzUHxTIttQAUNUqXr+42FPmt4iB7TPxdwDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjnDttPQKR4QQUA1R7UEywmdZAonN8vr8GzC+2ZKCsWIXlC/ze37Y4zYACEN+ZC3jwRYnnQ7QRRRVBVB0NGBqGOMqNjmsGg2VpwCO9r5+7Lq8tbrPIJ742Y4cfyuMsvGM9zHfjby3TLTOTEejPPFn3hZEBauM/97PDSALq6W6Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYPkpCPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCD3C4CEC3;
-	Tue, 10 Sep 2024 10:22:52 +0000 (UTC)
+	 MIME-Version; b=RM78cprsM3AMsguMjIBd85U4VAMOks5RNxvt/NkutI3b8j8XatzuRiZoaTIoP+nQ5lh8j0SB6SVCbwF8QyhKjOBOAPkeiSVzNYy6AEjKoY2907i7kgjR5O958o1HsrvuZbiHG3CnjTsOpxu0AwKb6ggskyeHnxx7ro0tHOtJ/OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql1icXCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FF8C4CEC3;
+	Tue, 10 Sep 2024 10:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963772;
-	bh=+OJSst2OSQko4/qOokf4+5QiNNmRur/46OlMZTFXFyY=;
+	s=korg; t=1725965066;
+	bh=ChRbT8EtTzUHxTIttQAUNUqXr+42FPmt4iB7TPxdwDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYPkpCPwUCvp++DJavF4fdrPhgixGCetXJoZVmcfweNYrlGwTFuY9iVS7Pu11EDh2
-	 IWfOOkHdAD0Ak7mb8i1y1U9nnmA6Q3q3/iuJCTGugH+383kFCrTtt0l1mP6Ml11EXe
-	 ILBvOOCQDw8HoW2KquEBzMN9pGLww2bEJG7mipoY=
+	b=ql1icXClDLfLyfXiPve209ZnOYjmR7TbaMMmLeUKKMzwQJ3kWnM4MFd+Z6lDgmcuB
+	 BRxCX/qBKt6ScZpzm/CtkxrS2OuBoB5Q4PmakhkEViEqL3Xk1zdqSn43jU4yFsrhdk
+	 umV0mNfuJPPeTWqN2EGLIGZ+VA79/4Pw5hTubB60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/214] ata: pata_macio: Use WARN instead of BUG
+Subject: [PATCH 5.10 098/186] smack: unix sockets: fix accept()ed socket label
 Date: Tue, 10 Sep 2024 11:33:13 +0200
-Message-ID: <20240910092605.663023330@linuxfoundation.org>
+Message-ID: <20240910092558.571914747@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit d4bc0a264fb482b019c84fbc7202dd3cab059087 ]
+[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
+When a process accept()s connection from a unix socket
+(either stream or seqpacket)
+it gets the socket with the label of the connecting process.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+For example, if a connecting process has a label 'foo',
+the accept()ed socket will also have 'in' and 'out' labels 'foo',
+regardless of the label of the listener process.
+
+This is because kernel creates unix child sockets
+in the context of the connecting process.
+
+I do not see any obvious way for the listener to abuse
+alien labels coming with the new socket, but,
+to be on the safe side, it's better fix new socket labels.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ security/smack/smack_lsm.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index be0ca8d5b345..eacebfc2ca08 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -540,7 +540,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
- 
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -552,11 +553,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 88bcda1f07bf..92bc6c9d793d 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -3642,12 +3642,18 @@ static int smack_unix_stream_connect(struct sock *sock,
  		}
  	}
  
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
+-	/*
+-	 * Cross reference the peer labels for SO_PEERSEC.
+-	 */
+ 	if (rc == 0) {
++		/*
++		 * Cross reference the peer labels for SO_PEERSEC.
++		 */
+ 		nsp->smk_packet = ssp->smk_out;
+ 		ssp->smk_packet = osp->smk_out;
++
++		/*
++		 * new/child/established socket must inherit listening socket labels
++		 */
++		nsp->smk_out = osp->smk_out;
++		nsp->smk_in  = osp->smk_in;
+ 	}
  
- 	/* Convert the last command to an input/output */
- 	table--;
+ 	return rc;
 -- 
 2.43.0
 
