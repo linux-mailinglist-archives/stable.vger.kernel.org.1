@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE4B97334D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:31:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4206197318A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA4C8B2C15B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D09B2727D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87939193418;
-	Tue, 10 Sep 2024 10:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B9C194A54;
+	Tue, 10 Sep 2024 10:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4NeRw35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H79dcDDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D7C14D431;
-	Tue, 10 Sep 2024 10:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E78D1946A1;
+	Tue, 10 Sep 2024 10:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963465; cv=none; b=EQCMHfp1S+w2ATIATtx0njipremznV8qS2JJ7SiqwGJK/rteQB0SL5tsqhQuFCHdLYNuJCzEPTrT0JI+A0WSd4ddcdsrTygf/yhYU9LAmx1VvvhLdlm7fCwTQozK+N7URAapoYl5cr2SSC/4rK+hEU89YP2VKTSTb/vwMf3Hvwc=
+	t=1725962893; cv=none; b=BZAjRcj5Y05icMlnwTX5qmdPTG0/HgFPCKr89l1fsLGMK7bkELdLCpWfizjQxIyfZQmY/GQP03ZPEAE/0duwd8We8x9sLbDHBBj8QSKHg5wJNYseE9DW1L0L+Syx+XFmP4VCWb7JseEMaYYS4nLbk+8gScAt2rfFtf32r3vciM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963465; c=relaxed/simple;
-	bh=sBSwn9YByA44ccjRPOZCQJhno950gRscAgk39ZQbKdE=;
+	s=arc-20240116; t=1725962893; c=relaxed/simple;
+	bh=2PT95Zio2CQ/2ynSY83n1hkPQMAeY+gmo82HxPKREOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPs9mxYgwHx9qwtKQeykQ3Epq29J3+rpzPJfs99GQYsTQOkckFVlMyB1Bb+nPp2EDm6g3Pq6lDqkjf6iEquAI8oFuv5Rb45JdNKEQYPbi4ZIZNjYVRJKAL6Z/UOQZROTzmbaIFKFjdZIHheX+fqixdqAVRuAoFMY4Fqmd/zhwBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4NeRw35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2BAC4CEC3;
-	Tue, 10 Sep 2024 10:17:44 +0000 (UTC)
+	 MIME-Version; b=Xy/r8RtU72606r8jxLI9+nWMmc4irIT36wZRmPvHDWydPFZXdUsmM0MzmlMLPegk/CsO/tqlXGU4173zgJyLSxEWJGSYFij1d+M6OFDxjiHeJF4CO5jhHMlom8o5Uw40Um06KX9kJbyYwHCLdhDmkEmhrw4XgfJ0rUt0PH9JpSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H79dcDDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8778FC4CECD;
+	Tue, 10 Sep 2024 10:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963464;
-	bh=sBSwn9YByA44ccjRPOZCQJhno950gRscAgk39ZQbKdE=;
+	s=korg; t=1725962892;
+	bh=2PT95Zio2CQ/2ynSY83n1hkPQMAeY+gmo82HxPKREOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4NeRw35bB9af3TaMzFC6QbmzBEiXRiq2CijsgWeu2xaqqwl3B360ytymrIZ+gOG6
-	 88MMpJ0kWDEj1jt7St7FbK/lPVtLd6o011zIXfonFwPoxGYOL9uzr1CmU/vpjueY5j
-	 Rx0RFsEeiG9w/a1MofvNplrHAf2V+98ZeFWLa/pE=
+	b=H79dcDDn0sxNY4xkPAnAtFfKeTQg6rcPUvjKnDuEFPeaaMDG+yzAz6i5F5hU1WBNa
+	 dPDahOwPsc0OhvjGHDS8jzxdsQXcbDus4HwU4eW+6E0zqvz/P9WCRniwj8fN6BDAlH
+	 nWcikuxjOYsUI4XlFYT+HOozoL1hTaylB0pyYQLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Cheong <htcheong@chromium.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 067/214] ALSA: hda/realtek: add patch for internal mic in Lenovo V145
+	Jules Irenge <jbi.octave@gmail.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 065/192] pcmcia: Use resource_size function on resource object
 Date: Tue, 10 Sep 2024 11:31:29 +0200
-Message-ID: <20240910092601.488320635@linuxfoundation.org>
+Message-ID: <20240910092600.668690794@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Cheong <htcheong@chromium.org>
+From: Jules Irenge <jbi.octave@gmail.com>
 
-commit ef27e89e7f3015be2b3c124833fbd6d2e4686561 upstream.
+[ Upstream commit 24a025497e7e883bd2adef5d0ece1e9b9268009f ]
 
-Lenovo V145 is having phase inverted dmic but simply applying inverted
-dmic fixups does not work. Chaining up verb fixes for ALC283 enables
-inverting dmic fixup to work properly.
+Cocinnele reports a warning
 
-Signed-off-by: Terry Cheong <htcheong@chromium.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240830-lenovo-v145-fixes-v3-1-f7b7265068fa@chromium.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: Suspicious code. resource_size is maybe missing with root
+
+The root cause is the function resource_size is not used when needed
+
+Use resource_size() on variable "root" of type resource
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pcmcia/yenta_socket.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7026,6 +7026,7 @@ enum {
- 	ALC236_FIXUP_HP_GPIO_LED,
- 	ALC236_FIXUP_HP_MUTE_LED,
- 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
-+	ALC236_FIXUP_LENOVO_INV_DMIC,
- 	ALC298_FIXUP_SAMSUNG_AMP,
- 	ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
- 	ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
-@@ -8420,6 +8421,12 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc236_fixup_hp_mute_led_micmute_vref,
- 	},
-+	[ALC236_FIXUP_LENOVO_INV_DMIC] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc_fixup_inv_dmic,
-+		.chained = true,
-+		.chain_id = ALC283_FIXUP_INT_MIC,
-+	},
- 	[ALC298_FIXUP_SAMSUNG_AMP] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_samsung_amp,
-@@ -9439,6 +9446,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
-+	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x17aa, 0x3bf8, "Quanta FL1", ALC269_FIXUP_PCM_44K),
-@@ -9680,6 +9688,7 @@ static const struct hda_model_fixup alc2
- 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
- 	{.id = ALC255_FIXUP_ACER_HEADPHONE_AND_MIC, .name = "alc255-acer-headphone-and-mic"},
- 	{.id = ALC285_FIXUP_HP_GPIO_AMP_INIT, .name = "alc285-hp-amp-init"},
-+	{.id = ALC236_FIXUP_LENOVO_INV_DMIC, .name = "alc236-fixup-lenovo-inv-mic"},
- 	{}
- };
- #define ALC225_STANDARD_PINS \
+diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
+index 3966a6ceb1ac..a1c16352c01c 100644
+--- a/drivers/pcmcia/yenta_socket.c
++++ b/drivers/pcmcia/yenta_socket.c
+@@ -638,11 +638,11 @@ static int yenta_search_one_res(struct resource *root, struct resource *res,
+ 		start = PCIBIOS_MIN_CARDBUS_IO;
+ 		end = ~0U;
+ 	} else {
+-		unsigned long avail = root->end - root->start;
++		unsigned long avail = resource_size(root);
+ 		int i;
+ 		size = BRIDGE_MEM_MAX;
+-		if (size > avail/8) {
+-			size = (avail+1)/8;
++		if (size > (avail - 1) / 8) {
++			size = avail / 8;
+ 			/* round size down to next power of 2 */
+ 			i = 0;
+ 			while ((size /= 2) != 0)
+-- 
+2.43.0
+
 
 
 
