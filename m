@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-74203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327C3972E04
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1ECA97308A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABD1282F0E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1209287FBB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6866718B482;
-	Tue, 10 Sep 2024 09:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B368B188A1E;
+	Tue, 10 Sep 2024 10:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCxZacLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edVadUEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2528A46444;
-	Tue, 10 Sep 2024 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729DA18BC28;
+	Tue, 10 Sep 2024 10:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961116; cv=none; b=YQwhaX2yiJdHWY3zG6wsZa7Ze0ybDyT1mdcUluBIR5T6pwmWaZ8ZPzKkhzFSWvqTgT6zwAXzreyGgLdjpamSfo3+neqHx4vmduvE2+XTQYjEp2Hx5LWYXoSEy8W/svtjrUci80o3G6uZ99p3auaVLtASce0PKSqMm7I1ssxuRgE=
+	t=1725962469; cv=none; b=Y3yIWtgq8F8RrzQ2iM6APBw9jYAvVhAyDt1693tZsGb+GqY6fQRAMoQIdVEXwjva5+9S/K5/wKLKMDMK2vUWIGZFKjQ29vja8U026ACaf4+Mdox76UNhoEdnbs2hF4JnFVB7xMUl3BebjXhbdy+VsaXI5J6SSRoPVqXLikwar9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961116; c=relaxed/simple;
-	bh=6S3Zn6CLsYyA47eSwkEc82l4Ne5yKJuM53JJd356Ngk=;
+	s=arc-20240116; t=1725962469; c=relaxed/simple;
+	bh=Qp4+y+AuGsOTAJ71xaP6QEBCKtu6202t8AWGpcU98Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcAy+LuQ+YbWOzw9R6ZoFJxni6d0ahlZHOd6sUtUIP3qiqfikhjnfrCQT23kg6043qaQUJimht1sHon3ASI9YPGvFjRb0aDaoeUDhbcFIWZFLVKQjAdo4SoHgAbbY1iLU7d3IpzSctqY3VICPXYgrzo2k2ECfTe+16APl3QApuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCxZacLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594E0C4CEC3;
-	Tue, 10 Sep 2024 09:38:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BXYRgFzvMRCCPTgtD9EWDo5gAAGFM/TvybzZFSfBxR3KnYTLRdeUDgIcfYsi+YKy700f0MeE+13YyraW/gysokgvU4jq31b5IazFEqRTSRBmqFlSochAMAk1R0uU7VNwAUX6O+A5eHbFPZ19Chn6ki6e46M6qaZS6fLf0fOoh5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edVadUEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0B0C4CEC6;
+	Tue, 10 Sep 2024 10:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961115;
-	bh=6S3Zn6CLsYyA47eSwkEc82l4Ne5yKJuM53JJd356Ngk=;
+	s=korg; t=1725962469;
+	bh=Qp4+y+AuGsOTAJ71xaP6QEBCKtu6202t8AWGpcU98Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCxZacLKBb3FUEfUOOx/DNzlWPUajm4kabTrWNvCR4EXw8jTbXMOZR189KBPX0qdK
-	 S1LECucZSoEClyrcHNDK0H6Zx7RZxm0weQtv4gXhkdEUxVy3rdd2OPgn01oOjoJ56b
-	 Xe7hmWkXRIDyO1nsCXP44Lpjgjz0WsMzPUGGcfTg=
+	b=edVadUEratUL5/hRQIULPPk5xG/KTq7BnsFR6K4J3St5QVAAwrFTxhlX4sj03XlXc
+	 n2qOX5P8u+6ZVNCN/yuDZmNdNPg7R0xP29/toKACIn1r/Eg2vCzFSf4jiyNMEP1FAg
+	 6YA8TsKZ3pCbHMOPd4brpMYj86beKsecQKVm4r1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 58/96] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Subject: [PATCH 5.4 045/121] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
 Date: Tue, 10 Sep 2024 11:32:00 +0200
-Message-ID: <20240910092544.080660038@linuxfoundation.org>
+Message-ID: <20240910092547.892591871@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
+[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
+generic_handle_domain_irq() is never called for these IRQs.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Disallow mapping these IRQs.
+
+[ Marek: changed commit message ]
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm95234.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-armada-370-xp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
-index c7fcc9e7f57a..13912ac7c69f 100644
---- a/drivers/hwmon/lm95234.c
-+++ b/drivers/hwmon/lm95234.c
-@@ -310,7 +310,8 @@ static ssize_t set_tcrit2(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
-+				1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit2[index] = val;
-@@ -359,7 +360,7 @@ static ssize_t set_tcrit1(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit1[index] = val;
-@@ -400,7 +401,7 @@ static ssize_t set_tcrit1_hyst(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
--	val = DIV_ROUND_CLOSEST(val, 1000);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
- 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
- 
- 	mutex_lock(&data->update_lock);
-@@ -440,7 +441,7 @@ static ssize_t set_offset(struct device *dev, struct device_attribute *attr,
- 		return ret;
- 
- 	/* Accuracy is 1/2 degrees C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
- 
- 	mutex_lock(&data->update_lock);
- 	data->toffset[index] = val;
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index 0fd428db3aa4..73c386aba368 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -346,6 +346,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
+ static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
+ 				      unsigned int virq, irq_hw_number_t hw)
+ {
++	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
++	if (hw <= 1)
++		return -EINVAL;
++
+ 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
+ 	if (!is_percpu_irq(hw))
+ 		writel(hw, per_cpu_int_base +
 -- 
 2.43.0
 
