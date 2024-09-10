@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-75129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2822973308
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3A4973231
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 779AD28654E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A391F27189
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C721192D82;
-	Tue, 10 Sep 2024 10:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F35A18C928;
+	Tue, 10 Sep 2024 10:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXFEzXt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcBnbWjh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA62188A38;
-	Tue, 10 Sep 2024 10:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D1A254C;
+	Tue, 10 Sep 2024 10:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963834; cv=none; b=k3Py//C3RjUrNQI5xu7AOlzTVrdORlbbIuzIaWu1JCVsESyK2LI6y8tv4VZgNBSx4bJxNI3eJzi/AU6QizoL/0qQnNH2eZuYe1WpcANFQ3dexJFhthohY9mJ/vN8Caanpyhwrm3A46ped6OKTncdngAYEFEMuXnBfwGOHTMk2/k=
+	t=1725963266; cv=none; b=D45wJIW0Z40CWIrhhuzm4qU1A539t8fZWi997wMbj2tT6zWIuq5EyCnNZu/FG/20o4zfBsx8RMRP5f39efkx/Y4dE+0HOu0YiZz/NGXvTNTq0K2VSYPdmRd2qKeHUyfRoV/dlewwS/S4pn8SauTEKPys6aIsf9AD+dqz2bGP/AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963834; c=relaxed/simple;
-	bh=IbImy3v4duGMe39mEa36WJ2Qygp2nJUsfBDoindqFBM=;
+	s=arc-20240116; t=1725963266; c=relaxed/simple;
+	bh=nxyAKHbbOVazgTXg7KHyYv7QbXFSTSDKhKFgkxDurLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEcVUre3A0RNXDLlCtjCgUZ+tZdHQSHh0/RCDlG2lam1Nq6GF1h6I9hWDCLi8MvF5pxcxWZpk5TRJJr6BCo7zkQyMcP2YtlFbxogFet0m5rWoRhai48hALYngebj50vF/ZBJLjMhxraI319RewpVO6V8+L17F89ro9mZ8QdclnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXFEzXt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9880C4CEC3;
-	Tue, 10 Sep 2024 10:23:53 +0000 (UTC)
+	 MIME-Version; b=ibsXnWhGX9gNkesUUSPgkuy3PS5k0vojIWC1m4dT574NtBZ84jCrRvg7w9hBprHEHFhei347lSIt1t03M3dEiFfz2TwPzqnRcRzfOSdT6/c/NqfUNxzMELaHy+m2gX4IcdeI7eLccYDOg1gScpF/QKnm+5LU9PaznhxqM3bhjdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcBnbWjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4276DC4CEC3;
+	Tue, 10 Sep 2024 10:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963834;
-	bh=IbImy3v4duGMe39mEa36WJ2Qygp2nJUsfBDoindqFBM=;
+	s=korg; t=1725963265;
+	bh=nxyAKHbbOVazgTXg7KHyYv7QbXFSTSDKhKFgkxDurLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXFEzXt+eZLhbiyW1IgnPm6SFrLO3xRIXhR+nzk9jDTIy+paiBz1JNAovDMG/o6Kb
-	 QLdSpVxXSM8KOylQMvgsoHX86+zWhG2DEOJJ7oOah6VK5iVJjxMPCHncbMoDZ/JKSj
-	 PTFusgNyv3TnD3H1XDvdRm15hS+xalzUW03ZEM6c=
+	b=WcBnbWjh/IbIrphi16UgRrFCAoe4B4tFdusm5DVRR49f6Ks4wB8AYAyhnWvfyBO66
+	 MIC9XSqQb/+IUtoF2/ALLzwxqEqNIuDI7bDpIIN2RapeeBfSEFqwWqAIExctRLF77d
+	 4HvJI5z17XZjSVeiMetFmrXl+GxqUjfKIIaA7h44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/214] ksmbd: Unlock on in ksmbd_tcp_set_interfaces()
-Date: Tue, 10 Sep 2024 11:33:34 +0200
-Message-ID: <20240910092606.457191792@linuxfoundation.org>
+	Peng Wu <wupeng58@huawei.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 191/192] regulator: of: fix a NULL vs IS_ERR() check in of_regulator_bulk_get_all()
+Date: Tue, 10 Sep 2024 11:33:35 +0200
+Message-ID: <20240910092605.650755078@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Peng Wu <wupeng58@huawei.com>
 
-[ Upstream commit 844436e045ac2ab7895d8b281cb784a24de1d14d ]
+commit c957387c402a1a213102e38f92b800d7909a728d upstream.
 
-Unlock before returning an error code if this allocation fails.
+The regulator_get() function never returns NULL. It returns error pointers.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 27b9ecc7a9ba ("regulator: Add of_regulator_bulk_get_all")
+Signed-off-by: Peng Wu <wupeng58@huawei.com>
+Link: https://lore.kernel.org/r/20221122082242.82937-1-wupeng58@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_tcp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/regulator/of_regulator.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/transport_tcp.c b/fs/ksmbd/transport_tcp.c
-index 9d4222154dcc..176295137045 100644
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -618,8 +618,10 @@ int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz)
- 		for_each_netdev(&init_net, netdev) {
- 			if (netif_is_bridge_port(netdev))
- 				continue;
--			if (!alloc_iface(kstrdup(netdev->name, GFP_KERNEL)))
-+			if (!alloc_iface(kstrdup(netdev->name, GFP_KERNEL))) {
-+				rtnl_unlock();
- 				return -ENOMEM;
-+			}
- 		}
- 		rtnl_unlock();
- 		bind_additional_ifaces = 1;
--- 
-2.43.0
-
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -767,7 +767,7 @@ restart:
+ 			memcpy(name, prop->name, i);
+ 			name[i] = '\0';
+ 			tmp = regulator_get(dev, name);
+-			if (!tmp) {
++			if (IS_ERR(tmp)) {
+ 				ret = -EINVAL;
+ 				goto error;
+ 			}
 
 
 
