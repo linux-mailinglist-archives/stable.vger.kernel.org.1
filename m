@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AD99731E9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A08199734C5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 106411F2948F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B0A1F25F16
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E70819DF79;
-	Tue, 10 Sep 2024 10:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66B019755B;
+	Tue, 10 Sep 2024 10:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VT5rZXSk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3VeSr4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290D11922D0;
-	Tue, 10 Sep 2024 10:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BE41974F4;
+	Tue, 10 Sep 2024 10:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963107; cv=none; b=T0KuAEtevlZ794XbMbdRejR+XtWArl6jq0V4EYZOflZRg80sgfH881FRbt3CLuxek1kYjeoVBZRYKhf1hILKZdaZH1WTBYnEkuMRQ7OL56/Bkh97fZFGYOu1t0AQ2+47W+J/iPpREl0QmfvrTxBLkBk5PH+r3KGL1mcmHshd4m0=
+	t=1725964812; cv=none; b=QjkjNoewx3RTWlX5YJxoHk53ltcMGpxHirvOm9TxnD9YTgczuh6vT6H2i/QHCEzS7GCau18T2Youl4QoueVObkPTJuQDyBLT0Va9dXEIZz1iZRDp03pOBlFEAlFbh5JlJ0/KvRkkc97pz69NYJX4Lapijd1hxedKdQfcKxLLMHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963107; c=relaxed/simple;
-	bh=uFY4AOG7Zivuh+QcnTYqkFAfyy+OoExM+T38oG7JLv4=;
+	s=arc-20240116; t=1725964812; c=relaxed/simple;
+	bh=7yMOwuAePNd4YAuJ/jtASj2GT4LhliZ6Him1CY3HSPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3ljZk+Ox4EdvG8KDWkOA2hDS17gAT6IyGUdpy7gHOLRfOEYBJoQSAb3qsGPPXpo1UIq0Qa9IgfWJn29hsIBfh1JVFyiM1JqVdd8mFAtpTH4myXDSLFI4xkKCVGGdJzdegcB7me0DHMvH4qfoQJQoh0cQmkwup/9lwKOT5diOho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VT5rZXSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B32C4CECE;
-	Tue, 10 Sep 2024 10:11:46 +0000 (UTC)
+	 MIME-Version; b=ZXIA29/l9rOzIFJ7EnyZyZMKpzV0v/FgmDJm35pKEEFlgqaA8XKciQ6caBd4oYWCzXhMj7V2Pt+mvEyLPCRQGgOpSHIU5LVTnFYupx4ieEL9+6wZnc4M5e9S2J1NW8kbHchjN0ysbblbqTnP7w3ISIxDxFHtkU98mUKLOUEfUHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3VeSr4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF079C4CECE;
+	Tue, 10 Sep 2024 10:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963107;
-	bh=uFY4AOG7Zivuh+QcnTYqkFAfyy+OoExM+T38oG7JLv4=;
+	s=korg; t=1725964812;
+	bh=7yMOwuAePNd4YAuJ/jtASj2GT4LhliZ6Him1CY3HSPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VT5rZXSkYLz6xN1WZQrgb3env2ikSUTemBilEc6FNkWSJ1cG0QFXwuc8MoYxtZg59
-	 ffcU9gLB/uefbQUgqYX4cG+fNmWQwVq5VJ2qHgTb0XWzK77nRqQ593Nt63W0wv9lMp
-	 44kwwiVB7jDV+ixeLRoRwVMDnp/ZtqGYXPIYNauo=
+	b=E3VeSr4OzrgOC5kuh65Gudpam9lakJdzy4ytE7V8QxoUchWzBdTsjWPqzBzOt8e4m
+	 ikCPoFrm7TNJznUlaQd9LyAqEYNJDh9O4+gz6P7vQG0KFzDjslhHo3LZsYq/gYIs+5
+	 kouPQYHQOybwWAHD4KWYYzY0aBbkZd/L8ixc9CLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/192] btrfs: replace BUG_ON() with error handling at update_ref_for_cow()
+Subject: [PATCH 5.10 040/186] wifi: cfg80211: make hash table duplicates more survivable
 Date: Tue, 10 Sep 2024 11:32:15 +0200
-Message-ID: <20240910092602.568246078@linuxfoundation.org>
+Message-ID: <20240910092556.183292579@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b56329a782314fde5b61058e2a25097af7ccb675 ]
+[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
 
-Instead of a BUG_ON() just return an error, log an error message and
-abort the transaction in case we find an extent buffer belonging to the
-relocation tree that doesn't have the full backref flag set. This is
-unexpected and should never happen (save for bugs or a potential bad
-memory).
+Jiazi Li reported that they occasionally see hash table duplicates
+as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
+isn't clear how that happens, nor have I been able to reproduce it,
+but if it does happen, the kernel crashes later, when it tries to
+unhash the entry that's now not hashed.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Try to make this situation more survivable by removing the BSS from
+the list(s) as well, that way it's fully leaked here (as had been
+the intent in the hash insert error path), and no longer reachable
+through the list(s) so it shouldn't be unhashed again later.
+
+Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 12 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index e08688844f1e..66d1f34c3fc6 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -324,8 +324,16 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 76a27b6d45d2..e8a9ce039295 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1510,7 +1510,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL(cfg80211_get_bss);
+ 
+-static void rb_insert_bss(struct cfg80211_registered_device *rdev,
++static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *bss)
+ {
+ 	struct rb_node **p = &rdev->bss_tree.rb_node;
+@@ -1526,7 +1526,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 		if (WARN_ON(!cmp)) {
+ 			/* will sort of leak this BSS */
+-			return;
++			return false;
+ 		}
+ 
+ 		if (cmp < 0)
+@@ -1537,6 +1537,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 	rb_link_node(&bss->rbn, parent, p);
+ 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
++	return true;
+ }
+ 
+ static struct cfg80211_internal_bss *
+@@ -1563,6 +1564,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
+ 	return NULL;
+ }
+ 
++static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
++				struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	if (!rb_insert_bss(rdev, bss))
++		return;
++	list_add_tail(&bss->list, &rdev->bss_list);
++	rdev->bss_entries++;
++}
++
++static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
++                                struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	rb_erase(&bss->rbn, &rdev->bss_tree);
++	if (!rb_insert_bss(rdev, bss)) {
++		list_del(&bss->list);
++		if (!list_empty(&bss->hidden_list))
++			list_del_init(&bss->hidden_list);
++		if (!list_empty(&bss->pub.nontrans_list))
++			list_del_init(&bss->pub.nontrans_list);
++		rdev->bss_entries--;
++	}
++	rdev->bss_generation++;
++}
++
+ static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
+ 				   struct cfg80211_internal_bss *new)
+ {
+@@ -1838,9 +1867,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 			bss_ref_get(rdev, pbss);
+ 		}
+ 
+-		list_add_tail(&new->list, &rdev->bss_list);
+-		rdev->bss_entries++;
+-		rb_insert_bss(rdev, new);
++		cfg80211_insert_bss(rdev, new);
+ 		found = new;
  	}
  
- 	owner = btrfs_header_owner(buf);
--	BUG_ON(owner == BTRFS_TREE_RELOC_OBJECTID &&
--	       !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
-+	if (unlikely(owner == BTRFS_TREE_RELOC_OBJECTID &&
-+		     !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF))) {
-+		btrfs_crit(fs_info,
-+"found tree block at bytenr %llu level %d root %llu refs %llu flags %llx without full backref flag set",
-+			   buf->start, btrfs_header_level(buf),
-+			   btrfs_root_id(root), refs, flags);
-+		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
+@@ -2702,10 +2729,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
+ 			rdev->bss_generation++;
+ 	}
+-
+-	rb_erase(&cbss->rbn, &rdev->bss_tree);
+-	rb_insert_bss(rdev, cbss);
+-	rdev->bss_generation++;
++	cfg80211_rehash_bss(rdev, cbss);
  
- 	if (refs > 1) {
- 		if ((owner == root->root_key.objectid ||
+ 	list_for_each_entry_safe(nontrans_bss, tmp,
+ 				 &cbss->pub.nontrans_list,
+@@ -2713,9 +2737,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		bss = container_of(nontrans_bss,
+ 				   struct cfg80211_internal_bss, pub);
+ 		bss->pub.channel = chan;
+-		rb_erase(&bss->rbn, &rdev->bss_tree);
+-		rb_insert_bss(rdev, bss);
+-		rdev->bss_generation++;
++		cfg80211_rehash_bss(rdev, bss);
+ 	}
+ 
+ done:
 -- 
 2.43.0
 
