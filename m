@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C003973409
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F089731C5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EB331C24612
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF49128BEE6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422A9190666;
-	Tue, 10 Sep 2024 10:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0255D19066C;
+	Tue, 10 Sep 2024 10:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEVYSlWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGSz6dvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F396A172BA8;
-	Tue, 10 Sep 2024 10:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53F7188A0C;
+	Tue, 10 Sep 2024 10:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964429; cv=none; b=bAleyU4qPtqKnYjH5eyM0s+YauyUZjv/8EXC4aqRWUfVFuii0G8OrgHxpNdQ/KxX8zAyX+qEUXIsd8SQVVknKAuZ240GJOy1phIpV06wIihNfCy23l/Pdm6M18gFldhZSXj2MMahJLikhieLcmepULUtbEXZ9Nvc2++fKOYHlbc=
+	t=1725963041; cv=none; b=azEpvWqo7q1lit2deizJiOcIh+zzDFd6h+S8yjH8jGT33AnpArlDo7VGBpB5FEgQn6Htta4/fcCxpRTYAFL4TYBa6/Gt9d2CS8iQLAf3m8LEl3DT1StBx6mQTDeaLrJgKF/Zj84HRU7MgJCFV/lqxTCtc7VF1DtT6OpIPCwGQPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964429; c=relaxed/simple;
-	bh=DJLp1yyCydevIxrFEcaypTUtifCGJPjQ1DW0cbLpnP4=;
+	s=arc-20240116; t=1725963041; c=relaxed/simple;
+	bh=S7HGkgeN5SvbbVkSJW7QN9RTtJgcGAAoGrOOK8uSfkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOrxNO+WG76BHjiMNfyV6f4QaEmovRKmVJc7pxKtzeOKUIWYFtYHdhcL0LDNuXmLuQMTmdwZg48xMRdyQdbptvdKZ/hY/VQiJhadxokjzzNacUzN/RgLAU4XoB79wwFQHkqxLXMgrzPTCxJ3g2jqkAyEM+ZdWvS6fYXBeNySHVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEVYSlWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF7AC4CEC3;
-	Tue, 10 Sep 2024 10:33:48 +0000 (UTC)
+	 MIME-Version; b=rcevoKSQVgjGlvbAhHG5RPswxO2CLHmyFSFVZD8DnzMwHmyYiJTGXqGs3nyfGBgePbZwDgqpjaCyd+9U3JzO2zSzO42Nq45vKm66HvUkHtfUXgzS4yZailipPh9huv90BVGAemSaiSu7jWceqe4zuztim6yeCVj2vrt9QAEMYYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGSz6dvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9A3C4CEC3;
+	Tue, 10 Sep 2024 10:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964428;
-	bh=DJLp1yyCydevIxrFEcaypTUtifCGJPjQ1DW0cbLpnP4=;
+	s=korg; t=1725963041;
+	bh=S7HGkgeN5SvbbVkSJW7QN9RTtJgcGAAoGrOOK8uSfkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bEVYSlWAE3UThvjaNOYB1k6vQyt0VtHZYjjxHfHQ2eS6nULij0AnwZZ/Z7TCvjABj
-	 4Tn0n5OEQpfWxkzidsuMPPaobba9f1BxriQ+RYbgSMmqOG/LEtYCF3l9//mUJDv7Ax
-	 zEq79BzduQ0EcVtkaseRAoHG0HnvGmof+h/EKzxQ=
+	b=wGSz6dvBsF+LWtBJKdtqrKI8pHSHtzO6KtccQ86YhUgFDV0PANlL3kJOc605cPY3l
+	 I78tR2i9QfuBWmee/9ExiFhZHxO4rqVKCN99eeIUihIDvQD6+gskaRFlcG0i6IjZMR
+	 FYT/YeULNEea9kv8psvS1xcsyS1hCYhdxlVJZrFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/269] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.1 116/192] i3c: mipi-i3c-hci: Error out instead on BUG_ON() in IBI DMA setup
 Date: Tue, 10 Sep 2024 11:32:20 +0200
-Message-ID: <20240910092613.668945829@linuxfoundation.org>
+Message-ID: <20240910092602.799495791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
+[ Upstream commit 8a2be2f1db268ec735419e53ef04ca039fc027dc ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+Definitely condition dma_get_cache_alignment * defined value > 256
+during driver initialization is not reason to BUG_ON(). Turn that to
+graceful error out with -EINVAL.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20240628131559.502822-3-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm95234.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
-index 67b9d7636ee4..37e8e9679aeb 100644
---- a/drivers/hwmon/lm95234.c
-+++ b/drivers/hwmon/lm95234.c
-@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 337c95d43f3f..edc3a69bfe31 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -291,7 +291,10 @@ static int hci_dma_init(struct i3c_hci *hci)
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
-+				1000);
+ 		rh->ibi_chunk_sz = dma_get_cache_alignment();
+ 		rh->ibi_chunk_sz *= IBI_CHUNK_CACHELINES;
+-		BUG_ON(rh->ibi_chunk_sz > 256);
++		if (rh->ibi_chunk_sz > 256) {
++			ret = -EINVAL;
++			goto err_out;
++		}
  
- 	mutex_lock(&data->update_lock);
- 	data->tcrit2[index] = val;
-@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit1[index] = val;
-@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
--	val = DIV_ROUND_CLOSEST(val, 1000);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
- 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
- 
- 	mutex_lock(&data->update_lock);
-@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
- 		return ret;
- 
- 	/* Accuracy is 1/2 degrees C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
- 
- 	mutex_lock(&data->update_lock);
- 	data->toffset[index] = val;
+ 		ibi_status_ring_sz = rh->ibi_status_sz * rh->ibi_status_entries;
+ 		ibi_data_ring_sz = rh->ibi_chunk_sz * rh->ibi_chunks_total;
 -- 
 2.43.0
 
