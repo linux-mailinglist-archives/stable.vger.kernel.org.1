@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-75148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA15597331D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8FD973534
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0725E1C2177C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E1F289EC9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB10195FEF;
-	Tue, 10 Sep 2024 10:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D5E17BB0C;
+	Tue, 10 Sep 2024 10:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjpW3fYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU2DBfoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6121922E7;
-	Tue, 10 Sep 2024 10:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C74144D1A;
+	Tue, 10 Sep 2024 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963890; cv=none; b=d1mWiTdDNB1Luls/NP9ZQjrW+xvLpZ2ULF1cxbZubMYwI22RrUj3L/PAiFJqLUg19p9rcig4WCrKuwVJsEhhEO6dPgB0FoiNaD5avpShNAzX984BXhZ9WyPD4++Fky5UspiaQDK7DK0t904LYgxR5Tq2x9eXnp1T5VTVTV6c64M=
+	t=1725965111; cv=none; b=I1G5hmKWVTTXBImYfdBu17udrcbgG1jEhcii4FeDRbMtE6uPjxhjsWa63MBHs4wTLtWKx4azGq9PDQpDcVmw1axZdDWelfoxEd9HB9nXC1f8JAkbPaZYr2Y0635RRxhv5CDCcdqCTOJR5SZOuUcNxJyXIDRt4nMJQaNUnBzx9Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963890; c=relaxed/simple;
-	bh=f9ryTJKrWJyIA0m9efRdTJR6/ZbkBZHtyi/SGKUx1aA=;
+	s=arc-20240116; t=1725965111; c=relaxed/simple;
+	bh=rgE2l2EXodiBOjN7qSBOuaOgl4S6aANlvcnLh3Yz0mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiujfjpFXkieBrgiUMQ9euBu0nsRM38r1VfNcb3y5HcLoAE7C0ZUn9ngQnLENyWsU1Ko++4Q5MdgNWXJ2XsQY6SZTj6StK0v241kpkq9p7gvL1M7MjQDjdo57iDe4WqD1xkoMpV0azwAnGc5TVEx/7Ik+Wp+xzhCEGNBPQxsdM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjpW3fYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C33BC4CEC3;
-	Tue, 10 Sep 2024 10:24:49 +0000 (UTC)
+	 MIME-Version; b=CyvkngaYVL0aJt732AK5/7InCzg6Uhe5yATOJYiJAnIADcJ+TG2T5KH9ZiK68sHp5xzME9828biw/pRZfrR8uUZUijxjh3ncEbvVK5MsE/Bgk+EvNewYXPtzw0lmsiXhEd5e391B67G87XC3RFcOBKQ91rebHMEUi+l20NBS8HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MU2DBfoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6779FC4CEC3;
+	Tue, 10 Sep 2024 10:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963890;
-	bh=f9ryTJKrWJyIA0m9efRdTJR6/ZbkBZHtyi/SGKUx1aA=;
+	s=korg; t=1725965110;
+	bh=rgE2l2EXodiBOjN7qSBOuaOgl4S6aANlvcnLh3Yz0mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjpW3fYW4EwS262TD8NPOlnQr/oJH6eWZbbHOsWG8QbXtvo4RwJYXxuD6GAv/c2mB
-	 Y3D+SIwHfMiAUZpO0eTHAgtK50KCIhX+4HSnPQiJjHP8R8ANwbUn20jXbIwPrskbt1
-	 gLWgQGNhD3iYn/fl00QZbzV6tC8P68+ISPNrUgCg=
+	b=MU2DBfoKeBQDMGcj5O8nKAlmM8E6u2TZcRWh/WwnM9Oz7hD6jslovdlC2JKU87jR/
+	 cq2NHpRkJnm7nCd2+MJVV5sBwYfuNz0FQagK5KFqA6MoLOOxrqHghiIdUf2WKYheJy
+	 6vhnefekNyjMZyHd4zlwku3kuhGA8oJkwVS0WE1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Dias <paulo.miguel.dias@gmail.com>,
-	Andreas Jahn <jahn-andi@web.de>,
-	syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 212/214] btrfs: fix race between direct IO write and fsync when using same fd
-Date: Tue, 10 Sep 2024 11:33:54 +0200
-Message-ID: <20240910092607.161585254@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 140/186] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Date: Tue, 10 Sep 2024 11:33:55 +0200
+Message-ID: <20240910092600.366366903@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,318 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit cd9253c23aedd61eb5ff11f37a36247cd46faf86 upstream.
+[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
 
-If we have 2 threads that are using the same file descriptor and one of
-them is doing direct IO writes while the other is doing fsync, we have a
-race where we can end up either:
+mwifiex_get_priv_by_id() returns the priv pointer corresponding to
+the bss_num and bss_type, but without checking if the priv is actually
+currently in use.
+Unused priv pointers do not have a wiphy attached to them which can
+lead to NULL pointer dereferences further down the callstack.  Fix
+this by returning only used priv pointers which have priv->bss_mode
+set to something else than NL80211_IFTYPE_UNSPECIFIED.
 
-1) Attempt a fsync without holding the inode's lock, triggering an
-   assertion failures when assertions are enabled;
+Said NULL pointer dereference happened when an Accesspoint was started
+with wpa_supplicant -i mlan0 with this config:
 
-2) Do an invalid memory access from the fsync task because the file private
-   points to memory allocated on stack by the direct IO task and it may be
-   used by the fsync task after the stack was destroyed.
+network={
+        ssid="somessid"
+        mode=2
+        frequency=2412
+        key_mgmt=WPA-PSK WPA-PSK-SHA256
+        proto=RSN
+        group=CCMP
+        pairwise=CCMP
+        psk="12345678"
+}
 
-The race happens like this:
+When waiting for the AP to be established, interrupting wpa_supplicant
+with <ctrl-c> and starting it again this happens:
 
-1) A user space program opens a file descriptor with O_DIRECT;
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
+| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
++mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
++imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
+| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
+| Hardware name: somemachine (DT)
+| Workqueue: events sdio_irq_work
+| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
+| sp : ffff8000818b3a70
+| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
+| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
+| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
+| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
+| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
+| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
+| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
+| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
+| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
+| Call trace:
+|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
+|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
+|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
+|  mwifiex_process_event+0x110/0x238 [mwifiex]
+|  mwifiex_main_process+0x428/0xa44 [mwifiex]
+|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
+|  process_sdio_pending_irqs+0x64/0x1b8
+|  sdio_irq_work+0x4c/0x7c
+|  process_one_work+0x148/0x2a0
+|  worker_thread+0x2fc/0x40c
+|  kthread+0x110/0x114
+|  ret_from_fork+0x10/0x20
+| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
+| ---[ end trace 0000000000000000 ]---
 
-2) The program spawns 2 threads using libpthread for example;
-
-3) One of the threads uses the file descriptor to do direct IO writes,
-   while the other calls fsync using the same file descriptor.
-
-4) Call task A the thread doing direct IO writes and task B the thread
-   doing fsyncs;
-
-5) Task A does a direct IO write, and at btrfs_direct_write() sets the
-   file's private to an on stack allocated private with the member
-   'fsync_skip_inode_lock' set to true;
-
-6) Task B enters btrfs_sync_file() and sees that there's a private
-   structure associated to the file which has 'fsync_skip_inode_lock' set
-   to true, so it skips locking the inode's VFS lock;
-
-7) Task A completes the direct IO write, and resets the file's private to
-   NULL since it had no prior private and our private was stack allocated.
-   Then it unlocks the inode's VFS lock;
-
-8) Task B enters btrfs_get_ordered_extents_for_logging(), then the
-   assertion that checks the inode's VFS lock is held fails, since task B
-   never locked it and task A has already unlocked it.
-
-The stack trace produced is the following:
-
-   assertion failed: inode_is_locked(&inode->vfs_inode), in fs/btrfs/ordered-data.c:983
-   ------------[ cut here ]------------
-   kernel BUG at fs/btrfs/ordered-data.c:983!
-   Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-   CPU: 9 PID: 5072 Comm: worker Tainted: G     U     OE      6.10.5-1-default #1 openSUSE Tumbleweed 69f48d427608e1c09e60ea24c6c55e2ca1b049e8
-   Hardware name: Acer Predator PH315-52/Covini_CFS, BIOS V1.12 07/28/2020
-   RIP: 0010:btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs]
-   Code: 50 d6 86 c0 e8 (...)
-   RSP: 0018:ffff9e4a03dcfc78 EFLAGS: 00010246
-   RAX: 0000000000000054 RBX: ffff9078a9868e98 RCX: 0000000000000000
-   RDX: 0000000000000000 RSI: ffff907dce4a7800 RDI: ffff907dce4a7800
-   RBP: ffff907805518800 R08: 0000000000000000 R09: ffff9e4a03dcfb38
-   R10: ffff9e4a03dcfb30 R11: 0000000000000003 R12: ffff907684ae7800
-   R13: 0000000000000001 R14: ffff90774646b600 R15: 0000000000000000
-   FS:  00007f04b96006c0(0000) GS:ffff907dce480000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: 00007f32acbfc000 CR3: 00000001fd4fa005 CR4: 00000000003726f0
-   Call Trace:
-    <TASK>
-    ? __die_body.cold+0x14/0x24
-    ? die+0x2e/0x50
-    ? do_trap+0xca/0x110
-    ? do_error_trap+0x6a/0x90
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? exc_invalid_op+0x50/0x70
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? asm_exc_invalid_op+0x1a/0x20
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    btrfs_sync_file+0x21a/0x4d0 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? __seccomp_filter+0x31d/0x4f0
-    __x64_sys_fdatasync+0x4f/0x90
-    do_syscall_64+0x82/0x160
-    ? do_futex+0xcb/0x190
-    ? __x64_sys_futex+0x10e/0x1d0
-    ? switch_fpu_return+0x4f/0xd0
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Another problem here is if task B grabs the private pointer and then uses
-it after task A has finished, since the private was allocated in the stack
-of task A, it results in some invalid memory access with a hard to predict
-result.
-
-This issue, triggering the assertion, was observed with QEMU workloads by
-two users in the Link tags below.
-
-Fix this by not relying on a file's private to pass information to fsync
-that it should skip locking the inode and instead pass this information
-through a special value stored in current->journal_info. This is safe
-because in the relevant section of the direct IO write path we are not
-holding a transaction handle, so current->journal_info is NULL.
-
-The following C program triggers the issue:
-
-   $ cat repro.c
-   /* Get the O_DIRECT definition. */
-   #ifndef _GNU_SOURCE
-   #define _GNU_SOURCE
-   #endif
-
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <unistd.h>
-   #include <stdint.h>
-   #include <fcntl.h>
-   #include <errno.h>
-   #include <string.h>
-   #include <pthread.h>
-
-   static int fd;
-
-   static ssize_t do_write(int fd, const void *buf, size_t count, off_t offset)
-   {
-       while (count > 0) {
-           ssize_t ret;
-
-           ret = pwrite(fd, buf, count, offset);
-           if (ret < 0) {
-               if (errno == EINTR)
-                   continue;
-               return ret;
-           }
-           count -= ret;
-           buf += ret;
-       }
-       return 0;
-   }
-
-   static void *fsync_loop(void *arg)
-   {
-       while (1) {
-           int ret;
-
-           ret = fsync(fd);
-           if (ret != 0) {
-               perror("Fsync failed");
-               exit(6);
-           }
-       }
-   }
-
-   int main(int argc, char *argv[])
-   {
-       long pagesize;
-       void *write_buf;
-       pthread_t fsyncer;
-       int ret;
-
-       if (argc != 2) {
-           fprintf(stderr, "Use: %s <file path>\n", argv[0]);
-           return 1;
-       }
-
-       fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0666);
-       if (fd == -1) {
-           perror("Failed to open/create file");
-           return 1;
-       }
-
-       pagesize = sysconf(_SC_PAGE_SIZE);
-       if (pagesize == -1) {
-           perror("Failed to get page size");
-           return 2;
-       }
-
-       ret = posix_memalign(&write_buf, pagesize, pagesize);
-       if (ret) {
-           perror("Failed to allocate buffer");
-           return 3;
-       }
-
-       ret = pthread_create(&fsyncer, NULL, fsync_loop, NULL);
-       if (ret != 0) {
-           fprintf(stderr, "Failed to create writer thread: %d\n", ret);
-           return 4;
-       }
-
-       while (1) {
-           ret = do_write(fd, write_buf, pagesize, 0);
-           if (ret != 0) {
-               perror("Write failed");
-               exit(5);
-           }
-       }
-
-       return 0;
-   }
-
-   $ mkfs.btrfs -f /dev/sdi
-   $ mount /dev/sdi /mnt/sdi
-   $ timeout 10 ./repro /mnt/sdi/foo
-
-Usually the race is triggered within less than 1 second. A test case for
-fstests will follow soon.
-
-Reported-by: Paulo Dias <paulo.miguel.dias@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219187
-Reported-by: Andreas Jahn <jahn-andi@web.de>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219199
-Reported-by: syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000044ff540620d7dee2@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.h       |    1 -
- fs/btrfs/file.c        |   25 ++++++++++---------------
- fs/btrfs/transaction.h |    6 ++++++
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -1383,7 +1383,6 @@ struct btrfs_drop_extents_args {
- struct btrfs_file_private {
- 	void *filldir_buf;
- 	u64 last_index;
--	bool fsync_skip_inode_lock;
- };
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index f4e3dce10d65..5b14fe08811e 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1310,6 +1310,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
  
- 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1992,13 +1992,6 @@ again:
- 	if (IS_ERR_OR_NULL(dio)) {
- 		err = PTR_ERR_OR_ZERO(dio);
- 	} else {
--		struct btrfs_file_private stack_private = { 0 };
--		struct btrfs_file_private *private;
--		const bool have_private = (file->private_data != NULL);
--
--		if (!have_private)
--			file->private_data = &stack_private;
--
- 		/*
- 		 * If we have a synchoronous write, we must make sure the fsync
- 		 * triggered by the iomap_dio_complete() call below doesn't
-@@ -2007,13 +2000,10 @@ again:
- 		 * partial writes due to the input buffer (or parts of it) not
- 		 * being already faulted in.
- 		 */
--		private = file->private_data;
--		private->fsync_skip_inode_lock = true;
-+		ASSERT(current->journal_info == NULL);
-+		current->journal_info = BTRFS_TRANS_DIO_WRITE_STUB;
- 		err = iomap_dio_complete(dio);
--		private->fsync_skip_inode_lock = false;
--
--		if (!have_private)
--			file->private_data = NULL;
-+		current->journal_info = NULL;
- 	}
- 
- 	/* No increment (+=) because iomap returns a cumulative value. */
-@@ -2195,7 +2185,6 @@ static inline bool skip_inode_logging(co
-  */
- int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
- {
--	struct btrfs_file_private *private = file->private_data;
- 	struct dentry *dentry = file_dentry(file);
- 	struct inode *inode = d_inode(dentry);
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-@@ -2205,7 +2194,13 @@ int btrfs_sync_file(struct file *file, l
- 	int ret = 0, err;
- 	u64 len;
- 	bool full_sync;
--	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
-+	bool skip_ilock = false;
+ 	for (i = 0; i < adapter->priv_num; i++) {
+ 		if (adapter->priv[i]) {
++			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
++				continue;
 +
-+	if (current->journal_info == BTRFS_TRANS_DIO_WRITE_STUB) {
-+		skip_ilock = true;
-+		current->journal_info = NULL;
-+		lockdep_assert_held(&inode->i_rwsem);
-+	}
- 
- 	trace_btrfs_sync_file(file, datasync);
- 
---- a/fs/btrfs/transaction.h
-+++ b/fs/btrfs/transaction.h
-@@ -11,6 +11,12 @@
- #include "delayed-ref.h"
- #include "ctree.h"
- 
-+/*
-+ * Signal that a direct IO write is in progress, to avoid deadlock for sync
-+ * direct IO writes when fsync is called during the direct IO write path.
-+ */
-+#define BTRFS_TRANS_DIO_WRITE_STUB	((void *) 1)
-+
- enum btrfs_trans_state {
- 	TRANS_STATE_RUNNING,
- 	TRANS_STATE_COMMIT_START,
+ 			if ((adapter->priv[i]->bss_num == bss_num) &&
+ 			    (adapter->priv[i]->bss_type == bss_type))
+ 				break;
+-- 
+2.43.0
+
 
 
 
