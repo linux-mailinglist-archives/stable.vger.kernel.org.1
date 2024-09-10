@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6413A9732E8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635BF97341E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D4B1C21066
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954761C213C3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ECF19006B;
-	Tue, 10 Sep 2024 10:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE04192581;
+	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9PrC+zS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVfxRVRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59705381A;
-	Tue, 10 Sep 2024 10:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27718B462;
+	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963741; cv=none; b=LyI7nqkpHxm9LIkA4c+H8oHU8PON9D22ZAG+MIMqGyrpFGUbFYFlQm18/UGwnGTOO+ZRX4rYgvMVDRH+mj/zyUIn3PVwAl1Zmd5DJfQvmCg167T4hef7OVPPtZhgEFKl7XWY4fvxOPyvX8g4fmG1AVcPwgINCqMgV192ViAXVjo=
+	t=1725964478; cv=none; b=HStxg44bmfxMkumqTVuk0RGVVlFgYDOcENJzCjr0DHLFkSZwYm3KNDXfKFn7Qwvc091hDPozIoHsHxTaDncYtKPJA/ERCsm0to2BZ3/VfS/EsYeWOUS71wNntEVF/DzP+yqMyni2sPbuN/82QMC7Txa/jhAJjkI5dO/FVjD2wuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963741; c=relaxed/simple;
-	bh=iUsWXLVg0gKY7FwZPBcpRbCaU6f+PxQw7InP5CVB7p0=;
+	s=arc-20240116; t=1725964478; c=relaxed/simple;
+	bh=8suC4PMMCm6AFIMZYmMkG6BSihA1xyRVLFeT9QPv6Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZ83RrrnVcuTtq+jqAUxcoVLLFI9wMQgaxn5RBj6sGs+xUjWggwWU4tUXFU661EAripKo1JHClg00I4hBV38Sige4Sd/j43aVcl5mGC/pNDr4UOdcWHFg5nwxVqeYvMJ8xX4xpT2NyhGsK3G5m/+RT5kfeNvUIW4nhmZBLsQ1Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9PrC+zS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D386C4CEC3;
-	Tue, 10 Sep 2024 10:22:20 +0000 (UTC)
+	 MIME-Version; b=gpBaYwIRfFSKqIIgAw9esc2RQjZpdvZUf2vAamF+tbnLVXLThBpfDw3XOIsAMOldlX1EEdHorUfiOwYXyRycHfuTz+a+wa+YFQNEceDkYXIavrlWl9nrAST7MjUgCLqVkstNMd3NOZAjH3+t1mJu2b4IqMc36xVaFZP773oyIq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVfxRVRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37884C4CEC3;
+	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963740;
-	bh=iUsWXLVg0gKY7FwZPBcpRbCaU6f+PxQw7InP5CVB7p0=;
+	s=korg; t=1725964478;
+	bh=8suC4PMMCm6AFIMZYmMkG6BSihA1xyRVLFeT9QPv6Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9PrC+zSX/RFUZeMOahpJPPcKw8okzEFZ3x46i+c4oqao2vG8/Zj0iLpSKN1leFRN
-	 gIcSY4sD6ml+8P5TwYmhiJtjmMe91a5D41+VYpvuP+oGG2PUtWo2ej0EnqEwI5e4EP
-	 o6AZRA7OvSAz3lg7ntWdOWqmcxtP/4IbGDw8RJG8=
+	b=JVfxRVRdf0AK3AJeVVKIeoUS4nQY1VIThPXRdB9KJ7YmdP4Bml3hak3ZoEGKz4nwO
+	 dI4HjRQ5RKn7jX8in/skNFoZfO/ZtpYDBZgA3BCfn6fhNadCI11a46Zg+FHgHpYwAv
+	 GDcrt4+B066i/yKqk+5N06odhphq6jmcqjn7GMzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/214] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 196/269] riscv: Use WRITE_ONCE() when setting page table entries
 Date: Tue, 10 Sep 2024 11:33:03 +0200
-Message-ID: <20240910092605.276443342@linuxfoundation.org>
+Message-ID: <20240910092615.094075592@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
+commit c30fa83b49897e708a52e122dd10616a52a4c82b upstream.
 
-Some arch + compiler combinations report a potentially unused variable
-location in btrfs_lookup_dentry(). This is a false alert as the variable
-is passed by value and always valid or there's an error. The compilers
-cannot probably reason about that although btrfs_inode_by_name() is in
-the same file.
+To avoid any compiler "weirdness" when accessing page table entries which
+are concurrently modified by the HW, let's use WRITE_ONCE() macro
+(commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when accessing
+page tables") gives a great explanation with more details).
 
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
-
-   m68k-gcc8/m68k-allmodconfig
-   mips-gcc8/mips-allmodconfig
-   powerpc-gcc5/powerpc-all{mod,yes}config
-   powerpc-gcc5/ppc64_defconfig
-
-Initialize it to zero, this should fix the warnings and won't change the
-behaviour as btrfs_inode_by_name() accepts only a root or inode item
-types, otherwise returns an error.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213203001.179237-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/pgtable-64.h |    6 +++---
+ arch/riscv/include/asm/pgtable.h    |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 66b56ddf3f4c..f7807f36c8e3 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6048,7 +6048,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
- 	struct inode *inode;
- 	struct btrfs_root *root = BTRFS_I(dir)->root;
- 	struct btrfs_root *sub_root = root;
--	struct btrfs_key location;
-+	struct btrfs_key location = { 0 };
- 	u8 di_type = 0;
- 	int ret = 0;
+--- a/arch/riscv/include/asm/pgtable-64.h
++++ b/arch/riscv/include/asm/pgtable-64.h
+@@ -198,7 +198,7 @@ static inline int pud_user(pud_t pud)
  
--- 
-2.43.0
-
+ static inline void set_pud(pud_t *pudp, pud_t pud)
+ {
+-	*pudp = pud;
++	WRITE_ONCE(*pudp, pud);
+ }
+ 
+ static inline void pud_clear(pud_t *pudp)
+@@ -274,7 +274,7 @@ static inline unsigned long _pmd_pfn(pmd
+ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+ {
+ 	if (pgtable_l4_enabled)
+-		*p4dp = p4d;
++		WRITE_ONCE(*p4dp, p4d);
+ 	else
+ 		set_pud((pud_t *)p4dp, (pud_t){ p4d_val(p4d) });
+ }
+@@ -347,7 +347,7 @@ static inline pud_t *pud_offset(p4d_t *p
+ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+ {
+ 	if (pgtable_l5_enabled)
+-		*pgdp = pgd;
++		WRITE_ONCE(*pgdp, pgd);
+ 	else
+ 		set_p4d((p4d_t *)pgdp, (p4d_t){ pgd_val(pgd) });
+ }
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -248,7 +248,7 @@ static inline int pmd_leaf(pmd_t pmd)
+ 
+ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ {
+-	*pmdp = pmd;
++	WRITE_ONCE(*pmdp, pmd);
+ }
+ 
+ static inline void pmd_clear(pmd_t *pmdp)
+@@ -515,7 +515,7 @@ static inline int pte_same(pte_t pte_a,
+  */
+ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ {
+-	*ptep = pteval;
++	WRITE_ONCE(*ptep, pteval);
+ }
+ 
+ void flush_icache_pte(pte_t pte);
 
 
 
