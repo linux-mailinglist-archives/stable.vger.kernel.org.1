@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E32973564
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3291397359A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F43AB22DEA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09E4EB29F41
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694A018D637;
-	Tue, 10 Sep 2024 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3897B18C327;
+	Tue, 10 Sep 2024 10:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arpune1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu5xu7JC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2726318CBE6;
-	Tue, 10 Sep 2024 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5574184549;
+	Tue, 10 Sep 2024 10:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965149; cv=none; b=SIMgbayekR8ibD2HscfL3lbpN05EJ0vCzT0vFzJHbCp1fR/Qj2xxbEZC94ZNlN3WsCTlKNCfgh4uPXKDg5Vu0hEKw8H9f4hIwO8w+VQ2wKc4WwO8HWwbQ+O0O/oarx8mxdxO5xdsLqadfQ/CxyvvW8PSJKsgh8CFWEloZfO+0vI=
+	t=1725964592; cv=none; b=Bdqdk9zP+mxPNOcj1j+Sow3Yb91VaixWdfJv18Qoz7SvkCf+pFwS0KwJLYo8AeqIdD1JMjwhIHOmNn2aITrk7Z9ydb8IbR7IF6NaefRDjcyM5I57+eLrF1xYvdf8BFwg/SQAOl4HYX8zOPlsuL9VULUwoi0zJWJjECelLFhvBKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965149; c=relaxed/simple;
-	bh=PbEzIVCQ0W8S2svPUd5gQntavcrDmrK5sDzaCjLcHNA=;
+	s=arc-20240116; t=1725964592; c=relaxed/simple;
+	bh=+m5013he/b4/Hl9enmq8S9zbtZhRAitU0P9tdbMVJps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPDmcZsLs0Q9r8moFEFP3SJepayXb7uN14CpqDP+KST9jFWJfCbOlJVnvLlRRj6I8sVscNQeZfPJywUQG02TNMCfPQgKgzS6a3KnFnuSAZY/zfdM0KAdyTBxnWiDTxF1zU27+U73PIXZdZclGgwNFpnbju9vwJQnbY9zHRAlhDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arpune1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8F8C4CEC3;
-	Tue, 10 Sep 2024 10:45:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rbb0Oud/9cjydVhFL2FcVGzEiU7QyEm2q9CDUSEoa8Ce2oi7BCSdTRUqHexs0Q2yO5A1GJS9zXj2fyzsiuYSNlqre8Z6IfZJkaOtK1KC7o4IDwbOQitORj7+stjaEmmXwtZLuau1f/wy++ysPab5rcH+PwG7xeVkeKgP7YCsHHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu5xu7JC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE21C4CEC3;
+	Tue, 10 Sep 2024 10:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965149;
-	bh=PbEzIVCQ0W8S2svPUd5gQntavcrDmrK5sDzaCjLcHNA=;
+	s=korg; t=1725964591;
+	bh=+m5013he/b4/Hl9enmq8S9zbtZhRAitU0P9tdbMVJps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arpune1+FEXtesiG+DBsSY0g28CZckQ1llFPwCQD9wwDtpSApcGbw2NDJKKvfKO0d
-	 nXHQriYa+bVIN0L4FRHqvaWA7vFOi4nvVQcz4r5wjAf3zWGMLrYGUgkyy24CcYjWCp
-	 Pnl1qztuk5GqGA4JoXu48k7m3wd44vz9kkbVDwC8=
+	b=Nu5xu7JCyq9GGftUS3oSKj5Hws13gnG4EVTCewV3V/eAZk4EbQyujY2tEeucDbcPe
+	 5hApbylr7t+1Ed8C/TVoxlYBn/AVqwsMrduTk/jwDxd2a7d5wNEF2YgDZaS4TIvYOh
+	 tsD8aIW8VmWJ2d8kDnhqSbdcv30Y5hkUkbrALTGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@bisdn.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 126/186] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
+Subject: [PATCH 6.6 234/269] can: mcp251xfd: rx: prepare to workaround broken RX FIFO head index erratum
 Date: Tue, 10 Sep 2024 11:33:41 +0200
-Message-ID: <20240910092559.771215010@linuxfoundation.org>
+Message-ID: <20240910092616.238545162@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,255 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
+[ Upstream commit 85505e585637a737e4713c1386c30e37c325b82e ]
 
-When userspace wants to take over a fdb entry by setting it as
-EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
-BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
+This is a preparatory patch to work around erratum DS80000789E 6 of
+the mcp2518fd, the other variants of the chip family (mcp2517fd and
+mcp251863) are probably also affected.
 
-If the bridge updates the entry later because its port changed, we clear
-the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
-flag set.
+When handling the RX interrupt, the driver iterates over all pending
+FIFOs (which are implemented as ring buffers in hardware) and reads
+the FIFO header index from the RX FIFO STA register of the chip.
 
-If userspace then wants to take over the entry again,
-br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
-setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
-update.
+In the bad case, the driver reads a too large head index. In the
+original code, the driver always trusted the read value, which caused
+old CAN frames that were already processed, or new, incompletely
+written CAN frames to be (re-)processed.
 
-Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
-if this was a user fdb entry or not.
+Instead of reading and trusting the head index, read the head index
+and calculate the number of CAN frames that were supposedly received -
+replace mcp251xfd_rx_ring_update() with mcp251xfd_get_rx_len().
 
-Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The mcp251xfd_handle_rxif_ring() function reads the received CAN
+frames from the chip, iterates over them and pushes them into the
+network stack. Prepare that the iteration can be stopped if an old CAN
+frame is detected. The actual code to detect old or incomplete frames
+and abort will be added in the next patch.
+
+Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com
+Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_fdb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 89 +++++++++++--------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 12 +--
+ 3 files changed, 56 insertions(+), 47 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 8a6470a21702..8751571a3cb0 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -1238,12 +1238,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			modified = true;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 3a941a71c78f..5f92aed62ff9 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -523,6 +523,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
  		}
  
--		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
-+		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
--			/* Take over SW learned entry */
--			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
-+		} else {
- 			modified = true;
+ 		rx_ring->obj_num = rx_obj_num;
++		rx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(rx_ring->obj_num_shift_to_u8) -
++			ilog2(rx_obj_num);
+ 		rx_ring->obj_size = rx_obj_size;
+ 		priv->rx[i] = rx_ring;
+ 	}
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index 5e2f39de88f3..5d0fb1c454cd 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -16,23 +16,14 @@
+ 
+ #include "mcp251xfd.h"
+ 
+-static inline int
+-mcp251xfd_rx_head_get_from_chip(const struct mcp251xfd_priv *priv,
+-				const struct mcp251xfd_rx_ring *ring,
+-				u8 *rx_head, bool *fifo_empty)
++static inline bool mcp251xfd_rx_fifo_sta_empty(const u32 fifo_sta)
+ {
+-	u32 fifo_sta;
+-	int err;
+-
+-	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
+-			  &fifo_sta);
+-	if (err)
+-		return err;
+-
+-	*rx_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
+-	*fifo_empty = !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++}
+ 
+-	return 0;
++static inline bool mcp251xfd_rx_fifo_sta_full(const u32 fifo_sta)
++{
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
+ 
+ static inline int
+@@ -80,29 +71,49 @@ mcp251xfd_check_rx_tail(const struct mcp251xfd_priv *priv,
+ }
+ 
+ static int
+-mcp251xfd_rx_ring_update(const struct mcp251xfd_priv *priv,
+-			 struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_len(const struct mcp251xfd_priv *priv,
++		     const struct mcp251xfd_rx_ring *ring,
++		     u8 *len_p)
+ {
+-	u32 new_head;
+-	u8 chip_rx_head;
+-	bool fifo_empty;
++	const u8 shift = ring->obj_num_shift_to_u8;
++	u8 chip_head, tail, len;
++	u32 fifo_sta;
+ 	int err;
+ 
+-	err = mcp251xfd_rx_head_get_from_chip(priv, ring, &chip_rx_head,
+-					      &fifo_empty);
+-	if (err || fifo_empty)
++	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
++			  &fifo_sta);
++	if (err)
++		return err;
++
++	if (mcp251xfd_rx_fifo_sta_empty(fifo_sta)) {
++		*len_p = 0;
++		return 0;
++	}
++
++	if (mcp251xfd_rx_fifo_sta_full(fifo_sta)) {
++		*len_p = ring->obj_num;
++		return 0;
++	}
++
++	chip_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
++
++	err =  mcp251xfd_check_rx_tail(priv, ring);
++	if (err)
+ 		return err;
++	tail = mcp251xfd_get_rx_tail(ring);
+ 
+-	/* chip_rx_head, is the next RX-Object filled by the HW.
+-	 * The new RX head must be >= the old head.
++	/* First shift to full u8. The subtraction works on signed
++	 * values, that keeps the difference steady around the u8
++	 * overflow. The right shift acts on len, which is an u8.
+ 	 */
+-	new_head = round_down(ring->head, ring->obj_num) + chip_rx_head;
+-	if (new_head <= ring->head)
+-		new_head += ring->obj_num;
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(chip_head));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(tail));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(len));
+ 
+-	ring->head = new_head;
++	len = (chip_head << shift) - (tail << shift);
++	*len_p = len >> shift;
+ 
+-	return mcp251xfd_check_rx_tail(priv, ring);
++	return 0;
+ }
+ 
+ static void
+@@ -208,6 +219,8 @@ mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
+ 	if (!len)
+ 		return 0;
+ 
++	ring->head += len;
++
+ 	/* Increment the RX FIFO tail pointer 'len' times in a
+ 	 * single SPI message.
+ 	 *
+@@ -233,22 +246,22 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			   struct mcp251xfd_rx_ring *ring)
+ {
+ 	struct mcp251xfd_hw_rx_obj_canfd *hw_rx_obj = ring->obj;
+-	u8 rx_tail, len;
++	u8 rx_tail, len, l;
+ 	int err, i;
+ 
+-	err = mcp251xfd_rx_ring_update(priv, ring);
++	err = mcp251xfd_get_rx_len(priv, ring, &len);
+ 	if (err)
+ 		return err;
+ 
+-	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
++	while ((l = mcp251xfd_get_rx_linear_len(ring, len))) {
+ 		rx_tail = mcp251xfd_get_rx_tail(ring);
+ 
+ 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
+-					    rx_tail, len);
++					    rx_tail, l);
+ 		if (err)
+ 			return err;
+ 
+-		for (i = 0; i < len; i++) {
++		for (i = 0; i < l; i++) {
+ 			err = mcp251xfd_handle_rxif_one(priv, ring,
+ 							(void *)hw_rx_obj +
+ 							i * ring->obj_size);
+@@ -256,9 +269,11 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 				return err;
  		}
+ 
+-		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
++		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, l);
+ 		if (err)
+ 			return err;
++
++		len -= l;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index 4628bf847bc9..2e5cee6ad0c4 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -558,6 +558,7 @@ struct mcp251xfd_rx_ring {
+ 	u8 nr;
+ 	u8 fifo_nr;
+ 	u8 obj_num;
++	u8 obj_num_shift_to_u8;
+ 	u8 obj_size;
+ 
+ 	union mcp251xfd_write_reg_buf irq_enable_buf;
+@@ -907,18 +908,9 @@ static inline u8 mcp251xfd_get_rx_tail(const struct mcp251xfd_rx_ring *ring)
+ 	return ring->tail & (ring->obj_num - 1);
+ }
+ 
+-static inline u8 mcp251xfd_get_rx_len(const struct mcp251xfd_rx_ring *ring)
+-{
+-	return ring->head - ring->tail;
+-}
+-
+ static inline u8
+-mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring, u8 len)
+ {
+-	u8 len;
+-
+-	len = mcp251xfd_get_rx_len(ring);
+-
+ 	return min_t(u8, len, ring->obj_num - mcp251xfd_get_rx_tail(ring));
+ }
  
 -- 
 2.43.0
