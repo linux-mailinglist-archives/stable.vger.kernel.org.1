@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F43B973180
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63A2973280
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494671F28344
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89091287B26
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55EC190499;
-	Tue, 10 Sep 2024 10:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41B71A01AE;
+	Tue, 10 Sep 2024 10:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeV00oh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/ONtjLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9301018C32F;
-	Tue, 10 Sep 2024 10:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FFE14D431;
+	Tue, 10 Sep 2024 10:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962875; cv=none; b=jw5vAEj+oROnAno1sdHZLJvEgrFtlO2Dj+KrpLDRdUONtZWtP/irE/hc33zfpr5yAcvChZNoAQPKw7EI9VnnjMFAHE5rrrFAwZvOXz5C95H1R/qkEjk874NmGZp1ZZFtG83EKv6kktfFcxWmxz3lzYgKoLbqT5rB0IQ9/EVIOyA=
+	t=1725963454; cv=none; b=nHaE2yZB1B8EsK49zJw+xSb2BSiKw7ceuGeL8JtOKTqPQc7gdZVN4mRyqwx6YXpMxz61DKH7wGnutPyDImmFAm2WsfQonvXQOL95z4PtI0nisAfXRDUDFW533UEsoTVvqe76W5gLBqFZrldxLHTspdhPhBtuhRZF8Y24Px9JnMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962875; c=relaxed/simple;
-	bh=WSRjt5B6c0Zz8N3/d78Goq9JYmJIKjDMIlp9zVE1mNE=;
+	s=arc-20240116; t=1725963454; c=relaxed/simple;
+	bh=PXmRVa0z+3pxHTlcxAQwdqRzb7i9DAnEmoBSIUGwwMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hQORvXyX08FqzIHkH86o33sqV1LmzalNTS/0+19RUUxdwQnQ7zo9gUJPyHPV2KPWgRxMakrCuw/uT8re1vSdlAkRj0WuCgRKbK6xj31y/krNlkYkKqli04al7RUgzlwXpBgyHMsVLqakYz+eDgt7lQPlQsjaOyRiFlwO/gxTFbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeV00oh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA63AC4CEC3;
-	Tue, 10 Sep 2024 10:07:54 +0000 (UTC)
+	 MIME-Version; b=jGqeT6DyRIfFid9YP1whhHOKPrnq25TIaX2WSlP4WhybXFqGGjmS8qUCgCFjD36Sihi6zrUgIrnDMJ2Qd4EBcmeb6gOSmVoViyiqP5CMgpv9HwoVklEpO6IAov5Mpc0btS6441hdyJvTGyHkcihrkxmOKbG0vmZA6qcwbSrNaw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/ONtjLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF040C4CEC3;
+	Tue, 10 Sep 2024 10:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962875;
-	bh=WSRjt5B6c0Zz8N3/d78Goq9JYmJIKjDMIlp9zVE1mNE=;
+	s=korg; t=1725963453;
+	bh=PXmRVa0z+3pxHTlcxAQwdqRzb7i9DAnEmoBSIUGwwMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeV00oh68pGtzcv1AOugksuquCDoPLg9f99nNz8n5UesDUc44O8JSBTP5DkAJNsLf
-	 HwLOS8csuqeyXAUIFunCH5lge8To/tN/ql0xAdjNCrAMqubPlp8L5Bw5N4pJAkNjbC
-	 44X91fHVWeXrUj10xMwAuAD6dAb24xFMOIZ/Ww94=
+	b=k/ONtjLaVtPFLiy2CQB8FGngqHxslS/DVV5exOukZubwD/CU3eTt1tZrOLsEju3qc
+	 5mALd6Nl5xVmW/k8h9MDwnsgyCWgMPDLqty3iJwbEVvRx8/LDN4P+QswyqpsU40CDm
+	 sGdTOBd46/WmKClcOsro8B7Lw1RH6qPFaiNpn1ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danijel Slivka <danijel.slivka@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/192] drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts
-Date: Tue, 10 Sep 2024 11:31:24 +0200
-Message-ID: <20240910092600.456078454@linuxfoundation.org>
+	robelin <robelin@nvidia.com>,
+	Sameer Pujar <spujar@nvidia.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 063/214] ASoC: dapm: Fix UAF for snd_soc_pcm_runtime object
+Date: Tue, 10 Sep 2024 11:31:25 +0200
+Message-ID: <20240910092601.349285944@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danijel Slivka <danijel.slivka@amd.com>
+From: robelin <robelin@nvidia.com>
 
-[ Upstream commit afbf7955ff01e952dbdd465fa25a2ba92d00291c ]
+commit b4a90b543d9f62d3ac34ec1ab97fc5334b048565 upstream.
 
-Why:
-Setting IH_RB_WPTR register to 0 will not clear the RB_OVERFLOW bit
-if RB_ENABLE is not set.
+When using kernel with the following extra config,
 
-How to fix:
-Set WPTR_OVERFLOW_CLEAR bit after RB_ENABLE bit is set.
-The RB_ENABLE bit is required to be set, together with
-WPTR_OVERFLOW_ENABLE bit so that setting WPTR_OVERFLOW_CLEAR bit
-would clear the RB_OVERFLOW.
+  - CONFIG_KASAN=y
+  - CONFIG_KASAN_GENERIC=y
+  - CONFIG_KASAN_INLINE=y
+  - CONFIG_KASAN_VMALLOC=y
+  - CONFIG_FRAME_WARN=4096
 
-Signed-off-by: Danijel Slivka <danijel.slivka@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel detects that snd_pcm_suspend_all() access a freed
+'snd_soc_pcm_runtime' object when the system is suspended, which
+leads to a use-after-free bug:
+
+[   52.047746] BUG: KASAN: use-after-free in snd_pcm_suspend_all+0x1a8/0x270
+[   52.047765] Read of size 1 at addr ffff0000b9434d50 by task systemd-sleep/2330
+
+[   52.047785] Call trace:
+[   52.047787]  dump_backtrace+0x0/0x3c0
+[   52.047794]  show_stack+0x34/0x50
+[   52.047797]  dump_stack_lvl+0x68/0x8c
+[   52.047802]  print_address_description.constprop.0+0x74/0x2c0
+[   52.047809]  kasan_report+0x210/0x230
+[   52.047815]  __asan_report_load1_noabort+0x3c/0x50
+[   52.047820]  snd_pcm_suspend_all+0x1a8/0x270
+[   52.047824]  snd_soc_suspend+0x19c/0x4e0
+
+The snd_pcm_sync_stop() has a NULL check on 'substream->runtime' before
+making any access. So we need to always set 'substream->runtime' to NULL
+everytime we kfree() it.
+
+Fixes: a72706ed8208 ("ASoC: codec2codec: remove ephemeral variables")
+Signed-off-by: robelin <robelin@nvidia.com>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://patch.msgid.link/20240823144342.4123814-2-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/ih_v6_0.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ sound/soc/soc-dapm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-index 657e4ca6f9dd..fccbec438bbe 100644
---- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-@@ -135,6 +135,34 @@ static int ih_v6_0_toggle_ring_interrupts(struct amdgpu_device *adev,
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -4002,6 +4002,7 @@ static int snd_soc_dai_link_event(struct
  
- 	tmp = RREG32(ih_regs->ih_rb_cntl);
- 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_ENABLE, (enable ? 1 : 0));
-+
-+	if (enable) {
-+		/* Unset the CLEAR_OVERFLOW bit to make sure the next step
-+		 * is switching the bit from 0 to 1
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Clear RB_OVERFLOW bit */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
-+		 * can be detected.
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+	}
-+
- 	/* enable_intr field is only valid in ring0 */
- 	if (ih == &adev->irq.ih)
- 		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, ENABLE_INTR, (enable ? 1 : 0));
--- 
-2.43.0
-
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		kfree(substream->runtime);
++		substream->runtime = NULL;
+ 		break;
+ 
+ 	default:
 
 
 
