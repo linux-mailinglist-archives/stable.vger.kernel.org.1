@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAE49731FC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F524973412
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB8028DF09
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:17:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B22B11C24E8A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6BE19343E;
-	Tue, 10 Sep 2024 10:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90787192D96;
+	Tue, 10 Sep 2024 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwWUo/17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I42vw7SO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662AA19048F;
-	Tue, 10 Sep 2024 10:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D990192D8E;
+	Tue, 10 Sep 2024 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963145; cv=none; b=sItXF1R74YtWaObwUaqSoLq+ocB6pXY4ouQpfkKUjG3b5UpUlfz9fFGDjFLNJyAS32++5wrZ3iCX2grZ0K4EauNPDEpIy7d8emsMkbEPPpmsCut/kyv11W+C3+apXyqwHaZzw0mK9mmDZbmP0BaYq31I9wcqIEDYMeWmDDaKhkQ=
+	t=1725964452; cv=none; b=WIkQXn883jCqYVSGuUatgBMF09M2Ay5xsLfJSDVNFBBLKb9bhF2Cd39FtAhv0YGuER73w53HiW2aaKYqSoq1x7JTW6jFk45yCX4Wiy1jLVRbMb82F0cEhhPd3dXvqZwZWAvxXYwDm+eR3QLG5In+ZJN4YuHz7TLADxfjQlro8Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963145; c=relaxed/simple;
-	bh=7k8gh0ndoholfzVqhTivi+4ZrrOLZraqJUDwuCWVnoA=;
+	s=arc-20240116; t=1725964452; c=relaxed/simple;
+	bh=3zvnwsrPAv90l9XyPvxKMNFTM/mUUj9BDZuELhhHCbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCiIt2moFiRLAUhQkqB1lhf+fxkgcI2PPTd0CKi9R2OeeZS2h1BydAQNz01TfcTsqOgdZExYxUOxIHLOvLEZAtkOI64xBcEPrrDTz76rAwQlm79bpY3QTJ2Fei0C4D0lEEeeyne7NBGzOzmiQh7I/fuOMDG8ER9gt/SZDaXr+34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwWUo/17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91059C4CECE;
-	Tue, 10 Sep 2024 10:12:24 +0000 (UTC)
+	 MIME-Version; b=AydS2sWiorClgIs1WcpQBjnWgROypc0zKGDXPNnlG4zs8nqDr6/T7KshtW+twdSOXbV9ONYFKlMMcFJ1kuDSnoYEek4tlqKCBultZWwruCbRD91aNEUrvsVqQj4VbrAe+Bifdmkw50gECfdTJIwLrMjH5ntZEbpkhgmlrGqQS28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I42vw7SO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BE0C4CEF3;
+	Tue, 10 Sep 2024 10:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963145;
-	bh=7k8gh0ndoholfzVqhTivi+4ZrrOLZraqJUDwuCWVnoA=;
+	s=korg; t=1725964452;
+	bh=3zvnwsrPAv90l9XyPvxKMNFTM/mUUj9BDZuELhhHCbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwWUo/17WcTxMWChmb6lUKVRhIBNRi38J11jLMqMg56D6cZ805zL56VJDA9gZbyOi
-	 CO1l5F6bVLPzMNZGGE4/Stg2uOd+kgzSeDlr576sovLMWiaZ7DRpt4JkzbugM25x8+
-	 RJ0Wk8fLsV6DT9RpzZMzOXD+5jThVKXsjzeSgJ2A=
+	b=I42vw7SOO6JueZHb9Ahdw/vTPB3+3+SFL7TsZIDfqai9fqQhZBJxWtMOAg6v/B2Oa
+	 FHd+6oNryES/rr9KVOJhTFABfWNWZLNGKjCKhMm/LQE0CO8JOFsssg1sOgkHGjQR/h
+	 QKRWXVUxUEtQvIROdJkCitdgTEGnr8AggziWy778=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>
-Subject: [PATCH 6.1 151/192] uprobes: Use kzalloc to allocate xol area
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 188/269] Squashfs: sanity check symbolic link size
 Date: Tue, 10 Sep 2024 11:32:55 +0200
-Message-ID: <20240910092604.171895796@linuxfoundation.org>
+Message-ID: <20240910092614.822053755@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit e240b0fde52f33670d1336697c22d90a4fe33c84 upstream.
+[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
 
-To prevent unitialized members, use kzalloc to allocate
-the xol area.
+Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
 
-Fixes: b059a453b1cf1 ("x86/vdso: Add mremap hook to vm_special_mapping")
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20240903102313.3402529-1-svens@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is caused by an uninitialised page, which is ultimately caused
+by a corrupted symbolic link size read from disk.
+
+The reason why the corrupted symlink size causes an uninitialised
+page is due to the following sequence of events:
+
+1. squashfs_read_inode() is called to read the symbolic
+   link from disk.  This assigns the corrupted value
+   3875536935 to inode->i_size.
+
+2. Later squashfs_symlink_read_folio() is called, which assigns
+   this corrupted value to the length variable, which being a
+   signed int, overflows producing a negative number.
+
+3. The following loop that fills in the page contents checks that
+   the copied bytes is less than length, which being negative means
+   the loop is skipped, producing an uninitialised page.
+
+This patch adds a sanity check which checks that the symbolic
+link size is not larger than expected.
+
+--
+
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
+V2: fix spelling mistake.
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/squashfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1483,7 +1483,7 @@ static struct xol_area *__create_xol_are
- 	uprobe_opcode_t insn = UPROBE_SWBP_INSN;
- 	struct xol_area *area;
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index 16bd693d0b3a..d5918eba27e3 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -279,8 +279,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
--	area = kmalloc(sizeof(*area), GFP_KERNEL);
-+	area = kzalloc(sizeof(*area), GFP_KERNEL);
- 	if (unlikely(!area))
- 		goto out;
- 
-@@ -1493,7 +1493,6 @@ static struct xol_area *__create_xol_are
- 		goto free_area;
- 
- 	area->xol_mapping.name = "[uprobes]";
--	area->xol_mapping.fault = NULL;
- 	area->xol_mapping.pages = area->pages;
- 	area->pages[0] = alloc_page(GFP_HIGHUSER);
- 	if (!area->pages[0])
+-		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
++		if (inode->i_size > PAGE_SIZE) {
++			ERROR("Corrupted symlink\n");
++			return -EINVAL;
++		}
++
++		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_symlink_inode_ops;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &squashfs_symlink_aops;
+-- 
+2.43.0
+
 
 
 
