@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80460972FB2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479E9972DE3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E45286D8A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A8651C22204
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D377618C038;
-	Tue, 10 Sep 2024 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB68E17BEAE;
+	Tue, 10 Sep 2024 09:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQJD3fhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEBimrJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C9913AD09;
-	Tue, 10 Sep 2024 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A2014F12C;
+	Tue, 10 Sep 2024 09:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962031; cv=none; b=jL9/w7/q7vb1/KpNL6jVIRosrnmFCIHMt23dxwWKz0URKWNsM+t0WcXJwovZeLEktV8NzA5vecNVE8DAHFwUHN3rAAnT18krJ8EVqFf71J1fD9r+XP0q8i/mmXYZQObVfmDJ1nXgx/LuYrI7hAlD5CkbslMrtgit68bJe2vrHeE=
+	t=1725961042; cv=none; b=pAlLC+XUD5aucAF7bXn8dWZN8+uEEwrxwNK2UqooxUIIef5sl4aWrsn3enLHGS62hW9WRixrtnN91WLjog44euLurLiH1KinXcU5XI8vtYFtKUJW1PwuZr96SnQHCPbphEdTLUZwN1zYTmeTDY1IDIgyYlbr1w/qp3kQrkG6NpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962031; c=relaxed/simple;
-	bh=J2/plzXgtWu/azeChDFNU+KenuK8dLokwqNMvSq+tdk=;
+	s=arc-20240116; t=1725961042; c=relaxed/simple;
+	bh=3MoZljTzhp3v899DmGCaXg1M8piq9kKu6uh279LH55U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R33quh7CSE7BwqJSctN4aLjbRQkgv0pqa8huDUT2yNxbDoYLqLjOPeC0K77LyG5FHoYap/Y8hGc3IQA8Ms7vFzavLqBDBTjGz+B5uXFicnF5RLy1hZESY2JQCadW7RtUKQdpP2x8W7x1ZAauG3QQTyRRhfehmTyRz2a7hUAbBBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQJD3fhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CEDC4CEC3;
-	Tue, 10 Sep 2024 09:53:50 +0000 (UTC)
+	 MIME-Version; b=o9rHBT4T+disXTgwNjwbJMrrp5401vgZQprrSzuGjL4SwRstflsT2nSPQA9FbtWwRtIK3kiWFOxyChLrU3azdrt3jsxJ8jouwLEYWMlvEOnu8n3wvmry6eMLCQXsKcBWRskD13RDPamEtPuzOC2DaCuI5Gk8PNhXb3bWiQVAZfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEBimrJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136C7C4CEC3;
+	Tue, 10 Sep 2024 09:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962031;
-	bh=J2/plzXgtWu/azeChDFNU+KenuK8dLokwqNMvSq+tdk=;
+	s=korg; t=1725961042;
+	bh=3MoZljTzhp3v899DmGCaXg1M8piq9kKu6uh279LH55U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQJD3fhDdIFzceK4XrPliovzF9rX6lRp+UDT47N4RW06SO7a8Ofo3ZqyBvIMFSTR4
-	 oa/I2LQCoL933FbARNZWbq0WI3yDkYit30XrODLtOuZVFEMraYyE6lLQJC1/pSzRgq
-	 B6C0Mx74JOXZhlG1DUOJEuXOj50lyUnzd8Cd9yzg=
+	b=LEBimrJ0+DkzwF3/0Hsckirskw+1t+KqRTjio3p/4HBaF/VXcrKIRnrCc6RZKGMfN
+	 XnySBHhVvsrkauZR8GBnpdViDNPK3cDZDqe6nvTNIJiRe6Ep2gXKl9KKlCNUI0z70o
+	 jkbBzy3eRZB1JpxXVLy9yD2mFCJ9RY26zBr9fuKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 271/375] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
+Subject: [PATCH 4.19 06/96] drm/amdgpu: fix ucode out-of-bounds read warning
 Date: Tue, 10 Sep 2024 11:31:08 +0200
-Message-ID: <20240910092631.662841779@linuxfoundation.org>
+Message-ID: <20240910092541.669544632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+Clear warning that read ucode[] may out-of-bounds.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index aaefb9b678c8..fa692c86f069 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -121,6 +121,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+index 387f1cf1dc20..9e768ff392fe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+@@ -212,6 +212,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
+ 		struct amdgpu_firmware_info *ucode;
  
+ 		id = fw_type_convert(cgs_device, type);
++		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
++			return -EINVAL;
++
+ 		ucode = &adev->firmware.ucode[id];
+ 		if (ucode->fw == NULL)
+ 			return -EINVAL;
 -- 
 2.43.0
 
