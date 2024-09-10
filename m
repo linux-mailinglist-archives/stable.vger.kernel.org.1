@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4229734D7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7F99733E6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B61928E27A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99AE81F23D5A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD21218FC73;
-	Tue, 10 Sep 2024 10:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954F7191F73;
+	Tue, 10 Sep 2024 10:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSog3xpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABM57UFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79938143880;
-	Tue, 10 Sep 2024 10:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536DC1917E1;
+	Tue, 10 Sep 2024 10:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964853; cv=none; b=YqYYIlWzsdwO8sY3IDTLkXa0tgVqgSaaotOWPYGGvn5fglrj2JGLq96NfxQ/smhN3T2H1B5uKm2nxEL4LexrfxwfC2yHLxzdv3sgXW14kePwOU2v8quI2iPBLU7Jm2RPjGVcfH+MD32QxkMQRIDyE/Fd5Hg5TiYygBvSV0BxOoc=
+	t=1725964373; cv=none; b=f9fDcdrD/OA6depAAH4Ea3plOoorSnTpttwxBLLwjGncyJK7m8VRDjFV0yOvjRAnSVaclTvEz77YWCeMGbCVpz/Phm/B8HcR0tI+Mv9bpm4nZUaRphDUDoQGyegCpDFpTiTYV4QOsVZ3S/+l8jRXSMkheMtLGIByKujqZ8RBj34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964853; c=relaxed/simple;
-	bh=03DkKXnuDbWDEBJ9RPRr8qIScedb/x85o9MmbZXOug4=;
+	s=arc-20240116; t=1725964373; c=relaxed/simple;
+	bh=HdDLIWIGxgh5ZuhfbTRLpoOXThMB++nWU1pNshYNyzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlJs+3hdCGZP4YZv08WTtYmINBgPIXIirmhI4VUU8FbEiUrorebNOTvzntwuSI0Awt58Zj5AvUhH1zT4t2DVu4XujkJORN5rdZwEoAcQ4un9OV2fQoI61pZttEKIkf/d/hXDTjIOVa7EJH3L0FlW5lSQR65rUgXUxn2RzTZePdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSog3xpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007AFC4CEC3;
-	Tue, 10 Sep 2024 10:40:52 +0000 (UTC)
+	 MIME-Version; b=uVIdX5UMIM/xzf7hQiGYuItSSS4+G38Ub/jIUWJIQWJ8RlZDN7XsmrSOUUueD9vvU/B2tG5aUJYUvm0Xa9VD93GyX+UFRQSeZ9NT1KzwtPx+XfTqfIB8izvSyM2SJzfNn5etPPIasw2jMqv+2MW02HSqrnZb7kuIz2J5L64abKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABM57UFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5EFC4CEC3;
+	Tue, 10 Sep 2024 10:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964853;
-	bh=03DkKXnuDbWDEBJ9RPRr8qIScedb/x85o9MmbZXOug4=;
+	s=korg; t=1725964373;
+	bh=HdDLIWIGxgh5ZuhfbTRLpoOXThMB++nWU1pNshYNyzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSog3xpQexUmZDpTp0GDDqZ/SujPFYdVdQdeFEkH6jGcKujaiib6oQqPRqg5zznqT
-	 LDu9/hxSoeKzPmCSmADl3m+VoQsRMzG3kMoxDyOTnj0NUWZZJnyx8KvdLjQdLELseW
-	 AAWYLJhcYPfQ6pC2vrycLMwBE5I4mhZaKDSDakB0=
+	b=ABM57UFKYKNK5YKQDtnw7uGsmdih9gEZ4ttWK/JXrAMUqkuXKVEqviMGnQWMXATXt
+	 sWV0p/UOQ8JCzvRJIREnkJZBeJOaBfdytWByencdIBj0nWfOCQwaq5ldLGi+7Lnq7m
+	 mXC5Ke82cTgVk53lJWayT7p8HGKUq7dJruc86JgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com,
-	syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Connor OBrien <connor.obrien@crowdstrike.com>
-Subject: [PATCH 5.10 053/186] bpf, cgroup: Assign cgroup in cgroup_sk_alloc when called from interrupt
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Barry Song <baohua@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 161/269] dma-mapping: benchmark: Dont starve others when doing the test
 Date: Tue, 10 Sep 2024 11:32:28 +0200
-Message-ID: <20240910092556.682986100@linuxfoundation.org>
+Message-ID: <20240910092613.910459451@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor O'Brien <connor.obrien@crowdstrike.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+[ Upstream commit 54624acf8843375a6de3717ac18df3b5104c39c5 ]
 
-commit 78cc316e9583067884eb8bd154301dc1e9ee945c upstream.
+The test thread will start N benchmark kthreads and then schedule out
+until the test time finished and notify the benchmark kthreads to stop.
+The benchmark kthreads will keep running until notified to stop.
+There's a problem with current implementation when the benchmark
+kthreads number is equal to the CPUs on a non-preemptible kernel:
+since the scheduler will balance the kthreads across the CPUs and
+when the test time's out the test thread won't get a chance to be
+scheduled on any CPU then cannot notify the benchmark kthreads to stop.
 
-If cgroup_sk_alloc() is called from interrupt context, then just assign the
-root cgroup to skcd->cgroup. Prior to commit 8520e224f547 ("bpf, cgroups:
-Fix cgroup v2 fallback on v1/v2 mixed mode") we would just return, and later
-on in sock_cgroup_ptr(), we were NULL-testing the cgroup in fast-path, and
-iff indeed NULL returning the root cgroup (v ?: &cgrp_dfl_root.cgrp). Rather
-than re-adding the NULL-test to the fast-path we can just assign it once from
-cgroup_sk_alloc() given v1/v2 handling has been simplified. The migration from
-NULL test with returning &cgrp_dfl_root.cgrp to assigning &cgrp_dfl_root.cgrp
-directly does /not/ change behavior for callers of sock_cgroup_ptr().
+This can be easily reproduced on a VM (simulated with 16 CPUs) with
+PREEMPT_VOLUNTARY:
+estuary:/mnt$ ./dma_map_benchmark -t 16 -s 1
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:     10-...!: (5221 ticks this GP) idle=ed24/1/0x4000000000000000 softirq=142/142 fqs=0
+ rcu:     (t=5254 jiffies g=-559 q=45 ncpus=16)
+ rcu: rcu_sched kthread starved for 5255 jiffies! g-559 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=12
+ rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+ rcu: RCU grace-period kthread stack dump:
+ task:rcu_sched       state:R  running task     stack:0     pid:16    tgid:16    ppid:2      flags:0x00000008
+ Call trace
+  __switch_to+0xec/0x138
+  __schedule+0x2f8/0x1080
+  schedule+0x30/0x130
+  schedule_timeout+0xa0/0x188
+  rcu_gp_fqs_loop+0x128/0x528
+  rcu_gp_kthread+0x1c8/0x208
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
+ Sending NMI from CPU 10 to CPUs 0:
+ NMI backtrace for cpu 0
+ CPU: 0 PID: 332 Comm: dma-map-benchma Not tainted 6.10.0-rc1-vanilla-LSE #8
+ Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+ pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+ lr : arm_smmu_cmdq_issue_cmdlist+0x488/0x730
+ sp : ffff80008748b630
+ x29: ffff80008748b630 x28: 0000000000000000 x27: ffff80008748b780
+ x26: 0000000000000000 x25: 000000000000bc70 x24: 000000000001bc70
+ x23: ffff0000c12af080 x22: 0000000000010000 x21: 000000000000ffff
+ x20: ffff80008748b700 x19: ffff0000c12af0c0 x18: 0000000000010000
+ x17: 0000000000000001 x16: 0000000000000040 x15: ffffffffffffffff
+ x14: 0001ffffffffffff x13: 000000000000ffff x12: 00000000000002f1
+ x11: 000000000001ffff x10: 0000000000000031 x9 : ffff800080b6b0b8
+ x8 : ffff0000c2a48000 x7 : 000000000001bc71 x6 : 0001800000000000
+ x5 : 00000000000002f1 x4 : 01ffffffffffffff x3 : 000000000009aaf1
+ x2 : 0000000000000018 x1 : 000000000000000f x0 : ffff0000c12af18c
+ Call trace:
+  arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+  __arm_smmu_tlb_inv_range+0xe0/0x1a8
+  arm_smmu_iotlb_sync+0xc0/0x128
+  __iommu_dma_unmap+0x248/0x320
+  iommu_dma_unmap_page+0x5c/0xe8
+  dma_unmap_page_attrs+0x38/0x1d0
+  map_benchmark_thread+0x118/0x2c0
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
 
-syzkaller was able to trigger a splat in the legacy netrom code base, where
-the RX handler in nr_rx_frame() calls nr_make_new() which calls sk_alloc()
-and therefore cgroup_sk_alloc() with in_interrupt() condition. Thus the NULL
-skcd->cgroup, where it trips over on cgroup_sk_free() side given it expects
-a non-NULL object. There are a few other candidates aside from netrom which
-have similar pattern where in their accept-like implementation, they just call
-to sk_alloc() and thus cgroup_sk_alloc() instead of sk_clone_lock() with the
-corresponding cgroup_sk_clone() which then inherits the cgroup from the parent
-socket. None of them are related to core protocols where BPF cgroup programs
-are running from. However, in future, they should follow to implement a similar
-inheritance mechanism.
+Solve this by adding scheduling point in the kthread loop,
+so if there're other threads in the system they may have
+a chance to run, especially the thread to notify the test
+end. However this may degrade the test concurrency so it's
+recommended to run this on an idle system.
 
-Additionally, with a !CONFIG_CGROUP_NET_PRIO and !CONFIG_CGROUP_NET_CLASSID
-configuration, the same issue was exposed also prior to 8520e224f547 due to
-commit e876ecc67db8 ("cgroup: memcg: net: do not associate sock with unrelated
-cgroup") which added the early in_interrupt() return back then.
-
-Fixes: 8520e224f547 ("bpf, cgroups: Fix cgroup v2 fallback on v1/v2 mixed mode")
-Fixes: e876ecc67db8 ("cgroup: memcg: net: do not associate sock with unrelated cgroup")
-Reported-by: syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com
-Reported-by: syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Tested-by: syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com
-Tested-by: syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/bpf/20210927123921.21535-1-daniel@iogearbox.net
-Signed-off-by: Connor O'Brien <connor.obrien@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ kernel/dma/map_benchmark.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -6559,22 +6559,29 @@ int cgroup_parse_float(const char *input
- 
- void cgroup_sk_alloc(struct sock_cgroup_data *skcd)
- {
--	/* Don't associate the sock with unrelated interrupted task's cgroup. */
--	if (in_interrupt())
--		return;
-+	struct cgroup *cgroup;
- 
- 	rcu_read_lock();
-+	/* Don't associate the sock with unrelated interrupted task's cgroup. */
-+	if (in_interrupt()) {
-+		cgroup = &cgrp_dfl_root.cgrp;
-+		cgroup_get(cgroup);
-+		goto out;
-+	}
+diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
+index 4950e0b622b1..cc19a3efea89 100644
+--- a/kernel/dma/map_benchmark.c
++++ b/kernel/dma/map_benchmark.c
+@@ -89,6 +89,22 @@ static int map_benchmark_thread(void *data)
+ 		atomic64_add(map_sq, &map->sum_sq_map);
+ 		atomic64_add(unmap_sq, &map->sum_sq_unmap);
+ 		atomic64_inc(&map->loops);
 +
- 	while (true) {
- 		struct css_set *cset;
- 
- 		cset = task_css_set(current);
- 		if (likely(cgroup_tryget(cset->dfl_cgrp))) {
--			skcd->cgroup = cset->dfl_cgrp;
--			cgroup_bpf_get(cset->dfl_cgrp);
-+			cgroup = cset->dfl_cgrp;
- 			break;
- 		}
- 		cpu_relax();
++		/*
++		 * We may test for a long time so periodically check whether
++		 * we need to schedule to avoid starving the others. Otherwise
++		 * we may hangup the kernel in a non-preemptible kernel when
++		 * the test kthreads number >= CPU number, the test kthreads
++		 * will run endless on every CPU since the thread resposible
++		 * for notifying the kthread stop (in do_map_benchmark())
++		 * could not be scheduled.
++		 *
++		 * Note this may degrade the test concurrency since the test
++		 * threads may need to share the CPU time with other load
++		 * in the system. So it's recommended to run this benchmark
++		 * on an idle system.
++		 */
++		cond_resched();
  	}
-+out:
-+	skcd->cgroup = cgroup;
-+	cgroup_bpf_get(cgroup);
- 	rcu_read_unlock();
- }
  
+ out:
+-- 
+2.43.0
+
 
 
 
