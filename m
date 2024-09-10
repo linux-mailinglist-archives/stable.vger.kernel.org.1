@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-74905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95314973204
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B059973420
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5503428DEE1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDCF41C24E48
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EA919004B;
-	Tue, 10 Sep 2024 10:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A3518B462;
+	Tue, 10 Sep 2024 10:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cnNB/+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaygYEED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99B9183CB0;
-	Tue, 10 Sep 2024 10:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78CE186619;
+	Tue, 10 Sep 2024 10:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963178; cv=none; b=aBUZL87OcJB0ybw1GDuPKXDdtydiKzMnro3GmXJVOqqoyQIrxCKMSr4taZGbcMvnCuApRsJ4ULqPRve95pFnya5JOuFADMPm9/cDewUH0tPd37eZ8T+6oKc7d9Nqw37i9i5U6sEO4kfnoYq4pTRksOmoVSx+yv716Cy7j+rc/hc=
+	t=1725964484; cv=none; b=QV92/IXg6fuj2QIV6GGkb8IbclTCaYbnN2kNHI6ZAbwT58YTu5JSlQBluvs3xaFkFDzSu0YYv0yIq+NnPeeWhRTvbBn2vyZUNUvgAVM9PzPHBPI8I9cf9hi0jgORYNnoNiF7gV7GxCZQof4tHpcAXwQyKwWoHLvAMTIdoc3HUyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963178; c=relaxed/simple;
-	bh=4hF4zcaQVb7f0qLL5CJiM4r9G1P2oAoXIjmhDLUqcMA=;
+	s=arc-20240116; t=1725964484; c=relaxed/simple;
+	bh=QtQWDCdVsC4gBe/a+uyQvvpPvgR1kSZjrbSlYeT4sEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofoboO7xRCgYRtBbwvcQJxNiPIKgIbqIMr67uGGqwIxzvsdQcanr5lTTzUbFp3qsswHjtzUd0ZO7JJoahYBti5QB/WFIULyGsS/8aNRyrUqXK66F/VwvQXYJaO2T//e4EBngQqbv3VTkjpGp47XvYEUgj+e476ZFyexxX1wQrHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cnNB/+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25197C4CEC3;
-	Tue, 10 Sep 2024 10:12:56 +0000 (UTC)
+	 MIME-Version; b=plpz2GaAVRd1wet20t73MDJ7hYNmeVcXqzi8Zh8HsQN8heXsyVaVM8IDSab5UzIUWVI4qvbfjdRrCYOmYhBZPOlwdWkD8bTTGzLcS5h8oCns+pb163S4+8jnQKBSOLi+Ex75un+WZsilEaPEl3Jsb/4FLfiSjoAPUBvgGOmPT0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaygYEED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106A1C4CECE;
+	Tue, 10 Sep 2024 10:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963177;
-	bh=4hF4zcaQVb7f0qLL5CJiM4r9G1P2oAoXIjmhDLUqcMA=;
+	s=korg; t=1725964484;
+	bh=QtQWDCdVsC4gBe/a+uyQvvpPvgR1kSZjrbSlYeT4sEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cnNB/+hKqnyQZ+sBRPQsoCFdapgEBeDy9EqSc/V+ILGgC6O7ll/rO7Hf+D8jFYfR
-	 B2WGmg3D5VV7gyGZGhoPpzxjcYPpworyzryL2r6caQpEO0NXZFfZfLlX/ACWjICRtS
-	 7FJJuuERGaotG24F0H4Ui8s8jdpsDyvl2m7LXpUc=
+	b=KaygYEEDJJbfVtrKjMTp8WmDE2ouuABOB5VUeZE262JmjdIVIlPhsSlX5fEcqpPwi
+	 rCK7jxiUcZu+IFeI1zJbe+lsRJ3twf8RgaViDx6cwD8ZMFvP4M99WaROENRxYuX3u8
+	 EF0kgM8KeByzrW+XD/2kKQH+fk/En0mA8Oo+qRW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Pavel Emelyanov <xemul@virtuozzo.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/192] userfaultfd: fix checks for huge PMDs
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 198/269] riscv: mm: Only compile pgtable.c if MMU
 Date: Tue, 10 Sep 2024 11:33:05 +0200
-Message-ID: <20240910092604.575528946@linuxfoundation.org>
+Message-ID: <20240910092615.156434788@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 71c186efc1b2cf1aeabfeff3b9bd5ac4c5ac14d8 ]
+commit d6508999d1882ddd0db8b3b4bd7967d83e9909fa upstream.
 
-Patch series "userfaultfd: fix races around pmd_trans_huge() check", v2.
+All functions defined in there depend on MMU, so no need to compile it
+for !MMU configs.
 
-The pmd_trans_huge() code in mfill_atomic() is wrong in three different
-ways depending on kernel version:
-
-1. The pmd_trans_huge() check is racy and can lead to a BUG_ON() (if you hit
-   the right two race windows) - I've tested this in a kernel build with
-   some extra mdelay() calls. See the commit message for a description
-   of the race scenario.
-   On older kernels (before 6.5), I think the same bug can even
-   theoretically lead to accessing transhuge page contents as a page table
-   if you hit the right 5 narrow race windows (I haven't tested this case).
-2. As pointed out by Qi Zheng, pmd_trans_huge() is not sufficient for
-   detecting PMDs that don't point to page tables.
-   On older kernels (before 6.5), you'd just have to win a single fairly
-   wide race to hit this.
-   I've tested this on 6.1 stable by racing migration (with a mdelay()
-   patched into try_to_migrate()) against UFFDIO_ZEROPAGE - on my x86
-   VM, that causes a kernel oops in ptlock_ptr().
-3. On newer kernels (>=6.5), for shmem mappings, khugepaged is allowed
-   to yank page tables out from under us (though I haven't tested that),
-   so I think the BUG_ON() checks in mfill_atomic() are just wrong.
-
-I decided to write two separate fixes for these (one fix for bugs 1+2, one
-fix for bug 3), so that the first fix can be backported to kernels
-affected by bugs 1+2.
-
-This patch (of 2):
-
-This fixes two issues.
-
-I discovered that the following race can occur:
-
-  mfill_atomic                other thread
-  ============                ============
-                              <zap PMD>
-  pmdp_get_lockless() [reads none pmd]
-  <bail if trans_huge>
-  <if none:>
-                              <pagefault creates transhuge zeropage>
-    __pte_alloc [no-op]
-                              <zap PMD>
-  <bail if pmd_trans_huge(*dst_pmd)>
-  BUG_ON(pmd_none(*dst_pmd))
-
-I have experimentally verified this in a kernel with extra mdelay() calls;
-the BUG_ON(pmd_none(*dst_pmd)) triggers.
-
-On kernels newer than commit 0d940a9b270b ("mm/pgtable: allow
-pte_offset_map[_lock]() to fail"), this can't lead to anything worse than
-a BUG_ON(), since the page table access helpers are actually designed to
-deal with page tables concurrently disappearing; but on older kernels
-(<=6.4), I think we could probably theoretically race past the two
-BUG_ON() checks and end up treating a hugepage as a page table.
-
-The second issue is that, as Qi Zheng pointed out, there are other types
-of huge PMDs that pmd_trans_huge() can't catch: devmap PMDs and swap PMDs
-(in particular, migration PMDs).
-
-On <=6.4, this is worse than the first issue: If mfill_atomic() runs on a
-PMD that contains a migration entry (which just requires winning a single,
-fairly wide race), it will pass the PMD to pte_offset_map_lock(), which
-assumes that the PMD points to a page table.
-
-Breakage follows: First, the kernel tries to take the PTE lock (which will
-crash or maybe worse if there is no "struct page" for the address bits in
-the migration entry PMD - I think at least on X86 there usually is no
-corresponding "struct page" thanks to the PTE inversion mitigation, amd64
-looks different).
-
-If that didn't crash, the kernel would next try to write a PTE into what
-it wrongly thinks is a page table.
-
-As part of fixing these issues, get rid of the check for pmd_trans_huge()
-before __pte_alloc() - that's redundant, we're going to have to check for
-that after the __pte_alloc() anyway.
-
-Backport note: pmdp_get_lockless() is pmd_read_atomic() in older kernels.
-
-Link: https://lkml.kernel.org/r/20240813-uffd-thp-flip-fix-v2-0-5efa61078a41@google.com
-Link: https://lkml.kernel.org/r/20240813-uffd-thp-flip-fix-v2-1-5efa61078a41@google.com
-Fixes: c1a4de99fada ("userfaultfd: mcopy_atomic|mfill_zeropage: UFFDIO_COPY|UFFDIO_ZEROPAGE preparation")
-Signed-off-by: Jann Horn <jannh@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pavel Emelyanov <xemul@virtuozzo.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213203001.179237-4-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ arch/riscv/mm/Makefile |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 5d873aadec76..50c01a7eb705 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -642,21 +642,23 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
- 		}
+--- a/arch/riscv/mm/Makefile
++++ b/arch/riscv/mm/Makefile
+@@ -13,10 +13,9 @@ endif
+ KCOV_INSTRUMENT_init.o := n
  
- 		dst_pmdval = pmdp_get_lockless(dst_pmd);
--		/*
--		 * If the dst_pmd is mapped as THP don't
--		 * override it and just be strict.
--		 */
--		if (unlikely(pmd_trans_huge(dst_pmdval))) {
--			err = -EEXIST;
--			break;
--		}
- 		if (unlikely(pmd_none(dst_pmdval)) &&
- 		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
- 			err = -ENOMEM;
- 			break;
- 		}
--		/* If an huge pmd materialized from under us fail */
--		if (unlikely(pmd_trans_huge(*dst_pmd))) {
-+		dst_pmdval = pmdp_get_lockless(dst_pmd);
-+		/*
-+		 * If the dst_pmd is THP don't override it and just be strict.
-+		 * (This includes the case where the PMD used to be THP and
-+		 * changed back to none after __pte_alloc().)
-+		 */
-+		if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval) ||
-+			     pmd_devmap(dst_pmdval))) {
-+			err = -EEXIST;
-+			break;
-+		}
-+		if (unlikely(pmd_bad(dst_pmdval))) {
- 			err = -EFAULT;
- 			break;
- 		}
--- 
-2.43.0
-
+ obj-y += init.o
+-obj-$(CONFIG_MMU) += extable.o fault.o pageattr.o
++obj-$(CONFIG_MMU) += extable.o fault.o pageattr.o pgtable.o
+ obj-y += cacheflush.o
+ obj-y += context.o
+-obj-y += pgtable.o
+ obj-y += pmem.o
+ 
+ ifeq ($(CONFIG_MMU),y)
 
 
 
