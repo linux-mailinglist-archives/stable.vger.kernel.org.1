@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EBC972E3A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC69973091
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943A81C24967
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B5B1F233D6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227C018B481;
-	Tue, 10 Sep 2024 09:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9D218C347;
+	Tue, 10 Sep 2024 10:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P99Gfx4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WB+kkuBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A96189F58;
-	Tue, 10 Sep 2024 09:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B70818B46D;
+	Tue, 10 Sep 2024 10:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961234; cv=none; b=do7pM4+oZC2hHUGy4C+hMKbsBgXG3vxyRrHPlQFx14d6kNLkjrBHvkM0/ppSWwlyLJQ5NDdkCidpJvfq3CG44kAKbNiXuf+KUBmEY6XCZVRJ8bP2IiB6JIGCyeJaI7KbNJgRSaqdMbR11QTu+Nbk9sWfmWY9THfSdWUp6QBuWlA=
+	t=1725962484; cv=none; b=RzergeV1hJTOjiYaewTBFxEJ5Bp8u7NI3bJk3X5yINO4XN9cyu0IFaP6q4DBT3dDilHJpiyvX+nDMukEDrBj02ZlFTzcLil+kjmNw/eVvlq8xSrvLHWlOKslWwTh9lUTk15bS+aC5YjiGO0vhEQb++EXRm6GuuMLgpWGvGkLnLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961234; c=relaxed/simple;
-	bh=ESeYBlBx5OMZrgO05KVHeyUgPR2PizemwXCwQjLQHto=;
+	s=arc-20240116; t=1725962484; c=relaxed/simple;
+	bh=RY3bD0uShHWVdAgz9NyHz1v9/ben1FHkgD9qDOUu7to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huNXnCaBjwrXkafLfibwrPEhq1LpxF95k+6W1j/sik1axY6HLWeq0HuuPDen47K3ma1N5EMPZ1kJMoyBZ5k/Kzizaw0wduX2cjT5w9HpWH5QGUnFPY1oK9GFYoxZ/jjuoT6myQ3WI/dJuCjstL3wkt3s8VtulnZ3Ve6VEXE7MF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P99Gfx4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084A4C4CEC3;
-	Tue, 10 Sep 2024 09:40:33 +0000 (UTC)
+	 MIME-Version; b=EwH5LEx98gN8HlcXwiXP4lMIMqsLD9CXq/DT9BoQVAp7Vk83qjhB0+NE+sJBgsCL0tt1fzcl0UXM5N+3vn1gV0CD0J5lGgGj5UtLaWbfqMsVYMvfPgDGRz8psNqLMQFqP0M0wh1LvdVgu62bkb/206RJ6Unjd29M2zJJyG5aDe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WB+kkuBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5308C4CEC3;
+	Tue, 10 Sep 2024 10:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961234;
-	bh=ESeYBlBx5OMZrgO05KVHeyUgPR2PizemwXCwQjLQHto=;
+	s=korg; t=1725962484;
+	bh=RY3bD0uShHWVdAgz9NyHz1v9/ben1FHkgD9qDOUu7to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P99Gfx4+pdlEsd9bsd+XkCciKmKvHol3MISypQviWQBTirM0ghTg+Zgs6W6CpwmV6
-	 wBNczn3uyQ6J2CSZHf1FVJcWm1g/6a0f599TZfUkWxLI5WEtoN5ariadx/TUZ+Y2re
-	 8gNNsXWrLSSm6gCiCoABC3N/X9PrZAqM3FHeu76Y=
+	b=WB+kkuBC8CY0PQbsxi+a96JXCIo8yWNuOZP2m0u1+WfbgkF5vgq7HmLAtFYM0YIm3
+	 1TnP3OCEy474Y/ZuUKwWc5uBnP6/Fr2Gl1eBVJBS8nqskw7Xo6CsZVszeF/MjzASqS
+	 G4UTzOnGLOeHwxsdlpnXpFPw4CoRPSqofXio/ZEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 62/96] smp: Add missing destroy_work_on_stack() call in smp_call_on_cpu()
+Subject: [PATCH 5.4 049/121] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Date: Tue, 10 Sep 2024 11:32:04 +0200
-Message-ID: <20240910092544.268782907@linuxfoundation.org>
+Message-ID: <20240910092548.090220212@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit 77aeb1b685f9db73d276bad4bb30d48505a6fd23 ]
+[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
 
-For CONFIG_DEBUG_OBJECTS_WORK=y kernels sscs.work defined by
-INIT_WORK_ONSTACK() is initialized by debug_object_init_on_stack() for
-the debug check in __init_work() to work correctly.
+After being asked about support for WPA3 for BCM43224 chipset it
+was found that all it takes is setting the MFP_CAPABLE flag and
+mac80211 will take care of all that is needed [1].
 
-But this lacks the counterpart to remove the tracked object from debug
-objects again, which will cause a debug object warning once the stack is
-freed.
-
-Add the missing destroy_work_on_stack() invocation to cure that.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240704065213.13559-1-qiang.zhang1211@gmail.com
+Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/smp.c | 1 +
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 9fa2fe6c0c05..c5f333258ecf 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -791,6 +791,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index 288d4d4d4454..eb735b054790 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1091,6 +1091,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
  
- 	queue_work_on(cpu, system_wq, &sscs.work);
- 	wait_for_completion(&sscs.done);
-+	destroy_work_on_stack(&sscs.work);
- 
- 	return sscs.ret;
- }
+ 	hw->extra_tx_headroom = brcms_c_get_header_len();
+ 	hw->queues = N_TX_QUEUES;
 -- 
 2.43.0
 
