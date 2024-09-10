@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-74364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B647B972EEE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:48:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40121972EFB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7385D287B29
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:48:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD29B271C8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A16618EFE1;
-	Tue, 10 Sep 2024 09:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70C818DF88;
+	Tue, 10 Sep 2024 09:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcasK0wf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mq4blo3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16608188CB3;
-	Tue, 10 Sep 2024 09:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9458B18661A;
+	Tue, 10 Sep 2024 09:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961591; cv=none; b=F6SsPc+m9ObwUNlIdcX9iZlC9vl1nCAzhu2b1JzwOGyx2QgpqLwYTzj/6d/ctsOolGevnmPxD6rkNsaCXeF1aPfPeBsK62bf88NAxibkSBtjleqPl6oFN2RxyZIFQ+5ERwB6jqyWJ7oezfl69sBVI1Q9a4Snjva3zODEzu2J8NE=
+	t=1725961623; cv=none; b=Acgmof9Gm+nUNZDZ4zy44+llyIUUdUIVtYfMlrMzK5NSi2vXABBh67qpBjMyQpnPKtoNx4XaXqLAzFAZL1GXPWqt9Crot3yLFBzorBVkuhDVlrQtJv+26XBGpyvKYGN06joyyGUsdLFKwKhe3NWCDy8F7qEV/KTou9w+kOSGZlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961591; c=relaxed/simple;
-	bh=tpU0BoNQSxMcLWrvmw+rgxf8DHAFnF2wJex/z0XKdOM=;
+	s=arc-20240116; t=1725961623; c=relaxed/simple;
+	bh=G/26shR9822E8CyDa8piucc31cL4F/s9wi5OpswmsGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bp+2CJd5RCrTCjH3n0UoZ2yxFJrFproW5A2PqC3+42DokGkCypaQ3mohKWSt432g06vZ5aLXmsNveQ6X/sQ2wElA8xzsv1r4uzgjZac2z7o24ZNkQTR2UfAZrm12XL6o/l7y0uSVaU+zocfOuBykbf+EZdCDVj6shb/bVboanec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcasK0wf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9387AC4CEC3;
-	Tue, 10 Sep 2024 09:46:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KKEBrqvMBSiopP2kxO7PZL2h+9flzXRWLISzT4egvG7N9CRKOFkbW3Rs3tj2/oUXFUlj/UCe5xXtraSU1mMKGAyeqODY+8ywC8FUeaObganoVll6mGF8J56xJYgGAmCrr8AxWoAlONX1XMWX9sgo27Nkighv9DWvxXVdeicSvTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mq4blo3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE50C4CEC3;
+	Tue, 10 Sep 2024 09:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961591;
-	bh=tpU0BoNQSxMcLWrvmw+rgxf8DHAFnF2wJex/z0XKdOM=;
+	s=korg; t=1725961623;
+	bh=G/26shR9822E8CyDa8piucc31cL4F/s9wi5OpswmsGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcasK0wfmdrAEPS7cgOUrVCLZBCuViZDfrxRmxq02GU0y2J/WEzW3EFuAmwutiw2G
-	 xM9myqEaY39HEwYEM/mrUkazFqbYsrVhwkBSR7BpcTOVxUJWAZZ42qp6AneLU9j5Gk
-	 //apnE/0kORbNW9EQ/G8r8SCmGP+a6BbZbhGfZO4=
+	b=Mq4blo3LfLvJPjDQt4AS+l7xNpuktZ998jJvRgrY2nXw6mxKEwPQ3i5of1gxcFNq8
+	 K4rruMX54Krc28C6DZM6rwMw90Cqe/c56sKCPHOIqzoaARdZKzxvhu+n/V+SeIGxvV
+	 vOWb6Oa3tGbkTsiPsvVCYgVr9SzM0W8/D+ZvGshE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.10 104/375] irqchip/renesas-rzg2l: Reorder function calls in rzg2l_irqc_irq_disable()
-Date: Tue, 10 Sep 2024 11:28:21 +0200
-Message-ID: <20240910092625.882779350@linuxfoundation.org>
+	Andrew Lunn <andrew@lunn.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 105/375] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
+Date: Tue, 10 Sep 2024 11:28:22 +0200
+Message-ID: <20240910092625.919540612@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -62,44 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 492eee82574b163fbb3f099c74ce3b4322d0af28 ]
+[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
 
-The order of function calls in the disable operation should be the reverse
-of that in the enable operation. Thus, reorder the function calls to first
-disable the parent IRQ chip before disabling the TINT IRQ.
+IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
+generic_handle_domain_irq() is never called for these IRQs.
 
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Disallow mapping these IRQs.
+
+[ Marek: changed commit message ]
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com> # on RZ/G3S
-Link: https://lore.kernel.org/r/20240606194813.676823-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-armada-370-xp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index f6484bf15e0b..5a4521cf3ec6 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -162,8 +162,8 @@ static void rzg2l_tint_irq_endisable(struct irq_data *d, bool enable)
- 
- static void rzg2l_irqc_irq_disable(struct irq_data *d)
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index 4b021a67bdfe..f488c35d9130 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -566,6 +566,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
+ static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
+ 				      unsigned int virq, irq_hw_number_t hw)
  {
--	rzg2l_tint_irq_endisable(d, false);
- 	irq_chip_disable_parent(d);
-+	rzg2l_tint_irq_endisable(d, false);
- }
- 
- static void rzg2l_irqc_irq_enable(struct irq_data *d)
++	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
++	if (hw <= 1)
++		return -EINVAL;
++
+ 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
+ 	if (!is_percpu_irq(hw))
+ 		writel(hw, per_cpu_int_base +
 -- 
 2.43.0
 
