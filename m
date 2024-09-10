@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-75442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BACD973491
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3059097335F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4BC1C24FDB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68FDB2C73E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA27B18E76F;
-	Tue, 10 Sep 2024 10:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1E518C357;
+	Tue, 10 Sep 2024 10:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhxeaUje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySSGpziO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D031DA4C;
-	Tue, 10 Sep 2024 10:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5CF199E9D;
+	Tue, 10 Sep 2024 10:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964744; cv=none; b=qnSX9b4PiiBvfN9sAF2azO6weTRcNhhmpz9GSJKroEr5migoUMctwSJJ4ht+fKHznfVD3r6k0gyz1nCeoLNNRMER5GJ6f4JQmYx3xt1ixyVchae6CZ/MNLQNHFmYXctn3z6mgRckbwqYIE343pYmoqFg6HI+vozB/24EnOcgSIo=
+	t=1725963611; cv=none; b=X42q4J+3X4hKjiTpIZEyYdnDzyEJN5yufUVCXrKD6D/Fs1vsuwexrQH4gS/F3eYxtuwjlhL2gLRrnN6MaSIKHGER5V/PP//dBfs8a1uKeS+wEoHMd4E6282iEiARCNWiWaW1P452NvRoc/qPJQKGEpTNqU2olS6DdiRx/OjiMsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964744; c=relaxed/simple;
-	bh=tOnGU4WRCmAJNWKzTht7Ic780WY0geifhKwQqEC+8CM=;
+	s=arc-20240116; t=1725963611; c=relaxed/simple;
+	bh=GmnpjMZG0sEZBtUa2WTY5Mc7iGfyq6vjdzqWJEQVRuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YB7iwBTaBEDaxnE/GTCJ4DTaU1HHpaABJ9a9mmA12MJK8kf9h+/hg2rRZ5AlMyJjUaJt+CsJymc3hE0hJ9HUgA4w7u9hriS2dAoQtvMlSpwEeOwpkCiYpY/49KSEnXxuW5jqkSP10BPItR3AhFyTrmdvcEVmwZ4XsfHIXFnNeXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhxeaUje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7AAC4CEC3;
-	Tue, 10 Sep 2024 10:39:03 +0000 (UTC)
+	 MIME-Version; b=ib9GkEj5+L61TYsdi1t/7OE37vEeDMQ5VwPrmdDxLa02ZtWuUmJrotgy7CY+zUD5wdatsmwIu5hzBncNk4vKnO4PB8MO68serBXbGG1h7GhqfuAv8EU9PXsjHvj/6SBcGdbLWhY87f3sF9se0k7NmJd82OGavdANJ7tw91qoZXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySSGpziO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F82C4CEC3;
+	Tue, 10 Sep 2024 10:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964744;
-	bh=tOnGU4WRCmAJNWKzTht7Ic780WY0geifhKwQqEC+8CM=;
+	s=korg; t=1725963611;
+	bh=GmnpjMZG0sEZBtUa2WTY5Mc7iGfyq6vjdzqWJEQVRuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhxeaUjeLPyPRPHKDVzE0qRDK9ugSvwt8FC2KGA87LmEVvpGQ7sQER+T/8+fKmMEf
-	 yLLKu5hinrM8n+uXkJWcKlFvC7IC3KmU9aNaZp6/pCZLnPHcHR0p0HQNmQ+7xHk2FI
-	 Gf2Q5C8EGzzr9GveeuH3PIz51kp5vvBOxXf0Wle0=
+	b=ySSGpziOPxuFR73/OzeP+p2Q/txmihJcUH1xT1gXJnGge76fWnx4EWzYqhfhGlNZ6
+	 IpLNUmcyjgmcYuq1JQ4r/c8ZBhXliRuhq3hIpO1KnxGN45Hypv6lWFO29LvAaVCm/6
+	 v0ctSwHTVdKE414Kb48s8O8IuaCMkQF0mIrbMFng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/186] drm/amd/display: Add array index check for hdcp ddc access
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 090/214] mptcp: pm: re-using ID of unused flushed subflows
 Date: Tue, 10 Sep 2024 11:31:52 +0200
-Message-ID: <20240910092555.338754132@linuxfoundation.org>
+Message-ID: <20240910092602.438938052@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
+commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
 
-[Why]
-Coverity reports OVERRUN warning. Do not check if array
-index valid.
+If no subflows are attached to the 'subflow' endpoints that are being
+flushed, the corresponding addr IDs will not be marked as available
+again.
 
-[How]
-Check msg_id valid and valid array index.
+Mark all ID as being available when flushing all the 'subflow'
+endpoints, and reset local_addr_used counter to cover these cases.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
+flushing operations, not to remove a specific set of addresses and
+subflows.
+
+Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-5-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ No conflicts, but the line modifying msk->pm.id_avail_bitmap has been
+  removed, as it is not in this version, introduced later in commit
+  86e39e04482b ("mptcp: keep track of local endpoint still available for
+  each msk") and depending on other ones. The best we can do in this
+  version is to reset local_addr_used counter, better than nothing. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ net/mptcp/pm_netlink.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index 8e9caae7c955..1b2df97226a3 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
- 
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
- 
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1498,8 +1498,14 @@ static void mptcp_pm_remove_addrs_and_su
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 +
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
-@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
+ 	if (slist.nr)
+ 		mptcp_pm_remove_subflow(msk, &slist);
 +
- 		success = hdcp->config.ddc.funcs.read_i2c(
- 				hdcp->config.ddc.handle,
- 				HDCP_I2C_ADDR,
-@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
++	/* Reset counters: maybe some subflows have been removed before */
++	spin_lock_bh(&msk->pm.lock);
++	msk->pm.local_addr_used = 0;
++	spin_unlock_bh(&msk->pm.lock);
+ }
  
--	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
-+		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
- 		return MOD_HDCP_STATUS_DDC_FAILURE;
--	}
- 
- 	if (is_dp_hdcp(hdcp)) {
-+		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
-+			sizeof(hdcp_dpcd_addrs[0]);
-+		if (msg_id >= num_dpcd_addrs)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
- 			success = hdcp->config.ddc.funcs.write_dpcd(
-@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 			data_offset += cur_size;
- 		}
- 	} else {
-+		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
-+			sizeof(hdcp_i2c_offsets[0]);
-+		if (msg_id >= num_i2c_offsets)
-+			return MOD_HDCP_STATUS_DDC_FAILURE;
-+
- 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
- 		memmove(&hdcp->buf[1], buf, buf_len);
- 		success = hdcp->config.ddc.funcs.write_i2c(
--- 
-2.43.0
-
+ static void mptcp_nl_remove_addrs_list(struct net *net,
 
 
 
