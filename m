@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B640D97341F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E106A97342B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9CFC1C24E55
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0657B2BBF4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39C018B474;
-	Tue, 10 Sep 2024 10:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A92191F9B;
+	Tue, 10 Sep 2024 10:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFB+MyO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MAJ1/Ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1488188CB6;
-	Tue, 10 Sep 2024 10:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A11190696;
+	Tue, 10 Sep 2024 10:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964481; cv=none; b=YOaebhOafosFRN3CSKXEAUSMW8pzDyIFEaLxaTSTpdgk+ibXF9Bm+ClJE0/UqEOf2mmaScjg17xmLQSG3tx638D3a9zdArV4oiHmqZS6B7AF0qOCiWXRK89JADargGP2d94M4321y5qVitnT2UvIBl4Vm4gy7igoXntbLcupcuM=
+	t=1725963746; cv=none; b=MYImLb/29Prz1qi15pyTBn+v8BPj5LeqXyl0OjVEFAbeVwcyV0cCa1bk0pT20m9Fn0/Ac85myRkjlIvPMusL02Y/L2TBixJ6flIb0ozbDKp7xBPx93d2rzPd7FDN5wkKLFxsqXvSGV2VrAY01tSybjlpmiQbnsN5PVQHtsb/PuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964481; c=relaxed/simple;
-	bh=tdlOWxweStGxw5byYiBz+OwO5h31ODF9CN8aSEcEa6k=;
+	s=arc-20240116; t=1725963746; c=relaxed/simple;
+	bh=fW7uasRWsIE3UMyES8pmyio0/nIg/IC6h9AWbc3ruwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uB2tMzL017ZKwqF//HH5h9kQlbyL/Cv4Wq2iC51Vy2Rh/XS3wk2DLHudxYYty1Vw3Co3FEYlt+8zj+fFOaIpsdzHOjd4V9Cvf03MIG20LP3a5i6hp06l+lHF9nlGO/esFvxWiG5bYcMpXJIXPt8laypCGTxQwtLlAFs4JPAXSwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFB+MyO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26139C4CEC3;
-	Tue, 10 Sep 2024 10:34:40 +0000 (UTC)
+	 MIME-Version; b=fHFPUd4jNT6oB7EjZRWLKHmAY8SCamHzZqYVkbxLZTM7e5iylAHN+Cczfe6u5XRKCgyR1o8IFV+Sbznpve6/YXtLzS1f8wdauxXOVcjusxmJPm3nJDtyCQYiFGQwqTrpzf5w1MhbY53n4tsSlhBl1jYAItWGuH7TZVNzQp0vpUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MAJ1/Ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A4FC4CEC3;
+	Tue, 10 Sep 2024 10:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964481;
-	bh=tdlOWxweStGxw5byYiBz+OwO5h31ODF9CN8aSEcEa6k=;
+	s=korg; t=1725963746;
+	bh=fW7uasRWsIE3UMyES8pmyio0/nIg/IC6h9AWbc3ruwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFB+MyO6HDkku/CL6MvKvF3CNo2xTBl2m8i7+JTT/0kFTmUTsjzZtwfDaoWkGvGYC
-	 ZhyicwAT94ECt7eIJtv+3cC3QYtLVtcvSCxuY5tVp0in/BZ/XLwKRSbRsFzDJ97Eue
-	 g782lMn9wGhIUh3xPWFpUfZIL/Gp53VdA2UhbXVo=
+	b=2MAJ1/Aek5WS0H42XfJfae25/HchuzPi25y9ILp/3TLowmFqGANDBF5MkrNGSbdjN
+	 GVC7fKuo4etmkC49zdC1q2zc9AblSn4/aMMVeKGRvUHLBlzQeLJuW8Pph7syXGVvZG
+	 2E1sToK7hDWrzi9f+KbJMMYU0Mqh8t1zp8VIzuu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.6 197/269] mm: Introduce pudp/p4dp/pgdp_get() functions
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 162/214] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
 Date: Tue, 10 Sep 2024 11:33:04 +0200
-Message-ID: <20240910092615.125068684@linuxfoundation.org>
+Message-ID: <20240910092605.316770539@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit eba2591d99d1f14a04c8a8a845ab0795b93f5646 upstream.
+[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
 
-Instead of directly dereferencing page tables entries, which can cause
-issues (see commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when
-accessing page tables"), let's introduce new functions to get the
-pud/p4d/pgd entries (the pte and pmd versions already exist).
+The .data.rel.ro and .got section were added between the rodata and
+ro_after_init data section, which adds an RW mapping in between all RO
+mapping of the kernel image:
 
-Note that arm pgd_t is actually an array so pgdp_get() is defined as a
-macro to avoid a build error.
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
+0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
+0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
+0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
 
-Those new functions will be used in subsequent commits by the riscv
-architecture.
+Move the ro_after_init data section again right behind the rodata
+section to prevent interleaving RO and RW mappings:
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213203001.179237-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
+0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/pgtable.h |    2 ++
- include/linux/pgtable.h        |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -151,6 +151,8 @@ extern pgprot_t phys_mem_access_prot(str
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 853b80770c6d..bf509f6194d0 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -72,6 +72,15 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	__end_ro_after_init = .;
  
- extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
++	.data.rel.ro : {
++		*(.data.rel.ro .data.rel.ro.*)
++	}
++	.got : {
++		__got_start = .;
++		*(.got)
++		__got_end = .;
++	}
++
+ 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
+ 	BOOT_DATA_PRESERVED
  
-+#define pgdp_get(pgpd)		READ_ONCE(*pgdp)
-+
- #define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
- #define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
- 
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -292,6 +292,27 @@ static inline pmd_t pmdp_get(pmd_t *pmdp
- }
- #endif
- 
-+#ifndef pudp_get
-+static inline pud_t pudp_get(pud_t *pudp)
-+{
-+	return READ_ONCE(*pudp);
-+}
-+#endif
-+
-+#ifndef p4dp_get
-+static inline p4d_t p4dp_get(p4d_t *p4dp)
-+{
-+	return READ_ONCE(*p4dp);
-+}
-+#endif
-+
-+#ifndef pgdp_get
-+static inline pgd_t pgdp_get(pgd_t *pgdp)
-+{
-+	return READ_ONCE(*pgdp);
-+}
-+#endif
-+
- #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
- static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
- 					    unsigned long address,
+-- 
+2.43.0
+
 
 
 
