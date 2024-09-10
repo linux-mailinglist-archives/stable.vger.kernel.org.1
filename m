@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB83973078
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF49972DD2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F722870EE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4160D1C248A4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB2318FC65;
-	Tue, 10 Sep 2024 10:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFF0189BBA;
+	Tue, 10 Sep 2024 09:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrLAEizY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ej2oApHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3ED17BEAE;
-	Tue, 10 Sep 2024 10:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE0188CDC;
+	Tue, 10 Sep 2024 09:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962425; cv=none; b=o9H89SLielXhYwJByT+9CFZqqfciwRVT6h7pHOABmpBXgxL1swGEeXXgS1CymiST6geQLnuJp4dc/4Ziq2O4GU5ExRiajoxYqNamBU43nO5gmfujIdVVUH8jOIgIHSUAP0Wym1oc0Y9WeELiOzFQkdygXpcxjRWV2iUXDccL2zw=
+	t=1725960992; cv=none; b=fB5e/LzmG3oFHUyh9AzV9GGfRFqcx1E7LpgKVV/Z93b3pv93iY2igTPgylxR1fJplDo7dyHUNLPkziEM+A01nuZfALE9XX846idan++4NRCAA73Ndw5vyfoaRFUiBceaFH2z5FPDTfBmJP2yBUbYlcYLg29qess8OS9pGTlr7DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962425; c=relaxed/simple;
-	bh=FQkBVqotzXFodUmxtmpK9GcowS0LTATdBVmhgM0SVlc=;
+	s=arc-20240116; t=1725960992; c=relaxed/simple;
+	bh=4FbHFZt06MYGnYBe21kyRV6Zl3gr7la7zTwk+mPXcok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iA5V1A9hC6o4Vxz6uHixD4H77RZvo8BTU+KQmtZSNtq0YoJuG3sZS/D2if0vT31Q3nEqHP/CZ+p9+dIOf9rqyM7/VHH3O6cIOkGfuqlzow23aXQrDz1HdnCia1b4MfvqulkG2xT361Nnt8bljljrbgyq/rYVIzcb7y7/Dfx6D1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrLAEizY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A417CC4CEC3;
-	Tue, 10 Sep 2024 10:00:24 +0000 (UTC)
+	 MIME-Version; b=fxYoiMAPBeAdjIOsYLa2XuFTGbrsJTHruV7QIihjewIHvPNQPjRi+kos0ikKxyh+ogEaplDEMZH5qBEWOqJ04V8tLNVVbjGIr/fTTMOHwc1P3cfTj96otJwWjEb9Nr1HNA3r61iK90oqPZvidF9Yf6lDDs8RKVaO93/ZMdvC0xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ej2oApHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C4CEC3;
+	Tue, 10 Sep 2024 09:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962425;
-	bh=FQkBVqotzXFodUmxtmpK9GcowS0LTATdBVmhgM0SVlc=;
+	s=korg; t=1725960992;
+	bh=4FbHFZt06MYGnYBe21kyRV6Zl3gr7la7zTwk+mPXcok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrLAEizYBiCvmSC70pzq3Ky9meZx74bdatfMrzkV2ZwBFzFAekyRAluyRzUCceeM+
-	 +D+gnXKbqShPV/E9d6yaJ2zREl7FSueWhgVE78DcGuugtL5Xb3T00HDp7Gblq0kMk+
-	 rnXNsRe4iqRHSsS7jfVEMqxjoZb7zm4hGaKlMqrk=
+	b=ej2oApHw+UGbaCcbJacQSHOTei0uqLutUhpNV5h3/q8ieJldmYutQlmilJ6WA73xE
+	 L2ZYruxr9KzpTevX+BRBxKGasTdlB2mScUBd5cIWHInWIPXjr2yMHubte4qQ5btxPA
+	 6Ur50ObvEVKSIstSt5R0BxzpYPLE/yCUaMDCvJCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 004/121] drm/amdgpu: Fix uninitialized variable warning in amdgpu_afmt_acr
+	syzbot <syzbot+d59c4387bfb6eced94e2@syzkaller.appspotmail.com>,
+	Andrey Konovalov <andreyknvl@google.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 4.19 17/96] ALSA: usb-audio: Fix gpf in snd_usb_pipe_sanity_check
 Date: Tue, 10 Sep 2024 11:31:19 +0200
-Message-ID: <20240910092545.950523471@linuxfoundation.org>
+Message-ID: <20240910092542.171362807@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Hillf Danton <hdanton@sina.com>
 
-[ Upstream commit c0d6bd3cd209419cc46ac49562bef1db65d90e70 ]
+[ Upstream commit 5d78e1c2b7f4be00bbe62141603a631dc7812f35 ]
 
-Assign value to clock to fix the warning below:
-"Using uninitialized value res. Field res.clock is uninitialized"
+syzbot found the following crash on:
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  general protection fault: 0000 [#1] SMP KASAN
+  RIP: 0010:snd_usb_pipe_sanity_check+0x80/0x130 sound/usb/helper.c:75
+  Call Trace:
+    snd_usb_motu_microbookii_communicate.constprop.0+0xa0/0x2fb  sound/usb/quirks.c:1007
+    snd_usb_motu_microbookii_boot_quirk sound/usb/quirks.c:1051 [inline]
+    snd_usb_apply_boot_quirk.cold+0x163/0x370 sound/usb/quirks.c:1280
+    usb_audio_probe+0x2ec/0x2010 sound/usb/card.c:576
+    usb_probe_interface+0x305/0x7a0 drivers/usb/core/driver.c:361
+    really_probe+0x281/0x650 drivers/base/dd.c:548
+    ....
+
+It was introduced in commit 801ebf1043ae for checking pipe and endpoint
+types. It is fixed by adding a check of the ep pointer in question.
+
+BugLink: https://syzkaller.appspot.com/bug?extid=d59c4387bfb6eced94e2
+Reported-by: syzbot <syzbot+d59c4387bfb6eced94e2@syzkaller.appspotmail.com>
+Fixes: 801ebf1043ae ("ALSA: usb-audio: Sanity checks for each pipe and EP types")
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Signed-off-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-index a4d65973bf7c..80771b1480ff 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-@@ -100,6 +100,7 @@ struct amdgpu_afmt_acr amdgpu_afmt_acr(uint32_t clock)
- 	amdgpu_afmt_calc_cts(clock, &res.cts_32khz, &res.n_32khz, 32000);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_44_1khz, &res.n_44_1khz, 44100);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_48khz, &res.n_48khz, 48000);
-+	res.clock = clock;
+--- a/sound/usb/helper.c
++++ b/sound/usb/helper.c
+@@ -85,7 +85,7 @@ int snd_usb_pipe_sanity_check(struct usb
+ 	struct usb_host_endpoint *ep;
  
- 	return res;
+ 	ep = usb_pipe_endpoint(dev, pipe);
+-	if (usb_pipetype(pipe) != pipetypes[usb_endpoint_type(&ep->desc)])
++	if (!ep || usb_pipetype(pipe) != pipetypes[usb_endpoint_type(&ep->desc)])
+ 		return -EINVAL;
+ 	return 0;
  }
--- 
-2.43.0
-
 
 
 
