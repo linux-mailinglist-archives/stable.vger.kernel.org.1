@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4206197318A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD059733C8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D09B2727D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7E0B23EB8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B9C194A54;
-	Tue, 10 Sep 2024 10:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C29194C79;
+	Tue, 10 Sep 2024 10:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H79dcDDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3oE/bD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E78D1946A1;
-	Tue, 10 Sep 2024 10:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B0F172BAE;
+	Tue, 10 Sep 2024 10:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962893; cv=none; b=BZAjRcj5Y05icMlnwTX5qmdPTG0/HgFPCKr89l1fsLGMK7bkELdLCpWfizjQxIyfZQmY/GQP03ZPEAE/0duwd8We8x9sLbDHBBj8QSKHg5wJNYseE9DW1L0L+Syx+XFmP4VCWb7JseEMaYYS4nLbk+8gScAt2rfFtf32r3vciM4=
+	t=1725964200; cv=none; b=ngbErdxAMHKHre3ONRFt7hAr2indS2qmEmZDG/xHFpKEFF0IYzvXD6QQUPyHHN+YMEo3ojdXpJ5qOY6h/rP2xnktYHLeNo7s7a3ZgYO4MBPEuBkp8mLh0C+1wmo39y3QtATAt4S4XjwaFnXbV5/enXQat08b//IZhx25XXCmdfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962893; c=relaxed/simple;
-	bh=2PT95Zio2CQ/2ynSY83n1hkPQMAeY+gmo82HxPKREOY=;
+	s=arc-20240116; t=1725964200; c=relaxed/simple;
+	bh=VnIPpREegfzX0MczdY0PpgtWcq8qn8RldPe3dSX7O/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xy/r8RtU72606r8jxLI9+nWMmc4irIT36wZRmPvHDWydPFZXdUsmM0MzmlMLPegk/CsO/tqlXGU4173zgJyLSxEWJGSYFij1d+M6OFDxjiHeJF4CO5jhHMlom8o5Uw40Um06KX9kJbyYwHCLdhDmkEmhrw4XgfJ0rUt0PH9JpSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H79dcDDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8778FC4CECD;
-	Tue, 10 Sep 2024 10:08:12 +0000 (UTC)
+	 MIME-Version; b=CNqCRFkvOhe60MimUMoxuBeYK+ffRwM1f01PggZklsUw89kvSs4RRvsyuPgMgxkKd/P/NEumvUu5FgsCBtUCVaOy9RgfwlQoBcret8seFYgjdAA4L1MNq6KMSw9NE+3COS56imkCvAOwUxO7Ai+ATfMtinvvuLKR1NTl5ImybXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3oE/bD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27655C4CEC3;
+	Tue, 10 Sep 2024 10:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962892;
-	bh=2PT95Zio2CQ/2ynSY83n1hkPQMAeY+gmo82HxPKREOY=;
+	s=korg; t=1725964199;
+	bh=VnIPpREegfzX0MczdY0PpgtWcq8qn8RldPe3dSX7O/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H79dcDDn0sxNY4xkPAnAtFfKeTQg6rcPUvjKnDuEFPeaaMDG+yzAz6i5F5hU1WBNa
-	 dPDahOwPsc0OhvjGHDS8jzxdsQXcbDus4HwU4eW+6E0zqvz/P9WCRniwj8fN6BDAlH
-	 nWcikuxjOYsUI4XlFYT+HOozoL1hTaylB0pyYQLY=
+	b=X3oE/bD5Fr0jUAQY+6Nvl9lxg/wp+yACawx8VdCpT92hrrWk4MueSiJNdpbzc7N4G
+	 1Jr88IOm3153X7Ei0jCo43q3jV0FctrwwUHfWf29PT5AH9E5zW4IBs349GKEPK/47E
+	 DLkjR1mdROWCbqgHAQ7ag8CELqHi8HYQISplILvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jules Irenge <jbi.octave@gmail.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/192] pcmcia: Use resource_size function on resource object
+	Daiwei Li <daiweili@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 102/269] igb: Fix not clearing TimeSync interrupts for 82580
 Date: Tue, 10 Sep 2024 11:31:29 +0200
-Message-ID: <20240910092600.668690794@linuxfoundation.org>
+Message-ID: <20240910092611.848369062@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jules Irenge <jbi.octave@gmail.com>
+From: Daiwei Li <daiweili@google.com>
 
-[ Upstream commit 24a025497e7e883bd2adef5d0ece1e9b9268009f ]
+[ Upstream commit ba8cf80724dbc09825b52498e4efacb563935408 ]
 
-Cocinnele reports a warning
+82580 NICs have a hardware bug that makes it
+necessary to write into the TSICR (TimeSync Interrupt Cause) register
+to clear it:
+https://lore.kernel.org/all/CDCB8BE0.1EC2C%25matthew.vick@intel.com/
 
-WARNING: Suspicious code. resource_size is maybe missing with root
+Add a conditional so only for 82580 we write into the TSICR register,
+so we don't risk losing events for other models.
 
-The root cause is the function resource_size is not used when needed
+Without this change, when running ptp4l with an Intel 82580 card,
+I get the following output:
 
-Use resource_size() on variable "root" of type resource
+> timed out while polling for tx timestamp increasing tx_timestamp_timeout or
+> increasing kworker priority may correct this issue, but a driver bug likely
+> causes it
 
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+This goes away with this change.
+
+This (partially) reverts commit ee14cc9ea19b ("igb: Fix missing time sync events").
+
+Fixes: ee14cc9ea19b ("igb: Fix missing time sync events")
+Closes: https://lore.kernel.org/intel-wired-lan/CAN0jFd1kO0MMtOh8N2Ztxn6f7vvDKp2h507sMryobkBKe=xk=w@mail.gmail.com/
+Tested-by: Daiwei Li <daiweili@google.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Daiwei Li <daiweili@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/yenta_socket.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
-index 3966a6ceb1ac..a1c16352c01c 100644
---- a/drivers/pcmcia/yenta_socket.c
-+++ b/drivers/pcmcia/yenta_socket.c
-@@ -638,11 +638,11 @@ static int yenta_search_one_res(struct resource *root, struct resource *res,
- 		start = PCIBIOS_MIN_CARDBUS_IO;
- 		end = ~0U;
- 	} else {
--		unsigned long avail = root->end - root->start;
-+		unsigned long avail = resource_size(root);
- 		int i;
- 		size = BRIDGE_MEM_MAX;
--		if (size > avail/8) {
--			size = (avail+1)/8;
-+		if (size > (avail - 1) / 8) {
-+			size = avail / 8;
- 			/* round size down to next power of 2 */
- 			i = 0;
- 			while ((size /= 2) != 0)
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 8c8894ef3388..fa268d7bd1bc 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -6985,10 +6985,20 @@ static void igb_extts(struct igb_adapter *adapter, int tsintr_tt)
+ 
+ static void igb_tsync_interrupt(struct igb_adapter *adapter)
+ {
++	const u32 mask = (TSINTR_SYS_WRAP | E1000_TSICR_TXTS |
++			  TSINTR_TT0 | TSINTR_TT1 |
++			  TSINTR_AUTT0 | TSINTR_AUTT1);
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 tsicr = rd32(E1000_TSICR);
+ 	struct ptp_clock_event event;
+ 
++	if (hw->mac.type == e1000_82580) {
++		/* 82580 has a hardware bug that requires an explicit
++		 * write to clear the TimeSync interrupt cause.
++		 */
++		wr32(E1000_TSICR, tsicr & mask);
++	}
++
+ 	if (tsicr & TSINTR_SYS_WRAP) {
+ 		event.type = PTP_CLOCK_PPS;
+ 		if (adapter->ptp_caps.pps)
 -- 
 2.43.0
 
