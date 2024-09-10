@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-74543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C2B972FDC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B6A973070
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13B261F21E85
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E466028712F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBD318B491;
-	Tue, 10 Sep 2024 09:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3494518EFD6;
+	Tue, 10 Sep 2024 10:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3ukiFlB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+aP0nzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA376171671;
-	Tue, 10 Sep 2024 09:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8B18CBE6;
+	Tue, 10 Sep 2024 10:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962113; cv=none; b=hREfGsAh0/dHpzwTfkh5Ps8agCo0KSt4ODaKAGWtXBgm+86EAlZKuwOnnt8nUc5RdS8s4uoYi1xE33g1lL91/tBfGI7sz2DheHFiy1jWwY2tPnI6XX9RQlHQ7JmQdhL2gkETj/ae2h3jW9/YQ8H2jakK6CfrvGAmvyQP9mIT9Oc=
+	t=1725962402; cv=none; b=FLREGWhcGGsMre55BGRRZOkAEyP1zUTT4BMJGuCn27eXj/bZdeAd5EeFiBVv6p7wHikQh5Cnvw2vRvMULydiO6AeCj+WB1d9E1QAF4nPWFE2Z3pjK7fWsoeajYcrWtIAOsyxCiRfhFzudKf777/dlF6sPlbsjeN3uG+u0BNPwNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962113; c=relaxed/simple;
-	bh=oet/RAHOIHlZ9BsfNZDcc4KEUC5saFAGh5OVHEV0qIQ=;
+	s=arc-20240116; t=1725962402; c=relaxed/simple;
+	bh=dEdJRCv+ZB4/qOqCWVLSoJhGl57xfzCr8wdymjMIA5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgeqzXfboid4JoMHLU58ovM/0xaIkjOS/W8HosWThuLvah6mFGT2JHeh3ypiqhWt4ODY/ec28GeT4h11jwb1jRXd6/N/X7/7FvRmwiMKjD/XG1p7tS6EeUoVzdIWYjCCMpb2XbxAdhmteTsIJEbx9eULneA4GpJ1hgHlf62r65c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3ukiFlB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54201C4CEC6;
-	Tue, 10 Sep 2024 09:55:13 +0000 (UTC)
+	 MIME-Version; b=lkgoC3f/WY4kdxfwYQbiC9eS4OHRbtrtGDJ2EHDZD76F0Qs79oRH9Hm9kKLoepSCaN42+pZKgswuI94tsCOI2AGt9AYMvp2DxrO0eCwQtwPXHxmUpf0SL6MREy+FPdQ4QD0RFc8120R7/Ju6H0AVCsZBdul09SmyveQ47xg3EPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+aP0nzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8AEC4CEC3;
+	Tue, 10 Sep 2024 10:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962113;
-	bh=oet/RAHOIHlZ9BsfNZDcc4KEUC5saFAGh5OVHEV0qIQ=;
+	s=korg; t=1725962401;
+	bh=dEdJRCv+ZB4/qOqCWVLSoJhGl57xfzCr8wdymjMIA5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3ukiFlBVqsMGsln/GZfboCx+50VNdA+wqLHid+OpUJc7zzR/IZ7RngvznzTegvx5
-	 5bRs7D6ocbgD83tuMb8+keyZqP1h16njUwVqbaBiI/Mnm9uLqQ/N2gb73c+cm3ZISC
-	 A+tk7gK6PJJwI1Mnysb2JJkBGuXLKmcYW/PLM8kc=
+	b=t+aP0nzq8p3TajKKvlg4kSy+zCbffj3m/0vmns0WqFpwui/um5SYmoCX9abRqn0+C
+	 CkCUIJGnvgebTbVffAqS3on2ytRRYe2s810Rg92iTIlCotDvNa4ZODZWU4IjqI0l8F
+	 8rK862lvBv6eDR6AX0xv2o3k6xTD69CG3o61BDtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.10 299/375] dt-bindings: nvmem: Use soc-nvmem node name instead of nvmem
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.4 021/121] block: initialize integrity buffer to zero before writing it to media
 Date: Tue, 10 Sep 2024 11:31:36 +0200
-Message-ID: <20240910092632.603005317@linuxfoundation.org>
+Message-ID: <20240910092546.730489476@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit a759d1f25182f51210c8831d71ce7ee81e0930f4 upstream.
+commit 899ee2c3829c5ac14bfc7d3c4a5846c0b709b78f upstream.
 
-Based on commit d8764d347bd7 ("dt-bindings: firmware: xilinx: Describe
-soc-nvmem subnode") soc-nvmem should be used instead of simple nvmem that's
-why also update example to have it described correctly everywhere.
+Metadata added by bio_integrity_prep is using plain kmalloc, which leads
+to random kernel memory being written media.  For PI metadata this is
+limited to the app tag that isn't used by kernel generated metadata,
+but for non-PI metadata the entire buffer leaks kernel memory.
 
-Fixes: c7f99cd8fb6b ("dt-bindings: nvmem: Convert xlnx,zynqmp-nvmem.txt to yaml")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240902142510.71096-4-srinivas.kandagatla@linaro.org
+Fix this by adding the __GFP_ZERO flag to allocations for writes.
+
+Fixes: 7ba1ba12eeef ("block: Block layer data integrity support")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Link: https://lore.kernel.org/r/20240613084839.1044015-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/nvmem/xlnx,zynqmp-nvmem.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/bio-integrity.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/nvmem/xlnx,zynqmp-nvmem.yaml b/Documentation/devicetree/bindings/nvmem/xlnx,zynqmp-nvmem.yaml
-index 917c40d5c382..1cbe44ab23b1 100644
---- a/Documentation/devicetree/bindings/nvmem/xlnx,zynqmp-nvmem.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/xlnx,zynqmp-nvmem.yaml
-@@ -28,7 +28,7 @@ unevaluatedProperties: false
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -212,6 +212,7 @@ bool bio_integrity_prep(struct bio *bio)
+ 	unsigned int bytes, offset, i;
+ 	unsigned int intervals;
+ 	blk_status_t status;
++	gfp_t gfp = GFP_NOIO;
  
- examples:
-   - |
--    nvmem {
-+    soc-nvmem {
-         compatible = "xlnx,zynqmp-nvmem-fw";
-         nvmem-layout {
-             compatible = "fixed-layout";
--- 
-2.46.0
-
+ 	if (!bi)
+ 		return true;
+@@ -234,12 +235,20 @@ bool bio_integrity_prep(struct bio *bio)
+ 		if (!bi->profile->generate_fn ||
+ 		    !(bi->flags & BLK_INTEGRITY_GENERATE))
+ 			return true;
++
++		/*
++		 * Zero the memory allocated to not leak uninitialized kernel
++		 * memory to disk.  For PI this only affects the app tag, but
++		 * for non-integrity metadata it affects the entire metadata
++		 * buffer.
++		 */
++		gfp |= __GFP_ZERO;
+ 	}
+ 	intervals = bio_integrity_intervals(bi, bio_sectors(bio));
+ 
+ 	/* Allocate kernel buffer for protection data */
+ 	len = intervals * bi->tuple_size;
+-	buf = kmalloc(len, GFP_NOIO | q->bounce_gfp);
++	buf = kmalloc(len, gfp | q->bounce_gfp);
+ 	status = BLK_STS_RESOURCE;
+ 	if (unlikely(buf == NULL)) {
+ 		printk(KERN_ERR "could not allocate integrity buffer\n");
 
 
 
