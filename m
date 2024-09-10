@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C73B972E45
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:41:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAFC9730E3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 460461F23C9F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:41:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508221C24B7D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996D218B487;
-	Tue, 10 Sep 2024 09:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171B518DF73;
+	Tue, 10 Sep 2024 10:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrdY8xDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2xBfmsq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581E817BEAE;
-	Tue, 10 Sep 2024 09:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89EB18787E;
+	Tue, 10 Sep 2024 10:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961249; cv=none; b=r6yvPEAZ11GtYeD0NBVpbI8GelO336e35wjKSs+mk6vx0nGR7uUN3yk0EmLJj5HR2CYV/x+GmWYD/bUn/g5Vb3w/8K7Af1l2QPxi6qxMK9ZwiJyx4xwQc4IVyOp9/I73qmAIi3fN5lsHIK1lJZ2SsbGD3w3JA5I88FWM87ytf68=
+	t=1725962585; cv=none; b=Fq5RwFcZD3xYOecydiFm2naleyUueod1G171vXg42ffoY2o2YYP1n/00VL7JWQlqyKIpZRlgXXq+tkF4QvD3AzQyA9UgeRPkj3IHdr4WnKyRd2PdKKC38DR86WenuhcmksBm+ZqYOu8EGAJJhYTb2EIV/9lNVDvmd0K0GtIrk2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961249; c=relaxed/simple;
-	bh=dkPHUEsMr/curxItgoO4PwGRKXwCDRhS2MjUH5sBfJ0=;
+	s=arc-20240116; t=1725962585; c=relaxed/simple;
+	bh=fwUhhzOpko19LD6G0IedDXbnZgqrgc69xDPtcSz0/gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmXd+v1QbUogbohZllJrQ4RSTb21CeCCeJCVvPm5+Rq1HKfXHpjLxyCil17nHGql2JNtDymblMSRI9GUt8/Ms1SVXe8gHM+1NJ970rojBgoawb6Q3NtAGSNXvT0UhflHb9NUokfElV058enrw9C8n4snDBBua8RDpGwy8kLWDeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrdY8xDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D71C4CEC3;
-	Tue, 10 Sep 2024 09:40:48 +0000 (UTC)
+	 MIME-Version; b=k+nfD/glDOW8cA1ckIbrNnl/P2jY3j4dEq7l9CfCOQ46U4GP2J6+YzrNXWtwFpOZMVCUtlmutCejxwc2tqroZQ0esOEJ5IqSd6yhZQfU4DuGuJfA3WTGf1yk3cxCrpnNfICilZmZL2/NvlSf4i9rQ/UXb8YTnNO86UmX7Pp3A88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2xBfmsq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E10BC4CEC3;
+	Tue, 10 Sep 2024 10:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961249;
-	bh=dkPHUEsMr/curxItgoO4PwGRKXwCDRhS2MjUH5sBfJ0=;
+	s=korg; t=1725962585;
+	bh=fwUhhzOpko19LD6G0IedDXbnZgqrgc69xDPtcSz0/gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrdY8xDQ7XA1E6mWkjn7Tia7gmr5tgqc+lIFF8fs64gnKrLBp22S/GxIHY0yWQPu4
-	 fm3X2txF+e+cUXoGhQtFokI2sSR7SaMbgIkXe5ICQDlHCWy0hW8BfnV0oeBsT63lk6
-	 E98xk2g8E3N2K3jDT5vLzneN/A5QY7WAEkh2i2VI=
+	b=Y2xBfmsqEp/yTdXwIUZkMndisMHyWsMbdJ8jdPgXGcyx0ahPGft405kGSXRsCuRYi
+	 IjTl9IoiL1B/gaFxC/1HAZKfygXvGXg71TwLl5JBc2EmqHDEr0r/0+uNGV2gpk8nld
+	 Iyovj9txGGYZUGTSjKcEpBMZB2vCTTQfWE3i6KOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 96/96] netns: restore ops before calling ops_exit_list
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/121] btrfs: replace BUG_ON with ASSERT in walk_down_proc()
 Date: Tue, 10 Sep 2024 11:32:38 +0200
-Message-ID: <20240910092545.754655127@linuxfoundation.org>
+Message-ID: <20240910092549.841793370@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit b272a0ad730103e84fb735fd0a8cc050cdf7f77c upstream.
+[ Upstream commit 1f9d44c0a12730a24f8bb75c5e1102207413cc9b ]
 
-ops has been iterated to first element when call pre_exit, and
-it needs to restore from save_ops, not save ops to save_ops
+We have a couple of areas where we check to make sure the tree block is
+locked before looking up or messing with references.  This is old code
+so it has this as BUG_ON().  Convert this to ASSERT() for developers.
 
-Fixes: d7d99872c144 ("netns: add pre_exit method to struct pernet_operations")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net_namespace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -357,7 +357,7 @@ out_undo:
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index a28b0eafb65a..202e6b6e2add 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4743,7 +4743,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+ 	if (lookup_info &&
+ 	    ((wc->stage == DROP_REFERENCE && wc->refs[level] != 1) ||
+ 	     (wc->stage == UPDATE_BACKREF && !(wc->flags[level] & flag)))) {
+-		BUG_ON(!path->locks[level]);
++		ASSERT(path->locks[level]);
+ 		ret = btrfs_lookup_extent_info(trans, fs_info,
+ 					       eb->start, level, 1,
+ 					       &wc->refs[level],
+@@ -4767,7 +4767,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
  
- 	synchronize_rcu();
- 
--	saved_ops = ops;
-+	ops = saved_ops;
- 	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
- 		ops_exit_list(ops, &net_exit_list);
- 
+ 	/* wc->stage == UPDATE_BACKREF */
+ 	if (!(wc->flags[level] & flag)) {
+-		BUG_ON(!path->locks[level]);
++		ASSERT(path->locks[level]);
+ 		ret = btrfs_inc_ref(trans, root, eb, 1);
+ 		BUG_ON(ret); /* -ENOMEM */
+ 		ret = btrfs_dec_ref(trans, root, eb, 0);
+-- 
+2.43.0
+
 
 
 
