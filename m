@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-74779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA85973165
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AF2973246
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E6289CD5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1D911F26DFD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF4418595E;
-	Tue, 10 Sep 2024 10:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3570119148D;
+	Tue, 10 Sep 2024 10:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+qjHR2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEWhI5YV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3798C18FDB9;
-	Tue, 10 Sep 2024 10:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E651D18B48A;
+	Tue, 10 Sep 2024 10:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962805; cv=none; b=kdvPpDmy34jB42YjBIjjEdTC1DQCz3zoKxKhnTPt7A5tMjs+RsfexVZOk5rYSp3JpEedag1RMSJvGAQOe+7xv9RSGt1t+oBX+G2tWOrHe2lUMWS1pLaupnaSpY5wo1FQ7NKrlG9ang+iZcYSzLHVY58gMUdePFqoEv1LIHSdf2g=
+	t=1725963333; cv=none; b=u8jUWpybRbCXXdKxGhDFfSd2H23NkIXBkEP9YKmOl7D6APDCuWThHJBAzNNWDS2hHGq+CDmoLrl/fKVp5E5waFXvmVtlU1bxNdghYlw9dJfhA6H0klIwnxLvftj8Bbwdb7ByxRfcbR4rY8dZlvyOv3Sv638iFovauDdn34NNPHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962805; c=relaxed/simple;
-	bh=wlYcoFSCPL0vk8R++32aCaap39EiHp1YM/LVa9Fpb0M=;
+	s=arc-20240116; t=1725963333; c=relaxed/simple;
+	bh=R6hvehsGSEgBeovZu230wMAYXL3nSnll+b7BVgELV0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qneRX1xfIfLrM5XZHMIDhnz7DeUVfauFIYxTAd/4La42mGFEbQVSSBu6gCBwc1+dpoL5dk3L/6n66A1kVQEFA+qC/lJpVkTvy5pfeZVw7ns2zDljP3tlamfhVc+16i6vLhSV0xILuAbc5LmeKOwFq+qir5PRaJoFkkrbCMkYh70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+qjHR2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BDBC4CEC6;
-	Tue, 10 Sep 2024 10:06:44 +0000 (UTC)
+	 MIME-Version; b=o9WOy0PkDxTJENycXGH7JoH9cH09MY+Evc6xbG4M7ndKvZ9qgwz2Ng9VARIvTC0sYIP+mjcPxJV+Rd0J6CXqvEeP2GdK+koUZHxJbhzwv8bV5qtr0A61WAKXrkY83vn6JBpEShWUmAf6T+YlfeOuOUfkhGHLF/qih30IMS+2RTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEWhI5YV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAB5C4CEC3;
+	Tue, 10 Sep 2024 10:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962805;
-	bh=wlYcoFSCPL0vk8R++32aCaap39EiHp1YM/LVa9Fpb0M=;
+	s=korg; t=1725963332;
+	bh=R6hvehsGSEgBeovZu230wMAYXL3nSnll+b7BVgELV0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+qjHR2FI1JO97RkVPXTyWJBLj8SMYU+sl1MuApTb5HcSRGrtSNQIMtMauKLE3TQv
-	 zY/m5oYrVFY70Jh7LKDdRl9JMp+TY0EWzoUa0lefx+H7kAozbBv9g4RQQYxGFo0lfA
-	 JO8f4NKIlxyRZfOUjAeEJOQNiQJwiC8v5YkEV5zo=
+	b=SEWhI5YVPJnV58Kv5p0X/hIxEx04m04S/DOT+18dD8+Mt9dK6S2ikhRoycMzSpmIM
+	 YdTven2CzIbCkrVCYC7zHZrNQzeB+wWaWpV1JVikEG/ukZT+LI63P9iAMy2Mo//wbr
+	 A8tbdhSgDXLPk9TDSsQD1EHyVixsvGrfG60H7V5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 018/192] Revert "Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE"
-Date: Tue, 10 Sep 2024 11:30:42 +0200
-Message-ID: <20240910092558.692826213@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 021/214] drm/amd/display: Check msg_id before processing transcation
+Date: Tue, 10 Sep 2024 11:30:43 +0200
+Message-ID: <20240910092559.645431987@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,223 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 532f8bcd1c2c4e8112f62e1922fd1703bc0ffce0 upstream.
+[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
 
-This reverts commit 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 which
-breaks compatibility with commands like:
+[WHY & HOW]
+HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
+array index, and it needs checking before used.
 
-bluetoothd[46328]: @ MGMT Command: Load.. (0x0013) plen 74  {0x0001} [hci0]
-        Keys: 2
-        BR/EDR Address: C0:DC:DA:A5:E5:47 (Samsung Electronics Co.,Ltd)
-        Key type: Authenticated key from P-256 (0x03)
-        Central: 0x00
-        Encryption size: 16
-        Diversifier[2]: 0000
-        Randomizer[8]: 0000000000000000
-        Key[16]: 6ed96089bd9765be2f2c971b0b95f624
-        LE Address: D7:2A:DE:1E:73:A2 (Static)
-        Key type: Unauthenticated key from P-256 (0x02)
-        Central: 0x00
-        Encryption size: 16
-        Diversifier[2]: 0000
-        Randomizer[8]: 0000000000000000
-        Key[16]: 87dd2546ededda380ffcdc0a8faa4597
-@ MGMT Event: Command Status (0x0002) plen 3                {0x0001} [hci0]
-      Load Long Term Keys (0x0013)
-        Status: Invalid Parameters (0x0d)
+This fixes 4 OVERRUN issues reported by Coverity.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/bluez/bluez/issues/875
-Fixes: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |    5 -----
- net/bluetooth/mgmt.c             |   25 +++++++------------------
- net/bluetooth/smp.c              |    7 -------
- 3 files changed, 7 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -187,7 +187,6 @@ struct blocked_key {
- struct smp_csrk {
- 	bdaddr_t bdaddr;
- 	u8 bdaddr_type;
--	u8 link_type;
- 	u8 type;
- 	u8 val[16];
- };
-@@ -197,7 +196,6 @@ struct smp_ltk {
- 	struct rcu_head rcu;
- 	bdaddr_t bdaddr;
- 	u8 bdaddr_type;
--	u8 link_type;
- 	u8 authenticated;
- 	u8 type;
- 	u8 enc_size;
-@@ -212,7 +210,6 @@ struct smp_irk {
- 	bdaddr_t rpa;
- 	bdaddr_t bdaddr;
- 	u8 addr_type;
--	u8 link_type;
- 	u8 val[16];
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+index 4233955e3c47..c9851492ec84 100644
+--- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
++++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+@@ -131,13 +131,21 @@ static bool hdmi_14_process_transaction(
+ 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
+ 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
+ 	struct i2c_command i2c_command;
+-	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
++	uint8_t offset;
+ 	struct i2c_payload i2c_payloads[] = {
+-		{ true, 0, 1, &offset },
++		{ true, 0, 1, 0 },
+ 		/* actual hdcp payload, will be filled later, zeroed for now*/
+ 		{ 0 }
+ 	};
  
-@@ -220,8 +217,6 @@ struct link_key {
- 	struct list_head list;
- 	struct rcu_head rcu;
- 	bdaddr_t bdaddr;
--	u8 bdaddr_type;
--	u8 link_type;
- 	u8 type;
- 	u8 val[HCI_LINK_KEY_SIZE];
- 	u8 pin_len;
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2903,8 +2903,7 @@ static int load_link_keys(struct sock *s
- 	for (i = 0; i < key_count; i++) {
- 		struct mgmt_link_key_info *key = &cp->keys[i];
- 
--		/* Considering SMP over BREDR/LE, there is no need to check addr_type */
--		if (key->type > 0x08)
-+		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
- 			return mgmt_cmd_status(sk, hdev->id,
- 					       MGMT_OP_LOAD_LINK_KEYS,
- 					       MGMT_STATUS_INVALID_PARAMS);
-@@ -7141,7 +7140,6 @@ static int load_irks(struct sock *sk, st
- 
- 	for (i = 0; i < irk_count; i++) {
- 		struct mgmt_irk_info *irk = &cp->irks[i];
--		u8 addr_type = le_addr_type(irk->addr.type);
- 
- 		if (hci_is_blocked_key(hdev,
- 				       HCI_BLOCKED_KEY_TYPE_IRK,
-@@ -7151,12 +7149,8 @@ static int load_irks(struct sock *sk, st
- 			continue;
- 		}
- 
--		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
--		if (irk->addr.type == BDADDR_BREDR)
--			addr_type = BDADDR_BREDR;
--
- 		hci_add_irk(hdev, &irk->addr.bdaddr,
--			    addr_type, irk->val,
-+			    le_addr_type(irk->addr.type), irk->val,
- 			    BDADDR_ANY);
- 	}
- 
-@@ -7237,7 +7231,6 @@ static int load_long_term_keys(struct so
- 	for (i = 0; i < key_count; i++) {
- 		struct mgmt_ltk_info *key = &cp->keys[i];
- 		u8 type, authenticated;
--		u8 addr_type = le_addr_type(key->addr.type);
- 
- 		if (hci_is_blocked_key(hdev,
- 				       HCI_BLOCKED_KEY_TYPE_LTK,
-@@ -7272,12 +7265,8 @@ static int load_long_term_keys(struct so
- 			continue;
- 		}
- 
--		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
--		if (key->addr.type == BDADDR_BREDR)
--			addr_type = BDADDR_BREDR;
--
- 		hci_add_ltk(hdev, &key->addr.bdaddr,
--			    addr_type, type, authenticated,
-+			    le_addr_type(key->addr.type), type, authenticated,
- 			    key->val, key->enc_size, key->ediv, key->rand);
- 	}
- 
-@@ -9545,7 +9534,7 @@ void mgmt_new_link_key(struct hci_dev *h
- 
- 	ev.store_hint = persistent;
- 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
--	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
-+	ev.key.addr.type = BDADDR_BREDR;
- 	ev.key.type = key->type;
- 	memcpy(ev.key.val, key->val, HCI_LINK_KEY_SIZE);
- 	ev.key.pin_len = key->pin_len;
-@@ -9596,7 +9585,7 @@ void mgmt_new_ltk(struct hci_dev *hdev,
- 		ev.store_hint = persistent;
- 
- 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
--	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
-+	ev.key.addr.type = link_to_bdaddr(LE_LINK, key->bdaddr_type);
- 	ev.key.type = mgmt_ltk_type(key);
- 	ev.key.enc_size = key->enc_size;
- 	ev.key.ediv = key->ediv;
-@@ -9625,7 +9614,7 @@ void mgmt_new_irk(struct hci_dev *hdev,
- 
- 	bacpy(&ev.rpa, &irk->rpa);
- 	bacpy(&ev.irk.addr.bdaddr, &irk->bdaddr);
--	ev.irk.addr.type = link_to_bdaddr(irk->link_type, irk->addr_type);
-+	ev.irk.addr.type = link_to_bdaddr(LE_LINK, irk->addr_type);
- 	memcpy(ev.irk.val, irk->val, sizeof(irk->val));
- 
- 	mgmt_event(MGMT_EV_NEW_IRK, hdev, &ev, sizeof(ev), NULL);
-@@ -9654,7 +9643,7 @@ void mgmt_new_csrk(struct hci_dev *hdev,
- 		ev.store_hint = persistent;
- 
- 	bacpy(&ev.key.addr.bdaddr, &csrk->bdaddr);
--	ev.key.addr.type = link_to_bdaddr(csrk->link_type, csrk->bdaddr_type);
-+	ev.key.addr.type = link_to_bdaddr(LE_LINK, csrk->bdaddr_type);
- 	ev.key.type = csrk->type;
- 	memcpy(ev.key.val, csrk->val, sizeof(csrk->val));
- 
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -1059,7 +1059,6 @@ static void smp_notify_keys(struct l2cap
- 	}
- 
- 	if (smp->remote_irk) {
--		smp->remote_irk->link_type = hcon->type;
- 		mgmt_new_irk(hdev, smp->remote_irk, persistent);
- 
- 		/* Now that user space can be considered to know the
-@@ -1074,28 +1073,24 @@ static void smp_notify_keys(struct l2cap
- 	}
- 
- 	if (smp->csrk) {
--		smp->csrk->link_type = hcon->type;
- 		smp->csrk->bdaddr_type = hcon->dst_type;
- 		bacpy(&smp->csrk->bdaddr, &hcon->dst);
- 		mgmt_new_csrk(hdev, smp->csrk, persistent);
- 	}
- 
- 	if (smp->responder_csrk) {
--		smp->responder_csrk->link_type = hcon->type;
- 		smp->responder_csrk->bdaddr_type = hcon->dst_type;
- 		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
- 		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
- 	}
- 
- 	if (smp->ltk) {
--		smp->ltk->link_type = hcon->type;
- 		smp->ltk->bdaddr_type = hcon->dst_type;
- 		bacpy(&smp->ltk->bdaddr, &hcon->dst);
- 		mgmt_new_ltk(hdev, smp->ltk, persistent);
- 	}
- 
- 	if (smp->responder_ltk) {
--		smp->responder_ltk->link_type = hcon->type;
- 		smp->responder_ltk->bdaddr_type = hcon->dst_type;
- 		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
- 		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
-@@ -1115,8 +1110,6 @@ static void smp_notify_keys(struct l2cap
- 		key = hci_add_link_key(hdev, smp->conn->hcon, &hcon->dst,
- 				       smp->link_key, type, 0, &persistent);
- 		if (key) {
--			key->link_type = hcon->type;
--			key->bdaddr_type = hcon->dst_type;
- 			mgmt_new_link_key(hdev, key, persistent);
- 
- 			/* Don't keep debug keys around if the relevant
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
++	offset = hdcp_i2c_offsets[message_info->msg_id];
++	i2c_payloads[0].data = &offset;
++
+ 	switch (message_info->link) {
+ 	case HDCP_LINK_SECONDARY:
+ 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
+@@ -311,6 +319,11 @@ static bool dp_11_process_transaction(
+ 	struct dc_link *link,
+ 	struct hdcp_protection_message *message_info)
+ {
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
+ 	return dpcd_access_helper(
+ 		link,
+ 		message_info->length,
+-- 
+2.43.0
+
 
 
 
