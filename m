@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8907097349B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D06A9732A3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EDD928E21F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908201C247F1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E992D1DA4C;
-	Tue, 10 Sep 2024 10:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E0D18C340;
+	Tue, 10 Sep 2024 10:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWRK50Se"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZgqKh+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FEB17A589;
-	Tue, 10 Sep 2024 10:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FAE188A28;
+	Tue, 10 Sep 2024 10:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964774; cv=none; b=KJw5esMiu/iCW1/wPZl9VMdnTbGJnpeE5aiNQG4ufcXOQFL80/brNGmzMV3mj8Lr6qWTt7puiUF0GAjm9AF26nw3KZTyteSIElud5UOko4QKTI/Q6SRM9sX0ZKwUOWr5/8PihcoxuHRh9yoTg4x2g/BtK7QqWpHcK0e05tKz5rs=
+	t=1725963558; cv=none; b=bimNAnyBihX1GNwtu6xCoJi2xL3z7/EaohlDHr2osTrKmJCzdyID3kQCJcuaTcxdgD7+6od6rnxlw1vNX7XuALxHs4+NmQ2RGo9nH/4Zf+QqTqHCl3zIlxiPja/oMKdQUM19zMM5eD68S3DVMwotT33xnufWe8S1a332IcwbGSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964774; c=relaxed/simple;
-	bh=FIyNmzIGhyQDRdfMNiT2J28tflcm5/BoL4ZOxtoUKBY=;
+	s=arc-20240116; t=1725963558; c=relaxed/simple;
+	bh=lyMOJYo40ct3soyuxGzw1SZl66zuIVk44BboJa+frbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrYhsl8YuS1EkepGOrE2HbnNl5BN0zodVuL0lXnePZE79HcZ7J2vYqwvj9SGVoczb2iYoly+fLWX6w+KrcFNc6LEe2Kcxxr8MAyrJGbG+WlKNwulvqj4aeA41HZunz8jvnccP6MuOeodhLXXiyaN+ZHugKZCfrr1Eddh9+JiFX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWRK50Se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0830C4CEC3;
-	Tue, 10 Sep 2024 10:39:33 +0000 (UTC)
+	 MIME-Version; b=tv04hRObMGY19fH5HA/3XkyNeAvEapnHnxyT/l44vzYchq0dxd+MAs2F4XdyGruFoydEJ0APFD+gIbfkytk567HP4y1JHpKtAdLc4ITID1YyGgj0mBE7lixpBq3Sf3VPk5QvupHBXT5sFE+jNJKJczBzvnOP2rNfras4zUOmKmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZgqKh+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD1FC4CEC3;
+	Tue, 10 Sep 2024 10:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964774;
-	bh=FIyNmzIGhyQDRdfMNiT2J28tflcm5/BoL4ZOxtoUKBY=;
+	s=korg; t=1725963558;
+	bh=lyMOJYo40ct3soyuxGzw1SZl66zuIVk44BboJa+frbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWRK50SeFTd/qnj27tHHGwDlQmcpx6oX1TLAZ6XkGiSx2x4OW8Q/lJFawOLjCk9xQ
-	 uKQ88op9XDrtPDlMJ7rICVOeoY+Lvlhd+wkwNMkb+YPPBvFyj3r3KePfuKTZn1kFYc
-	 FG7viXiAW0x8+4uvWn31HgI2e5Y00epYuyVoKaSY=
+	b=qZgqKh+IOv6cAUMhaqpgJNfEb7y7FyjuYs2NW/R1x4q2gAqYXac3Lf9KfEMoxZg9g
+	 Uk133Mb9p55K6/S+1LSI8xBf7IK0CYZSVtu+bZbOAZp2Exx4KZvuNdoUoyoFDgeuoe
+	 FiPWE9lUqA/zIi3tsiRJSS8KqpfoMu+f2v99hMus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chen <michael.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/186] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 099/214] mptcp: pm: do not remove already closed subflows
 Date: Tue, 10 Sep 2024 11:32:01 +0200
-Message-ID: <20240910092555.681135486@linuxfoundation.org>
+Message-ID: <20240910092602.844169875@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chen <michael.chen@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
+commit 58e1b66b4e4b8a602d3f2843e8eba00a969ecce2 upstream.
 
-Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
-in some use case. This would lead code scanner to complain about
-access beyond. Re-define it in union to enforce 8-byte size and
-alignment to avoid potential issue.
+It is possible to have in the list already closed subflows, e.g. the
+initial subflow has been already closed, but still in the list. No need
+to try to close it again, and increments the related counters again.
 
-Signed-off-by: Michael Chen <michael.chen@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ee4261a3681 ("mptcp: implement mptcp_pm_remove_subflow")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in pm_netlink.c, due to commit 3ad14f54bd74 ("mptcp: more
+  accurate MPC endpoint tracking") which is not in this version, and
+  changes the context. The same fix can be applied here by adding the
+  new check at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
- drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ net/mptcp/pm_netlink.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-index d54ceebd346b..30c70b3ab17f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-@@ -42,8 +42,6 @@
- #define CRAT_OEMTABLEID_LENGTH	8
- #define CRAT_RESERVED_LENGTH	6
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -767,6 +767,9 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
+ 			u8 id = subflow->local_id;
  
--#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
--
- /* Compute Unit flags */
- #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
- #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 2b31c3066aaa..b5738032237e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -906,8 +906,7 @@ static void kfd_update_system_properties(void)
- 	dev = list_last_entry(&topology_device_list,
- 			struct kfd_topology_device, list);
- 	if (dev) {
--		sys_props.platform_id =
--			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
-+		sys_props.platform_id = dev->oem_id64;
- 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
- 		sys_props.platform_rev = dev->oem_revision;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-index 326d9b26b7aa..22476a939064 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-@@ -182,7 +182,10 @@ struct kfd_topology_device {
- 	struct attribute		attr_gpuid;
- 	struct attribute		attr_name;
- 	struct attribute		attr_props;
--	uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+	union {
-+		uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+		uint64_t			oem_id64;
-+	};
- 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
- 	uint32_t			oem_revision;
- };
--- 
-2.43.0
-
++			if (inet_sk_state_load(ssk) == TCP_CLOSE)
++				continue;
++
+ 			if (rm_type == MPTCP_MIB_RMADDR)
+ 				id = subflow->remote_id;
+ 
 
 
 
