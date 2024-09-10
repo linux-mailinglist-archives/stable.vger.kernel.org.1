@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-75475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F307B9734D3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2DA9731B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B620F28E283
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5201C211AF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181C21917E4;
-	Tue, 10 Sep 2024 10:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206DD18C039;
+	Tue, 10 Sep 2024 10:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRrJSnCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UM9xZL4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF818FC73;
-	Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04D218C340;
+	Tue, 10 Sep 2024 10:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964841; cv=none; b=HftevemUhyfJZ4144uWhVT9A0Zz4sAhJnPVcIWRVJ38b6UxToGDUnzlveZrPws7kVpiezs2hXDq9gshOk34DulA/Jx8odd4YVJBIZrq+idISCc2LvqA8JqsKLpfrRYstZ1SjHN/Ww03BHxzYoURicmsab1YF4OliRcMoFF0dBuE=
+	t=1725963009; cv=none; b=o1tz9+FXrxIGloEv8QxwIw3PXQt3sbjJk3JBhWHZF9CWoWDP2rWmm+NnlaeI+Jf9UsoThLqpZ0WtVoOhZ8sIhqFSQg9y5FDXd3uJdSRoJMpZ2dykqbfnnN+N3IUhPLDCxUiAyq81K7/Uw0CKr8ZTN6nI2Z7Wb9v2RlN5swGODQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964841; c=relaxed/simple;
-	bh=WXkGJmX1d5GYt5V48NNARyzAiiqKS/daISzdfT2iRLk=;
+	s=arc-20240116; t=1725963009; c=relaxed/simple;
+	bh=f4niePS9t6N73OrgaQVlGXCwDejeP9mV/gZ259yd0Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZLPa4jWKSSP8TqOX2tiDDhg0jKOjZUzcwo+5pyiYGTHmfB6ZFCW/y9hR0XhrzysiMCeQXOXkUQTbAKeJ/z+ch/4VfxfRDSdqgsH4e5j9p54IZP+UzUT3JiDYPWT2zpblYFkLIPk4h0lTw3274NboZrT0AdwY29Jnl6gFarbdMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRrJSnCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E9C4CEC6;
-	Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
+	 MIME-Version; b=RTsKhf/Af2fVnMGW8lI/o2pLsPFLkhB/FzKAqWsWUy0S9AhnQQXqMCgC2TPipeTtdCgCbAEAoeC7dLMj7m4e/mtV5lQewlwP7oAl1FePPN0xZ3jCaBuXO8lYNAjzL6rT+EEybtjNos2F/BozMV8V1bdERqoVNgJEAwlIgnSvUAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UM9xZL4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059E7C4CEC3;
+	Tue, 10 Sep 2024 10:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964841;
-	bh=WXkGJmX1d5GYt5V48NNARyzAiiqKS/daISzdfT2iRLk=;
+	s=korg; t=1725963009;
+	bh=f4niePS9t6N73OrgaQVlGXCwDejeP9mV/gZ259yd0Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRrJSnCGWhTMhlZv3JuvXeUN2tpGv/F8apo8jGAHjcw+KdTer3mdZod807EbK0QNd
-	 zSfLyyGsvY9Cj/5Rk/+btqJSFxDUPr7Imca+n+MTVLGm7NbUY11gEm39M2WwdYJC+B
-	 vvjlGCR/SnZreWd6gvWEkkP9nFf2nWymdONnNLqA=
+	b=UM9xZL4ClMgwEfHpPVIE+rpI0E7f1y8ObSpszP0gScUepUhmoVdipEbbsx16h8RSL
+	 0bYRi5QB4xQfxOpcUvJC/Ql6PGAgjMIld97Z+LjZt9CXSEmEUURnns7+rNty0guuQ8
+	 hIjmjZLeu9eXlnedFTOdFM07YVzCCR9xAibjoOtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/186] PCI: al: Check IORESOURCE_BUS existence during probe
-Date: Tue, 10 Sep 2024 11:32:07 +0200
-Message-ID: <20240910092555.893962689@linuxfoundation.org>
+Subject: [PATCH 6.1 104/192] ext4: fix possible tid_t sequence overflows
+Date: Tue, 10 Sep 2024 11:32:08 +0200
+Message-ID: <20240910092602.279633239@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
+[ Upstream commit 63469662cc45d41705f14b4648481d5d29cf5999 ]
 
-If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
-of_pci_parse_bus_range(), so NULL pointer dereference should not happen
-here.
+In the fast commit code there are a few places where tid_t variables are
+being compared without taking into account the fact that these sequence
+numbers may wrap.  Fix this issue by using the helper functions tid_gt()
+and tid_geq().
 
-But that's hard to verify, so check for NULL anyway.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Harshad Shirwadkar <harshadshirwadkar@gmail.com>
+Link: https://patch.msgid.link/20240529092030.9557-3-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/ext4/fast_commit.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
-index f973fbca90cf..ac772fb11aa7 100644
---- a/drivers/pci/controller/dwc/pcie-al.c
-+++ b/drivers/pci/controller/dwc/pcie-al.c
-@@ -250,18 +250,24 @@ static struct pci_ops al_child_pci_ops = {
- 	.write = pci_generic_config_write,
- };
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index 19353a2f44bb..2ef773d40ffd 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -353,7 +353,7 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (sbi->s_fc_ineligible_tid < tid)
++	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
+ 		sbi->s_fc_ineligible_tid = tid;
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+@@ -1235,7 +1235,7 @@ int ext4_fc_commit(journal_t *journal, tid_t commit_tid)
+ 	if (ret == -EALREADY) {
+ 		/* There was an ongoing commit, check if we need to restart */
+ 		if (atomic_read(&sbi->s_fc_subtid) <= subtid &&
+-			commit_tid > journal->j_commit_sequence)
++		    tid_gt(commit_tid, journal->j_commit_sequence))
+ 			goto restart_fc;
+ 		ext4_fc_update_stats(sb, EXT4_FC_STATUS_SKIPPED, 0, 0,
+ 				commit_tid);
+@@ -1310,7 +1310,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
+ 		list_del_init(&iter->i_fc_list);
+ 		ext4_clear_inode_state(&iter->vfs_inode,
+ 				       EXT4_STATE_FC_COMMITTING);
+-		if (iter->i_sync_tid <= tid)
++		if (tid_geq(tid, iter->i_sync_tid))
+ 			ext4_fc_reset_inode(&iter->vfs_inode);
+ 		/* Make sure EXT4_STATE_FC_COMMITTING bit is clear */
+ 		smp_mb();
+@@ -1341,7 +1341,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
+ 	list_splice_init(&sbi->s_fc_q[FC_Q_STAGING],
+ 				&sbi->s_fc_q[FC_Q_MAIN]);
  
--static void al_pcie_config_prepare(struct al_pcie *pcie)
-+static int al_pcie_config_prepare(struct al_pcie *pcie)
- {
- 	struct al_pcie_target_bus_cfg *target_bus_cfg;
- 	struct pcie_port *pp = &pcie->pci->pp;
- 	unsigned int ecam_bus_mask;
-+	struct resource_entry *ft;
- 	u32 cfg_control_offset;
-+	struct resource *bus;
- 	u8 subordinate_bus;
- 	u8 secondary_bus;
- 	u32 cfg_control;
- 	u32 reg;
--	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
- 
-+	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
-+	if (!ft)
-+		return -ENODEV;
-+
-+	bus = ft->res;
- 	target_bus_cfg = &pcie->target_bus_cfg;
- 
- 	ecam_bus_mask = (pcie->ecam_size >> 20) - 1;
-@@ -295,6 +301,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
- 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
- 
- 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
-+
-+	return 0;
- }
- 
- static int al_pcie_host_init(struct pcie_port *pp)
-@@ -313,7 +321,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
- 	if (rc)
- 		return rc;
- 
--	al_pcie_config_prepare(pcie);
-+	rc = al_pcie_config_prepare(pcie);
-+	if (rc)
-+		return rc;
- 
- 	return 0;
- }
+-	if (tid >= sbi->s_fc_ineligible_tid) {
++	if (tid_geq(tid, sbi->s_fc_ineligible_tid)) {
+ 		sbi->s_fc_ineligible_tid = 0;
+ 		ext4_clear_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	}
 -- 
 2.43.0
 
