@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D02A9733B8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CB49734B7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE9A1C24AD1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C0C1F25EA0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8452D1990B5;
-	Tue, 10 Sep 2024 10:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302A519067A;
+	Tue, 10 Sep 2024 10:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKT9GBQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdzc0PYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F1D18E77F;
-	Tue, 10 Sep 2024 10:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E106D18FDAF;
+	Tue, 10 Sep 2024 10:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964241; cv=none; b=i5nXKJIRgnpO+4u3K1L3z4mYk+byhQ0wZvPuZ0d5B4Md6g8f6+/5WyJLZDpM2pU+IE1UtymS4ql4De2ivBe7d7GPkkk8RhwIiku709tGuF77wAGNL9b5unQCUabqc+XSIYk7CncoZD8mq13zX8SNGZbVMEFEwGfmJ8mQVYoaWYo=
+	t=1725964801; cv=none; b=aQUCrOtErZYElwfNp/x93H0Jpb3YdwL0CiW/jG4bj2KToKSypLxd+aoRtv6vA4oc5W0EYdS4u8rCV4u6A+up7FrAr6OZHVgDZ5Ut437819CIisBUL/tOIWmWK49utoA1QDPWCkmqkrJDyB9nzHS/SUi1gtEJxBMg+HUo6L0v1go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964241; c=relaxed/simple;
-	bh=hZ5bZhLuK3NX174YHWIdu4g9yuXPvO5xCRNYWKFA0LU=;
+	s=arc-20240116; t=1725964801; c=relaxed/simple;
+	bh=KRPrr3E3XDAiPGTQauPYOsLCakcAp4QkDER/Dd/jd8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWcBmzFlvrQkyUPcrevBeUyd4YmNC9j3mg/1/arkCFD5EyByHYCptfZ59Ds0akvAJzz0b9bxHU61QJjIw+4CtZ13tK1UdC8r8KqC2iyY3q3S/t3nKzGsGUkurI7LWpvKxnPGoS5sx1bFZO/wcFuQXF+o3973RsXqaptZ6TjXy/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKT9GBQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EFC4CEC3;
-	Tue, 10 Sep 2024 10:30:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZDOFNZs5+9veT3zr9Yp47hbRO4JIOkVILAR6shxqVH7qwyd46MyxG1s9FLoyEWw6/9O0xl6/zX2l755RJXy9CKQccHrpG53TaU5lwk9pZgcI14zj+MBjKHflrXO6+FHzn8o2kMFmozRxmY8UNWspihtvn6ACqez2lh0qYTgHsmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdzc0PYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD44C4CEC3;
+	Tue, 10 Sep 2024 10:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964241;
-	bh=hZ5bZhLuK3NX174YHWIdu4g9yuXPvO5xCRNYWKFA0LU=;
+	s=korg; t=1725964800;
+	bh=KRPrr3E3XDAiPGTQauPYOsLCakcAp4QkDER/Dd/jd8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKT9GBQViS5ebkMaNzZ7HrE6I5K2m4ViH0hx6UN55EOQGHGv0p2YzU2mvYJetUhCV
-	 EvTOUzIwo2km8a+AskJbL1MHwiyc4vMEfsvK90Lym7XtHJS+wjjybTKoApL+kXv14K
-	 6I+eBBN8EacMnZW5LGkmOsgyu17e//o+pFE9vejQ=
+	b=qdzc0PYMZrmVstUAQNpz7kj9k6QDd5LeEP8hdLIJTVdqgPGPVRdX4JNQZoprc7Vti
+	 zRacXyyZSDkQhJ55Bw9ZoMtOAiv8Ov30TC4YAuyzz0D51WO6xEv+2z4z2l8L9FDqTz
+	 +F9nlCQ29qzlAhpS4ZMG0KxdfjTUdyA46ORvzB/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/269] Bluetooth: hci_conn: Fix UAF Write in __hci_acl_create_connection_sync
-Date: Tue, 10 Sep 2024 11:31:42 +0200
-Message-ID: <20240910092612.291505620@linuxfoundation.org>
+Subject: [PATCH 5.10 008/186] drm/amdgpu: fix overflowed array index read warning
+Date: Tue, 10 Sep 2024 11:31:43 +0200
+Message-ID: <20240910092555.006055911@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 5f641f03abccddd1a37233ff1b8e774b9ff1f4e8 ]
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-This fixes the UAF on __hci_acl_create_connection_sync caused by
-connection abortion, it uses the same logic as to LE_LINK which uses
-hci_cmd_sync_cancel to prevent the callback to run if the connection is
-abort prematurely.
+Clear overflowed array index read warning by cast operation.
 
-Reported-by: syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com
-Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_sync.h |  3 +--
- net/bluetooth/hci_conn.c         |  3 ++-
- net/bluetooth/hci_sync.c         | 16 ++++++++++------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 532230150cc9..37ca8477b3f4 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -141,5 +141,4 @@ int hci_le_big_terminate_sync(struct hci_dev *hdev, u8 handle);
- 
- int hci_le_pa_terminate_sync(struct hci_dev *hdev, u16 handle);
- 
--int hci_acl_create_connection_sync(struct hci_dev *hdev,
--				   struct hci_conn *conn);
-+int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 36731d047f16..d15c8ce4b418 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1650,7 +1650,7 @@ struct hci_conn *hci_connect_acl(struct hci_dev *hdev, bdaddr_t *dst,
- 		acl->pending_sec_level = sec_level;
- 		acl->auth_type = auth_type;
- 
--		err = hci_acl_create_connection_sync(hdev, acl);
-+		err = hci_connect_acl_sync(hdev, acl);
- 		if (err) {
- 			hci_conn_del(acl);
- 			return ERR_PTR(err);
-@@ -2913,6 +2913,7 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
- 	 */
- 	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
- 		switch (hci_skb_event(hdev->sent_cmd)) {
-+		case HCI_EV_CONN_COMPLETE:
- 		case HCI_EV_LE_CONN_COMPLETE:
- 		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
- 		case HCI_EVT_LE_CIS_ESTABLISHED:
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 165c532fa2a2..19ceb7ce66bf 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6578,13 +6578,18 @@ int hci_update_adv_data(struct hci_dev *hdev, u8 instance)
- 				  UINT_PTR(instance), NULL);
- }
- 
--static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
-+static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 15ee13c3bd9e..6976f61be734 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -368,8 +368,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
  {
--	struct hci_conn *conn = data;
-+	struct hci_conn *conn;
-+	u16 handle = PTR_UINT(data);
- 	struct inquiry_entry *ie;
- 	struct hci_cp_create_conn cp;
- 	int err;
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
  
-+	conn = hci_conn_hash_lookup_handle(hdev, handle);
-+	if (!conn)
-+		return 0;
-+
- 	/* Many controllers disallow HCI Create Connection while it is doing
- 	 * HCI Inquiry. So we cancel the Inquiry first before issuing HCI Create
- 	 * Connection. This may cause the MGMT discovering state to become false
-@@ -6641,9 +6646,8 @@ static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
- 	return err;
- }
- 
--int hci_acl_create_connection_sync(struct hci_dev *hdev,
--				   struct hci_conn *conn)
-+int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue(hdev, __hci_acl_create_connection_sync,
--				  conn, NULL);
-+	return hci_cmd_sync_queue(hdev, hci_acl_create_conn_sync,
-+				  UINT_PTR(conn->handle), NULL);
- }
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
