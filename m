@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-74304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA2D972E99
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:45:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6157C972EA5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24161C241AB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:45:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 145A6288793
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5529519048A;
-	Tue, 10 Sep 2024 09:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411F818DF67;
+	Tue, 10 Sep 2024 09:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpRXMn4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWZ/epwN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1092518CBE8;
-	Tue, 10 Sep 2024 09:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F283418C331;
+	Tue, 10 Sep 2024 09:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961418; cv=none; b=BqQzmRRzGjy4F4ohU3wieGYdf3To35Ftzt92ZyxeR/zfhYoL8BqmJez/v1baX/mBvYcc7vWwvOf5G2f6XKfOtXkd26EY0MEZl07WCtqz1ay8Iw+Rnz+8wMk0uzWnRNEBddvRLwDEQtVak+Rc4FcZCzHkyJVs1lTshvdFBunNT+4=
+	t=1725961447; cv=none; b=VEmRrZdNlMXqBb1QSrHI1sqXl9Qz+iBpjm9ybsICS3tEoaDBkWbuv5wAbpeIcNS9nCWfbuCpuJpJBUKuMabFpEbkHyDINiloUSyFwdLhkcOB8KH3RcbBbNJPZ4/MTln3j5I7rTnVYuTSIIab22qV16mUEK+kzQS5RwT0ftA8ijw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961418; c=relaxed/simple;
-	bh=DoHC+vPt73EE3Z5a0j7BWSfpj107f68UKM6mdgWlhHA=;
+	s=arc-20240116; t=1725961447; c=relaxed/simple;
+	bh=2sABbx0E7nRqwP27xA79WNC0dK8CNYtDAN9XjgARU+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuNroRAPV1LyWbkAxc11Pm4q14BR6Fikcx3hrO2CGoho7LQ2+jLSsqe2byQwW6jgRJT6wISxzrMtp7RmO0ye+aQX8sjoD42HNFIfZWdmc/4IHShzgDZRlwVb4shWDE9xlDP3qk5ZbAL5+CQI5EPDFh/StfYHeWSFeuWV2vOOppQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpRXMn4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6D5C4CEC3;
-	Tue, 10 Sep 2024 09:43:37 +0000 (UTC)
+	 MIME-Version; b=WdV4ERFdhO1Cxu0N8CTX7KtscbHBVFQ3h/f9TkbSkYEPhWBUSzbWi81Hd9z88Lc+yTC7A9nK8Pt5ZEO6NgIefEnfENttpoWMN84b/mttkfCKn1c2SVbFFVludbEeIcOg6f759i4UE2OnFO4jClZZx1VQUuwAdTwaNbvMYikYoac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWZ/epwN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7794AC4CEC3;
+	Tue, 10 Sep 2024 09:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961417;
-	bh=DoHC+vPt73EE3Z5a0j7BWSfpj107f68UKM6mdgWlhHA=;
+	s=korg; t=1725961446;
+	bh=2sABbx0E7nRqwP27xA79WNC0dK8CNYtDAN9XjgARU+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpRXMn4bVXMSTCHsvk+Yk4pC5xdDnHJxjGgRBwByntoS6wfG+7ShIidqX8GF23kRC
-	 EwyJYjNZB9YjDIv31pEgFRum/TwHevyznoxRzTLSkpbZrN9dtWIcPHYaJiAyr5zsAo
-	 h2kEneGnsEhJLr5H+Kqy2bF3xOTAAbmAOitQCIn8=
+	b=BWZ/epwNVwr7cjk2OnGadqPB0ab+W6c9EiQZIEU7m2C8CkfXYdITneAHN4RQmnZP/
+	 aJBdSMMzIE4KnA5PSdI1dp+DFGuqNtTVdJc93ubDsjjeMgV0l3hAWbrvbXLYIlMLA4
+	 AaZ1skVOVWEM1ANnkFkF81wIoRC4lpBMokRHrya0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	matoro <matoro_mailinglist_kernel@matoro.tk>,
-	Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Subject: [PATCH 6.10 045/375] parisc: Delay write-protection until mark_rodata_ro() call
-Date: Tue, 10 Sep 2024 11:27:22 +0200
-Message-ID: <20240910092623.756313629@linuxfoundation.org>
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Xingyu Wu <xingyu.wu@starfivetech.com>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Michael Jeanson <mjeanson@efficios.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.10 046/375] clk: starfive: jh7110-sys: Add notifier for PLL0 clock
+Date: Tue, 10 Sep 2024 11:27:23 +0200
+Message-ID: <20240910092623.788530003@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -66,67 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Xingyu Wu <xingyu.wu@starfivetech.com>
 
-commit 213aa670153ed675a007c1f35c5db544b0fefc94 upstream.
+commit 538d5477b25289ac5d46ca37b9e5b4d685cbe019 upstream.
 
-Do not write-protect the kernel read-only and __ro_after_init sections
-earlier than before mark_rodata_ro() is called.  This fixes a boot issue on
-parisc which is triggered by commit 91a1d97ef482 ("jump_label,module: Don't
-alloc static_key_mod for __ro_after_init keys"). That commit may modify
-static key contents in the __ro_after_init section at bootup, so this
-section needs to be writable at least until mark_rodata_ro() is called.
+Add notifier function for PLL0 clock. In the function, the cpu_root clock
+should be operated by saving its current parent and setting a new safe
+parent (osc clock) before setting the PLL0 clock rate. After setting PLL0
+rate, it should be switched back to the original parent clock.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-Reported-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Tested-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Link: https://lore.kernel.org/linux-parisc/096cad5aada514255cd7b0b9dbafc768@matoro.tk/#r
-Fixes: 91a1d97ef482 ("jump_label,module: Don't alloc static_key_mod for __ro_after_init keys")
-Cc: stable@vger.kernel.org # v6.10+
+Fixes: e2c510d6d630 ("riscv: dts: starfive: Add cpu scaling for JH7110 SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Signed-off-by: Xingyu Wu <xingyu.wu@starfivetech.com>
+Link: https://lore.kernel.org/r/20240826080430.179788-2-xingyu.wu@starfivetech.com
+Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
+Tested-by: Michael Jeanson <mjeanson@efficios.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/mm/init.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/clk/starfive/clk-starfive-jh7110-sys.c |   31 ++++++++++++++++++++++++-
+ drivers/clk/starfive/clk-starfive-jh71x0.h     |    2 +
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 34d91cb8b259..96970fa75e4a 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -459,7 +459,6 @@ void free_initmem(void)
- 	unsigned long kernel_end  = (unsigned long)&_end;
- 
- 	/* Remap kernel text and data, but do not touch init section yet. */
--	kernel_set_to_readonly = true;
- 	map_pages(init_end, __pa(init_end), kernel_end - init_end,
- 		  PAGE_KERNEL, 0);
- 
-@@ -493,11 +492,18 @@ void free_initmem(void)
- #ifdef CONFIG_STRICT_KERNEL_RWX
- void mark_rodata_ro(void)
- {
--	/* rodata memory was already mapped with KERNEL_RO access rights by
--           pagetable_init() and map_pages(). No need to do additional stuff here */
--	unsigned long roai_size = __end_ro_after_init - __start_ro_after_init;
-+	unsigned long start = (unsigned long) &__start_rodata;
-+	unsigned long end = (unsigned long) &__end_rodata;
- 
--	pr_info("Write protected read-only-after-init data: %luk\n", roai_size >> 10);
-+	pr_info("Write protecting the kernel read-only data: %luk\n",
-+	       (end - start) >> 10);
-+
-+	kernel_set_to_readonly = true;
-+	map_pages(start, __pa(start), end - start, PAGE_KERNEL, 0);
-+
-+	/* force the kernel to see the new page table entries */
-+	flush_cache_all();
-+	flush_tlb_all();
+--- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
++++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
+@@ -385,6 +385,32 @@ int jh7110_reset_controller_register(str
  }
- #endif
+ EXPORT_SYMBOL_GPL(jh7110_reset_controller_register);
  
--- 
-2.46.0
-
++/*
++ * This clock notifier is called when the rate of PLL0 clock is to be changed.
++ * The cpu_root clock should save the curent parent clock and switch its parent
++ * clock to osc before PLL0 rate will be changed. Then switch its parent clock
++ * back after the PLL0 rate is completed.
++ */
++static int jh7110_pll0_clk_notifier_cb(struct notifier_block *nb,
++				       unsigned long action, void *data)
++{
++	struct jh71x0_clk_priv *priv = container_of(nb, struct jh71x0_clk_priv, pll_clk_nb);
++	struct clk *cpu_root = priv->reg[JH7110_SYSCLK_CPU_ROOT].hw.clk;
++	int ret = 0;
++
++	if (action == PRE_RATE_CHANGE) {
++		struct clk *osc = clk_get(priv->dev, "osc");
++
++		priv->original_clk = clk_get_parent(cpu_root);
++		ret = clk_set_parent(cpu_root, osc);
++		clk_put(osc);
++	} else if (action == POST_RATE_CHANGE) {
++		ret = clk_set_parent(cpu_root, priv->original_clk);
++	}
++
++	return notifier_from_errno(ret);
++}
++
+ static int __init jh7110_syscrg_probe(struct platform_device *pdev)
+ {
+ 	struct jh71x0_clk_priv *priv;
+@@ -413,7 +439,10 @@ static int __init jh7110_syscrg_probe(st
+ 		if (IS_ERR(priv->pll[0]))
+ 			return PTR_ERR(priv->pll[0]);
+ 	} else {
+-		clk_put(pllclk);
++		priv->pll_clk_nb.notifier_call = jh7110_pll0_clk_notifier_cb;
++		ret = clk_notifier_register(pllclk, &priv->pll_clk_nb);
++		if (ret)
++			return ret;
+ 		priv->pll[0] = NULL;
+ 	}
+ 
+--- a/drivers/clk/starfive/clk-starfive-jh71x0.h
++++ b/drivers/clk/starfive/clk-starfive-jh71x0.h
+@@ -114,6 +114,8 @@ struct jh71x0_clk_priv {
+ 	spinlock_t rmw_lock;
+ 	struct device *dev;
+ 	void __iomem *base;
++	struct clk *original_clk;
++	struct notifier_block pll_clk_nb;
+ 	struct clk_hw *pll[3];
+ 	struct jh71x0_clk reg[];
+ };
 
 
 
