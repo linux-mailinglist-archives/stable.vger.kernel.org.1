@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-74662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5713B973086
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF532972FF3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1722873BD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B250E287DFF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054ED190072;
-	Tue, 10 Sep 2024 10:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4244E171671;
+	Tue, 10 Sep 2024 09:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBeHWHi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSMz/9eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B771818CC17;
-	Tue, 10 Sep 2024 10:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F050B18C03D;
+	Tue, 10 Sep 2024 09:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962457; cv=none; b=b4owaujJmGDMugE+1vqflRgAC55nGfrUq7nY6gxluEfy8xJjRSyxqNnyHWXqxf1Q7LW+47beRVj+myxtMcK16Ku7R2KQbZ9pzfgKIva/9nFCQiaBtjh5oF/6Q4GHHT8k7EczkKB/BceFxFZMX2oFRI2q0i5SsJl1bRPDVvBqxcc=
+	t=1725962170; cv=none; b=T/8wyw2Ptq/y9HmC82NJGz0f40J7o4OSOVm53n+SSIgW28xlcahmjHjBhyoqvizpvfZktIqC8tYyhRlYbL5egF0oMm4hN+AB8sf/JbOu7PMtytJEHT6iwDWBJRi0nnaCYOp3Y0/2sAnHn+7iKGvbDPh/EOTWy3WhRSVWkaB2Bso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962457; c=relaxed/simple;
-	bh=F1qkMEin5pd/7naO25IfzNXnLFvd6V4w6/wAFVOuEwo=;
+	s=arc-20240116; t=1725962170; c=relaxed/simple;
+	bh=37UF3WiLWi6TitBydMjue6tD02Ym2dtzIsbfqajNw5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBI3UQrXtY8vOLLvuLYnzSKKuHaCdwvdSAZYWjvCmJRIO2u2BqStO8vZCiXXWdb4/rNbeBZLcitka/y6vOvuIX4sVj8NInfsIkLp7elnnX0aLPMfoAEgiWrGV0+cuEQqE4iL6xQ/KktD27p7/a4jkBSO5LpNjKtHPVTSHSE8n1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBeHWHi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D865BC4CEC3;
-	Tue, 10 Sep 2024 10:00:56 +0000 (UTC)
+	 MIME-Version; b=skLQqknDN48aiqwuKCql4ynZ2J7tOQGPD2ueGymf4ZVpAZvk+sAkPnous7GBpDDR4eLeqL+Iu+9V8sAxzp9vBveKQqdlHH6EI07Dg4tYihWJPjb78Fq5iWidRpGdff9JDq9ukL4GgIrwgVezvFwe7/Db1xBFoNucHhQD0+5BDSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSMz/9eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49266C4CEC3;
+	Tue, 10 Sep 2024 09:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962457;
-	bh=F1qkMEin5pd/7naO25IfzNXnLFvd6V4w6/wAFVOuEwo=;
+	s=korg; t=1725962169;
+	bh=37UF3WiLWi6TitBydMjue6tD02Ym2dtzIsbfqajNw5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBeHWHi9leY25jIQ7MylNuqDvieUrWCFF8lk49+a6SAJu3BiPTmFsd3a4BmUjuSKX
-	 U7P3S+7y+I57wbjv5j1Q+tchciCQCqHuJQYs9TYEYLXZP2v8JtlLeDKJtQHKogxLOP
-	 aHOdnwq5wT2oPbYKD3SiRENBCSv0O+TD1/7cf7Lw=
+	b=zSMz/9eUxqBbkpd0J/klNQExzzKNyDfuhsr55+7vyRZKcG1Q0osRRthINl18qlqs4
+	 e9o5VEI2WQhN5vWIrAMMZQqijuzS+c761axLbMytJZeqsfglf3Jnydri1OrTY2gHU0
+	 ZVTN0bxzbQbD0+nBECPWMy6SZUeT4jmPFGOY0a9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 041/121] nilfs2: fix missing cleanup on rollforward recovery error
+	James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
+	Jianyong Wu <jianyong.wu@arm.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 319/375] arm64: acpi: Move get_cpu_for_acpi_id() to a header
 Date: Tue, 10 Sep 2024 11:31:56 +0200
-Message-ID: <20240910092547.689264195@linuxfoundation.org>
+Message-ID: <20240910092633.285056285@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +70,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: James Morse <james.morse@arm.com>
 
-commit 5787fcaab9eb5930f5378d6a1dd03d916d146622 upstream.
+[ Upstream commit 8d34b6f17b9ac93faa2791eb037dcb08bdf755de ]
 
-In an error injection test of a routine for mount-time recovery, KASAN
-found a use-after-free bug.
+ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
+to the Linux CPU number.
 
-It turned out that if data recovery was performed using partial logs
-created by dsync writes, but an error occurred before starting the log
-writer to create a recovered checkpoint, the inodes whose data had been
-recovered were left in the ns_dirty_files list of the nilfs object and
-were not freed.
+The helper to retrieve this mapping is only available in arm64's NUMA
+code.
 
-Fix this issue by cleaning up inodes that have read the recovery data if
-the recovery routine fails midway before the log writer starts.
+Move it to live next to get_acpi_id_for_cpu().
 
-Link: https://lkml.kernel.org/r/20240810065242.3701-1-konishi.ryusuke@gmail.com
-Fixes: 0f3e1c7f23f8 ("nilfs2: recovery functions")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Link: https://lore.kernel.org/r/20240529133446.28446-12-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: 2488444274c7 ("arm64: acpi: Harden get_cpu_for_acpi_id() against missing CPU entry")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/recovery.c |   35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/acpi.h | 11 +++++++++++
+ arch/arm64/kernel/acpi_numa.c | 11 -----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
---- a/fs/nilfs2/recovery.c
-+++ b/fs/nilfs2/recovery.c
-@@ -709,6 +709,33 @@ static void nilfs_finish_roll_forward(st
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index 6792a1f83f2a..bc9a6656fc0c 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -119,6 +119,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+ 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
  }
  
- /**
-+ * nilfs_abort_roll_forward - cleaning up after a failed rollforward recovery
-+ * @nilfs: nilfs object
-+ */
-+static void nilfs_abort_roll_forward(struct the_nilfs *nilfs)
++static inline int get_cpu_for_acpi_id(u32 uid)
 +{
-+	struct nilfs_inode_info *ii, *n;
-+	LIST_HEAD(head);
++	int cpu;
 +
-+	/* Abandon inodes that have read recovery data */
-+	spin_lock(&nilfs->ns_inode_lock);
-+	list_splice_init(&nilfs->ns_dirty_files, &head);
-+	spin_unlock(&nilfs->ns_inode_lock);
-+	if (list_empty(&head))
-+		return;
++	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
++		if (uid == get_acpi_id_for_cpu(cpu))
++			return cpu;
 +
-+	set_nilfs_purging(nilfs);
-+	list_for_each_entry_safe(ii, n, &head, i_dirty) {
-+		spin_lock(&nilfs->ns_inode_lock);
-+		list_del_init(&ii->i_dirty);
-+		spin_unlock(&nilfs->ns_inode_lock);
-+
-+		iput(&ii->vfs_inode);
-+	}
-+	clear_nilfs_purging(nilfs);
++	return -EINVAL;
 +}
 +
-+/**
-  * nilfs_salvage_orphan_logs - salvage logs written after the latest checkpoint
-  * @nilfs: nilfs object
-  * @sb: super block instance
-@@ -766,15 +793,19 @@ int nilfs_salvage_orphan_logs(struct the
- 		if (unlikely(err)) {
- 			nilfs_err(sb, "error %d writing segment for recovery",
- 				  err);
--			goto failed;
-+			goto put_root;
- 		}
- 
- 		nilfs_finish_roll_forward(nilfs, ri);
- 	}
- 
-- failed:
-+put_root:
- 	nilfs_put_root(root);
- 	return err;
-+
-+failed:
-+	nilfs_abort_roll_forward(nilfs);
-+	goto put_root;
+ static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+ void __init acpi_init_cpus(void);
+ int apei_claim_sea(struct pt_regs *regs);
+diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
+index ccbff21ce1fa..2465f291c7e1 100644
+--- a/arch/arm64/kernel/acpi_numa.c
++++ b/arch/arm64/kernel/acpi_numa.c
+@@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
+ 	return acpi_early_node_map[cpu];
  }
  
- /**
+-static inline int get_cpu_for_acpi_id(u32 uid)
+-{
+-	int cpu;
+-
+-	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+-		if (uid == get_acpi_id_for_cpu(cpu))
+-			return cpu;
+-
+-	return -EINVAL;
+-}
+-
+ static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
+ 				      const unsigned long end)
+ {
+-- 
+2.43.0
+
 
 
 
