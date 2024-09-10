@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-74800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDC497317D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD06597337F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1995A1C247F8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE36EB2BD66
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DE19341A;
-	Tue, 10 Sep 2024 10:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E13195FF1;
+	Tue, 10 Sep 2024 10:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od+sg+7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lex87/4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FBD18C32F;
-	Tue, 10 Sep 2024 10:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C5195FD1;
+	Tue, 10 Sep 2024 10:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962866; cv=none; b=MJCJ/GWYv4fZ4UxmoUOhwXa5cBAvrL/Ld/vexMJNHf2prL/p0+Rcfd757KmnKxKkmav5k3hE50+I1GKvMW5R70l9wkC//KcUv7dS913WsrNBdSZtMZVXZtKlrZDHybU21lfHt6cbvl/Eos9u4xBdpHZrsBHxi8jtmUMsNoJIajM=
+	t=1725963523; cv=none; b=dxOj3GKQh3oa2EEM6ezlZfcWBXAfZLLnZ24xfxcqCoBR6wqa2PeXzbTowIxWcgPh5L55XkcYvkMXbT9aLsqsMnLyqHrSWSPa3NR1pc9Ek5iiFOGVHcoLUSUVtsXb7jfn3iNWeOE9hxZwgIActLCJKdGD9PBUhI8dKB9a3yoeyxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962866; c=relaxed/simple;
-	bh=tdwrJYQ1d6KQQRZtozEtHVuICLmNcZ6j31gQXeFz7Yg=;
+	s=arc-20240116; t=1725963523; c=relaxed/simple;
+	bh=NVZlz9Kh5NkBrzGoIFH4N6bdFa5m5640RLflj1O1l5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDeVU8JnbtuUNPir4fSn/T12SZ/aoAAyfNvCSI/V//WKTuXWT00v8TEdWRKV8LgaltJG/vSsvH2mJLQ3hQxSxZ+GB/fABJcpkEenPedUWflFB+vCAu4zmB//It0+X3wQrK9LbjcRWwZ9fEJ9iwtL4BieW8QMMqcw6kQoANA/GCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od+sg+7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABD9C4CEC3;
-	Tue, 10 Sep 2024 10:07:45 +0000 (UTC)
+	 MIME-Version; b=BxZ4zq4FgiudB6x5tl9qzSPbpH/ZcAMZXtZQjTGbhBP+1GrdV0+H1HODVm84FB47yxRFo3hFzQXWU0sZ70nta/4hZHfipt0hLnbc2lHQyBDTmwFtx90kmOLRYF+6cY/M1o+c2oD9dVQr5Bg9AuJNB1cScJVd45kk77nMshNT/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lex87/4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19773C4CEC3;
+	Tue, 10 Sep 2024 10:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962866;
-	bh=tdwrJYQ1d6KQQRZtozEtHVuICLmNcZ6j31gQXeFz7Yg=;
+	s=korg; t=1725963523;
+	bh=NVZlz9Kh5NkBrzGoIFH4N6bdFa5m5640RLflj1O1l5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=od+sg+7xSqdcIB70/AvMY19/jOdQ5QFJQMAGiNzD834n3QrCqyItM3I9qg48gp1qw
-	 fx4QnSs9b83917Xq4HOWSKiG8amRryS4T1gCT/Cg690SVMUuNCs+dPsS6Q7Ne8uqAs
-	 aaUUK7YCYyvxqNEeeXG2z+TowYbaQQGuSP0qNcW8=
+	b=Lex87/4W1FuODCjDkW6+26OjTbpzeclFIWLeM9UWjFwv+DWzhDkWkFZbLXyJ7lUY4
+	 n8cAEztvCsg6O5xY0OpDUX7t0DH8DjONpC9B8+PoTFj+nK3BgOami0Ps+llP0kCLJP
+	 K1WvVs5rWx0LvB9AaWmYhM9BT+NkHzrnLcSFN3yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/192] usb: gadget: aspeed_udc: validate endpoint index for ast udc
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 059/214] udf: Limit file size to 4TB
 Date: Tue, 10 Sep 2024 11:31:21 +0200
-Message-ID: <20240910092600.319701680@linuxfoundation.org>
+Message-ID: <20240910092601.183874021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit ee0d382feb44ec0f445e2ad63786cd7f3f6a8199 ]
+commit c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 upstream.
 
-We should verify the bound of the array to assure that host
-may not manipulate the index to point past endpoint array.
+UDF disk format supports in principle file sizes up to 1<<64-1. However
+the file space (including holes) is described by a linked list of
+extents, each of which can have at most 1GB. Thus the creation and
+handling of extents gets unusably slow beyond certain point. Limit the
+file size to 4TB to avoid locking up the kernel too easily.
 
-Found by static analysis.
-
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Link: https://lore.kernel.org/r/20240625022306.2568122-1-make24@iscas.ac.cn
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed_udc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/udf/super.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/aspeed_udc.c b/drivers/usb/gadget/udc/aspeed_udc.c
-index cedf17e38245..1a5a1115c1d9 100644
---- a/drivers/usb/gadget/udc/aspeed_udc.c
-+++ b/drivers/usb/gadget/udc/aspeed_udc.c
-@@ -1009,6 +1009,8 @@ static void ast_udc_getstatus(struct ast_udc_dev *udc)
- 		break;
- 	case USB_RECIP_ENDPOINT:
- 		epnum = crq.wIndex & USB_ENDPOINT_NUMBER_MASK;
-+		if (epnum >= AST_UDC_NUM_ENDPOINTS)
-+			goto stall;
- 		status = udc->ep[epnum].stopped;
- 		break;
- 	default:
--- 
-2.43.0
-
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -86,6 +86,13 @@ enum {
+ #define UDF_MAX_LVID_NESTING 1000
+ 
+ enum { UDF_MAX_LINKS = 0xffff };
++/*
++ * We limit filesize to 4TB. This is arbitrary as the on-disk format supports
++ * more but because the file space is described by a linked list of extents,
++ * each of which can have at most 1GB, the creation and handling of extents
++ * gets unusably slow beyond certain point...
++ */
++#define UDF_MAX_FILESIZE (1ULL << 42)
+ 
+ /* These are the "meat" - everything else is stuffing */
+ static int udf_fill_super(struct super_block *, void *, int);
+@@ -2302,7 +2309,7 @@ static int udf_fill_super(struct super_b
+ 		ret = -ENOMEM;
+ 		goto error_out;
+ 	}
+-	sb->s_maxbytes = MAX_LFS_FILESIZE;
++	sb->s_maxbytes = UDF_MAX_FILESIZE;
+ 	sb->s_max_links = UDF_MAX_LINKS;
+ 	return 0;
+ 
 
 
 
