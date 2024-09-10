@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FF49733A3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C59973282
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664E11C24D92
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4905C1C241A8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699F5194A43;
-	Tue, 10 Sep 2024 10:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72F1A01C3;
+	Tue, 10 Sep 2024 10:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ni7s58PG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvd3qSJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786C172BAE;
-	Tue, 10 Sep 2024 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B9418F2E3;
+	Tue, 10 Sep 2024 10:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964194; cv=none; b=shMgPqMDfOLo5a0Izee52cGPw8RbT3ZRJJ2aWXlASUpDiXv3M5U2Fd2qCD51obU5d4sv3/duT7SmzIvMkDGYTAa4+tINt31LjPtv0TQy7eKOAhNQCTjYemeK5ScSQrdHQ9Brfqsifcg57Tcljbr4rQ4m24a+mrUW9yYIC+EhUDg=
+	t=1725963459; cv=none; b=UAH/Ro9x3hdNRJqwOxF9O+9YezGDhU4D1ql4TJbIjz8LBgCXNSh5kFGyHLt7ynwwm7lAJEhMVbpUWKqX6RR/m9MEyEhQrZBP8AmR3Ks2FBDwQwtmwN5ti4i/wzBShot4/7Mjen9piJ+FgAwJUddBK2ZfeswecKiufrqGBwP8NyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964194; c=relaxed/simple;
-	bh=tJ1XTGY/YA0LjLtrF36eYia/cxbL4Fo8uWnu6XCRk6w=;
+	s=arc-20240116; t=1725963459; c=relaxed/simple;
+	bh=KIECj7tTTIqV2LKDsN6adl9sJ503oC8Mmg/Lahg+1Kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EffHWK8JAgC0bxYRJ+qjk04OsdB6AyzwrPeMlsfD3WbEyZlDC6O5QH6aExChftPSHAKP8zj3K4PR9Ndr9wEz+sRy4xX4oAh3BuvDe4XNK44kjsz2RMOy11O1SWogmL9TpHSAu0oWM2VrrTzPBtsNDg/ZqYc6BaHu14A+dKN25Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ni7s58PG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E81C4CEC3;
-	Tue, 10 Sep 2024 10:29:53 +0000 (UTC)
+	 MIME-Version; b=dIud9AWCTU4U2dUIQyaEQartSOoKki3x6cCcFLVuOjJ/G8eO4AMDoYyJU5wU/hpcmu+gALW2IqnqQUggpyj8J97rbo/gCLD2vTRS5nECGhj3JNOAevPCXhqK/FmUSjYjFv/LpzZ40JtklvU9EVmuP8bTRoEuPOK5vAl7uRU49fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvd3qSJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3C6C4CEC3;
+	Tue, 10 Sep 2024 10:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964193;
-	bh=tJ1XTGY/YA0LjLtrF36eYia/cxbL4Fo8uWnu6XCRk6w=;
+	s=korg; t=1725963459;
+	bh=KIECj7tTTIqV2LKDsN6adl9sJ503oC8Mmg/Lahg+1Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ni7s58PG1OWsD+WvFC+/4uiLL6NoJdHFlLMuP5CkMKcx1fDxW7wVxbf7hsVXAOoeD
-	 G6dMB92EVfSE06FRdpJglOttulKzdNO9twzCWNszjJms+0kvyohy3IpwwiSffEmM7w
-	 zA9GbMG9757fkFAFNJVEjJR5FgYmsKiFZRUTGCNQ=
+	b=yvd3qSJPDkNCTcGi24tI8miXZf1MmCF1Em2VQxBv2J+sZX+8WVSXgZoLMbR/qzPEQ
+	 Nc9N5S4P8n3mfRWGbV/N61g3vft76Zwrb84i73pwWxnb7jbvWAxxdUKupvhhKCBPV9
+	 HiC0u52dVfFHn7EFPMvprVL2SdxbIALVwQIh/aP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/269] rust: kbuild: fix export of bss symbols
+	Jim Mattson <jmattson@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 065/214] KVM: SVM: Dont advertise Bus Lock Detect to guest if SVM support is missing
 Date: Tue, 10 Sep 2024 11:31:27 +0200
-Message-ID: <20240910092611.779620456@linuxfoundation.org>
+Message-ID: <20240910092601.416666487@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-[ Upstream commit b8673d56935c32a4e0a1a0b40951fdd313dbf340 ]
+commit 54950bfe2b69cdc06ef753872b5225e54eb73506 upstream.
 
-Symbols in the bss segment are not currently exported. This is a problem
-for Rust modules that link against statics, that are resident in the kernel
-image. Thus export symbols in the bss segment.
+If host supports Bus Lock Detect, KVM advertises it to guests even if
+SVM support is absent. Additionally, guest wouldn't be able to use it
+despite guest CPUID bit being set. Fix it by unconditionally clearing
+the feature bit in KVM cpu capability.
 
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240815074519.2684107-2-nmi@metaspace.dk
-[ Reworded slightly. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jim Mattson <jmattson@google.com>
+Closes: https://lore.kernel.org/r/CALMp9eRet6+v8Y1Q-i6mqPm4hUow_kJNhmVHfOV8tMfuSS=tVg@mail.gmail.com
+Fixes: 76ea438b4afc ("KVM: X86: Expose bus lock debug exception to guest")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240808062937.1149-4-ravi.bangoria@amd.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 7e33ebe8a9f4..333b9a482473 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -363,7 +363,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers.c FORCE
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
- 	$(NM) -p --defined-only $< \
--		| awk '/ (T|R|D) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
-+		| awk '/ (T|R|D|B) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -958,6 +958,9 @@ static __init void svm_set_cpu_caps(void
  
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
--- 
-2.43.0
-
+ 	/* CPUID 0x8000001F (SME/SEV features) */
+ 	sev_set_cpu_caps();
++
++	/* Don't advertise Bus Lock Detect to guest if SVM support is absent */
++	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+ }
+ 
+ static __init int svm_hardware_setup(void)
 
 
 
