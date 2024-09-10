@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-75473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB69734D1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69239973367
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB6928E24F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 167EAB27BEE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4095D191F61;
-	Tue, 10 Sep 2024 10:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4562918CBE6;
+	Tue, 10 Sep 2024 10:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ieOKImGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIGZWTvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0777191F65;
-	Tue, 10 Sep 2024 10:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0357018FC93;
+	Tue, 10 Sep 2024 10:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964836; cv=none; b=GWgo26SxJcz5xZNcQndXa6Kia4z401ItM7ta2sqD7LYziEPA6tPPLi2KtUPknr4X7Chc971AHJGzxFfajAeNdqHnMC9zHS/j2T2/bwS9Kw+PisSUnQuMxWUODNfqGsajgU328Wjc2aay+CeaaFE66rdZ4oeAdILIdmZsqO8Y1Cc=
+	t=1725963706; cv=none; b=RvPSJr27WjsKhgtwMBKHQRvfVq2rIWPm8Y3Pd0OGJrYw6Cu85a/dBG44p9R/g0Vbts2cz8d5s9hmjdAnxqy0/QKo2t+EsZaGa9rd1tE89Isgwx4jxGNvBc+KJLJibGG0A+i4uWXNUsVpkCgA29chdojU4WgQqh3rd2hWyQj1T8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964836; c=relaxed/simple;
-	bh=KeExZTdUpGjDYg8nUwzVl2egtoy+ze2IhINujAO8ytA=;
+	s=arc-20240116; t=1725963706; c=relaxed/simple;
+	bh=qUMOLRjn0bPaMN4K5tI9ElL83PTxcGvQSzlk/q+PJME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlFaD5aoRQOZ28STHPQKbMQgLHabm5O1MZOSzNRpkCb9DWysWi8R7gz76SYEzYqbUKbcY4P1FvM5udiZ6f/fYYgjOAUWEiUX8o1JiXOVGDOeOc8dxBd/d7Yar6tWzMmQkUR8YCXLOLgu2wxsIDNrvrUBtTwJYLqWwnkGfWFawCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ieOKImGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76597C4CEC6;
-	Tue, 10 Sep 2024 10:40:35 +0000 (UTC)
+	 MIME-Version; b=bTrEOCGAvJkMztm5kUKdof84QfL4aySIfRf1anQKgS/nGSjwoq0A2HWTWchZJsOKZ9d9uBALYLRkKK6oulpIBv4co560u7Sgbe+BE0DIe0E2/4AV1uWUfkLjcY6FjiWwSVd3PBVrldjrY0qA6fcx16DDrlr6qSfFsNlGcnSTZNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIGZWTvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767B4C4CEC3;
+	Tue, 10 Sep 2024 10:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964835;
-	bh=KeExZTdUpGjDYg8nUwzVl2egtoy+ze2IhINujAO8ytA=;
+	s=korg; t=1725963705;
+	bh=qUMOLRjn0bPaMN4K5tI9ElL83PTxcGvQSzlk/q+PJME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ieOKImGdFgQfVDpJdH8soYiPbpYq2JTNvHZL7W9u6ZAKn8lNNAsmWwInm8TAcAHkT
-	 SNoJfbJXcvrM5ohh7X5Tl4rWWvVm59yIlyBXJQVxxuuHxYZGM8Qlw6q0quVWWzPsEa
-	 b9BzXyq4lItwrOD6lXY1Jbkbt2yXo4KqPsH8rYH0=
+	b=fIGZWTvt390cuyvS853YnaBLtEx1gQRD2Xun+YGF42HVrJuIXm48uTrdavLb+jVdp
+	 N4pdkx0i8elgnc4Ke3/HQ9l+zMid7tJ4N6c7ZFZCn8Eh22lbUlgxCNf05wMeTnPM47
+	 R6ztoJTq5Def+ER7BQElDK9S5j+eD132bZNnHTSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 048/186] virtio_net: Fix napi_skb_cache_put warning
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 121/214] can: m_can: Release irq on error in m_can_open
 Date: Tue, 10 Sep 2024 11:32:23 +0200
-Message-ID: <20240910092556.489725793@linuxfoundation.org>
+Message-ID: <20240910092603.717421525@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Simon Horman <horms@kernel.org>
 
-commit f8321fa75102246d7415a6af441872f6637c93ab upstream.
+[ Upstream commit 06d4ef3056a7ac31be331281bb7a6302ef5a7f8a ]
 
-After the commit bdacf3e34945 ("net: Use nested-BH locking for
-napi_alloc_cache.") was merged, the following warning began to appear:
+It appears that the irq requested in m_can_open() may be leaked
+if an error subsequently occurs: if m_can_start() fails.
 
-	 WARNING: CPU: 5 PID: 1 at net/core/skbuff.c:1451 napi_skb_cache_put+0x82/0x4b0
+Address this by calling free_irq in the unwind path for
+such cases.
 
-	  __warn+0x12f/0x340
-	  napi_skb_cache_put+0x82/0x4b0
-	  napi_skb_cache_put+0x82/0x4b0
-	  report_bug+0x165/0x370
-	  handle_bug+0x3d/0x80
-	  exc_invalid_op+0x1a/0x50
-	  asm_exc_invalid_op+0x1a/0x20
-	  __free_old_xmit+0x1c8/0x510
-	  napi_skb_cache_put+0x82/0x4b0
-	  __free_old_xmit+0x1c8/0x510
-	  __free_old_xmit+0x1c8/0x510
-	  __pfx___free_old_xmit+0x10/0x10
+Flagged by Smatch.
+Compile tested only.
 
-The issue arises because virtio is assuming it's running in NAPI context
-even when it's not, such as in the netpoll case.
-
-To resolve this, modify virtnet_poll_tx() to only set NAPI when budget
-is available. Same for virtnet_poll_cleantx(), which always assumed that
-it was in a NAPI context.
-
-Fixes: df133f3f9625 ("virtio_net: bulk free tx skbs")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Link: https://patch.msgid.link/20240712115325.54175-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Shivani: Modified to apply on v4.19.y-v5.10.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eaacfeaca7ad ("can: m_can: Call the RAM init directly from m_can_chip_config")
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/all/20240805-mcan-irq-v2-1-7154c0484819@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/can/m_can/m_can.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1497,7 +1497,7 @@ static bool is_xdp_raw_buffer_queue(stru
- 		return false;
- }
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index e027229c1955..07f61ee76ca6 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -1840,7 +1840,7 @@ static int m_can_open(struct net_device *dev)
+ 	/* start the m_can controller */
+ 	err = m_can_start(dev);
+ 	if (err)
+-		goto exit_irq_fail;
++		goto exit_start_fail;
  
--static void virtnet_poll_cleantx(struct receive_queue *rq)
-+static void virtnet_poll_cleantx(struct receive_queue *rq, int budget)
- {
- 	struct virtnet_info *vi = rq->vq->vdev->priv;
- 	unsigned int index = vq2rxq(rq->vq);
-@@ -1508,7 +1508,7 @@ static void virtnet_poll_cleantx(struct
- 		return;
+ 	can_led_event(dev, CAN_LED_EVENT_OPEN);
  
- 	if (__netif_tx_trylock(txq)) {
--		free_old_xmit_skbs(sq, true);
-+		free_old_xmit_skbs(sq, !!budget);
- 		__netif_tx_unlock(txq);
- 	}
+@@ -1851,6 +1851,9 @@ static int m_can_open(struct net_device *dev)
  
-@@ -1525,7 +1525,7 @@ static int virtnet_poll(struct napi_stru
- 	unsigned int received;
- 	unsigned int xdp_xmit = 0;
+ 	return 0;
  
--	virtnet_poll_cleantx(rq);
-+	virtnet_poll_cleantx(rq, budget);
- 
- 	received = virtnet_receive(rq, budget, &xdp_xmit);
- 
-@@ -1598,7 +1598,7 @@ static int virtnet_poll_tx(struct napi_s
- 	txq = netdev_get_tx_queue(vi->dev, index);
- 	__netif_tx_lock(txq, raw_smp_processor_id());
- 	virtqueue_disable_cb(sq->vq);
--	free_old_xmit_skbs(sq, true);
-+	free_old_xmit_skbs(sq, !!budget);
- 
- 	opaque = virtqueue_enable_cb_prepare(sq->vq);
- 
++exit_start_fail:
++	if (cdev->is_peripheral || dev->irq)
++		free_irq(dev->irq, dev);
+ exit_irq_fail:
+ 	if (cdev->is_peripheral)
+ 		destroy_workqueue(cdev->tx_wq);
+-- 
+2.43.0
+
 
 
 
