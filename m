@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259099730E2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBF3972E44
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E242A287069
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FF852884F5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E08B18DF60;
-	Tue, 10 Sep 2024 10:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDC318C34B;
+	Tue, 10 Sep 2024 09:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu6rbdKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyjcQEvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D080718787E;
-	Tue, 10 Sep 2024 10:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BFC18C33D;
+	Tue, 10 Sep 2024 09:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962582; cv=none; b=pVSS/joFeOrEmc1NNrObqRhsuNUReohajR+5w9GSx56YhQDckK26kctalc6grhvi9lHK8fkWO2XUQXwMJYyrTbuUw1befgw7Irn8aTa3TblXyaSp4V3eYBcSFDVDKtU1H+Vt9uAbLjofRi6x/ddtkNma8YXBH0qoaZogPdmvpLQ=
+	t=1725961246; cv=none; b=u61hTKYZS+6EfCa+Ky1PvoKojcgm6t186WsQAfUXQ/PL2/Tkjq3B19ETu7XF/iEIGNkfZ6xPpAAqic4jwXvQwjKiySAoYt5r//iJDRUGbVSx3G9cdToisl1y9S8MxeFS/LJJzE05yd9bdsYUJOyrtcbymcYn0gScG2xMstLp83E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962582; c=relaxed/simple;
-	bh=YzR+n4RjazWTYJsaniI+2enOG3d2rWKhp9AQEJcnFBs=;
+	s=arc-20240116; t=1725961246; c=relaxed/simple;
+	bh=wWgp9fi5HVJHQjwlOorlnJSSZhKIlUvbI7fkRwT0pyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNs3j0+NIJQ5cYgPz9OQZrDoZRFHTgBsjH8n7a7xLDS1NTHO5rU5C8vuP9IrB8IQAjvtptYnD9h95XprQEl5w6FdGofOygD5ZDap8GYdYl1lJhlnQN2edeNOZjKzn+B2fW3WSNjCiyU+R1zaJU+FM4ObYsoIBVquK4HV2DRu2ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu6rbdKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55884C4CECE;
-	Tue, 10 Sep 2024 10:03:02 +0000 (UTC)
+	 MIME-Version; b=EZUsZjOoJ5PrrP7C4QFBJ9ewnqKoZvyJEGyM/LieVeC76Xxxnm1IpHl5pRZSyDj09no/wtDokZRwbD2ZP+UPcFWS367dhD6+R+I51c02+qiR0btnLXwQBjWYdt2up7dEpHJHoAUggfndeRX/EOWWVaRqaZjpK0Vg8RpDUwnuYSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyjcQEvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5277C4CEC3;
+	Tue, 10 Sep 2024 09:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962582;
-	bh=YzR+n4RjazWTYJsaniI+2enOG3d2rWKhp9AQEJcnFBs=;
+	s=korg; t=1725961246;
+	bh=wWgp9fi5HVJHQjwlOorlnJSSZhKIlUvbI7fkRwT0pyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vu6rbdKKyMv09B96rSNqdaEoKpsS8CtmQYE+nQ9tUilQGMhWY59m/7eEESmwPXWnB
-	 +iZ7u/IFNO89s35Q+dq2vxa4eMHoftp3XcDDo84YpZEAlhClgsg9gJm3PeNMPuWiZe
-	 P737LU8FdAIMpKFdoV6QQLdH9AWoG6+6fzHXhuHs=
+	b=eyjcQEvdyy5XsNlplNyVAqwMTtp6FHHg7dzUHwIOV2dA84mU9xNQIGqXdOXzxDLOs
+	 qNTQJ+1oAyP6w3Kz5C5i/irF4IqaYNv2NsV8iNpjdY5ZW/AkUj4KfWxcgNOatyXj4y
+	 elqjZkl6XQWuBRbGgNi2GW46qyF2uugmLsaFLaBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/121] smp: Add missing destroy_work_on_stack() call in smp_call_on_cpu()
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 95/96] net: bridge: explicitly zero is_sticky in fdb_create
 Date: Tue, 10 Sep 2024 11:32:37 +0200
-Message-ID: <20240910092549.797451149@linuxfoundation.org>
+Message-ID: <20240910092545.712352624@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-[ Upstream commit 77aeb1b685f9db73d276bad4bb30d48505a6fd23 ]
+commit 1288aa7af20cfa25cb00cf0d77f94d1891644c83 upstream.
 
-For CONFIG_DEBUG_OBJECTS_WORK=y kernels sscs.work defined by
-INIT_WORK_ONSTACK() is initialized by debug_object_init_on_stack() for
-the debug check in __init_work() to work correctly.
+We need to explicitly zero is_sticky when creating a new fdb, otherwise
+we might get a stale value for a new entry.
 
-But this lacks the counterpart to remove the tracked object from debug
-objects again, which will cause a debug object warning once the stack is
-freed.
-
-Add the missing destroy_work_on_stack() invocation to cure that.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240704065213.13559-1-qiang.zhang1211@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 435f2e7cc0b7 ("net: bridge: add support for sticky fdb entries")
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/smp.c | 1 +
+ net/bridge/br_fdb.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index be65b76cb803..76de88dc1699 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -813,6 +813,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
- 
- 	queue_work_on(cpu, system_wq, &sscs.work);
- 	wait_for_completion(&sscs.done);
-+	destroy_work_on_stack(&sscs.work);
- 
- 	return sscs.ret;
- }
--- 
-2.43.0
-
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -512,6 +512,7 @@ static struct net_bridge_fdb_entry *fdb_
+ 		if (is_static)
+ 			set_bit(BR_FDB_STATIC, &fdb->flags);
+ 		fdb->offloaded = 0;
++		fdb->is_sticky = 0;
+ 		fdb->updated = fdb->used = jiffies;
+ 		if (rhashtable_lookup_insert_fast(&br->fdb_hash_tbl,
+ 						  &fdb->rhnode,
 
 
 
