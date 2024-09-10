@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05419973262
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434109733A1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27732882DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14C4AB25063
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03E1917D6;
-	Tue, 10 Sep 2024 10:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B64E192D69;
+	Tue, 10 Sep 2024 10:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpcvFthv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgXfszi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7A9190496;
-	Tue, 10 Sep 2024 10:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A21188A38;
+	Tue, 10 Sep 2024 10:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963371; cv=none; b=KgcE8ThJ6mP2nWFHLDsVCkmV/o8R+ztouakA76HALtitNnw5AEEZhSS6+bzc4JF1sPvh0vWB261QmjXzu33ek1twwadNUaRvY+jMBl/8zn7gWrAYHgMP2+AE25+zagjMC511JBrzEhmZc0L9Hh84kKwoJuTiZVUhzI3R0AIZV80=
+	t=1725964106; cv=none; b=J+BMijp8zFKanbW6Y2ddQ5QA5OhF/LY8MWMF1oPPoXnenq1QhX6dMP7AInQ0fqR6ckUqFLafUMNq3KSru6jXi2zajFMBE3KDhF4bkjX2cj/XIyZClYfQkp/EnsfmAyjDWNUU+KIUa0IWqi0Bj5LbJWgtzJTMGmuwfVv5dcUByWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963371; c=relaxed/simple;
-	bh=bTY3v/gGizhSfJuqG0c+gSm6+CmORv0Qat/uPTusOnI=;
+	s=arc-20240116; t=1725964106; c=relaxed/simple;
+	bh=7YRYtOPBaV+/DGkg2O8d9vSOYjunepgAPP7I3XlnWz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPVnlJ3qGZxP3B1GeZ24D5WpKkidFNUWXUvvaGSeLO6e8OdLZqzd0V7ptimQY8C6QcEwWhAc9aMW93UFeswZWJSXDSzBDWFRkv0A+dp5UJ316Cc1OGi3jEe2eNuv6IJUkVIFlbkbNN0trEhGbyFgwejnqplbcG9xGJD1xPoW4H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpcvFthv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE7BC4CEC3;
-	Tue, 10 Sep 2024 10:16:10 +0000 (UTC)
+	 MIME-Version; b=aT2eN3X+vUfgz2zgrsLvzN17Euoc6XZYuO8UxZR0GSVqdl3TBvhsn5rjVz89x5JSHwP8PxSeE8hLKz293kReOJlWf6foOc7xCezb1kmyJEL74k2ZMIW91a+BiIIj+OeailN52LFzqcK4WrynQwdezsC5gbh+7g25Xd1PxBupHPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgXfszi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D022C4CEC3;
+	Tue, 10 Sep 2024 10:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963371;
-	bh=bTY3v/gGizhSfJuqG0c+gSm6+CmORv0Qat/uPTusOnI=;
+	s=korg; t=1725964105;
+	bh=7YRYtOPBaV+/DGkg2O8d9vSOYjunepgAPP7I3XlnWz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpcvFthvxIlj9MoLGZ7msGr3Je/q/2gCMm7Q/LkvfHuslXjwnFKP/vrfwE06cQXWK
-	 L+T8RbI65/gc8MhJMc7sf1c15lGnD7a1iyHgR9O7HC2jrjM4TIaQcmnXFqt9Y1pJfa
-	 24fCpEW7SP405GTcMUd1mb2GOvoSbbFRP7MOaLnI=
+	b=FgXfszi+C22CDfXE0Pv7hSDLEJgfN0grTQaA4bCFNLwPP2/4fqZerOWNGNjJVQvas
+	 xVt0zri8uIBO2GOjGvldIjZyHyRx/0tmoD9CHN6GfScw5L5dyLlhJPfYZzbm9s3sxQ
+	 gCCl0pILdV8i1bxIqIbJrSUEEXtDMbQZDGFAcqmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/214] drm/amdgpu: the warning dereferencing obj for nbio_v7_4
+Subject: [PATCH 6.6 070/269] af_unix: Remove put_pid()/put_cred() in copy_peercred().
 Date: Tue, 10 Sep 2024 11:30:57 +0200
-Message-ID: <20240910092600.201222142@linuxfoundation.org>
+Message-ID: <20240910092610.697624960@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d190b459b2a4304307c3468ed97477b808381011 ]
+[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
 
-if ras_manager obj null, don't print NBIO err data
+When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
+the listener's sk_peer_pid/sk_peer_cred are copied to the client in
+copy_peercred().
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
+we need not call put_pid() and put_cred() there.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-index 74cd7543729b..af1ca5cbc2fa 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-@@ -370,7 +370,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
- 		else
- 			WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, bif_doorbell_intr_cntl);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b7f62442d826..dca4429014db 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -693,9 +693,6 @@ static void init_peercred(struct sock *sk)
  
--		if (!ras->disable_ras_err_cnt_harvest) {
-+		if (ras && !ras->disable_ras_err_cnt_harvest && obj) {
- 			/*
- 			 * clear error status after ras_controller_intr
- 			 * according to hw team and count ue number
+ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ {
+-	const struct cred *old_cred;
+-	struct pid *old_pid;
+-
+ 	if (sk < peersk) {
+ 		spin_lock(&sk->sk_peer_lock);
+ 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+@@ -703,16 +700,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 		spin_lock(&peersk->sk_peer_lock);
+ 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+ 	}
+-	old_pid = sk->sk_peer_pid;
+-	old_cred = sk->sk_peer_cred;
++
+ 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
+ 
+ 	spin_unlock(&sk->sk_peer_lock);
+ 	spin_unlock(&peersk->sk_peer_lock);
+-
+-	put_pid(old_pid);
+-	put_cred(old_cred);
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
 -- 
 2.43.0
 
