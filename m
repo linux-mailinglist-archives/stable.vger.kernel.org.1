@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-75606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A4D97355C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D5C9735C2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3242C1C24B95
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2B69B2F756
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230D218C32F;
-	Tue, 10 Sep 2024 10:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8A218DF86;
+	Tue, 10 Sep 2024 10:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA7F5p97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaOWYAa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B2D18EFEC;
-	Tue, 10 Sep 2024 10:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FF718DF67;
+	Tue, 10 Sep 2024 10:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965222; cv=none; b=DDAlBcXiwZKK35cehvStPXhmGpIUaUMIIP1l/qO/RA7X7PIucgbZLh3sFhjvptZhxwWAB5EBmo8MIyqpIvA39ejYjELbOFvGzC9GH5cdLZg0llTxtOTlyJGS/tNHJkYD0iIxrKbdheQGqH71CAOQTtGGXMZJP3XXHtwkIejTIUI=
+	t=1725965269; cv=none; b=LCFDz6mTkU5ThtJs/JfldnTgPxQ8VWFQ6mGGsoZuGFPQFrWhkEy3DiCX95XlZbp1v7PdU7/4usAdQ5jeTPtM39KIvq5GIsMmgjKjVAtWBX06VrU5+0TfWdSgc3iSBQy57AQ3ZSigBLkZs2qYmJhoM1os2BO2UK+eTz1VUxnydXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965222; c=relaxed/simple;
-	bh=/Bv8ZQjAfwURvEpyM9qC/sMQWh/pSV2tD0SqRWgbzEE=;
+	s=arc-20240116; t=1725965269; c=relaxed/simple;
+	bh=mMAPMl6eJslHDD08TFZKEAkaaaWbnXxDXNaz/EU/LM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djZPxPcbZiKHxrETdWx3zxhnjqHpJSC7gaz5XytN+63jy9thC80mOw2F/uEymotS1yLmWWmWMUXlyOpXJ/UOEp3+j5g6wXq9tIdqTF1wkeAh2Ikv7tLLK/DekcMKtZdJCXovCMWAweFnp2pWcFWX/ZXFwyfL7TrbzQvVLNlDy8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA7F5p97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACBEC4CEC3;
-	Tue, 10 Sep 2024 10:47:02 +0000 (UTC)
+	 MIME-Version; b=N6TjwvtjcABbjWn76xhkiY1dNu55QHWb/gpICGHYSpUGsreQPfK8GkEFOOVnMnqfDeVYDmFzxqNjyK9fz3uhZJElk1VMXcb4f2yMi58s2+cujce5j8NrOBEyat1LMuVhsR8f/QyGc0ZqNB5WB8Nqv8orQaNiaucxpoiGp/LXj1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaOWYAa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1DFC4CEC3;
+	Tue, 10 Sep 2024 10:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965222;
-	bh=/Bv8ZQjAfwURvEpyM9qC/sMQWh/pSV2tD0SqRWgbzEE=;
+	s=korg; t=1725965269;
+	bh=mMAPMl6eJslHDD08TFZKEAkaaaWbnXxDXNaz/EU/LM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jA7F5p97SVkurPwjmSxYpNIz77mqkxPIl43AhiCSmIO5UTSg77OfnXxMImRBCyOcr
-	 E9dQ1vNqhHuevNU/msw5oe4fVsaNQg1xSlCIPnT0FpOOORLZSGGiyz9fhVXfrVn+/q
-	 TO+Kl7bqUre3bZq+UraLSl2an600x39tEv8uE7Mc=
+	b=DaOWYAa10yOJi6jD/xUOTQbxX/aiaqzHvN8EaYeL4nYtWs8lqJEHIo/IUkPjc5z+v
+	 /PPOxveVGLVRnTF2YWY1mXGS/MA/JzQk4rk3RIEzzuMZcI3MGxlya72BeV06nkWS30
+	 rzMH1A2jZmfkzaEjxRvIrhFtZy+h5Z9kRnFh1esQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Shan <gshan@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/186] arm64: acpi: Harden get_cpu_for_acpi_id() against missing CPU entry
-Date: Tue, 10 Sep 2024 11:34:33 +0200
-Message-ID: <20240910092601.958904737@linuxfoundation.org>
+Subject: [PATCH 5.10 179/186] nvmet-tcp: fix kernel crash if commands allocation fails
+Date: Tue, 10 Sep 2024 11:34:34 +0200
+Message-ID: <20240910092601.992469441@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
 References: <20240910092554.645718780@linuxfoundation.org>
@@ -67,44 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 2488444274c70038eb6b686cba5f1ce48ebb9cdd ]
+[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
 
-In a review discussion of the changes to support vCPU hotplug where
-a check was added on the GICC being enabled if was online, it was
-noted that there is need to map back to the cpu and use that to index
-into a cpumask. As such, a valid ID is needed.
+If the commands allocation fails in nvmet_tcp_alloc_cmds()
+the kernel crashes in nvmet_tcp_release_queue_work() because of
+a NULL pointer dereference.
 
-If an MPIDR check fails in acpi_map_gic_cpu_interface() it is possible
-for the entry in cpu_madt_gicc[cpu] == NULL.  This function would
-then cause a NULL pointer dereference.   Whilst a path to trigger
-this has not been established, harden this caller against the
-possibility.
+  nvmet: failed to install queue 0 cntlid 1 ret 6
+  Unable to handle kernel NULL pointer dereference at
+         virtual address 0000000000000008
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240529133446.28446-13-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fix the bug by setting queue->nr_cmds to zero in case
+nvmet_tcp_alloc_cmd() fails.
+
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 0d1da93a5bad..702587fda70c 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -102,7 +102,8 @@ static inline int get_cpu_for_acpi_id(u32 uid)
- 	int cpu;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index e493fc709065..5655f6d81cc0 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1787,8 +1787,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
+ 	}
  
- 	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
--		if (uid == get_acpi_id_for_cpu(cpu))
-+		if (acpi_cpu_get_madt_gicc(cpu) &&
-+		    uid == get_acpi_id_for_cpu(cpu))
- 			return cpu;
+ 	queue->nr_cmds = sq->size * 2;
+-	if (nvmet_tcp_alloc_cmds(queue))
++	if (nvmet_tcp_alloc_cmds(queue)) {
++		queue->nr_cmds = 0;
+ 		return NVME_SC_INTERNAL;
++	}
+ 	return 0;
+ }
  
- 	return -EINVAL;
 -- 
 2.43.0
 
