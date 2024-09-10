@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-74470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BB9972F74
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BBE972F55
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F06286882
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1245F1F22F3E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667081891A5;
-	Tue, 10 Sep 2024 09:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5422B18BC3F;
+	Tue, 10 Sep 2024 09:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYy45+6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D535UWd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F651885A6;
-	Tue, 10 Sep 2024 09:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1276046444;
+	Tue, 10 Sep 2024 09:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961900; cv=none; b=LaXf0Ihg08063IeTRUlxFc39XAnjvXNXUDZcihSszPA89+GdSMvPwC0W/oMAkEYu38npIfOH09V3Rcml4czi2fwR1KGBVumX3JcL6hkHvN3WSZ66+EUXCjhqokgPr31r5sKraFbi9sTYpsKQN7AD5VqaN0ggXcKdpBgaN6yHjsY=
+	t=1725961820; cv=none; b=L9O4iVXLSfJY5njPbZ/Iqh9dIgJpHrWzC6NDO3n0hBx/BvioVhrwpFySYmHz0DH29j6SvxNTBYhD6JOupRPWFJvdgRGSW4m6PH4WNw5D4rKSok7klIQgoC6ahJUGqQdbwg8ye6OPQ/TWa6omKnaghBMhJvF7qYiEgYcQ8cHxk14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961900; c=relaxed/simple;
-	bh=WpzR8rjLNyGpJvUnaf33v0VmBNc98ZB6bkc9BIdGmzc=;
+	s=arc-20240116; t=1725961820; c=relaxed/simple;
+	bh=ydT67DBNtsCpIziBZn/YXHeheUXGpptovNI2FEOm4M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbGJ9//fa7/4AmI6TYq94INPqz8AGpllhqzAGkaTgF9iUhCPkG5iBn9uSfafaaBbIw9FKKx3hzsuOd5vp2iEWt6VIFef01AYezUJ/wZBMn1Uuoiu7tFOI+RfILmOW1K15PobfaLFNs3VxEQShNWPCXg3upnlVHlyDucKstfEE1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYy45+6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D90BC4CEC3;
-	Tue, 10 Sep 2024 09:51:39 +0000 (UTC)
+	 MIME-Version; b=oKufliY//X90L4g55xKTAjfWp8XcfY7M9Y22Zb/NbYT3loizJepPxRDwoalEWDOMVi+g362KVOKIOmqb7nL6dTP3IUVPAiA2W/WWI7Knnqn0hEYqJK5klxtavYRkaE+nYqjfwx9aZnx/sM7G02g0Of2fd56btxNOpc1dz8AyNig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D535UWd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D321C4CEC3;
+	Tue, 10 Sep 2024 09:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961899;
-	bh=WpzR8rjLNyGpJvUnaf33v0VmBNc98ZB6bkc9BIdGmzc=;
+	s=korg; t=1725961820;
+	bh=ydT67DBNtsCpIziBZn/YXHeheUXGpptovNI2FEOm4M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYy45+6kEGbHZsz4Z8QCSs/oVKEb1FtsjP5rhOeEv64YZDcGln3iS0KJiC/AEedt3
-	 gbLZVbi9W8muDsBvn1PHqwXcyDkdx9XoRlTjvtXAi+eqEFWRberybQzliy7WRuIfBB
-	 pmif3NRdf5dyGL4zfuba83d2gCTQYg3QHxt0O7cg=
+	b=D535UWd6vueIGvoRqY0YVlUqU56CvYz8Zudb1ZcQUhLtWhZ2GYead91WmcgZR3UpE
+	 jFNJMEZ5KVuGNFoMkWlxNwNbE4N6K/Mx/bxLh3jr96mCjgUMho/4aQE5TvxRnG2O0h
+	 Vo2ejaBQFV/nnjiQHjrSUcqRWOYWMoO/u3AggFxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Juergen Gross <jgross@suse.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 199/375] xen: privcmd: Fix possible access to a freed kirqfd instance
-Date: Tue, 10 Sep 2024 11:29:56 +0200
-Message-ID: <20240910092629.184563717@linuxfoundation.org>
+Subject: [PATCH 6.10 200/375] firmware: cs_dsp: Dont allow writes to read-only controls
+Date: Tue, 10 Sep 2024 11:29:57 +0200
+Message-ID: <20240910092629.223206175@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -68,89 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 611ff1b1ae989a7bcce3e2a8e132ee30e968c557 ]
+[ Upstream commit 62412a9357b16a4e39dc582deb2e2a682b92524c ]
 
-Nothing prevents simultaneous ioctl calls to privcmd_irqfd_assign() and
-privcmd_irqfd_deassign(). If that happens, it is possible that a kirqfd
-created and added to the irqfds_list by privcmd_irqfd_assign() may get
-removed by another thread executing privcmd_irqfd_deassign(), while the
-former is still using it after dropping the locks.
+Add a check to cs_dsp_coeff_write_ctrl() to abort if the control
+is not writeable.
 
-This can lead to a situation where an already freed kirqfd instance may
-be accessed and cause kernel oops.
+The cs_dsp code originated as an ASoC driver (wm_adsp) where all
+controls were exported as ALSA controls. It relied on ALSA to
+enforce the read-only permission. Now that the code has been
+separated from ALSA/ASoC it must perform its own permission check.
 
-Use SRCU locking to prevent the same, as is done for the KVM
-implementation for irqfds.
+This isn't currently causing any problems so there shouldn't be any
+need to backport this. If the client of cs_dsp exposes the control as
+an ALSA control, it should set permissions on that ALSA control to
+protect it. The few uses of cs_dsp_coeff_write_ctrl() inside drivers
+are for writable controls.
 
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/9e884af1f1f842eacbb7afc5672c8feb4dea7f3f.1718703669.git.viresh.kumar@linaro.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20240702110809.16836-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/privcmd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/firmware/cirrus/cs_dsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index c9c620e32fa8..39e726d7280e 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -17,6 +17,7 @@
- #include <linux/poll.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/srcu.h>
- #include <linux/string.h>
- #include <linux/workqueue.h>
- #include <linux/errno.h>
-@@ -846,6 +847,7 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
- /* Irqfd support */
- static struct workqueue_struct *irqfd_cleanup_wq;
- static DEFINE_SPINLOCK(irqfds_lock);
-+DEFINE_STATIC_SRCU(irqfds_srcu);
- static LIST_HEAD(irqfds_list);
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 8a347b938406..89fd63205a6e 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -796,6 +796,9 @@ int cs_dsp_coeff_write_ctrl(struct cs_dsp_coeff_ctl *ctl,
  
- struct privcmd_kernel_irqfd {
-@@ -873,6 +875,9 @@ static void irqfd_shutdown(struct work_struct *work)
- 		container_of(work, struct privcmd_kernel_irqfd, shutdown);
- 	u64 cnt;
+ 	lockdep_assert_held(&ctl->dsp->pwr_lock);
  
-+	/* Make sure irqfd has been initialized in assign path */
-+	synchronize_srcu(&irqfds_srcu);
++	if (ctl->flags && !(ctl->flags & WMFW_CTL_FLAG_WRITEABLE))
++		return -EPERM;
 +
- 	eventfd_ctx_remove_wait_queue(kirqfd->eventfd, &kirqfd->wait, &cnt);
- 	eventfd_ctx_put(kirqfd->eventfd);
- 	kfree(kirqfd);
-@@ -935,7 +940,7 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
- 	__poll_t events;
- 	struct fd f;
- 	void *dm_op;
--	int ret;
-+	int ret, idx;
+ 	if (len + off * sizeof(u32) > ctl->len)
+ 		return -EINVAL;
  
- 	kirqfd = kzalloc(sizeof(*kirqfd) + irqfd->size, GFP_KERNEL);
- 	if (!kirqfd)
-@@ -981,6 +986,7 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
- 		}
- 	}
- 
-+	idx = srcu_read_lock(&irqfds_srcu);
- 	list_add_tail(&kirqfd->list, &irqfds_list);
- 	spin_unlock_irqrestore(&irqfds_lock, flags);
- 
-@@ -992,6 +998,8 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
- 	if (events & EPOLLIN)
- 		irqfd_inject(kirqfd);
- 
-+	srcu_read_unlock(&irqfds_srcu, idx);
-+
- 	/*
- 	 * Do not drop the file until the kirqfd is fully initialized, otherwise
- 	 * we might race against the EPOLLHUP.
 -- 
 2.43.0
 
