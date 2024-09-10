@@ -1,100 +1,165 @@
-Return-Path: <stable+bounces-75731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D742B974112
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:51:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AAA974178
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2321C255C2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B28251F26AF4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C551A2C32;
-	Tue, 10 Sep 2024 17:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE531A38F1;
+	Tue, 10 Sep 2024 17:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OHrTNmu9"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="UD4IcbBk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B753461FE1
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 17:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C798116DED5;
+	Tue, 10 Sep 2024 17:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725990661; cv=none; b=kbq1V/NgLvgP/gKAeddct9xePwvrabbcbMU9C83royxm4sAl2JdYDicq/r9HaRAlIjKiGBBr1FwVPtP59mpYI25dAqxVnQ17cYjYZAnaUhzy9+mX4ro5ZOrdQNi8j1CX5pI3Uc0mTvu5WplN3boXGy6z3Z3GVda/akns9lyBXf8=
+	t=1725991193; cv=none; b=lzCLyjQIG9qbC7j+sT8B0eqN0yB/UDyx+T5WWUFJdDG3Uv5/E1M+9FPs9O2ihhGlx/5kq/yq2uR8aL31Ol5aC1yhevlN+j43pUe65DbPDfxhNwzoJ0qbAYzEEki9QF1ILsi/ORmpE/tT0oALcneU/NjYKJKchfZcFZWczyzYpqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725990661; c=relaxed/simple;
-	bh=/O17IV/yfGZqoOUamwcF10jhVtVEfBfb7u+sYzKZlrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=j4C0E24Ea0EvaRtiq6ZllgPXYlyr5pcxRQ3ohR3N1g1d8eA7ZG2GaiVAeUod4e5RC732PL3wMYD7lOTymniJHgtdyezC+Qw5JSafo1yhGEgsBQuoD6V5c/+hbq6Gg/KZKJSAAETKZYnct2z0Qir9IRubQCEDJgiQHNQqZ2ZgKns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OHrTNmu9; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725990659; x=1757526659;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=/O17IV/yfGZqoOUamwcF10jhVtVEfBfb7u+sYzKZlrw=;
-  b=OHrTNmu9ehk65ch+YbQPZrpvp6/t5QRZjLQvNqM+61j0ZjacZJgk3tts
-   HXGmFfCVajWgL4ZdpDMODG4aplfCD+WBjF7IgYvQp2YtdS/u0BIfh46i6
-   WeyoTh8JqAimmrw+b3EjPR4NKG6khc1lFlIrV8ZwHpD74Wwr55HZfyylT
-   ZJekvQQEEcF/4Cv5xB0O+OWJ4+906P97nfRFY1xcX+H9I0DazUexkv/xj
-   eq1cn28msgQhb0tLjmJsgv8JfTDEwwfxrxhwhpIFoIkNkBKlVIYEzn3yL
-   Hi+1JqfS+85FgenIJozNX1IXZxlkH7wwG14KKniSFObebsmrU2uHRB3hB
-   g==;
-X-CSE-ConnectionGUID: rpNL6hbORkGWwpoLho4EAA==
-X-CSE-MsgGUID: ukh8KdFATS+IlV+xCPN5Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35353080"
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="35353080"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 10:50:59 -0700
-X-CSE-ConnectionGUID: EPAnZmxWScmdBxR7lYo1WA==
-X-CSE-MsgGUID: oYaRLOTHSxGlbPLG+E0wTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="71900431"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 10 Sep 2024 10:50:59 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1so50x-0002SI-38;
-	Tue, 10 Sep 2024 17:50:55 +0000
-Date: Wed, 11 Sep 2024 01:50:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Brian Norris <briannorris@chromium.org>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [NOT A REGRESSION] firmware: framebuffer-coreboot: duplicate
- device name "simple-framebuffer.0"
-Message-ID: <ZuCG-DggNThuF4pj@b20ea791c01f>
+	s=arc-20240116; t=1725991193; c=relaxed/simple;
+	bh=OwP3+I3acA6YRD1AxGoP9eoRcytom+/4gfnsPh7Ru/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NNCJ0stHfOqT+dJ/fvEC0pe94QWP9oCMCCWxOMX8R24l3RRgREeva9CHxF9jWGkq0a18XJqZZXY3gQ3+ArXDRpicZ0FZ9SE9W/JLCJNVCsUXh6VTz7eCyP/ShmXPrcbGGZ0TkswyL5oZ35TH4Rgoj4LG9pC+kS+A+UxvRBtUPfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=UD4IcbBk; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4X3BL967XNzlgVnf;
+	Tue, 10 Sep 2024 17:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1725991174; x=1728583175; bh=oRpBILn97hQlAgqu+BPpd8j0
+	wIORp8/sYsHHAPwOHwk=; b=UD4IcbBkrLSUorg1mwaLj3gCH9px3fa3/cCIWLau
+	Yi0TC9URYhFajnf5t4Xx6rkFrNoZk+jsnhvrC0du5Kr6oElQ/ecp8xvGr2gHc2RX
+	/h5Kc7V62EB2570/EGWCWP1muZwaPCVoczra9dhbTh11nOSNGTaqnE53/JK5bOUq
+	ErWn9eS9qqM/7YbqqjkQcsK43u4BJfvAMtsIv428kC4A3+wTUPlISJD5b+f14JYu
+	IZskNUv4U8YkBONQ7QN5aVWi719R+QpO6tMPcCItbqk6H8ncbs6xPLelstjujOdG
+	OJVevr8exVNRhq6KTBu5rwT8HR6I88x6sTQg1f26RFXwzw==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id IFyM8jt2rizU; Tue, 10 Sep 2024 17:59:34 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4X3BKw4H3dzlgTWQ;
+	Tue, 10 Sep 2024 17:59:32 +0000 (UTC)
+Message-ID: <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
+Date: Tue, 10 Sep 2024 10:59:31 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZuCGkjoxKxpnhEh6@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
+ jejb@linux.ibm.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+ qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+ eddie.huang@mediatek.com, naomi.chu@mediatek.com, ed.tsai@mediatek.com,
+ quic_nguyenb@quicinc.com, stable@vger.kernel.org
+References: <20240910073035.25974-1-peter.wang@mediatek.com>
+ <20240910073035.25974-3-peter.wang@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240910073035.25974-3-peter.wang@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 9/10/24 12:30 AM, peter.wang@mediatek.com wrote:
+> ufshcd_abort_all froce abort all on-going command and the host
+                    ^^^^^ ^^^^^              ^^^^^^^         ^^^^
+                forcibly? aborts?            commands?   host controller?
+> will automatically fill in the OCS field of the corresponding
+> response with OCS_ABORTED based on different working modes.
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The host controller only sets the OCS field to OCS_ABORTED in MCQ mode
+if the host controller successfully aborted the command. If the
+abort TMF is submitted to the UFS device, the OCS field won't be changed
+into OCS_ABORTED. In SDB mode, the host controller does not modify the 
+OCS field either.
 
-Thanks for your patch.
+> SDB mode: aborts a command using UTRLCLR. Task Management response
+> which means a Transfer Request was aborted.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Hmm ... my understanding is that clearing a bit from UTRLCLR is only
+allowed *after* a command has been aborted and also that clearing a bit
+from this register does not abort a command but only frees the resources
+in the host controller associated with the command.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> For these two cases, set a flag to notify SCSI to requeue the
+> command after receiving response with OCS_ABORTED.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [NOT A REGRESSION] firmware: framebuffer-coreboot: duplicate device name "simple-framebuffer.0"
-Link: https://lore.kernel.org/stable/ZuCGkjoxKxpnhEh6%40google.com
+I think there is only one case when the SCSI core needs to be requested
+to requeue a command, namely when the UFS driver decided to initiate the
+abort (ufshcd_abort_all()).
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> @@ -7561,6 +7551,20 @@ int ufshcd_try_to_abort_task(struct ufs_hba *hba, int tag)
+>   		goto out;
+>   	}
+>   
+> +	/*
+> +	 * When the host software receives a "FUNCTION COMPLETE", set flag
+> +	 * to requeue command after receive response with OCS_ABORTED
+> +	 * SDB mode: UTRLCLR Task Management response which means a Transfer
+> +	 *           Request was aborted.
+> +	 * MCQ mode: Host will post to CQ with OCS_ABORTED after SQ cleanup
+> +	 * This flag is set because ufshcd_abort_all forcibly aborts all
+> +	 * commands, and the host will automatically fill in the OCS field
+> +	 * of the corresponding response with OCS_ABORTED.
+> +	 * Therefore, upon receiving this response, it needs to be requeued.
+> +	 */
+> +	if (!err)
+> +		lrbp->abort_initiated_by_err = true;
+> +
+>   	err = ufshcd_clear_cmd(hba, tag);
+>   	if (err)
+>   		dev_err(hba->dev, "%s: Failed clearing cmd at tag %d, err %d\n",
 
+The above change is misplaced. ufshcd_try_to_abort_task() can be called
+when the SCSI core decides to abort a command while
+abort_initiated_by_err must not be set in that case. Please move the
+above code block into ufshcd_abort_one().
 
+Regarding the word "host" in the above comment block: the host is the 
+Android device. I think that in the above comment "host" should be
+changed into "host controller".
 
+> diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+> index 0fd2aebac728..15b357672ca5 100644
+> --- a/include/ufs/ufshcd.h
+> +++ b/include/ufs/ufshcd.h
+> @@ -173,6 +173,8 @@ struct ufs_pm_lvl_states {
+>    * @crypto_key_slot: the key slot to use for inline crypto (-1 if none)
+>    * @data_unit_num: the data unit number for the first block for inline crypto
+>    * @req_abort_skip: skip request abort task flag
+> + * @abort_initiated_by_err: The flag is specifically used to handle aborts
+> + *                          caused by errors due to host/device communication
+
+The "abort_initiated_by_err" name still seems confusing to me. Please
+make it more clear that this flag is only set if the UFS error handler
+decides to abort a command. How about "abort_initiated_by_eh"?
+
+Please also make the description of this member variable more clear.
+
+Thanks,
+
+Bart.
 
