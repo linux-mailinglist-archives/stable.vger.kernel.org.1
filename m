@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3065597326D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81352973187
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D858B1F221DC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48E51C25612
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8838191F88;
-	Tue, 10 Sep 2024 10:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64781194A40;
+	Tue, 10 Sep 2024 10:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkW2hc6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPTlL8/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66501190077;
-	Tue, 10 Sep 2024 10:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDCF1946C4;
+	Tue, 10 Sep 2024 10:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963412; cv=none; b=qgY0bB9FksmTgAlfiDectn+hdXpVqcxp7FyZZPvCjrYLcTJn/RNt3/V4O1UXEW6YRkTEs8uUUWVUKtGG72b+8gNjXHrv0/+KtIvBWV6enEBIK/OaCAVTjSXAl052iZn2FSdv5Rz3TYGFdBcXuxHoKln6ymPw6qjbOotcB0bl7/A=
+	t=1725962890; cv=none; b=cJTcd0o7HGyUxgXq7GunTOEVmLeSCk4EZaZSuL3ate2ak4mdb6yeH/vcTWR/vQtHxBv1RLziTksOoinxkdkPM93fLJVwB48Yx2ZtsUaa+eIqkyxo23xNmOP3192UAClzHVqkOWEyFFlYWKSQ0/z/S5bCnu5kL3EvxMlyTnPb3+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963412; c=relaxed/simple;
-	bh=qqM8RqWBcvs2bakmYpSHyER18jUvhnjAZVXyNIlyUtc=;
+	s=arc-20240116; t=1725962890; c=relaxed/simple;
+	bh=8ZMAa2ScooZye04cS9zcYL0U+sSZ+eaXLs48pjOlq90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjJal9WT1DVoWZXYa5Qbr7CfnWCSN1jjcijgFmBaBYNzGnxHFzdruSZS4Ib2RqYTDxO14aCFLaAAHspXCsRERfwKHC7VM+dgtzP4EiFS8qnIw2sOEjxAyPMQmfdPtSigX3oyt0bfgAV4qMdPVKmS5gzXX6lvfvLI43sk8AgB/so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkW2hc6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2515C4CEC3;
-	Tue, 10 Sep 2024 10:16:51 +0000 (UTC)
+	 MIME-Version; b=rzTVJKDeoEM1CfzmwLqkm05J1JHzFj96QOWdratxb5YHNVV9ydBBHRLFn6dba6u+M7BrvIkDLRzUSnayFd+yxWT8yhj/Q7AYp1u0cSm2amEJ/enPxoFXqK6aaBFXxor+wTdOh0MNhQf80tj68LZRYuz3JzkKexxp90I+dddNVn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPTlL8/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7ECC4CEC3;
+	Tue, 10 Sep 2024 10:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963412;
-	bh=qqM8RqWBcvs2bakmYpSHyER18jUvhnjAZVXyNIlyUtc=;
+	s=korg; t=1725962890;
+	bh=8ZMAa2ScooZye04cS9zcYL0U+sSZ+eaXLs48pjOlq90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkW2hc6tt81aY2rhoJemmAdw1vk2yd3Qz7r1m7x6e/V/uaQGlMHai7D66YYupZ8A+
-	 4tLP7Kkzh2CqnmYMZsTeU7EB95bW6j1LrDFGvHMevhyf4YnfhCAokEyZy460YDQ/Ey
-	 HMNEp9WKlgETAGs0e4uTD4nOa1X34RuhZUp7IxHg=
+	b=tPTlL8/IgX2PYyytmULNLJyT93MDLh9Ud/AjNwFrr7MbwyaGidtN11nmIe0PhVT0F
+	 Jm3nD3bJT7XqHMJHufd6++f/5CuFbVO0Mj31sxM6DWmuHDSD2X53omBVQLcudq6QEd
+	 MykBYG2OCIHnWCYddN+9gya8UkFt7P64IxJ9jsj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/214] smack: tcp: ipv4, fix incorrect labeling
-Date: Tue, 10 Sep 2024 11:31:10 +0200
-Message-ID: <20240910092600.738674524@linuxfoundation.org>
+Subject: [PATCH 6.1 047/192] af_unix: Remove put_pid()/put_cred() in copy_peercred().
+Date: Tue, 10 Sep 2024 11:31:11 +0200
+Message-ID: <20240910092559.934676073@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Schaufler <casey@schaufler-ca.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
+[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
 
-Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
-when a label 'foo' connects to a label 'bar' with tcp/ipv4,
-'foo' always gets 'foo' in returned ipv4 packets. So,
-1) returned packets are incorrectly labeled ('foo' instead of 'bar')
-2) 'bar' can write to 'foo' without being authorized to write.
+When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
+the listener's sk_peer_pid/sk_peer_cred are copied to the client in
+copy_peercred().
 
-Here is a scenario how to see this:
+Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
+we need not call put_pid() and put_cred() there.
 
-* Take two machines, let's call them C and S,
-   with active Smack in the default state
-   (no settings, no rules, no labeled hosts, only builtin labels)
-
-* At S, add Smack rule 'foo bar w'
-   (labels 'foo' and 'bar' are instantiated at S at this moment)
-
-* At S, at label 'bar', launch a program
-   that listens for incoming tcp/ipv4 connections
-
-* From C, at label 'foo', connect to the listener at S.
-   (label 'foo' is instantiated at C at this moment)
-   Connection succeedes and works.
-
-* Send some data in both directions.
-* Collect network traffic of this connection.
-
-All packets in both directions are labeled with the CIPSO
-of the label 'foo'. Hence, label 'bar' writes to 'foo' without
-being authorized, and even without ever being known at C.
-
-If anybody cares: exactly the same happens with DCCP.
-
-This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
-and it looks unintentional. At least, no explanation was provided.
-
-I changed returned packes label into the 'bar',
-to bring it into line with the Smack documentation claims.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index e9d2ef3deccd..25c46b56fae8 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4225,7 +4225,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
- 	rcu_read_unlock();
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 7d59f9a6c904..5ce60087086c 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -680,9 +680,6 @@ static void init_peercred(struct sock *sk)
  
- 	if (hskp == NULL)
--		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
-+		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
- 	else
- 		netlbl_req_delattr(req);
+ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ {
+-	const struct cred *old_cred;
+-	struct pid *old_pid;
+-
+ 	if (sk < peersk) {
+ 		spin_lock(&sk->sk_peer_lock);
+ 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+@@ -690,16 +687,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 		spin_lock(&peersk->sk_peer_lock);
+ 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+ 	}
+-	old_pid = sk->sk_peer_pid;
+-	old_cred = sk->sk_peer_cred;
++
+ 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
  
+ 	spin_unlock(&sk->sk_peer_lock);
+ 	spin_unlock(&peersk->sk_peer_lock);
+-
+-	put_pid(old_pid);
+-	put_cred(old_cred);
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
 -- 
 2.43.0
 
