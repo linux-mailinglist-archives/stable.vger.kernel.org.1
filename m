@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34B4972DD8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEAA972FED
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DC731F25000
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44C128390A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CA1188CDC;
-	Tue, 10 Sep 2024 09:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81B818B462;
+	Tue, 10 Sep 2024 09:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeOo27dk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zahvsli4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD3E17BEAE;
-	Tue, 10 Sep 2024 09:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86447171671;
+	Tue, 10 Sep 2024 09:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961004; cv=none; b=Vh0DD6auuqUTJ716WqcmCtmm8PL8/At9WB7BP/YPLmfN0fMC3hLE01GSe3ZOLDNVpHCJDNT2mRd1/+1GJAl0XRNEfswtJTtZmwWzpXTRKdtDpyS8o6zoleH6h0cIc76T/SX84ND357lYMNsI4lwg1A3t+CqAVbGVm+Jm/Rq6lHE=
+	t=1725962157; cv=none; b=CfmWb8ttNramG0PN7Gzt9Z5ELWDXx2mNmecCBMbbVPbiAzLJ1iTPsJZmCiTV2OnOZ8a0Q8oJv2SGZihZk71wweZ4g/2rhrr6rZM0swMXVV3Y1xFqXp64Tomgm5BA+xEGa3IM8L1FpHr9A5h7gDzmScAlpjoXWEls0QubkVOszTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961004; c=relaxed/simple;
-	bh=Yv4ozVPpPrXNqU4P1vSFsgy48Xg+5elTG1FC8woroVE=;
+	s=arc-20240116; t=1725962157; c=relaxed/simple;
+	bh=Y7lSGduLu5si3zoKzzw2s+I/kDbjtIVlrMsRTSbb9q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAyZ4T1g+qLruNq89or1RCcLMImwzBnO+ud0KG4SIVZJdsXGdbe1wRqfrKTo1Ap/wIdoTd2U0tcdu01Dh/liosP3GSA3LwojhQR3K0zCkGhI1CcE8uXxMWPYHs1Mol9rWGt+qaS3EBteVi+hh9Ve6+qUTKyhEkyTp/ij+7x23rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeOo27dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E825C4CEC3;
-	Tue, 10 Sep 2024 09:36:43 +0000 (UTC)
+	 MIME-Version; b=tTfSb/h4EFGYRiaWDMF58uJr8axwk1giSQvYrVsdhzoJT4k+iUn6mQw/7Drvjm5lNBOJNGO6NC2pMdloxnW+Cpnu1hIXXtacJ5CsjZX8Oz2ZoHwpwpMZG2YU2z5mEGIfXVfbNURA+MsVvrsiSfv9RxQ+8vUYxav0KDMuCtNNky0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zahvsli4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A865C4CEC3;
+	Tue, 10 Sep 2024 09:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961004;
-	bh=Yv4ozVPpPrXNqU4P1vSFsgy48Xg+5elTG1FC8woroVE=;
+	s=korg; t=1725962157;
+	bh=Y7lSGduLu5si3zoKzzw2s+I/kDbjtIVlrMsRTSbb9q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FeOo27dkK9R8z0QUmQOlBrOkgO+HHF7Xw0sQmkn5ltSDdRFpPuhXbyl6Qa16y6QbW
-	 jiULfU9c/cknGQfYE7wP+JUxDdVgOhf46uC0g7VDKP6CmewXYCFwiuYGTUW85TXdQs
-	 p4/3NgGh2gP7sVXEKNdyQrLdvhPtCa46FTFhwBqk=
+	b=zahvsli4muwvO7XymwSK7CSQyXywJrW+NcOYSI77FTsoyetqHIFj0BtZRHJK1pOru
+	 tCkpoKwvYfcPZw/HlonAvNUlUYrfUVfa/Vk2KiGelwrwgQri0Ah33If3ZpOSmFzLnK
+	 W3usDFg25aUoGKye3qxdzx0JQkEQwCdVSNRErzjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 21/96] mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K
-Date: Tue, 10 Sep 2024 11:31:23 +0200
-Message-ID: <20240910092542.366788930@linuxfoundation.org>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Andreas Westman Dorcsak <hedmoo@yahoo.com>
+Subject: [PATCH 6.10 287/375] iio: imu: inv_mpu6050: fix interrupt status read for old buggy chips
+Date: Tue, 10 Sep 2024 11:31:24 +0200
+Message-ID: <20240910092632.209565736@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890 upstream.
+commit 0a3b517c8089aa4cf339f41460d542c681409386 upstream.
 
-Commit 616f87661792 ("mmc: pass queue_limits to blk_mq_alloc_disk") [1]
-revealed the long living issue in dw_mmc.c driver, existing since the
-time when it was first introduced in commit f95f3850f7a9 ("mmc: dw_mmc:
-Add Synopsys DesignWare mmc host driver."), also making kernel boot
-broken on platforms using dw_mmc driver with 16K or 64K pages enabled,
-with this message in dmesg:
+Interrupt status read seems to be broken on some old MPU-6050 like
+chips. Fix by reverting to previous driver behavior bypassing interrupt
+status read. This is working because these chips are not supporting
+WoM and data ready is the only interrupt source.
 
-    mmcblk: probe of mmc0:0001 failed with error -22
-
-That's happening because mmc_blk_probe() fails when it calls
-blk_validate_limits() consequently, which returns the error due to
-failed max_segment_size check in this code:
-
-    /*
-     * The maximum segment size has an odd historic 64k default that
-     * drivers probably should override.  Just like the I/O size we
-     * require drivers to at least handle a full page per segment.
-     */
-    ...
-    if (WARN_ON_ONCE(lim->max_segment_size < PAGE_SIZE))
-        return -EINVAL;
-
-In case when IDMAC (Internal DMA Controller) is used, dw_mmc.c always
-sets .max_seg_size to 4 KiB:
-
-    mmc->max_seg_size = 0x1000;
-
-The comment in the code above explains why it's incorrect. Arnd
-suggested setting .max_seg_size to .max_req_size to fix it, which is
-also what some other drivers are doing:
-
-   $ grep -rl 'max_seg_size.*=.*max_req_size' drivers/mmc/host/ | \
-     wc -l
-   18
-
-This change is not only fixing the boot with 16K/64K pages, but also
-leads to a better MMC performance. The linear write performance was
-tested on E850-96 board (eMMC only), before commit [1] (where it's
-possible to boot with 16K/64K pages without this fix, to be able to do
-a comparison). It was tested with this command:
-
-    # dd if=/dev/zero of=somefile bs=1M count=500 oflag=sync
-
-Test results are as follows:
-
-  - 4K pages,  .max_seg_size = 4 KiB:                   94.2 MB/s
-  - 4K pages,  .max_seg_size = .max_req_size = 512 KiB: 96.9 MB/s
-  - 16K pages, .max_seg_size = 4 KiB:                   126 MB/s
-  - 16K pages, .max_seg_size = .max_req_size = 2 MiB:   128 MB/s
-  - 64K pages, .max_seg_size = 4 KiB:                   138 MB/s
-  - 64K pages, .max_seg_size = .max_req_size = 8 MiB:   138 MB/s
-
-Unfortunately, SD card controller is not enabled in E850-96 yet, so it
-wasn't possible for me to run the test on some cheap SD cards to check
-this patch's impact on those. But it's possible that this change might
-also reduce the writes count, thus improving SD/eMMC longevity.
-
-All credit for the analysis and the suggested solution goes to Arnd.
-
-[1] https://lore.kernel.org/all/20240215070300.2200308-18-hch@lst.de/
-
-Fixes: f95f3850f7a9 ("mmc: dw_mmc: Add Synopsys DesignWare mmc host driver.")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYtddf2Fd3be+YShHP6CmSDNcn0ptW8qg+stUKW+Cn0rjQ@mail.gmail.com/
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: 5537f653d9be ("iio: imu: inv_mpu6050: add new interrupt handler for WoM events")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240306232052.21317-1-semen.protsenko@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # LG P895
+Tested-by: Andreas Westman Dorcsak <hedmoo@yahoo.com> # LG P880
+Link: https://patch.msgid.link/20240814143735.327302-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/dw_mmc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -2857,8 +2857,8 @@ static int dw_mci_init_slot(struct dw_mc
- 	if (host->use_dma == TRANS_MODE_IDMAC) {
- 		mmc->max_segs = host->ring_size;
- 		mmc->max_blk_size = 65535;
--		mmc->max_seg_size = 0x1000;
--		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
-+		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
-+		mmc->max_seg_size = mmc->max_req_size;
- 		mmc->max_blk_count = mmc->max_req_size / 512;
- 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
- 		mmc->max_segs = 64;
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -248,12 +248,20 @@ static irqreturn_t inv_mpu6050_interrupt
+ 	int result;
+ 
+ 	switch (st->chip_type) {
++	case INV_MPU6000:
+ 	case INV_MPU6050:
++	case INV_MPU9150:
++		/*
++		 * WoM is not supported and interrupt status read seems to be broken for
++		 * some chips. Since data ready is the only interrupt, bypass interrupt
++		 * status read and always assert data ready bit.
++		 */
++		wom_bits = 0;
++		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
++		goto data_ready_interrupt;
+ 	case INV_MPU6500:
+ 	case INV_MPU6515:
+ 	case INV_MPU6880:
+-	case INV_MPU6000:
+-	case INV_MPU9150:
+ 	case INV_MPU9250:
+ 	case INV_MPU9255:
+ 		wom_bits = INV_MPU6500_BIT_WOM_INT;
+@@ -279,6 +287,7 @@ static irqreturn_t inv_mpu6050_interrupt
+ 		}
+ 	}
+ 
++data_ready_interrupt:
+ 	/* handle raw data interrupt */
+ 	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
+ 		indio_dev->pollfunc->timestamp = st->it_timestamp;
 
 
 
