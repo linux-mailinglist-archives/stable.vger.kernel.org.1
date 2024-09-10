@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-75326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B847973417
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0C89732D2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9CF4B2EB76
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A691F22B9A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B400918A950;
-	Tue, 10 Sep 2024 10:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392CB17A589;
+	Tue, 10 Sep 2024 10:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFSCBUbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaIodX1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726DA18F2DF;
-	Tue, 10 Sep 2024 10:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6CF18C02E;
+	Tue, 10 Sep 2024 10:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964408; cv=none; b=KW2HMbLdmwCtlRgEWaZMkAzpNqSI8trU731GsU5zIFBbMQtcGBao9Kz/PkOjbY2ph1uqlm5ldITa//sDO7pRFzZa4Sg3w8Zhy4HYsJ3LQ2UJd5CgEes9XvUY9dSk7TpGVQGEiH7dGGxwNo9Exn0d0uFgzHwhGBB6zfa93gxCfFs=
+	t=1725963674; cv=none; b=X7lEWRjLYECazsaGGVbGiSo9fXzJazF5nuJvWkzmCW9PKLeDJ1Vdf8oVtYYL1NSl18UEhAlqaOBM+T5rTKT/xJUaXOAO28cP2VQniEx8BD9+q5HpQNvp3XWFWnRtFdI/GuAXY38zE9lM/t//RYA8YdRfcQl4BsjhWg/pq3cF4WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964408; c=relaxed/simple;
-	bh=a0w8fPhnIoDFWX49bcoClVpTLEphNBx9BoTcVvEPNP0=;
+	s=arc-20240116; t=1725963674; c=relaxed/simple;
+	bh=R/LQH9X3eRe2yRS59VkEUdM1S3H+eAGfuYOkLlL7pUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKc2+inNhrD2SU4L3Ee/Yf8Fv9sGNYKEiYuW21cRjdNV/P2Hv4UjXmU6zHTRHvJZ3SJvuu2r7lbslBjP6LZgz7a1Bit2TR7iEnuhaaRmgNXpWIEX/uuLLlRYlf5AkwATyirMqkH88WAD+koPnk9RPpm+5v9Al43GCWieHwwspU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFSCBUbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBCBC4CEC3;
-	Tue, 10 Sep 2024 10:33:27 +0000 (UTC)
+	 MIME-Version; b=GZwxZ3N92ntGYgeAqep6YWtcxzYl1IYh/gVI4BAX2v8S9UnwsGFD2FyXdPei/frD+kkKBlNxVbwhfW95WIrVVnDiYvEgpVUV23RZrxfW3pyncxgxtIJMb4swa4r1f1yDFVe7lHv0kaz2TKdd+2J2BdEMv7Qo657bOGo+IiyZf7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaIodX1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEB4C4CEC3;
+	Tue, 10 Sep 2024 10:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964408;
-	bh=a0w8fPhnIoDFWX49bcoClVpTLEphNBx9BoTcVvEPNP0=;
+	s=korg; t=1725963673;
+	bh=R/LQH9X3eRe2yRS59VkEUdM1S3H+eAGfuYOkLlL7pUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFSCBUbSRBdIzcdgI1HBL263mTHyBLoa82yhEBG0hl1q7NVWn+WDCVEd6RKdhWnqj
-	 DZSlMdrnijfo6rFanCa5+3+m/Ob8dgNb6f5yHEn6qHPEmICyC+WPXLy9q7DhMHOcfD
-	 FCWZOChf0vOlodgH8CIwvb2Q7zeaRh3QHueCcw1c=
+	b=vaIodX1RowJisqX3OKcc0JFt89HMnhQ7T0KPJHRHHhJDM++CacOeUkfXpMgxIVRwE
+	 nbhm8Yh2NTvRatbVR+K7vyMHDz9zkyPIqv6Gh4AeMPICf83wh/CgUoZyvm4q2QyN8/
+	 06EEvaY7SHKcGBHpQBt+JzhQwvfW06NMrKvZPEc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/269] tcp: Dont drop SYN+ACK for simultaneous connect().
+Subject: [PATCH 5.15 137/214] iommu/vt-d: Handle volatile descriptor status read
 Date: Tue, 10 Sep 2024 11:32:39 +0200
-Message-ID: <20240910092614.306177193@linuxfoundation.org>
+Message-ID: <20240910092604.358664749@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-[ Upstream commit 23e89e8ee7be73e21200947885a6d3a109a2c58d ]
+[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
 
-RFC 9293 states that in the case of simultaneous connect(), the connection
-gets established when SYN+ACK is received. [0]
+Queued invalidation wait descriptor status is volatile in that IOMMU
+hardware writes the data upon completion.
 
-      TCP Peer A                                       TCP Peer B
+Use READ_ONCE() to prevent compiler optimizations which ensures memory
+reads every time. As a side effect, READ_ONCE() also enforces strict
+types and may add an extra instruction. But it should not have negative
+performance impact since we use cpu_relax anyway and the extra time(by
+adding an instruction) may allow IOMMU HW request cacheline ownership
+easier.
 
-  1.  CLOSED                                           CLOSED
-  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
-  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
-  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
-  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
-  6.  ESTABLISHED  <-- <SEQ=300><ACK=101><CTL=SYN,ACK> <-- SYN-RECEIVED
-  7.               ... <SEQ=100><ACK=301><CTL=SYN,ACK> --> ESTABLISHED
+e.g. gcc 12.3
+BEFORE:
+	81 38 ad de 00 00       cmpl   $0x2,(%rax)
 
-However, since commit 0c24604b68fc ("tcp: implement RFC 5961 4.2"), such a
-SYN+ACK is dropped in tcp_validate_incoming() and responded with Challenge
-ACK.
+AFTER (with READ_ONCE())
+    772f:       8b 00                   mov    (%rax),%eax
+    7731:       3d ad de 00 00          cmp    $0x2,%eax
+                                        //status data is 32 bit
 
-For example, the write() syscall in the following packetdrill script fails
-with -EAGAIN, and wrong SNMP stats get incremented.
-
-   0 socket(..., SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP) = 3
-  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
-
-  +0 > S  0:0(0) <mss 1460,sackOK,TS val 1000 ecr 0,nop,wscale 8>
-  +0 < S  0:0(0) win 1000 <mss 1000>
-  +0 > S. 0:0(0) ack 1 <mss 1460,sackOK,TS val 3308134035 ecr 0,nop,wscale 8>
-  +0 < S. 0:0(0) ack 1 win 1000
-
-  +0 write(3, ..., 100) = 100
-  +0 > P. 1:101(100) ack 1
-
-  --
-
-  # packetdrill cross-synack.pkt
-  cross-synack.pkt:13: runtime error in write call: Expected result 100 but got -1 with errno 11 (Resource temporarily unavailable)
-  # nstat
-  ...
-  TcpExtTCPChallengeACK           1                  0.0
-  TcpExtTCPSYNChallenge           1                  0.0
-
-The problem is that bpf_skops_established() is triggered by the Challenge
-ACK instead of SYN+ACK.  This causes the bpf prog to miss the chance to
-check if the peer supports a TCP option that is expected to be exchanged
-in SYN and SYN+ACK.
-
-Let's accept a bare SYN+ACK for active-open TCP_SYN_RECV sockets to avoid
-such a situation.
-
-Note that tcp_ack_snd_check() in tcp_rcv_state_process() is skipped not to
-send an unnecessary ACK, but this could be a bit risky for net.git, so this
-targets for net-next.
-
-Link: https://www.rfc-editor.org/rfc/rfc9293.html#section-3.5-7 [0]
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240710171246.87533-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iommu/intel/dmar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 24c7c955dc95..336bc97e86d5 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5880,6 +5880,11 @@ static bool tcp_validate_incoming(struct sock *sk, struct sk_buff *skb,
- 	 * RFC 5961 4.2 : Send a challenge ack
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index 0ad33d8d99d1..1134aa24d67f 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1418,7 +1418,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
  	 */
- 	if (th->syn) {
-+		if (sk->sk_state == TCP_SYN_RECV && sk->sk_socket && th->ack &&
-+		    TCP_SKB_CB(skb)->seq + 1 == TCP_SKB_CB(skb)->end_seq &&
-+		    TCP_SKB_CB(skb)->seq + 1 == tp->rcv_nxt &&
-+		    TCP_SKB_CB(skb)->ack_seq == tp->snd_nxt)
-+			goto pass;
- syn_challenge:
- 		if (syn_inerr)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_INERRS);
-@@ -5889,6 +5894,7 @@ static bool tcp_validate_incoming(struct sock *sk, struct sk_buff *skb,
- 		goto discard;
- 	}
+ 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
  
-+pass:
- 	bpf_skops_parse_hdr(sk, skb);
- 
- 	return true;
-@@ -6673,6 +6679,9 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		tcp_fast_path_on(tp);
- 		if (sk->sk_shutdown & SEND_SHUTDOWN)
- 			tcp_shutdown(sk, SEND_SHUTDOWN);
-+
-+		if (sk->sk_socket)
-+			goto consume;
- 		break;
- 
- 	case TCP_FIN_WAIT1: {
+-	while (qi->desc_status[wait_index] != QI_DONE) {
++	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
+ 		/*
+ 		 * We will leave the interrupts disabled, to prevent interrupt
+ 		 * context to queue another cmd while a cmd is already submitted
 -- 
 2.43.0
 
