@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD009732E7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6759734F3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313B9283A21
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824DA1C25092
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4784A192B7B;
-	Tue, 10 Sep 2024 10:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C8C18FDC5;
+	Tue, 10 Sep 2024 10:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+vyUZLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6C2Mpv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0280B18C00C;
-	Tue, 10 Sep 2024 10:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23707188A1E;
+	Tue, 10 Sep 2024 10:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963738; cv=none; b=btMTxNW/KS6Ri4v2mhn+6JXVhcGyCZCIff/aOv4Z0PtgP6LKTtiu29lYqi2p5rAJFNflzp8DH2q/92HyQA6th5gI/GD3dRwt+QRDNTtj3jtNL0cPNM7vXVirDFppG9DohawLW7tvxIRvsjl8BayY0EbM0R/0twddlR2oxLeSshI=
+	t=1725964955; cv=none; b=sjFC4MwcxpKEE1kqTXUAEKsGbB29qHKX51hGU16kEm0yWVHZgqC4d0E8uQL/SPBw90wOe9AKYxUzCg5NS9SctGJ82Ow8cCQ3aQsiWFFezj73GCr43Vn2jNdDi/O3AnSykMnrSfaCwKJ+JTwwKAjI5KX5Oac3wfSyMljQIoSPgoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963738; c=relaxed/simple;
-	bh=/csc5sLJmTv/F4znLUR3SDnAjpsh26SudZIWwdJPRd8=;
+	s=arc-20240116; t=1725964955; c=relaxed/simple;
+	bh=IclfAMoejm09CWpS6eiCcXiTi8fjHiKLxUOGnd01Uts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLHmPgXtnwlnx+LCW3xdrpMRxKdMY+8rHTDFDoqqHSTQPXDXMm+VwomKe8Iz++wdF8BUoihR+YacmDLmYBs0EWagt2MEneKswOXt8cXKVTnjoxAGY7YSo1P0kPowydK76SQI9sYyWVA5cZq/2tOfgQh/q5glvsXQ+uMZkGY0wig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+vyUZLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F67C4CEC3;
-	Tue, 10 Sep 2024 10:22:17 +0000 (UTC)
+	 MIME-Version; b=IUUM6EHOxlpEgLNUm2568+d9w+3Z7k2jAC+TM4FIRrbzlwkTUprGD1vTVVe340JCNXFH8eRo+BzZjnncxYJ9XRG3yXtYSmG7Yk0+gTsNVOxJkCI95ohHhdyOO0plF04o83CVfQo8DoQtZGAmO2IunzKy56TfFvXlAZS7k4pT6Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6C2Mpv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45939C4CEC3;
+	Tue, 10 Sep 2024 10:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963737;
-	bh=/csc5sLJmTv/F4znLUR3SDnAjpsh26SudZIWwdJPRd8=;
+	s=korg; t=1725964954;
+	bh=IclfAMoejm09CWpS6eiCcXiTi8fjHiKLxUOGnd01Uts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+vyUZLZ85TyY20oMkc6aGClY4CBwtYVOzfGp4oipiPkaAVOmwxz5dWhQCpuYJ9E4
-	 DIFewIHQMC250ux8OKhh8kqVsqrcg03ICEY1LdhUURO8jUxtDNegE7HX+TA2F2QKEe
-	 xlJNy7RpcQgBCiDZaFGQwQYBoO/PbsrNiy6fF9Bs=
+	b=b6C2Mpv8pXDf5aJGnAG4fp8QMnYToFTe6X6+aiDIH0Ajk9Tc8f4RvlWXueaSqbTvR
+	 N+icCSAq7tisjEh7XxMsHEYHMPx5UJ4MMLaE+2LKLTjCZkeOt707WIcd+pKI0jU6xN
+	 cvfKzU51X+nTtf3oA8ddH1Px6nOQr0XdTvNbHgng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/214] kselftests: dmabuf-heaps: Ensure the driver name is null-terminated
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 087/186] sunrpc: dont change ->sv_stats if it doesnt exist
 Date: Tue, 10 Sep 2024 11:33:02 +0200
-Message-ID: <20240910092605.241014132@linuxfoundation.org>
+Message-ID: <20240910092558.093461088@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenghui Yu <yuzenghui@huawei.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 291e4baf70019f17a81b7b47aeb186b27d222159 ]
+[ Upstream commit ab42f4d9a26f1723dcfd6c93fcf768032b2bb5e7 ]
 
-Even if a vgem device is configured in, we will skip the import_vgem_fd()
-test almost every time.
+We check for the existence of ->sv_stats elsewhere except in the core
+processing code.  It appears that only nfsd actual exports these values
+anywhere, everybody else just has a write only copy of sv_stats in their
+svc_program.  Add a check for ->sv_stats before every adjustment to
+allow us to eliminate the stats struct from all the users who don't
+report the stats.
 
-  TAP version 13
-  1..11
-  # Testing heap: system
-  # =======================================
-  # Testing allocation and importing:
-  ok 1 # SKIP Could not open vgem -1
-
-The problem is that we use the DRM_IOCTL_VERSION ioctl to query the driver
-version information but leave the name field a non-null-terminated string.
-Terminate it properly to actually test against the vgem device.
-
-While at it, let's check the length of the driver name is exactly 4 bytes
-and return early otherwise (in case there is a name like "vgemfoo" that
-gets converted to "vgem\0" unexpectedly).
-
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240729024604.2046-1-yuzenghui@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v5.10.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sunrpc/svc.c |   24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-index 29af27acd40e..a0d3d2ed7a4a 100644
---- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-+++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-@@ -29,9 +29,11 @@ static int check_vgem(int fd)
- 	version.name = name;
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1355,7 +1355,8 @@ svc_process_common(struct svc_rqst *rqst
+ 		goto err_bad_proc;
  
- 	ret = ioctl(fd, DRM_IOCTL_VERSION, &version);
--	if (ret)
-+	if (ret || version.name_len != 4)
- 		return 0;
+ 	/* Syntactic check complete */
+-	serv->sv_stats->rpccnt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpccnt++;
+ 	trace_svc_process(rqstp, progp->pg_name);
  
-+	name[4] = '\0';
-+
- 	return !strcmp(name, "vgem");
+ 	/* Build the reply header. */
+@@ -1421,7 +1422,8 @@ err_short_len:
+ 	goto close_xprt;
+ 
+ err_bad_rpc:
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, 1);	/* REJECT */
+ 	svc_putnl(resv, 0);	/* RPC_MISMATCH */
+ 	svc_putnl(resv, 2);	/* Only RPCv2 supported */
+@@ -1434,7 +1436,8 @@ err_release_bad_auth:
+ err_bad_auth:
+ 	dprintk("svc: authentication failed (%d)\n",
+ 		be32_to_cpu(rqstp->rq_auth_stat));
+-	serv->sv_stats->rpcbadauth++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadauth++;
+ 	/* Restore write pointer to location of accept status: */
+ 	xdr_ressize_check(rqstp, reply_statp);
+ 	svc_putnl(resv, 1);	/* REJECT */
+@@ -1444,7 +1447,8 @@ err_bad_auth:
+ 
+ err_bad_prog:
+ 	dprintk("svc: unknown program %d\n", prog);
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROG_UNAVAIL);
+ 	goto sendit;
+ 
+@@ -1452,7 +1456,8 @@ err_bad_vers:
+ 	svc_printk(rqstp, "unknown version (%d for prog %d, %s)\n",
+ 		       rqstp->rq_vers, rqstp->rq_prog, progp->pg_name);
+ 
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROG_MISMATCH);
+ 	svc_putnl(resv, process.mismatch.lovers);
+ 	svc_putnl(resv, process.mismatch.hivers);
+@@ -1461,7 +1466,8 @@ err_bad_vers:
+ err_bad_proc:
+ 	svc_printk(rqstp, "unknown procedure (%d)\n", rqstp->rq_proc);
+ 
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROC_UNAVAIL);
+ 	goto sendit;
+ 
+@@ -1470,7 +1476,8 @@ err_garbage:
+ 
+ 	rpc_stat = rpc_garbage_args;
+ err_bad:
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, ntohl(rpc_stat));
+ 	goto sendit;
  }
+@@ -1505,7 +1512,8 @@ svc_process(struct svc_rqst *rqstp)
+ 	if (dir != 0) {
+ 		/* direction != CALL */
+ 		svc_printk(rqstp, "bad direction %d, dropping request\n", dir);
+-		serv->sv_stats->rpcbadfmt++;
++		if (serv->sv_stats)
++			serv->sv_stats->rpcbadfmt++;
+ 		goto out_drop;
+ 	}
  
--- 
-2.43.0
-
 
 
 
