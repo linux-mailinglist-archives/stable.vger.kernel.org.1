@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89104973137
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:09:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DD597325E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC2B41C2548E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:09:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB99DB2A7E2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00EA19EEA1;
-	Tue, 10 Sep 2024 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2D6194C96;
+	Tue, 10 Sep 2024 10:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqsWj+3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWxEZ5Gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D89E1922FA;
-	Tue, 10 Sep 2024 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2833B183CB0;
+	Tue, 10 Sep 2024 10:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962687; cv=none; b=UF0sQvuMMlWzrFOp/IICZ2biKIZiEFkagQ8ZeH3JAzJ/gh4J/qgQMpeUzcYDnp02FtlfDUqZ2HTfyJ+sX93hXTUaMFpN1SpgOty8oVnRlXZcd36j+Cn+qYJUlysRAq3nb1WTNnNjAp4SCoVsgCbdT9CyrVfyIetpQrYVwbSuaYA=
+	t=1725963198; cv=none; b=RQrBfoM0OsCNcc5C3ZXUZW1JJC14GR2/j5offP1oddFNVYPZbZ1fvokKdErpU0haN6jkdDOVgmnbQde/7ItOjEMWb1TNc5Ac0z4u66QhqZvWvicaPZO0qlmj7hch2eyO5/A1gJa8eNPsrjKh9aK7Qi/UwksD9kYwL/fX7Qkizec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962687; c=relaxed/simple;
-	bh=3XJnu+akOyl6RoNhOMO0YB8JCXNtV97f07NOcxUS+7Y=;
+	s=arc-20240116; t=1725963198; c=relaxed/simple;
+	bh=ktIk7jaL/Ye8z21iW7PXNJbE05oqeRUDvhoTKkTqEwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBLd5q7s7WILJWpg5fP6/NLzPMjEExdtbA6y32ZHhshistLO8Cp6p93LWdtB2JJeQHs6/HPOpb5LL5cxKYgDbFZG27Ocf32vJ458JSuG0ORvkkpxfoC18+WYwnrQu1ZtP/zapCFi/HGT7NL0BztwkUOWlRf+1UUwWGY1ENKa9K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqsWj+3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4ADC4CEC3;
-	Tue, 10 Sep 2024 10:04:46 +0000 (UTC)
+	 MIME-Version; b=XrRYP/NtJh2HUIvvUj1cggyR2niP5dvVVSfl+lP6j1Des5Vg7XjNeSMd1JaJJFInchIQAq4UO9dlTVghI7/wNWTvYbLgCYNYA9yixowWPqNKpFurdNkj+xs50/NuHzcTWQtTEQvAX6LIy5HQx58i4MhPkAxuMh1Wktzmmx9fWZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWxEZ5Gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CBEC4CEC3;
+	Tue, 10 Sep 2024 10:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962687;
-	bh=3XJnu+akOyl6RoNhOMO0YB8JCXNtV97f07NOcxUS+7Y=;
+	s=korg; t=1725963198;
+	bh=ktIk7jaL/Ye8z21iW7PXNJbE05oqeRUDvhoTKkTqEwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqsWj+3ASmHZQzQIAJjrmayYtOE02mQOmxzboTqRTH4ds3VQe1hLHSwYxgxd68P2G
-	 u1GD6/C90s8gTh1Ms7xv6FAC8BvMQxNFFTjar338IO89Lfs51EWryiwge0/wm0o2sJ
-	 RH//u/4cGl2DBKrNY9dtBoIKW1FRdkJeW0H5taP8=
+	b=zWxEZ5Gnuh6FEvwYwPiOT3ykX6ESxmb46kPOKkTmYttPYzd5iBxRwM+2xtxY7unf4
+	 OBIT5ZyF4pRmiZ8Vudzie5ZEE97/B6v+faoFTrsXBPPQzcZrb+L2DGPTkygaItX0ew
+	 Qsrl9FmI5h3QKRqJyVv47mUWZgn4aknJUpkEBPfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/121] Squashfs: sanity check symbolic link size
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 141/192] iio: adc: ad7124: fix chip ID mismatch
 Date: Tue, 10 Sep 2024 11:32:45 +0200
-Message-ID: <20240910092550.141222767@linuxfoundation.org>
+Message-ID: <20240910092603.785978899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+commit 96f9ab0d5933c1c00142dd052f259fce0bc3ced2 upstream.
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+The ad7124_soft_reset() function has the assumption that the chip will
+assert the "power-on reset" bit in the STATUS register after a software
+reset without any delay. The POR bit =0 is used to check if the chip
+initialization is done.
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
+A chip ID mismatch probe error appears intermittently when the probe
+continues too soon and the ID register does not contain the expected
+value.
 
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
+Fix by adding a 200us delay after the software reset command is issued.
 
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
-
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
-
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
-
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
-
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-1-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 24463145b351..f31649080a88 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -765,6 +765,7 @@ static int ad7124_soft_reset(struct ad71
+ 	if (ret < 0)
+ 		return ret;
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
-+
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
--- 
-2.43.0
-
++	fsleep(200);
+ 	timeout = 100;
+ 	do {
+ 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
 
 
 
