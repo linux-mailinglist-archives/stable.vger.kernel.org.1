@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8217E9732BD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561A597348D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381CA1F2273A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1221B28E1CD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AC5199FC4;
-	Tue, 10 Sep 2024 10:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234A918DF97;
+	Tue, 10 Sep 2024 10:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pcx55CG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jw2Exs8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C8A199FA0;
-	Tue, 10 Sep 2024 10:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D296517C220;
+	Tue, 10 Sep 2024 10:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963602; cv=none; b=qsjvK9wZwtYvIe9aU8SrhlAiLRDMqv/EWSndl68SPd6lw6Pel4HcSqoOPvHZ5W6ReoDXx7prhwCCai51pZWuh3SrE3T+FfHQLxt8oAmHLoqd41UKcENZXgv4RjpXUJtFRFxCKQAIxDss5G78o1u52mPC2t29JU7OuCcBJNSTqhw=
+	t=1725964735; cv=none; b=Ku/5BR5ULnmy4b0/TvwYehoijRXxl8iOCP/WTMq/uga1POX/XRmbbzTeCySkxlCAUuxzyGUtAl8RD5kxxBn1m/i9tBe/k9FeEZpBRJJHfiG1fvQngv9q1RSIkX9W4xYEv7SCuYm/SmY2ZgzMrW4mM7D3/2pu+zcCT3+rub9tp4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963602; c=relaxed/simple;
-	bh=MVYozCpN+Q/i/mHV314skEOtDhEQyz+sPxMyDHhz98k=;
+	s=arc-20240116; t=1725964735; c=relaxed/simple;
+	bh=+W/7LiUc4oixau43JKVlzi46EAIgt5jvP0TQ+EOH8t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P0Qk8YDsH1xoURulAoumA2YjWK3/vK9zAVoEocYr/aHWI+s80xOZw555zLDVQhiHrcbUFKUIX6LDcGOhWqlpgYnklQTNMTequHb60FheeM6AC36T1SBu++C6YQ5AYC6Ck/ugNVDRIL/PdzJLj7OyZiuh7TnaGUqdmxnIigyEwa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pcx55CG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF40C4CEC6;
-	Tue, 10 Sep 2024 10:20:02 +0000 (UTC)
+	 MIME-Version; b=RONJHYxuUndDfnWEOPOKiWDN0gJT/0tPyTqYHjtQSX8JpvjFwJDYJ7QqGYNv9uAyJjqiDwmKYuNuP6+waDNg2R0dRazlUziezOTJFfkLpEhYQQgh8TYBrelf3p7gNcOVMNwtvT1B0VodVRwnVV1QpN8Hn/JIjG9XoJnDJ02p4lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jw2Exs8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6DCC4CEC3;
+	Tue, 10 Sep 2024 10:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963602;
-	bh=MVYozCpN+Q/i/mHV314skEOtDhEQyz+sPxMyDHhz98k=;
+	s=korg; t=1725964735;
+	bh=+W/7LiUc4oixau43JKVlzi46EAIgt5jvP0TQ+EOH8t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pcx55CG8nSK5kcpjFx6aOjGVOHRcsOXP3IWOTk8YwGV9S98u8fWwcjFGml7rJmJTv
-	 gwG1zPkXhW0vD6JA8863oSneKZB/O10VkqO1Jc/az3Gbq4ftj4HLSvuQOnkrXRS0qB
-	 FdflhdfsMVKIP4Xu1fDq14zyEiCEIA/wwPLXIohM=
+	b=jw2Exs8zOaF8B2gZnccJHGZAXyHMZLx/BO7FcCq/R7J7rlrGMImLiYMKpC7gX919h
+	 B5Ve+OczNzT/N7bWz0mv+Awazaf+kIQnaXf7gbe4QHbZYkj5w2uUtESnDcuo0iEMiz
+	 v3Kg1Chakrf7/4yKeu2aaA76vMOd5ssafNb0GYX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 087/214] sched: sch_cake: fix bulk flow accounting logic for host fairness
+	Zhigang Luo <Zhigang.Luo@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/186] drm/amdgpu: avoid reading vf2pf info size from FB
 Date: Tue, 10 Sep 2024 11:31:49 +0200
-Message-ID: <20240910092602.308824254@linuxfoundation.org>
+Message-ID: <20240910092555.240350403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Zhigang Luo <Zhigang.Luo@amd.com>
 
-commit 546ea84d07e3e324644025e2aae2d12ea4c5896e upstream.
+[ Upstream commit 3bcc0ee14768d886cedff65da72d83d375a31a56 ]
 
-In sch_cake, we keep track of the count of active bulk flows per host,
-when running in dst/src host fairness mode, which is used as the
-round-robin weight when iterating through flows. The count of active
-bulk flows is updated whenever a flow changes state.
+VF can't access FB when host is doing mode1 reset. Using sizeof to get
+vf2pf info size, instead of reading it from vf2pf header stored in FB.
 
-This has a peculiar interaction with the hash collision handling: when a
-hash collision occurs (after the set-associative hashing), the state of
-the hash bucket is simply updated to match the new packet that collided,
-and if host fairness is enabled, that also means assigning new per-host
-state to the flow. For this reason, the bulk flow counters of the
-host(s) assigned to the flow are decremented, before new state is
-assigned (and the counters, which may not belong to the same host
-anymore, are incremented again).
-
-Back when this code was introduced, the host fairness mode was always
-enabled, so the decrement was unconditional. When the configuration
-flags were introduced the *increment* was made conditional, but
-the *decrement* was not. Which of course can lead to a spurious
-decrement (and associated wrap-around to U16_MAX).
-
-AFAICT, when host fairness is disabled, the decrement and wrap-around
-happens as soon as a hash collision occurs (which is not that common in
-itself, due to the set-associative hashing). However, in most cases this
-is harmless, as the value is only used when host fairness mode is
-enabled. So in order to trigger an array overflow, sch_cake has to first
-be configured with host fairness disabled, and while running in this
-mode, a hash collision has to occur to cause the overflow. Then, the
-qdisc has to be reconfigured to enable host fairness, which leads to the
-array out-of-bounds because the wrapped-around value is retained and
-used as an array index. It seems that syzbot managed to trigger this,
-which is quite impressive in its own right.
-
-This patch fixes the issue by introducing the same conditional check on
-decrement as is used on increment.
-
-The original bug predates the upstreaming of cake, but the commit listed
-in the Fixes tag touched that code, meaning that this patch won't apply
-before that.
-
-Fixes: 712639929912 ("sch_cake: Make the dual modes fairer")
-Reported-by: syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20240903160846.20909-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -785,12 +785,15 @@ skip_hash:
- 		 * queue, accept the collision, update the host tags.
- 		 */
- 		q->way_collisions++;
--		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
--			q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
--			q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
--		}
- 		allocate_src = cake_dsrc(flow_mode);
- 		allocate_dst = cake_ddst(flow_mode);
-+
-+		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
-+			if (allocate_src)
-+				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
-+			if (allocate_dst)
-+				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
-+		}
- found:
- 		/* reserve queue for future packets in same flow */
- 		reduced_hash = outer_hash + k;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index bd53844a8ba4..ca4c915e3a6c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -552,7 +552,7 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
+ 
+ 	vf2pf_info->checksum =
+ 		amd_sriov_msg_checksum(
+-		vf2pf_info, vf2pf_info->header.size, 0, 0);
++		vf2pf_info, sizeof(*vf2pf_info), 0, 0);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
