@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE329731E6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59539732C1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45E1C1F2948D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04EFF1C24386
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E46E192B96;
-	Tue, 10 Sep 2024 10:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9DB18C928;
+	Tue, 10 Sep 2024 10:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RO4LB3kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBJ+kyZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C64E192B8F;
-	Tue, 10 Sep 2024 10:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA0118C913;
+	Tue, 10 Sep 2024 10:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963104; cv=none; b=Qpv+5l8n6/3pFFPP/j9dthZcVr5xx/j9qSECTMrLnVgCN4pHJCVexT7we5+CiY3wseyaC8/weicwrmu0t1nsoioKlLbiA/tY3aG4Eqvd+5H+OWjlvl2H43SIKhrTAvnXcfOjaNKOZ+V2d4C4SBJJseMSt3/UklzsQcB4h+omUx0=
+	t=1725963623; cv=none; b=dE+jwiBlhZTMwqJ277DXypPUNwan9o3wKmxIv6hd5c8SYOMc6L0BDbmMiTL9XY0NtDmbDI6f/1gxFPW1v65yxDBK5wHb6eH+f9ACYCFzfzrQ6MR9gm1Nrd4LdVE7vo5UVl/NbC12lWKqHt5qYy3TVGKYPOAEGHpv7lYjAaIJ+WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963104; c=relaxed/simple;
-	bh=53SFkpSINNX2GzazPliHP6H1fIthbmetxR+Y1ukjYj8=;
+	s=arc-20240116; t=1725963623; c=relaxed/simple;
+	bh=OgLYA1SxCFDceKFGDAeztagqXh3mCueKTjL04Jvv4os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQAFJ+1R6dnJhRtOgq4Oo7ByC4lwF6qrhRHBTrDbJKpeoEXTAQDaRMqwnToIyNEe3jm7PkRzMEjBrM4ry2Ec1jl/vpcRCC2T8ofxv8mA59r4nXK8cURWJUWEvvfZqi3X/ju4AElrwXdHgITK1zJ/cC0rhFRzcUBuIN9gptOn5fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RO4LB3kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B904C4CEC6;
-	Tue, 10 Sep 2024 10:11:43 +0000 (UTC)
+	 MIME-Version; b=bwlTLaiTwz4f1YwNNkngCyY1LGhAvNxca0xA9dXpBqxD2WYf+qgqTxy2XCUpDTL20hkPjudYHMY2fe9TGPZcGfUOM9TV5lgDwQWktcsdQ2JSYJ4GKgfeiLkWY1WJotftYBEiq6kk+lxwGGEeCpkDnRnofZC0hwoukPcb/sHvXVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBJ+kyZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2861C4CEC3;
+	Tue, 10 Sep 2024 10:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963104;
-	bh=53SFkpSINNX2GzazPliHP6H1fIthbmetxR+Y1ukjYj8=;
+	s=korg; t=1725963623;
+	bh=OgLYA1SxCFDceKFGDAeztagqXh3mCueKTjL04Jvv4os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RO4LB3kfpzzIvDw3QutpABmRoBWG0qaTfYdBJVLSSOUspPhY4XwHxzx5xG3uVsExx
-	 k4VRzRP30seRyyP3iTRfJggPgXddA37W5AuLg1lzhGQEW/bQJqMO6WBb33X16xu9X2
-	 CRJo1Gm7XIefIwOCyuVdE8rL1Gcjz3WTxsWBQJjk=
+	b=kBJ+kyZkQGrRnNyqofv5XSAyNIkoTU8AgQ+q27wu6BSFzzQ4TeXuGjy7XCy74WkAS
+	 GbKVAqp1w3EZTDAFtgSVzMetlNXdcCe0BNNUQLD99wdL6Cc4a1MQao3Rfd+npraFZ1
+	 50WLg93axylA/BO5Z7dUNbKHAj1TvwiVIg+0Lj4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
+	Shantanu Goel <sgoel01@yahoo.com>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/192] btrfs: clean up our handling of refs == 0 in snapshot delete
-Date: Tue, 10 Sep 2024 11:32:14 +0200
-Message-ID: <20240910092602.519149084@linuxfoundation.org>
+Subject: [PATCH 5.15 113/214] usb: uas: set host status byte on data completion error
+Date: Tue, 10 Sep 2024 11:32:15 +0200
+Message-ID: <20240910092603.420441149@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Shantanu Goel <sgoel01@yahoo.com>
 
-[ Upstream commit b8ccef048354074a548f108e51d0557d6adfd3a3 ]
+[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
 
-In reada we BUG_ON(refs == 0), which could be unkind since we aren't
-holding a lock on the extent leaf and thus could get a transient
-incorrect answer.  In walk_down_proc we also BUG_ON(refs == 0), which
-could happen if we have extent tree corruption.  Change that to return
--EUCLEAN.  In do_walk_down() we catch this case and handle it correctly,
-however we return -EIO, which -EUCLEAN is a more appropriate error code.
-Finally in walk_up_proc we have the same BUG_ON(refs == 0), so convert
-that to proper error handling.  Also adjust the error message so we can
-actually do something with the information.
+Set the host status byte when a data completion error is encountered
+otherwise the upper layer may end up using the invalid zero'ed data.
+The following output was observed from scsi/sd.c prior to this fix.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
+[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
+[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+
+Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/usb/storage/uas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index d6efdcf95991..0d97c8ee6b4f 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5141,7 +5141,15 @@ static noinline void reada_walk_down(struct btrfs_trans_handle *trans,
- 		/* We don't care about errors in readahead. */
- 		if (ret < 0)
- 			continue;
--		BUG_ON(refs == 0);
-+
-+		/*
-+		 * This could be racey, it's conceivable that we raced and end
-+		 * up with a bogus refs count, if that's the case just skip, if
-+		 * we are actually corrupt we will notice when we look up
-+		 * everything again with our locks.
-+		 */
-+		if (refs == 0)
-+			continue;
- 
- 		if (wc->stage == DROP_REFERENCE) {
- 			if (refs == 1)
-@@ -5208,7 +5216,11 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
- 		BUG_ON(ret == -ENOMEM);
- 		if (ret)
- 			return ret;
--		BUG_ON(wc->refs[level] == 0);
-+		if (unlikely(wc->refs[level] == 0)) {
-+			btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+				  eb->start);
-+			return -EUCLEAN;
-+		}
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 11a551a9cd05..aa61b1041028 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
+ 			uas_log_cmd_state(cmnd, "data cmplt err", status);
+ 		/* error: no data transfered */
+ 		scsi_set_resid(cmnd, sdb->length);
++		set_host_byte(cmnd, DID_ERROR);
+ 	} else {
+ 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
  	}
- 
- 	if (wc->stage == DROP_REFERENCE) {
-@@ -5338,8 +5350,9 @@ static noinline int do_walk_down(struct btrfs_trans_handle *trans,
- 		goto out_unlock;
- 
- 	if (unlikely(wc->refs[level - 1] == 0)) {
--		btrfs_err(fs_info, "Missing references.");
--		ret = -EIO;
-+		btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+			  bytenr);
-+		ret = -EUCLEAN;
- 		goto out_unlock;
- 	}
- 	*lookup_info = 0;
-@@ -5540,7 +5553,12 @@ static noinline int walk_up_proc(struct btrfs_trans_handle *trans,
- 				path->locks[level] = 0;
- 				return ret;
- 			}
--			BUG_ON(wc->refs[level] == 0);
-+			if (unlikely(wc->refs[level] == 0)) {
-+				btrfs_tree_unlock_rw(eb, path->locks[level]);
-+				btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+					  eb->start);
-+				return -EUCLEAN;
-+			}
- 			if (wc->refs[level] == 1) {
- 				btrfs_tree_unlock_rw(eb, path->locks[level]);
- 				path->locks[level] = 0;
 -- 
 2.43.0
 
