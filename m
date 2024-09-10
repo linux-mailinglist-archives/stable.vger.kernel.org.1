@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17E19732DB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E097973426
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77BBC1F22E2A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC3B1F23FA9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1469E1917D7;
-	Tue, 10 Sep 2024 10:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8578B18DF67;
+	Tue, 10 Sep 2024 10:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDeFEaGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e05Msoxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D1D18FC93;
-	Tue, 10 Sep 2024 10:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418E4181B8D;
+	Tue, 10 Sep 2024 10:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963711; cv=none; b=EStm3L0M8jXCubn25+E3CD8e/Empxh8a4C8oQf/GuLPMdMoAstwyUVbkiueAfbBst85l0oI7GAdNzxBmckRqhe/AfDfWu2Otzlbm53mp/AuI7OaN9FONppNr5KQwVRBZNtA8N4weq0jd8AL0jj+P5vWpCKOKZSi2U4HNdafwmeE=
+	t=1725964505; cv=none; b=aWNQNYsop+n1Aqk6ZaAVX6buW0jCNiwjnhlmSC15Ln1KP0C0U/ZZ3hS/OuGZCdr/k50KRpywrMmpvLaVRLQsH57vL/+Mn6hgDN5wz6FDUuPG2LYUySc3/GUOkrOTH3fKeJ4fhqUVRkL4J0t0eocQ8yCeweyHSCj4x4s2wkA0S7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963711; c=relaxed/simple;
-	bh=HI6MekB+u2iWUs+RNWCpnzjTQvh4DQaZk8O/tFx6uLg=;
+	s=arc-20240116; t=1725964505; c=relaxed/simple;
+	bh=Z48hiQQ2F++eGdQnURVCSE6ptIW9YZBk4FBN5rkPl9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMiIgWhSfqsj1j3KYt8WYFx4t3DVmEBfAC5M77lccN0y7nTpj0ob0TGQgJi7U3F7kIoGP0CyGFT2/kWfLxiqtX8oExaSm5jRP+62uPE74ORs8NWBURDQzJTJV1Qhww1jYjCOsZZH4vrmViI+zKexn74Xl+m00lnZ+LmbJ5sxXCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDeFEaGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5024CC4CEC6;
-	Tue, 10 Sep 2024 10:21:51 +0000 (UTC)
+	 MIME-Version; b=iPe7hVJb9GnVPW9EO/AnW8Jof624BeFm34+pGJcvZzHCogt4eGvQmpPTJ72wTjBaBy0tx3CQUQlilBXRE63CbeWcHYtx2d7IKvolsrlXDXcdudA5Ks5lYKWFMuu5dnaC8fJ3qGCGwUDEfkAn+UVDxr75oIKpI37bslPeqEVBqyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e05Msoxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0F1C4CEC3;
+	Tue, 10 Sep 2024 10:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963711;
-	bh=HI6MekB+u2iWUs+RNWCpnzjTQvh4DQaZk8O/tFx6uLg=;
+	s=korg; t=1725964505;
+	bh=Z48hiQQ2F++eGdQnURVCSE6ptIW9YZBk4FBN5rkPl9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDeFEaGVBkmTwQKHKyqRqx/Bot+1GdMoWjx7wz0eb43lLl9lJP/3sYct4LwZtJbwn
-	 AtNja9ZbGJuedXYf06olIEuiDT0FYOazqdZ4mE844TbOsvFF9kYFiOfcLgZz3fJEDx
-	 ZCC+2KxqG/8z0f+aRT2i6oZnZx9gDUBUw5W30jak=
+	b=e05MsoxxKxmsh1bpoIb/cxt2HEhAEy5GrdEumLsqkpRyN6SP47fWhbs5GuU4bKkyM
+	 tcr4r9FxF7jaJ0Y91JEqAHHOAE45ptU69Ilf+AJarXLst+BjmftnVe7M2y3mxCZrM0
+	 fNRji/LTPZnmnk4EUbArTYUb9+qt970N3mwH4NxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/214] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.6 178/269] i3c: master: svc: resend target address when get NACK
 Date: Tue, 10 Sep 2024 11:32:45 +0200
-Message-ID: <20240910092604.599647481@linuxfoundation.org>
+Message-ID: <20240910092614.508405105@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
+[ Upstream commit 9bc7501b0b90f4d0c34b97c14ff1f708ce7ad8f3 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3:
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+If the Controller chooses to start an I3C Message with an I3C Dynamic
+Address, then special provisions shall be made because that same I3C Target
+may be initiating an IBI or a Controller Role Request. So, one of three
+things may happen: (skip 1, 2)
+
+3. The Addresses match and the RnW bits also match, and so neither
+Controller nor Target will ACK since both are expecting the other side to
+provide ACK. As a result, each side might think it had "won" arbitration,
+but neither side would continue, as each would subsequently see that the
+other did not provide ACK.
+...
+For either value of RnW: Due to the NACK, the Controller shall defer the
+Private Write or Private Read, and should typically transmit the Target
+						    ^^^^^^^^^^^^^^^^^^^
+Address again after a Repeated START (i.e., the next one or any one prior
+^^^^^^^^^^^^^
+to a STOP in the Frame). Since the Address Header following a Repeated
+START is not arbitrated, the Controller will always win (see Section
+5.1.2.2.4).
+
+Resend target address again if address is not 7E and controller get NACK.
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm95234.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 58 ++++++++++++++++++++++-------
+ 1 file changed, 44 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
-index ac169a994ae0..db2aecdfbd17 100644
---- a/drivers/hwmon/lm95234.c
-+++ b/drivers/hwmon/lm95234.c
-@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index ccd0c4680be2..acc937275c18 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1037,29 +1037,59 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
+ 			       u8 *in, const u8 *out, unsigned int xfer_len,
+ 			       unsigned int *actual_len, bool continued)
+ {
++	int retry = 2;
+ 	u32 reg;
+ 	int ret;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
-+				1000);
+ 	/* clean SVC_I3C_MINT_IBIWON w1c bits */
+ 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
  
- 	mutex_lock(&data->update_lock);
- 	data->tcrit2[index] = val;
-@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
+-	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
+-	       xfer_type |
+-	       SVC_I3C_MCTRL_IBIRESP_NACK |
+-	       SVC_I3C_MCTRL_DIR(rnw) |
+-	       SVC_I3C_MCTRL_ADDR(addr) |
+-	       SVC_I3C_MCTRL_RDTERM(*actual_len),
+-	       master->regs + SVC_I3C_MCTRL);
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
+-	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
++	while (retry--) {
++		writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
++		       xfer_type |
++		       SVC_I3C_MCTRL_IBIRESP_NACK |
++		       SVC_I3C_MCTRL_DIR(rnw) |
++		       SVC_I3C_MCTRL_ADDR(addr) |
++		       SVC_I3C_MCTRL_RDTERM(*actual_len),
++		       master->regs + SVC_I3C_MCTRL);
++
++		ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
+ 				 SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
+-	if (ret)
+-		goto emit_stop;
++		if (ret)
++			goto emit_stop;
  
- 	mutex_lock(&data->update_lock);
- 	data->tcrit1[index] = val;
-@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
- 	if (ret < 0)
- 		return ret;
+-	if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
+-		ret = -ENXIO;
+-		*actual_len = 0;
+-		goto emit_stop;
++		if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
++			/*
++			 * According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3.
++			 * If the Controller chooses to start an I3C Message with an I3C Dynamic
++			 * Address, then special provisions shall be made because that same I3C
++			 * Target may be initiating an IBI or a Controller Role Request. So, one of
++			 * three things may happen: (skip 1, 2)
++			 *
++			 * 3. The Addresses match and the RnW bits also match, and so neither
++			 * Controller nor Target will ACK since both are expecting the other side to
++			 * provide ACK. As a result, each side might think it had "won" arbitration,
++			 * but neither side would continue, as each would subsequently see that the
++			 * other did not provide ACK.
++			 * ...
++			 * For either value of RnW: Due to the NACK, the Controller shall defer the
++			 * Private Write or Private Read, and should typically transmit the Target
++			 * Address again after a Repeated START (i.e., the next one or any one prior
++			 * to a STOP in the Frame). Since the Address Header following a Repeated
++			 * START is not arbitrated, the Controller will always win (see Section
++			 * 5.1.2.2.4).
++			 */
++			if (retry && addr != 0x7e) {
++				writel(SVC_I3C_MERRWARN_NACK, master->regs + SVC_I3C_MERRWARN);
++			} else {
++				ret = -ENXIO;
++				*actual_len = 0;
++				goto emit_stop;
++			}
++		} else {
++			break;
++		}
+ 	}
  
--	val = DIV_ROUND_CLOSEST(val, 1000);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
- 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
- 
- 	mutex_lock(&data->update_lock);
-@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
- 		return ret;
- 
- 	/* Accuracy is 1/2 degrees C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
- 
- 	mutex_lock(&data->update_lock);
- 	data->toffset[index] = val;
+ 	/*
 -- 
 2.43.0
 
