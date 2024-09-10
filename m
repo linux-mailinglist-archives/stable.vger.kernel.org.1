@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D605973171
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F68973391
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B07881C211AF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5541F2533C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3376192D7B;
-	Tue, 10 Sep 2024 10:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4868A19413F;
+	Tue, 10 Sep 2024 10:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZj4nXMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCdEISzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64947188CC1;
-	Tue, 10 Sep 2024 10:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053911940B5;
+	Tue, 10 Sep 2024 10:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962831; cv=none; b=aRwqkzOz9OFerURhU0W/d+OOAuq3rhYC1FqqrIMHUPiPfJ5vd6OUxz9XsE6/C5NJc1Q4RpgN9U8twL61yaNjDQcOnSU+XBcJo8IBodafDYX/KWp4ZQ1hP8CfS20n0RsGFFGPgh/W8RBu6m7MtsFPkSIaX68Y7R+COiIw0930+7I=
+	t=1725964141; cv=none; b=bFWyawMAxpKjh7HODlLCfO6E2UjsrX6QhO24nJqG994FG21+Y+6183JoVhMhteK1nOhWh9LV8/M+8a6VS+wFBvC4ehLFrJM/aITt/hIka19w7kcWEBGro1SGhyKOdI8GnsIZ44FfNV0QrBPt2pReCQxVY6Uh05s9Rp0yPHMihJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962831; c=relaxed/simple;
-	bh=G/cM4lIEH80RPafaRh14vUmyW2MIM2kFjcUwpl3G9F4=;
+	s=arc-20240116; t=1725964141; c=relaxed/simple;
+	bh=WVBdfIXqA37TAQKxPishu3WdOPBmYMvXlTsVlqS/X2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SC9Vi6PKulXJSP1pz5PwVU89QPgsWZo1JBVO7vQSKUmBlfrrPAF4hqtY9AJ018TnkfFqKNC9uTX8y7XGoKK6qv6OFKOADtCkpcTCvNnCBeLO5nS5SVr075maKrynohOJfWLRyQd2GOydZjXSarsFXGIXQuemfKeCWFDXLMwihZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZj4nXMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB8DC4CEC3;
-	Tue, 10 Sep 2024 10:07:10 +0000 (UTC)
+	 MIME-Version; b=oNCvpLlTw+XB9DcqqHxXkASuWxG8gUh5uHjGvyjIlFBEyb6/xwzsTY4yU5Bb70ituGERWEWiOu8hBgoj36/qdv5KmfE3d+RLn8T5mk6rd6MCIivp64rR3vS7SdG3SacoQJrWa9CKJcJMLmVl4WxcDjZC/yBtrXX9/2vdw/VCd24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCdEISzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A8C4CEC3;
+	Tue, 10 Sep 2024 10:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962831;
-	bh=G/cM4lIEH80RPafaRh14vUmyW2MIM2kFjcUwpl3G9F4=;
+	s=korg; t=1725964140;
+	bh=WVBdfIXqA37TAQKxPishu3WdOPBmYMvXlTsVlqS/X2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZj4nXMAzOLT7+g/OtHFmyoL8ZNndLY9Dff1nKk7paR1NkUF2j+szv0UEiXo5vFeV
-	 JgSKhXYRX1/UBWbwjNzRzSJuCgn6H+QS72p/kT5AoXwv4GDg47DnuHF36AcZKhcOSL
-	 vf+oXfgg5cQgPs8VuMfFOM8gSQ+xi3QbVc+sk3FM=
+	b=MCdEISzXJXeTx33mi4TNoOamQKru6d8eEIHgfjMdqwdUi4/czfznt9mp6O6v2DhVY
+	 0EJR8r72VpNzEaKpYnpehiYmLApPgWqplur1dx8oDAL94szJ/pn3wOHq2cEqKkoCGV
+	 WXKtYB18iNHa+JwwAmHyLw2VxEJ7wNwOBk9unL1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Shantanu Goel <sgoel01@yahoo.com>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/192] smack: unix sockets: fix accept()ed socket label
+Subject: [PATCH 6.6 081/269] usb: uas: set host status byte on data completion error
 Date: Tue, 10 Sep 2024 11:31:08 +0200
-Message-ID: <20240910092559.814581897@linuxfoundation.org>
+Message-ID: <20240910092611.082473962@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Shantanu Goel <sgoel01@yahoo.com>
 
-[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
+[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
 
-When a process accept()s connection from a unix socket
-(either stream or seqpacket)
-it gets the socket with the label of the connecting process.
+Set the host status byte when a data completion error is encountered
+otherwise the upper layer may end up using the invalid zero'ed data.
+The following output was observed from scsi/sd.c prior to this fix.
 
-For example, if a connecting process has a label 'foo',
-the accept()ed socket will also have 'in' and 'out' labels 'foo',
-regardless of the label of the listener process.
+[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
+[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
+[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
 
-This is because kernel creates unix child sockets
-in the context of the connecting process.
-
-I do not see any obvious way for the listener to abuse
-alien labels coming with the new socket, but,
-to be on the safe side, it's better fix new socket labels.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/usb/storage/uas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 75b3e91d5a5f..c18366dbbfed 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -3706,12 +3706,18 @@ static int smack_unix_stream_connect(struct sock *sock,
- 		}
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 451d9569163a..f794cb39cc31 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
+ 			uas_log_cmd_state(cmnd, "data cmplt err", status);
+ 		/* error: no data transfered */
+ 		scsi_set_resid(cmnd, sdb->length);
++		set_host_byte(cmnd, DID_ERROR);
+ 	} else {
+ 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
  	}
- 
--	/*
--	 * Cross reference the peer labels for SO_PEERSEC.
--	 */
- 	if (rc == 0) {
-+		/*
-+		 * Cross reference the peer labels for SO_PEERSEC.
-+		 */
- 		nsp->smk_packet = ssp->smk_out;
- 		ssp->smk_packet = osp->smk_out;
-+
-+		/*
-+		 * new/child/established socket must inherit listening socket labels
-+		 */
-+		nsp->smk_out = osp->smk_out;
-+		nsp->smk_in  = osp->smk_in;
- 	}
- 
- 	return rc;
 -- 
 2.43.0
 
