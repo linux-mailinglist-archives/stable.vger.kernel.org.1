@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1EF9734DE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409609732B2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2E51F22F08
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11EE288DC2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7443B18B488;
-	Tue, 10 Sep 2024 10:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BC719993B;
+	Tue, 10 Sep 2024 10:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsMFiRB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjur5Fm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C8A17C220;
-	Tue, 10 Sep 2024 10:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A1199920;
+	Tue, 10 Sep 2024 10:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964877; cv=none; b=AM9e06GZeUDb7EGJlNXm2vDvj6T6vc6wgrZkdvFkrX3ECp+6Gf6e3zI2bc6u77StMwgRYsuE9WBz19oPoxg9gXc//ESSF/eb/xf5wWWy7+D+shbII97xIVB/0zIN9eX7vYH1gfJnBOTd0bwNQb+xmYqDi2HCUdsFv64ShMnzGFM=
+	t=1725963585; cv=none; b=fJ4s3XK7BZ8pBMBpUbGL5IccemoFT5J7/YGfRmKtSeyOhicDkjwWCIbVZiLZC1UtAk/sv6emHTYYIkQx/71Zeaf8WEfmi72/2M2UbZAY0x5lu6grIID8rQRTP9WwxAKlEcNxxmVkImvnQ20DyE9wGhkXZy/vscCc5RUf7xX5iys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964877; c=relaxed/simple;
-	bh=NkvelPiQNj9bJ2xOEa0mB8zNgG65cFCpZzwX9zgGgNo=;
+	s=arc-20240116; t=1725963585; c=relaxed/simple;
+	bh=rRlUq/FbnfStU1QqmCm4TPvwSWJACGpJWUFSuaxFMSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvieMYFg6tgM63YMKPdL4PMfwPBHfZ4Z+ZtgnYa+kHuuq0nE6CcQd6vSK58Kiwo4pKY2DyCivGVDn+pVMS/C6eXsFufaDHIKpGX1uKtH2bdReEjTw0E2R6IC0GrFoWlWv7IRVKdB/ByxroveXucbjrpNZGEEbDOoF6pt9EcSpTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsMFiRB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE3DC4CEC3;
-	Tue, 10 Sep 2024 10:41:16 +0000 (UTC)
+	 MIME-Version; b=ft/rRoStcpWRlNhl55LJT8+sEDBc7Se9Snj0puhDI7KKSqwz4Iqb7CZfg7fJirnL6a5T0FoNxNHq+fvB6k3PQFjEX1sZCDGvK5nqSovLKFo603CKezfPxQgbBep6PEti9mvG/qWzlI1EglFshvMrqmpSPJeMARe+x4AXPVk4uFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjur5Fm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AF3C4CEC3;
+	Tue, 10 Sep 2024 10:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964877;
-	bh=NkvelPiQNj9bJ2xOEa0mB8zNgG65cFCpZzwX9zgGgNo=;
+	s=korg; t=1725963585;
+	bh=rRlUq/FbnfStU1QqmCm4TPvwSWJACGpJWUFSuaxFMSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsMFiRB+jckt8j63opccYpnNgWXW4LluMmge6MBXkqtsLTGzL5WexTXGr5eTRg62+
-	 TPPvZ+jixllr5SL4aZaIFpdp5sw9f0J1tkmNPEVjit+Y7ZVM9UR2IJ8FbnClj+Vhfs
-	 aPjxawESYqef0OlDBMwxCdSfA7aKMJ2Qn/kur4f8=
+	b=rjur5Fm+iZuNy6tGuVRxyfsj77Ebsg/N+i/X2xCHmM7mBKRMHqo3Ba0NGewSNlgln
+	 jxPvjA7qeABH6eVp96oT51bMuX1BIFXV6NRHyluWYOcQ3Jx2PBJChkowGZtymq5uZY
+	 jB5C7hrjvmpNVOcN9BHvZbNKIaEq91mQTjlNGCLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/186] ionic: fix potential irq name truncation
+Subject: [PATCH 5.15 107/214] iommu: sun50i: clear bypass register
 Date: Tue, 10 Sep 2024 11:32:09 +0200
-Message-ID: <20240910092555.965258908@linuxfoundation.org>
+Message-ID: <20240910092603.176402879@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit 3eb76e71b16e8ba5277bf97617aef51f5e64dbe4 ]
+[ Upstream commit 927c70c93d929f4c2dcaf72f51b31bb7d118a51a ]
 
-Address a warning about potential string truncation based on the
-string buffer sizes.  We can add some hints to the string format
-specifier to set limits on the resulting possible string to
-squelch the complaints.
+The Allwinner H6 IOMMU has a bypass register, which allows to circumvent
+the page tables for each possible master. The reset value for this
+register is 0, which disables the bypass.
+The Allwinner H616 IOMMU resets this register to 0x7f, which activates
+the bypass for all masters, which is not what we want.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20240529000259.25775-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Always clear this register to 0, to enforce the usage of page tables,
+and make this driver compatible with the H616 in this respect.
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20240616224056.29159-2-andre.przywara@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/sun50i-iommu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 324ef6990e9a..f0c48f20d086 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -210,7 +210,7 @@ static int ionic_request_irq(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 		name = dev_name(dev);
- 
- 	snprintf(intr->name, sizeof(intr->name),
--		 "%s-%s-%s", IONIC_DRV_NAME, name, q->name);
-+		 "%.5s-%.16s-%.8s", IONIC_DRV_NAME, name, q->name);
- 
- 	return devm_request_irq(dev, intr->vector, ionic_isr,
- 				0, intr->name, &qcq->napi);
+diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
+index ed3574195599..8593c79cfaeb 100644
+--- a/drivers/iommu/sun50i-iommu.c
++++ b/drivers/iommu/sun50i-iommu.c
+@@ -379,6 +379,7 @@ static int sun50i_iommu_enable(struct sun50i_iommu *iommu)
+ 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(3) |
+ 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(4) |
+ 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(5));
++	iommu_write(iommu, IOMMU_BYPASS_REG, 0);
+ 	iommu_write(iommu, IOMMU_INT_ENABLE_REG, IOMMU_INT_MASK);
+ 	iommu_write(iommu, IOMMU_DM_AUT_CTRL_REG(SUN50I_IOMMU_ACI_NONE),
+ 		    IOMMU_DM_AUT_CTRL_RD_UNAVAIL(SUN50I_IOMMU_ACI_NONE, 0) |
 -- 
 2.43.0
 
