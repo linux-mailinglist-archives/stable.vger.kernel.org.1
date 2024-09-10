@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D629733A9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84E8973288
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C311F25498
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9AF31C24300
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99962195B1A;
-	Tue, 10 Sep 2024 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA46194082;
+	Tue, 10 Sep 2024 10:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuLp6Bsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG/+vLNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5850417B50F;
-	Tue, 10 Sep 2024 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDBB190493;
+	Tue, 10 Sep 2024 10:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964214; cv=none; b=XKvaXZlTWaBzFKOuHYlttOA40foM58J8w4pN0n0V+kK3fe9XZ3ABBKnG27QXBl4ucIlaf2HHrY0HqpGMaCKd5M4Oy8y3HxgtJRWUzUA69AeKNOIMFfu28T37N4rAUw0MYSxLO6xgSE2BoYUGsYMKdNqqVtEPtV72lJvLfYJscto=
+	t=1725963477; cv=none; b=NvOVABN2S3VUn3VL9bnfh2FJTz+BSb3WtghNzIAAVpHNlH+PeWYARc2F3Amq//Wmv8S+MvRp2F+bixhLZfK1dmKSMglWh1FPC9emceTTXyKwc3IUjGEd4oCsmlVKQgiNqgBeBQO2onolRqZTVV3MdMgaq4zH43PiHStgwqnYXL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964214; c=relaxed/simple;
-	bh=mtEQ9Ua/Fs+MZ4lNGlZ24Bko3Mvsxxm1rxqvfqYyu/s=;
+	s=arc-20240116; t=1725963477; c=relaxed/simple;
+	bh=4CiWa8YH8DtcNg/vPE/WkpQjaOK5u2aYEugQ/mmXjVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9eKpSG9S+zh4sngeYImsRGrhrmH6dSMZPcwG92McCCWdY9Sq1H2lFhYsPWE2RMDDKEMUjC3hoDHPG5m3RaYER9vps5nNA5MofiKRnQYcVNYjxM7Zg3BpeDqsApyGilg2So/tjRA880VFMv43EpnE9jqjjvKbr336eHiCvIEPxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuLp6Bsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA291C4CEC3;
-	Tue, 10 Sep 2024 10:30:13 +0000 (UTC)
+	 MIME-Version; b=ZqxLbwqZCGwlCmxoKwWrqs5aWfif5wz6TodHympOamvB9aabKalYIPj1AhpORo0T4NX/XGQ7RYwmDf3Lr/pBIuA3S6Ewd/FaG2N/+bEQsxXkvS7z3k+uJh9oC/ZnjO2bUc/V+oHkCrruOi/YNe88lqhOzMDtCnKKq8REzvgxgm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG/+vLNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E280C4CEC3;
+	Tue, 10 Sep 2024 10:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964214;
-	bh=mtEQ9Ua/Fs+MZ4lNGlZ24Bko3Mvsxxm1rxqvfqYyu/s=;
+	s=korg; t=1725963476;
+	bh=4CiWa8YH8DtcNg/vPE/WkpQjaOK5u2aYEugQ/mmXjVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuLp6BsyjjHQWJut6KsySBJGRahVDfVXWYPwveQwcm9/aD1Lg40f5Yh5J7hmRzxP7
-	 CxUT2XPD1W7/E0omhhtLLn6wX525B/Dkyf/8Z0CnnPJUS5L6MgYpTef4rZ9YJTHhsX
-	 7PMT8scW7aKG63PvGBYScUYAbs9xNRcrsW2Accms=
+	b=ZG/+vLNVo0K0qKlS1uZVXCuRRCjC7T6qOiWNm0AGrQrStXW98Taqm7eabBrilsULo
+	 6vzAr47rDfP3okzpoQaaKEQUHxVXword6fF4CObWUCq7zeS237aTdrV1IcCauT2BSA
+	 E9sRXuVQjMdR8BwhDM7fVVBL4dg2XAVw+F+sWUQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Jocic <martin.jocic@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/269] can: kvaser_pciefd: Skip redundant NULL pointer check in ISR
+	Roland Xu <mu001999@outlook.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 071/214] rtmutex: Drop rt_mutex::wait_lock before scheduling
 Date: Tue, 10 Sep 2024 11:31:33 +0200
-Message-ID: <20240910092611.986303174@linuxfoundation.org>
+Message-ID: <20240910092601.641902330@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Jocic <martin.jocic@kvaser.com>
+From: Roland Xu <mu001999@outlook.com>
 
-[ Upstream commit ac765219c2c4e44f29063724c8d36435a3e61985 ]
+commit d33d26036a0274b472299d7dcdaa5fb34329f91b upstream.
 
-This check is already done at the creation of the net devices in
-kvaser_pciefd_setup_can_ctrls called from kvaser_pciefd_probe.
+rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
+good case it returns with the lock held and in the deadlock case it emits a
+warning and goes into an endless scheduling loop with the lock held, which
+triggers the 'scheduling in atomic' warning.
 
-If it fails, the driver won't load, so there should be no need to
-repeat the check inside the ISR. The number of channels is read
-from the FPGA and should be trusted.
+Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
+and dropping into the schedule for ever loop.
 
-Signed-off-by: Martin Jocic <martin.jocic@kvaser.com>
-Link: https://lore.kernel.org/all/20240614151524.2718287-3-martin.jocic@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: dd885d90c047 ("can: kvaser_pciefd: Use a single write when releasing RX buffers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ tglx: Moved unlock before the WARN(), removed the pointless comment,
+  	massaged changelog, added Fixes tag ]
+
+Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
+Signed-off-by: Roland Xu <mu001999@outlook.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c | 6 ------
- 1 file changed, 6 deletions(-)
+ kernel/locking/rtmutex.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index a57005faa04f..076fc2f5b34b 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1641,12 +1641,6 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
- 		kvaser_pciefd_receive_irq(pcie);
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1613,6 +1613,7 @@ static int __sched rt_mutex_slowlock_blo
+ }
  
- 	for (i = 0; i < pcie->nr_channels; i++) {
--		if (!pcie->can[i]) {
--			dev_err(&pcie->pci->dev,
--				"IRQ mask points to unallocated controller\n");
--			break;
--		}
--
- 		/* Check that mask matches channel (i) IRQ mask */
- 		if (board_irq & irq_mask->kcan_tx[i])
- 			kvaser_pciefd_transmit_irq(pcie->can[i]);
--- 
-2.43.0
-
+ static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
++					     struct rt_mutex_base *lock,
+ 					     struct rt_mutex_waiter *w)
+ {
+ 	/*
+@@ -1625,10 +1626,10 @@ static void __sched rt_mutex_handle_dead
+ 	if (build_ww_mutex() && w->ww_ctx)
+ 		return;
+ 
+-	/*
+-	 * Yell loudly and stop the task right here.
+-	 */
++	raw_spin_unlock_irq(&lock->wait_lock);
++
+ 	WARN(1, "rtmutex deadlock detected\n");
++
+ 	while (1) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 		schedule();
+@@ -1680,7 +1681,7 @@ static int __sched __rt_mutex_slowlock(s
+ 	} else {
+ 		__set_current_state(TASK_RUNNING);
+ 		remove_waiter(lock, waiter);
+-		rt_mutex_handle_deadlock(ret, chwalk, waiter);
++		rt_mutex_handle_deadlock(ret, chwalk, lock, waiter);
+ 	}
+ 
+ 	/*
 
 
 
