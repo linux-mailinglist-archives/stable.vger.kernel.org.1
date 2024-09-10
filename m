@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-74537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC874972FD6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFAF972DDF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AB921C249D9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15D61C2154D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831518C91B;
-	Tue, 10 Sep 2024 09:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40082188CDC;
+	Tue, 10 Sep 2024 09:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hE73Rur4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmdso5pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3739318C008;
-	Tue, 10 Sep 2024 09:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150346444;
+	Tue, 10 Sep 2024 09:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962096; cv=none; b=rtQJTdwu+aQY6AGXpLWhPjRivxxu5w8QoIoyCRRocTZ4zY1hElQiOVmEaJwBhflloPHAbFeFZupgkhRKEH3ZawIAIKAjrB3Ay70GHDzNbkpGJ2qVHODyyRxM4ft9HSKv9/Oo9go5/a844+Wzsyk61Mh+hNGFMNa4LRLJk3LCHP8=
+	t=1725961031; cv=none; b=qepE1PpVBlaywSiT4/BSvR/vjCYcCJP8BdZ9gkHM9E6w8COP4q1UKndRXpfG+Imc7fPD+NAkHW+C31iG0T7PYgQRl70R5tTPXIgNwm+I6uqHr+JqLQDBdGivsKU9e2UR/o7qSEFJ3dtgx42k8T+0zbNhpRGP3ixk5W3oZhN8/EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962096; c=relaxed/simple;
-	bh=h5bjnJdz0J127F3MoXPYB5cdX319FNeb+OxzBYcmDFY=;
+	s=arc-20240116; t=1725961031; c=relaxed/simple;
+	bh=xfCS/yBynbX3CNradkBwglMhcQzATW13DqKhiu3fvSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KsrvCP2arnioICmVab4NTRtGLmrnaprg06zofWSTtCnGS6vWL7l0V3vSzNnpOYnCM+dzdwNrUKb8TqRPe0ZsHE2n61w9fkqbODW9UG7JFOgmDIA/maZr/y9pKbw8SXzHtuUm/inX1huSImXjd7uqFSKt726VrtyC3e7/800T2iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hE73Rur4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A83C4CEC3;
-	Tue, 10 Sep 2024 09:54:55 +0000 (UTC)
+	 MIME-Version; b=ekub0HhVNsJR2smZ/6h5UuRJwWknJe696nfWE4VaLSo9hOGrdSRD7Pa6wFGpezOU2UDC6L0nUcfqh+T5s0UX9lCsAYfq9+tK3P6JwAzOmSHF4h9knDNqtX/BRmec+wG7znMIaljC8J6JDYx/MNHa5n7MiXpYPsCPHQuclNy7BHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmdso5pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E243C4CEC3;
+	Tue, 10 Sep 2024 09:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962096;
-	bh=h5bjnJdz0J127F3MoXPYB5cdX319FNeb+OxzBYcmDFY=;
+	s=korg; t=1725961030;
+	bh=xfCS/yBynbX3CNradkBwglMhcQzATW13DqKhiu3fvSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hE73Rur4atl6sygeLYR4UoI9jRpHHtudT/nwxk+QLwzsqDc2UOoh6/oZxK0yZk8P0
-	 X/Bg8yscb4XatWiqc+xi0NlF8P4bKKeCyrG144r5k2GnTqNkjzS3o63JfLlZNgZkyt
-	 5L9F7j4Y9J6aPl/k4Jxx0xe10U/cnpJhf0Ry5NJM=
+	b=qmdso5pQ9+u/6bzCMZV5N+iUHb/j8dJODGaoOX4SWHGcn0vMrH6LuQurDJR969F06
+	 wR6gxEJWYG31tVw/u1dM52rYYLs6C6v+s5M+64sNrnw1TaRMvCf36rjaJL2Zn1Ezqr
+	 0Yja0EHaSW332oNHnMLzS7D8gli8rs6gD9ofsRt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>
-Subject: [PATCH 6.10 294/375] usb: cdns2: Fix controller reset issue
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 29/96] af_unix: Remove put_pid()/put_cred() in copy_peercred().
 Date: Tue, 10 Sep 2024 11:31:31 +0200
-Message-ID: <20240910092632.433833315@linuxfoundation.org>
+Message-ID: <20240910092542.769700774@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,79 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit e2940928115e83d707b21bf00b0db7d6c15f8341 upstream.
+[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
 
-Patch fixes the procedure of resetting controller.
-The CPUCTRL register is write only and reading returns 0.
-Waiting for reset to complite is incorrect.
+When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
+the listener's sk_peer_pid/sk_peer_cred are copied to the client in
+copy_peercred().
 
-Fixes: 3eb1f1efe204 ("usb: cdns2: Add main part of Cadence USBHS driver")
-cc: stable@vger.kernel.org
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Link: https://lore.kernel.org/r/PH7PR07MB9538D56D75F1F399D0BB96F0DD922@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
+we need not call put_pid() and put_cred() there.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/cdns2/cdns2-gadget.c |   12 +++---------
- drivers/usb/gadget/udc/cdns2/cdns2-gadget.h |    9 +++++++++
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ net/unix/af_unix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c
-+++ b/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c
-@@ -2251,7 +2251,6 @@ static int cdns2_gadget_start(struct cdn
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index dfcafbb8cd0e..24fb6f00f597 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -610,9 +610,6 @@ static void init_peercred(struct sock *sk)
+ 
+ static void copy_peercred(struct sock *sk, struct sock *peersk)
  {
- 	u32 max_speed;
- 	void *buf;
--	int val;
- 	int ret;
- 
- 	pdev->usb_regs = pdev->regs;
-@@ -2261,14 +2260,9 @@ static int cdns2_gadget_start(struct cdn
- 	pdev->adma_regs = pdev->regs + CDNS2_ADMA_REGS_OFFSET;
- 
- 	/* Reset controller. */
--	set_reg_bit_8(&pdev->usb_regs->cpuctrl, CPUCTRL_SW_RST);
+-	const struct cred *old_cred;
+-	struct pid *old_pid;
 -
--	ret = readl_poll_timeout_atomic(&pdev->usb_regs->cpuctrl, val,
--					!(val & CPUCTRL_SW_RST), 1, 10000);
--	if (ret) {
--		dev_err(pdev->dev, "Error: reset controller timeout\n");
--		return -EINVAL;
--	}
-+	writeb(CPUCTRL_SW_RST | CPUCTRL_UPCLK | CPUCTRL_WUEN,
-+	       &pdev->usb_regs->cpuctrl);
-+	usleep_range(5, 10);
- 
- 	usb_initialize_gadget(pdev->dev, &pdev->gadget, NULL);
- 
---- a/drivers/usb/gadget/udc/cdns2/cdns2-gadget.h
-+++ b/drivers/usb/gadget/udc/cdns2/cdns2-gadget.h
-@@ -292,8 +292,17 @@ struct cdns2_usb_regs {
- #define SPEEDCTRL_HSDISABLE	BIT(7)
- 
- /* CPUCTRL- bitmasks. */
-+/* UP clock enable */
-+#define CPUCTRL_UPCLK		BIT(0)
- /* Controller reset bit. */
- #define CPUCTRL_SW_RST		BIT(1)
-+/**
-+ * If the wuen bit is ‘1’, the upclken is automatically set to ‘1’ after
-+ * detecting rising edge of wuintereq interrupt. If the wuen bit is ‘0’,
-+ * the wuintereq interrupt is ignored.
-+ */
-+#define CPUCTRL_WUEN		BIT(7)
+ 	if (sk < peersk) {
+ 		spin_lock(&sk->sk_peer_lock);
+ 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+@@ -620,16 +617,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 		spin_lock(&peersk->sk_peer_lock);
+ 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+ 	}
+-	old_pid = sk->sk_peer_pid;
+-	old_cred = sk->sk_peer_cred;
 +
+ 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
  
- /**
-  * struct cdns2_adma_regs - ADMA controller registers.
+ 	spin_unlock(&sk->sk_peer_lock);
+ 	spin_unlock(&peersk->sk_peer_lock);
+-
+-	put_pid(old_pid);
+-	put_cred(old_cred);
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
+-- 
+2.43.0
+
 
 
 
