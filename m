@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-75222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4AD973384
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49DF9732B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B961C23EB6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B67EB244B5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D3D190499;
-	Tue, 10 Sep 2024 10:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF721A284A;
+	Tue, 10 Sep 2024 10:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/+rj1aZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4B93ke8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03307188A38;
-	Tue, 10 Sep 2024 10:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABA8191F9E;
+	Tue, 10 Sep 2024 10:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964103; cv=none; b=W+KCsVb5mNr/7rT+bfni6y82TvwK/P34yr115ZFsYb6K6fw3cVwtftwdR/YOfFZIa0B8Lw5e7YgnDDENIv2GdDYWk56lB/KHEZbh6fgtNRSq540wJ5C6P7fK6EEr7ctMDLtLfSKnGKq51RE5PXKX9SAMteE4CgdHYoVlekG5pNU=
+	t=1725963368; cv=none; b=G3NvreYiHh9H0oM6UEhY2xU8oHXnaFnZKXJ8Im3E2hiMBsoa+qCgzCcU6MliPW0WiQ6aW2SL2j+1DEUdapXlH2E4IPSQCtVWoMivJVOkUAvbeio+FTbPGilsBYmYZnC9nJyd1PX0jHyQJXxiJCbR4V31os6Cjw1ewLNlbf5XkVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964103; c=relaxed/simple;
-	bh=rTj5cmewmxIL8O8WEvlHkFoSU58g1A3xnIdpJu/KBTM=;
+	s=arc-20240116; t=1725963368; c=relaxed/simple;
+	bh=mRIRoP3UL6azlO9FrkgG1bdUtkvbxDHa33Tma2Qagk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQN1HAVu1Z56VwTM4CSgx8ph+RsLiKHnRzj6PGhc7laphGeNqa9nxQ1fGKPDFZL9FAsSQRqK4+tq12KlcdsNzJQQ0XRNvC8iUcaUieK7oyIISMBD2skHCnHDFOOVGMgZD1iUBerYg5PvSTWWuW7isOCI6Ayrdu9wDivu95r3VRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/+rj1aZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80238C4CECD;
-	Tue, 10 Sep 2024 10:28:22 +0000 (UTC)
+	 MIME-Version; b=VTqdxWboy1/VSSIjC+yKLYEHyO5C5Q19KdXtMXEsCuoIVbeceEuZzc8lizdX82ODVJxb3bZkbNLNVkJg6Z/kQL1gCN3IR2cJpi8hlNWB+gntzx0ETPnixjzaLFFiZqkjMQMsW5UCnaRiwcdCX6Qi045/Azk5cVaqkUsk3tug+PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4B93ke8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727A9C4CEC3;
+	Tue, 10 Sep 2024 10:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964102;
-	bh=rTj5cmewmxIL8O8WEvlHkFoSU58g1A3xnIdpJu/KBTM=;
+	s=korg; t=1725963368;
+	bh=mRIRoP3UL6azlO9FrkgG1bdUtkvbxDHa33Tma2Qagk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/+rj1aZ2ch4AkcWrXogTDq+enhGZSOwyPOaxIAfQn7lBkDv0gudoWaxEeL/7l4mV
-	 O+eJ5E/xtlFZc+bRqNqOwlhmHkBn+tcuUJgsNG4Um99ayoDxYUtPEn0KpghZDh5Rpx
-	 /paDzVh3aRhYxVuF8QT4cqMNYTNvrdZtvqlRa2tk=
+	b=J4B93ke86G9ZiHzVynLCcUkZgvU/V5IlXRNxY/LCN6uDmbUkdJffXTDFTYEg7z0MW
+	 Npw7/KpwoyzN4nJnCsC3CcdodbMF0F7DWNznKgMQcH8AnKg4yAH8e/yxU7+7AcIhUZ
+	 j67mEUhVwz/IGWwl6B6TCX9upq/MAO/7f6TwVf1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/269] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
+Subject: [PATCH 5.15 034/214] drm/amd/pm: check specific index for aldebaran
 Date: Tue, 10 Sep 2024 11:30:56 +0200
-Message-ID: <20240910092610.657996836@linuxfoundation.org>
+Message-ID: <20240910092600.165458308@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
+[ Upstream commit 0ce8ef2639c112ae203c985b758389e378630aac ]
 
-IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
-generic_handle_domain_irq() is never called for these IRQs.
+Check for specific indexes that may be invalid values.
 
-Disallow mapping these IRQs.
-
-[ Marek: changed commit message ]
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-armada-370-xp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index a55528469278..91a42e2d7a13 100644
---- a/drivers/irqchip/irq-armada-370-xp.c
-+++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -566,6 +566,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
- static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
- 				      unsigned int virq, irq_hw_number_t hw)
- {
-+	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
-+	if (hw <= 1)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+index d0c6b864d00a..31846510c1a9 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+@@ -1775,7 +1775,8 @@ static int aldebaran_mode2_reset(struct smu_context *smu)
+ 
+ 	index = smu_cmn_to_asic_specific_index(smu, CMN2ASIC_MAPPING_MSG,
+ 						SMU_MSG_GfxDeviceDriverReset);
+-
++	if (index < 0 )
 +		return -EINVAL;
-+
- 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
- 	if (!is_percpu_irq(hw))
- 		writel(hw, per_cpu_int_base +
+ 	mutex_lock(&smu->message_lock);
+ 	if (smu_version >= 0x00441400) {
+ 		ret = smu_cmn_send_msg_without_waiting(smu, (uint16_t)index, SMU_RESET_MODE_2);
 -- 
 2.43.0
 
