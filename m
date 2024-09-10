@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4483F97338C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05FC973174
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8161F25739
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F08A1C24B07
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FDC19343B;
-	Tue, 10 Sep 2024 10:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F02192D99;
+	Tue, 10 Sep 2024 10:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDMNCA26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZWMJv5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E29193418;
-	Tue, 10 Sep 2024 10:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F95918C025;
+	Tue, 10 Sep 2024 10:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964123; cv=none; b=LQAbQDtx7WiJi6+4poLz7JIa18urO4hAegchX8LG4tQr44QxhqmUM2nS6NKni+J+7f5gb9eUUmoZbt4G/YRM9IRjiUo6H4duuGfKzAqfOeu/CDUCZigv/HNUqxRxR/QQKGHzpoul5pxL19/jqkISdu8biCYwUBvykWbdVxr5tT0=
+	t=1725962840; cv=none; b=Rs9MDBJCnT1kJzQwNSQDplBv4YRPuw1uRCCy4XbIscw+0IJ939uWz2OXvc9Wk0iTFFSijom2rG1bM5Uq5nvn3sg9qeRMatgqWcakdbuBZFklx4e6y1oMTkfAN7oEhTNDL8TrCGvlmjb8+TlzetX7FCQnKsdIEjE7mNp53uNy7+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964123; c=relaxed/simple;
-	bh=UTMfh45jex3eBPH3jYzkMYNzl3c6t8cUgaUyrgDMHFk=;
+	s=arc-20240116; t=1725962840; c=relaxed/simple;
+	bh=bnfvcQcqxyDPwsPnnnDeV6oCMyppmm4tVMFVGSXAm2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcwQi2QwM7sj8WHfDnAKzfJVx7/NLja4snkKDFyjcZvszIyeCtuNZf5Uw5EAPM5eR5FsLVeHXG5KAU+2vsrByUObEiK5we4UJQMwpvkMhvlD1X4fhnyuTKsU8zRkDk2S4mBVcT/xp+gx/qFn4XQvBQ1z02bAS/l4NR+WsORy7XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDMNCA26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006CEC4CEC6;
-	Tue, 10 Sep 2024 10:28:42 +0000 (UTC)
+	 MIME-Version; b=bf9Yo9SEDd9tQKu8Xk3fd6sWnS1d71RM6ArxbEmMVwgZIcGIhFQ9aA6veNa40A2I+C4iVFZCmxGlSKN2ZvGwSjgMdoFUJ0tzXPWUn/ZeFrYjmnQ+GB/baM/hxNjPEpEO+9ftRlqMsz8sUU2dXMbwMgxFtt4Z7+DSe3uZ/wqGYWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZWMJv5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC45C4CEC3;
+	Tue, 10 Sep 2024 10:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964123;
-	bh=UTMfh45jex3eBPH3jYzkMYNzl3c6t8cUgaUyrgDMHFk=;
+	s=korg; t=1725962840;
+	bh=bnfvcQcqxyDPwsPnnnDeV6oCMyppmm4tVMFVGSXAm2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDMNCA263ZQ9CPD3X465UKS1FXKx80q2gBtPeCZpkr/8QMmKyvbTfa6pD2d1z9Vea
-	 tPYisWfjRdDkUDl+MbvPrn5o4qXnZetCKDyd6JYy/qUrDOvgYnABJ0yKneWIn83sX2
-	 cD4S2PTQfScsmwO7eZcrjXAJ1C9mtoLgjgQfYapM=
+	b=nZWMJv5qZgL6N9X3yY+QIAf/gvMLsgf10CvuyYIwW4tX1adGQdSxqJC9yXlFM63ZP
+	 uyRyz44RU875BvGziCsfZh9SOvYx99Nm3VJKP0pSKyRBcF5RAb1bswfT2zs+zu8EIg
+	 QRhNZ/L9mSR8F/mavMx33y7spah4x9XPkI5+CDgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 058/269] nilfs2: protect references to superblock parameters exposed in sysfs
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 021/192] mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K
 Date: Tue, 10 Sep 2024 11:30:45 +0200
-Message-ID: <20240910092610.280913605@linuxfoundation.org>
+Message-ID: <20240910092558.818019765@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-commit 683408258917541bdb294cd717c210a04381931e upstream.
+commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890 upstream.
 
-The superblock buffers of nilfs2 can not only be overwritten at runtime
-for modifications/repairs, but they are also regularly swapped, replaced
-during resizing, and even abandoned when degrading to one side due to
-backing device issues.  So, accessing them requires mutual exclusion using
-the reader/writer semaphore "nilfs->ns_sem".
+Commit 616f87661792 ("mmc: pass queue_limits to blk_mq_alloc_disk") [1]
+revealed the long living issue in dw_mmc.c driver, existing since the
+time when it was first introduced in commit f95f3850f7a9 ("mmc: dw_mmc:
+Add Synopsys DesignWare mmc host driver."), also making kernel boot
+broken on platforms using dw_mmc driver with 16K or 64K pages enabled,
+with this message in dmesg:
 
-Some sysfs attribute show methods read this superblock buffer without the
-necessary mutual exclusion, which can cause problems with pointer
-dereferencing and memory access, so fix it.
+    mmcblk: probe of mmc0:0001 failed with error -22
 
-Link: https://lkml.kernel.org/r/20240811100320.9913-1-konishi.ryusuke@gmail.com
-Fixes: da7141fb78db ("nilfs2: add /sys/fs/nilfs2/<device> group")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+That's happening because mmc_blk_probe() fails when it calls
+blk_validate_limits() consequently, which returns the error due to
+failed max_segment_size check in this code:
+
+    /*
+     * The maximum segment size has an odd historic 64k default that
+     * drivers probably should override.  Just like the I/O size we
+     * require drivers to at least handle a full page per segment.
+     */
+    ...
+    if (WARN_ON_ONCE(lim->max_segment_size < PAGE_SIZE))
+        return -EINVAL;
+
+In case when IDMAC (Internal DMA Controller) is used, dw_mmc.c always
+sets .max_seg_size to 4 KiB:
+
+    mmc->max_seg_size = 0x1000;
+
+The comment in the code above explains why it's incorrect. Arnd
+suggested setting .max_seg_size to .max_req_size to fix it, which is
+also what some other drivers are doing:
+
+   $ grep -rl 'max_seg_size.*=.*max_req_size' drivers/mmc/host/ | \
+     wc -l
+   18
+
+This change is not only fixing the boot with 16K/64K pages, but also
+leads to a better MMC performance. The linear write performance was
+tested on E850-96 board (eMMC only), before commit [1] (where it's
+possible to boot with 16K/64K pages without this fix, to be able to do
+a comparison). It was tested with this command:
+
+    # dd if=/dev/zero of=somefile bs=1M count=500 oflag=sync
+
+Test results are as follows:
+
+  - 4K pages,  .max_seg_size = 4 KiB:                   94.2 MB/s
+  - 4K pages,  .max_seg_size = .max_req_size = 512 KiB: 96.9 MB/s
+  - 16K pages, .max_seg_size = 4 KiB:                   126 MB/s
+  - 16K pages, .max_seg_size = .max_req_size = 2 MiB:   128 MB/s
+  - 64K pages, .max_seg_size = 4 KiB:                   138 MB/s
+  - 64K pages, .max_seg_size = .max_req_size = 8 MiB:   138 MB/s
+
+Unfortunately, SD card controller is not enabled in E850-96 yet, so it
+wasn't possible for me to run the test on some cheap SD cards to check
+this patch's impact on those. But it's possible that this change might
+also reduce the writes count, thus improving SD/eMMC longevity.
+
+All credit for the analysis and the suggested solution goes to Arnd.
+
+[1] https://lore.kernel.org/all/20240215070300.2200308-18-hch@lst.de/
+
+Fixes: f95f3850f7a9 ("mmc: dw_mmc: Add Synopsys DesignWare mmc host driver.")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYtddf2Fd3be+YShHP6CmSDNcn0ptW8qg+stUKW+Cn0rjQ@mail.gmail.com/
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240306232052.21317-1-semen.protsenko@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sysfs.c |   43 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ drivers/mmc/host/dw_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -836,9 +836,15 @@ ssize_t nilfs_dev_revision_show(struct n
- 				struct the_nilfs *nilfs,
- 				char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u32 major = le32_to_cpu(sbp[0]->s_rev_level);
--	u16 minor = le16_to_cpu(sbp[0]->s_minor_rev_level);
-+	struct nilfs_super_block *raw_sb;
-+	u32 major;
-+	u16 minor;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	major = le32_to_cpu(raw_sb->s_rev_level);
-+	minor = le16_to_cpu(raw_sb->s_minor_rev_level);
-+	up_read(&nilfs->ns_sem);
- 
- 	return sysfs_emit(buf, "%d.%d\n", major, minor);
- }
-@@ -856,8 +862,13 @@ ssize_t nilfs_dev_device_size_show(struc
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u64 dev_size = le64_to_cpu(sbp[0]->s_dev_size);
-+	struct nilfs_super_block *raw_sb;
-+	u64 dev_size;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	dev_size = le64_to_cpu(raw_sb->s_dev_size);
-+	up_read(&nilfs->ns_sem);
- 
- 	return sysfs_emit(buf, "%llu\n", dev_size);
- }
-@@ -879,9 +890,15 @@ ssize_t nilfs_dev_uuid_show(struct nilfs
- 			    struct the_nilfs *nilfs,
- 			    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = sysfs_emit(buf, "%pUb\n", raw_sb->s_uuid);
-+	up_read(&nilfs->ns_sem);
- 
--	return sysfs_emit(buf, "%pUb\n", sbp[0]->s_uuid);
-+	return len;
- }
- 
- static
-@@ -889,10 +906,16 @@ ssize_t nilfs_dev_volume_name_show(struc
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = scnprintf(buf, sizeof(raw_sb->s_volume_name), "%s\n",
-+			raw_sb->s_volume_name);
-+	up_read(&nilfs->ns_sem);
- 
--	return scnprintf(buf, sizeof(sbp[0]->s_volume_name), "%s\n",
--			 sbp[0]->s_volume_name);
-+	return len;
- }
- 
- static const char dev_readme_str[] =
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2952,8 +2952,8 @@ static int dw_mci_init_slot(struct dw_mc
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_seg_size = 0x1000;
+-		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
++		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
++		mmc->max_seg_size = mmc->max_req_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 
 
 
