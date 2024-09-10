@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-75770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1A9974635
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 01:03:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09054974645
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 01:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF951C250EC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 23:03:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355A61C2546D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 23:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9261AB538;
-	Tue, 10 Sep 2024 23:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920421AC439;
+	Tue, 10 Sep 2024 23:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LG4ThvWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TinxxfrM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F32F1A3BAF
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 23:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D951ABEA7
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 23:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726009392; cv=none; b=eI1G0UC8z2l1pSw1x0pobeOajDJC6QqKfdGoRwNnlxJGoDnqC/WvqaDDRFH/qcoeor64dOorRmHtJqKe+oySKAdw2quxK3ffbDQDARa/4O1mp0pugkPszpxKUD78griK1fiKtw0wKyjFUlQSVkeU3Hha6q14uUANb0s0s6JDcW8=
+	t=1726009997; cv=none; b=UcJ2QpcuAobzUsNqcQbbrX+njjwBwlfbF10o1W4OVcITOGgeIAJEdriwkUKmBjueFPS6cnxfdahKnYZFpBIF9r8G7xhrvwk5lZa3dZS2/yg0/QxIBs5dpipF+90+FT+pxuiX+8rZfjLswPPwYWJA8nJaG6fz6ci1d0+P9lYqIxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726009392; c=relaxed/simple;
-	bh=01XXCU8JIt+/LolNj9F9a66tCdxaL1YDcBc+c1mPPQ4=;
+	s=arc-20240116; t=1726009997; c=relaxed/simple;
+	bh=skkOgOVrk2rz6JTfzyf0B9szj/KCPd4ttv8afMLEVBc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WdneB3IL6GNv5Tk3eYDwJ93FHR1qsN+B2+DeG3RUv2M61s9cCmyJ0ig7O9FxX+LFvCox6I5/6LLa2JGxEmEdh1V+/fNfEWhwVNXClXb/+DjUrbb/kxXup6NalqCA2FcHT+wG+TtyNbvOX0igR/gNfaQCo8262cLjxJibe1U+JKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LG4ThvWQ; arc=none smtp.client-ip=209.85.166.47
+	 In-Reply-To:Content-Type; b=nV/HvzG91VjK4cZIEInbE/6ukN6j2V+ChrbRju7t01rsxqKnCdrLx83kCc1KGaWFnxNVCLCkcRaMqWMYD6cHmtAczcS/9E6pW7IBZDY7Qe89pMVwdi+Hu+SoE/X6cIziU0QKhNf9O8uB/pan6JbdrW5byYNcaRWnQEadwASOtdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TinxxfrM; arc=none smtp.client-ip=209.85.166.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-82ce603d8b5so130308839f.0
-        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 16:03:10 -0700 (PDT)
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-39f37a5a091so21629345ab.1
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 16:13:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1726009389; x=1726614189; darn=vger.kernel.org;
+        d=linuxfoundation.org; s=google; t=1726009994; x=1726614794; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Our0i5FAN8M9eyBuwGhZmOhmd7tZTzv8n7Ma5HUwtUY=;
-        b=LG4ThvWQNQYY/X9wrtutguloE+S1nRz9okNIEg7MTk6b2Dp1F9Nf0PNP5Jhl8Ai3Z6
-         6j4nKn1MYVUBgfqM2GJhmcvkWgoqp8J4uBBO0UsR2EDHaLQQ02oLHCFlZ1nNf7TWOQfU
-         9UFkd57/PRFSOVBHdTcv7/BxMbFdJJSVAZgHU=
+        bh=NB2gEKUnRkYZypGTHLojoU4Xifb8ehPDDVLdPZ1Wimc=;
+        b=TinxxfrMLWZRjaYgK0Fer54VAxyRzxNaZKPHX4H+m0v2OQusuvM1ByN4mTbcVWTntV
+         MxPZlx41U3i3atPTg/xpc5aYQXMdiJgJWV83TGZrCvWnXxn4WgAqYw1bo32KKcciBuqd
+         4mTRFUE7UyQSnX7m+Cx5Bm6FI4ymDZYL7Yayo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726009389; x=1726614189;
+        d=1e100.net; s=20230601; t=1726009994; x=1726614794;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Our0i5FAN8M9eyBuwGhZmOhmd7tZTzv8n7Ma5HUwtUY=;
-        b=N6962EunRo/ueGAw7cnjIzv3dRNwbFkOpjoqnHO2vb4E75Iho/uyNvxYDoDShYQEMd
-         3jOOFscIaIN1edZSf11wjP76cuCWfFXjLe31NWcstRRjr95cRQkmsvZTi2SDk2olULu7
-         wABWdJrKl/ai92gZE2toW6VwDmDwV//XOCApLNpeOtv1gIwdcVL2rbfuyx458V3Flpmw
-         Ei9sosCgx6qQnzQ4Jl3v4FKkh/qYrBS+OQqmF8T5kK/gJs4jgsHQRiKXxRj51sp/EW/b
-         gy3zEIouz1z6fevK2B+w8rwKuP1YoeZ7WeFjXQy2Gp0Kf6/b9JpwvBuyczXiKj/0lid6
-         pjpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJkjSCSJwZVqkYEph4vD+AxPjeVkCJL2ICqgTbBsGsN2U/C0Iww9RXqtcpWncv1/ZYq4hsTpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBFJ2RVTyYHj9Edo6EgCO35xu/njA54QFvKxKic43rjBIWgQQR
-	TX7WlhNCAP6cD7Il+2PwJnTEW2vC634VYNXsj1EkNj02VJZVgAvUJpWbm19PeaY=
-X-Google-Smtp-Source: AGHT+IHTzytd/BXjhulGOFJeDN5N2Y/iSixDSXEeNyCm+5M2O3H39PajIp3Y22RsVR4SC9HtjYRdKQ==
-X-Received: by 2002:a05:6602:2dc8:b0:82c:ef21:91de with SMTP id ca18e2360f4ac-82cef219385mr890886539f.14.1726009389357;
-        Tue, 10 Sep 2024 16:03:09 -0700 (PDT)
+        bh=NB2gEKUnRkYZypGTHLojoU4Xifb8ehPDDVLdPZ1Wimc=;
+        b=XNw/ZsKW5R59pSReRlV5Rc23TfaEcBHQsQ0siPAItPMJxXJ2Q97f2CjmD2q1OpFuZh
+         k/SpYMMw5MyG1DIEUXyQ84+p1jbI4hUYME+PZp+ZFIJmWNnnyB0tx+py69POAgHTxCg5
+         VGnUcdm08Qyx3O06sgRAEwjdnvahGYU8elaYm+p1Kpd/4jQc8oCkq88g2F7sJbTmOPSi
+         MRQeSGcE+jdbKfJkB4trNlKC9cuGvhLVLbFaXRrl0UKxMNDcMVrx+B25E/BR7J+7iuuQ
+         QVt8lTTxbDFFCbg/LiDDrERXcMYNccwpYSyc9ri49OSsjpKapqHQIP9ztZNQToEdq+X5
+         beYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTAMBXk++DH0r0ppqpmHBVIio9qOmDCCm7Ril93TXTR+8J9mB5wkW/1awVFs0bx0s+bqJ2m5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjSCgAmvniukJcnD28HgEXpyoipc7UjrCcmw/frYOg3olZTPk/
+	bezvY2cc9CdvcrbkVkFwJ0CXR+y4g30psoA4f7+i4p9WjpiLx1LfqJP91t+YUKc=
+X-Google-Smtp-Source: AGHT+IEeEWIUJMqZZjwDZ2RP39n9JJ9BSDpALYkvcGOf6VmhkOy+w1lJvYj/0k3BEF9J+t5LDNTr7g==
+X-Received: by 2002:a05:6e02:1fcb:b0:3a0:4c4e:2e53 with SMTP id e9e14a558f8ab-3a04f072f13mr158108345ab.5.1726009993733;
+        Tue, 10 Sep 2024 16:13:13 -0700 (PDT)
 Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-82aa7385633sm228261539f.33.2024.09.10.16.03.06
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d09451da2csm1860392173.27.2024.09.10.16.13.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Sep 2024 16:03:07 -0700 (PDT)
-Message-ID: <f2b4e304-2a9a-46ee-a56f-c7669bb891af@linuxfoundation.org>
-Date: Tue, 10 Sep 2024 17:03:06 -0600
+        Tue, 10 Sep 2024 16:13:13 -0700 (PDT)
+Message-ID: <2c086ba4-c7bd-47e3-bf12-d3c99a5edcfa@linuxfoundation.org>
+Date: Tue, 10 Sep 2024 17:13:12 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 00/96] 4.19.322-rc1 review
+Subject: Re: [PATCH 6.10 000/375] 6.10.10-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -82,16 +82,16 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
  rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
  Shuah Khan <skhan@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 Content-Language: en-US
 From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 9/10/24 03:31, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.322 release.
-> There are 96 patches in this series, all will be posted as a response
+On 9/10/24 03:26, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.10 release.
+> There are 375 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -99,9 +99,9 @@ On 9/10/24 03:31, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.322-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.10-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -109,22 +109,9 @@ On 9/10/24 03:31, Greg Kroah-Hartman wrote:
 > greg k-h
 > 
 
-Build failed with on AMD Ryzen 7 4700G with Radeon Graphics
+Compiled and booted on my test system. No dmesg regressions.
 
-   CC [M]  drivers/gpu/drm/amd/amdgpu/ci_smc.o
-net/bridge/br_fdb.c: In function ‘fdb_create’:
-net/bridge/br_fdb.c:515:20: error: ‘struct net_bridge_fdb_entry’ has no member n
-amed ‘is_sticky’
-   515 |                 fdb->is_sticky = 0;
-       |                    ^~
-make[2]: *** [scripts/Makefile.build:303: net/bridge/br_fdb.o] Error 1
-make[1]: *** [scripts/Makefile.build:544: net/bridge] Error 2
-make: *** [Makefile:1086: net] Error 2
-
-Possible problem commit:
-
-Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-     net: bridge: add support for sticky fdb entries
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
 thanks,
 -- Shuah
