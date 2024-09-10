@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD0F973039
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB32972E25
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB95F28285D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34F391F21D41
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1C5188CDC;
-	Tue, 10 Sep 2024 09:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E8D18BC3F;
+	Tue, 10 Sep 2024 09:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XmB54qW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQJA91bj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198F017BEAE;
-	Tue, 10 Sep 2024 09:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1688F189BBA;
+	Tue, 10 Sep 2024 09:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962328; cv=none; b=RGDcVtj0IOm4bjGOYj1NzWz3LYCR32i0EHpcULx76KvluXm5mofaEmxxateDfiUCLaO5oz6ba0H+l8NpRltd+JNudE/h4FM8daKY4I59q0wae0USYUnrf99SNjW/0hRekP08A+qRWBbKKnJE5B0nqvpRkXpBEPTZwmusQwjoqiQ=
+	t=1725961187; cv=none; b=o9X0sI6o/xpHErBMj/4Rs+9j2Tdbea320yewYchxfWjutV8ldpHBf8sdrXIWtwuiajbqWPGevsm8wpVaIUELx1JX8sqtlFBTZE0sAI8omhyTaNhwg/T2hodlS4GyAU+FOAv6KxCTNMv8DJNNPyi8rq8JEy9eZA25Vnsd9dMgLHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962328; c=relaxed/simple;
-	bh=G0/UpizbvaQ+aP+TdUrzJxdypmsLLW/dpXL7sYxRqKY=;
+	s=arc-20240116; t=1725961187; c=relaxed/simple;
+	bh=CQAiZxEMpP0lwIpJovCmNRATN0eZiVwrpTLEaiX9b/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8KXoMjzdloqHLHeaf8pmg8Kmcdymqk3zkuOXsLn2KbdQayifNCW6h6RwZyvoFm7wmM5g4T/QGj+dife12+nNlfu2IyUzcdINrIRVLkid4gewi08OOgT9saWplceUsiuS7Ple+u2KC+UX137/FOdgZOIABMEVD3NIc/zD4VoGfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XmB54qW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDCEC4CEC3;
-	Tue, 10 Sep 2024 09:58:47 +0000 (UTC)
+	 MIME-Version; b=AE15B+zm7acYVjL7KXAY8l9nSYofb7mVhVYn0YX5pvTdHsIyf5zwI/EWgv1DMwPMqLK8F8PA7bnE5aXgpzFde57emMWhqwuRhRoYI+92pS3WZhhoOaPI1nAsOAtnBkGgICM3Iq+WU1R+d1AgEQ3gRjiAfbDthbeEb64PbamvN/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQJA91bj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAE1C4CEC3;
+	Tue, 10 Sep 2024 09:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962327;
-	bh=G0/UpizbvaQ+aP+TdUrzJxdypmsLLW/dpXL7sYxRqKY=;
+	s=korg; t=1725961187;
+	bh=CQAiZxEMpP0lwIpJovCmNRATN0eZiVwrpTLEaiX9b/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XmB54qWGapDQ/r2Uyh756bheGq8Q0/1kqIc6cgC8GMEAc2HLmifmryVtDBe2wxKD
-	 ODetBV3K882LcKcWwPFnavGCttvwAFuJkA/hop8WVddyE4L92nMPY2cqX34aEZB8/A
-	 vRQ+ahFWIYmDSMxnqMm1jyP/efQTYCUamakIRV5o=
+	b=JQJA91bjDVxmxUZFEREfORjbM7nLTzsR91f2f2OQn/dFSjLv6slv9vRKb8TVVphUE
+	 zYJudrsRnsaZVC5dprcSQPvMRUNcwDhV4eOmvJr9rIJFDgpMpBa2dxG9sutiW1VSrB
+	 PdmN0i//muNJn8P0B+DYv8NSgHAtqwacc7LHtX2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 346/375] ASoc: SOF: topology: Clear SOF link platform name upon unload
-Date: Tue, 10 Sep 2024 11:32:23 +0200
-Message-ID: <20240910092634.210389816@linuxfoundation.org>
+Subject: [PATCH 4.19 82/96] ring-buffer: Rename ring_buffer_read() to read_buffer_iter_advance()
+Date: Tue, 10 Sep 2024 11:32:24 +0200
+Message-ID: <20240910092545.139696253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Steven Rostedt (VMware) <rostedt@goodmis.org>
 
-[ Upstream commit e0be875c5bf03a9676a6bfed9e0f1766922a7dbd ]
+[ Upstream commit bc1a72afdc4a91844928831cac85731566e03bc6 ]
 
-The SOF topology loading function sets the device name for the platform
-component link. This should be unset when unloading the topology,
-otherwise a machine driver unbind/bind or reprobe would complain about
-an invalid component as having both its component name and of_node set:
+When the ring buffer was first created, the iterator followed the normal
+producer/consumer operations where it had both a peek() operation, that just
+returned the event at the current location, and a read(), that would return
+the event at the current location and also increment the iterator such that
+the next peek() or read() will return the next event.
 
-    mt8186_mt6366 sound: ASoC: Both Component name/of_node are set for AFE_SOF_DL1
-    mt8186_mt6366 sound: error -EINVAL: Cannot register card
-    mt8186_mt6366 sound: probe with driver mt8186_mt6366 failed with error -22
+The only use of the ring_buffer_read() is currently to move the iterator to
+the next location and nothing now actually reads the event it returns.
+Rename this function to its actual use case to ring_buffer_iter_advance(),
+which also adds the "iter" part to the name, which is more meaningful. As
+the timestamp returned by ring_buffer_read() was never used, there's no
+reason that this new version should bother having returning it. It will also
+become a void function.
 
-This happens with machine drivers that set the of_node separately.
+Link: http://lkml.kernel.org/r/20200317213416.018928618@goodmis.org
 
-Clear the SOF link platform name in the topology unload callback.
-
-Fixes: 311ce4fe7637 ("ASoC: SOF: Add support for loading topologies")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patch.msgid.link/20240821041006.2618855-1-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Stable-dep-of: 49aa8a1f4d68 ("tracing: Avoid possible softlockup in tracing_iter_reset()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/topology.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/ring_buffer.h          |  3 +--
+ kernel/trace/ring_buffer.c           | 23 ++++++-----------------
+ kernel/trace/trace.c                 |  4 ++--
+ kernel/trace/trace_functions_graph.c |  2 +-
+ 4 files changed, 10 insertions(+), 22 deletions(-)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index da182314aa87..ebbd99e34143 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -2050,6 +2050,8 @@ static int sof_link_unload(struct snd_soc_component *scomp, struct snd_soc_dobj
- 	if (!slink)
- 		return 0;
+diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
+index 941bfd9b3c89..7c5b217347b3 100644
+--- a/include/linux/ring_buffer.h
++++ b/include/linux/ring_buffer.h
+@@ -135,8 +135,7 @@ void ring_buffer_read_finish(struct ring_buffer_iter *iter);
  
-+	slink->link->platforms->name = NULL;
-+
- 	kfree(slink->tuples);
- 	list_del(&slink->list);
- 	kfree(slink->hw_configs);
+ struct ring_buffer_event *
+ ring_buffer_iter_peek(struct ring_buffer_iter *iter, u64 *ts);
+-struct ring_buffer_event *
+-ring_buffer_read(struct ring_buffer_iter *iter, u64 *ts);
++void ring_buffer_iter_advance(struct ring_buffer_iter *iter);
+ void ring_buffer_iter_reset(struct ring_buffer_iter *iter);
+ int ring_buffer_iter_empty(struct ring_buffer_iter *iter);
+ 
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index aee6eab9bb8f..6cd50fb1b8fd 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4379,35 +4379,24 @@ ring_buffer_read_finish(struct ring_buffer_iter *iter)
+ EXPORT_SYMBOL_GPL(ring_buffer_read_finish);
+ 
+ /**
+- * ring_buffer_read - read the next item in the ring buffer by the iterator
++ * ring_buffer_iter_advance - advance the iterator to the next location
+  * @iter: The ring buffer iterator
+- * @ts: The time stamp of the event read.
+  *
+- * This reads the next event in the ring buffer and increments the iterator.
++ * Move the location of the iterator such that the next read will
++ * be the next location of the iterator.
+  */
+-struct ring_buffer_event *
+-ring_buffer_read(struct ring_buffer_iter *iter, u64 *ts)
++void ring_buffer_iter_advance(struct ring_buffer_iter *iter)
+ {
+-	struct ring_buffer_event *event;
+ 	struct ring_buffer_per_cpu *cpu_buffer = iter->cpu_buffer;
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+- again:
+-	event = rb_iter_peek(iter, ts);
+-	if (!event)
+-		goto out;
+-
+-	if (event->type_len == RINGBUF_TYPE_PADDING)
+-		goto again;
+ 
+ 	rb_advance_iter(iter);
+- out:
+-	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 
+-	return event;
++	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ }
+-EXPORT_SYMBOL_GPL(ring_buffer_read);
++EXPORT_SYMBOL_GPL(ring_buffer_iter_advance);
+ 
+ /**
+  * ring_buffer_size - return the size of the ring buffer (in bytes)
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 8292c7441e23..022f50dbc456 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3090,7 +3090,7 @@ static void trace_iterator_increment(struct trace_iterator *iter)
+ 
+ 	iter->idx++;
+ 	if (buf_iter)
+-		ring_buffer_read(buf_iter, NULL);
++		ring_buffer_iter_advance(buf_iter);
+ }
+ 
+ static struct trace_entry *
+@@ -3250,7 +3250,7 @@ void tracing_iter_reset(struct trace_iterator *iter, int cpu)
+ 		if (ts >= iter->trace_buffer->time_start)
+ 			break;
+ 		entries++;
+-		ring_buffer_read(buf_iter, NULL);
++		ring_buffer_iter_advance(buf_iter);
+ 	}
+ 
+ 	per_cpu_ptr(iter->trace_buffer->data, cpu)->skipped_entries = entries;
+diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
+index 086af4f5c3e8..7add1f3ee2dd 100644
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -726,7 +726,7 @@ get_return_for_leaf(struct trace_iterator *iter,
+ 
+ 	/* this is a leaf, now advance the iterator */
+ 	if (ring_iter)
+-		ring_buffer_read(ring_iter, NULL);
++		ring_buffer_iter_advance(ring_iter);
+ 
+ 	return next;
+ }
 -- 
 2.43.0
 
