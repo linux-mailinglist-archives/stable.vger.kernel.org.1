@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F68D973505
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E12C973431
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1D02889BA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B96B1F25D46
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABDF1917DC;
-	Tue, 10 Sep 2024 10:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F518EFCE;
+	Tue, 10 Sep 2024 10:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbhIMxh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdqtzxV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C9818C00C;
-	Tue, 10 Sep 2024 10:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C358A17B50F;
+	Tue, 10 Sep 2024 10:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965010; cv=none; b=hVgeFGGwnIC9g9Cf9ulZHWkzUkhjFuz8o+EoxW9dNOMWTI0QBO6Q21Qiz0n5ebjaj37FbCz0t41l0rGoHrTuSkLMOF5k8A9LCtO4cmo+ByyRdp7BiM0526S94XZ0xzh4Ij9f8akHDUEHpivQewnkonkrjJwjcJoXqUBHPNTh304=
+	t=1725964531; cv=none; b=Tq0Rguti1EGtWUdDUdQQ55fNsaov3ZKmRms3TFWkpcwSNF6/x4rrFZbf3c55WiNmf2UipMZGZziwJmz0YgTppFvzJaxt+/XPnQNPV8iMliyDVstZmZuPdvM4v9qzhL1MA4IN44PDl1Sj8jaG7NoJly58Z96LjTvQp2fay1TpUtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965010; c=relaxed/simple;
-	bh=evcYoeN/UuCYb6AEydD6Ec1iIebp8M8DFvBn4X9glXE=;
+	s=arc-20240116; t=1725964531; c=relaxed/simple;
+	bh=OMOWRkMrGUrEySa1CXFDUJ1V57O17NBI5RYzwfeaI7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdDgk3D+p68Ix6b/++B0lCgotldlgadJxOmsgciBzAbV+hEc1oKTxhQjZH7dtL7oWWCU76wkG9CnGyEiE3FKkzpePEfx/ec3NQrs2VQ11/JWYza7DSTu8fyoa5MfAt9bFcfWI8+KGyDNVsrzi6baKUG2IflNOtqwd/ZA3BwCiDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbhIMxh+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC7EC4CEC3;
-	Tue, 10 Sep 2024 10:43:29 +0000 (UTC)
+	 MIME-Version; b=Hl80+Som3ryr5JMP1rteZBV54kPsitCsWvjnvPhCfJUT6fJ1qjvNTWYVSOvng/vWKBHErwBw/VcgqpISK95N7iSyGN+reMoG8hJTc2ddeDiX16Fw+ke+qtUKII+BT0tDeQpKQMVAgzBvIBZ8MUG35jp2LNZaaboW+U4uFYcdX88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdqtzxV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8A5C4CECD;
+	Tue, 10 Sep 2024 10:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965010;
-	bh=evcYoeN/UuCYb6AEydD6Ec1iIebp8M8DFvBn4X9glXE=;
+	s=korg; t=1725964531;
+	bh=OMOWRkMrGUrEySa1CXFDUJ1V57O17NBI5RYzwfeaI7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbhIMxh+XuDcSNLGVh+MHVRKs/kFCV013NgPYITODX1DSTlbgcfyxzv0icPXmRU+L
-	 v0Q+GGeZec0bRTH/KhQcjwrQh3ObHpIQtDLXopzZWYQBoeWQCpXjaPYijmLWpvji3U
-	 kxOCZdVmEWpy9wgB5Mj9eLT+6v4DvtprQsUILe7M=
+	b=JdqtzxV3N4czzbd+if2bcOz73ua6/SYg30FDwU4N1cj5dG8b8l9iYpfYUobC1NEBa
+	 NfyjttUmi7pbw5bLkDQrGkoiXctIaNQKrtN/rUYKVJgRS43/3MvYN9SMaWyQqZ3aI4
+	 VpZCDNRUuDQFYRaee+9s90hUUbwoS9iSw7bcZ4so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shantanu Goel <sgoel01@yahoo.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/186] usb: uas: set host status byte on data completion error
+	Todd Kjos <tkjos@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.6 215/269] binder: fix UAF caused by offsets overwrite
 Date: Tue, 10 Sep 2024 11:33:22 +0200
-Message-ID: <20240910092558.940348606@linuxfoundation.org>
+Message-ID: <20240910092615.666007717@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shantanu Goel <sgoel01@yahoo.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
+commit 4df153652cc46545722879415937582028c18af5 upstream.
 
-Set the host status byte when a data completion error is encountered
-otherwise the upper layer may end up using the invalid zero'ed data.
-The following output was observed from scsi/sd.c prior to this fix.
+Binder objects are processed and copied individually into the target
+buffer during transactions. Any raw data in-between these objects is
+copied as well. However, this raw data copy lacks an out-of-bounds
+check. If the raw data exceeds the data section size then the copy
+overwrites the offsets section. This eventually triggers an error that
+attempts to unwind the processed objects. However, at this point the
+offsets used to index these objects are now corrupted.
 
-[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
-[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
-[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+Unwinding with corrupted offsets can result in decrements of arbitrary
+nodes and lead to their premature release. Other users of such nodes are
+left with a dangling pointer triggering a use-after-free. This issue is
+made evident by the following KASAN report (trimmed):
 
-Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock+0xe4/0x19c
+  Write of size 4 at addr ffff47fc91598f04 by task binder-util/743
+
+  CPU: 9 UID: 0 PID: 743 Comm: binder-util Not tainted 6.11.0-rc4 #1
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   _raw_spin_lock+0xe4/0x19c
+   binder_free_buf+0x128/0x434
+   binder_thread_write+0x8a4/0x3260
+   binder_ioctl+0x18f0/0x258c
+  [...]
+
+  Allocated by task 743:
+   __kmalloc_cache_noprof+0x110/0x270
+   binder_new_node+0x50/0x700
+   binder_transaction+0x413c/0x6da8
+   binder_thread_write+0x978/0x3260
+   binder_ioctl+0x18f0/0x258c
+  [...]
+
+  Freed by task 745:
+   kfree+0xbc/0x208
+   binder_thread_read+0x1c5c/0x37d4
+   binder_ioctl+0x16d8/0x258c
+  [...]
+  ==================================================================
+
+To avoid this issue, let's check that the raw data copy is within the
+boundaries of the data section.
+
+Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
+Cc: Todd Kjos <tkjos@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240822182353.2129600-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c | 1 +
+ drivers/android/binder.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index ff6f41e7e068..ea1680c4cc06 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -424,6 +424,7 @@ static void uas_data_cmplt(struct urb *urb)
- 			uas_log_cmd_state(cmnd, "data cmplt err", status);
- 		/* error: no data transfered */
- 		scsi_set_resid(cmnd, sdb->length);
-+		set_host_byte(cmnd, DID_ERROR);
- 	} else {
- 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
- 	}
--- 
-2.43.0
-
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -3342,6 +3342,7 @@ static void binder_transaction(struct bi
+ 		 */
+ 		copy_size = object_offset - user_offset;
+ 		if (copy_size && (user_offset > object_offset ||
++				object_offset > tr->data_size ||
+ 				binder_alloc_copy_user_to_buffer(
+ 					&target_proc->alloc,
+ 					t->buffer, user_offset,
 
 
 
