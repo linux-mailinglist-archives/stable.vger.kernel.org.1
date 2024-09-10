@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DF29730AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:03:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D163973011
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D14D31C21417
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0EA91F25234
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D338191476;
-	Tue, 10 Sep 2024 10:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897718C32B;
+	Tue, 10 Sep 2024 09:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9R8o48f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kca/2E7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB56191F9F;
-	Tue, 10 Sep 2024 10:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6908F14D431;
+	Tue, 10 Sep 2024 09:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962517; cv=none; b=OrUpTrvVgVMBu59+Rxq0Sp8Z3jUJGBhi/yv4v5H89TehVe+MW099L227NfPvVAyf8L5haYo1CUR6uxMKKAybdWTlquS5zQVjTc2G+S9i/AO4au3qXQVyWpm7Sfr/IwC/qpUSMpFEQmdVMyBP41zqwXhnfZpgC7I0JWxtPbqCjkU=
+	t=1725962231; cv=none; b=IHh4xM7Ix400LfNXyr0d+Pxa3N++Ns+fjSt2/OkdTDqRpbdgPti0zDLWCbDRqj02sig5+30YHo1x3N3HJdOd80hEdcP1FgtUl472IItl+Y6Rxl/7NJ+zRDV4vrF90ZMpu1KHCM0WkByDdX2Mg72fq4Hcm5f8fhnK8w0Ef/Y96Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962517; c=relaxed/simple;
-	bh=IBoP8DOlB3myNeorUUofsUh0aIydHA/wEMxzvM8unek=;
+	s=arc-20240116; t=1725962231; c=relaxed/simple;
+	bh=Jo1cgLeWcZMf2VQXqSo4Pe51cye0M8ZsBYdn2ISpBN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hw9nqTBsCo+Uhwy3uWDwbklrQaEIfB+rdYAJLSOvKC8rw83RW8LQZYVfQA92Qu62J5fw/mAlNHAwdzNs/CRAS4HSMWnPU/hG7JYdiw4OVNjlmqfiraQ89yRFs1TdfK08JeS3CJ/Kfdzy8JsvGSLJP6cRYqNt/8vEKU6S1Rygad4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9R8o48f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66958C4CEC3;
-	Tue, 10 Sep 2024 10:01:56 +0000 (UTC)
+	 MIME-Version; b=Cd6tlE6qBygpAkLw3KIj+1v/PjraBKTt6YsllTF4JOP2BpEL6YUZ5lRaDdis7MMPkbusF4En9pPm2yXrLlzCum3CRD3SCLxE88tpoq98HQ6eZCTnm76W0hrL9BrZBOJtHJxYqXwODcantvWMfTsNc7qyDmHZJ59PH6OwfIfTmX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kca/2E7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE8BC4CECD;
+	Tue, 10 Sep 2024 09:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962516;
-	bh=IBoP8DOlB3myNeorUUofsUh0aIydHA/wEMxzvM8unek=;
+	s=korg; t=1725962231;
+	bh=Jo1cgLeWcZMf2VQXqSo4Pe51cye0M8ZsBYdn2ISpBN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9R8o48fALR6PxoI/wFX4r4OQRByJuMMDJEo0OoCSPwLsY2nsaUAPdEUTOeMjdsgO
-	 HpK8Nnf12bS5c6k1w6FhgUMcUZU1Dbg/o50E3elP9XK5C/A9RnnpQLlZTtoTyy/WYQ
-	 TMCUoBbt2bOEcKEHFEecbmOz3l+M5DU6NEL9Gp9M=
+	b=Kca/2E7wlMK0zqBYmyK9dZX8//llwvztpX28gdUHoK3CSUv+FNMZJVxZfad/N8n8b
+	 QO+yh0AgVaDolrCwsk0PdcUBoMQ7o04iTXmPv1fir8m8yWpXxOP0O3fBoS6sr71/11
+	 GQaX0ljJ8rSgDI0+J9VhX9uZ4yrWmOo4Tlf6Cvb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.4 034/121] fuse: use unsigned type for getxattr/listxattr size truncation
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 312/375] workqueue: wq_watchdog_touch is always called with valid CPU
 Date: Tue, 10 Sep 2024 11:31:49 +0200
-Message-ID: <20240910092547.351785604@linuxfoundation.org>
+Message-ID: <20240910092633.038498330@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-commit b18915248a15eae7d901262f108d6ff0ffb4ffc1 upstream.
+[ Upstream commit 18e24deb1cc92f2068ce7434a94233741fbd7771 ]
 
-The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
-parsing the FUSE daemon's response to a zero-length getxattr/listxattr
-request.
-On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
-wrong: The min_t() will pass through any size values that are negative when
-interpreted as signed.
-fuse_listxattr() will then return this userspace-supplied negative value,
-which callers will treat as an error value.
+Warn in the case it is called with cpu == -1. This does not appear
+to happen anywhere.
 
-This kind of bug pattern can lead to fairly bad security bugs because of
-how error codes are used in the Linux kernel. If a caller were to convert
-the numeric error into an error pointer, like so:
-
-    struct foo *func(...) {
-      int len = fuse_getxattr(..., NULL, 0);
-      if (len < 0)
-        return ERR_PTR(len);
-      ...
-    }
-
-then it would end up returning this userspace-supplied negative value cast
-to a pointer - but the caller of this function wouldn't recognize it as an
-error pointer (IS_ERR_VALUE() only detects values in the narrow range in
-which legitimate errno values are), and so it would just be treated as a
-kernel pointer.
-
-I think there is at least one theoretical codepath where this could happen,
-but that path would involve virtio-fs with submounts plus some weird
-SELinux configuration, so I think it's probably not a concern in practice.
-
-Cc: stable@vger.kernel.org # v4.9
-Fixes: 63401ccdb2ca ("fuse: limit xattr returned size")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: 98f887f820c9 ("workqueue: Improve scalability of workqueue watchdog touch")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/xattr.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/workqueue.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/fuse/xattr.c
-+++ b/fs/fuse/xattr.c
-@@ -79,7 +79,7 @@ ssize_t fuse_getxattr(struct inode *inod
- 	}
- 	ret = fuse_simple_request(fc, &args);
- 	if (!ret && !size)
--		ret = min_t(ssize_t, outarg.size, XATTR_SIZE_MAX);
-+		ret = min_t(size_t, outarg.size, XATTR_SIZE_MAX);
- 	if (ret == -ENOSYS) {
- 		fc->no_getxattr = 1;
- 		ret = -EOPNOTSUPP;
-@@ -141,7 +141,7 @@ ssize_t fuse_listxattr(struct dentry *en
- 	}
- 	ret = fuse_simple_request(fc, &args);
- 	if (!ret && !size)
--		ret = min_t(ssize_t, outarg.size, XATTR_LIST_MAX);
-+		ret = min_t(size_t, outarg.size, XATTR_LIST_MAX);
- 	if (ret > 0 && size)
- 		ret = fuse_verify_xattr_list(list, ret);
- 	if (ret == -ENOSYS) {
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index c970eec25c5a..f26b0511b023 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -7588,6 +7588,8 @@ notrace void wq_watchdog_touch(int cpu)
+ {
+ 	if (cpu >= 0)
+ 		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
++	else
++		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
+ 
+ 	wq_watchdog_touched = jiffies;
+ }
+-- 
+2.43.0
+
 
 
 
