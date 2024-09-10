@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B5C972FBF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B5B972DCD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4904F1C2474C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD6CDB22471
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4EF189F52;
-	Tue, 10 Sep 2024 09:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F3B18BC28;
+	Tue, 10 Sep 2024 09:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0Wr+I/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0gCMNbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7B186E4B;
-	Tue, 10 Sep 2024 09:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EDB18A6DF;
+	Tue, 10 Sep 2024 09:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962049; cv=none; b=WnI13drdOQu8Wpg5CoID/0Cmfi1QZiCNa9hWGzRyeReaz3JsE7SeVbNHRiWq8Mqn6RRal3XQ7yJ5qidmizk0phdLLG7REW2vVzqwmzY5tqO0TbnzBRAhS8bJlD3mAM/gd2rzsFtlNaXnTe8sW6QwNPqHhpH4RNAE/+1ewor0QrM=
+	t=1725960977; cv=none; b=bdxg630IHPO3DfjKxC5+zqmuFhS+NJif/3UX+HPq3M3kF7SF8vKdyegWSPBHRV/XBR6Wp4cKCzq9F0RZaKXL/wLOQTYvhw2SULsvaFRGV6PCNvgisCL84BY0yKEvuVWuzGSEz/yl3confshv5ynC/QxyTcFHcy5ewaY9E2mFMTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962049; c=relaxed/simple;
-	bh=wuFwNbC1CGuNsjQx1ytw5JHtKGyvFTbUsPQcSD1iPk4=;
+	s=arc-20240116; t=1725960977; c=relaxed/simple;
+	bh=MuskqV41sBIoHxhI4Rfh0D6SzlJjKydpSZfvV6tMxZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzPvGfuyqj2lZXAncCIpJkS8bRGsjrEcT9UTNiu4qElOUZkSUttQCzrjiXCoOa4Yh+eo9Sa8G2weeMb1+8uh/cNF2Sp1EgqaNwE1VCsRkqdFZvVSvqnuLMXj54FSREIXY5jBvEWxrzQeu26dOVk0/gw3FTQNNKtmKbFvapeV7BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0Wr+I/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31E9C4CEC6;
-	Tue, 10 Sep 2024 09:54:08 +0000 (UTC)
+	 MIME-Version; b=I+mA3Tv915b3t3p455MVD2igaM2/e41DX+k2ZrHSDaSYzqL2UkJAl1rq6RFU230zIqlFmClQdPiKQcYVknSx2awDc6h85P2PeL2+3rE3rjhnDl9mR80HbNaa5DlBw4NxcZzsB1Xibc0trNN6gZ2RVmx1guPrjaHfk5o7azwbDvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0gCMNbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3A5C4CEC3;
+	Tue, 10 Sep 2024 09:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962049;
-	bh=wuFwNbC1CGuNsjQx1ytw5JHtKGyvFTbUsPQcSD1iPk4=;
+	s=korg; t=1725960977;
+	bh=MuskqV41sBIoHxhI4Rfh0D6SzlJjKydpSZfvV6tMxZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0Wr+I/2Edg6vOs5sjJKkEMfGT2PYVT9Q2UbAwrx81ZbkevtLGMMCRXkgOx4lN23J
-	 kCCoM2yz6riXVtuuthUGAIszuwNNUUhlxhT9OS96RtUFf/7QaED6+lnpxsXy6XMSDg
-	 y8l0da5iDppeiGqXwiG6gnvP4Pw2BmlI4IdQJv9M=
+	b=X0gCMNbETyXWjmvZFiCFncW22j82vV/4GCPBkkE2EssFzuwLsaf+jAxegI2kVyioz
+	 Zml0qx+yXbERNs62fqBD+bkxaHSeXlIt5vB+hhIQA5rVOTMb5DtDpz63Kj4ZckP3Q6
+	 L95Oh4fupuCx/gJgQSgT4C/yT+MSnIO8uGfvAo6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 277/375] smb/server: fix potential null-ptr-deref of lease_ctx_info in smb2_open()
+Subject: [PATCH 4.19 12/96] media: uvcvideo: Enforce alignment of frame and interval
 Date: Tue, 10 Sep 2024 11:31:14 +0200
-Message-ID: <20240910092631.865789194@linuxfoundation.org>
+Message-ID: <20240910092541.954827966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4e8771a3666c8f216eefd6bd2fd50121c6c437db ]
+[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
 
-null-ptr-deref will occur when (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
-and parse_lease_state() return NULL.
+Struct uvc_frame and interval (u32*) are packaged together on
+streaming->formats on a single contiguous allocation.
 
-Fix this by check if 'lease_ctx_info' is NULL.
+Right now they are allocated right after uvc_format, without taking into
+consideration their required alignment.
 
-Additionally, remove the redundant parentheses in
-parse_durable_handle_context().
+This is working fine because both structures have a field with a
+pointer, but it will stop working when the sizeof() of any of those
+structs is not a multiple of the sizeof(void*).
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Enforce that alignment during the allocation.
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c  |  2 +-
- fs/smb/server/smb2pdu.c | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index a8f52c4ebbda..e546ffa57b55 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1510,7 +1510,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
-  * parse_lease_state() - parse lease context containted in file open request
-  * @open_req:	buffer containing smb2 file open(create) request
-  *
-- * Return:  oplock state, -ENOENT if create lease context not found
-+ * Return: allocated lease context object on success, otherwise NULL
-  */
- struct lease_ctx_info *parse_lease_state(void *open_req)
- {
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index bc69b94df40f..39dfecf082ba 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2771,8 +2771,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 				}
- 			}
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 775d67720648..6367ee9c0066 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -860,16 +860,26 @@ static int uvc_parse_streaming(struct uvc_device *dev,
+ 		goto error;
+ 	}
  
--			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
--			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
-+			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
-+			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
- 				dh_info->CreateGuid =
- 					durable_v2_blob->CreateGuid;
- 				dh_info->persistent =
-@@ -2792,8 +2792,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 				goto out;
- 			}
+-	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
++	/*
++	 * Allocate memory for the formats, the frames and the intervals,
++	 * plus any required padding to guarantee that everything has the
++	 * correct alignment.
++	 */
++	size = nformats * sizeof(*format);
++	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
++	size = ALIGN(size, __alignof__(*interval))
+ 	     + nintervals * sizeof(*interval);
++
+ 	format = kzalloc(size, GFP_KERNEL);
+-	if (format == NULL) {
++	if (!format) {
+ 		ret = -ENOMEM;
+ 		goto error;
+ 	}
  
--			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
--			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
-+			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
-+			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
- 				ksmbd_debug(SMB, "Request for durable open\n");
- 				dh_info->type = dh_idx;
- 			}
-@@ -3415,7 +3415,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out1;
- 		}
- 	} else {
--		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
-+		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE && lc) {
- 			if (S_ISDIR(file_inode(filp)->i_mode)) {
- 				lc->req_state &= ~SMB2_LEASE_WRITE_CACHING_LE;
- 				lc->is_dir = true;
+-	frame = (struct uvc_frame *)&format[nformats];
+-	interval = (u32 *)&frame[nframes];
++	frame = (void *)format + nformats * sizeof(*format);
++	frame = PTR_ALIGN(frame, __alignof__(*frame));
++	interval = (void *)frame + nframes * sizeof(*frame);
++	interval = PTR_ALIGN(interval, __alignof__(*interval));
+ 
+ 	streaming->format = format;
+ 	streaming->nformats = nformats;
 -- 
 2.43.0
 
