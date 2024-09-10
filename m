@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-74544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4182B972FDD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD69972E09
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01AA8285F56
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 457FC285143
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069FF18A94C;
-	Tue, 10 Sep 2024 09:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF171891A5;
+	Tue, 10 Sep 2024 09:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB9++rwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFgHAuBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B819A171671;
-	Tue, 10 Sep 2024 09:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C869B1891A1;
+	Tue, 10 Sep 2024 09:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962116; cv=none; b=azuw+9rgolqqVlSuGsnz6phUDnvG5ExmOV/3c9qDzIX+brVk3PKwYiuAhIaKTcLDxo1BGA0TB5HnhKgKRPEJ4AZcZPC0IghWymldRgzLn077qaIKaos7AoSgH9zIb1ORqTVbFKaxKEAGerFAPnJ0x691RfYFoLRhnQgUgcVfXuw=
+	t=1725961127; cv=none; b=Jp2hVHho+DHqpR3e4/jRPRgWC+FBNvNw/uvp2+Ga1XGDjyI6bA3Io08ZTJscGR46IBbFifBfwwWYMYVrh2g8MPLdzRxCD6uhDhjDeH8LTWMjsqtjyW2kKl06jy14Ogag/gik1kY0NhCvVNZkEfbemHaozGsnf8pIfh31Fv7t630=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962116; c=relaxed/simple;
-	bh=O/Bl08oIhLGEFj4S+fygYsH/T0y318yCZTEgd/UTYq4=;
+	s=arc-20240116; t=1725961127; c=relaxed/simple;
+	bh=a3D44cT4Ml7LcKl5pbaEPYM7NEJyWrhjq3Gv9tRxaDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ln2mL/JHNhQsgw6UregQtQUkKMb/pQUsYUU0AJ1UW7FKPQ3oI8kEr24sRAc5w6w8f49Or7QSuxYPpt/j7NGVrf94wjEpJzz+pSppQRi0iMdQgGaKHv53ly1CUQWTlf/tdwwSkvLhnFgAGZ3kfyGnX0lTWUw+CtjUN7WoEYodkTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uB9++rwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425CCC4CEC3;
-	Tue, 10 Sep 2024 09:55:16 +0000 (UTC)
+	 MIME-Version; b=kM3SJfFt6GrTXmY4cCUVsE0cQriGysZ3r+mlV7uFohK+JDEJ3KeXJOqE45uu21OxzcSQXL92xx/J4PbyBH00S38IevuBybYfOVmZ8DOTy1bbA337iHMiEz9stUjfod4bodqUsuVWs77QmHaCCLmel5urRgUpf9yuo2/nJwoz6Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFgHAuBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52762C4CEC3;
+	Tue, 10 Sep 2024 09:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962116;
-	bh=O/Bl08oIhLGEFj4S+fygYsH/T0y318yCZTEgd/UTYq4=;
+	s=korg; t=1725961127;
+	bh=a3D44cT4Ml7LcKl5pbaEPYM7NEJyWrhjq3Gv9tRxaDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uB9++rwI7MdFRnp/0uoXxd5gRg909RzXy/mAFcYGfqtEbU2H5uoxPXfM7cJ2xCoyb
-	 k4Ot9MEt0IpqyQh0ijcrFPKi0oj9wNWdkZNiIiKbXpPD6vw/8BfRwZnmECe21blrPL
-	 +GkdVFPeM1ap9yHKfWdTmxMDAkelEPnQ2E+27JUU=
+	b=mFgHAuBgNOS5g2zI1v5vgoaGSX4NRVbfV+PFI8K/y4blspWWeGfZ/FuTGZArBF+kq
+	 DfkSGejC7FCc1HD47AJCxUmodMRY1nSnxznV7noGGT1ehc54ouAukx5DFzk1xxZ+9O
+	 UKmGONQUb2DwYdEZOn8FtFoO3R7ROgReue0nt2I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Thomson <git@johnthomson.fastmail.com.au>,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.10 300/375] nvmem: u-boot-env: error if NVMEM device is too small
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 35/96] can: bcm: Remove proc entry when dev is unregistered.
 Date: Tue, 10 Sep 2024 11:31:37 +0200
-Message-ID: <20240910092632.636183481@linuxfoundation.org>
+Message-ID: <20240910092543.052214940@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Thomson <git@johnthomson.fastmail.com.au>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 8679e8b4a1ebdb40c4429e49368d29353e07b601 upstream.
+[ Upstream commit 76fe372ccb81b0c89b6cd2fec26e2f38c958be85 ]
 
-Verify data size before trying to parse it to avoid reading out of
-buffer. This could happen in case of problems at MTD level or invalid DT
-bindings.
+syzkaller reported a warning in bcm_connect() below. [0]
 
-Signed-off-by: John Thomson <git@johnthomson.fastmail.com.au>
-Cc: stable <stable@kernel.org>
-Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
-[rmilecki: simplify commit description & rebase]
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240902142510.71096-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The repro calls connect() to vxcan1, removes vxcan1, and calls
+connect() with ifindex == 0.
+
+Calling connect() for a BCM socket allocates a proc entry.
+Then, bcm_sk(sk)->bound is set to 1 to prevent further connect().
+
+However, removing the bound device resets bcm_sk(sk)->bound to 0
+in bcm_notify().
+
+The 2nd connect() tries to allocate a proc entry with the same
+name and sets NULL to bcm_sk(sk)->bcm_proc_read, leaking the
+original proc entry.
+
+Since the proc entry is available only for connect()ed sockets,
+let's clean up the entry when the bound netdev is unregistered.
+
+[0]:
+proc_dir_entry 'can-bcm/2456' already registered
+WARNING: CPU: 1 PID: 394 at fs/proc/generic.c:376 proc_register+0x645/0x8f0 fs/proc/generic.c:375
+Modules linked in:
+CPU: 1 PID: 394 Comm: syz-executor403 Not tainted 6.10.0-rc7-g852e42cc2dd4
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:proc_register+0x645/0x8f0 fs/proc/generic.c:375
+Code: 00 00 00 00 00 48 85 ed 0f 85 97 02 00 00 4d 85 f6 0f 85 9f 02 00 00 48 c7 c7 9b cb cf 87 48 89 de 4c 89 fa e8 1c 6f eb fe 90 <0f> 0b 90 90 48 c7 c7 98 37 99 89 e8 cb 7e 22 05 bb 00 00 00 10 48
+RSP: 0018:ffa0000000cd7c30 EFLAGS: 00010246
+RAX: 9e129be1950f0200 RBX: ff1100011b51582c RCX: ff1100011857cd80
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
+RBP: 0000000000000000 R08: ffd400000000000f R09: ff1100013e78cac0
+R10: ffac800000cd7980 R11: ff1100013e12b1f0 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: ff1100011a99a2ec
+FS:  00007fbd7086f740(0000) GS:ff1100013fd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000200071c0 CR3: 0000000118556004 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ proc_create_net_single+0x144/0x210 fs/proc/proc_net.c:220
+ bcm_connect+0x472/0x840 net/can/bcm.c:1673
+ __sys_connect_file net/socket.c:2049 [inline]
+ __sys_connect+0x5d2/0x690 net/socket.c:2066
+ __do_sys_connect net/socket.c:2076 [inline]
+ __se_sys_connect net/socket.c:2073 [inline]
+ __x64_sys_connect+0x8f/0x100 net/socket.c:2073
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1c0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+RIP: 0033:0x7fbd708b0e5d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
+RSP: 002b:00007fff8cd33f08 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fbd708b0e5d
+RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000040 R09: 0000000000000040
+R10: 0000000000000040 R11: 0000000000000246 R12: 00007fff8cd34098
+R13: 0000000000401280 R14: 0000000000406de8 R15: 00007fbd70ab9000
+ </TASK>
+remove_proc_entry: removing non-empty directory 'net/can-bcm', leaking at least '2456'
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/all/20240722192842.37421-1-kuniyu@amazon.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/u-boot-env.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/can/bcm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/nvmem/u-boot-env.c
-+++ b/drivers/nvmem/u-boot-env.c
-@@ -176,6 +176,13 @@ static int u_boot_env_parse(struct u_boo
- 		data_offset = offsetof(struct u_boot_env_image_broadcom, data);
- 		break;
- 	}
-+
-+	if (dev_size < data_offset) {
-+		dev_err(dev, "Device too small for u-boot-env\n");
-+		err = -EIO;
-+		goto err_kfree;
-+	}
-+
- 	crc32_addr = (__le32 *)(buf + crc32_offset);
- 	crc32 = le32_to_cpu(*crc32_addr);
- 	crc32_data_len = dev_size - crc32_data_offset;
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 1c9953c68f09..095f68536c14 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1422,6 +1422,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
+ 
+ 		/* remove device reference, if this is our bound device */
+ 		if (bo->bound && bo->ifindex == dev->ifindex) {
++#if IS_ENABLED(CONFIG_PROC_FS)
++			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
++				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
++#endif
+ 			bo->bound   = 0;
+ 			bo->ifindex = 0;
+ 			notify_enodev = 1;
+-- 
+2.43.0
+
 
 
 
