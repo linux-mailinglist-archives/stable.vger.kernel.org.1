@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-75300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB619733D8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015599731BC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923DB28A605
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60541F293AF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A1118FDD5;
-	Tue, 10 Sep 2024 10:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633EB18DF88;
+	Tue, 10 Sep 2024 10:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fd7i79Hk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQMmM0HZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA6218B49E;
-	Tue, 10 Sep 2024 10:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A29188A0C;
+	Tue, 10 Sep 2024 10:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964332; cv=none; b=S1j6G0ZU4sWWXd/s6kAsieAH/utgXHl72OX1LSvZycMfmJFCdE6w/576jdSYHBQGMGCtc8QYifhJtExpXuoOJ0jAy1Yn6VfYTWU533LsQJ7LNThUnNVFg6JSYwyRs1v1m5VZAz3nzXbvuIXEYBmgn8JR4wX/4qXFiGU/z+jGrys=
+	t=1725963024; cv=none; b=cvmmWn/pKHlfta/gAbPFjpHw+RsXt2n6qT+ekXHFa3NjEUVherid90FQoAO42tG40SgbInhanwIO72S1SBzy4fhfL+z+5mcDua8y7ekNQE++wajnRw0BGP/OOBiMa9vimhwJnEgsEEoSi82ggoGScZ7HtM6HLF2qwOgkZnxUS5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964332; c=relaxed/simple;
-	bh=i3qoHgThPEh8i+rvDwoNcqDMXSXIo4ZUVUYpwxvNp40=;
+	s=arc-20240116; t=1725963024; c=relaxed/simple;
+	bh=5LuRBdKnTXEmlGMYHMgJVZF3E9FebiJ+jOIQZ9zMDi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFArOOkD7vnaAiJ5ZmPR3SCpJy9sYy0A+RW7ya3LR+HKwl0xpLGxGwGr60Dgznoo/iCG93lr4w1YhNFSovlOntlGS08+iMDdbwzTCEumjfuClpoU3ejSQsM3CoRC1l6Zg+ipfM7aAip1nlDL9Y6TB84Wm1ae/45JkxYOuq7ezhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fd7i79Hk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99CEC4CEC3;
-	Tue, 10 Sep 2024 10:32:11 +0000 (UTC)
+	 MIME-Version; b=pk8Hhs0NCNrI85ieWERtX7ZLGC9u9wH7hh3YkOLL/0mLHRpdMlazsO89c2qgoAdr/uyZbaJwjdWEHwNWlau2RNk3VskVV8qgOlgf8aDYIlrOOjq+cNSJMt5otK8POPcupzFkY6APe7U6+1x12wSez5GUX79htVzujqyGNPfezjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQMmM0HZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0BDC4CEC3;
+	Tue, 10 Sep 2024 10:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964332;
-	bh=i3qoHgThPEh8i+rvDwoNcqDMXSXIo4ZUVUYpwxvNp40=;
+	s=korg; t=1725963024;
+	bh=5LuRBdKnTXEmlGMYHMgJVZF3E9FebiJ+jOIQZ9zMDi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fd7i79Hkj1GCX1aO2szjS15Gy7vaP/SWbV+soCIAt/MRn82Fxpe2sFF6Ye0e4LyGb
-	 uftD+MVHWPKw3njetXvojQDoet2fsKVOibtwJl0wk/b665mMCCFX2eFw7IrR8sng1R
-	 TVjYSlXd4JMbXpnqESWuA4qDD81p+pQMS62HG4JI=
+	b=sQMmM0HZnY+oH2qshIEGmLzYIjiFVvhSc0NkHyNL9YPRmgJZB28s0YDlGYTWyPodk
+	 Y/Z8WVkQS2N1s3lVNycO7nwwIwFLGY0xPmavLP7h83R/hhHZWg3FbDg1INKQ6y4gK+
+	 6Mzhf4FvtxqnEJ6mEx98VK+K++6Yoz+3b+MuRRpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/269] Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT
+Subject: [PATCH 6.1 082/192] ice: do not bring the VSI up, if it was down before the XDP setup
 Date: Tue, 10 Sep 2024 11:31:46 +0200
-Message-ID: <20240910092612.424668479@linuxfoundation.org>
+Message-ID: <20240910092601.370125349@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,194 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit 227a0cdf4a028a73dc256d0f5144b4808d718893 ]
+[ Upstream commit 04c7e14e5b0b6227e7b00d7a96ca2f2426ab9171 ]
 
-MGMT_OP_DISCONNECT can be called while mgmt_device_connected has not
-been called yet, which will cause the connection procedure to be
-aborted, so mgmt_device_disconnected shall still respond with command
-complete to MGMT_OP_DISCONNECT and just not emit
-MGMT_EV_DEVICE_DISCONNECTED since MGMT_EV_DEVICE_CONNECTED was never
-sent.
+After XDP configuration is completed, we bring the interface up
+unconditionally, regardless of its state before the call to .ndo_bpf().
 
-To fix this MGMT_OP_DISCONNECT is changed to work similarly to other
-command which do use hci_cmd_sync_queue and then use hci_conn_abort to
-disconnect and returns the result, in order for hci_conn_abort to be
-used from hci_cmd_sync context it now uses hci_cmd_sync_run_once.
+Preserve the information whether the interface had to be brought down and
+later bring it up only in such case.
 
-Link: https://github.com/bluez/bluez/issues/932
-Fixes: 12d4a3b2ccb3 ("Bluetooth: Move check for MGMT_CONNECTED flag into mgmt.c")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c |  6 ++-
- net/bluetooth/mgmt.c     | 84 ++++++++++++++++++++--------------------
- 2 files changed, 47 insertions(+), 43 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index efa0881a90e1..d8a01eb016ad 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2877,5 +2877,9 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 1973b032fe05..3f01942e4982 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2909,8 +2909,8 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		   struct netlink_ext_ack *extack)
+ {
+ 	unsigned int frame_size = vsi->netdev->mtu + ICE_ETH_PKT_HDR_PAD;
+-	bool if_running = netif_running(vsi->netdev);
+ 	int ret = 0, xdp_ring_err = 0;
++	bool if_running;
+ 
+ 	if (frame_size > ice_max_xdp_frame_size(vsi)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MTU too large for loading XDP");
+@@ -2923,8 +2923,11 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
  		return 0;
  	}
  
--	return hci_cmd_sync_queue_once(hdev, abort_conn_sync, conn, NULL);
-+	/* Run immediately if on cmd_sync_work since this may be called
-+	 * as a result to MGMT_OP_DISCONNECT/MGMT_OP_UNPAIR which does
-+	 * already queue its callback on cmd_sync_work.
-+	 */
-+	return hci_cmd_sync_run_once(hdev, abort_conn_sync, conn, NULL);
- }
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index bad365f3d7bf..4ae9029b5785 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2918,7 +2918,12 @@ static int unpair_device_sync(struct hci_dev *hdev, void *data)
- 	if (!conn)
- 		return 0;
- 
--	return hci_abort_conn_sync(hdev, conn, HCI_ERROR_REMOTE_USER_TERM);
-+	/* Disregard any possible error since the likes of hci_abort_conn_sync
-+	 * will clean up the connection no matter the error.
-+	 */
-+	hci_abort_conn(conn, HCI_ERROR_REMOTE_USER_TERM);
++	if_running = netif_running(vsi->netdev) &&
++		     !test_and_set_bit(ICE_VSI_DOWN, vsi->state);
 +
-+	return 0;
- }
- 
- static int unpair_device(struct sock *sk, struct hci_dev *hdev, void *data,
-@@ -3050,13 +3055,44 @@ static int unpair_device(struct sock *sk, struct hci_dev *hdev, void *data,
- 	return err;
- }
- 
-+static void disconnect_complete(struct hci_dev *hdev, void *data, int err)
-+{
-+	struct mgmt_pending_cmd *cmd = data;
-+
-+	cmd->cmd_complete(cmd, mgmt_status(err));
-+	mgmt_pending_free(cmd);
-+}
-+
-+static int disconnect_sync(struct hci_dev *hdev, void *data)
-+{
-+	struct mgmt_pending_cmd *cmd = data;
-+	struct mgmt_cp_disconnect *cp = cmd->param;
-+	struct hci_conn *conn;
-+
-+	if (cp->addr.type == BDADDR_BREDR)
-+		conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK,
-+					       &cp->addr.bdaddr);
-+	else
-+		conn = hci_conn_hash_lookup_le(hdev, &cp->addr.bdaddr,
-+					       le_addr_type(cp->addr.type));
-+
-+	if (!conn)
-+		return -ENOTCONN;
-+
-+	/* Disregard any possible error since the likes of hci_abort_conn_sync
-+	 * will clean up the connection no matter the error.
-+	 */
-+	hci_abort_conn(conn, HCI_ERROR_REMOTE_USER_TERM);
-+
-+	return 0;
-+}
-+
- static int disconnect(struct sock *sk, struct hci_dev *hdev, void *data,
- 		      u16 len)
- {
- 	struct mgmt_cp_disconnect *cp = data;
- 	struct mgmt_rp_disconnect rp;
- 	struct mgmt_pending_cmd *cmd;
--	struct hci_conn *conn;
- 	int err;
- 
- 	bt_dev_dbg(hdev, "sock %p", sk);
-@@ -3079,27 +3115,7 @@ static int disconnect(struct sock *sk, struct hci_dev *hdev, void *data,
- 		goto failed;
- 	}
- 
--	if (pending_find(MGMT_OP_DISCONNECT, hdev)) {
--		err = mgmt_cmd_complete(sk, hdev->id, MGMT_OP_DISCONNECT,
--					MGMT_STATUS_BUSY, &rp, sizeof(rp));
--		goto failed;
--	}
--
--	if (cp->addr.type == BDADDR_BREDR)
--		conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK,
--					       &cp->addr.bdaddr);
--	else
--		conn = hci_conn_hash_lookup_le(hdev, &cp->addr.bdaddr,
--					       le_addr_type(cp->addr.type));
--
--	if (!conn || conn->state == BT_OPEN || conn->state == BT_CLOSED) {
--		err = mgmt_cmd_complete(sk, hdev->id, MGMT_OP_DISCONNECT,
--					MGMT_STATUS_NOT_CONNECTED, &rp,
--					sizeof(rp));
--		goto failed;
--	}
--
--	cmd = mgmt_pending_add(sk, MGMT_OP_DISCONNECT, hdev, data, len);
-+	cmd = mgmt_pending_new(sk, MGMT_OP_DISCONNECT, hdev, data, len);
- 	if (!cmd) {
- 		err = -ENOMEM;
- 		goto failed;
-@@ -3107,9 +3123,10 @@ static int disconnect(struct sock *sk, struct hci_dev *hdev, void *data,
- 
- 	cmd->cmd_complete = generic_cmd_complete;
- 
--	err = hci_disconnect(conn, HCI_ERROR_REMOTE_USER_TERM);
-+	err = hci_cmd_sync_queue(hdev, disconnect_sync, cmd,
-+				 disconnect_complete);
- 	if (err < 0)
--		mgmt_pending_remove(cmd);
-+		mgmt_pending_free(cmd);
- 
- failed:
- 	hci_dev_unlock(hdev);
-@@ -9627,18 +9644,6 @@ void mgmt_device_connected(struct hci_dev *hdev, struct hci_conn *conn,
- 	mgmt_event_skb(skb, NULL);
- }
- 
--static void disconnect_rsp(struct mgmt_pending_cmd *cmd, void *data)
--{
--	struct sock **sk = data;
--
--	cmd->cmd_complete(cmd, 0);
--
--	*sk = cmd->sk;
--	sock_hold(*sk);
--
--	mgmt_pending_remove(cmd);
--}
--
- static void unpair_device_rsp(struct mgmt_pending_cmd *cmd, void *data)
- {
- 	struct hci_dev *hdev = data;
-@@ -9679,8 +9684,6 @@ void mgmt_device_disconnected(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 	if (link_type != ACL_LINK && link_type != LE_LINK)
- 		return;
- 
--	mgmt_pending_foreach(MGMT_OP_DISCONNECT, hdev, disconnect_rsp, &sk);
--
- 	bacpy(&ev.addr.bdaddr, bdaddr);
- 	ev.addr.type = link_to_bdaddr(link_type, addr_type);
- 	ev.reason = reason;
-@@ -9693,9 +9696,6 @@ void mgmt_device_disconnected(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 
- 	if (sk)
- 		sock_put(sk);
--
--	mgmt_pending_foreach(MGMT_OP_UNPAIR_DEVICE, hdev, unpair_device_rsp,
--			     hdev);
- }
- 
- void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 	/* need to stop netdev while setting up the program for Rx rings */
+-	if (if_running && !test_and_set_bit(ICE_VSI_DOWN, vsi->state)) {
++	if (if_running) {
+ 		ret = ice_down(vsi);
+ 		if (ret) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Preparing device for XDP attach failed");
 -- 
 2.43.0
 
