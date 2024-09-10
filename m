@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-74829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CB797319F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E788973328
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F0A11C25612
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CCB6B26777
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFF8198842;
-	Tue, 10 Sep 2024 10:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC02618C90B;
+	Tue, 10 Sep 2024 10:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJeEltvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZIRuGlI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C82197556;
-	Tue, 10 Sep 2024 10:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA18E199E9D;
+	Tue, 10 Sep 2024 10:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962952; cv=none; b=cehrQvFLXqDXY1Eg5LHNVT4ZSEAUhPe50CWiXr/SBPs3no+huBg/UDUDaGMR0rY+fmaXgVmBkMgiqLOObHtZOUyJcWEJuAeXW4d1ASgzZQEqEWUGQubjnmt+gZSiERvF7dW3yr5OXPaVkJEJCc+6m1/4I1QwjU85sUcw4gf38ls=
+	t=1725963605; cv=none; b=d0xGAlgBnajzm0QtubU7OYIU1OwtsIrw5kHKAtWZJFY0jabvVqbeoW9+NHFs0jOSpmMSPR4Suq3/7JUgEB0l2OZSwCAG8DLMKsRXwS0EqIYLVB6AbNFUXLsjgE8IZ1hoN8UxD0RkFASB5IgYkYVH8OB5C3vEsg16MoY8xxpe/zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962952; c=relaxed/simple;
-	bh=njQjSleoxhCzJ4VBasWhVvqI5xlHSqeG7wEE5kyrTME=;
+	s=arc-20240116; t=1725963605; c=relaxed/simple;
+	bh=A1qVX9GEpkp9zJgJiifMM65DZVfR232yjpuPDSHPnm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HiVp5emiaLE8hHP0SwNdOvzhrcZnzlWNn5Zof1BiMhN8wb5HDYujI+LsqaKFtIv5J78V+ZrJ+4b+Y7Ri+S+75u2wambMB+IFTeh0FtT/uXyXsAW4A9ECBnPVKK1dlBxxLLMR8KaHbW2AFx1pwVyj2j3KZ7kvvyvo+HsoRLPpdxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJeEltvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817A1C4CEC3;
-	Tue, 10 Sep 2024 10:09:11 +0000 (UTC)
+	 MIME-Version; b=OgBpaicCmpwxd29OS/giWNprsAEmOI7EfYUGJ0WYUCbwKNvJrdb5IzQitdRm25U64mioGLlY4ZVA7zaX0EHJ60UwQNzs5IM3y5tm0VDvM7s3BNYZobsALlaUir09aDWEMvQu8UvmgHLhdrCpbvhmElvzvLEP2Rp3P7s1MS4H4NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZIRuGlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34492C4CEC3;
+	Tue, 10 Sep 2024 10:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962951;
-	bh=njQjSleoxhCzJ4VBasWhVvqI5xlHSqeG7wEE5kyrTME=;
+	s=korg; t=1725963605;
+	bh=A1qVX9GEpkp9zJgJiifMM65DZVfR232yjpuPDSHPnm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJeEltvyBx1REDFuwg2aF38bQOZs6AEYick6T7eTJtsb8xz/zWWAr0B2SNTZjir9L
-	 4xK+CkNUVY2+fi3acOvNxqMITZdw0jtOGtRW/NZkLORecI6F0cxO9mZWAkUaoeOLGO
-	 qeYRLd592XY3CppUMXLzsVk8haZbCfhU8vTAXPpo=
+	b=0ZIRuGlIMP8/oQ+Q9L3C31Rrj4fASNsE4hFxv1tGgeIsYMepGdHQxUuM6fOiZD/bk
+	 H4msNrhuDwqdltrSowTqChBaTZZ8p/Cew2YMp69fsXtYEBoy5PR0XGohzSpMEOHtpt
+	 Q4AWauru6D7/W86GIriAh894GGMQX4qd6YvZjgSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@bisdn.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/192] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 088/214] nilfs2: fix missing cleanup on rollforward recovery error
 Date: Tue, 10 Sep 2024 11:31:50 +0200
-Message-ID: <20240910092601.531120832@linuxfoundation.org>
+Message-ID: <20240910092602.351431293@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
+commit 5787fcaab9eb5930f5378d6a1dd03d916d146622 upstream.
 
-When userspace wants to take over a fdb entry by setting it as
-EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
-BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
+In an error injection test of a routine for mount-time recovery, KASAN
+found a use-after-free bug.
 
-If the bridge updates the entry later because its port changed, we clear
-the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
-flag set.
+It turned out that if data recovery was performed using partial logs
+created by dsync writes, but an error occurred before starting the log
+writer to create a recovered checkpoint, the inodes whose data had been
+recovered were left in the ns_dirty_files list of the nilfs object and
+were not freed.
 
-If userspace then wants to take over the entry again,
-br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
-setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
-update.
+Fix this issue by cleaning up inodes that have read the recovery data if
+the recovery routine fails midway before the log writer starts.
 
-Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
-if this was a user fdb entry or not.
-
-Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240810065242.3701-1-konishi.ryusuke@gmail.com
+Fixes: 0f3e1c7f23f8 ("nilfs2: recovery functions")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_fdb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/nilfs2/recovery.c |   35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index e7f4fccb6adb..882b6a67e11f 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -1388,12 +1388,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			modified = true;
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -709,6 +709,33 @@ static void nilfs_finish_roll_forward(st
+ }
+ 
+ /**
++ * nilfs_abort_roll_forward - cleaning up after a failed rollforward recovery
++ * @nilfs: nilfs object
++ */
++static void nilfs_abort_roll_forward(struct the_nilfs *nilfs)
++{
++	struct nilfs_inode_info *ii, *n;
++	LIST_HEAD(head);
++
++	/* Abandon inodes that have read recovery data */
++	spin_lock(&nilfs->ns_inode_lock);
++	list_splice_init(&nilfs->ns_dirty_files, &head);
++	spin_unlock(&nilfs->ns_inode_lock);
++	if (list_empty(&head))
++		return;
++
++	set_nilfs_purging(nilfs);
++	list_for_each_entry_safe(ii, n, &head, i_dirty) {
++		spin_lock(&nilfs->ns_inode_lock);
++		list_del_init(&ii->i_dirty);
++		spin_unlock(&nilfs->ns_inode_lock);
++
++		iput(&ii->vfs_inode);
++	}
++	clear_nilfs_purging(nilfs);
++}
++
++/**
+  * nilfs_salvage_orphan_logs - salvage logs written after the latest checkpoint
+  * @nilfs: nilfs object
+  * @sb: super block instance
+@@ -766,15 +793,19 @@ int nilfs_salvage_orphan_logs(struct the
+ 		if (unlikely(err)) {
+ 			nilfs_err(sb, "error %d writing segment for recovery",
+ 				  err);
+-			goto failed;
++			goto put_root;
  		}
  
--		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
-+		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
--			/* Take over SW learned entry */
--			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
-+		} else {
- 			modified = true;
- 		}
+ 		nilfs_finish_roll_forward(nilfs, ri);
+ 	}
  
--- 
-2.43.0
-
+- failed:
++put_root:
+ 	nilfs_put_root(root);
+ 	return err;
++
++failed:
++	nilfs_abort_roll_forward(nilfs);
++	goto put_root;
+ }
+ 
+ /**
 
 
 
