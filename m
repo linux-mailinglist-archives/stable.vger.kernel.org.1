@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-75161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2D097332A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080F5973335
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F0791F23726
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6EA81F23721
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE571990BA;
-	Tue, 10 Sep 2024 10:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A711C1990B5;
+	Tue, 10 Sep 2024 10:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc8oE0He"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzViCbko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A36A18C340;
-	Tue, 10 Sep 2024 10:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B63188A28;
+	Tue, 10 Sep 2024 10:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963926; cv=none; b=R/+wSwlbNgqcGY8Gm2xrn1UAr0vofG8trZfjgQ0s9YRc592sZV8+s34IoxHrJ7KpmCS1EP7Im8vS/HyQ/DVen2cEfQlsJm77m6GyT2rAz/H8spAWGWOL173hELF7Ikgf0eaE0FHLTWE8ExVBgqHjOYvxhQLaQLHPbI9WFOCzYpo=
+	t=1725963958; cv=none; b=H0wwAfQFfthlIfkqDZ3XCeZmqPbI5RbGw9mejUvC4Jj8dPZYQWNGxu4AxS5QVfE+Iua+rJg0XhwS2r7QE1KNjyqTLnbtTW9WaGYz/0ezfYPN+bdMoaA5c2plXvmcpVTAHpVEhpt+hwxWNzYHrzrBWhZ2NjcLRNhDcB/mrRBbuac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963926; c=relaxed/simple;
-	bh=iD9AHU4YK0yFjlEcVDdwBdMrUc/2hklVw6hWGmTbZSM=;
+	s=arc-20240116; t=1725963958; c=relaxed/simple;
+	bh=chEoo/ZTyWFfC9/dygPvjkNftMiZosV1W9WFpmTvbug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqyMkBvWnZfy2yMBqQFpzxYVxWgJvaFmnvm3sU7T4RC+3UJviwVlcMwkX/M9zRDLffp9bGioCOoZx5yBdPiBNJeH4RBXscwKKbRRRNz3/Joar2U9I0BZLkcdHhhHJBju0GKGGsZcB154hoB+ar/i/zBAy26t49d1i+bXdUuIdsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc8oE0He; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951CBC4CEC3;
-	Tue, 10 Sep 2024 10:25:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BOoJa0R285AsNDwZvF2bbiY2TbSmtN4r5nX2IryfOycjee/Pc+N+sJjwlEtqCTP+7mPQWNTJMhvTzC1INTlOvGuTEQRfs8bXON2jrBRkgWcw5KRAY7Kenw8hkNUjZonS4mXFgB5msm0Uo/1vqapFQmMzRxwlNadsRVzvvju8xgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzViCbko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25E3C4CEC3;
+	Tue, 10 Sep 2024 10:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963926;
-	bh=iD9AHU4YK0yFjlEcVDdwBdMrUc/2hklVw6hWGmTbZSM=;
+	s=korg; t=1725963958;
+	bh=chEoo/ZTyWFfC9/dygPvjkNftMiZosV1W9WFpmTvbug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pc8oE0He4Gp3f8R262ZVXPFVWLjgIRcx7TCVsoutFsV4QHY5xg3+ExZ52ENcW6N9E
-	 /RlPlzgMyek3K6palB6owJx0/AUyWlBfAZe67f7RuFKF2qxLBGErGXDPfIc1qbLkll
-	 fVAOzUML2iXVq89HbKJ4GH+ZUWwPZm1AreQ7aDZ4=
+	b=VzViCbkoa4kx2z0YxBgXRrFWXcUmWM1wova3GIa3aBpiqYtUAhqH+jx2NpdmZhas6
+	 sCX8DNLxTHInx26KJvmxhsMlmtZuKXF5/CbeZ3+yHoYKXvdFuUC4wqdxFrjIbbFYiF
+	 7TWPlS5wIEWfsihlB9ySeexvbrOwmKeqcbkhdKmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 001/269] sch/netem: fix use after free in netem_dequeue
-Date: Tue, 10 Sep 2024 11:29:48 +0200
-Message-ID: <20240910092608.282967714@linuxfoundation.org>
+	Dan Carpenter <error27@gmail.com>,
+	=?UTF-8?q?Jens=20Emil=20Schulz=20=C3=98stergaard?= <jensemil.schulzostergaard@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 002/269] net: microchip: vcap: Fix use-after-free error in kunit test
+Date: Tue, 10 Sep 2024 11:29:49 +0200
+Message-ID: <20240910092608.318733515@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -60,69 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 
-commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
+commit a3c1e45156ad39f225cd7ddae0f81230a3b1e657 upstream.
 
-If netem_dequeue() enqueues packet to inner qdisc and that qdisc
-returns __NET_XMIT_STOLEN. The packet is dropped but
-qdisc_tree_reduce_backlog() is not called to update the parent's
-q.qlen, leading to the similar use-after-free as Commit
-e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
-fails")
+This is a clear use-after-free error. We remove it, and rely on checking
+the return code of vcap_del_rule.
 
-Commands to trigger KASAN UaF:
-
-ip link add type dummy
-ip link set lo up
-ip link set dummy0 up
-tc qdisc add dev lo parent root handle 1: drr
-tc filter add dev lo parent 1: basic classid 1:1
-tc class add dev lo classid 1:1 drr
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2: handle 3: drr
-tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
-redirect dev dummy0
-tc class add dev lo classid 3:1 drr
-ping -c1 -W0.01 localhost # Trigger bug
-tc class del dev lo classid 1:1
-tc class add dev lo classid 1:1 drr
-ping -c1 -W0.01 localhost # UaF
-
-Fixes: 50612537e9ab ("netem: fix classful handling")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/kernel-janitors/7bffefc6-219a-4f71-baa0-ad4526e5c198@kili.mountain/
+Fixes: c956b9b318d9 ("net: microchip: sparx5: Adding KUNIT tests of key/action values in VCAP API")
+Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -742,11 +742,10 @@ deliver:
+--- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
++++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
+@@ -1442,18 +1442,8 @@ static void vcap_api_encode_rule_test(st
+ 	vcap_enable_lookups(&test_vctrl, &test_netdev, 0, 0,
+ 			    rule->cookie, false);
  
- 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
- 				kfree_skb_list(to_free);
--				if (err != NET_XMIT_SUCCESS &&
--				    net_xmit_drop_count(err)) {
--					qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1,
--								  pkt_len);
-+				if (err != NET_XMIT_SUCCESS) {
-+					if (net_xmit_drop_count(err))
-+						qdisc_qstats_drop(sch);
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
+-	vcap_free_rule(rule);
+-
+-	/* Check that the rule has been freed: tricky to access since this
+-	 * memory should not be accessible anymore
+-	 */
+-	KUNIT_EXPECT_PTR_NE(test, NULL, rule);
+-	ret = list_empty(&rule->keyfields);
+-	KUNIT_EXPECT_EQ(test, true, ret);
+-	ret = list_empty(&rule->actionfields);
+-	KUNIT_EXPECT_EQ(test, true, ret);
+-
+-	vcap_del_rule(&test_vctrl, &test_netdev, id);
++	ret = vcap_del_rule(&test_vctrl, &test_netdev, id);
++	KUNIT_EXPECT_EQ(test, 0, ret);
+ }
+ 
+ static void vcap_api_set_rule_counter_test(struct kunit *test)
 
 
 
