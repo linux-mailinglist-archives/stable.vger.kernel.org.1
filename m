@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA359731A6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9D9973496
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37C691F28C1F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E48A1C24FDC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8D5199920;
-	Tue, 10 Sep 2024 10:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4872192591;
+	Tue, 10 Sep 2024 10:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbB6OSWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpOC1L62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D352190676;
-	Tue, 10 Sep 2024 10:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62846190676;
+	Tue, 10 Sep 2024 10:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962974; cv=none; b=NkgYHjjPZUp289DX/DpUVcmvh+/4ZLJXJ/BmeulkEwlJ490x/1C57guKXisITvNNSZEzaPPmdg5N+CWo0TIYAWRz7ULrGQOeZZIRnROiiHfEBNYkyTJCGQzFeCCg05M9fNwrf9md/YRSjrnjGUgPpPCWstdqb6u6PZeKUYU4j8E=
+	t=1725964762; cv=none; b=gs34B1LMy91qiImc3LssMU6B9XM4M1Z0Y6MaXIWZ4LEUP2q+DsAMJwxYWERrhJmmAaw8/8jM9tn6O/MIsTuyHfIPFf+WVXw+7z9pghWB01dfSn9+HFrcnUyenLIpAGyHCBedwpuM1s04pclP7NHE2sDbu/eXzN7LEuchAkg84oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962974; c=relaxed/simple;
-	bh=7ZFhtv1WtREuwrqZSaPNy4zPlW/lrgOlCA0SEAvHu+k=;
+	s=arc-20240116; t=1725964762; c=relaxed/simple;
+	bh=Q1AXB7T5vLyaS6aDxBmIaeD+UfJJlqSsPSQYXBjcyqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKul/sdqn7wiNHo9wjMVwSTz5v8A/hVkkemMHib+h7G1pVHUw01nmLtt4j7v7mcORN+YYGE+hP1GJB4mKnoEJP7KyUudQyvVYgaO8okOjLZ4jTP7RSWQqF3YF7SOdLwmKZrL1T50zYZqK5Vr+E9YWiSVpxeEGcLTOZmSF4RYZBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbB6OSWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9918C4CEC3;
-	Tue, 10 Sep 2024 10:09:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vDjoRRJi/JvThsq0I8aLlGXhj6Wr0YLcKb4QL55XrB+cycb6zqM8UEx5ZCCFiHnBARZIUfSCdXzClq8a6fKuikrDyUC2okX2hOCClUhw320QuC86aNl1K5sYJhY4jkKITiEyKTdOTD+MIkeSXq+1qlTOSu+/abcAMfA4jkcLIFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpOC1L62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF12C4CEC3;
+	Tue, 10 Sep 2024 10:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962974;
-	bh=7ZFhtv1WtREuwrqZSaPNy4zPlW/lrgOlCA0SEAvHu+k=;
+	s=korg; t=1725964762;
+	bh=Q1AXB7T5vLyaS6aDxBmIaeD+UfJJlqSsPSQYXBjcyqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbB6OSWh7jG58jNlXlzeJfOs+ebtrzv1XD/d2NZn8kWgpIIm2QUFeTuCoNU/POpAS
-	 xB2+Rto4KUbDmSXG2XMB2byBzBH8OKoRZSGQff+Np0Cb4JMla/RXGSs+0OBBo3emuU
-	 fh69x3+pGMmU8yHE831Ryeq1tTLJbZEQSqDfDwBY=
+	b=fpOC1L62A4Ia1tqtackY5lgui+FAfJ6bT93YwMmgkpxL5jUkBXYyqZgND471aFLc1
+	 efpMmJeg4TVBHucHQ6NJVN5A4BYLAsP0P54hzXB3NzWMwFbxziH1hEkJPQDKX2wNgl
+	 vwtW6fBX4XikD8ztUWC61SZ+EaQgk9InFyuGq6Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/192] cgroup: Protect css->cgroup write under css_set_lock
+Subject: [PATCH 5.10 022/186] drm/amdgpu: Fix out-of-bounds write warning
 Date: Tue, 10 Sep 2024 11:31:57 +0200
-Message-ID: <20240910092601.837739118@linuxfoundation.org>
+Message-ID: <20240910092555.538681354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
+[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
 
-The writing of css->cgroup associated with the cgroup root in
-rebind_subsystems() is currently protected only by cgroup_mutex.
-However, the reading of css->cgroup in both proc_cpuset_show() and
-proc_cgroup_show() is protected just by css_set_lock. That makes the
-readers susceptible to racing problems like data tearing or caching.
-It is also a problem that can be reported by KCSAN.
+Check the ring type value to fix the out-of-bounds
+write warning
 
-This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
-css->cgroup. Alternatively, the writing of css->cgroup can be moved
-under css_set_lock as well which is done by this patch.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 455f67ff31b5..f6656fd410d0 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1852,9 +1852,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
- 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
- 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
- 		ss->root = dst_root;
--		css->cgroup = dcgrp;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 6976f61be734..b78feb8ba01e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -260,7 +260,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
+ 	ring->priority = DRM_SCHED_PRIORITY_NORMAL;
+ 	mutex_init(&ring->priority_mutex);
  
- 		spin_lock_irq(&css_set_lock);
-+		css->cgroup = dcgrp;
- 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
- 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
- 					 e_cset_node[ss->id]) {
+-	if (!ring->no_scheduler) {
++	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
+ 		hw_ip = ring->funcs->type;
+ 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
+ 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
 -- 
 2.43.0
 
