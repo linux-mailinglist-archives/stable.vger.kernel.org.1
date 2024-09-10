@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-75256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9E5973406
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA280973284
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 246EFB2E224
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0851C242F2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC6F1957F9;
-	Tue, 10 Sep 2024 10:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3612E19343B;
+	Tue, 10 Sep 2024 10:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5udiC/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNeQa0nh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A48E18E773;
-	Tue, 10 Sep 2024 10:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E767814D431;
+	Tue, 10 Sep 2024 10:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964202; cv=none; b=BTribVqtv8qYiL+6szEJKw9nfxkZLpmjPQgH/TUD+K82c6EUN3btK2G7+hV4fFoEckpmp6QSJIaPxmRThN4a1hVxPmByMs0tlxXC+ZCOmoGAb3RL3uk6iquu5ha+qmMTinDHHhHv99aDDldQrGAzE9GoUqf9LBXDk0J5eIrUJ2U=
+	t=1725963468; cv=none; b=ZA2kKxXOlkYhqCjUORI8wM3pAJFArEyiWO29m2Y/oDB3z9dDaZWovnuPW0VJyM+Fo/JNNBVZ6ZUqRUywSM7Sr1AQwkgekgvo4mzuIW7QzY5pqDXHWMoCbMI5RVniJn75t9Zjse3+L9l9jLRtRtEoj4/FZzy/C7lfmGwez4uHofU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964202; c=relaxed/simple;
-	bh=0mZBC1j/kZqLfSG9sJKw53rDVBXUvQKV5z+XFwtD2p0=;
+	s=arc-20240116; t=1725963468; c=relaxed/simple;
+	bh=T3egVNj0GnVN3z4hze2XhPcDi1jsZYhPUGpYEdHRzyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPHgugOFhEHjYD+D9x/gAFVUwgck03hQ6YfTcqsng1rUw2S2LWAkBKUTwDm4jgUA8wK2M3JhnV0867y56WcTurpQ97Mp0I+nBe6N7bPgORxxItEU/uLTuaSb7tJNx6Idon326bnl/y+nY9ZejMRaPdSQoYcwRb/wPu4p1FOxTjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5udiC/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C20DC4CEC6;
-	Tue, 10 Sep 2024 10:30:01 +0000 (UTC)
+	 MIME-Version; b=dyM3jLeDkdFsZW+8b9yP05zRBmDl7HCw5KZ4m3jRRus7Le0IzlSJXjoR5DoMvF0pplr5C8F01J92bjgALktc5eawmYPPTBVjAhVat0gFo2zE656P+AKvQbkGy7GEaG1kN/5c58dtf2jfyPxplMY9x73bhE9ZnOXji8MW/hSOobo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNeQa0nh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B668C4CEC3;
+	Tue, 10 Sep 2024 10:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964202;
-	bh=0mZBC1j/kZqLfSG9sJKw53rDVBXUvQKV5z+XFwtD2p0=;
+	s=korg; t=1725963467;
+	bh=T3egVNj0GnVN3z4hze2XhPcDi1jsZYhPUGpYEdHRzyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5udiC/b5bLd0ME/Bfqjb6r+JCD5pVNluv2u5BYI8jBoItRGKVEwvNd8LI7+VuGH6
-	 +FOayNtYm7ARTezrFVYwMfGVUwU6FfL8vDQu/Ejcw4c0H/NAnR5ZC/AtK3Jbr29Ff6
-	 XzVMiVLyyEDVXFn8fws0a2T6TBRXZie3RoVvSwSw=
+	b=fNeQa0nhp9/4f6hVUWZeDZxZNal3NfwD7VTsucZgtpR9yKmnVmfYwKOmrv1XgGUOU
+	 JpXhiSku/U176Tw9viIVXcIfsZYXPAi1rlU55jZjOm2yMseBFRUH3JtjJKQJGgPdS7
+	 OxwKb3TU27JjyXOlhPLGiE0UcqN9AKGxj8iG5Ea8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Igor Bagnucki <igor.bagnucki@intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 103/269] ice: Add netif_device_attach/detach into PF reset flow
+	Maximilien Perreault <maximilienperreault@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 068/214] ALSA: hda/realtek: Support mute LED on HP Laptop 14-dq2xxx
 Date: Tue, 10 Sep 2024 11:31:30 +0200
-Message-ID: <20240910092611.883053813@linuxfoundation.org>
+Message-ID: <20240910092601.527250762@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+From: Maximilien Perreault <maximilienperreault@gmail.com>
 
-[ Upstream commit d11a67634227f9f9da51938af085fb41a733848f ]
+commit 47a9e8dbb8d4713a9aac7cc6ce3c82dcc94217d8 upstream.
 
-Ethtool callbacks can be executed while reset is in progress and try to
-access deleted resources, e.g. getting coalesce settings can result in a
-NULL pointer dereference seen below.
+The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
 
-Reproduction steps:
-Once the driver is fully initialized, trigger reset:
-	# echo 1 > /sys/class/net/<interface>/device/reset
-when reset is in progress try to get coalesce settings using ethtool:
-	# ethtool -c <interface>
-
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 11 PID: 19713 Comm: ethtool Tainted: G S                 6.10.0-rc7+ #7
-RIP: 0010:ice_get_q_coalesce+0x2e/0xa0 [ice]
-RSP: 0018:ffffbab1e9bcf6a8 EFLAGS: 00010206
-RAX: 000000000000000c RBX: ffff94512305b028 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffff9451c3f2e588 RDI: ffff9451c3f2e588
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: ffff9451c3f2e580 R11: 000000000000001f R12: ffff945121fa9000
-R13: ffffbab1e9bcf760 R14: 0000000000000013 R15: ffffffff9e65dd40
-FS:  00007faee5fbe740(0000) GS:ffff94546fd80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000020 CR3: 0000000106c2e005 CR4: 00000000001706f0
-Call Trace:
-<TASK>
-ice_get_coalesce+0x17/0x30 [ice]
-coalesce_prepare_data+0x61/0x80
-ethnl_default_doit+0xde/0x340
-genl_family_rcv_msg_doit+0xf2/0x150
-genl_rcv_msg+0x1b3/0x2c0
-netlink_rcv_skb+0x5b/0x110
-genl_rcv+0x28/0x40
-netlink_unicast+0x19c/0x290
-netlink_sendmsg+0x222/0x490
-__sys_sendto+0x1df/0x1f0
-__x64_sys_sendto+0x24/0x30
-do_syscall_64+0x82/0x160
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7faee60d8e27
-
-Calling netif_device_detach() before reset makes the net core not call
-the driver when ethtool command is issued, the attempt to execute an
-ethtool command during reset will result in the following message:
-
-    netlink error: No such device
-
-instead of NULL pointer dereference. Once reset is done and
-ice_rebuild() is executing, the netif_device_attach() is called to allow
-for ethtool operations to occur again in a safe manner.
-
-Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Maximilien Perreault <maximilienperreault@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240904031013.21220-1-maximilienperreault@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 3f254ce0d6db..ffe6e74b9fea 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -606,6 +606,9 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
- 			memset(&vsi->mqprio_qopt, 0, sizeof(vsi->mqprio_qopt));
- 		}
- 	}
-+
-+	if (vsi->netdev)
-+		netif_device_detach(vsi->netdev);
- skip:
- 
- 	/* clear SW filtering DB */
-@@ -7295,6 +7298,7 @@ static void ice_update_pf_netdev_link(struct ice_pf *pf)
-  */
- static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
- {
-+	struct ice_vsi *vsi = ice_get_main_vsi(pf);
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_hw *hw = &pf->hw;
- 	bool dvm;
-@@ -7447,6 +7451,9 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
- 		ice_rebuild_arfs(pf);
- 	}
- 
-+	if (vsi && vsi->netdev)
-+		netif_device_attach(vsi->netdev);
-+
- 	ice_update_pf_netdev_link(pf);
- 
- 	/* tell the firmware we are up */
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9177,6 +9177,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
+ 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
++	SND_PCI_QUIRK(0x103c, 0x87fd, "HP Laptop 14-dq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
 
 
 
