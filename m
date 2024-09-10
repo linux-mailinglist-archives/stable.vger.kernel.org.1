@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-74760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA234973150
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA103973285
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76449289273
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AEB3B2BA27
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DCF1917C7;
-	Tue, 10 Sep 2024 10:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C7518CBE6;
+	Tue, 10 Sep 2024 10:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySIB5OP6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0TQ9MIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234BA191461;
-	Tue, 10 Sep 2024 10:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C077419CD17;
+	Tue, 10 Sep 2024 10:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962749; cv=none; b=ENt8x+qTumuAjIhYxCRiVWY71in5zfZUrArCH+WERnFOX26sfL7I2j2urKHaKaw32zl5MBj+nEVl9GEpgc1UxyG3FojtKLsdu4/jV2pmlPrvkOPsuiTmO9BWOHZtjFxIySDca99rloifeGuXqVNXDNphXwflmesY/poVrU87rtI=
+	t=1725963347; cv=none; b=dSnlaLvwRSAN7b2QPuHV5jnyOIWrLbrHP2Q7z4XIY7/88joDkeOwSvW0o7lSYN47uVcND4rps1nJJSJ1Zn1f6eH0Z524MC08g8bzxuyAlI+gpPtSChO+/4hjtvRcrRqXaZha5uhIsym8LNrQUOpXfpuVSllpgr7gJna4tXJKk8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962749; c=relaxed/simple;
-	bh=bvrkx2KRaldV0tbfI84hXxaKuv8R3xhcYt/1Yq9ZKuo=;
+	s=arc-20240116; t=1725963347; c=relaxed/simple;
+	bh=QSXAvBkCtMXYhNMMKSG/n3kCrM+7IHdEy96QeaXeC9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C98RgN2d7fafaIcGMhZXdt1YGjG7fn7F2b9gan5c4X2xCpDiEuHqSaE+foXMB2O0sQpi2ZRuyYYTVIDyv3NISKTJBu7+37aSa1DYlKnIVi3mrtxF/BX1twPxALPrctLETAD7tyBqfoC6Y+g77wNWRRFfm+01L6witva3whXEup8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySIB5OP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB9C4CEC3;
-	Tue, 10 Sep 2024 10:05:48 +0000 (UTC)
+	 MIME-Version; b=JbdxuByZOGygvKZzeWTl+e2FMepCHWhe8UcYqlKN6pNn0lKk4dHGDhDIYChgZ3Zsh9mVzKpSnFS1R/Yi18IbLnRHjT+W4gyTCX0Kaeb+1JhxMnOrHLaxlQV3D/dlDP3aAR0k95YodycQg0zLG3xMTrgKtJvG2uNdHcTH3TwF7J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0TQ9MIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC85DC4CEC3;
+	Tue, 10 Sep 2024 10:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962749;
-	bh=bvrkx2KRaldV0tbfI84hXxaKuv8R3xhcYt/1Yq9ZKuo=;
+	s=korg; t=1725963347;
+	bh=QSXAvBkCtMXYhNMMKSG/n3kCrM+7IHdEy96QeaXeC9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySIB5OP6LX/PAk7NxrEriFEJl8c1MHW2/VRKUXVPbnHbehK9hNSyd2qVHfrmWKaQI
-	 w5znQ9nG4rdKRdnOYWvVbimXSS2NVFAU+dDSWJ4o+MU8m3GH44Ni7t21Zwrhuidvwi
-	 +/WaMzlA1hMMgHs3Whff3AwWkjCh1Xhva/1eYlIA=
+	b=j0TQ9MIn6H2isTdlQ9fHMxh+pXAfYaorRlh/9qWRnt8TBjR0SYYAORsgOdh+n0Je6
+	 Yf6d5ATc0ao+I8qmuMdL7OIbQ0opcLvPEYTy4FtxaPRvDL6A2Fk64z4lRHCgH8jlJJ
+	 YtR8mmAUw2MuT7d8EU6NqILMT1c+MKKJqft7K/Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 003/192] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
-Date: Tue, 10 Sep 2024 11:30:27 +0200
-Message-ID: <20240910092558.031364819@linuxfoundation.org>
+	ZHANG Yuntian <yt@radxa.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/214] net: usb: qmi_wwan: add MeiG Smart SRM825L
+Date: Tue, 10 Sep 2024 11:30:28 +0200
+Message-ID: <20240910092558.969693360@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: ZHANG Yuntian <yt@radxa.com>
 
-commit 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 upstream.
+[ Upstream commit 1ca645a2f74a4290527ae27130c8611391b07dbf ]
 
-Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
-leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
-reads guest memory.
+Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
 
-Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
-via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
-kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
-problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
-grab it unconditionally for KVM_SET_VCPU_EVENTS.
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=6f345e48
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
- =============================
- WARNING: suspicious RCU usage
- 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
- -----------------------------
- include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
-
- other info that might help us debug this:
-
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by repro/1071:
-  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-
- stack backtrace:
- CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x7f/0x90
-  lockdep_rcu_suspicious+0x13f/0x1a0
-  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
-  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
-  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
-  vmx_leave_nested+0x30/0x40 [kvm_intel]
-  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
-  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
-  ? mark_held_locks+0x49/0x70
-  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  ? lock_acquire+0xba/0x2d0
-  ? find_held_lock+0x2b/0x80
-  ? do_user_addr_fault+0x40c/0x6f0
-  ? lock_release+0xb7/0x270
-  __x64_sys_ioctl+0x82/0xb0
-  do_syscall_64+0x6c/0x170
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7ff11eb1b539
-  </TASK>
-
-Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM state is toggled")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: ZHANG Yuntian <yt@radxa.com>
+Link: https://patch.msgid.link/D1EB81385E405DFE+20240803074656.567061-1-yt@radxa.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5747,7 +5747,9 @@ long kvm_arch_vcpu_ioctl(struct file *fi
- 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
- 			break;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 773a54c083f61..71ee7a3c3f5b8 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
+ 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
++	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
  
-+		kvm_vcpu_srcu_read_lock(vcpu);
- 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
-+		kvm_vcpu_srcu_read_unlock(vcpu);
- 		break;
- 	}
- 	case KVM_GET_DEBUGREGS: {
+ 	/* 4. Gobi 1000 devices */
+ 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+-- 
+2.43.0
+
 
 
 
