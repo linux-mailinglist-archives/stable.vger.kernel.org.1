@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0721D973155
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3132C9732A0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37CDB1C255ED
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8155B2AB6C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3107B1917DC;
-	Tue, 10 Sep 2024 10:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F3B18EFEE;
+	Tue, 10 Sep 2024 10:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSb3CmZi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT5KfW+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE09218FC80;
-	Tue, 10 Sep 2024 10:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C896318CC1A;
+	Tue, 10 Sep 2024 10:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962764; cv=none; b=D/XjYGNrRf4H5GdBFe8o5BERf+gXUbMY30PiL5oxyDymJodVMZ8kbRtgHCqhZ5z/fUeHTgTVEoDTLt067sf4ask7Rmv0VZyOizbk45ds51t0QvBo7aSkLonXYUfdHHqb81gn8LB1De8gTTdhpm47AWLSeBXXvKeo2ci+fm/0Qd0=
+	t=1725963300; cv=none; b=BB6jBMXvSM5/U/UCwGbxAJWBE9VAl6ejM77Wzs4VMChff+jNmaF2j1wzCh0eERJ+i182zK5Kg7kzKp6KPskFoJ5mH10m9w+VTcnWKWyNXjq5rh56L32uzzsx19V6EXIjTiXVbKOW7UWT2GhBzR0I0nmScxhKaEovD9Nk4DYktdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962764; c=relaxed/simple;
-	bh=9TtQciSNZ/10ZAtPAOuPF5TwtGYq3hkVnf337ltGnkw=;
+	s=arc-20240116; t=1725963300; c=relaxed/simple;
+	bh=MwemvVmrNKeknoLp5cKwGyXP0du+k/LFQ5FdwA0d/a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMXWPHV149IT48ssheb3SBw53x2U8Kl7jPoADnGWdo6G2GOaZXOcdYCYeDRAIbmBeI7ygwoqaksFyzvkdvpWEr47LBprL97l01XrGyqIRJXcigDTkawsdUuKthltZr6biE1tW2ZvwxHxyVkbRHp1iSJjjeVyHOxT2PbUWeDSbeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSb3CmZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653EAC4CEC6;
-	Tue, 10 Sep 2024 10:06:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oMldkNx4lAblRCExPOVvOc/45ySNix7x5HZlDV0UpnM+TX23H42aBHKmEVYdJEiXtQo/Hk6R1631m9hJlRIxrMt8ZfrBYbFBI/kNXDpv8QM5gUTUh1wuGBgEByHzwK023x5njBQ8MAnb34GbFrCgO+JCbraQYKG45O7pvYDPjYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT5KfW+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6E5C4CEC6;
+	Tue, 10 Sep 2024 10:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962763;
-	bh=9TtQciSNZ/10ZAtPAOuPF5TwtGYq3hkVnf337ltGnkw=;
+	s=korg; t=1725963300;
+	bh=MwemvVmrNKeknoLp5cKwGyXP0du+k/LFQ5FdwA0d/a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSb3CmZiko22CXK23VpUVHIsP6JDcq4piSqU54Z+XY/cQQM0KdTIRzIrVB8LqXwfm
-	 ceUrr54q0IIchDGSUPFPt/83HaZCEHnIoGfZuMJ54wHv527sYJAL2Q7RTDDxDYZmui
-	 784KDiz6/kAHe9jlA2YFe8Pib78Tc7lsnEwYIx1E=
+	b=oT5KfW+hpu8m6amvQ3oehjn6SXCF55XEqmKXLOvQ2CKZmDaA3jEVV72lfe7lUU3Db
+	 fus+DlAZ+wI8FWxpXB3mtd5t03gSK8gRleTbBWuHD1pLHUUOJuGLucaDklleq1/X7x
+	 c0Vywh1wIRXwJ3/aug/8DaPLmpMW+wbCUVrFjduo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilien Perreault <maximilienperreault@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 008/192] ALSA: hda/realtek: Support mute LED on HP Laptop 14-dq2xxx
-Date: Tue, 10 Sep 2024 11:30:32 +0200
-Message-ID: <20240910092558.254385461@linuxfoundation.org>
+	Tim Huang <Tim.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 011/214] drm/amd/pm: fix uninitialized variable warning for smu8_hwmgr
+Date: Tue, 10 Sep 2024 11:30:33 +0200
+Message-ID: <20240910092559.193134614@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilien Perreault <maximilienperreault@gmail.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 47a9e8dbb8d4713a9aac7cc6ce3c82dcc94217d8 upstream.
+[ Upstream commit 86df36b934640866eb249a4488abb148b985a0d9 ]
 
-The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
+Clear warnings that using uninitialized value level when fails
+to get the value from SMU.
 
-Signed-off-by: Maximilien Perreault <maximilienperreault@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240904031013.21220-1-maximilienperreault@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c   | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9717,6 +9717,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fd, "HP Laptop 14-dq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index f0f8ebffd9f2..c1887c21c7ab 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -584,6 +584,7 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.uvd_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
+ 
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -591,7 +592,9 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
+ 	data->uvd_dpm.soft_min_clk = 0;
+ 	data->uvd_dpm.hard_min_clk = 0;
+ 
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
++	if (ret)
++		return ret;
+ 
+ 	if (level < table->count)
+ 		clock = table->entries[level].vclk;
+@@ -611,6 +614,7 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.vce_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
+ 
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -618,7 +622,9 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
+ 	data->vce_dpm.soft_min_clk = 0;
+ 	data->vce_dpm.hard_min_clk = 0;
+ 
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
++	if (ret)
++		return ret;
+ 
+ 	if (level < table->count)
+ 		clock = table->entries[level].ecclk;
+@@ -638,6 +644,7 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
+ 				hwmgr->dyn_state.acp_clock_voltage_dependency_table;
+ 	unsigned long clock = 0;
+ 	uint32_t level;
++	int ret;
+ 
+ 	if (NULL == table || table->count <= 0)
+ 		return -EINVAL;
+@@ -645,7 +652,9 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
+ 	data->acp_dpm.soft_min_clk = 0;
+ 	data->acp_dpm.hard_min_clk = 0;
+ 
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
++	if (ret)
++		return ret;
+ 
+ 	if (level < table->count)
+ 		clock = table->entries[level].acpclk;
+-- 
+2.43.0
+
 
 
 
