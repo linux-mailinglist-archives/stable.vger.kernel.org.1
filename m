@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B769733A7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B09C973286
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 762551C243BD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF831C24109
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBCC195985;
-	Tue, 10 Sep 2024 10:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C49D193439;
+	Tue, 10 Sep 2024 10:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ys/AQIoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4WHgReh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D77F18B474;
-	Tue, 10 Sep 2024 10:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA9214D431;
+	Tue, 10 Sep 2024 10:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964205; cv=none; b=LbJjd01+48o/TtBETVpbCis+V0QyRuvBXicCAe3zB3aHvg6XD3J3c6mXBeHFV7VwI6RZV8RjRHj1/hrhac6ZX5Gvo8m+aXbz7HrHcABBfzGfN4LYQVUgXGYuhyfDKKncf9+CGZlpfWUp1R5yNPXdBg1NMDmfyjVwP8bHRw/l56s=
+	t=1725963470; cv=none; b=oxDvEDLP0qTtw8Pmev7/8kATh2895Mpmz1gXidxLSfytw+WcFS7Y6JkHNqBQkLsPEVvo57omlur6Nos4vFTiX0vEMcY2mtB2n9HWOwiglVKdOQPn9t976eYAqYzEhKwQB6pFRuqPz0rBk2iRtESCSLYrpYv8GC2AVaxbjqH1NOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964205; c=relaxed/simple;
-	bh=SnTxI0bf3H6hGhffUQx5U4oEekziEaHxV16L4T0a6Us=;
+	s=arc-20240116; t=1725963470; c=relaxed/simple;
+	bh=BvDG3R4clfk2OqnTEcqsPdgtRpRs6mEMZMrnMUNIFas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XyM3epf9fxG5+IsXacIqPYbuJQJRu8GECR4ZxLYEevxWcgJnl/JFU6B9sYUci6gsBrYjI0KZV+4FyGOuyPryiT5dpiNVSWU5P28QLJt0X2ICOFMQ1Y6FNsK4M0UaAg5eIrKuBOXcVfMk/0yn9c8/IfAWHsOmkbjs5cgEuuja+Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ys/AQIoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129BEC4CEC3;
-	Tue, 10 Sep 2024 10:30:04 +0000 (UTC)
+	 MIME-Version; b=qG2UiUOH0FP16WjImUSVkhyHfSjf/SWqiIlgSscQek8cbNfHibrazBRyL/yOEsbktLMGfDX29XYYu3klGEuiqEP94E4Z/WKmUH3sAV1IJAJ/5poWKo1alK3U5jyLmUd92fLU09nFDvCeXZEfyZidsvReVVL9ZLYBS3mW8iTe4OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4WHgReh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7A3C4CEC3;
+	Tue, 10 Sep 2024 10:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964205;
-	bh=SnTxI0bf3H6hGhffUQx5U4oEekziEaHxV16L4T0a6Us=;
+	s=korg; t=1725963470;
+	bh=BvDG3R4clfk2OqnTEcqsPdgtRpRs6mEMZMrnMUNIFas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ys/AQIoPK40XzMsgi51rBNzmN8yVIddMgocONcURdcfLm5ngbYNoBBd1l5hvzzyNH
-	 L+EwqX44gb9Qd8otqNfYsJumAcvjEWNX1B1GJZee/6DOIAUpu4u4pUGFkG2J4PJN3D
-	 V7TIv8y4sFgq5DdKdI8xdkqcYiETHDcGOxg+fUVw=
+	b=f4WHgRehLiDkbobc+aWZFOvxDGPXHOqmEcpddNKzIQMpj8LPEtLKSh3csJDu375ZQ
+	 h7+QbPjqg3I/gMUnyQ2fM1k8ZdXz5rgW9qBzG8+XeyofhJF7GCriMbnX+GTJsSmZWx
+	 1J9gk8Z+vmzgiArp9VoptZwvSHNXwjhLlUJeNMcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/269] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 069/214] ata: libata: Fix memory leak for error path in ata_host_alloc()
 Date: Tue, 10 Sep 2024 11:31:31 +0200
-Message-ID: <20240910092611.919999635@linuxfoundation.org>
+Message-ID: <20240910092601.566959555@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
+commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
 
-In case of error in build_tokens_sysfs(), all the memory that has been
-allocated is freed at end of this function. But then free_group() is
-called which performs memory deallocation again.
+In ata_host_alloc(), if devres_alloc() fails to allocate the device host
+resource data pointer, the already allocated ata_host structure is not
+freed before returning from the function. This results in a potential
+memory leak.
 
-Also, instead of free_group() call, there should be exit_dell_smbios_smm()
-and exit_dell_smbios_wmi() calls, since there is initialization, but there
-is no release of resources in case of an error.
+Call kfree(host) before jumping to the error handling path to ensure
+that the ata_host structure is properly freed if devres_alloc() fails.
 
-Fix these issues by replacing free_group() call with
-exit_dell_smbios_wmi() and exit_dell_smbios_smm().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ata/libata-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index 86b95206cb1b..6fb538a13868 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -590,7 +590,10 @@ static int __init dell_smbios_init(void)
- 	return 0;
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5454,8 +5454,10 @@ struct ata_host *ata_host_alloc(struct d
+ 	}
  
- fail_sysfs:
--	free_group(platform_device);
-+	if (!wmi)
-+		exit_dell_smbios_wmi();
-+	if (!smm)
-+		exit_dell_smbios_smm();
+ 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
+-	if (!dr)
++	if (!dr) {
++		kfree(host);
+ 		goto err_out;
++	}
  
- fail_create_group:
- 	platform_device_del(platform_device);
--- 
-2.43.0
-
+ 	devres_add(dev, dr);
+ 	dev_set_drvdata(dev, host);
 
 
 
