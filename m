@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-75524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDEC9734FD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61AF973444
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 132481C250E0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA6E1C24EF3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0471922E1;
-	Tue, 10 Sep 2024 10:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661961991B5;
+	Tue, 10 Sep 2024 10:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wi374CnF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anAV+GbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED2E17A924;
-	Tue, 10 Sep 2024 10:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F4419993F;
+	Tue, 10 Sep 2024 10:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964987; cv=none; b=ao+LsSVSbX5zbrlbZ8eqf0CXF2yMjKD1b3/luMkt8P5PJWkkTLKpXnT896aC06tN+3XfNjIewabJIJe9v7TtI8+g9mwoX5r+/DOVmiQKXuFFyscYznKOjRLt6xJZQraTdCoGdHlHJngXELOs+aNt7IftqUifX365yVUPcSKHx4c=
+	t=1725964561; cv=none; b=iZ1XDLKrVVjiL4ShUdPR9/bz+HhaExJd7mDZbX46qJ8yVGxGQ8+RsRfHz5yR35TSq1eh3+CbofSxndmKKmucOisRZY4b+AX7ZpOslupPZHUw/iohu5Unm73rdNh9QIOaGhKtqwtxHZ+9hPVfmcfORVVM51mWNlFPAZAY2OZoYX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964987; c=relaxed/simple;
-	bh=rUM5gl37fPw5b/2mfR6qYgoAwBqkoEUe2opCySo3xXg=;
+	s=arc-20240116; t=1725964561; c=relaxed/simple;
+	bh=q4mXKdFRSGXwTnA1aCHMjeaNzAF3Lt293G3b4M9VfGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BRhbzfAyUlN6pUL/O52i1bGO7SHjok/Gro5YSmHTITbawILC0LGEAa0bGmPQdMJFUN4+nDYkut2/zCssHGxtNqaB/VOUq0ulPHO+G/o9lHolgfHf6PVlPxjh8hzV7kyi9WwtnxsRMk7WP45YC7CIavZUDDWOopBTz7OeDvcp50k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wi374CnF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684A3C4CEC6;
-	Tue, 10 Sep 2024 10:43:06 +0000 (UTC)
+	 MIME-Version; b=IDfZydjpHAvs42aiZPKr9Xs+q9rS93Vfd/e02xwe51aCaS0ksN+dPFbYhpZ9k4yPET879rVwm4ZJ4s2lELVDGpK4RJOhSV8lOFF0pXqbQ1fo5w+W5NSbra4TodFh06AapGblbd3WWPYYFRSy8A1grIC84Ks4WMnLscbH+87M56Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anAV+GbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB48C4CEC3;
+	Tue, 10 Sep 2024 10:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964986;
-	bh=rUM5gl37fPw5b/2mfR6qYgoAwBqkoEUe2opCySo3xXg=;
+	s=korg; t=1725964561;
+	bh=q4mXKdFRSGXwTnA1aCHMjeaNzAF3Lt293G3b4M9VfGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wi374CnFPtndqOdEIIgJLoJxv3jmavUQuXqo6UPMVXxR4TOIjNnBQQkhF9n6x0TcV
-	 X1wJaWTS+qN91ifhd+s6oFT3JwMpcBKl2TGfGaWTX3LENXEYgPvhejxU8HH7WrPbCV
-	 nn4SOVMuPfqFhoQo5QZaPLLT2XVenX6J0civ57Wg=
+	b=anAV+GbUTla1rcKdjBO/ZaBLYtQHOEES+wh+dC41BCHInd2sWGbTTELBBgsl5DYFB
+	 WfzYBwYsZfFN/PhKdCjjKjcydwj9y7g2ig1DMd7R5g6UPzeZ9+4kZfYE8QFEI1rWo7
+	 +V396uJY4FBtO4p7nOK+ICXBkL1zG3sJWI857CAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/186] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 207/269] iio: fix scale application in iio_convert_raw_to_processed_unlocked
 Date: Tue, 10 Sep 2024 11:33:14 +0200
-Message-ID: <20240910092558.606482840@linuxfoundation.org>
+Message-ID: <20240910092615.426080781@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Matteo Martelli <matteomartelli3@gmail.com>
 
-[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
+commit 8a3dcc970dc57b358c8db2702447bf0af4e0d83a upstream.
 
-IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
-generic_handle_domain_irq() is never called for these IRQs.
+When the scale_type is IIO_VAL_INT_PLUS_MICRO or IIO_VAL_INT_PLUS_NANO
+the scale passed as argument is only applied to the fractional part of
+the value. Fix it by also multiplying the integer part by the scale
+provided.
 
-Disallow mapping these IRQs.
-
-[ Marek: changed commit message ]
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+Link: https://patch.msgid.link/20240730-iio-fix-scale-v1-1-6246638c8daa@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-armada-370-xp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/inkern.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index c76fb70c70bb..e865a43428b8 100644
---- a/drivers/irqchip/irq-armada-370-xp.c
-+++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -546,6 +546,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
- static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
- 				      unsigned int virq, irq_hw_number_t hw)
- {
-+	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
-+	if (hw <= 1)
-+		return -EINVAL;
-+
- 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
- 	if (!is_percpu_irq(hw))
- 		writel(hw, per_cpu_int_base +
--- 
-2.43.0
-
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -680,17 +680,17 @@ static int iio_convert_raw_to_processed_
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000LL);
+ 		break;
+ 	case IIO_VAL_INT_PLUS_NANO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000000LL);
+ 		break;
 
 
 
