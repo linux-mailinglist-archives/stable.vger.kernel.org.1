@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-75419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E6F9735AD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:56:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A31D973561
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593A8B29C30
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 273531F261C4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8A81922D6;
-	Tue, 10 Sep 2024 10:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCC518C347;
+	Tue, 10 Sep 2024 10:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnUg3MTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emPm4Ccy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18670143880;
-	Tue, 10 Sep 2024 10:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D35381A;
+	Tue, 10 Sep 2024 10:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964677; cv=none; b=Cb6UAchc2Caz0QG++y4YZB8Q5azI2ES3h58eVOV1NUpnueq4/TTuuAKD7/rxPDGhbSHKzDHsKuSePC0dThYxQsbn+IlIwQ2vGr8CdEYdQM86gJBulczSOeCV8YYo09KQ0fyvNgFIij192RmjIh11HJr9kdwfnsb8g3EmXUK6ICA=
+	t=1725965234; cv=none; b=AAQuCAxOKwxcOQ6Sm4DWY2wmvuwVf/2glKyvRtmiK0enp0CG7vxYDrPscPV4TjZcinhO0e6NMczCvzOvL5AnOHSyy3bzeiUNcVvOnpYkATJ5S9+PVfnLGbPDenflwex8IxjEY6D83o/xInw9HujubeXyJL5H7/+npcTTKrYDLFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964677; c=relaxed/simple;
-	bh=A8B4GVGu5DJB8WLuGzgqOtajWzuN5SvJgxxtrotXr54=;
+	s=arc-20240116; t=1725965234; c=relaxed/simple;
+	bh=LGBOJg5EXC27K8gF5jBeyuVN+tYJihNNePwnEkW0FvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igS09OfBw4f9B/SJ6vItlidHOdJN7JzP/2DCwn5AyzDGOw7iVhLpFPrG6/mhGRT2uuze3EbZuo4A2Y6cydEuJtm82v10xDM47KRV3eVsKzUcUrhXlXMkDo+2lQbxXJnTo90sM233olH0D2aOaIFDrAPzSqCUgG9OJkWjGUHqglI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnUg3MTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F8EC4CEC3;
-	Tue, 10 Sep 2024 10:37:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BLIbsDaLw++N/KHR+Dy70B8gNP+NEmwaLDPCD3cCeBzNqMqbG8dkgSCHQ3yjqW7UlOQ83R1m0atmAi+MD4OJes6ObcQqEqPVyqqQNO1xP01UxwCwt9rKA53NzqN1dkBSTWpPiB+E1uZYsqiX5NSODJBtWiIPMtvHN7x/byyNWbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emPm4Ccy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043A4C4CEC3;
+	Tue, 10 Sep 2024 10:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964677;
-	bh=A8B4GVGu5DJB8WLuGzgqOtajWzuN5SvJgxxtrotXr54=;
+	s=korg; t=1725965234;
+	bh=LGBOJg5EXC27K8gF5jBeyuVN+tYJihNNePwnEkW0FvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnUg3MTRcrpw1yFq8iMEFZPuaYmSQHZEKBSbiAwckkoHZjm2o5B949NXvEcsSoINg
-	 67jlyPrMYMybMtsDz9v6hSqKpsZZYdVlThlv+OSk+xaiMXFwKmwes1YbKfa4YiZPqW
-	 IYbCGjLfZT4QpuAMfSLTMV082dBnFfFB/TDW8lvI=
+	b=emPm4CcyhudGb1W/mMZfkCPBIM8E4SEOTOLAXb2/mS6nZRqnv3SPvkrhP631/Aq/l
+	 BkKJHAbYan5+yB8TFfjwfZwA1E5cJP7XaUsPq5n/75x3rjPPrdLkqkGB+svLDLuHNY
+	 r2OGP0frkgyUbKgDWSGXiWmgLfKuZ86be6pzB1bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.6 263/269] membarrier: riscv: Add full memory barrier in switch_mm()
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/186] MIPS: cevt-r4k: Dont call get_c0_compare_int if timer irq is installed
 Date: Tue, 10 Sep 2024 11:34:10 +0200
-Message-ID: <20240910092617.125910172@linuxfoundation.org>
+Message-ID: <20240910092600.968173058@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Parri <parri.andrea@gmail.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit d6cfd1770f20392d7009ae1fdb04733794514fa9 upstream.
+[ Upstream commit 50f2b98dc83de7809a5c5bf0ccf9af2e75c37c13 ]
 
-The membarrier system call requires a full memory barrier after storing
-to rq->curr, before going back to user-space.  The barrier is only
-needed when switching between processes: the barrier is implied by
-mmdrop() when switching from kernel to userspace, and it's not needed
-when switching from userspace to kernel.
+This avoids warning:
 
-Rely on the feature/mechanism ARCH_HAS_MEMBARRIER_CALLBACKS and on the
-primitive membarrier_arch_switch_mm(), already adopted by the PowerPC
-architecture, to insert the required barrier.
+[    0.118053] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
 
-Fixes: fab957c11efe2f ("RISC-V: Atomic and Locking Code")
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/r/20240131144936.29190-2-parri.andrea@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Caused by get_c0_compare_int on secondary CPU.
+
+We also skipped saving IRQ number to struct clock_event_device *cd as
+it's never used by clockevent core, as per comments it's only meant
+for "non CPU local devices".
+
+Reported-by: Serge Semin <fancer.lancer@gmail.com>
+Closes: https://lore.kernel.org/linux-mips/6szkkqxpsw26zajwysdrwplpjvhl5abpnmxgu2xuj3dkzjnvsf@4daqrz4mf44k/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                         |    2 +-
- arch/riscv/Kconfig                  |    1 +
- arch/riscv/include/asm/membarrier.h |   31 +++++++++++++++++++++++++++++++
- arch/riscv/mm/context.c             |    2 ++
- kernel/sched/core.c                 |    5 +++--
- 5 files changed, 38 insertions(+), 3 deletions(-)
- create mode 100644 arch/riscv/include/asm/membarrier.h
+ arch/mips/kernel/cevt-r4k.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13702,7 +13702,7 @@ M:	Mathieu Desnoyers <mathieu.desnoyers@
- M:	"Paul E. McKenney" <paulmck@kernel.org>
- L:	linux-kernel@vger.kernel.org
- S:	Supported
--F:	arch/powerpc/include/asm/membarrier.h
-+F:	arch/*/include/asm/membarrier.h
- F:	include/uapi/linux/membarrier.h
- F:	kernel/sched/membarrier.c
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 995ad9e69ded..23207516015c 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -307,13 +307,6 @@ int r4k_clockevent_init(void)
+ 	if (!c0_compare_int_usable())
+ 		return -ENXIO;
  
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -27,6 +27,7 @@ config RISCV
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_GIGANTIC_PAGE
- 	select ARCH_HAS_KCOV
-+	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_MMIOWB
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PMEM_API
---- /dev/null
-+++ b/arch/riscv/include/asm/membarrier.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASM_RISCV_MEMBARRIER_H
-+#define _ASM_RISCV_MEMBARRIER_H
-+
-+static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
-+					     struct mm_struct *next,
-+					     struct task_struct *tsk)
-+{
-+	/*
-+	 * Only need the full barrier when switching between processes.
-+	 * Barrier when switching from kernel to userspace is not
-+	 * required here, given that it is implied by mmdrop(). Barrier
-+	 * when switching from userspace to kernel is not needed after
-+	 * store to rq->curr.
-+	 */
-+	if (IS_ENABLED(CONFIG_SMP) &&
-+	    likely(!(atomic_read(&next->membarrier_state) &
-+		     (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
-+		      MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
-+		return;
-+
-+	/*
-+	 * The membarrier system call requires a full memory barrier
-+	 * after storing to rq->curr, before going back to user-space.
-+	 * Matches a full barrier in the proximity of the membarrier
-+	 * system call entry.
-+	 */
-+	smp_mb();
-+}
-+
-+#endif /* _ASM_RISCV_MEMBARRIER_H */
---- a/arch/riscv/mm/context.c
-+++ b/arch/riscv/mm/context.c
-@@ -323,6 +323,8 @@ void switch_mm(struct mm_struct *prev, s
- 	if (unlikely(prev == next))
- 		return;
+-	/*
+-	 * With vectored interrupts things are getting platform specific.
+-	 * get_c0_compare_int is a hook to allow a platform to return the
+-	 * interrupt number of its liking.
+-	 */
+-	irq = get_c0_compare_int();
+-
+ 	cd = &per_cpu(mips_clockevent_device, cpu);
  
-+	membarrier_arch_switch_mm(prev, next, task);
+ 	cd->name		= "MIPS";
+@@ -324,7 +317,6 @@ int r4k_clockevent_init(void)
+ 	min_delta		= calculate_min_delta();
+ 
+ 	cd->rating		= 300;
+-	cd->irq			= irq;
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= mips_next_event;
+ 	cd->event_handler	= mips_event_handler;
+@@ -336,6 +328,13 @@ int r4k_clockevent_init(void)
+ 
+ 	cp0_timer_irq_installed = 1;
+ 
++	/*
++	 * With vectored interrupts things are getting platform specific.
++	 * get_c0_compare_int is a hook to allow a platform to return the
++	 * interrupt number of its liking.
++	 */
++	irq = get_c0_compare_int();
 +
- 	/*
- 	 * Mark the current MM context as inactive, and the next as
- 	 * active.  This is at least used by the icache flushing
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6679,8 +6679,9 @@ static void __sched notrace __schedule(u
- 		 *
- 		 * Here are the schemes providing that barrier on the
- 		 * various architectures:
--		 * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC.
--		 *   switch_mm() rely on membarrier_arch_switch_mm() on PowerPC.
-+		 * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC,
-+		 *   RISC-V.  switch_mm() relies on membarrier_arch_switch_mm()
-+		 *   on PowerPC and on RISC-V.
- 		 * - finish_lock_switch() for weakly-ordered
- 		 *   architectures where spin_unlock is a full barrier,
- 		 * - switch_to() for arm64 (weakly-ordered, spin_unlock
+ 	if (request_irq(irq, c0_compare_interrupt, flags, "timer",
+ 			c0_compare_interrupt))
+ 		pr_err("Failed to request irq %d (timer)\n", irq);
+-- 
+2.43.0
+
 
 
 
