@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-74442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEF9972F53
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:50:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05862972F63
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9241C249E9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:50:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 088A4B252B7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E9B18C024;
-	Tue, 10 Sep 2024 09:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C549318C024;
+	Tue, 10 Sep 2024 09:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQc+5lvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjJUz8pr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E5414F12C;
-	Tue, 10 Sep 2024 09:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CF814F12C;
+	Tue, 10 Sep 2024 09:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961817; cv=none; b=G4pfuHioecjffV0nFK1nL3kYG7tNijWXfYcvGWWF9v7eOeGjX3o/YpOeu10ahXNJ0bFEAy2OBwt5Dy0N5B6ZEIFuOeZ4gemgVafEZyZHiwdDhpKFWkqMH08FT6Leb49vTcm8BLE062VVHKvo8qlK/KC9WF2BmIwQWgKPy36Rqtk=
+	t=1725961849; cv=none; b=GMp2iN88gfQsnZN518JQsqcZxPhM5qOZVdS315gGlKuWm4CSrbxFLo7cPG8ESFGdSn9biDDvIr8MtsRuwRWz5ZS/EUQ6blqTKpCjprX4fyDftmpKPd1R70eCRw4f0oLea7ja2hd9Hqz+IZGcz5+O6WOFS8+xEnXNcUBO1oIgNaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961817; c=relaxed/simple;
-	bh=2tb2wsG50RPlZZNwGGz2nBRmqgDsbV8C0UAxvTwKcok=;
+	s=arc-20240116; t=1725961849; c=relaxed/simple;
+	bh=pX2tTGDUvi0dPpIDIJmi3yXSFY0xWkWu7QjxwLR1Im8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6au6VYO7DcuUbXDyHyGNPNYkMBMlYyPxiQbV6aRlKuLAC3vRCXOqy76oLAUlOuzZBXwuLlKNngaDT2fJs1dPvD2ndq5dPCgQtWZl1ftCkBzxJvkBoxyW8GxsOFbxCmSlEYkIngPxKNyraBxwFLozcfTSG/C0GCfDUje5xE/Cew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQc+5lvn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBEDC4CEC3;
-	Tue, 10 Sep 2024 09:50:16 +0000 (UTC)
+	 MIME-Version; b=dQCydHC3ie+y9eM2fw+A7HLp/GcpNM7ns+nl6gKdRp2vv6BUrFIzE9fElTpGoL5RcHtyh2Dlqut5VLjJ4L9CDrjhvUaDuhlJL4q0TZYp+qNgA6MNyvG+5MMf9fUw8nAJOgRyYp2EnNoerruToI0LddcMxIHrbk55WxdpSjJ/Cus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjJUz8pr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FF0C4CEC3;
+	Tue, 10 Sep 2024 09:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961817;
-	bh=2tb2wsG50RPlZZNwGGz2nBRmqgDsbV8C0UAxvTwKcok=;
+	s=korg; t=1725961849;
+	bh=pX2tTGDUvi0dPpIDIJmi3yXSFY0xWkWu7QjxwLR1Im8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQc+5lvnBuJkEIAWxStStD68Ex+yQ/lY8fiJYNIyYBNagBl0511l9xZlrs41JiW3j
-	 P+fVpsuS304sdnyWD/8cQy0j2AJlEV0bMRrpdCwvYZQKE9RgqJ3IYs7MaaQ2RHmrSM
-	 eVFTMw7PZ+wDa+IdDHzWco5XLQpZ461PJmMLnF5s=
+	b=ZjJUz8pr00yk11WwxJLzLQQkL6EQGd/nt/9taoly55WxZKF1fYjzYilnNBImXb6A+
+	 Ll92BmkElxfcwhaJe7JVpaePDZhpgWioE2B0igt3+2Az6mGRBaPHNij1XDB0+AVf9f
+	 GPfz721da8LEHGaK296nAPjqa1ooqZdGyHJQKvY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Alphonse Kurian <alkurian@amazon.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 191/375] bareudp: Fix device stats updates.
-Date: Tue, 10 Sep 2024 11:29:48 +0200
-Message-ID: <20240910092628.912620306@linuxfoundation.org>
+Subject: [PATCH 6.10 192/375] fou: Fix null-ptr-deref in GRO.
+Date: Tue, 10 Sep 2024 11:29:49 +0200
+Message-ID: <20240910092628.948175180@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -67,107 +67,170 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 4963d2343af81f493519f9c3ea9f2169eaa7353a ]
+[ Upstream commit 7e4196935069947d8b70b09c1660b67b067e75cb ]
 
-Bareudp devices update their stats concurrently.
-Therefore they need proper atomic increments.
+We observed a null-ptr-deref in fou_gro_receive() while shutting down
+a host.  [0]
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/04b7b9d0b480158eb3ab4366ec80aa2ab7e41fcb.1725031794.git.gnault@redhat.com
+The NULL pointer is sk->sk_user_data, and the offset 8 is of protocol
+in struct fou.
+
+When fou_release() is called due to netns dismantle or explicit tunnel
+teardown, udp_tunnel_sock_release() sets NULL to sk->sk_user_data.
+Then, the tunnel socket is destroyed after a single RCU grace period.
+
+So, in-flight udp4_gro_receive() could find the socket and execute the
+FOU GRO handler, where sk->sk_user_data could be NULL.
+
+Let's use rcu_dereference_sk_user_data() in fou_from_sock() and add NULL
+checks in FOU GRO handlers.
+
+[0]:
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 80000001032f4067 P4D 80000001032f4067 PUD 103240067 PMD 0
+SMP PTI
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.216-204.855.amzn2.x86_64 #1
+Hardware name: Amazon EC2 c5.large/, BIOS 1.0 10/16/2017
+RIP: 0010:fou_gro_receive (net/ipv4/fou.c:233) [fou]
+Code: 41 5f c3 cc cc cc cc e8 e7 2e 69 f4 0f 1f 80 00 00 00 00 0f 1f 44 00 00 49 89 f8 41 54 48 89 f7 48 89 d6 49 8b 80 88 02 00 00 <0f> b6 48 08 0f b7 42 4a 66 25 fd fd 80 cc 02 66 89 42 4a 0f b6 42
+RSP: 0018:ffffa330c0003d08 EFLAGS: 00010297
+RAX: 0000000000000000 RBX: ffff93d9e3a6b900 RCX: 0000000000000010
+RDX: ffff93d9e3a6b900 RSI: ffff93d9e3a6b900 RDI: ffff93dac2e24d08
+RBP: ffff93d9e3a6b900 R08: ffff93dacbce6400 R09: 0000000000000002
+R10: 0000000000000000 R11: ffffffffb5f369b0 R12: ffff93dacbce6400
+R13: ffff93dac2e24d08 R14: 0000000000000000 R15: ffffffffb4edd1c0
+FS:  0000000000000000(0000) GS:ffff93daee800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 0000000102140001 CR4: 00000000007706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ? show_trace_log_lvl (arch/x86/kernel/dumpstack.c:259)
+ ? __die_body.cold (arch/x86/kernel/dumpstack.c:478 arch/x86/kernel/dumpstack.c:420)
+ ? no_context (arch/x86/mm/fault.c:752)
+ ? exc_page_fault (arch/x86/include/asm/irqflags.h:49 arch/x86/include/asm/irqflags.h:89 arch/x86/mm/fault.c:1435 arch/x86/mm/fault.c:1483)
+ ? asm_exc_page_fault (arch/x86/include/asm/idtentry.h:571)
+ ? fou_gro_receive (net/ipv4/fou.c:233) [fou]
+ udp_gro_receive (include/linux/netdevice.h:2552 net/ipv4/udp_offload.c:559)
+ udp4_gro_receive (net/ipv4/udp_offload.c:604)
+ inet_gro_receive (net/ipv4/af_inet.c:1549 (discriminator 7))
+ dev_gro_receive (net/core/dev.c:6035 (discriminator 4))
+ napi_gro_receive (net/core/dev.c:6170)
+ ena_clean_rx_irq (drivers/amazon/net/ena/ena_netdev.c:1558) [ena]
+ ena_io_poll (drivers/amazon/net/ena/ena_netdev.c:1742) [ena]
+ napi_poll (net/core/dev.c:6847)
+ net_rx_action (net/core/dev.c:6917)
+ __do_softirq (arch/x86/include/asm/jump_label.h:25 include/linux/jump_label.h:200 include/trace/events/irq.h:142 kernel/softirq.c:299)
+ asm_call_irq_on_stack (arch/x86/entry/entry_64.S:809)
+</IRQ>
+ do_softirq_own_stack (arch/x86/include/asm/irq_stack.h:27 arch/x86/include/asm/irq_stack.h:77 arch/x86/kernel/irq_64.c:77)
+ irq_exit_rcu (kernel/softirq.c:393 kernel/softirq.c:423 kernel/softirq.c:435)
+ common_interrupt (arch/x86/kernel/irq.c:239)
+ asm_common_interrupt (arch/x86/include/asm/idtentry.h:626)
+RIP: 0010:acpi_idle_do_entry (arch/x86/include/asm/irqflags.h:49 arch/x86/include/asm/irqflags.h:89 drivers/acpi/processor_idle.c:114 drivers/acpi/processor_idle.c:575)
+Code: 8b 15 d1 3c c4 02 ed c3 cc cc cc cc 65 48 8b 04 25 40 ef 01 00 48 8b 00 a8 08 75 eb 0f 1f 44 00 00 0f 00 2d d5 09 55 00 fb f4 <fa> c3 cc cc cc cc e9 be fc ff ff 66 66 2e 0f 1f 84 00 00 00 00 00
+RSP: 0018:ffffffffb5603e58 EFLAGS: 00000246
+RAX: 0000000000004000 RBX: ffff93dac0929c00 RCX: ffff93daee833900
+RDX: ffff93daee800000 RSI: ffff93daee87dc00 RDI: ffff93daee87dc64
+RBP: 0000000000000001 R08: ffffffffb5e7b6c0 R09: 0000000000000044
+R10: ffff93daee831b04 R11: 00000000000001cd R12: 0000000000000001
+R13: ffffffffb5e7b740 R14: 0000000000000001 R15: 0000000000000000
+ ? sched_clock_cpu (kernel/sched/clock.c:371)
+ acpi_idle_enter (drivers/acpi/processor_idle.c:712 (discriminator 3))
+ cpuidle_enter_state (drivers/cpuidle/cpuidle.c:237)
+ cpuidle_enter (drivers/cpuidle/cpuidle.c:353)
+ cpuidle_idle_call (kernel/sched/idle.c:158 kernel/sched/idle.c:239)
+ do_idle (kernel/sched/idle.c:302)
+ cpu_startup_entry (kernel/sched/idle.c:395 (discriminator 1))
+ start_kernel (init/main.c:1048)
+ secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:310)
+Modules linked in: udp_diag tcp_diag inet_diag nft_nat ipip tunnel4 dummy fou ip_tunnel nft_masq nft_chain_nat nf_nat wireguard nft_ct curve25519_x86_64 libcurve25519_generic nf_conntrack libchacha20poly1305 nf_defrag_ipv6 nf_defrag_ipv4 nft_objref chacha_x86_64 nft_counter nf_tables nfnetlink poly1305_x86_64 ip6_udp_tunnel udp_tunnel libchacha crc32_pclmul ghash_clmulni_intel aesni_intel crypto_simd cryptd glue_helper mousedev psmouse button ena ptp pps_core crc32c_intel
+CR2: 0000000000000008
+
+Fixes: d92283e338f6 ("fou: change to use UDP socket GRO")
+Reported-by: Alphonse Kurian <alkurian@amazon.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240902173927.62706-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/ipv4/fou_core.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index d5c56ca91b77..7aca0544fb29 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -83,7 +83,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 0abbc413e0fe..78b869b31492 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -50,7 +50,7 @@ struct fou_net {
  
- 		if (skb_copy_bits(skb, BAREUDP_BASE_HLEN, &ipversion,
- 				  sizeof(ipversion))) {
--			bareudp->dev->stats.rx_dropped++;
-+			DEV_STATS_INC(bareudp->dev, rx_dropped);
- 			goto drop;
- 		}
- 		ipversion >>= 4;
-@@ -93,7 +93,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 		} else if (ipversion == 6 && bareudp->multi_proto_mode) {
- 			proto = htons(ETH_P_IPV6);
- 		} else {
--			bareudp->dev->stats.rx_dropped++;
-+			DEV_STATS_INC(bareudp->dev, rx_dropped);
- 			goto drop;
- 		}
- 	} else if (bareudp->ethertype == htons(ETH_P_MPLS_UC)) {
-@@ -107,7 +107,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				   ipv4_is_multicast(tunnel_hdr->daddr)) {
- 				proto = htons(ETH_P_MPLS_MC);
- 			} else {
--				bareudp->dev->stats.rx_dropped++;
-+				DEV_STATS_INC(bareudp->dev, rx_dropped);
- 				goto drop;
- 			}
- 		} else {
-@@ -123,7 +123,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				   (addr_type & IPV6_ADDR_MULTICAST)) {
- 				proto = htons(ETH_P_MPLS_MC);
- 			} else {
--				bareudp->dev->stats.rx_dropped++;
-+				DEV_STATS_INC(bareudp->dev, rx_dropped);
- 				goto drop;
- 			}
- 		}
-@@ -135,7 +135,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				 proto,
- 				 !net_eq(bareudp->net,
- 				 dev_net(bareudp->dev)))) {
--		bareudp->dev->stats.rx_dropped++;
-+		DEV_STATS_INC(bareudp->dev, rx_dropped);
- 		goto drop;
- 	}
- 
-@@ -143,7 +143,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 
- 	tun_dst = udp_tun_rx_dst(skb, family, key, 0, 0);
- 	if (!tun_dst) {
--		bareudp->dev->stats.rx_dropped++;
-+		DEV_STATS_INC(bareudp->dev, rx_dropped);
- 		goto drop;
- 	}
- 	skb_dst_set(skb, &tun_dst->dst);
-@@ -169,8 +169,8 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 						     &((struct ipv6hdr *)oiph)->saddr);
- 		}
- 		if (err > 1) {
--			++bareudp->dev->stats.rx_frame_errors;
--			++bareudp->dev->stats.rx_errors;
-+			DEV_STATS_INC(bareudp->dev, rx_frame_errors);
-+			DEV_STATS_INC(bareudp->dev, rx_errors);
- 			goto drop;
- 		}
- 	}
-@@ -467,11 +467,11 @@ static netdev_tx_t bareudp_xmit(struct sk_buff *skb, struct net_device *dev)
- 	dev_kfree_skb(skb);
- 
- 	if (err == -ELOOP)
--		dev->stats.collisions++;
-+		DEV_STATS_INC(dev, collisions);
- 	else if (err == -ENETUNREACH)
--		dev->stats.tx_carrier_errors++;
-+		DEV_STATS_INC(dev, tx_carrier_errors);
- 
--	dev->stats.tx_errors++;
-+	DEV_STATS_INC(dev, tx_errors);
- 	return NETDEV_TX_OK;
+ static inline struct fou *fou_from_sock(struct sock *sk)
+ {
+-	return sk->sk_user_data;
++	return rcu_dereference_sk_user_data(sk);
  }
  
+ static int fou_recv_pull(struct sk_buff *skb, struct fou *fou, size_t len)
+@@ -233,9 +233,15 @@ static struct sk_buff *fou_gro_receive(struct sock *sk,
+ 				       struct sk_buff *skb)
+ {
+ 	const struct net_offload __rcu **offloads;
+-	u8 proto = fou_from_sock(sk)->protocol;
++	struct fou *fou = fou_from_sock(sk);
+ 	const struct net_offload *ops;
+ 	struct sk_buff *pp = NULL;
++	u8 proto;
++
++	if (!fou)
++		goto out;
++
++	proto = fou->protocol;
+ 
+ 	/* We can clear the encap_mark for FOU as we are essentially doing
+ 	 * one of two possible things.  We are either adding an L4 tunnel
+@@ -263,14 +269,24 @@ static int fou_gro_complete(struct sock *sk, struct sk_buff *skb,
+ 			    int nhoff)
+ {
+ 	const struct net_offload __rcu **offloads;
+-	u8 proto = fou_from_sock(sk)->protocol;
++	struct fou *fou = fou_from_sock(sk);
+ 	const struct net_offload *ops;
+-	int err = -ENOSYS;
++	u8 proto;
++	int err;
++
++	if (!fou) {
++		err = -ENOENT;
++		goto out;
++	}
++
++	proto = fou->protocol;
+ 
+ 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
+ 	ops = rcu_dereference(offloads[proto]);
+-	if (WARN_ON(!ops || !ops->callbacks.gro_complete))
++	if (WARN_ON(!ops || !ops->callbacks.gro_complete)) {
++		err = -ENOSYS;
+ 		goto out;
++	}
+ 
+ 	err = ops->callbacks.gro_complete(skb, nhoff);
+ 
+@@ -320,6 +336,9 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
+ 	struct gro_remcsum grc;
+ 	u8 proto;
+ 
++	if (!fou)
++		goto out;
++
+ 	skb_gro_remcsum_init(&grc);
+ 
+ 	off = skb_gro_offset(skb);
 -- 
 2.43.0
 
