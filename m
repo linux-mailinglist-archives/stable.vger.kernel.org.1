@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2283897350A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED38973434
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1291F25511
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E0828CA52
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D443D1917E4;
-	Tue, 10 Sep 2024 10:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD883192B77;
+	Tue, 10 Sep 2024 10:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ubGb5a3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRI+6A0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9101518595E;
-	Tue, 10 Sep 2024 10:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FE218C914;
+	Tue, 10 Sep 2024 10:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965022; cv=none; b=KbaJSrxf3GvwLOu+gYkGmsUYU1puo5zAjE0GNmJuqHW+dz2gRN8opXwOSf5VBiHpVyUJU4ImOHMYk/QYA4npwiHRw+d6KumRNaK6qbbrovXFoYphF82u8uX0vIe34WSGAbBOwggBpqJUlXfpflxrOiQjSb0DBSw/HzZrEYzP+0s=
+	t=1725964540; cv=none; b=k1J403mTjYacqXNrzYKP8vsln1NOn1dfnY5VeJRPYGT2/Y81AvxEYWSOjOW3GecYFRQDDS8jGpqJnKutWLuKIx+4YWCJcbWE9UXbukyRTmepeY1mdfUwjbrlC8QTkbgiDgwslqa+IaytTGHTvnqOcQbsYQzenuU4WBzCj2QJdD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965022; c=relaxed/simple;
-	bh=jhlFT+NUkr1aBnvtAJ+oalwiEXRUN8NDvOEYfxEjU08=;
+	s=arc-20240116; t=1725964540; c=relaxed/simple;
+	bh=OtWrmU0qcerXahsHBYilPlBkhXQd6gw0CQtvRQ07EVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UD6ENe9oMwNPi10wDwl3Ps5HU32OrH5QuJD3w2IOhJGWpz/rFNNZeHTL8hPmwnnR/w9cvNM/zBtR3o07XrZJbj9uBPonmuUidlnZnVFnWXIUH/PxI3hol99k8CtYgArNO8Hzu+kNgWkU1z/1uYtxrAc7IDJNUzBRXd6r6MaO3KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ubGb5a3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180F6C4CEC3;
-	Tue, 10 Sep 2024 10:43:41 +0000 (UTC)
+	 MIME-Version; b=JIdj+R0WKHnR0ImEyI0pNnZFuA2QJ5iYElZVPs7SuWiPFpvtXx3loa1JHNoEOkMVUv6G30apDwza8U3SuerdfKEEgvrBE63HXRqCL+fPfbqtQE6maImuuaLZkrcmi4bwKrzHwYaFPty5fFOMOTXxcW4cwxUbk+627MPnWLKfpsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRI+6A0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0A5C4CECD;
+	Tue, 10 Sep 2024 10:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965022;
-	bh=jhlFT+NUkr1aBnvtAJ+oalwiEXRUN8NDvOEYfxEjU08=;
+	s=korg; t=1725964540;
+	bh=OtWrmU0qcerXahsHBYilPlBkhXQd6gw0CQtvRQ07EVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ubGb5a3tmBVIonEu9C0Ou/okVPFsllZTvUBGIuE1Be+u3hJUwtsuBPeZPYa6c8Ub
-	 QyTxeA4+TafHACRZGAJi9KGcstozAMx7/qWx5J0sGPLFaYlyOq8OqRd1vGm2azAIlG
-	 Pe0BxIsBF4i82E83uGzPQSdiC8Gi0hNAqwKrdo9w=
+	b=wRI+6A0gdZCvXMNLT6khPkc9TJD8xBnNVksO27OuA4MZ2n2uXWK6C+kwFvZBztIgL
+	 PpAZPGYP/giroH3M97VNM6L2BfKcGO40Ubv/N/07b0qWgC3YWJK+Z5Rt6rhWecGzcy
+	 YbH+9TMY+yu79f47LCXNE5hoSwj2YINJ5JerPFRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/186] media: qcom: camss: Add check for v4l2_fwnode_endpoint_parse
+	Naman Jain <namjain@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH 6.6 218/269] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
 Date: Tue, 10 Sep 2024 11:33:25 +0200
-Message-ID: <20240910092559.055922409@linuxfoundation.org>
+Message-ID: <20240910092615.753312360@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit 4caf6d93d9f2c11d6441c64e1c549c445fa322ed ]
+commit 6fd28941447bf2c8ca0f26fda612a1cabc41663f upstream.
 
-Add check for the return value of v4l2_fwnode_endpoint_parse() and
-return the error if it fails in order to catch the error.
+Rescind offer handling relies on rescind callbacks for some of the
+resources cleanup, if they are registered. It does not unregister
+vmbus device for the primary channel closure, when callback is
+registered. Without it, next onoffer does not come, rescind flag
+remains set and device goes to unusable state.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add logic to unregister vmbus for the primary channel in rescind callback
+to ensure channel removal and relid release, and to ensure that next
+onoffer can be received and handled properly.
+
+Cc: stable@vger.kernel.org
+Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240829071312.1595-3-namjain@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hv/vmbus_drv.c       |    1 +
+ drivers/uio/uio_hv_generic.c |    8 ++++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 9186881afc98..d074f426980d 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -431,8 +431,11 @@ static int camss_of_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_bus_mipi_csi2 *mipi_csi2;
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
-+	int ret;
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -1962,6 +1962,7 @@ void vmbus_device_unregister(struct hv_d
+ 	 */
+ 	device_unregister(&device_obj->device);
+ }
++EXPORT_SYMBOL_GPL(vmbus_device_unregister);
  
--	v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	if (ret)
-+		return ret;
+ #ifdef CONFIG_ACPI
+ /*
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -119,6 +119,14 @@ static void hv_uio_rescind(struct vmbus_
  
- 	csd->interface.csiphy_id = vep.base.port;
+ 	/* Wake up reader */
+ 	uio_event_notify(&pdata->info);
++
++	/*
++	 * With rescind callback registered, rescind path will not unregister the device
++	 * from vmbus when the primary channel is rescinded.
++	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
++	 * Unregister the device from vmbus here.
++	 */
++	vmbus_device_unregister(channel->device_obj);
+ }
  
--- 
-2.43.0
-
+ /* Sysfs API to allow mmap of the ring buffers
 
 
 
