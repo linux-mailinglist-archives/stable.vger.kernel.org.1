@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5920A97326A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1962973170
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9211F21E5E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D80B24F09
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA88192D66;
-	Tue, 10 Sep 2024 10:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFA519048A;
+	Tue, 10 Sep 2024 10:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYM3lXDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utSjU5nc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D651922D0;
-	Tue, 10 Sep 2024 10:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C825188CC1;
+	Tue, 10 Sep 2024 10:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963397; cv=none; b=iooo5H7Mj3q+MymdMdYk1kL78mfxp/N1QRRdzn23FC0FtEXfZeTuZjsOhxAWvMAyQQawKfix7mx8AT3pD7LFHVn+DvfjKNBtM/LZ/gJXvJMhdB06CwS8XRDCLAHGtdGnFhIHk4vWqPZvo1xmCi1AlAr30fZ+XnN10DJ2oVmdAr8=
+	t=1725962822; cv=none; b=YVrxrgJAU6Ew9d6Va2NKC1NeS3Ev6B7REVzV8aj8oJ7IKZf9G08lr9RmaVXe+JYbJrqv4VYPi1rKvwTfD3BLat5MDHvnEGmCU+80ehBVfodhLVAHAcRUHn5bt8eRERAbhUgXwy5HjQGrxiF5E3g0PPy6k1rCajGysisZLonmEtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963397; c=relaxed/simple;
-	bh=Jq3RGUjwGX40VVHQvGpmcG26ckjsU7lho7MZtNZlgb4=;
+	s=arc-20240116; t=1725962822; c=relaxed/simple;
+	bh=o9nGf+tlhyBjZyQltVahPWD5hIkPZ3a/MiR6GJq0v+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJqRS9jlN1dpQm5noFBo628Ahj4JT9SLDoSSZHleGUuR1Hp6j7eyfuql1Ns6QLs7P1uI83DMzHJOkOAbE5qW1uJ6h7h+6edG/hJ24yk7pEVqLaFHptRGRbI6dK8RTIa9yNzC8mnHkULN/8YnLtITeXnbJC4SUL8f+b58HtggXNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYM3lXDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C20EC4CEC3;
-	Tue, 10 Sep 2024 10:16:36 +0000 (UTC)
+	 MIME-Version; b=dyp3HLbLMqlEd9lnzQaUSgIsi6maJ+iYfgGzYZTGZX63RHHGdB2Ju4EK4QEorQhE1ykJAPvguHKycqEyzeXM7uWg7iN0SmHVgsw3QV7bfUyEINku7mXiUDTUPhMXYVApkddbR1wy4u5xFnDPYQuZ52d1CZ/Vi7NkgGl84tF316o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utSjU5nc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FB6C4CEC3;
+	Tue, 10 Sep 2024 10:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963397;
-	bh=Jq3RGUjwGX40VVHQvGpmcG26ckjsU7lho7MZtNZlgb4=;
+	s=korg; t=1725962822;
+	bh=o9nGf+tlhyBjZyQltVahPWD5hIkPZ3a/MiR6GJq0v+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYM3lXDJaJPvXxeWOQvE4Hd/p2BZ4VmtuVrb7ancg+8lSjw1CwtWyWbWF+fwk41BS
-	 FUSc8+qbqXp2wBPLy+ecM68hnVz04sPUOZcKr//e16UEcevbLOfeyrH6BhWPzUQEdt
-	 dXA7OD4L6/0u0j4NiYoyiG6PPWlgaVKzp61F5X0Y=
+	b=utSjU5ncTFPTVbRb5SALI+QdAR5Vgofnql4RUObyvhoFuiDcrOOv4vElT1JLwXb0y
+	 zUbFkabsp5jnKKkvb8/O2gA29tUQTOB17oI4vsJ5g6d2Ig58ptXZ9MpMK4b+cr5aQR
+	 eO5TJGA47ssrkeJ3IjkIJal9mZSHVbiD9ym5q5pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/214] ionic: fix potential irq name truncation
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 041/192] nilfs2: fix state management in error path of log writing function
 Date: Tue, 10 Sep 2024 11:31:05 +0200
-Message-ID: <20240910092600.530758288@linuxfoundation.org>
+Message-ID: <20240910092559.692250024@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 3eb76e71b16e8ba5277bf97617aef51f5e64dbe4 ]
+commit 6576dd6695f2afca3f4954029ac4a64f82ba60ab upstream.
 
-Address a warning about potential string truncation based on the
-string buffer sizes.  We can add some hints to the string format
-specifier to set limits on the resulting possible string to
-squelch the complaints.
+After commit a694291a6211 ("nilfs2: separate wait function from
+nilfs_segctor_write") was applied, the log writing function
+nilfs_segctor_do_construct() was able to issue I/O requests continuously
+even if user data blocks were split into multiple logs across segments,
+but two potential flaws were introduced in its error handling.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20240529000259.25775-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+First, if nilfs_segctor_begin_construction() fails while creating the
+second or subsequent logs, the log writing function returns without
+calling nilfs_segctor_abort_construction(), so the writeback flag set on
+pages/folios will remain uncleared.  This causes page cache operations to
+hang waiting for the writeback flag.  For example,
+truncate_inode_pages_final(), which is called via nilfs_evict_inode() when
+an inode is evicted from memory, will hang.
+
+Second, the NILFS_I_COLLECTED flag set on normal inodes remain uncleared.
+As a result, if the next log write involves checkpoint creation, that's
+fine, but if a partial log write is performed that does not, inodes with
+NILFS_I_COLLECTED set are erroneously removed from the "sc_dirty_files"
+list, and their data and b-tree blocks may not be written to the device,
+corrupting the block mapping.
+
+Fix these issues by uniformly calling nilfs_segctor_abort_construction()
+on failure of each step in the loop in nilfs_segctor_do_construct(),
+having it clean up logs and segment usages according to progress, and
+correcting the conditions for calling nilfs_redirty_inodes() to ensure
+that the NILFS_I_COLLECTED flag is cleared.
+
+Link: https://lkml.kernel.org/r/20240814101119.4070-1-konishi.ryusuke@gmail.com
+Fixes: a694291a6211 ("nilfs2: separate wait function from nilfs_segctor_write")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/segment.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index b791fba82c2f..910d8973a4b0 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -221,7 +221,7 @@ static int ionic_request_irq(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 		name = dev_name(dev);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1833,6 +1833,9 @@ static void nilfs_segctor_abort_construc
+ 	nilfs_abort_logs(&logs, ret ? : err);
  
- 	snprintf(intr->name, sizeof(intr->name),
--		 "%s-%s-%s", IONIC_DRV_NAME, name, q->name);
-+		 "%.5s-%.16s-%.8s", IONIC_DRV_NAME, name, q->name);
+ 	list_splice_tail_init(&sci->sc_segbufs, &logs);
++	if (list_empty(&logs))
++		return; /* if the first segment buffer preparation failed */
++
+ 	nilfs_cancel_segusage(&logs, nilfs->ns_sufile);
+ 	nilfs_free_incomplete_logs(&logs, nilfs);
  
- 	return devm_request_irq(dev, intr->vector, ionic_isr,
- 				0, intr->name, &qcq->napi);
--- 
-2.43.0
-
+@@ -2077,7 +2080,7 @@ static int nilfs_segctor_do_construct(st
+ 
+ 		err = nilfs_segctor_begin_construction(sci, nilfs);
+ 		if (unlikely(err))
+-			goto out;
++			goto failed;
+ 
+ 		/* Update time stamp */
+ 		sci->sc_seg_ctime = ktime_get_real_seconds();
+@@ -2140,10 +2143,9 @@ static int nilfs_segctor_do_construct(st
+ 	return err;
+ 
+  failed_to_write:
+-	if (sci->sc_stage.flags & NILFS_CF_IFILE_STARTED)
+-		nilfs_redirty_inodes(&sci->sc_dirty_files);
+-
+  failed:
++	if (mode == SC_LSEG_SR && nilfs_sc_cstage_get(sci) >= NILFS_ST_IFILE)
++		nilfs_redirty_inodes(&sci->sc_dirty_files);
+ 	if (nilfs_doing_gc())
+ 		nilfs_redirty_inodes(&sci->sc_gc_inodes);
+ 	nilfs_segctor_abort_construction(sci, nilfs, err);
 
 
 
