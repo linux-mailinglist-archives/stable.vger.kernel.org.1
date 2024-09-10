@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5185397335A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E333E97330D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A241C230F5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E38D0B2BC4D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2281917C4;
-	Tue, 10 Sep 2024 10:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7321E18FDA9;
+	Tue, 10 Sep 2024 10:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCvtRrXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5rWYzcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6861C18CBE6;
-	Tue, 10 Sep 2024 10:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3085B5381A;
+	Tue, 10 Sep 2024 10:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964029; cv=none; b=fr8Vn3oHkfnilDOIZsmuHKDJHLejUI7RsubqVAXoM/FZDvBfyFN3YiHrZdO0u+iAI3Xo9yJLEyTnNO0IMMiKsE0KW9FCsoGsjVBDzHV1Fg+j6nNseZPt3kzRaoFm3EHroECNboJN4CeYLrgPDGNGI1V8fEDOo0/gqbxGFf/TguU=
+	t=1725963356; cv=none; b=e/Cl4B6mXUDMcWzJeOTTZEKhsOEBUwv6rOxJJva60uaRZbrTl/2w5vYTk8FUT+kIs8D+ORwlV+Y7Ul0qwxtl+IqBwT7nlus/SxSvqYt3+foLBDgjVCsx7BXUEM5VKze0KqWAIHowYZNFR3s4KApDOGZ6Ywyt03wT2WO8GD8aonk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964029; c=relaxed/simple;
-	bh=AzB/GpxycDOEvB2BiPk1AvdwZc44ojGLuypxW1UWV1U=;
+	s=arc-20240116; t=1725963356; c=relaxed/simple;
+	bh=7zZgX8Dp91th+1Ru4MXZv3IuL3yl4OmKX/6sWB0AXhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZO36W6hFZgcS3PBTU56S5wocbNLEv+pvNOeq93n9DXFznXBwMyqcQgNpBkQRcZysR0mENApD8N5BhqBGIOa2jmVhFMn5Ky9xE0erLYALqoneg5rFhEkJb65mLIjh237FWAa0lM/v7i2qkZBNV8vVIY/Gj6moTK4m8wCeA7ZuJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCvtRrXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C0C4CEC3;
-	Tue, 10 Sep 2024 10:27:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B4EUZUJKVJ1KYUU0IQfofBv+6nrNHVKBcytYxnsTR1tS1FmAdPtsN6/zCWLmWREZzmXaEUXRwjoKKSCVKjTJe80TGeLDOQxKw1lY9CAC3E9VBOzOPIAPktzjowbbN+Ecj8naQinXSuJDSwN+5I0Np1LJV/Dzq+Y3Zoiprncv790=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5rWYzcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B9FC4CEC3;
+	Tue, 10 Sep 2024 10:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964029;
-	bh=AzB/GpxycDOEvB2BiPk1AvdwZc44ojGLuypxW1UWV1U=;
+	s=korg; t=1725963356;
+	bh=7zZgX8Dp91th+1Ru4MXZv3IuL3yl4OmKX/6sWB0AXhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCvtRrXW1s1db9wRZJVN3+8/pN+kdoUZz+KO7PRxKQq84R44lZsmgRStK8KoVX3LG
-	 +KQA2VUx6446ICgQsCP9W3ZEX8Dalbi8e0c88Xi0iE0odeb5K5JqmmkbOEKb2tIxLr
-	 6HuOArVpnldBhiiNiHUrsnnE74+2lsRt8W9u0OVo=
+	b=z5rWYzcYEQj82RPHZvXWs0WvV7viqorZKu3W8aTVikB4qg2tdKC/g/f/TGdaPFUmw
+	 /gghUxQtiMqvUf0oVzl4KmLtinZKalMs8D7M/Qf1om4OiN9yQn/IWfN5UF0EXyqm6j
+	 YatdETQSnUUHZE9ioatHzHNmxlnLEJAIhcSP5OWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	John Kacur <jkacur@redhat.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 044/269] tracing/timerlat: Add interface_lock around clearing of kthread in stop_kthread()
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 009/214] drm/amdgpu: fix overflowed array index read warning
 Date: Tue, 10 Sep 2024 11:30:31 +0200
-Message-ID: <20240910092609.823276347@linuxfoundation.org>
+Message-ID: <20240910092559.088531704@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 5bfbcd1ee57b607fd29e4645c7f350dd385dd9ad upstream.
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-The timerlat interface will get and put the task that is part of the
-"kthread" field of the osn_var to keep it around until all references are
-released. But here's a race in the "stop_kthread()" code that will call
-put_task_struct() on the kthread if it is not a kernel thread. This can
-race with the releasing of the references to that task struct and the
-put_task_struct() can be called twice when it should have been called just
-once.
+Clear overflowed array index read warning by cast operation.
 
-Take the interface_lock() in stop_kthread() to synchronize this change.
-But to do so, the function stop_per_cpu_kthreads() needs to change the
-loop from for_each_online_cpu() to for_each_possible_cpu() and remove the
-cpu_read_lock(), as the interface_lock can not be taken while the cpu
-locks are held. The only side effect of this change is that it may do some
-extra work, as the per_cpu variables of the offline CPUs would not be set
-anyway, and would simply be skipped in the loop.
-
-Remove unneeded "return;" in stop_kthread().
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Cc: John Kacur <jkacur@redhat.com>
-Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/20240905113359.2b934242@gandalf.local.home
-Fixes: e88ed227f639e ("tracing/timerlat: Add user-space interface")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index 48e5014dd4ab..bbe47781617e 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1953,8 +1953,12 @@ static void stop_kthread(unsigned int cpu)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 0554576d3695..294ad2929485 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -367,8 +367,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
  {
- 	struct task_struct *kthread;
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
  
-+	mutex_lock(&interface_lock);
- 	kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
- 	if (kthread) {
-+		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
-+		mutex_unlock(&interface_lock);
-+
- 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask) &&
- 		    !WARN_ON(!test_bit(OSN_WORKLOAD, &osnoise_options))) {
- 			kthread_stop(kthread);
-@@ -1967,8 +1971,8 @@ static void stop_kthread(unsigned int cpu)
- 			kill_pid(kthread->thread_pid, SIGKILL, 1);
- 			put_task_struct(kthread);
- 		}
--		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
- 	} else {
-+		mutex_unlock(&interface_lock);
- 		/* if no workload, just return */
- 		if (!test_bit(OSN_WORKLOAD, &osnoise_options)) {
- 			/*
-@@ -1976,7 +1980,6 @@ static void stop_kthread(unsigned int cpu)
- 			 */
- 			per_cpu(per_cpu_osnoise_var, cpu).sampling = false;
- 			barrier();
--			return;
- 		}
- 	}
- }
-@@ -1991,12 +1994,8 @@ static void stop_per_cpu_kthreads(void)
- {
- 	int cpu;
- 
--	cpus_read_lock();
--
--	for_each_online_cpu(cpu)
-+	for_each_possible_cpu(cpu)
- 		stop_kthread(cpu);
--
--	cpus_read_unlock();
- }
- 
- /*
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
 -- 
-2.46.0
+2.43.0
 
 
 
