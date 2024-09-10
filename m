@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-75147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83D097336A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7395F97345D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2413B2D361
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EFBE1F25998
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B88195FF0;
-	Tue, 10 Sep 2024 10:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A9519148D;
+	Tue, 10 Sep 2024 10:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvDXFFmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuESXIWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEBD1922F6;
-	Tue, 10 Sep 2024 10:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AA146444;
+	Tue, 10 Sep 2024 10:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963887; cv=none; b=amqltmOGR5gVwvXBe1KTTOo9971wr2A5Q3ZAK/y2INAhwOZxpa4iUARTxbDymV/DxoEVmWuzEhi95LmZqpHeLyjMVQ5QupMvuu89KDkKCk2AChNpX7eRCt56Uxf3y+LL+cAd3zEWva31Y9TJpCrMZMGZiqYJn2hV8TeaPl4Je74=
+	t=1725964627; cv=none; b=fD46Uy/GJ4lk/G2JgfJY5OEQtH3KeHRK0mfw8dTbbHPufdAqfNHMAHPDVrjQmU7VZkiRG7uGkKlfEoZ53ha6+Z05KE1c9ZEuBlCr+AIyspIYwJAGkQf1I+52Gt+rPhJSqizk6bbib9BYE6PEwbVmmtidoGRB5ZtMdOBMPBIUYqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963887; c=relaxed/simple;
-	bh=YuSnyHu9AdsyBSa2CMSzK+jZhmOaPo2gkPu7MRHnD0E=;
+	s=arc-20240116; t=1725964627; c=relaxed/simple;
+	bh=3xTmCP8Yt4i2gANkgcRyBmPpXJlABSuXDBNMzjRm1IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSQjdmBJY74amVNfhsjiVU/VvN4yZ7HmXp0J6rlPgRGkHeCsKtM067+dI0+N93nYjOvIYweTIOkJPamGhIIqg/cQdZKY23Z33XT37cRKvMDdCwpH8671kOAcBHy1/s7PJzb0g1L7uOZP/6SGhg0XIpnIIcCy4AhmGvS8lAw/FF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvDXFFmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C84C4CEC3;
-	Tue, 10 Sep 2024 10:24:46 +0000 (UTC)
+	 MIME-Version; b=e9kTL4HT1GglZcXLjuNzlIIAmReYTgWnjOyymfxEQfBgdJvP/2l4g1Sc7EocJCdYO/Kc2/70xlaaMn4hVMGsknP9zHYJcpE/Kxim6XKjdeOITlRUPSQ3kpFWMmc9qT02FIGVfnGY3pzhJvqGj5ScoWENVgDdABw2M+0EGzFtScA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuESXIWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78A4C4CEC3;
+	Tue, 10 Sep 2024 10:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963887;
-	bh=YuSnyHu9AdsyBSa2CMSzK+jZhmOaPo2gkPu7MRHnD0E=;
+	s=korg; t=1725964627;
+	bh=3xTmCP8Yt4i2gANkgcRyBmPpXJlABSuXDBNMzjRm1IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvDXFFmrd4wa3KlqtgoxBQ36d/chwUX6kdzGWtYCgTmbjIXiwLYxnmWLY+LrDqxcL
-	 mvCWctZqXq5iSOoEUso8EfB+ZGBixYjqiwaN1fpQGNsU3MqAAdR2HkkRtESsZkblj7
-	 zqV928amAwKK/VPxtROkQuBC91BzhgSpvmu+UG0g=
+	b=XuESXIWmhjkxJkNSdKuLDR1nvF9QkEsARqCwfrhkEX//qGWqP7+T1Scm7sPVi3Dl4
+	 gEoUV4MQ6P8wHFrKn4R8AGaLEHl/A0VzZ2AoVN+UjuBKlVLFer+b7d2slYmbAjuWGW
+	 XdRybj/7cuoG0nqyeTZERol4yb+UKUAl3HSjkf/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lex Siegel <usiegl00@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neil Brown <neilb@suse.de>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 5.15 211/214] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
-Date: Tue, 10 Sep 2024 11:33:53 +0200
-Message-ID: <20240910092607.116325048@linuxfoundation.org>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 247/269] powerpc/vdso: Dont discard rela sections
+Date: Tue, 10 Sep 2024 11:33:54 +0200
+Message-ID: <20240910092616.632754463@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde upstream.
+[ Upstream commit 6114139c3bdde992f4a19264e4f9bfc100d8d776 ]
 
-When using a BPF program on kernel_connect(), the call can return -EPERM. This
-causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
-the kernel to potentially freeze up.
+After building the VDSO, there is a verification that it contains
+no dynamic relocation, see commit aff69273af61 ("vdso: Improve
+cmd_vdso_check to check all dynamic relocations").
 
-Neil suggested:
+This verification uses readelf -r and doesn't work if rela sections
+are discarded.
 
-  This will propagate -EPERM up into other layers which might not be ready
-  to handle it. It might be safer to map EPERM to an error we would be more
-  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
-
-ECONNREFUSED as error seems reasonable. For programs setting a different error
-can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
-which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
-instead of allow boolean"), thus given that it is better to simply remap for
-consistent behavior. UDP does handle EPERM in xs_udp_send_request().
-
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Co-developed-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Neil Brown <neilb@suse.de>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>
-Link: https://github.com/cilium/cilium/issues/33395
-Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
-Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ad57add77d3 ("powerpc/build: vdso linker warning for orphan sections")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/45c3e6fc76cad05ad2cac0f5b5dfb4fae86dc9d6.1724153239.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/vdso/vdso32.lds.S | 4 +++-
+ arch/powerpc/kernel/vdso/vdso64.lds.S | 4 ++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2335,6 +2335,13 @@ static void xs_tcp_setup_socket(struct w
- 	case -EALREADY:
- 		xprt_unlock_connect(xprt, transport);
- 		return;
-+	case -EPERM:
-+		/* Happens, for instance, if a BPF program is preventing
-+		 * the connect. Remap the error so upper layers can better
-+		 * deal with it.
-+		 */
-+		status = -ECONNREFUSED;
-+		fallthrough;
- 	case -EINVAL:
- 		/* Happens, for instance, if the user specified a link
- 		 * local IPv6 address without a scope-id.
+diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
+index 426e1ccc6971..8f57107000a2 100644
+--- a/arch/powerpc/kernel/vdso/vdso32.lds.S
++++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
+@@ -74,6 +74,8 @@ SECTIONS
+ 	.got		: { *(.got) }			:text
+ 	.plt		: { *(.plt) }
+ 
++	.rela.dyn	: { *(.rela .rela*) }
++
+ 	_end = .;
+ 	__end = .;
+ 	PROVIDE(end = .);
+@@ -87,7 +89,7 @@ SECTIONS
+ 		*(.branch_lt)
+ 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+ 		*(.bss .sbss .dynbss .dynsbss)
+-		*(.got1 .glink .iplt .rela*)
++		*(.got1 .glink .iplt)
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
+index bda6c8cdd459..400819258c06 100644
+--- a/arch/powerpc/kernel/vdso/vdso64.lds.S
++++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
+@@ -69,7 +69,7 @@ SECTIONS
+ 	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
+ 	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
+ 	.gcc_except_table : { *(.gcc_except_table) }
+-	.rela.dyn ALIGN(8) : { *(.rela.dyn) }
++	.rela.dyn ALIGN(8) : { *(.rela .rela*) }
+ 
+ 	.got ALIGN(8)	: { *(.got .toc) }
+ 
+@@ -86,7 +86,7 @@ SECTIONS
+ 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+ 		*(.bss .sbss .dynbss .dynsbss)
+ 		*(.opd)
+-		*(.glink .iplt .plt .rela*)
++		*(.glink .iplt .plt)
+ 	}
+ }
+ 
+-- 
+2.43.0
+
 
 
 
