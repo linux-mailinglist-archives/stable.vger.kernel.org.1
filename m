@@ -1,207 +1,99 @@
-Return-Path: <stable+bounces-74142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0381972C84
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:51:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D45972C91
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9A61C242DC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77E541C24661
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9DB186E4B;
-	Tue, 10 Sep 2024 08:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38519186E21;
+	Tue, 10 Sep 2024 08:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gT44vcUJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.astralinux.ru (mx.astralinux.ru [89.232.161.68])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2213E17624C;
-	Tue, 10 Sep 2024 08:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.232.161.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C8718755F
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 08:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725958307; cv=none; b=pTw16oDpze/TJTxhyhkHl8NMK2PrMk1vol7ou59iqtrXrS8Kqp8iPpZ1RCoAJo1q6Pki/LLuVmC8aLLdZrsrnSuwrdh2o9F/RWXGYAmA3gMfqy7B4muDFoMkavzBz/qbi8GxretUW4eWPoK6jLD1J4F1kaqQj5NUp9ON1RsNWzg=
+	t=1725958444; cv=none; b=nGCI065mIoFyOVPcaH90ry6YeVMfle/2JvbHe56S0M2iUS2Y6LW6c+KceFb7D1Zg/C0Z6YGGwVcO7lFz9keynpJVjgavZ3RF9gudqB+YWCxDxv0oW7H4POOfjco7WPje9IAEasdC32qAQrj5t7myWugvbOOOBHCQqEciO7jIlyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725958307; c=relaxed/simple;
-	bh=XVGXGzADbsLu3p+a2MUO3UozEei62Ba2NCZZ3KNQTWM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H7IiOhEO2DdcPczIEvMtC3WZhkr2dWolWDz0emhlsPk06AQhfKVK8pCHeQ6CzM61Olwx+uqVVjLMXKAqIhuANVmKN+wedczWnvwVxndfjNX9436wfpZETT151IqzqgpSNyaBJHEgMANWp0nvVToqp7ZiKjQzFM0pl/C+iXAF8eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=89.232.161.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from [10.177.185.111] (helo=new-mail.astralinux.ru)
-	by mx.astralinux.ru with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <abelova@astralinux.ru>)
-	id 1snwZS-00BYd3-TK; Tue, 10 Sep 2024 11:49:58 +0300
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.20.58])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4X2y983ntBz1c0mR;
-	Tue, 10 Sep 2024 11:51:08 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Anastasia Belova <abelova@astralinux.ru>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64: KVM: define ESR_ELx_EC_* constants as UL
-Date: Tue, 10 Sep 2024 11:50:16 +0300
-Message-Id: <20240910085016.32120-1-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <865xr5856r.wl-maz@kernel.org>
-References: 
+	s=arc-20240116; t=1725958444; c=relaxed/simple;
+	bh=7hu+i1kFclsAI2CDDxwLdICUKZximXQl3rttWU7SWMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PwMp9bj0++Agd9eT1v1+DsLrJaMl0+cG+Oejh/5NJmSTt8rbYlQaSqpYhheds6HOgi3y5YalVnnvDXOjGhkQ+MdxeD9tQwSOr8QZRiMNCtmPRn2kT1oOBbPKQuOMPEvLH0cNbGLslwB7mBH0xAUcQ0FCCcsxwrKV77L/x1EBcfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gT44vcUJ; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725958443; x=1757494443;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=7hu+i1kFclsAI2CDDxwLdICUKZximXQl3rttWU7SWMM=;
+  b=gT44vcUJMsOfIVHX6ogUKnwYqoc5qUFS2tfPouIVZALzc/qskHF//m1a
+   o5UOgaYWxeqAt3jig9kEBrq0zniw5B9ix92Vnr2jpuKygcTvwNh9nQxHZ
+   KZ5HwapubtJDdDBjOaybHiPyV0lhluWtlizVuKoxuVtBWDK+SsvzjW4CJ
+   ituzToT+jeRLlwxy0CTNEgI3ZvfK0F2smzgsJ7apa9L+ZLHHAd21Qpczp
+   Uckoe5EgddblwGiqT5hOCC8sgT3rdDJ1xS+WzI5MCCSkxnW7MRLIx/s1V
+   do1tqg/1KW/qsqCuFWKHL7xEP/wGHxfaV3MtxSPqZdMjTdQvtY5YSlhcS
+   Q==;
+X-CSE-ConnectionGUID: lRWf+MRmRqimx407BjEXLQ==
+X-CSE-MsgGUID: GLtDMbUTSIGCqv9lRjWp2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="13454180"
+X-IronPort-AV: E=Sophos;i="6.10,216,1719903600"; 
+   d="scan'208";a="13454180"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 01:54:02 -0700
+X-CSE-ConnectionGUID: rK4g7VhOQWSSvhvMcHReRw==
+X-CSE-MsgGUID: bb0FsfxUQDKm9HOPBBqqQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,216,1719903600"; 
+   d="scan'208";a="66921426"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 10 Sep 2024 01:54:01 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1snwdK-0000J8-2a;
+	Tue, 10 Sep 2024 08:53:58 +0000
+Date: Tue, 10 Sep 2024 16:53:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anastasia Belova <abelova@astralinux.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] arm64: KVM: define ESR_ELx_EC_* constants as UL
+Message-ID: <ZuAI9Fw0-ftS3VLH@b20ea791c01f>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DrWeb-SpamScore: 0
-X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetnhgrshhtrghsihgruceuvghlohhvrgcuoegrsggvlhhovhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeevhfduuefhueektdefkedvgfekgfekffegvdetffehfefhffejhfehveevudeigfenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudejjedrvddtrdehkeenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdquddtiedtiedvrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrddujeejrddvtddrheekmeegleehjeekpdhmrghilhhfrhhomheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepmhgriieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdprhgtphhtthhopeholhhivhgvrhdruhhpthhonheslhhinhhugidruggvvhdprhgtphhtthhopehjrghmvghsrdhmohhrshgvsegrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrd
- gtohhmpdhrtghpthhtohephihuiigvnhhghhhuiheshhhurgifvghirdgtohhmpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepkhhvmhgrrhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhvtgdqphhrohhjvggttheslhhinhhugihtvghsthhinhhgrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgnecuffhrrdghvggsucetnhhtihhsphgrmhemucenucfvrghgshem
-X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.7.202406240#1725912977#02
-X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128, SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12167075, Updated: 2024-Sep-10 07:11:52 UTC]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240910085016.32120-1-abelova@astralinux.ru>
 
-Add explicit casting to prevent expantion of 32th bit of
-u32 into highest half of u64 in several places.
+Hi,
 
-For example, in inject_abt64:
-ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
-This operation's result is int with 1 in 32th bit.
-While casting this value into u64 (esr is u64) 1
-fills 32 highest bits.
+Thanks for your patch.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
-v2: move casting from usage to definition
- arch/arm64/include/asm/esr.h | 88 ++++++++++++++++++------------------
- 1 file changed, 44 insertions(+), 44 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
-index 56c148890daf..2f3d56857a97 100644
---- a/arch/arm64/include/asm/esr.h
-+++ b/arch/arm64/include/asm/esr.h
-@@ -10,63 +10,63 @@
- #include <asm/memory.h>
- #include <asm/sysreg.h>
- 
--#define ESR_ELx_EC_UNKNOWN	(0x00)
--#define ESR_ELx_EC_WFx		(0x01)
-+#define ESR_ELx_EC_UNKNOWN	UL(0x00)
-+#define ESR_ELx_EC_WFx		UL(0x01)
- /* Unallocated EC: 0x02 */
--#define ESR_ELx_EC_CP15_32	(0x03)
--#define ESR_ELx_EC_CP15_64	(0x04)
--#define ESR_ELx_EC_CP14_MR	(0x05)
--#define ESR_ELx_EC_CP14_LS	(0x06)
--#define ESR_ELx_EC_FP_ASIMD	(0x07)
--#define ESR_ELx_EC_CP10_ID	(0x08)	/* EL2 only */
--#define ESR_ELx_EC_PAC		(0x09)	/* EL2 and above */
-+#define ESR_ELx_EC_CP15_32	UL(0x03)
-+#define ESR_ELx_EC_CP15_64	UL(0x04)
-+#define ESR_ELx_EC_CP14_MR	UL(0x05)
-+#define ESR_ELx_EC_CP14_LS	UL(0x06)
-+#define ESR_ELx_EC_FP_ASIMD	UL(0x07)
-+#define ESR_ELx_EC_CP10_ID	UL(0x08)	/* EL2 only */
-+#define ESR_ELx_EC_PAC		UL(0x09)	/* EL2 and above */
- /* Unallocated EC: 0x0A - 0x0B */
--#define ESR_ELx_EC_CP14_64	(0x0C)
--#define ESR_ELx_EC_BTI		(0x0D)
--#define ESR_ELx_EC_ILL		(0x0E)
-+#define ESR_ELx_EC_CP14_64	UL(0x0C)
-+#define ESR_ELx_EC_BTI		UL(0x0D)
-+#define ESR_ELx_EC_ILL		UL(0x0E)
- /* Unallocated EC: 0x0F - 0x10 */
--#define ESR_ELx_EC_SVC32	(0x11)
--#define ESR_ELx_EC_HVC32	(0x12)	/* EL2 only */
--#define ESR_ELx_EC_SMC32	(0x13)	/* EL2 and above */
-+#define ESR_ELx_EC_SVC32	UL(0x11)
-+#define ESR_ELx_EC_HVC32	UL(0x12)	/* EL2 only */
-+#define ESR_ELx_EC_SMC32	UL(0x13)	/* EL2 and above */
- /* Unallocated EC: 0x14 */
--#define ESR_ELx_EC_SVC64	(0x15)
--#define ESR_ELx_EC_HVC64	(0x16)	/* EL2 and above */
--#define ESR_ELx_EC_SMC64	(0x17)	/* EL2 and above */
--#define ESR_ELx_EC_SYS64	(0x18)
--#define ESR_ELx_EC_SVE		(0x19)
--#define ESR_ELx_EC_ERET		(0x1a)	/* EL2 only */
-+#define ESR_ELx_EC_SVC64	UL(0x15)
-+#define ESR_ELx_EC_HVC64	UL(0x16)	/* EL2 and above */
-+#define ESR_ELx_EC_SMC64	UL(0x17)	/* EL2 and above */
-+#define ESR_ELx_EC_SYS64	UL(0x18)
-+#define ESR_ELx_EC_SVE		UL(0x19)
-+#define ESR_ELx_EC_ERET		UL(0x1a)	/* EL2 only */
- /* Unallocated EC: 0x1B */
--#define ESR_ELx_EC_FPAC		(0x1C)	/* EL1 and above */
--#define ESR_ELx_EC_SME		(0x1D)
-+#define ESR_ELx_EC_FPAC		UL(0x1C)	/* EL1 and above */
-+#define ESR_ELx_EC_SME		UL(0x1D)
- /* Unallocated EC: 0x1E */
--#define ESR_ELx_EC_IMP_DEF	(0x1f)	/* EL3 only */
--#define ESR_ELx_EC_IABT_LOW	(0x20)
--#define ESR_ELx_EC_IABT_CUR	(0x21)
--#define ESR_ELx_EC_PC_ALIGN	(0x22)
-+#define ESR_ELx_EC_IMP_DEF	UL(0x1f)	/* EL3 only */
-+#define ESR_ELx_EC_IABT_LOW	UL(0x20)
-+#define ESR_ELx_EC_IABT_CUR	UL(0x21)
-+#define ESR_ELx_EC_PC_ALIGN	UL(0x22)
- /* Unallocated EC: 0x23 */
--#define ESR_ELx_EC_DABT_LOW	(0x24)
--#define ESR_ELx_EC_DABT_CUR	(0x25)
--#define ESR_ELx_EC_SP_ALIGN	(0x26)
--#define ESR_ELx_EC_MOPS		(0x27)
--#define ESR_ELx_EC_FP_EXC32	(0x28)
-+#define ESR_ELx_EC_DABT_LOW	UL(0x24)
-+#define ESR_ELx_EC_DABT_CUR	UL(0x25)
-+#define ESR_ELx_EC_SP_ALIGN	UL(0x26)
-+#define ESR_ELx_EC_MOPS		UL(0x27)
-+#define ESR_ELx_EC_FP_EXC32	UL(0x28)
- /* Unallocated EC: 0x29 - 0x2B */
--#define ESR_ELx_EC_FP_EXC64	(0x2C)
-+#define ESR_ELx_EC_FP_EXC64	UL(0x2C)
- /* Unallocated EC: 0x2D - 0x2E */
--#define ESR_ELx_EC_SERROR	(0x2F)
--#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
--#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
--#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
--#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
--#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
--#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
-+#define ESR_ELx_EC_SERROR	UL(0x2F)
-+#define ESR_ELx_EC_BREAKPT_LOW	UL(0x30)
-+#define ESR_ELx_EC_BREAKPT_CUR	UL(0x31)
-+#define ESR_ELx_EC_SOFTSTP_LOW	UL(0x32)
-+#define ESR_ELx_EC_SOFTSTP_CUR	UL(0x33)
-+#define ESR_ELx_EC_WATCHPT_LOW	UL(0x34)
-+#define ESR_ELx_EC_WATCHPT_CUR	UL(0x35)
- /* Unallocated EC: 0x36 - 0x37 */
--#define ESR_ELx_EC_BKPT32	(0x38)
-+#define ESR_ELx_EC_BKPT32	UL(0x38)
- /* Unallocated EC: 0x39 */
--#define ESR_ELx_EC_VECTOR32	(0x3A)	/* EL2 only */
-+#define ESR_ELx_EC_VECTOR32	UL(0x3A)	/* EL2 only */
- /* Unallocated EC: 0x3B */
--#define ESR_ELx_EC_BRK64	(0x3C)
-+#define ESR_ELx_EC_BRK64	UL(0x3C)
- /* Unallocated EC: 0x3D - 0x3F */
--#define ESR_ELx_EC_MAX		(0x3F)
-+#define ESR_ELx_EC_MAX		UL(0x3F)
- 
- #define ESR_ELx_EC_SHIFT	(26)
- #define ESR_ELx_EC_WIDTH	(6)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] arm64: KVM: define ESR_ELx_EC_* constants as UL
+Link: https://lore.kernel.org/stable/20240910085016.32120-1-abelova%40astralinux.ru
+
 -- 
-2.30.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
