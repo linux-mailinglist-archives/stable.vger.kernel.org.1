@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331F0973083
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFDC972DFB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657FC1C24020
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD991C2444F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF2B19004D;
-	Tue, 10 Sep 2024 10:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAD718B48A;
+	Tue, 10 Sep 2024 09:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAbOZAXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOeE+PmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FA418FDBD;
-	Tue, 10 Sep 2024 10:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4965C189BBA;
+	Tue, 10 Sep 2024 09:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962448; cv=none; b=RgW5sj2HAlGJS//iFkFxvfUV8C/77pN9wx1sxUntVHUs79GLiYqXBMw6hdLOjAsDetplF7unZmyuCH3o4/HY62pvO3QyDITYLkAQfuOZV4iUwDJNboYNw6xn+nYM1/3lfUNtwh5KeMKz+Wz9LbGNIRiLavHgh1uOi4TRpvJ+iY8=
+	t=1725961092; cv=none; b=Iw1Mw+Q7OGNE2qU+YFXo08kfrunC5Pf3bXzOfE0vFjL5khrkgc2bdlacQdLo+qDslLjKOq00Rt7+GfKeeuh/DV98HsyP7ygPssVZozodhVHFGiAOvoKQmrY68WYXLWJi0RTChjlaz5MJGHE21bvsaETgPpVPW47g5zuGHinBf8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962448; c=relaxed/simple;
-	bh=GXvmt9agX6RCDXZfPXDFRnYqMOcCVfxiyyVp/JAskH0=;
+	s=arc-20240116; t=1725961092; c=relaxed/simple;
+	bh=v/jGjQhHXWhkRYYsy5NtXj5jcR0sqZ30roB7n5tUNFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXp/r+mqnTZgQFffYxZLxEDIcmOO8npPHr7iUVH7fGyRQpcdPi7R5eoWnK21a3/AhOp7dEjQ7R4AXLPCslHVGkbfzcRPoAjI4JDwHMegU26lSpSPZTXlPVRFkRcvj5kiuN2oOH9ATVqiVVzQSuw1OyPGilruTP5VobbrnqvJZ9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAbOZAXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF9CC4CEC3;
-	Tue, 10 Sep 2024 10:00:47 +0000 (UTC)
+	 MIME-Version; b=oxMSp1p8b0lHwYbkD068ELyq96lntKEpsHDytT2VFa2LgwOjThQ4BHg1kDnAntdFKUCZKbOWSvYSTuXlBJp037FjbviP9mneRIOOACBD5qhfKt8KIZZceHApTzJh/klJiykDOm7EgOTX7bn7gUoXe0dPrnz/q2JYN9sndVHVEGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOeE+PmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ADFC4CEC3;
+	Tue, 10 Sep 2024 09:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962448;
-	bh=GXvmt9agX6RCDXZfPXDFRnYqMOcCVfxiyyVp/JAskH0=;
+	s=korg; t=1725961092;
+	bh=v/jGjQhHXWhkRYYsy5NtXj5jcR0sqZ30roB7n5tUNFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAbOZAXOwlO34zi78DiL4/sBZcrHuO2pTK2GOA3D438KVAwV1uqpHXIHY/WXpvB44
-	 zAL0BEnShizcEJPek4XcdVnFFtU5ZQpgSWMR+Iyuap+Us/h6zmCS+xTyeFaPvvaAWM
-	 iN3wspJH33MIH/yPFR3WJYXMLLfE1sb/Y1sF5JuE=
+	b=iOeE+PmEml2pLP6LxH2msV64/nvKBb0J41vSjMakZhrf+p38HwvUEFxaPioo+oZX4
+	 TXG6LxMa8lrx+PckU/ZZRRDXFFtU5uOKx4psfd0EVCGjstruN0GTa3l/BZErdMNFEP
+	 5ryIIwYis5lDoLNhiuVvfYEzKz8AIzGel8+xtBYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 038/121] clk: qcom: clk-alpha-pll: Fix the trion pll postdiv set rate API
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 51/96] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
 Date: Tue, 10 Sep 2024 11:31:53 +0200
-Message-ID: <20240910092547.532507267@linuxfoundation.org>
+Message-ID: <20240910092543.764521564@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-commit 4ad1ed6ef27cab94888bb3c740c14042d5c0dff2 upstream.
+[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
 
-Correct the pll postdiv shift used in clk_trion_pll_postdiv_set_rate
-API. The shift value is not same for different types of plls and
-should be taken from the pll's .post_div_shift member.
+CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
+Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
+moment.
 
-Fixes: 548a909597d5 ("clk: qcom: clk-alpha-pll: Add support for Trion PLLs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240731062916.2680823-3-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fix it.
+
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -1257,8 +1257,8 @@ clk_trion_pll_postdiv_set_rate(struct cl
+diff --git a/drivers/net/dsa/vitesse-vsc73xx.c b/drivers/net/dsa/vitesse-vsc73xx.c
+index eaafb1c30c91..c91f989165ad 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx.c
++++ b/drivers/net/dsa/vitesse-vsc73xx.c
+@@ -38,7 +38,7 @@
+ #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
+ #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
+-#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
++#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+ 
+@@ -385,13 +385,19 @@ static int vsc73xx_is_addr_valid(u8 block, u8 subblock)
+ 		break;
+ 
+ 	case VSC73XX_BLOCK_MII:
+-	case VSC73XX_BLOCK_CAPTURE:
+ 	case VSC73XX_BLOCK_ARBITER:
+ 		switch (subblock) {
+ 		case 0 ... 1:
+ 			return 1;
+ 		}
+ 		break;
++	case VSC73XX_BLOCK_CAPTURE:
++		switch (subblock) {
++		case 0 ... 4:
++		case 6 ... 7:
++			return 1;
++		}
++		break;
  	}
  
- 	return regmap_update_bits(regmap, PLL_USER_CTL(pll),
--				  PLL_POST_DIV_MASK(pll) << PLL_POST_DIV_SHIFT,
--				  val << PLL_POST_DIV_SHIFT);
-+				  PLL_POST_DIV_MASK(pll) << pll->post_div_shift,
-+				  val << pll->post_div_shift);
- }
- 
- const struct clk_ops clk_trion_pll_postdiv_ops = {
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
