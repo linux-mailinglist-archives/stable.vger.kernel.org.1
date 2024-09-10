@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88BE9731F7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F04B9732F7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3ED2B27695
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221BC284A27
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BE1192D8E;
-	Tue, 10 Sep 2024 10:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEF2192B9F;
+	Tue, 10 Sep 2024 10:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRk8EMrZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QprjHwwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA89192D7B;
-	Tue, 10 Sep 2024 10:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170F0192B9C;
+	Tue, 10 Sep 2024 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963133; cv=none; b=rg9y08y4xjQIujjOo+xDFEKQ9GGNEBy0Y3soiLaqGKjB8IIvpAH4U3sxMaiwXgHJDAMVVum/xjSBhx2KJnZgoiwy20sSA8fXmB6qwtsYS+7jNcbn4O2/Q6V13LvZnaw0ainT4PneO1vSNRlqZorBiAhv8UrdDNSj88NNw94G7H0=
+	t=1725963788; cv=none; b=gBI44zPmlLcNTLluJOKUH/fUkAtawVN+EwmC5plvPfQZcU3skNGnY9D/1xeG8Jdm9YOv3sTxzfVaO8OU7iaoFDnwmQctQZFvC4F+sOs4/8O/bphsxExiW1KpHramhzWB1hTveQbjZT15IBABz68yO5q/DjXHW/0dcohAsbTeSuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963133; c=relaxed/simple;
-	bh=DFjbE9mEOBwFeugmSS/7dFYwgsuizxLzSwscrnEinPA=;
+	s=arc-20240116; t=1725963788; c=relaxed/simple;
+	bh=/5TYw9+N3V27HuAXHjHpQzRsKNgdCuISKDp8GpMqYuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2i3EfK6xT2adStl/nTK7KV2dpEV/niSw8N/U+VR6Wx+3A0kj/rt5/nOa2hvJYca4xpArYQlKEK5yYGxx5R73iHEu+bNLfKGh1qrQBKLuRIUBdAm/gmD7ZJICCRef6Fqa8tnHrJlNk4oPNdnkejdNubky+URnvE6pikXuH0gE5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRk8EMrZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89B9C4CEC3;
-	Tue, 10 Sep 2024 10:12:12 +0000 (UTC)
+	 MIME-Version; b=ka6zEtiIZmu4QnNzenRtZt7S5boICTuFyKlJRNrZmPVErzN/hDg8cT+R4whOQTNxvKYSwCgbDqNcB0y0WgB4e+RXMBhC7L5eKr8N2N5xlo6yzFZd0UaQ3aenUEQASHJpnAjRIduCwTQM7RosgQNoKfcQXSjWcsjWrz690N9EaMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QprjHwwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C5C4CEC3;
+	Tue, 10 Sep 2024 10:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963133;
-	bh=DFjbE9mEOBwFeugmSS/7dFYwgsuizxLzSwscrnEinPA=;
+	s=korg; t=1725963787;
+	bh=/5TYw9+N3V27HuAXHjHpQzRsKNgdCuISKDp8GpMqYuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRk8EMrZWrLSxjxUmdojsttt8Ve+bqrrUWkAOvY0hZyaNxc9jjeFWAFUKE+cXLN5e
-	 xAoraccJbsyOjPeU/KDDVmJPp8thG0llBOJUF3f0pTmP72IUpQ11EgcdKcD/+IEfJb
-	 8bFU8Hbv64omspPtxoLbC9fgiecQtDSe+LgMvoAM=
+	b=QprjHwwV2LeBIroQgM+TAgWtu4nt+GFR/Z4BvJHxdhfyAtgl4tIZMEyK1/thLjOoq
+	 ahVHYCMbSI8KSZc5VlwkG4e/7IsSxbdYCxiKBV0q46k+8uZmPk9EOZR7+g0/CHmrBp
+	 7ZKAJ5Vs7F7RAPhGmUUhTJcMfz/gcg5tV311zUVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Kennedy <george.kennedy@oracle.com>,
-	David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
-Subject: [PATCH 6.1 147/192] VMCI: Fix use-after-free when removing resource in vmci_resource_remove()
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Barry Song <baohua@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 149/214] dma-mapping: benchmark: Dont starve others when doing the test
 Date: Tue, 10 Sep 2024 11:32:51 +0200
-Message-ID: <20240910092604.028133288@linuxfoundation.org>
+Message-ID: <20240910092604.828070487@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 48b9a8dabcc3cf5f961b2ebcd8933bf9204babb7 upstream.
+[ Upstream commit 54624acf8843375a6de3717ac18df3b5104c39c5 ]
 
-When removing a resource from vmci_resource_table in
-vmci_resource_remove(), the search is performed using the resource
-handle by comparing context and resource fields.
+The test thread will start N benchmark kthreads and then schedule out
+until the test time finished and notify the benchmark kthreads to stop.
+The benchmark kthreads will keep running until notified to stop.
+There's a problem with current implementation when the benchmark
+kthreads number is equal to the CPUs on a non-preemptible kernel:
+since the scheduler will balance the kthreads across the CPUs and
+when the test time's out the test thread won't get a chance to be
+scheduled on any CPU then cannot notify the benchmark kthreads to stop.
 
-It is possible though to create two resources with different types
-but same handle (same context and resource fields).
+This can be easily reproduced on a VM (simulated with 16 CPUs) with
+PREEMPT_VOLUNTARY:
+estuary:/mnt$ ./dma_map_benchmark -t 16 -s 1
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:     10-...!: (5221 ticks this GP) idle=ed24/1/0x4000000000000000 softirq=142/142 fqs=0
+ rcu:     (t=5254 jiffies g=-559 q=45 ncpus=16)
+ rcu: rcu_sched kthread starved for 5255 jiffies! g-559 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=12
+ rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+ rcu: RCU grace-period kthread stack dump:
+ task:rcu_sched       state:R  running task     stack:0     pid:16    tgid:16    ppid:2      flags:0x00000008
+ Call trace
+  __switch_to+0xec/0x138
+  __schedule+0x2f8/0x1080
+  schedule+0x30/0x130
+  schedule_timeout+0xa0/0x188
+  rcu_gp_fqs_loop+0x128/0x528
+  rcu_gp_kthread+0x1c8/0x208
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
+ Sending NMI from CPU 10 to CPUs 0:
+ NMI backtrace for cpu 0
+ CPU: 0 PID: 332 Comm: dma-map-benchma Not tainted 6.10.0-rc1-vanilla-LSE #8
+ Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+ pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+ lr : arm_smmu_cmdq_issue_cmdlist+0x488/0x730
+ sp : ffff80008748b630
+ x29: ffff80008748b630 x28: 0000000000000000 x27: ffff80008748b780
+ x26: 0000000000000000 x25: 000000000000bc70 x24: 000000000001bc70
+ x23: ffff0000c12af080 x22: 0000000000010000 x21: 000000000000ffff
+ x20: ffff80008748b700 x19: ffff0000c12af0c0 x18: 0000000000010000
+ x17: 0000000000000001 x16: 0000000000000040 x15: ffffffffffffffff
+ x14: 0001ffffffffffff x13: 000000000000ffff x12: 00000000000002f1
+ x11: 000000000001ffff x10: 0000000000000031 x9 : ffff800080b6b0b8
+ x8 : ffff0000c2a48000 x7 : 000000000001bc71 x6 : 0001800000000000
+ x5 : 00000000000002f1 x4 : 01ffffffffffffff x3 : 000000000009aaf1
+ x2 : 0000000000000018 x1 : 000000000000000f x0 : ffff0000c12af18c
+ Call trace:
+  arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+  __arm_smmu_tlb_inv_range+0xe0/0x1a8
+  arm_smmu_iotlb_sync+0xc0/0x128
+  __iommu_dma_unmap+0x248/0x320
+  iommu_dma_unmap_page+0x5c/0xe8
+  dma_unmap_page_attrs+0x38/0x1d0
+  map_benchmark_thread+0x118/0x2c0
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
 
-When trying to remove one of the resources, vmci_resource_remove()
-may not remove the intended one, but the object will still be freed
-as in the case of the datagram type in vmci_datagram_destroy_handle().
-vmci_resource_table will still hold a pointer to this freed resource
-leading to a use-after-free vulnerability.
+Solve this by adding scheduling point in the kthread loop,
+so if there're other threads in the system they may have
+a chance to run, especially the thread to notify the test
+end. However this may degrade the test concurrency so it's
+recommended to run this on an idle system.
 
-BUG: KASAN: use-after-free in vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
-BUG: KASAN: use-after-free in vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
-Read of size 4 at addr ffff88801c16d800 by task syz-executor197/1592
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x82/0xa9 lib/dump_stack.c:106
- print_address_description.constprop.0+0x21/0x366 mm/kasan/report.c:239
- __kasan_report.cold+0x7f/0x132 mm/kasan/report.c:425
- kasan_report+0x38/0x51 mm/kasan/report.c:442
- vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
- vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
- vmci_qp_broker_detach+0x89a/0x11b9 drivers/misc/vmw_vmci/vmci_queue_pair.c:2182
- ctx_free_ctx+0x473/0xbe1 drivers/misc/vmw_vmci/vmci_context.c:444
- kref_put include/linux/kref.h:65 [inline]
- vmci_ctx_put drivers/misc/vmw_vmci/vmci_context.c:497 [inline]
- vmci_ctx_destroy+0x170/0x1d6 drivers/misc/vmw_vmci/vmci_context.c:195
- vmci_host_close+0x125/0x1ac drivers/misc/vmw_vmci/vmci_host.c:143
- __fput+0x261/0xa34 fs/file_table.c:282
- task_work_run+0xf0/0x194 kernel/task_work.c:164
- tracehook_notify_resume include/linux/tracehook.h:189 [inline]
- exit_to_user_mode_loop+0x184/0x189 kernel/entry/common.c:187
- exit_to_user_mode_prepare+0x11b/0x123 kernel/entry/common.c:220
- __syscall_exit_to_user_mode_work kernel/entry/common.c:302 [inline]
- syscall_exit_to_user_mode+0x18/0x42 kernel/entry/common.c:313
- do_syscall_64+0x41/0x85 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x6e/0x0
-
-This change ensures the type is also checked when removing
-the resource from vmci_resource_table in vmci_resource_remove().
-
-Fixes: bc63dedb7d46 ("VMCI: resource object implementation.")
-Cc: stable@vger.kernel.org
-Reported-by: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
-Link: https://lore.kernel.org/r/20240828154338.754746-1-david.fernandez.gonzalez@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_resource.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/dma/map_benchmark.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/misc/vmw_vmci/vmci_resource.c
-+++ b/drivers/misc/vmw_vmci/vmci_resource.c
-@@ -144,7 +144,8 @@ void vmci_resource_remove(struct vmci_re
- 	spin_lock(&vmci_resource_table.lock);
+diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
+index fc67b39d8b38..b96d4fb8407b 100644
+--- a/kernel/dma/map_benchmark.c
++++ b/kernel/dma/map_benchmark.c
+@@ -112,6 +112,22 @@ static int map_benchmark_thread(void *data)
+ 		atomic64_add(map_sq, &map->sum_sq_map);
+ 		atomic64_add(unmap_sq, &map->sum_sq_unmap);
+ 		atomic64_inc(&map->loops);
++
++		/*
++		 * We may test for a long time so periodically check whether
++		 * we need to schedule to avoid starving the others. Otherwise
++		 * we may hangup the kernel in a non-preemptible kernel when
++		 * the test kthreads number >= CPU number, the test kthreads
++		 * will run endless on every CPU since the thread resposible
++		 * for notifying the kthread stop (in do_map_benchmark())
++		 * could not be scheduled.
++		 *
++		 * Note this may degrade the test concurrency since the test
++		 * threads may need to share the CPU time with other load
++		 * in the system. So it's recommended to run this benchmark
++		 * on an idle system.
++		 */
++		cond_resched();
+ 	}
  
- 	hlist_for_each_entry(r, &vmci_resource_table.entries[idx], node) {
--		if (vmci_handle_is_equal(r->handle, resource->handle)) {
-+		if (vmci_handle_is_equal(r->handle, resource->handle) &&
-+		    resource->type == r->type) {
- 			hlist_del_init_rcu(&r->node);
- 			break;
- 		}
+ out:
+-- 
+2.43.0
+
 
 
 
