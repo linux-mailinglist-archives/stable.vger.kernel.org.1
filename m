@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD3D97335E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506C297323C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7044A1C24117
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8521F26EDC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5271917DC;
-	Tue, 10 Sep 2024 10:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F2718EFE4;
+	Tue, 10 Sep 2024 10:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxc1WHVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPALp5pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D20318C003;
-	Tue, 10 Sep 2024 10:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A7818A6B9;
+	Tue, 10 Sep 2024 10:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964041; cv=none; b=kQh0wyW5S0qJEYAA4hYMewljcuaYuYCIQhbleJiVPWAJ42z6aPSmfvw2uugP7Gvn+kwwRMG7U2rVUX7RA8gfsM1DzPTRIUqLv5vatZtng3ll1xoT+veE5kr8lasaJkXJrYjWvY+2N1LSR/AGghQzk/uy3a2FClf1o5EdaZKP9vA=
+	t=1725963303; cv=none; b=NIi/CzFYdRDdQlG2WkdIh0A5fkvlSgs9FYBNaijViH/H4+eJkLK/rt9hK0y78Hz2+b+6+a5Ncb4mHIn/xSR+Zwcx3+cDyEwNwde35ueVt5x8OlvafBQeYA+7Vh1sZ6Ejf82NgursUW0fk+QKIyuRPmAxaxTchAqG/cOfZfMnBfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964041; c=relaxed/simple;
-	bh=eoNo7AZtGJYU5ksIqKiFekhAInnClN4/rdb43FRZaEk=;
+	s=arc-20240116; t=1725963303; c=relaxed/simple;
+	bh=G3fGXW6QDJJTU5Geu8Ttb0kWu/M8xVcLrIRLxIoKdmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdCHdTh+W1HLbx7hHtVQmsBK3qNV6cIWt/Djv6ACyQunD7esI+b8tyhRxdW6p7D3mTnstgnG6HUjjGzlsIuW0sp0pDWCv+OuIhgm1dbS+AL3FxLqMXqp4p4WwVd5Fc4M11yGFghIPQItWviT3IGsXZ6caS0mSHteWx4JUFoX/2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxc1WHVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8CAC4CEC3;
-	Tue, 10 Sep 2024 10:27:20 +0000 (UTC)
+	 MIME-Version; b=tQzpCSeAuFBJyKEtMk2JOzH9DnnZtQMFJ+nEtSpZoa9ZGo+rNFdm5Ej9iNp0zQx+Ze5gnjP8at1XCC0iUmzsG0JTsxYEIuT1J3nMozMNPHLh8whoJKIqq5PD7xMtrxenSp0UrnGTbKpFIHhN7vR5V3ZwZQm4eaij3HYCRTue8t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPALp5pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DA2C4CEC3;
+	Tue, 10 Sep 2024 10:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964041;
-	bh=eoNo7AZtGJYU5ksIqKiFekhAInnClN4/rdb43FRZaEk=;
+	s=korg; t=1725963303;
+	bh=G3fGXW6QDJJTU5Geu8Ttb0kWu/M8xVcLrIRLxIoKdmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxc1WHVNzr6vO7W52BVxQFbTjaqjMd1mRz5DMatkCVBRRrunxhB/7s2Xap3dlzGyV
-	 GfK0UK4pi2N/RpEHhAGLxI7BYvQVCep8eR2EHoqpsJrxEvGJYopN24D4yPzujcGNet
-	 9Pr5TlzEaQ9i/CyI35C4tbdze8hhOt9u4Ta0IE04=
+	b=iPALp5plznicz1L026mgH83nU9/FVFrUgHTldJQyHBHZDrm3B/5ckwOfXixkcWzO/
+	 RvAdvh2KL18XYVTf5AYqHFvo2q/Nx4yX3JU5tTwJ2LlYbt+qc+phwnzKRuAHDYTXyf
+	 LnQU4Fbr/fhzUae5XIg2t+Ug20ChhRGoSfSFRELY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 047/269] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 012/214] drm/amd/pm: fix warning using uninitialized value of max_vid_step
 Date: Tue, 10 Sep 2024 11:30:34 +0200
-Message-ID: <20240910092609.929071860@linuxfoundation.org>
+Message-ID: <20240910092559.232779593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
+[ Upstream commit 17e3bea65cdc453695b2fe4ff26d25d17f5339e9 ]
 
-The fscache_cookie_lru_timer is initialized when the fscache module
-is inserted, but is not deleted when the fscache module is removed.
-If timer_reduce() is called before removing the fscache module,
-the fscache_cookie_lru_timer will be added to the timer list of
-the current cpu. Afterwards, a use-after-free will be triggered
-in the softIRQ after removing the fscache module, as follows:
+Check the return of pp_atomfwctrl_get_Voltage_table_v4
+as it may fail to initialize max_vid_step
+V2: change the check condition (Tim Huang)
 
-==================================================================
-BUG: unable to handle page fault for address: fffffbfff803c9e9
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
-Tainted: [W]=WARN
-RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
-Call Trace:
- <IRQ>
- tmigr_handle_remote_up+0x627/0x810
- __walk_groups.isra.0+0x47/0x140
- tmigr_handle_remote+0x1fa/0x2f0
- handle_softirqs+0x180/0x590
- irq_exit_rcu+0x84/0xb0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
- default_idle_call+0x38/0x60
- do_idle+0x2b5/0x300
- cpu_startup_entry+0x54/0x60
- start_secondary+0x20d/0x280
- common_startup_64+0x13e/0x148
- </TASK>
-Modules linked in: [last unloaded: netfs]
-==================================================================
-
-Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
-
-Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fscache/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/fscache/main.c
-+++ b/fs/fscache/main.c
-@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index aba8904ac75f..6a0933a78c9d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -2575,8 +2575,11 @@ static int vega10_init_smc_table(struct pp_hwmgr *hwmgr)
+ 		}
+ 	}
  
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-+	timer_shutdown_sync(&fscache_cookie_lru_timer);
- 	destroy_workqueue(fscache_wq);
- 	pr_notice("Unloaded\n");
- }
+-	pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
++	result = pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
+ 			VOLTAGE_OBJ_SVID2,  &voltage_table);
++	PP_ASSERT_WITH_CODE(!result,
++			"Failed to get voltage table!",
++			return result);
+ 	pp_table->MaxVidStep = voltage_table.max_vid_step;
+ 
+ 	pp_table->GfxDpmVoltageMode =
+-- 
+2.43.0
+
 
 
 
