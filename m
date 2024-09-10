@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21EE973457
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E96397336C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 688D41F25C0C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A4BAB2D2B6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE8D190684;
-	Tue, 10 Sep 2024 10:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CEC19415E;
+	Tue, 10 Sep 2024 10:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcM6z1A5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtQyqTXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7762946444;
-	Tue, 10 Sep 2024 10:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6691F194145;
+	Tue, 10 Sep 2024 10:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964612; cv=none; b=eyrbNtOPA9bN/hIWLHj8g2bTlzkWUnjznvHKKW27EQqt4oNM0AiJpyhiWWQ4WlpkOBeLfokmr2o8DcMBDOXLl6Fka/FN0wLTyAVClTPaTWACyFXZC0rG0EigIPeHgZy5mJ+NuIGRSLVyqo6w+qbJrZRCCaeFxIuI31njgRDstiA=
+	t=1725963872; cv=none; b=V5/bRQLbD7WTFDzHVqkNIWnkUKM7phwE5pdIstQhL6XXQ9O4Der6VSAT4bp2aDqpEMT62huDhipLg/6Uh4NEA70OOK3y3Y4VM18YnQiK0jqrLoHo4Do/ZBbnum/hqxZdIohXKq9FIGnpdpJNnh8PmTH2xMFXSylM13mXz9YI+/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964612; c=relaxed/simple;
-	bh=94Q2JhbVwxF9qCjaCnfM5YLKkQhuufqPKQxdyQoj4/s=;
+	s=arc-20240116; t=1725963872; c=relaxed/simple;
+	bh=ihxk9Kgd08p/zf121g9OuLaoqz5elB9zCXXgi+ORU6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNrUZlpxLR9qIwlEvkHxL/kjmst3D/4Bv3p3MnONUrWPi6h68K6unZgDqUlZJmX1rBSmsPaCY9boFI+wnUAJ+f7aUWJSRZ/fe/AZIvd5B3fQmNnbHvPKkVCDpHva34+XzJ6dD0rTL0GW/nas8p9QvMnuhMK7g85GE4AUhmqhbOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcM6z1A5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E7DC4CEC3;
-	Tue, 10 Sep 2024 10:36:51 +0000 (UTC)
+	 MIME-Version; b=g8a0e8qPmhRNy+KlX2Q+drWTOR6mA76+9FayKYiirlvRgExKLtccURB5fPiOKN3rnF1i3sMLGTvUGCmn78lPfhj6yoaWjQRSLt5JhGuQpb64shBazag1zzE/g85fFUp/UhNYc0I2XzKXRJa3e+s5U5it17OB3aL46vUiixFGW2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtQyqTXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1482C4CEC3;
+	Tue, 10 Sep 2024 10:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964612;
-	bh=94Q2JhbVwxF9qCjaCnfM5YLKkQhuufqPKQxdyQoj4/s=;
+	s=korg; t=1725963872;
+	bh=ihxk9Kgd08p/zf121g9OuLaoqz5elB9zCXXgi+ORU6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcM6z1A58Da9wFnORIHeeWMA3NvpB8vlCuWBisX9P4uoVHnjTCiDWYdvKKFC0vqgk
-	 crE5ldGQMJtU9rLZB7+QcKSim2W996Lp/9na2olRgFjxbVW/eeE45bRRvkRjiTw/on
-	 gch01VE8BG25UsGmaXOCgOZdQUo3IB6wkWF3tcOQ=
+	b=KtQyqTXm/8UCQA9dt/0ZCXhGi9zgd2X6RjASGYhv6rPyqA0o22VLDOaZrNT5z1Wu0
+	 78UlzoKkV1R1wx6sKkNSkDNzSLDr0mbuDxjVh0o2luvobB+E2g+0ZdxDtAPOeHWTnB
+	 4gJbh0K9rHPIDJTpXGpj3jEstQwyBlkYz7mzB+iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sukrut Bellary <sukrut.bellary@linux.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 214/269] misc: fastrpc: Fix double free of buf in error path
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 179/214] iio: adc: ad7124: fix chip ID mismatch
 Date: Tue, 10 Sep 2024 11:33:21 +0200
-Message-ID: <20240910092615.632233411@linuxfoundation.org>
+Message-ID: <20240910092606.007496723@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sukrut Bellary <sukrut.bellary@linux.com>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-commit e8c276d4dc0e19ee48385f74426aebc855b49aaf upstream.
+commit 96f9ab0d5933c1c00142dd052f259fce0bc3ced2 upstream.
 
-smatch warning:
-drivers/misc/fastrpc.c:1926 fastrpc_req_mmap() error: double free of 'buf'
+The ad7124_soft_reset() function has the assumption that the chip will
+assert the "power-on reset" bit in the STATUS register after a software
+reset without any delay. The POR bit =0 is used to check if the chip
+initialization is done.
 
-In fastrpc_req_mmap() error path, the fastrpc buffer is freed in
-fastrpc_req_munmap_impl() if unmap is successful.
+A chip ID mismatch probe error appears intermittently when the probe
+continues too soon and the ID register does not contain the expected
+value.
 
-But in the end, there is an unconditional call to fastrpc_buf_free().
-So the above case triggers the double free of fastrpc buf.
+Fix by adding a 200us delay after the software reset command is issued.
 
-Fixes: 72fa6f7820c4 ("misc: fastrpc: Rework fastrpc_req_munmap")
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240902141409.70371-2-srinivas.kandagatla@linaro.org
+Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-1-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7124.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1912,7 +1912,8 @@ static int fastrpc_req_mmap(struct fastr
- 				      &args[0]);
- 	if (err) {
- 		dev_err(dev, "mmap error (len 0x%08llx)\n", buf->size);
--		goto err_invoke;
-+		fastrpc_buf_free(buf);
-+		return err;
- 	}
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -690,6 +690,7 @@ static int ad7124_soft_reset(struct ad71
+ 	if (ret < 0)
+ 		return ret;
  
- 	/* update the buffer to be able to deallocate the memory on the DSP */
-@@ -1950,8 +1951,6 @@ static int fastrpc_req_mmap(struct fastr
- 
- err_assign:
- 	fastrpc_req_munmap_impl(fl, buf);
--err_invoke:
--	fastrpc_buf_free(buf);
- 
- 	return err;
- }
++	fsleep(200);
+ 	timeout = 100;
+ 	do {
+ 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
 
 
 
