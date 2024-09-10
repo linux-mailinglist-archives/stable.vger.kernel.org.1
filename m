@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-74907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9D7973206
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4479D973421
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D961C21150
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00461F25AFD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F69194C76;
-	Tue, 10 Sep 2024 10:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65BF188A09;
+	Tue, 10 Sep 2024 10:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hX+xItDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huXK2+XQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75624183CB0;
-	Tue, 10 Sep 2024 10:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8457E17B50F;
+	Tue, 10 Sep 2024 10:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963183; cv=none; b=uvpfizpoSecajatUudOOOaXnlaT9+JzKBfzfaax5d7Yn06YJXrkKk2JlyRI0Wn5puKEUJbV3KK/RdyjVl3lmccSq1pdXDSmyWyLuGWUc+Wt/1vaz1dNyzwS8G5asLJZ6p/uFGWTlGq4ceFea42j5xLTTMAg26i8kfM9gAn//D8Q=
+	t=1725964490; cv=none; b=uvNEDJxtA6qSuIkrR7NI2fRSfMSzjZGD1plRmqrx/0d7uq5GskrM9Tllz4hqFgHHPeOA/Pgkxg4cxFZ+JWbJzDhINF5l4JXFTfFd9+qMiNzDvrigYwVDfvjxM1RlnaU9q9qi6jiv9wGMvAyTFbHJMWrSQZs/WzLh8v5Mv8+mD+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963183; c=relaxed/simple;
-	bh=zULc15tXiH4v5iM9vQutk6LLRXk1dz9xujc9rY3+uks=;
+	s=arc-20240116; t=1725964490; c=relaxed/simple;
+	bh=hJaUYokpM3wyQifpccXI1kJJi/wgoEO/VUVGTfgRTj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gbc8xZkSGfnrAy9bu7qcFNftMTBtxAvP8DyLDeY/zSa1UWP3F5Mxjyi8K+nsqi2KFr9QCw2jAx2SPCx4Jhx7WqNQ4vS4e0oAjjD2UWHHlc6QCDaniEfwG1hyC19A5JqxfERM0RpvNKyWSmZPy4wvUm+mU/SpFbjk5A8TGg0jz1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hX+xItDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F307CC4CEC3;
-	Tue, 10 Sep 2024 10:13:02 +0000 (UTC)
+	 MIME-Version; b=tmdpx9iZDrpKCjrWINpcxRtZ+ClxAhT9+Fy+hBazOiFhG3LEsFoQYfHscl3V2vbQiQRBX6FMAGGyY/rwrxzVqku/GvhBgLAQ8XU1q20s+NoTxWTHfwbv9hYHHNgsx05lLnu+ThAAKoIJM+kjXk/rEzmTkA1e26u6W5WBT61IEB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huXK2+XQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AEEC4CEC3;
+	Tue, 10 Sep 2024 10:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963183;
-	bh=zULc15tXiH4v5iM9vQutk6LLRXk1dz9xujc9rY3+uks=;
+	s=korg; t=1725964490;
+	bh=hJaUYokpM3wyQifpccXI1kJJi/wgoEO/VUVGTfgRTj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hX+xItDdZKc12+WN0LO8NH8xNp0aDuAcVhHAHuqNaAFHPHlZrhBw0hlhCZlDQgwTh
-	 cwQmtThWhGT6+YHb7GXgTFmC1vD7E2AGbuohuBU3455evHBZkLlRfsl/D5kXtGuRnS
-	 +JVJPnzYH096Z/hj4JecqnwNxcejMQ46WG8AK+lA=
+	b=huXK2+XQoHgVEzVeKJES5JY1IbTj/kOZn0+Fllf0YFUCAUxy/Z6Zyy2qqbzaz4dCs
+	 sJqhQ5BoMD78cn2YjxEUOaRQT8Clv+zqMonqOLrij0NIWc8Zp8qFuwGgLMYgcx8HQE
+	 AbCkZrEdb0tyaO+i23hbublFqzCC6+nMWVPWbVA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/192] workqueue: wq_watchdog_touch is always called with valid CPU
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Wyes Karny <wyes.karny@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Meng Li <li.meng@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 200/269] ACPI: CPPC: Add helper to get the highest performance value
 Date: Tue, 10 Sep 2024 11:33:07 +0200
-Message-ID: <20240910092604.639838923@linuxfoundation.org>
+Message-ID: <20240910092615.221447454@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Meng Li <li.meng@amd.com>
 
-[ Upstream commit 18e24deb1cc92f2068ce7434a94233741fbd7771 ]
+commit 12753d71e8c5c3e716cedba23ddeed508da0bdc4 upstream.
 
-Warn in the case it is called with cpu == -1. This does not appear
-to happen anywhere.
+Add support for getting the highest performance to the
+generic CPPC driver. This enables downstream drivers
+such as amd-pstate to discover and use these values.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Refer to Chapter 8.4.6.1.1.1. Highest Performance of ACPI
+Specification 6.5 for details on continuous performance control
+of CPPC (linked below).
+
+Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wyes Karny <wyes.karny@amd.com>
+Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+Acked-by: Huang Rui <ray.huang@amd.com>
+Signed-off-by: Meng Li <li.meng@amd.com>
+Link: https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html?highlight=cppc#highest-performance
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/cppc_acpi.c |   13 +++++++++++++
+ include/acpi/cppc_acpi.h |    5 +++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index f3b6ac232e21..4da8a5e702f8 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5893,6 +5893,8 @@ notrace void wq_watchdog_touch(int cpu)
- {
- 	if (cpu >= 0)
- 		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
-+	else
-+		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
- 
- 	wq_watchdog_touched = jiffies;
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1197,6 +1197,19 @@ int cppc_get_nominal_perf(int cpunum, u6
  }
--- 
-2.43.0
-
+ 
+ /**
++ * cppc_get_highest_perf - Get the highest performance register value.
++ * @cpunum: CPU from which to get highest performance.
++ * @highest_perf: Return address.
++ *
++ * Return: 0 for success, -EIO otherwise.
++ */
++int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
++{
++	return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
++}
++EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
++
++/**
+  * cppc_get_epp_perf - Get the epp register value.
+  * @cpunum: CPU from which to get epp preference value.
+  * @epp_perf: Return address.
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -139,6 +139,7 @@ struct cppc_cpudata {
+ #ifdef CONFIG_ACPI_CPPC_LIB
+ extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+ extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
++extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
+ extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+ extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+ extern int cppc_set_enable(int cpu, bool enable);
+@@ -165,6 +166,10 @@ static inline int cppc_get_nominal_perf(
+ {
+ 	return -ENOTSUPP;
+ }
++static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
++{
++	return -ENOTSUPP;
++}
+ static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ {
+ 	return -ENOTSUPP;
 
 
 
