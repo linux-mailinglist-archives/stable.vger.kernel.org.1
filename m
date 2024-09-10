@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D749733CB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8907097349B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 238E428A22D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EDD928E21F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9452199944;
-	Tue, 10 Sep 2024 10:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E992D1DA4C;
+	Tue, 10 Sep 2024 10:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIuD9Ih/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWRK50Se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2118E778;
-	Tue, 10 Sep 2024 10:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FEB17A589;
+	Tue, 10 Sep 2024 10:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964291; cv=none; b=Vm0Snnrr8NIT08UJBl76+XH0J5KLN/VSfdWFwD3hDEd0XUB6AccqyGOfJgbx+nuVpx0k89UXs5pqaw6Ks3n+6JYMtgf3s5UsJsgryPl+PLbfhENZhikeV9G04Bbwx0N01DPhgpOv1F3zKjRsLR76U5nSgEpskzQ6oPaa/NTNnxk=
+	t=1725964774; cv=none; b=KJw5esMiu/iCW1/wPZl9VMdnTbGJnpeE5aiNQG4ufcXOQFL80/brNGmzMV3mj8Lr6qWTt7puiUF0GAjm9AF26nw3KZTyteSIElud5UOko4QKTI/Q6SRM9sX0ZKwUOWr5/8PihcoxuHRh9yoTg4x2g/BtK7QqWpHcK0e05tKz5rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964291; c=relaxed/simple;
-	bh=1CaxLtajIta/91re0kqawbv1Sg76zilPrs+xEpqL/qY=;
+	s=arc-20240116; t=1725964774; c=relaxed/simple;
+	bh=FIyNmzIGhyQDRdfMNiT2J28tflcm5/BoL4ZOxtoUKBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZVFM29PVqerEJajgyzcLxDY3sqRCPbpRBlh9yygwqyQzcDKNjnfuc1G7IWdbBnewWL7+lFrZfYZfL3uiOBNRzdh5hnjxNZLfT8VfjqIc2T6ULhY2Bj4IKVLm/IndsAQO+ZHedgyeLGAQeuenJgfcOVsj10BXyzfS4euopzczlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIuD9Ih/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9768EC4CEC3;
-	Tue, 10 Sep 2024 10:31:30 +0000 (UTC)
+	 MIME-Version; b=XrYhsl8YuS1EkepGOrE2HbnNl5BN0zodVuL0lXnePZE79HcZ7J2vYqwvj9SGVoczb2iYoly+fLWX6w+KrcFNc6LEe2Kcxxr8MAyrJGbG+WlKNwulvqj4aeA41HZunz8jvnccP6MuOeodhLXXiyaN+ZHugKZCfrr1Eddh9+JiFX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWRK50Se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0830C4CEC3;
+	Tue, 10 Sep 2024 10:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964291;
-	bh=1CaxLtajIta/91re0kqawbv1Sg76zilPrs+xEpqL/qY=;
+	s=korg; t=1725964774;
+	bh=FIyNmzIGhyQDRdfMNiT2J28tflcm5/BoL4ZOxtoUKBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIuD9Ih/V7YM7a8jobe1fCkjwXjVU7pNgr8KQ8No6/e7rPKjNfSZJZFEQMc2Oyecb
-	 YI41i9se//9surl9Dr6WH8VfvECVNAJXT4Caf7LMx/usqygZwg1l/FvizhKbYJsE93
-	 ULJgZIcHCi4gPPhWWiutt5oqvS2hY0nJgu8hxsCQ=
+	b=eWRK50SeFTd/qnj27tHHGwDlQmcpx6oX1TLAZ6XkGiSx2x4OW8Q/lJFawOLjCk9xQ
+	 uKQ88op9XDrtPDlMJ7rICVOeoY+Lvlhd+wkwNMkb+YPPBvFyj3r3KePfuKTZn1kFYc
+	 FG7viXiAW0x8+4uvWn31HgI2e5Y00epYuyVoKaSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hayes Wang <hayeswang@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Chen <michael.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/269] r8152: fix the firmware doesnt work
-Date: Tue, 10 Sep 2024 11:32:00 +0200
-Message-ID: <20240910092612.945297230@linuxfoundation.org>
+Subject: [PATCH 5.10 026/186] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
+Date: Tue, 10 Sep 2024 11:32:01 +0200
+Message-ID: <20240910092555.681135486@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Michael Chen <michael.chen@amd.com>
 
-[ Upstream commit 8487b4af59d4d7feda4b119dc2d92c67ca25c27e ]
+[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
 
-generic_ocp_write() asks the parameter "size" must be 4 bytes align.
-Therefore, write the bp would fail, if the mac->bp_num is odd. Align the
-size to 4 for fixing it. The way may write an extra bp, but the
-rtl8152_is_fw_mac_ok() makes sure the value must be 0 for the bp whose
-index is more than mac->bp_num. That is, there is no influence for the
-firmware.
+Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
+in some use case. This would lead code scanner to complain about
+access beyond. Re-define it in union to enforce 8-byte size and
+alignment to avoid potential issue.
 
-Besides, I check the return value of generic_ocp_write() to make sure
-everything is correct.
-
-Fixes: e5c266a61186 ("r8152: set bp in bulk")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Link: https://patch.msgid.link/20240903063333.4502-1-hayeswang@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 127b34dcc5b3..ce19ebd180f1 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5143,14 +5143,23 @@ static void rtl8152_fw_mac_apply(struct r8152 *tp, struct fw_mac *mac)
- 	data = (u8 *)mac;
- 	data += __le16_to_cpu(mac->fw_offset);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index d54ceebd346b..30c70b3ab17f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -42,8 +42,6 @@
+ #define CRAT_OEMTABLEID_LENGTH	8
+ #define CRAT_RESERVED_LENGTH	6
  
--	generic_ocp_write(tp, __le16_to_cpu(mac->fw_reg), 0xff, length, data,
--			  type);
-+	if (generic_ocp_write(tp, __le16_to_cpu(mac->fw_reg), 0xff, length,
-+			      data, type) < 0) {
-+		dev_err(&tp->intf->dev, "Write %s fw fail\n",
-+			type ? "PLA" : "USB");
-+		return;
-+	}
- 
- 	ocp_write_word(tp, type, __le16_to_cpu(mac->bp_ba_addr),
- 		       __le16_to_cpu(mac->bp_ba_value));
- 
--	generic_ocp_write(tp, __le16_to_cpu(mac->bp_start), BYTE_EN_DWORD,
--			  __le16_to_cpu(mac->bp_num) << 1, mac->bp, type);
-+	if (generic_ocp_write(tp, __le16_to_cpu(mac->bp_start), BYTE_EN_DWORD,
-+			      ALIGN(__le16_to_cpu(mac->bp_num) << 1, 4),
-+			      mac->bp, type) < 0) {
-+		dev_err(&tp->intf->dev, "Write %s bp fail\n",
-+			type ? "PLA" : "USB");
-+		return;
-+	}
- 
- 	bp_en_addr = __le16_to_cpu(mac->bp_en_addr);
- 	if (bp_en_addr)
+-#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
+-
+ /* Compute Unit flags */
+ #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
+ #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 2b31c3066aaa..b5738032237e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -906,8 +906,7 @@ static void kfd_update_system_properties(void)
+ 	dev = list_last_entry(&topology_device_list,
+ 			struct kfd_topology_device, list);
+ 	if (dev) {
+-		sys_props.platform_id =
+-			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
++		sys_props.platform_id = dev->oem_id64;
+ 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
+ 		sys_props.platform_rev = dev->oem_revision;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index 326d9b26b7aa..22476a939064 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -182,7 +182,10 @@ struct kfd_topology_device {
+ 	struct attribute		attr_gpuid;
+ 	struct attribute		attr_name;
+ 	struct attribute		attr_props;
+-	uint8_t				oem_id[CRAT_OEMID_LENGTH];
++	union {
++		uint8_t				oem_id[CRAT_OEMID_LENGTH];
++		uint64_t			oem_id64;
++	};
+ 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
+ 	uint32_t			oem_revision;
+ };
 -- 
 2.43.0
 
