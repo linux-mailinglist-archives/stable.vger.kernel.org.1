@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-75124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F32973303
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25479973221
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A62C285B7F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05001F23732
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1D5192D96;
-	Tue, 10 Sep 2024 10:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517CF19259E;
+	Tue, 10 Sep 2024 10:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbEBdSuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRzg4srn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC7118F2DF;
-	Tue, 10 Sep 2024 10:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5518C925;
+	Tue, 10 Sep 2024 10:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963820; cv=none; b=cj7o4Jhfq6CUN0KqlyRHSgzgaIyhbyTGQYK3j6F7/8Izt0IMxsRQgnPd9Hyf3XkgRaDjf3nYLVP+6gSaKONCfNIbHJnDFyV7RDCzI4K7jUTrHFTD425scItU4BcrPGadanOEllCHH+cIo82Qv7KArlVKNTukop+CzUKf15JGUV4=
+	t=1725963251; cv=none; b=TY60erlJFmZiFCfFbaKCRFKc3cl/lSrJqTQzHiqKUX/xAxX7iAiaLhnM/duqX+BQnF6pH+G1bS87G5Lr5NQN7jLrHAg0HNWqQgdy0E+6SkOcj2SFwP1+SObC8hGaqjxiWes7YYCrGRGqKQCLUmQf8OT+r+pT+VPV5faaf2u96Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963820; c=relaxed/simple;
-	bh=LAFr7hWgMVjVvsKUE5Vfl51gQ1Bg6tA4e7bIn8PMssA=;
+	s=arc-20240116; t=1725963251; c=relaxed/simple;
+	bh=8nav9rMnXIhF8YQT2GL3rPazRbBfkQrSyN68WNKnyrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PGdgi1/28mMlAKsvN1UslM5D4Vd1uhSf4UzqLEVsKFRs3NzJWYeNIf20m/qRW+IH66Xp/pNjBXgM0RSYqnPcf2tT7RZDFccBoZgEEvV/KCFCV/EYpV1d0n/68VaPuyQ5vYl+TT1kFQndDLuGJbv3aSd96TLwe49EKtOwnow7X00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbEBdSuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E37C4CEC3;
-	Tue, 10 Sep 2024 10:23:39 +0000 (UTC)
+	 MIME-Version; b=lw2amX28vNrjO9UhHQT1YjD4Gpw29ZeMP6q6vkf28s29oPJe+clAcOQkYg4FFal2UmWMX31cDVJZapYGpxPoPkuWBlkPNXumUq5g7eny5JWNo7qyyRsi4QtnVQ7FuyUuKtNo/y+2Xp6qJQRkCXg1T+Y9h3xkJ14QYfQ9pRjcxEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRzg4srn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87431C4CECD;
+	Tue, 10 Sep 2024 10:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963819;
-	bh=LAFr7hWgMVjVvsKUE5Vfl51gQ1Bg6tA4e7bIn8PMssA=;
+	s=korg; t=1725963250;
+	bh=8nav9rMnXIhF8YQT2GL3rPazRbBfkQrSyN68WNKnyrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbEBdSuoMxJmoPMP2dyXTdiGJlDGcV1YFkdCdOa5iS0peckc+Pijq5YrILppCUotB
-	 s7AyhR4658UKNIVTInEdw3gexneIpx3ArwhnBvYLP8FB+hipgzS5pzPIOOkTM0O0Zt
-	 nt3BWxWtCLXXcvluOd5Vgn7TsH4OT/Gr5ohM/aYs=
+	b=qRzg4srnD0ZHKEZbYLC+KDe+1tex/SXD7e7BMLFpTa3o/R2N/qpFSzqkJxGdc6nXR
+	 jqwKir6Dat9ASTqsDGTUola1BxhjEIuIHuoGgO1Vi+As29mnRGxxcg8GDBRBnArrMs
+	 vhitlks0F4/ftgHaWuxeZ1eIccuqELKGg0eShjNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.15 188/214] clocksource/drivers/timer-of: Remove percpu irq related code
+	Ming Lei <ming.lei@redhat.com>,
+	Li Nan <linan122@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Changhui Zhong <czhong@redhat.com>
+Subject: [PATCH 6.1 186/192] ublk_drv: fix NULL pointer dereference in ublk_ctrl_start_recovery()
 Date: Tue, 10 Sep 2024 11:33:30 +0200
-Message-ID: <20240910092606.330145842@linuxfoundation.org>
+Message-ID: <20240910092605.464064948@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,118 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Li Nan <linan122@huawei.com>
 
-commit 471ef0b5a8aaca4296108e756b970acfc499ede4 upstream.
+[ Upstream commit e58f5142f88320a5b1449f96a146f2f24615c5c7 ]
 
-GCC's named address space checks errors out with:
+When two UBLK_CMD_START_USER_RECOVERY commands are submitted, the
+first one sets 'ubq->ubq_daemon' to NULL, and the second one triggers
+WARN in ublk_queue_reinit() and subsequently a NULL pointer dereference
+issue.
 
-drivers/clocksource/timer-of.c: In function ‘timer_of_irq_exit’:
-drivers/clocksource/timer-of.c:29:46: error: passing argument 2 of
-‘free_percpu_irq’ from pointer to non-enclosed address space
-  29 |                 free_percpu_irq(of_irq->irq, clkevt);
-     |                                              ^~~~~~
-In file included from drivers/clocksource/timer-of.c:8:
-./include/linux/interrupt.h:201:43: note: expected ‘__seg_gs void *’
-but argument is of type ‘struct clock_event_device *’
- 201 | extern void free_percpu_irq(unsigned int, void __percpu *);
-     |                                           ^~~~~~~~~~~~~~~
-drivers/clocksource/timer-of.c: In function ‘timer_of_irq_init’:
-drivers/clocksource/timer-of.c:74:51: error: passing argument 4 of
-‘request_percpu_irq’ from pointer to non-enclosed address space
-  74 |                                    np->full_name, clkevt) :
-     |                                                   ^~~~~~
-./include/linux/interrupt.h:190:56: note: expected ‘__seg_gs void *’
-but argument is of type ‘struct clock_event_device *’
- 190 |                    const char *devname, void __percpu *percpu_dev_id)
+Fix it by adding the check in ublk_ctrl_start_recovery() and return
+immediately in case of zero 'ub->nr_queues_ready'.
 
-Sparse warns about:
+  BUG: kernel NULL pointer dereference, address: 0000000000000028
+  RIP: 0010:ublk_ctrl_start_recovery.constprop.0+0x82/0x180
+  Call Trace:
+   <TASK>
+   ? __die+0x20/0x70
+   ? page_fault_oops+0x75/0x170
+   ? exc_page_fault+0x64/0x140
+   ? asm_exc_page_fault+0x22/0x30
+   ? ublk_ctrl_start_recovery.constprop.0+0x82/0x180
+   ublk_ctrl_uring_cmd+0x4f7/0x6c0
+   ? pick_next_task_idle+0x26/0x40
+   io_uring_cmd+0x9a/0x1b0
+   io_issue_sqe+0x193/0x3f0
+   io_wq_submit_work+0x9b/0x390
+   io_worker_handle_work+0x165/0x360
+   io_wq_worker+0xcb/0x2f0
+   ? finish_task_switch.isra.0+0x203/0x290
+   ? finish_task_switch.isra.0+0x203/0x290
+   ? __pfx_io_wq_worker+0x10/0x10
+   ret_from_fork+0x2d/0x50
+   ? __pfx_io_wq_worker+0x10/0x10
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
 
-timer-of.c:29:46: warning: incorrect type in argument 2 (different address spaces)
-timer-of.c:29:46:    expected void [noderef] __percpu *
-timer-of.c:29:46:    got struct clock_event_device *clkevt
-timer-of.c:74:51: warning: incorrect type in argument 4 (different address spaces)
-timer-of.c:74:51:    expected void [noderef] __percpu *percpu_dev_id
-timer-of.c:74:51:    got struct clock_event_device *clkevt
-
-It appears the code is incorrect as reported by Uros Bizjak:
-
-"The referred code is questionable as it tries to reuse
-the clkevent pointer once as percpu pointer and once as generic
-pointer, which should be avoided."
-
-This change removes the percpu related code as no drivers is using it.
-
-[Daniel: Fixed the description]
-
-Fixes: dc11bae785295 ("clocksource/drivers: Add timer-of common init routine")
-Reported-by: Uros Bizjak <ubizjak@gmail.com>
-Tested-by: Uros Bizjak <ubizjak@gmail.com>
-Link: https://lore.kernel.org/r/20240819100335.2394751-1-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c732a852b419 ("ublk_drv: add START_USER_RECOVERY and END_USER_RECOVERY support")
+Reported-and-tested-by: Changhui Zhong <czhong@redhat.com>
+Closes: https://lore.kernel.org/all/CAGVVp+UvLiS+bhNXV-h2icwX1dyybbYHeQUuH7RYqUvMQf6N3w@mail.gmail.com
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Link: https://lore.kernel.org/r/20240904031348.4139545-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-of.c |   17 ++++-------------
- drivers/clocksource/timer-of.h |    1 -
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/block/ublk_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/clocksource/timer-of.c
-+++ b/drivers/clocksource/timer-of.c
-@@ -25,10 +25,7 @@ static __init void timer_of_irq_exit(str
- 
- 	struct clock_event_device *clkevt = &to->clkevt;
- 
--	if (of_irq->percpu)
--		free_percpu_irq(of_irq->irq, clkevt);
--	else
--		free_irq(of_irq->irq, clkevt);
-+	free_irq(of_irq->irq, clkevt);
- }
- 
- /**
-@@ -42,9 +39,6 @@ static __init void timer_of_irq_exit(str
-  * - Get interrupt number by name
-  * - Get interrupt number by index
-  *
-- * When the interrupt is per CPU, 'request_percpu_irq()' is called,
-- * otherwise 'request_irq()' is used.
-- *
-  * Returns 0 on success, < 0 otherwise
-  */
- static __init int timer_of_irq_init(struct device_node *np,
-@@ -69,12 +63,9 @@ static __init int timer_of_irq_init(stru
- 		return -EINVAL;
- 	}
- 
--	ret = of_irq->percpu ?
--		request_percpu_irq(of_irq->irq, of_irq->handler,
--				   np->full_name, clkevt) :
--		request_irq(of_irq->irq, of_irq->handler,
--			    of_irq->flags ? of_irq->flags : IRQF_TIMER,
--			    np->full_name, clkevt);
-+	ret = request_irq(of_irq->irq, of_irq->handler,
-+			  of_irq->flags ? of_irq->flags : IRQF_TIMER,
-+			  np->full_name, clkevt);
- 	if (ret) {
- 		pr_err("Failed to request irq %d for %pOF\n", of_irq->irq, np);
- 		return ret;
---- a/drivers/clocksource/timer-of.h
-+++ b/drivers/clocksource/timer-of.h
-@@ -11,7 +11,6 @@
- struct of_timer_irq {
- 	int irq;
- 	int index;
--	int percpu;
- 	const char *name;
- 	unsigned long flags;
- 	irq_handler_t handler;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 3fa74051f31b..bfd643856f64 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1915,6 +1915,8 @@ static int ublk_ctrl_start_recovery(struct ublk_device *ub,
+ 	mutex_lock(&ub->mutex);
+ 	if (!ublk_can_use_recovery(ub))
+ 		goto out_unlock;
++	if (!ub->nr_queues_ready)
++		goto out_unlock;
+ 	/*
+ 	 * START_RECOVERY is only allowd after:
+ 	 *
+-- 
+2.43.0
+
 
 
 
