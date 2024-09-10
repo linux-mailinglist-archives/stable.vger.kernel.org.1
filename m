@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-74867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321D29731CE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4229734D7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 638BF1C25657
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B61928E27A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8B8191F67;
-	Tue, 10 Sep 2024 10:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD21218FC73;
+	Tue, 10 Sep 2024 10:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCeoGDZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSog3xpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8718B48A;
-	Tue, 10 Sep 2024 10:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79938143880;
+	Tue, 10 Sep 2024 10:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963065; cv=none; b=CDFu9btFjtlLt0bN9xUeojW/R4/9BDp9SbCvoJ6OZTM8X3wae6Hi0XKhQNfKN4fj8Wcy3SE+3EHacODIJyOx8nrf8NHuDP8f1clVyfxYTqgEmYrwwF0WpVAIoFx7lFPwM9ueEk6DceF0TFHd4Zxfebmx/xWktzkya8DbclGq5Ek=
+	t=1725964853; cv=none; b=YqYYIlWzsdwO8sY3IDTLkXa0tgVqgSaaotOWPYGGvn5fglrj2JGLq96NfxQ/smhN3T2H1B5uKm2nxEL4LexrfxwfC2yHLxzdv3sgXW14kePwOU2v8quI2iPBLU7Jm2RPjGVcfH+MD32QxkMQRIDyE/Fd5Hg5TiYygBvSV0BxOoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963065; c=relaxed/simple;
-	bh=luO4wLotB+G5ZPncl8n3wvedJ7ut0zW6Kx+rDvCKA8g=;
+	s=arc-20240116; t=1725964853; c=relaxed/simple;
+	bh=03DkKXnuDbWDEBJ9RPRr8qIScedb/x85o9MmbZXOug4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQYZ/OXfsxlHESIs0vTm4bD0ekcX/syEW5xHO7dSWLoopc2RUqc4pfMbqalHDX6kE3Kl2fPcwacdFluXmKD84+p708Q6A0i3bqenpJ7VIRWfABFAiD5aHWzlYPYNJyJ5t1qTMFBe+02RTTSALZ2R0n4F7bZH0I7vEpUW5TiVKOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCeoGDZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D7FC4CEC3;
-	Tue, 10 Sep 2024 10:11:04 +0000 (UTC)
+	 MIME-Version; b=IlJs+3hdCGZP4YZv08WTtYmINBgPIXIirmhI4VUU8FbEiUrorebNOTvzntwuSI0Awt58Zj5AvUhH1zT4t2DVu4XujkJORN5rdZwEoAcQ4un9OV2fQoI61pZttEKIkf/d/hXDTjIOVa7EJH3L0FlW5lSQR65rUgXUxn2RzTZePdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSog3xpQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007AFC4CEC3;
+	Tue, 10 Sep 2024 10:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963065;
-	bh=luO4wLotB+G5ZPncl8n3wvedJ7ut0zW6Kx+rDvCKA8g=;
+	s=korg; t=1725964853;
+	bh=03DkKXnuDbWDEBJ9RPRr8qIScedb/x85o9MmbZXOug4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCeoGDZYRLl22ZRomR40wijLzJ3/PzijkdKiB7Q9wrYN+ZGpQgjgW4pQ4D9SdwlAC
-	 pwtTFrc0IlFqe0hODB7P6Jh+SqFd4hzqK5yBKq4q1TU9LeL3W33Q+vAbgoKnqjUt4c
-	 ZQVFFvoKegB9cCa4Uxycy03Y+R1FTrGsmk+qJ8Ek=
+	b=ZSog3xpQexUmZDpTp0GDDqZ/SujPFYdVdQdeFEkH6jGcKujaiib6oQqPRqg5zznqT
+	 LDu9/hxSoeKzPmCSmADl3m+VoQsRMzG3kMoxDyOTnj0NUWZZJnyx8KvdLjQdLELseW
+	 AAWYLJhcYPfQ6pC2vrycLMwBE5I4mhZaKDSDakB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/192] Squashfs: sanity check symbolic link size
+	syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com,
+	syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Connor OBrien <connor.obrien@crowdstrike.com>
+Subject: [PATCH 5.10 053/186] bpf, cgroup: Assign cgroup in cgroup_sk_alloc when called from interrupt
 Date: Tue, 10 Sep 2024 11:32:28 +0200
-Message-ID: <20240910092603.137840846@linuxfoundation.org>
+Message-ID: <20240910092556.682986100@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +65,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Connor O'Brien <connor.obrien@crowdstrike.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+commit 78cc316e9583067884eb8bd154301dc1e9ee945c upstream.
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
+If cgroup_sk_alloc() is called from interrupt context, then just assign the
+root cgroup to skcd->cgroup. Prior to commit 8520e224f547 ("bpf, cgroups:
+Fix cgroup v2 fallback on v1/v2 mixed mode") we would just return, and later
+on in sock_cgroup_ptr(), we were NULL-testing the cgroup in fast-path, and
+iff indeed NULL returning the root cgroup (v ?: &cgrp_dfl_root.cgrp). Rather
+than re-adding the NULL-test to the fast-path we can just assign it once from
+cgroup_sk_alloc() given v1/v2 handling has been simplified. The migration from
+NULL test with returning &cgrp_dfl_root.cgrp to assigning &cgrp_dfl_root.cgrp
+directly does /not/ change behavior for callers of sock_cgroup_ptr().
 
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
+syzkaller was able to trigger a splat in the legacy netrom code base, where
+the RX handler in nr_rx_frame() calls nr_make_new() which calls sk_alloc()
+and therefore cgroup_sk_alloc() with in_interrupt() condition. Thus the NULL
+skcd->cgroup, where it trips over on cgroup_sk_free() side given it expects
+a non-NULL object. There are a few other candidates aside from netrom which
+have similar pattern where in their accept-like implementation, they just call
+to sk_alloc() and thus cgroup_sk_alloc() instead of sk_clone_lock() with the
+corresponding cgroup_sk_clone() which then inherits the cgroup from the parent
+socket. None of them are related to core protocols where BPF cgroup programs
+are running from. However, in future, they should follow to implement a similar
+inheritance mechanism.
 
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
+Additionally, with a !CONFIG_CGROUP_NET_PRIO and !CONFIG_CGROUP_NET_CLASSID
+configuration, the same issue was exposed also prior to 8520e224f547 due to
+commit e876ecc67db8 ("cgroup: memcg: net: do not associate sock with unrelated
+cgroup") which added the early in_interrupt() return back then.
 
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
-
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
-
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
-
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8520e224f547 ("bpf, cgroups: Fix cgroup v2 fallback on v1/v2 mixed mode")
+Fixes: e876ecc67db8 ("cgroup: memcg: net: do not associate sock with unrelated cgroup")
+Reported-by: syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com
+Reported-by: syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Tested-by: syzbot+df709157a4ecaf192b03@syzkaller.appspotmail.com
+Tested-by: syzbot+533f389d4026d86a2a95@syzkaller.appspotmail.com
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/bpf/20210927123921.21535-1-daniel@iogearbox.net
+Signed-off-by: Connor O'Brien <connor.obrien@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/cgroup/cgroup.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 24463145b351..f31649080a88 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -6559,22 +6559,29 @@ int cgroup_parse_float(const char *input
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
+ void cgroup_sk_alloc(struct sock_cgroup_data *skcd)
+ {
+-	/* Don't associate the sock with unrelated interrupted task's cgroup. */
+-	if (in_interrupt())
+-		return;
++	struct cgroup *cgroup;
+ 
+ 	rcu_read_lock();
++	/* Don't associate the sock with unrelated interrupted task's cgroup. */
++	if (in_interrupt()) {
++		cgroup = &cgrp_dfl_root.cgrp;
++		cgroup_get(cgroup);
++		goto out;
++	}
 +
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
--- 
-2.43.0
-
+ 	while (true) {
+ 		struct css_set *cset;
+ 
+ 		cset = task_css_set(current);
+ 		if (likely(cgroup_tryget(cset->dfl_cgrp))) {
+-			skcd->cgroup = cset->dfl_cgrp;
+-			cgroup_bpf_get(cset->dfl_cgrp);
++			cgroup = cset->dfl_cgrp;
+ 			break;
+ 		}
+ 		cpu_relax();
+ 	}
++out:
++	skcd->cgroup = cgroup;
++	cgroup_bpf_get(cgroup);
+ 	rcu_read_unlock();
+ }
+ 
 
 
 
