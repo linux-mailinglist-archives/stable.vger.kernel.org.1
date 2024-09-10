@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19F69731B1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B669734C2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD17D28B632
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94151C24F2B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA14219A28B;
-	Tue, 10 Sep 2024 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA415196446;
+	Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUOI4IG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWQbOEmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D03199FDB;
-	Tue, 10 Sep 2024 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85286195FEC;
+	Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963003; cv=none; b=XkcqQGmXUacPpQ5EZnoyWaOY9MLRc7Wd+6b0/kOKJnYISa432nj8uKic2F6pWvfCy9olRZtQuVxHJeJrtxZ0wWxHW449kKBp1EUTFAya/7afPqMFEd4HVnBDcKMBh6TbpL5gDYZgfbk/28ID3uNF3DGzHFJDVdkzyZGXdD6Nj8E=
+	t=1725964809; cv=none; b=ovy69u/8/ZJvaFBYpa6Om3zHIBxrGHwXRZ7s5qrNP6VKMW5ROLJAf12H2jknYUaoC+LbWFIjqywMLifc40ifAsOy3TIuYROJv1K2d07GGrCNOi5rzMCoOsRAaXKnwjdNx3lTVhmxi/UjW1Je5Vnqwi/2YDSTMIley66GFUYuprY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963003; c=relaxed/simple;
-	bh=eDy1zz8YilaFE7qoA7pVDeGQVQMrTc2HdGUc8lotog8=;
+	s=arc-20240116; t=1725964809; c=relaxed/simple;
+	bh=0oD+sOOU1ujLzpS7wdVLh0AGrU4kABLv7dFOmYzRMmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjBKFXRC9GGKXBZl1bfyStjilKdoPrLMNq6inUPt7rQbQzPu39EfVzABrTmnQaPhVOPmcgg+VBJUtT3ZWPqC+sfGcNBopcqMJ/zm0hqxrzu31epH4TCOfFoXNIFCquOb2XfVe8eq7IJ9ECFJbKLsP9K6gcBBJqcLmSCtE2ku/0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUOI4IG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EDBC4CECD;
-	Tue, 10 Sep 2024 10:10:02 +0000 (UTC)
+	 MIME-Version; b=U/sD0RAgpkyGCxwxeLtGjjOGiQe6M3VNSLS+rUglgu3re8suNOjhnHF+m9wIzv5F/lFMgFnXHA1hY+bh0cR6g2+tLc+HH/fxVv0OxjIRV7k+QCffb5BlBd9GpXHYSzE54CUeBfAAEGNjFv7MiAze7eCscK+r9Xhn0vwnutTDdMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWQbOEmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAF0C4CEC3;
+	Tue, 10 Sep 2024 10:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963003;
-	bh=eDy1zz8YilaFE7qoA7pVDeGQVQMrTc2HdGUc8lotog8=;
+	s=korg; t=1725964809;
+	bh=0oD+sOOU1ujLzpS7wdVLh0AGrU4kABLv7dFOmYzRMmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUOI4IG9n2QxodovqFOursW10hho/F2RzfSHNgpgQqdzL1St2ycHMOy0Xa5d7Gqgs
-	 lz9jw3ckqZoX45oLpRgplA6q7eSendFJYHmVBTJdYncIn/4FYSIwFzSvLKmOb34t71
-	 QwgJqueI+z+16zX2ZgImnDg+E6XxRIRkZO8bBODs=
+	b=OWQbOEmEnkiiFjLW3N6PzmsU4bDHp8wXWC+9ufpIxC4ooAw6Yia0tZ8BxloJaOdf/
+	 zlLE+OTp5X8LYk8q43BkZnhoiDLFgtrmVakzahe1mY7gimU1GZ0GjAoED5viHQ/BVz
+	 YYVWchMkuzt4iDpoXWz6E2W//7LoYJ1MRLRBa0tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Ziegler <ziegler.andreas@siemens.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/192] libbpf: Add NULL checks to bpf_object__{prev_map,next_map}
+Subject: [PATCH 5.10 031/186] wifi: iwlwifi: remove fw_running op
 Date: Tue, 10 Sep 2024 11:32:06 +0200
-Message-ID: <20240910092602.210455761@linuxfoundation.org>
+Message-ID: <20240910092555.858943065@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Ziegler <ziegler.andreas@siemens.com>
+From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-[ Upstream commit cedc12c5b57f7efa6dbebfb2b140e8675f5a2616 ]
+[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
 
-In the current state, an erroneous call to
-bpf_object__find_map_by_name(NULL, ...) leads to a segmentation
-fault through the following call chain:
+fw_running assumes that memory can be retrieved only after alive.
+This assumption is no longer true as we support dump before alive.
+To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
+bit in trans status is set before dumping instead of the prior check.
 
-  bpf_object__find_map_by_name(obj = NULL, ...)
-  -> bpf_object__for_each_map(pos, obj = NULL)
-  -> bpf_object__next_map((obj = NULL), NULL)
-  -> return (obj = NULL)->maps
-
-While calling bpf_object__find_map_by_name with obj = NULL is
-obviously incorrect, this should not lead to a segmentation
-fault but rather be handled gracefully.
-
-As __bpf_map__iter already handles this situation correctly, we
-can delegate the check for the regular case there and only add
-a check in case the prev or next parameter is NULL.
-
-Signed-off-by: Andreas Ziegler <ziegler.andreas@siemens.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240703083436.505124-1-ziegler.andreas@siemens.com
+Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
+ 3 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index bb27dfd6b97a..878f05a42421 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -9364,7 +9364,7 @@ __bpf_map__iter(const struct bpf_map *m, const struct bpf_object *obj, int i)
- struct bpf_map *
- bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
- {
--	if (prev == NULL)
-+	if (prev == NULL && obj != NULL)
- 		return obj->maps;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 24d6ed3513ce..c09a736f87e6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -275,8 +275,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
+ 		.data = { NULL, },
+ 	};
  
- 	return __bpf_map__iter(prev, obj, 1);
-@@ -9373,7 +9373,7 @@ bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
- struct bpf_map *
- bpf_object__prev_map(const struct bpf_object *obj, const struct bpf_map *next)
+-	if (fwrt->ops && fwrt->ops->fw_running &&
+-	    !fwrt->ops->fw_running(fwrt->ops_ctx))
++	if (!iwl_trans_fw_running(fwrt->trans))
+ 		return -EIO;
+ 
+ 	if (count < header_size + 1 || count > 1024 * 4)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+index cddcb4d9a264..79ab8ef78f67 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+@@ -72,7 +72,6 @@
+ struct iwl_fw_runtime_ops {
+ 	int (*dump_start)(void *ctx);
+ 	void (*dump_end)(void *ctx);
+-	bool (*fw_running)(void *ctx);
+ 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
+ 	bool (*d3_debug_enable)(void *ctx);
+ };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 3548eb57f1f3..9b1a1455a7d5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -577,11 +577,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
+ 	mutex_unlock(&mvm->mutex);
+ }
+ 
+-static bool iwl_mvm_fwrt_fw_running(void *ctx)
+-{
+-	return iwl_mvm_firmware_running(ctx);
+-}
+-
+ static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
  {
--	if (next == NULL) {
-+	if (next == NULL && obj != NULL) {
- 		if (!obj->nr_maps)
- 			return NULL;
- 		return obj->maps + obj->nr_maps - 1;
+ 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
+@@ -602,7 +597,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
+ static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
+ 	.dump_start = iwl_mvm_fwrt_dump_start,
+ 	.dump_end = iwl_mvm_fwrt_dump_end,
+-	.fw_running = iwl_mvm_fwrt_fw_running,
+ 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
+ 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
+ };
 -- 
 2.43.0
 
