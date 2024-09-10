@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDA19733D1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2399731AF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 422501C24E35
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABBB11C2567A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029E18FDA7;
-	Tue, 10 Sep 2024 10:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490CB19259E;
+	Tue, 10 Sep 2024 10:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIeom02c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNPsnCOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F02E18C02E;
-	Tue, 10 Sep 2024 10:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0815519066D;
+	Tue, 10 Sep 2024 10:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964309; cv=none; b=hwri6OtGwMu9UmWyaC0ikwBjoZXjcx4SrmaskyIoTqgaTmgUCnkufXCA1kwHRg28C7eXn2mYzhd6F/UOg8qvXQKRk2rceg4CNXaFvq8H/Q05iM4bB2iykQ402PrviCNuPH04XxByHfddRPFA6T8sCvyPTrKa2LZGUbz/hii6Shk=
+	t=1725963001; cv=none; b=Q3VtJvtVCT80l+zP9HqGSbqeZ3uTzeTbObzBhgjuOrCDWMKz68Su0/+zO82I2SRvsIu7r9qbJznB6NAJU0lbvcA4J5iD5hWuar3Xjs3AAY8bcKAWKRPVB0zLJDoNXMrF7Y6swg9EOLs+MsrY0bz4TtXcNhNKQYQ6OLzoOQYPHDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964309; c=relaxed/simple;
-	bh=b4z6qL0jXogsBKdpVO6zXYlFZSzKUvun+WjlbpZpjdY=;
+	s=arc-20240116; t=1725963001; c=relaxed/simple;
+	bh=8qFtgVPolKBnxIoRbAcYSzBdafvtVIojNKWqZE0h2B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDQPMNEK+4qxEufOuLwKTvr+1/F3e1Wu9vwtSgaVaiZ+uEWR0Ga+cZgTdoZsuFfiebUwUFmjZ7CeLoiT+uQZsKnKMMQAcm+3a1fOpWCw/ovrcC27xsioQT/waPOofJLVt6CO26+tHOqU5az/zBgRg5lriyVl+QkFV9JK79/G2aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIeom02c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4070EC4CEC3;
-	Tue, 10 Sep 2024 10:31:48 +0000 (UTC)
+	 MIME-Version; b=VUCsjrdCc4veVar4hgVp1XQELLTQMRT/WaAwErexiz6ihhXv+ZgJC5crUwrdfb4c9u6YXak1jZnfrZ+BEY2WFrjpjZRh2FlNOjjdAhLFEX4RLmZpHa4FqMEiaeykn9LjJMU80tn4A4DgxwIKwhmN9PSfp2lRAYlK0rLH9q2wRm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNPsnCOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D42EC4CEC6;
+	Tue, 10 Sep 2024 10:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964308;
-	bh=b4z6qL0jXogsBKdpVO6zXYlFZSzKUvun+WjlbpZpjdY=;
+	s=korg; t=1725963000;
+	bh=8qFtgVPolKBnxIoRbAcYSzBdafvtVIojNKWqZE0h2B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIeom02csTyzY0218307UT4iU3IC0DMi/xntep27woAv6x9lgrFDYjmHxEjjw9LhP
-	 iNrkTenTNg4p+gCbbBXAeZsldKhUOLERLjz1FJUrdb9SRl2KKALlmM5cxI4eeqPmBS
-	 oVJx9gfN63JhfrKio9kTv+fkOez+64DVSejUUL9o=
+	b=RNPsnCOtRCRNBDSPMfDxvJ8rglqOaA0xe6oNzLKdLOf87mFyNTa8SXxZKbAx+oEyr
+	 tKC/vhTQrlxeO2y2VlLETkNev+n8hYPcq+ohdvIeEmfaOXD+TC1HQz4LTv6UaFq2jN
+	 N3bJPW84/QHajWbbwKH7XbIB2k1u/eWhdvUZgTVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/269] firmware: cs_dsp: Dont allow writes to read-only controls
+Subject: [PATCH 6.1 101/192] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:32:05 +0200
-Message-ID: <20240910092613.124756603@linuxfoundation.org>
+Message-ID: <20240910092602.172300246@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 62412a9357b16a4e39dc582deb2e2a682b92524c ]
+[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
 
-Add a check to cs_dsp_coeff_write_ctrl() to abort if the control
-is not writeable.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-The cs_dsp code originated as an ASoC driver (wm_adsp) where all
-controls were exported as ALSA controls. It relied on ALSA to
-enforce the read-only permission. Now that the code has been
-separated from ALSA/ASoC it must perform its own permission check.
-
-This isn't currently causing any problems so there shouldn't be any
-need to backport this. If the client of cs_dsp exposes the control as
-an ALSA control, it should set permissions on that ALSA control to
-protect it. The few uses of cs_dsp_coeff_write_ctrl() inside drivers
-are for writable controls.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20240702110809.16836-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/w83627ehf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index a1da7581adb0..e62ffffe5fb8 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -796,6 +796,9 @@ int cs_dsp_coeff_write_ctrl(struct cs_dsp_coeff_ctl *ctl,
+diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+index 939d4c35e713..66d71aba4171 100644
+--- a/drivers/hwmon/w83627ehf.c
++++ b/drivers/hwmon/w83627ehf.c
+@@ -895,7 +895,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
+ 	if (err < 0)
+ 		return err;
  
- 	lockdep_assert_held(&ctl->dsp->pwr_lock);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
  
-+	if (ctl->flags && !(ctl->flags & WMFW_CTL_FLAG_WRITEABLE))
-+		return -EPERM;
-+
- 	if (len + off * sizeof(u32) > ctl->len)
- 		return -EINVAL;
+ 	mutex_lock(&data->update_lock);
+ 	data->target_temp[nr] = val;
+@@ -920,7 +920,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
+ 		return err;
  
+ 	/* Limit the temp to 0C - 15C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
 -- 
 2.43.0
 
