@@ -1,141 +1,108 @@
-Return-Path: <stable+bounces-75624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE02D973581
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:51:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442D59735FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 13:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3DB28451E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:51:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20F64B24A55
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4282C5381A;
-	Tue, 10 Sep 2024 10:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151581F956;
+	Tue, 10 Sep 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iw1h04fM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8EFAJT4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAEC23A6;
-	Tue, 10 Sep 2024 10:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F4C187325
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 11:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965465; cv=none; b=D5/p7dNuFnZNALydfspP8id3Ao9CaoD/L12RYNTPKy5BrsbeUiRm5pk58MLrR9Oy+LBZiakvSW0PJ0rccXKvmPdLMGQt3tTTa7an+ox6wobNnp4lUIpAjMY1TU/Xl3XzwX61DkLPgjWp1tXNnWcX3RffTzNIjjD2ALa+VfNG76U=
+	t=1725966888; cv=none; b=C3bioMGn3Qj3njqQB+vW9TvuCuTEbdDx2pj2tf7bwJTGIMFtAOT320l0jcBjvTy9wYzD1WdzeFnd6J0FRGJxnb7F59f5F0H3UFzlSpj465DkOl4a/OzsdiKeRsjJspAf6CLpOa8i3manSAf40FGHF5I/ljziPTGrM5iUmDrY50s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965465; c=relaxed/simple;
-	bh=mSbXh2gyZ7liAeMoQfvB79p/PvzkQVJ1yQBqaZvwphQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IHrQzF/UP5Zm977gPhHwWUD/fxM4Fr79pdSewyZAc4gvEH7/g16ABSjW+R9lWE3ezHoZPiPYgPdHJFq86yGJ80dYsQTHfYn69h/ua5XkAe+pJdq01MNwu2ocw82rj3IaLvbwl3FZ+QH9xbugoqw1T9N8C+MIfDMEXWNe8krEYY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iw1h04fM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DE0C4CEC3;
-	Tue, 10 Sep 2024 10:51:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725965464;
-	bh=mSbXh2gyZ7liAeMoQfvB79p/PvzkQVJ1yQBqaZvwphQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iw1h04fMwKQQ4oF9FMEggfLYIH2QslhSSal/d2Edv2cBDIWlSLlA0HtL8tEGkj89/
-	 LvoF9nluBiyjLLSpVsYhqVQN8RVfFhGswwBTIVC75Yo80Q/NH5zwPPrF+Zl90N92gr
-	 AjyjfdtGacJ0U1g7JydFPBuRTaDzMh+SRG0fsozTxbld5TFVdarXPqh7pmU6UZ2KkW
-	 5HeLMzNiEcuLggjexN9fJ18bI9UHFQyYiGpB0FXJrsytYovtL8Of4Ed2GgNMpUJtrJ
-	 x0saFKTEPG9nCi+97H+JJ9H7i9F20cMcPTIQijcVCeo11v6/DDc5WSQhfGYmsN3CEv
-	 H6TvmzFni8Zwg==
-Message-ID: <abd39210-9abf-4dc5-a2f9-6c9304cf2a52@kernel.org>
-Date: Tue, 10 Sep 2024 12:51:01 +0200
+	s=arc-20240116; t=1725966888; c=relaxed/simple;
+	bh=7R70qvFxYRQKCjHDlVjVMuioejDKgflNF55Yu8sguNM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eKuaRnl07cs7QsF105uG6HK6FjYvnqApifBGk5WtANfu75tVhC58ElZdUJEmPCKigIYaLclzi+Au/0DuUoOP82xmQRb7ijMjUY2HJ9f9kdkzFq2YdWF9wmV3u3ZyDXp8V2OhkpkEPtTFF0JSI6aRrihesHn86qiEagsu3TitKOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8EFAJT4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d8a4bad404so297098a91.1
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 04:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725966887; x=1726571687; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7R70qvFxYRQKCjHDlVjVMuioejDKgflNF55Yu8sguNM=;
+        b=b8EFAJT4AuZSgbpB8U3vhSsAOwduNZ0z8l6aphFB9V3hcqlA1nnS+dsA+UklAlwEtC
+         OMOhobPxJ07Ij/GJNjVelTmkJT+Fi4EFMA+SVK+nFIIXZJ3YE4O1h9su0oEoboWcUtFo
+         rTXsozi9RvD68KnNVZCgZBWacU+8iPZEmZ8pve/AKjVcn6miuPq3LbQnfA9fDu0caO/K
+         J9J0nryGMr16b9msw9fYDwTKp7nHNCyOx6kzYWeHmWV1/lwNax1u/+GnA4T3wFnS+A9U
+         E2zyY26iYGcYnhfzeuNEFuvZtVPFTy8c7EuDsYks/km+GD09vQKNCwnhb3oWy5907Nh5
+         1kZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725966887; x=1726571687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7R70qvFxYRQKCjHDlVjVMuioejDKgflNF55Yu8sguNM=;
+        b=eZMZaSUDCfEr1Y23yayXfU+0mJMfk5mQpvMsbjbhY31njArEts2NDmoWcFQHeS9R1p
+         xwurM7nJb/m8oOp9hfQNIWsPJC0CfTCoSpNCvVIPu3v6ISKRNQTjuGliLpaFCNhUKRuo
+         315nBG3JoSyy8EFTVSveoYa1JJ1vnKlNHNWbj0gICzZIfkaIOoeWKaP0jbNBWx0LcwTE
+         reHPPoZbmhn6zVo0Pz2jHFrJ/t4FqYIp7yAVQrUVl9i4+iKZ8U7vUr2nmYr3gU+Lgx33
+         Z3J0J3fAUY/bjkY8xUlMd5ex0HUo0GbC9smX1sYzjYZTsa5nXZYLJZu/NI4yCMaFcz1V
+         idDg==
+X-Gm-Message-State: AOJu0Yw7YBdtju/pg/nND7k8oBN/tUPXc5x5cTLYIwCTX/ys/5gi3diW
+	d7WNHseutjFyVgs1qqW6DzIkwzmsZEc1YYqu6VHfNjlAXXl1bo1ZrZ5wE2KsQojLy04XkmEiIMS
+	7/P05Q7W1+NhWBbMUZOpBunxfF9I=
+X-Google-Smtp-Source: AGHT+IFA9BIl5K6nzzFm26HbZ/XWC2bq8ZUkUz+X7SI61EMsnik7yYHU0TsUVMbVKdAcFYqRNR1EofIDip33sDTGX0Y=
+X-Received: by 2002:a17:90a:604a:b0:2db:60b:3668 with SMTP id
+ 98e67ed59e1d1-2db060b3bd2mr4322899a91.7.1725966886696; Tue, 10 Sep 2024
+ 04:14:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.10 250/375] tcp: Dont drop SYN+ACK for simultaneous
- connect().
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-References: <20240910092622.245959861@linuxfoundation.org>
- <20240910092630.944770087@linuxfoundation.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20240910092630.944770087@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240910092557.876094467@linuxfoundation.org> <20240910092604.257546283@linuxfoundation.org>
+ <CAH5fLgi7_=3W3WdPR2KcUW73Ma=SXo-dX20z0xx+AK4S_N3SwQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgi7_=3W3WdPR2KcUW73Ma=SXo-dX20z0xx+AK4S_N3SwQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Sep 2024 13:14:34 +0200
+Message-ID: <CANiq72kvESNP0StA6DRukSJ7K4q2a4EtTsNTDECSAsWjmhp5-g@mail.gmail.com>
+Subject: Re: [PATCH 6.1 153/192] rust: macros: provide correct provenance when
+ constructing THIS_MODULE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Boqun Feng <boqun.feng@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Benno Lossin <benno.lossin@proton.me>, Gary Guo <gary@garyguo.net>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+On Tue, Sep 10, 2024 at 12:25=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> On Tue, Sep 10, 2024 at 12:12=E2=80=AFPM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+> > Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make O=
+paque::get const")
+>
+> The opaque type doesn't exist yet on 6.1, so this needs to be changed
+> for the 6.1 backport. It won't compile as-is.
 
--Cc netdev devs for this issue, not to create confusions.
-
-On 10/09/2024 11:30, Greg Kroah-Hartman wrote:
-> [ Upstream commit 23e89e8ee7be73e21200947885a6d3a109a2c58d ]
-
-I just noticed that your scripts stripped the simple quotes from the
-subject: "Don't" -> "Dont". It's not a big issue, because the commit
-titles are correct in the Git tree:
-
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.10.y&id=5b05b62f9376
-
-
-The subject is also correct in the queue:
-
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.10/tcp-don-t-drop-syn-ack-for-simultaneous-connect.patch
-
-
-So it is only an issue in the emails, just confusing not to find this
-patch in lore when looking at the subject with the quote :)
-
-
-https://lore.kernel.org/stable/?q=s%3A%22tcp%3A+Don%27t+drop+SYN%2BACK+for+simultaneous+connect%28%29.%22
++1 -- Greg/Sasha: for context, this is the one I asked about using
+Option 3 since otherwise the list of cherry-picks for 6.1 would be
+quite long.
 
 Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+Miguel
 
