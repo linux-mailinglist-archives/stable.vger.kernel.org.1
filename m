@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229A2973452
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C95973501
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550401C24EB2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479ED28879B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A771190077;
-	Tue, 10 Sep 2024 10:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C619068E;
+	Tue, 10 Sep 2024 10:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/qwRDqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNyPDA92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC02E190056;
-	Tue, 10 Sep 2024 10:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C02188CDC;
+	Tue, 10 Sep 2024 10:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964600; cv=none; b=oInjqypsWWbGjkCtGCspXt2WzcY8ThTTMTcmX11vrOaitD1hV3vl9Tsig8jZfm8Q/wIbkjcmAHX8zQTOJxzbxDrR/7vZXZJWiYo6px4JlAvizZdyg4IkMAeLvAFnTlx8JJbdhqE2JoP10FzH69Rdq8KqNSDjCkyT5wtCxMExIWM=
+	t=1725964995; cv=none; b=E0rPfXMEBkgTm1ImiiF5i67B8wUwR6bGLRpoZLTa6eSErC6LiKM3lqPllPiYVjbWEOAuYQ8wpuLoiUksl9UfO4k/zKyGAyXoa9C2dPX2uBsWKCr2d0+l1ZNcqfY9/EPidvnioxgbeoaD9GyWTisYKbYLYJKF5ZGfTRjFXDAafwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964600; c=relaxed/simple;
-	bh=8mkKRW92D3VcBti5yddysPtJpuHqDG0VF0y4v6Byiiw=;
+	s=arc-20240116; t=1725964995; c=relaxed/simple;
+	bh=lpB++LjPRoEVDrUS5hjUKhplS2QNFyxePjd6dG7ZoDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOkZaQXqPjuiL802dqQyXfxRP6xfNzMLY3MbgE8vJRIxVnvkrQqqXBvj5jhhWUGSTDD3a/dRl8pKbbJ+0+/uPy2ccLbyhT61y1WN4Y14svj15Y+kmDxWxYaWHMOXplIJkZKPWGI54dgyurG8rwr+szbYU1PqzoG9Jnstgao2RcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/qwRDqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EDBC4CEC3;
-	Tue, 10 Sep 2024 10:36:40 +0000 (UTC)
+	 MIME-Version; b=Cbq3n3ps7cBMBWJTfBIWQjvr/bGFXvtXxdEUdt7MAtU4NNsb5sidbE3KAR0cI1Dfm920XNekBZjKwSm6NF1IMbZ1QmKimZUefab6X9b35eaHDwBLLcZXeeNIrepSjgNEhuQ6iVqBFHp6UbIAoCJbTwQk+pQ+pXXcXa1qJCw1JUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNyPDA92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227C2C4CEC3;
+	Tue, 10 Sep 2024 10:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964600;
-	bh=8mkKRW92D3VcBti5yddysPtJpuHqDG0VF0y4v6Byiiw=;
+	s=korg; t=1725964995;
+	bh=lpB++LjPRoEVDrUS5hjUKhplS2QNFyxePjd6dG7ZoDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/qwRDqI26ddSlc+cyq0XXZyN3wOI+chDXrMEc/h8jC0DfXjYzChqd3fABrFZpy7u
-	 umm2S316uMQvXDRQnffsiYY38LTy1VtbUHC/8IspI4jZ+PHPcdknaY49PU/kxI3BwW
-	 fFGRCBYiTXllXV1jXuQa6RIzRUEFLwWIVYQoZ0UU=
+	b=NNyPDA929Uo+/2HLmtrLwTjk7a7Oja9Ys9vWhKkwv3a13oCJGGN7lXnok/KN1r0KN
+	 HPYuYjsjxtL46pqSmLgS+TFrBGJ4CGpYVSL8UkcrtSFhI1PkX14RXbl7iU0EK/imWn
+	 bl67Vpja9QaXSEda/hHDpn6KylC77FCwYfljSP7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 210/269] iio: adc: ad7124: fix chip ID mismatch
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 102/186] netfilter: nf_conncount: fix wrong variable type
 Date: Tue, 10 Sep 2024 11:33:17 +0200
-Message-ID: <20240910092615.514080133@linuxfoundation.org>
+Message-ID: <20240910092558.735977154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-commit 96f9ab0d5933c1c00142dd052f259fce0bc3ced2 upstream.
+[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
 
-The ad7124_soft_reset() function has the assumption that the chip will
-assert the "power-on reset" bit in the STATUS register after a software
-reset without any delay. The POR bit =0 is used to check if the chip
-initialization is done.
+Now there is a issue is that code checks reports a warning: implicit
+narrowing conversion from type 'unsigned int' to small type 'u8' (the
+'keylen' variable). Fix it by removing the 'keylen' variable.
 
-A chip ID mismatch probe error appears intermittently when the probe
-continues too soon and the ID register does not contain the expected
-value.
-
-Fix by adding a 200us delay after the software reset command is issued.
-
-Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240731-ad7124-fix-v1-1-46a76aa4b9be@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_conncount.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -765,6 +765,7 @@ static int ad7124_soft_reset(struct ad71
- 	if (ret < 0)
- 		return ret;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 82f36beb2e76..0ce12a33ffda 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -310,7 +310,6 @@ insert_tree(struct net *net,
+ 	struct nf_conncount_rb *rbconn;
+ 	struct nf_conncount_tuple *conn;
+ 	unsigned int count = 0, gc_count = 0;
+-	u8 keylen = data->keylen;
+ 	bool do_gc = true;
  
-+	fsleep(200);
- 	timeout = 100;
- 	do {
- 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+@@ -322,7 +321,7 @@ insert_tree(struct net *net,
+ 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
+ 
+ 		parent = *rbnode;
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			rbnode = &((*rbnode)->rb_left);
+ 		} else if (diff > 0) {
+@@ -367,7 +366,7 @@ insert_tree(struct net *net,
+ 
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
+-	memcpy(rbconn->key, key, sizeof(u32) * keylen);
++	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
+ 
+ 	nf_conncount_list_init(&rbconn->list);
+ 	list_add(&conn->node, &rbconn->list.head);
+@@ -392,7 +391,6 @@ count_tree(struct net *net,
+ 	struct rb_node *parent;
+ 	struct nf_conncount_rb *rbconn;
+ 	unsigned int hash;
+-	u8 keylen = data->keylen;
+ 
+ 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
+ 	root = &data->root[hash];
+@@ -403,7 +401,7 @@ count_tree(struct net *net,
+ 
+ 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
+ 
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			parent = rcu_dereference_raw(parent->rb_left);
+ 		} else if (diff > 0) {
+-- 
+2.43.0
+
 
 
 
