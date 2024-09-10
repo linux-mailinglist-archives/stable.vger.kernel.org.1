@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DDA97349C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9E29731AD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69A601F25C9C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A97D52886DA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18B5192B7B;
-	Tue, 10 Sep 2024 10:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3924F199FC4;
+	Tue, 10 Sep 2024 10:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX7o8t4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtHO9WGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E633192B6A;
-	Tue, 10 Sep 2024 10:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FB5190678;
+	Tue, 10 Sep 2024 10:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964777; cv=none; b=RpXDeZVJ5YqlolaKmlrarLfvUmtdctu0Dp7Xrw9xSwG1d6V4puRiQpL0LyBsXObjpc2DivDlZDYED7Bcz/vBgGqNSyMHHTMmv5ljMi8rMk1oAyQTwHwMK2OO/k74eO+CAvZG24ceTCj9IH5Qy1jkOV0Kg6u6k7QP+ucXYlOa9fY=
+	t=1725962992; cv=none; b=VrUnPTtsihRQoejkaDF3oQYGKxA7KbKFJ9tN5aUB5Y/7OAjtjA/i+X0plDN0W0O3j263PxkTb9STkll5MvQkkPzTx4xrDDtxyFLm0fmlrEeCy2W3PR5UBZ0YHLuF/1MfAAXefgeDQix3tDgCKIQeOkjEcWxfLWbZaJggHsEKNes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964777; c=relaxed/simple;
-	bh=UACaiUzfh1B1qZaZspLhLtKWffnn8govMUeABjpI5GQ=;
+	s=arc-20240116; t=1725962992; c=relaxed/simple;
+	bh=tL9PrYzYYQQllXEVcwp+xoE7E/f2iJCdA84MTm0F/3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2Tazo70JUCow9Fxl4/ad953xyZTkHn/VIVRlqzEGuPFXlOA0jAW/NbjDPvZOYrxf3/Yf/ZtHZTtMubNLzxoMHc4WaDwjKNBsxAGxmBg0oe/wQdtiNgZI9wErc7w96p+MwomGxe7aOh9VJKyFF43PL3pklcIKo6La8n7krcdHxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX7o8t4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0657C4CEC3;
-	Tue, 10 Sep 2024 10:39:36 +0000 (UTC)
+	 MIME-Version; b=lLOxjkDESrSIvfxPNKLVT8jvNV8d3sMMnkbFDbhbSGJQy9J54znWOS+Qzj/vQS3YYWW+rxN8co2v7rrezJ/QEyzPkFisl6CUGjXq6xGK9xGr7TUxQLNjy9XbsHM75qtl+1D23COcPq2A1P3EDhi/iKNek6dgmV6n1mdA9DxLm2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtHO9WGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A5EC4CEC3;
+	Tue, 10 Sep 2024 10:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964777;
-	bh=UACaiUzfh1B1qZaZspLhLtKWffnn8govMUeABjpI5GQ=;
+	s=korg; t=1725962991;
+	bh=tL9PrYzYYQQllXEVcwp+xoE7E/f2iJCdA84MTm0F/3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xX7o8t4/aEaphFo/dJSuofeWNak22UJJrlghiFmK4qgR7z0jEzlOj8Wjt9tdSklti
-	 Yw+HQfDCBPl6LX1iFVXMpd3hmy1WnND49iVeeS9UCcGXTiIqZeDdA7Px7n9LDBmHzD
-	 Gc6iAqwmM/9mA805QfXs8n03WrjlBR7BfbtobYpM=
+	b=CtHO9WGjWClzfhKuC/ys/I10HFZhU1IgX6kCGZDvIJT1wqzsB/jVgDvP6QJYLllCh
+	 z0vkAtrf6uNom1ipVTRj21MtKdaJP3DgfC9Dde/Q/YejYfvEjFz0Z6v5YwKvElR1Gh
+	 7Glg3LJU6ymQUKWKlUTEnCjGphjWvp1EHPRGn/qA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leesoo Ahn <lsahn@ooseel.net>,
-	John Johansen <john.johansen@canonical.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/186] apparmor: fix possible NULL pointer dereference
+Subject: [PATCH 6.1 098/192] hwmon: (adc128d818) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:32:02 +0200
-Message-ID: <20240910092555.714934997@linuxfoundation.org>
+Message-ID: <20240910092602.053545897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leesoo Ahn <lsahn@ooseel.net>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 3dd384108d53834002be5630132ad5c3f32166ad ]
+[ Upstream commit 8cad724c8537fe3e0da8004646abc00290adae40 ]
 
-profile->parent->dents[AAFS_PROF_DIR] could be NULL only if its parent is made
-from __create_missing_ancestors(..) and 'ent->old' is NULL in
-aa_replace_profiles(..).
-In that case, it must return an error code and the code, -ENOENT represents
-its state that the path of its parent is not existed yet.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000030
-PGD 0 P4D 0
-PREEMPT SMP PTI
-CPU: 4 PID: 3362 Comm: apparmor_parser Not tainted 6.8.0-24-generic #24
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:aafs_create.constprop.0+0x7f/0x130
-Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
-RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- ? show_regs+0x6d/0x80
- ? __die+0x24/0x80
- ? page_fault_oops+0x99/0x1b0
- ? kernelmode_fixup_or_oops+0xb2/0x140
- ? __bad_area_nosemaphore+0x1a5/0x2c0
- ? find_vma+0x34/0x60
- ? bad_area_nosemaphore+0x16/0x30
- ? do_user_addr_fault+0x2a2/0x6b0
- ? exc_page_fault+0x83/0x1b0
- ? asm_exc_page_fault+0x27/0x30
- ? aafs_create.constprop.0+0x7f/0x130
- ? aafs_create.constprop.0+0x51/0x130
- __aafs_profile_mkdir+0x3d6/0x480
- aa_replace_profiles+0x83f/0x1270
- policy_update+0xe3/0x180
- profile_load+0xbc/0x150
- ? rw_verify_area+0x47/0x140
- vfs_write+0x100/0x480
- ? __x64_sys_openat+0x55/0xa0
- ? syscall_exit_to_user_mode+0x86/0x260
- ksys_write+0x73/0x100
- __x64_sys_write+0x19/0x30
- x64_sys_call+0x7e/0x25c0
- do_syscall_64+0x7f/0x180
- entry_SYSCALL_64_after_hwframe+0x78/0x80
-RIP: 0033:0x7be9f211c574
-Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-RSP: 002b:00007ffd26f2b8c8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00005d504415e200 RCX: 00007be9f211c574
-RDX: 0000000000001fc1 RSI: 00005d504418bc80 RDI: 0000000000000004
-RBP: 0000000000001fc1 R08: 0000000000001fc1 R09: 0000000080000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00005d504418bc80
-R13: 0000000000000004 R14: 00007ffd26f2b9b0 R15: 00007ffd26f2ba30
- </TASK>
-Modules linked in: snd_seq_dummy snd_hrtimer qrtr snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_seq_midi snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device i2c_i801 snd_timer i2c_smbus qxl snd soundcore drm_ttm_helper lpc_ich ttm joydev input_leds serio_raw mac_hid binfmt_misc msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs qemu_fw_cfg ip_tables x_tables autofs4 hid_generic usbhid hid ahci libahci psmouse virtio_rng xhci_pci xhci_pci_renesas
-CR2: 0000000000000030
----[ end trace 0000000000000000 ]---
-RIP: 0010:aafs_create.constprop.0+0x7f/0x130
-Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
-RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
-
-Signed-off-by: Leesoo Ahn <lsahn@ooseel.net>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/apparmorfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/adc128d818.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index 49d97b331abc..06eac2266565 100644
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -1679,6 +1679,10 @@ int __aafs_profile_mkdir(struct aa_profile *profile, struct dentry *parent)
- 		struct aa_profile *p;
- 		p = aa_deref_parent(profile);
- 		dent = prof_dir(p);
-+		if (!dent) {
-+			error = -ENOENT;
-+			goto fail2;
-+		}
- 		/* adding to parent that previously didn't have children */
- 		dent = aafs_create_dir("profiles", dent);
- 		if (IS_ERR(dent))
+diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
+index 97b330b6c165..bad2d39d9733 100644
+--- a/drivers/hwmon/adc128d818.c
++++ b/drivers/hwmon/adc128d818.c
+@@ -176,7 +176,7 @@ static ssize_t adc128_in_store(struct device *dev,
+ 
+ 	mutex_lock(&data->update_lock);
+ 	/* 10 mV LSB on limit registers */
+-	regval = clamp_val(DIV_ROUND_CLOSEST(val, 10), 0, 255);
++	regval = DIV_ROUND_CLOSEST(clamp_val(val, 0, 2550), 10);
+ 	data->in[index][nr] = regval << 4;
+ 	reg = index == 1 ? ADC128_REG_IN_MIN(nr) : ADC128_REG_IN_MAX(nr);
+ 	i2c_smbus_write_byte_data(data->client, reg, regval);
+@@ -214,7 +214,7 @@ static ssize_t adc128_temp_store(struct device *dev,
+ 		return err;
+ 
+ 	mutex_lock(&data->update_lock);
+-	regval = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
++	regval = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
+ 	data->temp[index] = regval << 1;
+ 	i2c_smbus_write_byte_data(data->client,
+ 				  index == 1 ? ADC128_REG_TEMP_MAX
 -- 
 2.43.0
 
