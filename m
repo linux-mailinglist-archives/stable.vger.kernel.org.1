@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-74262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0D2972E58
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:42:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7278972E67
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D0D1F24BBC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:42:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26286B22DFC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A781318C357;
-	Tue, 10 Sep 2024 09:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A6E18FC73;
+	Tue, 10 Sep 2024 09:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdM/VmI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvgSvyfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1C118B498;
-	Tue, 10 Sep 2024 09:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B8A18F2F9;
+	Tue, 10 Sep 2024 09:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961291; cv=none; b=JJCYCCwxxWPviabyrsaVX5KohndfJAHhWbrWrM5BNC89U+J5n+vzxzMNlmhFwDCunaTiHnnxLSGk8jJIvsbUIdx6vrd1HWe0LovuFMkU+OVdL61mV4eSA7e0sRA1174iXJzCz1xuehlc4CXXioui660dxV6TcbJvwJsUAMb9V8k=
+	t=1725961323; cv=none; b=eFalTl+lTA4wBdOesaHZnIbtQUw7NssK7COs+rUMImkiqhvskmw++oIbdn3WIl/E8R22X/f1mY5iklve9GMEFCLOjTWAxmz+U3iH6LmsjVGGVPigNMp4MwzBNp/CFPIyqp5LxbsQ2SJ8xI1LeL2mJ2bdiP2kKY+7Pys9dck1dp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961291; c=relaxed/simple;
-	bh=ZsQrJoiZOshdDmUUejzvy+/2zy1Dl8RF/Su/QJ5Vohs=;
+	s=arc-20240116; t=1725961323; c=relaxed/simple;
+	bh=PLKXgzmeIAjsnpQ+Ar5kV74DkaGBaD3bjdgTXCYvaxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BW0NUAapHFWHeGnN7EcKVy+Xxwm3UIM+lOX4fiTelc1NMCkz6E90lRc6zdp1RDBRHoDWmrXzEyOBxuvE9VxQv6mkmn/y0F5CewRS3Kyo4aLVP0QXwCiQdzm+Yc6Xy1ZgXQuycF4BDIuj76L4crr0dzOvkt95jcbDRlFZc7XX0NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdM/VmI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DCAC4CEC6;
-	Tue, 10 Sep 2024 09:41:30 +0000 (UTC)
+	 MIME-Version; b=QU+EiPNj/0d2f7gDs7RkmkxOzp8StL6wu/jV658G/Jnx/2njh5FLETCoamqmhNAeB2SYVH9H2S9RzLwR2q32Hk7RURdxJ36DGc2oYrq1d0VhTO3bhZT8KfB75BrFsBm6BktMRQSeZIjpPQZEFl0Wd2Ffz3qLiyaFhf8FDmVJ2Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvgSvyfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52168C4CECC;
+	Tue, 10 Sep 2024 09:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961291;
-	bh=ZsQrJoiZOshdDmUUejzvy+/2zy1Dl8RF/Su/QJ5Vohs=;
+	s=korg; t=1725961323;
+	bh=PLKXgzmeIAjsnpQ+Ar5kV74DkaGBaD3bjdgTXCYvaxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdM/VmI/3DFRPprFpVrzsy60mos9U239lMQ9wxq4Iy3L0mfwv8SgI7kSn8uLapkoN
-	 rhKQWs3F1ShE0b66YIfyiDAux/jNr0B6urVJQVZwgKbRZlFVnOmd/xKeU/D9kQbDbD
-	 4h6osnpcIJyGH2FBVG0hzGZcAG/BkmqPhcYvqpUw=
+	b=XvgSvyfCIN9ViYGhF0Fx47N4qmdRju6CFaqF7n5wcDkwd5yZusOIztssfyhK1VFic
+	 xDZ2mag6EXH+8EL8M9iTBYcV6dVUOBdnGxcmZn1sBq6qcm+JUzw4XKG6vaDLRHY+Yg
+	 B2PYLxgnZks4bG6kM/FeNOy2rr1YVth5E6YHcZp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Queler <queler+k@gmail.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 013/375] ALSA: hda/realtek: Enable Mute Led for HP Victus 15-fb1xxx
-Date: Tue, 10 Sep 2024 11:26:50 +0200
-Message-ID: <20240910092622.708751980@linuxfoundation.org>
+Subject: [PATCH 6.10 014/375] ALSA: hda/realtek - Fix inactive headset mic jack for ASUS Vivobook 15 X1504VAP
+Date: Tue, 10 Sep 2024 11:26:51 +0200
+Message-ID: <20240910092622.741698404@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -65,16 +65,19 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adam Queler <queler+k@gmail.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit b474f60f6a0c90f560190ac2cc6f20805f35d2c1 upstream.
+commit a83e4c97ddd7473406ec5e1df8d5e7b24bd7e892 upstream.
 
-The mute led is controlled by ALC245. This patch enables the already
-existing quirk for this device.
+When the headset is connected, there is no automatic switching of the
+capture source - you can only manually select the headset microphone
+in pavucontrol.
 
-Signed-off-by: Adam Queler <queler+k@gmail.com>
+This patch fixes/activates the inactive microphone of the headset.
+
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240903202419.31433-1-queler+k@gmail.com
+Link: https://patch.msgid.link/20240905140211.937385-1-kovalev@altlinux.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -83,14 +86,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -10229,6 +10229,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c16, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8c17, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8c21, "HP Pavilion Plus Laptop 14-ey0XXX", ALC245_FIXUP_HP_X360_MUTE_LEDS),
-+	SND_PCI_QUIRK(0x103c, 0x8c30, "HP Victus 15-fb1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c48, "HP EliteBook 860 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+@@ -10356,6 +10356,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1e63, "ASUS H7606W", ALC285_FIXUP_CS35L56_I2C_2),
 
 
 
