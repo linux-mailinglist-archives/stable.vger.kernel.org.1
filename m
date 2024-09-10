@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58DA973189
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58A997340F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 046411C246AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0193B2E283
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2814E194C76;
-	Tue, 10 Sep 2024 10:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BAF18C347;
+	Tue, 10 Sep 2024 10:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIUnQ0q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7hAETbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACF8194ADB;
-	Tue, 10 Sep 2024 10:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7114C19580F;
+	Tue, 10 Sep 2024 10:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962898; cv=none; b=GNQZMn/TqEt9kb7RZcDhgvS4XBqU+MI+6lm6MhNgqhRPD23g1KG04fzzbrPw45rUq6da2uV+bhKwaqP7aJgp5rM+2LsR36srdCA3MIbZtDoQjgl+kY5DgttoekP/7zAYIYYY/sz3REQWK7pBgb04gPeYwkXW0YHhU0cDQV8q9yc=
+	t=1725964208; cv=none; b=buvnEtbCKMuz8jvl/G5HUhP4Trxu+l4an/KGGpPQoUMC8fJD14kMQ2/7zZySs+x0jh2NEa0bsCMWuxA8dRS6P89of1Ky7Npg5rI09LG20uRg20ZV5I9DHD5JzUXCX/8VXYELhzVanEBrHfxoXdRIrWDTj0oxGb5ok1X8PxUmd4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962898; c=relaxed/simple;
-	bh=4LGTeVzRH9wsHQ1+gad8MazyvEyyNdZrAxzPJLWKtEs=;
+	s=arc-20240116; t=1725964208; c=relaxed/simple;
+	bh=oqulEuBF1LUunxL4Ktm12n1f8/fAJ0Q+NAwI1zSbXbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WmLrBNTmTFIxJS5GKnHBduFAO1H+0OqiUllAsotFdImGbIiBL0+oQqQ3c0VJ+zkh2zU29bhsLpK65sn8VyrkF53flV4lQlLMHN73nO6YSOwL1bcgGbSffDWqhUd3BbE0+qEl0yGYC+vArgn3X5PH5okNkZsW0Rn7C0Q81uhcWeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIUnQ0q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A12C4CEC3;
-	Tue, 10 Sep 2024 10:08:18 +0000 (UTC)
+	 MIME-Version; b=d4vFv1K/Xt5HhoT0EYbzh45tIl4xwZI9SVoaeYK/ROLXUCEeMicKg7awNU3Ynl56k8nWnDpJ8zK0YEk34J05rsG4a9W13ksBJKgvh/Y46Fs0xKn7OUTQUYbkK9AfLUtsV5rItWS0vCKaZvFCQFlGuSB2de8j1vdN6BODV2+Q0yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7hAETbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC5AC4CEC3;
+	Tue, 10 Sep 2024 10:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962898;
-	bh=4LGTeVzRH9wsHQ1+gad8MazyvEyyNdZrAxzPJLWKtEs=;
+	s=korg; t=1725964208;
+	bh=oqulEuBF1LUunxL4Ktm12n1f8/fAJ0Q+NAwI1zSbXbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIUnQ0q8B93LToGjZQ/XtZYDXFN1dWhNBWH/UAVnE3uJ+3mJNzZvnIVs/Z8e8HaHC
-	 Ztok4oa8+IwlP1gT7W1He/+Yry0A/KyUw8B14rKhha/L85oyxiHwYPrnd9P/ShUfza
-	 0SjVFBkTGhHA9biG7OHxJI8B0bjn1oSaP4DKYWQk=
+	b=R7hAETbD3SEiQ5W4bIiToFeHdTUX6JgdrlBKdfNyocuFgLPzkrzch9nt/W+avQjg1
+	 JdTB0UgD1EPUMp+XcyXZzRSpsGDE/4R2ZeokjCDTqNjC9eFtr012IrKiqOyhmNTWjK
+	 DrFf5NWYGea/jN4kZE8iC7NgW0tDogBFvrTPuwTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/192] drm/amdgpu: check for LINEAR_ALIGNED correctly in check_tiling_flags_gfx6
-Date: Tue, 10 Sep 2024 11:31:31 +0200
-Message-ID: <20240910092600.753578828@linuxfoundation.org>
+Subject: [PATCH 6.6 105/269] regulator: core: Stub devm_regulator_bulk_get_const() if !CONFIG_REGULATOR
+Date: Tue, 10 Sep 2024 11:31:32 +0200
+Message-ID: <20240910092611.954552887@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Olšák <marek.olsak@amd.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 11317d2963fa79767cd7c6231a00a9d77f2e0f54 ]
+[ Upstream commit 1a5caec7f80ca2e659c03f45378ee26915f4eda2 ]
 
-Fix incorrect check.
+When adding devm_regulator_bulk_get_const() I missed adding a stub for
+when CONFIG_REGULATOR is not enabled. Under certain conditions (like
+randconfig testing) this can cause the compiler to reports errors
+like:
 
-Signed-off-by: Marek Olšák <marek.olsak@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  error: implicit declaration of function 'devm_regulator_bulk_get_const';
+  did you mean 'devm_regulator_bulk_get_enable'?
+
+Add the stub.
+
+Fixes: 1de452a0edda ("regulator: core: Allow drivers to define their init data as const")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408301813.TesFuSbh-lkp@intel.com/
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20240830073511.1.Ib733229a8a19fad8179213c05e1af01b51e42328@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/regulator/consumer.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-index aabde6ebb190..ac773b191071 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -873,8 +873,7 @@ static int check_tiling_flags_gfx6(struct amdgpu_framebuffer *afb)
+diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
+index 2c526c8d10cc..25d0684d37b3 100644
+--- a/include/linux/regulator/consumer.h
++++ b/include/linux/regulator/consumer.h
+@@ -489,6 +489,14 @@ static inline int of_regulator_bulk_get_all(struct device *dev, struct device_no
+ 	return 0;
+ }
+ 
++static inline int devm_regulator_bulk_get_const(
++	struct device *dev, int num_consumers,
++	const struct regulator_bulk_data *in_consumers,
++	struct regulator_bulk_data **out_consumers)
++{
++	return 0;
++}
++
+ static inline int regulator_bulk_enable(int num_consumers,
+ 					struct regulator_bulk_data *consumers)
  {
- 	u64 micro_tile_mode;
- 
--	/* Zero swizzle mode means linear */
--	if (AMDGPU_TILING_GET(afb->tiling_flags, SWIZZLE_MODE) == 0)
-+	if (AMDGPU_TILING_GET(afb->tiling_flags, ARRAY_MODE) == 1) /* LINEAR_ALIGNED */
- 		return 0;
- 
- 	micro_tile_mode = AMDGPU_TILING_GET(afb->tiling_flags, MICRO_TILE_MODE);
 -- 
 2.43.0
 
