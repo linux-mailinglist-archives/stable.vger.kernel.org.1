@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-75069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76299732CF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D739731D6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3461C2123D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 694261F22804
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91ED170A01;
-	Tue, 10 Sep 2024 10:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD4018C002;
+	Tue, 10 Sep 2024 10:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9G5PEoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/UVmcCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8621C17A589;
-	Tue, 10 Sep 2024 10:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487AB18BC28;
+	Tue, 10 Sep 2024 10:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963658; cv=none; b=htQqbEm+smN49uqL6S6jc76GiszqebSxKPfgnlbmAM+jqWJt3OmgH2dw79SV9AA4jp+pi8L2KNzyXkVLiSTQwFj60aelQ1F6tbMDHZDq9wRmUuBOCVYFVSdOpgQNTG0ediUve2OqJl+9eygOChDoVlT01YFb7jihkCl41U/iP7Q=
+	t=1725963086; cv=none; b=RKZwZ42mFjYW3Nn4jV0uMDFImHZo0yd1Dn1kDp32H7DSQ0GBPGEcwJJ6EquhKPTFEbekIDPZE8+Nq8yFDtO1UwBSRNPPZ7ToZwW8rxOJ18bHPGzGo11asgwEg9JKtqiJLMB7vjhz85BFQtB5EuUlf93PwO6q5wdDQ0qWmxZll80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963658; c=relaxed/simple;
-	bh=2CpiRO3dfQq4vvsFFvj0fdJmVA1FpxjASBEvnr/4ndo=;
+	s=arc-20240116; t=1725963086; c=relaxed/simple;
+	bh=1VbbEDvwZ3tBR9zUjfA6WiW36iDmtSA9ZMpljn2pShM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVoKxZB0GD5MIrcnbZkmpNJbyJM5tYWskzmV/rq+uSqTHPJ9pjuCQ0KiYGd+t1olR/MrsWzNeb1kihZlYTs01zYgLPMM4y2TT0bvQIYrzrarm2XgHjvqk3FRCURpH5SO6CxGDhmxIh1L0L8wyYyztwBVcy2ZdNMqXA1IOrRgD0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9G5PEoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E16FC4CEC3;
-	Tue, 10 Sep 2024 10:20:57 +0000 (UTC)
+	 MIME-Version; b=ABFfP3ACnOdmBAPe5kuYz1in7TWyABH3RQgdQnSr1UnidNmlX4ovoEAen6TgEFCMq87f1wlfOofcBgrCTgo+PA/MXC1HDLhzibq2sK7Ybz79XzSQygn2ag51dcqvkJEt86+1htXgu2EpX5UVi4S+hMrBpia8065kAJ8us2kFc6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/UVmcCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B0C4CEC3;
+	Tue, 10 Sep 2024 10:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963658;
-	bh=2CpiRO3dfQq4vvsFFvj0fdJmVA1FpxjASBEvnr/4ndo=;
+	s=korg; t=1725963086;
+	bh=1VbbEDvwZ3tBR9zUjfA6WiW36iDmtSA9ZMpljn2pShM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9G5PEoHAqU74betuAcai1dVPlsXSHZcabSYEHn93K6o2taOMF+EDej56x7b5yxKI
-	 LOhBaxSBOrrGNR4PmpJVIz9KXwQ8AEbsFERVAabc+tkAWuIJRRX0K8RzspKyPSs2OE
-	 IHaBzZERe4zCPMMOXSEu7s9+IJrhOqZHHxL93FDc=
+	b=t/UVmcCs8uJruXEBwEPYHwc3NC6VhZ/e8c1UORymnCe5FqC6oDG9L21hcGMisy3mR
+	 ySpttUDa3uB6qYi+x4EXQ0CQ348Gny6+xjGTzweaR39dn1wiiB6kq2XuvCCWjuLHaO
+	 6CRkJbAqVOJ8E5Q8MUhnhMVaRAivyFq0o4I6J1z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alphonse Kurian <alkurian@amazon.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/214] fou: Fix null-ptr-deref in GRO.
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 130/192] selftests: mptcp: fix backport issues
 Date: Tue, 10 Sep 2024 11:32:34 +0200
-Message-ID: <20240910092604.139070224@linuxfoundation.org>
+Message-ID: <20240910092603.370503971@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,177 +60,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 7e4196935069947d8b70b09c1660b67b067e75cb ]
+By accident, some patches modifying the MPTCP selftests have been
+applied twice, using different versions of the patch [1].
 
-We observed a null-ptr-deref in fou_gro_receive() while shutting down
-a host.  [0]
+These patches have been dropped, but it looks like quilt incorrectly
+handled that by placing the new subtests at the wrong place: in
+userspace_tests() instead of endpoint_tests(). That caused a few other
+patches not to apply properly.
 
-The NULL pointer is sk->sk_user_data, and the offset 8 is of protocol
-in struct fou.
+Not to have to revert and re-apply patches, this issue can be fixed by
+moving some code around.
 
-When fou_release() is called due to netns dismantle or explicit tunnel
-teardown, udp_tunnel_sock_release() sets NULL to sk->sk_user_data.
-Then, the tunnel socket is destroyed after a single RCU grace period.
-
-So, in-flight udp4_gro_receive() could find the socket and execute the
-FOU GRO handler, where sk->sk_user_data could be NULL.
-
-Let's use rcu_dereference_sk_user_data() in fou_from_sock() and add NULL
-checks in FOU GRO handlers.
-
-[0]:
-BUG: kernel NULL pointer dereference, address: 0000000000000008
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 80000001032f4067 P4D 80000001032f4067 PUD 103240067 PMD 0
-SMP PTI
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.216-204.855.amzn2.x86_64 #1
-Hardware name: Amazon EC2 c5.large/, BIOS 1.0 10/16/2017
-RIP: 0010:fou_gro_receive (net/ipv4/fou.c:233) [fou]
-Code: 41 5f c3 cc cc cc cc e8 e7 2e 69 f4 0f 1f 80 00 00 00 00 0f 1f 44 00 00 49 89 f8 41 54 48 89 f7 48 89 d6 49 8b 80 88 02 00 00 <0f> b6 48 08 0f b7 42 4a 66 25 fd fd 80 cc 02 66 89 42 4a 0f b6 42
-RSP: 0018:ffffa330c0003d08 EFLAGS: 00010297
-RAX: 0000000000000000 RBX: ffff93d9e3a6b900 RCX: 0000000000000010
-RDX: ffff93d9e3a6b900 RSI: ffff93d9e3a6b900 RDI: ffff93dac2e24d08
-RBP: ffff93d9e3a6b900 R08: ffff93dacbce6400 R09: 0000000000000002
-R10: 0000000000000000 R11: ffffffffb5f369b0 R12: ffff93dacbce6400
-R13: ffff93dac2e24d08 R14: 0000000000000000 R15: ffffffffb4edd1c0
-FS:  0000000000000000(0000) GS:ffff93daee800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 0000000102140001 CR4: 00000000007706f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <IRQ>
- ? show_trace_log_lvl (arch/x86/kernel/dumpstack.c:259)
- ? __die_body.cold (arch/x86/kernel/dumpstack.c:478 arch/x86/kernel/dumpstack.c:420)
- ? no_context (arch/x86/mm/fault.c:752)
- ? exc_page_fault (arch/x86/include/asm/irqflags.h:49 arch/x86/include/asm/irqflags.h:89 arch/x86/mm/fault.c:1435 arch/x86/mm/fault.c:1483)
- ? asm_exc_page_fault (arch/x86/include/asm/idtentry.h:571)
- ? fou_gro_receive (net/ipv4/fou.c:233) [fou]
- udp_gro_receive (include/linux/netdevice.h:2552 net/ipv4/udp_offload.c:559)
- udp4_gro_receive (net/ipv4/udp_offload.c:604)
- inet_gro_receive (net/ipv4/af_inet.c:1549 (discriminator 7))
- dev_gro_receive (net/core/dev.c:6035 (discriminator 4))
- napi_gro_receive (net/core/dev.c:6170)
- ena_clean_rx_irq (drivers/amazon/net/ena/ena_netdev.c:1558) [ena]
- ena_io_poll (drivers/amazon/net/ena/ena_netdev.c:1742) [ena]
- napi_poll (net/core/dev.c:6847)
- net_rx_action (net/core/dev.c:6917)
- __do_softirq (arch/x86/include/asm/jump_label.h:25 include/linux/jump_label.h:200 include/trace/events/irq.h:142 kernel/softirq.c:299)
- asm_call_irq_on_stack (arch/x86/entry/entry_64.S:809)
-</IRQ>
- do_softirq_own_stack (arch/x86/include/asm/irq_stack.h:27 arch/x86/include/asm/irq_stack.h:77 arch/x86/kernel/irq_64.c:77)
- irq_exit_rcu (kernel/softirq.c:393 kernel/softirq.c:423 kernel/softirq.c:435)
- common_interrupt (arch/x86/kernel/irq.c:239)
- asm_common_interrupt (arch/x86/include/asm/idtentry.h:626)
-RIP: 0010:acpi_idle_do_entry (arch/x86/include/asm/irqflags.h:49 arch/x86/include/asm/irqflags.h:89 drivers/acpi/processor_idle.c:114 drivers/acpi/processor_idle.c:575)
-Code: 8b 15 d1 3c c4 02 ed c3 cc cc cc cc 65 48 8b 04 25 40 ef 01 00 48 8b 00 a8 08 75 eb 0f 1f 44 00 00 0f 00 2d d5 09 55 00 fb f4 <fa> c3 cc cc cc cc e9 be fc ff ff 66 66 2e 0f 1f 84 00 00 00 00 00
-RSP: 0018:ffffffffb5603e58 EFLAGS: 00000246
-RAX: 0000000000004000 RBX: ffff93dac0929c00 RCX: ffff93daee833900
-RDX: ffff93daee800000 RSI: ffff93daee87dc00 RDI: ffff93daee87dc64
-RBP: 0000000000000001 R08: ffffffffb5e7b6c0 R09: 0000000000000044
-R10: ffff93daee831b04 R11: 00000000000001cd R12: 0000000000000001
-R13: ffffffffb5e7b740 R14: 0000000000000001 R15: 0000000000000000
- ? sched_clock_cpu (kernel/sched/clock.c:371)
- acpi_idle_enter (drivers/acpi/processor_idle.c:712 (discriminator 3))
- cpuidle_enter_state (drivers/cpuidle/cpuidle.c:237)
- cpuidle_enter (drivers/cpuidle/cpuidle.c:353)
- cpuidle_idle_call (kernel/sched/idle.c:158 kernel/sched/idle.c:239)
- do_idle (kernel/sched/idle.c:302)
- cpu_startup_entry (kernel/sched/idle.c:395 (discriminator 1))
- start_kernel (init/main.c:1048)
- secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:310)
-Modules linked in: udp_diag tcp_diag inet_diag nft_nat ipip tunnel4 dummy fou ip_tunnel nft_masq nft_chain_nat nf_nat wireguard nft_ct curve25519_x86_64 libcurve25519_generic nf_conntrack libchacha20poly1305 nf_defrag_ipv6 nf_defrag_ipv4 nft_objref chacha_x86_64 nft_counter nf_tables nfnetlink poly1305_x86_64 ip6_udp_tunnel udp_tunnel libchacha crc32_pclmul ghash_clmulni_intel aesni_intel crypto_simd cryptd glue_helper mousedev psmouse button ena ptp pps_core crc32c_intel
-CR2: 0000000000000008
-
-Fixes: d92283e338f6 ("fou: change to use UDP socket GRO")
-Reported-by: Alphonse Kurian <alkurian@amazon.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240902173927.62706-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/fc21db4a-508d-41db-aa45-e3bc06d18ce7@kernel.org [1]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fou.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  138 ++++++++++++------------
+ 1 file changed, 69 insertions(+), 69 deletions(-)
 
-diff --git a/net/ipv4/fou.c b/net/ipv4/fou.c
-index 605d9673d6ec..135da756dd5a 100644
---- a/net/ipv4/fou.c
-+++ b/net/ipv4/fou.c
-@@ -48,7 +48,7 @@ struct fou_net {
- 
- static inline struct fou *fou_from_sock(struct sock *sk)
- {
--	return sk->sk_user_data;
-+	return rcu_dereference_sk_user_data(sk);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3236,75 +3236,6 @@ userspace_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_rm_nr 0 1
+ 	fi
+-
+-	# remove and re-add
+-	if reset "delete re-add signal" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 0 3
+-		pm_nl_set_limits $ns2 3 3
+-		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
+-		# broadcast IP: no packet for this address will be received on ns1
+-		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
+-		local tests_pid=$!
+-
+-		wait_mpj $ns2
+-		chk_subflow_nr needtitle "before delete" 2
+-
+-		pm_nl_del_endpoint $ns1 1 10.0.2.1
+-		pm_nl_del_endpoint $ns1 2 224.0.0.1
+-		sleep 0.5
+-		chk_subflow_nr "" "after delete" 1
+-
+-		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
+-		wait_mpj $ns2
+-		chk_subflow_nr "" "after re-add" 3
+-
+-		pm_nl_del_endpoint $ns1 42 10.0.1.1
+-		sleep 0.5
+-		chk_subflow_nr "" "after delete ID 0" 2
+-
+-		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
+-		wait_mpj $ns2
+-		chk_subflow_nr "" "after re-add" 3
+-		kill_tests_wait
+-
+-		chk_join_nr 4 4 4
+-		chk_add_nr 5 5
+-		chk_rm_nr 3 2 invert
+-	fi
+-
+-	# flush and re-add
+-	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 0 2
+-		pm_nl_set_limits $ns2 1 2
+-		# broadcast IP: no packet for this address will be received on ns1
+-		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+-		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
+-		local tests_pid=$!
+-
+-		wait_attempt_fail $ns2
+-		chk_subflow_nr needtitle "before flush" 1
+-
+-		pm_nl_flush_endpoint $ns2
+-		pm_nl_flush_endpoint $ns1
+-		wait_rm_addr $ns2 0
+-		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
+-		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		wait_mpj $ns2
+-		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
+-		wait_mpj $ns2
+-		kill_wait "${tests_pid}"
+-		kill_tests_wait
+-
+-		chk_join_nr 2 2 2
+-		chk_add_nr 2 2
+-		chk_rm_nr 1 0 invert
+-	fi
  }
  
- static int fou_recv_pull(struct sk_buff *skb, struct fou *fou, size_t len)
-@@ -231,9 +231,15 @@ static struct sk_buff *fou_gro_receive(struct sock *sk,
- 				       struct sk_buff *skb)
- {
- 	const struct net_offload __rcu **offloads;
--	u8 proto = fou_from_sock(sk)->protocol;
-+	struct fou *fou = fou_from_sock(sk);
- 	const struct net_offload *ops;
- 	struct sk_buff *pp = NULL;
-+	u8 proto;
+ endpoint_tests()
+@@ -3375,6 +3306,75 @@ endpoint_tests()
+ 		chk_join_nr 6 6 6
+ 		chk_rm_nr 4 4
+ 	fi
 +
-+	if (!fou)
-+		goto out;
++	# remove and re-add
++	if reset "delete re-add signal" &&
++	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		pm_nl_set_limits $ns1 0 3
++		pm_nl_set_limits $ns2 3 3
++		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
++		# broadcast IP: no packet for this address will be received on ns1
++		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
++		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
++		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
++		local tests_pid=$!
 +
-+	proto = fou->protocol;
- 
- 	/* We can clear the encap_mark for FOU as we are essentially doing
- 	 * one of two possible things.  We are either adding an L4 tunnel
-@@ -261,14 +267,24 @@ static int fou_gro_complete(struct sock *sk, struct sk_buff *skb,
- 			    int nhoff)
- {
- 	const struct net_offload __rcu **offloads;
--	u8 proto = fou_from_sock(sk)->protocol;
-+	struct fou *fou = fou_from_sock(sk);
- 	const struct net_offload *ops;
--	int err = -ENOSYS;
-+	u8 proto;
-+	int err;
++		wait_mpj $ns2
++		chk_subflow_nr needtitle "before delete" 2
 +
-+	if (!fou) {
-+		err = -ENOENT;
-+		goto out;
-+	}
++		pm_nl_del_endpoint $ns1 1 10.0.2.1
++		pm_nl_del_endpoint $ns1 2 224.0.0.1
++		sleep 0.5
++		chk_subflow_nr "" "after delete" 1
 +
-+	proto = fou->protocol;
- 
- 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
- 	ops = rcu_dereference(offloads[proto]);
--	if (WARN_ON(!ops || !ops->callbacks.gro_complete))
-+	if (WARN_ON(!ops || !ops->callbacks.gro_complete)) {
-+		err = -ENOSYS;
- 		goto out;
-+	}
- 
- 	err = ops->callbacks.gro_complete(skb, nhoff);
- 
-@@ -318,6 +334,9 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
- 	struct gro_remcsum grc;
- 	u8 proto;
- 
-+	if (!fou)
-+		goto out;
++		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
++		wait_mpj $ns2
++		chk_subflow_nr "" "after re-add" 3
 +
- 	skb_gro_remcsum_init(&grc);
++		pm_nl_del_endpoint $ns1 42 10.0.1.1
++		sleep 0.5
++		chk_subflow_nr "" "after delete ID 0" 2
++
++		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
++		wait_mpj $ns2
++		chk_subflow_nr "" "after re-add" 3
++		kill_tests_wait
++
++		chk_join_nr 4 4 4
++		chk_add_nr 5 5
++		chk_rm_nr 3 2 invert
++	fi
++
++	# flush and re-add
++	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
++	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 1 2
++		# broadcast IP: no packet for this address will be received on ns1
++		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
++		local tests_pid=$!
++
++		wait_attempt_fail $ns2
++		chk_subflow_nr needtitle "before flush" 1
++
++		pm_nl_flush_endpoint $ns2
++		pm_nl_flush_endpoint $ns1
++		wait_rm_addr $ns2 0
++		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_mpj $ns2
++		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
++		wait_mpj $ns2
++		kill_wait "${tests_pid}"
++		kill_tests_wait
++
++		chk_join_nr 2 2 2
++		chk_add_nr 2 2
++		chk_rm_nr 1 0 invert
++	fi
+ }
  
- 	off = skb_gro_offset(skb);
--- 
-2.43.0
-
+ # [$1: error message]
 
 
 
