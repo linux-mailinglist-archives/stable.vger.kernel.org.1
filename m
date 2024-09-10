@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-75502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E5B9734EA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDF09731FA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31451F25E9A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8BF1F29374
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19B318F2DB;
-	Tue, 10 Sep 2024 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C8F1A073B;
+	Tue, 10 Sep 2024 10:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiXzraOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDtXiGmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E64718C324;
-	Tue, 10 Sep 2024 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915311A0716;
+	Tue, 10 Sep 2024 10:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964922; cv=none; b=b+PTY/2iF0wAUdDG0xsURENrWQ3K/2vVBiK81nNJze0FzxWo5O/1euAEoXf1Mp40OXP/N5eai/By3un9Ikyv1CSQzNKXxPDWEEetE1y9c8GSFdJTggkgDThJcfhxa1IHewBCnC92rPyliMzyKY/0YU/jb10h5ZPLl3KBJ3qbE2A=
+	t=1725963136; cv=none; b=ZA8pWnMb3eVVDB5TEQOvNNZDgFGxEbEdYSeVJKw4Shx/nh6D28s0AVgUao2gBuDPqNSct2iSuzMU9q5FStAj98ddKXadS8n4gaYafYtmH6Gs3qrUMW3/9Rbci+d+JOKz88nrJx6MO7+mupaJp+YoDROlJcxjVqnQJWajRBtCXyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964922; c=relaxed/simple;
-	bh=NprSOmGtYYBuGn7dy5tfdYQWbW6ELD0cIUwKGLFxYEo=;
+	s=arc-20240116; t=1725963136; c=relaxed/simple;
+	bh=GfKvcRgbsk3P/BpPLTRrWuMMHvWUJGGwb6Luhxx2cv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SByqghF1QbxSeeJID3ai6U4thbLJr8D9qTTcQS7OZW1hdMaGjpQWi/QvKHdj1ta5myDi9i5oWAgvn89GBSRx8JIotJLtk5Inx/N0etMX4QhAokDIoqqCQc9yxCo1W5/geOobvKQNfYkaigyEQs1uNccN1aKDBIEd02iMUvWIVAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiXzraOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC83C4CEC3;
-	Tue, 10 Sep 2024 10:42:01 +0000 (UTC)
+	 MIME-Version; b=qrUC95HvyKHzHXSL6CBeKxCH5Qu2ArJwj4AFyo6Ll3b3SdDHjpkiN/3CJemUfYDTiQ9MfDQkLOT1P46LP9d/lDAXmHbvnjKOWjNWRCiRiqsb+10QkOdJTYOQ6M8/yC5H643eApd6BJOgURKojSysd5LhKO70M8Dn1CRZSLyw1l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDtXiGmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62E0C4CECD;
+	Tue, 10 Sep 2024 10:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964922;
-	bh=NprSOmGtYYBuGn7dy5tfdYQWbW6ELD0cIUwKGLFxYEo=;
+	s=korg; t=1725963136;
+	bh=GfKvcRgbsk3P/BpPLTRrWuMMHvWUJGGwb6Luhxx2cv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiXzraOvCEf7MZrh5Ct3YmeQIGHpsthiV1OPFNkBQWENyZ5JsSMkokiyV7SvZdIQx
-	 8xuPeESai5q4dhR6rcFaBXYus+JI9htjMSlLDwgou9MCVhVTUEOr5JE8T+VDSnSQrF
-	 31hGgWFpV69q03j2JO9ynqnaQ2vcS3jdUT7FJhv0=
+	b=BDtXiGmEmBK91EhYFD4dFrWUvGkj84OpxAmka5e1kWkXswljHB6iyhbVRBgA8cDAk
+	 LFt6WLlpVQotZtWfSr46wgOrxv7IbwZlNrLDCXKsnVQWiJ14bpoK8OShZk2jpGkwbO
+	 BPulps/APAZCur8czbjWAVB1mpoaEAuR5qN3RQjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 077/186] mptcp: pm: avoid possible UaF when selecting endp
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ye Li <ye.li@nxp.com>,
+	Jason Liu <jason.hui.liu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.1 148/192] clocksource/drivers/imx-tpm: Fix return -ETIME when delta exceeds INT_MAX
 Date: Tue, 10 Sep 2024 11:32:52 +0200
-Message-ID: <20240910092557.693791051@linuxfoundation.org>
+Message-ID: <20240910092604.065269380@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jacky Bai <ping.bai@nxp.com>
 
-commit 48e50dcbcbaaf713d82bf2da5c16aeced94ad07d upstream.
+commit 5b8843fcd49827813da80c0f590a17ae4ce93c5d upstream.
 
-select_local_address() and select_signal_address() both select an
-endpoint entry from the list inside an RCU protected section, but return
-a reference to it, to be read later on. If the entry is dereferenced
-after the RCU unlock, reading info could cause a Use-after-Free.
+In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
+is larger than INT_MAX.
 
-A simple solution is to copy the required info while inside the RCU
-protected section to avoid any risk of UaF later. The address ID might
-need to be modified later to handle the ID0 case later, so a copy seems
-OK to deal with.
+For example:
 
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Closes: https://lore.kernel.org/45cd30d3-7710-491c-ae4d-a1368c00beb1@redhat.com
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+tpm_set_next_event(delta = 0xffff_fffe)
+{
+        ...
+        next = tpm_read_counter(); // assume next is 0x10
+        next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
+        now = tpm_read_counter();  // now is 0x10
+        ...
+
+        return (int)(next - now) <= 0 ? -ETIME : 0;
+                     ^^^^^^^^^^
+                     0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
+                     cast to int. So return -ETIME.
+}
+
+To fix this, introduce a 'prev' variable and check if 'now - prev' is
+larger than delta.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-14-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c, because quite a bit of new code has been
-  added around since commit 86e39e04482b ("mptcp: keep track of local
-  endpoint still available for each msk"), and commit 2843ff6f36db
-  ("mptcp: remote addresses fullmesh"). But the issue is still there.
-  The conflicts have been resolved using the same way: by adding a new
-  parameter to select_local_address() and select_signal_address(), and
-  use it instead of the pointer they were previously returning. The code
-  is simpler in this version, this conflict resolution looks safe. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240725193355.1436005-1-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   45 +++++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ drivers/clocksource/timer-imx-tpm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -127,11 +127,13 @@ static bool lookup_subflow_by_saddr(cons
- 	return false;
+--- a/drivers/clocksource/timer-imx-tpm.c
++++ b/drivers/clocksource/timer-imx-tpm.c
+@@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(
+ static int tpm_set_next_event(unsigned long delta,
+ 				struct clock_event_device *evt)
+ {
+-	unsigned long next, now;
++	unsigned long next, prev, now;
+ 
+-	next = tpm_read_counter();
+-	next += delta;
++	prev = tpm_read_counter();
++	next = prev + delta;
+ 	writel(next, timer_base + TPM_C0V);
+ 	now = tpm_read_counter();
+ 
+@@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned l
+ 	 * of writing CNT registers which may cause the min_delta event got
+ 	 * missed, so we need add a ETIME check here in case it happened.
+ 	 */
+-	return (int)(next - now) <= 0 ? -ETIME : 0;
++	return (now - prev) >= delta ? -ETIME : 0;
  }
  
--static struct mptcp_pm_addr_entry *
-+static bool
- select_local_address(const struct pm_nl_pernet *pernet,
--		     struct mptcp_sock *msk)
-+		     struct mptcp_sock *msk,
-+		     struct mptcp_pm_addr_entry *new_entry)
- {
--	struct mptcp_pm_addr_entry *entry, *ret = NULL;
-+	struct mptcp_pm_addr_entry *entry;
-+	bool found = false;
- 
- 	rcu_read_lock();
- 	spin_lock_bh(&msk->join_list_lock);
-@@ -145,19 +147,23 @@ select_local_address(const struct pm_nl_
- 		if (entry->addr.family == ((struct sock *)msk)->sk_family &&
- 		    !lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
- 		    !lookup_subflow_by_saddr(&msk->join_list, &entry->addr)) {
--			ret = entry;
-+			*new_entry = *entry;
-+			found = true;
- 			break;
- 		}
- 	}
- 	spin_unlock_bh(&msk->join_list_lock);
- 	rcu_read_unlock();
--	return ret;
-+
-+	return found;
- }
- 
--static struct mptcp_pm_addr_entry *
--select_signal_address(struct pm_nl_pernet *pernet, unsigned int pos)
-+static bool
-+select_signal_address(struct pm_nl_pernet *pernet, unsigned int pos,
-+		      struct mptcp_pm_addr_entry *new_entry)
- {
--	struct mptcp_pm_addr_entry *entry, *ret = NULL;
-+	struct mptcp_pm_addr_entry *entry;
-+	bool found = false;
- 	int i = 0;
- 
- 	rcu_read_lock();
-@@ -170,12 +176,14 @@ select_signal_address(struct pm_nl_perne
- 		if (!(entry->addr.flags & MPTCP_PM_ADDR_FLAG_SIGNAL))
- 			continue;
- 		if (i++ == pos) {
--			ret = entry;
-+			*new_entry = *entry;
-+			found = true;
- 			break;
- 		}
- 	}
- 	rcu_read_unlock();
--	return ret;
-+
-+	return found;
- }
- 
- static void check_work_pending(struct mptcp_sock *msk)
-@@ -305,7 +313,7 @@ static void mptcp_pm_create_subflow_or_s
- {
- 	struct mptcp_addr_info remote = { 0 };
- 	struct sock *sk = (struct sock *)msk;
--	struct mptcp_pm_addr_entry *local;
-+	struct mptcp_pm_addr_entry local;
- 	struct pm_nl_pernet *pernet;
- 
- 	pernet = net_generic(sock_net((struct sock *)msk), pm_nl_pernet_id);
-@@ -317,13 +325,11 @@ static void mptcp_pm_create_subflow_or_s
- 
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < msk->pm.add_addr_signal_max) {
--		local = select_signal_address(pernet,
--					      msk->pm.add_addr_signaled);
--
--		if (local) {
--			if (mptcp_pm_alloc_anno_list(msk, local)) {
-+		if (select_signal_address(pernet, msk->pm.add_addr_signaled,
-+					  &local)) {
-+			if (mptcp_pm_alloc_anno_list(msk, &local)) {
- 				msk->pm.add_addr_signaled++;
--				mptcp_pm_announce_addr(msk, &local->addr, false);
-+				mptcp_pm_announce_addr(msk, &local.addr, false);
- 			}
- 		} else {
- 			/* pick failed, avoid fourther attempts later */
-@@ -338,13 +344,12 @@ static void mptcp_pm_create_subflow_or_s
- 	    msk->pm.subflows < msk->pm.subflows_max) {
- 		remote_address((struct sock_common *)sk, &remote);
- 
--		local = select_local_address(pernet, msk);
--		if (local) {
-+		if (select_local_address(pernet, msk, &local)) {
- 			msk->pm.local_addr_used++;
- 			msk->pm.subflows++;
- 			check_work_pending(msk);
- 			spin_unlock_bh(&msk->pm.lock);
--			__mptcp_subflow_connect(sk, &local->addr, &remote);
-+			__mptcp_subflow_connect(sk, &local.addr, &remote);
- 			spin_lock_bh(&msk->pm.lock);
- 			return;
- 		}
+ static int tpm_set_state_oneshot(struct clock_event_device *evt)
 
 
 
