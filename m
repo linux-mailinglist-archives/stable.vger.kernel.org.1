@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F48597342F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE4B97322D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188ED28C6E4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA1A4B28CB5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F71918E76B;
-	Tue, 10 Sep 2024 10:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A843194A42;
+	Tue, 10 Sep 2024 10:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyCpjkRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yhLkIzP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E13F18CBE9;
-	Tue, 10 Sep 2024 10:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C41183CB0;
+	Tue, 10 Sep 2024 10:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964526; cv=none; b=ZiWT8aiYG9qs1lK8kVMCopP5gYQHd4k9eWICWH5DTrbiochcmVJenpBgaIVgQd99QkyIy4FB79qfOERkF+ogxkdG3Z6MDLKMz2nxiLUq2XVU1/djmJqEfm/imKWIWtYiSYND4Cx3C0GPGIyPRjKiix3XVeNwm3gcZyP3Q0ML/NM=
+	t=1725963189; cv=none; b=A+aBwsQot8LRQjrzxPzU/YnxHGhRGeVtVunSMw/FhEYDsTZKJ4t+wrq5WijVcsxh56NXibmMxXZB3aOsOHxz/tkOoNWJArMGs49P6xS+7eaxyRSRsWPBu+saNiR61yp1A4NPUaKmPUK1NQ8bi5tx5BLf0cVTksRWrI4pz/Os37I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964526; c=relaxed/simple;
-	bh=QvVuqXpBd7vYQUpk9b/13aPrJKJgpVPh3p5iJoY0BRY=;
+	s=arc-20240116; t=1725963189; c=relaxed/simple;
+	bh=pAZeCe6H0Qe43B63wH4zzOaMOzmHYPliw8jSGjRXFL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzymX/tMmVtIsAFo12OeUhGozFa8oaak+25N9bUj7kg7L/OpaWyOpGbJOu5wf55EBWlQ6qkAsAgsT+V7xS75ugYMBflelROaLKl2QVj6x8+6HZn11PJPF8r1847pMUoFlIHB0Usj+FjXfiNKTqddoHSp0o80qJFyzVtFTq3h3M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyCpjkRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D157C4CEC3;
-	Tue, 10 Sep 2024 10:35:25 +0000 (UTC)
+	 MIME-Version; b=MlJuecjz1C0aUqyBIIdFWdtJQP2VlTcNF4GkfuldEw5ornOod6feIe/L1fr3mTRn4P8DMcYp1eQ7/YSm6FrXkrb/I7kBQA04lPo6wjSsl4CQ8wFmjJn5zR2v0Us3ndeE/cLZIoaT6QJ6Tn0xM/2jxo/2qS52smYgCEqovYDNMV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yhLkIzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E81C4CEC3;
+	Tue, 10 Sep 2024 10:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964525;
-	bh=QvVuqXpBd7vYQUpk9b/13aPrJKJgpVPh3p5iJoY0BRY=;
+	s=korg; t=1725963189;
+	bh=pAZeCe6H0Qe43B63wH4zzOaMOzmHYPliw8jSGjRXFL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyCpjkRDJqXP0nBEMQTIVp76PNy9Pg/Cc5urmGVxz1Psn8sGaB6nggwerAwJWC3Xb
-	 aWti4uLvb2yRSy3L4OgCbumZQKBsVDJzAXiTNN4HrLeiSGfutX0rrtMhVH/54LxuzJ
-	 8NHKDA4597sYQw0KBWqcPV3068WYME4M3B1njvC8=
+	b=0yhLkIzPkbsiWxfBwBODBgiUrit75GF6FtLkRJ0mDZmLnMAcNMtFkurFBz3mQ21uV
+	 xd2DTj+ZkaHc0u8+JW+tG4rkJzXoCGAVUkJ/AaEarPgLjb15aD+e+ua3NYYjoYfuGS
+	 b8dJJRUeKx3b7GOH+lR7GvM1lBojJhQnqueLE4uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/269] LoongArch: Use correct API to map cmdline in relocate_kernel()
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 138/192] iio: fix scale application in iio_convert_raw_to_processed_unlocked
 Date: Tue, 10 Sep 2024 11:32:42 +0200
-Message-ID: <20240910092614.415313966@linuxfoundation.org>
+Message-ID: <20240910092603.671402016@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Matteo Martelli <matteomartelli3@gmail.com>
 
-[ Upstream commit 0124fbb4c6dba23dbdf80c829be68adbccde2722 ]
+commit 8a3dcc970dc57b358c8db2702447bf0af4e0d83a upstream.
 
-fw_arg1 is in memory space rather than I/O space, so we should use
-early_memremap_ro() instead of early_ioremap() to map the cmdline.
-Moreover, we should unmap it after using.
+When the scale_type is IIO_VAL_INT_PLUS_MICRO or IIO_VAL_INT_PLUS_NANO
+the scale passed as argument is only applied to the fractional part of
+the value. Fix it by also multiplying the integer part by the scale
+provided.
 
-Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+Link: https://patch.msgid.link/20240730-iio-fix-scale-v1-1-6246638c8daa@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/relocate.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/inkern.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/kernel/relocate.c b/arch/loongarch/kernel/relocate.c
-index 1acfa704c8d0..0eddd4a66b87 100644
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -13,6 +13,7 @@
- #include <asm/bootinfo.h>
- #include <asm/early_ioremap.h>
- #include <asm/inst.h>
-+#include <asm/io.h>
- #include <asm/sections.h>
- #include <asm/setup.h>
- 
-@@ -170,7 +171,7 @@ unsigned long __init relocate_kernel(void)
- 	unsigned long kernel_length;
- 	unsigned long random_offset = 0;
- 	void *location_new = _text; /* Default to original kernel start */
--	char *cmdline = early_ioremap(fw_arg1, COMMAND_LINE_SIZE); /* Boot command line is passed in fw_arg1 */
-+	char *cmdline = early_memremap_ro(fw_arg1, COMMAND_LINE_SIZE); /* Boot command line is passed in fw_arg1 */
- 
- 	strscpy(boot_command_line, cmdline, COMMAND_LINE_SIZE);
- 
-@@ -182,6 +183,7 @@ unsigned long __init relocate_kernel(void)
- 		random_offset = (unsigned long)location_new - (unsigned long)(_text);
- #endif
- 	reloc_offset = (unsigned long)_text - VMLINUX_LOAD_ADDRESS;
-+	early_memunmap(cmdline, COMMAND_LINE_SIZE);
- 
- 	if (random_offset) {
- 		kernel_length = (long)(_end) - (long)(_text);
--- 
-2.43.0
-
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -679,17 +679,17 @@ static int iio_convert_raw_to_processed_
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000LL);
+ 		break;
+ 	case IIO_VAL_INT_PLUS_NANO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000000LL);
+ 		break;
 
 
 
