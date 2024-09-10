@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-74252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6D1972E4D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E26B4972E84
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07DCA28833B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:42:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA86D287265
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B3818FC6B;
-	Tue, 10 Sep 2024 09:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C4F18BC38;
+	Tue, 10 Sep 2024 09:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCtG2LIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ge+WX5Eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B712218F2F1;
-	Tue, 10 Sep 2024 09:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8539B188CC1;
+	Tue, 10 Sep 2024 09:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961261; cv=none; b=MFTRFDlqZZiKO2LNzynFKn928d1w7pe/S+0cJyKSQwkY6+ZuzMesVf41CtagdPH04jIPHlTnl4Y/qH21GVZUMJFaDB4dzkB9OY7oqT9bc6O22VGJtFa05yYOgXTIwy7KGIRm0201Fd7y9ScyFr+AC6YCBT+ERBjURHjJ8gq2+p8=
+	t=1725961379; cv=none; b=L09C/TC8P14/Va0+frpvKyF9nX6tSSRo8fdLuKmxZleZWh17jn0klFnbzSXipHxLhvGfIqSFddkorjjb8TGOg+bo+eFM5dDauSTGjRRyAsVbqo4NSPpSufBOAp2eVeWBJWJL2pOPmtvqCrSnpsHuaseYzSqOnf3QCMVB5vrcp4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961261; c=relaxed/simple;
-	bh=dkUInlHIU5iwwllvByOhcYdriUADuXRxeRAZVxT+9Hc=;
+	s=arc-20240116; t=1725961379; c=relaxed/simple;
+	bh=TeawhWoxNzzzIKseA8wA7aZs4RPWiBZ38Z4XnPy6wFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDDyK0AD5o2NiR4xoZsRsDmwoBEt5WIuVgYJCLDGNwtY+VlEFQ3gw7l2SJUeS/syC8RCuC0HF2VIoCmplcKTqwXIL+Ou+Ut2F76gHsDpnOPznBQI1PioKrFNxjmibs/r1Ad7Z0NPaFDEp+Dpr5jfLgaHq9kOHZDn1YiFNs3VSy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCtG2LIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E51EC4CECC;
-	Tue, 10 Sep 2024 09:41:01 +0000 (UTC)
+	 MIME-Version; b=cLOsYdrz/adM8leFSq/cjBIjFF70ruLgCtdJerrcwMkTqSqf11yNl4Zd9eQIAfJIoq754hhWMx2vauvO85lzyOPO7/xq8bvqkERF9CCDlSHQ5aW5o0z8Q5KpqquwgCNEvkWaXwezl+Ne1QOr7IXRmVj7INai8wBfnRaCa5ndG8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ge+WX5Eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C34C4CEC3;
+	Tue, 10 Sep 2024 09:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961261;
-	bh=dkUInlHIU5iwwllvByOhcYdriUADuXRxeRAZVxT+9Hc=;
+	s=korg; t=1725961379;
+	bh=TeawhWoxNzzzIKseA8wA7aZs4RPWiBZ38Z4XnPy6wFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCtG2LIc2x4kWeHTnKh4u+j1PuDLvMgHt+yJ5HqfeC4pCAnAPeKycSdbhNuwHEAyO
-	 dFJIKcCe05sld2BWhJmYAP//x7ZO92uzOjfHSMHtGffVAEvh3ArVezJtixV9Uf/d90
-	 zsWcB2dtTIie3KzJacqWQpGVGE/54yNEfnTr5AjE=
+	b=Ge+WX5EqmwL+WOCjd5wjyVnf7Rn076Jgk+wRPkusrktkeQybJDif0FUhHPwySwpMP
+	 ucVPX64l5Hk0cDVMW3jX0dFluVPxXfr0kWrF9ma81IKgkGEcqVCIt9BfjgesHUsm55
+	 DQNdmBFB5y1g2nOqS2aDseW3tLdMi951fXwVfwv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
+	Terry Cheong <htcheong@chromium.org>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 011/375] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
-Date: Tue, 10 Sep 2024 11:26:48 +0200
-Message-ID: <20240910092622.642657748@linuxfoundation.org>
+Subject: [PATCH 6.10 012/375] ALSA: hda/realtek: add patch for internal mic in Lenovo V145
+Date: Tue, 10 Sep 2024 11:26:49 +0200
+Message-ID: <20240910092622.672159617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -66,67 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Terry Cheong <htcheong@chromium.org>
 
-commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
+commit ef27e89e7f3015be2b3c124833fbd6d2e4686561 upstream.
 
-The Sirius notebooks have two sets of speakers 0x17 (sides) and
-0x1d (top center). The side speakers are active by default but
-the top speakers aren't.
+Lenovo V145 is having phase inverted dmic but simply applying inverted
+dmic fixups does not work. Chaining up verb fixes for ALC283 enables
+inverting dmic fixup to work properly.
 
-This patch provides a pincfg quirk to activate the top speakers.
-
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240830-lenovo-v145-fixes-v3-1-f7b7265068fa@chromium.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/pci/hda/patch_realtek.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -307,6 +307,7 @@ enum {
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
-+	CXT_PINCFG_TOP_SPEAKER,
- };
- 
- /* for hda_fixup_thinkpad_acpi() */
-@@ -974,6 +975,13 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = cxt_pincfg_sws_js201d,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7428,6 +7428,7 @@ enum {
+ 	ALC236_FIXUP_HP_GPIO_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
++	ALC236_FIXUP_LENOVO_INV_DMIC,
+ 	ALC298_FIXUP_SAMSUNG_AMP,
+ 	ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
+ 	ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
+@@ -9049,6 +9050,12 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc236_fixup_hp_mute_led_micmute_vref,
  	},
-+	[CXT_PINCFG_TOP_SPEAKER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1d, 0x82170111 },
-+			{ }
-+		},
++	[ALC236_FIXUP_LENOVO_INV_DMIC] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc_fixup_inv_dmic,
++		.chained = true,
++		.chain_id = ALC283_FIXUP_INT_MIC,
 +	},
- };
- 
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -1070,6 +1078,8 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
- 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
-+	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
-+	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
+ 	[ALC298_FIXUP_SAMSUNG_AMP] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_samsung_amp,
+@@ -10609,6 +10616,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
++	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3bf8, "Quanta FL1", ALC269_FIXUP_PCM_44K),
+@@ -10860,6 +10868,7 @@ static const struct hda_model_fixup alc2
+ 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
+ 	{.id = ALC255_FIXUP_ACER_HEADPHONE_AND_MIC, .name = "alc255-acer-headphone-and-mic"},
+ 	{.id = ALC285_FIXUP_HP_GPIO_AMP_INIT, .name = "alc285-hp-amp-init"},
++	{.id = ALC236_FIXUP_LENOVO_INV_DMIC, .name = "alc236-fixup-lenovo-inv-mic"},
  	{}
  };
- 
-@@ -1089,6 +1099,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
-+	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
- 	{}
- };
- 
+ #define ALC225_STANDARD_PINS \
 
 
 
