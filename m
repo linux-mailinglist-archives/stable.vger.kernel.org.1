@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-74145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6240A972C9F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:55:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C691972C9E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91DE0B24072
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A06071C23E84
 	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DE0186294;
-	Tue, 10 Sep 2024 08:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4408818755F;
+	Tue, 10 Sep 2024 08:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyZIizP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYSMhdoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EC117C9B9
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 08:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0380817C9B9
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 08:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725958529; cv=none; b=RHKbf5yzKSPs8AuU6Zpnd6s+1DlbvT8kw/+ARZyXbuqr/BWT7HtrEIzD/CxlbFIDUS1omF92T/hPnEk08mInWZg+uyhkCCDgx3UocUdUQbjArpoxHPjPCwwoQao8gxEmrVFz1pUc/mEOUxt7TPhEjo3ACvRUjH2NvDUTSWIBkso=
+	t=1725958532; cv=none; b=erL5n/kL77pIAOsKAJCStUZNs4SepkUgd/ED3GB3x0OniEnUJaFqOyTeoTfMgCRQouffQDTqi/XCSm4fKKUbnZgxKTdPqIreXMbwNSi0wroUYsFyTgyAqJHbXCBmBhUdE1cjsKGY7/w06bAIZzHdsFSisvKG6n0iX+ld3VPtKlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725958529; c=relaxed/simple;
-	bh=nhQPblASwIiiJ61RR/ri1sBuX/ce5JlhIKCLHRCHoRE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZKBi38D6uRTKinwEVU3FTnqB44eqPSDpAqoCMs0mKram2woiFVyvIqxmn78MaVft2b26ggqRM4Zl973ivXh6YU38zrgzgFM9/giXzTQ8omhvGg7djf++3HYPtLPWBIlIbGjYsH8Q9E9/ViU+lhbtplhLMbQjHwiHkW77HTwxl30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyZIizP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4E8C4CEC3;
-	Tue, 10 Sep 2024 08:55:27 +0000 (UTC)
+	s=arc-20240116; t=1725958532; c=relaxed/simple;
+	bh=ljzguPQ6qjCSEgLFMyw98TwH/XrWqs2A+x/6DI6yOjg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Jr0k9OhvQOaFKON0M89ZNYdvOXU4pTUdxrwybyBRyTGzEYwaYzq+mqBsARlqgmmJVhB3LxHuJqeHPS9sMGUhmH8KeUQ+1WtMMOJPiZB10S9d865uqo4fKQiBhm6y2H+2PzmupYCUgr0DrZ5rnZD62EdfE1UJWbbUOCuOmKX282s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYSMhdoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C871C4CEC3;
+	Tue, 10 Sep 2024 08:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725958528;
-	bh=nhQPblASwIiiJ61RR/ri1sBuX/ce5JlhIKCLHRCHoRE=;
+	s=korg; t=1725958531;
+	bh=ljzguPQ6qjCSEgLFMyw98TwH/XrWqs2A+x/6DI6yOjg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yyZIizP9M10lugo4peP9vMDXD7/AW1LY7xNupWhQdbvPRQixbCgnbphsZ/x9fPK3E
-	 0Q5bnv6MY7H/DWSBNYyjTlHShm+C5VpLz19HzhfX8R1CztBC9HGTjmvQIiDsQE6GaZ
-	 X6RS6sVg1dJ2XTJDiM6TgHU5h7bYOBsxdrHmh7Ts=
-Subject: FAILED: patch "[PATCH] LoongArch: Use accessors to page table entries instead of" failed to apply to 6.10-stable tree
+	b=qYSMhdoFD+PxRLLyPk8PL3mslqj0XxQ8xnflKDSN4oI9er5d1sCRh/hAyBVGdvNln
+	 B+Py/SFOQZo627NYpVi1YNTUr3bLXY4jzLuIgeQzZ7gnDEuedYqfbclmmUKiDatsXx
+	 Aj7OMVXQx6TXlVGwG3oOiSCH5eSCPcpfNJFH1XtY=
+Subject: FAILED: patch "[PATCH] LoongArch: Use accessors to page table entries instead of" failed to apply to 6.6-stable tree
 To: chenhuacai@kernel.org,chenhuacai@loongson.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Sep 2024 10:55:25 +0200
-Message-ID: <2024091025-freeway-unlocked-8c52@gregkh>
+Date: Tue, 10 Sep 2024 10:55:28 +0200
+Message-ID: <2024091028-stinking-mourner-56f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4574815abf43e2bf05643e1b3f7a2e5d6df894f0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091025-freeway-unlocked-8c52@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091028-stinking-mourner-56f5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 4574815abf43 ("LoongArch: Use accessors to page table entries instead of direct dereference")
+752e2cd7b4fb ("LoongArch: KVM: Implement kvm mmu operations")
 
 thanks,
 
