@@ -1,183 +1,183 @@
-Return-Path: <stable+bounces-74111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0E3972904
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6C897294D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E11F1C23C31
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 05:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB49B1C22214
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 06:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066A714C581;
-	Tue, 10 Sep 2024 05:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75604175D36;
+	Tue, 10 Sep 2024 06:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="MjQRKAR3";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="MjQRKAR3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VXDVv/ra"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52617BA42;
-	Tue, 10 Sep 2024 05:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCAF47A7C
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 06:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725947507; cv=none; b=t9Dvx8OIg5lUBYwjLHFltuvMHkUpKNCSvjZhFws7Bqd2dkgds5v5gmx1AqqSEmyscB3VprTQN+b3FHwofvHMezRwubslmQwBD9wpV2fJ0dqgYvCS2FuJSePt1DdB4onaH3bDcrc5IYijlwi3WkMWaBAQr4KqqqBhUYvOKLQ156g=
+	t=1725948756; cv=none; b=K69WYcqbKNdcCH+CmkB0+fG7stqYxKaFVy7sGEyvJ0il/88HKMTtmnBmp+QEWHmBXe8SVNGjxjdUl18psW6bbhftZu90LY5BQd9WpQrwAWNhAadN76iburaPOSDML9GAm/uNSCxGR/3IwUWyVzFLM6gEJGYcPL4Vz80sGwdwgp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725947507; c=relaxed/simple;
-	bh=jg4yZ2t7HOOAxBRuP13nbwyGcqwPFl6GsdUWs8lKUlA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P1sGyrjF7uef75Qa2JIx91zbx6jX+DGi/hEsesKTa07zMssERa475VGuLccFpYB4QRE4kSwRYwsfDSofOutXo4t9wPdNy4PEqCcbDhsrkBOjmLAyF5L91ZNBSMdndNCIJrJcAX9vxKTJ2NQFXVX2wyqpvJnqFB/gqGc0lDeQzsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=MjQRKAR3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=MjQRKAR3; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EC161F7FB;
-	Tue, 10 Sep 2024 05:51:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1725947498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hO8nqWpasQbNfWu5b5Ch2sNiwtLPhmu1QkKoX4syByw=;
-	b=MjQRKAR3Ep2tRw3klBSaqtY57rR16ajf20DDRdb80V5y9JjBbhrv5Cm+AJK6lIjuTwJmB0
-	PZJksE9iOmmez86+s2XPVbbS5FhoanF7FBekVTcjdWaSrC3LYF0Qt0oKLPI6xFgkWASp8C
-	HyO5tCLSnfSbOvrPO5jTXuSFKk5WpvQ=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=MjQRKAR3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1725947498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hO8nqWpasQbNfWu5b5Ch2sNiwtLPhmu1QkKoX4syByw=;
-	b=MjQRKAR3Ep2tRw3klBSaqtY57rR16ajf20DDRdb80V5y9JjBbhrv5Cm+AJK6lIjuTwJmB0
-	PZJksE9iOmmez86+s2XPVbbS5FhoanF7FBekVTcjdWaSrC3LYF0Qt0oKLPI6xFgkWASp8C
-	HyO5tCLSnfSbOvrPO5jTXuSFKk5WpvQ=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 17DF413A3A;
-	Tue, 10 Sep 2024 05:51:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yqQqMmje32a2CgAAD6G6ig
-	(envelope-from <wqu@suse.com>); Tue, 10 Sep 2024 05:51:36 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: qgroup: set a more sane default value for subtree drop threshold
-Date: Tue, 10 Sep 2024 15:21:04 +0930
-Message-ID: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725948756; c=relaxed/simple;
+	bh=KBK4L/Svs+SSSpRYgQ+SdhJybVIfGkMRnwWz/7TOsag=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kgaFXBHSXCqA104QPdyengqVDXCyNgBHJvVJi0PXYOJY861M1VDIv8TXITNWrSjxc6J72+HkiP7Fj1ahrxLUuDOAipF4XqAC7lkW9WiRE9g+b2VOS1U5FYOH1aNT3wD0qOMvv7AcGd34d/KYw+2SfFSiEd04q7wI2vKqt/gy+aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VXDVv/ra; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725948752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oLRmJNCG3oc9HHYM4SM+SbDTwZxDhWCFqUUuzaavTuQ=;
+	b=VXDVv/rarYfdCqpAlK0zRL5qG2qibohQDM65B5SSA2ry2urmr2osckMwwmZXjgNG3tY+M0
+	cl/7d01L5gWvf7g6syChOZ0Bet9W132SO1k5u9XxAXndHESPpuQ6UHgH3xDDr7Unhj1Htl
+	Q5+MoJJtWoXRpb7M4PafPywvNCHgeoU=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-45-ttqEXn48NwWX2wj3URMsBg-1; Tue, 10 Sep 2024 02:12:30 -0400
+X-MC-Unique: ttqEXn48NwWX2wj3URMsBg-1
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-207332f7c17so4225195ad.2
+        for <stable@vger.kernel.org>; Mon, 09 Sep 2024 23:12:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725948749; x=1726553549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oLRmJNCG3oc9HHYM4SM+SbDTwZxDhWCFqUUuzaavTuQ=;
+        b=vfSEdAePJed9nA3NdNhXHOF63GMwNqzKK2hSDMBPeuDjckpZ4OtvM0eCZ+rd7rBWnv
+         YN66pnnKhRGEiUdNg1FEVv4tkrUX5RTwvLhgqG5uStqg7WgHvF5zouRlFP3VcZ4Gpcig
+         P62wFbh8F5+ySkkc7kLb9FsfZprnBVVb69g9yXNp9FLLBZo4cJu78pu8UlctEOX+DInR
+         /+eVncdHru0DErzhC6KAneDY7XaTkqdWrJ5zdblzbQRDNWjCLP1prY6MIhjHP+XOFLOy
+         IiDMGpGNYkpz8XzoT49PwduRJsKRGwaqHq59+JZn0BzSq38/ESFXQgJL6xA2lauJfImA
+         l/xw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4TSxuVTSMxF6sk1D3RlZSB14EdzLu9rb8y2ErOxTeQ3+TCGrFnmQuHhY3FIB42cOA/nutWeI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwDI67LB+NBKhCN+qifHhARJM9sN22FuIB33JBAtym8KXufLIZ
+	UR5F5T7Un+iQx0pCTaRSh8UQQfbTRcLMZKPyJjJxMCuFBPBm4GAOEc3TPNfOmdn3ml3dV2trK78
+	/RVDdnwA29XgNSfICpvMzKo6IPLeQ3+VCwPbn7NhGKsNbqYAB7iSdFTm/hFtrkWVBiIRRGDJNHt
+	726w6Eu9zpsnjVCYlYqVdqcz0jULgK
+X-Received: by 2002:a17:903:22c4:b0:201:f1eb:bf98 with SMTP id d9443c01a7336-206f06242bfmr144283345ad.54.1725948749219;
+        Mon, 09 Sep 2024 23:12:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGl+BiaiPeOGgofe6xERlFpVXbjr7TyIBQ07MZxsXja5EigdLjujvtFMy8RjnNFUh4NnpA+tYEXbWa61qRuq68=
+X-Received: by 2002:a17:903:22c4:b0:201:f1eb:bf98 with SMTP id
+ d9443c01a7336-206f06242bfmr144282885ad.54.1725948748730; Mon, 09 Sep 2024
+ 23:12:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1EC161F7FB
-X-Spam-Score: -5.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.com:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:mid,suse.com:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+References: <20240910004033.530313-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20240910004033.530313-1-willemdebruijn.kernel@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 10 Sep 2024 14:12:17 +0800
+Message-ID: <CACGkMEsnPmbo8t6PbD8YsgKrZWHXG=Rz8ZwTDBJkSbmyzkNGSA@mail.gmail.com>
+Subject: Re: [PATCH net] net: tighten bad gso csum offset check in virtio_net_hdr
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	edumazet@google.com, pabeni@redhat.com, stable@vger.kernel.org, 
+	nsz@port70.net, mst@redhat.com, yury.khrustalev@arm.com, broonie@kernel.org, 
+	sudeep.holla@arm.com, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since commit 011b46c30476 ("btrfs: skip subtree scan if it's too high to
-avoid low stall in btrfs_commit_transaction()"), btrfs qgroup can
-automatically skip large subtree scan at the cost of marking qgroup
-inconsistent.
+On Tue, Sep 10, 2024 at 8:40=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> From: Willem de Bruijn <willemb@google.com>
+>
+> The referenced commit drops bad input, but has false positives.
+> Tighten the check to avoid these.
+>
+> The check detects illegal checksum offload requests, which produce
+> csum_start/csum_off beyond end of packet after segmentation.
+>
+> But it is based on two incorrect assumptions:
+>
+> 1. virtio_net_hdr_to_skb with VIRTIO_NET_HDR_GSO_TCP[46] implies GSO.
+> True in callers that inject into the tx path, such as tap.
+> But false in callers that inject into rx, like virtio-net.
+> Here, the flags indicate GRO, and CHECKSUM_UNNECESSARY or
+> CHECKSUM_NONE without VIRTIO_NET_HDR_F_NEEDS_CSUM is normal.
+>
+> 2. TSO requires checksum offload, i.e., ip_summed =3D=3D CHECKSUM_PARTIAL=
+.
+> False, as tcp[46]_gso_segment will fix up csum_start and offset for
+> all other ip_summed by calling __tcp_v4_send_check.
+>
+> Because of 2, we can limit the scope of the fix to virtio_net_hdr
+> that do try to set these fields, with a bogus value.
+>
+> Link: https://lore.kernel.org/netdev/20240909094527.GA3048202@port70.net/
+> Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_n=
+et_hdr")
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> Cc: <stable@vger.kernel.net>
+>
+> ---
+>
+> Verified that the syzbot repro is still caught.
+>
+> An equivalent alternative would be to move the check for csum_offset
+> to where the csum_start check is in segmentation:
+>
+> -    if (unlikely(skb_checksum_start(skb) !=3D skb_transport_header(skb))=
+)
+> +    if (unlikely(skb_checksum_start(skb) !=3D skb_transport_header(skb) =
+||
+> +                 skb->csum_offset !=3D offsetof(struct tcphdr, check)))
+>
+> Cleaner, but messier stable backport.
+>
+> We'll need an equivalent patch to this for VIRTIO_NET_HDR_GSO_UDP_L4.
+> But that csum_offset test was in a different commit, so different
 
-It's designed to address the final performance problem of snapshot drop
-with qgroup enabled, but to be safe the default value is
-BTRFS_MAX_LEVEL, requiring a user space daemon to set a different value
-to make it work.
+Not for this patch, but I see this in UDP_L4:
 
-I'd say it's not a good idea to rely on user space tool to set this
-default value, especially when some operations (snapshot dropping) can
-be triggered immediately after mount, leaving a very small window to
-that that sysfs interface.
+                       if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
+                               return -EINVAL;
 
-So instead of disabling this new feature by default, enable it with a
-low threshold (3), so that large subvolume tree drop at mount time won't
-cause huge qgroup workload.
+This seems to forbid VIRTIO_NET_HDR_F_DATA_VALID. I wonder what's the
+reason for doing this.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/disk-io.c | 2 +-
- fs/btrfs/qgroup.c  | 2 +-
- fs/btrfs/qgroup.h  | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+> Fixes tag.
+> ---
+>  include/linux/virtio_net.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index 6c395a2600e8d..276ca543ef44d 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -173,7 +173,8 @@ static inline int virtio_net_hdr_to_skb(struct sk_buf=
+f *skb,
+>                         break;
+>                 case SKB_GSO_TCPV4:
+>                 case SKB_GSO_TCPV6:
+> -                       if (skb->csum_offset !=3D offsetof(struct tcphdr,=
+ check))
+> +                       if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL &&
+> +                           skb->csum_offset !=3D offsetof(struct tcphdr,=
+ check))
+>                                 return -EINVAL;
+>                         break;
+>                 }
+> --
+> 2.46.0.598.g6f2099f65c-goog
+>
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 25d768e67e37..a9bd54d1be1e 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1959,7 +1959,7 @@ static void btrfs_init_qgroup(struct btrfs_fs_info *fs_info)
- 	fs_info->qgroup_seq = 1;
- 	fs_info->qgroup_ulist = NULL;
- 	fs_info->qgroup_rescan_running = false;
--	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-+	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
- 	mutex_init(&fs_info->qgroup_rescan_lock);
- }
- 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index c297909f1506..aec096dc8829 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1407,7 +1407,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 	fs_info->quota_root = NULL;
- 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_ON;
- 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
--	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-+	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
- 	spin_unlock(&fs_info->qgroup_lock);
- 
- 	btrfs_free_qgroup_config(fs_info);
-diff --git a/fs/btrfs/qgroup.h b/fs/btrfs/qgroup.h
-index 98adf4ec7b01..c229256d6fd5 100644
---- a/fs/btrfs/qgroup.h
-+++ b/fs/btrfs/qgroup.h
-@@ -121,6 +121,8 @@ struct btrfs_inode;
- #define BTRFS_QGROUP_RUNTIME_FLAG_CANCEL_RESCAN		(1ULL << 63)
- #define BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING		(1ULL << 62)
- 
-+#define BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT		(3)
-+
- /*
-  * Record a dirty extent, and info qgroup to update quota on it
-  */
--- 
-2.46.0
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks
 
 
