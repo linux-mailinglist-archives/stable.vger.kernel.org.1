@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-75071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14959973387
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626529733FE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64C72B2C89A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250AF28B90E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B60218EFEE;
-	Tue, 10 Sep 2024 10:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC9319CD17;
+	Tue, 10 Sep 2024 10:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYm4Ohw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeSJbHng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A517A589;
-	Tue, 10 Sep 2024 10:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1A7192B7B;
+	Tue, 10 Sep 2024 10:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963664; cv=none; b=JRD51jhBya9mltoMdVX8a/TJZZmxA+MydoKvkLqZSiqOgTNeuy/5ojmwmj7aW/iweM9G6vgIqYvexiuOor3eZEQA1aBi/n1G0Ceq41ctPkocyZVjZYmZa/AuPIusac/zF138OaKC/ftycIVGRabBrZUeyocexp7anoIBD+Vv/8M=
+	t=1725964399; cv=none; b=lEe+ZqcUnl59iOKNTk13kTRkKyPIejYL9pgd+mpGMuo47CHDByrcfGPzjqH32mYm+0St1Juui9CodBojKhr90h9nSvcMzkucqklU7AQB8ai2+p9wL6nW6Kvo8SOWCScpT+sy1EATBEPJEjieu/31U31UZr6X7Qa6Suj+eo/Dlj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963664; c=relaxed/simple;
-	bh=UatNjIYfHOd5khVII733zrXWogR5HmtY2pJQUT4rLeA=;
+	s=arc-20240116; t=1725964399; c=relaxed/simple;
+	bh=nJG/HJiXyrElPFehPKZZlS+VrglqQt7LDX/wtaUTeJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZnPzjN+sFhXJjAsFWwbhw2uGH2yK0ygMfjBMFymbbGB2IWtQvEQo7JEy9bgv/huIrbFV64qrrVAhj+BezL1O+Llcjz8GwJO7OzD+SQFOUHoQotiqIvYEkuQQh3VzStYj8aA0PSuqzUH+AfQahIFhdVny3+xfl1IOuB3UBZwmyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYm4Ohw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F9FC4CEC3;
-	Tue, 10 Sep 2024 10:21:04 +0000 (UTC)
+	 MIME-Version; b=TrXT81LWj64hzxJ/1JhGoh4uWoDdsGm5WECNp9ysq0dQaVkWL1x3qJmTRXc1AdIhDDUYEnmbG94fPqwcYXUmxhBBenKPsLFAkojZ2jFtwmIRVtLu9JhpCuiA7KNcW1g2SIRbbljIdj4vsFTVwLQ3Gat+IQSCUQZxVRml510x/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeSJbHng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C43AC4CEC3;
+	Tue, 10 Sep 2024 10:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963664;
-	bh=UatNjIYfHOd5khVII733zrXWogR5HmtY2pJQUT4rLeA=;
+	s=korg; t=1725964399;
+	bh=nJG/HJiXyrElPFehPKZZlS+VrglqQt7LDX/wtaUTeJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYm4Ohw+9SCrf5xWg3RIP36ESF9t8BOqwr4Hasr9w8V291obZR660p9R3yY1Y75SB
-	 FVz5OW0JY84KacTQTJipnpir66t9NFs1KOfTqBPNGkzPQfsE+1HLF6ofXTzaRbe+eH
-	 0ZcCPwNiSRGJM9jL6Jm31h9OcVhN8iJmstnETZrk=
+	b=WeSJbHngS00uWa8r02Y1ekgT7FyZVS52HJ4sp6fqDEt/AQdecUh5EFNYSHvVKtMK+
+	 78fyGkcsu239jclnf6kOLao4mSuw7qXpBlxqAFF/Ds2semmsIRWT2HUZzAc1G4HnwN
+	 MQkDDKpAQuM/hSWlfoDmZJDDVfwnPBRrkwmhw160=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/214] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
+Subject: [PATCH 6.6 169/269] cxl/region: Verify target positions using the ordered target list
 Date: Tue, 10 Sep 2024 11:32:36 +0200
-Message-ID: <20240910092604.234329907@linuxfoundation.org>
+Message-ID: <20240910092614.174883304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
+[ Upstream commit 82a3e3a235633aa0575fac9507d648dd80f3437f ]
 
-CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
-Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
-moment.
+When a root decoder is configured the interleave target list is read
+from the BIOS populated CFMWS structure. Per the CXL spec 3.1 Table
+9-22 the target list is in interleave order. The CXL driver populates
+its decoder target list in the same order and stores it in 'struct
+cxl_switch_decoder' field "@target: active ordered target list in
+current decoder configuration"
 
-This patch fix it.
+Given the promise of an ordered list, the driver can stop duplicating
+the work of BIOS and simply check target positions against the ordered
+list during region configuration.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The simplified check against the ordered list is presented here.
+A follow-on patch will remove the unused code.
+
+For Modulo arithmetic this is not a fix, only a simplification.
+For XOR arithmetic this is a fix for HB IW of 3,6,12.
+
+Fixes: f9db85bfec0d ("cxl/acpi: Support CXL XOR Interleave Math (CXIMS)")
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://patch.msgid.link/35d08d3aba08fee0f9b86ab1cef0c25116ca8a55.1719980933.git.alison.schofield@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/cxl/core/region.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 592527f06944..36da2107b5d9 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -35,7 +35,7 @@
- #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
- #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
- #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
--#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
-+#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index bc5a43897d57..5060d9802795 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1528,10 +1528,13 @@ static int cxl_region_attach_position(struct cxl_region *cxlr,
+ 				      const struct cxl_dport *dport, int pos)
+ {
+ 	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
++	struct cxl_switch_decoder *cxlsd = &cxlrd->cxlsd;
++	struct cxl_decoder *cxld = &cxlsd->cxld;
++	int iw = cxld->interleave_ways;
+ 	struct cxl_port *iter;
+ 	int rc;
  
-@@ -371,13 +371,19 @@ int vsc73xx_is_addr_valid(u8 block, u8 subblock)
- 		break;
- 
- 	case VSC73XX_BLOCK_MII:
--	case VSC73XX_BLOCK_CAPTURE:
- 	case VSC73XX_BLOCK_ARBITER:
- 		switch (subblock) {
- 		case 0 ... 1:
- 			return 1;
- 		}
- 		break;
-+	case VSC73XX_BLOCK_CAPTURE:
-+		switch (subblock) {
-+		case 0 ... 4:
-+		case 6 ... 7:
-+			return 1;
-+		}
-+		break;
- 	}
- 
- 	return 0;
+-	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
++	if (dport != cxlrd->cxlsd.target[pos % iw]) {
+ 		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
+ 			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
+ 			dev_name(&cxlrd->cxlsd.cxld.dev));
 -- 
 2.43.0
 
