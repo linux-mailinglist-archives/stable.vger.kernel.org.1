@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E99A97301D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27489730C1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7911F21DA8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B454287729
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89569188A38;
-	Tue, 10 Sep 2024 09:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F0A18BC3F;
+	Tue, 10 Sep 2024 10:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvBuMHER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9o9Tqqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4604A188A1E;
-	Tue, 10 Sep 2024 09:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56B18B491;
+	Tue, 10 Sep 2024 10:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962258; cv=none; b=hfV4G3AFdGZG0ObbnEAeKFz36M5nXNvtJIGv2HL91E7tViRgbeYKZyKniOqWs3viIcE0DXzwbAwAJGmi4TuNDjEnfyrxyV3/lb3ECwVbnN7pPe3wJc8IvX4Opcz1PciJdIRV+lletr20UK18NYeb/WkEqA3cA1VW7zA73SrFq68=
+	t=1725962547; cv=none; b=TlVORlpEZQ7INZyqhmGVROd1KcEspXbj0+8hSpb3wFj1Fe7P3dskJKXN4fwS4fTH7yzdZJZcn4U8zE5xvT2gc5y6hwnA+BNMdRi8sANOPnJXGqq+pg5yFDK0fj/YyuBRWAgVm/g1pjeQpS1IwWeRCV1DaXCTt9vh1kpPoeiK2Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962258; c=relaxed/simple;
-	bh=fIEhIaXOBiih0i4mUTBv6aquunZwfnog7zG5YnLRtRo=;
+	s=arc-20240116; t=1725962547; c=relaxed/simple;
+	bh=NR5vkcZFMIWPj3Zeowq/7ykdEvbbD1+/B1wwl/AJfgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9QXw+hWpIdr9qoLsSKOutRiIrvSW+MWIubzxwJxHC8hVeoe+yuJhWkrB3bgr6CaBq5M0k7QyRomnchuJcSDqqpnFY8szKEvqePfSLlyKUqt4RxErU5QF8l9tpQ2oVtnS1kV7o+wOHciUTnegaT5GnbIHP/qcfCAnIQkKGhkUro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvBuMHER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BA9C4CECE;
-	Tue, 10 Sep 2024 09:57:37 +0000 (UTC)
+	 MIME-Version; b=ihIGnILzltWctcWsj/hlbls5fAnCGYA/UmiYtGt7ccrlKrMNT6BS2hvzeXNr7xQD6Iglsb82CWgd9CIQ3XRWGY1mxrW6eMi2EZsDLhYwU9WuGIef1SFzpMyI/Qb/Ay3PiNjAc0oa5IL9MQrjY5S3dAp9+CW5tYYxOdp3W248biU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9o9Tqqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D71C4CEC3;
+	Tue, 10 Sep 2024 10:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962257;
-	bh=fIEhIaXOBiih0i4mUTBv6aquunZwfnog7zG5YnLRtRo=;
+	s=korg; t=1725962546;
+	bh=NR5vkcZFMIWPj3Zeowq/7ykdEvbbD1+/B1wwl/AJfgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvBuMHERjxUvI/h/dejnSv2Jz2FPfQALPoFScQADiKKodmuRRwqhNgdgE5T1KvGXU
-	 0ZmZ4WAjyPYUDEUO8/sOfmC6OUob6q0WZZXxH2Ckww03kVjfoPXctWD0BTUd7+7EbQ
-	 VXJmRQen31O29m31w3mw7hA0WLDZOQd5+74WraZM=
+	b=M9o9TqqtiVRBISvLSps76g3xhKyBHZBqEYMkYxNgvIluwoMQfKP/EkQMj9PxWRorE
+	 tjuwCqYrfPmuR9nqGLtYEGFSMZg5n6XDI0cKrDqSbsArwKBU9Meffm7BNpp1xst7k8
+	 JMteyOQVPIFt4FB5lypoMOeAG5/wLXgvIkiA1XBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 349/375] ASoC: sunxi: sun4i-i2s: fix LRCLK polarity in i2s mode
+Subject: [PATCH 5.4 071/121] iommu/vt-d: Handle volatile descriptor status read
 Date: Tue, 10 Sep 2024 11:32:26 +0200
-Message-ID: <20240910092634.316550155@linuxfoundation.org>
+Message-ID: <20240910092549.254966941@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,274 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matteo Martelli <matteomartelli3@gmail.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-[ Upstream commit 3e83957e8dd7433a69116780d9bad217b00913ea ]
+[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
 
-This fixes the LRCLK polarity for sun8i-h3 and sun50i-h6 in i2s mode
-which was wrongly inverted.
+Queued invalidation wait descriptor status is volatile in that IOMMU
+hardware writes the data upon completion.
 
-The LRCLK was being set in reversed logic compared to the DAI format:
-inverted LRCLK for SND_SOC_DAIFMT_IB_NF and SND_SOC_DAIFMT_NB_NF; normal
-LRCLK for SND_SOC_DAIFMT_IB_IF and SND_SOC_DAIFMT_NB_IF. Such reversed
-logic applies properly for DSP_A, DSP_B, LEFT_J and RIGHT_J modes but
-not for I2S mode, for which the LRCLK signal results reversed to what
-expected on the bus. The issue is due to a misinterpretation of the
-LRCLK polarity bit of the H3 and H6 i2s controllers. Such bit in this
-case does not mean "0 => normal" or "1 => inverted" according to the
-expected bus operation, but it means "0 => frame starts on low edge" and
-"1 => frame starts on high edge" (from the User Manuals).
+Use READ_ONCE() to prevent compiler optimizations which ensures memory
+reads every time. As a side effect, READ_ONCE() also enforces strict
+types and may add an extra instruction. But it should not have negative
+performance impact since we use cpu_relax anyway and the extra time(by
+adding an instruction) may allow IOMMU HW request cacheline ownership
+easier.
 
-This commit fixes the LRCLK polarity by setting the LRCLK polarity bit
-according to the selected bus mode and renames the LRCLK polarity bit
-definition to avoid further confusion.
+e.g. gcc 12.3
+BEFORE:
+	81 38 ad de 00 00       cmpl   $0x2,(%rax)
 
-Fixes: dd657eae8164 ("ASoC: sun4i-i2s: Fix the LRCK polarity")
-Fixes: 73adf87b7a58 ("ASoC: sun4i-i2s: Add support for H6 I2S")
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-Link: https://patch.msgid.link/20240801-asoc-fix-sun4i-i2s-v2-1-a8e4e9daa363@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+AFTER (with READ_ONCE())
+    772f:       8b 00                   mov    (%rax),%eax
+    7731:       3d ad de 00 00          cmp    $0x2,%eax
+                                        //status data is 32 bit
+
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-i2s.c | 143 ++++++++++++++++++------------------
- 1 file changed, 73 insertions(+), 70 deletions(-)
+ drivers/iommu/dmar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
-index 5f8d979585b6..3af0b2aab291 100644
---- a/sound/soc/sunxi/sun4i-i2s.c
-+++ b/sound/soc/sunxi/sun4i-i2s.c
-@@ -100,8 +100,8 @@
- #define SUN8I_I2S_CTRL_MODE_PCM			(0 << 4)
+diff --git a/drivers/iommu/dmar.c b/drivers/iommu/dmar.c
+index 36900d65386f..a4805d17317d 100644
+--- a/drivers/iommu/dmar.c
++++ b/drivers/iommu/dmar.c
+@@ -1294,7 +1294,7 @@ int qi_submit_sync(struct qi_desc *desc, struct intel_iommu *iommu)
+ 	 */
+ 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
  
- #define SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK	BIT(19)
--#define SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED		(1 << 19)
--#define SUN8I_I2S_FMT0_LRCLK_POLARITY_NORMAL		(0 << 19)
-+#define SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH	(1 << 19)
-+#define SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW		(0 << 19)
- #define SUN8I_I2S_FMT0_LRCK_PERIOD_MASK		GENMASK(17, 8)
- #define SUN8I_I2S_FMT0_LRCK_PERIOD(period)	((period - 1) << 8)
- #define SUN8I_I2S_FMT0_BCLK_POLARITY_MASK	BIT(7)
-@@ -729,65 +729,37 @@ static int sun4i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 				 unsigned int fmt)
- {
--	u32 mode, val;
-+	u32 mode, lrclk_pol, bclk_pol, val;
- 	u8 offset;
- 
--	/*
--	 * DAI clock polarity
--	 *
--	 * The setup for LRCK contradicts the datasheet, but under a
--	 * scope it's clear that the LRCK polarity is reversed
--	 * compared to the expected polarity on the bus.
--	 */
--	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
--	case SND_SOC_DAIFMT_IB_IF:
--		/* Invert both clocks */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_IB_NF:
--		/* Invert bit clock */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED |
--		      SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_NB_IF:
--		/* Invert frame clock */
--		val = 0;
--		break;
--	case SND_SOC_DAIFMT_NB_NF:
--		val = SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
--			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
--			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
--			   val);
--
- 	/* DAI Mode */
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_DSP_A:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_DSP_B:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_I2S:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_LEFT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_RIGHT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_RIGHT;
- 		offset = 0;
- 		break;
-@@ -805,6 +777,35 @@ static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 			   SUN8I_I2S_TX_CHAN_OFFSET_MASK,
- 			   SUN8I_I2S_TX_CHAN_OFFSET(offset));
- 
-+	/* DAI clock polarity */
-+	bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_NORMAL;
-+
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_IB_IF:
-+		/* Invert both clocks */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_IB_NF:
-+		/* Invert bit clock */
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_NB_IF:
-+		/* Invert frame clock */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_NB_NF:
-+		/* No inversion */
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
-+			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
-+			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
-+			   lrclk_pol | bclk_pol);
-+
- 	/* DAI clock master masks */
- 	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
- 	case SND_SOC_DAIFMT_BP_FP:
-@@ -836,65 +837,37 @@ static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- static int sun50i_h6_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 				     unsigned int fmt)
- {
--	u32 mode, val;
-+	u32 mode, lrclk_pol, bclk_pol, val;
- 	u8 offset;
- 
--	/*
--	 * DAI clock polarity
--	 *
--	 * The setup for LRCK contradicts the datasheet, but under a
--	 * scope it's clear that the LRCK polarity is reversed
--	 * compared to the expected polarity on the bus.
--	 */
--	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
--	case SND_SOC_DAIFMT_IB_IF:
--		/* Invert both clocks */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_IB_NF:
--		/* Invert bit clock */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED |
--		      SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_NB_IF:
--		/* Invert frame clock */
--		val = 0;
--		break;
--	case SND_SOC_DAIFMT_NB_NF:
--		val = SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
--			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
--			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
--			   val);
--
- 	/* DAI Mode */
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_DSP_A:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_DSP_B:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_I2S:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_LEFT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_RIGHT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_RIGHT;
- 		offset = 0;
- 		break;
-@@ -912,6 +885,36 @@ static int sun50i_h6_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 			   SUN50I_H6_I2S_TX_CHAN_SEL_OFFSET_MASK,
- 			   SUN50I_H6_I2S_TX_CHAN_SEL_OFFSET(offset));
- 
-+	/* DAI clock polarity */
-+	bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_NORMAL;
-+
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_IB_IF:
-+		/* Invert both clocks */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_IB_NF:
-+		/* Invert bit clock */
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_NB_IF:
-+		/* Invert frame clock */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_NB_NF:
-+		/* No inversion */
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
-+			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
-+			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
-+			   lrclk_pol | bclk_pol);
-+
-+
- 	/* DAI clock master masks */
- 	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
- 	case SND_SOC_DAIFMT_BP_FP:
+-	while (qi->desc_status[wait_index] != QI_DONE) {
++	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
+ 		/*
+ 		 * We will leave the interrupts disabled, to prevent interrupt
+ 		 * context to queue another cmd while a cmd is already submitted
 -- 
 2.43.0
 
