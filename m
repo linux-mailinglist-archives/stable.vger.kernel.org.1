@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-74749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6E0973142
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CDE9734FE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163001F272E6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA69C1F22741
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4549A18C347;
-	Tue, 10 Sep 2024 10:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83D19048A;
+	Tue, 10 Sep 2024 10:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TezXcDI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrBT4RBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CA7188A0C;
-	Tue, 10 Sep 2024 10:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC7188CDC;
+	Tue, 10 Sep 2024 10:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962717; cv=none; b=D+51ggI5765rzHJb0D034Xs2ojb5WyL19Op1GPkdwUWpjpKMM/pmPeMewJgMxATB/kLKvHfdvH816P2M15TcQVGOObzbCm9EH/xd7DfsnNtUwUS2hW36Vq+QTsijKWXYY2kQWfulmu2Pynybo9tnKNAJdnt7ybnYZ/sGI1txtl8=
+	t=1725964989; cv=none; b=pGrh9YDWe133SN8np466Phdiuid5g7AqoVnQWwrC7lKt7X00ui/JuxcYnvsFmn5C+mYXrSTullBBgDzsiwmTn4xNZfE3rU3i66GNLERh9yIf0iNhMrCd9o4zSqCP/V/S4aukkuT+N8cQYEYltNJ28tfZqm2VwA7VS91u8GyScNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962717; c=relaxed/simple;
-	bh=86bjg4zeauPrFOzpatz4ana0MhD5GQoBd91SEtssSrE=;
+	s=arc-20240116; t=1725964989; c=relaxed/simple;
+	bh=ITsd97sE25Ha4wacZOwexsOXne8Dl7Im3AyumKV3Ays=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaUFry89gvRQWI4prmVD6OYhvMcUe/ILC4Scr1cUZTNoNZZPb2R61/0PNSz6yFhlOop/2jyyh2Aa3xi14JRNXm5SK8eyNdD/hsnG8NjyVrt7Wp7TTw0vUr6bIfFd/TGoqU3UFqo0pZTqVr9U770emgDUm2Wr160ocnzdsnqMbIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TezXcDI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399E2C4CEC6;
-	Tue, 10 Sep 2024 10:05:16 +0000 (UTC)
+	 MIME-Version; b=YXF/Ery/Oh+iPk6QYVOcrxRt8YINGZ1zDojrBacD8dN6wAs+AtLLksd9tC0+9xo5TDI43E/rv+Xxw0hgku0nHwj6RsPUD+FWGYtrAidEUd9zAl4/62qust5b3Gi4p3BXZ4fqK6s/dboKCZc2gNjbMjm/YiMBES/SGFmEdI/Qu/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrBT4RBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45DC4CEC3;
+	Tue, 10 Sep 2024 10:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962716;
-	bh=86bjg4zeauPrFOzpatz4ana0MhD5GQoBd91SEtssSrE=;
+	s=korg; t=1725964989;
+	bh=ITsd97sE25Ha4wacZOwexsOXne8Dl7Im3AyumKV3Ays=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TezXcDI8YAqJXe5nAh3Fj4VEcBn8xqogjeR58VHhxkd1x6mQ6NWq2Ii29Xs6r2YoG
-	 /vANpscy1CNe5PcTZfvnA/6QhFwqr7vILJeeLcmGCce3+QQNk3maMjoE4wWrXXYlMp
-	 L9grIqBr3x9+pmzJEE/Nh8TtSGY4f6P9c+H/oDpI=
+	b=WrBT4RBJk1X+eEsmra0kfgfQ9EzJ5MzdwSHKSfIweLWwl+etf2Q1o2Ays9ACQjSGp
+	 PM7Q+Vr2XWMtXcF+YhFh8MCOoaM5KZZSlZ9I1pVHJz9S/GCGGT+m7KyKADv/fCpvaF
+	 gXb9gNDfxyysGe4gnKYmaWL9xn3oIST2qYrmvIwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lex Siegel <usiegl00@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neil Brown <neilb@suse.de>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 5.4 120/121] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 100/186] af_unix: Remove put_pid()/put_cred() in copy_peercred().
 Date: Tue, 10 Sep 2024 11:33:15 +0200
-Message-ID: <20240910092551.492792531@linuxfoundation.org>
+Message-ID: <20240910092558.645591335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde upstream.
+[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
 
-When using a BPF program on kernel_connect(), the call can return -EPERM. This
-causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
-the kernel to potentially freeze up.
+When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
+the listener's sk_peer_pid/sk_peer_cred are copied to the client in
+copy_peercred().
 
-Neil suggested:
+Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
+we need not call put_pid() and put_cred() there.
 
-  This will propagate -EPERM up into other layers which might not be ready
-  to handle it. It might be safer to map EPERM to an error we would be more
-  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
-
-ECONNREFUSED as error seems reasonable. For programs setting a different error
-can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
-which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
-instead of allow boolean"), thus given that it is better to simply remap for
-consistent behavior. UDP does handle EPERM in xs_udp_send_request().
-
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Co-developed-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Neil Brown <neilb@suse.de>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>
-Link: https://github.com/cilium/cilium/issues/33395
-Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
-Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/unix/af_unix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2437,6 +2437,13 @@ static void xs_tcp_setup_socket(struct w
- 	case -EALREADY:
- 		xprt_unlock_connect(xprt, transport);
- 		return;
-+	case -EPERM:
-+		/* Happens, for instance, if a BPF program is preventing
-+		 * the connect. Remap the error so upper layers can better
-+		 * deal with it.
-+		 */
-+		status = -ECONNREFUSED;
-+		fallthrough;
- 	case -EINVAL:
- 		/* Happens, for instance, if the user specified a link
- 		 * local IPv6 address without a scope-id.
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e2ff610d2776..b7e9c1238516 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -603,9 +603,6 @@ static void init_peercred(struct sock *sk)
+ 
+ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ {
+-	const struct cred *old_cred;
+-	struct pid *old_pid;
+-
+ 	if (sk < peersk) {
+ 		spin_lock(&sk->sk_peer_lock);
+ 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+@@ -613,16 +610,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 		spin_lock(&peersk->sk_peer_lock);
+ 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+ 	}
+-	old_pid = sk->sk_peer_pid;
+-	old_cred = sk->sk_peer_cred;
++
+ 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
+ 
+ 	spin_unlock(&sk->sk_peer_lock);
+ 	spin_unlock(&peersk->sk_peer_lock);
+-
+-	put_pid(old_pid);
+-	put_cred(old_cred);
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
+-- 
+2.43.0
+
 
 
 
