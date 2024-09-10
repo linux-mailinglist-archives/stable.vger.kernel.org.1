@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE2697317C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3065597326D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5496B28BEB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D858B1F221DC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A5F193081;
-	Tue, 10 Sep 2024 10:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8838191F88;
+	Tue, 10 Sep 2024 10:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8UIOQzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkW2hc6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641C188CC1;
-	Tue, 10 Sep 2024 10:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66501190077;
+	Tue, 10 Sep 2024 10:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962858; cv=none; b=nyHj5LINRi5SVcypbSA347MVpf1/o75hqBWhfRZA61MbuYjI5UNXvuqzI5o8AcCUPA1IgEzy7EYpDs82hNLTmKKwaXoflddoGiGFXuM0a+HOntcn3DXL7IR/uBSQEP5mAa3dfKa+vAax8l/sVB/FezELGEcgdYTorCXzr4OMAEI=
+	t=1725963412; cv=none; b=qgY0bB9FksmTgAlfiDectn+hdXpVqcxp7FyZZPvCjrYLcTJn/RNt3/V4O1UXEW6YRkTEs8uUUWVUKtGG72b+8gNjXHrv0/+KtIvBWV6enEBIK/OaCAVTjSXAl052iZn2FSdv5Rz3TYGFdBcXuxHoKln6ymPw6qjbOotcB0bl7/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962858; c=relaxed/simple;
-	bh=Mrfl+YDbRNyRzFTZ000QJzgKJDod9PDE50aZuUDoR6Y=;
+	s=arc-20240116; t=1725963412; c=relaxed/simple;
+	bh=qqM8RqWBcvs2bakmYpSHyER18jUvhnjAZVXyNIlyUtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lLgISxcjVEn3lrSK2mv/UXhtZOD4HsFPv3OkrDN/zwN8HxJi7rGMfTOTYneeEvN15nPdwA2VnhBgLauS4YExeFYqkqqSJDfF3FP22HXYoXy12zvC2l148m/O+/tBGeH1mQ5hGP/oJhH/6AY8RJP74ZCs8NKTHuUSDTSQ+77b+5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8UIOQzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3674EC4CEC3;
-	Tue, 10 Sep 2024 10:07:37 +0000 (UTC)
+	 MIME-Version; b=JjJal9WT1DVoWZXYa5Qbr7CfnWCSN1jjcijgFmBaBYNzGnxHFzdruSZS4Ib2RqYTDxO14aCFLaAAHspXCsRERfwKHC7VM+dgtzP4EiFS8qnIw2sOEjxAyPMQmfdPtSigX3oyt0bfgAV4qMdPVKmS5gzXX6lvfvLI43sk8AgB/so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkW2hc6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2515C4CEC3;
+	Tue, 10 Sep 2024 10:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962857;
-	bh=Mrfl+YDbRNyRzFTZ000QJzgKJDod9PDE50aZuUDoR6Y=;
+	s=korg; t=1725963412;
+	bh=qqM8RqWBcvs2bakmYpSHyER18jUvhnjAZVXyNIlyUtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8UIOQzE5XWLyiUpkp0SqwJRmzKUH+mMTzwAFHyWxZ3+AP9pvlYsqq1WyrSKSf8fU
-	 DaC+s0xA4dTF4Ta45EIjfMIxBFGTx0xDJ2FNG3YLc8Ntca4daTKNVqn+P8GEoU0eYQ
-	 84lLVFXGilZFcZwpD94ZgQSMGSq/iAJKo4AXsytU=
+	b=EkW2hc6tt81aY2rhoJemmAdw1vk2yd3Qz7r1m7x6e/V/uaQGlMHai7D66YYupZ8A+
+	 4tLP7Kkzh2CqnmYMZsTeU7EB95bW6j1LrDFGvHMevhyf4YnfhCAokEyZy460YDQ/Ey
+	 HMNEp9WKlgETAGs0e4uTD4nOa1X34RuhZUp7IxHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/192] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
+Subject: [PATCH 5.15 048/214] smack: tcp: ipv4, fix incorrect labeling
 Date: Tue, 10 Sep 2024 11:31:10 +0200
-Message-ID: <20240910092559.893833367@linuxfoundation.org>
+Message-ID: <20240910092600.738674524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
+[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
 
-IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
-generic_handle_domain_irq() is never called for these IRQs.
+Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
+when a label 'foo' connects to a label 'bar' with tcp/ipv4,
+'foo' always gets 'foo' in returned ipv4 packets. So,
+1) returned packets are incorrectly labeled ('foo' instead of 'bar')
+2) 'bar' can write to 'foo' without being authorized to write.
 
-Disallow mapping these IRQs.
+Here is a scenario how to see this:
 
-[ Marek: changed commit message ]
+* Take two machines, let's call them C and S,
+   with active Smack in the default state
+   (no settings, no rules, no labeled hosts, only builtin labels)
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+* At S, add Smack rule 'foo bar w'
+   (labels 'foo' and 'bar' are instantiated at S at this moment)
+
+* At S, at label 'bar', launch a program
+   that listens for incoming tcp/ipv4 connections
+
+* From C, at label 'foo', connect to the listener at S.
+   (label 'foo' is instantiated at C at this moment)
+   Connection succeedes and works.
+
+* Send some data in both directions.
+* Collect network traffic of this connection.
+
+All packets in both directions are labeled with the CIPSO
+of the label 'foo'. Hence, label 'bar' writes to 'foo' without
+being authorized, and even without ever being known at C.
+
+If anybody cares: exactly the same happens with DCCP.
+
+This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
+and it looks unintentional. At least, no explanation was provided.
+
+I changed returned packes label into the 'bar',
+to bring it into line with the Smack documentation claims.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-armada-370-xp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index ee18eb3e72b7..ab02b44a3b4e 100644
---- a/drivers/irqchip/irq-armada-370-xp.c
-+++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -567,6 +567,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
- static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
- 				      unsigned int virq, irq_hw_number_t hw)
- {
-+	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
-+	if (hw <= 1)
-+		return -EINVAL;
-+
- 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
- 	if (!is_percpu_irq(hw))
- 		writel(hw, per_cpu_int_base +
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index e9d2ef3deccd..25c46b56fae8 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4225,7 +4225,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
+ 	rcu_read_unlock();
+ 
+ 	if (hskp == NULL)
+-		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
++		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+ 		netlbl_req_delattr(req);
+ 
 -- 
 2.43.0
 
