@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3059097335F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC9D9731A2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68FDB2C73E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3B61C25598
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1E518C357;
-	Tue, 10 Sep 2024 10:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F11119885D;
+	Tue, 10 Sep 2024 10:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySSGpziO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czZ4Vd2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5CF199E9D;
-	Tue, 10 Sep 2024 10:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24C1922E7;
+	Tue, 10 Sep 2024 10:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963611; cv=none; b=X42q4J+3X4hKjiTpIZEyYdnDzyEJN5yufUVCXrKD6D/Fs1vsuwexrQH4gS/F3eYxtuwjlhL2gLRrnN6MaSIKHGER5V/PP//dBfs8a1uKeS+wEoHMd4E6282iEiARCNWiWaW1P452NvRoc/qPJQKGEpTNqU2olS6DdiRx/OjiMsc=
+	t=1725962958; cv=none; b=VbG1CKN8XNugGQb3aGcDy4Q7hesNxAnt+Yj/lWjzeV/dyIvnG+bdHlkIELOMhWvKt+VTy1M30giOv6stQZ76A1HAdbBtfXQP7gX0L1ZvwY5lfA74LoBDGPBWi82VnaA93SeaEYeJqWLHsvvqX+iDc2+YbWkas8biw0OOLy9E80w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963611; c=relaxed/simple;
-	bh=GmnpjMZG0sEZBtUa2WTY5Mc7iGfyq6vjdzqWJEQVRuY=;
+	s=arc-20240116; t=1725962958; c=relaxed/simple;
+	bh=PHNBvCujV5+RSInz40RhrW5aAOr72uheOw/B1fS0ytc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ib9GkEj5+L61TYsdi1t/7OE37vEeDMQ5VwPrmdDxLa02ZtWuUmJrotgy7CY+zUD5wdatsmwIu5hzBncNk4vKnO4PB8MO68serBXbGG1h7GhqfuAv8EU9PXsjHvj/6SBcGdbLWhY87f3sF9se0k7NmJd82OGavdANJ7tw91qoZXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySSGpziO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F82C4CEC3;
-	Tue, 10 Sep 2024 10:20:10 +0000 (UTC)
+	 MIME-Version; b=MtK+23Ro7N1iHZMpruJX+z9ktoSv5Cb/MoCldfVQZkt3UZhQvO/3qzZpG69zJG3W1boNPjZ27dvttANiMwX/oSD1NtMhhB/HqKMUO8aJvhNkKneik2kXejbePksmrXugWykJ5TayWGWn1Zjf3U+7uijvN4mYa1AL+BNmhMl1C0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czZ4Vd2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A56C4CECF;
+	Tue, 10 Sep 2024 10:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963611;
-	bh=GmnpjMZG0sEZBtUa2WTY5Mc7iGfyq6vjdzqWJEQVRuY=;
+	s=korg; t=1725962958;
+	bh=PHNBvCujV5+RSInz40RhrW5aAOr72uheOw/B1fS0ytc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySSGpziOPxuFR73/OzeP+p2Q/txmihJcUH1xT1gXJnGge76fWnx4EWzYqhfhGlNZ6
-	 IpLNUmcyjgmcYuq1JQ4r/c8ZBhXliRuhq3hIpO1KnxGN45Hypv6lWFO29LvAaVCm/6
-	 v0ctSwHTVdKE414Kb48s8O8IuaCMkQF0mIrbMFng=
+	b=czZ4Vd2xZMg1aoEtgiL+LWUAYy+XbOtzLnkXZc42mKhnzskzm2cYiJZnKiwNjUGFJ
+	 fkcwsuTLtt2qzLktEBHIIzBEVmMjwSlsDlrse/VUGWjxTc+xS+baGeZfxMVQdwFJ+l
+	 6tXZdd7icWJVP9x3YfwqYegh1Z+SukLNWKCj8Cqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 090/214] mptcp: pm: re-using ID of unused flushed subflows
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/192] firmware: cs_dsp: Dont allow writes to read-only controls
 Date: Tue, 10 Sep 2024 11:31:52 +0200
-Message-ID: <20240910092602.438938052@linuxfoundation.org>
+Message-ID: <20240910092601.627641136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
+[ Upstream commit 62412a9357b16a4e39dc582deb2e2a682b92524c ]
 
-If no subflows are attached to the 'subflow' endpoints that are being
-flushed, the corresponding addr IDs will not be marked as available
-again.
+Add a check to cs_dsp_coeff_write_ctrl() to abort if the control
+is not writeable.
 
-Mark all ID as being available when flushing all the 'subflow'
-endpoints, and reset local_addr_used counter to cover these cases.
+The cs_dsp code originated as an ASoC driver (wm_adsp) where all
+controls were exported as ALSA controls. It relied on ALSA to
+enforce the read-only permission. Now that the code has been
+separated from ALSA/ASoC it must perform its own permission check.
 
-Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
-flushing operations, not to remove a specific set of addresses and
-subflows.
+This isn't currently causing any problems so there shouldn't be any
+need to backport this. If the client of cs_dsp exposes the control as
+an ALSA control, it should set permissions on that ALSA control to
+protect it. The few uses of cs_dsp_coeff_write_ctrl() inside drivers
+are for writable controls.
 
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-5-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ No conflicts, but the line modifying msk->pm.id_avail_bitmap has been
-  removed, as it is not in this version, introduced later in commit
-  86e39e04482b ("mptcp: keep track of local endpoint still available for
-  each msk") and depending on other ones. The best we can do in this
-  version is to reset local_addr_used counter, better than nothing. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20240702110809.16836-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firmware/cirrus/cs_dsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1498,8 +1498,14 @@ static void mptcp_pm_remove_addrs_and_su
- 		mptcp_pm_remove_addr(msk, &alist);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
-+
- 	if (slist.nr)
- 		mptcp_pm_remove_subflow(msk, &slist);
-+
-+	/* Reset counters: maybe some subflows have been removed before */
-+	spin_lock_bh(&msk->pm.lock);
-+	msk->pm.local_addr_used = 0;
-+	spin_unlock_bh(&msk->pm.lock);
- }
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 68005cce0136..cf4f4da0cb87 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -764,6 +764,9 @@ int cs_dsp_coeff_write_ctrl(struct cs_dsp_coeff_ctl *ctl,
  
- static void mptcp_nl_remove_addrs_list(struct net *net,
+ 	lockdep_assert_held(&ctl->dsp->pwr_lock);
+ 
++	if (ctl->flags && !(ctl->flags & WMFW_CTL_FLAG_WRITEABLE))
++		return -EPERM;
++
+ 	if (len + off * sizeof(u32) > ctl->len)
+ 		return -EINVAL;
+ 
+-- 
+2.43.0
+
 
 
 
