@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132C9732A0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734F4973156
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8155B2AB6C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A87F1F278B9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F3B18EFEE;
-	Tue, 10 Sep 2024 10:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561011917E4;
+	Tue, 10 Sep 2024 10:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT5KfW+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7sISnI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C896318CC1A;
-	Tue, 10 Sep 2024 10:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1334C17BEAE;
+	Tue, 10 Sep 2024 10:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963300; cv=none; b=BB6jBMXvSM5/U/UCwGbxAJWBE9VAl6ejM77Wzs4VMChff+jNmaF2j1wzCh0eERJ+i182zK5Kg7kzKp6KPskFoJ5mH10m9w+VTcnWKWyNXjq5rh56L32uzzsx19V6EXIjTiXVbKOW7UWT2GhBzR0I0nmScxhKaEovD9Nk4DYktdc=
+	t=1725962767; cv=none; b=S6OzgVX+mCOZVgl+zLSyVfiFYLTAmF5x9fRoRUfZdQ8qPaXoE3+2ZY6e6q6DPJR1ypFx35/Mv8FRnvBIO3PI4+DZwuWbQr84c8AkhnrFRa1Ru5T5SbBgKHv773gL9uG5nOPAT8Cw/n66W6R57pXfklg6Z10T4CuixPMBLV1siDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963300; c=relaxed/simple;
-	bh=MwemvVmrNKeknoLp5cKwGyXP0du+k/LFQ5FdwA0d/a8=;
+	s=arc-20240116; t=1725962767; c=relaxed/simple;
+	bh=RMIotWOY1Ji+1x5JUcDBuw/Noa1r8lCUH7m9sqEeaRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oMldkNx4lAblRCExPOVvOc/45ySNix7x5HZlDV0UpnM+TX23H42aBHKmEVYdJEiXtQo/Hk6R1631m9hJlRIxrMt8ZfrBYbFBI/kNXDpv8QM5gUTUh1wuGBgEByHzwK023x5njBQ8MAnb34GbFrCgO+JCbraQYKG45O7pvYDPjYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT5KfW+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6E5C4CEC6;
-	Tue, 10 Sep 2024 10:15:00 +0000 (UTC)
+	 MIME-Version; b=fnrm5ZxQ0JPNqQTpXmvt2Z9Pv+vD5uQwtGRbg0kCN17uyvhPoWG1rsxq4M5t6bUhSAxPjcNNOB2OxHlRb1ubOo1FhGyXsntdjd85g/RSQEWul8/c3O4/85oo7Nk4bp1FW3fatyNAg1uzTavipnD5k3Q7ferecizxuY6b1aiaJoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7sISnI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C76CC4CEC3;
+	Tue, 10 Sep 2024 10:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963300;
-	bh=MwemvVmrNKeknoLp5cKwGyXP0du+k/LFQ5FdwA0d/a8=;
+	s=korg; t=1725962766;
+	bh=RMIotWOY1Ji+1x5JUcDBuw/Noa1r8lCUH7m9sqEeaRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oT5KfW+hpu8m6amvQ3oehjn6SXCF55XEqmKXLOvQ2CKZmDaA3jEVV72lfe7lUU3Db
-	 fus+DlAZ+wI8FWxpXB3mtd5t03gSK8gRleTbBWuHD1pLHUUOJuGLucaDklleq1/X7x
-	 c0Vywh1wIRXwJ3/aug/8DaPLmpMW+wbCUVrFjduo=
+	b=N7sISnI7WC0VKO00+oxsp41etQPv89Wv8TlpI59OYAdlyQtQfJBUrMNu2yHaaCrD6
+	 HCScF6CqFdfK4x4HH1USoPgOt6Ftc+vTVj1ydfjfRSudEZQqO11oeiH5agBYQdBm4x
+	 /GkKSGBJBy8tUGI43HfY5L6AzVK3/wppi8zSAQZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/214] drm/amd/pm: fix uninitialized variable warning for smu8_hwmgr
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 009/192] ksmbd: unset the binding mark of a reused connection
 Date: Tue, 10 Sep 2024 11:30:33 +0200
-Message-ID: <20240910092559.193134614@linuxfoundation.org>
+Message-ID: <20240910092558.305354021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +59,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 86df36b934640866eb249a4488abb148b985a0d9 ]
+commit 78c5a6f1f630172b19af4912e755e1da93ef0ab5 upstream.
 
-Clear warnings that using uninitialized value level when fails
-to get the value from SMU.
+Steve French reported null pointer dereference error from sha256 lib.
+cifs.ko can send session setup requests on reused connection.
+If reused connection is used for binding session, conn->binding can
+still remain true and generate_preauth_hash() will not set
+sess->Preauth_HashValue and it will be NULL.
+It is used as a material to create an encryption key in
+ksmbd_gen_smb311_encryptionkey. ->Preauth_HashValue cause null pointer
+dereference error from crypto_shash_update().
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 8 PID: 429254 Comm: kworker/8:39
+Hardware name: LENOVO 20MAS08500/20MAS08500, BIOS N2CET69W (1.52 )
+Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
+RIP: 0010:lib_sha256_base_do_update.isra.0+0x11e/0x1d0 [sha256_ssse3]
+<TASK>
+? show_regs+0x6d/0x80
+? __die+0x24/0x80
+? page_fault_oops+0x99/0x1b0
+? do_user_addr_fault+0x2ee/0x6b0
+? exc_page_fault+0x83/0x1b0
+? asm_exc_page_fault+0x27/0x30
+? __pfx_sha256_transform_rorx+0x10/0x10 [sha256_ssse3]
+? lib_sha256_base_do_update.isra.0+0x11e/0x1d0 [sha256_ssse3]
+? __pfx_sha256_transform_rorx+0x10/0x10 [sha256_ssse3]
+? __pfx_sha256_transform_rorx+0x10/0x10 [sha256_ssse3]
+_sha256_update+0x77/0xa0 [sha256_ssse3]
+sha256_avx2_update+0x15/0x30 [sha256_ssse3]
+crypto_shash_update+0x1e/0x40
+hmac_update+0x12/0x20
+crypto_shash_update+0x1e/0x40
+generate_key+0x234/0x380 [ksmbd]
+generate_smb3encryptionkey+0x40/0x1c0 [ksmbd]
+ksmbd_gen_smb311_encryptionkey+0x72/0xa0 [ksmbd]
+ntlm_authenticate.isra.0+0x423/0x5d0 [ksmbd]
+smb2_sess_setup+0x952/0xaa0 [ksmbd]
+__process_request+0xa3/0x1d0 [ksmbd]
+__handle_ksmbd_work+0x1c4/0x2f0 [ksmbd]
+handle_ksmbd_work+0x2d/0xa0 [ksmbd]
+process_one_work+0x16c/0x350
+worker_thread+0x306/0x440
+? __pfx_worker_thread+0x10/0x10
+kthread+0xef/0x120
+? __pfx_kthread+0x10/0x10
+ret_from_fork+0x44/0x70
+? __pfx_kthread+0x10/0x10
+ret_from_fork_asm+0x1b/0x30
+</TASK>
+
+Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c   | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index f0f8ebffd9f2..c1887c21c7ab 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -584,6 +584,7 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
- 				hwmgr->dyn_state.uvd_clock_voltage_dependency_table;
- 	unsigned long clock = 0;
- 	uint32_t level;
-+	int ret;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1703,6 +1703,8 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 		rc = ksmbd_session_register(conn, sess);
+ 		if (rc)
+ 			goto out_err;
++
++		conn->binding = false;
+ 	} else if (conn->dialect >= SMB30_PROT_ID &&
+ 		   (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
+ 		   req->Flags & SMB2_SESSION_REQ_FLAG_BINDING) {
+@@ -1781,6 +1783,8 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 			sess = NULL;
+ 			goto out_err;
+ 		}
++
++		conn->binding = false;
+ 	}
+ 	work->sess = sess;
  
- 	if (NULL == table || table->count <= 0)
- 		return -EINVAL;
-@@ -591,7 +592,9 @@ static int smu8_init_uvd_limit(struct pp_hwmgr *hwmgr)
- 	data->uvd_dpm.soft_min_clk = 0;
- 	data->uvd_dpm.hard_min_clk = 0;
- 
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxUvdLevel, &level);
-+	if (ret)
-+		return ret;
- 
- 	if (level < table->count)
- 		clock = table->entries[level].vclk;
-@@ -611,6 +614,7 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
- 				hwmgr->dyn_state.vce_clock_voltage_dependency_table;
- 	unsigned long clock = 0;
- 	uint32_t level;
-+	int ret;
- 
- 	if (NULL == table || table->count <= 0)
- 		return -EINVAL;
-@@ -618,7 +622,9 @@ static int smu8_init_vce_limit(struct pp_hwmgr *hwmgr)
- 	data->vce_dpm.soft_min_clk = 0;
- 	data->vce_dpm.hard_min_clk = 0;
- 
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxEclkLevel, &level);
-+	if (ret)
-+		return ret;
- 
- 	if (level < table->count)
- 		clock = table->entries[level].ecclk;
-@@ -638,6 +644,7 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
- 				hwmgr->dyn_state.acp_clock_voltage_dependency_table;
- 	unsigned long clock = 0;
- 	uint32_t level;
-+	int ret;
- 
- 	if (NULL == table || table->count <= 0)
- 		return -EINVAL;
-@@ -645,7 +652,9 @@ static int smu8_init_acp_limit(struct pp_hwmgr *hwmgr)
- 	data->acp_dpm.soft_min_clk = 0;
- 	data->acp_dpm.hard_min_clk = 0;
- 
--	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
-+	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetMaxAclkLevel, &level);
-+	if (ret)
-+		return ret;
- 
- 	if (level < table->count)
- 		clock = table->entries[level].acpclk;
--- 
-2.43.0
-
 
 
 
