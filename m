@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AF4972FE2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47194973075
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E198B28631
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A9502877D1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C906E18BC28;
-	Tue, 10 Sep 2024 09:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C39C18EFE6;
+	Tue, 10 Sep 2024 10:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMg9AN9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgWynHYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C96171671;
-	Tue, 10 Sep 2024 09:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC3F18B487;
+	Tue, 10 Sep 2024 10:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962125; cv=none; b=MzFKZdXmal7O2vwe2V2UxeoBQACFjV0Zmaa18mumH2fFy/ONF+1DpIlfHaPGzWkchpaaNzbyy7FbgxB6tGTckSf8Db+/TEAjJ4LB4wna4c/n2Jy210WbYLsStbmTyCAApdSaZRAAdyoWA0Z2KRmt2jerJQLqYqRnl4AdyN+qzCo=
+	t=1725962416; cv=none; b=F/dfetLB+4SZs+whF6oEU2iFK7yemZpJv79gg3im6W7ck/azJrO2rJIGch7XH+WBOQieBB6ko2s6GdeK68n6RLYmn/DKbyCXglZdEWCa+pIWUKtjk5g9/5oGoT5pp1jTBIp+8+knhKUhX34EEujvlC5Ni1iQ1DPiNh+GzcM5by0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962125; c=relaxed/simple;
-	bh=Co3+Clvhs9mUIcsLp+mmJmW5+JA+brMZhzUx2AAhhJc=;
+	s=arc-20240116; t=1725962416; c=relaxed/simple;
+	bh=CnuRlBRCoi6uZb8bN95LoX6ZUy/sXy1AN0OwQYu2EaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i22z5N2Lid+DbKpQxa8p9eSlO+70KI1TroiY7Aubp+j4yW5BbtmonP/qff9k4hbBQOh4P1VxEP1zHJ5HTihIkfvUo4P0Zapzs3Llxd+bm4QK3XKHN7J88BWgH5oRG6okQTBpaouAGgoHmBuulBo4ZmohkAkQ+fS/vj4LeA8sHvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMg9AN9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ACAC4CEC3;
-	Tue, 10 Sep 2024 09:55:24 +0000 (UTC)
+	 MIME-Version; b=K45oz4J2uLQsJU93NI4ZzhoVTQOtVyH36V7A+po5kSlcLRiHCihKhAF/iK+J1vYLAegHmRoXu0rkiD1qjgAcx1APyQbKMaUvAQHDFvhhJg3aeIu9F8h90wXpEcO5Wd2Jd6mHnthuDkiSnIZlHqAQNQGdOwWbtmEOUBhs9Wghb/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgWynHYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C921AC4CEC3;
+	Tue, 10 Sep 2024 10:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962125;
-	bh=Co3+Clvhs9mUIcsLp+mmJmW5+JA+brMZhzUx2AAhhJc=;
+	s=korg; t=1725962416;
+	bh=CnuRlBRCoi6uZb8bN95LoX6ZUy/sXy1AN0OwQYu2EaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMg9AN9ttNSTdMFilCiRHJlab2eCJzSuNfVDiPEW0vKgn3mTPqHJfqj9+QQab4QCS
-	 GPS8uc0DReDZDfgdu+T5wGdK9HydE7TG3kEexPWLNbAjoPzVfwDziNY+O1oMGzlLBU
-	 pn0H1v0zYj2OU2zAzjt/Rt9/AaZ/3+t5BuG2nap0=
+	b=fgWynHYJ4wHhqh65SoR06kjjD5xaBRsebvwmJrpnZi6r/dGjR6UBKp7esP2xzJ/i3
+	 oJnTqGdcU1mA5SXgns1dLKw6ap99aVdn8023c+SHFLVGTMB+fQzk8dRsdeEHZwJjwZ
+	 eW7IHJ0AKI7P9DdYpgZ01s0X3MdQCH7Q1TabWNG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: [PATCH 6.10 303/375] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
-Date: Tue, 10 Sep 2024 11:31:40 +0200
-Message-ID: <20240910092632.741395512@linuxfoundation.org>
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 026/121] sch/netem: fix use after free in netem_dequeue
+Date: Tue, 10 Sep 2024 11:31:41 +0200
+Message-ID: <20240910092546.959113816@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 6fd28941447bf2c8ca0f26fda612a1cabc41663f upstream.
+commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
 
-Rescind offer handling relies on rescind callbacks for some of the
-resources cleanup, if they are registered. It does not unregister
-vmbus device for the primary channel closure, when callback is
-registered. Without it, next onoffer does not come, rescind flag
-remains set and device goes to unusable state.
+If netem_dequeue() enqueues packet to inner qdisc and that qdisc
+returns __NET_XMIT_STOLEN. The packet is dropped but
+qdisc_tree_reduce_backlog() is not called to update the parent's
+q.qlen, leading to the similar use-after-free as Commit
+e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
+fails")
 
-Add logic to unregister vmbus for the primary channel in rescind callback
-to ensure channel removal and relid release, and to ensure that next
-onoffer can be received and handled properly.
+Commands to trigger KASAN UaF:
 
-Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240829071312.1595-3-namjain@linux.microsoft.com
+ip link add type dummy
+ip link set lo up
+ip link set dummy0 up
+tc qdisc add dev lo parent root handle 1: drr
+tc filter add dev lo parent 1: basic classid 1:1
+tc class add dev lo classid 1:1 drr
+tc qdisc add dev lo parent 1:1 handle 2: netem
+tc qdisc add dev lo parent 2: handle 3: drr
+tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
+redirect dev dummy0
+tc class add dev lo classid 3:1 drr
+ping -c1 -W0.01 localhost # Trigger bug
+tc class del dev lo classid 1:1
+tc class add dev lo classid 1:1 drr
+ping -c1 -W0.01 localhost # UaF
+
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/vmbus_drv.c       |    1 +
- drivers/uio/uio_hv_generic.c |    8 ++++++++
- 2 files changed, 9 insertions(+)
+ net/sched/sch_netem.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1952,6 +1952,7 @@ void vmbus_device_unregister(struct hv_d
- 	 */
- 	device_unregister(&device_obj->device);
- }
-+EXPORT_SYMBOL_GPL(vmbus_device_unregister);
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -733,11 +733,10 @@ deliver:
  
- #ifdef CONFIG_ACPI
- /*
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -121,6 +121,14 @@ static void hv_uio_rescind(struct vmbus_
- 
- 	/* Wake up reader */
- 	uio_event_notify(&pdata->info);
-+
-+	/*
-+	 * With rescind callback registered, rescind path will not unregister the device
-+	 * from vmbus when the primary channel is rescinded.
-+	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
-+	 * Unregister the device from vmbus here.
-+	 */
-+	vmbus_device_unregister(channel->device_obj);
- }
- 
- /* Sysfs API to allow mmap of the ring buffers
+ 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
+ 				kfree_skb_list(to_free);
+-				if (err != NET_XMIT_SUCCESS &&
+-				    net_xmit_drop_count(err)) {
+-					qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1,
+-								  pkt_len);
++				if (err != NET_XMIT_SUCCESS) {
++					if (net_xmit_drop_count(err))
++						qdisc_qstats_drop(sch);
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
 
 
 
