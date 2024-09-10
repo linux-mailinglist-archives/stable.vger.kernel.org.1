@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-74824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269FB9731A3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B7E9733BC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C33BDB26314
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2DC0289E16
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C72197A65;
-	Tue, 10 Sep 2024 10:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0431990C3;
+	Tue, 10 Sep 2024 10:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqdKUNig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5dkhrTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD40196DA2;
-	Tue, 10 Sep 2024 10:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDD318E77F;
+	Tue, 10 Sep 2024 10:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962937; cv=none; b=TSDVzimIFq5MXkL4muPHDNJ/EjRiNoujuHoqemjAyf577m8w6MaAyCosQ+xnrxBJrJVq/gSd2xvFXSdIjRID1gM8yAFTk1OPWaqTmTmi5p+EB8CbulKNiY4d5TGvU19vCxRhJzhAO8+IUGiUWpyNnoi5xIXVDNUDzLhbsbbjLmo=
+	t=1725964247; cv=none; b=f/d/6SEU/yhXD4yFVqwSdjfOGKU5wgiTJBJNvgcnnPWq3D+fj1ZKNYjOFTK90ipPPLhxNnjxOGf0++C8YqIVR6o+kssY9kZy3uIf5qnM8IQgCMbEuU7Cy7Kr8y6nqw1asrGmH2DiE6YgdTPMSEmf9GjaHJb4QwMI3dNaVaDNxDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962937; c=relaxed/simple;
-	bh=CVl1pZ2Cl7breV1QCzeZdABJbgWrddmFOOjp/dZgbJo=;
+	s=arc-20240116; t=1725964247; c=relaxed/simple;
+	bh=QXDAlI1niB9yDU1m/XbtamtCBtlRh8zPwLR3k12av8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxBs0VNlyqijZM5J5BHJu/ewJwqYmtxB9aZ43EKjfU7SpBjJ99Qp9k7iXWRGZ7dZsEZ+JIbNjNP/S6SWvgo/86RT4sBnOjXsrnIBfbgDFbZEyDVMNfqfV4LAb70U93LdVJpUJ50gbuxJYpTYq6q+Qi0tCk0nLjdr/ytBDGNXEoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqdKUNig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5F4C4CEC3;
-	Tue, 10 Sep 2024 10:08:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OSSCDDHYEFNYzkIVkoZVDV7wVYHPr9Gvck40OvYE9BSyR+b2CsWXQ5Otz1ohNdjlOO5Iv7JNRHBrUE9PB/gtnuSpm5/pZGhX/trDZ5ClmB2m5V1DvbXZI/VpSV7l7nQB3ptlyO6m4iEsm0A/+RVgDzUB91P3WJSOg6ARRCKfwjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5dkhrTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979FFC4CEC3;
+	Tue, 10 Sep 2024 10:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962936;
-	bh=CVl1pZ2Cl7breV1QCzeZdABJbgWrddmFOOjp/dZgbJo=;
+	s=korg; t=1725964247;
+	bh=QXDAlI1niB9yDU1m/XbtamtCBtlRh8zPwLR3k12av8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqdKUNigumMFVNeoZzBAirVms2bixi8wvhjY0Nxt1oWBK/tAwFk623IlBqGMtIw0A
-	 243he/3Df2Fgv4svpzlXHlgYaDqcNNat3tHuMShV7aQ67kddC1/xOEJ22Gp4bgoE6H
-	 qKq1wRr7c14Y9s8auEbisbfxowxGubxlkd4CarbY=
+	b=H5dkhrTCGf2NRUsuC5N4h4uGOhaaK87oH/jSXAIHhFEBfQpIZ4gAvp077YOjF9qhW
+	 2fMzd5fdP1d0a4uh4L4gWoCLKm0ezlCIUDSMEGHXAUN2nVg9sCi2sdM5cq+ibpWXNR
+	 GL71psGOikSNBBMO3ZC8jVbfhoVchVDoPvUYnY6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Achal Verma <a-verma1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/192] media: vivid: fix wrong sizeimage value for mplane
+Subject: [PATCH 6.6 090/269] PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)
 Date: Tue, 10 Sep 2024 11:31:17 +0200
-Message-ID: <20240910092600.176994377@linuxfoundation.org>
+Message-ID: <20240910092611.419283817@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,91 +64,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 0fd7c0c2c156270dceb8c15fad3120cdce03e539 ]
+[ Upstream commit 86f271f22bbb6391410a07e08d6ca3757fda01fa ]
 
-In several places a division by fmt->vdownsampling[p] was
-missing in the sizeimage[p] calculation, causing incorrect
-behavior for multiplanar formats were some planes are smaller
-than the first plane.
+Errata #i2037 in AM65x/DRA80xM Processors Silicon Revision 1.0
+(SPRZ452D_July 2018_Revised December 2019 [1]) mentions when an
+inbound PCIe TLP spans more than two internal AXI 128-byte bursts,
+the bus may corrupt the packet payload and the corrupt data may
+cause associated applications or the processor to hang.
 
-Found by new v4l2-compliance tests.
+The workaround for Errata #i2037 is to limit the maximum read
+request size and maximum payload size to 128 bytes. Add workaround
+for Errata #i2037 here.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The errata and workaround is applicable only to AM65x SR 1.0 and
+later versions of the silicon will have this fixed.
+
+[1] -> https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
+
+Link: https://lore.kernel.org/linux-pci/16e1fcae-1ea7-46be-b157-096e05661b15@siemens.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Achal Verma <a-verma1@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c |  5 +++--
- drivers/media/test-drivers/vivid/vivid-vid-out.c | 16 +++++++++-------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 44 ++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index c0999581c599..bff95cb57718 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -113,8 +113,9 @@ static int vid_cap_queue_setup(struct vb2_queue *vq,
- 		if (*nplanes != buffers)
- 			return -EINVAL;
- 		for (p = 0; p < buffers; p++) {
--			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h +
--						dev->fmt_cap->data_offset[p])
-+			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h /
-+					dev->fmt_cap->vdownsampling[p] +
-+					dev->fmt_cap->data_offset[p])
- 				return -EINVAL;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 54a3c7f29f78..c1dedc83759c 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -34,6 +34,11 @@
+ #define PCIE_DEVICEID_SHIFT	16
+ 
+ /* Application registers */
++#define PID				0x000
++#define RTL				GENMASK(15, 11)
++#define RTL_SHIFT			11
++#define AM6_PCI_PG1_RTL_VER		0x15
++
+ #define CMD_STATUS			0x004
+ #define LTSSM_EN_VAL		        BIT(0)
+ #define OB_XLAT_EN_VAL		        BIT(1)
+@@ -104,6 +109,8 @@
+ 
+ #define to_keystone_pcie(x)		dev_get_drvdata((x)->dev)
+ 
++#define PCI_DEVICE_ID_TI_AM654X		0xb00c
++
+ struct ks_pcie_of_data {
+ 	enum dw_pcie_device_mode mode;
+ 	const struct dw_pcie_host_ops *host_ops;
+@@ -518,7 +525,11 @@ static int ks_pcie_start_link(struct dw_pcie *pci)
+ static void ks_pcie_quirk(struct pci_dev *dev)
+ {
+ 	struct pci_bus *bus = dev->bus;
++	struct keystone_pcie *ks_pcie;
++	struct device *bridge_dev;
+ 	struct pci_dev *bridge;
++	u32 val;
++
+ 	static const struct pci_device_id rc_pci_devids[] = {
+ 		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCIE_RC_K2HK),
+ 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
+@@ -530,6 +541,11 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
+ 		{ 0, },
+ 	};
++	static const struct pci_device_id am6_pci_devids[] = {
++		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654X),
++		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
++		{ 0, },
++	};
+ 
+ 	if (pci_is_root_bus(bus))
+ 		bridge = dev;
+@@ -551,10 +567,36 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 	 */
+ 	if (pci_match_id(rc_pci_devids, bridge)) {
+ 		if (pcie_get_readrq(dev) > 256) {
+-			dev_info(&dev->dev, "limiting MRRS to 256\n");
++			dev_info(&dev->dev, "limiting MRRS to 256 bytes\n");
+ 			pcie_set_readrq(dev, 256);
  		}
- 	} else {
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-index 9f731f085179..e96d3d014143 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-@@ -63,14 +63,16 @@ static int vid_out_queue_setup(struct vb2_queue *vq,
- 		if (sizes[0] < size)
- 			return -EINVAL;
- 		for (p = 1; p < planes; p++) {
--			if (sizes[p] < dev->bytesperline_out[p] * h +
--				       vfmt->data_offset[p])
-+			if (sizes[p] < dev->bytesperline_out[p] * h /
-+					vfmt->vdownsampling[p] +
-+					vfmt->data_offset[p])
- 				return -EINVAL;
- 		}
- 	} else {
- 		for (p = 0; p < planes; p++)
--			sizes[p] = p ? dev->bytesperline_out[p] * h +
--				       vfmt->data_offset[p] : size;
-+			sizes[p] = p ? dev->bytesperline_out[p] * h /
-+					vfmt->vdownsampling[p] +
-+					vfmt->data_offset[p] : size;
  	}
++
++	/*
++	 * Memory transactions fail with PCI controller in AM654 PG1.0
++	 * when MRRS is set to more than 128 bytes. Force the MRRS to
++	 * 128 bytes in all downstream devices.
++	 */
++	if (pci_match_id(am6_pci_devids, bridge)) {
++		bridge_dev = pci_get_host_bridge_device(dev);
++		if (!bridge_dev && !bridge_dev->parent)
++			return;
++
++		ks_pcie = dev_get_drvdata(bridge_dev->parent);
++		if (!ks_pcie)
++			return;
++
++		val = ks_pcie_app_readl(ks_pcie, PID);
++		val &= RTL;
++		val >>= RTL_SHIFT;
++		if (val != AM6_PCI_PG1_RTL_VER)
++			return;
++
++		if (pcie_get_readrq(dev) > 128) {
++			dev_info(&dev->dev, "limiting MRRS to 128 bytes\n");
++			pcie_set_readrq(dev, 128);
++		}
++	}
+ }
+ DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, ks_pcie_quirk);
  
- 	if (vq->num_buffers + *nbuffers < 2)
-@@ -127,7 +129,7 @@ static int vid_out_buf_prepare(struct vb2_buffer *vb)
- 
- 	for (p = 0; p < planes; p++) {
- 		if (p)
--			size = dev->bytesperline_out[p] * h;
-+			size = dev->bytesperline_out[p] * h / vfmt->vdownsampling[p];
- 		size += vb->planes[p].data_offset;
- 
- 		if (vb2_get_plane_payload(vb, p) < size) {
-@@ -334,8 +336,8 @@ int vivid_g_fmt_vid_out(struct file *file, void *priv,
- 	for (p = 0; p < mp->num_planes; p++) {
- 		mp->plane_fmt[p].bytesperline = dev->bytesperline_out[p];
- 		mp->plane_fmt[p].sizeimage =
--			mp->plane_fmt[p].bytesperline * mp->height +
--			fmt->data_offset[p];
-+			mp->plane_fmt[p].bytesperline * mp->height /
-+			fmt->vdownsampling[p] + fmt->data_offset[p];
- 	}
- 	for (p = fmt->buffers; p < fmt->planes; p++) {
- 		unsigned stride = dev->bytesperline_out[p];
 -- 
 2.43.0
 
