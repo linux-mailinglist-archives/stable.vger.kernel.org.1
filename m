@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04569972DD9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EF3972FF0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30DA41C21481
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCF1DB28972
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732B61891A1;
-	Tue, 10 Sep 2024 09:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022A018BC3F;
+	Tue, 10 Sep 2024 09:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzThSGea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHXHyOI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D446444;
-	Tue, 10 Sep 2024 09:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EAB188A1E;
+	Tue, 10 Sep 2024 09:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961013; cv=none; b=YvBM+GQgMEXHk/bhmSNgtuOvrF+wHbNElYyhSaPCmIP/mufzXGI5T7CI7OZ2lu88QNPVbpCHS4SCRDSuQqiGEik8KGeVuS74Kh272zAk0C0GU/jQ0DCjzBdKrounWJA/KKTYOzhJKM6k2AmycO7y1XLoisOkrxoU+ZBrSwvl2+g=
+	t=1725962160; cv=none; b=ZMz+cX9tcWN+dedM/VTAbXPEzGQOWYZLWnnwpK8BKitMyGol7yCnWbj0kvOgnbugHHnk8KVoZnBNQxBn9jcto60E/c0tjMigH+DCbSj4B7/iYnf/XnY73MrpTAcN++YMg3Vi6VFB/mAGfjx2mX0KKK8uIJ7w5UHFvhNj2Djl0YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961013; c=relaxed/simple;
-	bh=ZJxPS8uXUNyUGM+7JHWp98vh7kSfExq+Jn2D7Wpbcew=;
+	s=arc-20240116; t=1725962160; c=relaxed/simple;
+	bh=kOPQjb6pc+ktcEkrSlHu5deqeMFbi/hX00r4mZ6rWTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbLd/2KWfymtqcRR4t4tTlPfft4lQQMqciC1QsILI6tayJpZPFabq/QHhphRkZMfFVrK52aOTRH1U88rDcyAw9tDHoCk88Bg3V6fWbP16kPPDdZ3ofP50xa9Qu0sw2g5zf84ZkLzTL7Siv0pqywiLwNzGyAbbG3Q34UI1ZiOQdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzThSGea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B0EC4CEC3;
-	Tue, 10 Sep 2024 09:36:52 +0000 (UTC)
+	 MIME-Version; b=K2OiObJIooIi5ZtOr2Biw+to4BxILo04Evd/dLd0JJpyGYPrEsMnjxvOkm5ZcZzhzMuyZsbNFNGOvOMDIfMWY7LelCULQdAvtyMm09ZbWTWWRw8laidf3VnNIbec6jHQgYB/kW+Mf3XDZKmDEbHotPW6mGUHnUSLqQ1JLVqIaEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHXHyOI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A3CC4CEC3;
+	Tue, 10 Sep 2024 09:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961013;
-	bh=ZJxPS8uXUNyUGM+7JHWp98vh7kSfExq+Jn2D7Wpbcew=;
+	s=korg; t=1725962160;
+	bh=kOPQjb6pc+ktcEkrSlHu5deqeMFbi/hX00r4mZ6rWTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzThSGea+GBngiJ5QOKzCEjYna274X3fF0wjv1x5vOV0q8Q0Dr0EVDek38x2OIVOv
-	 64Ep2PC8Bo0NHJCqUOftABIs3lWakIxe9/z9DigVygpxJU2YGZny3kSiV96GO0YE+u
-	 ebENzzcS7eMy0ZQ7a78LfLNOwaLy0kLFxl0VdIuo=
+	b=hHXHyOI0Ww4UjAPJhmQh0ACQJuO4WBxWToKPzNKWQYANNVChtipyYGbo66XGNKeT/
+	 0MZ3F1txBkNKGIm2xd/xg4rEQcKLU426BWbeHbjvNGvBJdv8fFV7imtFV5Hq+1A74x
+	 LcYmUQZWySfR6jZUDPkPmVFmgXxmkrJz18iMckxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 4.19 23/96] clk: qcom: clk-alpha-pll: Fix the pll post div mask
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.10 288/375] iio: adc: ad7124: fix config comparison
 Date: Tue, 10 Sep 2024 11:31:25 +0200
-Message-ID: <20240910092542.464818810@linuxfoundation.org>
+Message-ID: <20240910092632.243598077@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
+commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
 
-The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
+The ad7124_find_similar_live_cfg() computes the compare size by
+substracting the address of the cfg struct from the address of the live
+field. Because the live field is the first field in the struct, the
+result is 0.
 
-Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Also, the memcmp() call is made from the start of the cfg struct, which
+includes the live and cfg_slot fields, which are not relevant for the
+comparison.
+
+Fix by grouping the relevant fields with struct_group() and use the
+size of the group to compute the compare size; make the memcmp() call
+from the address of the group.
+
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -37,7 +37,7 @@
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -147,15 +147,18 @@ struct ad7124_chip_info {
+ struct ad7124_channel_config {
+ 	bool live;
+ 	unsigned int cfg_slot;
+-	enum ad7124_ref_sel refsel;
+-	bool bipolar;
+-	bool buf_positive;
+-	bool buf_negative;
+-	unsigned int vref_mv;
+-	unsigned int pga_bits;
+-	unsigned int odr;
+-	unsigned int odr_sel_bits;
+-	unsigned int filter_type;
++	/* Following fields are used to compare equality. */
++	struct_group(config_props,
++		enum ad7124_ref_sel refsel;
++		bool bipolar;
++		bool buf_positive;
++		bool buf_negative;
++		unsigned int vref_mv;
++		unsigned int pga_bits;
++		unsigned int odr;
++		unsigned int odr_sel_bits;
++		unsigned int filter_type;
++	);
+ };
  
- #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
- # define PLL_POST_DIV_SHIFT	8
--# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
-+# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
- # define PLL_ALPHA_EN		BIT(24)
- # define PLL_ALPHA_MODE		BIT(25)
- # define PLL_VCO_SHIFT		20
+ struct ad7124_channel {
+@@ -334,11 +337,12 @@ static struct ad7124_channel_config *ad7
+ 	ptrdiff_t cmp_size;
+ 	int i;
+ 
+-	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
++	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
+ 
+-		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
++		if (cfg_aux->live &&
++		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
+ 			return cfg_aux;
+ 	}
+ 
 
 
 
