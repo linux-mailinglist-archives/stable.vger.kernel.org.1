@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA8097351A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82371973424
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F01C2892B6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3569728C6CE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADB718E76B;
-	Tue, 10 Sep 2024 10:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9584918CBE2;
+	Tue, 10 Sep 2024 10:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2RmL+jt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FE9Vhqnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB45B5381A;
-	Tue, 10 Sep 2024 10:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B4A186615;
+	Tue, 10 Sep 2024 10:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965058; cv=none; b=M8xhif/L+Kxn5I7QvaOyOU66DNA0KGVSVPrmcA6UwY8xYhgjehU2ixb+/xF7PyHe0wxcDzmASdegYeD1m7o24z0xsq8TvOKP0kyMZfJgVushuMklDzWCLRmf98HGPVGRhpYIL3QbNBJ8PD9Z9D6GhTrkXC57ReIbq8Oz2Beez7g=
+	t=1725964499; cv=none; b=Ox2Eucuz2iewEkiTYe7gV3hGZATZY7gPD+c5w/7TzBCc4KZ8RhB55iFIaq5TSj233E1Ysp1AAQ23WYykdMOBsRiGtjpJ/XoauMR7jTda3kC/gyRbY0v229MkHuGcMiS0NccI1dcxw76l+BSeZNJ1CbJpGqFXmH7N18u7E1snGaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965058; c=relaxed/simple;
-	bh=DvQ/eYCCusgHq192Aln2TWTfA+smOyh0KpDncdIfcyo=;
+	s=arc-20240116; t=1725964499; c=relaxed/simple;
+	bh=YGjRCu9bLMNZqmxyV1tSgIHUwVI5o0GFEowgVAj4K1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDyVoc3gvHjkawbIuGT754rLK+1n5V53sxK53pHc61X4ukO8zZpccP4cEz2+4P9FyK9lle7ayjdpZrCk5wscO9PN0Cw0l0wvnVrYkRueexDL+ooyMFMf3iHaK5gJUbINcWNgTHqts9h0yE8SjnW18fkbnw0JHEKMEuY5iI5N8zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2RmL+jt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F16C4CEC3;
-	Tue, 10 Sep 2024 10:44:17 +0000 (UTC)
+	 MIME-Version; b=IsvNp/Bay9rHqy/b8TA+KjZ0PdZFh/41mJ7gIGeuUUip8XgAk483CrD26QmJcCJ9YFyDkwYy8PV3OBQLO/soDN/2pGXnAn8PxQmr0P4BVLHUUea/LPKZEAXogLYN/Eo9kZRxUw/W5gU+eQODZ4Guw0JJQImNS9t+5DSPr1roFYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FE9Vhqnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD908C4CEC3;
+	Tue, 10 Sep 2024 10:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965057;
-	bh=DvQ/eYCCusgHq192Aln2TWTfA+smOyh0KpDncdIfcyo=;
+	s=korg; t=1725964499;
+	bh=YGjRCu9bLMNZqmxyV1tSgIHUwVI5o0GFEowgVAj4K1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2RmL+jtrUONjPAovGUzl7FLKqcdiEcIqplrz2PGSZCLSrlJbg2uvdYl3bGEydxFf
-	 3REBizEGOPDBbXI5yvowwsxLrJXMmP9cp6nKbEESI9M60XTGdVi/VykEdOYFlXzw3v
-	 lPeJjXAQoq0oT+oQN8+7/OtTEtWE+zD8V4FONUdw=
+	b=FE9VhqnpU6OD/sSdKgiE5IYLD9nCcP3NC38gCC+H0t8OlfV7jDx0c4cPPHl4B9bgd
+	 eVbtwZLcPmqsC48Xen2Y857AprrNgpVZCioqwfqFnkOETx7BK52vwr25wC6wioMZuO
+	 xufOKrs4CqQkWcjssNAHk2lraSZUQwsGXavESww8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 095/186] nfsd: remove nfsd_stats, make th_cnt a global counter
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6 203/269] tcp: process the 3rd ACK with sk_socket for TFO/MPTCP
 Date: Tue, 10 Sep 2024 11:33:10 +0200
-Message-ID: <20240910092558.411762060@linuxfoundation.org>
+Message-ID: <20240910092615.307230832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit e41ee44cc6a473b1f414031782c3b4283d7f3e5f ]
+commit c1668292689ad2ee16c9c1750a8044b0b0aad663 upstream.
 
-This is the last global stat, take it out of the nfsd_stats struct and
-make it a global part of nfsd, report it the same as always.
+The 'Fixes' commit recently changed the behaviour of TCP by skipping the
+processing of the 3rd ACK when a sk->sk_socket is set. The goal was to
+skip tcp_ack_snd_check() in tcp_rcv_state_process() not to send an
+unnecessary ACK in case of simultaneous connect(). Unfortunately, that
+had an impact on TFO and MPTCP.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+I started to look at the impact on MPTCP, because the MPTCP CI found
+some issues with the MPTCP Packetdrill tests [1]. Then Paolo Abeni
+suggested me to look at the impact on TFO with "plain" TCP.
+
+For MPTCP, when receiving the 3rd ACK of a request adding a new path
+(MP_JOIN), sk->sk_socket will be set, and point to the MPTCP sock that
+has been created when the MPTCP connection got established before with
+the first path. The newly added 'goto' will then skip the processing of
+the segment text (step 7) and not go through tcp_data_queue() where the
+MPTCP options are validated, and some actions are triggered, e.g.
+sending the MPJ 4th ACK [2] as demonstrated by the new errors when
+running a packetdrill test [3] establishing a second subflow.
+
+This doesn't fully break MPTCP, mainly the 4th MPJ ACK that will be
+delayed. Still, we don't want to have this behaviour as it delays the
+switch to the fully established mode, and invalid MPTCP options in this
+3rd ACK will not be caught any more. This modification also affects the
+MPTCP + TFO feature as well, and being the reason why the selftests
+started to be unstable the last few days [4].
+
+For TFO, the existing 'basic-cookie-not-reqd' test [5] was no longer
+passing: if the 3rd ACK contains data, and the connection is accept()ed
+before receiving them, these data would no longer be processed, and thus
+not ACKed.
+
+One last thing about MPTCP, in case of simultaneous connect(), a
+fallback to TCP will be done, which seems fine:
+
+  `../common/defaults.sh`
+
+   0 socket(..., SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_MPTCP) = 3
+  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
+
+  +0 > S  0:0(0)                 <mss 1460, sackOK, TS val 100 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 < S  0:0(0) win 1000        <mss 1460, sackOK, TS val 407 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 > S. 0:0(0) ack 1           <mss 1460, sackOK, TS val 330 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 < S. 0:0(0) ack 1 win 65535 <mss 1460, sackOK, TS val 700 ecr 100, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey=2]>
+  +0 >  . 1:1(0) ack 1           <nop, nop, TS val 845707014 ecr 700, nop, nop, sack 0:1>
+
+Simultaneous SYN-data crossing is also not supported by TFO, see [6].
+
+Kuniyuki Iwashima suggested to restrict the processing to SYN+ACK only:
+that's a more generic solution than the one initially proposed, and
+also enough to fix the issues described above.
+
+Later on, Eric Dumazet mentioned that an ACK should still be sent in
+reaction to the second SYN+ACK that is received: not sending a DUPACK
+here seems wrong and could hurt:
+
+   0 socket(..., SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP) = 3
+  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
+
+  +0 > S  0:0(0)                <mss 1460, sackOK, TS val 1000 ecr 0,nop,wscale 8>
+  +0 < S  0:0(0)       win 1000 <mss 1000, sackOK, nop, nop>
+  +0 > S. 0:0(0) ack 1          <mss 1460, sackOK, TS val 3308134035 ecr 0,nop,wscale 8>
+  +0 < S. 0:0(0) ack 1 win 1000 <mss 1000, sackOK, nop, nop>
+  +0 >  . 1:1(0) ack 1          <nop, nop, sack 0:1>  // <== Here
+
+So in this version, the 'goto consume' is dropped, to always send an ACK
+when switching from TCP_SYN_RECV to TCP_ESTABLISHED. This ACK will be
+seen as a DUPACK -- with DSACK if SACK has been negotiated -- in case of
+simultaneous SYN crossing: that's what is expected here.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/actions/runs/9936227696 [1]
+Link: https://datatracker.ietf.org/doc/html/rfc8684#fig_tokens [2]
+Link: https://github.com/multipath-tcp/packetdrill/blob/mptcp-net-next/gtests/net/mptcp/syscalls/accept.pkt#L28 [3]
+Link: https://netdev.bots.linux.dev/contest.html?executor=vmksft-mptcp-dbg&test=mptcp-connect-sh [4]
+Link: https://github.com/google/packetdrill/blob/master/gtests/net/tcp/fastopen/server/basic-cookie-not-reqd.pkt#L21 [5]
+Link: https://github.com/google/packetdrill/blob/master/gtests/net/tcp/fastopen/client/simultaneous-fast-open.pkt [6]
+Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240724-upstream-net-next-20240716-tcp-3rd-ack-consume-sk_socket-v3-1-d48339764ce9@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsd.h   |    1 +
- fs/nfsd/nfssvc.c |    5 +++--
- fs/nfsd/stats.c  |    3 +--
- fs/nfsd/stats.h  |    6 ------
- 4 files changed, 5 insertions(+), 10 deletions(-)
+ net/ipv4/tcp_input.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -69,6 +69,7 @@ extern struct mutex		nfsd_mutex;
- extern spinlock_t		nfsd_drc_lock;
- extern unsigned long		nfsd_drc_max_mem;
- extern unsigned long		nfsd_drc_mem_used;
-+extern atomic_t			nfsd_th_cnt;		/* number of available threads */
- 
- extern const struct seq_operations nfs_exports_op;
- 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -34,6 +34,7 @@
- 
- #define NFSDDBG_FACILITY	NFSDDBG_SVC
- 
-+atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
- extern struct svc_program	nfsd_program;
- static int			nfsd(void *vrqstp);
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
-@@ -935,7 +936,7 @@ nfsd(void *vrqstp)
- 
- 	current->fs->umask = 0;
- 
--	atomic_inc(&nfsdstats.th_cnt);
-+	atomic_inc(&nfsd_th_cnt);
- 
- 	set_freezable();
- 
-@@ -959,7 +960,7 @@ nfsd(void *vrqstp)
- 		validate_process_creds();
- 	}
- 
--	atomic_dec(&nfsdstats.th_cnt);
-+	atomic_dec(&nfsd_th_cnt);
- 
- out:
- 	/* Release the thread */
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,7 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct nfsd_stats	nfsdstats;
- struct svc_stat		nfsd_svcstats = {
- 	.program	= &nfsd_program,
- };
-@@ -47,7 +46,7 @@ static int nfsd_show(struct seq_file *se
- 		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_IO_WRITE]));
- 
- 	/* thread usage: */
--	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
-+	seq_printf(seq, "th %u 0", atomic_read(&nfsd_th_cnt));
- 
- 	/* deprecated thread usage histogram stats */
- 	for (i = 0; i < 10; i++)
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,12 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--struct nfsd_stats {
--	atomic_t	th_cnt;		/* number of available threads */
--};
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6679,9 +6679,6 @@ int tcp_rcv_state_process(struct sock *s
+ 		tcp_fast_path_on(tp);
+ 		if (sk->sk_shutdown & SEND_SHUTDOWN)
+ 			tcp_shutdown(sk, SEND_SHUTDOWN);
 -
--extern struct nfsd_stats	nfsdstats;
--
- extern struct svc_stat		nfsd_svcstats;
+-		if (sk->sk_socket)
+-			goto consume;
+ 		break;
  
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
+ 	case TCP_FIN_WAIT1: {
 
 
 
