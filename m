@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-74816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FDF197318E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D1297328B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BDA51C25626
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE47428389A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192FF1953BD;
-	Tue, 10 Sep 2024 10:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8BA19412E;
+	Tue, 10 Sep 2024 10:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSF2NG8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+XjezjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E2F194145;
-	Tue, 10 Sep 2024 10:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01017AE00;
+	Tue, 10 Sep 2024 10:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962913; cv=none; b=UFxZGzoSCGMsnpL/JSRAfDRFD8XktPc+WcfEiXVAL5Bu3/2I+rgAVsZ6MywXhRZkdt6d3FQRYgcHN8hnoHISme8bcKxSTbUB3z8Bvv4sRmwSSX8brM1Tm1UUy0P3wsVmnhLnXDi6N9J1rxIMKygpNaqRI7Wo8Jx/LuOmZ19oadk=
+	t=1725963488; cv=none; b=kCtI7J26NMnRelg2y326I6ugyVK2fCJMQAswhVvdSoAYQapybJt+XqmLczVpUp5iCr+HZRWVw7lzrEdWQerDOLsQyAelSpWQlLiYCRh7mKM7MsGkffVpfASKRC9/ekeA+ac6+5r28dLTwCX788uD/aqL2HjsuPQSSONeQN25Anw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962913; c=relaxed/simple;
-	bh=GE0NdSROubGgU2k0XoCo4RJOumUVc6ZUbxceCBWlOOc=;
+	s=arc-20240116; t=1725963488; c=relaxed/simple;
+	bh=QGgNlrNWipxnKIB6Jpn5h3GeNrP9FTtIFnKbeVphC+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eM/793lBuTL7G3kaXFLpA32dMv/dPdIgPJO410fgiL+VQIDRYKrjg872xjpgt0r3NKOtepNlw7xHuJTfaHDUExteJZsvD6C0Hi+cS4O2Eyaz8G70tJwRpTH6ajGQCSM5jH+Pe03TjKXWC2hOAFEJmmNmHxc07AN9GYGMGTDwkdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSF2NG8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0030BC4CEC3;
-	Tue, 10 Sep 2024 10:08:32 +0000 (UTC)
+	 MIME-Version; b=DI8VxMWZtkvI8vj17wEXXhTIw8FAVOIamf+Ep9eZ7Fcem1tmVdOVTFLEmttrk6T5dYwrk5geUeh97KfXEwEt1PS3NHXwfBnvHvcESFJDt0zxRfwAGtqth1MTGgmcBAW6hJhJmcqazldejOZz16nast+BmquYP8TbqhsmDhlOp44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+XjezjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C8C4CED3;
+	Tue, 10 Sep 2024 10:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962913;
-	bh=GE0NdSROubGgU2k0XoCo4RJOumUVc6ZUbxceCBWlOOc=;
+	s=korg; t=1725963488;
+	bh=QGgNlrNWipxnKIB6Jpn5h3GeNrP9FTtIFnKbeVphC+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSF2NG8isKtSgjv4jxOhYyQTupjOSnNtN3WYrzt385Wpcun2ag3PJXVYnKZIAUR3V
-	 bSvwpk7o3tfWLgmOPBCRl2LMmJN+RLcEhrmaibvrfm0/WjboICEBqK9FnFxa+q09jF
-	 TFwVg/0hSMECPbE4OIZOm4V4W59rcGNrAILgALGk=
+	b=v+XjezjIv53YiglZ3WTJ2ZUEwNayXq/JMbTgFYLTx1mufkVPn5sI9K7R59783LCCX
+	 gpj/xLu4pM3HcFIdGOOFA2FDBZ9KaT4c7gcAPffpFYRKc8xvyd4aAkuRXYDu0EH3P2
+	 HhfbcONXB/Znn4iRNRb/PP9XE03HR4SuCJU+OcMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/192] rust: kbuild: fix export of bss symbols
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 074/214] Bluetooth: MGMT: Ignore keys being loaded with invalid type
 Date: Tue, 10 Sep 2024 11:31:36 +0200
-Message-ID: <20240910092600.965317871@linuxfoundation.org>
+Message-ID: <20240910092601.769203623@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b8673d56935c32a4e0a1a0b40951fdd313dbf340 ]
+commit 1e9683c9b6ca88cc9340cdca85edd6134c8cffe3 upstream.
 
-Symbols in the bss segment are not currently exported. This is a problem
-for Rust modules that link against statics, that are resident in the kernel
-image. Thus export symbols in the bss segment.
+Due to 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 there could be keys stored
+with the wrong address type so this attempt to detect it and ignore them
+instead of just failing to load all keys.
 
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240815074519.2684107-2-nmi@metaspace.dk
-[ Reworded slightly. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/bluez/bluez/issues/875
+Fixes: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/mgmt.c |   37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 9321a4c83b71..28ba3b9ee18d 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -303,7 +303,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers.c FORCE
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
- 	$(NM) -p --defined-only $< \
--		| awk '/ (T|R|D) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
-+		| awk '/ (T|R|D|B) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2375,15 +2375,6 @@ static int load_link_keys(struct sock *s
+ 	bt_dev_dbg(hdev, "debug_keys %u key_count %u", cp->debug_keys,
+ 		   key_count);
  
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
--- 
-2.43.0
-
+-	for (i = 0; i < key_count; i++) {
+-		struct mgmt_link_key_info *key = &cp->keys[i];
+-
+-		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
+-			return mgmt_cmd_status(sk, hdev->id,
+-					       MGMT_OP_LOAD_LINK_KEYS,
+-					       MGMT_STATUS_INVALID_PARAMS);
+-	}
+-
+ 	hci_dev_lock(hdev);
+ 
+ 	hci_link_keys_clear(hdev);
+@@ -2408,6 +2399,19 @@ static int load_link_keys(struct sock *s
+ 			continue;
+ 		}
+ 
++		if (key->addr.type != BDADDR_BREDR) {
++			bt_dev_warn(hdev,
++				    "Invalid link address type %u for %pMR",
++				    key->addr.type, &key->addr.bdaddr);
++			continue;
++		}
++
++		if (key->type > 0x08) {
++			bt_dev_warn(hdev, "Invalid link key type %u for %pMR",
++				    key->type, &key->addr.bdaddr);
++			continue;
++		}
++
+ 		/* Always ignore debug keys and require a new pairing if
+ 		 * the user wants to use them.
+ 		 */
+@@ -6259,15 +6263,6 @@ static int load_long_term_keys(struct so
+ 
+ 	bt_dev_dbg(hdev, "key_count %u", key_count);
+ 
+-	for (i = 0; i < key_count; i++) {
+-		struct mgmt_ltk_info *key = &cp->keys[i];
+-
+-		if (!ltk_is_valid(key))
+-			return mgmt_cmd_status(sk, hdev->id,
+-					       MGMT_OP_LOAD_LONG_TERM_KEYS,
+-					       MGMT_STATUS_INVALID_PARAMS);
+-	}
+-
+ 	hci_dev_lock(hdev);
+ 
+ 	hci_smp_ltks_clear(hdev);
+@@ -6283,6 +6278,12 @@ static int load_long_term_keys(struct so
+ 				    &key->addr.bdaddr);
+ 			continue;
+ 		}
++
++		if (!ltk_is_valid(key)) {
++			bt_dev_warn(hdev, "Invalid LTK for %pMR",
++				    &key->addr.bdaddr);
++			continue;
++		}
+ 
+ 		switch (key->type) {
+ 		case MGMT_LTK_UNAUTHENTICATED:
 
 
 
