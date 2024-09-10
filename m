@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988FA97340C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08D9973230
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB97E1C2454E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F9B6B22310
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE861922EB;
-	Tue, 10 Sep 2024 10:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8582D194C88;
+	Tue, 10 Sep 2024 10:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFofJpPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piCdoV6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50A18F2F0;
-	Tue, 10 Sep 2024 10:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430E9183CB0;
+	Tue, 10 Sep 2024 10:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964440; cv=none; b=NYZdddwvIZ08Sl+XzkWoF/DUiEk47FYwzRA2swiTd6YE1KQ+N1N4pyfz7XHrLAa580+rANSmMrVErBru60ZWdII3RwQI1GSwRbrokyaPCo7UoslTamaP9nLm6smvIavvwX+nG4wOvoaW4TOV2pWu5fj7rjvEgxGAiGO5hCyKq50=
+	t=1725963192; cv=none; b=F2wC5uYFepM8526jLBENH+uU7fklD7LCLKZIm0TUCzv7qorsGoAOODbsaOF8lEmwiz7WyIRC2EiNvmhiy0giPTyiP7t4YNDcpibLdlgSNvv3dWVySFq60S3duLK1iQhSokC42pvzia3QCSFLo7skftuLW0SP9+ZksAbI5zM6dhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964440; c=relaxed/simple;
-	bh=WOlz4ZummeqEg2GFUklSIYTVX/FAjGRDsmlSZb6zICQ=;
+	s=arc-20240116; t=1725963192; c=relaxed/simple;
+	bh=V1lwqFmjD5w9CWac8U9TO3/d1xT2OXpNZ9RCGurnM9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzltBpRspOND9r9xlP5VMK23dEh6YeJO06Gkq32X+sUwRSPrzguIpC1ByubQu5J0WhFZO3cG4p9RZxyFl1z2vywSREnlSzANFPPo+UskB+eeS6m9QeCZlhp7vLxNA+P/j9Xy/BElAgqOZm4f5lS7yhC00GMTMElfvT9AgZ7sxb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFofJpPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2573FC4CEC3;
-	Tue, 10 Sep 2024 10:33:59 +0000 (UTC)
+	 MIME-Version; b=afWPnjYRto+5F/eYAXeZbafIJ1WRsEpQYy/w3A8V7YHwKGUKP5nXETZXcL+6ra6Zgp6k9LZhofV74iE6B65f1R4MTQ8mQSVd3MfPrLwqEOZtk8TPAd0LYkfgSTX06gmWygnyNJBugAsU0h/axf1Sp8a0Bcranqxrtf6IGjbk/Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piCdoV6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3BDC4CEC3;
+	Tue, 10 Sep 2024 10:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964440;
-	bh=WOlz4ZummeqEg2GFUklSIYTVX/FAjGRDsmlSZb6zICQ=;
+	s=korg; t=1725963192;
+	bh=V1lwqFmjD5w9CWac8U9TO3/d1xT2OXpNZ9RCGurnM9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFofJpPnVokzbtgIMb6YyBtTGvyep1zl+Kq2WZTWsyZFG3LqSabvkjskZE1aKP84n
-	 aGU3ReYUBUq/W5yMPleN4ZxhLJv0iUHL1MFoU52dXT9zyedPa3lHeZzZ7u6M/u3JXE
-	 so9rE3Jr82p5vISV9cuQrE7z1OFHavdwHetVyco0=
+	b=piCdoV6rb2eNt/vAZql/ZONsrWk6oSO34OzTfCr64c1N6wdDOAMVTTexNxHd58y7g
+	 45jQi/bcRkuDnf399OiGA0VDK4NbQg5D/f9zcHoY3SAGY5KZtiiDzKN89YBqpApiOy
+	 JzcTo2UBgH4efjhWeWb/1ZuJCspR7Z362uidHFao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/269] regmap: maple: work around gcc-14.1 false-positive warning
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 139/192] iio: adc: ad7124: fix config comparison
 Date: Tue, 10 Sep 2024 11:32:43 +0200
-Message-ID: <20240910092614.446952848@linuxfoundation.org>
+Message-ID: <20240910092603.710851638@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-[ Upstream commit 542440fd7b30983cae23e32bd22f69a076ec7ef4 ]
+commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
 
-With gcc-14.1, there is a false-postive -Wuninitialized warning in
-regcache_maple_drop:
+The ad7124_find_similar_live_cfg() computes the compare size by
+substracting the address of the cfg struct from the address of the live
+field. Because the live field is the first field in the struct, the
+result is 0.
 
-drivers/base/regmap/regcache-maple.c: In function 'regcache_maple_drop':
-drivers/base/regmap/regcache-maple.c:113:23: error: 'lower_index' is used uninitialized [-Werror=uninitialized]
-  113 |         unsigned long lower_index, lower_last;
-      |                       ^~~~~~~~~~~
-drivers/base/regmap/regcache-maple.c:113:36: error: 'lower_last' is used uninitialized [-Werror=uninitialized]
-  113 |         unsigned long lower_index, lower_last;
-      |                                    ^~~~~~~~~~
+Also, the memcmp() call is made from the start of the cfg struct, which
+includes the live and cfg_slot fields, which are not relevant for the
+comparison.
 
-I've created a reduced test case to see if this needs to be reported
-as a gcc, but it appears that the gcc-14.x branch already has a change
-that turns this into a more sensible -Wmaybe-uninitialized warning, so
-I ended up not reporting it so far.
+Fix by grouping the relevant fields with struct_group() and use the
+size of the group to compute the compare size; make the memcmp() call
+from the address of the group.
 
-The reduced test case also produces a warning for gcc-13 and gcc-12
-but I don't see that with the version in the kernel.
-
-Link: https://godbolt.org/z/oKbohKqd3
-Link: https://lore.kernel.org/all/CAMuHMdWj=FLmkazPbYKPevDrcym2_HDb_U7Mb9YE9ovrP0jJfA@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20240719104030.1382465-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regcache-maple.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 55999a50ccc0..0b6c2277128b 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -110,7 +110,8 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
- 	struct maple_tree *mt = map->cache;
- 	MA_STATE(mas, mt, min, max);
- 	unsigned long *entry, *lower, *upper;
--	unsigned long lower_index, lower_last;
-+	/* initialized to work around false-positive -Wuninitialized warning */
-+	unsigned long lower_index = 0, lower_last = 0;
- 	unsigned long upper_index, upper_last;
- 	int ret = 0;
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -146,15 +146,18 @@ struct ad7124_chip_info {
+ struct ad7124_channel_config {
+ 	bool live;
+ 	unsigned int cfg_slot;
+-	enum ad7124_ref_sel refsel;
+-	bool bipolar;
+-	bool buf_positive;
+-	bool buf_negative;
+-	unsigned int vref_mv;
+-	unsigned int pga_bits;
+-	unsigned int odr;
+-	unsigned int odr_sel_bits;
+-	unsigned int filter_type;
++	/* Following fields are used to compare equality. */
++	struct_group(config_props,
++		enum ad7124_ref_sel refsel;
++		bool bipolar;
++		bool buf_positive;
++		bool buf_negative;
++		unsigned int vref_mv;
++		unsigned int pga_bits;
++		unsigned int odr;
++		unsigned int odr_sel_bits;
++		unsigned int filter_type;
++	);
+ };
  
--- 
-2.43.0
-
+ struct ad7124_channel {
+@@ -333,11 +336,12 @@ static struct ad7124_channel_config *ad7
+ 	ptrdiff_t cmp_size;
+ 	int i;
+ 
+-	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
++	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
+ 
+-		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
++		if (cfg_aux->live &&
++		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
+ 			return cfg_aux;
+ 	}
+ 
 
 
 
