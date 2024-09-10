@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D100972E00
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5713B973086
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED4A2870BB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1722873BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B750518B495;
-	Tue, 10 Sep 2024 09:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054ED190072;
+	Tue, 10 Sep 2024 10:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5zLI0pN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBeHWHi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1C1885A6;
-	Tue, 10 Sep 2024 09:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B771818CC17;
+	Tue, 10 Sep 2024 10:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961101; cv=none; b=WjT4Ps6kUaVkMToZxu+9ane2AGSR80hx0gd4Y0f2ed/yUIRXvqvTeU+HUZkmEOBFdAomN3LgTXDNh/fFhqfHHuKyoQaLCRSQ5TAOeCrnES3pB/Ccjn+PBEFE7RPI1JAZgvq0v5vKGv0zhl2Gjxbm6k3KQ9GFMz8OimezEfFbKSM=
+	t=1725962457; cv=none; b=b4owaujJmGDMugE+1vqflRgAC55nGfrUq7nY6gxluEfy8xJjRSyxqNnyHWXqxf1Q7LW+47beRVj+myxtMcK16Ku7R2KQbZ9pzfgKIva/9nFCQiaBtjh5oF/6Q4GHHT8k7EczkKB/BceFxFZMX2oFRI2q0i5SsJl1bRPDVvBqxcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961101; c=relaxed/simple;
-	bh=YBLOBL1VrZioOKmOzE46RTVZBoEyezkPubZTkDDIy4o=;
+	s=arc-20240116; t=1725962457; c=relaxed/simple;
+	bh=F1qkMEin5pd/7naO25IfzNXnLFvd6V4w6/wAFVOuEwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2zN9t45c6VXs/QzDbgUJyAi9HsbYsyYo198jLBO7fXVWTef4FHJT1/FemFMbNkbTwYxY6OhGVY9AaCKCk0qeqdGxOizGoN3Oi65ph9qNzIaRtYiJKepIATp50cs1vX/YhVl1Af0WFX+x1c74hbWP6+1t55pW8PJ1RuSO1xhJBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5zLI0pN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E1C4CECC;
-	Tue, 10 Sep 2024 09:38:20 +0000 (UTC)
+	 MIME-Version; b=bBI3UQrXtY8vOLLvuLYnzSKKuHaCdwvdSAZYWjvCmJRIO2u2BqStO8vZCiXXWdb4/rNbeBZLcitka/y6vOvuIX4sVj8NInfsIkLp7elnnX0aLPMfoAEgiWrGV0+cuEQqE4iL6xQ/KktD27p7/a4jkBSO5LpNjKtHPVTSHSE8n1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBeHWHi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D865BC4CEC3;
+	Tue, 10 Sep 2024 10:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961100;
-	bh=YBLOBL1VrZioOKmOzE46RTVZBoEyezkPubZTkDDIy4o=;
+	s=korg; t=1725962457;
+	bh=F1qkMEin5pd/7naO25IfzNXnLFvd6V4w6/wAFVOuEwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5zLI0pN11n/lew8vMtvTRnnxzh9lxnA0IWVRIiLWXa3C5/5JB303xNJEv6yB+pmo
-	 0I0hNHwSM4B1K6r8t/JFg3GdcVIKclLjZ/ooz+xaIXxRYWw4g2uY0CW+6JXD00YYCs
-	 +CT8U+p6f0nSa9+4J4ixVdhCJPnbCZiLGa3xCikM=
+	b=TBeHWHi9leY25jIQ7MylNuqDvieUrWCFF8lk49+a6SAJu3BiPTmFsd3a4BmUjuSKX
+	 U7P3S+7y+I57wbjv5j1Q+tchciCQCqHuJQYs9TYEYLXZP2v8JtlLeDKJtQHKogxLOP
+	 aHOdnwq5wT2oPbYKD3SiRENBCSv0O+TD1/7cf7Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 53/96] cgroup: Protect css->cgroup write under css_set_lock
-Date: Tue, 10 Sep 2024 11:31:55 +0200
-Message-ID: <20240910092543.863051822@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 041/121] nilfs2: fix missing cleanup on rollforward recovery error
+Date: Tue, 10 Sep 2024 11:31:56 +0200
+Message-ID: <20240910092547.689264195@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
+commit 5787fcaab9eb5930f5378d6a1dd03d916d146622 upstream.
 
-The writing of css->cgroup associated with the cgroup root in
-rebind_subsystems() is currently protected only by cgroup_mutex.
-However, the reading of css->cgroup in both proc_cpuset_show() and
-proc_cgroup_show() is protected just by css_set_lock. That makes the
-readers susceptible to racing problems like data tearing or caching.
-It is also a problem that can be reported by KCSAN.
+In an error injection test of a routine for mount-time recovery, KASAN
+found a use-after-free bug.
 
-This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
-css->cgroup. Alternatively, the writing of css->cgroup can be moved
-under css_set_lock as well which is done by this patch.
+It turned out that if data recovery was performed using partial logs
+created by dsync writes, but an error occurred before starting the log
+writer to create a recovered checkpoint, the inodes whose data had been
+recovered were left in the ns_dirty_files list of the nilfs object and
+were not freed.
 
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by cleaning up inodes that have read the recovery data if
+the recovery routine fails midway before the log writer starts.
+
+Link: https://lkml.kernel.org/r/20240810065242.3701-1-konishi.ryusuke@gmail.com
+Fixes: 0f3e1c7f23f8 ("nilfs2: recovery functions")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/recovery.c |   35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 6322b56529e9..30c058806702 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1712,9 +1712,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
- 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
- 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
- 		ss->root = dst_root;
--		css->cgroup = dcgrp;
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -709,6 +709,33 @@ static void nilfs_finish_roll_forward(st
+ }
  
- 		spin_lock_irq(&css_set_lock);
-+		css->cgroup = dcgrp;
- 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
- 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
- 					 e_cset_node[ss->id]) {
--- 
-2.43.0
-
+ /**
++ * nilfs_abort_roll_forward - cleaning up after a failed rollforward recovery
++ * @nilfs: nilfs object
++ */
++static void nilfs_abort_roll_forward(struct the_nilfs *nilfs)
++{
++	struct nilfs_inode_info *ii, *n;
++	LIST_HEAD(head);
++
++	/* Abandon inodes that have read recovery data */
++	spin_lock(&nilfs->ns_inode_lock);
++	list_splice_init(&nilfs->ns_dirty_files, &head);
++	spin_unlock(&nilfs->ns_inode_lock);
++	if (list_empty(&head))
++		return;
++
++	set_nilfs_purging(nilfs);
++	list_for_each_entry_safe(ii, n, &head, i_dirty) {
++		spin_lock(&nilfs->ns_inode_lock);
++		list_del_init(&ii->i_dirty);
++		spin_unlock(&nilfs->ns_inode_lock);
++
++		iput(&ii->vfs_inode);
++	}
++	clear_nilfs_purging(nilfs);
++}
++
++/**
+  * nilfs_salvage_orphan_logs - salvage logs written after the latest checkpoint
+  * @nilfs: nilfs object
+  * @sb: super block instance
+@@ -766,15 +793,19 @@ int nilfs_salvage_orphan_logs(struct the
+ 		if (unlikely(err)) {
+ 			nilfs_err(sb, "error %d writing segment for recovery",
+ 				  err);
+-			goto failed;
++			goto put_root;
+ 		}
+ 
+ 		nilfs_finish_roll_forward(nilfs, ri);
+ 	}
+ 
+- failed:
++put_root:
+ 	nilfs_put_root(root);
+ 	return err;
++
++failed:
++	nilfs_abort_roll_forward(nilfs);
++	goto put_root;
+ }
+ 
+ /**
 
 
 
