@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-75305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93F297351C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BF39731A1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5734B2CE32
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 420CA28AEEA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B234E1917C4;
-	Tue, 10 Sep 2024 10:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A90197556;
+	Tue, 10 Sep 2024 10:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYS6ijo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiGRrs3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D48E19149F;
-	Tue, 10 Sep 2024 10:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DD1922F1;
+	Tue, 10 Sep 2024 10:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964347; cv=none; b=hRKgqYJQyy/vKA25Oe/YCH+EdScUo3fLogNpXwv6FHDSyK+D+48kkAoW2WHKX4fdksXNbnBRgrM0+baI69YTwpFua3zBGq23X2eDWPH7/7jKLw5Y3YFLYUHsPcfIVR6uBooBCJm7Co2AIGQNO7RPIPXaqB57JvZ1uMJ3fcvL9Gk=
+	t=1725962955; cv=none; b=q91FBoYD49aO7rQeeh05cCJZcJGbV/N8O3nEbfk8TsUDsRcrZsh0grUQElG30jNTUyga1B+26ElCoxNXTzzvrCTDdp0JfPsO/1zC6QGZdZR5XdqmuwUenQfCsQO3VHndBux1zhK64dz6yTQrfJ/vyepwYsXi6AqTDsojMbcFXro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964347; c=relaxed/simple;
-	bh=KJTTg2kiH6WLcsIzcIrgA12DOQz/eSEwl8B7F4wBDMs=;
+	s=arc-20240116; t=1725962955; c=relaxed/simple;
+	bh=7Bs5c99IHmfGNaUZmLOSCknEZvHqOf1/TcBOnVJRMlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvYN4KcGdrWsReHVpc/M0CY/hBWkTkDUZFJ8GrmuDVlShhfOR/ZiJzOtIbVbWRZsbJGclEsjbhNJReUuZCQj6pUFYsuvYjf7P4b/zBtePpcg6sMfNYU/OS+30Yzxl7b6WmSFeNmRvtk7S3OgtSORczkvG82S0s3IZi+LA86+sMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYS6ijo6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F70C4CEC3;
-	Tue, 10 Sep 2024 10:32:26 +0000 (UTC)
+	 MIME-Version; b=ux5u1O89t0tEk+Of4kNY+akXAlX+0wvUcVjEiU8ZI2YS6t8qoR80LmNgqu561kwLgZnB3cZ3+BCW20ebA4f1/kG+A+1ffPXIU3Y4xOo59V9feuxecGpeSBi6/lf4krQ1t0PJNsJlHFPf+NxN6QRhTETpzw1emgCHP54f6OTMbII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiGRrs3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0FEC4CEC6;
+	Tue, 10 Sep 2024 10:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964347;
-	bh=KJTTg2kiH6WLcsIzcIrgA12DOQz/eSEwl8B7F4wBDMs=;
+	s=korg; t=1725962955;
+	bh=7Bs5c99IHmfGNaUZmLOSCknEZvHqOf1/TcBOnVJRMlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYS6ijo6gJAR0Y5uuTPqOPkue6OjBOYlOdy+xWK4mgNiu/8iwXbLLyZ/R9zsHGVSe
-	 1JyDs6QGuMA//mDReJgTkLNXdfqMNK8Zn3hDPKYjwUYMOLVBmLzlAaLFSKBhg79QuL
-	 yUaxb1teug/RbregZ2nsT2ZrYF4bHGRq4qG6Tw70=
+	b=LiGRrs3Y7syeC7nwYWuQIhkXI/FmAkNVh/h/k4Lz5GWj95q6cQvCI9Ms1CGSI+vfh
+	 ANSFarkwmoYPKCUbohsujcApv+KPb84lgMTE07PAALKt6YrJ/3F2/GYElA6H+u6irC
+	 0yQUpnbtg92pFUn1XumeWkQsdohcPgtRIF5iI7Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/269] ice: do not bring the VSI up, if it was down before the XDP setup
+Subject: [PATCH 6.1 087/192] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
 Date: Tue, 10 Sep 2024 11:31:51 +0200
-Message-ID: <20240910092612.596001714@linuxfoundation.org>
+Message-ID: <20240910092601.581255925@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 04c7e14e5b0b6227e7b00d7a96ca2f2426ab9171 ]
+[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
 
-After XDP configuration is completed, we bring the interface up
-unconditionally, regardless of its state before the call to .ndo_bpf().
+CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
+Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
+moment.
 
-Preserve the information whether the interface had to be brought down and
-later bring it up only in such case.
+This patch fix it.
 
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 3ee92b0e62ff..4d3a9fc79a6c 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2931,8 +2931,8 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		   struct netlink_ext_ack *extack)
- {
- 	unsigned int frame_size = vsi->netdev->mtu + ICE_ETH_PKT_HDR_PAD;
--	bool if_running = netif_running(vsi->netdev);
- 	int ret = 0, xdp_ring_err = 0;
-+	bool if_running;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index c8e9ca5d5c28..de444d201e0f 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -35,7 +35,7 @@
+ #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
+ #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
+-#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
++#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
  
- 	if (prog && !prog->aux->xdp_has_frags) {
- 		if (frame_size > ice_max_xdp_frame_size(vsi)) {
-@@ -2949,8 +2949,11 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		return 0;
+@@ -371,13 +371,19 @@ int vsc73xx_is_addr_valid(u8 block, u8 subblock)
+ 		break;
+ 
+ 	case VSC73XX_BLOCK_MII:
+-	case VSC73XX_BLOCK_CAPTURE:
+ 	case VSC73XX_BLOCK_ARBITER:
+ 		switch (subblock) {
+ 		case 0 ... 1:
+ 			return 1;
+ 		}
+ 		break;
++	case VSC73XX_BLOCK_CAPTURE:
++		switch (subblock) {
++		case 0 ... 4:
++		case 6 ... 7:
++			return 1;
++		}
++		break;
  	}
  
-+	if_running = netif_running(vsi->netdev) &&
-+		     !test_and_set_bit(ICE_VSI_DOWN, vsi->state);
-+
- 	/* need to stop netdev while setting up the program for Rx rings */
--	if (if_running && !test_and_set_bit(ICE_VSI_DOWN, vsi->state)) {
-+	if (if_running) {
- 		ret = ice_down(vsi);
- 		if (ret) {
- 			NL_SET_ERR_MSG_MOD(extack, "Preparing device for XDP attach failed");
+ 	return 0;
 -- 
 2.43.0
 
