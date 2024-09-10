@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CB49734B7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A40F9731B6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C0C1F25EA0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD0EC1C2563E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302A519067A;
-	Tue, 10 Sep 2024 10:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024618C03E;
+	Tue, 10 Sep 2024 10:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdzc0PYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12DDV7Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E106D18FDAF;
-	Tue, 10 Sep 2024 10:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CECC18A6D1;
+	Tue, 10 Sep 2024 10:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964801; cv=none; b=aQUCrOtErZYElwfNp/x93H0Jpb3YdwL0CiW/jG4bj2KToKSypLxd+aoRtv6vA4oc5W0EYdS4u8rCV4u6A+up7FrAr6OZHVgDZ5Ut437819CIisBUL/tOIWmWK49utoA1QDPWCkmqkrJDyB9nzHS/SUi1gtEJxBMg+HUo6L0v1go=
+	t=1725963015; cv=none; b=r5OUVCIynO+gLJqn14cj2Yia82H1Wnh2hqa0itJpLhxdAdCdrAtgvft4s8fludrCKAwd2zG7h24cMCp5ElGSF8l4PQE5MebXQ4gXUz+VymlpsH/Ov40ZMlk+BbqOA4BFvqp0GDqRv4hHfRc8qsl6vfMNY0xkm6BMrcH324UlYwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964801; c=relaxed/simple;
-	bh=KRPrr3E3XDAiPGTQauPYOsLCakcAp4QkDER/Dd/jd8M=;
+	s=arc-20240116; t=1725963015; c=relaxed/simple;
+	bh=EyjnZiJYdSSHClv7YERA39f23wy6GGbkJHxdOwXZM+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZDOFNZs5+9veT3zr9Yp47hbRO4JIOkVILAR6shxqVH7qwyd46MyxG1s9FLoyEWw6/9O0xl6/zX2l755RJXy9CKQccHrpG53TaU5lwk9pZgcI14zj+MBjKHflrXO6+FHzn8o2kMFmozRxmY8UNWspihtvn6ACqez2lh0qYTgHsmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdzc0PYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD44C4CEC3;
-	Tue, 10 Sep 2024 10:39:59 +0000 (UTC)
+	 MIME-Version; b=JLSIvyoxAhO6CsQ3QhAbSVE8pGbf4Gd9aVmnphR4U4gRoeAOTHrUTCjSDIwJ+sfriY8PxcZUqMeFSfTj+JGS2oHIGFuLfb8N8yjCRAbzpgZuG19mRzjxQj+4enhgeE4tF0O9RScoo+9N9VwXRUnXVEYxmSuEdBpu2B2wleq3fNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12DDV7Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F21C4CEC3;
+	Tue, 10 Sep 2024 10:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964800;
-	bh=KRPrr3E3XDAiPGTQauPYOsLCakcAp4QkDER/Dd/jd8M=;
+	s=korg; t=1725963015;
+	bh=EyjnZiJYdSSHClv7YERA39f23wy6GGbkJHxdOwXZM+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdzc0PYMZrmVstUAQNpz7kj9k6QDd5LeEP8hdLIJTVdqgPGPVRdX4JNQZoprc7Vti
-	 zRacXyyZSDkQhJ55Bw9ZoMtOAiv8Ov30TC4YAuyzz0D51WO6xEv+2z4z2l8L9FDqTz
-	 +F9nlCQ29qzlAhpS4ZMG0KxdfjTUdyA46ORvzB/I=
+	b=12DDV7DkELXMUANaZyYAfwYy04fKMXCebkQsR9lZhABmPfTs1rWgSWzydHkNuRGiZ
+	 Cqf5i0O0cyF75llWYT7YSgBzmXMH0kXFOLjjybT+bodqR3IpkpnBWM6U81S+UpTn8V
+	 aU8Yh+Q0pSQjXBIsdkp/hRZ+i0K2thSXuLH8Hj3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/186] drm/amdgpu: fix overflowed array index read warning
+Subject: [PATCH 6.1 079/192] igc: Unlock on error in igc_io_resume()
 Date: Tue, 10 Sep 2024 11:31:43 +0200
-Message-ID: <20240910092555.006055911@linuxfoundation.org>
+Message-ID: <20240910092601.244305914@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
+[ Upstream commit ef4a99a0164e3972abb421cbb1b09ea6c61414df ]
 
-Clear overflowed array index read warning by cast operation.
+Call rtnl_unlock() on this error path, before returning.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: bc23aa949aeb ("igc: Add pcie error handler support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index 15ee13c3bd9e..6976f61be734 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -368,8 +368,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
- 					size_t size, loff_t *pos)
- {
- 	struct amdgpu_ring *ring = file_inode(f)->i_private;
--	int r, i;
- 	uint32_t value, result, early[3];
-+	loff_t i;
-+	int r;
- 
- 	if (*pos & 3 || size & 3)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 39f8f28288aa..6ae2d0b723c8 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -7063,6 +7063,7 @@ static void igc_io_resume(struct pci_dev *pdev)
+ 	rtnl_lock();
+ 	if (netif_running(netdev)) {
+ 		if (igc_open(netdev)) {
++			rtnl_unlock();
+ 			netdev_err(netdev, "igc_open failed after reset\n");
+ 			return;
+ 		}
 -- 
 2.43.0
 
