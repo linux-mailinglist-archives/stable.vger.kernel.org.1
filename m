@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB09897320F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FDC973502
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D70528DF18
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 697B51C250DF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138881957F9;
-	Tue, 10 Sep 2024 10:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA087191484;
+	Tue, 10 Sep 2024 10:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5B7nUlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQPlT839"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD5B183CB0;
-	Tue, 10 Sep 2024 10:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9481B191466;
+	Tue, 10 Sep 2024 10:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963212; cv=none; b=NXrH3H2f6QwCDUg5K2wN+6OEQuBgrIuusWv7g4v2jFkQ1lNkOvwAc5Fd+je3O/NPuY7jiXZ2YggMozk79v5UpkwrT/sEP9TuBGW0HIa9XFufspQBxF0d2mm5q6Opujq20CXVaeogHEbnRnvo4UHQVWuBlGznvXZ2H56+PKE0xBI=
+	t=1725964998; cv=none; b=KRPc8TDuhEuzEs9/O6zbt6AggdOhLOdzpNnMTFIqKYkrbqpZso6JPhaFpJE6fXS0XkQ1tA91zqnqTYcO1tDj1bq8XjUJEf5/HNQmYviD8T48T/c/jXPdV2i7astRyh1GmWOh07bzFMsVBGYYdXFoRjMZKmUFOmpedgrazsT7Alw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963212; c=relaxed/simple;
-	bh=vP9AYutE3SVWF/NO0vVG8GggnrLVwwvRlZsKXq0s98g=;
+	s=arc-20240116; t=1725964998; c=relaxed/simple;
+	bh=XZ+6yaVWHH9LMyN3ctb/7ihnCK+cQPMt4wt4gFOC3o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J1S0+qshYgbE++3wcrsD+nVUPkeeT/xPlG4NQpUCdsaIHAU9Gwl3NBTyEwWWxVgkfxvMLXqr59CgyylEJa/w/foQscdvANlKU5rglKfoEpmXHHJiZd2KBBaL+hmPI59eBPYzyjxEOEkqaUwFxPcD2hOoW3SS4kazxwkMxnksXwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5B7nUlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458DBC4CEC6;
-	Tue, 10 Sep 2024 10:13:32 +0000 (UTC)
+	 MIME-Version; b=NDX5OeJFr7n3dlFGMyWPe30QYfGHVqucihH3xJwWVVYTwW8LvlfgU8pUeo8gD3F/ChBmrh6g9w+0waYWB6WceL/sUO0UH42C1paD6kZKeztAuLEI5l3y4dmDin5mSKy21O+fpKhvEnza+pVNReFZQmNKhs+aUFp3agWnkr1ua3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQPlT839; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5C5C4CEC3;
+	Tue, 10 Sep 2024 10:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963212;
-	bh=vP9AYutE3SVWF/NO0vVG8GggnrLVwwvRlZsKXq0s98g=;
+	s=korg; t=1725964998;
+	bh=XZ+6yaVWHH9LMyN3ctb/7ihnCK+cQPMt4wt4gFOC3o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5B7nUlQ74F/tMZbq390tSpi7kMHJHYqgzvcGn6Yvwy6xH/9CE0Zs8MlY9y/ucTJM
-	 svsWULnLZTuiBupwye1BHT5ziosZOKHCpQuFKwxFNkHMR1X80Jfh9qxJbTOcgdTc0A
-	 G05InGnyg1ONa0ZJhRPBep52LxW95wstT1uMsh00=
+	b=uQPlT839al8xlcwhDupwa70pi2lUWf4IYnEZQgV58ltBge/qngTErZb3+vUQ6fyII
+	 hcLC9Uik7lovvaMH/N2B+RuY0GtYmiIJAnQkoYYTdxJ+sqTYrdMJfkQ/ZhvTls6S0X
+	 XuihwONmwn9FLrarv/AMnXueGjY61BiwzHoP+oXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/192] drm/amdgpu: handle gfx12 in amdgpu_display_verify_sizes
+Subject: [PATCH 5.10 103/186] udf: Avoid excessive partition lengths
 Date: Tue, 10 Sep 2024 11:33:18 +0200
-Message-ID: <20240910092605.021304128@linuxfoundation.org>
+Message-ID: <20240910092558.780888440@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Olšák <marek.olsak@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 8dd1426e2c80e32ac1995007330c8f95ffa28ebb ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-It verified GFX9-11 swizzle modes on GFX12, which has undefined behavior.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-Signed-off-by: Marek Olšák <marek.olsak@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 27 ++++++++++++++++++++-
- include/uapi/drm/drm_fourcc.h               |  2 ++
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-index ac773b191071..cd0bccc95205 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -997,6 +997,30 @@ static int amdgpu_display_verify_sizes(struct amdgpu_framebuffer *rfb)
- 			block_width = 256 / format_info->cpp[i];
- 			block_height = 1;
- 			block_size_log2 = 8;
-+		} else if (AMD_FMT_MOD_GET(TILE_VERSION, modifier) >= AMD_FMT_MOD_TILE_VER_GFX12) {
-+			int swizzle = AMD_FMT_MOD_GET(TILE, modifier);
-+
-+			switch (swizzle) {
-+			case AMD_FMT_MOD_TILE_GFX12_256B_2D:
-+				block_size_log2 = 8;
-+				break;
-+			case AMD_FMT_MOD_TILE_GFX12_4K_2D:
-+				block_size_log2 = 12;
-+				break;
-+			case AMD_FMT_MOD_TILE_GFX12_64K_2D:
-+				block_size_log2 = 16;
-+				break;
-+			case AMD_FMT_MOD_TILE_GFX12_256K_2D:
-+				block_size_log2 = 18;
-+				break;
-+			default:
-+				drm_dbg_kms(rfb->base.dev,
-+					    "Gfx12 swizzle mode with unknown block size: %d\n", swizzle);
-+				return -EINVAL;
-+			}
-+
-+			get_block_dimensions(block_size_log2, format_info->cpp[i],
-+					     &block_width, &block_height);
- 		} else {
- 			int swizzle = AMD_FMT_MOD_GET(TILE, modifier);
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 5d79e5d2e158..ae75df43d51c 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1083,12 +1083,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
-@@ -1032,7 +1056,8 @@ static int amdgpu_display_verify_sizes(struct amdgpu_framebuffer *rfb)
- 			return ret;
+ 	map = &sbi->s_partmaps[p_index];
+ 
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
++	}
+ 
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1144,6 +1151,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
  	}
- 
--	if (AMD_FMT_MOD_GET(DCC, modifier)) {
-+	if (AMD_FMT_MOD_GET(TILE_VERSION, modifier) <= AMD_FMT_MOD_TILE_VER_GFX11 &&
-+	    AMD_FMT_MOD_GET(DCC, modifier)) {
- 		if (AMD_FMT_MOD_GET(DCC_RETILE, modifier)) {
- 			block_size_log2 = get_dcc_block_size(modifier, false, false);
- 			get_block_dimensions(block_size_log2 + 8, format_info->cpp[0],
-diff --git a/include/uapi/drm/drm_fourcc.h b/include/uapi/drm/drm_fourcc.h
-index 52ce13488eaf..6245928d76ee 100644
---- a/include/uapi/drm/drm_fourcc.h
-+++ b/include/uapi/drm/drm_fourcc.h
-@@ -1420,6 +1420,8 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
-  *    6 - 64KB_3D
-  *    7 - 256KB_3D
-  */
-+#define AMD_FMT_MOD_TILE_GFX12_256B_2D 1
-+#define AMD_FMT_MOD_TILE_GFX12_4K_2D 2
- #define AMD_FMT_MOD_TILE_GFX12_64K_2D 3
- #define AMD_FMT_MOD_TILE_GFX12_256K_2D 4
- 
 -- 
 2.43.0
 
