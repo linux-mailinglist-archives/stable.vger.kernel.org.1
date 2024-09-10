@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-75117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C51973321
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6E0973142
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFE7CB2CD78
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163001F272E6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D6F192D75;
-	Tue, 10 Sep 2024 10:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4549A18C347;
+	Tue, 10 Sep 2024 10:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfNf93lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TezXcDI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C56191F72;
-	Tue, 10 Sep 2024 10:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CA7188A0C;
+	Tue, 10 Sep 2024 10:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963799; cv=none; b=lJ0LBO2Y7GR2g5A1lI0C2V40IWgQZoQ/WFAl3foZM2v1tO99Z9rHELfYxkX94+9KOj2PNP8X1hIk+AXH6x/bErZGlCAv+zs5mG3CCzUEwUeczW5Eh1cHTDTd+M/QbkmjU3mGgwXowb9jKXtYjKh+XZv2Me1vjVhbE/ma/VmSscU=
+	t=1725962717; cv=none; b=D+51ggI5765rzHJb0D034Xs2ojb5WyL19Op1GPkdwUWpjpKMM/pmPeMewJgMxATB/kLKvHfdvH816P2M15TcQVGOObzbCm9EH/xd7DfsnNtUwUS2hW36Vq+QTsijKWXYY2kQWfulmu2Pynybo9tnKNAJdnt7ybnYZ/sGI1txtl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963799; c=relaxed/simple;
-	bh=8wQxykYQ19is8JR7BljfQNPayLQ8XHTgNFs2mo+Xl0o=;
+	s=arc-20240116; t=1725962717; c=relaxed/simple;
+	bh=86bjg4zeauPrFOzpatz4ana0MhD5GQoBd91SEtssSrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mArFSqSytxpKF5+sUn2bvVsFEZ2Ee7TMU/w5HKB9MLDHQ2gYNBLjk483x//xg8tr2LJasVuPtd4ezPKjmCbZU9d7yM9irvktlte037PP05XWke0I9MS/Pf8SnkUiCj1RaX9ASrlIC14d7KVLJ0u1z7+K+sIShwa9pRkXpYkdKWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfNf93lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2648C4CEC3;
-	Tue, 10 Sep 2024 10:23:18 +0000 (UTC)
+	 MIME-Version; b=PaUFry89gvRQWI4prmVD6OYhvMcUe/ILC4Scr1cUZTNoNZZPb2R61/0PNSz6yFhlOop/2jyyh2Aa3xi14JRNXm5SK8eyNdD/hsnG8NjyVrt7Wp7TTw0vUr6bIfFd/TGoqU3UFqo0pZTqVr9U770emgDUm2Wr160ocnzdsnqMbIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TezXcDI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399E2C4CEC6;
+	Tue, 10 Sep 2024 10:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963799;
-	bh=8wQxykYQ19is8JR7BljfQNPayLQ8XHTgNFs2mo+Xl0o=;
+	s=korg; t=1725962716;
+	bh=86bjg4zeauPrFOzpatz4ana0MhD5GQoBd91SEtssSrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfNf93lhbpZlCZLTpGoxucY4MC9+rIQNiGU+blamgnd731GpOmZ/Pehh0ACW/a4Tw
-	 W8oLWv2BI4P2eJr34kuml6q8v9YMj53T87Ji5poWXltoIlVwzjWYGxngsZzV4Nq0iV
-	 iM0ZeBoRWCTBXZii32/BZeOHf7mNgRgLSJ3S08PE=
+	b=TezXcDI8YAqJXe5nAh3Fj4VEcBn8xqogjeR58VHhxkd1x6mQ6NWq2Ii29Xs6r2YoG
+	 /vANpscy1CNe5PcTZfvnA/6QhFwqr7vILJeeLcmGCce3+QQNk3maMjoE4wWrXXYlMp
+	 L9grIqBr3x9+pmzJEE/Nh8TtSGY4f6P9c+H/oDpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>
-Subject: [PATCH 5.15 173/214] cifs: Check the lease context if we actually got a lease
+	Lex Siegel <usiegl00@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neil Brown <neilb@suse.de>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.4 120/121] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
 Date: Tue, 10 Sep 2024 11:33:15 +0200
-Message-ID: <20240910092605.755228910@linuxfoundation.org>
+Message-ID: <20240910092551.492792531@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +66,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronnie Sahlberg <lsahlber@redhat.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 66d45ca1350a3bb8d5f4db8879ccad3ed492337a upstream.
+commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde upstream.
 
-Some servers may return that we got a lease in rsp->OplockLevel
-but then in the lease context contradict this and say we got no lease
-at all.  Thus we need to check the context if we have a lease.
-Additionally, If we do not get a lease we need to make sure we close
-the handle before we return an error to the caller.
+When using a BPF program on kernel_connect(), the call can return -EPERM. This
+causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
+the kernel to potentially freeze up.
 
-Signed-off-by: Ronnie Sahlberg <lsahlber@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Neil suggested:
+
+  This will propagate -EPERM up into other layers which might not be ready
+  to handle it. It might be safer to map EPERM to an error we would be more
+  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
+
+ECONNREFUSED as error seems reasonable. For programs setting a different error
+can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
+which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
+instead of allow boolean"), thus given that it is better to simply remap for
+consistent behavior. UDP does handle EPERM in xs_udp_send_request().
+
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Co-developed-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Neil Brown <neilb@suse.de>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>
+Link: https://github.com/cilium/cilium/issues/33395
+Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
+Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ net/sunrpc/xprtsock.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -886,8 +886,6 @@ int open_cached_dir(unsigned int xid, st
- 		goto oshr_exit;
- 	}
- 
--	atomic_inc(&tcon->num_remote_opens);
--
- 	o_rsp = (struct smb2_create_rsp *)rsp_iov[0].iov_base;
- 	oparms.fid->persistent_fid = o_rsp->PersistentFileId;
- 	oparms.fid->volatile_fid = o_rsp->VolatileFileId;
-@@ -897,8 +895,6 @@ int open_cached_dir(unsigned int xid, st
- 
- 	tcon->crfid.tcon = tcon;
- 	tcon->crfid.is_valid = true;
--	tcon->crfid.dentry = dentry;
--	dget(dentry);
- 	kref_init(&tcon->crfid.refcount);
- 
- 	/* BB TBD check to see if oplock level check can be removed below */
-@@ -907,14 +903,16 @@ int open_cached_dir(unsigned int xid, st
- 		 * See commit 2f94a3125b87. Increment the refcount when we
- 		 * get a lease for root, release it if lease break occurs
- 		 */
--		kref_get(&tcon->crfid.refcount);
--		tcon->crfid.has_lease = true;
- 		rc = smb2_parse_contexts(server, rsp_iov,
- 				&oparms.fid->epoch,
- 				    oparms.fid->lease_key, &oplock,
- 				    NULL, NULL);
- 		if (rc)
- 			goto oshr_exit;
-+
-+		if (!(oplock & SMB2_LEASE_READ_CACHING_HE))
-+			goto oshr_exit;
-+
- 	} else
- 		goto oshr_exit;
- 
-@@ -928,7 +926,10 @@ int open_cached_dir(unsigned int xid, st
- 				(char *)&tcon->crfid.file_all_info))
- 		tcon->crfid.file_all_info_is_valid = true;
- 	tcon->crfid.time = jiffies;
--
-+	tcon->crfid.dentry = dentry;
-+	dget(dentry);
-+	kref_get(&tcon->crfid.refcount);
-+	tcon->crfid.has_lease = true;
- 
- oshr_exit:
- 	mutex_unlock(&tcon->crfid.fid_mutex);
-@@ -937,8 +938,15 @@ oshr_free:
- 	SMB2_query_info_free(&rqst[1]);
- 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
- 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
--	if (rc == 0)
-+	if (rc) {
-+		if (tcon->crfid.is_valid)
-+			SMB2_close(0, tcon, oparms.fid->persistent_fid,
-+				   oparms.fid->volatile_fid);
-+	}
-+	if (rc == 0) {
- 		*cfid = &tcon->crfid;
-+		atomic_inc(&tcon->num_remote_opens);
-+	}
- 	return rc;
- }
- 
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2437,6 +2437,13 @@ static void xs_tcp_setup_socket(struct w
+ 	case -EALREADY:
+ 		xprt_unlock_connect(xprt, transport);
+ 		return;
++	case -EPERM:
++		/* Happens, for instance, if a BPF program is preventing
++		 * the connect. Remap the error so upper layers can better
++		 * deal with it.
++		 */
++		status = -ECONNREFUSED;
++		fallthrough;
+ 	case -EINVAL:
+ 		/* Happens, for instance, if the user specified a link
+ 		 * local IPv6 address without a scope-id.
 
 
 
