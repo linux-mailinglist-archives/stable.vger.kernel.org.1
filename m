@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-74997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6028897327E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4483F97338C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25E0B28521E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8161F25739
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CAB19F480;
-	Tue, 10 Sep 2024 10:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FDC19343B;
+	Tue, 10 Sep 2024 10:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HE9kJKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDMNCA26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40CB19EEB4;
-	Tue, 10 Sep 2024 10:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E29193418;
+	Tue, 10 Sep 2024 10:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963447; cv=none; b=RUDvR57dKAc5HX+xpfArIi9G99Cfe5KFhn4T7qTTXfg3WFfOcykVI8CJQw+5CTrLcqpEPoX+Y4en13n/mIl8Bs2++N1YeDwLUgEd2sk+BrnXjyqgjLI4RaGZAsQgWR5W3ZnFs9nIOjJ4/g3eYiQ3ib9tlmNf9jh5zryS2RsZWLY=
+	t=1725964123; cv=none; b=LQAbQDtx7WiJi6+4poLz7JIa18urO4hAegchX8LG4tQr44QxhqmUM2nS6NKni+J+7f5gb9eUUmoZbt4G/YRM9IRjiUo6H4duuGfKzAqfOeu/CDUCZigv/HNUqxRxR/QQKGHzpoul5pxL19/jqkISdu8biCYwUBvykWbdVxr5tT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963447; c=relaxed/simple;
-	bh=G7rJmVe3mZBW0b6oq/WCplhGfENX794JUXrtZfMz4Do=;
+	s=arc-20240116; t=1725964123; c=relaxed/simple;
+	bh=UTMfh45jex3eBPH3jYzkMYNzl3c6t8cUgaUyrgDMHFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B9VX/HoB3hFR6gZfPfFyP6JLp4G6X6y4WEEF4wRDN4fBcH2mMZW/wUHAlNGxTlh25pxpntPUpTpzpPnNpbXt3WF2DTvVPp+QAJsVayalBljpxJx6tdvLddNCaTxjgPOo6AZK14jaTejF3PSOT+fU1j2xHknEtIet3CCWbn2NCcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HE9kJKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0868EC4CEC3;
-	Tue, 10 Sep 2024 10:17:26 +0000 (UTC)
+	 MIME-Version; b=XcwQi2QwM7sj8WHfDnAKzfJVx7/NLja4snkKDFyjcZvszIyeCtuNZf5Uw5EAPM5eR5FsLVeHXG5KAU+2vsrByUObEiK5we4UJQMwpvkMhvlD1X4fhnyuTKsU8zRkDk2S4mBVcT/xp+gx/qFn4XQvBQ1z02bAS/l4NR+WsORy7XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDMNCA26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006CEC4CEC6;
+	Tue, 10 Sep 2024 10:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963447;
-	bh=G7rJmVe3mZBW0b6oq/WCplhGfENX794JUXrtZfMz4Do=;
+	s=korg; t=1725964123;
+	bh=UTMfh45jex3eBPH3jYzkMYNzl3c6t8cUgaUyrgDMHFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1HE9kJKXVflB1n9MWzHseDNrNLTAj+HI/woXQ5hrnpvoYeGvR2NBseY5KyS9eYOjx
-	 UIOX5qdUVPRYWDM2rgnfcj2l3sWRuLsiLpb/DCveonzdWZbH5b+iyQXRUPa4bkj83v
-	 yq42psivGT2oczS0Z1mJ1ojj/ktr72koKTMqDZaI=
+	b=NDMNCA263ZQ9CPD3X465UKS1FXKx80q2gBtPeCZpkr/8QMmKyvbTfa6pD2d1z9Vea
+	 tPYisWfjRdDkUDl+MbvPrn5o4qXnZetCKDyd6JYy/qUrDOvgYnABJ0yKneWIn83sX2
+	 cD4S2PTQfScsmwO7eZcrjXAJ1C9mtoLgjgQfYapM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/214] drm/amd/amdgpu: Check tbo resource pointer
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 058/269] nilfs2: protect references to superblock parameters exposed in sysfs
 Date: Tue, 10 Sep 2024 11:30:45 +0200
-Message-ID: <20240910092559.722242382@linuxfoundation.org>
+Message-ID: <20240910092610.280913605@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +59,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
+commit 683408258917541bdb294cd717c210a04381931e upstream.
 
-Validate tbo resource pointer, skip if NULL
+The superblock buffers of nilfs2 can not only be overwritten at runtime
+for modifications/repairs, but they are also regularly swapped, replaced
+during resizing, and even abandoned when degrading to one side due to
+backing device issues.  So, accessing them requires mutual exclusion using
+the reader/writer semaphore "nilfs->ns_sem".
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Some sysfs attribute show methods read this superblock buffer without the
+necessary mutual exclusion, which can cause problems with pointer
+dereferencing and memory access, so fix it.
+
+Link: https://lkml.kernel.org/r/20240811100320.9913-1-konishi.ryusuke@gmail.com
+Fixes: da7141fb78db ("nilfs2: add /sys/fs/nilfs2/<device> group")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/sysfs.c |   43 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 300d3b236bb3..042f27af6856 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4406,7 +4406,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
- 		shadow = vmbo->shadow;
+--- a/fs/nilfs2/sysfs.c
++++ b/fs/nilfs2/sysfs.c
+@@ -836,9 +836,15 @@ ssize_t nilfs_dev_revision_show(struct n
+ 				struct the_nilfs *nilfs,
+ 				char *buf)
+ {
+-	struct nilfs_super_block **sbp = nilfs->ns_sbp;
+-	u32 major = le32_to_cpu(sbp[0]->s_rev_level);
+-	u16 minor = le16_to_cpu(sbp[0]->s_minor_rev_level);
++	struct nilfs_super_block *raw_sb;
++	u32 major;
++	u16 minor;
++
++	down_read(&nilfs->ns_sem);
++	raw_sb = nilfs->ns_sbp[0];
++	major = le32_to_cpu(raw_sb->s_rev_level);
++	minor = le16_to_cpu(raw_sb->s_minor_rev_level);
++	up_read(&nilfs->ns_sem);
  
- 		/* No need to recover an evicted BO */
--		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
-+		if (!shadow->tbo.resource ||
-+		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
- 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
- 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
- 			continue;
--- 
-2.43.0
-
+ 	return sysfs_emit(buf, "%d.%d\n", major, minor);
+ }
+@@ -856,8 +862,13 @@ ssize_t nilfs_dev_device_size_show(struc
+ 				    struct the_nilfs *nilfs,
+ 				    char *buf)
+ {
+-	struct nilfs_super_block **sbp = nilfs->ns_sbp;
+-	u64 dev_size = le64_to_cpu(sbp[0]->s_dev_size);
++	struct nilfs_super_block *raw_sb;
++	u64 dev_size;
++
++	down_read(&nilfs->ns_sem);
++	raw_sb = nilfs->ns_sbp[0];
++	dev_size = le64_to_cpu(raw_sb->s_dev_size);
++	up_read(&nilfs->ns_sem);
+ 
+ 	return sysfs_emit(buf, "%llu\n", dev_size);
+ }
+@@ -879,9 +890,15 @@ ssize_t nilfs_dev_uuid_show(struct nilfs
+ 			    struct the_nilfs *nilfs,
+ 			    char *buf)
+ {
+-	struct nilfs_super_block **sbp = nilfs->ns_sbp;
++	struct nilfs_super_block *raw_sb;
++	ssize_t len;
++
++	down_read(&nilfs->ns_sem);
++	raw_sb = nilfs->ns_sbp[0];
++	len = sysfs_emit(buf, "%pUb\n", raw_sb->s_uuid);
++	up_read(&nilfs->ns_sem);
+ 
+-	return sysfs_emit(buf, "%pUb\n", sbp[0]->s_uuid);
++	return len;
+ }
+ 
+ static
+@@ -889,10 +906,16 @@ ssize_t nilfs_dev_volume_name_show(struc
+ 				    struct the_nilfs *nilfs,
+ 				    char *buf)
+ {
+-	struct nilfs_super_block **sbp = nilfs->ns_sbp;
++	struct nilfs_super_block *raw_sb;
++	ssize_t len;
++
++	down_read(&nilfs->ns_sem);
++	raw_sb = nilfs->ns_sbp[0];
++	len = scnprintf(buf, sizeof(raw_sb->s_volume_name), "%s\n",
++			raw_sb->s_volume_name);
++	up_read(&nilfs->ns_sem);
+ 
+-	return scnprintf(buf, sizeof(sbp[0]->s_volume_name), "%s\n",
+-			 sbp[0]->s_volume_name);
++	return len;
+ }
+ 
+ static const char dev_readme_str[] =
 
 
 
