@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED25C97318D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D629733A9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E5CEB24DF5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C311F25498
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A68194ADB;
-	Tue, 10 Sep 2024 10:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99962195B1A;
+	Tue, 10 Sep 2024 10:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnuOypZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuLp6Bsy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1096C190666;
-	Tue, 10 Sep 2024 10:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5850417B50F;
+	Tue, 10 Sep 2024 10:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962902; cv=none; b=eyDp+4V3qcAtyvNmafd53fm8Eps4AXEWrvR8zW/1yhJfcuIB5C+V0tYcY+TqLk2XTH9RWcRYw7CShRwskCs/1w+Tk37m7QLufIxw6NdqljRa53NIVaNHJ/3f1dIK7B1JWKbH+CdwBKs9yAmPgFmNHw92/xJ/r+f7B4MshEJkcPE=
+	t=1725964214; cv=none; b=XKvaXZlTWaBzFKOuHYlttOA40foM58J8w4pN0n0V+kK3fe9XZ3ABBKnG27QXBl4ucIlaf2HHrY0HqpGMaCKd5M4Oy8y3HxgtJRWUzUA69AeKNOIMFfu28T37N4rAUw0MYSxLO6xgSE2BoYUGsYMKdNqqVtEPtV72lJvLfYJscto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962902; c=relaxed/simple;
-	bh=LxM9Pa2F2fUdmJQE7h9w7FwLX85ckIs4LjrsuVRK7pg=;
+	s=arc-20240116; t=1725964214; c=relaxed/simple;
+	bh=mtEQ9Ua/Fs+MZ4lNGlZ24Bko3Mvsxxm1rxqvfqYyu/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDQI15x3HQ/h564QQdo2ScNAXKGTpNFPeyRU1JW/Bw2EOFQ7zMAeJRl2uWo6XKS3oh3f4xyeuiJiVQtWJnEbbIF+Kkoud6WSEvhncIE9cV3UBbFdgthCAq4PSYsvNR/reDkES9B+jvpUhOkGilmuWgHkoVqqb+kCQCAGNCfxa9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnuOypZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E418C4CEC3;
-	Tue, 10 Sep 2024 10:08:21 +0000 (UTC)
+	 MIME-Version; b=a9eKpSG9S+zh4sngeYImsRGrhrmH6dSMZPcwG92McCCWdY9Sq1H2lFhYsPWE2RMDDKEMUjC3hoDHPG5m3RaYER9vps5nNA5MofiKRnQYcVNYjxM7Zg3BpeDqsApyGilg2So/tjRA880VFMv43EpnE9jqjjvKbr336eHiCvIEPxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuLp6Bsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA291C4CEC3;
+	Tue, 10 Sep 2024 10:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962901;
-	bh=LxM9Pa2F2fUdmJQE7h9w7FwLX85ckIs4LjrsuVRK7pg=;
+	s=korg; t=1725964214;
+	bh=mtEQ9Ua/Fs+MZ4lNGlZ24Bko3Mvsxxm1rxqvfqYyu/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnuOypZ47IwvpSOJig3avXl2koE+ERGJCRnatB4cITY2nma8pbtCOFqeRM2Jw/9lv
-	 Y54dXmnqZD8vK8aGhi8A4KiESY/TeZLCBocHUHQY6ixURjTdWXrXoMGzAz1Zw/VwQq
-	 dIqcqrWeL/EKlsc8Mc2m8oDSxsRyDGY6LX8/1xD4=
+	b=PuLp6BsyjjHQWJut6KsySBJGRahVDfVXWYPwveQwcm9/aD1Lg40f5Yh5J7hmRzxP7
+	 CxUT2XPD1W7/E0omhhtLLn6wX525B/Dkyf/8Z0CnnPJUS5L6MgYpTef4rZ9YJTHhsX
+	 7PMT8scW7aKG63PvGBYScUYAbs9xNRcrsW2Accms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
+	Martin Jocic <martin.jocic@kvaser.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/192] can: bcm: Remove proc entry when dev is unregistered.
-Date: Tue, 10 Sep 2024 11:31:32 +0200
-Message-ID: <20240910092600.803980835@linuxfoundation.org>
+Subject: [PATCH 6.6 106/269] can: kvaser_pciefd: Skip redundant NULL pointer check in ISR
+Date: Tue, 10 Sep 2024 11:31:33 +0200
+Message-ID: <20240910092611.986303174@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Martin Jocic <martin.jocic@kvaser.com>
 
-[ Upstream commit 76fe372ccb81b0c89b6cd2fec26e2f38c958be85 ]
+[ Upstream commit ac765219c2c4e44f29063724c8d36435a3e61985 ]
 
-syzkaller reported a warning in bcm_connect() below. [0]
+This check is already done at the creation of the net devices in
+kvaser_pciefd_setup_can_ctrls called from kvaser_pciefd_probe.
 
-The repro calls connect() to vxcan1, removes vxcan1, and calls
-connect() with ifindex == 0.
+If it fails, the driver won't load, so there should be no need to
+repeat the check inside the ISR. The number of channels is read
+from the FPGA and should be trusted.
 
-Calling connect() for a BCM socket allocates a proc entry.
-Then, bcm_sk(sk)->bound is set to 1 to prevent further connect().
-
-However, removing the bound device resets bcm_sk(sk)->bound to 0
-in bcm_notify().
-
-The 2nd connect() tries to allocate a proc entry with the same
-name and sets NULL to bcm_sk(sk)->bcm_proc_read, leaking the
-original proc entry.
-
-Since the proc entry is available only for connect()ed sockets,
-let's clean up the entry when the bound netdev is unregistered.
-
-[0]:
-proc_dir_entry 'can-bcm/2456' already registered
-WARNING: CPU: 1 PID: 394 at fs/proc/generic.c:376 proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Modules linked in:
-CPU: 1 PID: 394 Comm: syz-executor403 Not tainted 6.10.0-rc7-g852e42cc2dd4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Code: 00 00 00 00 00 48 85 ed 0f 85 97 02 00 00 4d 85 f6 0f 85 9f 02 00 00 48 c7 c7 9b cb cf 87 48 89 de 4c 89 fa e8 1c 6f eb fe 90 <0f> 0b 90 90 48 c7 c7 98 37 99 89 e8 cb 7e 22 05 bb 00 00 00 10 48
-RSP: 0018:ffa0000000cd7c30 EFLAGS: 00010246
-RAX: 9e129be1950f0200 RBX: ff1100011b51582c RCX: ff1100011857cd80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: 0000000000000000 R08: ffd400000000000f R09: ff1100013e78cac0
-R10: ffac800000cd7980 R11: ff1100013e12b1f0 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ff1100011a99a2ec
-FS:  00007fbd7086f740(0000) GS:ff1100013fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200071c0 CR3: 0000000118556004 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- proc_create_net_single+0x144/0x210 fs/proc/proc_net.c:220
- bcm_connect+0x472/0x840 net/can/bcm.c:1673
- __sys_connect_file net/socket.c:2049 [inline]
- __sys_connect+0x5d2/0x690 net/socket.c:2066
- __do_sys_connect net/socket.c:2076 [inline]
- __se_sys_connect net/socket.c:2073 [inline]
- __x64_sys_connect+0x8f/0x100 net/socket.c:2073
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fbd708b0e5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff8cd33f08 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fbd708b0e5d
-RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000040 R09: 0000000000000040
-R10: 0000000000000040 R11: 0000000000000246 R12: 00007fff8cd34098
-R13: 0000000000401280 R14: 0000000000406de8 R15: 00007fbd70ab9000
- </TASK>
-remove_proc_entry: removing non-empty directory 'net/can-bcm', leaking at least '2456'
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240722192842.37421-1-kuniyu@amazon.com
+Signed-off-by: Martin Jocic <martin.jocic@kvaser.com>
+Link: https://lore.kernel.org/all/20240614151524.2718287-3-martin.jocic@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: dd885d90c047 ("can: kvaser_pciefd: Use a single write when releasing RX buffers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/kvaser_pciefd.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 925d48cc50f8..4ecb5cd8a22d 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1428,6 +1428,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index a57005faa04f..076fc2f5b34b 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1641,12 +1641,6 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
+ 		kvaser_pciefd_receive_irq(pcie);
  
- 		/* remove device reference, if this is our bound device */
- 		if (bo->bound && bo->ifindex == dev->ifindex) {
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
-+				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-+#endif
- 			bo->bound   = 0;
- 			bo->ifindex = 0;
- 			notify_enodev = 1;
+ 	for (i = 0; i < pcie->nr_channels; i++) {
+-		if (!pcie->can[i]) {
+-			dev_err(&pcie->pci->dev,
+-				"IRQ mask points to unallocated controller\n");
+-			break;
+-		}
+-
+ 		/* Check that mask matches channel (i) IRQ mask */
+ 		if (board_irq & irq_mask->kcan_tx[i])
+ 			kvaser_pciefd_transmit_irq(pcie->can[i]);
 -- 
 2.43.0
 
