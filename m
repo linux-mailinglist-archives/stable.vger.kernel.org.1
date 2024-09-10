@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E93D972FDE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94B8973072
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21DF6285EF5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB08C1C20F25
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC6014F12C;
-	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73CB1885A5;
+	Tue, 10 Sep 2024 10:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fekjROsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="symlzPOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9239171671;
-	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B3217AE00;
+	Tue, 10 Sep 2024 10:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962119; cv=none; b=i843JSV9qItq4wlaoWcUeR8i3xBHD4i5VBC8w128cVGBsifAiZlXas6LBOwqEYm3Ps7dKAp37H/SjkMAEtPU6xFQrQllDuWlVPc9Spb2pTmh+mBX+wC22ttXXhXXfE+b+2awA0gLCfheN4SahUt5Pa0Mr34j14TXTA3vvbI7Bek=
+	t=1725962407; cv=none; b=pSS+ACtgQD+g0suKgByvKi4mLKaSN0JFfr9MG8ntJDoDdX5Ut9MIoqRQ1aoxqFDa5cMoWP5+PmQ+zZN7fYfVXyxqO4nfMFl1yIn3BYDUfzqH9N1gWe6ZlTqWWIk8um2gRaOaJreRKNyre3xdkwGPJ2CRHCVKYWmvR2cmPp8v6TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962119; c=relaxed/simple;
-	bh=HqmrULg8Cz+NyFP8/7yEvuR3uIbp+yQHpGfYEm2x5/c=;
+	s=arc-20240116; t=1725962407; c=relaxed/simple;
+	bh=TpdSuptpqqDTm4klHbghUFTJpZ5GtUqmZz2xYCQVOBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwhcO9ha/+l0COYRMvt85fCMjD1bToB6koHcUffr8XUplOcv9bbKaX2CZ9il7SaCjN2U9dEFiCIycOtbgXMuQJfkce1jlnVFRJCpg51yBmCUCRoxXhKj2yZc2dsZr6tLB3id87uMbGE5TO0PH9gIvTj/fwTT6yHuaXccvmtl1f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fekjROsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311DBC4CEC3;
-	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
+	 MIME-Version; b=LZtTi8sczSCMygEA0brjCHPnGB3uHa1BQXg0J3Zb4LwG4JojqWVslzXGX9eRVwr4ViKNeW2FmrTjgZTasQMC4Uo4B1l/7pB+Iz/lQWs3QrLFtX/WEDdlkk4LB8N/ht4yprov+QqtlmgHHC+Zl8DoVt1UFDAJgU8fzBoBsLGyXso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=symlzPOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC54C4CEC3;
+	Tue, 10 Sep 2024 10:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962119;
-	bh=HqmrULg8Cz+NyFP8/7yEvuR3uIbp+yQHpGfYEm2x5/c=;
+	s=korg; t=1725962407;
+	bh=TpdSuptpqqDTm4klHbghUFTJpZ5GtUqmZz2xYCQVOBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fekjROsv+ECBmrZrj+BjOp3zMn7J6x5QzW93D90p++n2FtwZwIz8TtrO2T+jm+H9p
-	 UXfJ2ThSf5Oy9nK08rOuKS4zThplUej6LwA8SWdz16J/CYBZRP1u0IKZ3sWhPBzjPT
-	 iZWpKDQGf+5ULCpaAFMzWQeiMJzm68HJThNkTopM=
+	b=symlzPOhvt5oZz3x/+H112UzInuCo4g+b7tZIN0aU6QQ3XEyDXRC0BJ6IFfnrVpaO
+	 YrCaTrGgO7tYvFI3DcbmGlaR67vRuDibsSWXDt2bfelmqgBHFbfomkDk4+nZtaOamy
+	 ChUjNgPG2WdhdhId6gqDvOqapm3GO2eXbLaf/TwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.10 301/375] nvmem: Fix return type of devm_nvmem_device_get() in kerneldoc
+	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.4 023/121] virtio_net: Fix napi_skb_cache_put warning
 Date: Tue, 10 Sep 2024 11:31:38 +0200
-Message-ID: <20240910092632.667872348@linuxfoundation.org>
+Message-ID: <20240910092546.813146598@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Breno Leitao <leitao@debian.org>
 
-commit c69f37f6559a8948d70badd2b179db7714dedd62 upstream.
+commit f8321fa75102246d7415a6af441872f6637c93ab upstream.
 
-devm_nvmem_device_get() returns an nvmem device, not an nvmem cell.
+After the commit bdacf3e34945 ("net: Use nested-BH locking for
+napi_alloc_cache.") was merged, the following warning began to appear:
 
-Fixes: e2a5402ec7c6d044 ("nvmem: Add nvmem_device based consumer apis.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240902142510.71096-3-srinivas.kandagatla@linaro.org
+	 WARNING: CPU: 5 PID: 1 at net/core/skbuff.c:1451 napi_skb_cache_put+0x82/0x4b0
+
+	  __warn+0x12f/0x340
+	  napi_skb_cache_put+0x82/0x4b0
+	  napi_skb_cache_put+0x82/0x4b0
+	  report_bug+0x165/0x370
+	  handle_bug+0x3d/0x80
+	  exc_invalid_op+0x1a/0x50
+	  asm_exc_invalid_op+0x1a/0x20
+	  __free_old_xmit+0x1c8/0x510
+	  napi_skb_cache_put+0x82/0x4b0
+	  __free_old_xmit+0x1c8/0x510
+	  __free_old_xmit+0x1c8/0x510
+	  __pfx___free_old_xmit+0x10/0x10
+
+The issue arises because virtio is assuming it's running in NAPI context
+even when it's not, such as in the netpoll case.
+
+To resolve this, modify virtnet_poll_tx() to only set NAPI when budget
+is available. Same for virtnet_poll_cleantx(), which always assumed that
+it was in a NAPI context.
+
+Fixes: df133f3f9625 ("virtio_net: bulk free tx skbs")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Link: https://patch.msgid.link/20240712115325.54175-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Shivani: Modified to apply on v4.19.y-v5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/virtio_net.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -1258,13 +1258,13 @@ void nvmem_device_put(struct nvmem_devic
- EXPORT_SYMBOL_GPL(nvmem_device_put);
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1479,7 +1479,7 @@ static bool is_xdp_raw_buffer_queue(stru
+ 		return false;
+ }
  
- /**
-- * devm_nvmem_device_get() - Get nvmem cell of device form a given id
-+ * devm_nvmem_device_get() - Get nvmem device of device form a given id
-  *
-  * @dev: Device that requests the nvmem device.
-  * @id: name id for the requested nvmem device.
-  *
-- * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_cell
-- * on success.  The nvmem_cell will be freed by the automatically once the
-+ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
-+ * on success.  The nvmem_device will be freed by the automatically once the
-  * device is freed.
-  */
- struct nvmem_device *devm_nvmem_device_get(struct device *dev, const char *id)
+-static void virtnet_poll_cleantx(struct receive_queue *rq)
++static void virtnet_poll_cleantx(struct receive_queue *rq, int budget)
+ {
+ 	struct virtnet_info *vi = rq->vq->vdev->priv;
+ 	unsigned int index = vq2rxq(rq->vq);
+@@ -1490,7 +1490,7 @@ static void virtnet_poll_cleantx(struct
+ 		return;
+ 
+ 	if (__netif_tx_trylock(txq)) {
+-		free_old_xmit_skbs(sq, true);
++		free_old_xmit_skbs(sq, !!budget);
+ 		__netif_tx_unlock(txq);
+ 	}
+ 
+@@ -1507,7 +1507,7 @@ static int virtnet_poll(struct napi_stru
+ 	unsigned int received;
+ 	unsigned int xdp_xmit = 0;
+ 
+-	virtnet_poll_cleantx(rq);
++	virtnet_poll_cleantx(rq, budget);
+ 
+ 	received = virtnet_receive(rq, budget, &xdp_xmit);
+ 
+@@ -1580,7 +1580,7 @@ static int virtnet_poll_tx(struct napi_s
+ 	txq = netdev_get_tx_queue(vi->dev, index);
+ 	__netif_tx_lock(txq, raw_smp_processor_id());
+ 	virtqueue_disable_cb(sq->vq);
+-	free_old_xmit_skbs(sq, true);
++	free_old_xmit_skbs(sq, !!budget);
+ 
+ 	opaque = virtqueue_enable_cb_prepare(sq->vq);
+ 
 
 
 
