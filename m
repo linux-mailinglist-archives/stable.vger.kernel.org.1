@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-75425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014E797347D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E4A973525
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348DF1C24FE7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C518A1C25117
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F96190664;
-	Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30D5190477;
+	Tue, 10 Sep 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAdsukbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6gq2/v+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC2918A6B9;
-	Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629F118E77F;
+	Tue, 10 Sep 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964694; cv=none; b=pypCLjUUgfQ2xFi96pAhJc8auCfJDN6HZwiPpXjHUHBEDIhb9eHgW+iU3L9IpAGXBlH7tsby/LToSYDvWGLX5JlatGSc2Vgs6N9y4aUgWe5eek5MxXRUZ5zXYvf3A7U1t1hO1OZWz5L/zCH5nvioXrkWSlddAUqHDzeoLR/+H04=
+	t=1725965093; cv=none; b=mfdspTWWhWlzlYBdnQT97UKkPz6HKmq9S1iPna7IuT8dHeyNqdylhMvu3OuR6uo9R37BJaAgyZsr9oX9zVddRGRiz5dKBQf4X1xY1nukACPYeNb2zfF92Bz5fsgNgnED1NpBU/VBgxzLUrHvHgom0UVa0gkG2IrE9U6Zkaj2RaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964694; c=relaxed/simple;
-	bh=ifdGWo664eVzvkjZs4iB+kjUBi+J34JBWp8PNAKwfZI=;
+	s=arc-20240116; t=1725965093; c=relaxed/simple;
+	bh=9ubCA5lKKznGG/ueIGP2o64cG5uJGRPPjFV8XRaPbv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+apKf9BL9lcA6wyS7QpgOwp3vy7BlPa76Ujl5ButSpB/THiDlal+XIVT+xl68YwrSpg31NqPYC1hvrJ/3rcd95QoDAJbXs0kqGvrz89eSVyO9Dc3WdEjUtD3nBcsvGuS4yrPOALDcX30f1larXwFUKyEzu1ClzzMQcXqC7v8z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAdsukbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2385BC4CEC3;
-	Tue, 10 Sep 2024 10:38:13 +0000 (UTC)
+	 MIME-Version; b=D/J5Otb0JB+SenO8cyjrCnZAABILyrtUoYx0hXNR0d0N3tlpI47x/DPkRyzoG/7BH6Zhn6pKCBQ35g/I0FLieuRKpJ4msSKD0wFLwV9pp4U9gmt8ESiGnt0P/MsSynABlDvKsR7f4Xog7lWGUmS06qTD17aBSFWkK90uKHDIy5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6gq2/v+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F94C4CEC3;
+	Tue, 10 Sep 2024 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964694;
-	bh=ifdGWo664eVzvkjZs4iB+kjUBi+J34JBWp8PNAKwfZI=;
+	s=korg; t=1725965093;
+	bh=9ubCA5lKKznGG/ueIGP2o64cG5uJGRPPjFV8XRaPbv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAdsukbDRfZjhG5a5rh1NJlxhE0h5YLxN9js/WdkHhVmUb3qNN3npMa26KInnU2zw
-	 MVp5IvMzGWmLq8vpNNfuATXHa4/NcPJcyteYkCAH4RNfT3dlezGZHt5iu4XvnJINNU
-	 XAjQMo3JtojWbYCkreMdcpvmyaL2LwpldINJ0muM=
+	b=x6gq2/v+9a2mJqJ+jpm3NXyCvItvAEWOtdJrsiiu7J/EnicJZ0F/3ZA9KIZMBMBB9
+	 e+79BaWYDDswcA8dLTw2/UKEDvg4TUF1YmlANhz/g7olasWjF2uMBUs1B7tRMdSszU
+	 qcs6ce88Wz1o9pyAbeaIAEkQ1xaZZtPkefW0E9jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	devi priya <quic_devipriy@quicinc.com>,
-	Amandeep Singh <quic_amansing@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/269] clk: qcom: ipq9574: Update the alpha PLL type for GPLLs
+Subject: [PATCH 5.10 135/186] hwmon: (adc128d818) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:33:50 +0200
-Message-ID: <20240910092616.520394839@linuxfoundation.org>
+Message-ID: <20240910092600.155589496@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: devi priya <quic_devipriy@quicinc.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 6357efe3abead68048729adf11a9363881657939 ]
+[ Upstream commit 8cad724c8537fe3e0da8004646abc00290adae40 ]
 
-Update PLL offsets to DEFAULT_EVO to configure MDIO to 800MHz.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-The incorrect clock frequency leads to an incorrect MDIO clock. This,
-in turn, affects the MDIO hardware configurations as the divider is
-calculated from the MDIO clock frequency. If the clock frequency is
-not as expected, the MDIO register fails due to the generation of an
-incorrect MDIO frequency.
-
-This issue is critical as it results in incorrect MDIO configurations
-and ultimately leads to the MDIO function not working. This results in
-a complete feature failure affecting all Ethernet PHYs. Specifically,
-Ethernet will not work on IPQ9574 due to this issue.
-
-Currently, the clock frequency is set to CLK_ALPHA_PLL_TYPE_DEFAULT.
-However, this setting does not yield the expected clock frequency.
-To rectify this, we need to change this to CLK_ALPHA_PLL_TYPE_DEFAULT_EVO.
-
-This modification ensures that the clock frequency aligns with our
-expectations, thereby resolving the MDIO register failure and ensuring
-the proper functioning of the Ethernet on IPQ9574.
-
-Fixes: d75b82cff488 ("clk: qcom: Add Global Clock Controller driver for IPQ9574")
-Signed-off-by: devi priya <quic_devipriy@quicinc.com>
-Signed-off-by: Amandeep Singh <quic_amansing@quicinc.com>
-Link: https://lore.kernel.org/r/20240806061105.2849944-1-quic_amansing@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq9574.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwmon/adc128d818.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
-index f8b9a1e93bef..cdbbf2cc9c5d 100644
---- a/drivers/clk/qcom/gcc-ipq9574.c
-+++ b/drivers/clk/qcom/gcc-ipq9574.c
-@@ -65,7 +65,7 @@ static const struct clk_parent_data gcc_sleep_clk_data[] = {
+diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
+index 6c9a906631b8..e73c4de9471f 100644
+--- a/drivers/hwmon/adc128d818.c
++++ b/drivers/hwmon/adc128d818.c
+@@ -176,7 +176,7 @@ static ssize_t adc128_in_store(struct device *dev,
  
- static struct clk_alpha_pll gpll0_main = {
- 	.offset = 0x20000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(0),
-@@ -93,7 +93,7 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
+ 	mutex_lock(&data->update_lock);
+ 	/* 10 mV LSB on limit registers */
+-	regval = clamp_val(DIV_ROUND_CLOSEST(val, 10), 0, 255);
++	regval = DIV_ROUND_CLOSEST(clamp_val(val, 0, 2550), 10);
+ 	data->in[index][nr] = regval << 4;
+ 	reg = index == 1 ? ADC128_REG_IN_MIN(nr) : ADC128_REG_IN_MAX(nr);
+ 	i2c_smbus_write_byte_data(data->client, reg, regval);
+@@ -214,7 +214,7 @@ static ssize_t adc128_temp_store(struct device *dev,
+ 		return err;
  
- static struct clk_alpha_pll_postdiv gpll0 = {
- 	.offset = 0x20000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll0",
-@@ -107,7 +107,7 @@ static struct clk_alpha_pll_postdiv gpll0 = {
- 
- static struct clk_alpha_pll gpll4_main = {
- 	.offset = 0x22000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(2),
-@@ -122,7 +122,7 @@ static struct clk_alpha_pll gpll4_main = {
- 
- static struct clk_alpha_pll_postdiv gpll4 = {
- 	.offset = 0x22000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll4",
-@@ -136,7 +136,7 @@ static struct clk_alpha_pll_postdiv gpll4 = {
- 
- static struct clk_alpha_pll gpll2_main = {
- 	.offset = 0x21000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.clkr = {
- 		.enable_reg = 0x0b000,
- 		.enable_mask = BIT(1),
-@@ -151,7 +151,7 @@ static struct clk_alpha_pll gpll2_main = {
- 
- static struct clk_alpha_pll_postdiv gpll2 = {
- 	.offset = 0x21000,
--	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
- 	.width = 4,
- 	.clkr.hw.init = &(const struct clk_init_data) {
- 		.name = "gpll2",
+ 	mutex_lock(&data->update_lock);
+-	regval = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
++	regval = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
+ 	data->temp[index] = regval << 1;
+ 	i2c_smbus_write_byte_data(data->client,
+ 				  index == 1 ? ADC128_REG_TEMP_MAX
 -- 
 2.43.0
 
