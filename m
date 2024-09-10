@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-74649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63234973076
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5949730B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C97286984
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4C9286705
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8FC18F2FD;
-	Tue, 10 Sep 2024 10:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4F618FDAF;
+	Tue, 10 Sep 2024 10:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJD0n178"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ETpziWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA718DF99;
-	Tue, 10 Sep 2024 10:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6905018595E;
+	Tue, 10 Sep 2024 10:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962419; cv=none; b=joLFCIX6vtUkwUtK+SxfgIRAOMIihy8ErmFtKJzNEyxqLuygNAfI0G56u01LGlm9ZIn5y2XOYPsByirxsLzt1XXfYKt0Ay4IGCb+kAzV2haErN9NqxGNuwrSxwknwAC1eZH3E5bHOnzUJw1zPUcC6gB5cssjho/GSgGcUWqKhgE=
+	t=1725962529; cv=none; b=Y9zxoz30s1f1O0rR7j01sf09xLV//cA+VSadfzoWLoqcKOgK9FUFGVD7cVIUWtpvX5yUCYoxnx/wMKo+BOI4a43OKbh2QJpgDmZCpv4S6HeAS2fiYs38SvdZJINYfVxC8Wf2VaeHjuALDG/id0k8N4BW/6ceEpoC11HEs55d2Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962419; c=relaxed/simple;
-	bh=F5myLYcC+cvZjYi9/noIQRiqjUR+Nn8CTgY4QvxFdsc=;
+	s=arc-20240116; t=1725962529; c=relaxed/simple;
+	bh=9fDB8FmAT7KL0FCjaYGEf/EepoE1uDxQym/Ax97hJgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fplgPTxdapsoXmNV0BUnICMTKFCc3MkJvOHzfK3IDmXZX4ZDgM1ZfGUfyHj+YTEc1LqnCMOB2JoiqyxdzhUGVoPNJDFNSHh7JWJ0F33d2oy79bDgYhF3zDR4Bd7gm6Gdg0sFY21yDbeO8ugKGm21CeDiJj8W8Nv/nyI82JAwMx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJD0n178; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C6C4CEC3;
-	Tue, 10 Sep 2024 10:00:18 +0000 (UTC)
+	 MIME-Version; b=rPQk6jfQC35RH2vq+g9qqU+7Ua8RzPUv2ns3QmuvG0DRmLdOxehONPXnbYVAfIex5WicTbkD+PNflmr7WY+45HPkQAErKDskbjEJC5GJK9uFp61KGs7O0JBCfNOByKwaXx6ASx7bkY4Sourx75RoSzYl6jniqZTA6cZojKRWVwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ETpziWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE14EC4CEC3;
+	Tue, 10 Sep 2024 10:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962419;
-	bh=F5myLYcC+cvZjYi9/noIQRiqjUR+Nn8CTgY4QvxFdsc=;
+	s=korg; t=1725962529;
+	bh=9fDB8FmAT7KL0FCjaYGEf/EepoE1uDxQym/Ax97hJgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJD0n178FYri10sK8yhi+FvubxYlO/vkxUeCRCCOnxD5+Xm2Sz0KdFwS3E2mfr1E0
-	 t2Ctc1Cfcq8irUdeCDIYTk0xezq0FFvMI2uGT/F1LNm60SdlaMLcYrEB9TRQf26Cpy
-	 Dhqj/PloT7i3Mrp9td6PPEu839bgels0JvcFf+Rc=
+	b=1ETpziWkymLxEB8EXT98xjXBBsIUljAle9REfBAjJb5ldgHyyP6mNoIRrulmKriHU
+	 twk2+ivzJFdepIgrl6VRf9s9zrCX5uy4jaqTPL6cJ+0wsmrdGEy73c1iiz53b9z4r0
+	 zFeCFLT1VnjJUl0OYvvWwaFsjjV41ntt3xvRCFV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	robelin <robelin@nvidia.com>,
-	Sameer Pujar <spujar@nvidia.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.4 027/121] ASoC: dapm: Fix UAF for snd_soc_pcm_runtime object
-Date: Tue, 10 Sep 2024 11:31:42 +0200
-Message-ID: <20240910092547.018907001@linuxfoundation.org>
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 028/121] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
+Date: Tue, 10 Sep 2024 11:31:43 +0200
+Message-ID: <20240910092547.066291897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
 References: <20240910092545.737864202@linuxfoundation.org>
@@ -66,59 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: robelin <robelin@nvidia.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit b4a90b543d9f62d3ac34ec1ab97fc5334b048565 upstream.
+commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
 
-When using kernel with the following extra config,
+The Sirius notebooks have two sets of speakers 0x17 (sides) and
+0x1d (top center). The side speakers are active by default but
+the top speakers aren't.
 
-  - CONFIG_KASAN=y
-  - CONFIG_KASAN_GENERIC=y
-  - CONFIG_KASAN_INLINE=y
-  - CONFIG_KASAN_VMALLOC=y
-  - CONFIG_FRAME_WARN=4096
+This patch provides a pincfg quirk to activate the top speakers.
 
-kernel detects that snd_pcm_suspend_all() access a freed
-'snd_soc_pcm_runtime' object when the system is suspended, which
-leads to a use-after-free bug:
-
-[   52.047746] BUG: KASAN: use-after-free in snd_pcm_suspend_all+0x1a8/0x270
-[   52.047765] Read of size 1 at addr ffff0000b9434d50 by task systemd-sleep/2330
-
-[   52.047785] Call trace:
-[   52.047787]  dump_backtrace+0x0/0x3c0
-[   52.047794]  show_stack+0x34/0x50
-[   52.047797]  dump_stack_lvl+0x68/0x8c
-[   52.047802]  print_address_description.constprop.0+0x74/0x2c0
-[   52.047809]  kasan_report+0x210/0x230
-[   52.047815]  __asan_report_load1_noabort+0x3c/0x50
-[   52.047820]  snd_pcm_suspend_all+0x1a8/0x270
-[   52.047824]  snd_soc_suspend+0x19c/0x4e0
-
-The snd_pcm_sync_stop() has a NULL check on 'substream->runtime' before
-making any access. So we need to always set 'substream->runtime' to NULL
-everytime we kfree() it.
-
-Fixes: a72706ed8208 ("ASoC: codec2codec: remove ephemeral variables")
-Signed-off-by: robelin <robelin@nvidia.com>
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-Link: https://patch.msgid.link/20240823144342.4123814-2-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-dapm.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_conexant.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -4003,6 +4003,7 @@ static int snd_soc_dai_link_event(struct
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -217,6 +217,7 @@ enum {
+ 	CXT_FIXUP_HEADSET_MIC,
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
+ 	CXT_PINCFG_SWS_JS201D,
++	CXT_PINCFG_TOP_SPEAKER,
+ };
  
- 	case SND_SOC_DAPM_POST_PMD:
- 		kfree(substream->runtime);
-+		substream->runtime = NULL;
- 		break;
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -871,6 +872,13 @@ static const struct hda_fixup cxt_fixups
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = cxt_pincfg_sws_js201d,
+ 	},
++	[CXT_PINCFG_TOP_SPEAKER] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1d, 0x82170111 },
++			{ }
++		},
++	},
+ };
  
- 	default:
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -965,6 +973,8 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
+ 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
++	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
++	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
+ 	{}
+ };
+ 
+@@ -983,6 +993,7 @@ static const struct hda_model_fixup cxt5
+ 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
+ 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
++	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
+ 	{}
+ };
+ 
 
 
 
