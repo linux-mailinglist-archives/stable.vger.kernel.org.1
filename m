@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2630B9733D3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEAC9732B1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D040E1F25B64
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E819C1F21C2F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C656B19067A;
-	Tue, 10 Sep 2024 10:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E22A192581;
+	Tue, 10 Sep 2024 10:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOaLTvLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNAW4BYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85744184549;
-	Tue, 10 Sep 2024 10:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5C4199920;
+	Tue, 10 Sep 2024 10:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964317; cv=none; b=tTOZHaR1ECIhrzkg1yP+fWFBkO5xWV6FLkMA6w8MjG54AlIs6zmnqPH9dCTaIffr/ItDm1Ll9/PfuAmZwooi2G0Rfu1VOJ9jLlfuoOjcCfuNJKEoqAEWl6zGo0qb77uPxT2rOh9k91l8UEPyYc5eQmEh21jJZUqtCaLywGyUxNA=
+	t=1725963582; cv=none; b=j3rRponmW6593e7Z8OANXRBrKO95+Ju+1Qw0NfJiyaEOWEWRcQzhZLWKiBBoDCac6mHtwL8D6EB+QxTcDzOPCN/oG/n3MGRlEG5ncC0j0XoTlI5cumRREIrejYOXOIsf0ZTDs/U8/w6IlAPtrHHI9kb6BKYhQdQOYpx4yjkp384=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964317; c=relaxed/simple;
-	bh=hNvI2ytjB1b+1/hOphCczworWwkFdEOoWlIrxnECZmA=;
+	s=arc-20240116; t=1725963582; c=relaxed/simple;
+	bh=Iuy+xfp9lSD7ybKTF9iilCJTBXF27W68SXVYn4y2RPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVOpYh+isJcrD7chD3kifLX/G8X8Mk0H7PTierR/TFDpR5tv6LDibTPZ5f7NTW7YikMX0xfpOfiuu7dKZ0BBGCne5KpaxcO2fkrg9oiUTK5SIaHLc7izQ97DqKDTgaXQdTFPS8kwjdZj8cOfoocQE3cQ46pwQCBS88h08nzFTQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOaLTvLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D98FC4CEC3;
-	Tue, 10 Sep 2024 10:31:56 +0000 (UTC)
+	 MIME-Version; b=pkeKiP8kfPNALmrZRpJLwALPxHbHQaoLhCysJvYGpf/3mpO6u9z7ajtS/Ju+tT4zRto8diePFA+72yHiDWdvj8wTONOULWE7zuXJb2ZzOO66MuR3EUSbAeZ9GAHbURKwP306xYz5mWMMYERLEDaa2ks1QdDzD9hwq96wQR3Q8wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNAW4BYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8891C4CEC3;
+	Tue, 10 Sep 2024 10:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964317;
-	bh=hNvI2ytjB1b+1/hOphCczworWwkFdEOoWlIrxnECZmA=;
+	s=korg; t=1725963582;
+	bh=Iuy+xfp9lSD7ybKTF9iilCJTBXF27W68SXVYn4y2RPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOaLTvLmHBKuhK9wGxsogfnYPXeZQaGpggIuTLEaFwRsSN89smo04e8UGsnO81Vj6
-	 35eGgblq1xvqawxpF7zESktnNdXRbDtVV0kWvLpg714v+hMwCyHIcsi8hdc+lnzsNR
-	 EhIErcCmnBkTSQRp5XrXVCt6T0Qku5vRDjEsKGVA=
+	b=kNAW4BYS4YU9VrO2ECFBYBzHMssdXqt4Cht2QVgKyDqd7EYUlKtPDJHRoEBYyIOaT
+	 8uKlFQ+dkAbY+xWs9ILpL1KM7pzChDpHNlCGWYAH1NKtKgqcq3hsOSBwIc2hnyayvf
+	 OYs8DEXVEakLVCDCiZHOHbobD3QBc8eM4r+DHIYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/269] dm init: Handle minors larger than 255
+Subject: [PATCH 5.15 106/214] af_unix: Remove put_pid()/put_cred() in copy_peercred().
 Date: Tue, 10 Sep 2024 11:32:08 +0200
-Message-ID: <20240910092613.236242601@linuxfoundation.org>
+Message-ID: <20240910092603.134027913@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 140ce37fd78a629105377e17842465258a5459ef ]
+[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
 
-dm_parse_device_entry() simply copies the minor number into dmi.dev, but
-the dev_t format splits the minor number between the lowest 8 bytes and
-highest 12 bytes. If the minor number is larger than 255, part of it
-will end up getting treated as the major number
+When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
+the listener's sk_peer_pid/sk_peer_cred are copied to the client in
+copy_peercred().
 
-Fix this by checking that the minor number is valid and then encoding it
-as a dev_t.
+Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
+we need not call put_pid() and put_cred() there.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
-index 2a71bcdba92d..b37bbe762500 100644
---- a/drivers/md/dm-init.c
-+++ b/drivers/md/dm-init.c
-@@ -212,8 +212,10 @@ static char __init *dm_parse_device_entry(struct dm_device *dev, char *str)
- 	strscpy(dev->dmi.uuid, field[1], sizeof(dev->dmi.uuid));
- 	/* minor */
- 	if (strlen(field[2])) {
--		if (kstrtoull(field[2], 0, &dev->dmi.dev))
-+		if (kstrtoull(field[2], 0, &dev->dmi.dev) ||
-+		    dev->dmi.dev >= (1 << MINORBITS))
- 			return ERR_PTR(-EINVAL);
-+		dev->dmi.dev = huge_encode_dev((dev_t)dev->dmi.dev);
- 		dev->dmi.flags |= DM_PERSISTENT_DEV_FLAG;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e73c1bbc5ff8..eb916b2eb673 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -616,9 +616,6 @@ static void init_peercred(struct sock *sk)
+ 
+ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ {
+-	const struct cred *old_cred;
+-	struct pid *old_pid;
+-
+ 	if (sk < peersk) {
+ 		spin_lock(&sk->sk_peer_lock);
+ 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
+@@ -626,16 +623,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 		spin_lock(&peersk->sk_peer_lock);
+ 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
  	}
- 	/* flags */
+-	old_pid = sk->sk_peer_pid;
+-	old_cred = sk->sk_peer_cred;
++
+ 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
+ 
+ 	spin_unlock(&sk->sk_peer_lock);
+ 	spin_unlock(&peersk->sk_peer_lock);
+-
+-	put_pid(old_pid);
+-	put_cred(old_cred);
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
 -- 
 2.43.0
 
