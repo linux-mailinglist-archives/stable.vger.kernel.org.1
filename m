@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C62972E3E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0E1973025
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153641F21E9B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22519282AEA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A9618C03B;
-	Tue, 10 Sep 2024 09:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EAE18A6D1;
+	Tue, 10 Sep 2024 09:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSTvnOeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B63UdKub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D9A189F58;
-	Tue, 10 Sep 2024 09:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D27518595E;
+	Tue, 10 Sep 2024 09:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961237; cv=none; b=M0XAuqAs0Harkkl9fdJezrcR8VLnkbJjXQTjS2+mSAHxmNSWZgqbSzqxykEt5qDOGxRQJthU+r1s7Q7DGPwxuNgPkMK8q9R9UuskQ3nj1meMAiy8gbNLuRMox9itudx/L4mk7wdN+ldm5B3JjOjOkxgHaoGW+ralmE3TKFeTLRI=
+	t=1725962281; cv=none; b=K2V98IFfqP1kfsIzhZ1m1nIC0VZCzr8EvV0RUaWnek0xrOItt68eRXBqAjv/ZrjPAAaa9gKCsWHqxuzn7gMkp5yGC8laB2Etzbd14/h0+fkeeLSedeLWlOo+cC7ppD79NuubiWtlK5Cl6vxcpC8LlxM1Vzjv/4BdL88LQJKcses=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961237; c=relaxed/simple;
-	bh=FqjYZAP2KhPSLzg7AG9Yhk2MrgZfLsgFpMQAdoGYB9g=;
+	s=arc-20240116; t=1725962281; c=relaxed/simple;
+	bh=Y9WJmnZLARiinuvVgkXSCpYr9Y0b1tN/lS5Tcddmts8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4eVQwjwkryL4pviDzeWtaCMn1oQ4cu+6pSyrW31EJVfvbSHMw+ofTdQTtLcGraiNxrBGzDixIs8nVtOh5y1/SCJAHeSTBgw2+R5mpR/qvReo+p0PK3lzsE2uTkP241hH9lgQHeKT7HHWux4jdE5UZMOhl1EzRtDHHCexU08zOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSTvnOeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAA8C4CECC;
-	Tue, 10 Sep 2024 09:40:36 +0000 (UTC)
+	 MIME-Version; b=qpArL+pEiz2eoIp2tNdHexBxM5M718HSLFn/ztow1Qe3ycrJfwTQfYZlCceCeWoU6T5IF7/gva9UhFIiRymzz2WxenIH6/66CngS3oQ0KWocN1mmBkogju35z70NKvYXFC2PyVVRc7PPqcIbH4cZUBvpoE6HwjKL5JRRWrAasa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B63UdKub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9402C4CEC3;
+	Tue, 10 Sep 2024 09:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961237;
-	bh=FqjYZAP2KhPSLzg7AG9Yhk2MrgZfLsgFpMQAdoGYB9g=;
+	s=korg; t=1725962281;
+	bh=Y9WJmnZLARiinuvVgkXSCpYr9Y0b1tN/lS5Tcddmts8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSTvnOeAs1sXLiZQZgB32TA97Cz4knmYLUklDh+8Z6yd1kepG3Cs/h/f18fpv+/yx
-	 T/ng6vktJZtnxvjXhEOXCWArwQv5id9nd2HwjW5iTxT7lJEboDqk1VfFntZQW6weCV
-	 3Zseal1g9q/QkkQrE94Cb1utyY/C9UMAkcV06BrA=
+	b=B63UdKubkd0aZZeSMqh0coqfMi/xnVehJxn55WXfkoStaiWcrBXjANRqlWvnNa0JZ
+	 IKHK/kH4kEhIBo47a5oYjc8/VAdJrqrU/2yzKLiyAGOUw6C+1shWwfp3lYU3vKBK3Q
+	 vXeESQLpE7hIEQUZqkCL87Y3wqvIZWtUGkl+4kJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roland Xu <mu001999@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.19 92/96] rtmutex: Drop rt_mutex::wait_lock before scheduling
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 357/375] smb: client: fix double put of @cfile in smb2_rename_path()
 Date: Tue, 10 Sep 2024 11:32:34 +0200
-Message-ID: <20240910092545.582316529@linuxfoundation.org>
+Message-ID: <20240910092634.589961294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roland Xu <mu001999@outlook.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit d33d26036a0274b472299d7dcdaa5fb34329f91b upstream.
+[ Upstream commit 3523a3df03c6f04f7ea9c2e7050102657e331a4f ]
 
-rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
-good case it returns with the lock held and in the deadlock case it emits a
-warning and goes into an endless scheduling loop with the lock held, which
-triggers the 'scheduling in atomic' warning.
+If smb2_set_path_attr() is called with a valid @cfile and returned
+-EINVAL, we need to call cifs_get_writable_path() again as the
+reference of @cfile was already dropped by previous smb2_compound_op()
+call.
 
-Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
-and dropping into the schedule for ever loop.
-
-[ tglx: Moved unlock before the WARN(), removed the pointless comment,
-  	massaged changelog, added Fixes tag ]
-
-Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
-Signed-off-by: Roland Xu <mu001999@outlook.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71f15c90e785 ("smb: client: retry compound request without reusing lease")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Cc: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/rtmutex.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1205,6 +1205,7 @@ __rt_mutex_slowlock(struct rt_mutex *loc
- }
- 
- static void rt_mutex_handle_deadlock(int res, int detect_deadlock,
-+				     struct rt_mutex *lock,
- 				     struct rt_mutex_waiter *w)
- {
- 	/*
-@@ -1214,6 +1215,7 @@ static void rt_mutex_handle_deadlock(int
- 	if (res != -EDEADLOCK || detect_deadlock)
- 		return;
- 
-+	raw_spin_unlock_irq(&lock->wait_lock);
- 	/*
- 	 * Yell lowdly and stop the task right here.
- 	 */
-@@ -1269,7 +1271,7 @@ rt_mutex_slowlock(struct rt_mutex *lock,
- 	if (unlikely(ret)) {
- 		__set_current_state(TASK_RUNNING);
- 		remove_waiter(lock, &waiter);
--		rt_mutex_handle_deadlock(ret, chwalk, &waiter);
-+		rt_mutex_handle_deadlock(ret, chwalk, lock, &waiter);
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 2a2847601f26..11a1c53c64e0 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1106,6 +1106,8 @@ int smb2_rename_path(const unsigned int xid,
+ 				  co, DELETE, SMB2_OP_RENAME, cfile, source_dentry);
+ 	if (rc == -EINVAL) {
+ 		cifs_dbg(FYI, "invalid lease key, resending request without lease");
++		cifs_get_writable_path(tcon, from_name,
++				       FIND_WR_WITH_DELETE, &cfile);
+ 		rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
+ 				  co, DELETE, SMB2_OP_RENAME, cfile, NULL);
  	}
- 
- 	/*
+-- 
+2.43.0
+
 
 
 
