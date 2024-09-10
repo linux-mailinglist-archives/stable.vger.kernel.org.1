@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-75674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94231973F4F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:25:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7887A973F53
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9901C25477
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:25:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E5CB27686
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9A91A7AF5;
-	Tue, 10 Sep 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DB41AAE34;
+	Tue, 10 Sep 2024 17:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYPs8/F2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uh8hsgJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8BB1A7AE3;
-	Tue, 10 Sep 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9241AAE09;
+	Tue, 10 Sep 2024 17:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988939; cv=none; b=INq6i/Fx71knf71o0/81ry8r/yNxIheL1eRsz6uA/VD9E4OmjARPAnXO/RLTur3xFegOhZ+4fHpFZiI80GMhK4xfHq31uD9ggbCz61NkcMNE2HMGeDmM+LpqXH7ASlIFNSWxzwLhQqikZE0/NmHjh+eqTy7GXG8Y7St+6xTqUTQ=
+	t=1725988942; cv=none; b=TW8vleOoZKpXCN0lFUwh4OF86kXdL+hhDG0pWK3voIIT2nl/dn3ogb69Jn+ygsP83ymIXiWPEfMGr6TJQOaBhcqS+IsryntjFjFTckco3P3NbePxS6Fg/q4T8pLSAwIojhD5EaUMirJQvCw8M8Fy9CN05qhSC9HrI40vq6xHI4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988939; c=relaxed/simple;
-	bh=co+0/b4aRDm6iCVskWeVHG7wwfqak69YUvWTAJJ1DXc=;
+	s=arc-20240116; t=1725988942; c=relaxed/simple;
+	bh=NeZBarf5sytU+4tlKJN+FOzynrWMMCnZ2J23Xvo9Q78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQDCqjqWaE83vZrZ1H3ShDdlV2i/JlqvUHQSFc/hUQQVIBI9UC5A5zwGfmdIpfwCDFPpaggpjnJgpeBY2cG3bVl+itJ7CNCxKz7pWrchdLiFfzVdqjyqS/vOsdxTfDr4DMlggLwAy9ypEjTzNBKXW9OAsjmXDEQ+8f6QbYNdzYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYPs8/F2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF86C4CECC;
-	Tue, 10 Sep 2024 17:22:17 +0000 (UTC)
+	 MIME-Version; b=LHKJSi+7v1nMpXDVBaRJRDZipcKH8qFrP0o2Emq8VFV18ZPOiNdbfiNykntXAxw4coCr3Zc9TGZWkDJ4l56cAr0Qiq/1ITJVZpvApTGWeYLYDyZtkVuMlz2Mtnjs5MxCtAYfvj0YLJhvxgAh6b/8kJheh5N0MvB+9mznsZGJ14g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uh8hsgJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9BCC4CECE;
+	Tue, 10 Sep 2024 17:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988939;
-	bh=co+0/b4aRDm6iCVskWeVHG7wwfqak69YUvWTAJJ1DXc=;
+	s=k20201202; t=1725988942;
+	bh=NeZBarf5sytU+4tlKJN+FOzynrWMMCnZ2J23Xvo9Q78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYPs8/F2By0QeCsvyvugerE/drBTM5pA7l78Oqh+jew7AGHVO0ACMnNrzEVStsgSL
-	 T6BLxE5fXsbwcVm89pPtuk1WNAaw/E9yCXbFwFHV4LQ4YQymZqzOybvQylFSjZgyPf
-	 BXaxSZE5ex9u1avZQeGGu5ecWxkmhgEEINNlr4yYoVkUp2E/7f39MfOsAHcH0Seb/D
-	 jjgf6VoljJ+pT0MNk2C189/AytjrA0MA348zK3LDKnSkVQrSzlU31Nc0uYIfYk6GU/
-	 HZvDARhFBUO1tj1tWsh/L9qX5UO0+kF95VSyhmAnsknO5zLqbs6jS8xPiwTi8fqI4g
-	 aLjEzefi219yg==
+	b=uh8hsgJidJNOE+g0PuIJIWLcg5LJMyHLTmlMX4+rj4Rt1W0mKV1/SBV0wxaTqsees
+	 zJrRXpuTf9m3LiXRW7+DJEBQA8OuMMsC0IWqTaq7XGrFVYP4Bu2U9dL8FuKbhJv+Id
+	 RlVlCQ6CMvIQK9CgK+VLICg1SYCkLgAWzilFgEU7U2jBsfZxpl1kCguBTukhl7nQh5
+	 mL90f73WaGvJPVxlKv7U7ROieW362fNAMWVDBPtoLlKOHREj1767WH1DBs0i0Gm+4H
+	 MBSrkpp9ZbGRtxq60e/VbyJ5C+ZpOFZnkTugkpU+UluL8cIhWFw46sTHI2ImhxB6Co
+	 ghvU3YRCMXKfA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	manivannan.sadhasivam@linaro.org,
-	mailhol.vincent@wanadoo.fr,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 02/18] can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
-Date: Tue, 10 Sep 2024 13:21:47 -0400
-Message-ID: <20240910172214.2415568-2-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 03/18] ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+Date: Tue, 10 Sep 2024 13:21:48 -0400
+Message-ID: <20240910172214.2415568-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172214.2415568-1-sashal@kernel.org>
 References: <20240910172214.2415568-1-sashal@kernel.org>
@@ -71,60 +75,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.9
 Content-Transfer-Encoding: 8bit
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ac2b81eb8b2d104033560daea886ee84531e3d0a ]
+[ Upstream commit 839a4ec06f75cec8fec2cc5fc14e921d0c3f7369 ]
 
-When changing the interface from CAN-CC to CAN-FD mode the old
-coalescing parameters are re-used. This might cause problem, as the
-configured parameters are too big for CAN-FD mode.
+There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
+turns out that the 2G version has a DMI product name of
+"CHERRYVIEW D1 PLATFORM" where as the 4G version has
+"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
+unique enough that the product-name check is not necessary.
 
-During testing an invalid TX coalescing configuration has been seen.
-The problem should be been fixed in the previous patch, but add a
-safeguard here to ensure that the number of TEF coalescing buffers (if
-configured) is exactly the half of all TEF buffers.
+Drop the product-name check so that the existing DMI match for the 4G
+RAM version also matches the 2G RAM version.
 
-Link: https://lore.kernel.org/all/20240805-mcp251xfd-fix-ringconfig-v1-2-72086f0ca5ee@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240823074305.16873-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ sound/soc/intel/common/soc-acpi-intel-cht-match.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index 4cb79a4f2461..489d1439563a 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -289,7 +289,7 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
- 	const struct mcp251xfd_rx_ring *rx_ring;
- 	u16 base = 0, ram_used;
- 	u8 fifo_nr = 1;
--	int i;
-+	int err = 0, i;
- 
- 	netdev_reset_queue(priv->ndev);
- 
-@@ -385,10 +385,18 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
- 		netdev_err(priv->ndev,
- 			   "Error during ring configuration, using more RAM (%u bytes) than available (%u bytes).\n",
- 			   ram_used, MCP251XFD_RAM_SIZE);
--		return -ENOMEM;
-+		err = -ENOMEM;
- 	}
- 
--	return 0;
-+	if (priv->tx_obj_num_coalesce_irq &&
-+	    priv->tx_obj_num_coalesce_irq * 2 != priv->tx->obj_num) {
-+		netdev_err(priv->ndev,
-+			   "Error during ring configuration, number of TEF coalescing buffers (%u) must be half of TEF buffers (%u).\n",
-+			   priv->tx_obj_num_coalesce_irq, priv->tx->obj_num);
-+		err = -EINVAL;
-+	}
-+
-+	return err;
- }
- 
- void mcp251xfd_ring_free(struct mcp251xfd_priv *priv)
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+index 5e2ec60e2954..e4c3492a0c28 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+@@ -84,7 +84,6 @@ static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
+ 		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 	},
 -- 
 2.43.0
 
