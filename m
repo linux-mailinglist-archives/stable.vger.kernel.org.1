@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED369732E6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C70997341A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5184F1C249A0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469B81F25D18
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A31190056;
-	Tue, 10 Sep 2024 10:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D4218C33D;
+	Tue, 10 Sep 2024 10:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXtC6emR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsOTrAw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A1C5381A;
-	Tue, 10 Sep 2024 10:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F0218B487;
+	Tue, 10 Sep 2024 10:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963735; cv=none; b=n3jIDdtlnPqexEtu9OjTD8JyZzMYQLaWnNjbl4X/8SDBqN6nRIjCnbBAWuzDNpj9JtW0FaNhRs1NqgeVWFaKhQ4BXZAFEOpFTPq+ATwfnzE8ZzkSeDs844CNVqhpaUDpDMIR+be6gNNnuJn3q2MZ2BnvHY1QTdFgKDri8PO2ycg=
+	t=1725964470; cv=none; b=r/kvyJsQUTjgL0njNteZwcv1AAcIzYdAHT2H/hKUv3o19291pfTqPWPcLIbZWwFgXYjlo/WIlBHIZyNhHr2jOFIVdtKnXWGExjt6HDrplC1U9NLe4mQzcoNmic6PFAOu4LS/NeCrLh5dwwCTEto7yRXji7imGnNKl/kJ05nG1eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963735; c=relaxed/simple;
-	bh=gsFR4DTXDBcBBo5VBqSV5jrc+pGR73Mq0RIWG5IN86s=;
+	s=arc-20240116; t=1725964470; c=relaxed/simple;
+	bh=vvQft8fD5+wFIsUoAoS5xjmm7PTEOBOeHM3ocdqkm8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSQ7+szwqayEERe1E8fIm0VbmcKS7tUvBsJIw++77Q0mFnRyAwETpIjCABxKc7dzYJFuvh6C6PPTcZzMbvNNm8agwCuZUSYsFfmBxOniRLxbxlUYa1VJnvyQ61LnlmfCuFHFpEbjqezi+7euaA8Rba6uzQDEPpIQE1Kut488Yiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXtC6emR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E32C4CEC3;
-	Tue, 10 Sep 2024 10:22:14 +0000 (UTC)
+	 MIME-Version; b=P83gU/Uf6JNVb06FeqHfkSbiYSAKhVS9IY+JI7xkbQcHiqS6tIdjnEeeRgv30vsvrs+90gQmmp/wXyh9GTvu1njVMrj0vcT455UTv/F/aEvSXiZvfjEZYouNtqO01Mjh6YZhJDT5e8X4K6MdisqVDH+I5mg5KkckN0qHG7ty8fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsOTrAw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC9BC4CEC3;
+	Tue, 10 Sep 2024 10:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963735;
-	bh=gsFR4DTXDBcBBo5VBqSV5jrc+pGR73Mq0RIWG5IN86s=;
+	s=korg; t=1725964469;
+	bh=vvQft8fD5+wFIsUoAoS5xjmm7PTEOBOeHM3ocdqkm8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXtC6emROXt1m3MopaOsHeioiyF+z1RbOfFIGANwljhGlMYjuAC+BVTKeYu/TP6li
-	 4txt+YK5N4KeQLEv9lieeym5QWqsfThGa8M5u3P1Y7cYxUYF7tNeo+qx0JEiq4By0l
-	 jrTftZagwpkxDb/vO887twwL2D0NTvOiaBysBMPQ=
+	b=YsOTrAw2cnHtLZ8qCRW+gNrunjIiNlJEGWxl+hfQsCihgbZ7uB76xFucLVvw7cLTN
+	 j/fC3je+kulr9DZDfT/ROalQqryDwy9iSnEUGwx0hfAucNFaOWtqRhKAqHbs8EmI0m
+	 ubnLojG4wzg1BnyT8k8JcDKRtO+zeFU5mgX6ITew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/214] i3c: mipi-i3c-hci: Error out instead on BUG_ON() in IBI DMA setup
+Subject: [PATCH 6.6 194/269] smb/server: fix potential null-ptr-deref of lease_ctx_info in smb2_open()
 Date: Tue, 10 Sep 2024 11:33:01 +0200
-Message-ID: <20240910092605.209577906@linuxfoundation.org>
+Message-ID: <20240910092615.027879595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-[ Upstream commit 8a2be2f1db268ec735419e53ef04ca039fc027dc ]
+[ Upstream commit 4e8771a3666c8f216eefd6bd2fd50121c6c437db ]
 
-Definitely condition dma_get_cache_alignment * defined value > 256
-during driver initialization is not reason to BUG_ON(). Turn that to
-graceful error out with -EINVAL.
+null-ptr-deref will occur when (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
+and parse_lease_state() return NULL.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20240628131559.502822-3-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix this by check if 'lease_ctx_info' is NULL.
+
+Additionally, remove the redundant parentheses in
+parse_durable_handle_context().
+
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/smb/server/oplock.c  |  2 +-
+ fs/smb/server/smb2pdu.c | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index 5e3f0ee1cfd0..b9b6be186438 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -291,7 +291,10 @@ static int hci_dma_init(struct i3c_hci *hci)
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index a8f52c4ebbda..e546ffa57b55 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1510,7 +1510,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+  * parse_lease_state() - parse lease context containted in file open request
+  * @open_req:	buffer containing smb2 file open(create) request
+  *
+- * Return:  oplock state, -ENOENT if create lease context not found
++ * Return: allocated lease context object on success, otherwise NULL
+  */
+ struct lease_ctx_info *parse_lease_state(void *open_req)
+ {
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index c55924f5164e..458cc736286a 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2771,8 +2771,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 				}
+ 			}
  
- 		rh->ibi_chunk_sz = dma_get_cache_alignment();
- 		rh->ibi_chunk_sz *= IBI_CHUNK_CACHELINES;
--		BUG_ON(rh->ibi_chunk_sz > 256);
-+		if (rh->ibi_chunk_sz > 256) {
-+			ret = -EINVAL;
-+			goto err_out;
-+		}
+-			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
+-			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
++			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
++			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
+ 				dh_info->CreateGuid =
+ 					durable_v2_blob->CreateGuid;
+ 				dh_info->persistent =
+@@ -2792,8 +2792,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 				goto out;
+ 			}
  
- 		ibi_status_ring_sz = rh->ibi_status_sz * rh->ibi_status_entries;
- 		ibi_data_ring_sz = rh->ibi_chunk_sz * rh->ibi_chunks_total;
+-			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
+-			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
++			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
++			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
+ 				ksmbd_debug(SMB, "Request for durable open\n");
+ 				dh_info->type = dh_idx;
+ 			}
+@@ -3415,7 +3415,7 @@ int smb2_open(struct ksmbd_work *work)
+ 			goto err_out1;
+ 		}
+ 	} else {
+-		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
++		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE && lc) {
+ 			if (S_ISDIR(file_inode(filp)->i_mode)) {
+ 				lc->req_state &= ~SMB2_LEASE_WRITE_CACHING_LE;
+ 				lc->is_dir = true;
 -- 
 2.43.0
 
