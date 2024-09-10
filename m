@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-74574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F5E973000
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E7C973093
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804251F23150
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E3781F259BE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6496A18B485;
-	Tue, 10 Sep 2024 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB0A18CC1A;
+	Tue, 10 Sep 2024 10:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeZUsQx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nmo4UMjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2319D18595E;
-	Tue, 10 Sep 2024 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3A118C00C;
+	Tue, 10 Sep 2024 10:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962202; cv=none; b=U935TPJb8Hgt3A9HHilw+QPQ5hiPI/PxwLqpElkTG4aG7Z1O0948KrZoPiTULOlhuXRy54UcO1JJXuDAAdxXzN1pHbEhV5jMbIWiy4Ryu4Ga2caau17Dgs8ovg0dMnRmHcuRjQyJshvnNk2tfxDBMrKyy4d7YJvFUbeHk+t8sQM=
+	t=1725962490; cv=none; b=FWccKAePl6E5mRtN8zpX1LeP7l2R/Pj0O0nNjOyMjsWUidUNQa6ikqZV8MVnrLYFZ++pw0KdLN3RYh+Mpf4ySfezz6RxUQ1J2uPYit1SrbGWkFlSCp8eIT10ARoA4oLcf1bOTGFq3OwVzRaOZd2m2zh3QWuGM0ZSYMOOUHVFcEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962202; c=relaxed/simple;
-	bh=PI2nNlE2f+BoSyTo0XYUTeiWkbEHvZTouGjJpSUGXuY=;
+	s=arc-20240116; t=1725962490; c=relaxed/simple;
+	bh=1X5eQWdv1kKrK7o7mUgZ3ci6cy19+BiGHmJ0HXwa9C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvz4xEE/a58edk6ewcbGRz9ll324zkyAU76ABYtnJUhLqYwWgWFjtLYsoNFjei63aaDbbjbOuemOYq8nCYYwQa+icf/TFfcgbC65RNq8L8+bXDDfxZGpFv/Pk9k8EYK/b9hPNah2FDlQYXvm4F8psfeGYcnhvOCg5NBfeTJ+xCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeZUsQx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9298AC4CECD;
-	Tue, 10 Sep 2024 09:56:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SQv7WHGTjDkFSfAHOtD3ilQdWYzVIBvcnPeDUqMU6qd9YTp9RXITORWrhjJnXCXAyByU90MEEspyO+0RwKGFzs1h/ybnjeUgIr6du1OPLwkvxfFRL0cT+YbFb6Pfjj38/AK7cBIn6Ucboj/d6FIj5rNdLHtLvKvD84WKV58fA+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nmo4UMjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9850DC4CECD;
+	Tue, 10 Sep 2024 10:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962202;
-	bh=PI2nNlE2f+BoSyTo0XYUTeiWkbEHvZTouGjJpSUGXuY=;
+	s=korg; t=1725962490;
+	bh=1X5eQWdv1kKrK7o7mUgZ3ci6cy19+BiGHmJ0HXwa9C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeZUsQx5kMOSA4metx78Fcv3MBbhLQfcT5w5n2hyia2kbzeBbhKqTlAike1d8xXrl
-	 XxXUK2i9mKfCuzDiPhaD3aujpBu8ddw+Ni+/BZvuYYnGdQuIfVRk8HlPdrRvYxJqPu
-	 CtuPCI4yjNWWo875ArD4/tQjIvCIIkY1d0q5V4J4=
+	b=Nmo4UMjcQx1+90D4qMHC3JpKR0tU7IU0kHLwFTYdWqckd6VqhKwVAe249WcjanUth
+	 ZAlAav01UrEbHjKtD6Auul6HD/0tWRyGE4UWgpHxiuLbo9MvnyoFxGCi+E9oRvziuV
+	 ZyfSyzkk/SXKNJM82qeuj3SvRBoIvaUYCkOw6PU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Achal Verma <a-verma1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 329/375] crypto: starfive - Align rsa input data to 32-bit
+Subject: [PATCH 5.4 051/121] PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)
 Date: Tue, 10 Sep 2024 11:32:06 +0200
-Message-ID: <20240910092633.627888734@linuxfoundation.org>
+Message-ID: <20240910092548.200444951@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +64,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Jie Ho <jiajie.ho@starfivetech.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 6aad7019f697ab0bed98eba737d19bd7f67713de ]
+[ Upstream commit 86f271f22bbb6391410a07e08d6ca3757fda01fa ]
 
-Hardware expects RSA input plain/ciphertext to be 32-bit aligned.
-Set fixed length for preallocated buffer to the maximum supported
-keysize of the hardware and shift input text accordingly.
+Errata #i2037 in AM65x/DRA80xM Processors Silicon Revision 1.0
+(SPRZ452D_July 2018_Revised December 2019 [1]) mentions when an
+inbound PCIe TLP spans more than two internal AXI 128-byte bursts,
+the bus may corrupt the packet payload and the corrupt data may
+cause associated applications or the processor to hang.
 
-Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 8323c036789b ("crypto: starfive - Fix nent assignment in rsa dec")
+The workaround for Errata #i2037 is to limit the maximum read
+request size and maximum payload size to 128 bytes. Add workaround
+for Errata #i2037 here.
+
+The errata and workaround is applicable only to AM65x SR 1.0 and
+later versions of the silicon will have this fixed.
+
+[1] -> https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
+
+Link: https://lore.kernel.org/linux-pci/16e1fcae-1ea7-46be-b157-096e05661b15@siemens.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Achal Verma <a-verma1@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-cryp.h |  3 ++-
- drivers/crypto/starfive/jh7110-rsa.c  | 12 ++++++++----
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 44 ++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-cryp.h b/drivers/crypto/starfive/jh7110-cryp.h
-index 494a74f52706..85c65c6c0327 100644
---- a/drivers/crypto/starfive/jh7110-cryp.h
-+++ b/drivers/crypto/starfive/jh7110-cryp.h
-@@ -30,6 +30,7 @@
- #define MAX_KEY_SIZE				SHA512_BLOCK_SIZE
- #define STARFIVE_AES_IV_LEN			AES_BLOCK_SIZE
- #define STARFIVE_AES_CTR_LEN			AES_BLOCK_SIZE
-+#define STARFIVE_RSA_MAX_KEYSZ			256
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index b18ddb2b9ef8..a16fe2a558c7 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -35,6 +35,11 @@
+ #define PCIE_DEVICEID_SHIFT	16
  
- union starfive_aes_csr {
- 	u32 v;
-@@ -222,7 +223,7 @@ struct starfive_cryp_request_ctx {
- 	unsigned int				digsize;
- 	unsigned long				in_sg_len;
- 	unsigned char				*adata;
--	u8 rsa_data[] __aligned(sizeof(u32));
-+	u8 rsa_data[STARFIVE_RSA_MAX_KEYSZ] __aligned(sizeof(u32));
- };
- 
- struct starfive_cryp_dev *starfive_cryp_find_dev(struct starfive_cryp_ctx *ctx);
-diff --git a/drivers/crypto/starfive/jh7110-rsa.c b/drivers/crypto/starfive/jh7110-rsa.c
-index 33093ba4b13a..59f5979e9360 100644
---- a/drivers/crypto/starfive/jh7110-rsa.c
-+++ b/drivers/crypto/starfive/jh7110-rsa.c
-@@ -31,7 +31,6 @@
- /* A * A * R mod N ==> A */
- #define CRYPTO_CMD_AARN			0x7
- 
--#define STARFIVE_RSA_MAX_KEYSZ		256
- #define STARFIVE_RSA_RESET		0x2
- 
- static inline int starfive_pka_wait_done(struct starfive_cryp_ctx *ctx)
-@@ -74,7 +73,7 @@ static int starfive_rsa_montgomery_form(struct starfive_cryp_ctx *ctx,
- {
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
- 	struct starfive_cryp_request_ctx *rctx = ctx->rctx;
--	int count = rctx->total / sizeof(u32) - 1;
-+	int count = (ALIGN(rctx->total, 4) / 4) - 1;
- 	int loop;
- 	u32 temp;
- 	u8 opsize;
-@@ -251,12 +250,17 @@ static int starfive_rsa_enc_core(struct starfive_cryp_ctx *ctx, int enc)
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
- 	struct starfive_cryp_request_ctx *rctx = ctx->rctx;
- 	struct starfive_rsa_key *key = &ctx->rsa_key;
--	int ret = 0;
-+	int ret = 0, shift = 0;
- 
- 	writel(STARFIVE_RSA_RESET, cryp->base + STARFIVE_PKA_CACR_OFFSET);
- 
-+	if (!IS_ALIGNED(rctx->total, sizeof(u32))) {
-+		shift = sizeof(u32) - (rctx->total & 0x3);
-+		memset(rctx->rsa_data, 0, shift);
-+	}
+ /* Application registers */
++#define PID				0x000
++#define RTL				GENMASK(15, 11)
++#define RTL_SHIFT			11
++#define AM6_PCI_PG1_RTL_VER		0x15
 +
- 	rctx->total = sg_copy_to_buffer(rctx->in_sg, rctx->nents,
--					rctx->rsa_data, rctx->total);
-+					rctx->rsa_data + shift, rctx->total);
+ #define CMD_STATUS			0x004
+ #define LTSSM_EN_VAL		        BIT(0)
+ #define OB_XLAT_EN_VAL		        BIT(1)
+@@ -107,6 +112,8 @@
  
- 	if (enc) {
- 		key->bitlen = key->e_bitlen;
+ #define to_keystone_pcie(x)		dev_get_drvdata((x)->dev)
+ 
++#define PCI_DEVICE_ID_TI_AM654X		0xb00c
++
+ struct ks_pcie_of_data {
+ 	enum dw_pcie_device_mode mode;
+ 	const struct dw_pcie_host_ops *host_ops;
+@@ -534,7 +541,11 @@ static int ks_pcie_start_link(struct dw_pcie *pci)
+ static void ks_pcie_quirk(struct pci_dev *dev)
+ {
+ 	struct pci_bus *bus = dev->bus;
++	struct keystone_pcie *ks_pcie;
++	struct device *bridge_dev;
+ 	struct pci_dev *bridge;
++	u32 val;
++
+ 	static const struct pci_device_id rc_pci_devids[] = {
+ 		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCIE_RC_K2HK),
+ 		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
+@@ -546,6 +557,11 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
+ 		{ 0, },
+ 	};
++	static const struct pci_device_id am6_pci_devids[] = {
++		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654X),
++		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
++		{ 0, },
++	};
+ 
+ 	if (pci_is_root_bus(bus))
+ 		bridge = dev;
+@@ -567,10 +583,36 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 	 */
+ 	if (pci_match_id(rc_pci_devids, bridge)) {
+ 		if (pcie_get_readrq(dev) > 256) {
+-			dev_info(&dev->dev, "limiting MRRS to 256\n");
++			dev_info(&dev->dev, "limiting MRRS to 256 bytes\n");
+ 			pcie_set_readrq(dev, 256);
+ 		}
+ 	}
++
++	/*
++	 * Memory transactions fail with PCI controller in AM654 PG1.0
++	 * when MRRS is set to more than 128 bytes. Force the MRRS to
++	 * 128 bytes in all downstream devices.
++	 */
++	if (pci_match_id(am6_pci_devids, bridge)) {
++		bridge_dev = pci_get_host_bridge_device(dev);
++		if (!bridge_dev && !bridge_dev->parent)
++			return;
++
++		ks_pcie = dev_get_drvdata(bridge_dev->parent);
++		if (!ks_pcie)
++			return;
++
++		val = ks_pcie_app_readl(ks_pcie, PID);
++		val &= RTL;
++		val >>= RTL_SHIFT;
++		if (val != AM6_PCI_PG1_RTL_VER)
++			return;
++
++		if (pcie_get_readrq(dev) > 128) {
++			dev_info(&dev->dev, "limiting MRRS to 128 bytes\n");
++			pcie_set_readrq(dev, 128);
++		}
++	}
+ }
+ DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, ks_pcie_quirk);
+ 
 -- 
 2.43.0
 
