@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD5B972E11
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15CE97300D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 726411C246FD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97961F2373F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E141117BEAE;
-	Tue, 10 Sep 2024 09:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20188188A28;
+	Tue, 10 Sep 2024 09:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zVbU4pi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJf4UTHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E50F189B9C;
-	Tue, 10 Sep 2024 09:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC231EEC9;
+	Tue, 10 Sep 2024 09:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961154; cv=none; b=RZBBVs1AEA3sdKwImeylENitE4+VsiwLX+FuT1NgIxOkuNDQg0NnQlMNPV6sRXdrEdAZJC2fGCKIbgp3LK8JMm67QuqtTslLj5D49DKsS62yjjZxh+de52RndFDs7+4A/Fx8/q/B+sEgc8bfC65pJMo2Cy4Jvt9eYYC5fpX8UBA=
+	t=1725962225; cv=none; b=PZBo0Pnu+WlFqEuN5X2jmFOCarlkd4OpHT45Z3tMTBB7M0XUhvuFUlXYVnJnloAGcGKi7CnynYRZq4W5cD6TOKDMK9fAA7TuNKk6oP3+G2WJtMdUe9SM6XEueewmKZjQBDXh6L+Ruxs1s3SVuZqXLSRbM4e719LzNdGgKLeSMlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961154; c=relaxed/simple;
-	bh=MLsuGh53XgMaBUD75TfOi0UWPF4/BMEh0gZ+ELuerkI=;
+	s=arc-20240116; t=1725962225; c=relaxed/simple;
+	bh=n/NQI/bF5Tf1+5ajBsYKa41DBhwrJv/biF2hjmCeW0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxHeAJ7yw7SK+VAfIgq2xu1LcKaxpsSiOO3LWRcWXNywH/CWnv5JHqBXt0KGKEiJbbXN6kcPEQCQaxQa2oORHXO9LhkxJX70FFZcg1nUG6DuoH0ZKpcbLX2DX7dm13vPBTomnWxVaPJ2aBburxNr7omF0YRuHqQZ8N2rPBQl5lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zVbU4pi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296AFC4CEC3;
-	Tue, 10 Sep 2024 09:39:13 +0000 (UTC)
+	 MIME-Version; b=JIANFdxzFEbzfcnzhs43WGyOCM2ErRQyM1FT5937trxbaw1DXD7kuIZKrOpkEBsPY+CBjeYVA6h9YSRa3QzgSAXR8qrD0zJkeNR639msRaZK7vyntIWgujpsuSqKHOJsXVt56433hyKECH2jYK0PnUOn9DcY/QQyNQawcAs1R3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJf4UTHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05556C4CECE;
+	Tue, 10 Sep 2024 09:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961154;
-	bh=MLsuGh53XgMaBUD75TfOi0UWPF4/BMEh0gZ+ELuerkI=;
+	s=korg; t=1725962225;
+	bh=n/NQI/bF5Tf1+5ajBsYKa41DBhwrJv/biF2hjmCeW0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zVbU4pizr2JYtWC5EB7mO0N4Cxeg/2RWkQYR5QVh/08qbcTkV+bM73Cfsv2OTzGQ
-	 aYRWbgnnb/WmtEx1naiNmutmEb0gUAqCboZF294qwSxkogSM6INwjlc7pNPiJ4Yb2n
-	 f1O+eu3kui1z9rJEhJUfjv2lKYTQaLJPwyXqoTAs=
+	b=sJf4UTHfvWmuMfBirxV7CN1c1/rbmzQ4y9SkikazcQ5qZFJ9dGvRBW8PXuF2V9IbV
+	 /WQT1DauGVj3XaXUQoi8Gwr5KKQrB4AZGagWWftHQiF4jKEjWn/QbRTeDDrbqCnlVS
+	 gQfEvPaRsX6ZyIGrVnSSgQxIkJgcyF7Qp6JjTufU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	devi priya <quic_devipriy@quicinc.com>,
+	Amandeep Singh <quic_amansing@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 72/96] ata: pata_macio: Use WARN instead of BUG
+Subject: [PATCH 6.10 337/375] clk: qcom: ipq9574: Update the alpha PLL type for GPLLs
 Date: Tue, 10 Sep 2024 11:32:14 +0200
-Message-ID: <20240910092544.720591921@linuxfoundation.org>
+Message-ID: <20240910092633.902101095@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: devi priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit d4bc0a264fb482b019c84fbc7202dd3cab059087 ]
+[ Upstream commit 6357efe3abead68048729adf11a9363881657939 ]
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
+Update PLL offsets to DEFAULT_EVO to configure MDIO to 800MHz.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+The incorrect clock frequency leads to an incorrect MDIO clock. This,
+in turn, affects the MDIO hardware configurations as the divider is
+calculated from the MDIO clock frequency. If the clock frequency is
+not as expected, the MDIO register fails due to the generation of an
+incorrect MDIO frequency.
+
+This issue is critical as it results in incorrect MDIO configurations
+and ultimately leads to the MDIO function not working. This results in
+a complete feature failure affecting all Ethernet PHYs. Specifically,
+Ethernet will not work on IPQ9574 due to this issue.
+
+Currently, the clock frequency is set to CLK_ALPHA_PLL_TYPE_DEFAULT.
+However, this setting does not yield the expected clock frequency.
+To rectify this, we need to change this to CLK_ALPHA_PLL_TYPE_DEFAULT_EVO.
+
+This modification ensures that the clock frequency aligns with our
+expectations, thereby resolving the MDIO register failure and ensuring
+the proper functioning of the Ethernet on IPQ9574.
+
+Fixes: d75b82cff488 ("clk: qcom: Add Global Clock Controller driver for IPQ9574")
+Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+Signed-off-by: Amandeep Singh <quic_amansing@quicinc.com>
+Link: https://lore.kernel.org/r/20240806061105.2849944-1-quic_amansing@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-ipq9574.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 765b99319d3c..7beb5dd9ff87 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -537,7 +537,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
+diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
+index f8b9a1e93bef..cdbbf2cc9c5d 100644
+--- a/drivers/clk/qcom/gcc-ipq9574.c
++++ b/drivers/clk/qcom/gcc-ipq9574.c
+@@ -65,7 +65,7 @@ static const struct clk_parent_data gcc_sleep_clk_data[] = {
  
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
+ static struct clk_alpha_pll gpll0_main = {
+ 	.offset = 0x20000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(0),
+@@ -93,7 +93,7 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
  
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -549,11 +550,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
- 		}
- 	}
+ static struct clk_alpha_pll_postdiv gpll0 = {
+ 	.offset = 0x20000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll0",
+@@ -107,7 +107,7 @@ static struct clk_alpha_pll_postdiv gpll0 = {
  
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
+ static struct clk_alpha_pll gpll4_main = {
+ 	.offset = 0x22000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(2),
+@@ -122,7 +122,7 @@ static struct clk_alpha_pll gpll4_main = {
  
- 	/* Convert the last command to an input/output */
- 	table--;
+ static struct clk_alpha_pll_postdiv gpll4 = {
+ 	.offset = 0x22000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll4",
+@@ -136,7 +136,7 @@ static struct clk_alpha_pll_postdiv gpll4 = {
+ 
+ static struct clk_alpha_pll gpll2_main = {
+ 	.offset = 0x21000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(1),
+@@ -151,7 +151,7 @@ static struct clk_alpha_pll gpll2_main = {
+ 
+ static struct clk_alpha_pll_postdiv gpll2 = {
+ 	.offset = 0x21000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll2",
 -- 
 2.43.0
 
