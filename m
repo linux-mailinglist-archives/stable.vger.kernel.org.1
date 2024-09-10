@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-75012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABB9973339
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB5973194
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 274DAB29427
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6CB328ABE4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3962319409C;
-	Tue, 10 Sep 2024 10:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180F819004B;
+	Tue, 10 Sep 2024 10:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZXV7rpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY/puQK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB32C17AE00;
-	Tue, 10 Sep 2024 10:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F1C196455;
+	Tue, 10 Sep 2024 10:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963492; cv=none; b=Lewo+7eqppv+E9F08F+cQIyvCsZWQy2fqqwckDCGMiwGmSnHIgRlHDXpYZiSACGjLJ9yprJ5LtPXYA2G+6jv3CeVB2Z3cCDxMPicCcqNrQr+gOJuVNwyI6rit+Z6xoC0O1gi4/TVEp4UdfDZS1TkveVRXwk8S68MdTX3D9oBTls=
+	t=1725962916; cv=none; b=glKJkxiwDwhH7QI6Z/j6xhXlcVEkRUit+nYqrUtFJ7d9iSx7923qK4rtPI45q3/CnpDxC9NGxrvkfKU0ZXoV8p3+mIcPo0mXKbg6WCGI416G9gpt+8A62okOvqbV4nvtaeFKlx/NISjiiZaVF7y5k52iBlosQUWPQSOawXWxPHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963492; c=relaxed/simple;
-	bh=yDR7v979Vib0F3QlWnCqhtYidkDyqfRMZcz7s1YmAMs=;
+	s=arc-20240116; t=1725962916; c=relaxed/simple;
+	bh=tAE2+XoFiNgHteoUTtc7fp/JUHaErHH1wQ23bYs4q3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrSpdX/n4sHoP4HklXEo5iKvK88dVzK6mqJzxW3XltkBQaz8XmlvhR1tLIYYgJtTr4SDVAEh2TRQvw0ey4ZlSPx5OM56/4Y8sB10F4Xl+u/MMtGqqKfMC0TlVewkorMUBOXt3hHpLJ8gr5uEePS9zBerdOVQRlXaF5Wn1N9aNlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZXV7rpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D62C4CEC3;
-	Tue, 10 Sep 2024 10:18:10 +0000 (UTC)
+	 MIME-Version; b=nG7B54eLTrGRxmdtiIhpJl+8MGf+wG8lbJevIATbqGdkSLX6B3W7UyLdy0Xnbd0hg1DiQGp3AduS+5cYTFUHWVIiNxxE+dK3f5UqhbHxU0LAoN6qdt0mbt0Sogk3XoAOzZZnv2szlmHcP7lP2543PcCA59BjNIjg1KPZq90YilQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY/puQK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14FDC4CEC3;
+	Tue, 10 Sep 2024 10:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963491;
-	bh=yDR7v979Vib0F3QlWnCqhtYidkDyqfRMZcz7s1YmAMs=;
+	s=korg; t=1725962916;
+	bh=tAE2+XoFiNgHteoUTtc7fp/JUHaErHH1wQ23bYs4q3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZXV7rpXEX5765ig6oHjqjOED8qteGCYkMzaW1bsFQk1PBvqHFzee1wvOVoRDeGDt
-	 8iv/G4EBxQn0E583BhNaHkfbxwLQofwrTC596aS8Qacfb4yXlfXUHOiKR7fnu7CIm3
-	 wJmFtVVpc7Z/wkeflQfXfA0SOPsf5qay4JoXhxuk=
+	b=MY/puQK89+QMB1+LH/TUoH7Dk60iaMaA8Mb70UXcf2I0RW7J6jsDWG9Awune8KooM
+	 dHFiX/xgoy/5exc+/gtnpgR9T2RZ+JWoaFdt3HGUMqX7yXv4kMUgK9XENqR01ADsJO
+	 5KD3xS3tl9YF/WZo9hUCY58BOgGBfH/6kejIJgwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 075/214] mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+	Pavel Shilovsky <pshilov@microsoft.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/192] cifs: Fix FALLOC_FL_ZERO_RANGE to preflush buffered part of target region
 Date: Tue, 10 Sep 2024 11:31:37 +0200
-Message-ID: <20240910092601.805271753@linuxfoundation.org>
+Message-ID: <20240910092601.000270539@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +70,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890 upstream.
+[ Upstream commit 91d1dfae464987aaf6c79ff51d8674880fb3be77 ]
 
-Commit 616f87661792 ("mmc: pass queue_limits to blk_mq_alloc_disk") [1]
-revealed the long living issue in dw_mmc.c driver, existing since the
-time when it was first introduced in commit f95f3850f7a9 ("mmc: dw_mmc:
-Add Synopsys DesignWare mmc host driver."), also making kernel boot
-broken on platforms using dw_mmc driver with 16K or 64K pages enabled,
-with this message in dmesg:
+Under certain conditions, the range to be cleared by FALLOC_FL_ZERO_RANGE
+may only be buffered locally and not yet have been flushed to the server.
+For example:
 
-    mmcblk: probe of mmc0:0001 failed with error -22
+	xfs_io -f -t -c "pwrite -S 0x41 0 4k" \
+		     -c "pwrite -S 0x42 4k 4k" \
+		     -c "fzero 0 4k" \
+		     -c "pread -v 0 8k" /xfstest.test/foo
 
-That's happening because mmc_blk_probe() fails when it calls
-blk_validate_limits() consequently, which returns the error due to
-failed max_segment_size check in this code:
+will write two 4KiB blocks of data, which get buffered in the pagecache,
+and then fallocate() is used to clear the first 4KiB block on the server -
+but we don't flush the data first, which means the EOF position on the
+server is wrong, and so the FSCTL_SET_ZERO_DATA RPC fails (and xfs_io
+ignores the error), but then when we try to read it, we see the old data.
 
-    /*
-     * The maximum segment size has an odd historic 64k default that
-     * drivers probably should override.  Just like the I/O size we
-     * require drivers to at least handle a full page per segment.
-     */
-    ...
-    if (WARN_ON_ONCE(lim->max_segment_size < PAGE_SIZE))
-        return -EINVAL;
+Fix this by preflushing any part of the target region that above the
+server's idea of the EOF position to force the server to update its EOF
+position.
 
-In case when IDMAC (Internal DMA Controller) is used, dw_mmc.c always
-sets .max_seg_size to 4 KiB:
+Note, however, that we don't want to simply expand the file by moving the
+EOF before doing the FSCTL_SET_ZERO_DATA[*] because someone else might see
+the zeroed region or if the RPC fails we then have to try to clean it up or
+risk getting corruption.
 
-    mmc->max_seg_size = 0x1000;
+[*] And we have to move the EOF first otherwise FSCTL_SET_ZERO_DATA won't
+do what we want.
 
-The comment in the code above explains why it's incorrect. Arnd
-suggested setting .max_seg_size to .max_req_size to fix it, which is
-also what some other drivers are doing:
+This fixes the generic/008 xfstest.
 
-   $ grep -rl 'max_seg_size.*=.*max_req_size' drivers/mmc/host/ | \
-     wc -l
-   18
+[!] Note: A better way to do this might be to split the operation into two
+parts: we only do FSCTL_SET_ZERO_DATA for the part of the range below the
+server's EOF and then, if that worked, invalidate the buffered pages for the
+part above the range.
 
-This change is not only fixing the boot with 16K/64K pages, but also
-leads to a better MMC performance. The linear write performance was
-tested on E850-96 board (eMMC only), before commit [1] (where it's
-possible to boot with 16K/64K pages without this fix, to be able to do
-a comparison). It was tested with this command:
-
-    # dd if=/dev/zero of=somefile bs=1M count=500 oflag=sync
-
-Test results are as follows:
-
-  - 4K pages,  .max_seg_size = 4 KiB:                   94.2 MB/s
-  - 4K pages,  .max_seg_size = .max_req_size = 512 KiB: 96.9 MB/s
-  - 16K pages, .max_seg_size = 4 KiB:                   126 MB/s
-  - 16K pages, .max_seg_size = .max_req_size = 2 MiB:   128 MB/s
-  - 64K pages, .max_seg_size = 4 KiB:                   138 MB/s
-  - 64K pages, .max_seg_size = .max_req_size = 8 MiB:   138 MB/s
-
-Unfortunately, SD card controller is not enabled in E850-96 yet, so it
-wasn't possible for me to run the test on some cheap SD cards to check
-this patch's impact on those. But it's possible that this change might
-also reduce the writes count, thus improving SD/eMMC longevity.
-
-All credit for the analysis and the suggested solution goes to Arnd.
-
-[1] https://lore.kernel.org/all/20240215070300.2200308-18-hch@lst.de/
-
-Fixes: f95f3850f7a9 ("mmc: dw_mmc: Add Synopsys DesignWare mmc host driver.")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYtddf2Fd3be+YShHP6CmSDNcn0ptW8qg+stUKW+Cn0rjQ@mail.gmail.com/
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240306232052.21317-1-semen.protsenko@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6b69040247e1 ("cifs/smb3: Fix data inconsistent when zero file range")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <stfrench@microsoft.com>
+cc: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+cc: Pavel Shilovsky <pshilov@microsoft.com>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-mm@kvack.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/dw_mmc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2ops.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -2903,8 +2903,8 @@ static int dw_mci_init_slot(struct dw_mc
- 	if (host->use_dma == TRANS_MODE_IDMAC) {
- 		mmc->max_segs = host->ring_size;
- 		mmc->max_blk_size = 65535;
--		mmc->max_seg_size = 0x1000;
--		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
-+		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
-+		mmc->max_seg_size = mmc->max_req_size;
- 		mmc->max_blk_count = mmc->max_req_size / 512;
- 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
- 		mmc->max_segs = 64;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 2291081653a8..5e9478f31d47 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3443,13 +3443,15 @@ static long smb3_zero_data(struct file *file, struct cifs_tcon *tcon,
+ }
+ 
+ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+-			    loff_t offset, loff_t len, bool keep_size)
++			    unsigned long long offset, unsigned long long len,
++			    bool keep_size)
+ {
+ 	struct cifs_ses *ses = tcon->ses;
+ 	struct inode *inode = file_inode(file);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsFileInfo *cfile = file->private_data;
+-	unsigned long long new_size;
++	struct netfs_inode *ictx = netfs_inode(inode);
++	unsigned long long i_size, new_size, remote_size;
+ 	long rc;
+ 	unsigned int xid;
+ 	__le64 eof;
+@@ -3462,6 +3464,16 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+ 	inode_lock(inode);
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
++	i_size = i_size_read(inode);
++	remote_size = ictx->remote_i_size;
++	if (offset + len >= remote_size && offset < i_size) {
++		unsigned long long top = umin(offset + len, i_size);
++
++		rc = filemap_write_and_wait_range(inode->i_mapping, offset, top - 1);
++		if (rc < 0)
++			goto zero_range_exit;
++	}
++
+ 	/*
+ 	 * We zero the range through ioctl, so we need remove the page caches
+ 	 * first, otherwise the data may be inconsistent with the server.
+-- 
+2.43.0
+
 
 
 
