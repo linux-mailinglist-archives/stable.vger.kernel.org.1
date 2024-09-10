@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBE1973069
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0E972FD5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B4912872F2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B89B11F2253D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DB91917F0;
-	Tue, 10 Sep 2024 09:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18E18C344;
+	Tue, 10 Sep 2024 09:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLqKXZr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1bJXp1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B581917E2;
-	Tue, 10 Sep 2024 09:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFBE188CB3;
+	Tue, 10 Sep 2024 09:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962381; cv=none; b=j3rMNy/S5l0KLJlz1a24MjPWffOljPWDkAgNgmc0CTIODyqOSCbmiO9xsNTPIAZ9EMxVe7X7sW6Ob4huyfXJV2VRw8E6RiA62eT7B3blIx2dcnPQzSPeDmrdMaOOjX9nsKI3pPh7uo2nUrfXv3N5MOKiD+6DEnjlB90RwhvuDko=
+	t=1725962093; cv=none; b=BEqKDgXzn/I5C1Xnn6/7t6ebD3kW3FzfLkrzAJYhXroXXp8MINzgnODS+J70Q2wdz1S6xxV+qOmTdqMN9/S5JKg2ud6AX1pnHJtO+fn3fBzB2uSsoywzYMT7M1ykrycJ3zssf7OGTz990x2dLD89Def+3YWIiMduBYk9xrd6bCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962381; c=relaxed/simple;
-	bh=k/hYAkMP3yZe47rpL467HvC740gWuc0b+wpsKP5E81Y=;
+	s=arc-20240116; t=1725962093; c=relaxed/simple;
+	bh=JPZtCO61VVZKJvVXjUJxEf2PMR7gqJKSY9hjHvt+Ej8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUniTt/jhZgFBFPfKc5ev1IUV/ht2MFWzro5hFjegzQ7K00kkyvx0l6Ft8dwJjXd7QW3a3BBAgyzguDLEWkAUmOt60DYmNaMo/tC7qJbFWJsYR++ldi0FbHdTTe3jESyyxq+dzFfi4gXcK5r5ksocHIsAlyxIecS3QSwh3TTKdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLqKXZr6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836A4C4CED2;
-	Tue, 10 Sep 2024 09:59:40 +0000 (UTC)
+	 MIME-Version; b=e3c9zFI2hc92YLqfYyPvAPDJvI0tU0c/+39k+TSxNk9pi2vJbscjB5RSwGo3K72z89DOx1/1f2Nl3vJc6v7Ft+UFL99QwbpfEU7rf9V+EENZuzLxnsN5llMMLznrqjRXQRbrvXKWfGG22UjV5PO8r5spJ9o8UOzTW/XM+yQXY74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1bJXp1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C609AC4CEC3;
+	Tue, 10 Sep 2024 09:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962380;
-	bh=k/hYAkMP3yZe47rpL467HvC740gWuc0b+wpsKP5E81Y=;
+	s=korg; t=1725962093;
+	bh=JPZtCO61VVZKJvVXjUJxEf2PMR7gqJKSY9hjHvt+Ej8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLqKXZr6URkHgjl3904ah5+yV5W8JtGxsvHILk4M9YkwG01Z2mJgICvRq8Rm2SmOV
-	 gDSQeupGXhBYuBK2E6FsNz2STQhD372mSUQSPwUk/oxOcgIrCy5+PYAZjf4NcYCLvY
-	 CMQ4zo2HhSifxWLJMRhl0t1kcvUi0rOSsN4IPwvQ=
+	b=b1bJXp1RAKY9JRXcoWb2c+/T+FuS8eTrZh+W1dQlh+PujPLFy1zbRfoZk93RUOiBg
+	 7V4Lyq03YpLTWg6VT+gPQqTT5Y3v+UAEZyJSRkCKUKieRXARfttPPtqvyF9Ejr+Y+4
+	 Z+imYZR4LM7/ajnfM1LrIjvgCouzg8/nuVzY3+cM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Holesch <simon@holesch.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Hongren Zheng <i@zenithal.me>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/121] usbip: Dont submit special requests twice
+	Faisal Hassan <quic_faisalh@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.10 293/375] usb: dwc3: core: update LC timer as per USB Spec V3.2
 Date: Tue, 10 Sep 2024 11:31:30 +0200
-Message-ID: <20240910092546.467025524@linuxfoundation.org>
+Message-ID: <20240910092632.407042383@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,188 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Holesch <simon@holesch.de>
+From: Faisal Hassan <quic_faisalh@quicinc.com>
 
-[ Upstream commit 8b6b386f9aa936ed0c190446c71cf59d4a507690 ]
+commit 9149c9b0c7e046273141e41eebd8a517416144ac upstream.
 
-Skip submitting URBs, when identical requests were already sent in
-tweak_special_requests(). Instead call the completion handler directly
-to return the result of the URB.
+This fix addresses STAR 9001285599, which only affects DWC_usb3 version
+3.20a. The timer value for PM_LC_TIMER in DWC_usb3 3.20a for the Link
+ECN changes is incorrect. If the PM TIMER ECN is enabled via GUCTL2[19],
+the link compliance test (TD7.21) may fail. If the ECN is not enabled
+(GUCTL2[19] = 0), the controller will use the old timer value (5us),
+which is still acceptable for the link compliance test. Therefore, clear
+GUCTL2[19] to pass the USB link compliance test: TD 7.21.
 
-Even though submitting those requests twice should be harmless, there
-are USB devices that react poorly to some duplicated requests.
-
-One example is the ChipIdea controller implementation in U-Boot: The
-second SET_CONFIGURATION request makes U-Boot disable and re-enable all
-endpoints. Re-enabling an endpoint in the ChipIdea controller, however,
-was broken until U-Boot commit b272c8792502 ("usb: ci: Fix gadget
-reinit").
-
-Signed-off-by: Simon Holesch <simon@holesch.de>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Hongren Zheng <i@zenithal.me>
-Tested-by: Hongren Zheng <i@zenithal.me>
-Link: https://lore.kernel.org/r/20240519141922.171460-1-simon@holesch.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240829094502.26502-1-quic_faisalh@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/stub_rx.c | 77 ++++++++++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 27 deletions(-)
+ drivers/usb/dwc3/core.c |   15 +++++++++++++++
+ drivers/usb/dwc3/core.h |    2 ++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/drivers/usb/usbip/stub_rx.c b/drivers/usb/usbip/stub_rx.c
-index d3d360ff0d24..6be5cd87e7cb 100644
---- a/drivers/usb/usbip/stub_rx.c
-+++ b/drivers/usb/usbip/stub_rx.c
-@@ -144,53 +144,62 @@ static int tweak_set_configuration_cmd(struct urb *urb)
- 	if (err && err != -ENODEV)
- 		dev_err(&sdev->udev->dev, "can't set config #%d, error %d\n",
- 			config, err);
--	return 0;
-+	return err;
- }
- 
- static int tweak_reset_device_cmd(struct urb *urb)
- {
- 	struct stub_priv *priv = (struct stub_priv *) urb->context;
- 	struct stub_device *sdev = priv->sdev;
-+	int err;
- 
- 	dev_info(&urb->dev->dev, "usb_queue_reset_device\n");
- 
--	if (usb_lock_device_for_reset(sdev->udev, NULL) < 0) {
-+	err = usb_lock_device_for_reset(sdev->udev, NULL);
-+	if (err < 0) {
- 		dev_err(&urb->dev->dev, "could not obtain lock to reset device\n");
--		return 0;
-+		return err;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1368,6 +1368,21 @@ static int dwc3_core_init(struct dwc3 *d
  	}
--	usb_reset_device(sdev->udev);
-+	err = usb_reset_device(sdev->udev);
- 	usb_unlock_device(sdev->udev);
  
--	return 0;
-+	return err;
- }
- 
- /*
-  * clear_halt, set_interface, and set_configuration require special tricks.
-+ * Returns 1 if request was tweaked, 0 otherwise.
-  */
--static void tweak_special_requests(struct urb *urb)
-+static int tweak_special_requests(struct urb *urb)
- {
-+	int err;
-+
- 	if (!urb || !urb->setup_packet)
--		return;
-+		return 0;
- 
- 	if (usb_pipetype(urb->pipe) != PIPE_CONTROL)
--		return;
-+		return 0;
- 
- 	if (is_clear_halt_cmd(urb))
- 		/* tweak clear_halt */
--		 tweak_clear_halt_cmd(urb);
-+		err = tweak_clear_halt_cmd(urb);
- 
- 	else if (is_set_interface_cmd(urb))
- 		/* tweak set_interface */
--		tweak_set_interface_cmd(urb);
-+		err = tweak_set_interface_cmd(urb);
- 
- 	else if (is_set_configuration_cmd(urb))
- 		/* tweak set_configuration */
--		tweak_set_configuration_cmd(urb);
-+		err = tweak_set_configuration_cmd(urb);
- 
- 	else if (is_reset_device_cmd(urb))
--		tweak_reset_device_cmd(urb);
--	else
-+		err = tweak_reset_device_cmd(urb);
-+	else {
- 		usbip_dbg_stub_rx("no need to tweak\n");
-+		return 0;
+ 	/*
++	 * STAR 9001285599: This issue affects DWC_usb3 version 3.20a
++	 * only. If the PM TIMER ECM is enabled through GUCTL2[19], the
++	 * link compliance test (TD7.21) may fail. If the ECN is not
++	 * enabled (GUCTL2[19] = 0), the controller will use the old timer
++	 * value (5us), which is still acceptable for the link compliance
++	 * test. Therefore, do not enable PM TIMER ECM in 3.20a by
++	 * setting GUCTL2[19] by default; instead, use GUCTL2[19] = 0.
++	 */
++	if (DWC3_VER_IS(DWC3, 320A)) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUCTL2);
++		reg &= ~DWC3_GUCTL2_LC_TIMER;
++		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
 +	}
 +
-+	return !err;
- }
++	/*
+ 	 * When configured in HOST mode, after issuing U3/L2 exit controller
+ 	 * fails to send proper CRC checksum in CRC5 feild. Because of this
+ 	 * behaviour Transaction Error is generated, resulting in reset and
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -417,6 +417,7 @@
  
- /*
-@@ -468,6 +477,7 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
- 	int support_sg = 1;
- 	int np = 0;
- 	int ret, i;
-+	int is_tweaked;
+ /* Global User Control Register 2 */
+ #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
++#define DWC3_GUCTL2_LC_TIMER			BIT(19)
  
- 	if (pipe == -1)
- 		return;
-@@ -580,8 +590,11 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
- 		priv->urbs[i]->pipe = pipe;
- 		priv->urbs[i]->complete = stub_complete;
+ /* Global User Control Register 3 */
+ #define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
+@@ -1262,6 +1263,7 @@ struct dwc3 {
+ #define DWC3_REVISION_290A	0x5533290a
+ #define DWC3_REVISION_300A	0x5533300a
+ #define DWC3_REVISION_310A	0x5533310a
++#define DWC3_REVISION_320A	0x5533320a
+ #define DWC3_REVISION_330A	0x5533330a
  
--		/* no need to submit an intercepted request, but harmless? */
--		tweak_special_requests(priv->urbs[i]);
-+		/*
-+		 * all URBs belong to a single PDU, so a global is_tweaked flag is
-+		 * enough
-+		 */
-+		is_tweaked = tweak_special_requests(priv->urbs[i]);
- 
- 		masking_bogus_flags(priv->urbs[i]);
- 	}
-@@ -594,22 +607,32 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
- 
- 	/* urb is now ready to submit */
- 	for (i = 0; i < priv->num_urbs; i++) {
--		ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
-+		if (!is_tweaked) {
-+			ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
- 
--		if (ret == 0)
--			usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
--					pdu->base.seqnum);
--		else {
--			dev_err(&udev->dev, "submit_urb error, %d\n", ret);
--			usbip_dump_header(pdu);
--			usbip_dump_urb(priv->urbs[i]);
-+			if (ret == 0)
-+				usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
-+						pdu->base.seqnum);
-+			else {
-+				dev_err(&udev->dev, "submit_urb error, %d\n", ret);
-+				usbip_dump_header(pdu);
-+				usbip_dump_urb(priv->urbs[i]);
- 
-+				/*
-+				 * Pessimistic.
-+				 * This connection will be discarded.
-+				 */
-+				usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
-+				break;
-+			}
-+		} else {
- 			/*
--			 * Pessimistic.
--			 * This connection will be discarded.
-+			 * An identical URB was already submitted in
-+			 * tweak_special_requests(). Skip submitting this URB to not
-+			 * duplicate the request.
- 			 */
--			usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
--			break;
-+			priv->urbs[i]->status = 0;
-+			stub_complete(priv->urbs[i]);
- 		}
- 	}
- 
--- 
-2.43.0
-
+ #define DWC31_REVISION_ANY	0x0
 
 
 
