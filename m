@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E857973085
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEBF97301A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF45C28723E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8211C23FCB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC42190054;
-	Tue, 10 Sep 2024 10:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D1114D431;
+	Tue, 10 Sep 2024 09:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK0dZQuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0U+xL3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B918B491;
-	Tue, 10 Sep 2024 10:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDB218C03E;
+	Tue, 10 Sep 2024 09:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962454; cv=none; b=sM66k0pPYCOmlpkv5lDAZ4ju9DoqVCP0xqKZBxUlXP2IGYoHvmevVcFemtX/zyGJ9C2JrmzkutNuJGKW6FpD12YBdVUJ5jvyy7m5CC2GqW36xvMS9jAOV0FOEhEqtEh+EZY53EjGIeIiEWyuLIASYx9VqaZv0bN7Y4DVOkVsGeg=
+	t=1725962249; cv=none; b=Z5+wwVR8KFxkLCDHHixnr3yeBXL2WXagA0B0/QO3rY+L1F2+pAeAic+quZi0t0SeuVy09aeDiM1e2Kwd9dpK/CyKFFOQrWn4QD0weSYUmohrvJG9LG9v8Gefp4ZsS+OXL6lmzkVfye6KRY8XmcZERriw7Wv+hXW4rReiyUxciZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962454; c=relaxed/simple;
-	bh=JTYc2G7kKHukB39j/Om0IDhzKwge1eJGEp8siIprKeU=;
+	s=arc-20240116; t=1725962249; c=relaxed/simple;
+	bh=ka0lGrS/ffUNOahWcVxEpmad6l3Bklyi1gkqFcdaahg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mQNghCZGywRaLaXUxiYVnpAYQVh1AIEoBgwQW/TqQ7ciDxV6Ox8oDOwAUJlfAAWIPJXTAtw46jPUlCmAVqYGVJs1eUJROfzVlA8VKpJG2SYcmzE5RoeWU9+lzYoEMqsblhRmupUNNBKKYbnpG3DkvVH20R/8qtcrhnMGIEmAOgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK0dZQuH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24CCC4CEC3;
-	Tue, 10 Sep 2024 10:00:53 +0000 (UTC)
+	 MIME-Version; b=imoyl37OvmSXIybWiMyc+3ldo+nNhIs34TjYRtIVv7EfRjm57hU1/bfbvFSsjqfNXVxZ15vcK7t8aysisllloGIyE/yK0/ii/Nuzf6ivFmjPGo/UY+IwAqFZKl/219DPjjKxh7Cv9qmyH9uNIUwTZBiw8rG5VYbsmQqyk95vbz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0U+xL3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBA3C4CEC3;
+	Tue, 10 Sep 2024 09:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962454;
-	bh=JTYc2G7kKHukB39j/Om0IDhzKwge1eJGEp8siIprKeU=;
+	s=korg; t=1725962249;
+	bh=ka0lGrS/ffUNOahWcVxEpmad6l3Bklyi1gkqFcdaahg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PK0dZQuH2zqJsjnay2MZy8rv+HKYvZb0MMpGKlMV+bsgpJotUDqAe3NmkGdatV6TF
-	 ALockNF1+s+h+PuXg6xHAioBVmkAE51kTYemGlmCWjqGxPL8TfE7QF4OTqBN8JGZGm
-	 ZiUTCD3RguJuqCDf1a5ECo+sPamvA8RqEd1Kcovc=
+	b=f0U+xL3iiI/MA/6iakKhFXU7VgVFSDT+nkD6xda5w7cHguXyFkTNaEEoHWXt6MIyu
+	 fr0gI14RYo5v9fTLBl9K3/F74NvGaXrINs7vIFRUDXRebrrZGP5KwNAIQdehHM3LQr
+	 Y6hxeKY1sJxqkcp2S5KeWqpnIl+7F2EpMX0IDSwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 040/121] sched: sch_cake: fix bulk flow accounting logic for host fairness
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 318/375] ACPI: processor: Fix memory leaks in error paths of processor_add()
 Date: Tue, 10 Sep 2024 11:31:55 +0200
-Message-ID: <20240910092547.639908493@linuxfoundation.org>
+Message-ID: <20240910092633.248163473@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit 546ea84d07e3e324644025e2aae2d12ea4c5896e upstream.
+[ Upstream commit 47ec9b417ed9b6b8ec2a941cd84d9de62adc358a ]
 
-In sch_cake, we keep track of the count of active bulk flows per host,
-when running in dst/src host fairness mode, which is used as the
-round-robin weight when iterating through flows. The count of active
-bulk flows is updated whenever a flow changes state.
+If acpi_processor_get_info() returned an error, pr and the associated
+pr->throttling.shared_cpu_map were leaked.
 
-This has a peculiar interaction with the hash collision handling: when a
-hash collision occurs (after the set-associative hashing), the state of
-the hash bucket is simply updated to match the new packet that collided,
-and if host fairness is enabled, that also means assigning new per-host
-state to the flow. For this reason, the bulk flow counters of the
-host(s) assigned to the flow are decremented, before new state is
-assigned (and the counters, which may not belong to the same host
-anymore, are incremented again).
+The unwind code was in the wrong order wrt to setup, relying on
+some unwind actions having no affect (clearing variables that were
+never set etc).  That makes it harder to reason about so reorder
+and add appropriate labels to only undo what was actually set up
+in the first place.
 
-Back when this code was introduced, the host fairness mode was always
-enabled, so the decrement was unconditional. When the configuration
-flags were introduced the *increment* was made conditional, but
-the *decrement* was not. Which of course can lead to a spurious
-decrement (and associated wrap-around to U16_MAX).
-
-AFAICT, when host fairness is disabled, the decrement and wrap-around
-happens as soon as a hash collision occurs (which is not that common in
-itself, due to the set-associative hashing). However, in most cases this
-is harmless, as the value is only used when host fairness mode is
-enabled. So in order to trigger an array overflow, sch_cake has to first
-be configured with host fairness disabled, and while running in this
-mode, a hash collision has to occur to cause the overflow. Then, the
-qdisc has to be reconfigured to enable host fairness, which leads to the
-array out-of-bounds because the wrapped-around value is retained and
-used as an array index. It seems that syzbot managed to trigger this,
-which is quite impressive in its own right.
-
-This patch fixes the issue by introducing the same conditional check on
-decrement as is used on increment.
-
-The original bug predates the upstreaming of cake, but the commit listed
-in the Fixes tag touched that code, meaning that this patch won't apply
-before that.
-
-Fixes: 712639929912 ("sch_cake: Make the dual modes fairer")
-Reported-by: syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20240903160846.20909-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240529133446.28446-6-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_processor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -749,12 +749,15 @@ skip_hash:
- 		 * queue, accept the collision, update the host tags.
- 		 */
- 		q->way_collisions++;
--		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
--			q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
--			q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
--		}
- 		allocate_src = cake_dsrc(flow_mode);
- 		allocate_dst = cake_ddst(flow_mode);
-+
-+		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
-+			if (allocate_src)
-+				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
-+			if (allocate_dst)
-+				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
-+		}
- found:
- 		/* reserve queue for future packets in same flow */
- 		reduced_hash = outer_hash + k;
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index c052cdeca9fd..5f5a01ccfc3a 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -400,7 +400,7 @@ static int acpi_processor_add(struct acpi_device *device,
+ 
+ 	result = acpi_processor_get_info(device);
+ 	if (result) /* Processor is not physically present or unavailable */
+-		return result;
++		goto err_clear_driver_data;
+ 
+ 	BUG_ON(pr->id >= nr_cpu_ids);
+ 
+@@ -415,7 +415,7 @@ static int acpi_processor_add(struct acpi_device *device,
+ 			"BIOS reported wrong ACPI id %d for the processor\n",
+ 			pr->id);
+ 		/* Give up, but do not abort the namespace scan. */
+-		goto err;
++		goto err_clear_driver_data;
+ 	}
+ 	/*
+ 	 * processor_device_array is not cleared on errors to allow buggy BIOS
+@@ -427,12 +427,12 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev = get_cpu_device(pr->id);
+ 	if (!dev) {
+ 		result = -ENODEV;
+-		goto err;
++		goto err_clear_per_cpu;
+ 	}
+ 
+ 	result = acpi_bind_one(dev, device);
+ 	if (result)
+-		goto err;
++		goto err_clear_per_cpu;
+ 
+ 	pr->dev = dev;
+ 
+@@ -443,10 +443,11 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev_err(dev, "Processor driver could not be attached\n");
+ 	acpi_unbind_one(dev);
+ 
+- err:
+-	free_cpumask_var(pr->throttling.shared_cpu_map);
+-	device->driver_data = NULL;
++ err_clear_per_cpu:
+ 	per_cpu(processors, pr->id) = NULL;
++ err_clear_driver_data:
++	device->driver_data = NULL;
++	free_cpumask_var(pr->throttling.shared_cpu_map);
+  err_free_pr:
+ 	kfree(pr);
+ 	return result;
+-- 
+2.43.0
+
 
 
 
