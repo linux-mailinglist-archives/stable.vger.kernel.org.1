@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CDE9734FE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0448C973237
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA69C1F22741
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78D291F27199
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83D19048A;
-	Tue, 10 Sep 2024 10:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC9D18DF8F;
+	Tue, 10 Sep 2024 10:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrBT4RBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4wH47c8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC7188CDC;
-	Tue, 10 Sep 2024 10:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497FA18C039;
+	Tue, 10 Sep 2024 10:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964989; cv=none; b=pGrh9YDWe133SN8np466Phdiuid5g7AqoVnQWwrC7lKt7X00ui/JuxcYnvsFmn5C+mYXrSTullBBgDzsiwmTn4xNZfE3rU3i66GNLERh9yIf0iNhMrCd9o4zSqCP/V/S4aukkuT+N8cQYEYltNJ28tfZqm2VwA7VS91u8GyScNI=
+	t=1725963283; cv=none; b=LR2v8pRS/pXEqD6oNjWVdBA2g4+ldzXnbVuMMg4vuUaoL66FEQBfUSEu0siKzxvUQAPWGNHr8jpGq/5OrDEbCHod4PwhbNt+9yKDru6b3g2/gK3+MZ0ZIIQjZI4Aley3TMGnxecTZs6VFquQ3+UliVY7v5StuTr6jRchxNycwGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964989; c=relaxed/simple;
-	bh=ITsd97sE25Ha4wacZOwexsOXne8Dl7Im3AyumKV3Ays=;
+	s=arc-20240116; t=1725963283; c=relaxed/simple;
+	bh=yhNxcvmUae2r4gabP/zSIa+xc8cW4OLxkeG7UQ7rkfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXF/Ery/Oh+iPk6QYVOcrxRt8YINGZ1zDojrBacD8dN6wAs+AtLLksd9tC0+9xo5TDI43E/rv+Xxw0hgku0nHwj6RsPUD+FWGYtrAidEUd9zAl4/62qust5b3Gi4p3BXZ4fqK6s/dboKCZc2gNjbMjm/YiMBES/SGFmEdI/Qu/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrBT4RBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45DC4CEC3;
-	Tue, 10 Sep 2024 10:43:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uGn1wBkkyJSA1N4p119kKdeHiRKZRCBUc6vACUICO8gLcYJptNAYBXQ2sGKxzH17SI0i7Xy43qmGT9ycnfiYNiyjhWx6U0SnKLZtqL32rHm/i58aUAEo7f60Qp4Xl4neia9ldf7h0MR4daEqpUb9pxZ4J9GrGA6IWJ+9gTu8Yz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4wH47c8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CA1C4CEC3;
+	Tue, 10 Sep 2024 10:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964989;
-	bh=ITsd97sE25Ha4wacZOwexsOXne8Dl7Im3AyumKV3Ays=;
+	s=korg; t=1725963283;
+	bh=yhNxcvmUae2r4gabP/zSIa+xc8cW4OLxkeG7UQ7rkfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WrBT4RBJk1X+eEsmra0kfgfQ9EzJ5MzdwSHKSfIweLWwl+etf2Q1o2Ays9ACQjSGp
-	 PM7Q+Vr2XWMtXcF+YhFh8MCOoaM5KZZSlZ9I1pVHJz9S/GCGGT+m7KyKADv/fCpvaF
-	 gXb9gNDfxyysGe4gnKYmaWL9xn3oIST2qYrmvIwk=
+	b=c4wH47c8YGWJyJgsIL3SQD7FNXw2ZbpD7Z4sHew95NFu8gnsIl2ekGqabhhlv1yH4
+	 dJH1dmdLPC+QiD8eK7m9JvjiV/LDDHjwbovmbuVf4GkK4+qt/JeiGXWn+W5XlneENY
+	 JdxqPfgEqnR7TM3QFLOSnoRFdMuXaNt6DTh6M0mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/186] af_unix: Remove put_pid()/put_cred() in copy_peercred().
+Subject: [PATCH 6.1 171/192] can: mcp251xfd: clarify the meaning of timestamp
 Date: Tue, 10 Sep 2024 11:33:15 +0200
-Message-ID: <20240910092558.645591335@linuxfoundation.org>
+Message-ID: <20240910092604.919855769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +61,298 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit e4bd881d987121dbf1a288641491955a53d9f8f7 ]
+[ Upstream commit e793c724b48ca8cae9693bc3be528e85284c126a ]
 
-When (AF_UNIX, SOCK_STREAM) socket connect()s to a listening socket,
-the listener's sk_peer_pid/sk_peer_cred are copied to the client in
-copy_peercred().
+The mcp251xfd chip is configured to provide a timestamp with each
+received and transmitted CAN frame. The timestamp is derived from the
+internal free-running timer, which can also be read from the TBC
+register via SPI. The timer is 32 bits wide and is clocked by the
+external oscillator (typically 20 or 40 MHz).
 
-Then, the client's sk_peer_pid and sk_peer_cred are always NULL, so
-we need not call put_pid() and put_cred() there.
+To avoid confusion, we call this timestamp "timestamp_raw" or "ts_raw"
+for short.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Using the timecounter framework, the "ts_raw" is converted to 64 bit
+nanoseconds since the epoch. This is what we call "timestamp".
+
+This is a preparation for the next patches which use the "timestamp"
+to work around a bug where so far only the "ts_raw" is used.
+
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ .../net/can/spi/mcp251xfd/mcp251xfd-core.c    | 28 +++++++++----------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  |  2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |  2 +-
+ .../can/spi/mcp251xfd/mcp251xfd-timestamp.c   | 22 ++++-----------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 27 ++++++++++++++----
+ 5 files changed, 43 insertions(+), 38 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index e2ff610d2776..b7e9c1238516 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -603,9 +603,6 @@ static void init_peercred(struct sock *sk)
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index 1665f78abb5c..a9bafa96e2f9 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -867,18 +867,18 @@ static int mcp251xfd_get_berr_counter(const struct net_device *ndev,
  
- static void copy_peercred(struct sock *sk, struct sock *peersk)
+ static struct sk_buff *
+ mcp251xfd_alloc_can_err_skb(struct mcp251xfd_priv *priv,
+-			    struct can_frame **cf, u32 *timestamp)
++			    struct can_frame **cf, u32 *ts_raw)
  {
--	const struct cred *old_cred;
--	struct pid *old_pid;
--
- 	if (sk < peersk) {
- 		spin_lock(&sk->sk_peer_lock);
- 		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);
-@@ -613,16 +610,12 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
- 		spin_lock(&peersk->sk_peer_lock);
- 		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);
- 	}
--	old_pid = sk->sk_peer_pid;
--	old_cred = sk->sk_peer_cred;
-+
- 	sk->sk_peer_pid  = get_pid(peersk->sk_peer_pid);
- 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
+ 	struct sk_buff *skb;
+ 	int err;
  
- 	spin_unlock(&sk->sk_peer_lock);
- 	spin_unlock(&peersk->sk_peer_lock);
--
--	put_pid(old_pid);
--	put_cred(old_cred);
+-	err = mcp251xfd_get_timestamp(priv, timestamp);
++	err = mcp251xfd_get_timestamp_raw(priv, ts_raw);
+ 	if (err)
+ 		return NULL;
+ 
+ 	skb = alloc_can_err_skb(priv->ndev, cf);
+ 	if (skb)
+-		mcp251xfd_skb_set_timestamp(priv, skb, *timestamp);
++		mcp251xfd_skb_set_timestamp_raw(priv, skb, *ts_raw);
+ 
+ 	return skb;
+ }
+@@ -889,7 +889,7 @@ static int mcp251xfd_handle_rxovif(struct mcp251xfd_priv *priv)
+ 	struct mcp251xfd_rx_ring *ring;
+ 	struct sk_buff *skb;
+ 	struct can_frame *cf;
+-	u32 timestamp, rxovif;
++	u32 ts_raw, rxovif;
+ 	int err, i;
+ 
+ 	stats->rx_over_errors++;
+@@ -924,14 +924,14 @@ static int mcp251xfd_handle_rxovif(struct mcp251xfd_priv *priv)
+ 			return err;
+ 	}
+ 
+-	skb = mcp251xfd_alloc_can_err_skb(priv, &cf, &timestamp);
++	skb = mcp251xfd_alloc_can_err_skb(priv, &cf, &ts_raw);
+ 	if (!skb)
+ 		return 0;
+ 
+ 	cf->can_id |= CAN_ERR_CRTL;
+ 	cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+ 
+-	err = can_rx_offload_queue_timestamp(&priv->offload, skb, timestamp);
++	err = can_rx_offload_queue_timestamp(&priv->offload, skb, ts_raw);
+ 	if (err)
+ 		stats->rx_fifo_errors++;
+ 
+@@ -948,12 +948,12 @@ static int mcp251xfd_handle_txatif(struct mcp251xfd_priv *priv)
+ static int mcp251xfd_handle_ivmif(struct mcp251xfd_priv *priv)
+ {
+ 	struct net_device_stats *stats = &priv->ndev->stats;
+-	u32 bdiag1, timestamp;
++	u32 bdiag1, ts_raw;
+ 	struct sk_buff *skb;
+ 	struct can_frame *cf = NULL;
+ 	int err;
+ 
+-	err = mcp251xfd_get_timestamp(priv, &timestamp);
++	err = mcp251xfd_get_timestamp_raw(priv, &ts_raw);
+ 	if (err)
+ 		return err;
+ 
+@@ -1035,8 +1035,8 @@ static int mcp251xfd_handle_ivmif(struct mcp251xfd_priv *priv)
+ 	if (!cf)
+ 		return 0;
+ 
+-	mcp251xfd_skb_set_timestamp(priv, skb, timestamp);
+-	err = can_rx_offload_queue_timestamp(&priv->offload, skb, timestamp);
++	mcp251xfd_skb_set_timestamp_raw(priv, skb, ts_raw);
++	err = can_rx_offload_queue_timestamp(&priv->offload, skb, ts_raw);
+ 	if (err)
+ 		stats->rx_fifo_errors++;
+ 
+@@ -1049,7 +1049,7 @@ static int mcp251xfd_handle_cerrif(struct mcp251xfd_priv *priv)
+ 	struct sk_buff *skb;
+ 	struct can_frame *cf = NULL;
+ 	enum can_state new_state, rx_state, tx_state;
+-	u32 trec, timestamp;
++	u32 trec, ts_raw;
+ 	int err;
+ 
+ 	err = regmap_read(priv->map_reg, MCP251XFD_REG_TREC, &trec);
+@@ -1079,7 +1079,7 @@ static int mcp251xfd_handle_cerrif(struct mcp251xfd_priv *priv)
+ 	/* The skb allocation might fail, but can_change_state()
+ 	 * handles cf == NULL.
+ 	 */
+-	skb = mcp251xfd_alloc_can_err_skb(priv, &cf, &timestamp);
++	skb = mcp251xfd_alloc_can_err_skb(priv, &cf, &ts_raw);
+ 	can_change_state(priv->ndev, cf, tx_state, rx_state);
+ 
+ 	if (new_state == CAN_STATE_BUS_OFF) {
+@@ -1110,7 +1110,7 @@ static int mcp251xfd_handle_cerrif(struct mcp251xfd_priv *priv)
+ 		cf->data[7] = bec.rxerr;
+ 	}
+ 
+-	err = can_rx_offload_queue_timestamp(&priv->offload, skb, timestamp);
++	err = can_rx_offload_queue_timestamp(&priv->offload, skb, ts_raw);
+ 	if (err)
+ 		stats->rx_fifo_errors++;
+ 
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index 5d0fb1c454cd..a79e6c661ecc 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -160,7 +160,7 @@ mcp251xfd_hw_rx_obj_to_skb(const struct mcp251xfd_priv *priv,
+ 	if (!(hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_RTR))
+ 		memcpy(cfd->data, hw_rx_obj->data, cfd->len);
+ 
+-	mcp251xfd_skb_set_timestamp(priv, skb, hw_rx_obj->ts);
++	mcp251xfd_skb_set_timestamp_raw(priv, skb, hw_rx_obj->ts);
  }
  
- static int unix_listen(struct socket *sock, int backlog)
+ static int
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index 902eb767426d..8f39730f3122 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -97,7 +97,7 @@ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
+ 	tef_tail = mcp251xfd_get_tef_tail(priv);
+ 	skb = priv->can.echo_skb[tef_tail];
+ 	if (skb)
+-		mcp251xfd_skb_set_timestamp(priv, skb, hw_tef_obj->ts);
++		mcp251xfd_skb_set_timestamp_raw(priv, skb, hw_tef_obj->ts);
+ 	stats->tx_bytes +=
+ 		can_rx_offload_get_echo_skb(&priv->offload,
+ 					    tef_tail, hw_tef_obj->ts,
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c
+index 712e09186987..1db99aabe85c 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2021 Pengutronix,
++// Copyright (c) 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ 
+@@ -11,20 +11,20 @@
+ 
+ #include "mcp251xfd.h"
+ 
+-static u64 mcp251xfd_timestamp_read(const struct cyclecounter *cc)
++static u64 mcp251xfd_timestamp_raw_read(const struct cyclecounter *cc)
+ {
+ 	const struct mcp251xfd_priv *priv;
+-	u32 timestamp = 0;
++	u32 ts_raw = 0;
+ 	int err;
+ 
+ 	priv = container_of(cc, struct mcp251xfd_priv, cc);
+-	err = mcp251xfd_get_timestamp(priv, &timestamp);
++	err = mcp251xfd_get_timestamp_raw(priv, &ts_raw);
+ 	if (err)
+ 		netdev_err(priv->ndev,
+ 			   "Error %d while reading timestamp. HW timestamps may be inaccurate.",
+ 			   err);
+ 
+-	return timestamp;
++	return ts_raw;
+ }
+ 
+ static void mcp251xfd_timestamp_work(struct work_struct *work)
+@@ -39,21 +39,11 @@ static void mcp251xfd_timestamp_work(struct work_struct *work)
+ 			      MCP251XFD_TIMESTAMP_WORK_DELAY_SEC * HZ);
+ }
+ 
+-void mcp251xfd_skb_set_timestamp(const struct mcp251xfd_priv *priv,
+-				 struct sk_buff *skb, u32 timestamp)
+-{
+-	struct skb_shared_hwtstamps *hwtstamps = skb_hwtstamps(skb);
+-	u64 ns;
+-
+-	ns = timecounter_cyc2time(&priv->tc, timestamp);
+-	hwtstamps->hwtstamp = ns_to_ktime(ns);
+-}
+-
+ void mcp251xfd_timestamp_init(struct mcp251xfd_priv *priv)
+ {
+ 	struct cyclecounter *cc = &priv->cc;
+ 
+-	cc->read = mcp251xfd_timestamp_read;
++	cc->read = mcp251xfd_timestamp_raw_read;
+ 	cc->mask = CYCLECOUNTER_MASK(32);
+ 	cc->shift = 1;
+ 	cc->mult = clocksource_hz2mult(priv->can.clock.freq, cc->shift);
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index ca5f4e670ec1..7713c9264fb5 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -2,7 +2,7 @@
+  *
+  * mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+  *
+- * Copyright (c) 2019, 2020, 2021 Pengutronix,
++ * Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+  *               Marc Kleine-Budde <kernel@pengutronix.de>
+  * Copyright (c) 2019 Martin Sperl <kernel@martin.sperl.org>
+  */
+@@ -794,10 +794,27 @@ mcp251xfd_spi_cmd_write(const struct mcp251xfd_priv *priv,
+ 	return data;
+ }
+ 
+-static inline int mcp251xfd_get_timestamp(const struct mcp251xfd_priv *priv,
+-					  u32 *timestamp)
++static inline int mcp251xfd_get_timestamp_raw(const struct mcp251xfd_priv *priv,
++					      u32 *ts_raw)
+ {
+-	return regmap_read(priv->map_reg, MCP251XFD_REG_TBC, timestamp);
++	return regmap_read(priv->map_reg, MCP251XFD_REG_TBC, ts_raw);
++}
++
++static inline void mcp251xfd_skb_set_timestamp(struct sk_buff *skb, u64 ns)
++{
++	struct skb_shared_hwtstamps *hwtstamps = skb_hwtstamps(skb);
++
++	hwtstamps->hwtstamp = ns_to_ktime(ns);
++}
++
++static inline
++void mcp251xfd_skb_set_timestamp_raw(const struct mcp251xfd_priv *priv,
++				     struct sk_buff *skb, u32 ts_raw)
++{
++	u64 ns;
++
++	ns = timecounter_cyc2time(&priv->tc, ts_raw);
++	mcp251xfd_skb_set_timestamp(skb, ns);
+ }
+ 
+ static inline u16 mcp251xfd_get_tef_obj_addr(u8 n)
+@@ -918,8 +935,6 @@ void mcp251xfd_ring_free(struct mcp251xfd_priv *priv);
+ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv);
+ int mcp251xfd_handle_rxif(struct mcp251xfd_priv *priv);
+ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv);
+-void mcp251xfd_skb_set_timestamp(const struct mcp251xfd_priv *priv,
+-				 struct sk_buff *skb, u32 timestamp);
+ void mcp251xfd_timestamp_init(struct mcp251xfd_priv *priv);
+ void mcp251xfd_timestamp_stop(struct mcp251xfd_priv *priv);
+ 
 -- 
 2.43.0
 
