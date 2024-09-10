@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-74413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236C2972F2E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:49:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C74F972F3F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560341C2438D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:49:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81E97B252B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592BA18E778;
-	Tue, 10 Sep 2024 09:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA291188CC4;
+	Tue, 10 Sep 2024 09:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZaqRe26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNvRpH2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10544183CB0;
-	Tue, 10 Sep 2024 09:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C1184101;
+	Tue, 10 Sep 2024 09:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961732; cv=none; b=UdPN1sWJK9DRGHC1PtlMLsMGI6c8qMUzapBr3UVOqBwKCa6IvevsxgDToI/UmWOSts1aSwpDs12OWsU/LggMbfBEfmpgqhYx+/GvqOa3fcZhDUCGtgQzQPVXxNPeA5eoso/QQCumRc2+Vp8oelOtwVUPpYyhj4zdy6Xs7TmCQ3s=
+	t=1725961764; cv=none; b=M9VN/WTmxCsgQXbaw6p9U12bF3Ts9celr46avY5sMR7sCFN+GyJI56MVU3pkRBIpI/uNwOgj4prfOcryJE7oibfc5TGQUQ04TPd+ZyWRy+URZbL1HuToQA8bc0KoUjx58XsF+gYej4SjteUsxLcDGmjowAX7B2akeWEqTI+vcIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961732; c=relaxed/simple;
-	bh=28v6gDaSp6X+/5EeHY82md46qaVMuRxGW5jfqWkfqxQ=;
+	s=arc-20240116; t=1725961764; c=relaxed/simple;
+	bh=uw/CsOYvAKuuzdxAA+hdloVLj/cNMdriULMo+Y8lg68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E7IratmayKjdOn6dB6cGo4eQbMywUQd+KlWW7HlJ8cfNldPPKPjV9GBu+ZTysmDSiaAFsaqMtfi5xSxu6ZUsRpxgO9+4K76gG8fM0ojj/0m+wvyF2zNhFJEQv9xi+7F6ntQVHdFvfyv6hIgSeYS7fD28oLs/oP7QgNQt8Kzi55g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZaqRe26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE55C4CEC3;
-	Tue, 10 Sep 2024 09:48:51 +0000 (UTC)
+	 MIME-Version; b=haX8gpl0EfQkP2gVmuLGD9rEAcpA+kRwsuDcIhGTVFWPeNvEA2JehU7B69LVOXkTGWKmEoeBa6Rlg/T9QXLz95OnBZL+o1mdwAD3m6ol1oSjxuvIG1CzebjSymfyAsG/SRcq973KcIB7DTN6gFx9x5LRRLNPQjqUAZDgUwVnk38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNvRpH2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE78C4CECD;
+	Tue, 10 Sep 2024 09:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961731;
-	bh=28v6gDaSp6X+/5EeHY82md46qaVMuRxGW5jfqWkfqxQ=;
+	s=korg; t=1725961764;
+	bh=uw/CsOYvAKuuzdxAA+hdloVLj/cNMdriULMo+Y8lg68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZaqRe26f8LZZoBr7rAGB3KwwSYwqdL8yLDZWcw/HoHyGOcCGUi9eYXPv++cWsfjd
-	 AEdl3McAVgMUEuRMqcoVwkjCqKHf4Zm06h4oqmCBLEbup4DkJ5IvAUIj+aakpyNoed
-	 sArS+DKfQy4yyHM56Ctu3K0fMQSmiOhI1nAbFhsY=
+	b=rNvRpH2/GvS0DbRaJ7fPaKrRK5rdELOZR44UeI0R3mV6X+Lz59nbfh/h+wtw2UJSl
+	 gQuy/BJIoQFst8OCQFnSeJoShPZZA1aJSrOCx6MyTSUKw1FkwMKspAzD10zFUXWgog
+	 qfA6dOm4D3g7LdvOJG6FsRTGvG4foXmYGSsSIFjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 162/375] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
-Date: Tue, 10 Sep 2024 11:29:19 +0200
-Message-ID: <20240910092627.925328825@linuxfoundation.org>
+Subject: [PATCH 6.10 163/375] spi: intel: Add check devm_kasprintf() returned value
+Date: Tue, 10 Sep 2024 11:29:20 +0200
+Message-ID: <20240910092627.960392544@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -60,56 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
+[ Upstream commit 2920294686ec23211637998f3ec386dfd3d784a6 ]
 
-In case of error in build_tokens_sysfs(), all the memory that has been
-allocated is freed at end of this function. But then free_group() is
-called which performs memory deallocation again.
+intel_spi_populate_chip() use devm_kasprintf() to set pdata->name.
+This can return a NULL pointer on failure but this returned value
+is not checked.
 
-Also, instead of free_group() call, there should be exit_dell_smbios_smm()
-and exit_dell_smbios_wmi() calls, since there is initialization, but there
-is no release of resources in case of an error.
-
-Fix these issues by replacing free_group() call with
-exit_dell_smbios_wmi() and exit_dell_smbios_smm().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: e58db3bcd93b ("spi: intel: Add default partition and name to the second chip")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/20240830074106.8744-1-hanchunchao@inspur.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-intel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index b562ed99ec4e..4702669dbb60 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -587,7 +587,10 @@ static int __init dell_smbios_init(void)
- 	return 0;
+diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
+index 3e5dcf2b3c8a..795b7e72baea 100644
+--- a/drivers/spi/spi-intel.c
++++ b/drivers/spi/spi-intel.c
+@@ -1390,6 +1390,9 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
  
- fail_sysfs:
--	free_group(platform_device);
-+	if (!wmi)
-+		exit_dell_smbios_wmi();
-+	if (!smm)
-+		exit_dell_smbios_smm();
- 
- fail_create_group:
- 	platform_device_del(platform_device);
+ 	pdata->name = devm_kasprintf(ispi->dev, GFP_KERNEL, "%s-chip1",
+ 				     dev_name(ispi->dev));
++	if (!pdata->name)
++		return -ENOMEM;
++
+ 	pdata->nr_parts = 1;
+ 	parts = devm_kcalloc(ispi->dev, pdata->nr_parts, sizeof(*parts),
+ 			     GFP_KERNEL);
 -- 
 2.43.0
 
