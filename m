@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD86D97307F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04569972DD9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5291287335
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30DA41C21481
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0245D18FDA5;
-	Tue, 10 Sep 2024 10:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732B61891A1;
+	Tue, 10 Sep 2024 09:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvjhztpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzThSGea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B530118FC99;
-	Tue, 10 Sep 2024 10:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D446444;
+	Tue, 10 Sep 2024 09:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962439; cv=none; b=R6evJBr0rGPN8qDGR5HCvnrPZTYDUVlDR5IGir1akUqrmsNU/bBz3Qz9fhsz9zDwmocDrrSALGvgGEeCKa/bCA3szuzLz7mrInmpvsWCBTs/6QnYrLCwRH/rfyb54qCkyVi/ZDEz6PABYKgSNHhQD2TUyRpfSyrp2kaGauijiLw=
+	t=1725961013; cv=none; b=YvBM+GQgMEXHk/bhmSNgtuOvrF+wHbNElYyhSaPCmIP/mufzXGI5T7CI7OZ2lu88QNPVbpCHS4SCRDSuQqiGEik8KGeVuS74Kh272zAk0C0GU/jQ0DCjzBdKrounWJA/KKTYOzhJKM6k2AmycO7y1XLoisOkrxoU+ZBrSwvl2+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962439; c=relaxed/simple;
-	bh=7eST+JtMmltYohE6OFgBe2L9m/IxpNjmHM++9Kkh8X0=;
+	s=arc-20240116; t=1725961013; c=relaxed/simple;
+	bh=ZJxPS8uXUNyUGM+7JHWp98vh7kSfExq+Jn2D7Wpbcew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNLJDa+sPbuLPCJ1LXSzPoj0wlvKCVN8TrBSw9UmBYW2LOgNevPjuTH8KHX/xSFE2V8BamoPcAOQT9IQrEoU/hO5Qku3PoHXR68lL6xn2NgTUAWsJbswVbBftUvCjy3/wHAorJU8G+qyhq324mpq8qqRLJPHlIfGELHdMT1pThk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvjhztpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B15AC4CEC3;
-	Tue, 10 Sep 2024 10:00:39 +0000 (UTC)
+	 MIME-Version; b=bbLd/2KWfymtqcRR4t4tTlPfft4lQQMqciC1QsILI6tayJpZPFabq/QHhphRkZMfFVrK52aOTRH1U88rDcyAw9tDHoCk88Bg3V6fWbP16kPPDdZ3ofP50xa9Qu0sw2g5zf84ZkLzTL7Siv0pqywiLwNzGyAbbG3Q34UI1ZiOQdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzThSGea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B0EC4CEC3;
+	Tue, 10 Sep 2024 09:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962439;
-	bh=7eST+JtMmltYohE6OFgBe2L9m/IxpNjmHM++9Kkh8X0=;
+	s=korg; t=1725961013;
+	bh=ZJxPS8uXUNyUGM+7JHWp98vh7kSfExq+Jn2D7Wpbcew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvjhztpHoXGxJ6yA7QEXOcd5u9qR/141nHto7YJ0BhUF4teojSrhcMRJeqQbWNKnp
-	 Mn+8R6W16MsCrP1YNMISmzfUAi+YJYN6d673qNIFJ7bPMfr24tcCuIeK67zXozb5HX
-	 nmXhxsTrxbGImA5DjQzRctrK2lCmRLArJdZErGbU=
+	b=rzThSGea+GBngiJ5QOKzCEjYna274X3fF0wjv1x5vOV0q8Q0Dr0EVDek38x2OIVOv
+	 64Ep2PC8Bo0NHJCqUOftABIs3lWakIxe9/z9DigVygpxJU2YGZny3kSiV96GO0YE+u
+	 ebENzzcS7eMy0ZQ7a78LfLNOwaLy0kLFxl0VdIuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/121] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within dal_gpio_service_create
-Date: Tue, 10 Sep 2024 11:31:24 +0200
-Message-ID: <20240910092546.188443164@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 4.19 23/96] clk: qcom: clk-alpha-pll: Fix the pll post div mask
+Date: Tue, 10 Sep 2024 11:31:25 +0200
+Message-ID: <20240910092542.464818810@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit c6077aa66fa230d12f37fef01161ef080d13b726 ]
+commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
 
-[Why]
-For subtraction, coverity reports integer overflow
-warning message when variable type is uint32_t.
+The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
 
-[How]
-Change variable type to int32_t.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index f76ec0dd29e7..a61cec470d28 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -58,7 +58,7 @@ struct gpio_service *dal_gpio_service_create(
- 	struct dc_context *ctx)
- {
- 	struct gpio_service *service;
--	uint32_t index_of_id;
-+	int32_t index_of_id;
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -37,7 +37,7 @@
  
- 	service = kzalloc(sizeof(struct gpio_service), GFP_KERNEL);
- 
-@@ -114,7 +114,7 @@ struct gpio_service *dal_gpio_service_create(
- 	return service;
- 
- failure_2:
--	while (index_of_id) {
-+	while (index_of_id > 0) {
- 		--index_of_id;
- 		kfree(service->busyness[index_of_id]);
- 	}
--- 
-2.43.0
-
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
++# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
+ # define PLL_VCO_SHIFT		20
 
 
 
