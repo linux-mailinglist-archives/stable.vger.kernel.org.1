@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3AD9733FD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C99579734FB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCC528B8B3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D20288577
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11186199FC0;
-	Tue, 10 Sep 2024 10:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCEE1922DF;
+	Tue, 10 Sep 2024 10:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APosx2eY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVRJdUOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C71922D6;
-	Tue, 10 Sep 2024 10:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132DB19048A;
+	Tue, 10 Sep 2024 10:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964396; cv=none; b=ewweL6oCWsIKUNyyjG64ZX4FbAytXuJNd3ZQwdNLOGqDp2Xbfq6WmUJRAbavwiDer8GbRo8/nhkX0UCObNwMoNWTytkaacdRBcrr2aXeEGiy3v6tay+ViuW2WGGEmzCHMxG5Gx/MHLepHtJSEu3ScV06dGoii2Z8sUX/SySEExk=
+	t=1725964981; cv=none; b=bgb6cVW1o0EmQHX+XTI23Wrd5g/GrGzBCPaKbq5ofCSY7bVyorTAW2Zx8j7eMDarSs9B7Lf/87LE2V4sgQIAGI2MYh96g9/wf4DGgvUXspX6Y/MBXyKd3bWjj7zEqA2oM/rm94AaE9qby/tHlvMG3xiEKy9mH58149O8nCMrtVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964396; c=relaxed/simple;
-	bh=X7P6mGIhtpkZL2SnuW163H2P6YWCc0A3g33NmJyeAI4=;
+	s=arc-20240116; t=1725964981; c=relaxed/simple;
+	bh=oHD67WEKSO/Vdr6Vcie1cgckRui2S5L0t9BEcUZ+Lm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P613xndRwT1WeOAADH/7htr01pieZqT8LFAPcTlYhJX9cLCvYxtPeKDvqwmseecGbw8X3Xj2WGWrCzkb5UID8RHyfZH47iYqq3gVlA4XUZGrX0ABJN8+stiMcFzbV1g5Pdzf38lDKvtvw4ATYJf1ilCIkITNsKE/dPUD9mhu1SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APosx2eY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C643C4CEC6;
-	Tue, 10 Sep 2024 10:33:16 +0000 (UTC)
+	 MIME-Version; b=IEynHq0KQXoQ0hFNcm/h64ttgHBfiYoUgQg0BVv87kw8XIW9ef5EVpYbTN0XnI7SRTaDueoK2Tc2i/8q73eeNOVcxXXVWAEvAA+XTFkXIvNVbR/mqCMbPv5TVGAI/60r0nOt8BZLSEgsz+siJfus86lptUYfenZFB9rcOzIHxRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVRJdUOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F92FC4CEC3;
+	Tue, 10 Sep 2024 10:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964396;
-	bh=X7P6mGIhtpkZL2SnuW163H2P6YWCc0A3g33NmJyeAI4=;
+	s=korg; t=1725964980;
+	bh=oHD67WEKSO/Vdr6Vcie1cgckRui2S5L0t9BEcUZ+Lm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APosx2eYKcqz8dCV4pzVir3qa5LhJFA3Fp/ALKf+ZLRURhPgjhNpRe1k4ZXYXETNs
-	 hWf1aK1uKsxsC+M2IlbOxeMQfI6lG3eFziNulTwCH/xIvM0uOILqNUnlbvxj3TNoY3
-	 Qo/VLNBVd9U0w9rscEpMsHbpzhjVmQa0IcM/k5FY=
+	b=AVRJdUOAG1bMou7t0KkmFm5RnWrI/jnR8Mzox42dB8xtxGo6slygTkhD6YAn3m5Vp
+	 CgxX8P3hK3vJYS6j6UwqyNebjCCqwdNuXDcEqzVZsi3hi9HRL50mvNPP6VnOu9aqVG
+	 PQKBPNQ510U8uLs3GLjT8ews7frSJXJgcZi0xUVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/269] btrfs: replace BUG_ON() with error handling at update_ref_for_cow()
+	Ma Ke <make24@iscas.ac.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 060/186] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init()
 Date: Tue, 10 Sep 2024 11:32:35 +0200
-Message-ID: <20240910092614.146011126@linuxfoundation.org>
+Message-ID: <20240910092556.958159150@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit b56329a782314fde5b61058e2a25097af7ccb675 ]
+commit c5af2c90ba5629f0424a8d315f75fb8d91713c3c upstream.
 
-Instead of a BUG_ON() just return an error, log an error message and
-abort the transaction in case we find an extent buffer belonging to the
-relocation tree that doesn't have the full backref flag set. This is
-unexpected and should never happen (save for bugs or a potential bad
-memory).
+gicv2m_of_init() fails to perform an of_node_put() when
+of_address_to_resource() fails, leading to a refcount leak.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this by moving the error handling path outside of the loop and
+making it common to all failure modes.
+
+Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240820092843.1219933-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v2m.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 118ad4d2cbbe..2eb4e03080ac 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -451,8 +451,16 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -442,12 +442,12 @@ static int __init gicv2m_of_init(struct
+ 
+ 		ret = gicv2m_init_one(&child->fwnode, spi_start, nr_spis,
+ 				      &res, 0);
+-		if (ret) {
+-			of_node_put(child);
++		if (ret)
+ 			break;
+-		}
  	}
  
- 	owner = btrfs_header_owner(buf);
--	BUG_ON(owner == BTRFS_TREE_RELOC_OBJECTID &&
--	       !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
-+	if (unlikely(owner == BTRFS_TREE_RELOC_OBJECTID &&
-+		     !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF))) {
-+		btrfs_crit(fs_info,
-+"found tree block at bytenr %llu level %d root %llu refs %llu flags %llx without full backref flag set",
-+			   buf->start, btrfs_header_level(buf),
-+			   btrfs_root_id(root), refs, flags);
-+		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
- 
- 	if (refs > 1) {
- 		if ((owner == root->root_key.objectid ||
--- 
-2.43.0
-
++	if (ret && child)
++		of_node_put(child);
+ 	if (!ret)
+ 		ret = gicv2m_allocate_domains(parent);
+ 	if (ret)
 
 
 
