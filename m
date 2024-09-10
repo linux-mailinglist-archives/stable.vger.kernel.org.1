@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304EA9731B5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF4F973353
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F0481C23E57
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF203B2B789
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67F018B488;
-	Tue, 10 Sep 2024 10:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB9D190074;
+	Tue, 10 Sep 2024 10:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxOsIm40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxmafKBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7360A188A0C;
-	Tue, 10 Sep 2024 10:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680B9143880;
+	Tue, 10 Sep 2024 10:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963012; cv=none; b=WJlOGpOdP1cLmnrki2gjsqLGoo2R8PCszyWiQmtOox+DTxSUuEelL4hzB34rGgyvMXghYG0OT3RRK+4oGT3Dt7UMbIwir/INWmUBSXvqCU5DIxYD4yKaazsBjECzpBz13GMsQY3KzYu4GMs8h7XMbCThgGHI0gTwSuioUsZOeGA=
+	t=1725963506; cv=none; b=hEF3W7a0/+RzDRO8OXYlWcri+DZO8P0vlOr2dCCqql1DC3nQ2/P0QNiWk8ut5N1+lRSfGbml8vmZtp4ERPIRgW0o0nyUvQHJ2ElBh0oAaGF+J1NIYpRbZKD4zGvKGeWtw0Rc/xyTq8rSlrrfR0MH4HOV2veb2Z4mhqppoM/5w5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963012; c=relaxed/simple;
-	bh=90z/axrDm+hkA+qL82K3ImBkMnA/xhvQ07mXmNiksJA=;
+	s=arc-20240116; t=1725963506; c=relaxed/simple;
+	bh=g1AfPQYu020euDHmNjZsgKSSqtEQOCx4wMBrnvJPJ4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hj5De4WJkYkqTcUABo4Bhm4Ih3QR5zpojISIVxUKzEJrtJQ+1kne5D2OPMsSv96GVUoLfD9uOm8PW3bPVbiHNQ0LQRBI+YbeY3zqiB0E7lJn9NdrNyCNDFVSiNBR/KSuHQAMwxM9KqgvyqifWovdJ/fHQPnDX5sKul5o1fGDL7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxOsIm40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB218C4CEC3;
-	Tue, 10 Sep 2024 10:10:11 +0000 (UTC)
+	 MIME-Version; b=LRw9leL/WNgBHpeXu5lKhGHr7ms6ofsNGPCZE2TbHOGwCVzfThWjIV4zvEpSnSUg4ZTf53ZK3rQWxudFlaTW9JFeQ9KDN3Wiz+QpLSLrrep5c2AxDR1EDIpuTtj587QXO9h6IE8XJohc3nMOBUf5mZhgVqgCgXGxa44ZH00hrts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxmafKBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC10C4CEC3;
+	Tue, 10 Sep 2024 10:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963012;
-	bh=90z/axrDm+hkA+qL82K3ImBkMnA/xhvQ07mXmNiksJA=;
+	s=korg; t=1725963506;
+	bh=g1AfPQYu020euDHmNjZsgKSSqtEQOCx4wMBrnvJPJ4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxOsIm40Q5Nnsb4CLfHxNTAnrQN0j8peQNFuwd8yivxPzi0QLkVvB4/ouuWwnRd9s
-	 r9+vQpsOQJc7JEDRvJM/H5sxZ8fZX9XEBMV2g9UcUE67mk11lPjXjLPghj0JRnDzKU
-	 l7xrWDD43XawXfoDxbhS+DNXtGCXJQz1ZrlX3Vo0=
+	b=CxmafKBuEkvrydqiy6sc913WtTiH0YeMAntEHauLEm4YFbZO50XF8KNaT2NF2Q4Yx
+	 5SdWQ1c65tLVpoWef/DqodPPtrZdzntakuRl6PCFr1v8tiqenEFzJ6R/3v5daBwsJ7
+	 tTYLJEjyBAtXjQIepGGQ6BeWD+YdmFwURtgzWhys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/192] regulator: core: Stub devm_regulator_bulk_get_const() if !CONFIG_REGULATOR
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 080/214] clk: qcom: clk-alpha-pll: Fix the pll post div mask
 Date: Tue, 10 Sep 2024 11:31:42 +0200
-Message-ID: <20240910092601.196677355@linuxfoundation.org>
+Message-ID: <20240910092601.999717226@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 1a5caec7f80ca2e659c03f45378ee26915f4eda2 ]
+commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
 
-When adding devm_regulator_bulk_get_const() I missed adding a stub for
-when CONFIG_REGULATOR is not enabled. Under certain conditions (like
-randconfig testing) this can cause the compiler to reports errors
-like:
+The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
 
-  error: implicit declaration of function 'devm_regulator_bulk_get_const';
-  did you mean 'devm_regulator_bulk_get_enable'?
-
-Add the stub.
-
-Fixes: 1de452a0edda ("regulator: core: Allow drivers to define their init data as const")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408301813.TesFuSbh-lkp@intel.com/
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20240830073511.1.Ib733229a8a19fad8179213c05e1af01b51e42328@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/regulator/consumer.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index 40c80c844ce5..60bc7e143869 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -487,6 +487,14 @@ static inline int of_regulator_bulk_get_all(struct device *dev, struct device_no
- 	return 0;
- }
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -38,7 +38,7 @@
  
-+static inline int devm_regulator_bulk_get_const(
-+	struct device *dev, int num_consumers,
-+	const struct regulator_bulk_data *in_consumers,
-+	struct regulator_bulk_data **out_consumers)
-+{
-+	return 0;
-+}
-+
- static inline int regulator_bulk_enable(int num_consumers,
- 					struct regulator_bulk_data *consumers)
- {
--- 
-2.43.0
-
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
++# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
+ # define PLL_VCO_SHIFT		20
 
 
 
