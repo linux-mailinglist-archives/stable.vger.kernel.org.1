@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-75687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A921973F74
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:28:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96218973F77
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57001F291D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ACD828E71D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EE91B29A9;
-	Tue, 10 Sep 2024 17:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1661B375B;
+	Tue, 10 Sep 2024 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V13Oi17B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBCRJG0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BE61A257B;
-	Tue, 10 Sep 2024 17:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D29A1B372E;
+	Tue, 10 Sep 2024 17:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988968; cv=none; b=PSFntpiRmEGne5GJqq7uVPO2JCf56mPo3EB0BzqB+opT0CvtgYg3cFSpfHMJwPTk9v2yIsew4XiLK9g3N8ewy9+m79957lzZpJ8qUn6S3NuHrpuCRa0nJLd7+8DA3zHlfHcdfxn8xrs5loKp/P0oTcaHa09HMbuzT0LFD+Bm/Ys=
+	t=1725988970; cv=none; b=f+yv3f9mRdXSLaj5gLYf7rBked+X7vKzHvvmzQ6qcqt/iI18Dbe4RY9a7KUscttqd+i4QBZ5zKgAbVjYyVMLc2ml54If5BTuH0QwPnb6mKI7w61GEbVCILP8bKBty5raw3Mp1RFggYs9xpwa0YUguEJofZBJsm8/OMGH/QQ/KR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988968; c=relaxed/simple;
-	bh=Cj+QOyImgiVgaityzLKNeNzJTMHwLD4SZFxnYezKIyw=;
+	s=arc-20240116; t=1725988970; c=relaxed/simple;
+	bh=PeLBCaC4W0vGegOjs1rbN7MoUicwWj/JzycTr/0ekiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmy06K0wBRaETa1ZV5wFaOz+zyrNILll6tuyrB8PwXfQSpUXWGOdx7k3mBPlWDP8iAgSvz7atJ5vWrQPgy7F1VrtnCsRF0Vdsw0Cbq2XKa3Nk8zdVCIaTFCtS7a0ia3BYJ2tMJtQFC5hLiux02u3DCDzPAayJqHEd9PgFhl5Yno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V13Oi17B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E111C4CEC4;
-	Tue, 10 Sep 2024 17:22:47 +0000 (UTC)
+	 MIME-Version; b=YiipgvjGhaUQo5w4PLqMLwvHgRNwgvGs4sXzVnzL9fNgJSpO6xVzt95KzzSV4SU1gHnsM3hCiPxuHeI7HitrM36MO4SbX3x9TkTD7DqIcOe57xTndmjXY7C82Eo2o4sfSck+6Rpi8XxUZMjs2Xb/uuVr9M2MqPsi4Dvn9c2VOjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBCRJG0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE300C4CECE;
+	Tue, 10 Sep 2024 17:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988968;
-	bh=Cj+QOyImgiVgaityzLKNeNzJTMHwLD4SZFxnYezKIyw=;
+	s=k20201202; t=1725988969;
+	bh=PeLBCaC4W0vGegOjs1rbN7MoUicwWj/JzycTr/0ekiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V13Oi17BJDwrBwGAGHBLOV0EE4s8XKIH6XnlfWHcvhnnKPt+JlIbADrokXeWoF8hZ
-	 cSxmhtXj+2NuaqBI3bEE3X/0lYtmm730F2syBM9DT67zL/BY4eWzI2S3EuUPIjDlkt
-	 16zw071nG02MT7nhAJG/YT4bZs/3mMmMY1hS4v/Rh5voMKfhHjVP2vx1FJc94jBLau
-	 Gr1PWcYpSUYqrlOFXFwh3j5Qd3vwM36lqPeWUNPVaKOW5xHLBuFFRyRYjjAHtOCFGw
-	 ACGfV4Jr4/NpAbUPNo3+vjwoLasRDWN4vpPq70q4AUFLcVxN6IwAtkR+obfQyCihOY
-	 Lj3tCvO6Wkagg==
+	b=oBCRJG0JPCdv5YrpgBRwVCybHRErWcFE8TszHVpFDtgJhWgszCmf/VEXBHD0oEXeo
+	 0cg/CAe2g+4KKKmWWaYP+2r7DWH7yJIc31SlqpWGkgf2fJDLgdtjqLv5xl8WjVpR96
+	 8PUskAmm3lHpFBoVup0IYTA+v0XtRCIteafqBon8T7DV06DLrcWwO36WMz3aXUoevv
+	 V9G0LUZv4JZy7YGAjEzOqGEu6wn4BkBN8qqtmeAB/h6HcPp+HAj97IydpszptR9mEz
+	 ObpLV4MgPlotBWk3ousSIcsyN89+Xi0bdEpebJev2sok8Ry3wt7kZpgz+pq97t0o9O
+	 kPLPu0ZBYNS2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Paulo Alcantara <pc@manguebit.com>,
+	Rickard Andersson <rickaran@axis.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 15/18] Revert "wifi: ath11k: restore country code during resume"
-Date: Tue, 10 Sep 2024 13:22:00 -0400
-Message-ID: <20240910172214.2415568-15-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.10 16/18] smb: client: fix hang in wait_for_response() for negproto
+Date: Tue, 10 Sep 2024 13:22:01 -0400
+Message-ID: <20240910172214.2415568-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172214.2415568-1-sashal@kernel.org>
 References: <20240910172214.2415568-1-sashal@kernel.org>
@@ -69,46 +68,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.9
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit d3e154d7776ba57ab679fb816fb87b627fba21c9 ]
+[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
 
-This reverts commit 7f0343b7b8710436c1e6355c71782d32ada47e0c.
+Call cifs_reconnect() to wake up processes waiting on negotiate
+protocol to handle the case where server abruptly shut down and had no
+chance to properly close the socket.
 
-We are going to revert commit 166a490f59ac ("wifi: ath11k: support hibernation"), on
-which this commit depends. With that commit reverted, this one is not needed any
-more, so revert this commit first.
+Simple reproducer:
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240830073420.5790-2-quic_bqiang@quicinc.com
+  ssh 192.168.2.100 pkill -STOP smbd
+  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
+
+Cc: Rickard Andersson <rickaran@axis.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ fs/smb/client/connect.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 47554c361963..a14d0c65000a 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1009,16 +1009,6 @@ int ath11k_core_resume(struct ath11k_base *ab)
- 		return -ETIMEDOUT;
- 	}
- 
--	if (ab->hw_params.current_cc_support &&
--	    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
--		ret = ath11k_reg_set_cc(ar);
--		if (ret) {
--			ath11k_warn(ab, "failed to set country code during resume: %d\n",
--				    ret);
--			return ret;
--		}
--	}
--
- 	ret = ath11k_dp_rx_pktlog_start(ab);
- 	if (ret)
- 		ath11k_warn(ab, "failed to start rx pktlog during resume: %d\n",
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index d2307162a2de..e325e06357ff 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
+ static bool
+ server_unresponsive(struct TCP_Server_Info *server)
+ {
++	/*
++	 * If we're in the process of mounting a share or reconnecting a session
++	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
++	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
++	 * negotiate protocol.
++	 */
++	spin_lock(&server->srv_lock);
++	if (server->tcpStatus == CifsInNegotiate &&
++	    time_after(jiffies, server->lstrp + 20 * HZ)) {
++		spin_unlock(&server->srv_lock);
++		cifs_reconnect(server, false);
++		return true;
++	}
+ 	/*
+ 	 * We need to wait 3 echo intervals to make sure we handle such
+ 	 * situations right:
+@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
+ 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
+ 	 *     a response in >60s.
+ 	 */
+-	spin_lock(&server->srv_lock);
+ 	if ((server->tcpStatus == CifsGood ||
+ 	    server->tcpStatus == CifsNeedNegotiate) &&
+ 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
 -- 
 2.43.0
 
