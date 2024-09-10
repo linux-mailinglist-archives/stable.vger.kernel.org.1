@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-75094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A4C9732E5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED3B97325A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE04283963
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B176B2764F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76724191F91;
-	Tue, 10 Sep 2024 10:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC58C194151;
+	Tue, 10 Sep 2024 10:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuSFnC3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A19sFQBt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3564B5381A;
-	Tue, 10 Sep 2024 10:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D13118C025;
+	Tue, 10 Sep 2024 10:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963732; cv=none; b=W4iA4aVQS7r1YIH9U1+aqqRQwyiMvOz0aeVjm/0jdsBKK9mZn9MDitD+BArB7W3EK+R/crKcTyZG4hTOk4+hJK/li7aqugZpUe52hQGcwPx5MGLaMPf8pzhAC5I2c9U39ZvTvnYFi82cO4IpqyiZfdJb1JtWpWouRh5GE5oKhE4=
+	t=1725963163; cv=none; b=Fh4BnTcL7SwZBKMQktAj5+1qXELOD7igw2McRD1GqYLlNQ0HDUlrc15iyKIKvZJ5B0jA/4wQ81zMBtPEEbMKnLzMmQb/tUh2UF87gaHbbzU+KVkjg/JRpLUoBTqbYXGeKZDcBglnUw3n+lvkNdh3OTfKYuaBj+BRdl86pxxKPh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963732; c=relaxed/simple;
-	bh=1HQDiKvdedAeB7zXWL/uYWdmGOjwfp4FaOe4VHsbe28=;
+	s=arc-20240116; t=1725963163; c=relaxed/simple;
+	bh=euAKZzKfvuQ8D3H9xGBguPOGfA6jd1pva+hXmgPmsVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkwV+Y+4d6dc6mNH4n3tizummVQU//tcsGawsoEoeiLY+E+SwsOMOLe+QCxFdg7zDWEJiEhf+c+1DDYcUND1XvnJBnFmykeapjhAszZyqNsVmAWoMQO0geArK+qvM93XihRHVyYOoEduBvpFgMSPPfV06cjk913kkfi2yPExnjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuSFnC3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE869C4CEC3;
-	Tue, 10 Sep 2024 10:22:11 +0000 (UTC)
+	 MIME-Version; b=te7nX71CVswrJgH+qDthLP9U629d/yi+zXycFvVqYlp1slH+TBy8Tth4+sil6daALiq0myEdRRq+9JWAomw9/7ESPgm/ajPTypwMLGoM7rg3rKf/ZVc7mTUALY77MdSUFt/Ua1QU0ngOwpFFxO/aGWHkjo3MWBh0R32dlRPaAHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A19sFQBt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57516C4CEC3;
+	Tue, 10 Sep 2024 10:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963732;
-	bh=1HQDiKvdedAeB7zXWL/uYWdmGOjwfp4FaOe4VHsbe28=;
+	s=korg; t=1725963162;
+	bh=euAKZzKfvuQ8D3H9xGBguPOGfA6jd1pva+hXmgPmsVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuSFnC3Gf/T5SJXI9ixIKPXbORDZK9Ac3TvAIy8kzt53lChEYqwzWy5MNAuCdzpEs
-	 g3Et0BrxY4KjPJQOyYWaYGgYwiT9NaF5+P3a96H2+Jh32E+XTwqyLthzJ7/oFDHUmm
-	 jBqCEGkb1UiwWkW8oXaPG9XOiUEC9kCWQ9Xeq86g=
+	b=A19sFQBtD/qm0N25vNUQmGtXX6fRX9eD+gHhXgsocJ8W0rbu6jokFvBKKVw59af5w
+	 GdAxprupNvzxR/Y+elNtX+yunr8xGVCsBcOC1mnaDB8S6J+6pBAd7tDhR6jwVT8moE
+	 e+j0fOCbMYsTbmFAbF0BtOwQkZklcrtEDhh5z5hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Breno Leitao <leitao@debian.org>,
-	Madalin Bucur <madalin.bucur@oss.nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/214] net: dpaa: avoid on-stack arrays of NR_CPUS elements
+Subject: [PATCH 6.1 156/192] fuse: add request extension
 Date: Tue, 10 Sep 2024 11:33:00 +0200
-Message-ID: <20240910092605.175785435@linuxfoundation.org>
+Message-ID: <20240910092604.385822569@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +61,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 555a05d84ca2c587e2d4777006e2c2fb3dfbd91d ]
+[ Upstream commit 15d937d7ca8c55d2b0ce9116e20c780fdd0b67cc ]
 
-The dpaa-eth driver is written for PowerPC and Arm SoCs which have 1-24
-CPUs. It depends on CONFIG_NR_CPUS having a reasonably small value in
-Kconfig. Otherwise, there are 2 functions which allocate on-stack arrays
-of NR_CPUS elements, and these can quickly explode in size, leading to
-warnings such as:
+Will need to add supplementary groups to create messages, so add the
+general concept of a request extension.  A request extension is appended to
+the end of the main request.  It has a header indicating the size and type
+of the extension.
 
-  drivers/net/ethernet/freescale/dpaa/dpaa_eth.c:3280:12: warning:
-  stack frame size (16664) exceeds limit (2048) in 'dpaa_eth_probe' [-Wframe-larger-than]
+The create security context (fuse_secctx_*) is similar to the generic
+request extension, so include that as well in a backward compatible manner.
 
-The problem is twofold:
-- Reducing the array size to the boot-time num_possible_cpus() (rather
-  than the compile-time NR_CPUS) creates a variable-length array,
-  which should be avoided in the Linux kernel.
-- Using NR_CPUS as an array size makes the driver blow up in stack
-  consumption with generic, as opposed to hand-crafted, .config files.
+Add the total extension length to the request header.  The offset of the
+extension block within the request can be calculated by:
 
-A simple solution is to use dynamic allocation for num_possible_cpus()
-elements (aka a small number determined at runtime).
+  inh->len - inh->total_extlen * 8
 
-Link: https://lore.kernel.org/all/202406261920.l5pzM1rj-lkp@intel.com/
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
-Link: https://patch.msgid.link/20240713225336.1746343-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: 3002240d1649 ("fuse: fix memory leak in fuse_create_open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 20 ++++++++++++++-----
- .../ethernet/freescale/dpaa/dpaa_ethtool.c    | 10 +++++++++-
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ fs/fuse/dev.c             |  2 ++
+ fs/fuse/dir.c             | 66 ++++++++++++++++++++++-----------------
+ fs/fuse/fuse_i.h          |  6 ++--
+ include/uapi/linux/fuse.h | 28 ++++++++++++++++-
+ 4 files changed, 71 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index 1766b7d94ffa..119f560b2e65 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -910,14 +910,18 @@ static inline void dpaa_setup_egress(const struct dpaa_priv *priv,
- 	}
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 61bef919c042..7e0d4f08a0cf 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -476,6 +476,8 @@ static void fuse_args_to_req(struct fuse_req *req, struct fuse_args *args)
+ 	req->in.h.opcode = args->opcode;
+ 	req->in.h.nodeid = args->nodeid;
+ 	req->args = args;
++	if (args->is_ext)
++		req->in.h.total_extlen = args->in_args[args->ext_idx].size / 8;
+ 	if (args->end)
+ 		__set_bit(FR_ASYNC, &req->flags);
+ }
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 8474003aa54d..3b7887312ac0 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -470,7 +470,7 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
  }
  
--static void dpaa_fq_setup(struct dpaa_priv *priv,
--			  const struct dpaa_fq_cbs *fq_cbs,
--			  struct fman_port *tx_port)
-+static int dpaa_fq_setup(struct dpaa_priv *priv,
-+			 const struct dpaa_fq_cbs *fq_cbs,
-+			 struct fman_port *tx_port)
+ static int get_security_context(struct dentry *entry, umode_t mode,
+-				void **security_ctx, u32 *security_ctxlen)
++				struct fuse_in_arg *ext)
  {
- 	int egress_cnt = 0, conf_cnt = 0, num_portals = 0, portal_cnt = 0, cpu;
- 	const cpumask_t *affine_cpus = qman_affine_cpus();
--	u16 channels[NR_CPUS];
- 	struct dpaa_fq *fq;
-+	u16 *channels;
-+
-+	channels = kcalloc(num_possible_cpus(), sizeof(u16), GFP_KERNEL);
-+	if (!channels)
-+		return -ENOMEM;
+ 	struct fuse_secctx *fctx;
+ 	struct fuse_secctx_header *header;
+@@ -517,14 +517,42 @@ static int get_security_context(struct dentry *entry, umode_t mode,
  
- 	for_each_cpu_and(cpu, affine_cpus, cpu_online_mask)
- 		channels[num_portals++] = qman_affine_channel(cpu);
-@@ -976,6 +980,10 @@ static void dpaa_fq_setup(struct dpaa_priv *priv,
- 				break;
- 		}
+ 		memcpy(ptr, ctx, ctxlen);
  	}
-+
-+	kfree(channels);
-+
-+	return 0;
+-	*security_ctxlen = total_len;
+-	*security_ctx = header;
++	ext->size = total_len;
++	ext->value = header;
+ 	err = 0;
+ out_err:
+ 	kfree(ctx);
+ 	return err;
  }
  
- static inline int dpaa_tx_fq_to_id(const struct dpaa_priv *priv,
-@@ -3444,7 +3452,9 @@ static int dpaa_eth_probe(struct platform_device *pdev)
- 	 */
- 	dpaa_eth_add_channel(priv->channel, &pdev->dev);
++static int get_create_ext(struct fuse_args *args, struct dentry *dentry,
++			  umode_t mode)
++{
++	struct fuse_conn *fc = get_fuse_conn_super(dentry->d_sb);
++	struct fuse_in_arg ext = { .size = 0, .value = NULL };
++	int err = 0;
++
++	if (fc->init_security)
++		err = get_security_context(dentry, mode, &ext);
++
++	if (!err && ext.size) {
++		WARN_ON(args->in_numargs >= ARRAY_SIZE(args->in_args));
++		args->is_ext = true;
++		args->ext_idx = args->in_numargs++;
++		args->in_args[args->ext_idx] = ext;
++	} else {
++		kfree(ext.value);
++	}
++
++	return err;
++}
++
++static void free_ext_value(struct fuse_args *args)
++{
++	if (args->is_ext)
++		kfree(args->in_args[args->ext_idx].value);
++}
++
+ /*
+  * Atomic create+open operation
+  *
+@@ -545,8 +573,6 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
+ 	struct fuse_entry_out outentry;
+ 	struct fuse_inode *fi;
+ 	struct fuse_file *ff;
+-	void *security_ctx = NULL;
+-	u32 security_ctxlen;
+ 	bool trunc = flags & O_TRUNC;
  
--	dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
-+	err = dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
+ 	/* Userspace expects S_IFREG in create mode */
+@@ -590,19 +616,12 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
+ 	args.out_args[1].size = sizeof(outopen);
+ 	args.out_args[1].value = &outopen;
+ 
+-	if (fm->fc->init_security) {
+-		err = get_security_context(entry, mode, &security_ctx,
+-					   &security_ctxlen);
+-		if (err)
+-			goto out_put_forget_req;
+-
+-		args.in_numargs = 3;
+-		args.in_args[2].size = security_ctxlen;
+-		args.in_args[2].value = security_ctx;
+-	}
++	err = get_create_ext(&args, entry, mode);
 +	if (err)
-+		goto free_dpaa_bps;
++		goto out_put_forget_req;
  
- 	/* Create a congestion group for this netdev, with
- 	 * dynamically-allocated CGR ID.
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-index 5750f9a56393..df6af1097dd2 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -541,12 +541,16 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 			     struct netlink_ext_ack *extack)
- {
- 	const cpumask_t *cpus = qman_affine_cpus();
--	bool needs_revert[NR_CPUS] = {false};
- 	struct qman_portal *portal;
- 	u32 period, prev_period;
- 	u8 thresh, prev_thresh;
-+	bool *needs_revert;
- 	int cpu, res;
+ 	err = fuse_simple_request(fm, &args);
+-	kfree(security_ctx);
++	free_ext_value(&args);
+ 	if (err)
+ 		goto out_free_ff;
  
-+	needs_revert = kcalloc(num_possible_cpus(), sizeof(bool), GFP_KERNEL);
-+	if (!needs_revert)
-+		return -ENOMEM;
-+
- 	period = c->rx_coalesce_usecs;
- 	thresh = c->rx_max_coalesced_frames;
+@@ -709,8 +728,6 @@ static int create_new_entry(struct fuse_mount *fm, struct fuse_args *args,
+ 	struct dentry *d;
+ 	int err;
+ 	struct fuse_forget_link *forget;
+-	void *security_ctx = NULL;
+-	u32 security_ctxlen;
  
-@@ -569,6 +573,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 		needs_revert[cpu] = true;
+ 	if (fuse_is_bad(dir))
+ 		return -EIO;
+@@ -725,21 +742,14 @@ static int create_new_entry(struct fuse_mount *fm, struct fuse_args *args,
+ 	args->out_args[0].size = sizeof(outarg);
+ 	args->out_args[0].value = &outarg;
+ 
+-	if (fm->fc->init_security && args->opcode != FUSE_LINK) {
+-		err = get_security_context(entry, mode, &security_ctx,
+-					   &security_ctxlen);
++	if (args->opcode != FUSE_LINK) {
++		err = get_create_ext(args, entry, mode);
+ 		if (err)
+ 			goto out_put_forget_req;
+-
+-		BUG_ON(args->in_numargs != 2);
+-
+-		args->in_numargs = 3;
+-		args->in_args[2].size = security_ctxlen;
+-		args->in_args[2].value = security_ctx;
  	}
  
-+	kfree(needs_revert);
+ 	err = fuse_simple_request(fm, args);
+-	kfree(security_ctx);
++	free_ext_value(args);
+ 	if (err)
+ 		goto out_put_forget_req;
+ 
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index cb464e5b171a..6c3ec70c1b70 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -264,8 +264,9 @@ struct fuse_page_desc {
+ struct fuse_args {
+ 	uint64_t nodeid;
+ 	uint32_t opcode;
+-	unsigned short in_numargs;
+-	unsigned short out_numargs;
++	uint8_t in_numargs;
++	uint8_t out_numargs;
++	uint8_t ext_idx;
+ 	bool force:1;
+ 	bool noreply:1;
+ 	bool nocreds:1;
+@@ -276,6 +277,7 @@ struct fuse_args {
+ 	bool page_zeroing:1;
+ 	bool page_replace:1;
+ 	bool may_block:1;
++	bool is_ext:1;
+ 	struct fuse_in_arg in_args[3];
+ 	struct fuse_arg out_args[2];
+ 	void (*end)(struct fuse_mount *fm, struct fuse_args *args, int error);
+diff --git a/include/uapi/linux/fuse.h b/include/uapi/linux/fuse.h
+index e3c54109bae9..c71f12429e3d 100644
+--- a/include/uapi/linux/fuse.h
++++ b/include/uapi/linux/fuse.h
+@@ -201,6 +201,9 @@
+  *  7.38
+  *  - add FUSE_EXPIRE_ONLY flag to fuse_notify_inval_entry
+  *  - add FOPEN_PARALLEL_DIRECT_WRITES
++ *  - add total_extlen to fuse_in_header
++ *  - add FUSE_MAX_NR_SECCTX
++ *  - add extension header
+  */
+ 
+ #ifndef _LINUX_FUSE_H
+@@ -503,6 +506,15 @@ struct fuse_file_lock {
+  */
+ #define FUSE_EXPIRE_ONLY		(1 << 0)
+ 
++/**
++ * extension type
++ * FUSE_MAX_NR_SECCTX: maximum value of &fuse_secctx_header.nr_secctx
++ */
++enum fuse_ext_type {
++	/* Types 0..31 are reserved for fuse_secctx_header */
++	FUSE_MAX_NR_SECCTX	= 31,
++};
 +
- 	return 0;
+ enum fuse_opcode {
+ 	FUSE_LOOKUP		= 1,
+ 	FUSE_FORGET		= 2,  /* no reply */
+@@ -886,7 +898,8 @@ struct fuse_in_header {
+ 	uint32_t	uid;
+ 	uint32_t	gid;
+ 	uint32_t	pid;
+-	uint32_t	padding;
++	uint16_t	total_extlen; /* length of extensions in 8byte units */
++	uint16_t	padding;
+ };
  
- revert_values:
-@@ -582,6 +588,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 		qman_dqrr_set_ithresh(portal, prev_thresh);
- 	}
+ struct fuse_out_header {
+@@ -1047,4 +1060,17 @@ struct fuse_secctx_header {
+ 	uint32_t	nr_secctx;
+ };
  
-+	kfree(needs_revert);
++/**
++ * struct fuse_ext_header - extension header
++ * @size: total size of this extension including this header
++ * @type: type of extension
++ *
++ * This is made compatible with fuse_secctx_header by using type values >
++ * FUSE_MAX_NR_SECCTX
++ */
++struct fuse_ext_header {
++	uint32_t	size;
++	uint32_t	type;
++};
 +
- 	return res;
- }
- 
+ #endif /* _LINUX_FUSE_H */
 -- 
 2.43.0
 
