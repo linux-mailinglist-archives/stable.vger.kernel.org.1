@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5949730B8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85017972E10
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4C9286705
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C1AB1F24705
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4F618FDAF;
-	Tue, 10 Sep 2024 10:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB9018B49F;
+	Tue, 10 Sep 2024 09:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ETpziWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgAdbEd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6905018595E;
-	Tue, 10 Sep 2024 10:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF4D188CC1;
+	Tue, 10 Sep 2024 09:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962529; cv=none; b=Y9zxoz30s1f1O0rR7j01sf09xLV//cA+VSadfzoWLoqcKOgK9FUFGVD7cVIUWtpvX5yUCYoxnx/wMKo+BOI4a43OKbh2QJpgDmZCpv4S6HeAS2fiYs38SvdZJINYfVxC8Wf2VaeHjuALDG/id0k8N4BW/6ceEpoC11HEs55d2Xk=
+	t=1725961145; cv=none; b=DAEhcqZzISZG9vnDrXh5wKE9u6SUVzoW9vT+59YD9E3Vm4dwim2OdI1vdRSi4g2EqpjGlcctMBdwf+M5bgoDTIxIdidC1BxPl/KGJQSAN1uyA90/p7G+hCWrQgmwkxJ76vE6GolLTszZ309GxS/fA6Fon4btOXJrD2pLWtiWVL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962529; c=relaxed/simple;
-	bh=9fDB8FmAT7KL0FCjaYGEf/EepoE1uDxQym/Ax97hJgQ=;
+	s=arc-20240116; t=1725961145; c=relaxed/simple;
+	bh=s5sMqgvBgxMphbkMJ/6+ZvwMLfHSHMNEXz3LJ1PF2aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPQk6jfQC35RH2vq+g9qqU+7Ua8RzPUv2ns3QmuvG0DRmLdOxehONPXnbYVAfIex5WicTbkD+PNflmr7WY+45HPkQAErKDskbjEJC5GJK9uFp61KGs7O0JBCfNOByKwaXx6ASx7bkY4Sourx75RoSzYl6jniqZTA6cZojKRWVwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ETpziWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE14EC4CEC3;
-	Tue, 10 Sep 2024 10:02:08 +0000 (UTC)
+	 MIME-Version; b=nJqzMwJAY/tT6Rl9ce0ZoaMBfCrorDwLxDWxTZnsi+5zdMP6U7dlYaoQQNwoqiIQ3cLYw9IREpS8LKZ9yoDuAqs6bsI0FpWOrk02QyJeYu5SueQd6Fx7afZgiABp9NnQSiLfmyT0ND9J3vy+AQIDaqEKmBe+wceB3obrDquslDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgAdbEd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F69C4CEC3;
+	Tue, 10 Sep 2024 09:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962529;
-	bh=9fDB8FmAT7KL0FCjaYGEf/EepoE1uDxQym/Ax97hJgQ=;
+	s=korg; t=1725961145;
+	bh=s5sMqgvBgxMphbkMJ/6+ZvwMLfHSHMNEXz3LJ1PF2aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ETpziWkymLxEB8EXT98xjXBBsIUljAle9REfBAjJb5ldgHyyP6mNoIRrulmKriHU
-	 twk2+ivzJFdepIgrl6VRf9s9zrCX5uy4jaqTPL6cJ+0wsmrdGEy73c1iiz53b9z4r0
-	 zFeCFLT1VnjJUl0OYvvWwaFsjjV41ntt3xvRCFV8=
+	b=UgAdbEd/zfxW5jwBERGJt5K1PFstPZLwEybtKR9jooSPM9FEbRg2plloHDGjFZ0E2
+	 vPVPZnEgnBsook8rbPen3wSBI3TOVN0RsoNimnnAvt/VSk2cjbAKVY+4cIV91tV49V
+	 1P4tEEEoDVjrH6iRPrTkL5uCMz2BF68S8tEm6cpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 028/121] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
+	Oliver Neukum <oneukum@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 41/96] usbnet: modern method to get random MAC
 Date: Tue, 10 Sep 2024 11:31:43 +0200
-Message-ID: <20240910092547.066291897@linuxfoundation.org>
+Message-ID: <20240910092543.334987980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
+[ Upstream commit bab8eb0dd4cb995caa4a0529d5655531c2ec5e8e ]
 
-The Sirius notebooks have two sets of speakers 0x17 (sides) and
-0x1d (top center). The side speakers are active by default but
-the top speakers aren't.
+The driver generates a random MAC once on load
+and uses it over and over, including on two devices
+needing a random MAC at the same time.
 
-This patch provides a pincfg quirk to activate the top speakers.
+Jakub suggested revamping the driver to the modern
+API for setting a random MAC rather than fixing
+the old stuff.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The bug is as old as the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/20240829175201.670718-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/usb/usbnet.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -217,6 +217,7 @@ enum {
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
-+	CXT_PINCFG_TOP_SPEAKER,
- };
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 16225654d88c..938335f4738d 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -79,9 +79,6 @@
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -871,6 +872,13 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = cxt_pincfg_sws_js201d,
- 	},
-+	[CXT_PINCFG_TOP_SPEAKER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1d, 0x82170111 },
-+			{ }
-+		},
-+	},
- };
+ /*-------------------------------------------------------------------------*/
  
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -965,6 +973,8 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
- 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
-+	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
-+	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
- 	{}
- };
+-// randomly generated ethernet address
+-static u8	node_id [ETH_ALEN];
+-
+ /* use ethtool to change the level for any given device */
+ static int msg_level = -1;
+ module_param (msg_level, int, 0);
+@@ -1725,7 +1722,6 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
  
-@@ -983,6 +993,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
-+	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
- 	{}
- };
+ 	dev->net = net;
+ 	strscpy(net->name, "usb%d", sizeof(net->name));
+-	eth_hw_addr_set(net, node_id);
  
+ 	/* rx and tx sides can use different message sizes;
+ 	 * bind() should set rx_urb_size in that case.
+@@ -1799,9 +1795,9 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		goto out4;
+ 	}
+ 
+-	/* let userspace know we have a random address */
+-	if (ether_addr_equal(net->dev_addr, node_id))
+-		net->addr_assign_type = NET_ADDR_RANDOM;
++	/* this flags the device for user space */
++	if (!is_valid_ether_addr(net->dev_addr))
++		eth_hw_addr_random(net);
+ 
+ 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+ 		SET_NETDEV_DEVTYPE(net, &wlan_type);
+@@ -2211,7 +2207,6 @@ static int __init usbnet_init(void)
+ 	BUILD_BUG_ON(
+ 		FIELD_SIZEOF(struct sk_buff, cb) < sizeof(struct skb_data));
+ 
+-	eth_random_addr(node_id);
+ 	return 0;
+ }
+ module_init(usbnet_init);
+-- 
+2.43.0
+
 
 
 
