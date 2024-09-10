@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CA297315E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4867F973382
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025331C25639
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41E91F22F48
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4A417C22F;
-	Tue, 10 Sep 2024 10:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA82192D6C;
+	Tue, 10 Sep 2024 10:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ravHgq8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQqdT65w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3B718595E;
-	Tue, 10 Sep 2024 10:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6B018FC73;
+	Tue, 10 Sep 2024 10:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962784; cv=none; b=e0GftjfAoqKd+iXPUnwX0p75ZY7hAEOnvu0+81GnigKsDflUDHjPmmpBXsIFFC4Bk85qDN+QE66TDAdAQN/N3zBrO4WFw/a29E4W+JnYUYmou2jMEh/0ZIFlmCNSMXAmDFRUp77dal/JetYCsrgj+bax2+nNdKkREZFpmt37AGI=
+	t=1725964094; cv=none; b=bXJhoF/2RxamKSshd6a3hfyl131TMjefhgYzrGUXgrzLi1SbqeU/6r4GRzno4MkeA9GOqwcHIkwnHcgDet3ohVUBtv5VET/1tnxzbwgyeeUbI2GhWVyojR1WfD+q4ePEFAy6e1EbZy8CvdRNTFirK8G/ByWgDVf1Qw7v6frO/2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962784; c=relaxed/simple;
-	bh=vz7dtBm3I0GxSE4AhoUvlasf4suJFGmyVKrwaT0bWyE=;
+	s=arc-20240116; t=1725964094; c=relaxed/simple;
+	bh=WGdW5pqQ3kc0TYKtekXhtwOa4E8qy825AkjoAXhSEV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5T8DRKFfFpt0ojbtL/fvGQRQJ9p2+Nh0aOdIChJpwG5D+AkDH2uVvMHJERbI8eUJXHUO6IzHY4Hv4HuPBnYtnTD3rVQSjhjxWpWZ7dO84b9qoShsDcej81vE9RuRQjzkhR5BwEFxG6ytNJLibjyXXZnEz+r01WSua1Rsk/OxYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ravHgq8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF50C4CEC3;
-	Tue, 10 Sep 2024 10:06:24 +0000 (UTC)
+	 MIME-Version; b=IldVlPcincbwkpW7mAVCIQE3cxwjeqDTeKaXyWA/LuUKGoBWvTOs1CHlTu5M1UZuqZWglHKItzgxhavFVcd6z74fLgPU5WozGufN179ZE1Qz8kRw8/Rb5K0BcdPn8XTZpAQymPCGh/MO+OzSoH+WN7+6etPGODtERFROzIisTUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQqdT65w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77A4C4CEC6;
+	Tue, 10 Sep 2024 10:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962784;
-	bh=vz7dtBm3I0GxSE4AhoUvlasf4suJFGmyVKrwaT0bWyE=;
+	s=korg; t=1725964094;
+	bh=WGdW5pqQ3kc0TYKtekXhtwOa4E8qy825AkjoAXhSEV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ravHgq8UZcygvP5RFT0vJ1UgaqP5EzI9XneNUsQLryFZexhhrnOiXG/Ujx9qlbWOB
-	 yJWA1VEwo6f7PhG3Ya9cJfPOpa41CGBZR2XDByx+o7ZNDSoxdjQmdSO+GP5pz1xCql
-	 8XvuP8p+2WYmGQkc27k4/4ycNBlFX6YAJFRuTEkY=
+	b=nQqdT65wdjbyW0AaMVSxin5tdQq1Tb5S4knZ/gj1jFZTovmkOOJHS3nD5HFSWxKxN
+	 XLUo4MxTB9supZmUYp+onPaLkbqoQ4av8yKIIePuGFOA0oXk2fLQCEEfo95+LnFPvx
+	 AIdmXSArohbiCdUR5emqTHvaP2mANtWN4CAMSKoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 029/192] clk: qcom: clk-alpha-pll: Update set_rate for Zonda PLL
+	Leon Hwang <hffilwlqm@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/269] bpf, verifier: Correct tail_call_reachable for bpf prog
 Date: Tue, 10 Sep 2024 11:30:53 +0200
-Message-ID: <20240910092559.146663434@linuxfoundation.org>
+Message-ID: <20240910092610.545824362@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Leon Hwang <hffilwlqm@gmail.com>
 
-commit f4973130d255dd4811006f5822d4fa4d0de9d712 upstream.
+[ Upstream commit 01793ed86b5d7df1e956520b5474940743eb7ed8 ]
 
-The Zonda PLL has a 16 bit signed alpha and in the cases where the alpha
-value is greater than 0.5, the L value needs to be adjusted accordingly.
-Thus update the logic to handle the signed alpha val.
+It's confusing to inspect 'prog->aux->tail_call_reachable' with drgn[0],
+when bpf prog has tail call but 'tail_call_reachable' is false.
 
-Fixes: f21b6bfecc27 ("clk: qcom: clk-alpha-pll: add support for zonda pll")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240731062916.2680823-5-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch corrects 'tail_call_reachable' when bpf prog has tail call.
+
+Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
+Link: https://lore.kernel.org/r/20240610124224.34673-2-hffilwlqm@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/bpf/verifier.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -41,6 +41,7 @@
- #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
- # define PLL_POST_DIV_SHIFT	8
- # define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
-+# define PLL_ALPHA_MSB		BIT(15)
- # define PLL_ALPHA_EN		BIT(24)
- # define PLL_ALPHA_MODE		BIT(25)
- # define PLL_VCO_SHIFT		20
-@@ -1986,6 +1987,18 @@ static void clk_zonda_pll_disable(struct
- 	regmap_write(regmap, PLL_OPMODE(pll), 0x0);
- }
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 3f1a9cd7fc9e..9d5699942273 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3064,8 +3064,10 @@ static int check_subprogs(struct bpf_verifier_env *env)
  
-+static void zonda_pll_adjust_l_val(unsigned long rate, unsigned long prate, u32 *l)
-+{
-+	u64 remainder, quotient;
-+
-+	quotient = rate;
-+	remainder = do_div(quotient, prate);
-+	*l = quotient;
-+
-+	if ((remainder * 2) / prate)
-+		*l = *l + 1;
-+}
-+
- static int clk_zonda_pll_set_rate(struct clk_hw *hw, unsigned long rate,
- 				  unsigned long prate)
- {
-@@ -2002,6 +2015,9 @@ static int clk_zonda_pll_set_rate(struct
- 	if (ret < 0)
- 		return ret;
- 
-+	if (a & PLL_ALPHA_MSB)
-+		zonda_pll_adjust_l_val(rate, prate, &l);
-+
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
- 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
- 
+ 		if (code == (BPF_JMP | BPF_CALL) &&
+ 		    insn[i].src_reg == 0 &&
+-		    insn[i].imm == BPF_FUNC_tail_call)
++		    insn[i].imm == BPF_FUNC_tail_call) {
+ 			subprog[cur_subprog].has_tail_call = true;
++			subprog[cur_subprog].tail_call_reachable = true;
++		}
+ 		if (BPF_CLASS(code) == BPF_LD &&
+ 		    (BPF_MODE(code) == BPF_ABS || BPF_MODE(code) == BPF_IND))
+ 			subprog[cur_subprog].has_ld_abs = true;
+-- 
+2.43.0
+
 
 
 
