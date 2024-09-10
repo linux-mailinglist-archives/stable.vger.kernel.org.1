@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144D6973404
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5519731A5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 552B5B26A84
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4481C28B23C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9D1144D1A;
-	Tue, 10 Sep 2024 10:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2297C199389;
+	Tue, 10 Sep 2024 10:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtN6bEfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVooKnFg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA42C18C912;
-	Tue, 10 Sep 2024 10:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D365319923A;
+	Tue, 10 Sep 2024 10:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963617; cv=none; b=TTiSFN4iOLf1GPOA5QF0ky1XvJhcMqSCzToAQ4zzCQEt2BbUFYgFkdtSgt81Z91wofg8QbEy2m+LK28FTxHoA6BVZgfWILYRBGYTiO2ibVo9JSVQs8RzJ5TrSTTOq0M/YC9cM+UnXNdR6e2hJl2HTcjccM3zNt940Tj6KQfRxEY=
+	t=1725962964; cv=none; b=P6+9ocnnhJmGIdvSSbMCUk99J1XKDBDtv3xZwkPCYX0jmDkEtNLzG9N7AV5AOOn3ImdXvt7gG/VywX0/Y8y7OBmOvZlpWDzefCzYEgC96dyO3MQVeLOjm7p42DYL2XjQohN+Puq6j1k+f2xoGvA6jjO4Q8kJAPzaApksBQFlJzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963617; c=relaxed/simple;
-	bh=oADWI6QrmYvz/y3HROx12Bybrq47iVZGQ3uhNw2MPyg=;
+	s=arc-20240116; t=1725962964; c=relaxed/simple;
+	bh=Mhxb1zureV9fOYdsWRu37I78GKSVjt6gXOlNuUAHvHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5LP1gyXlPEZs0wL+zsMJ+adgV5ZoKzygHyQ/4elPGo0Uh9uJNL+CwOOOCjyRaIPrGuMeGwlQT5Q7pylW/BWD9HRIX1a+kxE8y49OOuwa388fTjYs/KjcG66n9Y+GwoYGQ/X7OCiMW4jIJqMKNkngL7ZbErL9f/nuG3hFw32IV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtN6bEfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EADC4CECD;
-	Tue, 10 Sep 2024 10:20:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sBTRQR2dRisYx4bA1JWwjKZDqUbfKEdRk0IAe9XK4n+N1P9cTkdZwJj9eG8iN6R5EemAU8KGh3NurRt6HSjBf1wegy/U1ur4zUeaInfqrp3ZFItVjw+tzsJ03MC/7yXGLboCR69T+xutgpA/9SIdlE1YyQ/XWuvQqJcWqQ+iaVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVooKnFg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A402C4CEC3;
+	Tue, 10 Sep 2024 10:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963617;
-	bh=oADWI6QrmYvz/y3HROx12Bybrq47iVZGQ3uhNw2MPyg=;
+	s=korg; t=1725962964;
+	bh=Mhxb1zureV9fOYdsWRu37I78GKSVjt6gXOlNuUAHvHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtN6bEfCHHjB/SQpoImXyRBkUI3xXIQ5LbqWzn00WXkpib+/0omIeURxLp7EIBqzd
-	 eBcdxwv8YTb5zrOCfrlvbeLMzPGut4FWynEkU2BHEeXSI9xPs3F0cLja/GuO+RS992
-	 1+lKu62aowDUwAXHVehxui10E3tBGKsVFGqzhKoo=
+	b=fVooKnFgaqCdjniQJs46omwr8oP/Wm4T/qgFHNLZycgAdynIsFQjz4iRHBGs8jcrg
+	 GF/YZgzosYAuj9WXZjSw4pNKviiRrxXLJ+oi6LmHwGVwuz2kT+Fdmqp2a6Y9JWt3MR
+	 4XfQztFavpOP1ll0Mf+QQD7SDgHO56SVb/8S/KmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 092/214] mptcp: pm: check add_addr_accept_max before accepting new ADD_ADDR
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/192] ASoC: topology: Properly initialize soc_enum values
 Date: Tue, 10 Sep 2024 11:31:54 +0200
-Message-ID: <20240910092602.535782669@linuxfoundation.org>
+Message-ID: <20240910092601.703188692@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-commit 0137a3c7c2ea3f9df8ebfc65d78b4ba712a187bb upstream.
+[ Upstream commit 8ec2a2643544ce352f012ad3d248163199d05dfc ]
 
-The limits might have changed in between, it is best to check them
-before accepting new ADD_ADDR.
+soc_tplg_denum_create_values() should properly set its values field.
 
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-10-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c, because the context is different, but the
-  same lines can still be modified to fix the issue. This is due to
-  commit 322ea3778965 ("mptcp: pm: only mark 'subflow' endp as
-  available") not being backported to this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://patch.msgid.link/20240627101850.2191513-4-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/soc-topology.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -772,8 +772,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			/* Note: if the subflow has been closed before, this
- 			 * add_addr_accepted counter will not be decremented.
- 			 */
--			msk->pm.add_addr_accepted--;
--			WRITE_ONCE(msk->pm.accept_addr, true);
-+			if (--msk->pm.add_addr_accepted < mptcp_pm_get_add_addr_accept_max(msk))
-+				WRITE_ONCE(msk->pm.accept_addr, true);
- 		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
- 			msk->pm.local_addr_used--;
- 		}
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index fcb8a36d4a06..77296c950376 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -889,6 +889,8 @@ static int soc_tplg_denum_create_values(struct soc_tplg *tplg, struct soc_enum *
+ 		se->dobj.control.dvalues[i] = le32_to_cpu(ec->values[i]);
+ 	}
+ 
++	se->items = le32_to_cpu(ec->items);
++	se->values = (const unsigned int *)se->dobj.control.dvalues;
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
