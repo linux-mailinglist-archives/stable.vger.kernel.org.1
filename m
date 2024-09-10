@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7949730DB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE90972E30
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E3AB28676B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D1D2880CF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740DA18C912;
-	Tue, 10 Sep 2024 10:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32F818B495;
+	Tue, 10 Sep 2024 09:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GD1OsV43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj9HQP2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301D318C347;
-	Tue, 10 Sep 2024 10:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECA818B487;
+	Tue, 10 Sep 2024 09:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962568; cv=none; b=ImjQvGssj6PI8QOb2DVgB6Fp6898tl5BDCcNRqDidBVE8xjYRhsCWaZeA67eHxZfuIh1Qpbwr+zikDyZAafr7smf47dqIslmSgr6zF5ohjsuTevfzSECRzJYRA95wCO8AZBaUytf0wp0IYcjuOGahB7n05puUlxwZBYP98+lDBs=
+	t=1725961210; cv=none; b=owOBukvqSCSzKAn0EH+fDDG06I9er7+Q8AZkrFJNd7X0q0f7JYIwSYTledOWVoegaEs5r1KPxdda1t/ffY7D1DQyw7LbWOyRF0vkvZncms1UMvLG5b+J9H3k/FpG89RmagslZFW/UJ2s0e7NGNJDRSlNYdk3k8kYA+h9ElH/aR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962568; c=relaxed/simple;
-	bh=nZLa2a58Pj0/r/7wSqiy/8jum1ATH3ijcW8WzPq8d4c=;
+	s=arc-20240116; t=1725961210; c=relaxed/simple;
+	bh=S1OcOn/+/LPillw2+J6nzRqosRG8Fc5ZqgFfEgOYl3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZG5IQ9xf/AExHAWY3SPiskUqEA5DwWqmIz+a74wu2WrLOqLLgNWM4iU9HIKTBTg4D5gnOw00DW/9w+dQpVXPBRg7AUDO72zZhrwOB7uIXV//pm7qQln3GbFPKA6Cn+O1MqKUc1WYoArrhR5QzdeOeTc2a0/7KW+krDd81H/87bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GD1OsV43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A70C4CEC3;
-	Tue, 10 Sep 2024 10:02:46 +0000 (UTC)
+	 MIME-Version; b=FGifUO2ZjlgUxkMiWMGirMebfs0/Z7jEJ60tmq+kz8ac9DoSFLXoqfeY21tsnPtCw6uAvLPqZIbEaCu2aZBfA+wtUqYIgmFwGSSfIsdPCqynI5hcnGqVnnzMPl7pQnNqS7HrhMIsQbZZdZQ5j7yFFpx6Sz18BUP/ZFSNC6bzYSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj9HQP2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33296C4CEC3;
+	Tue, 10 Sep 2024 09:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962567;
-	bh=nZLa2a58Pj0/r/7wSqiy/8jum1ATH3ijcW8WzPq8d4c=;
+	s=korg; t=1725961210;
+	bh=S1OcOn/+/LPillw2+J6nzRqosRG8Fc5ZqgFfEgOYl3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GD1OsV43YO7aGJrTPPM8wNcHu8j3s4t8bKf+q5KamiL1ZYaW66HFeM6TYGwVcEk9L
-	 3CfurOFPuDit7YF40JEd2ZZMnXA4dvZOs4uWqbXFrITgYRG46BkkviM4QBKTxhZ/qL
-	 l6vlrjuo6H92pbSUeZd8WWv01JJHeoZIKUxA2RBs=
+	b=wj9HQP2/4foiLidtOiRB4YAafgrPqTmoyYVQfpathZUHvzc9XH7Kxt0qyYX0q6EZy
+	 1HTcHgYCcsPeWMGQOSTK3+VqvByiVcC7SOD9q0gZ4apR787BPuJyiZ9COiRBhQN0Ax
+	 JEgnwTDfn5bLqV8j7AqHj8hlkpvtmv1CM0KkxWHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/121] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Subject: [PATCH 4.19 90/96] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
 Date: Tue, 10 Sep 2024 11:32:32 +0200
-Message-ID: <20240910092549.556227780@linuxfoundation.org>
+Message-ID: <20240910092545.488326368@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
+[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
+it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
+   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+
+Fix this by marking debug_fence_init_onstack() with __maybe_unused.
+
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm95234.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
-index 8a2a2a490496..c49aaf0d710f 100644
---- a/drivers/hwmon/lm95234.c
-+++ b/drivers/hwmon/lm95234.c
-@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index 1de5173e53a2..c61e50659ed1 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -41,7 +41,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ 	debug_object_init(fence, &i915_sw_fence_debug_descr);
+ }
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
-+				1000);
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
+ }
+@@ -84,7 +84,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ {
+ }
  
- 	mutex_lock(&data->update_lock);
- 	data->tcrit2[index] = val;
-@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ }
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit1[index] = val;
-@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
--	val = DIV_ROUND_CLOSEST(val, 1000);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
- 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
- 
- 	mutex_lock(&data->update_lock);
-@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
- 		return ret;
- 
- 	/* Accuracy is 1/2 degrees C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
- 
- 	mutex_lock(&data->update_lock);
- 	data->toffset[index] = val;
 -- 
 2.43.0
 
