@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5B8973223
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A21B973305
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78EFA287383
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1CA0286088
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323841925B4;
-	Tue, 10 Sep 2024 10:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01660193067;
+	Tue, 10 Sep 2024 10:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZorKCNXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdN06+d7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51D918C344;
-	Tue, 10 Sep 2024 10:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B527B192D86;
+	Tue, 10 Sep 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963257; cv=none; b=ktuyhpHtZXS+WsYdA/iSuAInCgkL5SJ5LpOcxrHaLNKBk2iToiAxj12PcGmjvcsX54qoTukAyvQuROOKL9khfY4J6pFOVpyk/TDV1CUc6X70OHEejxCHE25SuVzbWmt9gV4L4t4UCI52BV5Kp4Qv0OstYrZ9Olgg09m+sFcc1UM=
+	t=1725963825; cv=none; b=d6ENcUoB+8bqfzYzHQvqr82z9rvIFAAa34ZWJ5vq8udaDirae5lgdpa0qKJZbOb9pH//vH/s5hc5/WljRZbEOdzQeom7RqoODmTr0a2xqGZygA9oKFs9L4Dh/aHFMBx0lnjOvkHXYa+bhWCJBsqKVFU/Zto2TTwhrGTcAbeFhOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963257; c=relaxed/simple;
-	bh=XuEb8XLCkHiEXlLWSx0vaPTj0Sk2+3DvDSW/0hEEvoU=;
+	s=arc-20240116; t=1725963825; c=relaxed/simple;
+	bh=CmJEswzY9wX71W0P3DJO5c6Q65gs0YBCKR8eRE0WdGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJi2yXsm0mKiJoIMc+2PiQPPLGbswzM2ovPiK7w0D0c5yNUo1Zw9gOupmlMx2908di2q/hTDsWmsG0yZZkw9liLTPlPDsydrGfWjT2trsHJMbHRlL1p5Td31/O7X0VBZ/6cTT9NRGtp/oS7PmnGksb5K1FXceVmi1pa0+2ujWv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZorKCNXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692B0C4CEC3;
-	Tue, 10 Sep 2024 10:14:16 +0000 (UTC)
+	 MIME-Version; b=h/kjYP/wNX1PRRVVUBgduOhkEuooLewfuPcW9orG42tBsgmRwf4QwCSSNiSV/I6hUYADFMOAHDpvYBRrjM/wnTBt756Hc66ohXkgtPY5LKk+IY3tb7aIh8fM8/nhAU/3aIQ5R4jrZAOvr8LCnuPPmbGYtRa+B3JtL09oed9A5iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdN06+d7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC26C4CEC3;
+	Tue, 10 Sep 2024 10:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963256;
-	bh=XuEb8XLCkHiEXlLWSx0vaPTj0Sk2+3DvDSW/0hEEvoU=;
+	s=korg; t=1725963825;
+	bh=CmJEswzY9wX71W0P3DJO5c6Q65gs0YBCKR8eRE0WdGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZorKCNXZ4eDcamM7VRg2dI2iXAP9YRAoxbQss+bQvBcy4NhzqPk5w9TJvnvZivGPZ
-	 UmHikjp6wyOYtRnHcX8Y89GDZaQTojt3fjl5Q1yAysbqJYM7CEY0gyXmzdUrnxC9zL
-	 vk3sot5c2nRaRPmVTHlEpXFS14vwcYVvUAhlAJFA=
+	b=LdN06+d7uR+6Nq4PgfkcVX1EQLUirzQU6A5ktP7vA4qe7GekQxTzDsHFs9drRnwtS
+	 OEDL8X7E1jaoQN06RUA61vq7gBtbb1meTEiuR6QweD30quT/32peGUYtJJ/0XPSW0f
+	 oP1pcci8ATzFB2GroqVz3/+fMHAWepUgZc9s4hb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Dias <paulo.miguel.dias@gmail.com>,
-	Andreas Jahn <jahn-andi@web.de>,
-	syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 188/192] btrfs: fix race between direct IO write and fsync when using same fd
+	Ole <ole@binarygecko.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 5.15 190/214] perf/aux: Fix AUX buffer serialization
 Date: Tue, 10 Sep 2024 11:33:32 +0200
-Message-ID: <20240910092605.545353129@linuxfoundation.org>
+Message-ID: <20240910092606.390702392@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,320 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit cd9253c23aedd61eb5ff11f37a36247cd46faf86 upstream.
+commit 2ab9d830262c132ab5db2f571003d80850d56b2a upstream.
 
-If we have 2 threads that are using the same file descriptor and one of
-them is doing direct IO writes while the other is doing fsync, we have a
-race where we can end up either:
+Ole reported that event->mmap_mutex is strictly insufficient to
+serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-1) Attempt a fsync without holding the inode's lock, triggering an
-   assertion failures when assertions are enabled;
+Note that in the lock order comment the perf_event::mmap_mutex order
+was already wrong, that is, it nesting under mmap_lock is not new with
+this patch.
 
-2) Do an invalid memory access from the fsync task because the file private
-   points to memory allocated on stack by the direct IO task and it may be
-   used by the fsync task after the stack was destroyed.
-
-The race happens like this:
-
-1) A user space program opens a file descriptor with O_DIRECT;
-
-2) The program spawns 2 threads using libpthread for example;
-
-3) One of the threads uses the file descriptor to do direct IO writes,
-   while the other calls fsync using the same file descriptor.
-
-4) Call task A the thread doing direct IO writes and task B the thread
-   doing fsyncs;
-
-5) Task A does a direct IO write, and at btrfs_direct_write() sets the
-   file's private to an on stack allocated private with the member
-   'fsync_skip_inode_lock' set to true;
-
-6) Task B enters btrfs_sync_file() and sees that there's a private
-   structure associated to the file which has 'fsync_skip_inode_lock' set
-   to true, so it skips locking the inode's VFS lock;
-
-7) Task A completes the direct IO write, and resets the file's private to
-   NULL since it had no prior private and our private was stack allocated.
-   Then it unlocks the inode's VFS lock;
-
-8) Task B enters btrfs_get_ordered_extents_for_logging(), then the
-   assertion that checks the inode's VFS lock is held fails, since task B
-   never locked it and task A has already unlocked it.
-
-The stack trace produced is the following:
-
-   assertion failed: inode_is_locked(&inode->vfs_inode), in fs/btrfs/ordered-data.c:983
-   ------------[ cut here ]------------
-   kernel BUG at fs/btrfs/ordered-data.c:983!
-   Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-   CPU: 9 PID: 5072 Comm: worker Tainted: G     U     OE      6.10.5-1-default #1 openSUSE Tumbleweed 69f48d427608e1c09e60ea24c6c55e2ca1b049e8
-   Hardware name: Acer Predator PH315-52/Covini_CFS, BIOS V1.12 07/28/2020
-   RIP: 0010:btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs]
-   Code: 50 d6 86 c0 e8 (...)
-   RSP: 0018:ffff9e4a03dcfc78 EFLAGS: 00010246
-   RAX: 0000000000000054 RBX: ffff9078a9868e98 RCX: 0000000000000000
-   RDX: 0000000000000000 RSI: ffff907dce4a7800 RDI: ffff907dce4a7800
-   RBP: ffff907805518800 R08: 0000000000000000 R09: ffff9e4a03dcfb38
-   R10: ffff9e4a03dcfb30 R11: 0000000000000003 R12: ffff907684ae7800
-   R13: 0000000000000001 R14: ffff90774646b600 R15: 0000000000000000
-   FS:  00007f04b96006c0(0000) GS:ffff907dce480000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: 00007f32acbfc000 CR3: 00000001fd4fa005 CR4: 00000000003726f0
-   Call Trace:
-    <TASK>
-    ? __die_body.cold+0x14/0x24
-    ? die+0x2e/0x50
-    ? do_trap+0xca/0x110
-    ? do_error_trap+0x6a/0x90
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? exc_invalid_op+0x50/0x70
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? asm_exc_invalid_op+0x1a/0x20
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? btrfs_get_ordered_extents_for_logging.cold+0x1f/0x42 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    btrfs_sync_file+0x21a/0x4d0 [btrfs bb26272d49b4cdc847cf3f7faadd459b62caee9a]
-    ? __seccomp_filter+0x31d/0x4f0
-    __x64_sys_fdatasync+0x4f/0x90
-    do_syscall_64+0x82/0x160
-    ? do_futex+0xcb/0x190
-    ? __x64_sys_futex+0x10e/0x1d0
-    ? switch_fpu_return+0x4f/0xd0
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    ? syscall_exit_to_user_mode+0x72/0x220
-    ? do_syscall_64+0x8e/0x160
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Another problem here is if task B grabs the private pointer and then uses
-it after task A has finished, since the private was allocated in the stack
-of task A, it results in some invalid memory access with a hard to predict
-result.
-
-This issue, triggering the assertion, was observed with QEMU workloads by
-two users in the Link tags below.
-
-Fix this by not relying on a file's private to pass information to fsync
-that it should skip locking the inode and instead pass this information
-through a special value stored in current->journal_info. This is safe
-because in the relevant section of the direct IO write path we are not
-holding a transaction handle, so current->journal_info is NULL.
-
-The following C program triggers the issue:
-
-   $ cat repro.c
-   /* Get the O_DIRECT definition. */
-   #ifndef _GNU_SOURCE
-   #define _GNU_SOURCE
-   #endif
-
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <unistd.h>
-   #include <stdint.h>
-   #include <fcntl.h>
-   #include <errno.h>
-   #include <string.h>
-   #include <pthread.h>
-
-   static int fd;
-
-   static ssize_t do_write(int fd, const void *buf, size_t count, off_t offset)
-   {
-       while (count > 0) {
-           ssize_t ret;
-
-           ret = pwrite(fd, buf, count, offset);
-           if (ret < 0) {
-               if (errno == EINTR)
-                   continue;
-               return ret;
-           }
-           count -= ret;
-           buf += ret;
-       }
-       return 0;
-   }
-
-   static void *fsync_loop(void *arg)
-   {
-       while (1) {
-           int ret;
-
-           ret = fsync(fd);
-           if (ret != 0) {
-               perror("Fsync failed");
-               exit(6);
-           }
-       }
-   }
-
-   int main(int argc, char *argv[])
-   {
-       long pagesize;
-       void *write_buf;
-       pthread_t fsyncer;
-       int ret;
-
-       if (argc != 2) {
-           fprintf(stderr, "Use: %s <file path>\n", argv[0]);
-           return 1;
-       }
-
-       fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0666);
-       if (fd == -1) {
-           perror("Failed to open/create file");
-           return 1;
-       }
-
-       pagesize = sysconf(_SC_PAGE_SIZE);
-       if (pagesize == -1) {
-           perror("Failed to get page size");
-           return 2;
-       }
-
-       ret = posix_memalign(&write_buf, pagesize, pagesize);
-       if (ret) {
-           perror("Failed to allocate buffer");
-           return 3;
-       }
-
-       ret = pthread_create(&fsyncer, NULL, fsync_loop, NULL);
-       if (ret != 0) {
-           fprintf(stderr, "Failed to create writer thread: %d\n", ret);
-           return 4;
-       }
-
-       while (1) {
-           ret = do_write(fd, write_buf, pagesize, 0);
-           if (ret != 0) {
-               perror("Write failed");
-               exit(5);
-           }
-       }
-
-       return 0;
-   }
-
-   $ mkfs.btrfs -f /dev/sdi
-   $ mount /dev/sdi /mnt/sdi
-   $ timeout 10 ./repro /mnt/sdi/foo
-
-Usually the race is triggered within less than 1 second. A test case for
-fstests will follow soon.
-
-Reported-by: Paulo Dias <paulo.miguel.dias@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219187
-Reported-by: Andreas Jahn <jahn-andi@web.de>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219199
-Reported-by: syzbot+4704b3cc972bd76024f1@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000044ff540620d7dee2@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Reported-by: Ole <ole@binarygecko.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
+ kernel/events/core.c        |   18 ++++++++++++------
+ kernel/events/internal.h    |    1 +
+ kernel/events/ring_buffer.c |    2 ++
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
----
- fs/btrfs/ctree.h       |    1 -
- fs/btrfs/file.c        |   25 ++++++++++---------------
- fs/btrfs/transaction.h |    6 ++++++
- 3 files changed, 16 insertions(+), 16 deletions(-)
-
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -1553,7 +1553,6 @@ struct btrfs_drop_extents_args {
- struct btrfs_file_private {
- 	void *filldir_buf;
- 	u64 last_index;
--	bool fsync_skip_inode_lock;
- };
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1368,8 +1368,9 @@ static void put_ctx(struct perf_event_co
+  *	  perf_event_context::mutex
+  *	    perf_event::child_mutex;
+  *	      perf_event_context::lock
+- *	    perf_event::mmap_mutex
+  *	    mmap_lock
++ *	      perf_event::mmap_mutex
++ *	        perf_buffer::aux_mutex
+  *	      perf_addr_filters_head::lock
+  *
+  *    cpu_hotplug_lock
+@@ -6275,12 +6276,11 @@ static void perf_mmap_close(struct vm_ar
+ 		event->pmu->event_unmapped(event, vma->vm_mm);
  
- 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1534,13 +1534,6 @@ again:
- 	if (IS_ERR_OR_NULL(dio)) {
- 		err = PTR_ERR_OR_ZERO(dio);
- 	} else {
--		struct btrfs_file_private stack_private = { 0 };
--		struct btrfs_file_private *private;
--		const bool have_private = (file->private_data != NULL);
--
--		if (!have_private)
--			file->private_data = &stack_private;
--
+ 	/*
+-	 * rb->aux_mmap_count will always drop before rb->mmap_count and
+-	 * event->mmap_count, so it is ok to use event->mmap_mutex to
+-	 * serialize with perf_mmap here.
++	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
++	 * to avoid complications.
+ 	 */
+ 	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
+-	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &event->mmap_mutex)) {
++	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
  		/*
- 		 * If we have a synchoronous write, we must make sure the fsync
- 		 * triggered by the iomap_dio_complete() call below doesn't
-@@ -1549,13 +1542,10 @@ again:
- 		 * partial writes due to the input buffer (or parts of it) not
- 		 * being already faulted in.
- 		 */
--		private = file->private_data;
--		private->fsync_skip_inode_lock = true;
-+		ASSERT(current->journal_info == NULL);
-+		current->journal_info = BTRFS_TRANS_DIO_WRITE_STUB;
- 		err = iomap_dio_complete(dio);
--		private->fsync_skip_inode_lock = false;
--
--		if (!have_private)
--			file->private_data = NULL;
-+		current->journal_info = NULL;
+ 		 * Stop all AUX events that are writing to this buffer,
+ 		 * so that we can free its AUX pages and corresponding PMU
+@@ -6297,7 +6297,7 @@ static void perf_mmap_close(struct vm_ar
+ 		rb_free_aux(rb);
+ 		WARN_ON_ONCE(refcount_read(&rb->aux_refcount));
+ 
+-		mutex_unlock(&event->mmap_mutex);
++		mutex_unlock(&rb->aux_mutex);
  	}
  
- 	/* No increment (+=) because iomap returns a cumulative value. */
-@@ -1795,7 +1785,6 @@ static inline bool skip_inode_logging(co
-  */
- int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
- {
--	struct btrfs_file_private *private = file->private_data;
- 	struct dentry *dentry = file_dentry(file);
- 	struct inode *inode = d_inode(dentry);
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-@@ -1805,7 +1794,13 @@ int btrfs_sync_file(struct file *file, l
- 	int ret = 0, err;
- 	u64 len;
- 	bool full_sync;
--	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
-+	bool skip_ilock = false;
+ 	if (atomic_dec_and_test(&rb->mmap_count))
+@@ -6385,6 +6385,7 @@ static int perf_mmap(struct file *file,
+ 	struct perf_event *event = file->private_data;
+ 	unsigned long user_locked, user_lock_limit;
+ 	struct user_struct *user = current_user();
++	struct mutex *aux_mutex = NULL;
+ 	struct perf_buffer *rb = NULL;
+ 	unsigned long locked, lock_limit;
+ 	unsigned long vma_size;
+@@ -6433,6 +6434,9 @@ static int perf_mmap(struct file *file,
+ 		if (!rb)
+ 			goto aux_unlock;
+ 
++		aux_mutex = &rb->aux_mutex;
++		mutex_lock(aux_mutex);
 +
-+	if (current->journal_info == BTRFS_TRANS_DIO_WRITE_STUB) {
-+		skip_ilock = true;
-+		current->journal_info = NULL;
-+		lockdep_assert_held(&inode->i_rwsem);
-+	}
+ 		aux_offset = READ_ONCE(rb->user_page->aux_offset);
+ 		aux_size = READ_ONCE(rb->user_page->aux_size);
  
- 	trace_btrfs_sync_file(file, datasync);
+@@ -6583,6 +6587,8 @@ unlock:
+ 		atomic_dec(&rb->mmap_count);
+ 	}
+ aux_unlock:
++	if (aux_mutex)
++		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
  
---- a/fs/btrfs/transaction.h
-+++ b/fs/btrfs/transaction.h
-@@ -11,6 +11,12 @@
- #include "delayed-ref.h"
- #include "ctree.h"
+ 	/*
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -40,6 +40,7 @@ struct perf_buffer {
+ 	struct user_struct		*mmap_user;
  
-+/*
-+ * Signal that a direct IO write is in progress, to avoid deadlock for sync
-+ * direct IO writes when fsync is called during the direct IO write path.
-+ */
-+#define BTRFS_TRANS_DIO_WRITE_STUB	((void *) 1)
+ 	/* AUX area */
++	struct mutex			aux_mutex;
+ 	long				aux_head;
+ 	unsigned int			aux_nest;
+ 	long				aux_wakeup;	/* last aux_watermark boundary crossed by aux_head */
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -332,6 +332,8 @@ ring_buffer_init(struct perf_buffer *rb,
+ 	 */
+ 	if (!rb->nr_pages)
+ 		rb->paused = 1;
 +
- enum btrfs_trans_state {
- 	TRANS_STATE_RUNNING,
- 	TRANS_STATE_COMMIT_START,
++	mutex_init(&rb->aux_mutex);
+ }
+ 
+ void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)
 
 
 
