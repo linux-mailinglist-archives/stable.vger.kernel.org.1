@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A87F972FEB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CF297307E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8601C249D5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E406F1C24075
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC4E18B487;
-	Tue, 10 Sep 2024 09:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2CF18FC86;
+	Tue, 10 Sep 2024 10:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV73rnQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1fuZEa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D034171671;
-	Tue, 10 Sep 2024 09:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC00E18B48A;
+	Tue, 10 Sep 2024 10:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962154; cv=none; b=pWa2KV+SxzJsRzyvFO0w87DPKJ/Ah9SuYi/3zsu1rgUQzvKgCKZVpUECJBocrhLWUWFHRgUqEccXg5dlHvMxmvmDbecgrcWDFtjc/Wc9FMVo2vqe+5DkXaHh0qUWzZy9477Ez/hh8vh5Au1g6hENYWZzZVRH7MH++tMRSLGqIaM=
+	t=1725962436; cv=none; b=pg6/0smNotLONo/4WvVu/L8/yu+EPAIOIgB63cu9PGxTq1dd5lTeKOA0EHMOxR2r2b+qNH9eZgNHSoQ7xmou1T49BX1+uinYAIn4b7XnqpBZeaAA8xvzYq32QcPQ+LC/zlCX1cyced4G376QxieDOArxNmByIOwFNKjkIAsHyWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962154; c=relaxed/simple;
-	bh=t+Mhe9RMw6QCVLyRtue7iKNcsUUlhsZMX3ogTzQY6Tg=;
+	s=arc-20240116; t=1725962436; c=relaxed/simple;
+	bh=QZu1EJEoN1Xdn7OrOnXrqst8q6YEAFq7XQckc/dUl1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=it2oKXTWCPO5aQM8bVLBX00kD9JHQpE+k3tEG6aqfqBPK1sKPQo0WATe0YVIPfzDrjSYUbVxOCBZNf6VFgBByus1ji9iqOeXogErspJR4e0PGLjtSpLhlI6i0SG8rg2L1A8XFqzU04aOCB4BnTpTVZ5QUpFQeDxZWswxhpp2+ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV73rnQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223BBC4CEC3;
-	Tue, 10 Sep 2024 09:55:53 +0000 (UTC)
+	 MIME-Version; b=EDrskpfdQtdZPKN/Gf1xsrZLXX1whNf11dP89MnKnsyMUUxvlzKPEPTnY30gwlo1GjazM/lx3PHNveDuGXqN9VNtw40uPGRi7Mk96RDHLM+F+vz03DVatF3U8oBsnemZS1Xv3G3aziHjtjm81bhZXgZj24WRAaF4UsnIB0UojjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1fuZEa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D7CC4CEC3;
+	Tue, 10 Sep 2024 10:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962154;
-	bh=t+Mhe9RMw6QCVLyRtue7iKNcsUUlhsZMX3ogTzQY6Tg=;
+	s=korg; t=1725962436;
+	bh=QZu1EJEoN1Xdn7OrOnXrqst8q6YEAFq7XQckc/dUl1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cV73rnQYvY91HFF+BSGh10n7xsBffTrjieA8szxgpK9aF8qnvpQzPP8IC+7Zx4iom
-	 C7871su4hY+kXywfTw3uJ6yzqHaXFJ1nB1WqcHHxwI5TUyftF+Xjg8Fd5365JLhZeJ
-	 b3bW4b3nOd01iqxqEN5hpq341CDlzFLWchJ7OajQ=
+	b=F1fuZEa1HRRIFnaEhHiAkg779YYVHQoyBHhoXfwV48pdNJNUSuxnJozIEJwrqqvyG
+	 9726HSyFn9CJkHoayo3YtdIvjZzynlfDq2PeCbqrXAzZVJxN8o1UViAiu3ab4ThoHt
+	 vyFjRwmTGnCKgjqIn44Frna2I/pUBSP8vSPJo8/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.10 286/375] iio: fix scale application in iio_convert_raw_to_processed_unlocked
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 008/121] drm/amd/display: Check num_valid_sets before accessing reader_wm_sets[]
 Date: Tue, 10 Sep 2024 11:31:23 +0200
-Message-ID: <20240910092632.173916971@linuxfoundation.org>
+Message-ID: <20240910092546.139244852@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matteo Martelli <matteomartelli3@gmail.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 8a3dcc970dc57b358c8db2702447bf0af4e0d83a upstream.
+[ Upstream commit b38a4815f79b87efb196cd5121579fc51e29a7fb ]
 
-When the scale_type is IIO_VAL_INT_PLUS_MICRO or IIO_VAL_INT_PLUS_NANO
-the scale passed as argument is only applied to the fractional part of
-the value. Fix it by also multiplying the integer part by the scale
-provided.
+[WHY & HOW]
+num_valid_sets needs to be checked to avoid a negative index when
+accessing reader_wm_sets[num_valid_sets - 1].
 
-Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-Link: https://patch.msgid.link/20240730-iio-fix-scale-v1-1-6246638c8daa@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes an OVERRUN issue reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -647,17 +647,17 @@ static int iio_convert_raw_to_processed_
- 		break;
- 	case IIO_VAL_INT_PLUS_MICRO:
- 		if (scale_val2 < 0)
--			*processed = -raw64 * scale_val;
-+			*processed = -raw64 * scale_val * scale;
- 		else
--			*processed = raw64 * scale_val;
-+			*processed = raw64 * scale_val * scale;
- 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
- 				      1000000LL);
- 		break;
- 	case IIO_VAL_INT_PLUS_NANO:
- 		if (scale_val2 < 0)
--			*processed = -raw64 * scale_val;
-+			*processed = -raw64 * scale_val * scale;
- 		else
--			*processed = raw64 * scale_val;
-+			*processed = raw64 * scale_val * scale;
- 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
- 				      1000000000LL);
- 		break;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
+index 9f301f8575a5..fec3ca955b26 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
+@@ -453,7 +453,8 @@ void build_watermark_ranges(struct clk_bw_params *bw_params, struct pp_smu_wm_ra
+ 			ranges->reader_wm_sets[num_valid_sets].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
+ 
+ 			/* Modify previous watermark range to cover up to max */
+-			ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
++			if (num_valid_sets > 0)
++				ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
+ 		}
+ 		num_valid_sets++;
+ 	}
+-- 
+2.43.0
+
 
 
 
