@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E71F973459
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF69973357
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3A241C24F15
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38779B2AB69
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE651191466;
-	Tue, 10 Sep 2024 10:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B5D198A22;
+	Tue, 10 Sep 2024 10:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wr7wHpLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbKnYlnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2CF190072;
-	Tue, 10 Sep 2024 10:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E689B18C340;
+	Tue, 10 Sep 2024 10:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964618; cv=none; b=OnbTu9vTWnhktp0oBVONs2zVUWZMzMo0ntlnDArlkimCqbjBXAC6iXXqkMCvu72dGyWCLfN4W4djse2/BZwf+4IBGgNeUBKTfy94uplu+3M/jx0Cxt2oRpR/OtN+wyI5iwQN4FvdR1T9qSqqU/t1OJyzE9refr3iwAC93cjPe/k=
+	t=1725963923; cv=none; b=JkMQLa27cBzbxZgVZMJ7TKX7l6spKuHqkBRd7DWnfwwESxzJRCjE0qbZXIZRmfnqEC1zVz0ZJaDJoc2N18MlnIGDnkRoXlQ3C92+804+jcI1uo4M9zLc+HI0jYKe/PjRYydseochlGA9MiyxGqPdX+t+IiaclI/Gu87QNlh3NO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964618; c=relaxed/simple;
-	bh=s/zWoE3o8M8ocIbtbqmoYEpmvEQ90YlG85UNhhyEHGs=;
+	s=arc-20240116; t=1725963923; c=relaxed/simple;
+	bh=DHRkT8q+lQTwzW9RXOplr3xgtPg9BAItMSXXdKReKHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Anepk5MRx9u61g/XYFO99hBFW1XcQUY2qfCzA6d4hoQPgdadybUebbschAuWewzzAd749TgL+s91ZtQiWfhF8O96bxBsiacT9JiIQv/jkJRZqgY+FbTSgrkiRQcmsAGSNBKkWVnzRnLm8ImKeqtG1pH5qOd69LXAshfQscul8ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wr7wHpLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC10C4CEC3;
-	Tue, 10 Sep 2024 10:36:57 +0000 (UTC)
+	 MIME-Version; b=uM49twDRTmin6zNjYCDafq4pzuqAfc9cfrip2g3Vieb/EhrLUqjoYtdBICHElzdaFe8SaOYoQfZCzo4yWDgUBY++0Wa/Po8oZ0k+AVx2kUkxxPTatrvm1yme0AWe9UKVIl6RdHUAVly8SfFSRvWWMBaSg5d0T3I1DCi4J9hwVK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbKnYlnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCC5C4CEC3;
+	Tue, 10 Sep 2024 10:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964618;
-	bh=s/zWoE3o8M8ocIbtbqmoYEpmvEQ90YlG85UNhhyEHGs=;
+	s=korg; t=1725963922;
+	bh=DHRkT8q+lQTwzW9RXOplr3xgtPg9BAItMSXXdKReKHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wr7wHpLJxL9S7DIyaITIQz20bxSp69uboncRaX/wNRfha0Vw/HiVZ3+ufqp2EymrO
-	 MwehCBWPyKQSQPCork+A+c6w4Op7d9iQ5o4/boxLwtuztWqvk44LonzaoTEz1QpeHG
-	 y9LYvDqk1XZ04yqakHbsI4b+OtLxiomyTiblzVnw=
+	b=WbKnYlnL2xeqdS8+EFpZzkJ59KLBVOXi+UOKNeGLGIqHTfb/BXq0paj8QyUDiUseR
+	 8C6AhsId2P8Wr1wca8OqKvF8qK2r6z8ZWFPGyTtwk1TN5ZqZwwFF5D7DCpvfvRHGHJ
+	 IYsF20Mf54eXy5DaPUWIwHMlGjFHeZve4KM3/MGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/269] can: mcp251xfd: rx: add workaround for erratum DS80000789E 6 of mcp2518fd
+Subject: [PATCH 5.15 201/214] nvmet-tcp: fix kernel crash if commands allocation fails
 Date: Tue, 10 Sep 2024 11:33:43 +0200
-Message-ID: <20240910092616.294806230@linuxfoundation.org>
+Message-ID: <20240910092606.771513795@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,147 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 24436be590c6fbb05f6161b0dfba7d9da60214aa ]
+[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
 
-This patch tries to works around erratum DS80000789E 6 of the
-mcp2518fd, the other variants of the chip family (mcp2517fd and
-mcp251863) are probably also affected.
+If the commands allocation fails in nvmet_tcp_alloc_cmds()
+the kernel crashes in nvmet_tcp_release_queue_work() because of
+a NULL pointer dereference.
 
-In the bad case, the driver reads a too large head index. In the
-original code, the driver always trusted the read value, which caused
-old, already processed CAN frames or new, incompletely written CAN
-frames to be (re-)processed.
+  nvmet: failed to install queue 0 cntlid 1 ret 6
+  Unable to handle kernel NULL pointer dereference at
+         virtual address 0000000000000008
 
-To work around this issue, keep a per FIFO timestamp [1] of the last
-valid received CAN frame and compare against the timestamp of every
-received CAN frame. If an old CAN frame is detected, abort the
-iteration and mark the number of valid CAN frames as processed in the
-chip by incrementing the FIFO's tail index.
+Fix the bug by setting queue->nr_cmds to zero in case
+nvmet_tcp_alloc_cmd() fails.
 
-Further tests showed that this workaround can recognize old CAN
-frames, but a small time window remains in which partially written CAN
-frames [2] are not recognized but then processed. These CAN frames
-have the correct data and time stamps, but the DLC has not yet been
-updated.
-
-[1] As the raw timestamp overflows every 107 seconds (at the usual
-    clock rate of 40 MHz) convert it to nanoseconds with the
-    timecounter framework and use this to detect stale CAN frames.
-
-Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com [2]
-Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
-Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  1 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 32 +++++++++++++++++--
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |  3 ++
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ drivers/nvme/target/tcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index 5f92aed62ff9..f72582d4d3e8 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -206,6 +206,7 @@ mcp251xfd_ring_init_rx(struct mcp251xfd_priv *priv, u16 *base, u8 *fifo_nr)
- 	int i, j;
- 
- 	mcp251xfd_for_each_rx_ring(priv, rx_ring, i) {
-+		rx_ring->last_valid = timecounter_read(&priv->tc);
- 		rx_ring->head = 0;
- 		rx_ring->tail = 0;
- 		rx_ring->base = *base;
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-index a79e6c661ecc..fe897f3e4c12 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-@@ -159,8 +159,6 @@ mcp251xfd_hw_rx_obj_to_skb(const struct mcp251xfd_priv *priv,
- 
- 	if (!(hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_RTR))
- 		memcpy(cfd->data, hw_rx_obj->data, cfd->len);
--
--	mcp251xfd_skb_set_timestamp_raw(priv, skb, hw_rx_obj->ts);
- }
- 
- static int
-@@ -171,8 +169,26 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
- 	struct net_device_stats *stats = &priv->ndev->stats;
- 	struct sk_buff *skb;
- 	struct canfd_frame *cfd;
-+	u64 timestamp;
- 	int err;
- 
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the RX FIFO head index
-+	 * might be corrupted and we might process past the RX FIFO's
-+	 * head into old CAN frames.
-+	 *
-+	 * Compare the timestamp of currently processed CAN frame with
-+	 * last valid frame received. Abort with -EBADMSG if an old
-+	 * CAN frame is detected.
-+	 */
-+	timestamp = timecounter_cyc2time(&priv->tc, hw_rx_obj->ts);
-+	if (timestamp <= ring->last_valid) {
-+		stats->rx_fifo_errors++;
-+
-+		return -EBADMSG;
-+	}
-+	ring->last_valid = timestamp;
-+
- 	if (hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_FDF)
- 		skb = alloc_canfd_skb(priv->ndev, &cfd);
- 	else
-@@ -183,6 +199,7 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
- 		return 0;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index df044a79a734..809b03b86a00 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1819,8 +1819,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
  	}
  
-+	mcp251xfd_skb_set_timestamp(skb, timestamp);
- 	mcp251xfd_hw_rx_obj_to_skb(priv, hw_rx_obj, skb);
- 	err = can_rx_offload_queue_timestamp(&priv->offload, skb, hw_rx_obj->ts);
- 	if (err)
-@@ -265,7 +282,16 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 			err = mcp251xfd_handle_rxif_one(priv, ring,
- 							(void *)hw_rx_obj +
- 							i * ring->obj_size);
--			if (err)
-+
-+			/* -EBADMSG means we're affected by mcp2518fd
-+			 * erratum DS80000789E 6., i.e. the timestamp
-+			 * in the RX object is older that the last
-+			 * valid received CAN frame. Don't process any
-+			 * further and mark processed frames as good.
-+			 */
-+			if (err == -EBADMSG)
-+				return mcp251xfd_handle_rxif_ring_uinc(priv, ring, i);
-+			else if (err)
- 				return err;
- 		}
+ 	queue->nr_cmds = sq->size * 2;
+-	if (nvmet_tcp_alloc_cmds(queue))
++	if (nvmet_tcp_alloc_cmds(queue)) {
++		queue->nr_cmds = 0;
+ 		return NVME_SC_INTERNAL;
++	}
+ 	return 0;
+ }
  
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index ae35845d4ce1..991662fbba42 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -554,6 +554,9 @@ struct mcp251xfd_rx_ring {
- 	unsigned int head;
- 	unsigned int tail;
- 
-+	/* timestamp of the last valid received CAN frame */
-+	u64 last_valid;
-+
- 	u16 base;
- 	u8 nr;
- 	u8 fifo_nr;
 -- 
 2.43.0
 
