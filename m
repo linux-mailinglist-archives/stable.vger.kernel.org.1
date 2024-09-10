@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-75238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC0973395
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFC397326E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3351284436
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 038A52890EA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F7A19415D;
-	Tue, 10 Sep 2024 10:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEA31922E1;
+	Tue, 10 Sep 2024 10:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbNwrMpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gas5EtmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B6419412C;
-	Tue, 10 Sep 2024 10:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A50C18C036;
+	Tue, 10 Sep 2024 10:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964150; cv=none; b=hFkuE8mda+R5N405ce05YkLkFonm9HqJ4nmOAAVed8eWjU9bM7F+5aLRLdjeryyuq2g337QwL/y/Y4pBu3rC6C1inBmCJRKIe3hAUFTINrR1tXSqVAVuwPo08a0GUS+kvtZ8tHmB9DAVEG1OW5BxNhj/9mza83SlQh0KyD/cVoo=
+	t=1725963415; cv=none; b=a1z2eOV2Rjr78zw/5k84qHg+7WjBFCMoByf57LJ9HmwHCUILLGKPers4lJ02UTj2HdgDWnSC45If8XBjGSOitEe7P2Lp5nFNyNEwVZouIFyT6VVpITLQxJhYAo0pjgmbEGfKLdVY7f3NhXrHW6+e/In7qFivEb+1sZnWZIMv1Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964150; c=relaxed/simple;
-	bh=0CHzbC1SoDHR0RXG6SolIas89dumWzt/ptaiO/nWbL0=;
+	s=arc-20240116; t=1725963415; c=relaxed/simple;
+	bh=VpaXhrOf75cnTk2Y77Ev2/QD3IvEK1Q1SdKiyGwGIhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9ZHhA2mtGnSTpmw4+UaxzlzXYTBfosh56nRblUPKMKQEh1nHQ5V39QfjI7LSL1t7Lw4NuCdxRRSD3MGZQY94xyVNMIHNCYy1wPFOF0UYkxZSuq/Yivd4Tw64t4PAscBFMyfO5sIrcek3VgCEgM5I4kUvSMDUxGYkWCAo82MCoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbNwrMpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A428C4CEC3;
-	Tue, 10 Sep 2024 10:29:09 +0000 (UTC)
+	 MIME-Version; b=BuUlfVg3ly3Pe0PDWV3X++YYGBxKjNQBTcyKbWXBLeIBhFLUYklHp375pf2GFjgTX8RqLEXny9rrOYWR+I8yufyyocMbzJBcRPhx3Inj9Jq53r/H/wx3UFzqYg22qJKjssTGv09C+jYszsTh5NAcyVQrOE+cTQrYC7cXBzieCNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gas5EtmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EC9C4CEC3;
+	Tue, 10 Sep 2024 10:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964149;
-	bh=0CHzbC1SoDHR0RXG6SolIas89dumWzt/ptaiO/nWbL0=;
+	s=korg; t=1725963415;
+	bh=VpaXhrOf75cnTk2Y77Ev2/QD3IvEK1Q1SdKiyGwGIhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZbNwrMpRVeLgXwYSHVyEvXbWneZn7qrgLJMUpaBtxkEay9PfNRTbiTPniOaf4EdoU
-	 t6r0A8gTpsO68o3Vd/Cv9fqs0cyA8aMk3wjcE7Zu70JFOvZEhw/tGqfJ733/SrzDXU
-	 nZM916pfaVWWH45zzSTDUrs+5O5aCSGa2s9effjQ=
+	b=Gas5EtmVAmdbjz00HrwnnyDGaMQ/Uu1Rsc/KiEQnaT8enc6UYy1G8z95DBVsHCeh5
+	 XzYHd278CrxX7fZHzym1mibYjOl/5IlSgHsgdOc1Ludi8ziU3KvtVIGTcHZFDsb759
+	 JiIws2nxDJbfN2ke+9wV5cqA4LmxhlGHtfUQbt9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Haoran Liu <liuhaoran14@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/269] drm/amd/display: Check HDCP returned status
+Subject: [PATCH 5.15 049/214] drm/meson: plane: Add error handling
 Date: Tue, 10 Sep 2024 11:31:11 +0200
-Message-ID: <20240910092611.195205003@linuxfoundation.org>
+Message-ID: <20240910092600.775576825@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Haoran Liu <liuhaoran14@163.com>
 
-[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
+[ Upstream commit 3c28b239620e249b68beeca17f429e317fa6b8d4 ]
 
-[WHAT & HOW]
-Check mod_hdcp_execute_and_set() return values in authenticated_dp.
+This patch adds robust error handling to the meson_plane_create
+function in drivers/gpu/drm/meson/meson_plane.c. The function
+previously lacked proper handling for potential failure scenarios
+of the drm_universal_plane_init call.
 
-This fixes 3 CHECKED_RETURN issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231129113405.33057-1-liuhaoran14@163.com
+[narmstrong: fixe the commit subject]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129113405.33057-1-liuhaoran14@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_plane.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-index 1ddb4f5eac8e..93c0455766dd 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
- 	}
+diff --git a/drivers/gpu/drm/meson/meson_plane.c b/drivers/gpu/drm/meson/meson_plane.c
+index 44aa52629443..c17abaf9b54d 100644
+--- a/drivers/gpu/drm/meson/meson_plane.c
++++ b/drivers/gpu/drm/meson/meson_plane.c
+@@ -533,6 +533,7 @@ int meson_plane_create(struct meson_drm *priv)
+ 	struct meson_plane *meson_plane;
+ 	struct drm_plane *plane;
+ 	const uint64_t *format_modifiers = format_modifiers_default;
++	int ret;
  
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
-+		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
- 				&input->bstatus_read, &status,
--				hdcp, "bstatus_read");
-+				hdcp, "bstatus_read"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_link_integrity_dp,
-+		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
- 				&input->link_integrity_check, &status,
--				hdcp, "link_integrity_check");
-+				hdcp, "link_integrity_check"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
-+		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
- 				&input->reauth_request_check, &status,
--				hdcp, "reauth_request_check");
-+				hdcp, "reauth_request_check"))
-+			goto out;
- out:
- 	return status;
- }
+ 	meson_plane = devm_kzalloc(priv->drm->dev, sizeof(*meson_plane),
+ 				   GFP_KERNEL);
+@@ -547,12 +548,16 @@ int meson_plane_create(struct meson_drm *priv)
+ 	else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A))
+ 		format_modifiers = format_modifiers_afbc_g12a;
+ 
+-	drm_universal_plane_init(priv->drm, plane, 0xFF,
+-				 &meson_plane_funcs,
+-				 supported_drm_formats,
+-				 ARRAY_SIZE(supported_drm_formats),
+-				 format_modifiers,
+-				 DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	ret = drm_universal_plane_init(priv->drm, plane, 0xFF,
++					&meson_plane_funcs,
++					supported_drm_formats,
++					ARRAY_SIZE(supported_drm_formats),
++					format_modifiers,
++					DRM_PLANE_TYPE_PRIMARY, "meson_primary_plane");
++	if (ret) {
++		devm_kfree(priv->drm->dev, meson_plane);
++		return ret;
++	}
+ 
+ 	drm_plane_helper_add(plane, &meson_plane_helper_funcs);
+ 
 -- 
 2.43.0
 
