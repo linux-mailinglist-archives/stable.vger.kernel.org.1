@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-74313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D09972EA4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:45:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A848972EE1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98D551C20D52
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:45:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC7AC1C244FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2DE190676;
-	Tue, 10 Sep 2024 09:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3449518C01F;
+	Tue, 10 Sep 2024 09:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oThKOmtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlOx6e9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7F118DF67;
-	Tue, 10 Sep 2024 09:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4972224F6;
+	Tue, 10 Sep 2024 09:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961444; cv=none; b=nEfmdKVkibWqkNSgcDmMFpty23SSQpoPu+6XcKne8f5N2CfDw9IQbZ6LV7QqqEIoH3irBbJekLRdKstiphS26viELFYBtWt75TUxVeWTEL9ytzFvkqkerNE9LJmvpvXNByRUa1AThPUpyI2SqATnh3fL1RqIwhi1kd4WXp3V6Gw=
+	t=1725961556; cv=none; b=Pb6o4VCnO+dqV24QVerD5EcB2SW/3AsbxruZdDA/BTtLp1dttKb9nTsM+yldamWmPSqEhaGC+T/phMnT4dTWUL/MohdoFMxwmTTYQAQMn4s0WD5XUfCIEjt5vaCUdGFcrhpIbul/4PveeTqvrBC04lSs0Yv203wJPnbbhc8Chr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961444; c=relaxed/simple;
-	bh=W26fGf70dipd75fEZWQcvTs/iq7IpINiofVfJS4zHZo=;
+	s=arc-20240116; t=1725961556; c=relaxed/simple;
+	bh=qzndcszZ5hGO/ntVRxFMxTOmZ6IEkanE03q5nYUYBEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1iVSiIUcckYdnHaKvTQ/DfpUlQVoyMu2Mp6vo4M58K8CcD/rJCKauzY03tON42vi5IcRHAehQSuOuCVCo3vR7BXOz+3PK+1Uc3sLZ12zUlKAvRxn7sxM5lzZmwnJkk14aYGdndpWzq10jP15agbe4aqyABE4Xzk4tIq3npTVKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oThKOmtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86234C4CEC3;
-	Tue, 10 Sep 2024 09:44:03 +0000 (UTC)
+	 MIME-Version; b=MB/dumaPO1ozWbqwSdwm5mj3k6yr00jnFrtmmeLdmu62RZm2uoqmsYB6KxSEq/d0XU2ot11wQFKwzqQTSM73vLJNdPio7O7wvJVUOXzLz9KXSfj8EC9XQol0d2Lt2ZlAqvb587rHWyWA1rQgh2lGv3QrRyi/fFcDDHrWMQI1CnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlOx6e9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477FEC4CEC3;
+	Tue, 10 Sep 2024 09:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961443;
-	bh=W26fGf70dipd75fEZWQcvTs/iq7IpINiofVfJS4zHZo=;
+	s=korg; t=1725961555;
+	bh=qzndcszZ5hGO/ntVRxFMxTOmZ6IEkanE03q5nYUYBEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oThKOmtu81hzKaPwiRGCJ3NO3CYqEwEqlfWP5SdzWGP38WAXSdD0gcwVAi9oxx/eB
-	 C8SjifRGf9ICqw0OIHYI5UQKeUarFFFmr/xFYi3plTcuuyYiBzhirTxtlC5voFhoiX
-	 4sf0bSQglcE0Aa6Ep1aMvE6QUH2YTTWeFzmdO5Ww=
+	b=PlOx6e9TB8RlkFwhkG/KuJfg37D5pPrX4C4lkaU4xXiHHNepZp2WgOYiAJmad+Ftl
+	 jS3JWgwiAlUTenDy7hgPk7JLzHUxutzw+Lh7rLSmsma45KVh5mAJU6uBxh8+fS2UVw
+	 fPESpgACa1HYtXkz7VPqdmHx4Sgy0cz34ZPFDK3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.10 071/375] net: mctp-serial: Fix missing escapes on transmit
-Date: Tue, 10 Sep 2024 11:27:48 +0200
-Message-ID: <20240910092624.605061474@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH 6.10 072/375] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported
+Date: Tue, 10 Sep 2024 11:27:49 +0200
+Message-ID: <20240910092624.638421976@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -65,56 +65,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Mitchell Levy <levymitchell0@gmail.com>
 
-commit f962e8361adfa84e8252d3fc3e5e6bb879f029b1 upstream.
+commit 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b upstream.
 
-0x7d and 0x7e bytes are meant to be escaped in the data portion of
-frames, but this didn't occur since next_chunk_len() had an off-by-one
-error. That also resulted in the final byte of a payload being written
-as a separate tty write op.
+There are two distinct CPU features related to the use of XSAVES and LBR:
+whether LBR is itself supported and whether XSAVES supports LBR. The LBR
+subsystem correctly checks both in intel_pmu_arch_lbr_init(), but the
+XSTATE subsystem does not.
 
-The chunk prior to an escaped byte would be one byte short, and the
-next call would never test the txpos+1 case, which is where the escaped
-byte was located. That meant it never hit the escaping case in
-mctp_serial_tx_work().
+The LBR bit is only removed from xfeatures_mask_independent when LBR is not
+supported by the CPU, but there is no validation of XSTATE support.
 
-Example Input: 01 00 08 c8 7e 80 02
+If XSAVES does not support LBR the write to IA32_XSS causes a #GP fault,
+leaving the state of IA32_XSS unchanged, i.e. zero. The fault is handled
+with a warning and the boot continues.
 
-Previous incorrect chunks from next_chunk_len():
+Consequently the next XRSTORS which tries to restore supervisor state fails
+with #GP because the RFBM has zero for all supervisor features, which does
+not match the XCOMP_BV field.
 
-01 00 08
-c8 7e 80
-02
+As XFEATURE_MASK_FPSTATE includes supervisor features setting up the FPU
+causes a #GP, which ends up in fpu_reset_from_exception_fixup(). That fails
+due to the same problem resulting in recursive #GPs until the kernel runs
+out of stack space and double faults.
 
-With this fix:
+Prevent this by storing the supported independent features in
+fpu_kernel_cfg during XSTATE initialization and use that cached value for
+retrieving the independent feature bits to be written into IA32_XSS.
 
-01 00 08 c8
-7e
-80 02
+[ tglx: Massaged change log ]
 
+Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: a0c2ccd9b5ad ("mctp: Add MCTP-over-serial transport binding")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/all/20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-serial.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/fpu/types.h |    7 +++++++
+ arch/x86/kernel/fpu/xstate.c     |    3 +++
+ arch/x86/kernel/fpu/xstate.h     |    4 ++--
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/net/mctp/mctp-serial.c
-+++ b/drivers/net/mctp/mctp-serial.c
-@@ -91,8 +91,8 @@ static int next_chunk_len(struct mctp_se
- 	 * will be those non-escaped bytes, and does not include the escaped
- 	 * byte.
+--- a/arch/x86/include/asm/fpu/types.h
++++ b/arch/x86/include/asm/fpu/types.h
+@@ -591,6 +591,13 @@ struct fpu_state_config {
+ 	 * even without XSAVE support, i.e. legacy features FP + SSE
  	 */
--	for (i = 1; i + dev->txpos + 1 < dev->txlen; i++) {
--		if (needs_escape(dev->txbuf[dev->txpos + i + 1]))
-+	for (i = 1; i + dev->txpos < dev->txlen; i++) {
-+		if (needs_escape(dev->txbuf[dev->txpos + i]))
- 			break;
+ 	u64 legacy_features;
++	/*
++	 * @independent_features:
++	 *
++	 * Features that are supported by XSAVES, but not managed as part of
++	 * the FPU core, such as LBR
++	 */
++	u64 independent_features;
+ };
+ 
+ /* FPU state configuration information */
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -788,6 +788,9 @@ void __init fpu__init_system_xstate(unsi
+ 		goto out_disable;
  	}
  
++	fpu_kernel_cfg.independent_features = fpu_kernel_cfg.max_features &
++					      XFEATURE_MASK_INDEPENDENT;
++
+ 	/*
+ 	 * Clear XSAVE features that are disabled in the normal CPUID.
+ 	 */
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -62,9 +62,9 @@ static inline u64 xfeatures_mask_supervi
+ static inline u64 xfeatures_mask_independent(void)
+ {
+ 	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR))
+-		return XFEATURE_MASK_INDEPENDENT & ~XFEATURE_MASK_LBR;
++		return fpu_kernel_cfg.independent_features & ~XFEATURE_MASK_LBR;
+ 
+-	return XFEATURE_MASK_INDEPENDENT;
++	return fpu_kernel_cfg.independent_features;
+ }
+ 
+ /* XSAVE/XRSTOR wrapper functions */
 
 
 
