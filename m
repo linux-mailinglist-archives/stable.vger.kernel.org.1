@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6FD9733B7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D23E973352
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E56A1C24C48
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 777FDB29482
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F88190676;
-	Tue, 10 Sep 2024 10:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B024418C90E;
+	Tue, 10 Sep 2024 10:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTHx0cO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnnJuArX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C54144D1A;
-	Tue, 10 Sep 2024 10:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F769143880;
+	Tue, 10 Sep 2024 10:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964238; cv=none; b=BGV5Ah+l0/jBe1jp+I8Ao0AP0Edli5btlAvS14kEm/qqF+j+TjoiP+1xFoTqQxF10x/b8vIvYlS+zDurL9qAD+CWwHjPWA6VU3JigJsueBuv5jMNICDykyi4NNTpXccgn8HfFbgpMPJzdZ7BuE4LB26AIGqT0mQ+sOrKcazrVgs=
+	t=1725963503; cv=none; b=TxHupz/KW9R3IJbPwPkwo8B1NZsHX7MnwWXjOdaFQn0wpEDShdGBnj5Qw5Zggx2fEvlF6UDO5W2bF7Z5pEi5vRjUIjBlHJXLhv0IhXwAmXnkVCORNvz3fZWy7eyDtogH/BK2xV3t8mSUhtokI2fA9/VY8PlA6+dDFlAy95hrMjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964238; c=relaxed/simple;
-	bh=bo9euLSEawJtzimmu20ZIihWo0QjqfXiPGDlvu71WT4=;
+	s=arc-20240116; t=1725963503; c=relaxed/simple;
+	bh=f1HEAItnK8RLGoAUvEubT/1aQAibXH0tXMnl/mqbrHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chhOnexHypfKPLqrXefs2YzxqlradvaCxNQAPDhyj36PCkVyWXGN1JpZt/rFLEnnvDaTesZArMy+OnDjAhW1I4bqtf6zYqx0DHXA+qR9wetTubH5tNyz9HycaZpv+aiZ+eeXEfpvagPQ5SGXlJq/JCT/PQlw9bwjiJmviBtLlJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTHx0cO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB2DC4CEC3;
-	Tue, 10 Sep 2024 10:30:37 +0000 (UTC)
+	 MIME-Version; b=tckKwiHgpV3JLs/uLy9mToV7aKT5K4pW5j8C+njtx4kkwlN2RD8DWuiyycYNDdSIgicU7FKCTs7e3gVeR6NOmiCTku5g2yVSbgD12QGBFllmztW0cLGFEYSirtAy0AKs1VcpST6hZyCNm0VlS0oA9RvsFc9FVYj1fqF30cBLG24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnnJuArX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3FDC4CEC3;
+	Tue, 10 Sep 2024 10:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964238;
-	bh=bo9euLSEawJtzimmu20ZIihWo0QjqfXiPGDlvu71WT4=;
+	s=korg; t=1725963503;
+	bh=f1HEAItnK8RLGoAUvEubT/1aQAibXH0tXMnl/mqbrHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTHx0cO1JbMiue1BBX2T3kXegWeIGnXyvJF/cdQFbLCcj1+HdUl15JqUB7f97dIYa
-	 iVrxEqj2TrxXNW++oZ7Pow0CbyVIXjQXo5rRXv9h1hBqYgrGhcuZqKrqM+YLtC3u/M
-	 KEMLdp3PPSb2eFyyDZuijXMPty03yNGsSHGZRLuQ=
+	b=fnnJuArXJKBftuNHt9sPIQYOe/H7Ukjr0AvelXdMOn1bzp6tHaPCzJghn/ZIXEYC5
+	 dhqZNHpmgG9BGxl4gXfjYKfNJ9noFdjU83F3Z/8/nOXC8YKC9aYj18uz17yrJ/i6dD
+	 fpZnyFbA/YXvKEgOOkT6gs0ZveoRXwiIwgPswhaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/269] Bluetooth: Remove pending ACL connection attempts
+	Jann Horn <jannh@google.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.15 079/214] fuse: use unsigned type for getxattr/listxattr size truncation
 Date: Tue, 10 Sep 2024 11:31:41 +0200
-Message-ID: <20240910092612.258483803@linuxfoundation.org>
+Message-ID: <20240910092601.965741493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,157 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Dreßler <verdre@v0yd.nl>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 4aa42119d971603dc9e4d8cf4f53d5fcf082ea7d ]
+commit b18915248a15eae7d901262f108d6ff0ffb4ffc1 upstream.
 
-With the last commit we moved to using the hci_sync queue for "Create
-Connection" requests, removing the need for retrying the paging after
-finished/failed "Create Connection" requests and after the end of
-inquiries.
+The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
+parsing the FUSE daemon's response to a zero-length getxattr/listxattr
+request.
+On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
+wrong: The min_t() will pass through any size values that are negative when
+interpreted as signed.
+fuse_listxattr() will then return this userspace-supplied negative value,
+which callers will treat as an error value.
 
-hci_conn_check_pending() was used to trigger this retry, we can remove it
-now.
+This kind of bug pattern can lead to fairly bad security bugs because of
+how error codes are used in the Linux kernel. If a caller were to convert
+the numeric error into an error pointer, like so:
 
-Note that we can also remove the special handling for COMMAND_DISALLOWED
-errors in the completion handler of "Create Connection", because "Create
-Connection" requests are now always serialized.
+    struct foo *func(...) {
+      int len = fuse_getxattr(..., NULL, 0);
+      if (len < 0)
+        return ERR_PTR(len);
+      ...
+    }
 
-This is somewhat reverting commit 4c67bc74f016 ("[Bluetooth] Support
-concurrent connect requests").
+then it would end up returning this userspace-supplied negative value cast
+to a pointer - but the caller of this function wouldn't recognize it as an
+error pointer (IS_ERR_VALUE() only detects values in the narrow range in
+which legitimate errno values are), and so it would just be treated as a
+kernel pointer.
 
-With this, the BT_CONNECT2 state of ACL hci_conn objects should now be
-back to meaning only one thing: That we received a "Connection Request"
-from another device (see hci_conn_request_evt), but the response to that
-is going to be deferred.
+I think there is at least one theoretical codepath where this could happen,
+but that path would involve virtio-fs with submounts plus some weird
+SELinux configuration, so I think it's probably not a concern in practice.
 
-Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v4.9
+Fixes: 63401ccdb2ca ("fuse: limit xattr returned size")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h |  1 -
- net/bluetooth/hci_conn.c         | 16 ----------------
- net/bluetooth/hci_event.c        | 21 ++++-----------------
- 3 files changed, 4 insertions(+), 34 deletions(-)
+ fs/fuse/xattr.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 070c794e6a42..850f0e46aecf 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1417,7 +1417,6 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
- 				    bdaddr_t *dst, u8 role);
- void hci_conn_del(struct hci_conn *conn);
- void hci_conn_hash_flush(struct hci_dev *hdev);
--void hci_conn_check_pending(struct hci_dev *hdev);
- 
- struct hci_chan *hci_chan_create(struct hci_conn *conn);
- void hci_chan_del(struct hci_chan *chan);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 04fe901a47f7..36731d047f16 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2565,22 +2565,6 @@ void hci_conn_hash_flush(struct hci_dev *hdev)
+--- a/fs/fuse/xattr.c
++++ b/fs/fuse/xattr.c
+@@ -82,7 +82,7 @@ ssize_t fuse_getxattr(struct inode *inod
  	}
- }
- 
--/* Check pending connect attempts */
--void hci_conn_check_pending(struct hci_dev *hdev)
--{
--	struct hci_conn *conn;
--
--	BT_DBG("hdev %s", hdev->name);
--
--	hci_dev_lock(hdev);
--
--	conn = hci_conn_hash_lookup_state(hdev, ACL_LINK, BT_CONNECT2);
--	if (conn)
--		hci_acl_create_connection_sync(hdev, conn);
--
--	hci_dev_unlock(hdev);
--}
--
- static u32 get_link_mode(struct hci_conn *conn)
- {
- 	u32 link_mode = 0;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index dc80c1560357..d81c7fccdd40 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -118,8 +118,6 @@ static u8 hci_cc_inquiry_cancel(struct hci_dev *hdev, void *data,
- 		hci_discovery_set_state(hdev, DISCOVERY_STOPPED);
- 	hci_dev_unlock(hdev);
- 
--	hci_conn_check_pending(hdev);
--
- 	return rp->status;
- }
- 
-@@ -150,8 +148,6 @@ static u8 hci_cc_exit_periodic_inq(struct hci_dev *hdev, void *data,
- 
- 	hci_dev_clear_flag(hdev, HCI_PERIODIC_INQ);
- 
--	hci_conn_check_pending(hdev);
--
- 	return rp->status;
- }
- 
-@@ -2257,10 +2253,8 @@ static void hci_cs_inquiry(struct hci_dev *hdev, __u8 status)
- {
- 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
- 
--	if (status) {
--		hci_conn_check_pending(hdev);
-+	if (status)
- 		return;
--	}
- 
- 	if (hci_sent_cmd_data(hdev, HCI_OP_INQUIRY))
- 		set_bit(HCI_INQUIRY, &hdev->flags);
-@@ -2285,12 +2279,9 @@ static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
- 
- 	if (status) {
- 		if (conn && conn->state == BT_CONNECT) {
--			if (status != HCI_ERROR_COMMAND_DISALLOWED || conn->attempt > 2) {
--				conn->state = BT_CLOSED;
--				hci_connect_cfm(conn, status);
--				hci_conn_del(conn);
--			} else
--				conn->state = BT_CONNECT2;
-+			conn->state = BT_CLOSED;
-+			hci_connect_cfm(conn, status);
-+			hci_conn_del(conn);
- 		}
- 	} else {
- 		if (!conn) {
-@@ -2980,8 +2971,6 @@ static void hci_inquiry_complete_evt(struct hci_dev *hdev, void *data,
- 
- 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
- 
--	hci_conn_check_pending(hdev);
--
- 	if (!test_and_clear_bit(HCI_INQUIRY, &hdev->flags))
- 		return;
- 
-@@ -3228,8 +3217,6 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
- 
- unlock:
- 	hci_dev_unlock(hdev);
--
--	hci_conn_check_pending(hdev);
- }
- 
- static void hci_reject_conn(struct hci_dev *hdev, bdaddr_t *bdaddr)
--- 
-2.43.0
-
+ 	ret = fuse_simple_request(fm, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_SIZE_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_SIZE_MAX);
+ 	if (ret == -ENOSYS) {
+ 		fm->fc->no_getxattr = 1;
+ 		ret = -EOPNOTSUPP;
+@@ -144,7 +144,7 @@ ssize_t fuse_listxattr(struct dentry *en
+ 	}
+ 	ret = fuse_simple_request(fm, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_LIST_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_LIST_MAX);
+ 	if (ret > 0 && size)
+ 		ret = fuse_verify_xattr_list(list, ret);
+ 	if (ret == -ENOSYS) {
 
 
 
