@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-75345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF387973416
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27523973599
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DDE71C24E73
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0F03B27689
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6781922F6;
-	Tue, 10 Sep 2024 10:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F6A18EFC6;
+	Tue, 10 Sep 2024 10:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCxaDYnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/u8PGgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0A918C33D;
-	Tue, 10 Sep 2024 10:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BD917A924;
+	Tue, 10 Sep 2024 10:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964461; cv=none; b=MfJClsdDJXCirzTj63lQhDH61tEvVqt7txlawySxQD911F2ggRU7eVKqlQr8RJCFTGfceqDqAke7TDRTfrhKPZYL0TRZzh3RjqQqzHC79pnHLUGKtqj4VpJ32OSzBYBThhuAHs4c+mvskQZ2ASuB61ogpebCNpWGjJpNfHYiXNs=
+	t=1725964942; cv=none; b=IwVOWVuatjS7s0P4rj+r+jqupaW8//ZPfIeP99wqZAHLUHZQFKvlkBWEhXJkJAdsAuHWOIGW3cocBeTrzdLo6JzVSWWuOD9As65QXW/CG3Is9HWOgidmspNoepIdLF77wnFYGV9I70g4SSF7U6Yl1Fdbbf5m8vvjeXBD6Lia2cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964461; c=relaxed/simple;
-	bh=Aa82sFe7F87RAqj2EodPCdIKfu3eduBjwDwkxl0jfKc=;
+	s=arc-20240116; t=1725964942; c=relaxed/simple;
+	bh=NK6KBoTPQHkiQ/ABOfyKwHr3eqJFbINk47r+fAzrp6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AGb5cICuX26l0KxIaq2ki2vQdcdEroBSKOgDCiq115xHgBJoUE7pmAMbtjmnAKzovFJTKuS2t21X8u1neAPkikVTVyUnPhBQAQjSCK6vH2Sttxg1vHTXvCuZFP9UkD12BV0KAVbgMKnYTe6f6MaVfqXGqH+i1ZlHSeNN/ob/95s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCxaDYnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AA1C4CEC3;
-	Tue, 10 Sep 2024 10:34:20 +0000 (UTC)
+	 MIME-Version; b=YBJysSPV3wcs4zsfCocIyjPdR4py3br3WgzM4vjUmoUf/u7XG1/MIakaV2bheGuRiZ+x2s4yqI5xSnED8DYyIN0ShrDKDH4Vuz/946dEpHI775eKTwBihzeuT1paPyaK10ktfuC5P9mDjXohN7T7DlHfsZyMoiqXWuI9LoZ5cAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/u8PGgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424F5C4CEC3;
+	Tue, 10 Sep 2024 10:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964460;
-	bh=Aa82sFe7F87RAqj2EodPCdIKfu3eduBjwDwkxl0jfKc=;
+	s=korg; t=1725964942;
+	bh=NK6KBoTPQHkiQ/ABOfyKwHr3eqJFbINk47r+fAzrp6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCxaDYnzlRLL3dtJPOkoITaYK3f/65ibmGuoX7cK9714NXYJchFlEQ0XU9JZlgq+2
-	 K0cGhyCW8iV4DVL/xhcPZmDgWTMGl93glddWyvWWAWSfAlk63hWZVxlhLae2ojMPQ3
-	 k+hlvDVBmTY6m7pp3mw9V74lNnlhUnEFwDBAVRo4=
+	b=W/u8PGgNaUdBPGr2nmhDmDHa4zzylog9PGlcaGvuxfgA4yQcQKf4cnAFjqpvnIP2n
+	 eP7Vn1yjedlt8zczm7puz7r/Nk5Lc7HwcTmq7rtYyCo6e5iEUx3LN1z0fjQ6GltVSM
+	 gFzwIdf3xi+AdE4+Di8KG97TyDzcnareDVYJStCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/269] MIPS: cevt-r4k: Dont call get_c0_compare_int if timer irq is installed
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 083/186] NFSD: Refactor the duplicate reply cache shrinker
 Date: Tue, 10 Sep 2024 11:32:58 +0200
-Message-ID: <20240910092614.922071405@linuxfoundation.org>
+Message-ID: <20240910092557.928692752@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +59,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 50f2b98dc83de7809a5c5bf0ccf9af2e75c37c13 ]
+[ Upstream commit c135e1269f34dfdea4bd94c11060c83a3c0b3c12 ]
 
-This avoids warning:
+Avoid holding the bucket lock while freeing cache entries. This
+change also caps the number of entries that are freed when the
+shrinker calls to reduce the shrinker's impact on the cache's
+effectiveness.
 
-[    0.118053] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
-
-Caused by get_c0_compare_int on secondary CPU.
-
-We also skipped saving IRQ number to struct clock_event_device *cd as
-it's never used by clockevent core, as per comments it's only meant
-for "non CPU local devices".
-
-Reported-by: Serge Semin <fancer.lancer@gmail.com>
-Closes: https://lore.kernel.org/linux-mips/6szkkqxpsw26zajwysdrwplpjvhl5abpnmxgu2xuj3dkzjnvsf@4daqrz4mf44k/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/cevt-r4k.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/nfsd/nfscache.c |   82 +++++++++++++++++++++++++----------------------------
+ 1 file changed, 39 insertions(+), 43 deletions(-)
 
-diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
-index 368e8475870f..5f6e9e2ebbdb 100644
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -303,13 +303,6 @@ int r4k_clockevent_init(void)
- 	if (!c0_compare_int_usable())
- 		return -ENXIO;
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -309,68 +309,64 @@ nfsd_prune_bucket_locked(struct nfsd_net
+ 	}
+ }
  
--	/*
--	 * With vectored interrupts things are getting platform specific.
--	 * get_c0_compare_int is a hook to allow a platform to return the
--	 * interrupt number of its liking.
--	 */
--	irq = get_c0_compare_int();
--
- 	cd = &per_cpu(mips_clockevent_device, cpu);
+-static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+-			 unsigned int max)
++/**
++ * nfsd_reply_cache_count - count_objects method for the DRC shrinker
++ * @shrink: our registered shrinker context
++ * @sc: garbage collection parameters
++ *
++ * Returns the total number of entries in the duplicate reply cache. To
++ * keep things simple and quick, this is not the number of expired entries
++ * in the cache (ie, the number that would be removed by a call to
++ * nfsd_reply_cache_scan).
++ */
++static unsigned long
++nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+-	struct svc_cacherep *rp, *tmp;
+-	long freed = 0;
++	struct nfsd_net *nn = container_of(shrink,
++				struct nfsd_net, nfsd_reply_cache_shrinker);
  
- 	cd->name		= "MIPS";
-@@ -320,7 +313,6 @@ int r4k_clockevent_init(void)
- 	min_delta		= calculate_min_delta();
+-	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
+-		/*
+-		 * Don't free entries attached to calls that are still
+-		 * in-progress, but do keep scanning the list.
+-		 */
+-		if (rp->c_state == RC_INPROG)
+-			continue;
+-		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
+-		    time_before(jiffies, rp->c_timestamp + RC_EXPIRE))
+-			break;
+-		nfsd_reply_cache_free_locked(b, rp, nn);
+-		if (max && freed++ > max)
+-			break;
+-	}
+-	return freed;
++	return atomic_read(&nn->num_drc_entries);
+ }
  
- 	cd->rating		= 300;
--	cd->irq			= irq;
- 	cd->cpumask		= cpumask_of(cpu);
- 	cd->set_next_event	= mips_next_event;
- 	cd->event_handler	= mips_event_handler;
-@@ -332,6 +324,13 @@ int r4k_clockevent_init(void)
+-/*
+- * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
+- * Also prune the oldest ones when the total exceeds the max number of entries.
++/**
++ * nfsd_reply_cache_scan - scan_objects method for the DRC shrinker
++ * @shrink: our registered shrinker context
++ * @sc: garbage collection parameters
++ *
++ * Free expired entries on each bucket's LRU list until we've released
++ * nr_to_scan freed objects. Nothing will be released if the cache
++ * has not exceeded it's max_drc_entries limit.
++ *
++ * Returns the number of entries released by this call.
+  */
+-static long
+-prune_cache_entries(struct nfsd_net *nn)
++static unsigned long
++nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
+ {
++	struct nfsd_net *nn = container_of(shrink,
++				struct nfsd_net, nfsd_reply_cache_shrinker);
++	unsigned long freed = 0;
++	LIST_HEAD(dispose);
+ 	unsigned int i;
+-	long freed = 0;
  
- 	cp0_timer_irq_installed = 1;
+ 	for (i = 0; i < nn->drc_hashsize; i++) {
+ 		struct nfsd_drc_bucket *b = &nn->drc_hashtbl[i];
  
-+	/*
-+	 * With vectored interrupts things are getting platform specific.
-+	 * get_c0_compare_int is a hook to allow a platform to return the
-+	 * interrupt number of its liking.
-+	 */
-+	irq = get_c0_compare_int();
+ 		if (list_empty(&b->lru_head))
+ 			continue;
 +
- 	if (request_irq(irq, c0_compare_interrupt, flags, "timer",
- 			c0_compare_interrupt))
- 		pr_err("Failed to request irq %d (timer)\n", irq);
--- 
-2.43.0
-
+ 		spin_lock(&b->cache_lock);
+-		freed += prune_bucket(b, nn, 0);
++		nfsd_prune_bucket_locked(nn, b, 0, &dispose);
+ 		spin_unlock(&b->cache_lock);
+-	}
+-	return freed;
+-}
+ 
+-static unsigned long
+-nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
+-{
+-	struct nfsd_net *nn = container_of(shrink,
+-				struct nfsd_net, nfsd_reply_cache_shrinker);
++		freed += nfsd_cacherep_dispose(&dispose);
++		if (freed > sc->nr_to_scan)
++			break;
++	}
+ 
+-	return atomic_read(&nn->num_drc_entries);
++	trace_nfsd_drc_gc(nn, freed);
++	return freed;
+ }
+ 
+-static unsigned long
+-nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
+-{
+-	struct nfsd_net *nn = container_of(shrink,
+-				struct nfsd_net, nfsd_reply_cache_shrinker);
+-
+-	return prune_cache_entries(nn);
+-}
+ /*
+  * Walk an xdr_buf and get a CRC for at most the first RC_CSUMLEN bytes
+  */
 
 
 
