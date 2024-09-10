@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEB7972DD3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68806972FEA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6741C24937
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26ACB284855
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29411891A5;
-	Tue, 10 Sep 2024 09:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2503818A6D2;
+	Tue, 10 Sep 2024 09:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2JCgw5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7oElE+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E80E46444;
-	Tue, 10 Sep 2024 09:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FCE14F12C;
+	Tue, 10 Sep 2024 09:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725960995; cv=none; b=K9qbKmdChqzJ6VZ8vecksg/Z2mLr3nVxgb+TeHmKGRs7K0NczJa7JzMPUCsraPNmcxLhdoGRkXccWxN12ilVkmfVc0SBYnBtQQxOFvKDOWCqiaU1E7Y8j2ZOyb98KBTIte82T8hPZwtAyPQZyjv/iEAr5ki1RobC5lmFe2gf6ks=
+	t=1725962145; cv=none; b=hc5RXkdgmhtwpXM/LF/xuI29r1huTSii1FNO7mWqLYVAtFoazFrczdBMuqM5qhB5J0Nbbg/5p60JacR7Tx21rFIhBQbjUXFtzIbqa+KqSuhSpT54fh05ocW3Ksnm/xMu4vzIME+b13KdfICgWpE5StNFqMODC71JmfJ5M2xHQmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725960995; c=relaxed/simple;
-	bh=Yv8HcB3EjvNfplCUD5tlIAk79yp9CaoVdK5l3/5nMFc=;
+	s=arc-20240116; t=1725962145; c=relaxed/simple;
+	bh=TUnXjsS8ZyhQj930ICpW/D7QrsZQ941Hj3+4X3vEDIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpAUcqSgGyL+hm20Y0z94lgNFIy4awxSqEe3nze77BUlfX+ESHk14bXa3i8E8P2g+JE+tsWIx0cFX8pQbB7feIN6Kkxb+z4MtgPAcZDHHttfwZbv6Zp6bS9rpaYEOW666h1leJvH48HJbSyqJ36Zezm2vbix5dX7o0NT98CHfVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2JCgw5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12B2C4CEC3;
-	Tue, 10 Sep 2024 09:36:34 +0000 (UTC)
+	 MIME-Version; b=nAzUFDcaOj6ZO53drkorYM2nZnXka1s0mq2D6hwqGmAcr+WY/2Flz/b8YRx1Cxqpjl35M0l8cbhvvHuWp+6Unu8KpYRT9FCelWAonop/ZNT7w3hfWQqWwIvLbGpS1q25VYwUxS8BXyyq9Cp7SIUyQOgAMn/FBPNHanzR049fZw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7oElE+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D510C4CEC3;
+	Tue, 10 Sep 2024 09:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725960995;
-	bh=Yv8HcB3EjvNfplCUD5tlIAk79yp9CaoVdK5l3/5nMFc=;
+	s=korg; t=1725962145;
+	bh=TUnXjsS8ZyhQj930ICpW/D7QrsZQ941Hj3+4X3vEDIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2JCgw5b1yExiIjbaboCRTTB2FIdjeTYDfqVOcL540ZymG2Ui9OchMOnXlwUZtdPE
-	 Nf0avDGOoqDgAHlT0oC4AoEWrBGaNXFy9HramsM4OtNhf9FmAgGBM6trJQhGsNB/nn
-	 HA1Y2CYdGTPwSGaUkKHJdXeirNVHNUc6v646WUMc=
+	b=X7oElE+AhDhX6hYHjUoVAmdwkvgWJQsgbORv/v10+qmZwzv377D/u6N8OVmDUEZiT
+	 DUtTGlSSC6MGnx7m7/EIADmlmoJykOAK+CwSUWeAjK/N1bMrQK+N4cz8HWTV7rL7iO
+	 VBev6Ir3fbV219MALJIVS0xWVaEO0NZ0IXhT3Qk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 18/96] sch/netem: fix use after free in netem_dequeue
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.10 283/375] tcp: process the 3rd ACK with sk_socket for TFO/MPTCP
 Date: Tue, 10 Sep 2024 11:31:20 +0200
-Message-ID: <20240910092542.222308070@linuxfoundation.org>
+Message-ID: <20240910092632.069089355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
+commit c1668292689ad2ee16c9c1750a8044b0b0aad663 upstream.
 
-If netem_dequeue() enqueues packet to inner qdisc and that qdisc
-returns __NET_XMIT_STOLEN. The packet is dropped but
-qdisc_tree_reduce_backlog() is not called to update the parent's
-q.qlen, leading to the similar use-after-free as Commit
-e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
-fails")
+The 'Fixes' commit recently changed the behaviour of TCP by skipping the
+processing of the 3rd ACK when a sk->sk_socket is set. The goal was to
+skip tcp_ack_snd_check() in tcp_rcv_state_process() not to send an
+unnecessary ACK in case of simultaneous connect(). Unfortunately, that
+had an impact on TFO and MPTCP.
 
-Commands to trigger KASAN UaF:
+I started to look at the impact on MPTCP, because the MPTCP CI found
+some issues with the MPTCP Packetdrill tests [1]. Then Paolo Abeni
+suggested me to look at the impact on TFO with "plain" TCP.
 
-ip link add type dummy
-ip link set lo up
-ip link set dummy0 up
-tc qdisc add dev lo parent root handle 1: drr
-tc filter add dev lo parent 1: basic classid 1:1
-tc class add dev lo classid 1:1 drr
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2: handle 3: drr
-tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
-redirect dev dummy0
-tc class add dev lo classid 3:1 drr
-ping -c1 -W0.01 localhost # Trigger bug
-tc class del dev lo classid 1:1
-tc class add dev lo classid 1:1 drr
-ping -c1 -W0.01 localhost # UaF
+For MPTCP, when receiving the 3rd ACK of a request adding a new path
+(MP_JOIN), sk->sk_socket will be set, and point to the MPTCP sock that
+has been created when the MPTCP connection got established before with
+the first path. The newly added 'goto' will then skip the processing of
+the segment text (step 7) and not go through tcp_data_queue() where the
+MPTCP options are validated, and some actions are triggered, e.g.
+sending the MPJ 4th ACK [2] as demonstrated by the new errors when
+running a packetdrill test [3] establishing a second subflow.
 
-Fixes: 50612537e9ab ("netem: fix classful handling")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This doesn't fully break MPTCP, mainly the 4th MPJ ACK that will be
+delayed. Still, we don't want to have this behaviour as it delays the
+switch to the fully established mode, and invalid MPTCP options in this
+3rd ACK will not be caught any more. This modification also affects the
+MPTCP + TFO feature as well, and being the reason why the selftests
+started to be unstable the last few days [4].
+
+For TFO, the existing 'basic-cookie-not-reqd' test [5] was no longer
+passing: if the 3rd ACK contains data, and the connection is accept()ed
+before receiving them, these data would no longer be processed, and thus
+not ACKed.
+
+One last thing about MPTCP, in case of simultaneous connect(), a
+fallback to TCP will be done, which seems fine:
+
+  `../common/defaults.sh`
+
+   0 socket(..., SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_MPTCP) = 3
+  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
+
+  +0 > S  0:0(0)                 <mss 1460, sackOK, TS val 100 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 < S  0:0(0) win 1000        <mss 1460, sackOK, TS val 407 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 > S. 0:0(0) ack 1           <mss 1460, sackOK, TS val 330 ecr 0,   nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
+  +0 < S. 0:0(0) ack 1 win 65535 <mss 1460, sackOK, TS val 700 ecr 100, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey=2]>
+  +0 >  . 1:1(0) ack 1           <nop, nop, TS val 845707014 ecr 700, nop, nop, sack 0:1>
+
+Simultaneous SYN-data crossing is also not supported by TFO, see [6].
+
+Kuniyuki Iwashima suggested to restrict the processing to SYN+ACK only:
+that's a more generic solution than the one initially proposed, and
+also enough to fix the issues described above.
+
+Later on, Eric Dumazet mentioned that an ACK should still be sent in
+reaction to the second SYN+ACK that is received: not sending a DUPACK
+here seems wrong and could hurt:
+
+   0 socket(..., SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP) = 3
+  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
+
+  +0 > S  0:0(0)                <mss 1460, sackOK, TS val 1000 ecr 0,nop,wscale 8>
+  +0 < S  0:0(0)       win 1000 <mss 1000, sackOK, nop, nop>
+  +0 > S. 0:0(0) ack 1          <mss 1460, sackOK, TS val 3308134035 ecr 0,nop,wscale 8>
+  +0 < S. 0:0(0) ack 1 win 1000 <mss 1000, sackOK, nop, nop>
+  +0 >  . 1:1(0) ack 1          <nop, nop, sack 0:1>  // <== Here
+
+So in this version, the 'goto consume' is dropped, to always send an ACK
+when switching from TCP_SYN_RECV to TCP_ESTABLISHED. This ACK will be
+seen as a DUPACK -- with DSACK if SACK has been negotiated -- in case of
+simultaneous SYN crossing: that's what is expected here.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/actions/runs/9936227696 [1]
+Link: https://datatracker.ietf.org/doc/html/rfc8684#fig_tokens [2]
+Link: https://github.com/multipath-tcp/packetdrill/blob/mptcp-net-next/gtests/net/mptcp/syscalls/accept.pkt#L28 [3]
+Link: https://netdev.bots.linux.dev/contest.html?executor=vmksft-mptcp-dbg&test=mptcp-connect-sh [4]
+Link: https://github.com/google/packetdrill/blob/master/gtests/net/tcp/fastopen/server/basic-cookie-not-reqd.pkt#L21 [5]
+Link: https://github.com/google/packetdrill/blob/master/gtests/net/tcp/fastopen/client/simultaneous-fast-open.pkt [6]
+Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240724-upstream-net-next-20240716-tcp-3rd-ack-consume-sk_socket-v3-1-d48339764ce9@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_input.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -697,11 +697,10 @@ deliver:
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6825,9 +6825,6 @@ tcp_rcv_state_process(struct sock *sk, s
+ 		tcp_fast_path_on(tp);
+ 		if (sk->sk_shutdown & SEND_SHUTDOWN)
+ 			tcp_shutdown(sk, SEND_SHUTDOWN);
+-
+-		if (sk->sk_socket)
+-			goto consume;
+ 		break;
  
- 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
- 				kfree_skb_list(to_free);
--				if (err != NET_XMIT_SUCCESS &&
--				    net_xmit_drop_count(err)) {
--					qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1,
--								  pkt_len);
-+				if (err != NET_XMIT_SUCCESS) {
-+					if (net_xmit_drop_count(err))
-+						qdisc_qstats_drop(sch);
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
+ 	case TCP_FIN_WAIT1: {
 
 
 
