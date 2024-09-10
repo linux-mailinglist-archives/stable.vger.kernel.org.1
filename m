@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719B297313B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88BE9731F7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C221C255AD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3ED2B27695
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5867818C925;
-	Tue, 10 Sep 2024 10:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BE1192D8E;
+	Tue, 10 Sep 2024 10:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBlwR0Bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRk8EMrZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1755518C039;
-	Tue, 10 Sep 2024 10:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA89192D7B;
+	Tue, 10 Sep 2024 10:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962702; cv=none; b=BLTAV7CXSifJ7IZjZNNciQHxRw0GZ7KtD/cH/OR5wCPS0dF/AA0DaHfhaDF5jD/PawdwMR9MF0yYV2beLrH+jCIkpzPhtyqx51sHNvJP4VQDITEmXzW9WCitPl0bSdoBOfTGOqIMHSJ591wuqnxyaCK2JBoHB05dNtNcJk/smBM=
+	t=1725963133; cv=none; b=rg9y08y4xjQIujjOo+xDFEKQ9GGNEBy0Y3soiLaqGKjB8IIvpAH4U3sxMaiwXgHJDAMVVum/xjSBhx2KJnZgoiwy20sSA8fXmB6qwtsYS+7jNcbn4O2/Q6V13LvZnaw0ainT4PneO1vSNRlqZorBiAhv8UrdDNSj88NNw94G7H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962702; c=relaxed/simple;
-	bh=ARpILm6jpiaJ6m6IF/u0sCt7CRZB2XLEfeHs2dHPzPM=;
+	s=arc-20240116; t=1725963133; c=relaxed/simple;
+	bh=DFjbE9mEOBwFeugmSS/7dFYwgsuizxLzSwscrnEinPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlVhadJqivdaKUrFHYqGKYvSwcPChJ1KSnpkUsm8vVnW8YDp2Q5QLtmgtmi+/nt91jWWNOENB16DNK/kG7ojbjL1JCOrYhjIy8Ebb8CB2/bnXmmShu/7yTVmvyr8m2QtuBJ32bi8OSxVrArmPGSdm14ygJsdaY9Fmec9v+4z+mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBlwR0Bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936F7C4CEC3;
-	Tue, 10 Sep 2024 10:05:01 +0000 (UTC)
+	 MIME-Version; b=J2i3EfK6xT2adStl/nTK7KV2dpEV/niSw8N/U+VR6Wx+3A0kj/rt5/nOa2hvJYca4xpArYQlKEK5yYGxx5R73iHEu+bNLfKGh1qrQBKLuRIUBdAm/gmD7ZJICCRef6Fqa8tnHrJlNk4oPNdnkejdNubky+URnvE6pikXuH0gE5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRk8EMrZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89B9C4CEC3;
+	Tue, 10 Sep 2024 10:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962702;
-	bh=ARpILm6jpiaJ6m6IF/u0sCt7CRZB2XLEfeHs2dHPzPM=;
+	s=korg; t=1725963133;
+	bh=DFjbE9mEOBwFeugmSS/7dFYwgsuizxLzSwscrnEinPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBlwR0BvVmXYWMxKhcR5HBn5xo6vD5FI/o7Lby9Kw4djj7svBumbo3XvjR6EQOgfM
-	 BQEK1Bo7jJb/gynRO7vPmAxgTyeIGo6JcGLFkPbLf/G+zaPuEVa1oy/6Sq4454JeAY
-	 6Ekdx+S9D3+GySiMTnIv6HmF3OWf53yqO4ovon04=
+	b=NRk8EMrZWrLSxjxUmdojsttt8Ve+bqrrUWkAOvY0hZyaNxc9jjeFWAFUKE+cXLN5e
+	 xAoraccJbsyOjPeU/KDDVmJPp8thG0llBOJUF3f0pTmP72IUpQ11EgcdKcD/+IEfJb
+	 8bFU8Hbv64omspPtxoLbC9fgiecQtDSe+LgMvoAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 095/121] staging: iio: frequency: ad9834: Validate frequency parameter value
-Date: Tue, 10 Sep 2024 11:32:50 +0200
-Message-ID: <20240910092550.349938266@linuxfoundation.org>
+	George Kennedy <george.kennedy@oracle.com>,
+	David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+Subject: [PATCH 6.1 147/192] VMCI: Fix use-after-free when removing resource in vmci_resource_remove()
+Date: Tue, 10 Sep 2024 11:32:51 +0200
+Message-ID: <20240910092604.028133288@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
 
-commit b48aa991758999d4e8f9296c5bbe388f293ef465 upstream.
+commit 48b9a8dabcc3cf5f961b2ebcd8933bf9204babb7 upstream.
 
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
+When removing a resource from vmci_resource_table in
+vmci_resource_remove(), the search is performed using the resource
+handle by comparing context and resource fields.
 
-Modify parameters checking.
+It is possible though to create two resources with different types
+but same handle (same context and resource fields).
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+When trying to remove one of the resources, vmci_resource_remove()
+may not remove the intended one, but the object will still be freed
+as in the case of the datagram type in vmci_datagram_destroy_handle().
+vmci_resource_table will still hold a pointer to this freed resource
+leading to a use-after-free vulnerability.
 
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+BUG: KASAN: use-after-free in vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
+BUG: KASAN: use-after-free in vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
+Read of size 4 at addr ffff88801c16d800 by task syz-executor197/1592
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x82/0xa9 lib/dump_stack.c:106
+ print_address_description.constprop.0+0x21/0x366 mm/kasan/report.c:239
+ __kasan_report.cold+0x7f/0x132 mm/kasan/report.c:425
+ kasan_report+0x38/0x51 mm/kasan/report.c:442
+ vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
+ vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
+ vmci_qp_broker_detach+0x89a/0x11b9 drivers/misc/vmw_vmci/vmci_queue_pair.c:2182
+ ctx_free_ctx+0x473/0xbe1 drivers/misc/vmw_vmci/vmci_context.c:444
+ kref_put include/linux/kref.h:65 [inline]
+ vmci_ctx_put drivers/misc/vmw_vmci/vmci_context.c:497 [inline]
+ vmci_ctx_destroy+0x170/0x1d6 drivers/misc/vmw_vmci/vmci_context.c:195
+ vmci_host_close+0x125/0x1ac drivers/misc/vmw_vmci/vmci_host.c:143
+ __fput+0x261/0xa34 fs/file_table.c:282
+ task_work_run+0xf0/0x194 kernel/task_work.c:164
+ tracehook_notify_resume include/linux/tracehook.h:189 [inline]
+ exit_to_user_mode_loop+0x184/0x189 kernel/entry/common.c:187
+ exit_to_user_mode_prepare+0x11b/0x123 kernel/entry/common.c:220
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:302 [inline]
+ syscall_exit_to_user_mode+0x18/0x42 kernel/entry/common.c:313
+ do_syscall_64+0x41/0x85 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x6e/0x0
+
+This change ensures the type is also checked when removing
+the resource from vmci_resource_table in vmci_resource_remove().
+
+Fixes: bc63dedb7d46 ("VMCI: resource object implementation.")
+Cc: stable@vger.kernel.org
+Reported-by: George Kennedy <george.kennedy@oracle.com>
+Signed-off-by: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+Link: https://lore.kernel.org/r/20240828154338.754746-1-david.fernandez.gonzalez@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/frequency/ad9834.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/vmw_vmci/vmci_resource.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -115,7 +115,7 @@ static int ad9834_write_frequency(struct
+--- a/drivers/misc/vmw_vmci/vmci_resource.c
++++ b/drivers/misc/vmw_vmci/vmci_resource.c
+@@ -144,7 +144,8 @@ void vmci_resource_remove(struct vmci_re
+ 	spin_lock(&vmci_resource_table.lock);
  
- 	clk_freq = clk_get_rate(st->mclk);
- 
--	if (fout > (clk_freq / 2))
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
+ 	hlist_for_each_entry(r, &vmci_resource_table.entries[idx], node) {
+-		if (vmci_handle_is_equal(r->handle, resource->handle)) {
++		if (vmci_handle_is_equal(r->handle, resource->handle) &&
++		    resource->type == r->type) {
+ 			hlist_del_init_rcu(&r->node);
+ 			break;
+ 		}
 
 
 
