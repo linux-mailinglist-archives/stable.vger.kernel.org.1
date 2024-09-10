@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-75252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1279733A2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C35973281
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1177285ABC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B591F287CC6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5295E194A7C;
-	Tue, 10 Sep 2024 10:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843831A01BD;
+	Tue, 10 Sep 2024 10:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lu2Kysbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emRNZM9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C4F194A42;
-	Tue, 10 Sep 2024 10:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BB214D431;
+	Tue, 10 Sep 2024 10:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964191; cv=none; b=YrJrhy0K5rQEv9iZ+pyDUNoEQ3tzuoUFoXHozR4GMAu0XM+H+FORUH7u/aeKBCXQunGrLbiYspNWz7Vr5HAOOaJa01mnH4GNP59RQsqS30nW91wLldcw3Y6TkNEwrpIqbSu4hy2TwwQJVD0QrzXTQPky9E9e+EaHsU/hjNeTTH4=
+	t=1725963456; cv=none; b=FDIbrroI0mhKgoufrrHrmNsNuAtAmB52hbg5KKjhXqu2pA5Wc9tcPRSCrVxIiSckzf3losByx9dLN5JvLToPUO4La7VLvvIUXrjL0+7lOYoJ1fBnz9vRZb2MAjJb3MMAR4Fes0eg9ebFVJr+L5/+MpTH2h4r/NM0//WN2NYn3a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964191; c=relaxed/simple;
-	bh=pkNvrvXpPdqyW38la7R1NjCbKLnV6MHZCPPm7HlA9nE=;
+	s=arc-20240116; t=1725963456; c=relaxed/simple;
+	bh=3z5K016P5qiK34JzJh4iNaGEmoBJZ/ZNvVimOhCjrNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmNzpD3vNUa/ynAHI86J7LeZpUWzW6G7wdB+5WyGR5Cd1/Z3PevaXTR4VK2OSpzGinHXseozyHBufPpHqG3YqPlpTchwVD6qK3FRTXcxaa3S9twZ35MtfXw9EzRMEe3MddjTlECofIg6CvISteYZLFIN0amQ6F1SyAPGsQyAGAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lu2Kysbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A38DC4CEC3;
-	Tue, 10 Sep 2024 10:29:50 +0000 (UTC)
+	 MIME-Version; b=ZBqKtMfJO2JM/FqhkO2pcLaGJlfKpzddH2Sg4ppOvSwqrZw4RUnwo9bzx2EXe7G625jbZG5sRLiXHTvZ1rMfk/7/mLD94N3JGbqaZwU/ny16Lw+O9pu5PPnSicK1r4ZusVyogf6GA2HY1DPwUKFhRiT+h1nddo1bFZn2oHhH4Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emRNZM9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3F8C4CEC3;
+	Tue, 10 Sep 2024 10:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964190;
-	bh=pkNvrvXpPdqyW38la7R1NjCbKLnV6MHZCPPm7HlA9nE=;
+	s=korg; t=1725963456;
+	bh=3z5K016P5qiK34JzJh4iNaGEmoBJZ/ZNvVimOhCjrNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lu2Kysbf9hXeeKdUzuqilfyijxtAu6wsUnJfkeeU6Grr7sqfU9/ojbFf2Hhl2benf
-	 yMOY/Yt8hCpxfBiK7WaP+dLAJy8MfmqYks/gnsCTGOcFrknMn4Y8fwXQORpoXDdEJ+
-	 ZNFdV0H770jLIsMzN4TOk/RBiNxHnwTkHdDH8lMQ=
+	b=emRNZM9wrbkKQVhkdT7zCkC+GNE4H8mQcNcufT1EVOlFUfK2u1tkMWjMzVKlAQ0mK
+	 ydMh7ymMVi5E7Mes9yX3jpqOs5qqriSQKlfcUgdeQD88HMIH1+QcoYig2kHpjPu4S0
+	 1AA++wlICh1MQvspxl7/rZowrjlVGELw0z7Ppc9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/269] rust: Use awk instead of recent xargs
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 064/214] KVM: SVM: fix emulation of msr reads/writes of MSR_FS_BASE and MSR_GS_BASE
 Date: Tue, 10 Sep 2024 11:31:26 +0200
-Message-ID: <20240910092611.746516993@linuxfoundation.org>
+Message-ID: <20240910092601.383595427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit 45f97e6385cad6d0e48a27ddcd08793bb4d35851 ]
+commit dad1613e0533b380318281c1519e1a3477c2d0d2 upstream.
 
-`awk` is already required by the kernel build, and the `xargs` feature
-used in current Rust detection is not present in all `xargs` (notably,
-toybox based xargs, used in the Android kernel build).
+If these msrs are read by the emulator (e.g due to 'force emulation' prefix),
+SVM code currently fails to extract the corresponding segment bases,
+and return them to the emulator.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Link: https://lore.kernel.org/r/20230928205045.2375899-1-mmaurer@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: b8673d56935c ("rust: kbuild: fix export of bss symbols")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20240802151608.72896-3-mlevitsk@redhat.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kvm/svm/svm.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index e5619f25b55c..7e33ebe8a9f4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -363,9 +363,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers.c FORCE
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
- 	$(NM) -p --defined-only $< \
--		| grep -E ' (T|R|D) ' | cut -d ' ' -f 3 \
--		| xargs -Isymbol \
--		echo 'EXPORT_SYMBOL_RUST_GPL(symbol);' > $@
-+		| awk '/ (T|R|D) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
- 
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
--- 
-2.43.0
-
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2712,6 +2712,12 @@ static int svm_get_msr(struct kvm_vcpu *
+ 	case MSR_CSTAR:
+ 		msr_info->data = svm->vmcb01.ptr->save.cstar;
+ 		break;
++	case MSR_GS_BASE:
++		msr_info->data = svm->vmcb01.ptr->save.gs.base;
++		break;
++	case MSR_FS_BASE:
++		msr_info->data = svm->vmcb01.ptr->save.fs.base;
++		break;
+ 	case MSR_KERNEL_GS_BASE:
+ 		msr_info->data = svm->vmcb01.ptr->save.kernel_gs_base;
+ 		break;
+@@ -2923,6 +2929,12 @@ static int svm_set_msr(struct kvm_vcpu *
+ 	case MSR_CSTAR:
+ 		svm->vmcb01.ptr->save.cstar = data;
+ 		break;
++	case MSR_GS_BASE:
++		svm->vmcb01.ptr->save.gs.base = data;
++		break;
++	case MSR_FS_BASE:
++		svm->vmcb01.ptr->save.fs.base = data;
++		break;
+ 	case MSR_KERNEL_GS_BASE:
+ 		svm->vmcb01.ptr->save.kernel_gs_base = data;
+ 		break;
 
 
 
