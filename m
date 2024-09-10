@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-75247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E890E97339C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB54973172
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94B5F1F21E99
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE4D2895DE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E51F192B62;
-	Tue, 10 Sep 2024 10:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A878192D78;
+	Tue, 10 Sep 2024 10:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF/bjt3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UFicsVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5D118B487;
-	Tue, 10 Sep 2024 10:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51930188CC1;
+	Tue, 10 Sep 2024 10:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964176; cv=none; b=AG+UrQx29OQd2rS9NgLlqhjsCJNrtTDmOU0E62e+mzmD3mr8oZZ7mlNrcyKBPrJsOV30bTDzUAm8xZL70NFyhsLci2XtY8nY/OQg5JMpcsYy541OEN38Ai3JwSai00qVnqpV8mpUclw1CDJppTJTAFz1nVv0h3/yuCZFH69sVfA=
+	t=1725962834; cv=none; b=k7akcjITqfiH/mnKKa8KHq1JP6ciJvCiYu3+zLsZM4G8i4q1sbPouIzha0JzySKz6zViDBlYHspYBNbhm2jujoUhdQYulPyrUqLGKnPIN3ERi2K1anf2bYncBJjqpvRlWEbWL2NolhZsQNMHWQldKTktYws5FUhMn3mr+HiReKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964176; c=relaxed/simple;
-	bh=/LrFVwOTEb2sUU6ioJ5kyn2xH4adGllM1SLKBhG6sQc=;
+	s=arc-20240116; t=1725962834; c=relaxed/simple;
+	bh=lUevj12nnijXrav4rLmfkhpQgzrXipKcLscSaoFdPT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=taD25eQ2j+TANH9tiW13KzLc5WEgg96hZOGMbb7PEzNHZl/u7YIOu3xpq5bwRo+B+/gjNcBs8HsAXLPTQIJ1p3MlhVfZvS7J0Io7GCIw4VoUqKTDK+74j/W7IjO8g2/cbDE8i2FqWgHCg5HCWyET1OwKqtiAHDwnoOX26+q9W+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF/bjt3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B985FC4CEC3;
-	Tue, 10 Sep 2024 10:29:35 +0000 (UTC)
+	 MIME-Version; b=kiRYfG9MLFbO1aB8EYT99FyiErOz11e0IagZmMWSjxIpM97onFlsIGX4Foy4VLU/Ks+ffLtkgDVje6tqX/AkqvhL6QSIpnY8iosRQi5p6R038L/z72ucoVpwbRxjOuVwxICquFUOxLJ1FBSef5EPTvh/zQtfCHHKkOjxwmywq5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UFicsVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD10C4CEC3;
+	Tue, 10 Sep 2024 10:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964176;
-	bh=/LrFVwOTEb2sUU6ioJ5kyn2xH4adGllM1SLKBhG6sQc=;
+	s=korg; t=1725962834;
+	bh=lUevj12nnijXrav4rLmfkhpQgzrXipKcLscSaoFdPT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yF/bjt3WDIQ4Gos+KaYgf7t90Cdip2wxfSGhMZ9fzdlfir6ky10rJCEMBsjauKAXw
-	 +58dzGEILQk8EMPRTgkJMUL3Iln4mq3Fxsi9ChTX+pXDNMLibsv/OBrgF42z0JVN/R
-	 XZLOhrJvdI3q3dc3dtUGHopWkTgXG+/bo2Csbl/Y=
+	b=1UFicsVKupE1x/dilv6fGkavHmiiZwnSKL/4jWuIcdHLzvh/9UitvBQMoIhY2aJjm
+	 dFQGLUZfWHXd8X26d4ZI5ityDaBGNdVPV3C8P3Hkbfo+dhjk9xDbQEfrW6AwEuJNKE
+	 lXssFHSjyYLoqNDKh2ZNY4EeqyiFDUZtZ0CEhWio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 056/269] sched: sch_cake: fix bulk flow accounting logic for host fairness
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 019/192] Bluetooth: MGMT: Ignore keys being loaded with invalid type
 Date: Tue, 10 Sep 2024 11:30:43 +0200
-Message-ID: <20240910092610.222472795@linuxfoundation.org>
+Message-ID: <20240910092558.734911581@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +58,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 546ea84d07e3e324644025e2aae2d12ea4c5896e upstream.
+commit 1e9683c9b6ca88cc9340cdca85edd6134c8cffe3 upstream.
 
-In sch_cake, we keep track of the count of active bulk flows per host,
-when running in dst/src host fairness mode, which is used as the
-round-robin weight when iterating through flows. The count of active
-bulk flows is updated whenever a flow changes state.
+Due to 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 there could be keys stored
+with the wrong address type so this attempt to detect it and ignore them
+instead of just failing to load all keys.
 
-This has a peculiar interaction with the hash collision handling: when a
-hash collision occurs (after the set-associative hashing), the state of
-the hash bucket is simply updated to match the new packet that collided,
-and if host fairness is enabled, that also means assigning new per-host
-state to the flow. For this reason, the bulk flow counters of the
-host(s) assigned to the flow are decremented, before new state is
-assigned (and the counters, which may not belong to the same host
-anymore, are incremented again).
-
-Back when this code was introduced, the host fairness mode was always
-enabled, so the decrement was unconditional. When the configuration
-flags were introduced the *increment* was made conditional, but
-the *decrement* was not. Which of course can lead to a spurious
-decrement (and associated wrap-around to U16_MAX).
-
-AFAICT, when host fairness is disabled, the decrement and wrap-around
-happens as soon as a hash collision occurs (which is not that common in
-itself, due to the set-associative hashing). However, in most cases this
-is harmless, as the value is only used when host fairness mode is
-enabled. So in order to trigger an array overflow, sch_cake has to first
-be configured with host fairness disabled, and while running in this
-mode, a hash collision has to occur to cause the overflow. Then, the
-qdisc has to be reconfigured to enable host fairness, which leads to the
-array out-of-bounds because the wrapped-around value is retained and
-used as an array index. It seems that syzbot managed to trigger this,
-which is quite impressive in its own right.
-
-This patch fixes the issue by introducing the same conditional check on
-decrement as is used on increment.
-
-The original bug predates the upstreaming of cake, but the commit listed
-in the Fixes tag touched that code, meaning that this patch won't apply
-before that.
-
-Fixes: 712639929912 ("sch_cake: Make the dual modes fairer")
-Reported-by: syzbot+7fe7b81d602cc1e6b94d@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20240903160846.20909-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://github.com/bluez/bluez/issues/875
+Fixes: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_cake.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/bluetooth/mgmt.c |   37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -786,12 +786,15 @@ skip_hash:
- 		 * queue, accept the collision, update the host tags.
- 		 */
- 		q->way_collisions++;
--		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
--			q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
--			q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
--		}
- 		allocate_src = cake_dsrc(flow_mode);
- 		allocate_dst = cake_ddst(flow_mode);
-+
-+		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
-+			if (allocate_src)
-+				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
-+			if (allocate_dst)
-+				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2900,15 +2900,6 @@ static int load_link_keys(struct sock *s
+ 	bt_dev_dbg(hdev, "debug_keys %u key_count %u", cp->debug_keys,
+ 		   key_count);
+ 
+-	for (i = 0; i < key_count; i++) {
+-		struct mgmt_link_key_info *key = &cp->keys[i];
+-
+-		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
+-			return mgmt_cmd_status(sk, hdev->id,
+-					       MGMT_OP_LOAD_LINK_KEYS,
+-					       MGMT_STATUS_INVALID_PARAMS);
+-	}
+-
+ 	hci_dev_lock(hdev);
+ 
+ 	hci_link_keys_clear(hdev);
+@@ -2933,6 +2924,19 @@ static int load_link_keys(struct sock *s
+ 			continue;
+ 		}
+ 
++		if (key->addr.type != BDADDR_BREDR) {
++			bt_dev_warn(hdev,
++				    "Invalid link address type %u for %pMR",
++				    key->addr.type, &key->addr.bdaddr);
++			continue;
 +		}
- found:
- 		/* reserve queue for future packets in same flow */
- 		reduced_hash = outer_hash + k;
++
++		if (key->type > 0x08) {
++			bt_dev_warn(hdev, "Invalid link key type %u for %pMR",
++				    key->type, &key->addr.bdaddr);
++			continue;
++		}
++
+ 		/* Always ignore debug keys and require a new pairing if
+ 		 * the user wants to use them.
+ 		 */
+@@ -7215,15 +7219,6 @@ static int load_long_term_keys(struct so
+ 
+ 	bt_dev_dbg(hdev, "key_count %u", key_count);
+ 
+-	for (i = 0; i < key_count; i++) {
+-		struct mgmt_ltk_info *key = &cp->keys[i];
+-
+-		if (!ltk_is_valid(key))
+-			return mgmt_cmd_status(sk, hdev->id,
+-					       MGMT_OP_LOAD_LONG_TERM_KEYS,
+-					       MGMT_STATUS_INVALID_PARAMS);
+-	}
+-
+ 	hci_dev_lock(hdev);
+ 
+ 	hci_smp_ltks_clear(hdev);
+@@ -7239,6 +7234,12 @@ static int load_long_term_keys(struct so
+ 				    &key->addr.bdaddr);
+ 			continue;
+ 		}
++
++		if (!ltk_is_valid(key)) {
++			bt_dev_warn(hdev, "Invalid LTK for %pMR",
++				    &key->addr.bdaddr);
++			continue;
++		}
+ 
+ 		switch (key->type) {
+ 		case MGMT_LTK_UNAUTHENTICATED:
 
 
 
