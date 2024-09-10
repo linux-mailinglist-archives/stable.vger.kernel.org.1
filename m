@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-75132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3420297330F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979AF97344B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE05C1F234B5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD7F28DE78
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805CB19409C;
-	Tue, 10 Sep 2024 10:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2082418FDAF;
+	Tue, 10 Sep 2024 10:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ut/J3BKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdwRxWcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F91118C32F;
-	Tue, 10 Sep 2024 10:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162218C021;
+	Tue, 10 Sep 2024 10:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963843; cv=none; b=lOml/PonO12Q4iG90nNljPsS1RLVswrtmM0WYK+5fdFZhT6dJGzql+n8jMhUW014brbtd5GVrGexFwih2xbev9sF3CCRo9TcNtvU+oqdu2ktOLHha2593gqklKSJauiMuGo8ORIftFsbIdidT7yP6CrStlcvfijyxqqnOvOM12c=
+	t=1725964578; cv=none; b=psFiTNOaO01ynq3ZuHY2uXFdj1vIaJwYlVNE/h17kk5AMG0g0Pq+OPdUgJ9TGe6RhvizYia/4wo38/1bzZXWsqEGtYI7SX5J47dwnuZtYnwApdJR9Y4sGZGIK/l7uQjPbFsNYKiISut+cDjzZYQICpvI6WP3UcMTvtF/+/Tmuik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963843; c=relaxed/simple;
-	bh=F2FPTDYJocgqpbMu/nYUCRcBRbgxtNyxpwEOzY0/JXI=;
+	s=arc-20240116; t=1725964578; c=relaxed/simple;
+	bh=jUk0pPJYL6IVHDg4rpIFgdeSP8p3Yf70M+H3AmJ8INI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lm+789fv9coE89Vd1lpxc1+chTpU01gLRdWRvpfr5LP4sCtRmc+vlKo0p2sT8nOLUcmgtfSlU5rMOI1yQZr4orHWJpkEAvvNujuLyDR/UnjocCImeoTTxzLpQZNE3z65B7HeL2/I82A10CGK29SlmRpaYg53w3gZpIJDeKLjkIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ut/J3BKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB224C4CEC3;
-	Tue, 10 Sep 2024 10:24:02 +0000 (UTC)
+	 MIME-Version; b=QUKtpxr0H6z9WA+YpcnyOrOm33bnSNfs78xmQpuWVMxPdpByqpbK8+igAIRgmd3wC3pDEM/8W1k2x4VNZPdg+SMroO2PnKH1QVOxGgr4WmwK7P/Eq05r1/M+n5qJgxHpiueDftwsK6z4d9DeD8/fqmoI0STJtZSPoSFJDqCGfSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdwRxWcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50714C4CEC3;
+	Tue, 10 Sep 2024 10:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963843;
-	bh=F2FPTDYJocgqpbMu/nYUCRcBRbgxtNyxpwEOzY0/JXI=;
+	s=korg; t=1725964578;
+	bh=jUk0pPJYL6IVHDg4rpIFgdeSP8p3Yf70M+H3AmJ8INI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ut/J3BKdZd713kYt46udPqePgplqTYiqybQlsns8G1D/9nQJsrSYoJlVsCisErVgK
-	 5Y3TBVJ+5VPQihJjtvhWKS8KYx7EAs2Yv3F7Kw/ALvs/4LwjWg4BGX8mb5NEbhpgi+
-	 vfbdr/Rf/ziAWkrvTVmio7Zl3OsYk632Kyitddi0=
+	b=rdwRxWcvkHzvN9pTfTq0Nep04Z6kAWO3YjAXo404XPJ06eoSxUoo+R+UiHGmA4+nD
+	 BacpNbiL4dtyhPB6lbnEyNi66MwDp8ffF4fABqnGKkNv2pK7Qm0Dn8a2EdcBd1i0Ox
+	 c9wYF9Kfg5TknrQtMVur/8M07+D6TKSTE9/pc2/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 195/214] workqueue: wq_watchdog_touch is always called with valid CPU
+Subject: [PATCH 6.6 230/269] ACPI: processor: Fix memory leaks in error paths of processor_add()
 Date: Tue, 10 Sep 2024 11:33:37 +0200
-Message-ID: <20240910092606.571051663@linuxfoundation.org>
+Message-ID: <20240910092616.119795511@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 18e24deb1cc92f2068ce7434a94233741fbd7771 ]
+[ Upstream commit 47ec9b417ed9b6b8ec2a941cd84d9de62adc358a ]
 
-Warn in the case it is called with cpu == -1. This does not appear
-to happen anywhere.
+If acpi_processor_get_info() returned an error, pr and the associated
+pr->throttling.shared_cpu_map were leaked.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+The unwind code was in the wrong order wrt to setup, relying on
+some unwind actions having no affect (clearing variables that were
+never set etc).  That makes it harder to reason about so reorder
+and add appropriate labels to only undo what was actually set up
+in the first place.
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240529133446.28446-6-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpi_processor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index d5f30b610217..f7975a8f665f 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5937,6 +5937,8 @@ notrace void wq_watchdog_touch(int cpu)
- {
- 	if (cpu >= 0)
- 		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
-+	else
-+		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 5f760bc62219..7053f1b9fc1d 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -415,7 +415,7 @@ static int acpi_processor_add(struct acpi_device *device,
  
- 	wq_watchdog_touched = jiffies;
- }
+ 	result = acpi_processor_get_info(device);
+ 	if (result) /* Processor is not physically present or unavailable */
+-		return result;
++		goto err_clear_driver_data;
+ 
+ 	BUG_ON(pr->id >= nr_cpu_ids);
+ 
+@@ -430,7 +430,7 @@ static int acpi_processor_add(struct acpi_device *device,
+ 			"BIOS reported wrong ACPI id %d for the processor\n",
+ 			pr->id);
+ 		/* Give up, but do not abort the namespace scan. */
+-		goto err;
++		goto err_clear_driver_data;
+ 	}
+ 	/*
+ 	 * processor_device_array is not cleared on errors to allow buggy BIOS
+@@ -442,12 +442,12 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev = get_cpu_device(pr->id);
+ 	if (!dev) {
+ 		result = -ENODEV;
+-		goto err;
++		goto err_clear_per_cpu;
+ 	}
+ 
+ 	result = acpi_bind_one(dev, device);
+ 	if (result)
+-		goto err;
++		goto err_clear_per_cpu;
+ 
+ 	pr->dev = dev;
+ 
+@@ -458,10 +458,11 @@ static int acpi_processor_add(struct acpi_device *device,
+ 	dev_err(dev, "Processor driver could not be attached\n");
+ 	acpi_unbind_one(dev);
+ 
+- err:
+-	free_cpumask_var(pr->throttling.shared_cpu_map);
+-	device->driver_data = NULL;
++ err_clear_per_cpu:
+ 	per_cpu(processors, pr->id) = NULL;
++ err_clear_driver_data:
++	device->driver_data = NULL;
++	free_cpumask_var(pr->throttling.shared_cpu_map);
+  err_free_pr:
+ 	kfree(pr);
+ 	return result;
 -- 
 2.43.0
 
