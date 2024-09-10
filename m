@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-74796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09ED4973179
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBE4973241
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8026A1F28274
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4665D1F272A8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6148B193088;
-	Tue, 10 Sep 2024 10:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFDD188A09;
+	Tue, 10 Sep 2024 10:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgXZkjHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQuMUxcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D85B193081;
-	Tue, 10 Sep 2024 10:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD2317C7A3;
+	Tue, 10 Sep 2024 10:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962855; cv=none; b=H756IS7vwtEl+P6LcRBheFbAnQHuui88xZoP5379MScjl0yhV515o7dhuguhKfafeCXI9SEgsHeYNfpEXy+oBxWmMyxo9AT7dDyTV6MQS+Fx1qCvX+U0KdPHIiX1zHtxxmqisTaMOUu1Szw8GeYDAbvdJ1BEiTx9tX/BfrG/Y9Y=
+	t=1725963321; cv=none; b=KI6lzC+qALu36LktWl9PCQsw8cvF5174ZiDGQUs+15UNjmc/YMiYRwtWJ0EUA5Sn1jnheq05vK4zgzA/LFvrwilbgoJVGg80NYa51irkLdERgbiwzKOCWRqGqeor+meEatgsnxNdNpvip8ycqNf18O5tzrb9RxB2WGNw/VNunzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962855; c=relaxed/simple;
-	bh=lV+ScZxPAPd8ZRa5xb+KqxQpMXUZ2SWZOgX/rLsfNNw=;
+	s=arc-20240116; t=1725963321; c=relaxed/simple;
+	bh=bwCqCxyg2qnKEpAqbE2JLIJIS7xfK0lKFV4aaVLjzls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH8EBxSkfUV8yL3lDGVg319kj9MozIhTkNHVp6s0pVhe/EUk49CoKYKr3IUeil6Vj2L/NWuUeHdiGH5iAVIqCwDbCV/3QZGyfqbfodnZhjoeaLMt/sSji/wZCINyL7/y4jtab+T2RFWPHPKfhD/1VnJzb0WW4Wwggyl4WQHqvEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgXZkjHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41147C4CEC3;
-	Tue, 10 Sep 2024 10:07:34 +0000 (UTC)
+	 MIME-Version; b=Sla89BLvftN1eEIEwPK6em/SKv9AyO40vPkt1Phr2r6YkcS+U7UlrVQz5hWnT2rsH3PpPIJei+yCDoPXUqfLxtUwyDR7oXQIF0zgy0MUGnj3ab7wDmI9jEVRpwh31W/VmN4Wn9var37dVFaEJmQm8CgR2gaduORs7wBqO2UhmsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQuMUxcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82E9C4CEC3;
+	Tue, 10 Sep 2024 10:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962854;
-	bh=lV+ScZxPAPd8ZRa5xb+KqxQpMXUZ2SWZOgX/rLsfNNw=;
+	s=korg; t=1725963321;
+	bh=bwCqCxyg2qnKEpAqbE2JLIJIS7xfK0lKFV4aaVLjzls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgXZkjHZJIklZ+U9bcwpSfaLLZMRcRJM/g7n78kTweQntRwM197c43idRdTYsP4kg
-	 sfwDcoroylnm21Mde67HBfDTrCwXJ0nBtwrnMnf+tek/C4PIJLsp12rdle+mH7i890
-	 bcGOUORbfLb2MuL0AlbkcUBXY18l7iUX6FOfWi9M=
+	b=gQuMUxcwfESi5bKaNL9OYpaCPHobpyHvrTilf9EwRrleFBk1vwQPDCs5dZ3LPl3aI
+	 PCsccctulWCBRjz/smILZFPnmyw+4u6y3n/I4/MbIawVGTwTF9+5S4Qpl3R/Uax65e
+	 kK/68pDyOuwL8v7JyGnCaYTQwcwF46H8lpCvTVNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roland Xu <mu001999@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 016/192] rtmutex: Drop rt_mutex::wait_lock before scheduling
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 018/214] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
 Date: Tue, 10 Sep 2024 11:30:40 +0200
-Message-ID: <20240910092558.618456053@linuxfoundation.org>
+Message-ID: <20240910092559.510017432@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roland Xu <mu001999@outlook.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit d33d26036a0274b472299d7dcdaa5fb34329f91b upstream.
+[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
 
-rt_mutex_handle_deadlock() is called with rt_mutex::wait_lock held.  In the
-good case it returns with the lock held and in the deadlock case it emits a
-warning and goes into an endless scheduling loop with the lock held, which
-triggers the 'scheduling in atomic' warning.
+[Why]
+Coverity reports OVERRUN warning. Should abort amdgpu_dm
+initialize.
 
-Unlock rt_mutex::wait_lock in the dead lock case before issuing the warning
-and dropping into the schedule for ever loop.
+[How]
+Return failure to amdgpu_dm_init.
 
-[ tglx: Moved unlock before the WARN(), removed the pointless comment,
-  	massaged changelog, added Fixes tag ]
-
-Fixes: 3d5c9340d194 ("rtmutex: Handle deadlock detection smarter")
-Signed-off-by: Roland Xu <mu001999@outlook.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/ME0P300MB063599BEF0743B8FA339C2CECC802@ME0P300MB0635.AUSP300.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/rtmutex.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1624,6 +1624,7 @@ static int __sched rt_mutex_slowlock_blo
- }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 333be0541893..b4ae90c3ed23 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4211,7 +4211,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
  
- static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
-+					     struct rt_mutex_base *lock,
- 					     struct rt_mutex_waiter *w)
- {
- 	/*
-@@ -1636,10 +1637,10 @@ static void __sched rt_mutex_handle_dead
- 	if (build_ww_mutex() && w->ww_ctx)
- 		return;
- 
--	/*
--	 * Yell loudly and stop the task right here.
--	 */
-+	raw_spin_unlock_irq(&lock->wait_lock);
-+
- 	WARN(1, "rtmutex deadlock detected\n");
-+
- 	while (1) {
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		schedule();
-@@ -1693,7 +1694,7 @@ static int __sched __rt_mutex_slowlock(s
- 	} else {
- 		__set_current_state(TASK_RUNNING);
- 		remove_waiter(lock, waiter);
--		rt_mutex_handle_deadlock(ret, chwalk, waiter);
-+		rt_mutex_handle_deadlock(ret, chwalk, lock, waiter);
- 	}
+ 	/* There is one primary plane per CRTC */
+ 	primary_planes = dm->dc->caps.max_streams;
+-	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
++	if (primary_planes > AMDGPU_MAX_PLANES) {
++		DRM_ERROR("DM: Plane nums out of 6 planes\n");
++		return -EINVAL;
++	}
  
  	/*
+ 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
+-- 
+2.43.0
+
 
 
 
