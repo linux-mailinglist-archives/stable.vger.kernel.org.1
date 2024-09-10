@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-75409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C1297346D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C0B97346F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C5E028E06C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F3D1C24ED2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05823192B7F;
-	Tue, 10 Sep 2024 10:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2876D18FC73;
+	Tue, 10 Sep 2024 10:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwkKuup5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USag/dtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C41922D9;
-	Tue, 10 Sep 2024 10:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF914D280;
+	Tue, 10 Sep 2024 10:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964647; cv=none; b=F24fet8m6MkVwHbxCupb2TopHRWTxLi9ahZbmE37JOeRb3BwfOcmX07hXvyi/C0Xln0aiIg5SanJc7bY6CHPPCXv/V18sK11CAdE0Fl8gWcUvgq5hiHqQJ0CXu1dDV+arirJdKrY/9k0HY2Y0uHlJFiCb1q045iTxMlYc/Vj+y0=
+	t=1725964653; cv=none; b=Mx6UPKNsnX9wQxD1aACkqfY9AkrRlVYqG/xfzAevy/WvfT9BXwQm8YBd1GNEjpgmqwAAA4PiRvJbdz2bXDxpT1iJmqqiQ2P6pApx8C/3oCCoGZVgmji6zRvPnanVELJf0fNoOvQk0J/BnggvCYs9UKMuy0Jzo8NGp9gJscpkH+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964647; c=relaxed/simple;
-	bh=kjCg/CEPRtiCMdh36O9fg/X9s1j0Hg4hQoWliciXzzw=;
+	s=arc-20240116; t=1725964653; c=relaxed/simple;
+	bh=KcvamTlO8D40B+Bgs/rLyASDPFiG9Tfqm7FUgn/l9mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8In0/nhXGCe9td0zZ3D91xKFmTWIQ5HXfpu17/LC9xd3rGFt/+9BMPXx2FMqNjk9j16qxUstpGA80Hgg0zreeEXNnCBFTPc/V4VK/WFnw5q6W8FwkocBUOhnabzuxOeiADjPiYeFf+ZPLdYuA4S49rOc3f1d3hoCwr3BI+9pHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwkKuup5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9EBC4CEC3;
-	Tue, 10 Sep 2024 10:37:27 +0000 (UTC)
+	 MIME-Version; b=oHoEIrNRPIkBjsOntfUphl56KFFUfSH/OUksV8uheV09hTEFS0OsN+E2Y0N701Kp8oQofd0t/Lz1tU5SL6MfAKg1m3PigTqV+0flszYHKi2FjsQjX2eOKFoJD7TRGNdOqi+bt4HlU/Y+lRYK2h9pOhU2DP+JDt7O01tGW/8adCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USag/dtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272A6C4CEC3;
+	Tue, 10 Sep 2024 10:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964647;
-	bh=kjCg/CEPRtiCMdh36O9fg/X9s1j0Hg4hQoWliciXzzw=;
+	s=korg; t=1725964653;
+	bh=KcvamTlO8D40B+Bgs/rLyASDPFiG9Tfqm7FUgn/l9mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwkKuup5pHtKHX4KzFaKPckp2fXqvnAdNNmC5shjciR5vM+LiXvgBtrammIXvH+CR
-	 JAB2kbWI+2xR2Lutcl9s6tZxzSY18GgiV6zFkzypR4abPpryAnr6E/BCjle9DjZohq
-	 2RFA7H0fwou15qbL26JwFfhuDQSUU+a1bXq9DDII=
+	b=USag/dtHe/adVoz574Q2kc2BPRTO5jIHPrcncHEpNYyYbvZkXjdBRxxQ+ek4FhUla
+	 Y69jn9M9Bo9+plRRLpVTyQB300XNcBY3EqaH2d2JvOvbGF4TQfX0Qen8MCLw+PryKf
+	 QIwbQRaJUG1VRZUly1cPNxqMtT/Yx9QXXn3E1Vmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/269] clk: qcom: gcc-sm8550: Dont park the USB RCG at registration time
-Date: Tue, 10 Sep 2024 11:34:01 +0200
-Message-ID: <20240910092616.853222874@linuxfoundation.org>
+Subject: [PATCH 6.6 255/269] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+Date: Tue, 10 Sep 2024 11:34:02 +0200
+Message-ID: <20240910092616.884580558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -70,103 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 7b6dfa1bbe7f727315d2e05a2fc8e4cfeb779156 ]
+[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
 
-Amit Pundir reports that audio and USB-C host mode stops working if the
-gcc_usb30_prim_master_clk_src clk is registered and
-clk_rcg2_shared_init() parks it on XO. Skip parking this clk at
-registration time to fix those issues.
+When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
+it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-Partially revert commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon
-registration") by skipping the parking bit for this clk, but keep the
-part where we cache the config register. That's still necessary to
-figure out the true parent of the clk at registration time.
+.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
+   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
-Fixes: 929c75d57566 ("clk: qcom: gcc-sm8550: Mark RCGs shared where applicable")
-Cc: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Taniya Das <quic_tdas@quicinc.com>
-Reported-by: Amit Pundir <amit.pundir@linaro.org>
-Closes: https://lore.kernel.org/CAMi1Hd1KQBE4kKUdAn8E5FV+BiKzuv+8FoyWQrrTHPDoYTuhgA@mail.gmail.com
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20240819233628.2074654-3-swboyd@chromium.org
-Tested-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix this by marking debug_fence_init_onstack() with __maybe_unused.
+
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rcg.h    |  1 +
- drivers/clk/qcom/clk-rcg2.c   | 30 ++++++++++++++++++++++++++++++
- drivers/clk/qcom/gcc-sm8550.c |  2 +-
- 3 files changed, 32 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-rcg.h b/drivers/clk/qcom/clk-rcg.h
-index e6d84c8c7989..84c497f361bc 100644
---- a/drivers/clk/qcom/clk-rcg.h
-+++ b/drivers/clk/qcom/clk-rcg.h
-@@ -176,6 +176,7 @@ extern const struct clk_ops clk_byte2_ops;
- extern const struct clk_ops clk_pixel_ops;
- extern const struct clk_ops clk_gfx3d_ops;
- extern const struct clk_ops clk_rcg2_shared_ops;
-+extern const struct clk_ops clk_rcg2_shared_no_init_park_ops;
- extern const struct clk_ops clk_dp_ops;
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index 8a9aad523eec..d4020ff3549a 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -51,7 +51,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ 	debug_object_init(fence, &i915_sw_fence_debug_descr);
+ }
  
- struct clk_rcg_dfs_data {
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index b9f2a29be927..461f54fe5e4f 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -1182,6 +1182,36 @@ const struct clk_ops clk_rcg2_shared_ops = {
- };
- EXPORT_SYMBOL_GPL(clk_rcg2_shared_ops);
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
+ }
+@@ -94,7 +94,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ {
+ }
  
-+static int clk_rcg2_shared_no_init_park(struct clk_hw *hw)
-+{
-+	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-+
-+	/*
-+	 * Read the config register so that the parent is properly mapped at
-+	 * registration time.
-+	 */
-+	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &rcg->parked_cfg);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Like clk_rcg2_shared_ops but skip the init so that the clk frequency is left
-+ * unchanged at registration time.
-+ */
-+const struct clk_ops clk_rcg2_shared_no_init_park_ops = {
-+	.init = clk_rcg2_shared_no_init_park,
-+	.enable = clk_rcg2_shared_enable,
-+	.disable = clk_rcg2_shared_disable,
-+	.get_parent = clk_rcg2_shared_get_parent,
-+	.set_parent = clk_rcg2_shared_set_parent,
-+	.recalc_rate = clk_rcg2_shared_recalc_rate,
-+	.determine_rate = clk_rcg2_determine_rate,
-+	.set_rate = clk_rcg2_shared_set_rate,
-+	.set_rate_and_parent = clk_rcg2_shared_set_rate_and_parent,
-+};
-+EXPORT_SYMBOL_GPL(clk_rcg2_shared_no_init_park_ops);
-+
- /* Common APIs to be used for DFS based RCGR */
- static void clk_rcg2_dfs_populate_freq(struct clk_hw *hw, unsigned int l,
- 				       struct freq_tbl *f)
-diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
-index bf7b7c5d4606..eb3765c57b65 100644
---- a/drivers/clk/qcom/gcc-sm8550.c
-+++ b/drivers/clk/qcom/gcc-sm8550.c
-@@ -1159,7 +1159,7 @@ static struct clk_rcg2 gcc_usb30_prim_master_clk_src = {
- 		.parent_data = gcc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_shared_ops,
-+		.ops = &clk_rcg2_shared_no_init_park_ops,
- 	},
- };
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ }
  
 -- 
 2.43.0
