@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFDC972DFB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9C6973019
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD991C2444F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07C04B233BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAD718B48A;
-	Tue, 10 Sep 2024 09:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E2318C00C;
+	Tue, 10 Sep 2024 09:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOeE+PmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaicubSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4965C189BBA;
-	Tue, 10 Sep 2024 09:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2551B17BEAE;
+	Tue, 10 Sep 2024 09:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961092; cv=none; b=Iw1Mw+Q7OGNE2qU+YFXo08kfrunC5Pf3bXzOfE0vFjL5khrkgc2bdlacQdLo+qDslLjKOq00Rt7+GfKeeuh/DV98HsyP7ygPssVZozodhVHFGiAOvoKQmrY68WYXLWJi0RTChjlaz5MJGHE21bvsaETgPpVPW47g5zuGHinBf8k=
+	t=1725962246; cv=none; b=YqnfdowTwpq2EKyGFe1QzWbWcYZAUPtcrQSYEDCX1o5sBG9w8k1WpmyVKxtx3ihw9JHIA/Ry1y5Q+CcYg/AO85zPEj57HGssCLMmjy6nsLwU4jlHqln1leDFlCVmDIS1XPyj5WEzIr8IGwH9wK/YRCO6spuAvuscdomN1rUoL9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961092; c=relaxed/simple;
-	bh=v/jGjQhHXWhkRYYsy5NtXj5jcR0sqZ30roB7n5tUNFQ=;
+	s=arc-20240116; t=1725962246; c=relaxed/simple;
+	bh=UYaz166SZMs6SvoG3vYYPq53ddR2seZSmKay/3OhxbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxMSp1p8b0lHwYbkD068ELyq96lntKEpsHDytT2VFa2LgwOjThQ4BHg1kDnAntdFKUCZKbOWSvYSTuXlBJp037FjbviP9mneRIOOACBD5qhfKt8KIZZceHApTzJh/klJiykDOm7EgOTX7bn7gUoXe0dPrnz/q2JYN9sndVHVEGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOeE+PmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ADFC4CEC3;
-	Tue, 10 Sep 2024 09:38:11 +0000 (UTC)
+	 MIME-Version; b=lNJ0GQOSpyCqPdbeL98Kgw8j647EWY80ViB7MsxwQAN9ado8mI5mOHSFjmoOGuU5wJSnaP8VMr+H2DU7y8+B23cX2i3fkAUmNidu/1cLsrpNwF1blfAV1/SgrPQ20EgQsDFiETgxY+J2DZFxoYJPmyDxGpHHB0TQ0iKX6RBZedM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaicubSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0637C4CEC6;
+	Tue, 10 Sep 2024 09:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961092;
-	bh=v/jGjQhHXWhkRYYsy5NtXj5jcR0sqZ30roB7n5tUNFQ=;
+	s=korg; t=1725962246;
+	bh=UYaz166SZMs6SvoG3vYYPq53ddR2seZSmKay/3OhxbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOeE+PmEml2pLP6LxH2msV64/nvKBb0J41vSjMakZhrf+p38HwvUEFxaPioo+oZX4
-	 TXG6LxMa8lrx+PckU/ZZRRDXFFtU5uOKx4psfd0EVCGjstruN0GTa3l/BZErdMNFEP
-	 5ryIIwYis5lDoLNhiuVvfYEzKz8AIzGel8+xtBYM=
+	b=EaicubSzTkJi/P5xZmhKR1tkCnHSukOa3WiYbQgvzYrywpnziC31xgpanQ0T7HpZt
+	 dl8BKn1OwLdWd6e9MOCEvVzEkKeDlTErdSa3tF5dKPXHgF5WBbdj9ZikCpS1PC5FsC
+	 3f7fXxrRiE2nTVDLtwDDjI70YXbjRquxZcs4ObTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 51/96] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
-Date: Tue, 10 Sep 2024 11:31:53 +0200
-Message-ID: <20240910092543.764521564@linuxfoundation.org>
+Subject: [PATCH 6.10 317/375] ACPI: processor: Return an error if acpi_processor_get_info() fails in processor_add()
+Date: Tue, 10 Sep 2024 11:31:54 +0200
+Message-ID: <20240910092633.215749622@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
+[ Upstream commit fadf231f0a06a6748a7fc4a2c29ac9ef7bca6bfd ]
 
-CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
-Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
-moment.
+Rafael observed [1] that returning 0 from processor_add() will result in
+acpi_default_enumeration() being called which will attempt to create a
+platform device, but that makes little sense when the processor is known
+to be not available.  So just return the error code from acpi_processor_get_info()
+instead.
 
-This patch fix it.
-
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/all/CAJZ5v0iKU8ra9jR+EmgxbuNm=Uwx2m1-8vn_RAZ+aCiUVLe3Pw@mail.gmail.com/ [1]
+Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240529133446.28446-5-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: 47ec9b417ed9 ("ACPI: processor: Fix memory leaks in error paths of processor_add()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx.c b/drivers/net/dsa/vitesse-vsc73xx.c
-index eaafb1c30c91..c91f989165ad 100644
---- a/drivers/net/dsa/vitesse-vsc73xx.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx.c
-@@ -38,7 +38,7 @@
- #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
- #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
- #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
--#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
-+#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 7a0dd35d62c9..c052cdeca9fd 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -400,7 +400,7 @@ static int acpi_processor_add(struct acpi_device *device,
  
-@@ -385,13 +385,19 @@ static int vsc73xx_is_addr_valid(u8 block, u8 subblock)
- 		break;
+ 	result = acpi_processor_get_info(device);
+ 	if (result) /* Processor is not physically present or unavailable */
+-		return 0;
++		return result;
  
- 	case VSC73XX_BLOCK_MII:
--	case VSC73XX_BLOCK_CAPTURE:
- 	case VSC73XX_BLOCK_ARBITER:
- 		switch (subblock) {
- 		case 0 ... 1:
- 			return 1;
- 		}
- 		break;
-+	case VSC73XX_BLOCK_CAPTURE:
-+		switch (subblock) {
-+		case 0 ... 4:
-+		case 6 ... 7:
-+			return 1;
-+		}
-+		break;
- 	}
+ 	BUG_ON(pr->id >= nr_cpu_ids);
  
- 	return 0;
 -- 
 2.43.0
 
