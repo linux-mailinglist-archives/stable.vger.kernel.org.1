@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA0C97329C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E549731B2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BABC1287676
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BE5B272FC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6432D1A0729;
-	Tue, 10 Sep 2024 10:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FB61991BA;
+	Tue, 10 Sep 2024 10:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ig4swWVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM0SHPEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B2E46444;
-	Tue, 10 Sep 2024 10:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37008190667;
+	Tue, 10 Sep 2024 10:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963541; cv=none; b=Y8/a2+K+SbeNYnPgSRdWi6hKirjNQGFa9uFYw3qwJEMJom8LVE6udgXoSDlPpY6C2WGKZAVwEUERBjIgTh61hQUwT1sfjvpzA+C7OqggRYL5+VPgJRLL92vmqvkYpHwt0ZqjuUQd2WvBdfyQBLy87nVoy24/so/Kb6EW8jOkESM=
+	t=1725962968; cv=none; b=R5Xn/6JAPQS34oFnUG9eYHt8hQJEcDIlVCGLROZoEu/0P/4qkSFcxBNBIMd+avqM7XI1tjoHVuII197HwoozTOQjGNpE7aioZyI1oNLh/VJZawrNn9OGlLuHnNr4mJizjWrLd4ORKCbuvpd9WiryfCOA94J3aW1Q/fCJbMjQ4mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963541; c=relaxed/simple;
-	bh=Dm/UohRAuHZNjYvWGHzIWYvl3TSyMJaZ2ct5KNzTP7I=;
+	s=arc-20240116; t=1725962968; c=relaxed/simple;
+	bh=WtCxVucatc299nPxR4mSEJJ/ZWS1je7Hr4/TKwhSWfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdyNyuGP28/UDZ22dv+VYGSPqYR7+6EcZU/pB39z5qohbXTZfWOMLUUAtBig9zkBnpEoUVu2kfnP/WFuGhaQ6SgpTBuWq253SjO5Gob2TQe+X0UeAhAAAiixaVmlH2uGq11ZovuVO8JWTvKe8oYE6tA2CqOUPc7Rf7SMu/CWSic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ig4swWVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7BFC4CEC3;
-	Tue, 10 Sep 2024 10:19:00 +0000 (UTC)
+	 MIME-Version; b=VHkDgi8L2rb2gso0aPbZW3sssEkkHv6qcG5NeJ+YLOrL9IxuwPVWlq9gkdLXj+hOL4RPT2BdsYK4pAo6dyjBxzq4d1Xr9VmeoqjKDJPGJb7eZTXXbIwzJjzTdRfCh9HnVEuWrf2/oLxPyBepFVSE/s3bb/HTKz67IUq0VFQcD/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM0SHPEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44BBC4CEC3;
+	Tue, 10 Sep 2024 10:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963541;
-	bh=Dm/UohRAuHZNjYvWGHzIWYvl3TSyMJaZ2ct5KNzTP7I=;
+	s=korg; t=1725962968;
+	bh=WtCxVucatc299nPxR4mSEJJ/ZWS1je7Hr4/TKwhSWfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ig4swWVw34uy9MQ6LfYrw903O+X1T9hT1SYHjHalD+WidILhWT8JQEWgIujj8cKum
-	 S4IKsUYgdrKr/b6Y2fQpTIrK6lhyNpBveD2rHxFKtZdt8rP+FCK9RlXxfg1rgX1wP1
-	 GBkhZbUjLRAXXDEdYtGHCa7SkJjVBZEGWc/CWc2U=
+	b=mM0SHPEzlShjoEmtbT/sy1eqCib04wj5OEXyT+dg9kEhu1dnOmo8yOozlDzVtPyFv
+	 tSIdbIgy7fLCuPQWeKT0J8jDY/kpwxdyW6RN7SOcAu4roXic5MpUbmxpb5dHQPdqSA
+	 J5/JKs2C3SxqFI5ZfrZE99FnIEwCAQtHzbFR2JZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 093/214] mptcp: pm: fullmesh: select the right ID later
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/192] dm init: Handle minors larger than 255
 Date: Tue, 10 Sep 2024 11:31:55 +0200
-Message-ID: <20240910092602.576875465@linuxfoundation.org>
+Message-ID: <20240910092601.746259931@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-commit 09355f7abb9fbfc1a240be029837921ea417bf4f upstream.
+[ Upstream commit 140ce37fd78a629105377e17842465258a5459ef ]
 
-When reacting upon the reception of an ADD_ADDR, the in-kernel PM first
-looks for fullmesh endpoints. If there are some, it will pick them,
-using their entry ID.
+dm_parse_device_entry() simply copies the minor number into dmi.dev, but
+the dev_t format splits the minor number between the lowest 8 bytes and
+highest 12 bytes. If the minor number is larger than 255, part of it
+will end up getting treated as the major number
 
-It should set the ID 0 when using the endpoint corresponding to the
-initial subflow, it is a special case imposed by the MPTCP specs.
+Fix this by checking that the minor number is valid and then encoding it
+as a dev_t.
 
-Note that msk->mpc_endpoint_id might not be set when receiving the first
-ADD_ADDR from the server. So better to compare the addresses.
-
-Fixes: 1a0d6136c5f0 ("mptcp: local addresses fullmesh")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-12-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c, because the new 'mpc_addr' variable is
-  added where the 'local' one was, before commit b9d69db87fb7 ("mptcp:
-  let the in-kernel PM use mixed IPv4 and IPv6 addresses"), that is not
-  a candidate for the backports. This 'local' variable has been moved to
-  the new place to reduce the scope, and help with possible future
-  backports.
-  Note that addresses_equal() has been used instead of
-  mptcp_addresses_equal(), renamed in commit 4638de5aefe5 ("mptcp:
-  handle local addrs announced by userspace PMs"), not in this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/md/dm-init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -554,7 +554,7 @@ static unsigned int fill_local_addresses
- {
- 	struct sock *sk = (struct sock *)msk;
- 	struct mptcp_pm_addr_entry *entry;
--	struct mptcp_addr_info local;
-+	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
- 	int i = 0;
-@@ -562,6 +562,8 @@ static unsigned int fill_local_addresses
- 	pernet = net_generic(sock_net(sk), pm_nl_pernet_id);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
- 
-+	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
-+
- 	rcu_read_lock();
- 	__mptcp_flush_join_list(msk);
- 	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
-@@ -580,7 +582,13 @@ static unsigned int fill_local_addresses
- 
- 		if (msk->pm.subflows < subflows_max) {
- 			msk->pm.subflows++;
--			addrs[i++] = entry->addr;
-+			addrs[i] = entry->addr;
-+
-+			/* Special case for ID0: set the correct ID */
-+			if (addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
-+				addrs[i].id = 0;
-+
-+			i++;
- 		}
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index dc4381d68313..6e9e73a55874 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -213,8 +213,10 @@ static char __init *dm_parse_device_entry(struct dm_device *dev, char *str)
+ 	strscpy(dev->dmi.uuid, field[1], sizeof(dev->dmi.uuid));
+ 	/* minor */
+ 	if (strlen(field[2])) {
+-		if (kstrtoull(field[2], 0, &dev->dmi.dev))
++		if (kstrtoull(field[2], 0, &dev->dmi.dev) ||
++		    dev->dmi.dev >= (1 << MINORBITS))
+ 			return ERR_PTR(-EINVAL);
++		dev->dmi.dev = huge_encode_dev((dev_t)dev->dmi.dev);
+ 		dev->dmi.flags |= DM_PERSISTENT_DEV_FLAG;
  	}
- 	rcu_read_unlock();
-@@ -589,6 +597,8 @@ static unsigned int fill_local_addresses
- 	 * 'IPADDRANY' local address
- 	 */
- 	if (!i) {
-+		struct mptcp_addr_info local;
-+
- 		memset(&local, 0, sizeof(local));
- 		local.family = msk->pm.remote.family;
- 
+ 	/* flags */
+-- 
+2.43.0
+
 
 
 
