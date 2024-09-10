@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-74976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7828973266
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C887A97316C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA0301C20E3D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06EC81C244A6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40012192B96;
-	Tue, 10 Sep 2024 10:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D92190077;
+	Tue, 10 Sep 2024 10:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O12Pv5aZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiEWWiEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB849190496;
-	Tue, 10 Sep 2024 10:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A7188CC1;
+	Tue, 10 Sep 2024 10:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963386; cv=none; b=W5BJ7G/yKTxKFa7/pvxJGNOzY2ocwkDjwDKKGUKxfYs9RPbIgRYpxwkJoEUZFKWBIAZA82GgCnCt4PliShGYWLdrydPV/Wwy6VxvGzaRDd/RHK2zdeKizhNxBXh0NiJ0dJWK3IOo2zTCIoUMZdmKJ4ZMRgyB6fV98jEvbSwryr8=
+	t=1725962816; cv=none; b=l/cjc2bmO8hhhC/eB4OZvNZJsIrNUsVn74dZN99/sgqo2jmtM2FVsWIM/00dYMsusBL4RhKSClKarG+Y//HuCu71MXRYg6CgSxhCJ0DI2gt3pP2zqxWCZlni26uLgUs1W8eac+81Iit+xCjFAFDyaJSt42pXe/NrKypovcWIiAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963386; c=relaxed/simple;
-	bh=SbM5QXbHwyVJ1VsDbSv6Vwl7uVigReiXGdVQIz13A/w=;
+	s=arc-20240116; t=1725962816; c=relaxed/simple;
+	bh=GZ/wSl7wSVXe9tGGbzvVWyT82uCq/ad7P67vGJb0JpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pn0XBBHCuFHGlxxQ3qklgpV2mbE5mrDKJ+tKDJI1nLvSALZzA5UEb6RLoWIwzj7UxvMWQM4zfBOaxAZcIRxB9cUhsSwH+OHFjV8MdMkBywNt2RUB1n38rG27O3C7YBvfD0aX1ayyk8UUuCw675gn3/H8Q4zJ2Gy89oretLxexR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O12Pv5aZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F391C4CEC3;
-	Tue, 10 Sep 2024 10:16:25 +0000 (UTC)
+	 MIME-Version; b=Zyzu9m8aA0Us5Lwk5qxq+CD+uggUPPGpqW5/XAFu9ZwjHuR/J6D8PtJxEz9yTGcRAwm+RDIwuK4v/0JY29nJRwg7XlSB0XrpoETwCzOFVzTzxdJ/WStRLxT7C2aYrTxirXZF2wQ70hYeLAk3m6LlEuGhSJtafBW7yiuAvE+9874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiEWWiEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AED9C4CEC3;
+	Tue, 10 Sep 2024 10:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963385;
-	bh=SbM5QXbHwyVJ1VsDbSv6Vwl7uVigReiXGdVQIz13A/w=;
+	s=korg; t=1725962816;
+	bh=GZ/wSl7wSVXe9tGGbzvVWyT82uCq/ad7P67vGJb0JpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O12Pv5aZL1MZ4VLJ6c0Cbtf98Ae8TPEM9WPDemXx6MvMh50G1ilX1jfGOHW+N7PK9
-	 EMvbWWjM+0A5s2q9N7aE/CJqdbGK3rKU4Z1BAmzigd5oFFbqrzFk5PkV8rUiL6Sz30
-	 Xv1pyY7LX6uB4syn735j72L0v43IvA1ewTOD34YU=
+	b=WiEWWiEGHSOaQM6mLm2vpKL8sYAlYXiCthO63HlAwgFoGst9C90pJkFl2URXkmV0c
+	 ZKxw4mXblEpAXkX/9afWGW3N8wVDi53srfh93KRYAsH/F863j/TzM3GxRPjIr+gAfQ
+	 vSefuX0k7fnOvdjOykB1G1pdiQerYH0rQ0zPbEjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/214] PCI: al: Check IORESOURCE_BUS existence during probe
-Date: Tue, 10 Sep 2024 11:31:02 +0200
-Message-ID: <20240910092600.414330920@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 039/192] nilfs2: fix missing cleanup on rollforward recovery error
+Date: Tue, 10 Sep 2024 11:31:03 +0200
+Message-ID: <20240910092559.604149443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +59,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
+commit 5787fcaab9eb5930f5378d6a1dd03d916d146622 upstream.
 
-If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
-of_pci_parse_bus_range(), so NULL pointer dereference should not happen
-here.
+In an error injection test of a routine for mount-time recovery, KASAN
+found a use-after-free bug.
 
-But that's hard to verify, so check for NULL anyway.
+It turned out that if data recovery was performed using partial logs
+created by dsync writes, but an error occurred before starting the log
+writer to create a recovered checkpoint, the inodes whose data had been
+recovered were left in the ns_dirty_files list of the nilfs object and
+were not freed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this issue by cleaning up inodes that have read the recovery data if
+the recovery routine fails midway before the log writer starts.
 
-Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240810065242.3701-1-konishi.ryusuke@gmail.com
+Fixes: 0f3e1c7f23f8 ("nilfs2: recovery functions")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/nilfs2/recovery.c |   35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
-index e8afa50129a8..60a0d59a533f 100644
---- a/drivers/pci/controller/dwc/pcie-al.c
-+++ b/drivers/pci/controller/dwc/pcie-al.c
-@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
- 	.write = pci_generic_config_write,
- };
- 
--static void al_pcie_config_prepare(struct al_pcie *pcie)
-+static int al_pcie_config_prepare(struct al_pcie *pcie)
- {
- 	struct al_pcie_target_bus_cfg *target_bus_cfg;
- 	struct pcie_port *pp = &pcie->pci->pp;
- 	unsigned int ecam_bus_mask;
-+	struct resource_entry *ft;
- 	u32 cfg_control_offset;
-+	struct resource *bus;
- 	u8 subordinate_bus;
- 	u8 secondary_bus;
- 	u32 cfg_control;
- 	u32 reg;
--	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
- 
-+	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
-+	if (!ft)
-+		return -ENODEV;
-+
-+	bus = ft->res;
- 	target_bus_cfg = &pcie->target_bus_cfg;
- 
- 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
-@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
- 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
- 
- 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
-+
-+	return 0;
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -709,6 +709,33 @@ static void nilfs_finish_roll_forward(st
  }
  
- static int al_pcie_host_init(struct pcie_port *pp)
-@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
- 	if (rc)
- 		return rc;
+ /**
++ * nilfs_abort_roll_forward - cleaning up after a failed rollforward recovery
++ * @nilfs: nilfs object
++ */
++static void nilfs_abort_roll_forward(struct the_nilfs *nilfs)
++{
++	struct nilfs_inode_info *ii, *n;
++	LIST_HEAD(head);
++
++	/* Abandon inodes that have read recovery data */
++	spin_lock(&nilfs->ns_inode_lock);
++	list_splice_init(&nilfs->ns_dirty_files, &head);
++	spin_unlock(&nilfs->ns_inode_lock);
++	if (list_empty(&head))
++		return;
++
++	set_nilfs_purging(nilfs);
++	list_for_each_entry_safe(ii, n, &head, i_dirty) {
++		spin_lock(&nilfs->ns_inode_lock);
++		list_del_init(&ii->i_dirty);
++		spin_unlock(&nilfs->ns_inode_lock);
++
++		iput(&ii->vfs_inode);
++	}
++	clear_nilfs_purging(nilfs);
++}
++
++/**
+  * nilfs_salvage_orphan_logs - salvage logs written after the latest checkpoint
+  * @nilfs: nilfs object
+  * @sb: super block instance
+@@ -766,15 +793,19 @@ int nilfs_salvage_orphan_logs(struct the
+ 		if (unlikely(err)) {
+ 			nilfs_err(sb, "error %d writing segment for recovery",
+ 				  err);
+-			goto failed;
++			goto put_root;
+ 		}
  
--	al_pcie_config_prepare(pcie);
-+	rc = al_pcie_config_prepare(pcie);
-+	if (rc)
-+		return rc;
+ 		nilfs_finish_roll_forward(nilfs, ri);
+ 	}
  
- 	return 0;
+- failed:
++put_root:
+ 	nilfs_put_root(root);
+ 	return err;
++
++failed:
++	nilfs_abort_roll_forward(nilfs);
++	goto put_root;
  }
--- 
-2.43.0
-
+ 
+ /**
 
 
 
