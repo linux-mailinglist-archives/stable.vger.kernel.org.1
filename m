@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-74990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1386973273
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2549734A1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72709287DA8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60294B2DFC3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40203192D90;
-	Tue, 10 Sep 2024 10:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CC11922EF;
+	Tue, 10 Sep 2024 10:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJtWQ1/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9izco0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B80192D94;
-	Tue, 10 Sep 2024 10:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93701172BAE;
+	Tue, 10 Sep 2024 10:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963427; cv=none; b=VFkopg/IhQv+hJBrAZpsgqW5OzeVzPZGsZ/goBJhRlacLjcjFwSOjCSEdU5uzifgyl0s17qMJ882HOq/2VfRaYhvcYTdHbGJZzPlgGY++NiRjhSr64vVmsJvhmUMjPHxCl9xq4wYOVxhF5yXcN2PAZ22Eg2PgWFjc4KJEadJWbs=
+	t=1725964161; cv=none; b=rEfBr6kUHZ8AYiZUTvZAyjyN3XsefqSpvf7CBesSntEz4X7PS/+8fFWhP1O4U/o++YqIM5OgqyEGW3x0lMTdHO55lvZ8jFv8GmBVy1VNmPswErm9Xsfq8wSrmlT7zZH+NPqnMeOL35knta0DtxIA4FtugJdSsC4T126fhWLMycc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963427; c=relaxed/simple;
-	bh=rBIlFtjs4EuCB4Yv5e0nBn5JvNr4nfZAe4UYXJupI/Q=;
+	s=arc-20240116; t=1725964161; c=relaxed/simple;
+	bh=oMyfbdq1ljyTfaw2zQ9EwaSrGoVGODTZGOmnXfBliq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RSu9/ikXaef8U8TMzFkKblMUrvt0mC2dYSz5IPhT/E4flnPLNXGtrD5r0GfoB9uzcloK3EbGD3fDh5sZdmsf7nLeI91KzCoRAQJMHXpVoNDjQy5oKQnv6M3I1cdyYFyp7FnxShuBLBNpskcpGTIFFFOUbYyXVsDUmD0zFL5sthM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJtWQ1/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA2AC4CEDA;
-	Tue, 10 Sep 2024 10:17:06 +0000 (UTC)
+	 MIME-Version; b=eouFiGPcimIdcB7xPcavSSRqJ+hUTdB5sP5lwGQmIllp17IQ2PBFjMJiDAFpEyfza+nGCwIvSpbIYFIh9I/feyPRJgjsvQJ7rztm/L74YxaJaUcoZjd4+N9c3zrhDPKMgrwrJEcrSB7Jvz4ahI4RxuA1lpWBgse92wXeJgH4eV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9izco0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D1AC4CEC3;
+	Tue, 10 Sep 2024 10:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963426;
-	bh=rBIlFtjs4EuCB4Yv5e0nBn5JvNr4nfZAe4UYXJupI/Q=;
+	s=korg; t=1725964161;
+	bh=oMyfbdq1ljyTfaw2zQ9EwaSrGoVGODTZGOmnXfBliq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJtWQ1/RPcUgQ5tJWlGVf5lr3fqLXptKM3adI9K3L2XG2AHYopGZtbF1eUiq0jDNk
-	 L7466cEyP+dIDSfslDvEfupFNvUEvK23uALOfZTH8Gje6m8uydH99pbxSqsnfdAmP2
-	 OYVxKEkOlvJR48TIyl3dqk6E9fl3KT0D8OxNYfFs=
+	b=f9izco0rOWUsMHdxqSVI4gnBkOC0nMocHe+F2GmqvsL2p1FRehf/cE84xE6xtpIMg
+	 GB64chqsZZXykpUWTAKmG9pJ8dvuS0PTcWaOVMwVHE7vUQPwXBAxp5kXqcK4yhMsQY
+	 K1YcAzkqzf17AgXwY23jArv/IHh6Eu9oPgUIw6Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/214] drm/amdgpu: Fix out-of-bounds write warning
+Subject: [PATCH 6.6 061/269] ALSA: control: Apply sanity check of input values for user elements
 Date: Tue, 10 Sep 2024 11:30:48 +0200
-Message-ID: <20240910092559.845020885@linuxfoundation.org>
+Message-ID: <20240910092610.377362626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
+[ Upstream commit 50ed081284fe2bfd1f25e8b92f4f6a4990e73c0a ]
 
-Check the ring type value to fix the out-of-bounds
-write warning
+Although we have already a mechanism for sanity checks of input values
+for control writes, it's not applied unless the kconfig
+CONFIG_SND_CTL_INPUT_VALIDATION is set due to the performance reason.
+Nevertheless, it still makes sense to apply the same check for user
+elements despite of its cost, as that's the only way to filter out the
+invalid values; the user controls are handled solely in ALSA core
+code, and there is no corresponding driver, after all.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This patch adds the same input value validation for user control
+elements at its put callback.  The kselftest will be happier with this
+change, as the incorrect values will be bailed out now with errors.
+
+For other normal controls, the check is applied still only when
+CONFIG_SND_CTL_INPUT_VALIDATION is set.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/1d44be36-9bb9-4d82-8953-5ae2a4f09405@molgen.mpg.de
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-4-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/control.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index 294ad2929485..de05b7f864f2 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -263,7 +263,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
- 	ring->max_dw = max_dw;
- 	ring->hw_prio = hw_prio;
+diff --git a/sound/core/control.c b/sound/core/control.c
+index 59c8658966d4..dd4bdb39782c 100644
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1553,12 +1553,16 @@ static int snd_ctl_elem_user_get(struct snd_kcontrol *kcontrol,
+ static int snd_ctl_elem_user_put(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
+ {
+-	int change;
++	int err, change;
+ 	struct user_element *ue = kcontrol->private_data;
+ 	unsigned int size = ue->elem_data_size;
+ 	char *dst = ue->elem_data +
+ 			snd_ctl_get_ioff(kcontrol, &ucontrol->id) * size;
  
--	if (!ring->no_scheduler) {
-+	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
- 		hw_ip = ring->funcs->type;
- 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
- 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
++	err = sanity_check_input_values(ue->card, ucontrol, &ue->info, false);
++	if (err < 0)
++		return err;
++
+ 	change = memcmp(&ucontrol->value, dst, size) != 0;
+ 	if (change)
+ 		memcpy(dst, &ucontrol->value, size);
 -- 
 2.43.0
 
