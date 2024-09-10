@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-74928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63EE973294
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:24:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B259732FF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F8ECB27A40
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF021C24C53
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6292A196C7C;
-	Tue, 10 Sep 2024 10:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53243192D8E;
+	Tue, 10 Sep 2024 10:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaQQx47l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqOaqqup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214BB19259E;
-	Tue, 10 Sep 2024 10:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D6192D86;
+	Tue, 10 Sep 2024 10:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963245; cv=none; b=Oi8GsbhmDQIHTNnjZy5MMAWLakMGkbHNyx/7ih+t9yVm9GPz8ehdtfZbLBMv96IlZlI/u6Hfx3ybONYNrhpGxd9+iUIX1sIQLgs7F6Xc0OCfo+onW8LwmP5va1U3197+pvWjYMex6xsnRmSlKUdNT+pWFKCAetmkZjInHkDEuZ4=
+	t=1725963814; cv=none; b=iuOhTgAZksQTPK+UYjoYTHde5fC15ILbo2gNe8mLb1iLX661n5iqg0BgLSWZgj9KsRutNbFq+22mJ0dpu34OlRFg4xzgQyBvBeH3txPK2h9l+dEdur+2qpMWJmhQPVR6e0fCr2Rpm9/Ebqn7+MWZvOzYjsG81AYGGmPc/P7wDNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963245; c=relaxed/simple;
-	bh=vSppGmhXof0c/cLMX9NKF5BO1/pny2oQH7AC7V27k5Q=;
+	s=arc-20240116; t=1725963814; c=relaxed/simple;
+	bh=PYFlGomOzb/tPvpHIFh46fhGY6bRPtvmNCjzxK8bBUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqeG0P4L8eNaTDCV8v4Ee0plQaOR++cIysyVUmkzkGdDm7rQBSq6qYx3dE0VILmC/slFHFYEvAoAaAdkWOtNn03OrBgvHZxP7bAzm4W9eSY7ZDIUVx+nWkeMtiBeqglsRpkwnkex8Q5Lp21srtsYGo98CCkO6mykI5NW+Z6lrss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaQQx47l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE66C4CEC3;
-	Tue, 10 Sep 2024 10:14:04 +0000 (UTC)
+	 MIME-Version; b=D45Mcx06f5sxOTfexaDV1QDQhrCFw228v2g5e1dpxlfLAJn0HXnn3Gw2X4BCfpsGTSgDSh+CK3X9ZDclwiOon42qPuGrQeu9nymSbdvUsSpPQnuUPjpZmFSbX6GDfJP/YxpG5oiM36lL/hVTfqwVbnUBMwoB+gTgz2otESO+Zt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqOaqqup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD5FC4CEC3;
+	Tue, 10 Sep 2024 10:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963245;
-	bh=vSppGmhXof0c/cLMX9NKF5BO1/pny2oQH7AC7V27k5Q=;
+	s=korg; t=1725963813;
+	bh=PYFlGomOzb/tPvpHIFh46fhGY6bRPtvmNCjzxK8bBUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WaQQx47lVbvmneB6PL1wua4fj61iOckd75OAOItA64qKv6GgeXHSXp+n90X05mkZL
-	 I7/+hlodVPg3FjvMWO3AbkPD5T5nXJ+V8CThuZDC7FGfgyRlUWTTcTDe/zPgUkwFP9
-	 gWctse5poFrl5BT5dcH0kSX8JKYKBW/uDUm0w2Zc=
+	b=RqOaqqupYVdtwt85nv195BhQbzUgN9f5Z7pmt2zIDoOgFQmmYzypzZeDleFsDfTTk
+	 ZVq74+SyRpZLhd4tG1J0Oec1acpSrOyE/+FOEpss4bpH3DuSibDgZx8kaqXb0rrhKT
+	 CCupihZ43CuB+5vfNHDNBSjM16fpNM7CWCBVNTlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/192] gpio: rockchip: fix OF node leak in probe()
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ye Li <ye.li@nxp.com>,
+	Jason Liu <jason.hui.liu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.15 186/214] clocksource/drivers/imx-tpm: Fix return -ETIME when delta exceeds INT_MAX
 Date: Tue, 10 Sep 2024 11:33:28 +0200
-Message-ID: <20240910092605.391382813@linuxfoundation.org>
+Message-ID: <20240910092606.267572025@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit adad2e460e505a556f5ea6f0dc16fe95e62d5d76 ]
+commit 5b8843fcd49827813da80c0f590a17ae4ce93c5d upstream.
 
-Driver code is leaking OF node reference from of_get_parent() in
-probe().
+In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
+is larger than INT_MAX.
 
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://lore.kernel.org/r/20240826150832.65657-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example:
+
+tpm_set_next_event(delta = 0xffff_fffe)
+{
+        ...
+        next = tpm_read_counter(); // assume next is 0x10
+        next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
+        now = tpm_read_counter();  // now is 0x10
+        ...
+
+        return (int)(next - now) <= 0 ? -ETIME : 0;
+                     ^^^^^^^^^^
+                     0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
+                     cast to int. So return -ETIME.
+}
+
+To fix this, introduce a 'prev' variable and check if 'now - prev' is
+larger than delta.
+
+Cc: stable@vger.kernel.org
+Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240725193355.1436005-1-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/timer-imx-tpm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 200e43a6f4b4..3c1e303aaca8 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -713,6 +713,7 @@ static int rockchip_gpio_probe(struct platform_device *pdev)
- 		return -ENODEV;
+--- a/drivers/clocksource/timer-imx-tpm.c
++++ b/drivers/clocksource/timer-imx-tpm.c
+@@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(
+ static int tpm_set_next_event(unsigned long delta,
+ 				struct clock_event_device *evt)
+ {
+-	unsigned long next, now;
++	unsigned long next, prev, now;
  
- 	pctldev = of_pinctrl_get(pctlnp);
-+	of_node_put(pctlnp);
- 	if (!pctldev)
- 		return -EPROBE_DEFER;
+-	next = tpm_read_counter();
+-	next += delta;
++	prev = tpm_read_counter();
++	next = prev + delta;
+ 	writel(next, timer_base + TPM_C0V);
+ 	now = tpm_read_counter();
  
--- 
-2.43.0
-
+@@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned l
+ 	 * of writing CNT registers which may cause the min_delta event got
+ 	 * missed, so we need add a ETIME check here in case it happened.
+ 	 */
+-	return (int)(next - now) <= 0 ? -ETIME : 0;
++	return (now - prev) >= delta ? -ETIME : 0;
+ }
+ 
+ static int tpm_set_state_oneshot(struct clock_event_device *evt)
 
 
 
