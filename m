@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C1B9731E4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80C79734E1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594511C2424F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F5431F25EFF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A855D192B88;
-	Tue, 10 Sep 2024 10:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB1918C913;
+	Tue, 10 Sep 2024 10:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic7lUK8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T26MIJIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6621E19006F;
-	Tue, 10 Sep 2024 10:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFCA2AF15;
+	Tue, 10 Sep 2024 10:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963101; cv=none; b=kKHBpS06HkQb3ItSEVMlgyyMqTU91XQTWK0ZrTyZIi6Vcj/MhKJ/jagE1XU316ZkqarskMgv4dW3ogsCcDFzaZmu7uZEm4YzU1vQR7W9ttOL9h+zEMrOaM5zAuzN2Aqbt7qUw1PJB8wVL0BN4HoPfoMwTtio088uzg2bFCYKJEw=
+	t=1725964889; cv=none; b=KotRKsvKnjeAup+2R1bYPSuf3XvWZ4tp8UzyrwVbMhY0c3gn1vKcUAFvaXsQo/TQswTaD5+Y2R7wKOMvmC1euPyAyj4gEI2mq+x4G2hfvqWcrMt7e3noVyrn++mxXuGq+djbsfW7Hmq3TikejyxN+pNVosGcaUGjmrAkuoJQF7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963101; c=relaxed/simple;
-	bh=7jOkney1jsfDcEbTRARLc4FJiLmQ4Zg0F/lGCcYiIQU=;
+	s=arc-20240116; t=1725964889; c=relaxed/simple;
+	bh=eFnGCDAFaDj8H2r2W7Jaq7uRrLzEKAhmyD6wU+SwsKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZp+0TaeLPPk202LVkyC1H3xdTUddAThOv5nXxXoJe7EJa0seZ48jwywqs2QWWvjYB1ATs2Lq8FRYJESgINqopbBlb7kF3a/wAW4IOOg4zjt2zuI1DsS4muPtG6ZzSEU4bPUJL+jv0AYxBHBoNQhkHtTjTBvLcxGibu/ea8CLE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic7lUK8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B313C4CEC3;
-	Tue, 10 Sep 2024 10:11:40 +0000 (UTC)
+	 MIME-Version; b=JqkeAbKJ0QqUkuFhtAzxwP92J2FoMyMaHdrf2L/lX8/+lOrAu6LYsFyKVFWEB2rxy2YOwyerMTiLn3VdJLA6mqC7MSoGR0u/G87O2Avb/ikwjmHrG3x6m9aU4yfJYXizbhcESSUoAcB9cb5yhvQQkIIz2eNbUja929mV4nGlpy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T26MIJIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE50C4CEC3;
+	Tue, 10 Sep 2024 10:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963101;
-	bh=7jOkney1jsfDcEbTRARLc4FJiLmQ4Zg0F/lGCcYiIQU=;
+	s=korg; t=1725964889;
+	bh=eFnGCDAFaDj8H2r2W7Jaq7uRrLzEKAhmyD6wU+SwsKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ic7lUK8QMdKk4JiDuEkl0E6/sd+9YYEtN8nklfhrOa1IMWzcZnaZgou8tV4715CQ9
-	 BeKndessAtsTGJOcIfosYRk1HzNloe2NrtmpxZWJ8/p+m4ixOOWBGK6OweTvPd3Op6
-	 mXDKlgGkx5fD92m8eDCZM2YvPkm0tdu8tAKSviLw=
+	b=T26MIJIJnPxV9VNycfEgM76iL0nVsEr0PSPFEhm6Y10FLv4age33HSKUZHdUVSr1X
+	 Wjq3z6Q2L7kyQFdHHMPX8eDtEYV3IPcXBdoeswfHLNlBi3MwvOuboLbqU16lEN4Ku9
+	 yGtOrB2SoaFvPoljV89wmuddwvhiIDPcDFxgziuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/192] btrfs: replace BUG_ON with ASSERT in walk_down_proc()
+Subject: [PATCH 5.10 038/186] smack: tcp: ipv4, fix incorrect labeling
 Date: Tue, 10 Sep 2024 11:32:13 +0200
-Message-ID: <20240910092602.481873786@linuxfoundation.org>
+Message-ID: <20240910092556.112509909@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 1f9d44c0a12730a24f8bb75c5e1102207413cc9b ]
+[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
 
-We have a couple of areas where we check to make sure the tree block is
-locked before looking up or messing with references.  This is old code
-so it has this as BUG_ON().  Convert this to ASSERT() for developers.
+Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
+when a label 'foo' connects to a label 'bar' with tcp/ipv4,
+'foo' always gets 'foo' in returned ipv4 packets. So,
+1) returned packets are incorrectly labeled ('foo' instead of 'bar')
+2) 'bar' can write to 'foo' without being authorized to write.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Here is a scenario how to see this:
+
+* Take two machines, let's call them C and S,
+   with active Smack in the default state
+   (no settings, no rules, no labeled hosts, only builtin labels)
+
+* At S, add Smack rule 'foo bar w'
+   (labels 'foo' and 'bar' are instantiated at S at this moment)
+
+* At S, at label 'bar', launch a program
+   that listens for incoming tcp/ipv4 connections
+
+* From C, at label 'foo', connect to the listener at S.
+   (label 'foo' is instantiated at C at this moment)
+   Connection succeedes and works.
+
+* Send some data in both directions.
+* Collect network traffic of this connection.
+
+All packets in both directions are labeled with the CIPSO
+of the label 'foo'. Hence, label 'bar' writes to 'foo' without
+being authorized, and even without ever being known at C.
+
+If anybody cares: exactly the same happens with DCCP.
+
+This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
+and it looks unintentional. At least, no explanation was provided.
+
+I changed returned packes label into the 'bar',
+to bring it into line with the Smack documentation claims.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 528cd88a77fd..d6efdcf95991 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5200,7 +5200,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
- 	if (lookup_info &&
- 	    ((wc->stage == DROP_REFERENCE && wc->refs[level] != 1) ||
- 	     (wc->stage == UPDATE_BACKREF && !(wc->flags[level] & flag)))) {
--		BUG_ON(!path->locks[level]);
-+		ASSERT(path->locks[level]);
- 		ret = btrfs_lookup_extent_info(trans, fs_info,
- 					       eb->start, level, 1,
- 					       &wc->refs[level],
-@@ -5224,7 +5224,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 8c790563b33a..88bcda1f07bf 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4228,7 +4228,7 @@ static int smack_inet_conn_request(struct sock *sk, struct sk_buff *skb,
+ 	rcu_read_unlock();
  
- 	/* wc->stage == UPDATE_BACKREF */
- 	if (!(wc->flags[level] & flag)) {
--		BUG_ON(!path->locks[level]);
-+		ASSERT(path->locks[level]);
- 		ret = btrfs_inc_ref(trans, root, eb, 1);
- 		BUG_ON(ret); /* -ENOMEM */
- 		ret = btrfs_dec_ref(trans, root, eb, 0);
+ 	if (hskp == NULL)
+-		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
++		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+ 		netlbl_req_delattr(req);
+ 
 -- 
 2.43.0
 
