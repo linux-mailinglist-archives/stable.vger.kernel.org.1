@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-75143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81D4973319
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACD6973214
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841DD285FA8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173A51F294C4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F23F19597F;
-	Tue, 10 Sep 2024 10:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB267195FEF;
+	Tue, 10 Sep 2024 10:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArlLQDIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzM6J9ui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F21957F4;
-	Tue, 10 Sep 2024 10:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C3818C025;
+	Tue, 10 Sep 2024 10:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963875; cv=none; b=mKKEYHQkrf80fk59+Sy5hWs6fy/F5Y5lYsSn1hw9ULqdMRb5PD4qhRD3MVfFl1EbzVtTvL8Z30iBk/1KLFgfcLwtzVwlgKjaeB0ossgWKC5R8Q0lDmaNTEvdJgL4IU00/qGI5A1mNJh+6q9wA54gs4+cGRYEdl5JpsrXBjQv3bk=
+	t=1725963224; cv=none; b=BzvKjOs0hZCDLeCgARXUTuJYdW7R80nFIuMFq60Cvg1fm/mxsHiEFJFpGSRzk4kD3zhWXa7tWhiDSK9qHqNOjxc1LlZMHzoNLELIJLpHjrnQuyvpI0BSnshPlxDvXuuVaZ7W9BQF2IlFbs4boRxDzWHETr2GJEsHMnK4IEpD9Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963875; c=relaxed/simple;
-	bh=04xP46FHpYqkQPp3CQ7xkEAt+IRDicDVtKv6saRT5Kg=;
+	s=arc-20240116; t=1725963224; c=relaxed/simple;
+	bh=anJBxvH8YYL6JR+0q3ZUUB5/Gi+9jqDillbKd1e5eI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Boeb8OK6j7h32XLOjr8GeyQ7HzE3qiAszl+/UdFC8aNJx33fDgLjdUk45QmqzBNqR3kL4r0IuWY5Tz298XVa3WiDgj/BRvXA0G6lq3p50bBTRVuTlR4lPu6jLhvYjgavwrlOiT4eq5/r85EvM8XYOOTb01+ETe001+HoQxaIH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArlLQDIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04B3C4CEC3;
-	Tue, 10 Sep 2024 10:24:34 +0000 (UTC)
+	 MIME-Version; b=FmZWl6wNzKA7+cYW4JHhgCuX7dRATOBr2u4PxHlMB6Wa6Ma+Dp0ydcGU7EcHIhlOcXlUzrD0lLJ5YHZSnx2DVPzKTvU7Sb6q8fdjhE07D2TIuuVmkAWlp6MncjmySl22A8YSysrGcfZNr3MH1cUSgDyLoIAqJZ+bKgQzzgjPCx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzM6J9ui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6F3C4CEC6;
+	Tue, 10 Sep 2024 10:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963875;
-	bh=04xP46FHpYqkQPp3CQ7xkEAt+IRDicDVtKv6saRT5Kg=;
+	s=korg; t=1725963224;
+	bh=anJBxvH8YYL6JR+0q3ZUUB5/Gi+9jqDillbKd1e5eI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArlLQDIxRQwAZ9/O1q8k7JSlVZRq1RUUTER1Q4n4f7zMeCYXPwAoKtbVfm0Kn0QjL
-	 n2ZiicdNQryqO/QElvKNE/xhT9zBH6fMTYOF+3+ODJXkWQpO39t+eCZ73Jm+th7gvf
-	 Fm4UMUSy55qB5mTbIAB8lvMu4CToObKHbd/BtSnI=
+	b=EzM6J9ui9KtwJgh9EX85wN6kf8bJKEjk+TgOqfmW+s3aumTzfC0A2GKurFhW/546K
+	 rGCPxT+nQTMTB8EB7A50cG1IL5WJIjgD8p0S4te+oTqD+7jUWsUCfcunfC/mBryQYV
+	 57Ox3hWb9eY4UjLWFdiQAiPK/J9J2J20/X67Q5/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faisal Hassan <quic_faisalh@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 180/214] usb: dwc3: core: update LC timer as per USB Spec V3.2
+	Mohan Kumar <mkumard@nvidia.com>,
+	Ritu Chaudhary <rituc@nvidia.com>,
+	Sameer Pujar <spujar@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 178/192] ASoC: tegra: Fix CBB error during probe()
 Date: Tue, 10 Sep 2024 11:33:22 +0200
-Message-ID: <20240910092606.051415450@linuxfoundation.org>
+Message-ID: <20240910092605.172728365@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faisal Hassan <quic_faisalh@quicinc.com>
+From: Mohan Kumar <mkumard@nvidia.com>
 
-commit 9149c9b0c7e046273141e41eebd8a517416144ac upstream.
+[ Upstream commit 6781b962d97bc52715a8db8cc17278cc3c23ebe8 ]
 
-This fix addresses STAR 9001285599, which only affects DWC_usb3 version
-3.20a. The timer value for PM_LC_TIMER in DWC_usb3 3.20a for the Link
-ECN changes is incorrect. If the PM TIMER ECN is enabled via GUCTL2[19],
-the link compliance test (TD7.21) may fail. If the ECN is not enabled
-(GUCTL2[19] = 0), the controller will use the old timer value (5us),
-which is still acceptable for the link compliance test. Therefore, clear
-GUCTL2[19] to pass the USB link compliance test: TD 7.21.
+When Tegra audio drivers are built as part of the kernel image,
+TIMEOUT_ERR is observed from cbb-fabric. Following is seen on
+Jetson AGX Orin during boot:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240829094502.26502-1-quic_faisalh@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    8.012482] **************************************
+[    8.017423] CPU:0, Error:cbb-fabric, Errmon:2
+[    8.021922]    Error Code            : TIMEOUT_ERR
+[    8.025966]    Overflow              : Multiple TIMEOUT_ERR
+[    8.030644]
+[    8.032175]    Error Code            : TIMEOUT_ERR
+[    8.036217]    MASTER_ID             : CCPLEX
+[    8.039722]    Address               : 0x290a0a8
+[    8.043318]    Cache                 : 0x1 -- Bufferable
+[    8.047630]    Protection            : 0x2 -- Unprivileged, Non-Secure, Data Access
+[    8.054628]    Access_Type           : Write
+
+[    8.106130] WARNING: CPU: 0 PID: 124 at drivers/soc/tegra/cbb/tegra234-cbb.c:604 tegra234_cbb_isr+0x134/0x178
+
+[    8.240602] Call trace:
+[    8.243126]  tegra234_cbb_isr+0x134/0x178
+[    8.247261]  __handle_irq_event_percpu+0x60/0x238
+[    8.252132]  handle_irq_event+0x54/0xb8
+
+These errors happen when MVC device, which is a child of AHUB
+device, tries to access its device registers. This happens as
+part of call tegra210_mvc_reset_vol_settings() in MVC device
+probe().
+
+The root cause of this problem is, the child MVC device gets
+probed before the AHUB clock gets enabled. The AHUB clock is
+enabled in runtime PM resume of parent AHUB device and due to
+the wrong sequence of pm_runtime_enable() in AHUB driver,
+runtime PM resume doesn't happen for AHUB device when MVC makes
+register access.
+
+Fix this by calling pm_runtime_enable() for parent AHUB device
+before of_platform_populate() in AHUB driver. This ensures that
+clock becomes available when MVC makes register access.
+
+Fixes: 16e1bcc2caf4 ("ASoC: tegra: Add Tegra210 based AHUB driver")
+Signed-off-by: Mohan Kumar <mkumard@nvidia.com>
+Signed-off-by: Ritu Chaudhary <rituc@nvidia.com>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://patch.msgid.link/20240823144342.4123814-3-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |   15 +++++++++++++++
- drivers/usb/dwc3/core.h |    2 ++
- 2 files changed, 17 insertions(+)
+ sound/soc/tegra/tegra210_ahub.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1058,6 +1058,21 @@ static int dwc3_core_init(struct dwc3 *d
+diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
+index b38d205b69cc..dfdcb4580cd7 100644
+--- a/sound/soc/tegra/tegra210_ahub.c
++++ b/sound/soc/tegra/tegra210_ahub.c
+@@ -2,7 +2,7 @@
+ //
+ // tegra210_ahub.c - Tegra210 AHUB driver
+ //
+-// Copyright (c) 2020-2022, NVIDIA CORPORATION.  All rights reserved.
++// Copyright (c) 2020-2024, NVIDIA CORPORATION.  All rights reserved.
+ 
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -1401,11 +1401,13 @@ static int tegra_ahub_probe(struct platform_device *pdev)
+ 		return err;
  	}
  
- 	/*
-+	 * STAR 9001285599: This issue affects DWC_usb3 version 3.20a
-+	 * only. If the PM TIMER ECM is enabled through GUCTL2[19], the
-+	 * link compliance test (TD7.21) may fail. If the ECN is not
-+	 * enabled (GUCTL2[19] = 0), the controller will use the old timer
-+	 * value (5us), which is still acceptable for the link compliance
-+	 * test. Therefore, do not enable PM TIMER ECM in 3.20a by
-+	 * setting GUCTL2[19] by default; instead, use GUCTL2[19] = 0.
-+	 */
-+	if (DWC3_VER_IS(DWC3, 320A)) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUCTL2);
-+		reg &= ~DWC3_GUCTL2_LC_TIMER;
-+		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
-+	}
++	pm_runtime_enable(&pdev->dev);
 +
-+	/*
- 	 * When configured in HOST mode, after issuing U3/L2 exit controller
- 	 * fails to send proper CRC checksum in CRC5 feild. Because of this
- 	 * behaviour Transaction Error is generated, resulting in reset and
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -387,6 +387,7 @@
+ 	err = of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->dev);
+-	if (err)
++	if (err) {
++		pm_runtime_disable(&pdev->dev);
+ 		return err;
+-
+-	pm_runtime_enable(&pdev->dev);
++	}
  
- /* Global User Control Register 2 */
- #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
-+#define DWC3_GUCTL2_LC_TIMER			BIT(19)
- 
- /* Global User Control Register 3 */
- #define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
-@@ -1197,6 +1198,7 @@ struct dwc3 {
- #define DWC3_REVISION_290A	0x5533290a
- #define DWC3_REVISION_300A	0x5533300a
- #define DWC3_REVISION_310A	0x5533310a
-+#define DWC3_REVISION_320A	0x5533320a
- #define DWC3_REVISION_330A	0x5533330a
- 
- #define DWC31_REVISION_ANY	0x0
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
