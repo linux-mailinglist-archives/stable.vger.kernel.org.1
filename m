@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-75432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CF1973484
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA53A97354C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9621C24FCB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECC831C237B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F8318C03E;
-	Tue, 10 Sep 2024 10:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0E718EFE6;
+	Tue, 10 Sep 2024 10:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="widdOfb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnGb8Ieh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D1A5674D;
-	Tue, 10 Sep 2024 10:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96141DA4C;
+	Tue, 10 Sep 2024 10:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964715; cv=none; b=TUC19YBq7NUMCTHepTEygyRDnEqLDznu3aUpcLvR8JMm2kxY+BvP8++MvvNOpA6EVrZtSyu4uwn71R0U9RBgts2BJ8BlCsSw+MHJH2jlWr4kZu0OKYBR/hEIy/JERRJWaZH/+SRXz3dCeysSe9SG837pS6f0AMRAYIFPg5ls6v8=
+	t=1725965172; cv=none; b=FZzZZFG9n7Zj1QIRU6Wj4Outf/Z8I6GoWQmDJRLYmgOiOcRrgni925lbA8ZXNe5eM9Kfr5gB7hQ3G93uKPq0hmrI8hyCjroMUTmzwacrfaeI4qUMMNP2R1hCUF8+AwLkec7YkUYbAAjafMtwI6tjQyNW9ReBnuunve4Vc9GaIiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964715; c=relaxed/simple;
-	bh=KNaNsW/j6NDztrnWr9mElq12kT0biRIigUEDce25i24=;
+	s=arc-20240116; t=1725965172; c=relaxed/simple;
+	bh=cZkpI32eDzWCLa6htqS1yM7looDtFwsEJkRkGaOL5LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pcvh3ciluIdUKeTjuBJJbQCYfBjFyLq/eISNOwh2a9uuT8NTaOztxiuBmeW8ucojqZtIF1JnQo/jQefX7Hv0mRSpr6VRGATf3Jtea+UG5XHIkbQSTOFcbLpb723/Kkk0KHBrcU1iy0rUXa2BN3EyVsHoaOSzLn07K7aXArJrOw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=widdOfb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955FEC4CEC3;
-	Tue, 10 Sep 2024 10:38:34 +0000 (UTC)
+	 MIME-Version; b=KsTsCWhGmd22JhrpWv5Pxs3O6HSvg9UyNL7SOjRbox3p8x+zLtlmOEofpUb3+rMKsdqX7+WOysN3QYy4e1fq7MCHXZCws0Rdctcfdi0VrZC1WziD/cHjfBNg6t1h8dybRemjpBpfLZxoFnuXTkKu6HSrFc9N27ITqKzfc2WeyD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnGb8Ieh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299EFC4CEC3;
+	Tue, 10 Sep 2024 10:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964715;
-	bh=KNaNsW/j6NDztrnWr9mElq12kT0biRIigUEDce25i24=;
+	s=korg; t=1725965172;
+	bh=cZkpI32eDzWCLa6htqS1yM7looDtFwsEJkRkGaOL5LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=widdOfb5V3zTDICNZn8peNGno5CjmUfeBftwisAlqjtcO6J3Pke/iqEhwG1Vu1BLw
-	 E97QLkxBkvjg9riRXs0Nrrt3z3g8Qn9+ACuYphsXk0cQcb1r4yY1BnlT8dp3dYRPM5
-	 gXdcpV1qGjPe/O/3yerMqBR2K5N3R3IIO7JrtIrI=
+	b=rnGb8IehRa3kLrY50hYza+6UWHb2qdbAQzmK7G/V+fak1eJ29veYh3vMfrERRoqNa
+	 DCF+fP7JBYQW585qS7w921GQ3pa/mfwtM4IMC2qR0ftLysacwCj7IuaRxqsLWco1kD
+	 JZsHuyv57IXwPeC7zqpGAnTHR0pb+I+wnpIMdKPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 269/269] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
-Date: Tue, 10 Sep 2024 11:34:16 +0200
-Message-ID: <20240910092617.320405012@linuxfoundation.org>
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 162/186] iio: adc: ad7124: fix chip ID mismatch
+Date: Tue, 10 Sep 2024 11:34:17 +0200
+Message-ID: <20240910092601.288124497@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-commit 7453847fb22c7c45334c43cc6a02ea5df5b9961d upstream.
+commit 96f9ab0d5933c1c00142dd052f259fce0bc3ced2 upstream.
 
-Fixes the following trace where hci_acl_create_conn_sync attempts to
-call hci_abort_conn_sync after timeout:
+The ad7124_soft_reset() function has the assumption that the chip will
+assert the "power-on reset" bit in the STATUS register after a software
+reset without any delay. The POR bit =0 is used to check if the chip
+initialization is done.
 
-BUG: KASAN: slab-use-after-free in hci_abort_conn_sync
-(net/bluetooth/hci_sync.c:5439)
-Read of size 2 at addr ffff88800322c032 by task kworker/u3:2/36
+A chip ID mismatch probe error appears intermittently when the probe
+continues too soon and the ID register does not contain the expected
+value.
 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38
-04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
-<TASK>
-dump_stack_lvl (./arch/x86/include/asm/irqflags.h:26
-./arch/x86/include/asm/irqflags.h:67 ./arch/x86/include/asm/irqflags.h:127
-lib/dump_stack.c:107)
-print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
-? preempt_count_sub (kernel/sched/core.c:5889)
-? __virt_addr_valid (./arch/x86/include/asm/preempt.h:103 (discriminator 1)
-./include/linux/rcupdate.h:865 (discriminator 1)
-./include/linux/mmzone.h:2026 (discriminator 1)
-arch/x86/mm/physaddr.c:65 (discriminator 1))
-? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-kasan_report (mm/kasan/report.c:603)
-? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-? __pfx_hci_abort_conn_sync (net/bluetooth/hci_sync.c:5433)
-hci_acl_create_conn_sync (net/bluetooth/hci_sync.c:6681)
+Fix by adding a 200us delay after the software reset command is issued.
 
-Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-1-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ad7124.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6796,15 +6796,10 @@ static int hci_acl_create_conn_sync(stru
- 	else
- 		cp.role_switch = 0x00;
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -500,6 +500,7 @@ static int ad7124_soft_reset(struct ad71
+ 	if (ret < 0)
+ 		return ret;
  
--	err = __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
--				       sizeof(cp), &cp,
--				       HCI_EV_CONN_COMPLETE,
--				       HCI_ACL_CONN_TIMEOUT, NULL);
--
--	if (err == -ETIMEDOUT)
--		hci_abort_conn_sync(hdev, conn, HCI_ERROR_LOCAL_HOST_TERM);
--
--	return err;
-+	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
-+					sizeof(cp), &cp,
-+					HCI_EV_CONN_COMPLETE,
-+					conn->conn_timeout, NULL);
- }
- 
- int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
++	fsleep(200);
+ 	timeout = 100;
+ 	do {
+ 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
 
 
 
