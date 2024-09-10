@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F01973104
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71506973059
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B722887B1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:06:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31917282D23
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C541E18B491;
-	Tue, 10 Sep 2024 10:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D9B18C003;
+	Tue, 10 Sep 2024 09:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyM8yqa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXOYQ1IW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A5D14D431;
-	Tue, 10 Sep 2024 10:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E28188A1E;
+	Tue, 10 Sep 2024 09:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962654; cv=none; b=bxTRcd2MnEZKBKT9hDo3UTeUGtlovTJrGPf2+DXDdAEpo5nGQakwdm5nI5FmhaY3aQPPd0gM5jSvGAY65pUeMVwUIn/h499BviuECHu1LwFHhuzQ8j4xr8cSfqN6FpnZzeeVvk5CP3zdrMzEmYDXfYrimKVVgSlaXUxHUteTGOU=
+	t=1725962360; cv=none; b=CNBfIOqschBUq9mKAR4C19smaKm0vbe6eqDoxTCqBmS8F4ChNe7jMCHy4VyWAHGHb8XB8v9/XU2vvXdgj32LJehvxn+U0Nb6mWtlVdx6xRusIRljbttaQoLYWYBpxHN/0JnQHSxARcR47Xz9LNT8tIdMAIQmnAm9rYCwUTF6n7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962654; c=relaxed/simple;
-	bh=PIpqTZ+0z/P7K38JGRkj8fQ+7Yxx9K718+MYgm2sgpQ=;
+	s=arc-20240116; t=1725962360; c=relaxed/simple;
+	bh=yv31dHj3CY/5dLt+GxiBCP15vhsFOE+bVsJB3s7DgHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SN3CUjr6d0/UMSPm1LPn24Ph4j4NypHqyo8zRsZLt2MvcP0BZ51N/t1rVaKtrO8FedtGBDHGetvXuI179Bc9mApVP3swBrY7jFqpiz2RLEy3hv0pOZE/3z4a5swsWx50RA0wXp4WA+hOyhWtwxmuxadPNHtMju7BnRozKSabirI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyM8yqa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AFCC4CEC3;
-	Tue, 10 Sep 2024 10:04:13 +0000 (UTC)
+	 MIME-Version; b=XSlildP9UaYGwEUqKOkHxyfn610C2RfZQGP6RPxfRylCg/XwY4c9GI94580ds79kpz1Fg5XjsKkBM0q5VyWl/A7Vz6z3ZwkHPJGr3rHcWJVbv4M4gxzhPWFZdHXaB3bE2qyifw6jUPvJR0KVKI2rIGKJbjAvilkI2L31c9sDhwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXOYQ1IW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06713C4CEC3;
+	Tue, 10 Sep 2024 09:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962654;
-	bh=PIpqTZ+0z/P7K38JGRkj8fQ+7Yxx9K718+MYgm2sgpQ=;
+	s=korg; t=1725962360;
+	bh=yv31dHj3CY/5dLt+GxiBCP15vhsFOE+bVsJB3s7DgHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyM8yqa05YghP8q9Q8tAiP9OJFehs8CgGSfnE9qdCUqVdDBfXI9CYINV4i2ndNsy5
-	 5IdWjBoHsDc/ke9Gu0jx8yyPPN09B6NHBxyXWBb5fSNi6D32iD0OSV6l/Ai/6rMgWH
-	 CvOZ6AoAQebpqkLM6hgJtdhgrDwFyZV5HbEk7hkM=
+	b=OXOYQ1IWp3S5qCdj2kVUSY+OUuSKckz1PLeR/emUxbMKuki/cCJWPbRouy63dA2B8
+	 8l2ul+YA3WZFSUZwwjUPTHzCJzRWt3nMin7zLaX/zkUHIj1ebg+bkRMv6FacWxYF/3
+	 di18A9o6X6Zv7C/usRHCX/t5hxAeJdqOHwvtwqPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Foster Snowhill <forst@pen.gy>,
-	Georgi Valkov <gvalkov@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/121] usbnet: ipheth: race between ipheth_close and error handling
-Date: Tue, 10 Sep 2024 11:32:44 +0200
-Message-ID: <20240910092550.096747448@linuxfoundation.org>
+Subject: [PATCH 6.10 368/375] nvmet: Identify-Active Namespace ID List command should reject invalid nsid
+Date: Tue, 10 Sep 2024 11:32:45 +0200
+Message-ID: <20240910092634.985048567@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
+[ Upstream commit 899d2e5a4e3d36689e8938e152f4b69a4bcc6b4d ]
 
-ipheth_sndbulk_callback() can submit carrier_work
-as a part of its error handling. That means that
-the driver must make sure that the work is cancelled
-after it has made sure that no more URB can terminate
-with an error condition.
+nsid values of 0xFFFFFFFE and 0XFFFFFFFF should be rejected with
+a status code of "Invalid Namespace or Format".
+See NVMe Base Specification, Active Namespace ID list (CNS 02h).
 
-Hence the order of actions in ipheth_close() needs
-to be inverted.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Tested-by: Georgi Valkov <gvalkov@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ipheth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/admin-cmd.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 9887eb282beb..05576f66f73d 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -353,8 +353,8 @@ static int ipheth_close(struct net_device *net)
- {
- 	struct ipheth_device *dev = netdev_priv(net);
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index f7e1156ac7ec..85006b2df8ae 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -587,6 +587,16 @@ static void nvmet_execute_identify_nslist(struct nvmet_req *req)
+ 	u16 status = 0;
+ 	int i = 0;
  
--	cancel_delayed_work_sync(&dev->carrier_work);
- 	netif_stop_queue(net);
-+	cancel_delayed_work_sync(&dev->carrier_work);
- 	return 0;
- }
- 
++	/*
++	 * NSID values 0xFFFFFFFE and NVME_NSID_ALL are invalid
++	 * See NVMe Base Specification, Active Namespace ID list (CNS 02h).
++	 */
++	if (min_nsid == 0xFFFFFFFE || min_nsid == NVME_NSID_ALL) {
++		req->error_loc = offsetof(struct nvme_identify, nsid);
++		status = NVME_SC_INVALID_NS | NVME_STATUS_DNR;
++		goto out;
++	}
++
+ 	list = kzalloc(buf_size, GFP_KERNEL);
+ 	if (!list) {
+ 		status = NVME_SC_INTERNAL;
 -- 
 2.43.0
 
