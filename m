@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-75407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B88197346A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E5F97353C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC5128E148
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5316D289C68
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECAA1922CA;
-	Tue, 10 Sep 2024 10:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD78318C344;
+	Tue, 10 Sep 2024 10:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ae3ADJAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTYbkhM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15D214D280;
-	Tue, 10 Sep 2024 10:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDBE1552FD;
+	Tue, 10 Sep 2024 10:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964642; cv=none; b=eCnROWuKgKTR/UGnaf8kJayyRiAF2AkbPeLnBJ4AsysegRRCdcSAXpH4X6iv4lPZnx9Q6A8JC3iKBgy1V5kMec3Rlf/JPW018a3/7Njxz974TyS8tSt+9yyq8IPLAGckVnHMliGLo0WSogPoLr2xMbFaozwvPTL0Yv2sr93wAaQ=
+	t=1725965122; cv=none; b=M0DC67ARVe7LN8gDtFUziNUP0Xib85f+L+EyAmfVcSAXz8LkZDVFDrfEdnY4rT/f0o2lRb/9ElUGXr8xvtBySj/B1oY8PVIk3gy29olgaPLcer4ziIXai60ACD6J64l6SdyG+GUvGiYcv2K6DkFdgyD20pCgWSvGSl/yv/Z45go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964642; c=relaxed/simple;
-	bh=+NexW2TSgi+Yi6qKjNSebbjVF08kb5HHLJeYxBLj2Os=;
+	s=arc-20240116; t=1725965122; c=relaxed/simple;
+	bh=xLZRTOiHvyynuxW+tdiSLwf0Sbv2BCgiVK5KaU9lJic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Evn0cGZu1Ps77HUmJYMBRe2xbGqOrhL5HlVo8JoZoYGcRwQTiHO2xamLww9Kq1KVxTZiLeELd+Et4/oRz87wn2qwT+7oDFHOl4tyky2QZzPtC1cQ5ZBEYkyB5DSwPXSW9taCjzZxlHQPPPht79MwDrU3hxn0Na8A3QPasieuWBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ae3ADJAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B0CC4CEC3;
-	Tue, 10 Sep 2024 10:37:21 +0000 (UTC)
+	 MIME-Version; b=XGy5htV8e4y3QTvXALFqtAMamNvKjZQq4rU9lBQSMLBz6Yg12iXMsTQiHBjqwOxs3R0b8GQxvCXmj5BkwmkYZ1fhE+ce/Om+47cD6R+qXjOWG6A/BCHNo5+vGKTtarbaJjqAcjJ4bB6a9a3YYJq+A2Rq3EKAsN+6CPhsjGhi0A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTYbkhM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236A7C4CEC3;
+	Tue, 10 Sep 2024 10:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964641;
-	bh=+NexW2TSgi+Yi6qKjNSebbjVF08kb5HHLJeYxBLj2Os=;
+	s=korg; t=1725965122;
+	bh=xLZRTOiHvyynuxW+tdiSLwf0Sbv2BCgiVK5KaU9lJic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ae3ADJAKl1wsX4Eah548tXXLPfkgYSxgW8ufWB+FrDEPFXdvh1Qm87vj/UvrwFiPZ
-	 eswPlBoHorN6gYYKYvOig5EzMpvBUK7hmBJmC8G8jjIZSqi7HpWpznZcZG76t7kvBt
-	 zmNeZt1Zt+OKRcGSHIpDQzpIZtrweOaarIptJi2Y=
+	b=FTYbkhM/Cw8Pg/hxEmiwVWTw7eyL1VikZ5pNDEx+KythNjj/s97XdUxq0Cwhr/0mp
+	 P2nHhlrZWUpJarsGxlrThNWTmORNB7Ngzu/57j9gqInjXS8MUU4LOSxJHkBmNRNMzw
+	 zRjujgfZKtUPUyMu6j3z5a2uKGsRPo2pi/dy6z30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Imre Deak <imre.deak@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/269] ASoC: sunxi: sun4i-i2s: fix LRCLK polarity in i2s mode
+Subject: [PATCH 5.10 144/186] PCI: Add missing bridge lock to pci_bus_lock()
 Date: Tue, 10 Sep 2024 11:33:59 +0200
-Message-ID: <20240910092616.789885845@linuxfoundation.org>
+Message-ID: <20240910092600.535369366@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,274 +67,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matteo Martelli <matteomartelli3@gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 3e83957e8dd7433a69116780d9bad217b00913ea ]
+[ Upstream commit a4e772898f8bf2e7e1cf661a12c60a5612c4afab ]
 
-This fixes the LRCLK polarity for sun8i-h3 and sun50i-h6 in i2s mode
-which was wrongly inverted.
+One of the true positives that the cfg_access_lock lockdep effort
+identified is this sequence:
 
-The LRCLK was being set in reversed logic compared to the DAI format:
-inverted LRCLK for SND_SOC_DAIFMT_IB_NF and SND_SOC_DAIFMT_NB_NF; normal
-LRCLK for SND_SOC_DAIFMT_IB_IF and SND_SOC_DAIFMT_NB_IF. Such reversed
-logic applies properly for DSP_A, DSP_B, LEFT_J and RIGHT_J modes but
-not for I2S mode, for which the LRCLK signal results reversed to what
-expected on the bus. The issue is due to a misinterpretation of the
-LRCLK polarity bit of the H3 and H6 i2s controllers. Such bit in this
-case does not mean "0 => normal" or "1 => inverted" according to the
-expected bus operation, but it means "0 => frame starts on low edge" and
-"1 => frame starts on high edge" (from the User Manuals).
+  WARNING: CPU: 14 PID: 1 at drivers/pci/pci.c:4886 pci_bridge_secondary_bus_reset+0x5d/0x70
+  RIP: 0010:pci_bridge_secondary_bus_reset+0x5d/0x70
+  Call Trace:
+   <TASK>
+   ? __warn+0x8c/0x190
+   ? pci_bridge_secondary_bus_reset+0x5d/0x70
+   ? report_bug+0x1f8/0x200
+   ? handle_bug+0x3c/0x70
+   ? exc_invalid_op+0x18/0x70
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? pci_bridge_secondary_bus_reset+0x5d/0x70
+   pci_reset_bus+0x1d8/0x270
+   vmd_probe+0x778/0xa10
+   pci_device_probe+0x95/0x120
 
-This commit fixes the LRCLK polarity by setting the LRCLK polarity bit
-according to the selected bus mode and renames the LRCLK polarity bit
-definition to avoid further confusion.
+Where pci_reset_bus() users are triggering unlocked secondary bus resets.
+Ironically pci_bus_reset(), several calls down from pci_reset_bus(), uses
+pci_bus_lock() before issuing the reset which locks everything *but* the
+bridge itself.
 
-Fixes: dd657eae8164 ("ASoC: sun4i-i2s: Fix the LRCK polarity")
-Fixes: 73adf87b7a58 ("ASoC: sun4i-i2s: Add support for H6 I2S")
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-Link: https://patch.msgid.link/20240801-asoc-fix-sun4i-i2s-v2-1-a8e4e9daa363@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For the same motivation as adding:
+
+  bridge = pci_upstream_bridge(dev);
+  if (bridge)
+    pci_dev_lock(bridge);
+
+to pci_reset_function() for the "bus" and "cxl_bus" reset cases, add
+pci_dev_lock() for @bus->self to pci_bus_lock().
+
+Link: https://lore.kernel.org/r/171711747501.1628941.15217746952476635316.stgit@dwillia2-xfh.jf.intel.com
+Reported-by: Imre Deak <imre.deak@intel.com>
+Closes: http://lore.kernel.org/r/6657833b3b5ae_14984b29437@dwillia2-xfh.jf.intel.com.notmuch
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[bhelgaas: squash in recursive locking deadlock fix from Keith Busch:
+https://lore.kernel.org/r/20240711193650.701834-1-kbusch@meta.com]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Kalle Valo <kvalo@kernel.org>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-i2s.c | 143 ++++++++++++++++++------------------
- 1 file changed, 73 insertions(+), 70 deletions(-)
+ drivers/pci/pci.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
-index 5124b6c9ceb4..d1cb49d54f00 100644
---- a/sound/soc/sunxi/sun4i-i2s.c
-+++ b/sound/soc/sunxi/sun4i-i2s.c
-@@ -100,8 +100,8 @@
- #define SUN8I_I2S_CTRL_MODE_PCM			(0 << 4)
- 
- #define SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK	BIT(19)
--#define SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED		(1 << 19)
--#define SUN8I_I2S_FMT0_LRCLK_POLARITY_NORMAL		(0 << 19)
-+#define SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH	(1 << 19)
-+#define SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW		(0 << 19)
- #define SUN8I_I2S_FMT0_LRCK_PERIOD_MASK		GENMASK(17, 8)
- #define SUN8I_I2S_FMT0_LRCK_PERIOD(period)	((period - 1) << 8)
- #define SUN8I_I2S_FMT0_BCLK_POLARITY_MASK	BIT(7)
-@@ -727,65 +727,37 @@ static int sun4i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 				 unsigned int fmt)
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 09d5fa637b98..800df0f1417d 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5260,10 +5260,12 @@ static void pci_bus_lock(struct pci_bus *bus)
  {
--	u32 mode, val;
-+	u32 mode, lrclk_pol, bclk_pol, val;
- 	u8 offset;
+ 	struct pci_dev *dev;
  
--	/*
--	 * DAI clock polarity
--	 *
--	 * The setup for LRCK contradicts the datasheet, but under a
--	 * scope it's clear that the LRCK polarity is reversed
--	 * compared to the expected polarity on the bus.
--	 */
--	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
--	case SND_SOC_DAIFMT_IB_IF:
--		/* Invert both clocks */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_IB_NF:
--		/* Invert bit clock */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED |
--		      SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_NB_IF:
--		/* Invert frame clock */
--		val = 0;
--		break;
--	case SND_SOC_DAIFMT_NB_NF:
--		val = SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
--			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
--			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
--			   val);
--
- 	/* DAI Mode */
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_DSP_A:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 1;
- 		break;
++	pci_dev_lock(bus->self);
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		pci_dev_lock(dev);
+ 		if (dev->subordinate)
+ 			pci_bus_lock(dev->subordinate);
++		else
++			pci_dev_lock(dev);
+ 	}
+ }
  
- 	case SND_SOC_DAIFMT_DSP_B:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 0;
- 		break;
+@@ -5275,8 +5277,10 @@ static void pci_bus_unlock(struct pci_bus *bus)
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+ 		if (dev->subordinate)
+ 			pci_bus_unlock(dev->subordinate);
+-		pci_dev_unlock(dev);
++		else
++			pci_dev_unlock(dev);
+ 	}
++	pci_dev_unlock(bus->self);
+ }
  
- 	case SND_SOC_DAIFMT_I2S:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_LEFT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_RIGHT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_RIGHT;
- 		offset = 0;
- 		break;
-@@ -803,6 +775,35 @@ static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 			   SUN8I_I2S_TX_CHAN_OFFSET_MASK,
- 			   SUN8I_I2S_TX_CHAN_OFFSET(offset));
- 
-+	/* DAI clock polarity */
-+	bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_NORMAL;
-+
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_IB_IF:
-+		/* Invert both clocks */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_IB_NF:
-+		/* Invert bit clock */
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_NB_IF:
-+		/* Invert frame clock */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_NB_NF:
-+		/* No inversion */
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
-+			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
-+			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
-+			   lrclk_pol | bclk_pol);
-+
- 	/* DAI clock master masks */
- 	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
- 	case SND_SOC_DAIFMT_BP_FP:
-@@ -834,65 +835,37 @@ static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- static int sun50i_h6_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 				     unsigned int fmt)
+ /* Return 1 on successful lock, 0 on contention */
+@@ -5284,15 +5288,15 @@ static int pci_bus_trylock(struct pci_bus *bus)
  {
--	u32 mode, val;
-+	u32 mode, lrclk_pol, bclk_pol, val;
- 	u8 offset;
+ 	struct pci_dev *dev;
  
--	/*
--	 * DAI clock polarity
--	 *
--	 * The setup for LRCK contradicts the datasheet, but under a
--	 * scope it's clear that the LRCK polarity is reversed
--	 * compared to the expected polarity on the bus.
--	 */
--	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
--	case SND_SOC_DAIFMT_IB_IF:
--		/* Invert both clocks */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_IB_NF:
--		/* Invert bit clock */
--		val = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED |
--		      SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	case SND_SOC_DAIFMT_NB_IF:
--		/* Invert frame clock */
--		val = 0;
--		break;
--	case SND_SOC_DAIFMT_NB_NF:
--		val = SUN8I_I2S_FMT0_LRCLK_POLARITY_INVERTED;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
--			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
--			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
--			   val);
--
- 	/* DAI Mode */
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_DSP_A:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_DSP_B:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_PCM;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_I2S:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_LOW;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 1;
- 		break;
- 
- 	case SND_SOC_DAIFMT_LEFT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_LEFT;
- 		offset = 0;
- 		break;
- 
- 	case SND_SOC_DAIFMT_RIGHT_J:
-+		lrclk_pol = SUN8I_I2S_FMT0_LRCLK_POLARITY_START_HIGH;
- 		mode = SUN8I_I2S_CTRL_MODE_RIGHT;
- 		offset = 0;
- 		break;
-@@ -910,6 +883,36 @@ static int sun50i_h6_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
- 			   SUN50I_H6_I2S_TX_CHAN_SEL_OFFSET_MASK,
- 			   SUN50I_H6_I2S_TX_CHAN_SEL_OFFSET(offset));
- 
-+	/* DAI clock polarity */
-+	bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_NORMAL;
++	if (!pci_dev_trylock(bus->self))
++		return 0;
 +
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_IB_IF:
-+		/* Invert both clocks */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_IB_NF:
-+		/* Invert bit clock */
-+		bclk_pol = SUN8I_I2S_FMT0_BCLK_POLARITY_INVERTED;
-+		break;
-+	case SND_SOC_DAIFMT_NB_IF:
-+		/* Invert frame clock */
-+		lrclk_pol ^= SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_NB_NF:
-+		/* No inversion */
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
-+			   SUN8I_I2S_FMT0_LRCLK_POLARITY_MASK |
-+			   SUN8I_I2S_FMT0_BCLK_POLARITY_MASK,
-+			   lrclk_pol | bclk_pol);
-+
-+
- 	/* DAI clock master masks */
- 	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
- 	case SND_SOC_DAIFMT_BP_FP:
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		if (!pci_dev_trylock(dev))
+-			goto unlock;
+ 		if (dev->subordinate) {
+-			if (!pci_bus_trylock(dev->subordinate)) {
+-				pci_dev_unlock(dev);
++			if (!pci_bus_trylock(dev->subordinate))
+ 				goto unlock;
+-			}
+-		}
++		} else if (!pci_dev_trylock(dev))
++			goto unlock;
+ 	}
+ 	return 1;
+ 
+@@ -5300,8 +5304,10 @@ static int pci_bus_trylock(struct pci_bus *bus)
+ 	list_for_each_entry_continue_reverse(dev, &bus->devices, bus_list) {
+ 		if (dev->subordinate)
+ 			pci_bus_unlock(dev->subordinate);
+-		pci_dev_unlock(dev);
++		else
++			pci_dev_unlock(dev);
+ 	}
++	pci_dev_unlock(bus->self);
+ 	return 0;
+ }
+ 
+@@ -5333,9 +5339,10 @@ static void pci_slot_lock(struct pci_slot *slot)
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		pci_dev_lock(dev);
+ 		if (dev->subordinate)
+ 			pci_bus_lock(dev->subordinate);
++		else
++			pci_dev_lock(dev);
+ 	}
+ }
+ 
+@@ -5361,14 +5368,13 @@ static int pci_slot_trylock(struct pci_slot *slot)
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		if (!pci_dev_trylock(dev))
+-			goto unlock;
+ 		if (dev->subordinate) {
+ 			if (!pci_bus_trylock(dev->subordinate)) {
+ 				pci_dev_unlock(dev);
+ 				goto unlock;
+ 			}
+-		}
++		} else if (!pci_dev_trylock(dev))
++			goto unlock;
+ 	}
+ 	return 1;
+ 
+@@ -5379,7 +5385,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
+ 			continue;
+ 		if (dev->subordinate)
+ 			pci_bus_unlock(dev->subordinate);
+-		pci_dev_unlock(dev);
++		else
++			pci_dev_unlock(dev);
+ 	}
+ 	return 0;
+ }
 -- 
 2.43.0
 
