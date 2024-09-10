@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A4A973095
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AD1973009
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 268EC1C2468E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9331C21CE6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F5618C357;
-	Tue, 10 Sep 2024 10:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620DE188CDC;
+	Tue, 10 Sep 2024 09:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zh0MLzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYdyWEi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420D318B462;
-	Tue, 10 Sep 2024 10:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191CF188CB3;
+	Tue, 10 Sep 2024 09:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962499; cv=none; b=HgfIxLcHpkxbN/B2784d9/dg0DhFwUbZHA3m/h03YTmmc8DIzNcVvchIh/fxEnmzD9ZEEXsRdq7iX+iFQ3MXO3EEXpIDnsMA6WzyRGBA8AxSPmkjKItVRD3GeV1neogEx3twINxDE0joGV/RpxZ1ynCuiVYmB86L2E6AvIvyXBI=
+	t=1725962211; cv=none; b=GmpkYOTnVJqENu/Z2VDZExP6DD3iAx76VPY9YbeWuHplcotKY2xkfLPVEP7d3qiskajNtywhmKVGx7SDEFh1/Sd9qSaUVy5W4KU8HU/mbjPKZVSGM8woGwX2BM0wuTx0z/SA6OnrEj/kkaTH6nqAGviLfG8HdqxxkMffpi8pnrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962499; c=relaxed/simple;
-	bh=ayfyuYUBpHDiNKwsWs4jkgDfbnfzz8jV5zeF8RZ/aY8=;
+	s=arc-20240116; t=1725962211; c=relaxed/simple;
+	bh=LtRQAI9if327r9N5iX+o6WkMUh6KGWfsiiy39xB0ZUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zz7o/g8TZDCwWfM0BcOiWlp1Hms4QM8ZX0UnvP6CJTkP2uxCDFZmlNepKrDGCHy0/G3kPXCLsGTx2FrAip4SAUzbrS5ctCtKgy+b7tr4BR9z/ExQcVe+B8SWJKNfLeI3/yyaMtW3iWD15wd5aQ2pjWz2oYDIuwOVyHPERy9Rse0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zh0MLzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4D5C4CEC3;
-	Tue, 10 Sep 2024 10:01:38 +0000 (UTC)
+	 MIME-Version; b=Gki8QxWIju/GOX8L646etj+VuiaBPVJimJlIlmhj//ASvqnyoNYFDP3VxO26u7OsBlsJ10oC8mYwRQ6Aykmqy7Q8LvYOQwmIntnmcppc8LSxTulEOj/rxo5Ya7xmmSbPmZ7EZJL7NwfDn0kLylMJ0+2FdBRR/7rsDKRmzdZJUyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYdyWEi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A40C4CEC6;
+	Tue, 10 Sep 2024 09:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962499;
-	bh=ayfyuYUBpHDiNKwsWs4jkgDfbnfzz8jV5zeF8RZ/aY8=;
+	s=korg; t=1725962210;
+	bh=LtRQAI9if327r9N5iX+o6WkMUh6KGWfsiiy39xB0ZUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Zh0MLzRsRGIG0dXzqv7nWsehIH1jaUHAHHLbNkCapGKyax8cp833moE80r/rcweB
-	 tf6sbTh9MW1/ILiohB6WFLySV17lN4IAN+IBcg6q9Sx45a4dNyjhKTliS7nFFWHT0C
-	 Sri1dFEIGqB7vd/cougBwS5CZl+ohcLU8dfWHJUk=
+	b=tYdyWEi9WMU67dc2Bp2C6IxTLkVsJAPwpv7Hp6vqHwcbp3y5IpPIwCvpxGRIQuezB
+	 tKyL8XzKA7XqBCReQ6G4lmgjBJcJNXu7pC8ZZjHyotNIp8zUZ9XIaYTDthX8UXpByH
+	 Eslg9hrFfwuslgjE10FXsAlntebrHx/3nqyClrOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Yoray Zack <yorayz@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/121] can: bcm: Remove proc entry when dev is unregistered.
+Subject: [PATCH 6.10 332/375] net/mlx5e: SHAMPO, Use KSMs instead of KLMs
 Date: Tue, 10 Sep 2024 11:32:09 +0200
-Message-ID: <20240910092548.363037976@linuxfoundation.org>
+Message-ID: <20240910092633.735688214@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,335 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Yoray Zack <yorayz@nvidia.com>
 
-[ Upstream commit 76fe372ccb81b0c89b6cd2fec26e2f38c958be85 ]
+[ Upstream commit 758191c9ea7bcc45dd99398a538ae4ab27c4029e ]
 
-syzkaller reported a warning in bcm_connect() below. [0]
+KSM Mkey is KLM Mkey with a fixed buffer size. Due to this fact,
+it is a faster mechanism than KLM.
 
-The repro calls connect() to vxcan1, removes vxcan1, and calls
-connect() with ifindex == 0.
+SHAMPO feature used KLMs Mkeys for memory mappings of its headers buffer.
+As it used KLMs with the same buffer size for each entry,
+we can use KSMs instead.
 
-Calling connect() for a BCM socket allocates a proc entry.
-Then, bcm_sk(sk)->bound is set to 1 to prevent further connect().
+This commit changes the Mkeys that map the SHAMPO headers buffer
+from KLMs to KSMs.
 
-However, removing the bound device resets bcm_sk(sk)->bound to 0
-in bcm_notify().
-
-The 2nd connect() tries to allocate a proc entry with the same
-name and sets NULL to bcm_sk(sk)->bcm_proc_read, leaking the
-original proc entry.
-
-Since the proc entry is available only for connect()ed sockets,
-let's clean up the entry when the bound netdev is unregistered.
-
-[0]:
-proc_dir_entry 'can-bcm/2456' already registered
-WARNING: CPU: 1 PID: 394 at fs/proc/generic.c:376 proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Modules linked in:
-CPU: 1 PID: 394 Comm: syz-executor403 Not tainted 6.10.0-rc7-g852e42cc2dd4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Code: 00 00 00 00 00 48 85 ed 0f 85 97 02 00 00 4d 85 f6 0f 85 9f 02 00 00 48 c7 c7 9b cb cf 87 48 89 de 4c 89 fa e8 1c 6f eb fe 90 <0f> 0b 90 90 48 c7 c7 98 37 99 89 e8 cb 7e 22 05 bb 00 00 00 10 48
-RSP: 0018:ffa0000000cd7c30 EFLAGS: 00010246
-RAX: 9e129be1950f0200 RBX: ff1100011b51582c RCX: ff1100011857cd80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: 0000000000000000 R08: ffd400000000000f R09: ff1100013e78cac0
-R10: ffac800000cd7980 R11: ff1100013e12b1f0 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ff1100011a99a2ec
-FS:  00007fbd7086f740(0000) GS:ff1100013fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200071c0 CR3: 0000000118556004 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- proc_create_net_single+0x144/0x210 fs/proc/proc_net.c:220
- bcm_connect+0x472/0x840 net/can/bcm.c:1673
- __sys_connect_file net/socket.c:2049 [inline]
- __sys_connect+0x5d2/0x690 net/socket.c:2066
- __do_sys_connect net/socket.c:2076 [inline]
- __se_sys_connect net/socket.c:2073 [inline]
- __x64_sys_connect+0x8f/0x100 net/socket.c:2073
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fbd708b0e5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff8cd33f08 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fbd708b0e5d
-RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000040 R09: 0000000000000040
-R10: 0000000000000040 R11: 0000000000000246 R12: 00007fff8cd34098
-R13: 0000000000401280 R14: 0000000000406de8 R15: 00007fbd70ab9000
- </TASK>
-remove_proc_entry: removing non-empty directory 'net/can-bcm', leaking at least '2456'
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240722192842.37421-1-kuniyu@amazon.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Yoray Zack <yorayz@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240603212219.1037656-13-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: f232de7cdb4b ("net/mlx5e: SHAMPO, Fix page leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  | 20 +-----
+ .../ethernet/mellanox/mlx5/core/en/params.c   | 12 ++--
+ .../net/ethernet/mellanox/mlx5/core/en/txrx.h | 19 ++++++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c | 21 +++---
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 65 +++++++++----------
+ include/linux/mlx5/device.h                   |  1 +
+ 6 files changed, 71 insertions(+), 67 deletions(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 5cb4b6129263..cc7fb30eafc0 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1425,6 +1425,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+index e85fb71bf0b4..3cebc3a435db 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -80,6 +80,7 @@ struct page_pool;
+ 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
  
- 		/* remove device reference, if this is our bound device */
- 		if (bo->bound && bo->ifindex == dev->ifindex) {
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
-+				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-+#endif
- 			bo->bound   = 0;
- 			bo->ifindex = 0;
- 			notify_enodev = 1;
+ #define MLX5E_RX_MAX_HEAD (256)
++#define MLX5E_SHAMPO_LOG_HEADER_ENTRY_SIZE (8)
+ #define MLX5E_SHAMPO_LOG_MAX_HEADER_ENTRY_SIZE (9)
+ #define MLX5E_SHAMPO_WQ_HEADER_PER_PAGE (PAGE_SIZE >> MLX5E_SHAMPO_LOG_MAX_HEADER_ENTRY_SIZE)
+ #define MLX5E_SHAMPO_WQ_BASE_HEAD_ENTRY_SIZE (64)
+@@ -146,25 +147,6 @@ struct page_pool;
+ #define MLX5E_TX_XSK_POLL_BUDGET       64
+ #define MLX5E_SQ_RECOVER_MIN_INTERVAL  500 /* msecs */
+ 
+-#define MLX5E_KLM_UMR_WQE_SZ(sgl_len)\
+-	(sizeof(struct mlx5e_umr_wqe) +\
+-	(sizeof(struct mlx5_klm) * (sgl_len)))
+-
+-#define MLX5E_KLM_UMR_WQEBBS(klm_entries) \
+-	(DIV_ROUND_UP(MLX5E_KLM_UMR_WQE_SZ(klm_entries), MLX5_SEND_WQE_BB))
+-
+-#define MLX5E_KLM_UMR_DS_CNT(klm_entries)\
+-	(DIV_ROUND_UP(MLX5E_KLM_UMR_WQE_SZ(klm_entries), MLX5_SEND_WQE_DS))
+-
+-#define MLX5E_KLM_MAX_ENTRIES_PER_WQE(wqe_size)\
+-	(((wqe_size) - sizeof(struct mlx5e_umr_wqe)) / sizeof(struct mlx5_klm))
+-
+-#define MLX5E_KLM_ENTRIES_PER_WQE(wqe_size)\
+-	ALIGN_DOWN(MLX5E_KLM_MAX_ENTRIES_PER_WQE(wqe_size), MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT)
+-
+-#define MLX5E_MAX_KLM_PER_WQE(mdev) \
+-	MLX5E_KLM_ENTRIES_PER_WQE(MLX5_SEND_WQE_BB * mlx5e_get_max_sq_aligned_wqebbs(mdev))
+-
+ #define mlx5e_state_dereference(priv, p) \
+ 	rcu_dereference_protected((p), lockdep_is_held(&(priv)->state_lock))
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index ec819dfc98be..6c9ccccca81e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -1071,18 +1071,18 @@ static u32 mlx5e_shampo_icosq_sz(struct mlx5_core_dev *mdev,
+ 				 struct mlx5e_params *params,
+ 				 struct mlx5e_rq_param *rq_param)
+ {
+-	int max_num_of_umr_per_wqe, max_hd_per_wqe, max_klm_per_umr, rest;
++	int max_num_of_umr_per_wqe, max_hd_per_wqe, max_ksm_per_umr, rest;
+ 	void *wqc = MLX5_ADDR_OF(rqc, rq_param->rqc, wq);
+ 	int wq_size = BIT(MLX5_GET(wq, wqc, log_wq_sz));
+ 	u32 wqebbs;
+ 
+-	max_klm_per_umr = MLX5E_MAX_KLM_PER_WQE(mdev);
++	max_ksm_per_umr = MLX5E_MAX_KSM_PER_WQE(mdev);
+ 	max_hd_per_wqe = mlx5e_shampo_hd_per_wqe(mdev, params, rq_param);
+-	max_num_of_umr_per_wqe = max_hd_per_wqe / max_klm_per_umr;
+-	rest = max_hd_per_wqe % max_klm_per_umr;
+-	wqebbs = MLX5E_KLM_UMR_WQEBBS(max_klm_per_umr) * max_num_of_umr_per_wqe;
++	max_num_of_umr_per_wqe = max_hd_per_wqe / max_ksm_per_umr;
++	rest = max_hd_per_wqe % max_ksm_per_umr;
++	wqebbs = MLX5E_KSM_UMR_WQEBBS(max_ksm_per_umr) * max_num_of_umr_per_wqe;
+ 	if (rest)
+-		wqebbs += MLX5E_KLM_UMR_WQEBBS(rest);
++		wqebbs += MLX5E_KSM_UMR_WQEBBS(rest);
+ 	wqebbs *= wq_size;
+ 	return wqebbs;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+index 879d698b6119..d1f0f868d494 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+@@ -34,6 +34,25 @@
+ 
+ #define MLX5E_RX_ERR_CQE(cqe) (get_cqe_opcode(cqe) != MLX5_CQE_RESP_SEND)
+ 
++#define MLX5E_KSM_UMR_WQE_SZ(sgl_len)\
++	(sizeof(struct mlx5e_umr_wqe) +\
++	(sizeof(struct mlx5_ksm) * (sgl_len)))
++
++#define MLX5E_KSM_UMR_WQEBBS(ksm_entries) \
++	(DIV_ROUND_UP(MLX5E_KSM_UMR_WQE_SZ(ksm_entries), MLX5_SEND_WQE_BB))
++
++#define MLX5E_KSM_UMR_DS_CNT(ksm_entries)\
++	(DIV_ROUND_UP(MLX5E_KSM_UMR_WQE_SZ(ksm_entries), MLX5_SEND_WQE_DS))
++
++#define MLX5E_KSM_MAX_ENTRIES_PER_WQE(wqe_size)\
++	(((wqe_size) - sizeof(struct mlx5e_umr_wqe)) / sizeof(struct mlx5_ksm))
++
++#define MLX5E_KSM_ENTRIES_PER_WQE(wqe_size)\
++	ALIGN_DOWN(MLX5E_KSM_MAX_ENTRIES_PER_WQE(wqe_size), MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT)
++
++#define MLX5E_MAX_KSM_PER_WQE(mdev) \
++	MLX5E_KSM_ENTRIES_PER_WQE(MLX5_SEND_WQE_BB * mlx5e_get_max_sq_aligned_wqebbs(mdev))
++
+ static inline
+ ktime_t mlx5e_cqe_ts_to_ns(cqe_ts_to_ns func, struct mlx5_clock *clock, u64 cqe_ts)
+ {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 409f525f1703..632129de24ba 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -504,8 +504,8 @@ static int mlx5e_create_umr_mkey(struct mlx5_core_dev *mdev,
+ 	return err;
+ }
+ 
+-static int mlx5e_create_umr_klm_mkey(struct mlx5_core_dev *mdev,
+-				     u64 nentries,
++static int mlx5e_create_umr_ksm_mkey(struct mlx5_core_dev *mdev,
++				     u64 nentries, u8 log_entry_size,
+ 				     u32 *umr_mkey)
+ {
+ 	int inlen;
+@@ -525,12 +525,13 @@ static int mlx5e_create_umr_klm_mkey(struct mlx5_core_dev *mdev,
+ 	MLX5_SET(mkc, mkc, umr_en, 1);
+ 	MLX5_SET(mkc, mkc, lw, 1);
+ 	MLX5_SET(mkc, mkc, lr, 1);
+-	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_KLMS);
++	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_KSM);
+ 	mlx5e_mkey_set_relaxed_ordering(mdev, mkc);
+ 	MLX5_SET(mkc, mkc, qpn, 0xffffff);
+ 	MLX5_SET(mkc, mkc, pd, mdev->mlx5e_res.hw_objs.pdn);
+ 	MLX5_SET(mkc, mkc, translations_octword_size, nentries);
+-	MLX5_SET(mkc, mkc, length64, 1);
++	MLX5_SET(mkc, mkc, log_page_size, log_entry_size);
++	MLX5_SET64(mkc, mkc, len, nentries << log_entry_size);
+ 	err = mlx5_core_create_mkey(mdev, umr_mkey, in, inlen);
+ 
+ 	kvfree(in);
+@@ -565,14 +566,16 @@ static int mlx5e_create_rq_umr_mkey(struct mlx5_core_dev *mdev, struct mlx5e_rq
+ static int mlx5e_create_rq_hd_umr_mkey(struct mlx5_core_dev *mdev,
+ 				       struct mlx5e_rq *rq)
+ {
+-	u32 max_klm_size = BIT(MLX5_CAP_GEN(mdev, log_max_klm_list_size));
++	u32 max_ksm_size = BIT(MLX5_CAP_GEN(mdev, log_max_klm_list_size));
+ 
+-	if (max_klm_size < rq->mpwqe.shampo->hd_per_wq) {
+-		mlx5_core_err(mdev, "max klm list size 0x%x is smaller than shampo header buffer list size 0x%x\n",
+-			      max_klm_size, rq->mpwqe.shampo->hd_per_wq);
++	if (max_ksm_size < rq->mpwqe.shampo->hd_per_wq) {
++		mlx5_core_err(mdev, "max ksm list size 0x%x is smaller than shampo header buffer list size 0x%x\n",
++			      max_ksm_size, rq->mpwqe.shampo->hd_per_wq);
+ 		return -EINVAL;
+ 	}
+-	return mlx5e_create_umr_klm_mkey(mdev, rq->mpwqe.shampo->hd_per_wq,
++
++	return mlx5e_create_umr_ksm_mkey(mdev, rq->mpwqe.shampo->hd_per_wq,
++					 MLX5E_SHAMPO_LOG_HEADER_ENTRY_SIZE,
+ 					 &rq->mpwqe.shampo->mkey);
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 0138f77eaeed..2df96648e3f4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -619,25 +619,25 @@ static int bitmap_find_window(unsigned long *bitmap, int len,
+ 	return min(len, count);
+ }
+ 
+-static void build_klm_umr(struct mlx5e_icosq *sq, struct mlx5e_umr_wqe *umr_wqe,
+-			  __be32 key, u16 offset, u16 klm_len, u16 wqe_bbs)
++static void build_ksm_umr(struct mlx5e_icosq *sq, struct mlx5e_umr_wqe *umr_wqe,
++			  __be32 key, u16 offset, u16 ksm_len)
+ {
+-	memset(umr_wqe, 0, offsetof(struct mlx5e_umr_wqe, inline_klms));
++	memset(umr_wqe, 0, offsetof(struct mlx5e_umr_wqe, inline_ksms));
+ 	umr_wqe->ctrl.opmod_idx_opcode =
+ 		cpu_to_be32((sq->pc << MLX5_WQE_CTRL_WQE_INDEX_SHIFT) |
+ 			     MLX5_OPCODE_UMR);
+ 	umr_wqe->ctrl.umr_mkey = key;
+ 	umr_wqe->ctrl.qpn_ds = cpu_to_be32((sq->sqn << MLX5_WQE_CTRL_QPN_SHIFT)
+-					    | MLX5E_KLM_UMR_DS_CNT(klm_len));
++					    | MLX5E_KSM_UMR_DS_CNT(ksm_len));
+ 	umr_wqe->uctrl.flags = MLX5_UMR_TRANSLATION_OFFSET_EN | MLX5_UMR_INLINE;
+ 	umr_wqe->uctrl.xlt_offset = cpu_to_be16(offset);
+-	umr_wqe->uctrl.xlt_octowords = cpu_to_be16(klm_len);
++	umr_wqe->uctrl.xlt_octowords = cpu_to_be16(ksm_len);
+ 	umr_wqe->uctrl.mkey_mask     = cpu_to_be64(MLX5_MKEY_MASK_FREE);
+ }
+ 
+ static int mlx5e_build_shampo_hd_umr(struct mlx5e_rq *rq,
+ 				     struct mlx5e_icosq *sq,
+-				     u16 klm_entries, u16 index)
++				     u16 ksm_entries, u16 index)
+ {
+ 	struct mlx5e_shampo_hd *shampo = rq->mpwqe.shampo;
+ 	u16 entries, pi, header_offset, err, wqe_bbs, new_entries;
+@@ -650,20 +650,20 @@ static int mlx5e_build_shampo_hd_umr(struct mlx5e_rq *rq,
+ 	int headroom, i;
+ 
+ 	headroom = rq->buff.headroom;
+-	new_entries = klm_entries - (shampo->pi & (MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT - 1));
+-	entries = ALIGN(klm_entries, MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT);
+-	wqe_bbs = MLX5E_KLM_UMR_WQEBBS(entries);
++	new_entries = ksm_entries - (shampo->pi & (MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT - 1));
++	entries = ALIGN(ksm_entries, MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT);
++	wqe_bbs = MLX5E_KSM_UMR_WQEBBS(entries);
+ 	pi = mlx5e_icosq_get_next_pi(sq, wqe_bbs);
+ 	umr_wqe = mlx5_wq_cyc_get_wqe(&sq->wq, pi);
+-	build_klm_umr(sq, umr_wqe, shampo->key, index, entries, wqe_bbs);
++	build_ksm_umr(sq, umr_wqe, shampo->key, index, entries);
+ 
+ 	frag_page = &shampo->pages[page_index];
+ 
+ 	for (i = 0; i < entries; i++, index++) {
+ 		dma_info = &shampo->info[index];
+-		if (i >= klm_entries || (index < shampo->pi && shampo->pi - index <
+-					 MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT))
+-			goto update_klm;
++		if (i >= ksm_entries || (index < shampo->pi && shampo->pi - index <
++					 MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT))
++			goto update_ksm;
+ 		header_offset = (index & (MLX5E_SHAMPO_WQ_HEADER_PER_PAGE - 1)) <<
+ 			MLX5E_SHAMPO_LOG_MAX_HEADER_ENTRY_SIZE;
+ 		if (!(header_offset & (PAGE_SIZE - 1))) {
+@@ -683,12 +683,11 @@ static int mlx5e_build_shampo_hd_umr(struct mlx5e_rq *rq,
+ 			dma_info->frag_page = frag_page;
+ 		}
+ 
+-update_klm:
+-		umr_wqe->inline_klms[i].bcount =
+-			cpu_to_be32(MLX5E_RX_MAX_HEAD);
+-		umr_wqe->inline_klms[i].key    = cpu_to_be32(lkey);
+-		umr_wqe->inline_klms[i].va     =
+-			cpu_to_be64(dma_info->addr + headroom);
++update_ksm:
++		umr_wqe->inline_ksms[i] = (struct mlx5_ksm) {
++			.key = cpu_to_be32(lkey),
++			.va  = cpu_to_be64(dma_info->addr + headroom),
++		};
+ 	}
+ 
+ 	sq->db.wqe_info[pi] = (struct mlx5e_icosq_wqe_info) {
+@@ -720,37 +719,37 @@ static int mlx5e_build_shampo_hd_umr(struct mlx5e_rq *rq,
+ static int mlx5e_alloc_rx_hd_mpwqe(struct mlx5e_rq *rq)
+ {
+ 	struct mlx5e_shampo_hd *shampo = rq->mpwqe.shampo;
+-	u16 klm_entries, num_wqe, index, entries_before;
++	u16 ksm_entries, num_wqe, index, entries_before;
+ 	struct mlx5e_icosq *sq = rq->icosq;
+-	int i, err, max_klm_entries, len;
++	int i, err, max_ksm_entries, len;
+ 
+-	max_klm_entries = MLX5E_MAX_KLM_PER_WQE(rq->mdev);
+-	klm_entries = bitmap_find_window(shampo->bitmap,
++	max_ksm_entries = MLX5E_MAX_KSM_PER_WQE(rq->mdev);
++	ksm_entries = bitmap_find_window(shampo->bitmap,
+ 					 shampo->hd_per_wqe,
+ 					 shampo->hd_per_wq, shampo->pi);
+-	if (!klm_entries)
++	if (!ksm_entries)
+ 		return 0;
+ 
+-	klm_entries += (shampo->pi & (MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT - 1));
+-	index = ALIGN_DOWN(shampo->pi, MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT);
++	ksm_entries += (shampo->pi & (MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT - 1));
++	index = ALIGN_DOWN(shampo->pi, MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT);
+ 	entries_before = shampo->hd_per_wq - index;
+ 
+-	if (unlikely(entries_before < klm_entries))
+-		num_wqe = DIV_ROUND_UP(entries_before, max_klm_entries) +
+-			  DIV_ROUND_UP(klm_entries - entries_before, max_klm_entries);
++	if (unlikely(entries_before < ksm_entries))
++		num_wqe = DIV_ROUND_UP(entries_before, max_ksm_entries) +
++			  DIV_ROUND_UP(ksm_entries - entries_before, max_ksm_entries);
+ 	else
+-		num_wqe = DIV_ROUND_UP(klm_entries, max_klm_entries);
++		num_wqe = DIV_ROUND_UP(ksm_entries, max_ksm_entries);
+ 
+ 	for (i = 0; i < num_wqe; i++) {
+-		len = (klm_entries > max_klm_entries) ? max_klm_entries :
+-							klm_entries;
++		len = (ksm_entries > max_ksm_entries) ? max_ksm_entries :
++							ksm_entries;
+ 		if (unlikely(index + len > shampo->hd_per_wq))
+ 			len = shampo->hd_per_wq - index;
+ 		err = mlx5e_build_shampo_hd_umr(rq, sq, len, index);
+ 		if (unlikely(err))
+ 			return err;
+ 		index = (index + len) & (rq->mpwqe.shampo->hd_per_wq - 1);
+-		klm_entries -= len;
++		ksm_entries -= len;
+ 	}
+ 
+ 	return 0;
+diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
+index d7bb31d9a446..da09bfaa7b81 100644
+--- a/include/linux/mlx5/device.h
++++ b/include/linux/mlx5/device.h
+@@ -294,6 +294,7 @@ enum {
+ #define MLX5_UMR_FLEX_ALIGNMENT 0x40
+ #define MLX5_UMR_MTT_NUM_ENTRIES_ALIGNMENT (MLX5_UMR_FLEX_ALIGNMENT / sizeof(struct mlx5_mtt))
+ #define MLX5_UMR_KLM_NUM_ENTRIES_ALIGNMENT (MLX5_UMR_FLEX_ALIGNMENT / sizeof(struct mlx5_klm))
++#define MLX5_UMR_KSM_NUM_ENTRIES_ALIGNMENT (MLX5_UMR_FLEX_ALIGNMENT / sizeof(struct mlx5_ksm))
+ 
+ #define MLX5_USER_INDEX_LEN (MLX5_FLD_SZ_BYTES(qpc, user_index) * 8)
+ 
 -- 
 2.43.0
 
