@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AB597337A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F97B9731FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C538B28D1B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2A501C2099E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCD81917DC;
-	Tue, 10 Sep 2024 10:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB5519408A;
+	Tue, 10 Sep 2024 10:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5ZcauJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aN58Nw45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7861418FDAF;
-	Tue, 10 Sep 2024 10:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CACD19048F;
+	Tue, 10 Sep 2024 10:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963720; cv=none; b=ZGA6r0IAguR5qdFGM4A+g/vd2xI8c2HY4Pkl3M/4ehnOanCIPK3seSxI3ko7xNQfphH7BCAx2n5i0sHK9Fni5q+zj56VyHdpOxQFpUwxnZJ5s1fBnH12GHezJVzV8UnLxJgty1fwLjSllWVqi1vx40xD94N0bQIEuJf+BAtrR5w=
+	t=1725963148; cv=none; b=sBjVe9TXmgIzc+WZS2pv0+XVCd3o9k7414+dA3awlbr48eaxicZGpF6DQkPBKcE3XgjnUYQ0dVhlvXKWIV9pgLxGdfy9ztCY73TrfVVBO3F24yGdC7MSTltezuzaf0pq6itwqv3pxWb9GVJB08ghryrEn4KemAdpKcQBfKigJGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963720; c=relaxed/simple;
-	bh=3zIFA3K9GAHG52a8v/c5J9DNkcLbFLQ8amdwHFWAhkc=;
+	s=arc-20240116; t=1725963148; c=relaxed/simple;
+	bh=jopl3DXQQFqUkfSWX0flqp2twI41ixxxw1F5bRovLtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fni6LtaseFaxOjhqxocTlv7R1DAt7UjHOINCaVJKHSQJZoi/j/M+5uD62bnJ5pcqWmuI6JnFPDlt0IXjOjMMQjxbYP/ud+CJC3ZXA6b7fOl9hQE9+Zi1QAsBz1nZhELvkf9X3qxJSZ87DJfzGKb/szjMlKbnDbqJpHBxgllyCBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5ZcauJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B1BC4CEC3;
-	Tue, 10 Sep 2024 10:21:59 +0000 (UTC)
+	 MIME-Version; b=DMFfKa6NMQwhV0T6SWqJgGenCLATE3l5xAzj/xoNvofiB9MpQy7hr+xczrfrAHtrZ7U/9bYcKRvFODi9mvaUtY4/A9mRgyxkuuIKIWmWoNYCy5ECprBx9vKq+E1d8YqySyA2a6FhNtIBB6DibzCAN8mI75LdYS3e6uBGoGb3PgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aN58Nw45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E245C4CEC3;
+	Tue, 10 Sep 2024 10:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963720;
-	bh=3zIFA3K9GAHG52a8v/c5J9DNkcLbFLQ8amdwHFWAhkc=;
+	s=korg; t=1725963147;
+	bh=jopl3DXQQFqUkfSWX0flqp2twI41ixxxw1F5bRovLtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5ZcauJe0Uaxt70uqMD/R7oP0ooI02fLXHr+2AqQFWzmLbKZv3t2izCY/pfcIv+gH
-	 5bxu9+F1gqd3zfyamTlvP6wxfcJ7tthtAwvZb258I7n+nXzMrxrj61ng8kwBHErkVe
-	 Q1P0DEeC5SUcp/SkSVMXFIQpxpLvO5c/8IqDEOzc=
+	b=aN58Nw45QuN0Q/rvgKxDRQwn8Lan149YtupuMs5PsS1GsZxBz62yNoHa+YD4uanEA
+	 slZXflNwxnY6dD+u8BEgqNNF6Bilf0W+Bd8tqkMEdjNU/MoiFzVwtfb8ZS+QN1BArg
+	 aITteqUzeGkjNQwOS3jbhqF2tZPkWyjzGZzB5/4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/214] btrfs: clean up our handling of refs == 0 in snapshot delete
+	Ole <ole@binarygecko.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 152/192] perf/aux: Fix AUX buffer serialization
 Date: Tue, 10 Sep 2024 11:32:56 +0200
-Message-ID: <20240910092605.033351676@linuxfoundation.org>
+Message-ID: <20240910092604.213487622@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit b8ccef048354074a548f108e51d0557d6adfd3a3 ]
+commit 2ab9d830262c132ab5db2f571003d80850d56b2a upstream.
 
-In reada we BUG_ON(refs == 0), which could be unkind since we aren't
-holding a lock on the extent leaf and thus could get a transient
-incorrect answer.  In walk_down_proc we also BUG_ON(refs == 0), which
-could happen if we have extent tree corruption.  Change that to return
--EUCLEAN.  In do_walk_down() we catch this case and handle it correctly,
-however we return -EIO, which -EUCLEAN is a more appropriate error code.
-Finally in walk_up_proc we have the same BUG_ON(refs == 0), so convert
-that to proper error handling.  Also adjust the error message so we can
-actually do something with the information.
+Ole reported that event->mmap_mutex is strictly insufficient to
+serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that in the lock order comment the perf_event::mmap_mutex order
+was already wrong, that is, it nesting under mmap_lock is not new with
+this patch.
+
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Reported-by: Ole <ole@binarygecko.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ kernel/events/core.c        |   18 ++++++++++++------
+ kernel/events/internal.h    |    1 +
+ kernel/events/ring_buffer.c |    2 ++
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index ea488b5f5cd8..8a526b9e8949 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5027,7 +5027,15 @@ static noinline void reada_walk_down(struct btrfs_trans_handle *trans,
- 		/* We don't care about errors in readahead. */
- 		if (ret < 0)
- 			continue;
--		BUG_ON(refs == 0);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1277,8 +1277,9 @@ static void put_ctx(struct perf_event_co
+  *	  perf_event_context::mutex
+  *	    perf_event::child_mutex;
+  *	      perf_event_context::lock
+- *	    perf_event::mmap_mutex
+  *	    mmap_lock
++ *	      perf_event::mmap_mutex
++ *	        perf_buffer::aux_mutex
+  *	      perf_addr_filters_head::lock
+  *
+  *    cpu_hotplug_lock
+@@ -6181,12 +6182,11 @@ static void perf_mmap_close(struct vm_ar
+ 		event->pmu->event_unmapped(event, vma->vm_mm);
+ 
+ 	/*
+-	 * rb->aux_mmap_count will always drop before rb->mmap_count and
+-	 * event->mmap_count, so it is ok to use event->mmap_mutex to
+-	 * serialize with perf_mmap here.
++	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
++	 * to avoid complications.
+ 	 */
+ 	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
+-	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &event->mmap_mutex)) {
++	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
+ 		/*
+ 		 * Stop all AUX events that are writing to this buffer,
+ 		 * so that we can free its AUX pages and corresponding PMU
+@@ -6203,7 +6203,7 @@ static void perf_mmap_close(struct vm_ar
+ 		rb_free_aux(rb);
+ 		WARN_ON_ONCE(refcount_read(&rb->aux_refcount));
+ 
+-		mutex_unlock(&event->mmap_mutex);
++		mutex_unlock(&rb->aux_mutex);
+ 	}
+ 
+ 	if (atomic_dec_and_test(&rb->mmap_count))
+@@ -6291,6 +6291,7 @@ static int perf_mmap(struct file *file,
+ 	struct perf_event *event = file->private_data;
+ 	unsigned long user_locked, user_lock_limit;
+ 	struct user_struct *user = current_user();
++	struct mutex *aux_mutex = NULL;
+ 	struct perf_buffer *rb = NULL;
+ 	unsigned long locked, lock_limit;
+ 	unsigned long vma_size;
+@@ -6339,6 +6340,9 @@ static int perf_mmap(struct file *file,
+ 		if (!rb)
+ 			goto aux_unlock;
+ 
++		aux_mutex = &rb->aux_mutex;
++		mutex_lock(aux_mutex);
 +
-+		/*
-+		 * This could be racey, it's conceivable that we raced and end
-+		 * up with a bogus refs count, if that's the case just skip, if
-+		 * we are actually corrupt we will notice when we look up
-+		 * everything again with our locks.
-+		 */
-+		if (refs == 0)
-+			continue;
+ 		aux_offset = READ_ONCE(rb->user_page->aux_offset);
+ 		aux_size = READ_ONCE(rb->user_page->aux_size);
  
- 		if (wc->stage == DROP_REFERENCE) {
- 			if (refs == 1)
-@@ -5094,7 +5102,11 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
- 		BUG_ON(ret == -ENOMEM);
- 		if (ret)
- 			return ret;
--		BUG_ON(wc->refs[level] == 0);
-+		if (unlikely(wc->refs[level] == 0)) {
-+			btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+				  eb->start);
-+			return -EUCLEAN;
-+		}
+@@ -6489,6 +6493,8 @@ unlock:
+ 		atomic_dec(&rb->mmap_count);
  	}
+ aux_unlock:
++	if (aux_mutex)
++		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
  
- 	if (wc->stage == DROP_REFERENCE) {
-@@ -5224,8 +5236,9 @@ static noinline int do_walk_down(struct btrfs_trans_handle *trans,
- 		goto out_unlock;
+ 	/*
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -40,6 +40,7 @@ struct perf_buffer {
+ 	struct user_struct		*mmap_user;
  
- 	if (unlikely(wc->refs[level - 1] == 0)) {
--		btrfs_err(fs_info, "Missing references.");
--		ret = -EIO;
-+		btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+			  bytenr);
-+		ret = -EUCLEAN;
- 		goto out_unlock;
- 	}
- 	*lookup_info = 0;
-@@ -5426,7 +5439,12 @@ static noinline int walk_up_proc(struct btrfs_trans_handle *trans,
- 				path->locks[level] = 0;
- 				return ret;
- 			}
--			BUG_ON(wc->refs[level] == 0);
-+			if (unlikely(wc->refs[level] == 0)) {
-+				btrfs_tree_unlock_rw(eb, path->locks[level]);
-+				btrfs_err(fs_info, "bytenr %llu has 0 references, expect > 0",
-+					  eb->start);
-+				return -EUCLEAN;
-+			}
- 			if (wc->refs[level] == 1) {
- 				btrfs_tree_unlock_rw(eb, path->locks[level]);
- 				path->locks[level] = 0;
--- 
-2.43.0
-
+ 	/* AUX area */
++	struct mutex			aux_mutex;
+ 	long				aux_head;
+ 	unsigned int			aux_nest;
+ 	long				aux_wakeup;	/* last aux_watermark boundary crossed by aux_head */
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -332,6 +332,8 @@ ring_buffer_init(struct perf_buffer *rb,
+ 	 */
+ 	if (!rb->nr_pages)
+ 		rb->paused = 1;
++
++	mutex_init(&rb->aux_mutex);
+ }
+ 
+ void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)
 
 
 
