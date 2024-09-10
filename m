@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E549731B2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E99D7973494
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BE5B272FC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941F31F2522D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FB61991BA;
-	Tue, 10 Sep 2024 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C495E1922F3;
+	Tue, 10 Sep 2024 10:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM0SHPEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SiBAJE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37008190667;
-	Tue, 10 Sep 2024 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816AA18EFEE;
+	Tue, 10 Sep 2024 10:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962968; cv=none; b=R5Xn/6JAPQS34oFnUG9eYHt8hQJEcDIlVCGLROZoEu/0P/4qkSFcxBNBIMd+avqM7XI1tjoHVuII197HwoozTOQjGNpE7aioZyI1oNLh/VJZawrNn9OGlLuHnNr4mJizjWrLd4ORKCbuvpd9WiryfCOA94J3aW1Q/fCJbMjQ4mA=
+	t=1725964756; cv=none; b=J6yn69986tXrZKvflGFxhXjXqP4ti65G0Vy/L46H2XE5VeFwSA8VHeqRdykqDi8WyuDrCt8iqcWb/p2CmZZlp7lLe4bZ3HLPbfy/OexYM8cjcJDJYk8wyZOE1FMx5ZEu6cSAzb/917K9mZaiytkS0NFfUCyWuHO6QvGmVN1uyKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962968; c=relaxed/simple;
-	bh=WtCxVucatc299nPxR4mSEJJ/ZWS1je7Hr4/TKwhSWfk=;
+	s=arc-20240116; t=1725964756; c=relaxed/simple;
+	bh=TKbokKB7HTXKMqGa6Ra6J74OJlsYHJdWEjssC2mPZYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHkDgi8L2rb2gso0aPbZW3sssEkkHv6qcG5NeJ+YLOrL9IxuwPVWlq9gkdLXj+hOL4RPT2BdsYK4pAo6dyjBxzq4d1Xr9VmeoqjKDJPGJb7eZTXXbIwzJjzTdRfCh9HnVEuWrf2/oLxPyBepFVSE/s3bb/HTKz67IUq0VFQcD/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM0SHPEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44BBC4CEC3;
-	Tue, 10 Sep 2024 10:09:27 +0000 (UTC)
+	 MIME-Version; b=s/jxsYr7SJthExua13VIAeWlLE4FMd+2aYa72YVoMIFKQ4beQq5hO1WltZj5FlhtHmd196HO3Nnz3nYplnJ8TFUwpSLyPbwJG3QVLJ01WuLeW6NCyHTsv1ak6K711TUn7JyM+6RNivtI1xZU41dA3FXH5VnCA/jgBRUcdyj0CmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SiBAJE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C15C4CEC3;
+	Tue, 10 Sep 2024 10:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962968;
-	bh=WtCxVucatc299nPxR4mSEJJ/ZWS1je7Hr4/TKwhSWfk=;
+	s=korg; t=1725964756;
+	bh=TKbokKB7HTXKMqGa6Ra6J74OJlsYHJdWEjssC2mPZYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mM0SHPEzlShjoEmtbT/sy1eqCib04wj5OEXyT+dg9kEhu1dnOmo8yOozlDzVtPyFv
-	 tSIdbIgy7fLCuPQWeKT0J8jDY/kpwxdyW6RN7SOcAu4roXic5MpUbmxpb5dHQPdqSA
-	 J5/JKs2C3SxqFI5ZfrZE99FnIEwCAQtHzbFR2JZs=
+	b=1SiBAJE/KZ9+B2az8wZcjYN5AWqBtQxKNcT3NGj7JfZzrLdUe5dTy9uUwgguORiwB
+	 fXNaDB9mQAhggqB1XXgwC1XNzpBR2B8chQ5IpATE351JVGNhFi7UMZCYpL0WVN2aOn
+	 o+iTJ17M704HK9ke9Zs3Zhy2j/EfC6AKMcLANM/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/192] dm init: Handle minors larger than 255
+Subject: [PATCH 5.10 020/186] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within dal_gpio_service_create
 Date: Tue, 10 Sep 2024 11:31:55 +0200
-Message-ID: <20240910092601.746259931@linuxfoundation.org>
+Message-ID: <20240910092555.474225756@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 140ce37fd78a629105377e17842465258a5459ef ]
+[ Upstream commit c6077aa66fa230d12f37fef01161ef080d13b726 ]
 
-dm_parse_device_entry() simply copies the minor number into dmi.dev, but
-the dev_t format splits the minor number between the lowest 8 bytes and
-highest 12 bytes. If the minor number is larger than 255, part of it
-will end up getting treated as the major number
+[Why]
+For subtraction, coverity reports integer overflow
+warning message when variable type is uint32_t.
 
-Fix this by checking that the minor number is valid and then encoding it
-as a dev_t.
+[How]
+Change variable type to int32_t.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
-index dc4381d68313..6e9e73a55874 100644
---- a/drivers/md/dm-init.c
-+++ b/drivers/md/dm-init.c
-@@ -213,8 +213,10 @@ static char __init *dm_parse_device_entry(struct dm_device *dev, char *str)
- 	strscpy(dev->dmi.uuid, field[1], sizeof(dev->dmi.uuid));
- 	/* minor */
- 	if (strlen(field[2])) {
--		if (kstrtoull(field[2], 0, &dev->dmi.dev))
-+		if (kstrtoull(field[2], 0, &dev->dmi.dev) ||
-+		    dev->dmi.dev >= (1 << MINORBITS))
- 			return ERR_PTR(-EINVAL);
-+		dev->dmi.dev = huge_encode_dev((dev_t)dev->dmi.dev);
- 		dev->dmi.flags |= DM_PERSISTENT_DEV_FLAG;
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index a7c92c64490c..a5de27908914 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -58,7 +58,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	struct dc_context *ctx)
+ {
+ 	struct gpio_service *service;
+-	uint32_t index_of_id;
++	int32_t index_of_id;
+ 
+ 	service = kzalloc(sizeof(struct gpio_service), GFP_KERNEL);
+ 
+@@ -114,7 +114,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	return service;
+ 
+ failure_2:
+-	while (index_of_id) {
++	while (index_of_id > 0) {
+ 		--index_of_id;
+ 		kfree(service->busyness[index_of_id]);
  	}
- 	/* flags */
 -- 
 2.43.0
 
