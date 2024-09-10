@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-75248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2EB97339D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79479733A8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00CC285406
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1F51F2538F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB0E192B6B;
-	Tue, 10 Sep 2024 10:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97E618B474;
+	Tue, 10 Sep 2024 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yzg6bIoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyvtAAGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9618B487;
-	Tue, 10 Sep 2024 10:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693ED17BB0C;
+	Tue, 10 Sep 2024 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964179; cv=none; b=oSTRj6kZXOvV4BZjyvwYf8r98JZUtjpRu4+e1ax43SswVY6i4v9FCKMJk7a/YsqCJ2LgZjZLHy4eR80t7dFd1+nnMAt0lYo+INghcdyvDGI3EhAiPqn0ZT6bnrz89FOj6DONQkv2osZBqiCtVbpcDpfpzNc9VcIBEp8A0CKR+Xc=
+	t=1725964211; cv=none; b=JCMrTl/s3k8jDcn0PN68xso1b6FSQRIUPxVmfM6XN01fHRzJIyg5tEpak8hKpfr70Cg5CExMlZ8Qdz515+t63RhQQnl1e2Zs5yDv9zsnamLkwZLArzmQhSj8DMA5OKGOw5MMbL8G9n7Cb3h+sIRdo1aUMiAsFF0fyEpl4I3PnIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964179; c=relaxed/simple;
-	bh=lGtM8AarloSTRVYuZ4KOcAGDU5Xh79at3sEE+BsixK8=;
+	s=arc-20240116; t=1725964211; c=relaxed/simple;
+	bh=l27zFQaenzKLLNNiKssM0jamu2280H9eJ+MHyVZ95I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYBkQLahZhcTkXPuJIgSpnxnHuy3NwOqSif4NjfYZbHwm79iJz0EAElwetJAh8qQh5wyoRP3USrX7pnNu0c/5NSIjjpjWJRDpztiauH/uRobbYPTZiK1CduAyjQeGE5BC+wfQNsLeSD/RSJui4AXqxBgRSFv9w8tw2mlpXCjjBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yzg6bIoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6715C4CEC3;
-	Tue, 10 Sep 2024 10:29:38 +0000 (UTC)
+	 MIME-Version; b=nFSjSo2y6jFXVAvwazyGTU6WGTDXOu+fv5VxT2F/nnJSCKo2NNmJRLB5mmSxxDerLjjnifSshWSUYzs4t24CoUpL3AosPPHplDkr0eHkGvSYA887V3CMFgIWwWCV5rUu2ucxKmJI7AAnAwm+PBVB4jQu8dGSQPK9/54jWXIta0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyvtAAGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DB4C4CEC6;
+	Tue, 10 Sep 2024 10:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964179;
-	bh=lGtM8AarloSTRVYuZ4KOcAGDU5Xh79at3sEE+BsixK8=;
+	s=korg; t=1725964211;
+	bh=l27zFQaenzKLLNNiKssM0jamu2280H9eJ+MHyVZ95I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yzg6bIoKn2WG+P5i2lkpH30UQmdPU8mWO/017N2WjjV4OmQJ1CFHhLhfz8rP3f/wn
-	 z6pP6EX33nrk2rs9IPW1fX8skFbpQ2KJ240gc4xkpvq1oigOQer+zbjnjwy+T4cEVL
-	 V1cRH6Ktwok6y1mciBs9tm5T6HE3YL6NRf1PGuPo=
+	b=xyvtAAGcCO3N8N3P8kfI9OGtCg2NTMFEU/2D4MzsobRb2UQQBocapzb9KXVRfsCGU
+	 pvtXDm0l61OLi+jNeys7lw+q+jgf/vFNaIAOEeJWSln7RcRJ4bE4sjdWOPMAr66cGH
+	 r40S8Zl/fDWhln+MRL44PkzrmlAuvO51vpBbtesI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/269] media: vivid: dont set HDMI TX controls if there are no HDMI outputs
-Date: Tue, 10 Sep 2024 11:31:14 +0200
-Message-ID: <20240910092611.305226296@linuxfoundation.org>
+Subject: [PATCH 6.6 088/269] vfio/spapr: Always clear TCEs before unsetting the window
+Date: Tue, 10 Sep 2024 11:31:15 +0200
+Message-ID: <20240910092611.343253550@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -65,54 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 
-[ Upstream commit 17763960b1784578e8fe915304b330922f646209 ]
+[ Upstream commit 4ba2fdff2eb174114786784926d0efb6903c88a6 ]
 
-When setting the EDID it would attempt to update two controls
-that are only present if there is an HDMI output configured.
+The PAPR expects the TCE table to have no entries at the time of
+unset window(i.e. remove-pe). The TCE clear right now is done
+before freeing the iommu table. On pSeries, the unset window
+makes those entries inaccessible to the OS and the H_PUT/GET calls
+fail on them with H_CONSTRAINED.
 
-If there isn't any (e.g. when the vivid module is loaded with
-node_types=1), then calling VIDIOC_S_EDID would crash.
+On PowerNV, this has no side effect as the TCE clear can be done
+before the DMA window removal as well.
 
-Fix this by first checking if outputs are present.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/171923273535.1397.1236742071894414895.stgit@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/vfio/vfio_iommu_spapr_tce.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index a81c17634daa..99325bfed643 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -1557,8 +1557,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 		return -EINVAL;
- 	if (edid->blocks == 0) {
- 		dev->edid_blocks = 0;
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		if (dev->num_outputs) {
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		}
- 		phys_addr = CEC_PHYS_ADDR_INVALID;
- 		goto set_phys_addr;
+diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
+index a94ec6225d31..5f9e7e477078 100644
+--- a/drivers/vfio/vfio_iommu_spapr_tce.c
++++ b/drivers/vfio/vfio_iommu_spapr_tce.c
+@@ -364,7 +364,6 @@ static void tce_iommu_release(void *iommu_data)
+ 		if (!tbl)
+ 			continue;
+ 
+-		tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
+ 		tce_iommu_free_table(container, tbl);
  	}
-@@ -1582,8 +1584,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 			display_present |=
- 				dev->display_present[i] << j++;
  
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
-+	if (dev->num_outputs) {
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
+@@ -720,6 +719,8 @@ static long tce_iommu_remove_window(struct tce_container *container,
+ 
+ 	BUG_ON(!tbl->it_size);
+ 
++	tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
++
+ 	/* Detach groups from IOMMUs */
+ 	list_for_each_entry(tcegrp, &container->group_list, next) {
+ 		table_group = iommu_group_get_iommudata(tcegrp->grp);
+@@ -738,7 +739,6 @@ static long tce_iommu_remove_window(struct tce_container *container,
+ 	}
+ 
+ 	/* Free table */
+-	tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
+ 	tce_iommu_free_table(container, tbl);
+ 	container->tables[num] = NULL;
+ 
+@@ -1197,9 +1197,14 @@ static void tce_iommu_release_ownership(struct tce_container *container,
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i)
+-		if (container->tables[i])
++	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
++		if (container->tables[i]) {
++			tce_iommu_clear(container, container->tables[i],
++					container->tables[i]->it_offset,
++					container->tables[i]->it_size);
+ 			table_group->ops->unset_window(table_group, i);
++		}
 +	}
+ }
  
- set_phys_addr:
- 	/* TODO: a proper hotplug detect cycle should be emulated here */
+ static long tce_iommu_take_ownership(struct tce_container *container,
 -- 
 2.43.0
 
