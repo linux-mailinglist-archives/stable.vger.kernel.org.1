@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70754972FDF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFD2972E0B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0B828679B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65DEB1F2548B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E306F18A6D1;
-	Tue, 10 Sep 2024 09:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BE51891A1;
+	Tue, 10 Sep 2024 09:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfYQI4yN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mx/h/IbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A150F172BAE;
-	Tue, 10 Sep 2024 09:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2177188CC1;
+	Tue, 10 Sep 2024 09:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962122; cv=none; b=S4m0Ks7IFycDzf3D7Knw+ssHkvS33Ai4D1Ka9XpyvkCuAK4VeIV22I3gU8F3rywg9KGim4y82Cpcqr58IO8KCumaba5/DbSOSuJMeZakffgOj+AjKx02HAZrFbQhWK1NEem8rDrB/0ZRs88vry+BW1nPfyDSjiRw4PRcDEbLBEI=
+	t=1725961133; cv=none; b=iOtM0aBU2C8Y/csdONgRvHWYBQLSFpUTldlyGOrBg62Y1d2VG+cz1SySneqViWtxB8LixvFoeADXlvmQKUL2MK2GGUR68RwW62pTDObyEFweXT3SSsI9U79N30HeXJk/gD0TgBSxcKFn/AkQroqUT4pA8bof3u1rnW9UOrSR5Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962122; c=relaxed/simple;
-	bh=Ssl1CwVTycDR3E2yoZF52rTEGwIk08f+a/ZYc+HeZm4=;
+	s=arc-20240116; t=1725961133; c=relaxed/simple;
+	bh=UddNO0URh2ErPh/Vff6egf0z/XQu304kEccHvZZ4YbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNraCe8Q8ARU+SQT1CV9mg6Aqid4U34NWipj2BjKL0l1YKiBGGMjVsZpnVDFL5U95zozvdQWhp89CQUDq2m7lF2/MtXBhFiu+X1bSJ5WQFHYuTrqaAnQgdBybBkgrWz9c0VSp/YrjlpMstAifxQa9eyXlpN2XEW0Ukp6im5qfA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfYQI4yN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2286AC4CEC3;
-	Tue, 10 Sep 2024 09:55:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d6yzeSSae1lHfQ5uCB5CrB7KmAkaKGe8PH4NF47R3M8iSz5N5VCY+kQSSy1bh3scVCzC0coBWoiK8lc+XWQ9dbGFvZlBI2Y8vHCZYhc0XmcFQI8qy4F4s3/v4TsoG0ZgQwtkYKAdlqA9HHPCPgLWSqSlklPjYReSx5rkOEWu85A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mx/h/IbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39999C4CEC3;
+	Tue, 10 Sep 2024 09:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962122;
-	bh=Ssl1CwVTycDR3E2yoZF52rTEGwIk08f+a/ZYc+HeZm4=;
+	s=korg; t=1725961133;
+	bh=UddNO0URh2ErPh/Vff6egf0z/XQu304kEccHvZZ4YbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfYQI4yNGuWO6I7jyHXcWwMkh32KEhmPJMROv8PFPaTK05OSN4uIoxc7kb6AbFygz
-	 FqXSJViOF1LKHKK4Hos74/cdfhAAd5yMz+bwgBEJ7F5TYR/tU1g+fAcy8hmLxjCRav
-	 TB9AtCY/bwriDC2TAQxEVFcYz7fvc+4IxUiQUOos=
+	b=Mx/h/IbQxMUfGD9zdzxxkqFJ8xIhHm4cnRD9bM3dr8AMFL1mZCtAz1IRuFoguaSt0
+	 JI0rb9+qxnjISCDs0NtZk6fJm//0xouu2nQdiUpXyP2xc7nTGa+Sd6K5pxj5ircUs6
+	 R3dKF012U6S7IHBFXE48jxffqTBkRqjzXMB9Gx9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 6.10 302/375] uio_hv_generic: Fix kernel NULL pointer dereference in hv_uio_rescind
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 37/96] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
 Date: Tue, 10 Sep 2024 11:31:39 +0200
-Message-ID: <20240910092632.703483435@linuxfoundation.org>
+Message-ID: <20240910092543.154025834@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit fb1adbd7e50f3d2de56d0a2bb0700e2e819a329e upstream.
+[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
 
-For primary VM Bus channels, primary_channel pointer is always NULL. This
-pointer is valid only for the secondary channels. Also, rescind callback
-is meant for primary channels only.
+In case of error in build_tokens_sysfs(), all the memory that has been
+allocated is freed at end of this function. But then free_group() is
+called which performs memory deallocation again.
 
-Fix NULL pointer dereference by retrieving the device_obj from the parent
-for the primary channel.
+Also, instead of free_group() call, there should be exit_dell_smbios_smm()
+and exit_dell_smbios_wmi() calls, since there is initialization, but there
+is no release of resources in case of an error.
 
-Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240829071312.1595-2-namjain@linux.microsoft.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix these issues by replacing free_group() call with
+exit_dell_smbios_wmi() and exit_dell_smbios_smm().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/dell-smbios-base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -106,10 +106,11 @@ static void hv_uio_channel_cb(void *cont
+diff --git a/drivers/platform/x86/dell-smbios-base.c b/drivers/platform/x86/dell-smbios-base.c
+index 9e9fc5155789..f5299edb83f5 100644
+--- a/drivers/platform/x86/dell-smbios-base.c
++++ b/drivers/platform/x86/dell-smbios-base.c
+@@ -613,7 +613,10 @@ static int __init dell_smbios_init(void)
+ 	return 0;
  
- /*
-  * Callback from vmbus_event when channel is rescinded.
-+ * It is meant for rescind of primary channels only.
-  */
- static void hv_uio_rescind(struct vmbus_channel *channel)
- {
--	struct hv_device *hv_dev = channel->primary_channel->device_obj;
-+	struct hv_device *hv_dev = channel->device_obj;
- 	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
+ fail_sysfs:
+-	free_group(platform_device);
++	if (!wmi)
++		exit_dell_smbios_wmi();
++	if (!smm)
++		exit_dell_smbios_smm();
  
- 	/*
+ fail_create_group:
+ 	platform_device_del(platform_device);
+-- 
+2.43.0
+
 
 
 
