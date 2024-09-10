@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F58B9733D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1479732B9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCD1F25AB8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FFE01C2496F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4B8191466;
-	Tue, 10 Sep 2024 10:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C321A2878;
+	Tue, 10 Sep 2024 10:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brYyZL5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEc3BTsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9921D18EFC6;
-	Tue, 10 Sep 2024 10:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA3F199958;
+	Tue, 10 Sep 2024 10:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964326; cv=none; b=L4QLNM7v6E0P1EWCDcGqdFZECH6NnXxEihi6gtulOmPGxeU7b/5gLUw9XdGBFIh6YmwcqFFOhRiXWv39iIQyCVVX/gSO2D5j2YkIiHAFe0ma+cZIfY86B71i1uCfsw7d5cUPr1X2iRarpVdhgjeLXW0Wn+EpQKfBK2PvnQv+1No=
+	t=1725963591; cv=none; b=SybavmgSR2CMfzaGt9/bOCftLPbJ6zpDulM8cg8mtmiM+xjqYsgPNgNd/rF3awu4RY43sD7rxQtrHvJEKw4GUOtsbDkAgnqmF1j9oqCH9Xo+auK+0GgGA2Ln4HeJsb5kZej1OyS7FjajZ1I6vseePXs+kNIBZ+apQcj4zPY9fyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964326; c=relaxed/simple;
-	bh=y7oCIudHPzA7Ji61rxJh8a8vdhi4ao+DZLFA/zxobQg=;
+	s=arc-20240116; t=1725963591; c=relaxed/simple;
+	bh=lVcHT7fV/QeJ4UvsomVhgUN10H6JU2xpcsSeYcKiPBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PL/Vi7SzLSx7c2nzKv0476ZFrDwKWOkp/eTf4VdtZlTBUSxOFjzoaFntGzVP+RDD+ccpvXcvDLvCcYYhTFZfABcuUVaphmSF0JpnV294tsW2YasCvLZs7Sjy46oO+17qnY1FbBREKIAdAuawSJkMjschGhINCUBPkp1JAH089j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brYyZL5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD03C4CEC3;
-	Tue, 10 Sep 2024 10:32:05 +0000 (UTC)
+	 MIME-Version; b=DPKkB3xMhUPfnyMStv0j/94zLxGPOeacmXFBoeP/onNHWEizmf0OpWzTAZrdTR/SyG9eEzcDRS/v7odyKRA/CupLzX10Cm3Hkv/uxCxiReoSQPLgos8pY7xYqy91uLXy/c4dtNPAxy8AXOlASyjreT6q8ksDryOslUUK1p0f8Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEc3BTsN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733A9C4CEC3;
+	Tue, 10 Sep 2024 10:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964326;
-	bh=y7oCIudHPzA7Ji61rxJh8a8vdhi4ao+DZLFA/zxobQg=;
+	s=korg; t=1725963590;
+	bh=lVcHT7fV/QeJ4UvsomVhgUN10H6JU2xpcsSeYcKiPBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brYyZL5DSO0t5dSBp8Noo971X1GhZjoMvlNfHYnAyA3uQ0uHsj4oRSclsAkp4yZiZ
-	 R1bvNE6SQg6J0wPLgsZah/W/8MyPNGdOBv26wgV5FE3a+rDa8OlM6f7+1vVpu8uxpH
-	 9MoZXIzEkFVBjbUgb+Bm6tKQj+Kar++azJvqfhdU=
+	b=WEc3BTsNHYSIE9uGHiXsc7y9CMqQ3p2KqsYaDdjK1Il+3XauLFtAwwHWNfMqkIRey
+	 u0K2rzTUQtqpbuuI09ZS1IKArz5oPtz4UB7+QltsNy8iPwMD6qmyn2/HldVPDrqXQI
+	 Vhj7gmgWk+NTz2GCHwwJEFwNrNLj693EHIWB8kIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/269] um: line: always fill *error_out in setup_one_line()
+Subject: [PATCH 5.15 109/214] udf: Avoid excessive partition lengths
 Date: Tue, 10 Sep 2024 11:32:11 +0200
-Message-ID: <20240910092613.343632380@linuxfoundation.org>
+Message-ID: <20240910092603.265211273@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 824ac4a5edd3f7494ab1996826c4f47f8ef0f63d ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-The pointer isn't initialized by callers, but I have
-encountered cases where it's still printed; initialize
-it in all possible cases in setup_one_line().
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-Link: https://patch.msgid.link/20240703172235.ad863568b55f.Iaa1eba4db8265d7715ba71d5f6bb8c7ff63d27e9@changeid
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index 375200e9aba9..2ba4e0d4e26b 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -383,6 +383,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			parse_chan_pair(NULL, line, n, opts, error_out);
- 			err = 0;
- 		}
-+		*error_out = "configured as 'none'";
- 	} else {
- 		char *new = kstrdup(init, GFP_KERNEL);
- 		if (!new) {
-@@ -406,6 +407,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			}
- 		}
- 		if (err) {
-+			*error_out = "failed to parse channel pair";
- 			line->init_str = NULL;
- 			line->valid = 0;
- 			kfree(new);
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 8691f7c31bf9..4275d2bc0c36 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1084,12 +1084,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
+ 
+ 	map = &sbi->s_partmaps[p_index];
+ 
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
++	}
+ 
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1145,6 +1152,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
+ 	}
 -- 
 2.43.0
 
