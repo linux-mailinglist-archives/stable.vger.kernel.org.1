@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-74646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC317973073
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70754972FDF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9D28287260
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0B828679B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E0018C930;
-	Tue, 10 Sep 2024 10:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E306F18A6D1;
+	Tue, 10 Sep 2024 09:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2U9sCdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfYQI4yN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7187E181B8D;
-	Tue, 10 Sep 2024 10:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A150F172BAE;
+	Tue, 10 Sep 2024 09:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962410; cv=none; b=QvAur4Ttlfn82e01jIe/mXCA70IqqdC18uft0EzMzTIda5k7WNwHMftBf3pxSmyFu83Hf7AyqVZww2/mDa9PExwjDMHsAL31dF39AZZmOvz+DaqT+CSH+EQHxp5DP/wszcyU1ilVzaPCHn376JUAxV7o8U1H5XVL8X/S2krle3Y=
+	t=1725962122; cv=none; b=S4m0Ks7IFycDzf3D7Knw+ssHkvS33Ai4D1Ka9XpyvkCuAK4VeIV22I3gU8F3rywg9KGim4y82Cpcqr58IO8KCumaba5/DbSOSuJMeZakffgOj+AjKx02HAZrFbQhWK1NEem8rDrB/0ZRs88vry+BW1nPfyDSjiRw4PRcDEbLBEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962410; c=relaxed/simple;
-	bh=66U8mezrOnbG37ykK7lU7KG1h4AN0CT5tAjqqqauA4k=;
+	s=arc-20240116; t=1725962122; c=relaxed/simple;
+	bh=Ssl1CwVTycDR3E2yoZF52rTEGwIk08f+a/ZYc+HeZm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a540/3WoiaRL+UFgR+ewNyj5d2+AtOCEPqzKznQYKerhlYCvQjg9CCzc6u1rZgJxmxNZouB0hx/o6UsQJySdwV1/GrJarso2GhR0YMevmzkbrCecmyy+/oj49BT1o9XDguff4mBbjgop6eV/bP62rV1GyQzvZnXUtT/VghspZlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2U9sCdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EBBC4CEC3;
-	Tue, 10 Sep 2024 10:00:09 +0000 (UTC)
+	 MIME-Version; b=hNraCe8Q8ARU+SQT1CV9mg6Aqid4U34NWipj2BjKL0l1YKiBGGMjVsZpnVDFL5U95zozvdQWhp89CQUDq2m7lF2/MtXBhFiu+X1bSJ5WQFHYuTrqaAnQgdBybBkgrWz9c0VSp/YrjlpMstAifxQa9eyXlpN2XEW0Ukp6im5qfA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfYQI4yN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2286AC4CEC3;
+	Tue, 10 Sep 2024 09:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962410;
-	bh=66U8mezrOnbG37ykK7lU7KG1h4AN0CT5tAjqqqauA4k=;
+	s=korg; t=1725962122;
+	bh=Ssl1CwVTycDR3E2yoZF52rTEGwIk08f+a/ZYc+HeZm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2U9sCdok3h1Vssxy2m+wiNRfEX0YB0farkNUXXij215WT8ASqIJmlcYNxPBSB8mD
-	 FBBrm9b+n3gPpAxOwqdrmjVNNAuCkpWa/RySMz9LBzPGngcGIC4TpG11nrfCtGgsG+
-	 UoUF9Y+ghugjUhBKQN0pbMltKqWY+pwm31FJcZ30=
+	b=mfYQI4yNGuWO6I7jyHXcWwMkh32KEhmPJMROv8PFPaTK05OSN4uIoxc7kb6AbFygz
+	 FqXSJViOF1LKHKK4Hos74/cdfhAAd5yMz+bwgBEJ7F5TYR/tU1g+fAcy8hmLxjCRav
+	 TB9AtCY/bwriDC2TAQxEVFcYz7fvc+4IxUiQUOos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.4 024/121] udf: Limit file size to 4TB
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH 6.10 302/375] uio_hv_generic: Fix kernel NULL pointer dereference in hv_uio_rescind
 Date: Tue, 10 Sep 2024 11:31:39 +0200
-Message-ID: <20240910092546.858911920@linuxfoundation.org>
+Message-ID: <20240910092632.703483435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-commit c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 upstream.
+commit fb1adbd7e50f3d2de56d0a2bb0700e2e819a329e upstream.
 
-UDF disk format supports in principle file sizes up to 1<<64-1. However
-the file space (including holes) is described by a linked list of
-extents, each of which can have at most 1GB. Thus the creation and
-handling of extents gets unusably slow beyond certain point. Limit the
-file size to 4TB to avoid locking up the kernel too easily.
+For primary VM Bus channels, primary_channel pointer is always NULL. This
+pointer is valid only for the secondary channels. Also, rescind callback
+is meant for primary channels only.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fix NULL pointer dereference by retrieving the device_obj from the parent
+for the primary channel.
+
+Cc: stable@vger.kernel.org
+Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240829071312.1595-2-namjain@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/super.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/uio/uio_hv_generic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -86,6 +86,13 @@ enum {
- #define UDF_MAX_LVID_NESTING 1000
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -106,10 +106,11 @@ static void hv_uio_channel_cb(void *cont
  
- enum { UDF_MAX_LINKS = 0xffff };
-+/*
-+ * We limit filesize to 4TB. This is arbitrary as the on-disk format supports
-+ * more but because the file space is described by a linked list of extents,
-+ * each of which can have at most 1GB, the creation and handling of extents
-+ * gets unusably slow beyond certain point...
-+ */
-+#define UDF_MAX_FILESIZE (1ULL << 42)
+ /*
+  * Callback from vmbus_event when channel is rescinded.
++ * It is meant for rescind of primary channels only.
+  */
+ static void hv_uio_rescind(struct vmbus_channel *channel)
+ {
+-	struct hv_device *hv_dev = channel->primary_channel->device_obj;
++	struct hv_device *hv_dev = channel->device_obj;
+ 	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
  
- /* These are the "meat" - everything else is stuffing */
- static int udf_fill_super(struct super_block *, void *, int);
-@@ -2308,7 +2315,7 @@ static int udf_fill_super(struct super_b
- 		ret = -ENOMEM;
- 		goto error_out;
- 	}
--	sb->s_maxbytes = MAX_LFS_FILESIZE;
-+	sb->s_maxbytes = UDF_MAX_FILESIZE;
- 	sb->s_max_links = UDF_MAX_LINKS;
- 	return 0;
- 
+ 	/*
 
 
 
