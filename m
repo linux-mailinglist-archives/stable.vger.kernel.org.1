@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-74843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560B99731AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928F99734B6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ABBA2891CE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD77EB2857B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3DD199FBA;
-	Tue, 10 Sep 2024 10:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F7199951;
+	Tue, 10 Sep 2024 10:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsLHiE7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIQvBkSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD7319066D;
-	Tue, 10 Sep 2024 10:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46D7199941;
+	Tue, 10 Sep 2024 10:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962995; cv=none; b=HC5OGlGKTg4bkOYSbCmRxLVt9+O2pM5QMKVogCrLd808xE5xQyS8NZ+9O9DA/jeCZHREQQZ1P+6C7/9DEMmGzsPoXQtfGZZFN4g1yf/ePeNg7DypDR4xItV73WM6DEi4TGt+U6cQush6v+3vDUgTx8Kg0VNPrHSBTQZEuSvwlJQ=
+	t=1725964302; cv=none; b=q0+kxeZ5y0Oz5PIPDnIlqjR3JTeha1O9VQQyQUsbrfkUuK+Y2FpbNJ4ceoRapP0zjhFHkGq8eRqKSUnn5yrSvOmsUawUL8TExELnn8maoDHEAIekhfXM8DohJDOprlRRuhAP+3N4JSE480pSf0cNU26V+lhb8C5BZ9NGjoG6l44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962995; c=relaxed/simple;
-	bh=yPIY/1gkbfUE7jm8EnTBTZk3daEmcZelGWVMyDoR7XY=;
+	s=arc-20240116; t=1725964302; c=relaxed/simple;
+	bh=wiqtrK2Cl+C2szB4N3LNkgGZ0RJyP2e+cM8L0E13wEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjZrXJ/n/Wulw3vt7PvcgdrCFwuegcWerokaHI+GzPTBNUb5IDNXeYcU/GLXGVtdPV1EMeMHBUIXHDwr1vp1QVZwQUEvR5mMYObu0s/C3ZzMjvvLAua6agI3hANg1HLswnVzC5U5unrfQcr1PvCpsE5/z1XMLToS3tvoz/Ftb24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsLHiE7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D5EC4CEC3;
-	Tue, 10 Sep 2024 10:09:54 +0000 (UTC)
+	 MIME-Version; b=izMz9bY1Mmjf5aoeHj4/DZBXvOMXjNv+Ke9QA+hpLj2qZZmA/YWfw7yOI9INoxW4EkwaDkhjexZYZ8DcBvBEnsy5Purv2cDeNv/aPoxwtMEBIjMCu7ixsDTlD4cJZGbLGjVa4xjflv/1/5CFWnvmyBVxcixMGmzWaMLGAcy3Ql0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIQvBkSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5913BC4CEC3;
+	Tue, 10 Sep 2024 10:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962994;
-	bh=yPIY/1gkbfUE7jm8EnTBTZk3daEmcZelGWVMyDoR7XY=;
+	s=korg; t=1725964302;
+	bh=wiqtrK2Cl+C2szB4N3LNkgGZ0RJyP2e+cM8L0E13wEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsLHiE7xs9NijnHSkl601c6/z8ViItJCXtnbbyZEqEfXhDDuu/7Ukk4fW1CVX3/mK
-	 23umvY8truT9LwvmRiEksjcG4s6QnBvhTvAbW8zYKTjC9DAjsWXL5219VBL5LSpSYh
-	 5wJ0TGEVNw/A4XfqEEM+RNxgGVpsiZrO6SJ37qnw=
+	b=qIQvBkSqR2qWq4VaB62BXpSuwyrzVyii7OTCr95SKYQrbh55BsTXrA2A+VQonfOAU
+	 G2leykEsyiAJf2b0Jw5GJXo1v4HagwFymAURuZsXTG0l982Upy51w31AqF/blYT8qm
+	 5b94tHXK7PNfLZeNivDOlbIxhjPjFxrJFnpb7MM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/192] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.6 136/269] selftests: net: enable bind tests
 Date: Tue, 10 Sep 2024 11:32:03 +0200
-Message-ID: <20240910092602.093836910@linuxfoundation.org>
+Message-ID: <20240910092613.054719061@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
+[ Upstream commit e4af74a53b7aa865e7fcc104630ebb7a9129b71f ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+bind_wildcard is compiled but not run, bind_timewait is not compiled.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+These two tests complete in a very short time, use the test harness
+properly, and seem reasonable to enable.
+
+The author of the tests confirmed via email that these were
+intended to be run.
+
+Enable these two tests.
+
+Fixes: 13715acf8ab5 ("selftest: Add test for bind() conflicts.")
+Fixes: 2c042e8e54ef ("tcp: Add selftest for bind() and TIME_WAIT.")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/5a009b26cf5fb1ad1512d89c61b37e2fac702323.1725430322.git.jamie.bainbridge@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm95234.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
-index b4a9d0c223c4..db570fe84132 100644
---- a/drivers/hwmon/lm95234.c
-+++ b/drivers/hwmon/lm95234.c
-@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
-+				1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit2[index] = val;
-@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
- 	if (ret < 0)
- 		return ret;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->tcrit1[index] = val;
-@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
--	val = DIV_ROUND_CLOSEST(val, 1000);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
- 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
- 
- 	mutex_lock(&data->update_lock);
-@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
- 		return ret;
- 
- 	/* Accuracy is 1/2 degrees C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
- 
- 	mutex_lock(&data->update_lock);
- 	data->toffset[index] = val;
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index d417de105123..91a48efb140b 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -85,7 +85,8 @@ TEST_GEN_FILES += csum
+ TEST_GEN_FILES += nat6to4.o
+ TEST_GEN_FILES += xdp_dummy.o
+ TEST_GEN_FILES += ip_local_port_range
+-TEST_GEN_FILES += bind_wildcard
++TEST_GEN_PROGS += bind_wildcard
++TEST_GEN_PROGS += bind_timewait
+ TEST_PROGS += test_vxlan_mdb.sh
+ TEST_PROGS += test_bridge_neigh_suppress.sh
+ TEST_PROGS += test_vxlan_nolocalbypass.sh
 -- 
 2.43.0
 
