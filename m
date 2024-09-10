@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-74965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84E0973256
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:21:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB65D9733AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ABA1F26A36
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:21:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 034BBB24C47
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D6B18FDDC;
-	Tue, 10 Sep 2024 10:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AA619FA94;
+	Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkgcgrrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWoSlgz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A176C18FDA9;
-	Tue, 10 Sep 2024 10:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81263191496;
+	Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963353; cv=none; b=uPHQZG21XtyY1Y7b38FAfVvoJunwYD39gtqV84gMFTeNYCocy2Ms2b5NEcli+uilfBRxT2CmmiFhduNLF+6C8sT5TvPXymPcQR8fA4PSrRh8s7RwFuiJwvmbRVv6oJKCVqTuU7qa0ecWEHJJOHlSzWfaM3sxD3QER3FyuLL7pIU=
+	t=1725964026; cv=none; b=cfyTc5mTeBKozpXs7Axp6TIVv3ydV/72lFaoLjX+19Pm9kY3aLyd7CrdKmwNhiltWKDgwQMr433STJXvMT/jhdQMMLMqKxIJoNVvGLbRSbcEBRlKU3gxLZcSVgbjPl9G5YvZw8eJkIBOc7zX438b9iMGeAz1aBaB4KTL4vwZhBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963353; c=relaxed/simple;
-	bh=4VKpKzSTMcD4q2/rtkcKt+fhY5PVXhXMx8YGPIwnRJg=;
+	s=arc-20240116; t=1725964026; c=relaxed/simple;
+	bh=NS85PktJRETKrpjWU7nre0m/TrvuiXlMljaD2DFD87M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJPB+oeQibXIQ5vIFUdEscfAH9WSE3v2h2kXuGciloMWskq0SILw70hnHMtdkfw9aM/8PiLrzlYmdC/lbgIYo9Ajst2Nq7BIcaAwsn4yGaQpseWXlZcCcUVtAieEP3b3gx2CxQwZD2RY9s+IdF9FI4MBhYzEyRqVcEIl0jYYgyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkgcgrrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBC3C4CEC3;
-	Tue, 10 Sep 2024 10:15:52 +0000 (UTC)
+	 MIME-Version; b=L2PaX0N00Pp/fiF9ExqBUckyMUnlGBWru1d+TEvNcMVUWlzrbJ9Xdgr92Ab2QQy8pHIsMJIIQdHM20b3QqQtVEceQ33P0HGTXjPq/35WfRBHoR2G4OdGfAtz15vH+Jm0gGd3XtUVELm4Yab0C45Jd9zVdG7u/ng2EHYRF48WSs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWoSlgz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A1CC4CEC3;
+	Tue, 10 Sep 2024 10:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963353;
-	bh=4VKpKzSTMcD4q2/rtkcKt+fhY5PVXhXMx8YGPIwnRJg=;
+	s=korg; t=1725964026;
+	bh=NS85PktJRETKrpjWU7nre0m/TrvuiXlMljaD2DFD87M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkgcgrrBmqn80rOzt4NRVBNwk0wNzcUv+8t4/v9j/8eX9GpyXcBqvdlAlHw+hcB/P
-	 0S0hevFKaUzJVRW0jTBjmPk1bWPsclhM9EZC6onDM9WhsACVMzUHod+wssP37iGT8n
-	 fjWfd/dW35qc7Jx3AldhnHs/uSE8EQpL2ehe9CwM=
+	b=HWoSlgz+3QizXFCRSnOwSrKkIcaUG0Zm2GAkCTwSnv0bFS+1F6e7NMcUw9wXLVUuX
+	 Vx+pSF6SjjTn0G/26ypd8qdOXtwt8elOBvuYJWvBrJhcBi53do4JHwEHoV03tdIryY
+	 kxDUCpatgwdZENdF5xn1uYk27mgKGQ24MHInMYEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/214] drm/amd/display: Assign linear_pitch_alignment even for VM
+	Steven Rostedt <rostedt@goodmis.org>,
+	Zheng Yejian <zhengyejian@huaweicloud.com>
+Subject: [PATCH 6.6 043/269] tracing: Avoid possible softlockup in tracing_iter_reset()
 Date: Tue, 10 Sep 2024 11:30:30 +0200
-Message-ID: <20240910092559.045233106@linuxfoundation.org>
+Message-ID: <20240910092609.790924201@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Zheng Yejian <zhengyejian@huaweicloud.com>
 
-[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
+commit 49aa8a1f4d6800721c7971ed383078257f12e8f9 upstream.
 
-[Description]
-Assign linear_pitch_alignment so we don't cause a divide by 0
-error in VM environments
+In __tracing_open(), when max latency tracers took place on the cpu,
+the time start of its buffer would be updated, then event entries with
+timestamps being earlier than start of the buffer would be skipped
+(see tracing_iter_reset()).
 
-Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Softlockup will occur if the kernel is non-preemptible and too many
+entries were skipped in the loop that reset every cpu buffer, so add
+cond_resched() to avoid it.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f26ebd549b9a ("tracing: use timestamp to determine start of latency traces")
+Link: https://lore.kernel.org/20240827124654.3817443-1-zhengyejian@huaweicloud.com
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index ef151a1bc31c..12e4beca5e84 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1107,6 +1107,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
- 		return NULL;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4156,6 +4156,8 @@ void tracing_iter_reset(struct trace_ite
+ 			break;
+ 		entries++;
+ 		ring_buffer_iter_advance(buf_iter);
++		/* This could be a big loop */
++		cond_resched();
+ 	}
  
- 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
-+		dc->caps.linear_pitch_alignment = 64;
- 		if (!dc_construct_ctx(dc, init_params))
- 			goto destruct_dc;
- 	} else {
--- 
-2.43.0
-
+ 	per_cpu_ptr(iter->array_buffer->data, cpu)->skipped_entries = entries;
 
 
 
