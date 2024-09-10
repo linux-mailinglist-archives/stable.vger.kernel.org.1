@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5385697355F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF06797343F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B82EB2F38D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A2B1F2211D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8804E18C33D;
-	Tue, 10 Sep 2024 10:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AA4194080;
+	Tue, 10 Sep 2024 10:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzT0PKT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIERko63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4522518C03E;
-	Tue, 10 Sep 2024 10:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4490818FC74;
+	Tue, 10 Sep 2024 10:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965037; cv=none; b=cgybJJceG5cWQxBvFbFYzamSONvHkD16Bt2BEfF/8SHKZocywgadc6zQf9qP6RTtPtFo+iAUaZkDiy54daXE84USOhiPcjoFG1CYGSF1yR/SzXq9PAsmwDCx8QtUUP6G4DtvoEtUKRrnIJVtn5EOKl+IaHONWs9eCgGaSvn2vCc=
+	t=1725964555; cv=none; b=Pvu3xLt8+znPQmhRS52W4oRbNjWvVP65Hn9zKYkL5IpXEM1S8m/ug7y3ZkFDQbvLOcgS1rqZml25dXJ0wyfk1OUW2YeFtfQsr1GofezBNZ/l6JbfsNqnEx5N5jtF3a8tzcotvzP/uCIn1LRk442R6XUUhRCl43lpj5+gGw3zgM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965037; c=relaxed/simple;
-	bh=/MYLThAjdu3gS2LPxeBvoycl1ceGsdpAwrnV4DDzn0w=;
+	s=arc-20240116; t=1725964555; c=relaxed/simple;
+	bh=tmckVvVO3z6VysHDlCTfO7qbcqnqtWk27POL4vuZJ6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CeBy8i8Lu5PwYwn/mtNdWc6XomjyqPPBgVrkURyaYwNagENFWZWMI+R7gvyhR6uFdncLc5e2b+tz8Dcj9T4GUaBp8NNn+UiHbrInvpkFkR1qCT2419fi9H1qEpoDeGiOX5vHSyf4v57fMmwJ05VqRj5axtF2Wc23jDTwj4svX9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzT0PKT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF8AC4CED3;
-	Tue, 10 Sep 2024 10:43:56 +0000 (UTC)
+	 MIME-Version; b=CHJEMI2FrTWFtoSpOUNni7Ihj6dYdoOt+e4jN76VvRFf3PPCOHbZ2BpLEHnAo+H9p2/EAEN6iTuxKrONqCXb/bDq1/MP84HCUC3EnCM5xTiOT1ZPsSOE4UPmdT932GiyZ6Oc1bTataQMS3YFhFc8Eezcq/W33qRctja4Ecch38U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIERko63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BDFC4CEC3;
+	Tue, 10 Sep 2024 10:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965037;
-	bh=/MYLThAjdu3gS2LPxeBvoycl1ceGsdpAwrnV4DDzn0w=;
+	s=korg; t=1725964555;
+	bh=tmckVvVO3z6VysHDlCTfO7qbcqnqtWk27POL4vuZJ6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzT0PKT8I3i8oMuSVX3nRaq1DRLv5e40eBsXpQoJDDWVhcJTvSa7NWnXD6xAGdghg
-	 a1Xwb2g1brcuInvKx9jJGLpaA2+KG9EItiE25E1VBuk53Ddg4xLcKv6dw11RKxI1/y
-	 WXRuFDJ77rDlpgCpxLR33NJIbzgeky8bpkXDkEGc=
+	b=vIERko631YHDVi3OCrIN5dxzR9b5/ek+qweFHB8eP3NAPsXWIPVhcsFm1GYWU6dHP
+	 vac1zMbC/tWUD7gtXP6FLfmXOF61dhYi3ub+kSptp4Eqx7EfFQRSbE+pLWA8rgHata
+	 g8NOR93QUi9qCLaMz1Mn19EjMmNE3L5zdlPJnddo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/186] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
+	Sven Schnelle <svens@linux.ibm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>
+Subject: [PATCH 6.6 223/269] uprobes: Use kzalloc to allocate xol area
 Date: Tue, 10 Sep 2024 11:33:30 +0200
-Message-ID: <20240910092559.267893302@linuxfoundation.org>
+Message-ID: <20240910092615.904587557@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
+commit e240b0fde52f33670d1336697c22d90a4fe33c84 upstream.
 
-In case of error in build_tokens_sysfs(), all the memory that has been
-allocated is freed at end of this function. But then free_group() is
-called which performs memory deallocation again.
+To prevent unitialized members, use kzalloc to allocate
+the xol area.
 
-Also, instead of free_group() call, there should be exit_dell_smbios_smm()
-and exit_dell_smbios_wmi() calls, since there is initialization, but there
-is no release of resources in case of an error.
-
-Fix these issues by replacing free_group() call with
-exit_dell_smbios_wmi() and exit_dell_smbios_smm().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b059a453b1cf1 ("x86/vdso: Add mremap hook to vm_special_mapping")
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20240903102313.3402529-1-svens@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell-smbios-base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/events/uprobes.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell-smbios-base.c b/drivers/platform/x86/dell-smbios-base.c
-index 3a1dbf199441..98e77cb210b7 100644
---- a/drivers/platform/x86/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell-smbios-base.c
-@@ -610,7 +610,10 @@ static int __init dell_smbios_init(void)
- 	return 0;
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1480,7 +1480,7 @@ static struct xol_area *__create_xol_are
+ 	uprobe_opcode_t insn = UPROBE_SWBP_INSN;
+ 	struct xol_area *area;
  
- fail_sysfs:
--	free_group(platform_device);
-+	if (!wmi)
-+		exit_dell_smbios_wmi();
-+	if (!smm)
-+		exit_dell_smbios_smm();
+-	area = kmalloc(sizeof(*area), GFP_KERNEL);
++	area = kzalloc(sizeof(*area), GFP_KERNEL);
+ 	if (unlikely(!area))
+ 		goto out;
  
- fail_create_group:
- 	platform_device_del(platform_device);
--- 
-2.43.0
-
+@@ -1490,7 +1490,6 @@ static struct xol_area *__create_xol_are
+ 		goto free_area;
+ 
+ 	area->xol_mapping.name = "[uprobes]";
+-	area->xol_mapping.fault = NULL;
+ 	area->xol_mapping.pages = area->pages;
+ 	area->pages[0] = alloc_page(GFP_HIGHUSER);
+ 	if (!area->pages[0])
 
 
 
