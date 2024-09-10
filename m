@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822DC973430
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B996973140
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0581C24EFB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EB11F27293
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AED818B48A;
-	Tue, 10 Sep 2024 10:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D0A18C932;
+	Tue, 10 Sep 2024 10:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVlhw2Tu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ggvI9J5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A2618C91B;
-	Tue, 10 Sep 2024 10:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696F18C325;
+	Tue, 10 Sep 2024 10:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964529; cv=none; b=hRB/AonAbBuESDzO7JTJ4efL1FESJow/rgoII+23UhzmPjlEbF36AmJZAP+k1TeUYeiwLh67t4j5LSEpoErlMiZ6ELBb2Oh/Sn4H8y+mdgL7JxQAkzkO4NiS5QwFgOhdyS5RsRbBM9dUJ8jP/P2Pu8SnV5wCz05EtE6DpCL/aUE=
+	t=1725962710; cv=none; b=m1an2DVsch2WTQo2Icvg8JzANRofPRyTwqgg2Xwmmcv2BuQUhUsfQnJCLcSoGCvdUBQcAs+dqfTv8QPcKaTGFyheP3VYlbG3EWIyUVPWQsuvmfRG3QTlFlOxFpqKSPaJFvPPLoed/81OU7YvIdtVdfQEQCZmHJ8geQDTDw04zFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964529; c=relaxed/simple;
-	bh=desCQJwzoRvMUqAfdjGBIuH9xqy46Eyx2cg6SuW+2AE=;
+	s=arc-20240116; t=1725962710; c=relaxed/simple;
+	bh=gAHcY62WEcD0uhdinERFGXn0MFAum+wQ0PtsmJJaRB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hb9x7L2R3wx0ZVRhIyszp8/0RNQ8/MxpZ6JPdJzOAMxJLWZzSyTCeTeMv5pG50qtcPaUOxS+H15VCErQDN1GYox588dDqBoNDzdkVXgFW6OT2kqkXBCmRHIDRzIxtwm3rtUNDNmLnV9xRIsv0rdz4FdUV7kVzjFg8MBvMyHX7pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVlhw2Tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AE3C4CECD;
-	Tue, 10 Sep 2024 10:35:28 +0000 (UTC)
+	 MIME-Version; b=IB1E1XYuqo/UYNR/4k7cdUzNQ5ef6Frlan7YgPjm/bmeCCakMi3uynALE1LGs71AX/+nFUi7ZzimI/K5c6TTBEiDwq3+vj92h7pq9NZPCl4VJrgatHDeZgvwIleiY4Gs7BozQ0wiikrzxSZPs8099lvTjAy/5mu1aCGqPPXK69I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ggvI9J5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E406C4CEC3;
+	Tue, 10 Sep 2024 10:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964528;
-	bh=desCQJwzoRvMUqAfdjGBIuH9xqy46Eyx2cg6SuW+2AE=;
+	s=korg; t=1725962710;
+	bh=gAHcY62WEcD0uhdinERFGXn0MFAum+wQ0PtsmJJaRB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVlhw2TuAbZIGCn8xI2f8duHmHA/i4WeGya1E0X4ukoJsZv5WICNUfR3S1gAoM+3D
-	 pCZKDzghtbqaXkUbizcfBj/zgw+IuowsPnN2tHm4SvTEe4KtkjgORLysr5vrXFigox
-	 DgIaJxDGXyFyIfNjdRTSBpwO9CYDFDScBDlBGVIM=
+	b=1ggvI9J5jP7KYon1Vm99+xcIMNLQ/0OfiAe4yInsgocI0PLYG99IawpLszPIfOC/M
+	 O+JGP9BJ6gzfFgSiEIM3t+m4oIWgF497sYvEKJXx/6nFbYptyi0pqsc1bc4gRekCHO
+	 wVUWNuApa0Flfv1wbf75SoullQANcWRP9cLSPqvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 206/269] iio: buffer-dmaengine: fix releasing dma channel on error
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 118/121] drm/i915/fence: Mark debug_fence_free() with __maybe_unused
 Date: Tue, 10 Sep 2024 11:33:13 +0200
-Message-ID: <20240910092615.400273524@linuxfoundation.org>
+Message-ID: <20240910092551.404209844@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 84c65d8008764a8fb4e627ff02de01ec4245f2c4 upstream.
+[ Upstream commit f99999536128b14b5d765a9982763b5134efdd79 ]
 
-If dma_get_slave_caps() fails, we need to release the dma channel before
-returning an error to avoid leaking the channel.
+When debug_fence_free() is unused
+(CONFIG_DRM_I915_SW_FENCE_DEBUG_OBJECTS=n), it prevents kernel builds
+with clang, `make W=1` and CONFIG_WERROR=y:
 
-Fixes: 2d6ca60f3284 ("iio: Add a DMAengine framework based buffer")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20240723-iio-fix-dmaengine-free-on-error-v1-1-2c7cbc9b92ff@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+.../i915_sw_fence.c:118:20: error: unused function 'debug_fence_free' [-Werror,-Wunused-function]
+  118 | static inline void debug_fence_free(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~
+
+Fix this by marking debug_fence_free() with __maybe_unused.
+
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: fc1584059d6c ("drm/i915: Integrate i915_sw_fence with debugobjects")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 8be4dce5ea6f2368cc25edc71989c4690fa66964)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -180,7 +180,7 @@ struct iio_buffer *iio_dmaengine_buffer_
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index 475e4b9485af..8f20668a860e 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -64,7 +64,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
+ 	debug_object_destroy(fence, &i915_sw_fence_debug_descr);
+ }
  
- 	ret = dma_get_slave_caps(chan, &caps);
- 	if (ret < 0)
--		goto err_free;
-+		goto err_release;
+-static inline void debug_fence_free(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
+ {
+ 	debug_object_free(fence, &i915_sw_fence_debug_descr);
+ 	smp_wmb(); /* flush the change in state before reallocation */
+@@ -102,7 +102,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
+ {
+ }
  
- 	/* Needs to be aligned to the maximum of the minimums */
- 	if (caps.src_addr_widths)
-@@ -206,6 +206,8 @@ struct iio_buffer *iio_dmaengine_buffer_
+-static inline void debug_fence_free(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
+ {
+ }
  
- 	return &dmaengine_buffer->queue.buffer;
- 
-+err_release:
-+	dma_release_channel(chan);
- err_free:
- 	kfree(dmaengine_buffer);
- 	return ERR_PTR(ret);
+-- 
+2.43.0
+
 
 
 
