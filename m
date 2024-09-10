@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6E59732F1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7663B9735B0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A01C283D0C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1270B2E002
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9724A19048A;
-	Tue, 10 Sep 2024 10:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CE918C02E;
+	Tue, 10 Sep 2024 10:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhRq2piQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3Z6EgUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7A05381A;
-	Tue, 10 Sep 2024 10:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4335C8DF;
+	Tue, 10 Sep 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963767; cv=none; b=ModW2xZbpV5h3LCBwl9Jj26BY6ZLZxh1Sb8APwIAL3fhDQh54V7ArxArzTaqeJhLOIvaGxw4yG1NG6IMy+240/qy2EeMlttZFdRiXMRU8T24LjXR1QfTwjORo2B8cz1zCPViUbaIWqHywAMgkCdcTk6LDKVeAU08LqhrI1onWHs=
+	t=1725965060; cv=none; b=OA2YFxp+I2EdccIXhAiDsEgeaTEaan92oyoLzHgo5nvlv9PeIxWJ2R2inJrq81fS+BTYbkW1eNHukUsWnrXH0jsYY8ttvIMKD0a9x+I+otpfASfRN0iZmuZDDmH3QYJU6vQhO1Ny3Lv87rt7+jvo4exuQIZe+AtkWJZ0/gPo2x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963767; c=relaxed/simple;
-	bh=nuh0Guvya6VhP5DOZWsMNIVkXwuhkeAcYFgJtGXxTVU=;
+	s=arc-20240116; t=1725965060; c=relaxed/simple;
+	bh=Ucs3kzmhA8/jE4U9/mq5MBxdO6jWwfDCPcZpEyOMCtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNreYynciCWhgnokiXtjqKxokYVC0uIAdw/lCZuTynuTfWs5O3Ko/3xxAXcuAHTvPKxjdGbLaPvwJDMN6LGgNhNNWW5V7iF9/gJc55bBR2gsKThFJrPuVvbYkSbuWVaelrhmJddFpYndJwuhxFRD+yKXmNTR4OfbRbBNeh5bpu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhRq2piQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B85C4CEC3;
-	Tue, 10 Sep 2024 10:22:46 +0000 (UTC)
+	 MIME-Version; b=fpQG05UyrbKHpVZC9fdxm52hovp26KaTyqw7NE3s0mR+y16g8ze7/kg2pOVrMiEonSFaWxxL8kczhVp21dvgoao2QRuAehvRlBgv6NLANwvFAt45eS0NYIVq4KvaGgvAmeCH/PUcBkbbxn7Ld+nSFGCd/2303hBFkAkK/YiViQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3Z6EgUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD73C4CEC3;
+	Tue, 10 Sep 2024 10:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963767;
-	bh=nuh0Guvya6VhP5DOZWsMNIVkXwuhkeAcYFgJtGXxTVU=;
+	s=korg; t=1725965060;
+	bh=Ucs3kzmhA8/jE4U9/mq5MBxdO6jWwfDCPcZpEyOMCtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhRq2piQudBwxu27bHjDlogq94GDfVu85mbd4bTSEgWBxtDWs4Xr6LjLaQ3uP0DsD
-	 K0vvnczQ/aW9XuUOr9BlsPaLVKJC5iDz19Zc9vHi0PwQza2EU9Rc4VR2BJAjgg2KIM
-	 LfL5fYP5ykdC24mlnZqpO+6OfEvBQqllc7gDcm2E=
+	b=I3Z6EgUrU2jhVdwSvT4snQZzrN8p12K5eDlqQrYtL1yn7NR1qb8WHUdWbfDNDIzKJ
+	 5f8fN639PXWqgQRtz1cx4eYlm6EhmwlCNWJNF7N4hcL3schTwswIkDbvMIRreyQLtZ
+	 84B/t6FHTS3LQRerGaaZ5Yi5DALsr8iGfj/pKk4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/214] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 096/186] nfsd: make svc_stat per-network namespace instead of global
 Date: Tue, 10 Sep 2024 11:33:11 +0200
-Message-ID: <20240910092605.599769283@linuxfoundation.org>
+Message-ID: <20240910092558.477382135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+The final bit of stats that is global is the rpc svc_stat.  Move this
+into the nfsd_net struct and use that everywhere instead of the global
+struct.  Remove the unused global struct.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/netns.h  |    4 ++++
+ fs/nfsd/nfsctl.c |    2 ++
+ fs/nfsd/nfssvc.c |    2 +-
+ fs/nfsd/stats.c  |   10 ++++------
+ fs/nfsd/stats.h  |    2 --
+ 5 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index f25eb111c051..34d3ac52de89 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
- 	}
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -13,6 +13,7 @@
+ #include <linux/nfs4.h>
+ #include <linux/percpu_counter.h>
+ #include <linux/siphash.h>
++#include <linux/sunrpc/stats.h>
  
--- 
-2.43.0
-
+ /* Hash tables for nfs4_clientid state */
+ #define CLIENT_HASH_BITS                 4
+@@ -183,6 +184,9 @@ struct nfsd_net {
+ 	/* Per-netns stats counters */
+ 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
+ 
++	/* sunrpc svc stats */
++	struct svc_stat          nfsd_svcstats;
++
+ 	/* longest hash chain seen */
+ 	unsigned int             longest_chain;
+ 
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1461,6 +1461,8 @@ static __net_init int nfsd_init_net(stru
+ 	retval = nfsd_stat_counters_init(nn);
+ 	if (retval)
+ 		goto out_repcache_error;
++	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
++	nn->nfsd_svcstats.program = &nfsd_program;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -664,7 +664,7 @@ int nfsd_create_serv(struct net *net)
+ 	if (nfsd_max_blksize == 0)
+ 		nfsd_max_blksize = nfsd_get_default_max_blksize();
+ 	nfsd_reset_versions(nn);
+-	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
++	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
+ 				 nfsd_max_blksize, nfsd);
+ 	if (serv == NULL)
+ 		return -ENOMEM;
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -27,10 +27,6 @@
+ 
+ #include "nfsd.h"
+ 
+-struct svc_stat		nfsd_svcstats = {
+-	.program	= &nfsd_program,
+-};
+-
+ static int nfsd_show(struct seq_file *seq, void *v)
+ {
+ 	struct net *net = PDE_DATA(file_inode(seq->file));
+@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *se
+ 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
+ 
+ 	/* show my rpc info */
+-	svc_seq_show(seq, &nfsd_svcstats);
++	svc_seq_show(seq, &nn->nfsd_svcstats);
+ 
+ #ifdef CONFIG_NFSD_V4
+ 	/* Show count for individual nfsv4 operations */
+@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct n
+ 
+ void nfsd_proc_stat_init(struct net *net)
+ {
+-	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
++	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++
++	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ }
+ 
+ void nfsd_proc_stat_shutdown(struct net *net)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,8 +10,6 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-extern struct svc_stat		nfsd_svcstats;
+-
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
 
 
 
