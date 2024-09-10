@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA0597305C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458FF972FD2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790C71C249D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78AEE1C24963
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEB418C331;
-	Tue, 10 Sep 2024 09:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC76618C340;
+	Tue, 10 Sep 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRRsUJYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yrswbbb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD9418C32F;
-	Tue, 10 Sep 2024 09:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79B18B48A;
+	Tue, 10 Sep 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962372; cv=none; b=kpWCFKGirIoJB2lDM5jyRAhC4QGR4NXZaVMUsV3v4g4yztYM+aLueDX9DPJJODgIJuVSprxXDN4TsKgLE/h+cVU6uKp32m+FVhMSBfgyOnPgUwcECKTgYJkHpQGNhv91TEgypx+QiH9XbfnMvTYvTsGj+xh1EG5sBQKyqhLqUIc=
+	t=1725962084; cv=none; b=OIq3VZaQjp9xZW8dHqghzHcGkKvMZsE5+tY2uyXBFk2I/O/knF7wFwq59zzXpKNBmUAQhHfS5TDfqlpMFy3IY39PL7z7wx2H3RIPfa/xE1P7votdotIvpfTIAF+cIOehDanKjkRrbzak6myM9zn10Ig35Gfpr8t/OK33lAcdtEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962372; c=relaxed/simple;
-	bh=QuXOG6ysEopYTkM3XFEUqI4Ny0S1N9StyTkudo/GvkY=;
+	s=arc-20240116; t=1725962084; c=relaxed/simple;
+	bh=lobsw704lsCjqHGl9qujPZBnasEcR0YJJP0TSFaoqyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBiWp/gWpSR/NaadQg6tcbb8mmTSSx7UpwOhj/doHP18UFYPqNIkQ5jMgiJSHP/1EI0ZcJzXRydC3qqpoyb9JX7NX89KhX/WgXKNUIaCncB6NC93VuAOLl1au0IxYYbwlsty1QvNgOfqw+ENoFUzEuvZZZydzpu3P7bHrId3de4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRRsUJYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8990C4CEC3;
-	Tue, 10 Sep 2024 09:59:31 +0000 (UTC)
+	 MIME-Version; b=Zeni5kO/C4V8VdvJZDeBTlM1GD55M5n65E8JWwtKveQW+CtpmMp/qkLrBs2H4uGoycSkVqeB7eL1TcOCnP7UgZn8SC8vaaL4ktkE+1wBGb2gF/uVRBXwh0tjXjt8Zcy7mXKj5szXXGVRxeToB2BLAoglO6THm0o7Si/BYtFpNbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yrswbbb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000F9C4CEC3;
+	Tue, 10 Sep 2024 09:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962372;
-	bh=QuXOG6ysEopYTkM3XFEUqI4Ny0S1N9StyTkudo/GvkY=;
+	s=korg; t=1725962084;
+	bh=lobsw704lsCjqHGl9qujPZBnasEcR0YJJP0TSFaoqyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRRsUJYTZHSwq87ox6k/7MVIvG28GuxAOgjvEQmulipknZ0CcXBA7Nc11at1yQIVu
-	 oO5qz2wqf/jNp76uL4FWxJ3DtPOcVYm+nkCtFAkkJkVzrsqR9n32TN4fbewgJ3mSGO
-	 3wO7voSH4/4bHjnET0KL3nWga2mPkdHIhpkPRiws=
+	b=Yrswbbb+mxXIvV7WzX0Jp7CK1E9MiAA0hSs2yiHTpYHh7gGetiXB81fk12m0L4IPs
+	 iXAoMmJ6NAOpGz1bN4uZbySQVMIm433M5q0yCXpWnt4kme6FOuWeOOal8mbugpplNq
+	 tKYhzR9mTinxxlE0C6UjjrUYdccLn7ddXkl8phRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chen <michael.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 012/121] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.10 290/375] iio: adc: ad_sigma_delta: fix irq_flags on irq request
 Date: Tue, 10 Sep 2024 11:31:27 +0200
-Message-ID: <20240910092546.328847663@linuxfoundation.org>
+Message-ID: <20240910092632.310240423@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chen <michael.chen@amd.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
+commit e81bb580ec08d7503c14c92157d810d306290003 upstream.
 
-Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
-in some use case. This would lead code scanner to complain about
-access beyond. Re-define it in union to enforce 8-byte size and
-alignment to avoid potential issue.
+With commit 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq
+selection"), we can get the irq line from struct ad_sigma_delta_info
+instead of the spi device. However, in devm_ad_sd_probe_trigger(), when
+getting the irq_flags with irq_get_trigger_type() we are still using
+the spi device irq instead of the one used for devm_request_irq().
 
-Signed-off-by: Michael Chen <michael.chen@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq selection")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240806-dev-fix-ad-sigma-delta-v1-1-aa25b173c063@analog.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
- drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-index d54ceebd346b..30c70b3ab17f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
-@@ -42,8 +42,6 @@
- #define CRAT_OEMTABLEID_LENGTH	8
- #define CRAT_RESERVED_LENGTH	6
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -568,7 +568,7 @@ EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trig
+ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_dev)
+ {
+ 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+-	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->spi->irq);
++	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->irq_line);
+ 	int ret;
  
--#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
--
- /* Compute Unit flags */
- #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
- #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index a49e2ab071d6..de892ee147de 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -883,8 +883,7 @@ static void kfd_update_system_properties(void)
- 	dev = list_last_entry(&topology_device_list,
- 			struct kfd_topology_device, list);
- 	if (dev) {
--		sys_props.platform_id =
--			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
-+		sys_props.platform_id = dev->oem_id64;
- 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
- 		sys_props.platform_rev = dev->oem_revision;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-index d4718d58d0f2..7230b5b5bfe5 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
-@@ -172,7 +172,10 @@ struct kfd_topology_device {
- 	struct attribute		attr_gpuid;
- 	struct attribute		attr_name;
- 	struct attribute		attr_props;
--	uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+	union {
-+		uint8_t				oem_id[CRAT_OEMID_LENGTH];
-+		uint64_t			oem_id64;
-+	};
- 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
- 	uint32_t			oem_revision;
- };
--- 
-2.43.0
-
+ 	if (dev != &sigma_delta->spi->dev) {
 
 
 
