@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9AC973164
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F689734C8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B52B28B30
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F4ECB270D2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09D718FDAE;
-	Tue, 10 Sep 2024 10:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262E1192D94;
+	Tue, 10 Sep 2024 10:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvlWTarQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NADd78VI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A035418595E;
-	Tue, 10 Sep 2024 10:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D0E192D75;
+	Tue, 10 Sep 2024 10:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962799; cv=none; b=EOIeXig0D9Va5PeXFdR4a8otmu5ndHB6wBJhD/IMibBT9D4a2wgTk46TJjBW87+CBeaYPZJ29LHks4ilWa6bsJVWmVjw/m/whsu/VWoIe9vSMisCHaw56O6Jc4nGfu8RROLLiELHKaNOl9evptwrmnWFTWBPOeOlMJICuQoocXY=
+	t=1725964108; cv=none; b=mp/yGugtvVeE7EVcMzQ2ppzKurDlFTQRPYKXr8jWWssvUCSl3q1RQJ3sBWB48TmOVZvzb0op7kfK4CvQ47xGsZx61oFiy1z39lvFfF4/O6B7FbkGquiYQdoGo0bca6uHOWzWK83M+eoVYL/PgG47sibGAL2ejqhjneTk2CSc++Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962799; c=relaxed/simple;
-	bh=oyLXVX8de7CRFMbJLUP9K2fg3t7zbiHoQ9RIUp1bkAc=;
+	s=arc-20240116; t=1725964108; c=relaxed/simple;
+	bh=dE838avZTsB2rid5O2tdtJJ1dCrpNGYW0miaqdBQF7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqoVGciQoWU1T1/IkMaJ2kI3hOEgpqGtnFMnuuXv/tZEFElL4iKzIuSpmnF6XDGskgPBD9m1ZLSSaiUwgWy7B4OG6RP+fUQqRSTUwzhA/P3M948sJDIlLNdgB3p1MuoFURm23AZG9BlCc76vy+FSesPjyUfqFUojcGBnuC2dwaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvlWTarQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8673C4CEC3;
-	Tue, 10 Sep 2024 10:06:38 +0000 (UTC)
+	 MIME-Version; b=iDai+Iw1vghQL82XmSmm73P5sG100TX26BQpPEiByLhOt/iFm17+mRLDxdu0IQPrmMcBPQJ75MwAYANtRCKif4KgFeGkQs3nkPceDqIzXJg3bEutW17/8tjUBL4dudXlbvgBxhbqP94F6WMJKM/+MbP6B9E9n02FAZQdCO3gvNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NADd78VI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B1DC4CEC3;
+	Tue, 10 Sep 2024 10:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962799;
-	bh=oyLXVX8de7CRFMbJLUP9K2fg3t7zbiHoQ9RIUp1bkAc=;
+	s=korg; t=1725964108;
+	bh=dE838avZTsB2rid5O2tdtJJ1dCrpNGYW0miaqdBQF7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvlWTarQNU1Nqkd5okg0jNqULWgx3JDN83CdBQj5P++rdwbOdWFak7xS143XuUDKT
-	 zbHsHXdPCunYsnoOh5/VG6PM3VSoV62oGjXvFEReiCl14vwm8Gp9g7lJ4lqt0qwexQ
-	 tALhfAJHrDwosU6Zkro9CTBE7PCe1QdAXPq4uQoM=
+	b=NADd78VIzoWzj/bwlcYe+kFI50ACsfL2TJRA7CuGQbPHkbh0rEeTWTEhDtQP4uDHg
+	 bzFbNNaQmhyGeVUfJDuMEBUvOEZyGj3rvybB7oJ6E+NLxZSgkEBG9QuX1c3o357B/H
+	 MmYUoeRKMcYBLVvPUL3oJAsT15ndtJYqlTWBim3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mitchell Levy <levymitchell0@gmail.com>
-Subject: [PATCH 6.1 034/192] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported
+	Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Alexander Potapenko <glider@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 071/269] x86/kmsan: Fix hook for unaligned accesses
 Date: Tue, 10 Sep 2024 11:30:58 +0200
-Message-ID: <20240910092559.357626185@linuxfoundation.org>
+Message-ID: <20240910092610.733550830@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mitchell Levy <levymitchell0@gmail.com>
+From: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
 
-commit 2848ff28d180bd63a95da8e5dcbcdd76c1beeb7b upstream.
+[ Upstream commit bf6ab33d8487f5e2a0998ce75286eae65bb0a6d6 ]
 
-There are two distinct CPU features related to the use of XSAVES and LBR:
-whether LBR is itself supported and whether XSAVES supports LBR. The LBR
-subsystem correctly checks both in intel_pmu_arch_lbr_init(), but the
-XSTATE subsystem does not.
+When called with a 'from' that is not 4-byte-aligned, string_memcpy_fromio()
+calls the movs() macro to copy the first few bytes, so that 'from' becomes
+4-byte-aligned before calling rep_movs(). This movs() macro modifies 'to', and
+the subsequent line modifies 'n'.
 
-The LBR bit is only removed from xfeatures_mask_independent when LBR is not
-supported by the CPU, but there is no validation of XSTATE support.
+As a result, on unaligned accesses, kmsan_unpoison_memory() uses the updated
+(aligned) values of 'to' and 'n'. Hence, it does not unpoison the entire
+region.
 
-If XSAVES does not support LBR the write to IA32_XSS causes a #GP fault,
-leaving the state of IA32_XSS unchanged, i.e. zero. The fault is handled
-with a warning and the boot continues.
+Save the original values of 'to' and 'n', and pass those to
+kmsan_unpoison_memory(), so that the entire region is unpoisoned.
 
-Consequently the next XRSTORS which tries to restore supervisor state fails
-with #GP because the RFBM has zero for all supervisor features, which does
-not match the XCOMP_BV field.
-
-As XFEATURE_MASK_FPSTATE includes supervisor features setting up the FPU
-causes a #GP, which ends up in fpu_reset_from_exception_fixup(). That fails
-due to the same problem resulting in recursive #GPs until the kernel runs
-out of stack space and double faults.
-
-Prevent this by storing the supported independent features in
-fpu_kernel_cfg during XSTATE initialization and use that cached value for
-retrieving the independent feature bits to be written into IA32_XSS.
-
-[ tglx: Massaged change log ]
-
-Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Link: https://lore.kernel.org/r/20240523215029.4160518-1-bjohannesmeyer@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/fpu/types.h |    7 +++++++
- arch/x86/kernel/fpu/xstate.c     |    3 +++
- arch/x86/kernel/fpu/xstate.h     |    4 ++--
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/lib/iomem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -577,6 +577,13 @@ struct fpu_state_config {
- 	 * even without XSAVE support, i.e. legacy features FP + SSE
- 	 */
- 	u64 legacy_features;
-+	/*
-+	 * @independent_features:
-+	 *
-+	 * Features that are supported by XSAVES, but not managed as part of
-+	 * the FPU core, such as LBR
-+	 */
-+	u64 independent_features;
- };
+diff --git a/arch/x86/lib/iomem.c b/arch/x86/lib/iomem.c
+index e0411a3774d4..5eecb45d05d5 100644
+--- a/arch/x86/lib/iomem.c
++++ b/arch/x86/lib/iomem.c
+@@ -25,6 +25,9 @@ static __always_inline void rep_movs(void *to, const void *from, size_t n)
  
- /* FPU state configuration information */
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -792,6 +792,9 @@ void __init fpu__init_system_xstate(unsi
- 		goto out_disable;
- 	}
- 
-+	fpu_kernel_cfg.independent_features = fpu_kernel_cfg.max_features &
-+					      XFEATURE_MASK_INDEPENDENT;
-+
- 	/*
- 	 * Clear XSAVE features that are disabled in the normal CPUID.
- 	 */
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -64,9 +64,9 @@ static inline u64 xfeatures_mask_supervi
- static inline u64 xfeatures_mask_independent(void)
+ static void string_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
  {
- 	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR))
--		return XFEATURE_MASK_INDEPENDENT & ~XFEATURE_MASK_LBR;
-+		return fpu_kernel_cfg.independent_features & ~XFEATURE_MASK_LBR;
++	const void *orig_to = to;
++	const size_t orig_n = n;
++
+ 	if (unlikely(!n))
+ 		return;
  
--	return XFEATURE_MASK_INDEPENDENT;
-+	return fpu_kernel_cfg.independent_features;
+@@ -39,7 +42,7 @@ static void string_memcpy_fromio(void *to, const volatile void __iomem *from, si
+ 	}
+ 	rep_movs(to, (const void *)from, n);
+ 	/* KMSAN must treat values read from devices as initialized. */
+-	kmsan_unpoison_memory(to, n);
++	kmsan_unpoison_memory(orig_to, orig_n);
  }
  
- /* XSAVE/XRSTOR wrapper functions */
+ static void string_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
+-- 
+2.43.0
+
 
 
 
