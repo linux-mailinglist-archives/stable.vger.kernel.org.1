@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2F1973523
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B5A97347C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D0E1F25EE9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F178B1F257A6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B51190056;
-	Tue, 10 Sep 2024 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB118C025;
+	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKGyUEmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3gSm3DR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E60A18FC9F;
-	Tue, 10 Sep 2024 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7A18A6B9;
+	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965087; cv=none; b=lPQjzEo0tjqNm+/03VSKPLVGCn66/xDlJ1jJJjAWA/chlChAl2FbPQuCffubmHYLlP7ucK6jlLW238mvXIL+k/eEqu/5WB5uWgQ1tvRaPMMGZeYVxc/8hTygrBfViryxgbQYcuXcHJOaR+/1fLgHs8ruh6C9XMWMjSpoUMPINao=
+	t=1725964691; cv=none; b=Y57V+hqzrl0gN7NGpbpYR8Amp66HcATuf4mCorzepS+dnQESgjURZaXuxspgm9iIrMH6VPtspMpSzxbGR9yuOVRIy46Dz6sc8fzKnM6JeSIh9qXmhSBVnspBp+JsOG9yfJzeXhNn+tIwbpopR21Hb6XPbphAuNlU4ZooKgo8o+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965087; c=relaxed/simple;
-	bh=IBBnYYlfsny63xncUVgp1fJnKZeSvUQYxU32GyKrlgo=;
+	s=arc-20240116; t=1725964691; c=relaxed/simple;
+	bh=YTcUVjnjHf5PQul2GMNrR3MIPEe6X41fKoZ+4HpzJFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juROkmt/tCpaiA6orJchicYKMBH2TaCOanu/2Hf4UxfSkXdn1EYAYYuMYHrvgTfh2QkOcG8/piMJWPlR5OmLZ44djaKoYFBHgfxhI7glNtcbSNGnkEcmC0zNSV7wJqhHaKlKO6b4Thz8q/D5OP/o2zbCSkwbf3s7xSWLomgY9hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKGyUEmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24E3C4CEC3;
-	Tue, 10 Sep 2024 10:44:46 +0000 (UTC)
+	 MIME-Version; b=Y+gNXnCZqsc8tfqBvCCB15GUZ2fMQRDWHiv7cWQe+F9O+t3iNi1qxR3qexi+FMv+PtvgvFFk4vD9KR92vxIK+Tc45E93JKb9EtQLBjJP33l0K985PQ3+YIoopX8N7d8siw6Wn7nbgPyLykEc7gkmkCLh5Wh3xiFbSAjHDpQ2m0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3gSm3DR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350B5C4CEC3;
+	Tue, 10 Sep 2024 10:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965087;
-	bh=IBBnYYlfsny63xncUVgp1fJnKZeSvUQYxU32GyKrlgo=;
+	s=korg; t=1725964691;
+	bh=YTcUVjnjHf5PQul2GMNrR3MIPEe6X41fKoZ+4HpzJFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKGyUEmPcI/29z3JHC17ci+b60dajExFPQBZNnAuK2AjfyFQKSD5mtaVBTHSAxYWE
-	 qluY4jj1LDDDc7QsTpRir31+IRblGKQq9Z5ynuLMcK4srZe5n9hmFVO1250vXE7H7x
-	 A2PCZiJnCFLagFe7gD4zWtz4UCBc1snb2MMofs2s=
+	b=y3gSm3DRM87CwvIjG9yQ0DNusTXANGfATtsCMvq/E7tX5ZcpJ3Krco2W7LaZGgl2n
+	 yMDb/b/lHtGTXR0Aub94D6XjwncrOeTRZQvQM9EmWPRK8T10fHM5NC8WkoEcL6GZcj
+	 gz86qywpi2h6U2LrFjbkzLShqcvW9A4oRJZb5Un8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/186] devres: Initialize an uninitialized struct member
-Date: Tue, 10 Sep 2024 11:33:48 +0200
-Message-ID: <20240910092600.065240991@linuxfoundation.org>
+Subject: [PATCH 6.6 242/269] crypto: starfive - Fix nent assignment in rsa dec
+Date: Tue, 10 Sep 2024 11:33:49 +0200
+Message-ID: <20240910092616.487048555@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Jia Jie Ho <jiajie.ho@starfivetech.com>
 
-[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
+[ Upstream commit 8323c036789b8b4a61925fce439a89dba17b7f2f ]
 
-Initialize an uninitialized struct member for driver API
-devres_open_group().
+Missing src scatterlist nent assignment in rsa decrypt function.
+Removing all unneeded assignment and use nents value from req->src
+instead.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/starfive/jh7110-cryp.h | 1 -
+ drivers/crypto/starfive/jh7110-rsa.c  | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 8a74008c13c4..e3a735d0213a 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -577,6 +577,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
- 	grp->id = grp;
- 	if (id)
- 		grp->id = id;
-+	grp->color = 0;
+diff --git a/drivers/crypto/starfive/jh7110-cryp.h b/drivers/crypto/starfive/jh7110-cryp.h
+index f386e9897896..607f70292b21 100644
+--- a/drivers/crypto/starfive/jh7110-cryp.h
++++ b/drivers/crypto/starfive/jh7110-cryp.h
+@@ -213,7 +213,6 @@ struct starfive_cryp_request_ctx {
+ 	struct scatterlist			*out_sg;
+ 	struct ahash_request			ahash_fbk_req;
+ 	size_t					total;
+-	size_t					nents;
+ 	unsigned int				blksize;
+ 	unsigned int				digsize;
+ 	unsigned long				in_sg_len;
+diff --git a/drivers/crypto/starfive/jh7110-rsa.c b/drivers/crypto/starfive/jh7110-rsa.c
+index fbc06f8ee95f..1db9a3d02848 100644
+--- a/drivers/crypto/starfive/jh7110-rsa.c
++++ b/drivers/crypto/starfive/jh7110-rsa.c
+@@ -282,7 +282,7 @@ static int starfive_rsa_enc_core(struct starfive_cryp_ctx *ctx, int enc)
+ 		memset(rctx->rsa_data, 0, shift);
+ 	}
  
- 	spin_lock_irqsave(&dev->devres_lock, flags);
- 	add_dr(dev, &grp->node[0]);
+-	rctx->total = sg_copy_to_buffer(rctx->in_sg, rctx->nents,
++	rctx->total = sg_copy_to_buffer(rctx->in_sg, sg_nents(rctx->in_sg),
+ 					rctx->rsa_data + shift, rctx->total);
+ 
+ 	if (enc) {
+@@ -333,7 +333,6 @@ static int starfive_rsa_enc(struct akcipher_request *req)
+ 	rctx->in_sg = req->src;
+ 	rctx->out_sg = req->dst;
+ 	rctx->total = req->src_len;
+-	rctx->nents = sg_nents(rctx->in_sg);
+ 	ctx->rctx = rctx;
+ 
+ 	return starfive_rsa_enc_core(ctx, 1);
 -- 
 2.43.0
 
