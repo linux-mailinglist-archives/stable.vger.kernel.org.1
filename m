@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AE29732A1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D749733CB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 070832866F6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 238E428A22D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FCF1922FC;
-	Tue, 10 Sep 2024 10:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9452199944;
+	Tue, 10 Sep 2024 10:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtzvD05j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIuD9Ih/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7763188A28;
-	Tue, 10 Sep 2024 10:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2118E778;
+	Tue, 10 Sep 2024 10:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963555; cv=none; b=KBtkPNhnImTK4QSpgGA78DsGEHWD8s5izLdnSzL83tVxX8ErKBCXNcDemlz1BS3mQLOhv9scmcjQBVQjxHDgF6PEhIxx8sCqBWOQXqprkwZGVE5WQjENjxfQ7XdhqLq5KH/3U9GpC+zh7ZApNcBZn7nGg55BlWiyy7z7Hk6veck=
+	t=1725964291; cv=none; b=Vm0Snnrr8NIT08UJBl76+XH0J5KLN/VSfdWFwD3hDEd0XUB6AccqyGOfJgbx+nuVpx0k89UXs5pqaw6Ks3n+6JYMtgf3s5UsJsgryPl+PLbfhENZhikeV9G04Bbwx0N01DPhgpOv1F3zKjRsLR76U5nSgEpskzQ6oPaa/NTNnxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963555; c=relaxed/simple;
-	bh=W4mH0/9x87S5i+UINUxDXEjQ5wEfIvzbcSTZhn4iK7Y=;
+	s=arc-20240116; t=1725964291; c=relaxed/simple;
+	bh=1CaxLtajIta/91re0kqawbv1Sg76zilPrs+xEpqL/qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pa8gOIoJGhN8fUFTQYNEaH68wzq6nrb0BAMSsTezu6dQXHBadeJiWJ4ud5v5cB8yR4/rcOK8Y5Ef3FuVW0LG8I4DMraScYYZgZpXe8A/ohkjyVvwlt2a7cDMjtPDQQqzQrLursa4C33Hvnxx01bSiSjA7iYFnWyrq7gixigIuRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtzvD05j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3261AC4CEC3;
-	Tue, 10 Sep 2024 10:19:15 +0000 (UTC)
+	 MIME-Version; b=pZVFM29PVqerEJajgyzcLxDY3sqRCPbpRBlh9yygwqyQzcDKNjnfuc1G7IWdbBnewWL7+lFrZfYZfL3uiOBNRzdh5hnjxNZLfT8VfjqIc2T6ULhY2Bj4IKVLm/IndsAQO+ZHedgyeLGAQeuenJgfcOVsj10BXyzfS4euopzczlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIuD9Ih/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9768EC4CEC3;
+	Tue, 10 Sep 2024 10:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963555;
-	bh=W4mH0/9x87S5i+UINUxDXEjQ5wEfIvzbcSTZhn4iK7Y=;
+	s=korg; t=1725964291;
+	bh=1CaxLtajIta/91re0kqawbv1Sg76zilPrs+xEpqL/qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtzvD05jqo6wfssECQLP/EFwztU1lC1rw/r5eM0irV7yw0Rcahwqky1oNCCVqQdlX
-	 x/b+2YjVGZyRGwU+IdGr8MY9OL5MU02yLIWCfJD0bWvPFjvCHVebikJLFmD/Ur7gwd
-	 VK/bGPkdsyo61rzjEbkbVoKYCy+VNhcBuJUBIkE4=
+	b=IIuD9Ih/V7YM7a8jobe1fCkjwXjVU7pNgr8KQ8No6/e7rPKjNfSZJZFEQMc2Oyecb
+	 YI41i9se//9surl9Dr6WH8VfvECVNAJXT4Caf7LMx/usqygZwg1l/FvizhKbYJsE93
+	 ULJgZIcHCi4gPPhWWiutt5oqvS2hY0nJgu8hxsCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 098/214] mptcp: pm: ADD_ADDR 0 is not a new address
+	Hayes Wang <hayeswang@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 133/269] r8152: fix the firmware doesnt work
 Date: Tue, 10 Sep 2024 11:32:00 +0200
-Message-ID: <20240910092602.794936322@linuxfoundation.org>
+Message-ID: <20240910092612.945297230@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Hayes Wang <hayeswang@realtek.com>
 
-commit 57f86203b41c98b322119dfdbb1ec54ce5e3369b upstream.
+[ Upstream commit 8487b4af59d4d7feda4b119dc2d92c67ca25c27e ]
 
-The ADD_ADDR 0 with the address from the initial subflow should not be
-considered as a new address: this is not something new. If the host
-receives it, it simply means that the address is available again.
+generic_ocp_write() asks the parameter "size" must be 4 bytes align.
+Therefore, write the bp would fail, if the mac->bp_num is odd. Align the
+size to 4 for fixing it. The way may write an extra bp, but the
+rtl8152_is_fw_mac_ok() makes sure the value must be 0 for the bp whose
+index is more than mac->bp_num. That is, there is no influence for the
+firmware.
 
-When receiving an ADD_ADDR for the ID 0, the PM already doesn't consider
-it as new by not incrementing the 'add_addr_accepted' counter. But the
-'accept_addr' might not be set if the limit has already been reached:
-this can be bypassed in this case. But before, it is important to check
-that this ADD_ADDR for the ID 0 is for the same address as the initial
-subflow. If not, it is not something that should happen, and the
-ADD_ADDR can be ignored.
+Besides, I check the return value of generic_ocp_write() to make sure
+everything is correct.
 
-Note that if an ADD_ADDR is received while there is already a subflow
-opened using the same address, this ADD_ADDR is ignored as well. It
-means that if multiple ADD_ADDR for ID 0 are received, there will not be
-any duplicated subflows created by the client.
-
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in pm.c, due to commit 4d25247d3ae4 ("mptcp: bypass
-  in-kernel PM restrictions for non-kernel PMs"), which is not in this
-  version, and changes the context. The same fix can be applied here by
-  adding the new check at the same place. Note that addresses_equal()
-  has been used instead of mptcp_addresses_equal(), renamed in commit
-  4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs"),
-  not in this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5c266a61186 ("r8152: set bp in bulk")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Link: https://patch.msgid.link/20240903063333.4502-1-hayeswang@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm.c         |    4 +++-
- net/mptcp/pm_netlink.c |    9 +++++++++
- net/mptcp/protocol.h   |    2 ++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -189,7 +189,9 @@ void mptcp_pm_add_addr_received(struct m
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 127b34dcc5b3..ce19ebd180f1 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -5143,14 +5143,23 @@ static void rtl8152_fw_mac_apply(struct r8152 *tp, struct fw_mac *mac)
+ 	data = (u8 *)mac;
+ 	data += __le16_to_cpu(mac->fw_offset);
  
- 	spin_lock_bh(&pm->lock);
+-	generic_ocp_write(tp, __le16_to_cpu(mac->fw_reg), 0xff, length, data,
+-			  type);
++	if (generic_ocp_write(tp, __le16_to_cpu(mac->fw_reg), 0xff, length,
++			      data, type) < 0) {
++		dev_err(&tp->intf->dev, "Write %s fw fail\n",
++			type ? "PLA" : "USB");
++		return;
++	}
  
--	if (!READ_ONCE(pm->accept_addr)) {
-+	/* id0 should not have a different address */
-+	if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
-+	    (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
- 		mptcp_pm_announce_addr(msk, addr, true);
- 		mptcp_pm_add_addr_send_ack(msk);
- 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -669,6 +669,15 @@ add_addr_echo:
- 	mptcp_pm_nl_addr_send_ack(msk);
- }
+ 	ocp_write_word(tp, type, __le16_to_cpu(mac->bp_ba_addr),
+ 		       __le16_to_cpu(mac->bp_ba_value));
  
-+bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
-+				     const struct mptcp_addr_info *remote)
-+{
-+	struct mptcp_addr_info mpc_remote;
-+
-+	remote_address((struct sock_common *)msk, &mpc_remote);
-+	return addresses_equal(&mpc_remote, remote, remote->port);
-+}
-+
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow;
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -742,6 +742,8 @@ void mptcp_pm_add_addr_received(struct m
- void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
- 			      const struct mptcp_addr_info *addr);
- void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
-+bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
-+				     const struct mptcp_addr_info *remote);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
- 			       const struct mptcp_rm_list *rm_list);
+-	generic_ocp_write(tp, __le16_to_cpu(mac->bp_start), BYTE_EN_DWORD,
+-			  __le16_to_cpu(mac->bp_num) << 1, mac->bp, type);
++	if (generic_ocp_write(tp, __le16_to_cpu(mac->bp_start), BYTE_EN_DWORD,
++			      ALIGN(__le16_to_cpu(mac->bp_num) << 1, 4),
++			      mac->bp, type) < 0) {
++		dev_err(&tp->intf->dev, "Write %s bp fail\n",
++			type ? "PLA" : "USB");
++		return;
++	}
+ 
+ 	bp_en_addr = __le16_to_cpu(mac->bp_en_addr);
+ 	if (bp_en_addr)
+-- 
+2.43.0
+
 
 
 
