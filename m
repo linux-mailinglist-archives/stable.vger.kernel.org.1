@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-75122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B259732FF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622DC97350F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF021C24C53
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950171C250EF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53243192D8E;
-	Tue, 10 Sep 2024 10:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D87D187FF9;
+	Tue, 10 Sep 2024 10:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqOaqqup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSMuGv+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D6192D86;
-	Tue, 10 Sep 2024 10:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C44417BB0C;
+	Tue, 10 Sep 2024 10:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963814; cv=none; b=iuOhTgAZksQTPK+UYjoYTHde5fC15ILbo2gNe8mLb1iLX661n5iqg0BgLSWZgj9KsRutNbFq+22mJ0dpu34OlRFg4xzgQyBvBeH3txPK2h9l+dEdur+2qpMWJmhQPVR6e0fCr2Rpm9/Ebqn7+MWZvOzYjsG81AYGGmPc/P7wDNg=
+	t=1725965034; cv=none; b=PX2fOI95eIbj4/ic/ToNH+fNrazcX8I6AsOTUJlZrBNwfsV62/cO4a+Q020jtTscRNNAUR5DyYLiKf7b4w16KM7Lo88Tq16WZospZlmGRH1+RfFX6pRjP0RLo/tT/UolYJzVCtqunmFA9NNk1cpAB0JeWSJB+MQDD2Oq9UEG8OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963814; c=relaxed/simple;
-	bh=PYFlGomOzb/tPvpHIFh46fhGY6bRPtvmNCjzxK8bBUo=;
+	s=arc-20240116; t=1725965034; c=relaxed/simple;
+	bh=UKhzNOPUaiDqDwls7Yr1BmQXWDTUSKizDz+op2KWjME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D45Mcx06f5sxOTfexaDV1QDQhrCFw228v2g5e1dpxlfLAJn0HXnn3Gw2X4BCfpsGTSgDSh+CK3X9ZDclwiOon42qPuGrQeu9nymSbdvUsSpPQnuUPjpZmFSbX6GDfJP/YxpG5oiM36lL/hVTfqwVbnUBMwoB+gTgz2otESO+Zt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqOaqqup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD5FC4CEC3;
-	Tue, 10 Sep 2024 10:23:33 +0000 (UTC)
+	 MIME-Version; b=eVoWW1CLTqHPw4zlBbxyjl3e3MXGLWZlYBW/PmS2bZ3Y2zt1pMOFd+reEI2HApsIXL+/tMlbsWEbb4y81FJC81w+O/aqCo+Rtvn88YquBNHwdHOc+q9zxIU7sISnWgrTOmxOZytjbr0Qq0CNpTSKdrhKDjvQHfbBKuJrH7LVqDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSMuGv+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88BEC4CEC3;
+	Tue, 10 Sep 2024 10:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963813;
-	bh=PYFlGomOzb/tPvpHIFh46fhGY6bRPtvmNCjzxK8bBUo=;
+	s=korg; t=1725965034;
+	bh=UKhzNOPUaiDqDwls7Yr1BmQXWDTUSKizDz+op2KWjME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqOaqqupYVdtwt85nv195BhQbzUgN9f5Z7pmt2zIDoOgFQmmYzypzZeDleFsDfTTk
-	 ZVq74+SyRpZLhd4tG1J0Oec1acpSrOyE/+FOEpss4bpH3DuSibDgZx8kaqXb0rrhKT
-	 CCupihZ43CuB+5vfNHDNBSjM16fpNM7CWCBVNTlI=
+	b=kSMuGv+w+XZa/eCfBlEMZJ+EyeSrS9uYB17be8rb2Vx7XNrjzG6g7sFAOY/lQJ81x
+	 ZwlPUi5RXx1ztjG45iWD+MrH+w5d1ZD0C+RX52YtQ3C/2N0B0sql/76U/CqvWp49zG
+	 B12ZigJ9jH2WcnxmA3DJTKsxcWnZ5XxvV8/V1/Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.15 186/214] clocksource/drivers/imx-tpm: Fix return -ETIME when delta exceeds INT_MAX
-Date: Tue, 10 Sep 2024 11:33:28 +0200
-Message-ID: <20240910092606.267572025@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 114/186] svcrdma: Catch another Reply chunk overflow case
+Date: Tue, 10 Sep 2024 11:33:29 +0200
+Message-ID: <20240910092559.227766007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 5b8843fcd49827813da80c0f590a17ae4ce93c5d upstream.
+[ Upstream commit e5decb2eb5f4d1f64ba9196b4bad0e26a441c81c ]
 
-In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
-is larger than INT_MAX.
+When space in the Reply chunk runs out in the middle of a segment,
+we end up passing a zero-length SGL to rdma_rw_ctx_init(), and it
+oopses.
 
-For example:
-
-tpm_set_next_event(delta = 0xffff_fffe)
-{
-        ...
-        next = tpm_read_counter(); // assume next is 0x10
-        next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
-        now = tpm_read_counter();  // now is 0x10
-        ...
-
-        return (int)(next - now) <= 0 ? -ETIME : 0;
-                     ^^^^^^^^^^
-                     0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
-                     cast to int. So return -ETIME.
-}
-
-To fix this, introduce a 'prev' variable and check if 'now - prev' is
-larger than delta.
-
-Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-1-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: ffc17e1479e8 ("platform/x86: dell-smbios: Fix error path in dell_smbios_init()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtrdma/svc_rdma_rw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(
- static int tpm_set_next_event(unsigned long delta,
- 				struct clock_event_device *evt)
- {
--	unsigned long next, now;
-+	unsigned long next, prev, now;
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_rw.c b/net/sunrpc/xprtrdma/svc_rdma_rw.c
+index 80a0c0e87590..7c50eddb8d3c 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
+@@ -460,6 +460,8 @@ svc_rdma_build_writes(struct svc_rdma_write_info *info,
+ 		offset += info->wi_seg_off;
  
--	next = tpm_read_counter();
--	next += delta;
-+	prev = tpm_read_counter();
-+	next = prev + delta;
- 	writel(next, timer_base + TPM_C0V);
- 	now = tpm_read_counter();
- 
-@@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned l
- 	 * of writing CNT registers which may cause the min_delta event got
- 	 * missed, so we need add a ETIME check here in case it happened.
- 	 */
--	return (int)(next - now) <= 0 ? -ETIME : 0;
-+	return (now - prev) >= delta ? -ETIME : 0;
- }
- 
- static int tpm_set_state_oneshot(struct clock_event_device *evt)
+ 		write_len = min(remaining, length - info->wi_seg_off);
++		if (!write_len)
++			goto out_overflow;
+ 		ctxt = svc_rdma_get_rw_ctxt(rdma,
+ 					    (write_len >> PAGE_SHIFT) + 2);
+ 		if (!ctxt)
+-- 
+2.43.0
+
 
 
 
