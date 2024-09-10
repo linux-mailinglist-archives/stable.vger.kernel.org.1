@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-75009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BB89732CB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451D697319A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B3C7B24A99
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E292E1F28774
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A5F1940B3;
-	Tue, 10 Sep 2024 10:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77573196DA2;
+	Tue, 10 Sep 2024 10:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOujIPwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4wvBBAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801E7190664;
-	Tue, 10 Sep 2024 10:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36057194C8B;
+	Tue, 10 Sep 2024 10:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963482; cv=none; b=Ggr1MRa3j7dquJliB2tKY3feO47JLaX0QOquFtcSt/SNiFxBqTcYf3+i6+YYttyo4TCg0iecG5rNpdt0IOdfZJG7ASedITDESkEx+yBLWIc2Q3Gn6hBoQHl3KnHDdIhVf/WgryEtYQ9N44p8Bw6PH+npluSNuWNvrTwznC9Nqo8=
+	t=1725962940; cv=none; b=YQdj7R3Rb/z+zPkkqFNEK7atnIcadR67sFg8T8EbEc/3C85AUJ/2k6TAXDQdwCdoLlnxCSPdd2MQ6XL8hq0nbi46I4+j6vuPCsAYiXE4u9QXZ1mRKV9AcJM5UewiIjljGqgMwxJwcV035rvuoVJIma2Q6bHwU+tpH2LBbmM7mnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963482; c=relaxed/simple;
-	bh=vTl3M/eKCFdE2xx4iycU6AHeYbqykOSatZW5x/Jr7QU=;
+	s=arc-20240116; t=1725962940; c=relaxed/simple;
+	bh=OT6gIzIuSp6zIzSvFj3Nxad2hg3cYhH7b2l+i6o8SuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4TyezmWSbrN+X0FEiAjYfTF5v1YXZg8vrxTWABh9KduJBIZhhNcEM94L4wX2uxAzgIQuDm5XWMGWrhUjjchQ+elpA+WEbSeCMwI3njuw+N22AqBSEGVgHLGS4KujHlpfUGioMQg+JAtXdgPy2MxM4EEPxDqdwyGiAkp645FYU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOujIPwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0507AC4CEC3;
-	Tue, 10 Sep 2024 10:18:01 +0000 (UTC)
+	 MIME-Version; b=BXApgPD7nYZ8ksHfZ77s0Ye5mCI7dcpcuPhVs2Q7T/qRcycf5IQPpuQhVLK9z3SF8SFZwCTprgj2W5bZQoixrQTD56WvNpm0tUw47DxcUh+HF0yFdfOL9Id9I9eL55lT+N1ZI7gzFo0OtbImov9WKq8a+KSg51aeVimO29EvRkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4wvBBAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCFDC4CEC3;
+	Tue, 10 Sep 2024 10:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963482;
-	bh=vTl3M/eKCFdE2xx4iycU6AHeYbqykOSatZW5x/Jr7QU=;
+	s=korg; t=1725962939;
+	bh=OT6gIzIuSp6zIzSvFj3Nxad2hg3cYhH7b2l+i6o8SuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOujIPwQb0z0ZAaIX8tq/CDqnK2g5eaEWKMuZ0a6TMp2i9hIAFQ1jgAGscRsMn6Ok
-	 qtqiUgzG1NsVfxOAV2KjqjM6FZgR8/j5SEh4KBtP5QcAxSuMg+2DUmIncFx6i0Ddqb
-	 MgzY785xhLchliTMXhEF3qLvIZ4V0AIlXR1hYMjA=
+	b=m4wvBBAs4jicIFblKiGKx6ENbMppAUKDy8MPld+ca/OKLWaAQ8T4H2K2sazFbgLpo
+	 F587tlyn2hiKd4dFbyFt6z9YjnmoTosRKltZRQXwJovDxGOWVwwROphgF738DfV1et
+	 3yeN5mJlBZuVsJkRiLh9ViuaBpHa/p7hq520FXhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Mukul Sikka <mukul.sikka@broadcom.com>
-Subject: [PATCH 5.15 055/214] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
-Date: Tue, 10 Sep 2024 11:31:17 +0200
-Message-ID: <20240910092601.012024452@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 054/192] leds: spi-byte: Call of_node_put() on error path
+Date: Tue, 10 Sep 2024 11:31:18 +0200
+Message-ID: <20240910092600.211418747@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 50151b7f1c79a09117837eb95b76c2de76841dab upstream.
+[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
 
-Check return value and conduct null pointer handling to avoid null pointer dereference.
+Add a missing call to of_node_put(np) on error.
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c |   30 +++++++++++++++---
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ drivers/leds/leds-spi-byte.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3415,13 +3415,17 @@ static int vega10_find_dpm_states_clocks
- 	const struct vega10_power_state *vega10_ps =
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
--	uint32_t sclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].gfx_clock;
- 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
--	uint32_t mclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].mem_clock;
-+	uint32_t sclk, mclk;
- 	uint32_t i;
- 
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+	sclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].gfx_clock;
-+	mclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].mem_clock;
-+
- 	for (i = 0; i < sclk_table->count; i++) {
- 		if (sclk == sclk_table->dpm_levels[i].value)
- 			break;
-@@ -3728,6 +3732,9 @@ static int vega10_generate_dpm_level_ena
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	int i;
- 
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+
- 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
- 			"Attempt to Trim DPM States Failed!",
- 			return -1);
-@@ -4865,6 +4872,9 @@ static int vega10_check_states_equal(str
- 
- 	psa = cast_const_phw_vega10_power_state(pstate1);
- 	psb = cast_const_phw_vega10_power_state(pstate2);
-+	if (psa == NULL || psb == NULL)
-+		return -EINVAL;
-+
- 	/* If the two states don't even have the same number of performance levels they cannot be the same state. */
- 	if (psa->performance_level_count != psb->performance_level_count) {
- 		*equal = false;
-@@ -4990,6 +5000,8 @@ static int vega10_set_sclk_od(struct pp_
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index 2bc5c99daf51..6883d3ba382f 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
+ 		dev_err(dev, "Device must have exactly one LED sub-node.");
  		return -EINVAL;
+ 	}
+-	child = of_get_next_available_child(dev_of_node(dev), NULL);
  
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
+ 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+ 	if (!led)
+@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
  
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].gfx_clock =
-@@ -5041,6 +5053,8 @@ static int vega10_set_mclk_od(struct pp_
- 		return -EINVAL;
++	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	state = of_get_property(child, "default-state", NULL);
+ 	if (state) {
+ 		if (!strcmp(state, "on")) {
+ 			led->ldev.brightness = led->ldev.max_brightness;
+ 		} else if (strcmp(state, "off")) {
++			of_node_put(child);
+ 			/* all other cases except "off" */
+ 			dev_err(dev, "default-state can only be 'on' or 'off'");
+ 			return -EINVAL;
+@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
  
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].mem_clock =
-@@ -5278,6 +5292,9 @@ static void vega10_odn_update_power_stat
- 		return;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
+ 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
+ 	if (ret) {
++		of_node_put(child);
+ 		mutex_destroy(&led->mutex);
+ 		return ret;
+ 	}
 +
- 	max_level = vega10_ps->performance_level_count - 1;
++	of_node_put(child);
+ 	spi_set_drvdata(spi, led);
  
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5300,6 +5317,9 @@ static void vega10_odn_update_power_stat
- 
- 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
-+
- 	max_level = vega10_ps->performance_level_count - 1;
- 
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5490,6 +5510,8 @@ static int vega10_get_performance_level(
- 		return -EINVAL;
- 
- 	ps = cast_const_phw_vega10_power_state(state);
-+	if (ps == NULL)
-+		return -EINVAL;
- 
- 	i = index > ps->performance_level_count - 1 ?
- 			ps->performance_level_count - 1 : index;
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
