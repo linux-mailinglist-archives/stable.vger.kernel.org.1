@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19686973399
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C378973342
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE45B284F23
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1551B20DBF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A781518C925;
-	Tue, 10 Sep 2024 10:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DAF19DF8D;
+	Tue, 10 Sep 2024 10:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu62Gt55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+Gxui4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EEC172BAE;
-	Tue, 10 Sep 2024 10:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834C19DF67;
+	Tue, 10 Sep 2024 10:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964167; cv=none; b=CEs358zICzgt8YKKcqMRVyLir0B9+lJS+a1lvbfLTbKiOJXnYWkG0MITf3Nwfdsq5ytAUacmKqWMpRv42MhU78r5uxX7GYy3kuWDjIWKyY+GxpY7/P+bJS/CtkjUUFUD9TWul/ti0rm64LOid4txoH8ms+9u1e8D2Lot84v0zV0=
+	t=1725963432; cv=none; b=Lx8Mh0YhY76bM5M9A8xBdjlrt2Q0ZQ7bNltSJjbjW+SLFXMK3pTM4gyWgEmDxVD0qX/NH83aJ6R6uZSqAouCUB9DtqY0S8aqA+GQavNMLY1O1xxJUVdCRPrx5i2jO18olHwJC+8yKgAd7R38MAGEAIenkYpWRzULGY8wCI9l31g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964167; c=relaxed/simple;
-	bh=fyQhrlXQJ6mbHN7s54IDOWt2TTXTdVlAZZYX9Vv6TUc=;
+	s=arc-20240116; t=1725963432; c=relaxed/simple;
+	bh=AmC2IiVJcfUF5hJ3rxpKTKTPndEgku8Yo3lQrXsz/7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oc4fVAGCmGKrQNamF8k7KQ+DrHS3szyyD6qAmRYpt8g5kGCUVyTOGch7g9nzb0DI8oBF86B7zQRdwpYLBt5QqxZYaxOGg3j4VG5m/MqeQeDuAZxTE/4PPYhqI87pheVIqQyDWkg07b28NGs0I/I8C1bQHHOEjawPKMCbvA910C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu62Gt55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D74C4CEC3;
-	Tue, 10 Sep 2024 10:29:26 +0000 (UTC)
+	 MIME-Version; b=gHfqFMByLEJP7VAolisvQRgPi3pmFxo/qFVyajxTZUORi7HnBCfD7/uaxyDqhw8+hJfzppYSlxTrJxMQktyPDw7zMi++Y9/Gn/pBztkP+1HlZc66dekxlQ/v93t2LTnxCACzL2lnDdYMJ2sdlAsk4c38Rs37KauzTru7Ju5PXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+Gxui4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591A1C4CECD;
+	Tue, 10 Sep 2024 10:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964167;
-	bh=fyQhrlXQJ6mbHN7s54IDOWt2TTXTdVlAZZYX9Vv6TUc=;
+	s=korg; t=1725963432;
+	bh=AmC2IiVJcfUF5hJ3rxpKTKTPndEgku8Yo3lQrXsz/7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nu62Gt557FDwwq8X6qh3Uy9xWhS/eyrO5qFMAl+PJMvQcEoyHXDxbrRHagKRmFLYU
-	 41Maq6VXOp6+ya7Sgn5UqYi+8JOLP7rDzX4khmnBR1O9kXZjE7+dRrYevUxix4gR5o
-	 VyYlxCNhuSVQ9dvuKlo0MGK9LlKT8wsMLt8yshnI=
+	b=e+Gxui4uxtB+mdbTCyAZQ6G3fnILexflW8EbyNTynirmVg0CXcJcEH1PT8TJWoptk
+	 r3z8c0HDfM8/TAhfNHbueN/r4q0X3GHOL4QBVCIRICf8Q6YBjbAysL6XPTkUtrQE/S
+	 GVK1CBUbwZXrLcVOfH5ZH+KyySGHnIk+RFXzakZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <quic_aarasahu@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/269] wifi: ath12k: fix uninitialize symbol error on ath12k_peer_assoc_h_he()
+Subject: [PATCH 5.15 028/214] drm/amdgpu: fix ucode out-of-bounds read warning
 Date: Tue, 10 Sep 2024 11:30:50 +0200
-Message-ID: <20240910092610.440527171@linuxfoundation.org>
+Message-ID: <20240910092559.929971648@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 19b77e7c656a3e125319cc3ef347b397cf042bf6 ]
+[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
 
-Smatch throws following errors
+Clear warning that read ucode[] may out-of-bounds.
 
-drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
-drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
-drivers/net/wireless/ath/ath12k/mac.c:1924 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
-
-In ath12k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160 variables
-remain uninitialized in the following conditions:
-1. Whenever the value of mcs_80 become equal to
-   IEEE80211_HE_MCS_NOT_SUPPORTED then rx_mcs_80 remains uninitialized.
-2. Whenever phy capability is not supported 160 channel width and
-   value of mcs_160 become equal to IEEE80211_HE_MCS_NOT_SUPPORTED
-   then rx_mcs_160 remains uninitialized.
-
-Initialize these variables during declaration.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240611031017.297927-3-quic_aarasahu@quicinc.com
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index ba6fc27f4a1a..618eeaf6e331 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1614,7 +1614,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- {
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	int i;
--	u8 ampdu_factor, rx_mcs_80, rx_mcs_160, max_nss;
-+	u8 ampdu_factor, max_nss;
-+	u8 rx_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+	u8 rx_mcs_160 = IEEE80211_HE_MCS_NOT_SUPPORTED;
- 	u16 mcs_160_map, mcs_80_map;
- 	bool support_160;
- 	u16 v;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+index f1a050379190..682de88cf91f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
+ 		struct amdgpu_firmware_info *ucode;
+ 
+ 		id = fw_type_convert(cgs_device, type);
++		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
++			return -EINVAL;
++
+ 		ucode = &adev->firmware.ucode[id];
+ 		if (ucode->fw == NULL)
+ 			return -EINVAL;
 -- 
 2.43.0
 
