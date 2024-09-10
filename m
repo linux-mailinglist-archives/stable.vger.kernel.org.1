@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-74224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449A5972E22
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1D39730BA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773DA1C243C5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F7C286E53
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F78118B498;
-	Tue, 10 Sep 2024 09:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F03318FDB0;
+	Tue, 10 Sep 2024 10:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6s9l0zJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbpHTTCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4AA18B491;
-	Tue, 10 Sep 2024 09:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C96518595E;
+	Tue, 10 Sep 2024 10:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961178; cv=none; b=YPR0csqKFfFDHRDz8WDcLoH2hBz8pNLO4vaeS4zOfXnTqjVwC0HDnt7Vf2/g895p2t2uJdI1agRC6YDAhDZTmqqz8YWc2gvdkMuKD5tlx7hW/Oe/+F70KimGD0KSQBr0aS/y9j0DaClpLIjdhT2RxNVCWbjdHGphw3w+Rcy+ggU=
+	t=1725962535; cv=none; b=gpropX6f8nbefgCWQ5bLcy0Dkw0ZDebPPYAfUBDDuguWSm83JQBf6wWcVsEnvhHj2B9OMzbfu20JX5cvimN5xguDEPmaAxC4nSpO2YIOK+Fn+MCcEJQtlj5ydgQApG+lYNwZDBZGHEvl31pKcYS92/LTfhKVowBSExEY6j793TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961178; c=relaxed/simple;
-	bh=+HmyGEPoJ1yKaZ0rn0P3C7p0aHMxMothzYwb742uo3U=;
+	s=arc-20240116; t=1725962535; c=relaxed/simple;
+	bh=ye2iKNGVoLcnHgpFLm7QCR58TjVdXu5ccQ/63orpOn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdND8z+swm1nwWcEU33qtzryzFm/TDIJz4D+WYWHQfdyawYaQDEjeFw4eTehsjsK94P1hTIbxozFN2qZZ+KnuSvHOjQuaHPzzZ45FKszL6VI4aMAMV1drnYuzMOv7DUTt34EODZXf986Rmtp2io/g2HHEcstq6gx4BKz/9Qj/Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6s9l0zJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3845C4CECC;
-	Tue, 10 Sep 2024 09:39:37 +0000 (UTC)
+	 MIME-Version; b=P/ghLgGeLXSNT47Yb/NYt7FQCKNd0YcKEt/rnzODr2ac1xPe034z0NSpBbSiaXUouyOD2BDTiK/tsUfjkBHG1nl5CVu4ehzaCV4gLsKmeQRno26/pM/uPRGMwh6bvyknUuC8GOvDpIP70/rDnb6/C/yBEaBG8GkBdWoSZoJ9AEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbpHTTCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC79BC4CEC3;
+	Tue, 10 Sep 2024 10:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961178;
-	bh=+HmyGEPoJ1yKaZ0rn0P3C7p0aHMxMothzYwb742uo3U=;
+	s=korg; t=1725962535;
+	bh=ye2iKNGVoLcnHgpFLm7QCR58TjVdXu5ccQ/63orpOn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6s9l0zJTaFzlzRDscg1mKNdiZyTUrIE9UfLaz0PgPn0AmqnwSmojfFOg6pzdJ21L
-	 pPj9PLBr+iQHZA0fPk2+HF6Xt+GKUwN5vx4DOnVuYYXoiHlUi4iqhEqTOPqcdnrrVY
-	 r9PXAV6ULKPSt0KsB6GtrrEkeEr7dBA4z+HutX1o=
+	b=XbpHTTCzQjNill3jJAnQcgZ8Ql/rm42hsp4heMHahumxpoirEG9tVtyTs2oWi3Hno
+	 rStoTgiJG4et/s3ebtzsqCbB5Jj/whbryEbhv5jgizJmNIF8Aa8hGfw3m8MeEd04mn
+	 l56SBHmKqXh7toD9M1FRNWFsA5L5hujKSUOaUOVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 4.19 80/96] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
+	Jonas Gorski <jonas.gorski@bisdn.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 067/121] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
 Date: Tue, 10 Sep 2024 11:32:22 +0200
-Message-ID: <20240910092545.057375741@linuxfoundation.org>
+Message-ID: <20240910092549.045181277@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Jonas Gorski <jonas.gorski@bisdn.de>
 
-commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
+[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
 
-The value written into the TPM CnV can only be updated into the hardware
-when the counter increases. Additional writes to the CnV write buffer are
-ignored until the register has been updated. Therefore, we need to check
-if the CnV has been updated before continuing. This may require waiting for
-1 counter cycle in the worst case.
+When userspace wants to take over a fdb entry by setting it as
+EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
+BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
 
-Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the bridge updates the entry later because its port changed, we clear
+the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
+flag set.
+
+If userspace then wants to take over the entry again,
+br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
+setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
+update.
+
+Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
+if this was a user fdb entry or not.
+
+Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
+Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/bridge/br_fdb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -104,6 +104,14 @@ static int tpm_set_next_event(unsigned l
- 	now = tpm_read_counter();
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 83d6be3f87f1..89e0a6808d30 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -1138,12 +1138,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			modified = true;
+ 		}
  
- 	/*
-+	 * Need to wait CNT increase at least 1 cycle to make sure
-+	 * the C0V has been updated into HW.
-+	 */
-+	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
-+		while (now == tpm_read_counter())
-+			;
-+
-+	/*
- 	 * NOTE: We observed in a very small probability, the bus fabric
- 	 * contention between GPU and A7 may results a few cycles delay
- 	 * of writing CNT registers which may cause the min_delta event got
+-		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
++		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+-			/* Take over SW learned entry */
+-			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
++		} else {
+ 			modified = true;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
