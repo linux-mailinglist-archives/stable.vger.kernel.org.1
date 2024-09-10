@@ -1,114 +1,148 @@
-Return-Path: <stable+bounces-75658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022969739FD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 16:35:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516729739FE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 16:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADFDB1F21C83
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 14:35:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8418B1C247B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 14:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C3F193096;
-	Tue, 10 Sep 2024 14:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992F71946DF;
+	Tue, 10 Sep 2024 14:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oe8JuEWq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DFBcdUGt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06A019309C;
-	Tue, 10 Sep 2024 14:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66181922E1
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 14:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725978923; cv=none; b=b9Pl8EUVLl6lSWDZAAXYqx5x5n48BzlY52WOfspJANywlZRWFnPXWc+eGCNV4siBbqNOWhkiWxmD80p6Ui2Fd/gMx+Mn0t+d4Zs9ksTNH3atjqufNrtlj7duLvrAkDWlolbLvcjxM0ra3iy1DCFIVaFG10FxPBLDvPb0pMc5EqY=
+	t=1725978941; cv=none; b=DVjOAG/Pr2RMEpHc4i9HsNo7iVdprhRzbnFXgyzeocFBIj1POiIIJcVa4UImSUKXhFxJG++Yc/dml5XY1+0MZymXDJ8Nax/G0mXlfp+QSjOK9dcj23GoXWyoLz/9TxAzXwYnDkH0IKkTt2fQ8bA/JNuYQPPzexRj966BX9t0zYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725978923; c=relaxed/simple;
-	bh=cnBKc6QSEPPGpTooPRBqwMZQ7q3hlFQG/diuM76jvik=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=msYS3nhpvuqnOx1kJLCaFMabg2y1oBSeN/41FRG7+SKJag+GA3yQUw8O878LoG9MGARbRuy7Vr3RbyF7bFV/QdtaFDaGJ2MENMpRz3ZpktCVFcG6fcTWjRjvCa8Btf4cZAZt/Z58yW8lwbJ8k7sPz+H/EVUYc01fWJW/XxsLDDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oe8JuEWq; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a99e8ad977so336984085a.3;
-        Tue, 10 Sep 2024 07:35:21 -0700 (PDT)
+	s=arc-20240116; t=1725978941; c=relaxed/simple;
+	bh=7RCDHK+BTLtJJc3M9GwORWj8tI6RSH+IGiIxcm0cxME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SK0dk5pVGj1zgSJG7EBpgmTPw84DAEw+jDcDzxqhBSDKx+bDvzPSSLp96blVpCMLsPpW4D4XQtRutwmdkbYj9JO81a+ffqbRIW2kkGlILjSlXkFMDA/hFA1VqVf467aBxNRm36y+ylBOTOtgFame0vxxQck90U8w9016oJqh5Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DFBcdUGt; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5011af337d4so229617e0c.2
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 07:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725978920; x=1726583720; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qQrftbtO0vVoQQg7Rm8RoTAZZxy51Jatmrm5N+2ea1c=;
-        b=Oe8JuEWqXl2hG8aJkXCGskvlybXicclkOkDooEOU3+/yARP1ENafu3kK6NgHt6p8le
-         y5re3jRluI0XCOGJsXe0813KS+a6Y6nuraT3gf9MUiAHPn1d0HaxUXlEbtw1CocH8YmZ
-         TnItXmCclyQncDwQCMnDrvFByPb8NqShYeXW+/Ph6AHWBBzYDTnzEHFf7WCTAt8xdKcU
-         ajb0Y6143YKR3QWsYRp0mm4a2PylEtlIwoJY2P/oAEioT/9CxeDDpDuIQiYhQqlE0jyq
-         CCuf6OFzyvxgXhj6o3To1hBiajMZOuHn9B78cjpCrdiI3VBJn2Z3xrsGdthpEWfzvUcs
-         SIHQ==
+        d=linaro.org; s=google; t=1725978939; x=1726583739; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WifKBD4WaotF8X+UtX2lfxD1eqAgMkavmDZNd0guNfs=;
+        b=DFBcdUGtlcNfs8DXsRQ2bmFiOpc3pCRTp4d7NQhUL1OOBMvUZix8AsEOi1TqZtzcUq
+         fMjNbb6plPaX0ixcYDcT4eupqn+lfDdctfhMYj+J5gBvp/7x7ny8FcDpoytfcF/1/tXu
+         r58YdKfp8drHXShS0Pg2ak/1WSpNc/S0nJZUgVN3wH4YxTY8342DEqZvxFScNcd4GR6P
+         XrVL7uYEPnUmsvIyIo7PreecZtymLvU92mzRmlVXFd8TtEwwnA/kaMYRlTzmXQ3IxlJf
+         2YCdAO97/7ymI7n6gIceVjxcLyuxfhzNCbK3Y04cUcopCY7ygvfYp6Ua/PnaSR0GoykS
+         gmbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725978920; x=1726583720;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qQrftbtO0vVoQQg7Rm8RoTAZZxy51Jatmrm5N+2ea1c=;
-        b=Z3/XeOeBzRw9uHtca2ShSEvkiYnXid6iSy+dkBX3XLXWFo+PIHrD14+LABy0dotfV4
-         /iQIuh1+Y8T8mNL/4KRtwT7BAzCeaLHVywtIpU9QVnOLG7bmn+LhviAL/8GqywfZmHYL
-         QDmiSiYrRAICMVcAu85FmOm6lW/7yqvoLE+Xew2N67IYgqGRHzsyKiBVbiEkuDY8xbzO
-         e6fFReXEG7Gzo82aQ15pWvIM2H63X46huT9O0AjvVbv+GY5my+hR4M3kFjCJbiW03tqf
-         qAT47xlaC3UUFlySB9UmcY2RNtkcXxSV1f2vZ8uH9tB9YJkuXYJ2wMhGJO+HUGBBl2uu
-         Bz1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU+KVwpNldyI4BYzGiVeKYVhEhEX/mU21cMn7jQvAIXGIAHTNGUKRiPAECiyYY34XuQj0U2sq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKICojPgNZu78xTfKgSOLDfQJHDhjqSeE7CqNmbpmeJLtJY2XY
-	1vSUxUoOolPTACrmvXmQ2W8anPuMBZGYV5Wd0hZv/mfkr0VfbBeT
-X-Google-Smtp-Source: AGHT+IFMq1nOfj6B9b980/HhnIOYyLnpjL4IBtxigTBnCmfMqCS6R18QOkk52Jz2SDNpKA8RgcNxFw==
-X-Received: by 2002:a05:620a:240b:b0:7a7:fa7a:75f7 with SMTP id af79cd13be357-7a9a38ec003mr1624259685a.51.1725978920321;
-        Tue, 10 Sep 2024 07:35:20 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a9a7991f7fsm311003485a.62.2024.09.10.07.35.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Sep 2024 07:35:19 -0700 (PDT)
-Date: Tue, 10 Sep 2024 10:35:19 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Greg KH <gregkh@linuxfoundation.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- stable@vger.kernel.org, 
- nsz@port70.net, 
- mst@redhat.com, 
- jasowang@redhat.com, 
- yury.khrustalev@arm.com, 
- broonie@kernel.org, 
- sudeep.holla@arm.com, 
- Willem de Bruijn <willemb@google.com>, 
- stable@vger.kernel.net
-Message-ID: <66e059275c121_9de0029430@willemb.c.googlers.com.notmuch>
-In-Reply-To: <2024091024-gratitude-challenge-c4c3@gregkh>
-References: <20240910004033.530313-1-willemdebruijn.kernel@gmail.com>
- <2024091024-gratitude-challenge-c4c3@gregkh>
-Subject: Re: [PATCH net] net: tighten bad gso csum offset check in
- virtio_net_hdr
+        d=1e100.net; s=20230601; t=1725978939; x=1726583739;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WifKBD4WaotF8X+UtX2lfxD1eqAgMkavmDZNd0guNfs=;
+        b=HC11rIKcYjKCz6iFu9He3K10sgT+Q0W/Fq5RaU3nog7LsH9AGTwzxlIfcOHY3M1/9e
+         gRIAknvuGKpoTE38teY+1klli4+sgnJzoe9r0scFf/iZUaWbsrc1hvp3DARx4Lm9GuOk
+         nPylTFj/Z9SGl54rtXySXIudh+2xMzLZGqoylfqGAUQJsyTgJMCnrMXzFY2Zo2MK6Lbw
+         7ClsFJpWYH3ZPgMKgJIwdS2r7onPeMhQmjT4oJENts7GEQs9DOzs9lmFINpXjXeituS7
+         7j4bcSC3ipDozidd2isN8MCYzv55pWhlLr6aVBWYyf3C1cX1oQZ7e1OvdBnloja3CGa/
+         U9YA==
+X-Gm-Message-State: AOJu0Yzolac1ZD3OUDwNDDLhmYr1M3nUDn7R1gMEHd3ci/33hHtfXEJS
+	z2O4u1h2k8FXPYhkpVIAsEEkF2TcO1+gzT/Ghg6peJiglNd2O+8+o6j1IH6M38MMXDAldrKUVU4
+	kn1EXGuiE9fWIuTwKGC+O4BOtls7mto3rWcx3Ew==
+X-Google-Smtp-Source: AGHT+IG56IxeJxMzo//8/ECLyeSetMnxmdoCauE97u7O2Z/LJKU+8CVElNiOE3Mdlcu/xMKPnyg4APMxgLv49j/w4BI=
+X-Received: by 2002:a05:6122:791:b0:4f5:3048:ee20 with SMTP id
+ 71dfb90a1353d-502be8cecb7mr8674939e0c.5.1725978938569; Tue, 10 Sep 2024
+ 07:35:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240910092557.876094467@linuxfoundation.org> <CA+G9fYufdd0MGMO1NbXgJwN1+wPHB24_Nrok9TMX=fYKXaxXLA@mail.gmail.com>
+In-Reply-To: <CA+G9fYufdd0MGMO1NbXgJwN1+wPHB24_Nrok9TMX=fYKXaxXLA@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 10 Sep 2024 20:05:27 +0530
+Message-ID: <CA+G9fYv1yHoL9r7PkunHPNyPznLxfB9spSFbWvoFBBSwOYrT3g@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/192] 6.1.110-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Linux-sh list <linux-sh@vger.kernel.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Peter Zijlstra <peterz@infradead.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Greg KH wrote:
-> On Mon, Sep 09, 2024 at 08:38:52PM -0400, Willem de Bruijn wrote:
-> > Cc: <stable@vger.kernel.net>
-> 
-> This is not a correct email address :(
-> 
+On Tue, 10 Sept 2024 at 18:24, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Tue, 10 Sept 2024 at 15:36, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.1.110 release.
+> > There are 192 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.110-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+>
+> The SuperH defconfig builds failed due to following build warnings / errors
+> on the stable-rc linux-6.1.y.
+>
+> * SuperH, build
+>   - gcc-8-defconfig
+>   - gcc-11-shx3_defconfig
+>   - gcc-11-defconfig
+>   - gcc-8-shx3_defconfig
+>
+> Build log:
+> --------
+> In file included from  include/linux/mm.h:29,
+>                  from  arch/sh/kernel/asm-offsets.c:14:
+>  include/linux/pgtable.h: In function 'pmdp_get_lockless':
+>  include/linux/pgtable.h:379:20: error: 'pmd_t' has no member named 'pmd_low'
+>   379 |                 pmd.pmd_low = pmdp->pmd_low;
+>       |                    ^
+>  include/linux/pgtable.h:379:35: error: 'pmd_t' has no member named 'pmd_low'
+>   379 |                 pmd.pmd_low = pmdp->pmd_low;
+>       |                                   ^~
+>
 
-Sorry. I'll resend with that fixed.
+Anders bisected this down to,
+# first bad commit:
+  [4f5373c50a1177e2a195f0ef6a6e5b7f64bf8b6c]
+  mm: Fix pmd_read_atomic()
+    [ Upstream commit 024d232ae4fcd7a7ce8ea239607d6c1246d7adc8 ]
 
+  AFAICT there's no reason to do anything different than what we do for
+  PTEs. Make it so (also affects SH)
 
+--
+Linaro LKFT
+https://lkft.linaro.org
 
