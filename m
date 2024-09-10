@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-74157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D37972DCF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47946972FC5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6DE3B227B9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A6421C214D9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6922C189903;
-	Tue, 10 Sep 2024 09:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F48C18F2DF;
+	Tue, 10 Sep 2024 09:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bql/aF8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAeczxi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2561546444;
-	Tue, 10 Sep 2024 09:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFED18EFF9;
+	Tue, 10 Sep 2024 09:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725960980; cv=none; b=YYNbe6iJqcXzwsXoWLcPN7b+6jU2VsE35sII6NvJvSB5rx1x+r2LZE8oQ2lK2AzzWe2oHRHF7KBL0nN/QBnl7HUOmYREWFYlETPABGJ2ADeosD0xjajQK69Y8D4j1kq4pWp67uST8QCJnB3QJqzzdnxSR7tzdemlDzp2Xei4K4Y=
+	t=1725962052; cv=none; b=gc9PQqHuj5rzLJFZOsa06AEA1l/jSHlkVvaJpPXNOfsAQaSeBUybsUeE5XOAD0r71zUViedijHeUIBolQ0i2+gT6PncZKSX2WGDXoIzPNxLvK1Fn5nGlzivzpbVTGb/YeGb5lf9Z9Nbtom5NUeqkTQt60X5GrONgZ2ArSYxlDXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725960980; c=relaxed/simple;
-	bh=VeIhCLhbl2dZHyTpfSg9KcZC2kjnkxjTS4ewwlrcSsE=;
+	s=arc-20240116; t=1725962052; c=relaxed/simple;
+	bh=dtp3Xo1p3wUy/eE+p1AsOIITrQ44uD2BFwQJk0qA334=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Et6DBh5vZpBWR4e/+jFlGSZliCUYEpNE0PQkahmr0vnFidzHPf+xSLJVv9l/V2C8LZX6Axyd2b5SqN379fXHe6KuSarFWe/SyeBRFLjnZ8EpTn324ZTUU8H7LpLDFBxno3EJovPe6Nc/Xot+pTrGWKNAia3IlSKlxYm+hO6z3c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bql/aF8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7DFC4CEC3;
-	Tue, 10 Sep 2024 09:36:19 +0000 (UTC)
+	 MIME-Version; b=aGvKjr+pjrA5w75o0ybaw5lJwd3Nt5oUZY9cjWVR1TzRu5+x6ANF3qCoBtJ0oTg6WH4+wpzygTxsm2EgiaCLmksiH3dnThLPLUGUacKPewukGj0m3XWjEEAoTDNiRuUi7iZr6KwjEtMna6FERtQ9q/XtfHpfil/aYp0ycg1YgWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAeczxi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5D6C4CED4;
+	Tue, 10 Sep 2024 09:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725960980;
-	bh=VeIhCLhbl2dZHyTpfSg9KcZC2kjnkxjTS4ewwlrcSsE=;
+	s=korg; t=1725962052;
+	bh=dtp3Xo1p3wUy/eE+p1AsOIITrQ44uD2BFwQJk0qA334=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bql/aF8UBlPiWISoDTaHOGd61ucrDRCUSjjOlQw6E63snv+B0JAo8yJdTaWvG17I6
-	 I2xb7kgAkf5HpTjEqKZ3XRF6CjGYrSqsrholQZqs6HYgPp3VkbsB/NB9tTijxe4qaA
-	 mBXbdEZjD80Y+wa0rdrUVlBd2TENi1Fze6G3yNKU=
+	b=uAeczxi4g+IuTT8yY6dDX5afcp2YWYCTno0kW3OK+cgfXEG2QYwqSb0fvZZiv822w
+	 R1c5cF2Qcscwc0/0maBX8u6v6f6ZcPi7Wd1wAMfbiDjT2SvchCx/aW2bRl6IyaxJgr
+	 IZKE7rYlTBK1OreypYVvXnf3TVycR8vH7oao9Mw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 4.19 13/96] block: initialize integrity buffer to zero before writing it to media
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 278/375] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
 Date: Tue, 10 Sep 2024 11:31:15 +0200
-Message-ID: <20240910092541.996999705@linuxfoundation.org>
+Message-ID: <20240910092631.896985071@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 899ee2c3829c5ac14bfc7d3c4a5846c0b709b78f upstream.
+[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
 
-Metadata added by bio_integrity_prep is using plain kmalloc, which leads
-to random kernel memory being written media.  For PI metadata this is
-limited to the app tag that isn't used by kernel generated metadata,
-but for non-PI metadata the entire buffer leaks kernel memory.
+We're seeing reports of soft lockups when iterating through the loops,
+so let's add rescheduling points.
 
-Fix this by adding the __GFP_ZERO flag to allocations for writes.
-
-Fixes: 7ba1ba12eeef ("block: Block layer data integrity support")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240613084839.1044015-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/nfs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -227,6 +227,7 @@ bool bio_integrity_prep(struct bio *bio)
- 	unsigned int bytes, offset, i;
- 	unsigned int intervals;
- 	blk_status_t status;
-+	gfp_t gfp = GFP_NOIO;
- 
- 	if (!bi)
- 		return true;
-@@ -249,12 +250,20 @@ bool bio_integrity_prep(struct bio *bio)
- 		if (!bi->profile->generate_fn ||
- 		    !(bi->flags & BLK_INTEGRITY_GENERATE))
- 			return true;
-+
-+		/*
-+		 * Zero the memory allocated to not leak uninitialized kernel
-+		 * memory to disk.  For PI this only affects the app tag, but
-+		 * for non-integrity metadata it affects the entire metadata
-+		 * buffer.
-+		 */
-+		gfp |= __GFP_ZERO;
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index cbbd4866b0b7..97b386032b71 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -47,6 +47,7 @@
+ #include <linux/vfs.h>
+ #include <linux/inet.h>
+ #include <linux/in6.h>
++#include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <net/ipv6.h>
+ #include <linux/netdevice.h>
+@@ -228,6 +229,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
+ 		ret = fn(server, data);
+ 		if (ret)
+ 			goto out;
++		cond_resched();
+ 		rcu_read_lock();
  	}
- 	intervals = bio_integrity_intervals(bi, bio_sectors(bio));
- 
- 	/* Allocate kernel buffer for protection data */
- 	len = intervals * bi->tuple_size;
--	buf = kmalloc(len, GFP_NOIO | q->bounce_gfp);
-+	buf = kmalloc(len, gfp | q->bounce_gfp);
- 	status = BLK_STS_RESOURCE;
- 	if (unlikely(buf == NULL)) {
- 		printk(KERN_ERR "could not allocate integrity buffer\n");
+ 	rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
