@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B625972E1E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8124B973036
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0D91C23DF3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5F21F23CD0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F2B18C325;
-	Tue, 10 Sep 2024 09:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBC817BEAE;
+	Tue, 10 Sep 2024 09:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrGpxRLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLL6/Y2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A7A1891A1;
-	Tue, 10 Sep 2024 09:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5C418595E;
+	Tue, 10 Sep 2024 09:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961172; cv=none; b=Xzq/0ZtJTPvreWxES/rPniOr3nOHMmRiGqPxY5FB855pui8lBXT2TERWciBESgvp9cBglMlpf75jy/AMSiu5lPjH9LaTVnDbBipgxpee0UddT6mis4EtojyYh+N5UMYh+NaqE0MHCmgSmVV86KnCft9bqPmM5kpkL3zpgqcMMkU=
+	t=1725962319; cv=none; b=VtUCdNlT83+z8j1vLIuGtSbTVSc7xST6vdVQTz1ylD/C2TX3tZ0lVcGTLi36qPeehM9BNDrUEpvduALa+b1SFWXUfcXNnN8UICu+zzgcEsdGV0LKrFP9oeMc4ZoPJgjLgl2r0CptuqIaEVO6kNtnqmVQMkBi0va1/SEPvEHMnIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961172; c=relaxed/simple;
-	bh=lQwfQPtdqe+gtZVDPWM5TAFH7olvz8wcrwp+3fB1G/M=;
+	s=arc-20240116; t=1725962319; c=relaxed/simple;
+	bh=3mlZlLYSbgf7hAZRfKxIG7XjoylRoo5DYYiPP7y/qfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7s4pobbzM05oBHfCwRMJWyq8NH5F+ZtddZdOmc1SstFkP02GDm7kzSha+CKOQOq1FArQh7rqGBwH429gJjnEe0MB5ejS9kqAamvlNRrApEMt7RHQgQuMq0uywpYFCK2EXsbKRq8lIvnJAad9iT82ogJqFwN+oP7ea6KENQQN5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrGpxRLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF10C4CEC6;
-	Tue, 10 Sep 2024 09:39:31 +0000 (UTC)
+	 MIME-Version; b=YokB3kz0MpvGgQQDc9Bfv1khwVbWlC7gRrKq9YD3LIoowjjWpUV/jL6u352VxUIsIFlsfrkoHdaHrEGz3K6G1RCwddfqwlAUhYIyVbJiZFXHF50QE6GfuiOyfnUG4Y+xcgrONnD+OBga4/8yzY+ErU7D84TjL6tccaYCQV/VhRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLL6/Y2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47DDC4CEC3;
+	Tue, 10 Sep 2024 09:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961172;
-	bh=lQwfQPtdqe+gtZVDPWM5TAFH7olvz8wcrwp+3fB1G/M=;
+	s=korg; t=1725962319;
+	bh=3mlZlLYSbgf7hAZRfKxIG7XjoylRoo5DYYiPP7y/qfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrGpxRLxsrft2j69WEOICfmtWk29j5BExAuU8edihJDh169nnpCt7KlF2PyflTjPV
-	 p/ryOb/CkSVu9cjfKivSpcal3oQk7DPt8+hyk+tFUevlR20M9b61Oj/TlJu3ZU8VIo
-	 LJadJa7LhUvqpFPLsaOxOJC/WKDO4I0dcHEn4uPU=
+	b=GLL6/Y2USO84xc9PppomH5lWTbOdOj32mvUuBEfgzTnJQliSAbFTZIYYfpwbTaV0E
+	 a5keMAQJz9lv8DIN4SV/GUxRkYWU5VLc2WmDMFT87W0z9xW7P4jPT5MWxQha406xBC
+	 gwcSJ9cvutPh53CCJ22oXA0cRipUNAWXlvFXZ/9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Kennedy <george.kennedy@oracle.com>,
-	David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
-Subject: [PATCH 4.19 78/96] VMCI: Fix use-after-free when removing resource in vmci_resource_remove()
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 343/375] nvmet-tcp: fix kernel crash if commands allocation fails
 Date: Tue, 10 Sep 2024 11:32:20 +0200
-Message-ID: <20240910092544.971990791@linuxfoundation.org>
+Message-ID: <20240910092634.111458151@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit 48b9a8dabcc3cf5f961b2ebcd8933bf9204babb7 upstream.
+[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
 
-When removing a resource from vmci_resource_table in
-vmci_resource_remove(), the search is performed using the resource
-handle by comparing context and resource fields.
+If the commands allocation fails in nvmet_tcp_alloc_cmds()
+the kernel crashes in nvmet_tcp_release_queue_work() because of
+a NULL pointer dereference.
 
-It is possible though to create two resources with different types
-but same handle (same context and resource fields).
+  nvmet: failed to install queue 0 cntlid 1 ret 6
+  Unable to handle kernel NULL pointer dereference at
+         virtual address 0000000000000008
 
-When trying to remove one of the resources, vmci_resource_remove()
-may not remove the intended one, but the object will still be freed
-as in the case of the datagram type in vmci_datagram_destroy_handle().
-vmci_resource_table will still hold a pointer to this freed resource
-leading to a use-after-free vulnerability.
+Fix the bug by setting queue->nr_cmds to zero in case
+nvmet_tcp_alloc_cmd() fails.
 
-BUG: KASAN: use-after-free in vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
-BUG: KASAN: use-after-free in vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
-Read of size 4 at addr ffff88801c16d800 by task syz-executor197/1592
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x82/0xa9 lib/dump_stack.c:106
- print_address_description.constprop.0+0x21/0x366 mm/kasan/report.c:239
- __kasan_report.cold+0x7f/0x132 mm/kasan/report.c:425
- kasan_report+0x38/0x51 mm/kasan/report.c:442
- vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
- vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
- vmci_qp_broker_detach+0x89a/0x11b9 drivers/misc/vmw_vmci/vmci_queue_pair.c:2182
- ctx_free_ctx+0x473/0xbe1 drivers/misc/vmw_vmci/vmci_context.c:444
- kref_put include/linux/kref.h:65 [inline]
- vmci_ctx_put drivers/misc/vmw_vmci/vmci_context.c:497 [inline]
- vmci_ctx_destroy+0x170/0x1d6 drivers/misc/vmw_vmci/vmci_context.c:195
- vmci_host_close+0x125/0x1ac drivers/misc/vmw_vmci/vmci_host.c:143
- __fput+0x261/0xa34 fs/file_table.c:282
- task_work_run+0xf0/0x194 kernel/task_work.c:164
- tracehook_notify_resume include/linux/tracehook.h:189 [inline]
- exit_to_user_mode_loop+0x184/0x189 kernel/entry/common.c:187
- exit_to_user_mode_prepare+0x11b/0x123 kernel/entry/common.c:220
- __syscall_exit_to_user_mode_work kernel/entry/common.c:302 [inline]
- syscall_exit_to_user_mode+0x18/0x42 kernel/entry/common.c:313
- do_syscall_64+0x41/0x85 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x6e/0x0
-
-This change ensures the type is also checked when removing
-the resource from vmci_resource_table in vmci_resource_remove().
-
-Fixes: bc63dedb7d46 ("VMCI: resource object implementation.")
-Cc: stable@vger.kernel.org
-Reported-by: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
-Link: https://lore.kernel.org/r/20240828154338.754746-1-david.fernandez.gonzalez@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_resource.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/vmw_vmci/vmci_resource.c
-+++ b/drivers/misc/vmw_vmci/vmci_resource.c
-@@ -152,7 +152,8 @@ void vmci_resource_remove(struct vmci_re
- 	spin_lock(&vmci_resource_table.lock);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 380f22ee3ebb..ebf25819a7da 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -2146,8 +2146,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
+ 	}
  
- 	hlist_for_each_entry(r, &vmci_resource_table.entries[idx], node) {
--		if (vmci_handle_is_equal(r->handle, resource->handle)) {
-+		if (vmci_handle_is_equal(r->handle, resource->handle) &&
-+		    resource->type == r->type) {
- 			hlist_del_init_rcu(&r->node);
- 			break;
- 		}
+ 	queue->nr_cmds = sq->size * 2;
+-	if (nvmet_tcp_alloc_cmds(queue))
++	if (nvmet_tcp_alloc_cmds(queue)) {
++		queue->nr_cmds = 0;
+ 		return NVME_SC_INTERNAL;
++	}
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
