@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880BE97307D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96747972DD5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49F962872AD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56C57283E20
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B4518FC84;
-	Tue, 10 Sep 2024 10:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA36188CDC;
+	Tue, 10 Sep 2024 09:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZW6S+lmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7WrehUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C5318F2FF;
-	Tue, 10 Sep 2024 10:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FEF188A17;
+	Tue, 10 Sep 2024 09:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962434; cv=none; b=OVGvSDcgZBlV33Dlsnm/TFQ6oRfLosh7lwPcY2mdhwtfHVlUgkHLIQ08HDDmaZpzwzdLBdQNQT1Xur+fSp4HxnyTHa60HKAdquvM56W5MER3GRMQRq1q3are636zuUF/hQgbKttQnCvwmVuMKq+leGh0J9v6QZKcJJi9De4YEm0=
+	t=1725961001; cv=none; b=NFQu2k33NuDxPQp/cRj3bYB3113bAlY/udgXqvrysRYXIe1Vg6IBYEcMw4XJqxYqbgVL1UCpE2aaiJSxX0YjLUNSXB+amoqf8MS6nEXGoFV5WkNUbj/0dxOHefeszTiqJNNFmF5hjnRafVgfavIK4Dp30vZrcAVnLZs9oex2y0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962434; c=relaxed/simple;
-	bh=0hdjV0FDvtEzE4fsRMlJQ4EfvbKgmWw4RZsHLGkDZTI=;
+	s=arc-20240116; t=1725961001; c=relaxed/simple;
+	bh=sye5gregCQ/jsQZGpUyuvTqO4cDsSutJyzK7+pbjnkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uToxbNCTeV+Xho3KbJsTcpo4HZqAtl0k+ytzuSKcLP5SfUrp4SowT4vNfa2myaAr6TeplmUfn2GbGJCyp0fSdzvFzMnsgnEqXs8XkE6/mVf1rc5S6nuMdSb0H4LqSa+M2FN3pdpHReHjURZCWjur9GdJlmqdAtz8hG5XH+7GP3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZW6S+lmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D176C4CEC3;
-	Tue, 10 Sep 2024 10:00:33 +0000 (UTC)
+	 MIME-Version; b=l7jnkvrBr4sXzyKo4FbRbG9vRMnIyhw9lX4/IaARgRwLo0AV3eKlvuCMa7SIFBTSoLyUMY8j441kNRmwIjtoQ0Nd1/LEqE4uLi/Firo71acqe21FcgETvnEiagT6NMIYleonYY6zB2ldXDXiStu5sXxWQa8NvRjHJLjmZ9GLtdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7WrehUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5ABC4CEC3;
+	Tue, 10 Sep 2024 09:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962433;
-	bh=0hdjV0FDvtEzE4fsRMlJQ4EfvbKgmWw4RZsHLGkDZTI=;
+	s=korg; t=1725961001;
+	bh=sye5gregCQ/jsQZGpUyuvTqO4cDsSutJyzK7+pbjnkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZW6S+lmg4YR93XCC76NxuAU0UWSmbT0BrgCitveyv/UXrRfQ0DghtR+hKQ4RFtZQc
-	 cNkv938yocclIXX7SoM6dHIsYAUdgz7w+J9DpMNH3BVqlxuKSijBc7fLwbwzN4rwbe
-	 mdYzyJzNrdAhfE0pNhPpona8glZ+CEDbYnk7f6cY=
+	b=o7WrehUiMoe7P2JMCTyImlKr3UgRFHDGk74S5DWyfnUMWWCwKBiyWJsL5CTUeZ0b2
+	 8CmbO5xEWypY8B6No3KDcS8mGdIf33KkmbdNSNTBDbgCkz2pJjzy4OJerQaaJFBhFS
+	 OIa+LfimsixMirq6/HVZsUTzzX/4G+t4y/Txzpeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/121] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.19 20/96] ata: libata: Fix memory leak for error path in ata_host_alloc()
 Date: Tue, 10 Sep 2024 11:31:22 +0200
-Message-ID: <20240910092546.088133392@linuxfoundation.org>
+Message-ID: <20240910092542.311379721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
+commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
 
-[Why]
-Coverity reports OVERRUN warning. Should abort amdgpu_dm
-initialize.
+In ata_host_alloc(), if devres_alloc() fails to allocate the device host
+resource data pointer, the already allocated ata_host structure is not
+freed before returning from the function. This results in a potential
+memory leak.
 
-[How]
-Return failure to amdgpu_dm_init.
+Call kfree(host) before jumping to the error handling path to ensure
+that the ata_host structure is properly freed if devres_alloc() fails.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ata/libata-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3bfc4aa328c6..869b38908b28 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2263,7 +2263,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -6221,8 +6221,10 @@ struct ata_host *ata_host_alloc(struct d
+ 	}
  
- 	/* There is one primary plane per CRTC */
- 	primary_planes = dm->dc->caps.max_streams;
--	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
-+	if (primary_planes > AMDGPU_MAX_PLANES) {
-+		DRM_ERROR("DM: Plane nums out of 6 planes\n");
-+		return -EINVAL;
+ 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
+-	if (!dr)
++	if (!dr) {
++		kfree(host);
+ 		goto err_out;
 +	}
  
- 	/*
- 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
--- 
-2.43.0
-
+ 	devres_add(dev, dr);
+ 	dev_set_drvdata(dev, host);
 
 
 
