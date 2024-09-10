@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CB99733D9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 551DD9731BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E455B1F254BF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011BD1F29381
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A78190046;
-	Tue, 10 Sep 2024 10:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5842218DF9E;
+	Tue, 10 Sep 2024 10:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zb5vNVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qMKwo16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2499A18C021;
-	Tue, 10 Sep 2024 10:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1606A188A0C;
+	Tue, 10 Sep 2024 10:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964335; cv=none; b=eULgQysgTMGdO0e+k2v5PvZKp12KONuu00Q+Klmc3Q5/8C5JmegtCVAZ7g3D+8+koCpuAz38bQS64PyWhg9KcSAiBNfwGz+to8lIDfnccpQzGuZdDUsWJYZJHfTqP2f/mxbMywBFer9XsMb07tijKymQpRVwAnBe/y+zG9biPY4=
+	t=1725963027; cv=none; b=Cu7siC978PcEZoZhf/M+WwTJ58g4VuJpnerG8EK5oiH09PnplS4/uEMgYHBOIf9dffCDJPbXulez2UurWcU9c4G4tHVM8RYlr+CH10xTSQNo1On95Z/JZrLKtUqUsI+cTeB1qzTyH+Chs1WlYqbAJ0s0xf38YDwlARxdYhWjne0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964335; c=relaxed/simple;
-	bh=Z4OAeZpIj+OGnwtI4HvxVgZDhGZMjZ/2BxPzAxEwbPc=;
+	s=arc-20240116; t=1725963027; c=relaxed/simple;
+	bh=gU/ww9U8LtCqcoalfInV1+ATQYmyFhXG0rIv029wrTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyiwEndveSKgxM3YhxhdUl0eChoMplfCPtSq5/U+8vC3oQa26eBdGh22blhKv1L9WOmCF6ybZ+oNCOBieeO9u06c52PLwd114eKg+B0jk6a85RnidzXYbpx7Fbtrm5UDEQlqkx6CzHanhbTsmAl1KxRNgVbVAE2FJo7Wwytw0iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zb5vNVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AA8C4CEC3;
-	Tue, 10 Sep 2024 10:32:14 +0000 (UTC)
+	 MIME-Version; b=h5RUR0Aj0wb7Ll5CrEHL74Z4dcO1PppdboECEFnGtYNTQPcirIthEIUwtm04p262lDgd8X5oLQDtifxLJVwikg2sOs1WPno161lG7w7Hh0nTELrgJjG/qukbclFQx8NdRHlwNwe8YlIXyqorvRGNhhTOlioZPAdUZHp9snvSoAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qMKwo16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C05EC4CEC6;
+	Tue, 10 Sep 2024 10:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964335;
-	bh=Z4OAeZpIj+OGnwtI4HvxVgZDhGZMjZ/2BxPzAxEwbPc=;
+	s=korg; t=1725963026;
+	bh=gU/ww9U8LtCqcoalfInV1+ATQYmyFhXG0rIv029wrTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Zb5vNVmJU/ROsvTapZXHmrWTsh4+5EtwZVCK3vTEUildrO2VdGBvEStV03E6wAlN
-	 Kwgha6JB100MR1BW35ZOhqnRubUxMc/321ZEEqLhxwgyb5fe2KyLqIhjWorTzvbtSk
-	 SGiPwC8HAmYnYDYFzkB/bq3GY+E74uIQYXRsTExQ=
+	b=2qMKwo16pdP3RpTpxzmXlhogZfercQZRXcwbDDb+im/B0XZfETqONdViD6h308ZlU
+	 Gbjfn9Do3jbW11lGZvd1OIREmmrR00CBiyJrrsAzc9EfnHQBzxeHJ28hQ6ciEnXC23
+	 Jt+eZZYXpAeqbLkVcaAqDv2PfOyLDNBcriPx+kPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Oliver Neukum <oneukum@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/269] igc: Unlock on error in igc_io_resume()
+Subject: [PATCH 6.1 083/192] usbnet: modern method to get random MAC
 Date: Tue, 10 Sep 2024 11:31:47 +0200
-Message-ID: <20240910092612.451240686@linuxfoundation.org>
+Message-ID: <20240910092601.410755827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit ef4a99a0164e3972abb421cbb1b09ea6c61414df ]
+[ Upstream commit bab8eb0dd4cb995caa4a0529d5655531c2ec5e8e ]
 
-Call rtnl_unlock() on this error path, before returning.
+The driver generates a random MAC once on load
+and uses it over and over, including on two devices
+needing a random MAC at the same time.
 
-Fixes: bc23aa949aeb ("igc: Add pcie error handler support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Jakub suggested revamping the driver to the modern
+API for setting a random MAC rather than fixing
+the old stuff.
+
+The bug is as old as the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/20240829175201.670718-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/usbnet.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 21fb1a98ebca..da1018d83262 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7288,6 +7288,7 @@ static void igc_io_resume(struct pci_dev *pdev)
- 	rtnl_lock();
- 	if (netif_running(netdev)) {
- 		if (igc_open(netdev)) {
-+			rtnl_unlock();
- 			netdev_err(netdev, "igc_open failed after reset\n");
- 			return;
- 		}
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 405e588f8a3a..0f848d318544 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -61,9 +61,6 @@
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-// randomly generated ethernet address
+-static u8	node_id [ETH_ALEN];
+-
+ /* use ethtool to change the level for any given device */
+ static int msg_level = -1;
+ module_param (msg_level, int, 0);
+@@ -1726,7 +1723,6 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 
+ 	dev->net = net;
+ 	strscpy(net->name, "usb%d", sizeof(net->name));
+-	eth_hw_addr_set(net, node_id);
+ 
+ 	/* rx and tx sides can use different message sizes;
+ 	 * bind() should set rx_urb_size in that case.
+@@ -1800,9 +1796,9 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		goto out4;
+ 	}
+ 
+-	/* let userspace know we have a random address */
+-	if (ether_addr_equal(net->dev_addr, node_id))
+-		net->addr_assign_type = NET_ADDR_RANDOM;
++	/* this flags the device for user space */
++	if (!is_valid_ether_addr(net->dev_addr))
++		eth_hw_addr_random(net);
+ 
+ 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+ 		SET_NETDEV_DEVTYPE(net, &wlan_type);
+@@ -2212,7 +2208,6 @@ static int __init usbnet_init(void)
+ 	BUILD_BUG_ON(
+ 		sizeof_field(struct sk_buff, cb) < sizeof(struct skb_data));
+ 
+-	eth_random_addr(node_id);
+ 	return 0;
+ }
+ module_init(usbnet_init);
 -- 
 2.43.0
 
