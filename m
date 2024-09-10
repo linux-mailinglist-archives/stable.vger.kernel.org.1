@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071A6973584
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E68F97345C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A69D1B2BABF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 292641F25DD7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49C11922FA;
-	Tue, 10 Sep 2024 10:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C49A191476;
+	Tue, 10 Sep 2024 10:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obZwmwU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uySGrs7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6199618FC6B;
-	Tue, 10 Sep 2024 10:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DB25381A;
+	Tue, 10 Sep 2024 10:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965102; cv=none; b=CFjs1FwMU4X8u94hksN6dKrM5DgWDrgRTOMz2AS3cDTKVsdD08CRYB44MX2F8rNHHNTdLpYOWuEHtq6DsNimkKATBwnIN/UcYy5Q9G74cMHyYfLAL9z1/vlls+0N68bCddDsEyixmEoocaixtPfWnUPV1G+yNKvpxQ+ydl8vcto=
+	t=1725964624; cv=none; b=XbkP4BH9kpIQOklG9LhqYA9ILig/GGrrtcDzh45+r4RNSb0M0vZOfyKFj71FNd51hXFSwOVLFLZi5KiV6URKLhDIfORGUZBlgxGAJGXue11ko3VHQDvGbjeTVkoqJWXBIiEg++papuMTh4KZIhmnSIZhbS7tnqlF8rFaZ762OIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965102; c=relaxed/simple;
-	bh=V6ItvJO0RjilbWTD+ZHkLg1hW+e268iVlG1FPXsUAGk=;
+	s=arc-20240116; t=1725964624; c=relaxed/simple;
+	bh=iAFiErD9U2gxLZFmNGfvXdjsx4WTgw462COKJklc14M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PO1HrZotSdz2RfBKjyexy0FCj6HpHETCvAwVL/LW0PCXlXsHm+F+lbamveVv0QsXth7DgqZL4BF6SmCvJ4NchuKIexM+zH8CZZ8wHAoZXcBQKwTSpNw3btqCWBpaXBDv55A09BtaQeE1d9WZsXJdCkjFnGigeIWxKdgOhqkwEBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obZwmwU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5D9C4CEC6;
-	Tue, 10 Sep 2024 10:45:01 +0000 (UTC)
+	 MIME-Version; b=u41j+n5+D7uzzJ9ZC+HJplQgXPrYeatpF0i0nxs+ke3i5bKDmePrF6YCO6DjyeXikyUXY5tvyh/fTB9BJ4uOkeckzuhiTrofIr0w4SZ+OYlnM/kDummzBE1WQJ3n4w0NCIvr/8G5bwuNFWjBSgBZ+pKa/sg+/n/XCfdJ7ZsQZkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uySGrs7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4936C4CEC3;
+	Tue, 10 Sep 2024 10:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965102;
-	bh=V6ItvJO0RjilbWTD+ZHkLg1hW+e268iVlG1FPXsUAGk=;
+	s=korg; t=1725964624;
+	bh=iAFiErD9U2gxLZFmNGfvXdjsx4WTgw462COKJklc14M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obZwmwU1/2fRmgDtlxeKK7js2CUbmHDaniQJUCSqt9OYiBAzEWPab7RcfEs2+Ieym
-	 FpAx0TX21J7y6Q7ETjCGP4qZfGvnMwERNyNE9KkeOzTYn1Dq9yDUGxj2GTqMu46Am+
-	 JBNJkJ7eghDRu9LDeOoiIUJhXnV9elXRJNYj7340=
+	b=uySGrs7RlTxV+E+F+j86ijsRKOO4EXNyzcBODdvP/zMl6XRZYXCjJluALdmJsuerS
+	 xQl/xUvyZmhP9hX1YLvnXeCrOtEILZGnUZGmrEU4Up/s3+CVKl6XQxFJsfiuY5Ef9X
+	 f0QyCNBl8NeRQzvZn5U9GMejo8ijQca5MUu+vIrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	kernel test robot <lkp@intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/186] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.6 246/269] powerpc/64e: Define mmu_pte_psize static
 Date: Tue, 10 Sep 2024 11:33:53 +0200
-Message-ID: <20240910092600.295213312@linuxfoundation.org>
+Message-ID: <20240910092616.607821233@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
+[ Upstream commit d92b5cc29c792f1d3f0aaa3b29dddfe816c03e88 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+mmu_pte_psize is only used in the tlb_64e.c, define it static.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 25d21ad6e799 ("powerpc: Add TLB management code for 64-bit Book3E")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408011256.1O99IB0s-lkp@intel.com/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/beb30d280eaa5d857c38a0834b147dffd6b28aa9.1724157750.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83627ehf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/nohash/tlb_64e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
-index 3964ceab2817..acf36862851a 100644
---- a/drivers/hwmon/w83627ehf.c
-+++ b/drivers/hwmon/w83627ehf.c
-@@ -897,7 +897,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
- 
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->target_temp[nr] = val;
-@@ -922,7 +922,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
- 		return err;
- 
- 	/* Limit the temp to 0C - 15C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
+diff --git a/arch/powerpc/mm/nohash/tlb_64e.c b/arch/powerpc/mm/nohash/tlb_64e.c
+index 1dcda261554c..b6af3ec4d001 100644
+--- a/arch/powerpc/mm/nohash/tlb_64e.c
++++ b/arch/powerpc/mm/nohash/tlb_64e.c
+@@ -33,7 +33,7 @@
+  * though this will probably be made common with other nohash
+  * implementations at some point
+  */
+-int mmu_pte_psize;		/* Page size used for PTE pages */
++static int mmu_pte_psize;	/* Page size used for PTE pages */
+ int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
+ int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
+ unsigned long linear_map_top;	/* Top of linear mapping */
 -- 
 2.43.0
 
