@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2546973312
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5181973450
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7379E287A2A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77591C24F38
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECBD18C038;
-	Tue, 10 Sep 2024 10:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9C2190052;
+	Tue, 10 Sep 2024 10:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZPCSo+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjOJdUMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D6B18A6B9;
-	Tue, 10 Sep 2024 10:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FAD7581D;
+	Tue, 10 Sep 2024 10:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963852; cv=none; b=QPcKguwG3Y3NO8Hb4+kClPD/61KRFU3811bpxCFgKqydqa5KWAZz66QW5R02zbonjkwQpNneENGNgRNn9xkfjRaZU9+a1DKudcv7NAvHBUq70tYOZfPm6XunktPm3guH0M4yDU5SuWgY+8QQXElO8Uuft1o+QOm6bdLBS3Y2znk=
+	t=1725964588; cv=none; b=YDJeXv9lT1JFMYPKKxOC2djCTJyrLZS0ys8rtGklfPqlMk9BCFbmHpN+jOJuByacxLcUbl+56KpiM3XHWfpZiv95kgl4hbvyxj42Jx+qOC7K0D8oxPH+PfmbpsP15IKHklwgdRnAGrrYXEHVuys4yOmOj3i2ffv5fgrpAUm2k+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963852; c=relaxed/simple;
-	bh=oyl4fkz1dkVpSTWOFwEXCsJJBMu1H5MND5LXQWZI7F0=;
+	s=arc-20240116; t=1725964588; c=relaxed/simple;
+	bh=8YnMcYP+E3xPNbe3iQqNTBNcPlkBGY3VNhADSRavIXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3A+dwY8s6uX9lp6X3VBSF8vWMA2r6GJiq8Ur5C5eUHnDV9fKdcyT16y3SHTLhdh1OY+U6vASQM4kmTs3WHbZqtQSBBizxPS7duif9j0kABNEfYvLlrQNGXPBYBLlUycOiA4v5YoAXTO36YNM7pPAZPlUYz0ba8fUAr99WVSrbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZPCSo+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7904EC4CEC3;
-	Tue, 10 Sep 2024 10:24:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RWt1ruLZ/2J9GRZC3aXttgkaktfgXoMuC7xU54+ctNDqfqb2ZbB5cKMn/2KggxidD9STLQc0EeC0mURf7vc7eOb+DI+6yUj3KcDzo9Hq/FFpEtyy87QHOV7zHbJb+JnkbD0/ADKxB9Mn++nrDwlaQoov1rdaSMuuvwZCjfBsMUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjOJdUMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E3FC4CEC3;
+	Tue, 10 Sep 2024 10:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963851;
-	bh=oyl4fkz1dkVpSTWOFwEXCsJJBMu1H5MND5LXQWZI7F0=;
+	s=korg; t=1725964588;
+	bh=8YnMcYP+E3xPNbe3iQqNTBNcPlkBGY3VNhADSRavIXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZPCSo+DKVMU24+Q73QBaX0O4sJg4+JAj9jUEz/iACBxVejNoxsdQDjsCBsQDyS11
-	 QkEbmlIJf5gpZJ1NdQBSLn5S6dMdsIJjJl54EqgG2j0tWnE+JuX3HL+lOzSk5WtEme
-	 H4ucHfhCjKjTgX92WaJzH3td22e8N2aFRzxxdJgE=
+	b=RjOJdUMzFHhcryFftB2MVfQyWVBmJYPXoxECJrGdReZ3F34t7WO4IeNkk/PHnEQQ6
+	 SBqLyf5sugnwNeP0R3fyEtw4wPrXfdIfVIHoJDD2uWh6iXrCq/TtJUeZRLz8Z/0mle
+	 muxRTB/ExEUI1LdBuJAS6WWQCvrWyrRGcHkOUBNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/214] ACPI: processor: Fix memory leaks in error paths of processor_add()
+Subject: [PATCH 6.6 233/269] can: mcp251xfd: mcp251xfd_handle_rxif_ring_uinc(): factor out in separate function
 Date: Tue, 10 Sep 2024 11:33:40 +0200
-Message-ID: <20240910092606.671468822@linuxfoundation.org>
+Message-ID: <20240910092616.206840502@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 47ec9b417ed9b6b8ec2a941cd84d9de62adc358a ]
+[ Upstream commit d49184b7b585f9da7ee546b744525f62117019f6 ]
 
-If acpi_processor_get_info() returned an error, pr and the associated
-pr->throttling.shared_cpu_map were leaked.
+This is a preparation patch.
 
-The unwind code was in the wrong order wrt to setup, relying on
-some unwind actions having no affect (clearing variables that were
-never set etc).  That makes it harder to reason about so reorder
-and add appropriate labels to only undo what was actually set up
-in the first place.
+Sending the UINC messages followed by incrementing the tail pointer
+will be called in more than one place in upcoming patches, so factor
+this out into a separate function.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240529133446.28446-6-Jonathan.Cameron@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Also make mcp251xfd_handle_rxif_ring_uinc() safe to be called with a
+"len" of 0.
+
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c | 48 +++++++++++++-------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 5662c157fda7..8bd5c4fa91f2 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -373,7 +373,7 @@ static int acpi_processor_add(struct acpi_device *device,
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index ced8d9c81f8c..5e2f39de88f3 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -197,6 +197,37 @@ mcp251xfd_rx_obj_read(const struct mcp251xfd_priv *priv,
+ 	return err;
+ }
  
- 	result = acpi_processor_get_info(device);
- 	if (result) /* Processor is not physically present or unavailable */
--		return result;
-+		goto err_clear_driver_data;
++static int
++mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
++				struct mcp251xfd_rx_ring *ring,
++				u8 len)
++{
++	int offset;
++	int err;
++
++	if (!len)
++		return 0;
++
++	/* Increment the RX FIFO tail pointer 'len' times in a
++	 * single SPI message.
++	 *
++	 * Note:
++	 * Calculate offset, so that the SPI transfer ends on
++	 * the last message of the uinc_xfer array, which has
++	 * "cs_change == 0", to properly deactivate the chip
++	 * select.
++	 */
++	offset = ARRAY_SIZE(ring->uinc_xfer) - len;
++	err = spi_sync_transfer(priv->spi,
++				ring->uinc_xfer + offset, len);
++	if (err)
++		return err;
++
++	ring->tail += len;
++
++	return 0;
++}
++
+ static int
+ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			   struct mcp251xfd_rx_ring *ring)
+@@ -210,8 +241,6 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 		return err;
  
- 	BUG_ON(pr->id >= nr_cpu_ids);
+ 	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
+-		int offset;
+-
+ 		rx_tail = mcp251xfd_get_rx_tail(ring);
  
-@@ -388,7 +388,7 @@ static int acpi_processor_add(struct acpi_device *device,
- 			"BIOS reported wrong ACPI id %d for the processor\n",
- 			pr->id);
- 		/* Give up, but do not abort the namespace scan. */
--		goto err;
-+		goto err_clear_driver_data;
+ 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
+@@ -227,22 +256,9 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 				return err;
+ 		}
+ 
+-		/* Increment the RX FIFO tail pointer 'len' times in a
+-		 * single SPI message.
+-		 *
+-		 * Note:
+-		 * Calculate offset, so that the SPI transfer ends on
+-		 * the last message of the uinc_xfer array, which has
+-		 * "cs_change == 0", to properly deactivate the chip
+-		 * select.
+-		 */
+-		offset = ARRAY_SIZE(ring->uinc_xfer) - len;
+-		err = spi_sync_transfer(priv->spi,
+-					ring->uinc_xfer + offset, len);
++		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
+ 		if (err)
+ 			return err;
+-
+-		ring->tail += len;
  	}
- 	/*
- 	 * processor_device_array is not cleared on errors to allow buggy BIOS
-@@ -400,12 +400,12 @@ static int acpi_processor_add(struct acpi_device *device,
- 	dev = get_cpu_device(pr->id);
- 	if (!dev) {
- 		result = -ENODEV;
--		goto err;
-+		goto err_clear_per_cpu;
- 	}
  
- 	result = acpi_bind_one(dev, device);
- 	if (result)
--		goto err;
-+		goto err_clear_per_cpu;
- 
- 	pr->dev = dev;
- 
-@@ -416,10 +416,11 @@ static int acpi_processor_add(struct acpi_device *device,
- 	dev_err(dev, "Processor driver could not be attached\n");
- 	acpi_unbind_one(dev);
- 
-- err:
--	free_cpumask_var(pr->throttling.shared_cpu_map);
--	device->driver_data = NULL;
-+ err_clear_per_cpu:
- 	per_cpu(processors, pr->id) = NULL;
-+ err_clear_driver_data:
-+	device->driver_data = NULL;
-+	free_cpumask_var(pr->throttling.shared_cpu_map);
-  err_free_pr:
- 	kfree(pr);
- 	return result;
+ 	return 0;
 -- 
 2.43.0
 
