@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BF39731A1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BACD973491
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 420CA28AEEA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4BC1C24FDB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A90197556;
-	Tue, 10 Sep 2024 10:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA27B18E76F;
+	Tue, 10 Sep 2024 10:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiGRrs3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhxeaUje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DD1922F1;
-	Tue, 10 Sep 2024 10:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D031DA4C;
+	Tue, 10 Sep 2024 10:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962955; cv=none; b=q91FBoYD49aO7rQeeh05cCJZcJGbV/N8O3nEbfk8TsUDsRcrZsh0grUQElG30jNTUyga1B+26ElCoxNXTzzvrCTDdp0JfPsO/1zC6QGZdZR5XdqmuwUenQfCsQO3VHndBux1zhK64dz6yTQrfJ/vyepwYsXi6AqTDsojMbcFXro=
+	t=1725964744; cv=none; b=qnSX9b4PiiBvfN9sAF2azO6weTRcNhhmpz9GSJKroEr5migoUMctwSJJ4ht+fKHznfVD3r6k0gyz1nCeoLNNRMER5GJ6f4JQmYx3xt1ixyVchae6CZ/MNLQNHFmYXctn3z6mgRckbwqYIE343pYmoqFg6HI+vozB/24EnOcgSIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962955; c=relaxed/simple;
-	bh=7Bs5c99IHmfGNaUZmLOSCknEZvHqOf1/TcBOnVJRMlY=;
+	s=arc-20240116; t=1725964744; c=relaxed/simple;
+	bh=tOnGU4WRCmAJNWKzTht7Ic780WY0geifhKwQqEC+8CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ux5u1O89t0tEk+Of4kNY+akXAlX+0wvUcVjEiU8ZI2YS6t8qoR80LmNgqu561kwLgZnB3cZ3+BCW20ebA4f1/kG+A+1ffPXIU3Y4xOo59V9feuxecGpeSBi6/lf4krQ1t0PJNsJlHFPf+NxN6QRhTETpzw1emgCHP54f6OTMbII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiGRrs3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0FEC4CEC6;
-	Tue, 10 Sep 2024 10:09:14 +0000 (UTC)
+	 MIME-Version; b=YB7iwBTaBEDaxnE/GTCJ4DTaU1HHpaABJ9a9mmA12MJK8kf9h+/hg2rRZ5AlMyJjUaJt+CsJymc3hE0hJ9HUgA4w7u9hriS2dAoQtvMlSpwEeOwpkCiYpY/49KSEnXxuW5jqkSP10BPItR3AhFyTrmdvcEVmwZ4XsfHIXFnNeXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhxeaUje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7AAC4CEC3;
+	Tue, 10 Sep 2024 10:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962955;
-	bh=7Bs5c99IHmfGNaUZmLOSCknEZvHqOf1/TcBOnVJRMlY=;
+	s=korg; t=1725964744;
+	bh=tOnGU4WRCmAJNWKzTht7Ic780WY0geifhKwQqEC+8CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiGRrs3Y7syeC7nwYWuQIhkXI/FmAkNVh/h/k4Lz5GWj95q6cQvCI9Ms1CGSI+vfh
-	 ANSFarkwmoYPKCUbohsujcApv+KPb84lgMTE07PAALKt6YrJ/3F2/GYElA6H+u6irC
-	 0yQUpnbtg92pFUn1XumeWkQsdohcPgtRIF5iI7Eg=
+	b=XhxeaUjeLPyPRPHKDVzE0qRDK9ugSvwt8FC2KGA87LmEVvpGQ7sQER+T/8+fKmMEf
+	 yLLKu5hinrM8n+uXkJWcKlFvC7IC3KmU9aNaZp6/pCZLnPHcHR0p0HQNmQ+7xHk2FI
+	 Gf2Q5C8EGzzr9GveeuH3PIz51kp5vvBOxXf0Wle0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/192] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
-Date: Tue, 10 Sep 2024 11:31:51 +0200
-Message-ID: <20240910092601.581255925@linuxfoundation.org>
+Subject: [PATCH 5.10 017/186] drm/amd/display: Add array index check for hdcp ddc access
+Date: Tue, 10 Sep 2024 11:31:52 +0200
+Message-ID: <20240910092555.338754132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
+[ Upstream commit 4e70c0f5251c25885c31ee84a31f99a01f7cf50e ]
 
-CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
-Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
-moment.
+[Why]
+Coverity reports OVERRUN warning. Do not check if array
+index valid.
 
-This patch fix it.
+[How]
+Check msg_id valid and valid array index.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   | 28 ++++++++++++++++---
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index c8e9ca5d5c28..de444d201e0f 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -35,7 +35,7 @@
- #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
- #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
- #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
--#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
-+#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+index 8e9caae7c955..1b2df97226a3 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -156,11 +156,16 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
  
-@@ -371,13 +371,19 @@ int vsc73xx_is_addr_valid(u8 block, u8 subblock)
- 		break;
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
  
- 	case VSC73XX_BLOCK_MII:
--	case VSC73XX_BLOCK_CAPTURE:
- 	case VSC73XX_BLOCK_ARBITER:
- 		switch (subblock) {
- 		case 0 ... 1:
- 			return 1;
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.read_dpcd(hdcp->config.ddc.handle,
+@@ -175,6 +180,11 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
  		}
- 		break;
-+	case VSC73XX_BLOCK_CAPTURE:
-+		switch (subblock) {
-+		case 0 ... 4:
-+		case 6 ... 7:
-+			return 1;
-+		}
-+		break;
- 	}
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		success = hdcp->config.ddc.funcs.read_i2c(
+ 				hdcp->config.ddc.handle,
+ 				HDCP_I2C_ADDR,
+@@ -219,11 +229,16 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 	uint32_t cur_size = 0;
+ 	uint32_t data_offset = 0;
  
- 	return 0;
+-	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
++	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID ||
++		msg_id >= MOD_HDCP_MESSAGE_ID_MAX)
+ 		return MOD_HDCP_STATUS_DDC_FAILURE;
+-	}
+ 
+ 	if (is_dp_hdcp(hdcp)) {
++		int num_dpcd_addrs = sizeof(hdcp_dpcd_addrs) /
++			sizeof(hdcp_dpcd_addrs[0]);
++		if (msg_id >= num_dpcd_addrs)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		while (buf_len > 0) {
+ 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 			success = hdcp->config.ddc.funcs.write_dpcd(
+@@ -239,6 +254,11 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
+ 			data_offset += cur_size;
+ 		}
+ 	} else {
++		int num_i2c_offsets = sizeof(hdcp_i2c_offsets) /
++			sizeof(hdcp_i2c_offsets[0]);
++		if (msg_id >= num_i2c_offsets)
++			return MOD_HDCP_STATUS_DDC_FAILURE;
++
+ 		hdcp->buf[0] = hdcp_i2c_offsets[msg_id];
+ 		memmove(&hdcp->buf[1], buf, buf_len);
+ 		success = hdcp->config.ddc.funcs.write_i2c(
 -- 
 2.43.0
 
