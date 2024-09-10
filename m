@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-74383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D1F972F02
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:48:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9385C972F12
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E198B1F25EEB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567FF286DF4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177E8183CB0;
-	Tue, 10 Sep 2024 09:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D5818C006;
+	Tue, 10 Sep 2024 09:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4moKbzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8tTTEty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70AC18F2F9;
-	Tue, 10 Sep 2024 09:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081A14D431;
+	Tue, 10 Sep 2024 09:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961646; cv=none; b=syiO24eaJOuJT1bkZpZU9IdYrty/44n5tRqZPjYiTR+3GhLt7FUL6+UDdUnX3VF52joSyTcicGoCexC1DM5uaJysccq+hVnuwOXFZljmGQJpkyTt2XP718unMErpjjBeh4L3sA+D8HIvuMiiDIItnMaQKPgOaf6QchzmFp40LFw=
+	t=1725961679; cv=none; b=W4FsUVz+o68EJqBto6/p1oJUtwBZwjJh+AZrgNXL54wmCAO2hnOsxWBNiXv3Bw453Rf5107WHsn14WGFf465EIE6edycDdoi+jWZ2mlryxRMqS9pUo4tzxcfEqL6QviooZ9Ud+fIpRsRRh8rtBafaHvbUPlghOW15vvzA4S1mBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961646; c=relaxed/simple;
-	bh=nGl+EPYMZJt4rXSrEpEQ3SSmQyk/6+oUDt9D6i7P9mY=;
+	s=arc-20240116; t=1725961679; c=relaxed/simple;
+	bh=awxfpA49x9lHnxEzT92iu1qaCjXyPCcZkUvjLcZ1xM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBV61QoSWV+IjkagaUqLL8svxrUUDjHR3Dk9N3OxLMdmxCyrQGYCBa7kYsVATQH+FBUqf4IPQUSKkSTh3OTol+dHjGz3WXFCxocCz8tGNBFVquaizug8pBAb1GjfkPZyk924syq2EFEbe/lysS/fD2GnC9p5NEfQRVhBb7FnCr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4moKbzf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47135C4CEC6;
-	Tue, 10 Sep 2024 09:47:26 +0000 (UTC)
+	 MIME-Version; b=UPLG4whwobNsM0zg0j6uBpoBiqj5OzaSfXd9/zSUgdJqLt5LLPxgkWbg0fGaObYhHiHysFeJMYQN3CMqKMdLpKvApMOIBUQaAqrk9ZyGGOSjV6I3ZtUBE8VcteQAnhWA8Dl/OW7AlgDIAwiUzWQY7sLMbdxg6I9Xn2e+SAzOrc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8tTTEty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A56C4CEC3;
+	Tue, 10 Sep 2024 09:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961646;
-	bh=nGl+EPYMZJt4rXSrEpEQ3SSmQyk/6+oUDt9D6i7P9mY=;
+	s=korg; t=1725961679;
+	bh=awxfpA49x9lHnxEzT92iu1qaCjXyPCcZkUvjLcZ1xM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4moKbzfk9wW9P+dlJ5Ym/ndmPLsx5efVbYFF8TELfPbLPyDTFqs06YHPxx3O7dlG
-	 IZu7937acPBCQmxdRSDpKtdNb2L/xQiM4RpvYLPAIJ4C6KTRGRWRv+Xg9TozPvnjOV
-	 RUujXLc3zDzNRdGWBcBjwa8wsCwPWUk2Ext+LqFI=
+	b=M8tTTEtyGm4jkjEzSYXY8xHXRnOElGD1i8hT4EMIB4XzQ/CvUOmjRmzkRikjym0io
+	 bu2mxAfinCJHoh73t8pJwbTqs5V1M/c4qvwD/b4cgQtWdHL/8OrGGkXUoy46xOpCxm
+	 FCaxCBFirDvJMKzcqffX7x0lxZ0VLVT46zvuzbmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 133/375] fs: relax permissions for statmount()
-Date: Tue, 10 Sep 2024 11:28:50 +0200
-Message-ID: <20240910092626.903119072@linuxfoundation.org>
+Subject: [PATCH 6.10 134/375] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+Date: Tue, 10 Sep 2024 11:28:51 +0200
+Message-ID: <20240910092626.938549146@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -65,42 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit f3107df39df123328a9d3c8f40c006834b37287d ]
+[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
 
-It is sufficient to have capabilities in the owning user namespace of
-the mount namespace to stat a mount regardless of whether it's reachable
-or not.
+Smatch warns:
 
-Link: https://lore.kernel.org/r/bf5961d71ec479ba85806766b0d8d96043e67bba.1719243756.git.josef@toxicpanda.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
+
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
+
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/rtas.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 57311ecbdf5a..4494064205a6 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -4906,6 +4906,7 @@ static int copy_statmount_to_user(struct kstatmount *s)
- static int do_statmount(struct kstatmount *s)
- {
- 	struct mount *m = real_mount(s->mnt);
-+	struct mnt_namespace *ns = m->mnt_ns;
- 	int err;
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 8064d9c3de86..f7e86e09c49f 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -19,6 +19,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/memblock.h>
+ #include <linux/mutex.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ #include <linux/reboot.h>
+@@ -1916,6 +1917,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
  
- 	/*
-@@ -4913,7 +4914,7 @@ static int do_statmount(struct kstatmount *s)
- 	 * mounts to show users.
- 	 */
- 	if (!is_path_reachable(m, m->mnt.mnt_root, &s->root) &&
--	    !ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
-+	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
- 		return -EPERM;
- 
- 	err = security_sb_statfs(s->mnt->mnt_root);
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 -- 
 2.43.0
 
