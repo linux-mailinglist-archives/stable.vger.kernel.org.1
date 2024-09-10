@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB009732EF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D09D973423
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E311F22F75
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282D51F25BAD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80A418B491;
-	Tue, 10 Sep 2024 10:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A094A18C90B;
+	Tue, 10 Sep 2024 10:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2p3YY6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7ahuqns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674695381A;
-	Tue, 10 Sep 2024 10:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F800186615;
+	Tue, 10 Sep 2024 10:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963761; cv=none; b=jnTryX0hZPiFQ7XaWkfzHd24y4BFWeflHN6OYBQvR7T3U2ISrjqVFEPd20PC5TuZJZeP221NUSDxJ0nyJ7Lgr6Q3WfVFKJ04lpCsxYZbcpALjihMWyg9U/XSd6+SNq7nrS91X3Y07Sv33qoyy/3rJBe3Sy4RKn8Jt8uDw4Yd6Tk=
+	t=1725964496; cv=none; b=bvxmqAMdGUe+bTjTVEZNsnvH4IlZpboQz06IQQtYn8hyAmFltQJTWuquhEQLuUmUcioM3FpR0jKyhloL7Jy5YCz1Sa8xSv8JHZVYqYyEYiUkuz2QJgHPE28rkG5tOYvxzKD72t/QYCUAFsvXLkOfGQ6BnktGWsANwp/Tilw7uFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963761; c=relaxed/simple;
-	bh=MoWXs4bj41YU7sSZpeRyeG+kGCKv4U/FYHeO7OufbTE=;
+	s=arc-20240116; t=1725964496; c=relaxed/simple;
+	bh=gSRjgsCvm8ORDIkSBTVBbzvWqkjKmcK1ImP/amZff+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDyr//KmGA4Ku+VW5iMOO75QFm48DImj6K32v77bB9mhPSWr6aIAUz9YxhKkUgxHcqE1R08834gynrJxCtZMDfFcFfsTdCSbToB/biZsK0BOzRbMKeufeUlISrh8+eNggNZGb1bDCg3j8DPqkXOzqb6f9ZYd7c2ksgbc7uYjr18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2p3YY6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D61C4CEC3;
-	Tue, 10 Sep 2024 10:22:40 +0000 (UTC)
+	 MIME-Version; b=GXYIb0ddIxuz95sSxCDtNZ5Bti1QdQ1A4+qaSwE0kU90b09M09CtGbL7BeniTZrs4cAKoL1ybexAjTmqsGzHhLVC8t9uXKM8N0Sn4Xevn7ujKOMDBn1EclWlOrwzRoZfZSMr5NUFjdSgpBA3yoJzIr/oJ7bxoz5WYxNf1tyCBZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7ahuqns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9C9C4CEC3;
+	Tue, 10 Sep 2024 10:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963761;
-	bh=MoWXs4bj41YU7sSZpeRyeG+kGCKv4U/FYHeO7OufbTE=;
+	s=korg; t=1725964496;
+	bh=gSRjgsCvm8ORDIkSBTVBbzvWqkjKmcK1ImP/amZff+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2p3YY6R9MRBTnbnziIrKz9Kp/qcPE4Qn+iKp/u7uKg/sG9F1cohsPy4nB8p5sZMb
-	 ylmD9D/dut/58orkov6Pg674x6jNgzkWZn8Bc4F/0UpX9UQVvRi1yFluSeSCx2mSrw
-	 4qiDdpSJvfYndjIsxDxmEW61gRV3R3qBjO2EvIXQ=
+	b=G7ahuqnsbB9hobfR9dITv1lePt5KZj6UKf+FouuBfQuy5VQKNQJlASXsV08S0ER18
+	 BBL8I/734omvFhN94hSgRGG06CFlLcLsiS9xfosMF2crqJ9ovbvDizeJbv6b5xvNXe
+	 /BVJGfW7P/mzfIHVaXtlyilSIsszJJE7H/CDJ+bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/214] Squashfs: sanity check symbolic link size
+	Perry Yuan <perry.yuan@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Gaha Bana <gahabana@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 202/269] cpufreq: amd-pstate: fix the highest frequency issue which limits performance
 Date: Tue, 10 Sep 2024 11:33:09 +0200
-Message-ID: <20240910092605.511189751@linuxfoundation.org>
+Message-ID: <20240910092615.277134427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Perry Yuan <perry.yuan@amd.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+commit bf202e654bfa57fb8cf9d93d4c6855890b70b9c4 upstream.
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+To address the performance drop issue, an optimization has been
+implemented. The incorrect highest performance value previously set by the
+low-level power firmware for AMD CPUs with Family ID 0x19 and Model ID
+ranging from 0x70 to 0x7F series has been identified as the cause.
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
+To resolve this, a check has been implemented to accurately determine the
+CPU family and model ID. The correct highest performance value is now set
+and the performance drop caused by the incorrect highest performance value
+are eliminated.
 
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
+Before the fix, the highest frequency was set to 4200MHz, now it is set
+to 4971MHz which is correct.
 
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
+CPU NODE SOCKET CORE L1d:L1i:L2:L3 ONLINE    MAXMHZ   MINMHZ       MHZ
+  0    0      0    0 0:0:0:0          yes 4971.0000 400.0000  400.0000
+  1    0      0    0 0:0:0:0          yes 4971.0000 400.0000  400.0000
+  2    0      0    1 1:1:1:0          yes 4971.0000 400.0000 4865.8140
+  3    0      0    1 1:1:1:0          yes 4971.0000 400.0000  400.0000
 
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
-
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
-
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
-
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3a052391822 ("cpufreq: amd-pstate: Enable amd-pstate preferred core support")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218759
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Tested-by: Gaha Bana <gahabana@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/cpufreq/amd-pstate.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 24463145b351..f31649080a88 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -50,7 +50,8 @@
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
+ #define AMD_PSTATE_TRANSITION_LATENCY	20000
+ #define AMD_PSTATE_TRANSITION_DELAY	1000
+-#define AMD_PSTATE_PREFCORE_THRESHOLD	166
++#define CPPC_HIGHEST_PERF_PERFORMANCE	196
++#define CPPC_HIGHEST_PERF_DEFAULT	166
+ 
+ /*
+  * TODO: We need more time to fine tune processors with shared memory solution
+@@ -313,6 +314,21 @@ static inline int amd_pstate_enable(bool
+ 	return static_call(amd_pstate_enable)(enable);
+ }
+ 
++static u32 amd_pstate_highest_perf_set(struct amd_cpudata *cpudata)
++{
++	struct cpuinfo_x86 *c = &cpu_data(0);
 +
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
--- 
-2.43.0
-
++	/*
++	 * For AMD CPUs with Family ID 19H and Model ID range 0x70 to 0x7f,
++	 * the highest performance level is set to 196.
++	 * https://bugzilla.kernel.org/show_bug.cgi?id=218759
++	 */
++	if (c->x86 == 0x19 && (c->x86_model >= 0x70 && c->x86_model <= 0x7f))
++		return CPPC_HIGHEST_PERF_PERFORMANCE;
++
++	return CPPC_HIGHEST_PERF_DEFAULT;
++}
++
+ static int pstate_init_perf(struct amd_cpudata *cpudata)
+ {
+ 	u64 cap1;
+@@ -329,7 +345,7 @@ static int pstate_init_perf(struct amd_c
+ 	 * the default max perf.
+ 	 */
+ 	if (cpudata->hw_prefcore)
+-		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
++		highest_perf = amd_pstate_highest_perf_set(cpudata);
+ 	else
+ 		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
+ 
+@@ -352,7 +368,7 @@ static int cppc_init_perf(struct amd_cpu
+ 		return ret;
+ 
+ 	if (cpudata->hw_prefcore)
+-		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
++		highest_perf = amd_pstate_highest_perf_set(cpudata);
+ 	else
+ 		highest_perf = cppc_perf.highest_perf;
+ 
 
 
 
