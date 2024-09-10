@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4F9973454
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C37A973316
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6113D1F25395
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BE0287DA8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD20B190056;
-	Tue, 10 Sep 2024 10:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6945194132;
+	Tue, 10 Sep 2024 10:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h30UlA5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpM5CZx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B10046444;
-	Tue, 10 Sep 2024 10:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B3418A6B9;
+	Tue, 10 Sep 2024 10:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964603; cv=none; b=BNnTq8rkpCbdhBFQlSCsOEn/TAgn54Jdv892PUb2RclVncpwBO9ZSjoc1ZcJnoCxsohETGBG6xuE7u4gAAt6F2axDwLQNBg+gQHMxeAkcP3xTOu9iqgGDPYcHplZFq2X5ZXuku+ImaPNibWK3tQYvJNdah14HxFs0LNtn6xk2BQ=
+	t=1725963866; cv=none; b=Z7Vcm4Lggh+C/W4ySBgPsqJWK5zI6h2mMJn30OWePWM6eJqP88yLfeHWBpnzvwkNscNxJcAbeJRGxowoh1qWmzbfIxZMK7aP2tjzpNQlkfyT+fHRheRV74DMx5MfSaW4ga3nDH+mBldxY4irzwhFhmDVjqrINqKXdYXDzWHe45o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964603; c=relaxed/simple;
-	bh=N5g//AtEN4PsZeYUfvbbAGHMEgf1v5qHV7OMF0iKw28=;
+	s=arc-20240116; t=1725963866; c=relaxed/simple;
+	bh=TnxmHITbposWjpjPuawTjYV2IwF2/MUTwWEUt+gUteM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fr6zPZDC+XGZfFKjHhbO47HXdQTveXdYMF9rNa2AGE2zqR7vHWvoWCgufXeDnQJ7e/cME3m2ET/jHHJar2LUTA8IPFGSKue1C3ycgc4OgWliRNPvmwhPvX2flvpnH+azvGVrRA5xFfv+yiiqjYVbENF5oZk9uq8/KrPFD4zm0FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h30UlA5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DB1C4CEC3;
-	Tue, 10 Sep 2024 10:36:42 +0000 (UTC)
+	 MIME-Version; b=Td4yO8YXVwiIAqSU7rj2sxCnVzQs/qQ2TQKrPXtTll9k+gKunFnnYuk6raiumNKlLA/OlbHjRrVKYhsCTfdrp2KDiQ4TfKenEcMrFm3DYHKjenIFvyqifs1OGBrPWBd1xKqveqv9R16peRWW7to1OQEHV/TtVXu7Oyj9p6I71yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpM5CZx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF2C4CEC3;
+	Tue, 10 Sep 2024 10:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964603;
-	bh=N5g//AtEN4PsZeYUfvbbAGHMEgf1v5qHV7OMF0iKw28=;
+	s=korg; t=1725963866;
+	bh=TnxmHITbposWjpjPuawTjYV2IwF2/MUTwWEUt+gUteM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h30UlA5K+Px0lFJemXT/cARQhzqjJqDM16B9GjPS3tC1wrctFP+JQgQFVVZWDbXDk
-	 6Uxv/MV54fCx9a/O4Obf32ysDx9ot1RhtiXDYT8z8gD1Jg05W0EFbpDFoXrkXPyitv
-	 aRxaABfz/l6TvkKfCoZFLNOzRJPtkMDdllGgHDzI=
+	b=TpM5CZx6/1m5F5GWsYXSQ4oyHVSUarkUsdo9G8To++MlQGHLdwLfsAkfBuZ9/FwLQ
+	 H6hSsl6HuquloJFGx/lldoLteufvkcAxQYSuJAeteH0ZTcanGNOfoFYWKSgrXv+Avh
+	 CYhSDgLHynfmZDSnDiUttyfsH3j3eTzpltxaa+3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faisal Hassan <quic_faisalh@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 211/269] usb: dwc3: core: update LC timer as per USB Spec V3.2
-Date: Tue, 10 Sep 2024 11:33:18 +0200
-Message-ID: <20240910092615.544883961@linuxfoundation.org>
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 177/214] iio: adc: ad7124: fix config comparison
+Date: Tue, 10 Sep 2024 11:33:19 +0200
+Message-ID: <20240910092605.937336185@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faisal Hassan <quic_faisalh@quicinc.com>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-commit 9149c9b0c7e046273141e41eebd8a517416144ac upstream.
+commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
 
-This fix addresses STAR 9001285599, which only affects DWC_usb3 version
-3.20a. The timer value for PM_LC_TIMER in DWC_usb3 3.20a for the Link
-ECN changes is incorrect. If the PM TIMER ECN is enabled via GUCTL2[19],
-the link compliance test (TD7.21) may fail. If the ECN is not enabled
-(GUCTL2[19] = 0), the controller will use the old timer value (5us),
-which is still acceptable for the link compliance test. Therefore, clear
-GUCTL2[19] to pass the USB link compliance test: TD 7.21.
+The ad7124_find_similar_live_cfg() computes the compare size by
+substracting the address of the cfg struct from the address of the live
+field. Because the live field is the first field in the struct, the
+result is 0.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240829094502.26502-1-quic_faisalh@quicinc.com
+Also, the memcmp() call is made from the start of the cfg struct, which
+includes the live and cfg_slot fields, which are not relevant for the
+comparison.
+
+Fix by grouping the relevant fields with struct_group() and use the
+size of the group to compute the compare size; make the memcmp() call
+from the address of the group.
+
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   15 +++++++++++++++
- drivers/usb/dwc3/core.h |    2 ++
- 2 files changed, 17 insertions(+)
+ drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1289,6 +1289,21 @@ static int dwc3_core_init(struct dwc3 *d
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -144,15 +144,18 @@ struct ad7124_chip_info {
+ struct ad7124_channel_config {
+ 	bool live;
+ 	unsigned int cfg_slot;
+-	enum ad7124_ref_sel refsel;
+-	bool bipolar;
+-	bool buf_positive;
+-	bool buf_negative;
+-	unsigned int vref_mv;
+-	unsigned int pga_bits;
+-	unsigned int odr;
+-	unsigned int odr_sel_bits;
+-	unsigned int filter_type;
++	/* Following fields are used to compare equality. */
++	struct_group(config_props,
++		enum ad7124_ref_sel refsel;
++		bool bipolar;
++		bool buf_positive;
++		bool buf_negative;
++		unsigned int vref_mv;
++		unsigned int pga_bits;
++		unsigned int odr;
++		unsigned int odr_sel_bits;
++		unsigned int filter_type;
++	);
+ };
+ 
+ struct ad7124_channel {
+@@ -331,11 +334,12 @@ static struct ad7124_channel_config *ad7
+ 	ptrdiff_t cmp_size;
+ 	int i;
+ 
+-	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
++	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
+ 
+-		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
++		if (cfg_aux->live &&
++		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
+ 			return cfg_aux;
  	}
  
- 	/*
-+	 * STAR 9001285599: This issue affects DWC_usb3 version 3.20a
-+	 * only. If the PM TIMER ECM is enabled through GUCTL2[19], the
-+	 * link compliance test (TD7.21) may fail. If the ECN is not
-+	 * enabled (GUCTL2[19] = 0), the controller will use the old timer
-+	 * value (5us), which is still acceptable for the link compliance
-+	 * test. Therefore, do not enable PM TIMER ECM in 3.20a by
-+	 * setting GUCTL2[19] by default; instead, use GUCTL2[19] = 0.
-+	 */
-+	if (DWC3_VER_IS(DWC3, 320A)) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUCTL2);
-+		reg &= ~DWC3_GUCTL2_LC_TIMER;
-+		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
-+	}
-+
-+	/*
- 	 * When configured in HOST mode, after issuing U3/L2 exit controller
- 	 * fails to send proper CRC checksum in CRC5 feild. Because of this
- 	 * behaviour Transaction Error is generated, resulting in reset and
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -408,6 +408,7 @@
- 
- /* Global User Control Register 2 */
- #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
-+#define DWC3_GUCTL2_LC_TIMER			BIT(19)
- 
- /* Global User Control Register 3 */
- #define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
-@@ -1238,6 +1239,7 @@ struct dwc3 {
- #define DWC3_REVISION_290A	0x5533290a
- #define DWC3_REVISION_300A	0x5533300a
- #define DWC3_REVISION_310A	0x5533310a
-+#define DWC3_REVISION_320A	0x5533320a
- #define DWC3_REVISION_330A	0x5533330a
- 
- #define DWC31_REVISION_ANY	0x0
 
 
 
