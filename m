@@ -1,106 +1,101 @@
-Return-Path: <stable+bounces-75817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDDD975123
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 13:53:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE6E97529D
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 14:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8838F1F27885
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:53:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1777B22A50
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 12:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1098B1885A8;
-	Wed, 11 Sep 2024 11:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC13718F2DF;
+	Wed, 11 Sep 2024 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcOulFoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjaUwSlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DD355E73;
-	Wed, 11 Sep 2024 11:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AC1770E8
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726055610; cv=none; b=chy2qf6Qhiu/79NIbsDEheR+nEsAGD+xZJ8foCQON7ht1GBtB8Yd7N7pWaQ4wCAi/SgpV4ng2Ha1c3pwXGOw0UFP5Hm5zBTRL3NvyEA63kNZgMwJ1i+Uw9k4XU+PSUho70gof26c3nRgsZcAjgt3oZ5WcFuSD875Dh2JJ9hkLkw=
+	t=1726058239; cv=none; b=bCLeL1QoLXr2s9aLJTDV+X/zuxD3zjieA36qJlpUQDuTBWgjy3roOfKCA9WGXJpkx5VVXRhHVSDMa8kBzOuSTWhobXZdqkiPCk49/f6Wsgz2JbgcUXQJYpMyhiYhk5hJQgrDCwbyes5e27YartKB0C2LF7KAz6uCKr5xoTaW2OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726055610; c=relaxed/simple;
-	bh=wnlcu3GUOvYuxP341TqK9IEhiSWPkVw9Fa0I9EzEjFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXTPZAK9kj2BmghRlNMU5sYPe3MjpwD0urSax9MV5NeapweqU/S3G/eEUvdclA5NT8No3uO5u1VK1j/K4Q+hVkmokhb31K2ynek8g2hN5vuhjM83w2BdxrJ80Omt8RvDRc0AzV5YBBmCTX5mBDj4YTNzIFt5LZXU8pWu0SXwq8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CcOulFoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7024EC4CEC7;
-	Wed, 11 Sep 2024 11:53:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726055610;
-	bh=wnlcu3GUOvYuxP341TqK9IEhiSWPkVw9Fa0I9EzEjFw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcOulFoUp0JVqELwXzKSFU1c/G2V9DezoCCctHwVTW4jreVPOe3+YS/9fjh9i2Wio
-	 NzYzTWesRU/Mbzc3lihTEXVomEVdWHFBuklpMG6Ns2GVtgq2HdMr3UMiviRpZYpQmN
-	 ojrODh6zIsz/izFET0GWZ6aYWuYc4R0tCvcjRc/vngTISPwtX4e8nHub3gFgwxDqq7
-	 7XaNDwV8fR9ZFZ/+2Ru8lNNqVcBAht1NhH2Dc83iN7n/hjO3eRf97jigeIWtUvh4vN
-	 Nzz8WpcfQaigw+C6egA8iYJ6wjR064IerdNtE0zH1du8NcA0CU2KIaqzlqrSCb4qI6
-	 G8yDYsJZHVSDg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1soLuv-000000002rQ-2Hvh;
-	Wed, 11 Sep 2024 13:53:49 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/4] phy: qcom: qmp-usbc: fix NULL-deref on runtime suspend
-Date: Wed, 11 Sep 2024 13:52:52 +0200
-Message-ID: <20240911115253.10920-4-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240911115253.10920-1-johan+linaro@kernel.org>
-References: <20240911115253.10920-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1726058239; c=relaxed/simple;
+	bh=XGfR16Gv3pYvFbdInbchv2JqQUMXBTzS5B/HiiA32c8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EFNXReD9tXXWdN7cQXi8ZV+6Jz+enKWy9rQdRLDR0H63fFJTAZLM4190d99KKnNOYmo2qTWXCsDKWlVlFdgMejp1jFzXWz8fY7OWOYap9//sLY65l+8FtD0yfhDtKeo+dluD9H0Bl0cx/xKOA7se2Jloh6m/eB5eGL9hWbnTHEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjaUwSlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83C0C4CECF;
+	Wed, 11 Sep 2024 12:37:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726058239;
+	bh=XGfR16Gv3pYvFbdInbchv2JqQUMXBTzS5B/HiiA32c8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xjaUwSlVndt1PPI9yINn3jsiZRduihovg9MkSOQdaJr/B+/0okbnDACBUmpFxSsK2
+	 MCMNM6+F/GgUltJrwhZWpHhvVTs96t0tXSFpdyD66bA/qYZqJlQy5fVsjY7K9E7Vok
+	 pVVpgER4XCnoNOcEjSTunxTAD9l3mKn+MmhMFy0w=
+Date: Tue, 10 Sep 2024 12:06:27 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: HeLuang <helugang@uniontech.com>
+Cc: stable@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 6.6.y 2/2] iio: adc: ad7124: fix DT configuration parsing
+Message-ID: <2024091052-reach-proclaim-b8ae@gregkh>
+References: <2024090914-province-underdone-1eea@gregkh>
+ <20240910090757.649865-1-helugang@uniontech.com>
+ <0ACF46DADA3C2900+20240910090757.649865-2-helugang@uniontech.com>
+ <2024091053-boundless-blob-20bd@gregkh>
+ <0D03D3D118FBAF5F+abf1276e-4c7d-4c9a-8d6f-278b69022680@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0D03D3D118FBAF5F+abf1276e-4c7d-4c9a-8d6f-278b69022680@uniontech.com>
 
-Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-removed most users of the platform device driver data from the
-qcom-qmp-usb driver, but mistakenly also removed the initialisation
-despite the data still being used in the runtime PM callbacks. This bug
-was later reproduced when the driver was copied to create the qmp-usbc
-driver.
+On Tue, Sep 10, 2024 at 05:43:21PM +0800, HeLuang wrote:
+> 
+> 
+> 在 2024/9/10 17:23, Greg KH 写道:
+> > On Tue, Sep 10, 2024 at 05:07:57PM +0800, He Lugang wrote:
+> > > From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> > > 
+> > > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> > 
+> > Why is this 2 different addresses?
+> > 
+> > And why was this sent twice?
+> > 
+> > confused,
+> > 
+> > greg k-h
+> > 
+> 
+> Hi,greg
+> 
+> About the two email addresses because the email address mismatch message
+> from the checkpatch.pl,so I just and the signed-off-by one,should we just
+> ignore it?
 
-Restore the driver data initialisation at probe to avoid a NULL-pointer
-dereference on runtime suspend.
+Please use what is in the upstream commit.
 
-Apparently no one uses runtime PM, which currently needs to be enabled
-manually through sysfs, with these drivers.
+> Also pls just pass over the first patch mail because of lack of dependency.
 
-Fixes: 19281571a4d5 ("phy: qcom: qmp-usb: split USB-C PHY driver")
-Cc: stable@vger.kernel.org	# 6.9
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/phy/qualcomm/phy-qcom-qmp-usbc.c | 1 +
- 1 file changed, 1 insertion(+)
+Please tell us what is going on, otherwise we get confused.
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c b/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
-index 5cbc5fd529eb..dea3456f88b1 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
-@@ -1049,6 +1049,7 @@ static int qmp_usbc_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	qmp->dev = dev;
-+	dev_set_drvdata(dev, qmp);
- 
- 	qmp->orientation = TYPEC_ORIENTATION_NORMAL;
- 
--- 
-2.44.2
+Please fix this up and resend a new series that we can take.
 
+thanks,
+
+greg k-h
 
