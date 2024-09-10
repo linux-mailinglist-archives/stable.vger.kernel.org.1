@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B567973522
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF1F973322
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5701C2511D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25E61C24B62
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A56190077;
-	Tue, 10 Sep 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968A4197A65;
+	Tue, 10 Sep 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnAMfp26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e85O0FN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811C1190068;
-	Tue, 10 Sep 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3971974EA;
+	Tue, 10 Sep 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965084; cv=none; b=svr+yF26RFnZn4jSqu8DQYczOu8ZguS+17TFjiMKrBNIPaEQq3UmTiaMmVAhAiP1RvSFQq9skfixbKH6yzGxq4SSDRUZec1dCLIpMFs+dqJyYhtdxKY5axjY6/cWgjdkHJkCqIa3VL1CqHflWXPhdEoDg8Xi35XTDpmFxGadrkc=
+	t=1725963905; cv=none; b=Zazb7KwRTh/lOb4Skhf5pAqlwnXv3rKds3dUSDdB8mHOp22lcUN5YwvhkWzB8MKpBX2mwS8TnZXbbXoEBq/ywf7WOulnTsS0gAKRsiodNMDQf/xGuxDT2mdTj2SiFQwmC/ICUTbE+FjcNVOrNDPFsy9dyKKLTZL3nP5cwqTYCXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965084; c=relaxed/simple;
-	bh=AtjDi/hY+bhjNNPnfyZowrO4XzVA2F66BdMSIWlDbfA=;
+	s=arc-20240116; t=1725963905; c=relaxed/simple;
+	bh=Ul+WbT7PT7iwHGLXWLBWXuUl6lm2pwWXaXCmQRhGKyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSmj9nxQUGhS/JUZuf3E4EMQtEmFAtQiIcDDwnunWFLT2t/K7LEERDyqabL5VugbxDUqTeJG5WC3koi/Ey5wxnM7m7tf5/EckdfUb2G4kGtTSXnfMG2kGjWQvPqY+v//XK1NvVWTQjBY/SoquBjqAUvich1TW9Z5a/BJbud3sO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnAMfp26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08841C4CEC3;
-	Tue, 10 Sep 2024 10:44:43 +0000 (UTC)
+	 MIME-Version; b=fer82/Km9amjErS5AMLmccx/3emypPo8laSUJ3Z7T+TSb19zca/jrxkqfjgkHNQJGSiAZLfZQm4EOG8arNca0bIPdy8fPNGsEY4Kl4/M8QLbbF4aIdh9ATD4ILIn2JhnJBpNDCq7eE5v2mvycD0nzSQpcVWxpMIiKq0tPkAzZ68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e85O0FN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F60C4CEC3;
+	Tue, 10 Sep 2024 10:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965084;
-	bh=AtjDi/hY+bhjNNPnfyZowrO4XzVA2F66BdMSIWlDbfA=;
+	s=korg; t=1725963905;
+	bh=Ul+WbT7PT7iwHGLXWLBWXuUl6lm2pwWXaXCmQRhGKyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnAMfp26zFA6wlYbvcZvw+URWu631ZThEC4RgXfplbJbQ4qtpFpL9u9jcNBmWkS9H
-	 v1WiuvRh0J/h1Sz1bvb3jDjWy8Nd4uIO6eGxeHu4nP8V4LmofXAswk0rlxDzRyin9r
-	 KMtftvXFTo5QrySYrwJ1zRP9zDQ2qW35KXZBqEv4=
+	b=e85O0FN66jkaKpVdicJjtsHG7D3J5Y4kIIMJShApr9lBBaIxANWBGDv6lQb2lUD+2
+	 FZGkzeXfMyrG3VNV4/zhYXi7K9oxWTHv8xbz0rQcHD7SgtWshE7jKloxkEHO6UsHYJ
+	 47RzqK51K5K2LIop5xK39Ag17hFloQ8PZe7zVcv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/186] um: line: always fill *error_out in setup_one_line()
+Subject: [PATCH 5.15 205/214] gpio: rockchip: fix OF node leak in probe()
 Date: Tue, 10 Sep 2024 11:33:47 +0200
-Message-ID: <20240910092600.023327682@linuxfoundation.org>
+Message-ID: <20240910092606.901491010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 824ac4a5edd3f7494ab1996826c4f47f8ef0f63d ]
+[ Upstream commit adad2e460e505a556f5ea6f0dc16fe95e62d5d76 ]
 
-The pointer isn't initialized by callers, but I have
-encountered cases where it's still printed; initialize
-it in all possible cases in setup_one_line().
+Driver code is leaking OF node reference from of_get_parent() in
+probe().
 
-Link: https://patch.msgid.link/20240703172235.ad863568b55f.Iaa1eba4db8265d7715ba71d5f6bb8c7ff63d27e9@changeid
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/20240826150832.65657-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-rockchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index 37e96ba0f5fb..d2beb4a497a2 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -378,6 +378,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			parse_chan_pair(NULL, line, n, opts, error_out);
- 			err = 0;
- 		}
-+		*error_out = "configured as 'none'";
- 	} else {
- 		char *new = kstrdup(init, GFP_KERNEL);
- 		if (!new) {
-@@ -401,6 +402,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			}
- 		}
- 		if (err) {
-+			*error_out = "failed to parse channel pair";
- 			line->init_str = NULL;
- 			line->valid = 0;
- 			kfree(new);
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index a197f698efeb..d331745da1a3 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -708,6 +708,7 @@ static int rockchip_gpio_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 
+ 	pctldev = of_pinctrl_get(pctlnp);
++	of_node_put(pctlnp);
+ 	if (!pctldev)
+ 		return -EPROBE_DEFER;
+ 
 -- 
 2.43.0
 
