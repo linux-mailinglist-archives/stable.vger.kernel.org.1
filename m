@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-74751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9490B973144
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EECA9732F2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454CA1F2731A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB7DB1F22CB3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B12C18B488;
-	Tue, 10 Sep 2024 10:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701D4190496;
+	Tue, 10 Sep 2024 10:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvqOfV1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+yx00zT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF8D1885A5;
-	Tue, 10 Sep 2024 10:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6785381A;
+	Tue, 10 Sep 2024 10:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962723; cv=none; b=Zt3Oq8wwbQI5PpfrYhHQ/L1TMOz1ff9fHmEYOsbIUQZVmqvnjWAyyMWvuDtX+hGN06q1FnzVPxED5n93evvLC+FCcKKd5JRBfvhw1D9zjMqAGSVA6AJTgIAWgQXMkj0Y295uSLXXTp9Bdjr52MzVWq9QpHRcH3RUTdJvk4hpqoo=
+	t=1725963770; cv=none; b=noVBbjQopb1Vz87PzGeJpbWkmNdn8/Ehjam4B9Rc7BlxejKlWnjLMSeEHS6KlXJoN0pB42lSir3omHqaPcgqc0VWnOQHgA+EiGDCDIn5BgTVMttT1DNN0OZFwP/cvgPlNABOJYRinx1DDNDNONHaFpz1XoEH8IvnW6+yNO7r/BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962723; c=relaxed/simple;
-	bh=qI9xEda6GTNWaOUjwjob4rGrxLZLEIakXBvjrsPuJAA=;
+	s=arc-20240116; t=1725963770; c=relaxed/simple;
+	bh=CKf2J/ASqGR/BZNvQk6vrmK49jSVbpBYWFITzFgkj4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOWGM6BgycOinGT1oFo3+j3cR++PpF/umnzOIr76+o4JZKmOhHrnBpsWv04/jbbIHqBRbRkCbUnGexFi3HHgDnmp5OYjuEmlCf7/+TJwwLJwjBsNOlbLHKIydRWWaOLRo1lHiGN4kzsYk3Vct1bD7EGAatCZ1jl2EhvqBZ5ZeCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvqOfV1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D921C4CEC3;
-	Tue, 10 Sep 2024 10:05:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HIPj3rOLenaq855UouisXZoSMM5Xv+i1aCbqEFE4tHu5hqvqdlGSOtDg1vvBxtRCxOvTI8d3P9tACv6L0NrASchTWU4ujWJWr6AMOGr4PIOp8X6GjoI6miIkETVc2NZk7fqg5yy204ILBrO9FPjYjQbjMpunUOWCH4bRMbfIV0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+yx00zT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A4CC4CECD;
+	Tue, 10 Sep 2024 10:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962722;
-	bh=qI9xEda6GTNWaOUjwjob4rGrxLZLEIakXBvjrsPuJAA=;
+	s=korg; t=1725963770;
+	bh=CKf2J/ASqGR/BZNvQk6vrmK49jSVbpBYWFITzFgkj4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvqOfV1BT9oujhhqfvPMFQ2gzlB8W+jUhheQV0sLsH2dWQosxhM97+1vbfzGKPqP4
-	 CJUUFde7+WCaZ3qsvVb077tn5dcMiMJAffF1E+TpgYl2xgLuN23rChSea/+EdGuKDo
-	 UJ+Fg5/ndq/JcJfxsgK+QsqT5LWrPCac956gb3+E=
+	b=s+yx00zTQizZTAihaxVMXVZECElrS8cDnh+ouOyLPpKGmj1oATFLzZplUJjgFE8Vo
+	 lNS2vKVcMJ9BNqyFXX4J4joe4nlevUmu0dS8NyOTz2RvWooIILAsvneBMibK9Fjp2F
+	 5mm/JqCJ7uXCXYl9ckiYnpGeKkERF8PZfVPwT6ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/121] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+Subject: [PATCH 5.15 170/214] MIPS: cevt-r4k: Dont call get_c0_compare_int if timer irq is installed
 Date: Tue, 10 Sep 2024 11:33:12 +0200
-Message-ID: <20240910092551.353143466@linuxfoundation.org>
+Message-ID: <20240910092605.633369315@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
+[ Upstream commit 50f2b98dc83de7809a5c5bf0ccf9af2e75c37c13 ]
 
-When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
-it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+This avoids warning:
 
-.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
-   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+[    0.118053] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
 
-Fix this by marking debug_fence_init_onstack() with __maybe_unused.
+Caused by get_c0_compare_int on secondary CPU.
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+We also skipped saving IRQ number to struct clock_event_device *cd as
+it's never used by clockevent core, as per comments it's only meant
+for "non CPU local devices".
 
-Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reported-by: Serge Semin <fancer.lancer@gmail.com>
+Closes: https://lore.kernel.org/linux-mips/6szkkqxpsw26zajwysdrwplpjvhl5abpnmxgu2xuj3dkzjnvsf@4daqrz4mf44k/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/cevt-r4k.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index b3fd6ff665da..475e4b9485af 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -38,7 +38,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- 	debug_object_init(fence, &i915_sw_fence_debug_descr);
- }
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 32ec67c9ab67..77028aa8c107 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -303,13 +303,6 @@ int r4k_clockevent_init(void)
+ 	if (!c0_compare_int_usable())
+ 		return -ENXIO;
  
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
- }
-@@ -81,7 +81,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- {
- }
+-	/*
+-	 * With vectored interrupts things are getting platform specific.
+-	 * get_c0_compare_int is a hook to allow a platform to return the
+-	 * interrupt number of its liking.
+-	 */
+-	irq = get_c0_compare_int();
+-
+ 	cd = &per_cpu(mips_clockevent_device, cpu);
  
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- }
+ 	cd->name		= "MIPS";
+@@ -320,7 +313,6 @@ int r4k_clockevent_init(void)
+ 	min_delta		= calculate_min_delta();
  
+ 	cd->rating		= 300;
+-	cd->irq			= irq;
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= mips_next_event;
+ 	cd->event_handler	= mips_event_handler;
+@@ -332,6 +324,13 @@ int r4k_clockevent_init(void)
+ 
+ 	cp0_timer_irq_installed = 1;
+ 
++	/*
++	 * With vectored interrupts things are getting platform specific.
++	 * get_c0_compare_int is a hook to allow a platform to return the
++	 * interrupt number of its liking.
++	 */
++	irq = get_c0_compare_int();
++
+ 	if (request_irq(irq, c0_compare_interrupt, flags, "timer",
+ 			c0_compare_interrupt))
+ 		pr_err("Failed to request irq %d (timer)\n", irq);
 -- 
 2.43.0
 
