@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5B197301C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E9F972E16
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35EA2887B1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82CA71F2207D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E80B18595E;
-	Tue, 10 Sep 2024 09:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169151891A5;
+	Tue, 10 Sep 2024 09:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdScOQLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FedVT8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DB8188CB3;
-	Tue, 10 Sep 2024 09:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C853017BEAE;
+	Tue, 10 Sep 2024 09:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962255; cv=none; b=ltCJ+KEk/QYd8CeMvIn0KdERtgs2heYC/XZq6m1Uxptt6nEy2Y8JWM2Y6LKcKnqw5m4+RkeCEeaIerAyZekBquuhrtEo0zt9QjWwJNNtkrjqTemRYxzbaEvAZ9ulvIt4eeZfGgO9FoU9qDCO4XUrFVM7WMNv2YkCpeE8mJROHuE=
+	t=1725961163; cv=none; b=pTBCbzCwef8IFin6u3McDgiB2WRuguAW62EbECN5+1VQKgzyd4t5dMCbCjsRtnL0oBNhTjTN6LEqocHqQ3W6jBdeiqypp+VMFFWUT4X4k5jQlGk2Bswe0+67PD0/RwXdjirE/ex0H7FjixJC528Pp1kNmZV3rED1GUUZKW5V3s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962255; c=relaxed/simple;
-	bh=zHzxIH/0R6QzykfEIKnZhlSZE4CHGpFlRkWolit+WTM=;
+	s=arc-20240116; t=1725961163; c=relaxed/simple;
+	bh=KhlNAEIWUN2fwnhgbqGtIuX/evEhrUor5765U8lX53w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pttyJKhQn47V6QpDtEZeImktgejxyuUuSGrJ8RCA/LxEiXjSnQSbkDGwPbn6OVPhnKS7IuAYtqJxFgiBXL9GGR1pEgA/4sHv4iI/vS2lmky21pJwWIE5P3mXQnnLmbGRJLdBp5Ed9x0bH4eR7etsMeEkWbacE/s9o3ojPNYjsAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdScOQLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FDBC4CEC3;
-	Tue, 10 Sep 2024 09:57:34 +0000 (UTC)
+	 MIME-Version; b=bqG+wGMVIpwN2AAhaf6iZavqTLduEhFY/O6AKZy0zhN5h07aQLwAYaZHGfn5fWy9V8ntyIDPrZLMW7+SNhnZjQZalzvDGUBSexL5KhjBQ03I4WNYpsG23rOZ+fgQ82q48pJvgGZWR+EA50CUH6m66yWHb08HivJ+BJncnt9l9vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FedVT8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D73DC4CEC3;
+	Tue, 10 Sep 2024 09:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962254;
-	bh=zHzxIH/0R6QzykfEIKnZhlSZE4CHGpFlRkWolit+WTM=;
+	s=korg; t=1725961163;
+	bh=KhlNAEIWUN2fwnhgbqGtIuX/evEhrUor5765U8lX53w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdScOQLlcbF4FASEvQmlBLrt2laOnHH+ew4t6nXrBq15lLcDfQQFopMjnKMHSmtJZ
-	 9LiA9ly7Me5UQnoV5qYr3iF1b1uV52So0NxVNXRTPVd+cJAB2By8qTAs6uAMyt50U1
-	 AvybpWHvwziDQkldD3GsRQARG4/M9uyYemKn9EUk=
+	b=0FedVT8/HUmXiv0azx0Np+jfh+C0BmJPpzWFzeRZF+9atnoMjJO+eB6Lc5uaBZhKq
+	 24dCZnIxkRqsr2nqHZra6PB1jO2FPrPaeiRzcZvJwigltRhxfokVUFkR2/wpGaCvG1
+	 betUU+ZGic11iQg1dXOnJh8UKX3O9CPWjSlgB1VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 340/375] powerpc/64e: Define mmu_pte_psize static
+	stable <stable@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 4.19 75/96] nvmem: Fix return type of devm_nvmem_device_get() in kerneldoc
 Date: Tue, 10 Sep 2024 11:32:17 +0200
-Message-ID: <20240910092634.006491069@linuxfoundation.org>
+Message-ID: <20240910092544.844107395@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit d92b5cc29c792f1d3f0aaa3b29dddfe816c03e88 ]
+commit c69f37f6559a8948d70badd2b179db7714dedd62 upstream.
 
-mmu_pte_psize is only used in the tlb_64e.c, define it static.
+devm_nvmem_device_get() returns an nvmem device, not an nvmem cell.
 
-Fixes: 25d21ad6e799 ("powerpc: Add TLB management code for 64-bit Book3E")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408011256.1O99IB0s-lkp@intel.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/beb30d280eaa5d857c38a0834b147dffd6b28aa9.1724157750.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2a5402ec7c6d044 ("nvmem: Add nvmem_device based consumer apis.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240902142510.71096-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/nohash/tlb_64e.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/tlb_64e.c b/arch/powerpc/mm/nohash/tlb_64e.c
-index 1dcda261554c..b6af3ec4d001 100644
---- a/arch/powerpc/mm/nohash/tlb_64e.c
-+++ b/arch/powerpc/mm/nohash/tlb_64e.c
-@@ -33,7 +33,7 @@
-  * though this will probably be made common with other nohash
-  * implementations at some point
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -794,13 +794,13 @@ void nvmem_device_put(struct nvmem_devic
+ EXPORT_SYMBOL_GPL(nvmem_device_put);
+ 
+ /**
+- * devm_nvmem_device_get() - Get nvmem cell of device form a given id
++ * devm_nvmem_device_get() - Get nvmem device of device form a given id
+  *
+  * @dev: Device that requests the nvmem device.
+  * @id: name id for the requested nvmem device.
+  *
+- * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_cell
+- * on success.  The nvmem_cell will be freed by the automatically once the
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.  The nvmem_device will be freed by the automatically once the
+  * device is freed.
   */
--int mmu_pte_psize;		/* Page size used for PTE pages */
-+static int mmu_pte_psize;	/* Page size used for PTE pages */
- int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
- int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
- unsigned long linear_map_top;	/* Top of linear mapping */
--- 
-2.43.0
-
+ struct nvmem_device *devm_nvmem_device_get(struct device *dev, const char *id)
 
 
 
