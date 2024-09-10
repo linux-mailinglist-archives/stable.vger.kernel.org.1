@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C594D973301
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F02C973402
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A53C0B2AF1F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09CE41F21FD7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285B118FC84;
-	Tue, 10 Sep 2024 10:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DD218F2E3;
+	Tue, 10 Sep 2024 10:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Q4E1qxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFDJVlUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC518C02E;
-	Tue, 10 Sep 2024 10:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F1C172BA8;
+	Tue, 10 Sep 2024 10:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963676; cv=none; b=HIGtnIUCNSZlbfW7En6a/2qw6Gknr+yJIGbsP7z/uubMrIE3FQ9Bamcn1EtobGRLCV/gX3l2TEL6WhuAy2s8JgLrr2cigHWlkkTkIEeIb6j/v2pu/Cjsewb/OdxR1Z1OJxj9Ce18cJgNnZjCE+JiUQxSeMI/gA/JA72OJsed2PI=
+	t=1725964414; cv=none; b=sGTRWWjOy6UH1SNbrh/XyyhtZyrCbVLs0+gak7nCrIh7fddb5gdmXvDDswLzbyzNyptjMe8yfh9Le0byLQ6juUUZN7PGfoBXP+KV6MaWbSRksCGa/OMZw1uju6AnnMfVWerC7/iFjqPdkfBkFlD3dizYgXAjwDnAmgafRclP+d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963676; c=relaxed/simple;
-	bh=dVt0NO9tZD3K4q+v82cHq0/xfa2m9E3/klYDLk7QZSI=;
+	s=arc-20240116; t=1725964414; c=relaxed/simple;
+	bh=Lpz4F2xRqK0hcf/D7Er0qcLOGGNHtjFxmd9tNbW7n9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pemws3FChdJhk1tPYZ1pqd9nIHjlF6CtqSmrjX4qXinspxO/BJDIEuRy+Q3rxKyOQc/Q+H//GLuxpEqL0aZvrelUk321yhJ9IwmzzOJpx0IpeKyLtXpi8v6u5txPCQicehIyrR6R7RBOaQKP7a/k5HWQYnVpBJqRTDEHEtMgCy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Q4E1qxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676A9C4CEC3;
-	Tue, 10 Sep 2024 10:21:16 +0000 (UTC)
+	 MIME-Version; b=JZN3qoKcvomqzR6zYyOgHxU4CqrdClpRSwafBHQ899PJ6NvQBD9PUTxDUHe7EDscbQstnq882HvEikciCTUb+OGirkzP6stP4bo69vO3RvMac56VLGvjnkSv0XDiyaJ5khA7rlWygNdOrj0wTi+9ssNOq8CXgoXmdBqBC79K+f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFDJVlUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1A0C4CEC3;
+	Tue, 10 Sep 2024 10:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963676;
-	bh=dVt0NO9tZD3K4q+v82cHq0/xfa2m9E3/klYDLk7QZSI=;
+	s=korg; t=1725964414;
+	bh=Lpz4F2xRqK0hcf/D7Er0qcLOGGNHtjFxmd9tNbW7n9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Q4E1qxVH1w33O3LlfWERL7pAmsxne0FXTC/8uOb8nxXXK9EZNTRPa+ssG8Po6IlA
-	 6TTOSoIGrL9XjT8YzGqVG0Ti8eiaetCLHjAru5U4gfkvdZ57x9FMSNuqxWMoMt2UME
-	 atHHd5o8shA3TKFqB/VRk8X4IFFKy4Y2fOVw3XEM=
+	b=IFDJVlUrI+GGmj2eSgOHK3o+pGje8gKa/u5BAmpXEmco8G61OqINtfx6TPmXmKpXu
+	 HHaEtFJml6Ku63PKw89HNK9E3C61L0V+HABwWwOyh8J9ODRp4lakDPKU4dpePGXcGC
+	 bCCXuKQ+6ht4PPJ0uUk1H+3hLCOLqF4lmenrarl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Breno Leitao <leitao@debian.org>,
+	Madalin Bucur <madalin.bucur@oss.nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/214] cgroup: Protect css->cgroup write under css_set_lock
-Date: Tue, 10 Sep 2024 11:32:40 +0200
-Message-ID: <20240910092604.392064377@linuxfoundation.org>
+Subject: [PATCH 6.6 174/269] net: dpaa: avoid on-stack arrays of NR_CPUS elements
+Date: Tue, 10 Sep 2024 11:32:41 +0200
+Message-ID: <20240910092614.374135924@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
+[ Upstream commit 555a05d84ca2c587e2d4777006e2c2fb3dfbd91d ]
 
-The writing of css->cgroup associated with the cgroup root in
-rebind_subsystems() is currently protected only by cgroup_mutex.
-However, the reading of css->cgroup in both proc_cpuset_show() and
-proc_cgroup_show() is protected just by css_set_lock. That makes the
-readers susceptible to racing problems like data tearing or caching.
-It is also a problem that can be reported by KCSAN.
+The dpaa-eth driver is written for PowerPC and Arm SoCs which have 1-24
+CPUs. It depends on CONFIG_NR_CPUS having a reasonably small value in
+Kconfig. Otherwise, there are 2 functions which allocate on-stack arrays
+of NR_CPUS elements, and these can quickly explode in size, leading to
+warnings such as:
 
-This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
-css->cgroup. Alternatively, the writing of css->cgroup can be moved
-under css_set_lock as well which is done by this patch.
+  drivers/net/ethernet/freescale/dpaa/dpaa_eth.c:3280:12: warning:
+  stack frame size (16664) exceeds limit (2048) in 'dpaa_eth_probe' [-Wframe-larger-than]
 
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+The problem is twofold:
+- Reducing the array size to the boot-time num_possible_cpus() (rather
+  than the compile-time NR_CPUS) creates a variable-length array,
+  which should be avoided in the Linux kernel.
+- Using NR_CPUS as an array size makes the driver blow up in stack
+  consumption with generic, as opposed to hand-crafted, .config files.
+
+A simple solution is to use dynamic allocation for num_possible_cpus()
+elements (aka a small number determined at runtime).
+
+Link: https://lore.kernel.org/all/202406261920.l5pzM1rj-lkp@intel.com/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+Link: https://patch.msgid.link/20240713225336.1746343-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 20 ++++++++++++++-----
+ .../ethernet/freescale/dpaa/dpaa_ethtool.c    | 10 +++++++++-
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index be467aea457e..84e85561a87c 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1802,9 +1802,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
- 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
- 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
- 		ss->root = dst_root;
--		css->cgroup = dcgrp;
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index dcbc598b11c6..c6a3eefd83bf 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -931,14 +931,18 @@ static inline void dpaa_setup_egress(const struct dpaa_priv *priv,
+ 	}
+ }
  
- 		spin_lock_irq(&css_set_lock);
-+		css->cgroup = dcgrp;
- 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
- 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
- 					 e_cset_node[ss->id]) {
+-static void dpaa_fq_setup(struct dpaa_priv *priv,
+-			  const struct dpaa_fq_cbs *fq_cbs,
+-			  struct fman_port *tx_port)
++static int dpaa_fq_setup(struct dpaa_priv *priv,
++			 const struct dpaa_fq_cbs *fq_cbs,
++			 struct fman_port *tx_port)
+ {
+ 	int egress_cnt = 0, conf_cnt = 0, num_portals = 0, portal_cnt = 0, cpu;
+ 	const cpumask_t *affine_cpus = qman_affine_cpus();
+-	u16 channels[NR_CPUS];
+ 	struct dpaa_fq *fq;
++	u16 *channels;
++
++	channels = kcalloc(num_possible_cpus(), sizeof(u16), GFP_KERNEL);
++	if (!channels)
++		return -ENOMEM;
+ 
+ 	for_each_cpu_and(cpu, affine_cpus, cpu_online_mask)
+ 		channels[num_portals++] = qman_affine_channel(cpu);
+@@ -997,6 +1001,10 @@ static void dpaa_fq_setup(struct dpaa_priv *priv,
+ 				break;
+ 		}
+ 	}
++
++	kfree(channels);
++
++	return 0;
+ }
+ 
+ static inline int dpaa_tx_fq_to_id(const struct dpaa_priv *priv,
+@@ -3416,7 +3424,9 @@ static int dpaa_eth_probe(struct platform_device *pdev)
+ 	 */
+ 	dpaa_eth_add_channel(priv->channel, &pdev->dev);
+ 
+-	dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
++	err = dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
++	if (err)
++		goto free_dpaa_bps;
+ 
+ 	/* Create a congestion group for this netdev, with
+ 	 * dynamically-allocated CGR ID.
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+index 5bd0b36d1feb..3f8cd4a7d845 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -457,12 +457,16 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 			     struct netlink_ext_ack *extack)
+ {
+ 	const cpumask_t *cpus = qman_affine_cpus();
+-	bool needs_revert[NR_CPUS] = {false};
+ 	struct qman_portal *portal;
+ 	u32 period, prev_period;
+ 	u8 thresh, prev_thresh;
++	bool *needs_revert;
+ 	int cpu, res;
+ 
++	needs_revert = kcalloc(num_possible_cpus(), sizeof(bool), GFP_KERNEL);
++	if (!needs_revert)
++		return -ENOMEM;
++
+ 	period = c->rx_coalesce_usecs;
+ 	thresh = c->rx_max_coalesced_frames;
+ 
+@@ -485,6 +489,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 		needs_revert[cpu] = true;
+ 	}
+ 
++	kfree(needs_revert);
++
+ 	return 0;
+ 
+ revert_values:
+@@ -498,6 +504,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 		qman_dqrr_set_ithresh(portal, prev_thresh);
+ 	}
+ 
++	kfree(needs_revert);
++
+ 	return res;
+ }
+ 
 -- 
 2.43.0
 
