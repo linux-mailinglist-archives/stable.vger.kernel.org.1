@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF87973541
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A47973456
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D0CB26D86
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F6C1C24F57
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC70519149F;
-	Tue, 10 Sep 2024 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14820190485;
+	Tue, 10 Sep 2024 10:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF3KYPL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqo4Huss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8239C19148D;
-	Tue, 10 Sep 2024 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20DB190477;
+	Tue, 10 Sep 2024 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965004; cv=none; b=ASXa+aMLpo1duD1CWd/6bTh5Fo4wtDDNmiS+krxqfcRNz66v1ddlTMlHuJRYdajyRDJF+laN2hEwF/DsUizg95fYLJ9On3jxiimfko4jJDt2jMexak+tPrUuBRxMcyzredAzcNYYQ3WvuUk1MuSjAkjHBVZMAsCchM23X2yfeS0=
+	t=1725964609; cv=none; b=pWcQWmY6jXBaC6mcAwRlwHEzwEuKfBqBcMiWqKEqDwBYrGOu4figWPYPFqSfRekCuMiG18P/+Z7zEnyAWxFWX96adb5Ttz/cmv5NAnD93TFARCBETEloj+Z8XSZ0HJ51rekSyD8yN6UttsZvtsI4GUY9gFL/xH94zVkAjvIzfIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965004; c=relaxed/simple;
-	bh=IsCdSFpDrhkXwqpXSXTL543kMcYwxA2JixTM7BZIN00=;
+	s=arc-20240116; t=1725964609; c=relaxed/simple;
+	bh=kl4zknEna8Ok4g4SBHE21LXDG3vYHjCbuRPyQ2MxxPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQkVa9KhgR90hodOQY/RRvt60msyHvWbGOPWaR7FNx7AjgflDTQsN+wdOGyIpisSwBAXN7GfFAZK2OcSO66y8Hf4OdDQjOuflYIlcjVFNVupOyqFfZ417QjyKuJQACzwQ4yaQ+yFIIp/f16qmvZZdTSvBBQkJTh9tfEiOhvNZl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF3KYPL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093AAC4CEC3;
-	Tue, 10 Sep 2024 10:43:23 +0000 (UTC)
+	 MIME-Version; b=CeeE2XmaxIhrR0shVdAm1YbpIe29sRLNbYP1493HYCN19mKUKff4kG0N8t3KlDGYGh6/RNp1pIiGLticjpeC1rtFSofTStUBzx8NUsv2qKmzYirJDxt2Q4zAjoHmiZ9OuG6E2WQrZSFN4AEhDKnOF0yQeegUtMzNzHbSlSz4aVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqo4Huss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF35C4CEC6;
+	Tue, 10 Sep 2024 10:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965004;
-	bh=IsCdSFpDrhkXwqpXSXTL543kMcYwxA2JixTM7BZIN00=;
+	s=korg; t=1725964609;
+	bh=kl4zknEna8Ok4g4SBHE21LXDG3vYHjCbuRPyQ2MxxPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JF3KYPL3Hdhq7MSra0mrKq1otLlhbrtYkhm0z1LHMuEcVmGt2bVXaJj0MXPDwyG5L
-	 5cqLO3JggzybMK6OhKuUfQeaRVwQ1VnIqCcJGFr8DSokINeC16iAHKOOihrqgQL6lS
-	 iX1NCE0ULG0YzTAej7/A3XZZpJ/9j9IqvCu7f69Y=
+	b=pqo4Huss3lpyuLAu2cPBI9bj7xaH6mJsJx4SBPMXBPKVvzCodoCzxgPoE5Wp8VnM/
+	 Y/9GsmzujUQeel8e151OctHWMVO0RPVMizEHTNUZPk/YJUbiRuqcXYkqPzz6wQKKcW
+	 AuCffqDjE/O6uHxWOsH7yQXLSblrJ7Kyg78Hf2D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/186] leds: spi-byte: Call of_node_put() on error path
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 6.6 213/269] usb: dwc3: Avoid waking up gadget during startxfer
 Date: Tue, 10 Sep 2024 11:33:20 +0200
-Message-ID: <20240910092558.864611843@linuxfoundation.org>
+Message-ID: <20240910092615.601678227@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
+commit 00dcf2fa449f23a263343d7fe051741bdde65d0b upstream.
 
-Add a missing call to of_node_put(np) on error.
+When operating in High-Speed, it is observed that DSTS[USBLNKST] doesn't
+update link state immediately after receiving the wakeup interrupt. Since
+wakeup event handler calls the resume callbacks, there is a chance that
+function drivers can perform an ep queue, which in turn tries to perform
+remote wakeup from send_gadget_ep_cmd(STARTXFER). This happens because
+DSTS[[21:18] wasn't updated to U0 yet, it's observed that the latency of
+DSTS can be in order of milli-seconds. Hence avoid calling gadget_wakeup
+during startxfer to prevent unnecessarily issuing remote wakeup to host.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c36d8e947a56 ("usb: dwc3: gadget: put link to U0 before Start Transfer")
+Cc: stable@vger.kernel.org
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240828064302.3796315-1-quic_prashk@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-spi-byte.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |   41 +++++++++++++++++------------------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index f1964c96fb15..82696e0607a5 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
- 		dev_err(dev, "Device must have exactly one LED sub-node.");
- 		return -EINVAL;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -287,6 +287,23 @@ static int __dwc3_gadget_wakeup(struct d
+  *
+  * Caller should handle locking. This function will issue @cmd with given
+  * @params to @dep and wait for its completion.
++ *
++ * According to the programming guide, if the link state is in L1/L2/U3,
++ * then sending the Start Transfer command may not complete. The
++ * programming guide suggested to bring the link state back to ON/U0 by
++ * performing remote wakeup prior to sending the command. However, don't
++ * initiate remote wakeup when the user/function does not send wakeup
++ * request via wakeup ops. Send the command when it's allowed.
++ *
++ * Notes:
++ * For L1 link state, issuing a command requires the clearing of
++ * GUSB2PHYCFG.SUSPENDUSB2, which turns on the signal required to complete
++ * the given command (usually within 50us). This should happen within the
++ * command timeout set by driver. No additional step is needed.
++ *
++ * For L2 or U3 link state, the gadget is in USB suspend. Care should be
++ * taken when sending Start Transfer command to ensure that it's done after
++ * USB resume.
+  */
+ int dwc3_send_gadget_ep_cmd(struct dwc3_ep *dep, unsigned int cmd,
+ 		struct dwc3_gadget_ep_cmd_params *params)
+@@ -327,30 +344,6 @@ int dwc3_send_gadget_ep_cmd(struct dwc3_
+ 			dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
  	}
--	child = of_get_next_available_child(dev_of_node(dev), NULL);
  
- 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
- 	if (!led)
-@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
- 
-+	child = of_get_next_available_child(dev_of_node(dev), NULL);
- 	state = of_get_property(child, "default-state", NULL);
- 	if (state) {
- 		if (!strcmp(state, "on")) {
- 			led->ldev.brightness = led->ldev.max_brightness;
- 		} else if (strcmp(state, "off")) {
-+			of_node_put(child);
- 			/* all other cases except "off" */
- 			dev_err(dev, "default-state can only be 'on' or 'off'");
- 			return -EINVAL;
-@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
- 
- 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
- 	if (ret) {
-+		of_node_put(child);
- 		mutex_destroy(&led->mutex);
- 		return ret;
- 	}
-+
-+	of_node_put(child);
- 	spi_set_drvdata(spi, led);
- 
- 	return 0;
--- 
-2.43.0
-
+-	if (DWC3_DEPCMD_CMD(cmd) == DWC3_DEPCMD_STARTTRANSFER) {
+-		int link_state;
+-
+-		/*
+-		 * Initiate remote wakeup if the link state is in U3 when
+-		 * operating in SS/SSP or L1/L2 when operating in HS/FS. If the
+-		 * link state is in U1/U2, no remote wakeup is needed. The Start
+-		 * Transfer command will initiate the link recovery.
+-		 */
+-		link_state = dwc3_gadget_get_link_state(dwc);
+-		switch (link_state) {
+-		case DWC3_LINK_STATE_U2:
+-			if (dwc->gadget->speed >= USB_SPEED_SUPER)
+-				break;
+-
+-			fallthrough;
+-		case DWC3_LINK_STATE_U3:
+-			ret = __dwc3_gadget_wakeup(dwc, false);
+-			dev_WARN_ONCE(dwc->dev, ret, "wakeup failed --> %d\n",
+-					ret);
+-			break;
+-		}
+-	}
+-
+ 	/*
+ 	 * For some commands such as Update Transfer command, DEPCMDPARn
+ 	 * registers are reserved. Since the driver often sends Update Transfer
 
 
 
