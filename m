@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-74601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0E1973025
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B59279730DF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22519282AEA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F2FC287529
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EAE18A6D1;
-	Tue, 10 Sep 2024 09:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FEA18DF69;
+	Tue, 10 Sep 2024 10:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B63UdKub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8ZN9B2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D27518595E;
-	Tue, 10 Sep 2024 09:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C231618D643;
+	Tue, 10 Sep 2024 10:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962281; cv=none; b=K2V98IFfqP1kfsIzhZ1m1nIC0VZCzr8EvV0RUaWnek0xrOItt68eRXBqAjv/ZrjPAAaa9gKCsWHqxuzn7gMkp5yGC8laB2Etzbd14/h0+fkeeLSedeLWlOo+cC7ppD79NuubiWtlK5Cl6vxcpC8LlxM1Vzjv/4BdL88LQJKcses=
+	t=1725962573; cv=none; b=K4O9Nu9flB3HQsKgwJk7XX+Jfk1eYw3ZMIWLFOUFONa0JGLXQ41saqQg9JOuwqwoaecFGxo7llUtDvvlMzAysnVcOUJbNLeDAiZHwjJ++HYBbpXwAYnS6D2zrw5eB70vlUmPdToesItsnOwIiZIhlTprAz2WZHMGYXjiLvasNYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962281; c=relaxed/simple;
-	bh=Y9WJmnZLARiinuvVgkXSCpYr9Y0b1tN/lS5Tcddmts8=;
+	s=arc-20240116; t=1725962573; c=relaxed/simple;
+	bh=EnxtgUtckf6Q4aS6bAWAI/rIPJwznHj11fEJo08bU7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpArL+pEiz2eoIp2tNdHexBxM5M718HSLFn/ztow1Qe3ycrJfwTQfYZlCceCeWoU6T5IF7/gva9UhFIiRymzz2WxenIH6/66CngS3oQ0KWocN1mmBkogju35z70NKvYXFC2PyVVRc7PPqcIbH4cZUBvpoE6HwjKL5JRRWrAasa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B63UdKub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9402C4CEC3;
-	Tue, 10 Sep 2024 09:58:00 +0000 (UTC)
+	 MIME-Version; b=SzcE1ioQ3u3GAAFnOxrxboQ7Erz4kZJf/dgSXp6C/2fqG7BxOiu6xoDZ/UvV9KBxynbR58H/UnGYZnaXv+ZZvDb2Cxeybe75JHipS9o9BJTHgKuB8du4xWr+w2L0rOtJJd5kI6CDsJSZzmUITOaDKYOfDIB9hUYaeFsGhO/j3l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8ZN9B2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486A9C4CEC3;
+	Tue, 10 Sep 2024 10:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962281;
-	bh=Y9WJmnZLARiinuvVgkXSCpYr9Y0b1tN/lS5Tcddmts8=;
+	s=korg; t=1725962573;
+	bh=EnxtgUtckf6Q4aS6bAWAI/rIPJwznHj11fEJo08bU7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B63UdKubkd0aZZeSMqh0coqfMi/xnVehJxn55WXfkoStaiWcrBXjANRqlWvnNa0JZ
-	 IKHK/kH4kEhIBo47a5oYjc8/VAdJrqrU/2yzKLiyAGOUw6C+1shWwfp3lYU3vKBK3Q
-	 vXeESQLpE7hIEQUZqkCL87Y3wqvIZWtUGkl+4kJE=
+	b=O8ZN9B2QVcBwIBLA0oaOOz6zgAY+sYzB2Xf3stsDyq52w9eLyyIXA9rwMQ98/qFPi
+	 x2ACSBWlV7dIuH7pDEQzePQ1FUnlzNbg5r8UQInrsgG1g/xFH2nUvP+dCKA1se1mKA
+	 BSz+XN8HZmFVR4V4wqdpyk0HK4jtJvqUnZ53lQLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 357/375] smb: client: fix double put of @cfile in smb2_rename_path()
+Subject: [PATCH 5.4 079/121] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:32:34 +0200
-Message-ID: <20240910092634.589961294@linuxfoundation.org>
+Message-ID: <20240910092549.649898368@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 3523a3df03c6f04f7ea9c2e7050102657e331a4f ]
+[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
 
-If smb2_set_path_attr() is called with a valid @cfile and returned
--EINVAL, we need to call cifs_get_writable_path() again as the
-reference of @cfile was already dropped by previous smb2_compound_op()
-call.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-Fixes: 71f15c90e785 ("smb: client: retry compound request without reusing lease")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/w83627ehf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 2a2847601f26..11a1c53c64e0 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1106,6 +1106,8 @@ int smb2_rename_path(const unsigned int xid,
- 				  co, DELETE, SMB2_OP_RENAME, cfile, source_dentry);
- 	if (rc == -EINVAL) {
- 		cifs_dbg(FYI, "invalid lease key, resending request without lease");
-+		cifs_get_writable_path(tcon, from_name,
-+				       FIND_WR_WITH_DELETE, &cfile);
- 		rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
- 				  co, DELETE, SMB2_OP_RENAME, cfile, NULL);
- 	}
+diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+index eb171d15ac48..e4e5bb911558 100644
+--- a/drivers/hwmon/w83627ehf.c
++++ b/drivers/hwmon/w83627ehf.c
+@@ -1506,7 +1506,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
+ 	if (err < 0)
+ 		return err;
+ 
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->target_temp[nr] = val;
+@@ -1532,7 +1532,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
+ 		return err;
+ 
+ 	/* Limit the temp to 0C - 15C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	if (sio_data->kind == nct6775 || sio_data->kind == nct6776) {
 -- 
 2.43.0
 
