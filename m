@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D594973588
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:51:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822DC973430
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19718B290EB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0581C24EFB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7D18C327;
-	Tue, 10 Sep 2024 10:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AED818B48A;
+	Tue, 10 Sep 2024 10:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql1icXCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVlhw2Tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBA2C8DF;
-	Tue, 10 Sep 2024 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A2618C91B;
+	Tue, 10 Sep 2024 10:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965066; cv=none; b=uph7DyKSw8xp/uVMHcYensgBYWKrC5y5pqwutUByTZ2hppyDLri+B2BnTyKnhbXfQcBk5OcsBLgdSXkBdEi//pV/ZrfBrYWcYkiSF42W3r4nXKlCwYJpCRqur3r9ln1ddL+WkIuN78k37D/Ay1ag2xCsdSKIUFWCi1R45RbYNoE=
+	t=1725964529; cv=none; b=hRB/AonAbBuESDzO7JTJ4efL1FESJow/rgoII+23UhzmPjlEbF36AmJZAP+k1TeUYeiwLh67t4j5LSEpoErlMiZ6ELBb2Oh/Sn4H8y+mdgL7JxQAkzkO4NiS5QwFgOhdyS5RsRbBM9dUJ8jP/P2Pu8SnV5wCz05EtE6DpCL/aUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965066; c=relaxed/simple;
-	bh=ChRbT8EtTzUHxTIttQAUNUqXr+42FPmt4iB7TPxdwDA=;
+	s=arc-20240116; t=1725964529; c=relaxed/simple;
+	bh=desCQJwzoRvMUqAfdjGBIuH9xqy46Eyx2cg6SuW+2AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RM78cprsM3AMsguMjIBd85U4VAMOks5RNxvt/NkutI3b8j8XatzuRiZoaTIoP+nQ5lh8j0SB6SVCbwF8QyhKjOBOAPkeiSVzNYy6AEjKoY2907i7kgjR5O958o1HsrvuZbiHG3CnjTsOpxu0AwKb6ggskyeHnxx7ro0tHOtJ/OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql1icXCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FF8C4CEC3;
-	Tue, 10 Sep 2024 10:44:26 +0000 (UTC)
+	 MIME-Version; b=hb9x7L2R3wx0ZVRhIyszp8/0RNQ8/MxpZ6JPdJzOAMxJLWZzSyTCeTeMv5pG50qtcPaUOxS+H15VCErQDN1GYox588dDqBoNDzdkVXgFW6OT2kqkXBCmRHIDRzIxtwm3rtUNDNmLnV9xRIsv0rdz4FdUV7kVzjFg8MBvMyHX7pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVlhw2Tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AE3C4CECD;
+	Tue, 10 Sep 2024 10:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965066;
-	bh=ChRbT8EtTzUHxTIttQAUNUqXr+42FPmt4iB7TPxdwDA=;
+	s=korg; t=1725964528;
+	bh=desCQJwzoRvMUqAfdjGBIuH9xqy46Eyx2cg6SuW+2AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ql1icXClDLfLyfXiPve209ZnOYjmR7TbaMMmLeUKKMzwQJ3kWnM4MFd+Z6lDgmcuB
-	 BRxCX/qBKt6ScZpzm/CtkxrS2OuBoB5Q4PmakhkEViEqL3Xk1zdqSn43jU4yFsrhdk
-	 umV0mNfuJPPeTWqN2EGLIGZ+VA79/4Pw5hTubB60=
+	b=GVlhw2TuAbZIGCn8xI2f8duHmHA/i4WeGya1E0X4ukoJsZv5WICNUfR3S1gAoM+3D
+	 pCZKDzghtbqaXkUbizcfBj/zgw+IuowsPnN2tHm4SvTEe4KtkjgORLysr5vrXFigox
+	 DgIaJxDGXyFyIfNjdRTSBpwO9CYDFDScBDlBGVIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/186] smack: unix sockets: fix accept()ed socket label
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 206/269] iio: buffer-dmaengine: fix releasing dma channel on error
 Date: Tue, 10 Sep 2024 11:33:13 +0200
-Message-ID: <20240910092558.571914747@linuxfoundation.org>
+Message-ID: <20240910092615.400273524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
+commit 84c65d8008764a8fb4e627ff02de01ec4245f2c4 upstream.
 
-When a process accept()s connection from a unix socket
-(either stream or seqpacket)
-it gets the socket with the label of the connecting process.
+If dma_get_slave_caps() fails, we need to release the dma channel before
+returning an error to avoid leaking the channel.
 
-For example, if a connecting process has a label 'foo',
-the accept()ed socket will also have 'in' and 'out' labels 'foo',
-regardless of the label of the listener process.
-
-This is because kernel creates unix child sockets
-in the context of the connecting process.
-
-I do not see any obvious way for the listener to abuse
-alien labels coming with the new socket, but,
-to be on the safe side, it's better fix new socket labels.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2d6ca60f3284 ("iio: Add a DMAengine framework based buffer")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20240723-iio-fix-dmaengine-free-on-error-v1-1-2c7cbc9b92ff@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/smack/smack_lsm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 88bcda1f07bf..92bc6c9d793d 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -3642,12 +3642,18 @@ static int smack_unix_stream_connect(struct sock *sock,
- 		}
- 	}
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -180,7 +180,7 @@ struct iio_buffer *iio_dmaengine_buffer_
  
--	/*
--	 * Cross reference the peer labels for SO_PEERSEC.
--	 */
- 	if (rc == 0) {
-+		/*
-+		 * Cross reference the peer labels for SO_PEERSEC.
-+		 */
- 		nsp->smk_packet = ssp->smk_out;
- 		ssp->smk_packet = osp->smk_out;
-+
-+		/*
-+		 * new/child/established socket must inherit listening socket labels
-+		 */
-+		nsp->smk_out = osp->smk_out;
-+		nsp->smk_in  = osp->smk_in;
- 	}
+ 	ret = dma_get_slave_caps(chan, &caps);
+ 	if (ret < 0)
+-		goto err_free;
++		goto err_release;
  
- 	return rc;
--- 
-2.43.0
-
+ 	/* Needs to be aligned to the maximum of the minimums */
+ 	if (caps.src_addr_widths)
+@@ -206,6 +206,8 @@ struct iio_buffer *iio_dmaengine_buffer_
+ 
+ 	return &dmaengine_buffer->queue.buffer;
+ 
++err_release:
++	dma_release_channel(chan);
+ err_free:
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
 
 
 
