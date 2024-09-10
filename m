@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FA1973506
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D820E973215
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF65288967
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16B4F1C20A1F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB34E191F96;
-	Tue, 10 Sep 2024 10:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5F4196455;
+	Tue, 10 Sep 2024 10:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkC4dEyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBvU4Hqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E6E18893C;
-	Tue, 10 Sep 2024 10:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8879618C33D;
+	Tue, 10 Sep 2024 10:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965013; cv=none; b=fQ9Vs23UMs5qSliB6qUJmltipfLi1f1FOWR8s5Hf684QaezPyM/IH6jgt+zLBPp8uFV5ytl8mh/T2ftC25N7QPzSt8OBK1FEQ+is87aTckZs905lUmhwgv3fM4RynXMVTVyodCP1qJe7Gvm7oHHxtnOGVMgUtuRAO/HDVh2zn9w=
+	t=1725963230; cv=none; b=eeMyZ3QAYdq8Th0ScZ3IzCo5M953x48hwEamk4wFoufsxoytluD8+Aerx/W0VfXKACj07/0jCTvUMkqPx3SDdsAtSiZCUyZDD5i8V2/bvsQwBYyTCOtcm/zD5jtQiMFNSYzptHMh7etAP2bqmTOibw8xcLmwLsZpnB/5wyQXHCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965013; c=relaxed/simple;
-	bh=RQ5vC85m/T23st9yL+3Nq7ChicN1/gMUkjJb2CB+rWQ=;
+	s=arc-20240116; t=1725963230; c=relaxed/simple;
+	bh=41BKwJX6lM2VZ3VxDTqRTczES3WEH6wLcrrFyJKXBgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaH88J4jdriurM43HBKip/AqFD994i/CjE4m8OP0ADFcGG7OAVMIw9LFC+nRT048/W3nQblz8E1R9SwKvK7LxXI2jgzwwoI93js+/SY9MEXRC+UiOprRK/VClidKi3d+yPXEwE1iSYjGqvam68sekXrLP4N0kAOYe4yurjy8iWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkC4dEyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10069C4CEC3;
-	Tue, 10 Sep 2024 10:43:32 +0000 (UTC)
+	 MIME-Version; b=fqh283ympGla+jN2S6iJxpkmOMywTJBD0vee0xyhluwyoc2PDlt06G87nhgQhIOA3mVL/aKC84mcodjYDGuPSjfibN4ULoL03LS+L5T1rf/V6UNDgkUxlyBAJxrRgV2uRJYHXb40ELcEhgjjKNHMYkBCr1a599z2QM7+d2YpVhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBvU4Hqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A01C4CEC3;
+	Tue, 10 Sep 2024 10:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965013;
-	bh=RQ5vC85m/T23st9yL+3Nq7ChicN1/gMUkjJb2CB+rWQ=;
+	s=korg; t=1725963230;
+	bh=41BKwJX6lM2VZ3VxDTqRTczES3WEH6wLcrrFyJKXBgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkC4dEyHx9A/14k2p4FgaXADh5B1FRipSQy8phZ3oJv2n5YXy7QD5cU859Xo/YdyW
-	 FVXk4HxWVBcODihwU9sJa7MzAMW6vvYOPpbvP1EV8pN0NMLMR0LQHMb0N1bsYrkTwL
-	 Q44hb1kXkICUzOhuHa0xIDOqF/jCUomirq61OsU0=
+	b=MBvU4HqmqychXqXn7Q7JQOgUno+/prCN7BV9sjL+X2yWejbFitNqo7/JRad8N1Gfn
+	 M4wapz+MBiXMigLOM/kYnoYo9ccvjN7r68eQseLHdBFk9hqjhga7x61WTGRX7+2kY3
+	 Cgv3QzdJcJ+quj6Ak5kOcWr2NwjPe8apT8re2NKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/186] media: vivid: dont set HDMI TX controls if there are no HDMI outputs
-Date: Tue, 10 Sep 2024 11:33:23 +0200
-Message-ID: <20240910092558.982574710@linuxfoundation.org>
+Subject: [PATCH 6.1 180/192] ASoc: SOF: topology: Clear SOF link platform name upon unload
+Date: Tue, 10 Sep 2024 11:33:24 +0200
+Message-ID: <20240910092605.247966365@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 17763960b1784578e8fe915304b330922f646209 ]
+[ Upstream commit e0be875c5bf03a9676a6bfed9e0f1766922a7dbd ]
 
-When setting the EDID it would attempt to update two controls
-that are only present if there is an HDMI output configured.
+The SOF topology loading function sets the device name for the platform
+component link. This should be unset when unloading the topology,
+otherwise a machine driver unbind/bind or reprobe would complain about
+an invalid component as having both its component name and of_node set:
 
-If there isn't any (e.g. when the vivid module is loaded with
-node_types=1), then calling VIDIOC_S_EDID would crash.
+    mt8186_mt6366 sound: ASoC: Both Component name/of_node are set for AFE_SOF_DL1
+    mt8186_mt6366 sound: error -EINVAL: Cannot register card
+    mt8186_mt6366 sound: probe with driver mt8186_mt6366 failed with error -22
 
-Fix this by first checking if outputs are present.
+This happens with machine drivers that set the of_node separately.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Clear the SOF link platform name in the topology unload callback.
+
+Fixes: 311ce4fe7637 ("ASoC: SOF: Add support for loading topologies")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20240821041006.2618855-1-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ sound/soc/sof/topology.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index 907781c2e613..2ce7f5567f51 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -1802,8 +1802,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 		return -EINVAL;
- 	if (edid->blocks == 0) {
- 		dev->edid_blocks = 0;
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
--		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		if (dev->num_outputs) {
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
-+			v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
-+		}
- 		phys_addr = CEC_PHYS_ADDR_INVALID;
- 		goto set_phys_addr;
- 	}
-@@ -1827,8 +1829,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
- 			display_present |=
- 				dev->display_present[i] << j++;
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index e7305ce57ea1..374c8b1d6958 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1817,6 +1817,8 @@ static int sof_link_unload(struct snd_soc_component *scomp, struct snd_soc_dobj
+ 	if (!slink)
+ 		return 0;
  
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
--	v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
-+	if (dev->num_outputs) {
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
-+		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
-+	}
- 
- set_phys_addr:
- 	/* TODO: a proper hotplug detect cycle should be emulated here */
++	slink->link->platforms->name = NULL;
++
+ 	kfree(slink->tuples);
+ 	list_del(&slink->list);
+ 	kfree(slink->hw_configs);
 -- 
 2.43.0
 
