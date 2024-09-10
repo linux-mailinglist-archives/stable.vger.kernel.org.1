@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-74499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52243972F97
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:53:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9212C972F77
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7042848B7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:53:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C49111C20E07
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F1418B48A;
-	Tue, 10 Sep 2024 09:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96E0188CC1;
+	Tue, 10 Sep 2024 09:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpGbIk6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9U6KwSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59D517BB01;
-	Tue, 10 Sep 2024 09:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8698046444;
+	Tue, 10 Sep 2024 09:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961984; cv=none; b=gKNJXUmFd0sC1kluBB7EsvADNdLeGEm+VmQUiOy8Q2F4jy+yFoVDK/qXo2ZBpMA9r033/Br7mSU9KW2zGbGVTFBJCCAIjYk7lU+rxwLo9xmTJkf9bWKH4C84KIXjDRqmOaEnmlK87WJixRQJhhwdsSMEx7MYqxEcTXiB1DY/qbc=
+	t=1725961908; cv=none; b=kMENO/taIc75OicPOFHRhyveP9AK1/IxVJwrOUVz7FMER7hyWudZc3o3AAARasTsy47NHahwVBkHSFce/rzl1gAD4YCO//XyUJlINN4U293DxN15MY8HuR5LRrR98y3ENr+6MqYhlobs+bnAIL7TepWHTCYDhRpXCsCYEyQ7L9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961984; c=relaxed/simple;
-	bh=my453g7DZccJNvdYFelxbZAbsvpb2pK70O1AUtczUhM=;
+	s=arc-20240116; t=1725961908; c=relaxed/simple;
+	bh=cKwR32V0+wYCZrp0XNPS5grqr6XWm95stB9yGMk5PUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdcoOx6FE+6EnUbUxOkNrhGHpXOQN+l2X52RmweabUe3dbR9OAlYH00mq46yxHGbcOsiOZrBcSdO7oQRVsA7Q6mcXnkubOUAe1BEwEw3JfD28+nf8Wf/83KQ7HMjpXPrZ1sGmjCjKwXT6Dk6074f06rrPSbgu2RNjCO6GQGNEYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpGbIk6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FF2C4CEC3;
-	Tue, 10 Sep 2024 09:53:04 +0000 (UTC)
+	 MIME-Version; b=ZvdgaMZtzWbvBxRd6+2hJDQobe3eeKYCdcCPv4Bu+jNOlPbKV5taLX2XMleepR8lsW2SdKjY5GPguMxu8I0JZKse/FoZ79TZ1u5uvrYpPbeYR9jOGeOuLSvwc2p6CoM5gNd/xQF0gtFh6mRr7j7NqjAki782XoiBvvIDlr8+hg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9U6KwSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C30FC4CEC3;
+	Tue, 10 Sep 2024 09:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961984;
-	bh=my453g7DZccJNvdYFelxbZAbsvpb2pK70O1AUtczUhM=;
+	s=korg; t=1725961908;
+	bh=cKwR32V0+wYCZrp0XNPS5grqr6XWm95stB9yGMk5PUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpGbIk6J481MXVZFCypWhFuE5v1V0ryiqejW4AUOJ2/ZgBKBBQ83ti6Pirl24GFah
-	 FjHkTRvxg5JRPCrlk5yFf08oKGkRJP1pL66LTdV4i3VimRu6Pg3bHhWfxdNVxz1Imn
-	 l7VXiRlVtJXlMVeM5jFQzRtFxq9rX/LNSK9cGe/c=
+	b=u9U6KwSipuCWQclf5ukNgSgw60BZi+gnH7GDD8L0NshBzC/9sX9IHCKFOgyhIvP7m
+	 d6oy6ggz9W3cxKJNCxVB0CdioMeX/UXQAF/zkQt6p4nkBP14rs2W8uP8a8RSFkj0qU
+	 hd6QqmAzI2T6UqwMwlFCLducgmIufakk4LPd0XHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 229/375] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
-Date: Tue, 10 Sep 2024 11:30:26 +0200
-Message-ID: <20240910092630.230641209@linuxfoundation.org>
+Subject: [PATCH 6.10 230/375] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
+Date: Tue, 10 Sep 2024 11:30:27 +0200
+Message-ID: <20240910092630.267658204@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -68,110 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
+[ Upstream commit 556a7c039a52c21da33eaae9269984a1ef59189b ]
 
-mwifiex_get_priv_by_id() returns the priv pointer corresponding to
-the bss_num and bss_type, but without checking if the priv is actually
-currently in use.
-Unused priv pointers do not have a wiphy attached to them which can
-lead to NULL pointer dereferences further down the callstack.  Fix
-this by returning only used priv pointers which have priv->bss_mode
-set to something else than NL80211_IFTYPE_UNSPECIFIED.
+The below error is observed on Ice Lake VM.
 
-Said NULL pointer dereference happened when an Accesspoint was started
-with wpa_supplicant -i mlan0 with this config:
+$ perf stat
+Error:
+The sys_perf_event_open() syscall returned with 22 (Invalid argument)
+for event (slots).
+/bin/dmesg | grep -i perf may provide additional information.
 
-network={
-        ssid="somessid"
-        mode=2
-        frequency=2412
-        key_mgmt=WPA-PSK WPA-PSK-SHA256
-        proto=RSN
-        group=CCMP
-        pairwise=CCMP
-        psk="12345678"
-}
+In a virtualization env, the Topdown metrics and the slots event haven't
+been supported yet. The guest CPUID doesn't enumerate them. However, the
+current kernel unconditionally exposes the slots event and the Topdown
+metrics events to sysfs, which misleads the perf tool and triggers the
+error.
 
-When waiting for the AP to be established, interrupting wpa_supplicant
-with <ctrl-c> and starting it again this happens:
+Hide the perf-metrics topdown events and the slots event if the
+perf-metrics feature is not enumerated.
 
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
-| Mem abort info:
-|   ESR = 0x0000000096000004
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x04: level 0 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
-| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
-| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
-+mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
-+imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
-| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
-| Hardware name: somemachine (DT)
-| Workqueue: events sdio_irq_work
-| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
-| sp : ffff8000818b3a70
-| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
-| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
-| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
-| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
-| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
-| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
-| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
-| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
-| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
-| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
-| Call trace:
-|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
-|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
-|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
-|  mwifiex_process_event+0x110/0x238 [mwifiex]
-|  mwifiex_main_process+0x428/0xa44 [mwifiex]
-|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
-|  process_sdio_pending_irqs+0x64/0x1b8
-|  sdio_irq_work+0x4c/0x7c
-|  process_one_work+0x148/0x2a0
-|  worker_thread+0x2fc/0x40c
-|  kthread+0x110/0x114
-|  ret_from_fork+0x10/0x20
-| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
-| ---[ end trace 0000000000000000 ]---
+The big core of a hybrid platform can also supports the perf-metrics
+feature. Fix the hybrid platform as well.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Closes: https://lore.kernel.org/lkml/CAM9d7cj8z+ryyzUHR+P1Dcpot2jjW+Qcc4CPQpfafTXN=LEU0Q@mail.gmail.com/
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
+Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/intel/core.c | 34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 175882485a19..c5164ae41b54 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1287,6 +1287,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 05ec651663cb..dcac96133cb6 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5733,8 +5733,22 @@ exra_is_visible(struct kobject *kobj, struct attribute *attr, int i)
+ 	return x86_pmu.version >= 2 ? attr->mode : 0;
+ }
  
- 	for (i = 0; i < adapter->priv_num; i++) {
- 		if (adapter->priv[i]) {
-+			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
-+				continue;
++static umode_t
++td_is_visible(struct kobject *kobj, struct attribute *attr, int i)
++{
++	/*
++	 * Hide the perf metrics topdown events
++	 * if the feature is not enumerated.
++	 */
++	if (x86_pmu.num_topdown_events)
++		return x86_pmu.intel_cap.perf_metrics ? attr->mode : 0;
 +
- 			if ((adapter->priv[i]->bss_num == bss_num) &&
- 			    (adapter->priv[i]->bss_type == bss_type))
- 				break;
++	return attr->mode;
++}
++
+ static struct attribute_group group_events_td  = {
+ 	.name = "events",
++	.is_visible = td_is_visible,
+ };
+ 
+ static struct attribute_group group_events_mem = {
+@@ -5936,9 +5950,27 @@ static umode_t hybrid_format_is_visible(struct kobject *kobj,
+ 	return (cpu >= 0) && (pmu->pmu_type & pmu_attr->pmu_type) ? attr->mode : 0;
+ }
+ 
++static umode_t hybrid_td_is_visible(struct kobject *kobj,
++				    struct attribute *attr, int i)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++
++	if (!is_attr_for_this_pmu(kobj, attr))
++		return 0;
++
++
++	/* Only the big core supports perf metrics */
++	if (pmu->pmu_type == hybrid_big)
++		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute_group hybrid_group_events_td  = {
+ 	.name		= "events",
+-	.is_visible	= hybrid_events_is_visible,
++	.is_visible	= hybrid_td_is_visible,
+ };
+ 
+ static struct attribute_group hybrid_group_events_mem = {
 -- 
 2.43.0
 
