@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33183973535
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:46:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05959734DD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 661D11C24B95
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17C61B28A0F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2087118801A;
-	Tue, 10 Sep 2024 10:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C706191F6F;
+	Tue, 10 Sep 2024 10:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOYwetO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShPzPz9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D0B185B43;
-	Tue, 10 Sep 2024 10:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC87E191F9E;
+	Tue, 10 Sep 2024 10:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965113; cv=none; b=RCUqvVNqknVASL/0lkPcCy63NxPtE4hETeTz0txsbl9HOGNg0nS1Kca8A1KLlc5goIynz39Eobr4dK2lb9uC9ncVCbt/G5GHZRGF2hNtVcxrsJu9rl4ft8aQQe6i5UqJLA3dJbZYdYWg2iPXdZAFfHoe5Fp1JIqtHSaKzJo0Nws=
+	t=1725964636; cv=none; b=mZwGDDy2M9dQHYi8ujpbfIxI7YcRhLOFzgPGn7qcKsq5PC7u4Z1AkYEj3PRf21m5E1c3KF7BpqeFBPUGW+MCEDlO42MTFPmsgDGSyB8AiyXYxcnVdmnzXKW0kvoMK/tlt0n982dMmpvGmDV5SRWYQHaL4lwOULPZxjaUdw0UaDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965113; c=relaxed/simple;
-	bh=2Gj4rvoC9wGG6k4rEDpPiFw+da2faSf8fuTSdQBdByU=;
+	s=arc-20240116; t=1725964636; c=relaxed/simple;
+	bh=Y9gRSw5TvBA3JhOd4fuS1NEIZDdrMKR2haYrTJWz58Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzU3KMAiNLGqhIjBtZqpRzEVNwzKjgGRhO5G8KezoMzBKpeg/AiWcDbTMUMkq6QNGVxaZ6U3OCYawizylkIC6FrjbPkHh6bWUrKmEt0NiS5KXo4TphVpS55Q7yYL0iin7fZNTe5RwmUJN53QyajkOOijDOy0RJ8qnNkqROaLSJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOYwetO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A815C4CEC3;
-	Tue, 10 Sep 2024 10:45:13 +0000 (UTC)
+	 MIME-Version; b=eSqyNQwof6YUi5BOii61g+KLvxNcbY+AaE/0z+hQeUcYU/4t0V+yUG8t9vtKA1+lOFHpGLw4N1QsNB+nv4FL1EvNGABEjuKbYIvPBySjaH6i8hZUTYRQRwaHYmLTgFgxKiU/ra7y3LKTFfu42S7lMxFcwIEnVSgOiBqhOJxMSio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShPzPz9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7293AC4CEC3;
+	Tue, 10 Sep 2024 10:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965113;
-	bh=2Gj4rvoC9wGG6k4rEDpPiFw+da2faSf8fuTSdQBdByU=;
+	s=korg; t=1725964635;
+	bh=Y9gRSw5TvBA3JhOd4fuS1NEIZDdrMKR2haYrTJWz58Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOYwetO1NLl0gZDb57gdyiNodFDBmnt3IZTvwWRytL1BYrWDKcfoDNjaKLgeQe4v8
-	 5ZGzy0rcILW3QglYT4kQsz/BQMqpy6avvctzs3zxavbzx70xYhTP0KZ31vQT4JwXwN
-	 2XUf+Ftc3Tg3CId8v01xRQ6h0KPZMcQc3Gj61fM4=
+	b=ShPzPz9T8UHsIu+3EHJDYX107jC4YBWk56NsxuZoTnDb+h41XIDALHjb+8PWUcSol
+	 ryW5q+avRvxVsNdPx0hx5ZscqACp9aeOPWi0/gtke2470taId1POlA7kNd5xmM0fYw
+	 +QNA0Dd63PxBuNHMcszlahEibTUnrLrQIyt2MFxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/186] smp: Add missing destroy_work_on_stack() call in smp_call_on_cpu()
-Date: Tue, 10 Sep 2024 11:33:56 +0200
-Message-ID: <20240910092600.403245210@linuxfoundation.org>
+Subject: [PATCH 6.6 250/269] nvme-pci: allocate tagset on reset if necessary
+Date: Tue, 10 Sep 2024 11:33:57 +0200
+Message-ID: <20240910092616.729281674@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 77aeb1b685f9db73d276bad4bb30d48505a6fd23 ]
+[ Upstream commit 6f01bdbfef3b62955cf6503a8425d527b3a5cf94 ]
 
-For CONFIG_DEBUG_OBJECTS_WORK=y kernels sscs.work defined by
-INIT_WORK_ONSTACK() is initialized by debug_object_init_on_stack() for
-the debug check in __init_work() to work correctly.
+If a drive is unable to create IO queues on the initial probe, a
+subsequent reset will need to allocate the tagset if IO queue creation
+is successful. Without this, blk_mq_update_nr_hw_queues will crash on a
+bad pointer due to the invalid tagset.
 
-But this lacks the counterpart to remove the tracked object from debug
-objects again, which will cause a debug object warning once the stack is
-freed.
-
-Add the missing destroy_work_on_stack() invocation to cure that.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240704065213.13559-1-qiang.zhang1211@gmail.com
+Fixes: eac3ef262941f62 ("nvme-pci: split the initial probe from the rest path")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index b0684b4c111e..c6b3ad79c72b 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -1009,6 +1009,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 89e0798af780..7fc1ab4d9e7d 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2471,6 +2471,12 @@ static unsigned int nvme_pci_nr_maps(struct nvme_dev *dev)
  
- 	queue_work_on(cpu, system_wq, &sscs.work);
- 	wait_for_completion(&sscs.done);
-+	destroy_work_on_stack(&sscs.work);
- 
- 	return sscs.ret;
- }
+ static void nvme_pci_update_nr_queues(struct nvme_dev *dev)
+ {
++	if (!dev->ctrl.tagset) {
++		nvme_alloc_io_tag_set(&dev->ctrl, &dev->tagset, &nvme_mq_ops,
++				nvme_pci_nr_maps(dev), sizeof(struct nvme_iod));
++		return;
++	}
++
+ 	blk_mq_update_nr_hw_queues(&dev->tagset, dev->online_queues - 1);
+ 	/* free previously allocated queues that are no longer usable */
+ 	nvme_free_queues(dev, dev->online_queues);
 -- 
 2.43.0
 
