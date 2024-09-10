@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0225973579
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:50:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E229A9731D2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB459B2B1D2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F8FC28C7CE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4F1188CB6;
-	Tue, 10 Sep 2024 10:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C2191F82;
+	Tue, 10 Sep 2024 10:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNAoU4T+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh4Lbori"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E259143880;
-	Tue, 10 Sep 2024 10:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795A318FC99;
+	Tue, 10 Sep 2024 10:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964862; cv=none; b=R30Lkm9phg1XcplVs3FqbosNQ1WSCjKpdwxVPqcgT223KFP2Dx6BVH4icO1MtkK8lGcDhwQx5agTWzif63Xpbf9DXm8rjhsMSHeKDLJ2z0KNUHEKazwD+nm40zrEGcWm3rMJYCbEtC19EEv3zLMPRFjBqqTDKGGD2V77BLYhp2A=
+	t=1725963077; cv=none; b=isbV3xRK5YpEclvwkNy4U+niaF/ifiKuzWgnar1y3oRTkiaBwI2W/6byU54or4sOq6oyRoya+DvBDY53vBg/v77BQLXmiX64AkcoTyzbk8Zux/AM54r6o5Rx6zOxsMyzRL4QC/DgMNKyC1E8ftCmHgY8O1L4eyVo34GtwjmnFy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964862; c=relaxed/simple;
-	bh=t0gSrkK4TK5GHhJmQJx741Y/17ixh5OtNngYwB0aq+0=;
+	s=arc-20240116; t=1725963077; c=relaxed/simple;
+	bh=a4Wy4s8f8V0kNF6bjoYKzk8HZtLkTl3PSRHTLvI3EHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/c/74jIBXmTIGDHL95/s3K+NIQ8z3dCScavJ8dSbTGhZxeUtCZORZoehjrS2+p/dhpnB/2cvWUuZAL7T89VW8oxDBdl4Drfi6V5gi4fF0F1LkBI5hr/KyFGMlE14KX+MI5I/Galm5xlhzfx/DX3HuaUiZe9yHK3+GZ+FGhn5e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNAoU4T+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7E5C4CEC6;
-	Tue, 10 Sep 2024 10:41:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O0D8IbIBTnQqM5NCOF4x0fMr4fGzKniC11hDGfXuCsfihbvdIawIyeA1Z0ZERXoutp5abqJq7pn1CvJM24ccRy3MCCMxkwSxwKUTyzP3RzyL6ZjHb4taZYprvU6/P5fzXAA7SzLImeUMMR/TavWFqXCsST7t7BzhfhEt1sYpdGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh4Lbori; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011A9C4CEC3;
+	Tue, 10 Sep 2024 10:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964862;
-	bh=t0gSrkK4TK5GHhJmQJx741Y/17ixh5OtNngYwB0aq+0=;
+	s=korg; t=1725963077;
+	bh=a4Wy4s8f8V0kNF6bjoYKzk8HZtLkTl3PSRHTLvI3EHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNAoU4T+fbHsfLypZmRbybdBco6ZgiLJ6970GfaFo/sDYaegS19KM3rkJByXDtceZ
-	 /RzQ8iibOyGUV1TcoFf2DLCUh9LEaLlSjStw6QuS0vkH5s9ETSTH2wHPy5s8bnuYgk
-	 WyQoTWPLN6C/r/NfY6rHfU39Iy0LNE6iGGpeY8VE=
+	b=mh4LboriCh/ZXMVHbxeB0oAJetavVZh0wip9lHPqx2zd2pSkWsJlPSo8QUFUIuQSJ
+	 UesxnvCThzBdCS+LGTFiHlGblaYuCRFCfHST0GWQi7wPGvNDsu+e/Jq7vdMj6CyoAZ
+	 3neBPIOOuXI2sK91b1ZyOYoaGL+KRhDVtW9b5SeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 056/186] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/192] MIPS: cevt-r4k: Dont call get_c0_compare_int if timer irq is installed
 Date: Tue, 10 Sep 2024 11:32:31 +0200
-Message-ID: <20240910092556.801981357@linuxfoundation.org>
+Message-ID: <20240910092603.243896967@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
+[ Upstream commit 50f2b98dc83de7809a5c5bf0ccf9af2e75c37c13 ]
 
-The Sirius notebooks have two sets of speakers 0x17 (sides) and
-0x1d (top center). The side speakers are active by default but
-the top speakers aren't.
+This avoids warning:
 
-This patch provides a pincfg quirk to activate the top speakers.
+[    0.118053] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Caused by get_c0_compare_int on secondary CPU.
+
+We also skipped saving IRQ number to struct clock_event_device *cd as
+it's never used by clockevent core, as per comments it's only meant
+for "non CPU local devices".
+
+Reported-by: Serge Semin <fancer.lancer@gmail.com>
+Closes: https://lore.kernel.org/linux-mips/6szkkqxpsw26zajwysdrwplpjvhl5abpnmxgu2xuj3dkzjnvsf@4daqrz4mf44k/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/mips/kernel/cevt-r4k.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -238,6 +238,7 @@ enum {
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
-+	CXT_PINCFG_TOP_SPEAKER,
- };
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 32ec67c9ab67..77028aa8c107 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -303,13 +303,6 @@ int r4k_clockevent_init(void)
+ 	if (!c0_compare_int_usable())
+ 		return -ENXIO;
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -905,6 +906,13 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = cxt_pincfg_sws_js201d,
- 	},
-+	[CXT_PINCFG_TOP_SPEAKER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1d, 0x82170111 },
-+			{ }
-+		},
-+	},
- };
+-	/*
+-	 * With vectored interrupts things are getting platform specific.
+-	 * get_c0_compare_int is a hook to allow a platform to return the
+-	 * interrupt number of its liking.
+-	 */
+-	irq = get_c0_compare_int();
+-
+ 	cd = &per_cpu(mips_clockevent_device, cpu);
  
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -1001,6 +1009,8 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
- 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
-+	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
-+	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
- 	{}
- };
+ 	cd->name		= "MIPS";
+@@ -320,7 +313,6 @@ int r4k_clockevent_init(void)
+ 	min_delta		= calculate_min_delta();
  
-@@ -1020,6 +1030,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
-+	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
- 	{}
- };
+ 	cd->rating		= 300;
+-	cd->irq			= irq;
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= mips_next_event;
+ 	cd->event_handler	= mips_event_handler;
+@@ -332,6 +324,13 @@ int r4k_clockevent_init(void)
  
+ 	cp0_timer_irq_installed = 1;
+ 
++	/*
++	 * With vectored interrupts things are getting platform specific.
++	 * get_c0_compare_int is a hook to allow a platform to return the
++	 * interrupt number of its liking.
++	 */
++	irq = get_c0_compare_int();
++
+ 	if (request_irq(irq, c0_compare_interrupt, flags, "timer",
+ 			c0_compare_interrupt))
+ 		pr_err("Failed to request irq %d (timer)\n", irq);
+-- 
+2.43.0
+
 
 
 
