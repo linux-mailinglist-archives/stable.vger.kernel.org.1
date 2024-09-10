@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-75195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB65D9733AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B4A973154
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 034BBB24C47
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C8F41C25030
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AA619FA94;
-	Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4351A19149F;
+	Tue, 10 Sep 2024 10:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWoSlgz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK25Debz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81263191496;
-	Tue, 10 Sep 2024 10:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0297418CBE6;
+	Tue, 10 Sep 2024 10:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964026; cv=none; b=cfyTc5mTeBKozpXs7Axp6TIVv3ydV/72lFaoLjX+19Pm9kY3aLyd7CrdKmwNhiltWKDgwQMr433STJXvMT/jhdQMMLMqKxIJoNVvGLbRSbcEBRlKU3gxLZcSVgbjPl9G5YvZw8eJkIBOc7zX438b9iMGeAz1aBaB4KTL4vwZhBg=
+	t=1725962761; cv=none; b=AUFk0macOaD5xUgbPwl7pVBRYpE8L3xJ4IGl4zriATk2GCem5VMy+zA23JSE35/FsnSpQX+O0ebilZx10t0qXaIxEPzm0lJM5C4+DhqhW1Mb8D3XjhcGwaZ9B/2ri4s9c1X7SwR1d/MHMmnnruW2pkyEUYA1m3dIyS/524xmjRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964026; c=relaxed/simple;
-	bh=NS85PktJRETKrpjWU7nre0m/TrvuiXlMljaD2DFD87M=;
+	s=arc-20240116; t=1725962761; c=relaxed/simple;
+	bh=p51zTFeVsaPTvhozTomQCEyO351cJBYIC+ybhCvVhBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2PaX0N00Pp/fiF9ExqBUckyMUnlGBWru1d+TEvNcMVUWlzrbJ9Xdgr92Ab2QQy8pHIsMJIIQdHM20b3QqQtVEceQ33P0HGTXjPq/35WfRBHoR2G4OdGfAtz15vH+Jm0gGd3XtUVELm4Yab0C45Jd9zVdG7u/ng2EHYRF48WSs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWoSlgz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A1CC4CEC3;
-	Tue, 10 Sep 2024 10:27:05 +0000 (UTC)
+	 MIME-Version; b=apYIlvdl96C088nHfPr9Sq2A0jigZPXTEI/YwU0pAOmLRpzgOlojgygQKC9qsEaRgLtJk+kPqChZBuLEnEf7Wwm/ToJig2XRClkMNACU1i6Oorf06bE0bwZkjS+LWtWMt9msvBi78B9fWAayxxitu0UXxpsRrurEjo2xWS/G2Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK25Debz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799BEC4CEC3;
+	Tue, 10 Sep 2024 10:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964026;
-	bh=NS85PktJRETKrpjWU7nre0m/TrvuiXlMljaD2DFD87M=;
+	s=korg; t=1725962760;
+	bh=p51zTFeVsaPTvhozTomQCEyO351cJBYIC+ybhCvVhBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWoSlgz+3QizXFCRSnOwSrKkIcaUG0Zm2GAkCTwSnv0bFS+1F6e7NMcUw9wXLVUuX
-	 Vx+pSF6SjjTn0G/26ypd8qdOXtwt8elOBvuYJWvBrJhcBi53do4JHwEHoV03tdIryY
-	 kxDUCpatgwdZENdF5xn1uYk27mgKGQ24MHInMYEU=
+	b=XK25DebzFIppV09qFiZN6ayLG2pKzzZ0PkBx8ux7lzDryIUWuF8eZUsnHgYQ/OY32
+	 Er16oRZJm+94MelfoJqxqArJRd++IF18PnI2tv6+Fb4Ksb2TptoZUuIBnK4Hn+yPml
+	 eNSLzI7pL/vO2hxBsBOqUFAPCb379c4zaj/UBrTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Zheng Yejian <zhengyejian@huaweicloud.com>
-Subject: [PATCH 6.6 043/269] tracing: Avoid possible softlockup in tracing_iter_reset()
-Date: Tue, 10 Sep 2024 11:30:30 +0200
-Message-ID: <20240910092609.790924201@linuxfoundation.org>
+	Terry Cheong <htcheong@chromium.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 007/192] ALSA: hda/realtek: add patch for internal mic in Lenovo V145
+Date: Tue, 10 Sep 2024 11:30:31 +0200
+Message-ID: <20240910092558.211166141@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
+From: Terry Cheong <htcheong@chromium.org>
 
-commit 49aa8a1f4d6800721c7971ed383078257f12e8f9 upstream.
+commit ef27e89e7f3015be2b3c124833fbd6d2e4686561 upstream.
 
-In __tracing_open(), when max latency tracers took place on the cpu,
-the time start of its buffer would be updated, then event entries with
-timestamps being earlier than start of the buffer would be skipped
-(see tracing_iter_reset()).
+Lenovo V145 is having phase inverted dmic but simply applying inverted
+dmic fixups does not work. Chaining up verb fixes for ALC283 enables
+inverting dmic fixup to work properly.
 
-Softlockup will occur if the kernel is non-preemptible and too many
-entries were skipped in the loop that reset every cpu buffer, so add
-cond_resched() to avoid it.
-
-Cc: stable@vger.kernel.org
-Fixes: 2f26ebd549b9a ("tracing: use timestamp to determine start of latency traces")
-Link: https://lore.kernel.org/20240827124654.3817443-1-zhengyejian@huaweicloud.com
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240830-lenovo-v145-fixes-v3-1-f7b7265068fa@chromium.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4156,6 +4156,8 @@ void tracing_iter_reset(struct trace_ite
- 			break;
- 		entries++;
- 		ring_buffer_iter_advance(buf_iter);
-+		/* This could be a big loop */
-+		cond_resched();
- 	}
- 
- 	per_cpu_ptr(iter->array_buffer->data, cpu)->skipped_entries = entries;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7289,6 +7289,7 @@ enum {
+ 	ALC236_FIXUP_HP_GPIO_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
++	ALC236_FIXUP_LENOVO_INV_DMIC,
+ 	ALC298_FIXUP_SAMSUNG_AMP,
+ 	ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
+ 	ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
+@@ -8805,6 +8806,12 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc236_fixup_hp_mute_led_micmute_vref,
+ 	},
++	[ALC236_FIXUP_LENOVO_INV_DMIC] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc_fixup_inv_dmic,
++		.chained = true,
++		.chain_id = ALC283_FIXUP_INT_MIC,
++	},
+ 	[ALC298_FIXUP_SAMSUNG_AMP] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_samsung_amp,
+@@ -10111,6 +10118,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x3866, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
++	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3bf8, "Quanta FL1", ALC269_FIXUP_PCM_44K),
+@@ -10359,6 +10367,7 @@ static const struct hda_model_fixup alc2
+ 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
+ 	{.id = ALC255_FIXUP_ACER_HEADPHONE_AND_MIC, .name = "alc255-acer-headphone-and-mic"},
+ 	{.id = ALC285_FIXUP_HP_GPIO_AMP_INIT, .name = "alc285-hp-amp-init"},
++	{.id = ALC236_FIXUP_LENOVO_INV_DMIC, .name = "alc236-fixup-lenovo-inv-mic"},
+ 	{}
+ };
+ #define ALC225_STANDARD_PINS \
 
 
 
