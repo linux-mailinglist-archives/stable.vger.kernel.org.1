@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7494E973163
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05419973262
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A23DBB29B81
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27732882DF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0348018FDA9;
-	Tue, 10 Sep 2024 10:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03E1917D6;
+	Tue, 10 Sep 2024 10:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZhqWB9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpcvFthv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AFD18595E;
-	Tue, 10 Sep 2024 10:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7A9190496;
+	Tue, 10 Sep 2024 10:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962796; cv=none; b=XoEPKRWnaWSUjfPqYdWtMTAv8wE0Gdx++RqJldd3kDMLB0+n00PEjVnfk9+OOwL93hKrplSTVcOeo89ZSIVxCP6eNVH5NU150+SEWkcgmXlZhqjm2HGt0JaUzrXIOLepSbsOR2LmiqQdiXltIzo9BENnQ+zmkI+bmXVCqNUXK+Q=
+	t=1725963371; cv=none; b=KgcE8ThJ6mP2nWFHLDsVCkmV/o8R+ztouakA76HALtitNnw5AEEZhSS6+bzc4JF1sPvh0vWB261QmjXzu33ek1twwadNUaRvY+jMBl/8zn7gWrAYHgMP2+AE25+zagjMC511JBrzEhmZc0L9Hh84kKwoJuTiZVUhzI3R0AIZV80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962796; c=relaxed/simple;
-	bh=cOV87OJFaLD/PxJlN/IoqR5s7i7n4bJqHla9DRuxO5I=;
+	s=arc-20240116; t=1725963371; c=relaxed/simple;
+	bh=bTY3v/gGizhSfJuqG0c+gSm6+CmORv0Qat/uPTusOnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BD20jIyCqiosEqpaAPITNaw4/tK7NYK9AyJBYdLYkv3vkL0qOMmO4YUiPhs+vvQNV/VmTo0+u/1QnUEU9Op3kURI6wueJ2q5w6kBSk9Ouo5b0EjG6B/klEjUOswsgV0kd9FP00kcg2StsFyWeec5tUhm/O+jj7oxuBbClzNAQM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZhqWB9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15DBC4CEC6;
-	Tue, 10 Sep 2024 10:06:35 +0000 (UTC)
+	 MIME-Version; b=UPVnlJ3qGZxP3B1GeZ24D5WpKkidFNUWXUvvaGSeLO6e8OdLZqzd0V7ptimQY8C6QcEwWhAc9aMW93UFeswZWJSXDSzBDWFRkv0A+dp5UJ316Cc1OGi3jEe2eNuv6IJUkVIFlbkbNN0trEhGbyFgwejnqplbcG9xGJD1xPoW4H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpcvFthv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE7BC4CEC3;
+	Tue, 10 Sep 2024 10:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962796;
-	bh=cOV87OJFaLD/PxJlN/IoqR5s7i7n4bJqHla9DRuxO5I=;
+	s=korg; t=1725963371;
+	bh=bTY3v/gGizhSfJuqG0c+gSm6+CmORv0Qat/uPTusOnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZhqWB9qvstxy5PhTNRg4gpG05Kob2NO416AyKICX5aycNHEXK8OFwWoWN/4oDl3f
-	 /+ZYIvPmLFjL14PCgvOFBkxV1pjQe6bo8mp98pxPJ+PhVj4cHCkRgPIZGcQBtIYD9R
-	 hnJq4pR8dWQLWDkUr6TaMLq4VreJkbXn2quvuYAI=
+	b=zpcvFthvxIlj9MoLGZ7msGr3Je/q/2gCMm7Q/LkvfHuslXjwnFKP/vrfwE06cQXWK
+	 L+T8RbI65/gc8MhJMc7sf1c15lGnD7a1iyHgR9O7HC2jrjM4TIaQcmnXFqt9Y1pJfa
+	 24fCpEW7SP405GTcMUd1mb2GOvoSbbFRP7MOaLnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 033/192] net: mctp-serial: Fix missing escapes on transmit
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 035/214] drm/amdgpu: the warning dereferencing obj for nbio_v7_4
 Date: Tue, 10 Sep 2024 11:30:57 +0200
-Message-ID: <20240910092559.318700625@linuxfoundation.org>
+Message-ID: <20240910092600.201222142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-commit f962e8361adfa84e8252d3fc3e5e6bb879f029b1 upstream.
+[ Upstream commit d190b459b2a4304307c3468ed97477b808381011 ]
 
-0x7d and 0x7e bytes are meant to be escaped in the data portion of
-frames, but this didn't occur since next_chunk_len() had an off-by-one
-error. That also resulted in the final byte of a payload being written
-as a separate tty write op.
+if ras_manager obj null, don't print NBIO err data
 
-The chunk prior to an escaped byte would be one byte short, and the
-next call would never test the txpos+1 case, which is where the escaped
-byte was located. That meant it never hit the escaping case in
-mctp_serial_tx_work().
-
-Example Input: 01 00 08 c8 7e 80 02
-
-Previous incorrect chunks from next_chunk_len():
-
-01 00 08
-c8 7e 80
-02
-
-With this fix:
-
-01 00 08 c8
-7e
-80 02
-
-Cc: stable@vger.kernel.org
-Fixes: a0c2ccd9b5ad ("mctp: Add MCTP-over-serial transport binding")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-serial.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/mctp/mctp-serial.c
-+++ b/drivers/net/mctp/mctp-serial.c
-@@ -91,8 +91,8 @@ static int next_chunk_len(struct mctp_se
- 	 * will be those non-escaped bytes, and does not include the escaped
- 	 * byte.
- 	 */
--	for (i = 1; i + dev->txpos + 1 < dev->txlen; i++) {
--		if (needs_escape(dev->txbuf[dev->txpos + i + 1]))
-+	for (i = 1; i + dev->txpos < dev->txlen; i++) {
-+		if (needs_escape(dev->txbuf[dev->txpos + i]))
- 			break;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+index 74cd7543729b..af1ca5cbc2fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
+@@ -370,7 +370,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
+ 		else
+ 			WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, bif_doorbell_intr_cntl);
  
+-		if (!ras->disable_ras_err_cnt_harvest) {
++		if (ras && !ras->disable_ras_err_cnt_harvest && obj) {
+ 			/*
+ 			 * clear error status after ras_controller_intr
+ 			 * according to hw team and count ue number
+-- 
+2.43.0
+
 
 
 
