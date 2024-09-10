@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-74899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD5C97322E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A4C9732E5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354C2B26409
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE04283963
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3602D1946B5;
-	Tue, 10 Sep 2024 10:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76724191F91;
+	Tue, 10 Sep 2024 10:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STZsXinB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuSFnC3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87F8192D9D;
-	Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3564B5381A;
+	Tue, 10 Sep 2024 10:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963160; cv=none; b=LMU3yuh53++bhuOXAdg0yJDk6NNmxpPT8wKcBWqAY81K3/6qj+RZlJ7hA63FRBJgY7aPw1inYdyxJvyf9I6v3pGwDzuM6aU7jMebSt0GuI1BO/5bs731UEfa8ufYrcYQRpr3c/EOtxul0rtBeYDk39MHdIRw+r3j4DiLqCIfBG0=
+	t=1725963732; cv=none; b=W4iA4aVQS7r1YIH9U1+aqqRQwyiMvOz0aeVjm/0jdsBKK9mZn9MDitD+BArB7W3EK+R/crKcTyZG4hTOk4+hJK/li7aqugZpUe52hQGcwPx5MGLaMPf8pzhAC5I2c9U39ZvTvnYFi82cO4IpqyiZfdJb1JtWpWouRh5GE5oKhE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963160; c=relaxed/simple;
-	bh=nEGrovzd/8APHaaWD1alTOfKOyIvYFMegYoRkPSWAOU=;
+	s=arc-20240116; t=1725963732; c=relaxed/simple;
+	bh=1HQDiKvdedAeB7zXWL/uYWdmGOjwfp4FaOe4VHsbe28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fupMAm523AqmigcryIUIPAJq1+Yv/5IhfRsVcrMtl4LHiRn5/9NPgiqvZc5wEYPQDB95DzYVUxmKZ0TfxW5bDL/oknN6vlNI3fUFZwVqzwTGRvXdGCeehbDR8yLLUTeSgOR+oOR/o+INXnpINw2PvPoxavLXnGj38XUOYOxl/Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STZsXinB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6634AC4CEC3;
-	Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
+	 MIME-Version; b=RkwV+Y+4d6dc6mNH4n3tizummVQU//tcsGawsoEoeiLY+E+SwsOMOLe+QCxFdg7zDWEJiEhf+c+1DDYcUND1XvnJBnFmykeapjhAszZyqNsVmAWoMQO0geArK+qvM93XihRHVyYOoEduBvpFgMSPPfV06cjk913kkfi2yPExnjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuSFnC3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE869C4CEC3;
+	Tue, 10 Sep 2024 10:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963159;
-	bh=nEGrovzd/8APHaaWD1alTOfKOyIvYFMegYoRkPSWAOU=;
+	s=korg; t=1725963732;
+	bh=1HQDiKvdedAeB7zXWL/uYWdmGOjwfp4FaOe4VHsbe28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STZsXinB9QWknsD+UU6ascc2p6bTqqRo3rwJ4YxyA+I+xtXgTm2xCCfPTQM+FbG3D
-	 TTb0IpAiGwY863UtlzlE1e3tlrIpKbNqv9KBrjHppMlLiSy7/mAXM80gACDYM3oRcN
-	 XboYXdvtPOqk0+zlVlNeLOm3JVOAsE+CBqq+wv1c=
+	b=vuSFnC3Gf/T5SJXI9ixIKPXbORDZK9Ac3TvAIy8kzt53lChEYqwzWy5MNAuCdzpEs
+	 g3Et0BrxY4KjPJQOyYWaYGgYwiT9NaF5+P3a96H2+Jh32E+XTwqyLthzJ7/oFDHUmm
+	 jBqCEGkb1UiwWkW8oXaPG9XOiUEC9kCWQ9Xeq86g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dharmendra Singh <dsingh@ddn.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Breno Leitao <leitao@debian.org>,
+	Madalin Bucur <madalin.bucur@oss.nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/192] fuse: allow non-extending parallel direct writes on the same file
-Date: Tue, 10 Sep 2024 11:32:59 +0200
-Message-ID: <20240910092604.341975706@linuxfoundation.org>
+Subject: [PATCH 5.15 158/214] net: dpaa: avoid on-stack arrays of NR_CPUS elements
+Date: Tue, 10 Sep 2024 11:33:00 +0200
+Message-ID: <20240910092605.175785435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dharmendra Singh <dsingh@ddn.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 153524053bbb0d27bb2e0be36d1b46862e9ce74c ]
+[ Upstream commit 555a05d84ca2c587e2d4777006e2c2fb3dfbd91d ]
 
-In general, as of now, in FUSE, direct writes on the same file are
-serialized over inode lock i.e we hold inode lock for the full duration of
-the write request.  I could not find in fuse code and git history a comment
-which clearly explains why this exclusive lock is taken for direct writes.
-Following might be the reasons for acquiring an exclusive lock but not be
-limited to
+The dpaa-eth driver is written for PowerPC and Arm SoCs which have 1-24
+CPUs. It depends on CONFIG_NR_CPUS having a reasonably small value in
+Kconfig. Otherwise, there are 2 functions which allocate on-stack arrays
+of NR_CPUS elements, and these can quickly explode in size, leading to
+warnings such as:
 
- 1) Our guess is some USER space fuse implementations might be relying on
-    this lock for serialization.
+  drivers/net/ethernet/freescale/dpaa/dpaa_eth.c:3280:12: warning:
+  stack frame size (16664) exceeds limit (2048) in 'dpaa_eth_probe' [-Wframe-larger-than]
 
- 2) The lock protects against file read/write size races.
+The problem is twofold:
+- Reducing the array size to the boot-time num_possible_cpus() (rather
+  than the compile-time NR_CPUS) creates a variable-length array,
+  which should be avoided in the Linux kernel.
+- Using NR_CPUS as an array size makes the driver blow up in stack
+  consumption with generic, as opposed to hand-crafted, .config files.
 
- 3) Ruling out any issues arising from partial write failures.
+A simple solution is to use dynamic allocation for num_possible_cpus()
+elements (aka a small number determined at runtime).
 
-This patch relaxes the exclusive lock for direct non-extending writes only.
-File size extending writes might not need the lock either, but we are not
-entirely sure if there is a risk to introduce any kind of regression.
-Furthermore, benchmarking with fio does not show a difference between patch
-versions that take on file size extension a) an exclusive lock and b) a
-shared lock.
-
-A possible example of an issue with i_size extending writes are write error
-cases.  Some writes might succeed and others might fail for file system
-internal reasons - for example ENOSPACE.  With parallel file size extending
-writes it _might_ be difficult to revert the action of the failing write,
-especially to restore the right i_size.
-
-With these changes, we allow non-extending parallel direct writes on the
-same file with the help of a flag called FOPEN_PARALLEL_DIRECT_WRITES.  If
-this flag is set on the file (flag is passed from libfuse to fuse kernel as
-part of file open/create), we do not take exclusive lock anymore, but
-instead use a shared lock that allows non-extending writes to run in
-parallel.  FUSE implementations which rely on this inode lock for
-serialization can continue to do so and serialized direct writes are still
-the default.  Implementations that do not do write serialization need to be
-updated and need to set the FOPEN_PARALLEL_DIRECT_WRITES flag in their file
-open/create reply.
-
-On patch review there were concerns that network file systems (or vfs
-multiple mounts of the same file system) might have issues with parallel
-writes.  We believe this is not the case, as this is just a local lock,
-which network file systems could not rely on anyway.  I.e. this lock is
-just for local consistency.
-
-Signed-off-by: Dharmendra Singh <dsingh@ddn.com>
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Stable-dep-of: 3002240d1649 ("fuse: fix memory leak in fuse_create_open")
+Link: https://lore.kernel.org/all/202406261920.l5pzM1rj-lkp@intel.com/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+Link: https://patch.msgid.link/20240713225336.1746343-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c            | 43 ++++++++++++++++++++++++++++++++++++---
- include/uapi/linux/fuse.h |  3 +++
- 2 files changed, 43 insertions(+), 3 deletions(-)
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 20 ++++++++++++++-----
+ .../ethernet/freescale/dpaa/dpaa_ethtool.c    | 10 +++++++++-
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index e6ec4338a9c5..0df1311afb87 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1563,14 +1563,47 @@ static ssize_t fuse_direct_read_iter(struct kiocb *iocb, struct iov_iter *to)
- 	return res;
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index 1766b7d94ffa..119f560b2e65 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -910,14 +910,18 @@ static inline void dpaa_setup_egress(const struct dpaa_priv *priv,
+ 	}
  }
  
-+static bool fuse_direct_write_extending_i_size(struct kiocb *iocb,
-+					       struct iov_iter *iter)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	return iocb->ki_pos + iov_iter_count(iter) > i_size_read(inode);
-+}
-+
- static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
+-static void dpaa_fq_setup(struct dpaa_priv *priv,
+-			  const struct dpaa_fq_cbs *fq_cbs,
+-			  struct fman_port *tx_port)
++static int dpaa_fq_setup(struct dpaa_priv *priv,
++			 const struct dpaa_fq_cbs *fq_cbs,
++			 struct fman_port *tx_port)
  {
- 	struct inode *inode = file_inode(iocb->ki_filp);
-+	struct file *file = iocb->ki_filp;
-+	struct fuse_file *ff = file->private_data;
- 	struct fuse_io_priv io = FUSE_IO_PRIV_SYNC(iocb);
- 	ssize_t res;
-+	bool exclusive_lock =
-+		!(ff->open_flags & FOPEN_PARALLEL_DIRECT_WRITES) ||
-+		iocb->ki_flags & IOCB_APPEND ||
-+		fuse_direct_write_extending_i_size(iocb, from);
+ 	int egress_cnt = 0, conf_cnt = 0, num_portals = 0, portal_cnt = 0, cpu;
+ 	const cpumask_t *affine_cpus = qman_affine_cpus();
+-	u16 channels[NR_CPUS];
+ 	struct dpaa_fq *fq;
++	u16 *channels;
 +
-+	/*
-+	 * Take exclusive lock if
-+	 * - Parallel direct writes are disabled - a user space decision
-+	 * - Parallel direct writes are enabled and i_size is being extended.
-+	 *   This might not be needed at all, but needs further investigation.
-+	 */
-+	if (exclusive_lock)
-+		inode_lock(inode);
-+	else {
-+		inode_lock_shared(inode);
-+
-+		/* A race with truncate might have come up as the decision for
-+		 * the lock type was done without holding the lock, check again.
-+		 */
-+		if (fuse_direct_write_extending_i_size(iocb, from)) {
-+			inode_unlock_shared(inode);
-+			inode_lock(inode);
-+			exclusive_lock = true;
-+		}
-+	}
++	channels = kcalloc(num_possible_cpus(), sizeof(u16), GFP_KERNEL);
++	if (!channels)
++		return -ENOMEM;
  
--	/* Don't allow parallel writes to the same file */
--	inode_lock(inode);
- 	res = generic_write_checks(iocb, from);
- 	if (res > 0) {
- 		if (!is_sync_kiocb(iocb) && iocb->ki_flags & IOCB_DIRECT) {
-@@ -1581,7 +1614,10 @@ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 			fuse_write_update_attr(inode, iocb->ki_pos, res);
+ 	for_each_cpu_and(cpu, affine_cpus, cpu_online_mask)
+ 		channels[num_portals++] = qman_affine_channel(cpu);
+@@ -976,6 +980,10 @@ static void dpaa_fq_setup(struct dpaa_priv *priv,
+ 				break;
  		}
  	}
--	inode_unlock(inode);
-+	if (exclusive_lock)
-+		inode_unlock(inode);
-+	else
-+		inode_unlock_shared(inode);
++
++	kfree(channels);
++
++	return 0;
+ }
  
+ static inline int dpaa_tx_fq_to_id(const struct dpaa_priv *priv,
+@@ -3444,7 +3452,9 @@ static int dpaa_eth_probe(struct platform_device *pdev)
+ 	 */
+ 	dpaa_eth_add_channel(priv->channel, &pdev->dev);
+ 
+-	dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
++	err = dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
++	if (err)
++		goto free_dpaa_bps;
+ 
+ 	/* Create a congestion group for this netdev, with
+ 	 * dynamically-allocated CGR ID.
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+index 5750f9a56393..df6af1097dd2 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -541,12 +541,16 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 			     struct netlink_ext_ack *extack)
+ {
+ 	const cpumask_t *cpus = qman_affine_cpus();
+-	bool needs_revert[NR_CPUS] = {false};
+ 	struct qman_portal *portal;
+ 	u32 period, prev_period;
+ 	u8 thresh, prev_thresh;
++	bool *needs_revert;
+ 	int cpu, res;
+ 
++	needs_revert = kcalloc(num_possible_cpus(), sizeof(bool), GFP_KERNEL);
++	if (!needs_revert)
++		return -ENOMEM;
++
+ 	period = c->rx_coalesce_usecs;
+ 	thresh = c->rx_max_coalesced_frames;
+ 
+@@ -569,6 +573,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 		needs_revert[cpu] = true;
+ 	}
+ 
++	kfree(needs_revert);
++
+ 	return 0;
+ 
+ revert_values:
+@@ -582,6 +588,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
+ 		qman_dqrr_set_ithresh(portal, prev_thresh);
+ 	}
+ 
++	kfree(needs_revert);
++
  	return res;
  }
-@@ -2937,6 +2973,7 @@ fuse_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
  
- 	if (iov_iter_rw(iter) == WRITE) {
- 		fuse_write_update_attr(inode, pos, ret);
-+		/* For extending writes we already hold exclusive lock */
- 		if (ret < 0 && offset + count > i_size)
- 			fuse_do_truncate(file);
- 	}
-diff --git a/include/uapi/linux/fuse.h b/include/uapi/linux/fuse.h
-index 39cfb343faa8..e3c54109bae9 100644
---- a/include/uapi/linux/fuse.h
-+++ b/include/uapi/linux/fuse.h
-@@ -200,6 +200,7 @@
-  *
-  *  7.38
-  *  - add FUSE_EXPIRE_ONLY flag to fuse_notify_inval_entry
-+ *  - add FOPEN_PARALLEL_DIRECT_WRITES
-  */
- 
- #ifndef _LINUX_FUSE_H
-@@ -307,6 +308,7 @@ struct fuse_file_lock {
-  * FOPEN_CACHE_DIR: allow caching this directory
-  * FOPEN_STREAM: the file is stream-like (no file position at all)
-  * FOPEN_NOFLUSH: don't flush data cache on close (unless FUSE_WRITEBACK_CACHE)
-+ * FOPEN_PARALLEL_DIRECT_WRITES: Allow concurrent direct writes on the same inode
-  */
- #define FOPEN_DIRECT_IO		(1 << 0)
- #define FOPEN_KEEP_CACHE	(1 << 1)
-@@ -314,6 +316,7 @@ struct fuse_file_lock {
- #define FOPEN_CACHE_DIR		(1 << 3)
- #define FOPEN_STREAM		(1 << 4)
- #define FOPEN_NOFLUSH		(1 << 5)
-+#define FOPEN_PARALLEL_DIRECT_WRITES	(1 << 6)
- 
- /**
-  * INIT request/reply flags
 -- 
 2.43.0
 
