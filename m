@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3B39732C6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 840E99733E4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4ED289386
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4706828A94A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798AD19AA75;
-	Tue, 10 Sep 2024 10:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD26B18FDBD;
+	Tue, 10 Sep 2024 10:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD0tcQYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDPhz+Up"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D7218C03E;
-	Tue, 10 Sep 2024 10:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD921917FA;
+	Tue, 10 Sep 2024 10:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963629; cv=none; b=TTkGsOKd4iUVUVRmbYYigM1TRKHxx+g/PnK+LAyOqyKroKpXusCtcxQ1l1Bc0/3YYJ+x/2/6+WCteHe/NTVBt2h8tFCvSD24jfkAPwJtEz0qi9WevyJ3qMGY3UXmlBoa1XR4OM3Kv6C9GUs8KWL7Nkp9c/B8WvGR6EMOS4a+jkY=
+	t=1725964367; cv=none; b=u1/9+Ue0ZSvhWWMV3DhecKzU4WYvav4bauhMpRYaTuokXDk2LDd+ymhrMekOxNlH11oDyYS0xIYbgn2llGN4yTAg0b7hR3QLz0hbLdY8hqEYj1lnH6RTO6Ope5UXWNmDLVzYtWODxAbtMiaFhX96OQf9DUboCC4gEespMrELXtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963629; c=relaxed/simple;
-	bh=VNy/AptBIK6vDEy6afezN0GysH4OQAk1GoVWBDdzXCU=;
+	s=arc-20240116; t=1725964367; c=relaxed/simple;
+	bh=62AePO3ky2v9a+ScyOoyReI9YrlL3/wNJMA6I8pGUcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d8ISdUIUdjhGkpjZJKWBn9o/VAm5WFh31IR4NrYN+EJII3HyUo24wAhw/Vq6nvdFpPVyZQ64rw1oK+r9uf4DEkFgo5C2d/LUR/+phxJfoTWqx/6On+DqtV8fHvW+lBndHBA1e8lr1VqdI2t/PdqIzkhBT8PIIKr4J6BEhKJjo4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD0tcQYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB223C4CEC6;
-	Tue, 10 Sep 2024 10:20:28 +0000 (UTC)
+	 MIME-Version; b=csDHqeYCGtfWjcAbqN8mLmvgPUJKn9ICfrxCKPBf//n3Y3wCQGn/pCil8cp/Aq/ubjhY3XnwY9xqanIWOOORUe7SY8q46nAVmcNwqiWRfkBggQwHA3YsugDlxbiAPnnzYyUCEHq6q9Qg3kZb8kjqHgQ1PH7OpMXM170MUD8Vqlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDPhz+Up; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED483C4CEC3;
+	Tue, 10 Sep 2024 10:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963629;
-	bh=VNy/AptBIK6vDEy6afezN0GysH4OQAk1GoVWBDdzXCU=;
+	s=korg; t=1725964367;
+	bh=62AePO3ky2v9a+ScyOoyReI9YrlL3/wNJMA6I8pGUcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lD0tcQYEC0WZG/3eTcJcS0PtzK7JF4/KEzhVaMXRUP0rAdX6558It+PnIMq2/sPqa
-	 L2eqwxYWH2HPmUkFYC1/knlwxKqL80zMphV+lyNl4R+gitWybnl8RAz1Fr/V/Vyb7n
-	 diXvRP2aergUviQvTTw0Z9HLFf6jIdfP6QaCQFnw=
+	b=dDPhz+Up2kGKZc4tIyUyeUlMXOj+PE2Rz1RR/LcGCeq38hN3scPzkT2X1MBvsm3Dh
+	 sxJHnUGmjwH0Ih5Ddygf67vtfoLrNISJXeM484V39807uwscVuyYLj20TKB5a8aNAS
+	 +qXzdqLwnOZRSrqiZ5WQ3iWeTVcGtlBUuwTklKPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/214] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
-Date: Tue, 10 Sep 2024 11:32:25 +0200
-Message-ID: <20240910092603.790814433@linuxfoundation.org>
+Subject: [PATCH 6.6 159/269] ext4: fix possible tid_t sequence overflows
+Date: Tue, 10 Sep 2024 11:32:26 +0200
+Message-ID: <20240910092613.853173473@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
+[ Upstream commit 63469662cc45d41705f14b4648481d5d29cf5999 ]
 
-In case of error in build_tokens_sysfs(), all the memory that has been
-allocated is freed at end of this function. But then free_group() is
-called which performs memory deallocation again.
+In the fast commit code there are a few places where tid_t variables are
+being compared without taking into account the fact that these sequence
+numbers may wrap.  Fix this issue by using the helper functions tid_gt()
+and tid_geq().
 
-Also, instead of free_group() call, there should be exit_dell_smbios_smm()
-and exit_dell_smbios_wmi() calls, since there is initialization, but there
-is no release of resources in case of an error.
-
-Fix these issues by replacing free_group() call with
-exit_dell_smbios_wmi() and exit_dell_smbios_smm().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Harshad Shirwadkar <harshadshirwadkar@gmail.com>
+Link: https://patch.msgid.link/20240529092030.9557-3-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ext4/fast_commit.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index 77b0f5bbe3ac..b19c5ff31a70 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -589,7 +589,10 @@ static int __init dell_smbios_init(void)
- 	return 0;
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index 5d473e50598f..f32a91d7c05d 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -353,7 +353,7 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (sbi->s_fc_ineligible_tid < tid)
++	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
+ 		sbi->s_fc_ineligible_tid = tid;
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+@@ -1213,7 +1213,7 @@ int ext4_fc_commit(journal_t *journal, tid_t commit_tid)
+ 	if (ret == -EALREADY) {
+ 		/* There was an ongoing commit, check if we need to restart */
+ 		if (atomic_read(&sbi->s_fc_subtid) <= subtid &&
+-			commit_tid > journal->j_commit_sequence)
++		    tid_gt(commit_tid, journal->j_commit_sequence))
+ 			goto restart_fc;
+ 		ext4_fc_update_stats(sb, EXT4_FC_STATUS_SKIPPED, 0, 0,
+ 				commit_tid);
+@@ -1288,7 +1288,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
+ 		list_del_init(&iter->i_fc_list);
+ 		ext4_clear_inode_state(&iter->vfs_inode,
+ 				       EXT4_STATE_FC_COMMITTING);
+-		if (iter->i_sync_tid <= tid)
++		if (tid_geq(tid, iter->i_sync_tid))
+ 			ext4_fc_reset_inode(&iter->vfs_inode);
+ 		/* Make sure EXT4_STATE_FC_COMMITTING bit is clear */
+ 		smp_mb();
+@@ -1319,7 +1319,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
+ 	list_splice_init(&sbi->s_fc_q[FC_Q_STAGING],
+ 				&sbi->s_fc_q[FC_Q_MAIN]);
  
- fail_sysfs:
--	free_group(platform_device);
-+	if (!wmi)
-+		exit_dell_smbios_wmi();
-+	if (!smm)
-+		exit_dell_smbios_smm();
- 
- fail_create_group:
- 	platform_device_del(platform_device);
+-	if (tid >= sbi->s_fc_ineligible_tid) {
++	if (tid_geq(tid, sbi->s_fc_ineligible_tid)) {
+ 		sbi->s_fc_ineligible_tid = 0;
+ 		ext4_clear_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	}
 -- 
 2.43.0
 
