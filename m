@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1AC97318B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E411A973289
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28B8128A925
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21AF61C2477A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DAF194C88;
-	Tue, 10 Sep 2024 10:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D622B194091;
+	Tue, 10 Sep 2024 10:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbLyuV7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN39LuBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A6D18C336;
-	Tue, 10 Sep 2024 10:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938B214D431;
+	Tue, 10 Sep 2024 10:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962904; cv=none; b=dV6n7qvBSQMSltMa5eViGh6g88d8zq5QbAuLQcL6dp2CG9xzrtDD5qwyddefmAHSvMQ7lCQBP5CywlPnPrdyYJPGCd9Odoi8mOUCwABIDsza3RELj3p0vHa5p4L3bsR4GGg24uJ2kyRsEfLVBUBhmAnT9szEt6s1xg4XLDXG4JI=
+	t=1725963479; cv=none; b=XcKvSkr1YKQ/yfPbaF0LTfj2R3KeJaGgOsj8whppGqtadO1M/pZpcVtxKT3k6rC22fbuFp7C2WQewMVvvmGzdJkcJ8kd7S2xNMEckZbWKtNAQZPxJyQiapB5eHCqWTsF/B5rrJn911Mv3KWi4H1rXuw/blFv5POk9pCqDyk5KJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962904; c=relaxed/simple;
-	bh=BFXJ7edtuQVGvpDgJA05nNtCEQNFhODpE5v5wFjgpDY=;
+	s=arc-20240116; t=1725963479; c=relaxed/simple;
+	bh=fMUy+5XmCtCPmWQPq26x0/RX5Q/554u7Q7TKfczrxhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQNtMai7XdSuqiYjphA2NEUEmC3pVcxuhtDGwrfZ9q0rpLIvaNllPSBTieCAhu45UAGvBAeJhKS3DHEhWmcsE2d9ls9GDGm7ZbRkeOog4kP71O6mW0piDUP9p+Rs7Ck3sUlEK+0L50g8/vd0CFTSeORSAKS3LabBi1wQ58vdg48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbLyuV7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F795C4CEC3;
-	Tue, 10 Sep 2024 10:08:24 +0000 (UTC)
+	 MIME-Version; b=Jz/sWxPQ8Vn5OvLlZ1/mWwe+djIafRoUcOrR3MVQu6EenCdMb8k5u0pLuyooR8+u6ye+bEYnnH0I8yPHsY6LCXjCEZ2dmA9GRmWE6fiICH/VY4VVCEiEGjmxhXraFOK3tPS1FOX+ZAK4UFmaWKA/3j291IbM4iEaUyXeapnplPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN39LuBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0E0C4CEC3;
+	Tue, 10 Sep 2024 10:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962904;
-	bh=BFXJ7edtuQVGvpDgJA05nNtCEQNFhODpE5v5wFjgpDY=;
+	s=korg; t=1725963479;
+	bh=fMUy+5XmCtCPmWQPq26x0/RX5Q/554u7Q7TKfczrxhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbLyuV7rrTkv4Y0McF4bZyXLcvHBaLmr8Pvw7EJkVedmQI4n8V3Tcxz+RHHsJ1d7S
-	 MqCEH6S7+e4vQvOEVRy2pQ9BDhQzn/kBm4RZ/oWcEgCXzI+0NcwFHo2rjHC7bIC7Sb
-	 LhbTA3u2m18Iv924jr5heXpl7luoPcx3UQC3BcRo=
+	b=SN39LuBs1XOq1wlKSa7Mt0QNCD/Ux7FIQuELRhxkRjIjFyO1GZ3gV4zjGJYWIKhv+
+	 yfZEaX380SljMsMMSuIw00819oJnepd4ocrS/07cZiXHy1ujdLc8irR1OdLbsQBkHM
+	 P5bL7rmvvfmUGN2p3pvxAi85HqZEPgIgvC2SKopA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/192] can: m_can: Release irq on error in m_can_open
-Date: Tue, 10 Sep 2024 11:31:33 +0200
-Message-ID: <20240910092600.844735387@linuxfoundation.org>
+	Georg Gottleuber <ggo@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.15 072/214] nvme-pci: Add sleep quirk for Samsung 990 Evo
+Date: Tue, 10 Sep 2024 11:31:34 +0200
+Message-ID: <20240910092601.683034182@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Georg Gottleuber <ggo@tuxedocomputers.com>
 
-[ Upstream commit 06d4ef3056a7ac31be331281bb7a6302ef5a7f8a ]
+commit 61aa894e7a2fda4ee026523b01d07e83ce2abb72 upstream.
 
-It appears that the irq requested in m_can_open() may be leaked
-if an error subsequently occurs: if m_can_start() fails.
+On some TUXEDO platforms, a Samsung 990 Evo NVMe leads to a high
+power consumption in s2idle sleep (2-3 watts).
 
-Address this by calling free_irq in the unwind path for
-such cases.
+This patch applies 'Force No Simple Suspend' quirk to achieve a
+sleep with a lower power consumption, typically around 0.5 watts.
 
-Flagged by Smatch.
-Compile tested only.
-
-Fixes: eaacfeaca7ad ("can: m_can: Call the RAM init directly from m_can_chip_config")
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240805-mcan-irq-v2-1-7154c0484819@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 2de998b98cb5..561f25cdad3f 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1815,7 +1815,7 @@ static int m_can_open(struct net_device *dev)
- 	/* start the m_can controller */
- 	err = m_can_start(dev);
- 	if (err)
--		goto exit_irq_fail;
-+		goto exit_start_fail;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2974,6 +2974,17 @@ static unsigned long check_vendor_combin
+ 		    dmi_match(DMI_BOARD_NAME, "NS5x_7xPU") ||
+ 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1"))
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
++	} else if (pdev->vendor == 0x144d && pdev->device == 0xa80d) {
++		/*
++		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
++		 * because of high power consumption (> 2 Watt) in s2idle
++		 * sleep. Only some boards with Intel CPU are affected.
++		 */
++		if (dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
++		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
++		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
++		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
++			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
+ 	}
  
- 	if (!cdev->is_peripheral)
- 		napi_enable(&cdev->napi);
-@@ -1824,6 +1824,9 @@ static int m_can_open(struct net_device *dev)
- 
- 	return 0;
- 
-+exit_start_fail:
-+	if (cdev->is_peripheral || dev->irq)
-+		free_irq(dev->irq, dev);
- exit_irq_fail:
- 	if (cdev->is_peripheral)
- 		destroy_workqueue(cdev->tx_wq);
--- 
-2.43.0
-
+ 	/*
 
 
 
